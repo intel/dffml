@@ -1,0 +1,26 @@
+language: python
+dist: xenial
+python:
+  - "3.7"
+addons:
+  apt:
+    packages:
+      - git
+      - subversion
+      - cloc
+env:
+  global:
+    - LOGGING=debug
+  matrix:
+    - PLUGIN=.
+    - PLUGIN=model/tensorflow
+    - PLUGIN=feature/git
+before_install:
+  # Update cloc (xenial has bad version)
+  - |
+    curl -o /tmp/cloc -sSL https://github.com/AlDanial/cloc/raw/1.80/cloc
+    sudo cp /tmp/cloc /usr/bin/cloc
+    sudo chmod 755 /usr/bin/cloc
+  - |
+script:
+  - python setup.py install && cd $PLUGIN && python setup.py test
