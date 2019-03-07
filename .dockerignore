@@ -1,0 +1,6 @@
+.venv/
+.eggs/
+.mypy_cache/
+*/*.venv/
+*/*.eggs/
+*/*.mypy_cache/
