@@ -10,7 +10,7 @@ with open('dffml/version.py', 'r') as f:
             version = ast.literal_eval(line.strip().split('=')[-1].strip())
             break
 
-with open('README.rst', 'r', encoding='utf-8') as f:
+with open('README.md', 'r', encoding='utf-8') as f:
     readme = f.read()
 
 setup(
