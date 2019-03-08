@@ -13,7 +13,7 @@ with open(os.path.join(self_path, 'dffml_model_tensorflow', 'version.py'),
             version = ast.literal_eval(line.strip().split('=')[-1].strip())
             break
 
-with open(os.path.join(self_path, 'README.rst'), 'r', encoding='utf-8') as f:
+with open(os.path.join(self_path, 'README.md'), 'r', encoding='utf-8') as f:
     readme = f.read()
 
 INSTALL_REQUIRES = [
