@@ -178,7 +178,7 @@ classifications can be used to train Models. The classification of the repo is
 what Education will ask it's models to make predictions on.
 
 Feature
-------
+-------
 
 Features are given a repo, containing at the minimum a source URL for it,
 and produce a list of results which represent the evaluation of that feature.
@@ -235,7 +235,7 @@ just it's source URL. Sources are responsible for providing the repos they
 contain and updating those repos upon request.
 
 Model
--------
+-----
 
 Models are feed classified repos from which they learn from during their
 training phase. After training they can be used to make a prediction about the
