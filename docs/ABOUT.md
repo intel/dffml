@@ -41,3 +41,11 @@ services. See [Architecture](ARCHITECTURE.md) to learn how it works.
 
 The plumbing DFFML provides enables users to swap out models and features,
 in order to quickly prototype.
+
+DFFML allows users to take advantage of Python's `asyncio` library in order to
+build applications which interact in deterministic ways with external data
+sources and syncs (think pub/sub, websockets, grpc streams). Writing with
+`asyncio` in the loop (huh-huh) makes testing MUCH MUCH EASIER. `asyncio` usage
+also means that when generating datasets, we can do everything concurrently (or
+in parallel if you want to us an executor) making generating a dataset from
+scratch very fast, and best of all, clean error handling if things go wrong.

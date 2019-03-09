@@ -11,14 +11,6 @@ generation and model definition. So that we as developers and researchers can
 quickly and easily plug and play various pieces of data with various model
 implementations.
 
-DFFML allows users to take advantage of Python's `asyncio` library in order to
-build applications which interact in deterministic ways with external data
-sources and syncs (think pub/sub, websockets, grpc streams). Writing with
-`asyncio` in the loop (huh-huh) makes testing MUCH MUCH EASIER. `asyncio` usage
-also means that when generating datasets, we can do everything concurrently (or
-in parallel if you want to us an executor) making generating a dataset from
-scratch very fast, and best of all, clean error handling if things go wrong.
-
 Here's a quick demo showing how DFFML can be used to train on the iris dataset.
 The more we build up the library of plugins (which anyone can maintain, they
 don't have to be contributed upstream unless you want to) the more variations on
