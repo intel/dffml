@@ -50,8 +50,11 @@ If you don't have Python 3.7 we have a docker image for you, or you can install
 
 ## Usage
 
-See [DFFML Models for Tensorflow Library](model/tensorflow/README.md) repo
-until documentation here is updated with a generic example.
+To start using `dffml` for data set generation with a single CLI command see
+[DFFML Features for Git Version Control](feature/git/README.md).
+
+To start using `dffml` for machine learning with a few CLI commands see
+[DFFML Models for Tensorflow Library](model/tensorflow/README.md).
 
 ## Documentation
 
