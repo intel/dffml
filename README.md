@@ -52,6 +52,10 @@ If you want a quick how to on the iris dataset head to the
 python3.7 -m pip install -U dffml[git,tensorflow]
 ```
 
+If you don't have Python 3.7 we have a docker image for you, or you can install
+`pyenv` which will quickly and easily give you Python 3.7. See
+[docs/INSTALL.md](docs/INSTALL.md) for more details.
+
 ## Usage
 
 See [DFFML Models for Tensorflow Library](model/tensorflow/README.md) repo
