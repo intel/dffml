@@ -58,7 +58,7 @@ class TestFileSource(AsyncTestCase):
     async def test_open(self):
         source = FakeFileSource('testfile')
         m_open = mock_open()
-        with patch('os.path.isfile', return_value=True), \
+        with patch('os.path.exists', return_value=True), \
                 patch('builtins.open', m_open):
             await source.open()
             m_open.assert_called_once_with('testfile', 'r')
