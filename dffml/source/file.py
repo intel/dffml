@@ -5,9 +5,9 @@ import abc
 import asyncio
 
 from .source import Source
-# from .log import LOGGER
+from .log import LOGGER
 
-# LOGGER = LOGGER.getChild('file')
+LOGGER = LOGGER.getChild('file')
 
 class FileSource(Source):
     '''
@@ -34,7 +34,10 @@ class FileSource(Source):
         await asyncio.shield(self._open())
 
     async def _open(self):
-        if not os.path.isfile(self.filename):
+        if not os.path.exists(self.filename) \
+                and not os.path.isdir(self.filename):
+            LOGGER.debug('%r is not a file, initializing memory to empty dict',
+                         self.filename)
             self.mem = {}
             return
         with open(self.filename, 'r') as fd:
