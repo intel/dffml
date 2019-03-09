@@ -35,7 +35,7 @@ class FileSource(Source):
 
     async def _open(self):
         if not os.path.exists(self.filename) \
-                and not os.path.isdir(self.filename):
+                or os.path.isdir(self.filename):
             LOGGER.debug('%r is not a file, initializing memory to empty dict',
                          self.filename)
             self.mem = {}
