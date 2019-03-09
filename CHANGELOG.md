@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Contribution guidelines
 ### Changed
 - Restructured documentation to docs folder and moved from rST to markdown
+### Fixed
+- Enable source.file to read from /dev/fd/XX
 
 ## [0.1.1] - 2019-03-08
 ### Changed
