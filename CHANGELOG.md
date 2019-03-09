@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Contribution guidelines
+- Logging documentation
 ### Changed
 - Restructured documentation to docs folder and moved from rST to markdown
 ### Fixed
