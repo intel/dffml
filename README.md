@@ -58,7 +58,7 @@ To start using `dffml` for machine learning with a few CLI commands see
 
 ## Documentation
 
-Start with [Architechture](docs/ARCHITECHTURE.md).
+Start with [Architecture](docs/ARCHITECTURE.md).
 
 ## License
 
