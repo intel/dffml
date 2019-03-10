@@ -46,9 +46,6 @@ class CSVSource(FileSource, MemorySource):
             self.mem[repo.src_url] = repo
         LOGGER.debug('%r loaded %d records', self, len(self.mem))
 
-    async def _close(self):
-        LOGGER.debug('%r save to file not implemented', self)
-
     async def dump_fd(self, fd):
         pass
         # LOGGER.debug('%r saved %d records', self, len(self.mem))
