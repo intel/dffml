@@ -30,3 +30,9 @@ protocols and deployment scenarios.
 - [Source](SOURCE.md)
 - [Model](MODEL.md)
 - [Repo](REPO.md)
+
+## Original Architecture Drawing
+
+![oarch](https://github.com/intel/dffml/raw/master/docs/images/oarch.jpg)
+
+> December 26th 2017
