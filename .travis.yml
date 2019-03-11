@@ -1,30 +1,36 @@
 language: python
 dist: xenial
 python:
-  - "3.7"
+- '3.7'
 addons:
   apt:
     packages:
-      - git
-      - subversion
-      - cloc
+    - git
+    - subversion
+    - cloc
 env:
   global:
-    - LOGGING=debug
+  - LOGGING=debug
+  - secure: HFt5s9J80XaUoIxfXRTd7ysJRQXX6We38XZ8z6ex01OqAGix027obDmarWzoi917o7IOtsLybn2gX+4oYvlENv45n52FoX/A1dmfA/JNfixZ5zEu+KsCnT3xynUgIvkxmiTUTm+BjpS1uvFBYSOLMyy2g3PArQ6te5Mgxxnks1rogNdhJlB0mp1J1zif8jL5wdjg0i6mSNsNKwPt/h1NnBC6spwhqSySFxUUNpRJjgwwtGalC2/MogA/fkOGmbG+ihu/5MR7rq9p91EyUtfqhFB1deKn7fkMWcvbOQ1aPjnZB16nPp5L8rjnmUgKRu1WXS6kaNP0ZMz62sjzJmVUTpdTdCAabRf4EAcK3WXGxYl2sqnp8U5S1UhkFlWSvAOESF8BAMenunYnV6GufT0k/JOulTPeVrw6EBlKHBGVkeUiNQxOVek4k38jvZrOM8FbfrYtNCGoqTD7IPEV2Ipib03oee1g5zlUoZMFKbpZMnmd85R1XaOC86bxh7obIHUxGUs5kvnUFpCOcQf8rdF4N+QRKoo9XBC2sulvUCbTrl4N+OyZEEvbnvHNpPBW+nwyXyM+liRaxArvfQFznrUswSiGCj+hm6vvnSwy0y0GnfmwUNz4pTPK1Nu/dOfqh9BmPWd63yb33Y2fI62pHgTZ2cZ5h6zIgWTWYtv9C2RtdYU=
   matrix:
-    - PLUGIN=.
-    - PLUGIN=model/tensorflow
-    - PLUGIN=feature/git
+  - PLUGIN=.
+  - PLUGIN=model/tensorflow
+  - PLUGIN=feature/git
 before_install:
-  # Update cloc (xenial has bad version)
-  - |
-    curl -o /tmp/cloc -sSL https://github.com/AlDanial/cloc/raw/1.80/cloc
-    sudo cp /tmp/cloc /usr/bin/cloc
-    sudo chmod 755 /usr/bin/cloc
-  - |
+- pip install coverage codecov
+- |
+  curl -o /tmp/cloc -sSL https://github.com/AlDanial/cloc/raw/1.80/cloc
+  sudo cp /tmp/cloc /usr/bin/cloc
+  sudo chmod 755 /usr/bin/cloc
+- ''
 script:
-  - python setup.py install && cd $PLUGIN && python setup.py test && cd -
-  - |
-    if [ "x$PLUGIN" = "x." ]; then
-        ./scripts/new_feature.sh travis_test_feature
-    fi
+- python setup.py install && cd $PLUGIN && coverage run setup.py test && cd -
+- |
+  if [ "x$PLUGIN" = "x." ]; then
+      ./scripts/new_feature.sh travis_test_feature
+  fi
+after_success:
+- |
+  if [ "x$PLUGIN" = "x." ]; then
+      codecov
+  fi
