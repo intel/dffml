@@ -27,7 +27,8 @@ script:
 - python setup.py install && cd $PLUGIN && coverage run setup.py test && cd -
 - |
   if [ "x$PLUGIN" = "x." ]; then
-      ./scripts/new_feature.sh travis_test_feature
+      ./scripts/create.sh feature travis_test_feature
+      ./scripts/create.sh model travis_test_model
   fi
 after_success:
 - |

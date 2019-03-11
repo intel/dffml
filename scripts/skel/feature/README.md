@@ -1,6 +1,6 @@
-# DFFML FEATURE_NAME Features
+# DFFML feature_name Features
 
-FEATURE_NAME description.
+feature_name description.
 
 ## Demo
 
@@ -16,5 +16,5 @@ dffml evaluate repo -keys relavant keys -features misc
 
 ## License
 
-DFFML DFFML FEATURE_NAME are distributed under the
+DFFML DFFML feature_name are distributed under the
 [MIT License](LICENSE).
