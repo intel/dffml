@@ -55,7 +55,7 @@ class MiscFeature(Feature):
         '''
         Calculates the score for this feature based on data found by parse().
         '''
-        return await data.data.set('FEATURE_NAME_misc')
+        return await data.data.get('FEATURE_NAME_misc')
 
     async def setUp(self, data):
         '''
