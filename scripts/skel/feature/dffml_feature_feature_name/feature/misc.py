@@ -17,7 +17,6 @@ class MiscFeature(Feature):
     LOGGER = LOGGER.getChild('MiscFeature')
 
     NAME: str = 'misc'
-    ENTRY_POINT = 'dffml.feature'
 
     def dtype(self) -> Type:
         '''
