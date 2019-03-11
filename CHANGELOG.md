@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Contribution guidelines
 - Logging documentation
 - Example usage of Git features
+- New Feature creation script
 ### Changed
 - Restructured documentation to docs folder and moved from rST to markdown
 ### Fixed

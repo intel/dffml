@@ -23,4 +23,8 @@ before_install:
     sudo chmod 755 /usr/bin/cloc
   - |
 script:
-  - python setup.py install && cd $PLUGIN && python setup.py test
+  - python setup.py install && cd $PLUGIN && python setup.py test && cd -
+  - |
+    if [ "x$PLUGIN" = "x." ]; then
+        ./scripts/new_feature.sh travis_test_feature
+    fi
