@@ -6,7 +6,7 @@ import unittest
 from dffml.feature import Feature, Features
 from dffml.util.asynctestcase import AsyncTestCase
 
-# FEATURE_NAME based features
+# feature_name based features
 from dffml_feature_feature_name.feature.misc import MiscFeature
 
 FEATURES = Features(*[feature() for _name, feature in \

@@ -9,7 +9,7 @@ We're going to create a feature that multiplies float values by `4.2`.
 
 ```console
 export YOUR_FEATURE_NAME=string
-./scripts/new_feature.sh $YOUR_FEATURE_NAME
+./scripts/create.sh feature $YOUR_FEATURE_NAME
 ```
 
 > All lower case, only underscores allowed.

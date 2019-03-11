@@ -42,8 +42,8 @@ class MiscFeature(Feature):
         Fetch retrieves any additional information about the software we are
         evaluating. Any data fetched should be stored in tempdir().
         '''
-        await data.data.set('FEATURE_NAME_misc',
-                            '%s + FEATURE_NAME_misc' % (data.src_url,))
+        await data.data.set('feature_name_misc',
+                            '%s + feature_name_misc' % (data.src_url,))
 
     async def parse(self, data):
         '''
@@ -55,7 +55,7 @@ class MiscFeature(Feature):
         '''
         Calculates the score for this feature based on data found by parse().
         '''
-        return await data.data.get('FEATURE_NAME_misc')
+        return await data.data.get('feature_name_misc')
 
     async def setUp(self, data):
         '''
