@@ -47,5 +47,24 @@ class CSVSource(FileSource, MemorySource):
         LOGGER.debug('%r loaded %d records', self, len(self.mem))
 
     async def dump_fd(self, fd):
-        pass
-        # LOGGER.debug('%r saved %d records', self, len(self.mem))
+        '''
+        Dumps data into a CSV stream
+        '''
+        samplekey = list(self.mem.keys())[0]
+        sampledata = self.mem[samplekey]
+        fieldnames = list(sampledata.dict()['features'].keys()) + ['classification']
+        if 'prediction' in sampledata.dict():
+            fieldnames += ['prediction','confidence']
+        writer = csv.DictWriter(fd, fieldnames=fieldnames)
+        writer.writeheader()
+        for data in self.mem.values():
+            row = {}
+            for key,value in data.dict()['features'].items():
+                row[key] = value
+
+            row['classification'] = data.dict()['classification']
+            if 'prediction' in data.dict():
+                row['prediction'] = data.dict()['prediction']['classification']
+                row['confidence'] = data.dict()['prediction']['confidence']
+            writer.writerow(row)
+        LOGGER.debug('%r saved %d records', self, len(self.mem))
