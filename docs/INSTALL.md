@@ -13,13 +13,24 @@ This is a good option if you don't want to deal with installing Python 3.7 or
 don't like `pyenv`.
 
 ```console
+docker pull intelotc/dffml
+```
+
+Or build it yourself.
+
+```console
 docker build -t dffml .
 ```
 
-You can then alias dffml to run the docker container.
+You can then make bash function to run the dffml docker container.
 
 ```bash
-alias dffml="docker run --rm -ti -v $HOME/.local:/home/$USER/.local/ -v $PWD:/workdir -w /workdir -e UID=$(id -u) -e USER=$USER dffml"
+dffml() {
+  docker run --rm -ti \
+    -v $HOME/.local:/home/$USER/.local/ \
+    -v $HOME/.cache:/home/$USER/.cache/ \
+    -v $PWD:/workdir -w /workdir -e UID=$(id -u) -e USER=$USER dffml $@
+}
 ```
 
 This creates an alias that takes your current working directory and mounts it
