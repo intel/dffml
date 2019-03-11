@@ -6,7 +6,7 @@ from setuptools import find_packages, setup
 
 self_path = os.path.dirname(os.path.realpath(__file__))
 
-with open(os.path.join(self_path, 'dffml_feature_feature_name', 'version.py'),
+with open(os.path.join(self_path, 'dffml_model_model_name', 'version.py'),
           'r') as f:
     for line in f:
         if line.startswith('VERSION'):
@@ -20,13 +20,13 @@ INSTALL_REQUIRES = [
     ]
 
 setup(
-    name='dffml_feature_feature_name',
+    name='dffml-model-model_name',
     version=version,
     description='',
     long_description=readme,
     author='John Andersen',
     author_email='john.s.andersen@intel.com',
-    url='https://github.com/intel/dffml/blob/master/feature/feature_name/README.rst',
+    url='https://github.com/intel/dffml/blob/master/model/model_name/README.md',
     license='MIT',
 
     keywords=[
@@ -40,18 +40,18 @@ setup(
         'License :: OSI Approved :: Apache Software License',
         'Natural Language :: English',
         'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
 
     install_requires=INSTALL_REQUIRES,
-    tests_require=[],
 
     packages=find_packages(),
     entry_points={
-        'dffml.feature': [
-            'misc = dffml_feature_feature_name.feature.misc:MiscFeature',
+        'dffml.model': [
+            'dnn = dffml_model_model_name.model.misc:Misc',
         ],
     },
 )
