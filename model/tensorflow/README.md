@@ -8,6 +8,10 @@ DFFML models backed by Tensorflow.
 
 ![Demo](https://github.com/intel/dffml/raw/master/docs/images/iris_demo.gif)
 
+> This demo was taken before the below steps were updated, the actual accuracy
+> may vary as this video shows accuracy being assessed against the training
+> data. You should try it for yourself and see!
+
 ## Install
 
 ```console
@@ -38,7 +42,7 @@ dffml train \
   -log debug
 dffml accuracy \
   -model dnn \
-  -sources csv=iris_training.csv \
+  -sources csv=iris_test.csv \
   -classifications 0 1 2 \
   -features \
     def:SepalLength:float:1 \

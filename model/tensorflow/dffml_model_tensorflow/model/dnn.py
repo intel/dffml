@@ -189,7 +189,7 @@ class DNN(Model):
                 len(classifications), classifications)
         self._model = self._tf.estimator.DNNClassifier(
                 feature_columns=list((await self.features(features)).values()),
-                hidden_units=[10, 20, 10],
+                hidden_units=[12, 40, 15],
                 n_classes=len(classifications),
                 model_dir=self.model_dir_path(features))
         return self._model
