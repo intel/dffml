@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New Model skeleton directory
 - New Feature creation tutorial
 - New Model creation tutorial
+- Added update functionality to the CSV source
 ### Changed
 - Restructured documentation to docs folder and moved from rST to markdown
 ### Fixed
