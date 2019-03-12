@@ -15,7 +15,9 @@ from dffml.util.asynctestcase import AsyncTestCase
 class TestCSVSource(AsyncTestCase):
 
     async def test_update(self):
-        repo = Repo("24",data= {
+        full_src_url = '0'
+        empty_src_url = '1'
+        full_repo = Repo(full_src_url, data= {
             "classification": "1",
             "features": {
                 "PetalLength": 3.9,
@@ -23,26 +25,35 @@ class TestCSVSource(AsyncTestCase):
                 "SepalLength": 5.8,
                 "SepalWidth": 2.7,
             },
-            "last_updated": "2019-03-11T09:11:25Z",
             "prediction": {
-                "classification": "1",
-                "confidence": 1.0
+                "classification": "feedface",
+                "confidence": 0.42
             },
         })
-        csvSource = CSVSource(os.path.join(
-                os.path.expanduser('~'), '.cache', 'dffml_test.csv'))
-        csvSource.mem["22"] = repo
-        fd, path = tempfile.mkstemp()
-        
-        with os.fdopen(fd, 'w') as tmp:
-            await csvSource.dump_fd(tmp)
-        print("Temporary file path :" + path)
+        empty_repo = Repo(empty_src_url, data= {
+            "classification": "1",
+            "features": {
+                "PetalLength": 3.9,
+                "PetalWidth": 1.2,
+                "SepalLength": 5.8,
+                "SepalWidth": 2.7,
+            },
+        })
 
-        with open(path,'r') as rd:
-            headers = csv.DictReader(rd).fieldnames
-            self.assertTrue(set(['prediction','confidence']).issubset(set(headers)))
-
-
-
-
-
+        with tempfile.NamedTemporaryFile() as csvfile:
+            csvSource = CSVSource(csvfile.name)
+            # Open, update, and close
+            async with csvSource as source:
+                await source.update(full_repo)
+                await source.update(empty_repo)
+            # Open and confirm we saved and loaded correctly
+            async with csvSource as source:
+                with self.subTest(src_url=full_src_url):
+                    repo = await source.repo(full_src_url)
+                    self.assertEqual(repo.data.prediction.classification,
+                                     "feedface")
+                    self.assertEqual(repo.data.prediction.confidence, 0.42)
+                with self.subTest(src_url=empty_src_url):
+                    repo = await source.repo(empty_src_url)
+                    self.assertFalse(repo.data.prediction.classification)
+                    self.assertFalse(repo.data.prediction.confidence)
