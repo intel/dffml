@@ -19,6 +19,7 @@ from .source import Source, Sources, SubsetSources, ValidationSources
 from .memory import MemorySource, RepoSource
 from .json import JSONSource
 from .file import FileSource
+from .csvfile import CSVSource
 
 # Declares dffml.source as a namespace package
 __import__('pkg_resources').declare_namespace(__name__)
