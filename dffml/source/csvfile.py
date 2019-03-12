@@ -38,8 +38,17 @@ class CSVSource(FileSource, MemorySource):
             if not data.get('classification') is None:
                 classification = data['classification']
                 del data['classification']
-                repo = Repo(str(i), data={'features': data,
+                if not data.get('prediction') is None and not data.get('confidence') is None:
+                    prediction = data['prediction']
+                    del data['prediction']
+                    confidence = data['confidence']
+                    del data['confidence']
+                    repo = Repo(str(i), data={'features': data,
+                    'classification': str(classification), 'prediction': {'classification':str(prediction),'confidence': str(confidence)}})
+                else:
+                    repo = Repo(str(i), data={'features': data,
                     'classification': str(classification)})
+
             else:
                 repo = Repo(str(i), data={'features': data})
             i += 1
