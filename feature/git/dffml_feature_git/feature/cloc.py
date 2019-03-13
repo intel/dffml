@@ -20,6 +20,8 @@ class GitClocFeature(GitMonthlyFeature):
         for binary in self.FASTER_THAN_CLOC:
             if inpath(binary):
                 self.binary = binary
+            else:
+                LOGGER.error("%s not in path",binary)
 
     async def applicable(self, data):
         return inpath(self.binary) \
