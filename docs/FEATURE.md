@@ -46,3 +46,8 @@ entry_points={
     ],
 },
 ```
+
+## Tutorial
+
+The [new feature tutorial](tutorial/FEATURE.md) will walk you through how to
+write a new DFFML feature to gernerate data for a dataset.
