@@ -67,7 +67,7 @@ Making you're next machine learning project a breeze to write!
 
 - Features
   - The [new feature tutorial](docs/tutorial/FEATURE.md) will walk you through
-    how to write a new DFFML feature to gernerate data for a dataset.
+    how to write a new DFFML feature to generate data for a dataset.
 - Models
   - The [new model tutorial](docs/tutorial/MODEL.md) will walk you through how
     to wrap your favorite framework or a custom implementation in the DFFML
