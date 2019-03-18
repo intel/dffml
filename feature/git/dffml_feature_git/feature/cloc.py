@@ -17,6 +17,8 @@ class GitClocFeature(GitMonthlyFeature):
     def __init__(self):
         super().__init__()
         self.binary = self.BINARY
+        if not inpath(self.binary):
+            LOGGER.error("%s not in path", self.binary)
         for binary in self.FASTER_THAN_CLOC:
             if inpath(binary):
                 self.binary = binary
