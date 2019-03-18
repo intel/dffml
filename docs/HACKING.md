@@ -30,8 +30,7 @@ python3.7 setup.py test
 These commands will generate a folder ```htmlcov```, you can check the report by opening the ```index.html``` in a web browser.
 
 ```console
-cd dffml
-coverage run -m unittest discover
+coverage run setup.py test
 coverage report
 coverage html
 ```
