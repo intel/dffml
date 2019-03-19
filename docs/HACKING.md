@@ -19,6 +19,16 @@ cd feature/git
 pip install --user -e .
 ```
 
+# Git
+
+Be sure to checkout a new branch to do your work on.
+
+```console
+git checkout origin/master
+git pull
+git checkout -b my_new_thing origin/master
+```
+
 # Testing
 
 ```console
