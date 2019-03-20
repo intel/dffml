@@ -29,6 +29,22 @@ git pull
 git checkout -b my_new_thing origin/master
 ```
 
+You'll need to fork the repo on GitHub too. Then add that as a remote.
+
+```console
+# $USER in this case would be your github username
+git remote add $USER git@github.com:$USER/dffml
+```
+
+Once you've commited a change on that branch you can push it to your fork.
+
+```console
+git push -u $USER my_new_thing
+```
+
+Then you can keep commiting on this branch and just use `git push` to send your
+new commits to GitHub.
+
 # Testing
 
 ```console
