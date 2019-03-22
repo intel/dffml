@@ -29,5 +29,5 @@ Here are some examples:
 - Most PRs should include a description of what is changing to the
   [CHANGELOG.md](CHANGELOG.md) file. Use your own judgement on what warrants
   inclusion, the expectation is that 95% of PRs will include an edit to the
-  change log. Maintainers will let you know if you if you include and its not
+  change log. Maintainers will let you know if you need to include it or its not
   needed.

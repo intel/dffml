@@ -3,7 +3,7 @@
 ## Create the Package
 
 To create a new feature we first create a new python package. DFFML has a script
-to created it for you.
+to create it for you.
 
 We're going to create a feature that multiplies float values by `4.2`.
 
@@ -134,7 +134,7 @@ from dffml_feature_string.feature.string_by_4_point_2 import \
 ### Modify `evaluates` test
 
 The tests start out with one testcase which should work. Modify that so that it
-still works. If you don't it should fail because the string being parsed can't
+still works. If you don't, it should fail because the string being parsed can't
 be parsed into a float.
 
 ```python
