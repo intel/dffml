@@ -238,7 +238,7 @@ class ModelCMD(CMD):
         super().__init__(*args, **kwargs)
         self.model.model_dir = self.model_dir
         if hasattr(self,'modelParams'):
-            print(self.modelParams)
+            print("MODEL PARAMS : "+ self.modelParams)
             self.model.modelParams = self.modelParams
 
 class PortCMD(CMD):
