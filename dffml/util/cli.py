@@ -89,6 +89,7 @@ class CMD(object):
             required=False, default=logging.INFO)
 
     def __init__(self, **kwargs) -> None:
+        print("\n\n\n INIT \n\n\n")
         for name, method in [(name.lower().replace('arg_', ''), method) \
                 for name, method in inspect.getmembers(self) \
                 if isinstance(method, Arg)]:

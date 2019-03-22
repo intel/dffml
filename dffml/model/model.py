@@ -22,9 +22,12 @@ class Model(abc.ABC, Entrypoint):
 
     ENTRY_POINT = 'dffml.model'
 
-    def __init__(self, model_dir: Optional[str] = None) -> None:
+    def __init__(self, model_dir: Optional[str] = None, 
+        modelParams: Optional[str] = None) -> None:
         super().__init__()
         self.model_dir = model_dir
+        if hasattr(self,'modelParams'):
+            self.modelParams = modelParams
 
     @abc.abstractmethod
     async def train(self, sources: Sources, features: Features,

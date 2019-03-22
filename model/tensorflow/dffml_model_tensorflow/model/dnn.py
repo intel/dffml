@@ -27,6 +27,8 @@ class DNN(Model):
 
     def __init__(self):
         super().__init__()
+        if hasattr(self,'modelParams'):
+            print(self.modelParams)
         self._model = None
         # Load packages with lots of dependencies durring instantiation so that
         # users can choose to install these or not.
@@ -183,6 +185,8 @@ class DNN(Model):
         '''
         if self._model is not None:
             return self._model
+         if hasattr(self,'modelParams'):
+            print(self.modelParams)
         # Build 3 layer DNN with 10, 20, 10 units respectively.
         # 2 classifications whitelist or blacklist
         LOGGER.debug('Loading model with classifications(%d): %r',
