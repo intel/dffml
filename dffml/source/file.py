@@ -41,7 +41,7 @@ class FileSource(Source):
             self.mem = {}
             return
         if self.filename[::-1].startswith(('.gz')[::-1]):
-            opener = gzip.GzipFile(fd, 'r')
+            opener = gzip.GzipFile(self.filename, 'r')
         else:
             opener = open(self.filename, 'r')
         with opener as fd:
@@ -53,7 +53,7 @@ class FileSource(Source):
     async def _close(self):
         if not self.readonly:
             if self.filename[::-1].startswith(('.gz')[::-1]):
-                close = gzip.GzipFile(fd, 'w')
+                close = gzip.GzipFile(self.filename, 'w')
             else:
                 close = open(self.filename, 'w')
             with close as fd:
