@@ -26,6 +26,9 @@ class DNN(Model):
     '''
 
     def __init__(self):
+
+        if hasattr(self,'modelParams'):
+            print(self.modelParams)
         super().__init__()
         self._model = None
         # Load packages with lots of dependencies durring instantiation so that
@@ -187,6 +190,8 @@ class DNN(Model):
         # 2 classifications whitelist or blacklist
         LOGGER.debug('Loading model with classifications(%d): %r',
                 len(classifications), classifications)
+        if hasattr(self,'modelParams'):
+            print(self.modelParams)
         self._model = self._tf.estimator.DNNClassifier(
                 feature_columns=list((await self.features(features)).values()),
                 hidden_units=[12, 40, 15],

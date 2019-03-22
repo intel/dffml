@@ -39,6 +39,11 @@ class ParseModelAction(argparse.Action):
     def __call__(self, parser, namespace, value, option_string=None):
         setattr(namespace, self.dest, Model.load(value)())
 
+class ParseModelParamsAction(argparse.Action):
+
+    def __call__(self, parser, namespace, value, option_string=None):
+        setattr(namespace, self.dest, Model.load(value)())
+
 class ParsePortAction(argparse.Action):
 
     def __call__(self, parser, namespace, value, option_string=None):
@@ -226,10 +231,15 @@ class ModelCMD(CMD):
             action=ParseModelAction, required=True)
     arg_model_dir = Arg('-model_dir', help='Model directory for ML',
             default=os.path.join(os.path.expanduser('~'), '.cache', 'dffml'))
+    arg_modelParams = Arg('-modelParams',help='Model specific params', 
+            nargs='*', action=ParseModelParamsAction, default=None)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.model.model_dir = self.model_dir
+        if hasattr(self,'modelParams'):
+            print(self.modelParams)
+            self.model.modelParams = self.modelParams
 
 class PortCMD(CMD):
 
