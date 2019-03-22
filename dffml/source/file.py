@@ -3,7 +3,7 @@
 import os
 import abc
 import asyncio
-
+import gzip
 from .source import Source
 from .log import LOGGER
 
@@ -40,7 +40,11 @@ class FileSource(Source):
                          self.filename)
             self.mem = {}
             return
-        with open(self.filename, 'r') as fd:
+        if self.filename[::-1].startswith(('.gz')[::-1]):
+            opener = gzip.open(self.filename, 'rt')
+        else:
+            opener = open(self.filename, 'r')
+        with opener as fd:
             await self.load_fd(fd)
 
     async def close(self):
@@ -48,7 +52,11 @@ class FileSource(Source):
 
     async def _close(self):
         if not self.readonly:
-            with open(self.filename, 'w') as fd:
+            if self.filename[::-1].startswith(('.gz')[::-1]):
+                close = gzip.open(self.filename, 'wt')
+            else:
+                close = open(self.filename, 'w')
+            with close as fd:
                 await self.dump_fd(fd)
 
     @abc.abstractmethod
