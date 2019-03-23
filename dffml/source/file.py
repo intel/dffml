@@ -3,7 +3,8 @@
 import os
 import abc
 import asyncio
-import gzip, bz2
+import gzip 
+import bz2
 from .source import Source
 from .log import LOGGER
 
