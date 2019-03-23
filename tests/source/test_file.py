@@ -67,9 +67,9 @@ class TestFileSource(AsyncTestCase):
         source = FakeFileSource('testfile.gz')
         m_open = mock_open()
         with patch('os.path.exists', return_value=True), \
-                patch('builtins.open', m_open):
+                patch('gzip.open', m_open):
             await source.open()
-            m_open.assert_called_once_with('testfile.gz', 'rb')    
+            m_open.assert_called_once_with('testfile.gz', 'rt')
 
     async def test_open_no_file(self):
         source = FakeFileSource('testfile')
@@ -87,9 +87,9 @@ class TestFileSource(AsyncTestCase):
     async def test_close_gz(self):
         source = FakeFileSource('testfile.gz')
         m_open = mock_open()
-        with patch('builtins.open', m_open):
+        with patch('gzip.open', m_open):
             await source.close()
-            m_open.assert_called_once_with('testfile.gz', 'wb')
+            m_open.assert_called_once_with('testfile.gz', 'wt')
 
     async def test_close_readonly(self):
         source = FakeFileSource('testfile:ro')
