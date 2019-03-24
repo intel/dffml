@@ -278,6 +278,7 @@ class CLI(CMD):
     '''
     CLI interface for dffml
     '''
+
     version = Version
     _list = List
     edit = Edit

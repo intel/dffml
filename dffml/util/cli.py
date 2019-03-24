@@ -44,8 +44,14 @@ class ParseModelParamsAction(argparse.Action):
 
     def __call__(self, parser, namespace, value, option_string=None):
         setattr(namespace, self.dest, value)
-        ModelParams = value
-        namespace.model.modelParams = value
+        param_dict = {}
+        for param in value:
+            key,val = param.split('=')
+            param_dict[key]=val
+        if(param_dict['hidden_units']):
+            hidden_units = param_dict['hidden_units']
+        ModelParams = param_dict
+        namespace.model.modelParams = param_dict
 
 class ParsePortAction(argparse.Action):
 
@@ -148,7 +154,6 @@ class CMD(object):
         '''
         Runs cli commands in asyncio loop and outputs in appropriate format
         '''
-
         result = None
         try:
             result = loop.run_until_complete(cls.cli(*argv[1:]))
@@ -231,10 +236,10 @@ class ModelCMD(CMD):
     Set a models model dir.
     '''
 
-    arg_model_dir = Arg('-model_dir', help='Model directory for ML',
-            default=os.path.join(os.path.expanduser('~'), '.cache', 'dffml'))
     arg_model = Arg('-model', help='Model used for ML',
         action=ParseModelAction, required=True)
+    arg_model_dir = Arg('-model_dir', help='Model directory for ML',
+            default=os.path.join(os.path.expanduser('~'), '.cache', 'dffml'))
     arg_modelParams = Arg('-modelParams',help='Model specific params', 
         nargs='*', action=ParseModelParamsAction, required=False)
 

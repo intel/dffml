@@ -188,19 +188,14 @@ class DNN(Model):
         # 2 classifications whitelist or blacklist
         LOGGER.debug('Loading model with classifications(%d): %r',
                 len(classifications), classifications)
-        param_dict = {}
-        hidden_units=[12, 40, 15]
         if not self.modelParams is None:
-            for param in self.modelParams:
-                key,val = param.split('=')
-                param_dict[key]=val
-
-            if(param_dict['hidden_units']):
-                hidden_units = ast.literal_eval(param_dict['hidden_units'])
-
+            pass
+        else:
+            self.modelParams={}
+            self.modelParams['hidden_units']='[12, 40, 15]'
         self._model = self._tf.estimator.DNNClassifier(
                 feature_columns=list((await self.features(features)).values()),
-                hidden_units=hidden_units,
+                hidden_units=ast.literal_eval(self.modelParams['hidden_units']),
                 n_classes=len(classifications),
                 model_dir=self.model_dir_path(features))
         return self._model
