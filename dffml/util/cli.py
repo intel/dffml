@@ -18,6 +18,7 @@ from ..source import Source, Sources, JSONSource
 from ..model import Model
 
 LOGGER = LOGGER.getChild('cli')
+ModelParams = None
 
 class ParseSourcesAction(argparse.Action):
 
@@ -42,7 +43,9 @@ class ParseModelAction(argparse.Action):
 class ParseModelParamsAction(argparse.Action):
 
     def __call__(self, parser, namespace, value, option_string=None):
-        setattr(namespace, self.dest, Model.load(value)())
+        setattr(namespace, self.dest, value)
+        ModelParams = value
+        namespace.model.modelParams = value
 
 class ParsePortAction(argparse.Action):
 
@@ -145,6 +148,7 @@ class CMD(object):
         '''
         Runs cli commands in asyncio loop and outputs in appropriate format
         '''
+
         result = None
         try:
             result = loop.run_until_complete(cls.cli(*argv[1:]))
@@ -227,19 +231,16 @@ class ModelCMD(CMD):
     Set a models model dir.
     '''
 
-    arg_model = Arg('-model', help='Model used for ML',
-            action=ParseModelAction, required=True)
     arg_model_dir = Arg('-model_dir', help='Model directory for ML',
             default=os.path.join(os.path.expanduser('~'), '.cache', 'dffml'))
+    arg_model = Arg('-model', help='Model used for ML',
+        action=ParseModelAction, required=True)
     arg_modelParams = Arg('-modelParams',help='Model specific params', 
-            nargs='*', action=ParseModelParamsAction, default=None)
+        nargs='*', action=ParseModelParamsAction, required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.model.model_dir = self.model_dir
-        if hasattr(self,'modelParams'):
-            print("MODEL PARAMS : "+ self.modelParams)
-            self.model.modelParams = self.modelParams
 
 class PortCMD(CMD):
 

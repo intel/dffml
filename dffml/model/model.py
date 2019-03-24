@@ -26,8 +26,7 @@ class Model(abc.ABC, Entrypoint):
             modelParams: Optional[str] = None) -> None:
         super().__init__()
         self.model_dir = model_dir
-        if hasattr(self,'modelParams'):
-            self.modelParams = modelParams
+        self.modelParams = modelParams
 
     @abc.abstractmethod
     async def train(self, sources: Sources, features: Features,

@@ -14,6 +14,7 @@ from dffml.feature import Feature, Features
 from dffml.source import Sources
 from dffml.model import Model
 from dffml.accuracy import Accuracy
+import ast
 
 from .log import LOGGER
 
@@ -26,12 +27,7 @@ class DNN(Model):
     '''
 
     def __init__(self):
-
-        if hasattr(self,'modelParams'):
-            print(self.modelParams)
         super().__init__()
-        if hasattr(self,'modelParams'):
-            print(self.modelParams)
         self._model = None
         # Load packages with lots of dependencies durring instantiation so that
         # users can choose to install these or not.
@@ -188,17 +184,23 @@ class DNN(Model):
         '''
         if self._model is not None:
             return self._model
-        if hasattr(self,'modelParams'):
-            print(self.modelParams)
         # Build 3 layer DNN with 10, 20, 10 units respectively.
         # 2 classifications whitelist or blacklist
         LOGGER.debug('Loading model with classifications(%d): %r',
                 len(classifications), classifications)
-        if hasattr(self,'modelParams'):
-            print(self.modelParams)
+        param_dict = {}
+        hidden_units=[12, 40, 15]
+        if not self.modelParams is None:
+            for param in self.modelParams:
+                key,val = param.split('=')
+                param_dict[key]=val
+
+            if(param_dict['hidden_units']):
+                hidden_units = ast.literal_eval(param_dict['hidden_units'])
+
         self._model = self._tf.estimator.DNNClassifier(
                 feature_columns=list((await self.features(features)).values()),
-                hidden_units=[12, 40, 15],
+                hidden_units=hidden_units,
                 n_classes=len(classifications),
                 model_dir=self.model_dir_path(features))
         return self._model
