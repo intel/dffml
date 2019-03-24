@@ -79,6 +79,22 @@ class TestFileSource(AsyncTestCase):
             await source.open()
             m_open.assert_called_once_with('testfile.bz2', 'rt')
 
+    async def test_open_lzma(self):
+        source = FakeFileSource('testfile.lzma')
+        m_open = mock_open()
+        with patch('os.path.exists', return_value=True), \
+                patch('lzma.open', m_open):
+            await source.open()
+            m_open.assert_called_once_with('testfile.lzma', 'rt')
+
+    async def test_open_xz(self):
+        source = FakeFileSource('testfile.xz')
+        m_open = mock_open()
+        with patch('os.path.exists', return_value=True), \
+                patch('lzma.open', m_open):
+            await source.open()
+            m_open.assert_called_once_with('testfile.xz', 'rt')
+
     async def test_open_no_file(self):
         source = FakeFileSource('testfile')
         with patch('os.path.isfile', return_value=False):
@@ -105,6 +121,20 @@ class TestFileSource(AsyncTestCase):
         with patch('bz2.open', m_open):
             await source.close()
             m_open.assert_called_once_with('testfile.bz2', 'wt')
+
+    async def test_close_lzma(self):
+        source = FakeFileSource('testfile.lzma')
+        m_open = mock_open()
+        with patch('lzma.open', m_open):
+            await source.close()
+            m_open.assert_called_once_with('testfile.lzma', 'wt')
+
+    async def test_close_xz(self):
+        source = FakeFileSource('testfile.xz')
+        m_open = mock_open()
+        with patch('lzma.open', m_open):
+            await source.close()
+            m_open.assert_called_once_with('testfile.xz', 'wt')
     
     async def test_close_readonly(self):
         source = FakeFileSource('testfile:ro')
