@@ -3,7 +3,8 @@
 import os
 import abc
 import asyncio
-import gzip
+import gzip 
+import bz2
 from .source import Source
 from .log import LOGGER
 
@@ -42,6 +43,8 @@ class FileSource(Source):
             return
         if self.filename[::-1].startswith(('.gz')[::-1]):
             opener = gzip.open(self.filename, 'rt')
+        elif self.filename[::-1].startswith(('.bz2')[::-1]):
+            opener = bz2.open(self.filename, 'rt')
         else:
             opener = open(self.filename, 'r')
         with opener as fd:
@@ -54,6 +57,8 @@ class FileSource(Source):
         if not self.readonly:
             if self.filename[::-1].startswith(('.gz')[::-1]):
                 close = gzip.open(self.filename, 'wt')
+            elif self.filename[::-1].startswith(('.bz2')[::-1]):
+                close = bz2.open(self.filename, 'wt')
             else:
                 close = open(self.filename, 'w')
             with close as fd:
