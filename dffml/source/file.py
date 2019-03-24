@@ -46,8 +46,9 @@ class FileSource(Source):
             opener = gzip.open(self.filename, 'rt')
         elif self.filename[::-1].startswith(('.bz2')[::-1]):
             opener = bz2.open(self.filename, 'rt')
-        elif self.filename[::-1].startswith(('.xz')[::-1]) or self.filename[::-1].startswith(('.lzma')[::-1]):
-            opener = lzma.open(self.filename, 'rt')                                                                  
+        elif self.filename[::-1].startswith(('.xz')[::-1]) or \
+                self.filename[::-1].startswith(('.lzma')[::-1]):
+            opener = lzma.open(self.filename, 'rt')
         else:
             opener = open(self.filename, 'r')
         with opener as fd:
@@ -62,7 +63,8 @@ class FileSource(Source):
                 close = gzip.open(self.filename, 'wt')
             elif self.filename[::-1].startswith(('.bz2')[::-1]):
                 close = bz2.open(self.filename, 'wt')
-            elif self.filename[::-1].startswith(('.xz')[::-1]) or self.filename[::-1].startswith(('.lzma')[::-1]):
+            elif self.filename[::-1].startswith(('.xz')[::-1]) or \
+                    self.filename[::-1].startswith(('.lzma')[::-1]):
                 close = lzma.open(self.filename, 'wt')
             else:
                 close = open(self.filename, 'w')
