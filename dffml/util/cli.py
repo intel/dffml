@@ -237,7 +237,7 @@ class ModelCMD(CMD):
     '''
 
     arg_model = Arg('-model', help='Model used for ML',
-            action=ParseModelAction, required=True)
+        action=ParseModelAction, required=True)
     arg_model_dir = Arg('-model_dir', help='Model directory for ML',
             default=os.path.join(os.path.expanduser('~'), '.cache', 'dffml'))
     arg_modelParams = Arg('-modelParams',help='Model specific params', 
