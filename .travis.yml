@@ -16,6 +16,8 @@ env:
   - PLUGIN=.
   - PLUGIN=model/tensorflow
   - PLUGIN=feature/git
+  - CHANGELOG=1
+  - WHITESPACE=1
 before_install:
 - pip install coverage codecov
 - |
@@ -24,12 +26,7 @@ before_install:
   sudo chmod 755 /usr/bin/cloc
 - ''
 script:
-- python setup.py install && cd $PLUGIN && coverage run setup.py test && cd -
-- |
-  if [ "x$PLUGIN" = "x." ]; then
-      ./scripts/create.sh feature travis_test_feature
-      ./scripts/create.sh model travis_test_model
-  fi
+- ./.ci/run.sh
 after_success:
 - |
   if [ "x$PLUGIN" = "x." ]; then
