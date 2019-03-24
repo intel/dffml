@@ -63,6 +63,14 @@ class TestFileSource(AsyncTestCase):
             await source.open()
             m_open.assert_called_once_with('testfile', 'r')
 
+    async def test_open_gz(self):
+        source = FakeFileSource('testfile.gz')
+        m_open = mock_open()
+        with patch('os.path.exists', return_value=True), \
+                patch('gzip.open', m_open):
+            await source.open()
+            m_open.assert_called_once_with('testfile.gz', 'rt')
+
     async def test_open_no_file(self):
         source = FakeFileSource('testfile')
         with patch('os.path.isfile', return_value=False):
@@ -75,6 +83,13 @@ class TestFileSource(AsyncTestCase):
         with patch('builtins.open', m_open):
             await source.close()
             m_open.assert_called_once_with('testfile', 'w')
+
+    async def test_close_gz(self):
+        source = FakeFileSource('testfile.gz')
+        m_open = mock_open()
+        with patch('gzip.open', m_open):
+            await source.close()
+            m_open.assert_called_once_with('testfile.gz', 'wt')
 
     async def test_close_readonly(self):
         source = FakeFileSource('testfile:ro')
