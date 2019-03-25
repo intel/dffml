@@ -6,6 +6,9 @@ import asyncio
 import gzip
 import bz2
 import lzma
+import zipfile
+import io
+import tempfile
 from .source import Source
 from .log import LOGGER
 
@@ -49,10 +52,18 @@ class FileSource(Source):
         elif self.filename[::-1].startswith(('.xz')[::-1]) or \
                 self.filename[::-1].startswith(('.lzma')[::-1]):
             opener = lzma.open(self.filename, 'rt')
+        elif zipfile.is_zipfile(self.filename):
+            archive = zipfile.ZipFile(self.filename)
+            for file in archive.infolist():
+                file = io.TextIOWrapper(archive.open(file, 'r'))
+                await self.load_fd(file)
         else:
             opener = open(self.filename, 'r')
-        with opener as fd:
-            await self.load_fd(fd)
+        if zipfile.is_zipfile(self.filename):
+            pass
+        else:
+            with opener as fd:
+                await self.load_fd(fd)
 
     async def close(self):
         await asyncio.shield(self._close())
@@ -66,10 +77,19 @@ class FileSource(Source):
             elif self.filename[::-1].startswith(('.xz')[::-1]) or \
                     self.filename[::-1].startswith(('.lzma')[::-1]):
                 close = lzma.open(self.filename, 'wt')
+            elif zipfile.is_zipfile(self.filename):
+                tmp = tempfile.NamedTemporaryFile(suffix='.csv')
+                with open(tmp.name, 'w') as fd:
+                    await self.dump_fd(fd)
+                archive = zipfile.ZipFile(self.filename, 'w')
+                archive.write(tmp.name)
             else:
                 close = open(self.filename, 'w')
-            with close as fd:
-                await self.dump_fd(fd)
+            if self.filename[::-1].startswith(('.zip')[::-1]):
+                pass
+            else:
+                with close as fd:
+                    await self.dump_fd(fd)
 
     @abc.abstractmethod
     async def load_fd(self, fd):
