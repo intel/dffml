@@ -217,7 +217,7 @@ class OperationsAll(OperationsCMD):
                                           results)
                         continue
                     if not sub in results[output_operation_name]:
-                        self.logger.error('[%s] %s does not contain %s: %s',
+                        self.logger.error('[%s] %s does not contain: %s',
                                           ctx_str,
                                           sub,
                                           results[output_operation_name])

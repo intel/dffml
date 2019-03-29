@@ -1,8 +1,10 @@
 import abc
 import inspect
+import pkg_resources
 from typing import AsyncIterator, Dict, List, Tuple, Any, NamedTuple, Union, \
                    Optional
 
+from .exceptions import NotOpImp
 from .types import Operation, Input, Parameter, Stage, Definition
 
 from .log import LOGGER
@@ -63,7 +65,7 @@ class OperationImplementationContext(abc.ABC):
     def imp(cls, config: 'BaseConfig'):
         return cls.implementation(cls.op)(config)
 
-class OperationImplementation(Entrypoint):
+class OperationImplementation(object):
 
     ENTRY_POINT = 'dffml.operation.implementation'
 
@@ -83,6 +85,31 @@ class OperationImplementation(Entrypoint):
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         pass
+
+    @classmethod
+    def load(cls, loading=None):
+        '''
+        Loads all installed loading and returns them as a list. Sources to be
+        loaded should be registered to ENTRY_POINT via setuptools.
+        '''
+        raise NotImplementedError()
+
+    @classmethod
+    def load_multiple(cls, to_load: List[str]):
+        '''
+        Loads each class requested without instantiating it.
+        '''
+        loading_classes = {}
+        for i in pkg_resources.iter_entry_points(cls.ENTRY_POINT):
+            loaded = i.load()
+            if isopimp(loaded):
+                loading_classes[opimp_name(loaded)] = loaded
+        for loading in to_load:
+            if not loading in loading_classes:
+                raise KeyError('%s was not found in (%s)' % \
+                        (repr(loading),
+                         ', '.join(list(map(str, loading_classes)))))
+        return loading_classes
 
 def op(**kwargs):
     def wrap(func):
@@ -106,6 +133,17 @@ def op(**kwargs):
         return func
 
     return wrap
+
+def opimp_name(item):
+    if inspect.isclass(item) \
+            and issubclass(item, OperationImplementation) \
+            and item is not OperationImplementation:
+        return item.op.name
+    if inspect.ismethod(item) \
+            and issubclass(item.__self__, OperationImplementationContext) \
+            and item.__name__ == 'imp':
+        return item.__self__.op.name
+    raise NotOpImp(item)
 
 def isopimp(item):
     '''

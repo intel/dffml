@@ -9,3 +9,6 @@ class ContextNotPresent(Exception):
 
 class DefinitionNotInContext(Exception):
     pass
+
+class NotOpImp(Exception):
+    pass
