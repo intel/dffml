@@ -34,7 +34,7 @@ before_install:
   source "$HOME/.cargo/env"
   export tokeisrc=/home/travis/.cache/tokeisrc/
   mkdir -p $tokeisrc
-  if [ ! -f $tokeisrc/target/release/tokei ]; then
+  if [ ! -f "$HOME/.cargo/bin/tokei" ]; then
     git clone https://github.com/Aaronepower/tokei.git --depth 1 $tokeisrc
     cd $tokeisrc
     cargo build --release
