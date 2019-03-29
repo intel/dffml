@@ -18,6 +18,7 @@ setup(
     version=version,
     description='Data Flow Facilitator for Machine Learning',
     long_description=readme,
+    long_description_content_type='text/markdown',
     author='John Andersen',
     author_email='john.s.andersen@intel.com',
     maintainer='John Andersen',
