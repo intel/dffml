@@ -18,12 +18,29 @@ env:
   - PLUGIN=feature/git
   - CHANGELOG=1
   - WHITESPACE=1
+cache:
+  directories:
+    - /home/travis/.cache/
+    - /home/travis/.cargo/
 before_install:
+- mkdir -p /home/travis/.cache/
 - pip install coverage codecov
 - |
-  curl -o /tmp/cloc -sSL https://github.com/AlDanial/cloc/raw/1.80/cloc
-  sudo cp /tmp/cloc /usr/bin/cloc
+  curl -o /home/travis/.cache/cloc -sSL https://github.com/AlDanial/cloc/raw/1.80/cloc
+  sudo cp /home/travis/.cache/cloc /usr/bin/cloc
   sudo chmod 755 /usr/bin/cloc
+- |
+  curl https://sh.rustup.rs -sSf | sh -s -- -y
+  source "$HOME/.cargo/env"
+  export tokeisrc=/home/travis/.cache/tokeisrc/
+  mkdir -p $tokeisrc
+  if [ ! -f $tokeisrc/target/release/tokei ]; then
+    git clone https://github.com/Aaronepower/tokei.git --depth 1 $tokeisrc
+    cd $tokeisrc
+    cargo build --release
+    cd -
+  fi
+  sudo mv $tokeisrc/target/release/tokei "$HOME/.cargo/bin/tokei"
 - ''
 script:
 - ./.ci/run.sh

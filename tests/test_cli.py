@@ -17,14 +17,17 @@ from contextlib import contextmanager
 from typing import List, Dict, Any, Optional, Tuple, AsyncIterator
 
 from dffml.repo import Repo
-from dffml.feature import Feature, Features
+from dffml.feature import Feature, Features, DefFeature
 from dffml.source import Sources, RepoSource
 from dffml.model import Model
 from dffml.accuracy import Accuracy as AccuracyType
 from dffml.util.asynctestcase import AsyncTestCase
 
-from dffml.cli import EvaluateAll, EvaluateRepo, \
-        Train, Accuracy, PredictAll, PredictRepo
+from dffml.cli import OperationsAll, OperationsRepo, \
+                      EvaluateAll, EvaluateRepo, \
+                      Train, Accuracy, PredictAll, PredictRepo
+
+from .test_df import OPERATIONS, OPIMPS
 
 class ReposTestCase(AsyncTestCase):
 
@@ -70,6 +73,61 @@ class FakeModel(Model):
                     AsyncIterator[Tuple[Repo, Any, float]]:
         async for repo in repos:
             yield repo, '', 1.0
+
+class TestOperationsAll(ReposTestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.repo_keys = {
+            'add 40 and 2': 42,
+            'multiply 42 and 10': 420
+            }
+        self.repos = list(map(Repo, self.repo_keys.keys()))
+        self.sources = Sources(RepoSource(*self.repos))
+        self.features = Features(DefFeature('string_calculator', int, 1))
+        self.cli = OperationsAll(
+            ops=OPERATIONS,
+            opimpn_memory_opimps=OPIMPS,
+            repo_def='calc_string',
+            output_specs=[(['result'], 'get_single_spec',)],
+            remap=[('get_single', 'result', 'string_calculator')],
+            sources=self.sources,
+            features=self.features)
+
+    async def test_run(self):
+        repos = {repo.src_url: repo async for repo in self.cli.run()}
+        self.assertEqual(len(repos), len(self.repos))
+        for repo in self.repos:
+            self.assertIn(repo.src_url, repos)
+            self.assertIn('string_calculator', repos[repo.src_url].features())
+            self.assertEqual(self.repo_keys[repo.src_url],
+                    repos[repo.src_url]\
+                    .features(['string_calculator'])['string_calculator'])
+
+class TestOperationsRepo(TestOperationsAll):
+
+    def setUp(self):
+        super().setUp()
+        self.subset = self.repos[int(len(self.repos) / 2):]
+        self.cli = OperationsRepo(
+            keys=[repo.src_url for repo in self.subset],
+            ops=OPERATIONS,
+            opimpn_memory_opimps=OPIMPS,
+            repo_def='calc_string',
+            output_specs=[(['result'], 'get_single_spec',)],
+            remap=[('get_single', 'result', 'string_calculator')],
+            sources=self.sources,
+            features=self.features)
+
+    async def test_run(self):
+        repos = {repo.src_url: repo async for repo in self.cli.run()}
+        self.assertEqual(len(repos), len(self.subset))
+        for repo in self.subset:
+            self.assertIn(repo.src_url, repos)
+            self.assertIn('string_calculator', repos[repo.src_url].features())
+            self.assertEqual(self.repo_keys[repo.src_url],
+                    repos[repo.src_url]\
+                    .features(['string_calculator'])['string_calculator'])
 
 class TestEvaluateAll(ReposTestCase):
 
