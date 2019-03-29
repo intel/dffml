@@ -39,8 +39,8 @@ before_install:
     cd $tokeisrc
     cargo build --release
     cd -
+    mv $tokeisrc/target/release/tokei "$HOME/.cargo/bin/tokei"
   fi
-  sudo mv $tokeisrc/target/release/tokei "$HOME/.cargo/bin/tokei"
 - ''
 script:
 - ./.ci/run.sh
