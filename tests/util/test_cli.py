@@ -13,16 +13,23 @@ from dffml.feature import Feature, Features
 from dffml.source import Source, Sources
 from dffml.model import Model
 
-from dffml.util.cli import \
+from dffml.util.cli.base import \
+        Arg, \
+        JSONEncoder, \
+        CMD, \
+        Parser
+
+from dffml.util.cli.parser import \
         ParseSourcesAction, \
         ParseFeaturesAction, \
         ParseModelAction, \
         ParsePortAction, \
         ParseLoggingAction, \
-        Arg, \
-        JSONEncoder, \
-        CMD, \
-        Parser, \
+        ParseOutputSpecsAction, \
+        ParseInputsAction, \
+        ParseRemapAction
+
+from dffml.util.cli.cmd import \
         ListEntrypoint, \
         FeaturesCMD, \
         ModelCMD
@@ -84,6 +91,42 @@ class TestParseActions(unittest.TestCase):
         with patch.object(logging, 'basicConfig') as mock_method:
             action(None, namespace, 'WARNING')
             mock_method.assert_called_once_with(level=logging.WARNING)
+
+    def test_output_specs(self):
+        namespace = Namespace(output_specs=False)
+        action = ParseOutputSpecsAction(dest='output_specs', option_strings='')
+        action(None, namespace, ["['result']=get_single_spec"])
+        self.assertEqual(len(namespace.output_specs), 1)
+        self.assertEqual(namespace.output_specs[0],
+                         (['result'], 'get_single_spec',))
+        action(None, namespace, "['result']=get_single_spec")
+        self.assertEqual(len(namespace.output_specs), 1)
+        self.assertEqual(namespace.output_specs[0],
+                         (['result'], 'get_single_spec',))
+
+    def test_inputs(self):
+        namespace = Namespace(inputs=False)
+        action = ParseInputsAction(dest='inputs', option_strings='')
+        action(None, namespace, ["['result']=get_single_spec"])
+        self.assertEqual(len(namespace.inputs), 1)
+        self.assertEqual(namespace.inputs[0],
+                         (['result'], 'get_single_spec',))
+        action(None, namespace, "['result']=get_single_spec")
+        self.assertEqual(len(namespace.inputs), 1)
+        self.assertEqual(namespace.inputs[0],
+                         (['result'], 'get_single_spec',))
+
+    def test_remap(self):
+        namespace = Namespace(inputs=False)
+        action = ParseRemapAction(dest='inputs', option_strings='')
+        action(None, namespace, ["get_single.result=string_calculator"])
+        self.assertEqual(len(namespace.inputs), 1)
+        self.assertEqual(namespace.inputs[0],
+                         ('get_single', 'result', 'string_calculator',))
+        action(None, namespace, "get_single.result=string_calculator")
+        self.assertEqual(len(namespace.inputs), 1)
+        self.assertEqual(namespace.inputs[0],
+                         ('get_single', 'result', 'string_calculator',))
 
 class TestArg(unittest.TestCase):
 
