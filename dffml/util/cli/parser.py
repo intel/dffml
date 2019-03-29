@@ -17,6 +17,11 @@ from ...feature import Feature, Features
 from ...source import Source, Sources, JSONSource
 from ...model import Model
 
+from ...df.base import Operation, \
+                       OperationImplementation
+
+from .base import ParseLoggingAction
+
 from .log import LOGGER
 
 LOGGER = LOGGER.getChild('cmds')
@@ -39,13 +44,17 @@ class ParseFeaturesAction(argparse.Action):
 class ParseOperationAction(argparse.Action):
 
     def __call__(self, parser, namespace, values, option_string=None):
-        setattr(namespace, self.dest, Operation.load_multiple(*values))
+        if not isinstance(values, list):
+            values = [values]
+        setattr(namespace, self.dest, Operation.load_multiple(values).values())
 
 class ParseOperationImplementationAction(argparse.Action):
 
     def __call__(self, parser, namespace, values, option_string=None):
+        if not isinstance(values, list):
+            values = [values]
         setattr(namespace, self.dest,
-                OperationImplementation.load_multiple(*values))
+                OperationImplementation.load_multiple(values).values())
 
 class ParseInputNetworkAction(argparse.Action):
 
@@ -116,10 +125,3 @@ class ParsePortAction(argparse.Action):
 
     def __call__(self, parser, namespace, value, option_string=None):
         setattr(namespace, self.dest, Port.load(value)())
-
-class ParseLoggingAction(argparse.Action):
-
-    def __call__(self, parser, namespace, value, option_string=None):
-        setattr(namespace, self.dest,
-                getattr(logging, value.upper(), logging.INFO))
-        logging.basicConfig(level=getattr(namespace, self.dest))

@@ -18,9 +18,14 @@ from ...feature import Feature, Features
 from ...source import Source, Sources, JSONSource
 from ...model import Model
 
-from .parser import *
-
 LOGGER = LOGGER.getChild('cli')
+
+class ParseLoggingAction(argparse.Action):
+
+    def __call__(self, parser, namespace, value, option_string=None):
+        setattr(namespace, self.dest,
+                getattr(logging, value.upper(), logging.INFO))
+        logging.basicConfig(level=getattr(namespace, self.dest))
 
 class Arg(dict):
 
@@ -55,6 +60,8 @@ class CMD(object):
             required=False, default=logging.INFO)
 
     def __init__(self, **kwargs) -> None:
+        self.logger = logging.getLogger('%s.%s' % (self.__class__.__module__,
+                                                   self.__class__.__qualname__))
         for name, method in [(name.lower().replace('arg_', ''), method) \
                 for name, method in inspect.getmembers(self) \
                 if isinstance(method, Arg)]:
@@ -63,10 +70,10 @@ class CMD(object):
             if not name in kwargs and 'default' in method:
                 kwargs[name] = method['default']
             if name in kwargs:
-                LOGGER.debug('Setting %s.%s = %r', self, name, kwargs[name])
+                self.logger.debug('Setting %s = %r', name, kwargs[name])
                 setattr(self, name, kwargs[name])
             else:
-                LOGGER.debug('Ignored %s.%s', self, name)
+                self.logger.debug('Ignored %s', name)
 
     async def __aenter__(self):
         pass
