@@ -17,3 +17,4 @@ wheelhouse/
 *.egg-info/
 htmlcov/
 .venv/
+html/
