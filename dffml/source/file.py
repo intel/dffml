@@ -11,6 +11,7 @@ import io
 import tempfile
 from .source import Source
 from .log import LOGGER
+from contextlib import contextmanager
 
 LOGGER = LOGGER.getChild('file')
 
@@ -53,17 +54,19 @@ class FileSource(Source):
                 self.filename[::-1].startswith(('.lzma')[::-1]):
             opener = lzma.open(self.filename, 'rt')
         elif zipfile.is_zipfile(self.filename):
-            archive = zipfile.ZipFile(self.filename)
-            for file in archive.infolist():
-                file = io.TextIOWrapper(archive.open(file, 'r'))
-                await self.load_fd(file)
+            @contextmanager
+            def opener_helper():
+                with zipfile.ZipFile(self.filename) as archive:
+                    for file in archive.infolist():
+                        with io.TextIOWrapper(archive.open(file, 'r')) as fd:
+                            yield fd
+                        # Works for only one file inside archive
+                        break
+            opener = opener_helper()
         else:
             opener = open(self.filename, 'r')
-        if zipfile.is_zipfile(self.filename):
-            pass
-        else:
-            with opener as fd:
-                await self.load_fd(fd)
+        with opener as fd:
+            await self.load_fd(fd)
 
     async def close(self):
         await asyncio.shield(self._close())
