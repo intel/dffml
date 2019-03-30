@@ -8,7 +8,6 @@ import bz2
 import lzma
 import zipfile
 import io
-import tempfile
 from .source import Source
 from .log import LOGGER
 from contextlib import contextmanager
