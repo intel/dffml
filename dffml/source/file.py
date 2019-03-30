@@ -81,18 +81,16 @@ class FileSource(Source):
                     self.filename[::-1].startswith(('.lzma')[::-1]):
                 close = lzma.open(self.filename, 'wt')
             elif zipfile.is_zipfile(self.filename):
-                tmp = tempfile.NamedTemporaryFile(suffix='.csv')
-                with open(tmp.name, 'w') as fd:
-                    await self.dump_fd(fd)
-                archive = zipfile.ZipFile(self.filename, 'w')
-                archive.write(tmp.name)
+                @contextmanager
+                def closer_helper():
+                    with zipfile.ZipFile(self.filename, 'w') as archive:
+                        with io.TextIOWrapper(archive.open(str(self.filename[:-3]) + 'csv', 'w')) as fd:
+                            yield fd
+                close = closer_helper()
             else:
                 close = open(self.filename, 'w')
-            if self.filename[::-1].startswith(('.zip')[::-1]):
-                pass
-            else:
-                with close as fd:
-                    await self.dump_fd(fd)
+            with close as fd:
+                await self.dump_fd(fd)
 
     @abc.abstractmethod
     async def load_fd(self, fd):
