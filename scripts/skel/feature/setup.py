@@ -26,7 +26,7 @@ setup(
     long_description=readme,
     author='John Andersen',
     author_email='john.s.andersen@intel.com',
-    url='https://github.com/intel/dffml/blob/master/feature/feature_name/README.rst',
+    url='https://github.com/intel/dffml/blob/master/feature/feature_name/README.md',
     license='MIT',
 
     keywords=[

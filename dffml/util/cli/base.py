@@ -2,6 +2,7 @@
 # Copyright (c) 2019 Intel Corporation
 import os
 import sys
+import ast
 import copy
 import json
 import asyncio
@@ -11,52 +12,14 @@ import argparse
 from typing import Optional
 
 from .log import LOGGER
-from ..repo import Repo
-from ..port import Port
-from ..feature import Feature, Features
-from ..source import Source, Sources, JSONSource
-from ..model import Model
+from ...repo import Repo
+from ...port import Port
+from ...feature import Feature, Features
+from ...source import Source, Sources, JSONSource
+from ...model import Model
 
 LOGGER = LOGGER.getChild('cli')
 ModelParams = None
-
-class ParseSourcesAction(argparse.Action):
-
-    def __call__(self, parser, namespace, values, option_string=None):
-        if not isinstance(values, list):
-            values = [values]
-        parse = dict(map(lambda source: source.split('=', maxsplit=2)[::-1],
-            values))
-        values = Sources(*list(Source.load_from_dict(parse).values()))
-        setattr(namespace, self.dest, values)
-
-class ParseFeaturesAction(argparse.Action):
-
-    def __call__(self, parser, namespace, values, option_string=None):
-        setattr(namespace, self.dest, Features.load(*values))
-
-class ParseModelAction(argparse.Action):
-
-    def __call__(self, parser, namespace, value, option_string=None):
-        setattr(namespace, self.dest, Model.load(value)())
-
-class ParseModelParamsAction(argparse.Action):
-
-    def __call__(self, parser, namespace, value, option_string=None):
-        setattr(namespace, self.dest, value)
-        param_dict = {}
-        for param in value:
-            key,val = param.split('=')
-            param_dict[key]=val
-        if(param_dict['hidden_units']):
-            hidden_units = param_dict['hidden_units']
-        ModelParams = param_dict
-        namespace.model.modelParams = param_dict
-
-class ParsePortAction(argparse.Action):
-
-    def __call__(self, parser, namespace, value, option_string=None):
-        setattr(namespace, self.dest, Port.load(value)())
 
 class ParseLoggingAction(argparse.Action):
 
@@ -98,6 +61,8 @@ class CMD(object):
             required=False, default=logging.INFO)
 
     def __init__(self, **kwargs) -> None:
+        self.logger = logging.getLogger('%s.%s' % (self.__class__.__module__,
+                                                   self.__class__.__qualname__))
         for name, method in [(name.lower().replace('arg_', ''), method) \
                 for name, method in inspect.getmembers(self) \
                 if isinstance(method, Arg)]:
@@ -106,10 +71,10 @@ class CMD(object):
             if not name in kwargs and 'default' in method:
                 kwargs[name] = method['default']
             if name in kwargs:
-                LOGGER.debug('Setting %s.%s = %r', self, name, kwargs[name])
+                self.logger.debug('Setting %s = %r', name, kwargs[name])
                 setattr(self, name, kwargs[name])
             else:
-                LOGGER.debug('Ignored %s.%s', self, name)
+                self.logger.debug('Ignored %s', name)
 
     async def __aenter__(self):
         pass
@@ -186,72 +151,3 @@ class Parser(argparse.ArgumentParser):
                 parser.add_subs(method) # type: ignore
             elif isinstance(method, Arg):
                 self.add_argument(method.name, **method)
-
-class ListEntrypoint(CMD):
-    '''
-    Subclass this with an Entrypoint to display all registered classes.
-    '''
-
-    def display(self, cls):
-        '''
-        Print out the loaded but uninstantiated class
-        '''
-        if not cls.__doc__ is None:
-            print('%s:' % (cls.__qualname__))
-            print(cls.__doc__.rstrip())
-        else:
-            print('%s' % (cls.__qualname__))
-        print()
-
-    async def run(self):
-        '''
-        Display all classes registered with the entrypoint
-        '''
-        for cls in self.ENTRYPOINT.load():
-            self.display(cls)
-
-class FeaturesCMD(CMD):
-    '''
-    Set timeout for features
-    '''
-
-    arg_features = Arg('-features', nargs='+', required=True,
-            default=Features(), action=ParseFeaturesAction)
-    arg_timeout = Arg('-timeout', help='Feature evaluation timeout',
-            required=False, default=Features.TIMEOUT, type=int)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.features.timeout = self.timeout
-
-class SourcesCMD(CMD):
-
-    arg_sources = Arg('-sources', help='Sources for loading and saving',
-            nargs='+', default=Sources(JSONSource(os.path.join(
-                os.path.expanduser('~'), '.cache', 'dffml.json'))),
-            action=ParseSourcesAction)
-
-class ModelCMD(CMD):
-    '''
-    Set a models model dir.
-    '''
-
-    arg_model = Arg('-model', help='Model used for ML',
-            action=ParseModelAction, required=True)
-    arg_model_dir = Arg('-model_dir', help='Model directory for ML',
-            default=os.path.join(os.path.expanduser('~'), '.cache', 'dffml'))
-    arg_modelParams = Arg('-modelParams',help='Model specific params',
-        nargs='*', action=ParseModelParamsAction, required=False)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.model.model_dir = self.model_dir
-
-class PortCMD(CMD):
-
-    arg_port = Arg('port', action=ParsePortAction)
-
-class KeysCMD(CMD):
-
-    arg_keys = Arg('-keys', help='Key used for source lookup and evaluation',
-            nargs='+', required=True)

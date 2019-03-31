@@ -18,6 +18,7 @@ setup(
     version=version,
     description='Data Flow Facilitator for Machine Learning',
     long_description=readme,
+    long_description_content_type='text/markdown',
     author='John Andersen',
     author_email='john.s.andersen@intel.com',
     maintainer='John Andersen',
@@ -54,6 +55,36 @@ setup(
         ],
         'dffml.port': [
             'json = dffml.port.json:JSON',
+        ],
+        # Data Flow
+        'dffml.operation': [
+            'group_by = dffml.operation.output:GroupBy.op',
+            'get_single = dffml.operation.output:GetSingle.op',
+        ],
+        'dffml.operation.implementation': [
+            'group_by = dffml.operation.output:GroupBy.imp',
+            'get_single = dffml.operation.output:GetSingle.imp',
+        ],
+        'dffml.kvstore': [
+            'memory = dffml.df.memory:MemoryKeyValueStore',
+        ],
+        'dffml.input.network': [
+            'memory = dffml.df.memory:MemoryInputNetwork',
+        ],
+        'dffml.operation.network': [
+            'memory = dffml.df.memory:MemoryOperationNetwork',
+        ],
+        'dffml.redundancy.checker': [
+            'memory = dffml.df.memory:MemoryRedundancyChecker',
+        ],
+        'dffml.lock.network': [
+            'memory = dffml.df.memory:MemoryLockNetwork',
+        ],
+        'dffml.operation.implementation.network': [
+            'memory = dffml.df.memory:MemoryOperationImplementationNetwork',
+        ],
+        'dffml.orchestrator': [
+            'memory = dffml.df.memory:MemoryOrchestrator',
         ],
     },
 )
