@@ -52,7 +52,7 @@ class FileSource(Source):
         elif self.filename[::-1].startswith(('.xz')[::-1]) or \
                 self.filename[::-1].startswith(('.lzma')[::-1]):
             opener = lzma.open(self.filename, 'rt')
-        elif zipfile.is_zipfile(self.filename):
+        elif self.filename[::-1].startswith(('.zip')[::-1]):
             @contextmanager
             def opener_helper():
                 with zipfile.ZipFile(self.filename) as archive:
@@ -79,7 +79,7 @@ class FileSource(Source):
             elif self.filename[::-1].startswith(('.xz')[::-1]) or \
                     self.filename[::-1].startswith(('.lzma')[::-1]):
                 close = lzma.open(self.filename, 'wt')
-            elif zipfile.is_zipfile(self.filename):
+            elif self.filename[::-1].startswith(('.zip')[::-1]):
                 @contextmanager
                 def closer_helper():
                     with zipfile.ZipFile(self.filename, 'w') as archive:
