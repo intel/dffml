@@ -5,6 +5,7 @@ repo.
 import os
 import asyncio
 import hashlib
+import inspect
 import numpy as np
 import tensorflow
 from typing import List, Dict, Any, AsyncIterator, Tuple, Optional
@@ -157,6 +158,9 @@ class DNN(Model):
         Creates a feature column for a feature
         '''
         dtype = feature.dtype()
+        if not inspect.isclass(dtype):
+            LOGGER.warning('Unknown dtype %r. Cound not create column' % (dtype))
+            return None
         if dtype is int or issubclass(dtype, int) \
                 or dtype is float or issubclass(dtype, float):
             return self._tf.feature_column.numeric_column(feature.NAME,
