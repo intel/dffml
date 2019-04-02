@@ -26,8 +26,8 @@ setup(
     version=version,
     description='',
     long_description=readme,
-    author='John Andersen',
-    author_email='john.s.andersen@intel.com',
+    author='hsfzxjy',
+    author_email='hsfzxjy@gmail.com',
     url='https://github.com/intel/dffml/blob/master/model/pytorch/README.md',
     license='MIT',
 
