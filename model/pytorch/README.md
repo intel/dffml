@@ -2,9 +2,11 @@
 
 ## About
 
-A demo that implements IRIS classification model using pytorch and dffml.
+A PyTorch model implementing a classifier with one hidden layer.
 
 ## Usage
+
+The following commands demostrates how to use this model to classify IRIS dataset.
 
 ```console
 mkdir data
