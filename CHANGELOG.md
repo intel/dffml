@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- PyTorch model of a generic classifier with one hidden layer
+
 ## [0.1.2] - 2019-03-29
 ### Added
 - Contribution guidelines
