@@ -130,7 +130,7 @@ class DFCN(Model):
 
         dataset = await self.prepare_dataset(sources, features, classifications)
 
-        for epoch in range(3000):
+        for epoch in range(num_epochs):
 
             for xs, ys in dataset:
                 optimizer.zero_grad()
