@@ -22,7 +22,7 @@ from sklearn.metrics import accuracy_score
 
 from .log import LOGGER
 
-LOGGER = LOGGER.getChild('fcdn')
+LOGGER = LOGGER.getChild('dfcn')
 
 
 class Net(nn.Module):
