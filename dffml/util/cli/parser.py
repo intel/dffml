@@ -31,7 +31,7 @@ class ParseSourcesAction(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         if not isinstance(values, list):
             values = [values]
-        parse = dict(map(lambda source: source.split('=', maxsplit=2)[::-1],
+        parse = dict(map(lambda source: source.split('=', maxsplit=1)[::-1],
             values))
         values = Sources(*list(Source.load_from_dict(parse).values()))
         setattr(namespace, self.dest, values)
@@ -97,8 +97,8 @@ class ParseOutputSpecsAction(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         if not isinstance(values, list):
             values = [values]
-        ouput_specs = [(ast.literal_eval(value.split('=', maxsplit=2)[0]),
-                        value.split('=', maxsplit=2)[1],) \
+        ouput_specs = [(ast.literal_eval(value.split('=', maxsplit=1)[0]),
+                        value.split('=', maxsplit=1)[1],) \
                        for value in values]
         setattr(namespace, self.dest, ouput_specs)
 
@@ -111,8 +111,8 @@ class ParseRemapAction(argparse.Action):
             values = [values]
         inputs = []
         for value in values:
-            output_operation, sub = value.split('.', maxsplit=2)
-            sub, feature = sub.split('=', maxsplit=2)
+            output_operation, sub = value.split('.', maxsplit=1)
+            sub, feature = sub.split('=', maxsplit=1)
             inputs.append((output_operation, sub, feature,))
         setattr(namespace, self.dest, inputs)
 
