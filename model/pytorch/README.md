@@ -37,6 +37,18 @@ dffml accuracy \
     def:PetalLength:float:1 \
     def:PetalWidth:float:1 \
   -log critical
+dffml predict all \
+  -model dfcn \
+  -sources csv=data/iris_test.csv \
+  -classifications 0 1 2 \
+  -features \
+    def:SepalLength:float:1 \
+    def:SepalWidth:float:1 \
+    def:PetalLength:float:1 \
+    def:PetalWidth:float:1 \
+  -caching \
+  -log critical \
+  > data/prediction.json
 ```
 
 ## License
