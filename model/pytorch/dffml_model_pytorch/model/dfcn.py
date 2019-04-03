@@ -74,9 +74,14 @@ class DFCN(Model):
             shuffle=True
         )
 
-    def transform_repo(self, repo: Repo, feature_names: List[Any], cids: dict):
+    def transform_repo(self, repo: Repo, feature_names: List[Any], cids: dict, return_label=True):
 
-        return tuple(repo.features(feature_names).values()), cids[repo.classification()]
+        if return_label:
+            label = cids[repo.classification()]
+        else:
+            label = None
+
+        return tuple(repo.features(feature_names).values()), label
 
     def model_file_path(self, features: Features):
 
@@ -173,8 +178,7 @@ class DFCN(Model):
         num_to_label, cids = self.mkcids(classifications)
 
         async for repo in repos:
-            x, y = self.transform_repo(repo, feature_names, cids)
+            x, _ = self.transform_repo(repo, feature_names, cids, return_label=False)
             x = torch.tensor([x]).float()
-            y = torch.tensor([y]).long()
             val, predicted = torch.max(model(x), 1)
             yield repo, num_to_label[predicted.item()], val.item()
