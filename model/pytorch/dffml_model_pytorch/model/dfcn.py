@@ -92,6 +92,7 @@ class DFCN(Model):
             .hexdigest()
         if not os.path.isdir(self.model_dir):
             raise NotADirectoryError('%s is not a directory' % (self.model_dir))
+        os.makedirs(os.path.join(self.model_dir, model), exist_ok=True)
         return os.path.join(self.model_dir, model, 'model.pth.tar')
 
     def mkcids(self, classifications: List[Any]):
