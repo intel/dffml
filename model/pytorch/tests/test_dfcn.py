@@ -9,7 +9,6 @@ from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml_model_pytorch.model.dfcn import DFCN
 
-
 class StartsWithA(Feature):
 
     NAME: str = 'starts_with_a'
@@ -24,12 +23,10 @@ class StartsWithA(Feature):
         return 1 if data.src_url.lower().startswith('a') \
             else 0
 
-
 class TestDFCN(AsyncTestCase):
 
     @classmethod
     def setUpClass(cls):
-
         cls.model_dir = tempfile.TemporaryDirectory()
         cls.model = DFCN()
         cls.model.model_dir = cls.model_dir.name
