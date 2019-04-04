@@ -26,6 +26,7 @@ setup(
     version=version,
     description='',
     long_description=readme,
+    long_description_content_type='text/markdown',
     author='hsfzxjy',
     author_email='hsfzxjy@gmail.com',
     url='https://github.com/intel/dffml/blob/master/model/pytorch/README.md',
