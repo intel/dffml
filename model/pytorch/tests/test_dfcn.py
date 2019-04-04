@@ -44,8 +44,7 @@ class TestDFCN(AsyncTestCase):
 
     @classmethod
     def tearDownClass(cls):
-        # cls.model_dir.cleanup()
-        pass
+        cls.model_dir.cleanup()
 
     async def test_00_train(self):
         async with self.sources as sources, self.features as features:
