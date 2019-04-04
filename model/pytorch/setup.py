@@ -17,8 +17,8 @@ with open(os.path.join(self_path, 'README.md'), 'r', encoding='utf-8') as f:
     readme = f.read()
 
 INSTALL_REQUIRES = [
-    "torch",
-    "scikit-learn"
+    "torch>=1.0.1.post2",
+    "scikit-learn>=0.20.3"
 ]
 
 setup(
