@@ -25,6 +25,7 @@ setup(
     version=version,
     description='',
     long_description=readme,
+    long_description_content_type='text/markdown',
     author='John Andersen',
     author_email='john.s.andersen@intel.com',
     url='https://github.com/intel/dffml/blob/master/model/tensorflow/README.md',
