@@ -23,6 +23,19 @@ class StartsWithA(Feature):
         return 1 if data.src_url.lower().startswith('a') \
             else 0
 
+class NotAcceptable(Feature):
+
+    NAME: str = 'not_acceptable'
+
+    def dtype(self) -> Type:
+        return str
+
+    def length(self) -> int:
+        return 1
+
+    async def calc(self, data: Data) -> str:
+        return 'abc'
+
 class TestDFCN(AsyncTestCase):
 
     @classmethod
@@ -31,15 +44,34 @@ class TestDFCN(AsyncTestCase):
         cls.model = DFCN()
         cls.model.model_dir = cls.model_dir.name
         cls.feature = StartsWithA()
-        cls.features = Features(cls.feature)
+        cls.not_acceptable = NotAcceptable()
+        cls.features = Features(cls.feature, cls.not_acceptable)
         cls.classifications = ['a', 'not a']
         random.seed(42)
-        cls.repos = [Repo('a' + str(random.random()),
-                          data={'features': {cls.feature.NAME: 1},
-                                'classification': 'a'}) for _ in range(0, 1000)]
-        cls.repos += [Repo('b' + str(random.random()),
-                           data={'features': {cls.feature.NAME: 0},
-                                 'classification': 'not a'}) for _ in range(0, 1000)]
+        cls.repos = [
+            Repo(
+                'a' + str(random.random()),
+                data={
+                    'features': {
+                        cls.feature.NAME: 1,
+                        cls.not_acceptable.NAME: 1
+                    },
+                    'classification': 'a'
+                })
+            for _ in range(0, 1000)
+        ]
+        cls.repos += [
+            Repo(
+                'b' + str(random.random()),
+                data={
+                    'features': {
+                        cls.feature.NAME: 0,
+                        cls.not_acceptable.NAME: 1
+                    },
+                    'classification': 'not a'
+                })
+            for _ in range(0, 1000)
+        ]
         cls.sources = Sources(RepoSource(*cls.repos))
 
     @classmethod
@@ -67,3 +99,7 @@ class TestDFCN(AsyncTestCase):
             self.assertEqual(len(res), 1)
             self.assertEqual(res[0][0].src_url, a.src_url)
             self.assertTrue(res[0][1])
+
+    async def test_03_model_features_num(self):
+        torch_model = self.model.model(self.features, self.classifications)
+        self.assertEqual(torch_model.layers[0].in_features, 1)
