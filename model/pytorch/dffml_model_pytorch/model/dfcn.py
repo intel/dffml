@@ -9,7 +9,7 @@ from typing import AsyncIterator, Tuple, Any, List, Optional
 
 from dffml.repo import Repo
 from dffml.source import Sources
-from dffml.feature import Features
+from dffml.feature import Features, Feature
 from dffml.accuracy import Accuracy
 from dffml.model import Model
 
@@ -55,6 +55,14 @@ class DFCN(Model):
         self.model_dir = model_dir
         self._torch = torch
         self._model = None
+
+    def is_acceptable_feature(self, feature: Feature):
+        dtype = feature.dtype()
+        return dtype is float or isinstance(dtype, float) \
+            or dtype is int or isinstance(dtype, int)
+
+    def validate_features(self, features: Features):
+        return Features(*filter(self.is_acceptable_feature, features))
 
     async def prepare_dataset(self, sources: Sources, features: Features, classifications: List[Any]):
 
@@ -102,6 +110,7 @@ class DFCN(Model):
         return num_to_label, label_to_num
 
     def model(self, features: Features, classifications: List[Any], pretrained: bool= False):
+        features = self.validate_features(features)
 
         if self._model is not None:
             return self._model
@@ -123,6 +132,7 @@ class DFCN(Model):
         '''
         Train using repos as the data to learn from.
         '''
+        features = self.validate_features(features)
         model = self.model(features, classifications)
         criterion = nn.CrossEntropyLoss()  # cross entropy loss
 
@@ -156,6 +166,7 @@ class DFCN(Model):
         Evaluates the accuracy of our model after training using the input repos
         as test data.
         '''
+        features = self.validate_features(features)
         model = self.model(features, classifications, pretrained=True).eval()
         dataset = await self.prepare_dataset(sources, features, classifications)
 
@@ -173,7 +184,7 @@ class DFCN(Model):
         '''
         Uses trained data to make a prediction about the quality of a repo.
         '''
-
+        features = self.validate_features(features)
         model = self.model(features, classifications, pretrained=True).eval()
         feature_names = features.names()
         num_to_label, cids = self.mkcids(classifications)
