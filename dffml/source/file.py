@@ -56,8 +56,8 @@ class FileSource(Source):
             @contextmanager
             def opener_helper():
                 with zipfile.ZipFile(self.filename) as archive:
-                    for file in archive.infolist():
-                        with io.TextIOWrapper(archive.open(file, 'r')) as fd:
+                    for zippedfile in archive.infolist():
+                        with io.TextIOWrapper(archive.open(zippedfile, 'r')) as fd:
                             yield fd
                         # Works for only one file inside archive
                         break
@@ -83,7 +83,7 @@ class FileSource(Source):
                 @contextmanager
                 def closer_helper():
                     with zipfile.ZipFile(self.filename, 'w') as archive:
-                        with io.TextIOWrapper(archive.open(str(self.filename[:-3]) + 'csv', 'w')) as fd:
+                        with io.TextIOWrapper(archive.open(str(self.filename[:-3]) + type(self).__name__.split("Source")[0].lower(), 'w')) as fd:
                             yield fd
                 close = closer_helper()
             else:
