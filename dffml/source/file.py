@@ -83,7 +83,7 @@ class FileSource(Source):
                 @contextmanager
                 def closer_helper():
                     with zipfile.ZipFile(self.filename, 'w') as archive:
-                        with io.TextIOWrapper(archive.open(str(self.filename[:-3]), 'w')) as fd:
+                        with io.TextIOWrapper(archive.open(str(self.filename[:-4]), 'w')) as fd:
                             yield fd
                 close = closer_helper()
             else:
