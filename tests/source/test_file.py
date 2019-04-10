@@ -11,7 +11,7 @@ import logging
 import tempfile
 import unittest
 import collections
-from unittest.mock import patch, mock_open, Mock
+from unittest.mock import patch, mock_open
 from functools import wraps
 from contextlib import contextmanager
 from typing import List, Dict, Any, Optional, Tuple, AsyncIterator
@@ -36,23 +36,6 @@ class FakeFileSource(FileSource):
 
     async def dump_fd(self, fd):
         pass # pragma: no cover
-
-class MockZipFile:
-    def __init__(self, name):
-        self.name = name
-        self.files = [Mock(filename='foo.csv'), Mock(filename='bar.csv')]
-
-    def __iter__(self):
-        return iter(self.files)
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        return True
-
-    def infolist(self):
-        return self.files
 
 class TestFileSource(AsyncTestCase):
 
@@ -113,12 +96,14 @@ class TestFileSource(AsyncTestCase):
             m_open.assert_called_once_with('testfile.xz', 'rt')
 
     async def test_open_zip(self):
-        source = MockZipFile('testfile.zip')
+        source = FakeFileSource('testfile.zip')
         m_open = mock_open()
         source.open = m_open
         with patch('os.path.exists', return_value=True), \
-                patch('zipfile.ZipFile',m_open):
+                patch('zipfile.ZipFile',m_open), \
+                patch('zipfile.is_zipfile',return_value=True):
             source.open()
+
 
     async def test_open_no_file(self):
         source = FakeFileSource('testfile')
@@ -162,11 +147,12 @@ class TestFileSource(AsyncTestCase):
             m_open.assert_called_once_with('testfile.xz', 'wt')
 
     async def test_close_zip(self):
-        source = MockZipFile('testfile.zip')
+        source = FakeFileSource('testfile.zip')
         m_open = mock_open()
         source.close = m_open
         with patch('os.path.exists', return_value=True), \
-                patch('zipfile.ZipFile',m_open):
+                patch('zipfile.ZipFile', m_open), \
+                patch('zipfile.is_zipfile', return_value=True):
             source.close()
     
     async def test_close_readonly(self):
