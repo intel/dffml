@@ -98,12 +98,10 @@ class TestFileSource(AsyncTestCase):
     async def test_open_zip(self):
         source = FakeFileSource('testfile.zip')
         m_open = mock_open()
-        source.open = m_open
         with patch('os.path.exists', return_value=True), \
-                patch('zipfile.ZipFile',m_open), \
-                patch('zipfile.is_zipfile',return_value=True):
+                patch('zipfile.ZipFile', m_open), \
+                patch('zipfile.is_zipfile', return_value=True):
             source.open()
-
 
     async def test_open_no_file(self):
         source = FakeFileSource('testfile')
@@ -149,7 +147,6 @@ class TestFileSource(AsyncTestCase):
     async def test_close_zip(self):
         source = FakeFileSource('testfile.zip')
         m_open = mock_open()
-        source.close = m_open
         with patch('os.path.exists', return_value=True), \
                 patch('zipfile.ZipFile', m_open), \
                 patch('zipfile.is_zipfile', return_value=True):
