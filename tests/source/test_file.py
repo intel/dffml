@@ -11,7 +11,7 @@ import logging
 import tempfile
 import unittest
 import collections
-from unittest.mock import patch, mock_open
+from unittest.mock import patch, mock_open, Mock
 from functools import wraps
 from contextlib import contextmanager
 from typing import List, Dict, Any, Optional, Tuple, AsyncIterator
@@ -32,10 +32,35 @@ class FakeFileSource(FileSource):
         pass # pragma: no cover
 
     async def load_fd(self, fd):
-        pass # pragma: no cover
+        self.loaded_fd = fd
 
     async def dump_fd(self, fd):
-        pass # pragma: no cover
+        self.dumped_fd = fd
+
+class MockZipFile(object):
+
+    def __init__(self, *_args, **_kwargs):
+        self.files = [Mock(filename='foo'), Mock(filename='bar')]
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return
+
+    def infolist(self):
+        return self.files
+
+    @classmethod
+    def opener(cls):
+        class mzip(cls):
+            pass
+        mzip.open = mock_open()
+        return mzip
+
+@contextmanager
+def yield_42():
+    yield 42
 
 class TestFileSource(AsyncTestCase):
 
@@ -97,11 +122,10 @@ class TestFileSource(AsyncTestCase):
 
     async def test_open_zip(self):
         source = FakeFileSource('testfile.zip')
-        m_open = mock_open()
         with patch('os.path.exists', return_value=True), \
-                patch('zipfile.ZipFile', m_open), \
-                patch('zipfile.is_zipfile', return_value=True):
-            source.open()
+                patch.object(source, 'zip_opener_helper', yield_42):
+            await source.open()
+            self.assertEqual(source.loaded_fd, 42)
 
     async def test_open_no_file(self):
         source = FakeFileSource('testfile')
@@ -146,12 +170,10 @@ class TestFileSource(AsyncTestCase):
 
     async def test_close_zip(self):
         source = FakeFileSource('testfile.zip')
-        m_open = mock_open()
-        with patch('os.path.exists', return_value=True), \
-                patch('zipfile.ZipFile', m_open), \
-                patch('zipfile.is_zipfile', return_value=True):
-            source.close()
-    
+        with patch.object(source, 'zip_closer_helper', yield_42):
+            await source.close()
+            self.assertEqual(source.dumped_fd, 42)
+
     async def test_close_readonly(self):
         source = FakeFileSource('testfile:ro')
         m_open = mock_open()

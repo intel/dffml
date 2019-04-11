@@ -53,15 +53,7 @@ class FileSource(Source):
                 self.filename[::-1].startswith(('.lzma')[::-1]):
             opener = lzma.open(self.filename, 'rt')
         elif self.filename[::-1].startswith(('.zip')[::-1]):
-            @contextmanager
-            def opener_helper():
-                with zipfile.ZipFile(self.filename) as archive:
-                    for zippedfile in archive.infolist():
-                        with io.TextIOWrapper(archive.open(zippedfile, 'r')) as fd:
-                            yield fd
-                        # Works for only one file inside archive
-                        break
-            opener = opener_helper()
+            opener = self.zip_opener_helper()
         else:
             opener = open(self.filename, 'r')
         with opener as fd:
@@ -80,16 +72,26 @@ class FileSource(Source):
                     self.filename[::-1].startswith(('.lzma')[::-1]):
                 close = lzma.open(self.filename, 'wt')
             elif self.filename[::-1].startswith(('.zip')[::-1]):
-                @contextmanager
-                def closer_helper():
-                    with zipfile.ZipFile(self.filename, 'w') as archive:
-                        with io.TextIOWrapper(archive.open(str(self.filename[:-3]), 'w')) as fd:
-                            yield fd
-                close = closer_helper()
+                close = self.zip_closer_helper()
             else:
                 close = open(self.filename, 'w')
             with close as fd:
                 await self.dump_fd(fd)
+
+    @contextmanager
+    def zip_opener_helper(self):
+        with zipfile.ZipFile(self.filename) as archive:
+            with archive.open(self.__class__.__qualname__, mode='r') as fd:
+                yield fd
+
+    @contextmanager
+    def zip_closer_helper(self):
+        with zipfile.ZipFile(self.filename, 'w',
+                             compression=zipfile.ZIP_BZIP2) as archive:
+            with io.TextIOWrapper(archive.open(self.__class__.__qualname__,
+                                               mode='w',
+                                               force_zip64=True)) as fd:
+                yield fd
 
     @abc.abstractmethod
     async def load_fd(self, fd):
