@@ -6,8 +6,11 @@ import asyncio
 import gzip
 import bz2
 import lzma
+import zipfile
+import io
 from .source import Source
 from .log import LOGGER
+from contextlib import contextmanager
 
 LOGGER = LOGGER.getChild('file')
 
@@ -49,6 +52,8 @@ class FileSource(Source):
         elif self.filename[::-1].startswith(('.xz')[::-1]) or \
                 self.filename[::-1].startswith(('.lzma')[::-1]):
             opener = lzma.open(self.filename, 'rt')
+        elif self.filename[::-1].startswith(('.zip')[::-1]):
+            opener = self.zip_opener_helper()
         else:
             opener = open(self.filename, 'r')
         with opener as fd:
@@ -66,10 +71,27 @@ class FileSource(Source):
             elif self.filename[::-1].startswith(('.xz')[::-1]) or \
                     self.filename[::-1].startswith(('.lzma')[::-1]):
                 close = lzma.open(self.filename, 'wt')
+            elif self.filename[::-1].startswith(('.zip')[::-1]):
+                close = self.zip_closer_helper()
             else:
                 close = open(self.filename, 'w')
             with close as fd:
                 await self.dump_fd(fd)
+
+    @contextmanager
+    def zip_opener_helper(self):
+        with zipfile.ZipFile(self.filename) as archive:
+            with archive.open(self.__class__.__qualname__, mode='r') as fd:
+                yield fd
+
+    @contextmanager
+    def zip_closer_helper(self):
+        with zipfile.ZipFile(self.filename, 'w',
+                             compression=zipfile.ZIP_BZIP2) as archive:
+            with io.TextIOWrapper(archive.open(self.__class__.__qualname__,
+                                               mode='w',
+                                               force_zip64=True)) as fd:
+                yield fd
 
     @abc.abstractmethod
     async def load_fd(self, fd):
