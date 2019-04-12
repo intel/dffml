@@ -60,3 +60,7 @@ async def concurrently(work: Dict[asyncio.Task, Any],
         for task in tasks:
             if not task.done():
                 task.cancel()
+            else:
+                # For tasks which are done but have expections which we didn't
+                # raise, collect their execptions
+                task.exception()

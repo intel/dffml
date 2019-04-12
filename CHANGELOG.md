@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- Added support for zip file source
+- Added async helper for running task concurrently
 
 ## [0.1.2] - 2019-03-29
 ### Added
@@ -24,7 +26,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added support for lzma file source
 - Added support for xz file source
 - Added Data Flow Facilitator
-- Added support for zip file source
 ### Changed
 - Restructured documentation to docs folder and moved from rST to markdown
 - Git feature cloc logs if no binaries are in path
