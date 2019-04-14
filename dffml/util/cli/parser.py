@@ -125,3 +125,15 @@ class ParsePortAction(argparse.Action):
 
     def __call__(self, parser, namespace, value, option_string=None):
         setattr(namespace, self.dest, Port.load(value)())
+
+class ParseModelParamsAction(argparse.Action):
+
+    def __call__(self, parser, namespace, value, option_string=None):
+        setattr(namespace, self.dest, value)
+        param_dict = {}
+        for param in value:
+            key,val = param.split('=')
+            param_dict[key]=val
+        if(param_dict['hidden_units']):
+            hidden_units = param_dict['hidden_units']
+        namespace.model.modelParams = param_dict

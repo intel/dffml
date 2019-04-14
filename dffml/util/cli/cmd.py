@@ -114,6 +114,10 @@ class ModelCMD(CMD):
     arg_model_dir = Arg('-model_dir', help='Model directory for ML',
             default=os.path.join(os.path.expanduser('~'), '.cache', 'dffml'))
 
+    for loaded in Model.load() :
+        for arg_name, arg in loaded.args().items():
+            pass
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.model.model_dir = self.model_dir

@@ -16,10 +16,8 @@ from ...repo import Repo
 from ...port import Port
 from ...feature import Feature, Features
 from ...source import Source, Sources, JSONSource
-from ...model import Model
 
 LOGGER = LOGGER.getChild('cli')
-ModelParams = None
 
 class ParseLoggingAction(argparse.Action):
 

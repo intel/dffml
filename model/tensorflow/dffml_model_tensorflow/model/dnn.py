@@ -18,6 +18,8 @@ from dffml.accuracy import Accuracy
 import ast
 
 from .log import LOGGER
+from dffml.util.cli.base import Arg, CMD
+from dffml.util.cli.parser import ParseModelParamsAction
 
 LOGGER = LOGGER.getChild('dnn')
 
@@ -249,3 +251,18 @@ class DNN(Model):
             class_id = pred_dict['class_ids'][0]
             probability = pred_dict['probabilities'][class_id]
             yield repo, cids[class_id], probability
+
+    @classmethod
+    def args(cls): 
+        args = { 
+            'arg_model_params': Arg('-modelParams', 
+                nargs='+', 
+                action=ParseModelParamsAction) 
+            } 
+        return args 
+ 
+    @classmethod
+    def config(cls):
+        pass 
+
+    

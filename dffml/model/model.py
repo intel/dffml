@@ -58,3 +58,13 @@ class Model(abc.ABC, Entrypoint):
     @classmethod
     def installed(cls):
         return {key: model() for key, model in cls.load().items()}
+
+    @classmethod
+    @abc.abstractmethod 
+    def args(cls):
+        pass 
+ 
+    @classmethod
+    @abc.abstractmethod 
+    def config(cls): 
+        pass 
