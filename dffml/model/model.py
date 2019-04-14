@@ -63,7 +63,7 @@ class Model(abc.ABC, Entrypoint):
     @abc.abstractmethod
     def args(cls):
         pass
- 
+
     @classmethod
     @abc.abstractmethod
     def config(cls):
