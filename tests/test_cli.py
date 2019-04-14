@@ -74,6 +74,12 @@ class FakeModel(Model):
         async for repo in repos:
             yield repo, '', 1.0
 
+    def args(cls):
+        pass
+ 
+    def config(cls):
+        pass
+
 class TestOperationsAll(ReposTestCase):
 
     def setUp(self):

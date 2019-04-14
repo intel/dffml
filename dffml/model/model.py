@@ -60,11 +60,11 @@ class Model(abc.ABC, Entrypoint):
         return {key: model() for key, model in cls.load().items()}
 
     @classmethod
-    @abc.abstractmethod 
+    @abc.abstractmethod
     def args(cls):
-        pass 
+        pass
  
     @classmethod
-    @abc.abstractmethod 
-    def config(cls): 
-        pass 
+    @abc.abstractmethod
+    def config(cls):
+        pass
