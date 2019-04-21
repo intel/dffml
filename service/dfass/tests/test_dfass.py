@@ -1,41 +1,54 @@
+from http import HTTPStatus
+from contextlib import asynccontextmanager
+
+from dffml.df.base import BaseConfig
 from dffml.util.asynctestcase import AsyncTestCase
 
 from aiohttp import web
 from aiohttp import client
+from aiohttp.test_utils import AioHTTPTestCase, unittest_run_loop
 import aiohttp
 import asyncio
 import logging
 import pprint
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+from dffml.log import LOGGER
 
-
-baseUrl = 'http://0.0.0.0:8888'
-mountPoint = '/fakeUuid'
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 # From StackOverflow: https://stackoverflow.com/a/52403071
-class ReverseProxyHandler(object):
+class ReverseProxyHandlerContext(object):
 
-    async def wsforward(ws_from,ws_to):
+    def __init__(self,
+                 parent: 'ReverseProxyHandler',
+                 *,
+                 address: str = '127.0.0.1',
+                 port: int = 0) -> None:
+        self.parent = parent
+        self.address = address
+        self.port = port
+        self.upstream = {}
+        self.logger = LOGGER.getChild(self.__class__.__qualname__)
+
+    async def wsforward(self, ws_from, ws_to):
         async for msg in ws_from:
-            logger.info('>>> msg: %s',pprint.pformat(msg))
-            mt = msg.type
-            md = msg.data
-            if mt == aiohttp.WSMsgType.TEXT:
-                await ws_to.send_str(md)
-            elif mt == aiohttp.WSMsgType.BINARY:
-                await ws_to.send_bytes(md)
-            elif mt == aiohttp.WSMsgType.PING:
+            self.logger.info('>>> msg: %s',pprint.pformat(msg))
+            if msg.type == aiohttp.WSMsgType.TEXT:
+                await ws_to.send_str(msg.data)
+            elif msg.type == aiohttp.WSMsgType.BINARY:
+                await ws_to.send_bytes(msg.data)
+            elif msg.type == aiohttp.WSMsgType.PING:
                 await ws_to.ping()
-            elif mt == aiohttp.WSMsgType.PONG:
+            elif msg.type == aiohttp.WSMsgType.PONG:
                 await ws_to.pong()
             elif ws_to.closed:
                 await ws_to.close(code=ws_to.close_code, message=msg.extra)
             else:
                 raise ValueError('Unexpected message type: %s' % (msg,))
 
-    async def __call__(self, req):
+    async def handler_proxy(self, req):
+        self.logger.debug('%s', pprint.pformat(req))
         proxyPath = req.match_info.get('proxyPath','no proxyPath placeholder defined')
         reqH = req.headers.copy()
         if reqH['connection'] == 'Upgrade' \
@@ -43,14 +56,13 @@ class ReverseProxyHandler(object):
 
           ws_server = web.WebSocketResponse()
           await ws_server.prepare(req)
-          logger.info('##### WS_SERVER %s' % pprint.pformat(ws_server))
+          self.logger.info('##### WS_SERVER %s' % pprint.pformat(ws_server))
 
           client_session = aiohttp.ClientSession(cookies=req.cookies)
           async with client_session.ws_connect(
             baseUrl+req.path_qs,
-          },
           ) as ws_client:
-            logger.info('##### WS_CLIENT %s' % pprint.pformat(ws_client))
+            self.logger.info('##### WS_CLIENT %s' % pprint.pformat(ws_client))
 
             coro = asyncio.wait([
                     wsforward(ws_server,ws_client),
@@ -78,38 +90,68 @@ class ReverseProxyHandler(object):
               )
           return ws_server
 
-app = web.Application()
-app.router.add_route('*',mountPoint + '{proxyPath:.*}', handler)
-web.run_app(app,port=3984)
+    async def add_upstream(self,
+                           address: str,
+                           port: int,
+                           subdomain: str = None,
+                           path: str = None):
+        self.upstream[(subdomain, path,)] = (address, port,)
 
-class TestReverseProxy(AsyncTestCase):
+    async def __aenter__(self) -> 'ReverseProxyHandlerContext':
+        self.app = web.Application()
+        self.app.router.add_resource('').add_route('*',
+                                                    self.handler_proxy)
+        self.runner = web.AppRunner(self.app)
+        await self.runner.setup()
+        self.site = web.TCPSite(self.runner, self.address, self.port)
+        await self.site.start()
+        self.address, self.port = self.site._server.sockets[0].getsockname()
+        return self
 
-    async def test_run(self):
-import asyncio
-from aiohttp import web
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        await self.site.stop()
+        await self.runner.cleanup()
 
-async def handler(request):
-    return web.Response(text="OK")
+class ReverseProxyHandler(object):
 
+    def __init__(self, config: BaseConfig) -> None:
+        self.config = config
+        self.logger = LOGGER.getChild(self.__class__.__qualname__)
 
-async def main():
-    server = web.Server(handler)
-    runner = web.ServerRunner(server)
-    await runner.setup()
-    site = web.TCPSite(runner, 'localhost', 8080)
-    await site.start()
+    def __call__(self, address='127.0.0.1', port=0) -> 'ReverseProxyHandlerContext':
+        return ReverseProxyHandlerContext(self, address=address, port=port)
 
-    print("======= Serving on http://127.0.0.1:8080/ ======")
+@asynccontextmanager
+async def rproxy(self, subdomain, path):
+    rproxyh = ReverseProxyHandler(BaseConfig())
+    async with rproxyh() as ctx:
+        await ctx.add_upstream(address=self.server.host,
+                               port=self.server.port,
+                               subdomain='test',
+                               path='/route/this')
+        yield ctx
 
-    # pause here for very long time by serving HTTP requests and
-    # waiting for keyboard interruption
-    await asyncio.sleep(100*3600)
+class MyAppTestCase(AioHTTPTestCase):
 
+    async def get_application(self):
+        async def hello(request):
+            return web.Response(text='Hello, world')
 
-loop = asyncio.get_event_loop()
+        app = web.Application()
+        app.router.add_get('/', hello)
+        return app
 
-try:
-    loop.run_until_complete(main())
-except KeyboardInterrupt:
-    pass
-loop.close()
+    @unittest_run_loop
+    async def test_example(self):
+        subdomain = 'test'
+        path = '/route/this'
+        async with rproxy(self, subdomain=subdomain, path=path) as rctx, \
+                aiohttp.ClientSession() as session:
+            address = 'localhost'
+            port = rctx.port
+            url = 'http://%s.%s:%d%s' % (subdomain, address, port, path,)
+            LOGGER.debug('rproxy url: %s', url)
+            async with session.get(url) as resp:
+                self.assertEqual(resp.status, HTTPStatus.OK)
+                text = await resp.text()
+                self.assertEqual('Hello, world', text)
