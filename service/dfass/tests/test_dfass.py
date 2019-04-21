@@ -9,8 +9,6 @@ from aiohttp import client
 from aiohttp.test_utils import AioHTTPTestCase, unittest_run_loop
 import aiohttp
 import asyncio
-import logging
-import pprint
 
 from dffml.log import LOGGER
 
@@ -33,7 +31,7 @@ class ReverseProxyHandlerContext(object):
 
     async def wsforward(self, ws_from, ws_to):
         async for msg in ws_from:
-            self.logger.info('>>> msg: %s',pprint.pformat(msg))
+            self.logger.info('>>> msg: %s',str(msg))
             if msg.type == aiohttp.WSMsgType.TEXT:
                 await ws_to.send_str(msg.data)
             elif msg.type == aiohttp.WSMsgType.BINARY:
@@ -48,7 +46,7 @@ class ReverseProxyHandlerContext(object):
                 raise ValueError('Unexpected message type: %s' % (msg,))
 
     async def handler_proxy(self, req):
-        self.logger.debug('%s', pprint.pformat(req))
+        self.logger.debug('%s', str(req))
         proxyPath = req.match_info.get('proxyPath','no proxyPath placeholder defined')
         reqH = req.headers.copy()
         if reqH['connection'] == 'Upgrade' \
@@ -56,13 +54,13 @@ class ReverseProxyHandlerContext(object):
 
           ws_server = web.WebSocketResponse()
           await ws_server.prepare(req)
-          self.logger.info('##### WS_SERVER %s' % pprint.pformat(ws_server))
+          self.logger.info('##### WS_SERVER %s' % str(ws_server))
 
           client_session = aiohttp.ClientSession(cookies=req.cookies)
           async with client_session.ws_connect(
             baseUrl+req.path_qs,
           ) as ws_client:
-            self.logger.info('##### WS_CLIENT %s' % pprint.pformat(ws_client))
+            self.logger.info('##### WS_CLIENT %s' % str(ws_client))
 
             coro = asyncio.wait([
                     wsforward(ws_server,ws_client),
@@ -99,8 +97,7 @@ class ReverseProxyHandlerContext(object):
 
     async def __aenter__(self) -> 'ReverseProxyHandlerContext':
         self.app = web.Application()
-        self.app.router.add_resource('').add_route('*',
-                                                    self.handler_proxy)
+        self.app.router.add_route('*', '/{path:.*}', self.handler_proxy)
         self.runner = web.AppRunner(self.app)
         await self.runner.setup()
         self.site = web.TCPSite(self.runner, self.address, self.port)
