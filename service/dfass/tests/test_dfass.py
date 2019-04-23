@@ -1,3 +1,4 @@
+import socket
 from http import HTTPStatus
 from contextlib import asynccontextmanager
 
@@ -21,9 +22,14 @@ class ReverseProxyHandlerContext(object):
     def __init__(self,
                  parent: 'ReverseProxyHandler',
                  *,
+                 hostname: str = None,
                  address: str = '127.0.0.1',
                  port: int = 0) -> None:
+        '''
+        Hostname must be set in order to resolve subdomains
+        '''
         self.parent = parent
+        self.hostname = 'localhost' if hostname is None else hostname
         self.address = address
         self.port = port
         self.upstream = {}
@@ -31,7 +37,7 @@ class ReverseProxyHandlerContext(object):
 
     async def wsforward(self, ws_from, ws_to):
         async for msg in ws_from:
-            self.logger.info('>>> msg: %s',str(msg))
+            self.logger.info('>>> msg: %s', msg)
             if msg.type == aiohttp.WSMsgType.TEXT:
                 await ws_to.send_str(msg.data)
             elif msg.type == aiohttp.WSMsgType.BINARY:
@@ -45,48 +51,79 @@ class ReverseProxyHandlerContext(object):
             else:
                 raise ValueError('Unexpected message type: %s' % (msg,))
 
+    def subdomain(self, headers):
+        '''
+        Helper method for accessing subdomain protion of Host header. Returns
+        None if header not present or subdomain not present.
+        '''
+        host = headers.get('host', False)
+        if not host:
+            return None
+        if not '.' in host:
+            return None
+        # Check for port
+        if ':' in host:
+            host, _port = host.split(':')
+        # Check to see if host is an ip address. If so then then bail
+        if all(map(lambda part: part.isdigit(), host.split('.', maxsplit=4))):
+            return None
+        # Ensure hostname is present
+        if not self.hostname in host:
+            return None
+        # Discard hostname
+        host = host[:host.index(self.hostname)]
+        # Split on .
+        host = list(filter(lambda part: bool(len(part)), host.split('.')))
+        return '.'.join(host)
+
     async def handler_proxy(self, req):
-        self.logger.debug('%s', str(req))
-        proxyPath = req.match_info.get('proxyPath','no proxyPath placeholder defined')
-        reqH = req.headers.copy()
-        if reqH['connection'] == 'Upgrade' \
-                and reqH['upgrade'] == 'websocket' and req.method == 'GET':
+        headers = req.headers.copy()
+        self.logger.debug('headers: %s', headers)
 
-          ws_server = web.WebSocketResponse()
-          await ws_server.prepare(req)
-          self.logger.info('##### WS_SERVER %s' % str(ws_server))
+        subdomain = self.subdomain(headers)
+        path = '/' + req.match_info.get('path', '')
+        self.logger.debug('subdomain: %r, path: %r', subdomain, path)
 
-          client_session = aiohttp.ClientSession(cookies=req.cookies)
-          async with client_session.ws_connect(
-            baseUrl+req.path_qs,
-          ) as ws_client:
-            self.logger.info('##### WS_CLIENT %s' % str(ws_client))
+        if 'connection' in headers \
+                and 'upgrade' in headers \
+                and headers['connection'] == 'Upgrade' \
+                and headers['upgrade'] == 'websocket' and req.method == 'GET':
 
-            coro = asyncio.wait([
-                    wsforward(ws_server,ws_client),
-                    wsforward(ws_client,ws_server)
-                ],
-                return_when=asyncio.FIRST_COMPLETED)
-            # TODO replace with
-            # https://aiohttp.readthedocs.io/en/stable/web_advanced.html#background-tasks
-            finished,unfinished = await coro
+            ws_server = web.WebSocketResponse()
+            await ws_server.prepare(req)
+            self.logger.info('##### WS_SERVER %s', ws_server)
 
-            return ws_server
+            client_session = aiohttp.ClientSession(cookies=req.cookies)
+            async with client_session.ws_connect(
+              baseUrl+req.path_qs,
+            ) as ws_client:
+              self.logger.info('##### WS_CLIENT %s', ws_client)
+
+              coro = asyncio.wait([
+                      wsforward(ws_server,ws_client),
+                      wsforward(ws_client,ws_server)
+                  ],
+                  return_when=asyncio.FIRST_COMPLETED)
+              # TODO replace with
+              # https://aiohttp.readthedocs.io/en/stable/web_advanced.html#background-tasks
+              finished,unfinished = await coro
+
+              return ws_server
         else:
-          async with client.request(
-              req.method,baseUrl+mountPoint+proxyPath,
-              headers = reqH,
-              allow_redirects=False,
-              data = await req.read()
-          ) as res:
-              headers = res.headers.copy()
-              body = await res.read()
-              return web.Response(
+            async with client.request(
+                req.method,baseUrl+mountPoint+proxyPath,
                 headers = headers,
-                status = res.status,
-                body = body
-              )
-          return ws_server
+                allow_redirects=False,
+                data = await req.read()
+            ) as res:
+                headers = res.headers.copy()
+                body = await res.read()
+                return web.Response(
+                  headers = headers,
+                  status = res.status,
+                  body = body
+                )
+            return ws_server
 
     async def add_upstream(self,
                            address: str,
@@ -115,13 +152,17 @@ class ReverseProxyHandler(object):
         self.config = config
         self.logger = LOGGER.getChild(self.__class__.__qualname__)
 
-    def __call__(self, address='127.0.0.1', port=0) -> 'ReverseProxyHandlerContext':
-        return ReverseProxyHandlerContext(self, address=address, port=port)
+    def __call__(self, hostname=None, address='127.0.0.1', port=0) \
+            -> 'ReverseProxyHandlerContext':
+        return ReverseProxyHandlerContext(self,
+                                          hostname=hostname,
+                                          address=address,
+                                          port=port)
 
 @asynccontextmanager
 async def rproxy(self, subdomain, path):
     rproxyh = ReverseProxyHandler(BaseConfig())
-    async with rproxyh() as ctx:
+    async with rproxyh('localhost') as ctx:
         await ctx.add_upstream(address=self.server.host,
                                port=self.server.port,
                                subdomain='test',
