@@ -1,5 +1,6 @@
 import socket
 from http import HTTPStatus
+from urllib.parse import urlparse
 from contextlib import asynccontextmanager
 
 from dffml.df.base import BaseConfig
@@ -81,14 +82,18 @@ class ReverseProxyHandlerContext(object):
         self.logger.debug('headers: %s', headers)
 
         subdomain = self.subdomain(headers)
-        path = '/' + req.match_info.get('path', '')
+        path = req.path
         self.logger.debug('subdomain: %r, path: %r', subdomain, path)
+
+        upstream = self.get_upstream(subdomain, path)
+        if not upstream:
+            return web.Response(status=HTTPStatus.NOT_FOUND)
 
         if 'connection' in headers \
                 and 'upgrade' in headers \
                 and headers['connection'] == 'Upgrade' \
                 and headers['upgrade'] == 'websocket' and req.method == 'GET':
-
+            # Handle websocket proxy
             ws_server = web.WebSocketResponse()
             await ws_server.prepare(req)
             self.logger.info('##### WS_SERVER %s', ws_server)
@@ -110,27 +115,49 @@ class ReverseProxyHandlerContext(object):
 
               return ws_server
         else:
+            # Handle regular HTTP request proxy
+            self.logger.debug('upstream for (%r): %s', upstream,
+                              (subdomain, path,))
             async with client.request(
-                req.method,baseUrl+mountPoint+proxyPath,
-                headers = headers,
+                req.method,
+                upstream,
+                headers=headers,
                 allow_redirects=False,
-                data = await req.read()
+                data=await req.read()
             ) as res:
-                headers = res.headers.copy()
-                body = await res.read()
+                self.logger.debug('upstream url(%s) status: %d', upstream,
+                                  res.status)
                 return web.Response(
-                  headers = headers,
-                  status = res.status,
-                  body = body
+                  headers=res.headers,
+                  status=res.status,
+                  body=await res.read()
                 )
             return ws_server
 
-    async def add_upstream(self,
-                           address: str,
-                           port: int,
-                           subdomain: str = None,
-                           path: str = None):
-        self.upstream[(subdomain, path,)] = (address, port,)
+    def set_upstream(self,
+                     url: str,
+                     subdomain: str,
+                     path: str):
+        if not subdomain in self.upstream:
+            self.upstream[subdomain] = {}
+        self.upstream[subdomain][path] = url
+
+    def get_upstream(self,
+                     subdomain: str,
+                     path: str):
+        paths = self.upstream.get(subdomain, {})
+        if not paths:
+            return False
+        longest_match = ''
+        for local_path, upstream in paths.items():
+            if path.startswith(local_path) \
+                    and len(local_path) > len(longest_match):
+                longest_match = local_path
+        if not longest_match:
+            return False
+        upstream = urlparse(paths[longest_match])
+        upstream = upstream._replace(path=path.replace(longest_match, upstream.path))
+        return upstream.geturl()
 
     async def __aenter__(self) -> 'ReverseProxyHandlerContext':
         self.app = web.Application()
@@ -160,36 +187,77 @@ class ReverseProxyHandler(object):
                                           port=port)
 
 @asynccontextmanager
-async def rproxy(self, subdomain, path):
+async def rproxy(self, upstream_path, subdomain, path):
     rproxyh = ReverseProxyHandler(BaseConfig())
     async with rproxyh('localhost') as ctx:
-        await ctx.add_upstream(address=self.server.host,
-                               port=self.server.port,
-                               subdomain='test',
-                               path='/route/this')
+        ctx.set_upstream('http://%s:%d%s' % \
+                         (self.server.host, self.server.port, upstream_path,),
+                         subdomain='test',
+                         path='/route/this')
         yield ctx
 
-class MyAppTestCase(AioHTTPTestCase):
+class TestReverseProxyHandler(AioHTTPTestCase):
+
+    TEST_ADDRESS = 'localhost'
+    PROXY_SUBDOMAIN = 'test'
+    PROXY_PATH = '/route/this'
+    UPSTREAM_PATH = '/to/here'
 
     async def get_application(self):
         async def hello(request):
-            return web.Response(text='Hello, world')
-
+            return web.Response(text=request.path)
         app = web.Application()
-        app.router.add_get('/', hello)
+        app.router.add_get(self.UPSTREAM_PATH + '{path:.*}', hello)
         return app
 
     @unittest_run_loop
-    async def test_example(self):
-        subdomain = 'test'
-        path = '/route/this'
-        async with rproxy(self, subdomain=subdomain, path=path) as rctx, \
+    async def test_not_found(self):
+        async with rproxy(self,
+                          self.UPSTREAM_PATH,
+                          subdomain=self.PROXY_SUBDOMAIN,
+                          path=self.PROXY_PATH) as rctx, \
                 aiohttp.ClientSession() as session:
-            address = 'localhost'
-            port = rctx.port
-            url = 'http://%s.%s:%d%s' % (subdomain, address, port, path,)
+            url = 'http://%s.%s:%d%s' % \
+                  (self.PROXY_SUBDOMAIN + '.not.found',
+                   self.TEST_ADDRESS,
+                   rctx.port,
+                   self.PROXY_PATH,)
+            LOGGER.debug('rproxy url: %s', url)
+            async with session.get(url) as resp:
+                self.assertEqual(resp.status, HTTPStatus.NOT_FOUND)
+
+    @unittest_run_loop
+    async def test_path(self):
+        async with rproxy(self,
+                          self.UPSTREAM_PATH,
+                          subdomain=self.PROXY_SUBDOMAIN,
+                          path=self.PROXY_PATH) as rctx, \
+                aiohttp.ClientSession() as session:
+            url = 'http://%s.%s:%d%s' % \
+                  (self.PROXY_SUBDOMAIN,
+                   self.TEST_ADDRESS,
+                   rctx.port,
+                   self.PROXY_PATH,)
             LOGGER.debug('rproxy url: %s', url)
             async with session.get(url) as resp:
                 self.assertEqual(resp.status, HTTPStatus.OK)
                 text = await resp.text()
-                self.assertEqual('Hello, world', text)
+                self.assertEqual(self.UPSTREAM_PATH, text)
+
+    @unittest_run_loop
+    async def test_path_joined(self):
+        async with rproxy(self,
+                          self.UPSTREAM_PATH,
+                          subdomain=self.PROXY_SUBDOMAIN,
+                          path=self.PROXY_PATH) as rctx, \
+                aiohttp.ClientSession() as session:
+            url = 'http://%s.%s:%d%s' % \
+                  (self.PROXY_SUBDOMAIN,
+                   self.TEST_ADDRESS,
+                   rctx.port,
+                   self.PROXY_PATH + '/test/joined',)
+            LOGGER.debug('rproxy url: %s', url)
+            async with session.get(url) as resp:
+                self.assertEqual(resp.status, HTTPStatus.OK)
+                text = await resp.text()
+                self.assertEqual(self.UPSTREAM_PATH + '/test/joined', text)
