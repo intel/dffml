@@ -104,7 +104,7 @@ class TestMemoryKeyValueStore(AsyncTestCase):
 
 class TestMemoryOperationImplementationNetwork(AsyncTestCase):
 
-    def setUp(self):
+    async def setUp(self):
         self.operationsNetwork = MemoryOperationImplementationNetwork(
             MemoryOperationImplementationNetworkConfig(
                 operations={
@@ -112,13 +112,17 @@ class TestMemoryOperationImplementationNetwork(AsyncTestCase):
                 }
             )
         )
+        self.operationsNetworkCtx = await self.operationsNetwork.__aenter__()
+
+    async def tearDown(self):
+        await self.operationsNetwork.__aexit__(None, None, None)
 
     async def test_contains(self):
-        async with self.operationsNetwork() as ctx:
+        async with self.operationsNetworkCtx() as ctx:
             self.assertTrue(await ctx.contains(add.op))
 
     async def test_run(self):
-        async with self.operationsNetwork() as ctx:
+        async with self.operationsNetworkCtx() as ctx:
             # No input set context and input network context required to test
             # the add operation
             self.assertEqual(42, (await ctx.run(None, None, add.op, {
@@ -185,10 +189,7 @@ class TestRunner(AsyncTestCase):
             definition=definitions['get_single_spec'],
             parents=False)
 
-        dff = DataFlowFacilitator()
-
-        # Orchestrate the running of these operations
-        async with dff(
+        dff = DataFlowFacilitator(
             input_network = MemoryInputNetwork(BaseConfig()),
             operation_network = MemoryOperationNetwork(
                 MemoryOperationNetworkConfig(
@@ -201,31 +202,36 @@ class TestRunner(AsyncTestCase):
                     key_value_store=MemoryKeyValueStore(BaseConfig())
                 )
             ),
-            opimpn = MemoryOperationImplementationNetwork(
+            opimp_network = MemoryOperationImplementationNetwork(
                 MemoryOperationImplementationNetworkConfig(
                     operations={imp.op.name: imp \
                                 for imp in \
                                 [Imp(BaseConfig()) for Imp in OPIMPS]}
                 )
             ),
-            orchestrator = MemoryOrchestrator(BaseConfig())) as dffctx:
-            # Add our inputs to the input network with the context being the URL
-            for to_calc in calc_strings_check.keys():
-                await dffctx.ictx.add(
-                    MemoryInputSet(
-                        MemoryInputSetConfig(
-                            ctx=StringInputSetContext(to_calc),
-                            inputs=[calc_strings[to_calc]] + \
-                                   [get_single_spec]
+            orchestrator = MemoryOrchestrator(BaseConfig())
+        )
+
+        # Orchestrate the running of these operations
+        async with dff as dff:
+            async with dff() as dffctx:
+                # Add our inputs to the input network with the context being the URL
+                for to_calc in calc_strings_check.keys():
+                    await dffctx.ictx.add(
+                        MemoryInputSet(
+                            MemoryInputSetConfig(
+                                ctx=StringInputSetContext(to_calc),
+                                inputs=[calc_strings[to_calc]] + \
+                                       [get_single_spec]
+                            )
                         )
                     )
-                )
-            async for ctx, results in dffctx.evaluate():
-                ctx_str = (await ctx.handle()).as_string()
-                print()
-                print(ctx_str,
-                      json.dumps(results, sort_keys=True,
-                                 indent=4, separators=(',', ':')))
-                print()
-                self.assertEqual(calc_strings_check[ctx_str],
-                                 results['get_single']['result'])
+                async for ctx, results in dffctx.evaluate(strict=True):
+                    ctx_str = (await ctx.handle()).as_string()
+                    print()
+                    print(ctx_str,
+                          json.dumps(results, sort_keys=True,
+                                     indent=4, separators=(',', ':')))
+                    print()
+                    self.assertEqual(calc_strings_check[ctx_str],
+                                     results['get_single']['result'])

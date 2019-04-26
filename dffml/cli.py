@@ -159,75 +159,63 @@ class OperationsAll(OperationsCMD):
 
     # async def operations(self, sources, features):
     async def run_operations(self, sources):
-        # Orchestrate the running of these operations
-        async with self.dff(
-                input_network = self.input_network(
-                    self.input_network.config(self)),
-                operation_network = self.operation_network(
-                    self.operation_network.config(self)),
-                lock_network = self.lock_network(
-                    self.lock_network.config(self)),
-                rchecker = self.rchecker(
-                    self.rchecker.config(self)),
-                opimpn = self.opimpn(self.opimpn.config(self)),
-                orchestrator = self.orchestrator(
-                    self.orchestrator.config(self))
-                ) as dffctx:
+        async with self.dff as dff:
+            # Orchestrate the running of these operations
+            async with dff() as dffctx:
+                # Create the inputs for the ouput operations
+                output_specs = [Input(value=value,
+                                     definition=self.definitions[def_name],
+                                     parents=False) \
+                    for value, def_name in self.output_specs]
 
-            # Create the inputs for the ouput operations
-            output_specs = [Input(value=value,
-                                 definition=self.definitions[def_name],
-                                 parents=False) \
-                for value, def_name in self.output_specs]
+                # Add our inputs to the input network with the context being the
+                # repo src_url
+                async for repo in sources.repos():
+                    inputs = []
+                    for value, def_name in self.inputs:
+                        inputs.append(Input(value=value,
+                                            definition=self.definitions[def_name],
+                                            parents=False))
+                    if self.repo_def:
+                        inputs.append(Input(value=repo.src_url,
+                                            definition=self.definitions[self.repo_def],
+                                            parents=False))
 
-            # Add our inputs to the input network with the context being the
-            # repo src_url
-            async for repo in sources.repos():
-                inputs = []
-                for value, def_name in self.inputs:
-                    inputs.append(Input(value=value,
-                                        definition=self.definitions[def_name],
-                                        parents=False))
-                if self.repo_def:
-                    inputs.append(Input(value=repo.src_url,
-                                        definition=self.definitions[self.repo_def],
-                                        parents=False))
-
-                await dffctx.ictx.add(
-                    MemoryInputSet(
-                        MemoryInputSetConfig(
-                            ctx=StringInputSetContext(repo.src_url),
-                            inputs=inputs + output_specs
+                    await dffctx.ictx.add(
+                        MemoryInputSet(
+                            MemoryInputSetConfig(
+                                ctx=StringInputSetContext(repo.src_url),
+                                inputs=inputs + output_specs
+                            )
                         )
                     )
-                )
 
-            async for ctx, results in dffctx.evaluate():
-                ctx_str = (await ctx.handle()).as_string()
-                # TODO Make a RepoInputSetContext which would let us store the
-                # repo instead of recalling it by the URL
-                repo = await sources.repo(ctx_str)
-                # Remap the output operations to their feature
-                remap = {}
-                for output_operation_name, sub, feature_name in self.remap:
-                    if not output_operation_name in results:
-                        self.logger.error('[%s] results do not contain %s: %s',
-                                          ctx_str,
-                                          output_operation_name,
-                                          results)
-                        continue
-                    if not sub in results[output_operation_name]:
-                        self.logger.error('[%s] %s does not contain: %s',
-                                          ctx_str,
-                                          sub,
-                                          results[output_operation_name])
-                        continue
-                    remap[feature_name] = results[output_operation_name][sub]
-                # Store the results
-                repo.evaluated(remap)
-                yield repo
-                if self.update:
-                    await sources.update(repo)
+                async for ctx, results in dffctx.evaluate(strict=True):
+                    ctx_str = (await ctx.handle()).as_string()
+                    # TODO Make a RepoInputSetContext which would let us store the
+                    # repo instead of recalling it by the URL
+                    repo = await sources.repo(ctx_str)
+                    # Remap the output operations to their feature
+                    remap = {}
+                    for output_operation_name, sub, feature_name in self.remap:
+                        if not output_operation_name in results:
+                            self.logger.error('[%s] results do not contain %s: %s',
+                                              ctx_str,
+                                              output_operation_name,
+                                              results)
+                            continue
+                        if not sub in results[output_operation_name]:
+                            self.logger.error('[%s] %s does not contain: %s',
+                                              ctx_str,
+                                              sub,
+                                              results[output_operation_name])
+                            continue
+                        remap[feature_name] = results[output_operation_name][sub]
+                    # Store the results
+                    repo.evaluated(remap)
+                    yield repo
+                    if self.update:
+                        await sources.update(repo)
 
     async def run(self):
         # async with self.sources as sources, self.features as features:

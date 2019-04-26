@@ -6,6 +6,7 @@ from ..df.types import Definition, Operation, Stage
 from ..df.base import OperationImplementationContext, \
                       BaseInputSetContext, \
                       BaseInputNetworkContext
+from ..df.exceptions import DefinitionNotInContext
 
 group_by_spec = Definition(
     name='group_by_spec',
@@ -145,3 +146,52 @@ class GetSingle(OperationImplementationContext):
                     want[definition.name] = item.value
                     break
             return want
+
+associate_spec = Definition(
+    name='associate_spec',
+    primitive='List[str]'
+)
+
+associate_output = Definition(
+    name='associate_output',
+    primitive='Dict[str, Any]'
+)
+
+class Associate(OperationImplementationContext):
+
+    op = Operation(
+                   name='associate',
+                   inputs={
+                       'spec': associate_spec
+                       },
+                   outputs={
+                       'output': associate_output
+                       },
+                   conditions=[],
+                   stage=Stage.OUTPUT
+        )
+
+    async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
+        # TODO Address the need to copy operation implementation inputs dict
+        # In case the input is used elsewhere in the network
+        exported = copy.deepcopy(inputs['spec'])
+        # Look up the definiton for each
+        try:
+            for convert in range(0, len(exported)):
+                exported[convert] = await self.ictx.definition(self.ctx,
+                                                               exported[convert])
+        except DefinitionNotInContext:
+            return {exported[1]: {}}
+        # Make exported into key, value which it will be in output
+        key, value = exported
+        # Acquire all definitions within the context
+        async with self.ictx.definitions(self.ctx) as od:
+            # Output dict
+            want = {}
+            async for item in od.inputs(value):
+                parents = item.get_parents()
+                for parent in parents:
+                    if key == parent.definition:
+                        want[parent.value] = item.value
+                        break
+            return {value.name: want}

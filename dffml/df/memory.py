@@ -3,6 +3,7 @@ import asyncio
 import hashlib
 import itertools
 from functools import wraps
+from datetime import datetime
 from itertools import product
 from contextlib import asynccontextmanager, AsyncExitStack
 from typing import AsyncIterator, Dict, List, Tuple, Any, NamedTuple, Union, \
@@ -226,7 +227,16 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         handle_string = (await watch_ctx.handle()).as_string()
         # Notify whatever is listening for new inputs in this context
         async with self.parent.input_notification_set[handle_string]() as ctx:
+            '''
             return await ctx.added()
+            '''
+            async with ctx.parent.event_added_lock:
+                await ctx.parent.event_added.wait()
+                ctx.parent.event_added.clear()
+                async with ctx.parent.lock:
+                    notification_items = ctx.parent.notification_items
+                    ctx.parent.notification_items = []
+                    return False, notification_items
 
     async def definition(self, ctx: BaseInputSetContext, definition: str) \
             -> Definition:
@@ -548,7 +558,7 @@ class MemoryOperationImplementationNetworkContext(BaseOperationImplementationNet
         '''
         Run an operation in our network.
         '''
-        async with self.parent.operations[operation.name](ctx, ictx) as ctx:
+        async with self.parent.operations[operation.name](ctx, ictx) as opctx:
             self.logger.debug('---')
             self.logger.debug('Stage: %s: %s', operation.stage.value.upper(),
                               operation.name)
@@ -556,7 +566,7 @@ class MemoryOperationImplementationNetworkContext(BaseOperationImplementationNet
             self.logger.debug('Conditions: %s', dict(zip(
                 map(lambda condition: condition.name, operation.conditions),
                 ([True] * len(operation.conditions)))))
-            outputs = await ctx.run(inputs)
+            outputs = await opctx.run(inputs)
             self.logger.debug('Output: %s', outputs)
             self.logger.debug('---')
             return outputs
@@ -579,6 +589,8 @@ class MemoryOperationImplementationNetworkContext(BaseOperationImplementationNet
             # Run the operation
             outputs = await self.run(parameter_set.ctx, ictx, operation,
                                      await parameter_set._asdict())
+            if outputs is None:
+                return []
         # Create a list of inputs from the outputs using the definition mapping
         try:
             inputs = []
@@ -586,14 +598,15 @@ class MemoryOperationImplementationNetworkContext(BaseOperationImplementationNet
                 expand = operation.expand
             else:
                 expand = []
+            parents = [item async for item in \
+                       parameter_set.inputs()]
             for key, output in outputs.items():
                 if not key in expand:
                     output = [output]
                 for value in output:
                     inputs.append(Input(value=value,
                                          definition=operation.outputs[key],
-                                         parents=[item async for item in \
-                                                  parameter_set.inputs()]))
+                                         parents=parents))
         except KeyError as error:
             raise KeyError(
                     'Value %s missing from output:definition mapping %s(%s)' \
@@ -649,7 +662,8 @@ class MemoryOperationImplementationNetwork(BaseOperationImplementationNetwork):
 
     def __init__(self, config: MemoryOperationImplementationNetworkConfig) -> None:
         super().__init__(config)
-        self.operations = self.config.operations
+        self.opimps = self.config.operations
+        self.operations = {}
         self.completed_event = asyncio.Event()
 
     def __call__(self) -> MemoryOperationImplementationNetworkContext:
@@ -677,9 +691,22 @@ class MemoryOperationImplementationNetwork(BaseOperationImplementationNetwork):
                             for Imp in cmd.opimpn_memory_opimps]}
             )
 
+    async def __aenter__(self) -> 'MemoryOperationImplementationNetworkContext':
+        self.__stack = AsyncExitStack()
+        await self.__stack.__aenter__()
+        self.operations = {
+                opimp.op.name: await self.__stack.enter_async_context(opimp) \
+                for opimp in self.opimps.values()}
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        if self.__stack is not None:
+            await self.__stack.aclose()
+            self.__stack = None
+
 class MemoryOrchestratorContext(BaseOrchestratorContext):
 
-    async def run_operations(self) \
+    async def run_operations(self, strict: bool = False) \
             -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
         # Track if there are more contexts
         more = True
@@ -688,54 +715,64 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # Create initial events to wait on
         new_context_enters_network = asyncio.create_task(self.ictx.ctx())
         tasks.add(new_context_enters_network)
-        # Return when outstanding operations reaches zero
-        while tasks:
-            if not more \
-                    and len(tasks) == 1 and new_context_enters_network in tasks:
-                break
-            # Wait for incoming events
-            done, _pending = await asyncio.wait(tasks,
-                return_when=asyncio.FIRST_COMPLETED)
+        try:
+            # Return when outstanding operations reaches zero
+            while tasks:
+                if not more \
+                        and len(tasks) == 1 and new_context_enters_network in tasks:
+                    break
+                # Wait for incoming events
+                done, _pending = await asyncio.wait(tasks,
+                    return_when=asyncio.FIRST_COMPLETED)
 
-            for task in done:
-                # Remove the task from the set of tasks we are waiting for
-                tasks.remove(task)
-                # Get the tasks exception if any
-                exception = task.exception()
-                if not exception is None:
-                    # If there was an exception log it
-                    output = io.StringIO()
-                    task.print_stack(file=output)
-                    self.logger.error('%s', output.getvalue().rstrip())
-                    output.close()
-                elif task is new_context_enters_network:
-                    # TODO Make some way to cap the number of context's who have
-                    # operations executing. Or maybe just the number of
-                    # operations. Or both.
-                    # A new context entered the network
-                    more, new_ctx = new_context_enters_network.result()
-                    self.logger.debug('new_context_enters_network: %s',
-                                      (await new_ctx.handle()).as_string())
-                    # Add a task which will run operations for the new context
-                    tasks.add(asyncio.create_task(
-                              self.run_operations_for_ctx(new_ctx)))
-                    # Create a another task to waits for a new context
-                    new_context_enters_network = asyncio.create_task(
-                            self.ictx.ctx())
-                    tasks.add(new_context_enters_network)
+                for task in done:
+                    # Remove the task from the set of tasks we are waiting for
+                    tasks.remove(task)
+                    # Get the tasks exception if any
+                    exception = task.exception()
+                    if strict and exception is not None:
+                        raise exception
+                    elif exception is not None:
+                        # If there was an exception log it
+                        output = io.StringIO()
+                        task.print_stack(file=output)
+                        self.logger.error('%s', output.getvalue().rstrip())
+                        output.close()
+                    elif task is new_context_enters_network:
+                        # TODO Make some way to cap the number of context's who have
+                        # operations executing. Or maybe just the number of
+                        # operations. Or both.
+                        # A new context entered the network
+                        more, new_ctx = new_context_enters_network.result()
+                        self.logger.debug('new_context_enters_network: %s',
+                                          (await new_ctx.handle()).as_string())
+                        # Add a task which will run operations for the new context
+                        tasks.add(asyncio.create_task(
+                                  self.run_operations_for_ctx(new_ctx,
+                                                              strict=strict)))
+                        # Create a another task to waits for a new context
+                        new_context_enters_network = asyncio.create_task(
+                                self.ictx.ctx())
+                        tasks.add(new_context_enters_network)
+                    else:
+                        # All operations for a context completed
+                        # Yield the context that completed and the results of its
+                        # output operations
+                        ctx, results = task.result()
+                        yield ctx, results
+                self.logger.debug('ctx.outstanding: %d', len(tasks) - 1)
+        finally:
+            # Cancel tasks which we don't need anymore now that we know we are done
+            for task in tasks:
+                if not task.done():
+                    task.cancel()
                 else:
-                    # All operations for a context completed
-                    # Yield the context that completed and the results of its
-                    # output operations
-                    ctx, results = task.result()
-                    yield ctx, results
-            self.logger.debug('ctx.outstanding: %d', len(tasks) - 1)
-        # Cancel tasks which we don't need anymore now that we know we are done
-        for task in tasks:
-            if not task.done():
-                task.cancel()
+                    task.exception()
 
-    async def run_operations_for_ctx(self, ctx: BaseContextHandle) \
+    async def run_operations_for_ctx(self,
+                                     ctx: BaseContextHandle,
+                                     *,
+                                     strict: bool = False) \
             -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
         # Track if there are more inputs
         more = True
@@ -746,59 +783,79 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # Create initial events to wait on
         input_set_enters_network = asyncio.create_task(self.ictx.added(ctx))
         tasks.add(input_set_enters_network)
-        # Return when outstanding operations reaches zero
-        while tasks:
-            if not more \
-                    and len(tasks) == 1 and input_set_enters_network in tasks:
-                break
-            # Wait for incoming events
-            done, _pending = await asyncio.wait(tasks,
-                return_when=asyncio.FIRST_COMPLETED)
+        try:
+            # Return when outstanding operations reaches zero
+            while tasks:
+                if not more \
+                        and len(tasks) == 1 and input_set_enters_network in tasks:
+                    break
+                # Wait for incoming events
+                done, _pending = await asyncio.wait(tasks,
+                    return_when=asyncio.FIRST_COMPLETED)
 
-            for task in done:
-                # Remove the task from the set of tasks we are waiting for
-                tasks.remove(task)
-                # Get the tasks exception if any
-                exception = task.exception()
-                if not exception is None:
-                    # If there was an exception log it
-                    output = io.StringIO()
-                    task.print_stack(file=output)
-                    self.logger.error('%s', output.getvalue().rstrip())
-                    output.close()
-                elif task is input_set_enters_network:
-                    more, new_input_set = input_set_enters_network.result()
-                    self.logger.debug('[%s]: input_set_enters_network: %s',
-                                      ctx_str,
-                                      [(i.definition.name, i.value) \
-                                      async for i in new_input_set.inputs()])
-                    # Identify which operations have complete contextually
-                    # appropriate input sets which haven't been run yet
-                    async for operation, parameter_set in \
-                            self.nctx.operations_parameter_set_pairs(self.ictx,
-                                    self.octx, self.rctx, ctx,
-                                    new_input_set=new_input_set):
-                        # Add inputs and operation to redundancy checker before
-                        # dispatch
-                        await self.rctx.add(operation, parameter_set)
-                        # Dispatch the operation and input set for running
-                        tasks.add(await self.nctx.dispatch(self.ictx,
-                                self.lctx, operation, parameter_set))
-                        self.logger.debug('[%s]: dispatch operation: %s',
-                                          ctx_str, operation.name)
-                    # Create a another task to waits for new input sets
-                    input_set_enters_network = asyncio.create_task(
-                            self.ictx.added(ctx))
-                    tasks.add(input_set_enters_network)
+                start_time = datetime.now()
+                for task in done:
+                    # Remove the task from the set of tasks we are waiting for
+                    tasks.remove(task)
+                    # Get the tasks exception if any
+                    exception = task.exception()
+                    if strict and exception is not None:
+                        raise exception
+                    elif exception is not None:
+                        # If there was an exception log it
+                        output = io.StringIO()
+                        task.print_stack(file=output)
+                        self.logger.error('%s', output.getvalue().rstrip())
+                        output.close()
+                    elif task is input_set_enters_network:
+                        more, new_input_sets = input_set_enters_network.result()
+                        for new_input_set in new_input_sets:
+                            # self.logger.debug('[%s]: input_set_enters_network: %s',
+                            #                   ctx_str,
+                            #                   [(i.definition.name, i.value) \
+                            #                   async for i in new_input_set.inputs()])
+                            # Identify which operations have complete contextually
+                            # appropriate input sets which haven't been run yet
+                            async for operation, parameter_set in \
+                                    self.nctx.operations_parameter_set_pairs(self.ictx,
+                                            self.octx, self.rctx, ctx,
+                                            new_input_set=new_input_set):
+                                # Add inputs and operation to redundancy checker before
+                                # dispatch
+                                await self.rctx.add(operation, parameter_set)
+                                # Dispatch the operation and input set for running
+                                dispatch_operation = await self.nctx.dispatch(
+                                        self.ictx, self.lctx,
+                                        operation, parameter_set)
+                                dispatch_operation.operation = operation
+                                dispatch_operation.start_time = datetime.now()
+                                tasks.add(dispatch_operation)
+                                self.logger.debug('[%s]: dispatch operation: %s',
+                                                  ctx_str, operation.name)
+                        # Create a another task to waits for new input sets
+                        input_set_enters_network = asyncio.create_task(
+                                self.ictx.added(ctx))
+                        tasks.add(input_set_enters_network)
+                    else:
+                        self.logger.debug('[%s]: operation %r took: %s',
+                                          ctx_str,
+                                          task.operation.name,
+                                          datetime.now() - task.start_time)
+                self.logger.debug('[%s]: dispatching took: %s',
+                                  ctx_str,
+                                  datetime.now() - start_time)
                 self.logger.debug('[%s]: operations outstanding: %d',
                                   ctx_str, len(tasks) - 1)
-        # Cancel tasks which we don't need anymore now that we know we are done
-        for task in tasks:
-            if not task.done():
-                task.cancel()
-        # Run cleanup
-        async for _operation, _results in self.run_stage(ctx, Stage.CLEANUP):
-            pass
+        finally:
+            # Cancel tasks which we don't need anymore now that we know we are done
+            for task in tasks:
+                if not task.done():
+                    task.cancel()
+                else:
+                    task.exception()
+            # Run cleanup
+            async for _operation, _results in self.run_stage(ctx, Stage.CLEANUP):
+                pass
         # Run output and return context along with output
         return ctx, {operation.name: results \
                      async for operation, results in \

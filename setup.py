@@ -60,10 +60,12 @@ setup(
         'dffml.operation': [
             'group_by = dffml.operation.output:GroupBy.op',
             'get_single = dffml.operation.output:GetSingle.op',
+            'associate = dffml.operation.output:Associate.op',
         ],
         'dffml.operation.implementation': [
             'group_by = dffml.operation.output:GroupBy.imp',
             'get_single = dffml.operation.output:GetSingle.imp',
+            'associate = dffml.operation.output:Associate.imp',
         ],
         'dffml.kvstore': [
             'memory = dffml.df.memory:MemoryKeyValueStore',
