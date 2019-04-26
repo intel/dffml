@@ -24,6 +24,10 @@ class DFEntrypoint(abc.ABC, Entrypoint):
     def config(cls, cmd: CMD):
         pass
 
+    @classmethod
+    def withconfig(cls, cmd: CMD):
+        return cls(cls.config(cmd))
+
 class OperationImplementationContext(abc.ABC):
 
     def __init__(self,
@@ -81,7 +85,10 @@ class OperationImplementation(object):
                        ctx: 'BaseInputSetContext',
                        ictx: 'BaseInputNetworkContext') \
             -> OperationImplementationContext:
-        return OperationImplementationContext(self, ictx)
+        return OperationImplementationContext(self, ctx, ictx)
+
+    async def __aenter__(self) -> 'OperationImplementation':
+        return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         pass
@@ -647,20 +654,20 @@ class BaseOrchestratorContext(object):
         self.logger = LOGGER.getChild(self.__class__.__qualname__)
 
     @abc.abstractmethod
-    async def run_operations(self) \
+    async def run_operations(self, strict: bool = False) \
             -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
         '''
         Run all Stage.PROCESSING operations
         '''
         pass
 
-    async def run_until_complete(self) \
+    async def run_until_complete(self, strict: bool = False) \
             -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
         '''
         Run all the operations then run cleanup and output operations
         '''
         # Run all operations until no more are run
-        async for ctx, results in self.run_operations():
+        async for ctx, results in self.run_operations(strict=strict):
             yield ctx, results
 
     async def __aenter__(self) -> 'BaseOrchestratorContext':

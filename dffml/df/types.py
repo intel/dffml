@@ -113,8 +113,9 @@ class Input(object):
             self.parents = []
 
     def get_parents(self) -> Iterator['Input']:
-        return itertools.chain(*[[item] + list(item.get_parents()) \
-                                 for item in self.parents])
+        return list(set(itertools.chain(*[[item] + \
+                                          list(set(item.get_parents())) \
+                                          for item in self.parents])))
 
     def __repr__(self):
         return '%s: %s' % (self.definition.name, self.value)

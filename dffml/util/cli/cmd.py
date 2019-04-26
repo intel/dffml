@@ -167,7 +167,14 @@ class BaseDataFlowFacilitatorCMD(CMD):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.dff = DataFlowFacilitator()
+        self.dff = DataFlowFacilitator(
+            input_network=self.input_network.withconfig(self),
+            operation_network=self.operation_network.withconfig(self),
+            lock_network=self.lock_network.withconfig(self),
+            rchecker=self.rchecker.withconfig(self),
+            opimp_network=self.opimpn.withconfig(self),
+            orchestrator=self.orchestrator.withconfig(self)
+        )
         self.linker = Linker()
         self.exported = self.linker.export(*self.ops)
         self.definitions, self.operations, _outputs = \

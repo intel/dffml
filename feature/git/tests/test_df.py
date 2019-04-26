@@ -95,45 +95,45 @@ class TestRunner(AsyncTestCase):
                   for imp in \
                   [Imp(BaseConfig()) for Imp in OPIMPS]}
 
-        dff = DataFlowFacilitator()
+        dff = DataFlowFacilitator(
+            input_network = MemoryInputNetwork(BaseConfig()),
+            operation_network = MemoryOperationNetwork(
+                MemoryOperationNetworkConfig(
+                    operations=list(operations.values())
+                )
+            ),
+            lock_network = MemoryLockNetwork(BaseConfig()),
+            rchecker = MemoryRedundancyChecker(
+                BaseRedundancyCheckerConfig(
+                    key_value_store=MemoryKeyValueStore(BaseConfig())
+                )
+            ),
+            opimp_network = MemoryOperationImplementationNetwork(
+                MemoryOperationImplementationNetworkConfig(
+                    operations=opimps
+                )
+            ),
+            orchestrator = MemoryOrchestrator(BaseConfig()))
 
         # Orchestrate the running of these operations
-        async with dff(
-                input_network = MemoryInputNetwork(BaseConfig()),
-                operation_network = MemoryOperationNetwork(
-                    MemoryOperationNetworkConfig(
-                        operations=list(operations.values())
-                    )
-                ),
-                lock_network = MemoryLockNetwork(BaseConfig()),
-                rchecker = MemoryRedundancyChecker(
-                    BaseRedundancyCheckerConfig(
-                        key_value_store=MemoryKeyValueStore(BaseConfig())
-                    )
-                ),
-                opimpn = MemoryOperationImplementationNetwork(
-                    MemoryOperationImplementationNetworkConfig(
-                        operations=opimps
-                    )
-                ),
-                orchestrator = MemoryOrchestrator(BaseConfig())
-            ) as dffctx:
-            # Add our inputs to the input network with the context being the URL
-            for url in urls:
-                await dffctx.ictx.add(
-                    MemoryInputSet(
-                        MemoryInputSetConfig(
-                            ctx=StringInputSetContext(url.value),
-                            inputs=[url, no_git_branch_given, date_spec] + \
-                                   quarters + \
-                                   [group_by_spec]
+        async with dff as dff:
+            async with dff() as dffctx:
+                # Add our inputs to the input network with the context being the URL
+                for url in urls:
+                    await dffctx.ictx.add(
+                        MemoryInputSet(
+                            MemoryInputSetConfig(
+                                ctx=StringInputSetContext(url.value),
+                                inputs=[url, no_git_branch_given, date_spec] + \
+                                       quarters + \
+                                       [group_by_spec]
+                            )
                         )
                     )
-                )
-            async for ctx, results in dffctx.evaluate():
-                print()
-                print((await ctx.handle()).as_string(),
-                      json.dumps(results, sort_keys=True,
-                                 indent=4, separators=(',', ':')))
-                print()
-                self.assertTrue(results)
+                async for ctx, results in dffctx.evaluate():
+                    print()
+                    print((await ctx.handle()).as_string(),
+                          json.dumps(results, sort_keys=True,
+                                     indent=4, separators=(',', ':')))
+                    print()
+                    self.assertTrue(results)
