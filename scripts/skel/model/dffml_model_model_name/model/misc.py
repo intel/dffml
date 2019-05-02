@@ -45,3 +45,9 @@ class Misc(Model):
         '''
         async for repo in repos:
             yield repo, classifications[0], 1.0
+
+    def args(cls):
+        pass
+
+    def config(cls):
+        pass
