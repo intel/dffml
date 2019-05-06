@@ -2,7 +2,7 @@ import abc
 import inspect
 import pkg_resources
 from typing import AsyncIterator, Dict, List, Tuple, Any, NamedTuple, Union, \
-                   Optional
+                   Optional, Set
 
 from .exceptions import NotOpImp
 from .types import Operation, Input, Parameter, Stage, Definition
@@ -294,6 +294,10 @@ class BaseInputSet(abc.ABC):
         self.config = config
         self.ctx = config.ctx
         self.logger = LOGGER.getChild(self.__class__.__qualname__)
+
+    @abc.abstractmethod
+    async def definitions(self) -> Set[Definition]:
+        pass
 
     @abc.abstractmethod
     async def inputs(self) -> AsyncIterator[Input]:

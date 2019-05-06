@@ -54,20 +54,20 @@ setup(
     packages=find_packages(),
     entry_points={
         'dffml.operation': [
-            'rpm_url_to_rpmfile = dffml_feature_codesec.feature.operations:rpm_url_to_rpmfile',
+            'url_to_urlbytes = dffml_feature_codesec.feature.operations:url_to_urlbytes',
+            'urlbytes_to_tarfile = dffml_feature_codesec.feature.operations:urlbytes_to_tarfile.op',
+            'urlbytes_to_rpmfile = dffml_feature_codesec.feature.operations:urlbytes_to_rpmfile.op',
             'files_in_rpm = dffml_feature_codesec.feature.operations:files_in_rpm.op',
-            'binary_file = dffml_feature_codesec.feature.operations:binary_file.op',
-            'pwn_checksec = dffml_feature_codesec.feature.operations:pwn_checksec.op',
+            'is_binary_pie = dffml_feature_codesec.feature.operations:is_binary_pie',
             'cleanup_rpm = dffml_feature_codesec.feature.operations:cleanup_rpm.op',
-            'cleanup_binary = dffml_feature_codesec.feature.operations:cleanup_binary.op',
         ],
         'dffml.operation.implementation': [
-            'rpm_url_to_rpmfile = dffml_feature_codesec.feature.operations:RPMURLToRPMFile',
+            'url_to_urlbytes = dffml_feature_codesec.feature.operations:URLToURLBytes',
+            'urlbytes_to_tarfile = dffml_feature_codesec.feature.operations:urlbytes_to_tarfile.imp',
+            'urlbytes_to_rpmfile = dffml_feature_codesec.feature.operations:urlbytes_to_rpmfile.imp',
             'files_in_rpm = dffml_feature_codesec.feature.operations:files_in_rpm.imp',
-            'binary_file = dffml_feature_codesec.feature.operations:binary_file.imp',
-            'pwn_checksec = dffml_feature_codesec.feature.operations:pwn_checksec.imp',
+            'is_binary_pie = dffml_feature_codesec.feature.operations:IsBinaryPIE',
             'cleanup_rpm = dffml_feature_codesec.feature.operations:cleanup_rpm.imp',
-            'cleanup_binary = dffml_feature_codesec.feature.operations:cleanup_binary.imp',
         ],
     },
 )
