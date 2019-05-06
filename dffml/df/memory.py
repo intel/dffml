@@ -7,7 +7,7 @@ from datetime import datetime
 from itertools import product
 from contextlib import asynccontextmanager, AsyncExitStack
 from typing import AsyncIterator, Dict, List, Tuple, Any, NamedTuple, Union, \
-      Optional
+      Optional, Set
 
 from .exceptions import ContextNotPresent, DefinitionNotInContext
 from .types import Input, Parameter, Definition, Operation, Stage
@@ -80,6 +80,9 @@ class MemoryInputSet(BaseInputSet):
     def __init__(self, config: MemoryInputSetConfig) -> None:
         super().__init__(config)
         self.__inputs = config.inputs
+
+    async def definitions(self) -> Set[Definition]:
+        return set(map(lambda item: item.definition, self.__inputs))
 
     async def inputs(self) -> AsyncIterator[Input]:
         for item in self.__inputs:
@@ -281,12 +284,6 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                 # Limit search to given context via context handle
                 contexts = [self.parent.ctxhd[handle_string]]
             for ctx, definitions in contexts:
-                # Check that all conditions are present and logicly True
-                if not all(map(lambda definition:
-                    (definition in definitions and \
-                        all(map(lambda item: bool(item.value),
-                            definitions[definition]))), operation.conditions)):
-                    return
                 # Gather all inputs with matching definitions and contexts
                 for key, definition in operation.inputs.items():
                     # Return if any inputs are missing
@@ -355,8 +352,7 @@ class MemoryOperationNetworkContext(BaseOperationNetworkContext):
             stage: Stage = Stage.PROCESSING) -> AsyncIterator[Operation]:
         # Set list of needed input definitions if given
         if not input_set is None:
-            input_definitions = set([item.definition \
-                                     async for item in input_set.inputs()])
+            input_definitions = await input_set.definitions()
         # Yield all operations with an input in the input set
         for operation in self.parent.memory:
             # Only run operations of the requested stage
@@ -364,10 +360,10 @@ class MemoryOperationNetworkContext(BaseOperationNetworkContext):
                 continue
             # If there is a given input set check each definition in it against
             # the operation's inputs to verify we are only looking at the subset
-            if not input_set is None:
-                for item in input_definitions:
-                    if not item in operation.inputs.values():
-                        continue
+            if input_set is not None:
+                if not [item for item in operation.inputs.values() \
+                        if item in input_definitions]:
+                    continue
             yield operation
 
 class MemoryOperationNetwork(BaseOperationNetwork):
@@ -793,7 +789,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 done, _pending = await asyncio.wait(tasks,
                     return_when=asyncio.FIRST_COMPLETED)
 
-                start_time = datetime.now()
                 for task in done:
                     # Remove the task from the set of tasks we are waiting for
                     tasks.remove(task)
@@ -810,10 +805,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                     elif task is input_set_enters_network:
                         more, new_input_sets = input_set_enters_network.result()
                         for new_input_set in new_input_sets:
-                            # self.logger.debug('[%s]: input_set_enters_network: %s',
-                            #                   ctx_str,
-                            #                   [(i.definition.name, i.value) \
-                            #                   async for i in new_input_set.inputs()])
                             # Identify which operations have complete contextually
                             # appropriate input sets which haven't been run yet
                             async for operation, parameter_set in \
@@ -827,8 +818,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                                 dispatch_operation = await self.nctx.dispatch(
                                         self.ictx, self.lctx,
                                         operation, parameter_set)
-                                dispatch_operation.operation = operation
-                                dispatch_operation.start_time = datetime.now()
                                 tasks.add(dispatch_operation)
                                 self.logger.debug('[%s]: dispatch operation: %s',
                                                   ctx_str, operation.name)
@@ -836,16 +825,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                         input_set_enters_network = asyncio.create_task(
                                 self.ictx.added(ctx))
                         tasks.add(input_set_enters_network)
-                    else:
-                        self.logger.debug('[%s]: operation %r took: %s',
-                                          ctx_str,
-                                          task.operation.name,
-                                          datetime.now() - task.start_time)
-                self.logger.debug('[%s]: dispatching took: %s',
-                                  ctx_str,
-                                  datetime.now() - start_time)
-                self.logger.debug('[%s]: operations outstanding: %d',
-                                  ctx_str, len(tasks) - 1)
         finally:
             # Cancel tasks which we don't need anymore now that we know we are done
             for task in tasks:
