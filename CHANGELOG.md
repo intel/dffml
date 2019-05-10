@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Added support for zip file source
-- Added async helper for running task concurrently
+- Support for zip file source
+- Async helper for running tasks concurrently
 - Gitter badge to README
+- Documentation on the Data Flow Facilitator subsystem
+- codesec plugin containing operations which gather security related metrics on
+  code and binaries.
+- auth plugin containing operations such as password hashing
 ### Fixed
 - Corrected maxsplit in util.cli.parser
 - Check that dtype is a class in Tensorlfow DNN
 - CI script no longer always exits 0 for plugin tests
+- Corrected render type in setup.py to markdown
 
 ## [0.1.2] - 2019-03-29
 ### Added

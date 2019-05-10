@@ -13,7 +13,8 @@ definitions = [
     ),
     Definition(
         name="RPMObject",
-        primitive="python_obj"
+        primitive="python_obj",
+        lock=True,
     ),
     Definition(
         name="rpm_filename",
