@@ -284,6 +284,12 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                 # Limit search to given context via context handle
                 contexts = [self.parent.ctxhd[handle_string]]
             for ctx, definitions in contexts:
+                # Check that all conditions are present and logicly True
+                if not all(map(lambda definition:
+                    (definition in definitions and \
+                        all(map(lambda item: bool(item.value),
+                            definitions[definition]))), operation.conditions)):
+                    return
                 # Gather all inputs with matching definitions and contexts
                 for key, definition in operation.inputs.items():
                     # Return if any inputs are missing
