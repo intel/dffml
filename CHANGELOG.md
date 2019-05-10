@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added support for zip file source
 - Added async helper for running task concurrently
+- Gitter badge to README
 ### Fixed
 - Corrected maxsplit in util.cli.parser
 - Check that dtype is a class in Tensorlfow DNN
