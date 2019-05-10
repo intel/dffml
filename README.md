@@ -63,16 +63,15 @@ Start with [Architecture](docs/ARCHITECTURE.md).
 ## Contributing
 
 DFFML is meant to be a community driven application. There are various segments you can help with:
+ 
+- Found a bug, error in the docs or have a new idea, create an issue [here](https://github.com/intel/dffml/issues/new/choose).
+- Help us fix an [issue](https://github.com/intel/dffml/issues), refer to [HACKING](docs/HACKING.md) in the docs.
+- Make sure you go through [CONTRIBUTING.md](CONTRIBUTING.md) before contributing.
 
-- **Issues**
-    - Found a bug, error in the docs or have a new idea, create an issue [here](https://github.com/intel/dffml/issues/new/choose).
-    - Help us fix an [issue](https://github.com/intel/dffml/issues), refer to [HACKING](docs/HACKING.md) in the docs.
-
-- **Add new Features/Models:** Got an idea for a new feature/model, tutorials will help you write code that takes full advantage of the DFFML API. Making your next machine learning project a breeze to write!
-    - Features: The [new feature tutorial](docs/tutorial/FEATURE.md) will walk you through how to write a new DFFML feature to generate new data for a dataset.
-    - Models: The [new model tutorial](docs/tutorial/MODEL.md) will walk you through how to wrap your favorite framework or a custom implementation in the DFFML library's model API.
-
-- **Community:** Join the community. Ask doubts, share ideas, request features and what not. Join our [gitter](https://gitter.im/dffml/community?utm_source=share-link&utm_medium=link&utm_campaign=share-link) room and say Hi!
+### Tutorials
+Got an idea for a new feature/model, tutorials will help you write code that takes full advantage of the DFFML API. Making your next machine learning project a breeze to write!
+- Features: The [new feature tutorial](docs/tutorial/FEATURE.md) will walk you through how to write a new DFFML feature to generate new data for a dataset.
+- Models: The [new model tutorial](docs/tutorial/MODEL.md) will walk you through how to wrap your favorite framework or a custom implementation in the DFFML library's model API.
 
 ## License
 

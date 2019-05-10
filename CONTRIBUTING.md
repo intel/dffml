@@ -31,3 +31,7 @@ Here are some examples:
   inclusion, the expectation is that 95% of PRs will include an edit to the
   change log. Maintainers will let you know if you need to include it or its not
   needed.
+
+## Community 
+
+- Join the community. Ask questions, share ideas, request features and what not. Join our [gitter](https://gitter.im/dffml/community?utm_source=share-link&utm_medium=link&utm_campaign=share-link) room and say Hi!
