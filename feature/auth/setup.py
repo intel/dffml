@@ -6,7 +6,7 @@ from setuptools import find_packages, setup
 
 self_path = os.path.dirname(os.path.realpath(__file__))
 
-with open(os.path.join(self_path, 'dffml_feature_codesec', 'version.py'),
+with open(os.path.join(self_path, 'dffml_feature_auth', 'version.py'),
           'r') as f:
     for line in f:
         if line.startswith('VERSION'):
@@ -17,20 +17,17 @@ with open(os.path.join(self_path, 'README.md'), 'r', encoding='utf-8') as f:
     readme = f.read()
 
 INSTALL_REQUIRES = [
-    'aiohttp>=3.5.4',
-    # 'rpmfile>=1.0.0',
-    'pyelftools>=0.25',
     ]
 
 setup(
-    name='dffml_feature_codesec',
+    name='dffml_feature_auth',
     version=version,
     description='',
     long_description=readme,
     long_description_content_type='text/markdown',
     author='John Andersen',
     author_email='john.s.andersen@intel.com',
-    url='https://github.com/intel/dffml/blob/master/feature/codesec/README.md',
+    url='https://github.com/intel/dffml/blob/master/feature/auth/README.md',
     license='MIT',
 
     keywords=[
@@ -55,20 +52,10 @@ setup(
     packages=find_packages(),
     entry_points={
         'dffml.operation': [
-            'url_to_urlbytes = dffml_feature_codesec.feature.operations:url_to_urlbytes',
-            'urlbytes_to_tarfile = dffml_feature_codesec.feature.operations:urlbytes_to_tarfile.op',
-            'urlbytes_to_rpmfile = dffml_feature_codesec.feature.operations:urlbytes_to_rpmfile.op',
-            'files_in_rpm = dffml_feature_codesec.feature.operations:files_in_rpm.op',
-            'is_binary_pie = dffml_feature_codesec.feature.operations:is_binary_pie',
-            'cleanup_rpm = dffml_feature_codesec.feature.operations:cleanup_rpm.op',
+            'scrypt = dffml_feature_auth.feature.operations:scrypt',
         ],
         'dffml.operation.implementation': [
-            'url_to_urlbytes = dffml_feature_codesec.feature.operations:URLToURLBytes',
-            'urlbytes_to_tarfile = dffml_feature_codesec.feature.operations:urlbytes_to_tarfile.imp',
-            'urlbytes_to_rpmfile = dffml_feature_codesec.feature.operations:urlbytes_to_rpmfile.imp',
-            'files_in_rpm = dffml_feature_codesec.feature.operations:files_in_rpm.imp',
-            'is_binary_pie = dffml_feature_codesec.feature.operations:IsBinaryPIE',
-            'cleanup_rpm = dffml_feature_codesec.feature.operations:cleanup_rpm.imp',
+            'scrypt = dffml_feature_auth.feature.operations:Scrypt',
         ],
     },
 )
