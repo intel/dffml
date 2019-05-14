@@ -1,24 +1,31 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
+import abc
 import tempfile
 
 from ...repo import Repo
 from ..asynctestcase import AsyncTestCase
 
-class SourceTest(object):
+class SourceTest(abc.ABC):
     '''
     Test case class used to test a Source implementation. Subclass from and set
     the SOURCE property to run tests on that source.
 
-    >>> from dffml.source import JSONSource
+    >>> from dffml.source.file import FileSourceConfig
+    >>> from dffml.source.json import JSONSource
     >>> from dffml.util.testing.source import SourceTest
     >>> from dffml.util.asynctestcase import AsyncTestCase
     >>> class TestJSONSource(SourceTest, AsyncTestCase):
-    >>>     SOURCE = JSONSource
+    >>>     async def setUpSource(self, fileobj):
+    >>>         return JSONSource(FileSourceConfig(filename=fileobj.name))
     '''
 
     async def setUpFile(self, fileobj):
         pass
+
+    @abc.abstractmethod
+    async def setUpSource(self, fileobj):
+        pass # pragma: no cover
 
     async def test_update(self):
         full_src_url = '0'
@@ -48,19 +55,19 @@ class SourceTest(object):
 
         with tempfile.NamedTemporaryFile() as testfile:
             await self.setUpFile(testfile)
-            testSource = self.SOURCE(testfile.name)
-            # Open, update, and close
-            async with testSource as source:
-                await source.update(full_repo)
-                await source.update(empty_repo)
-            # Open and confirm we saved and loaded correctly
-            async with testSource as source:
-                with self.subTest(src_url=full_src_url):
-                    repo = await source.repo(full_src_url)
-                    self.assertEqual(repo.data.prediction.classification,
-                                     "feedface")
-                    self.assertEqual(repo.data.prediction.confidence, 0.42)
-                with self.subTest(src_url=empty_src_url):
-                    repo = await source.repo(empty_src_url)
-                    self.assertFalse(repo.data.prediction.classification)
-                    self.assertFalse(repo.data.prediction.confidence)
+            async with (await self.setUpSource(testfile)) as testSource:
+                # Open, update, and close
+                async with testSource() as sourceContext:
+                    await sourceContext.update(full_repo)
+                    await sourceContext.update(empty_repo)
+                # Open and confirm we saved and loaded correctly
+                async with testSource() as sourceContext:
+                    with self.subTest(src_url=full_src_url):
+                        repo = await sourceContext.repo(full_src_url)
+                        self.assertEqual(repo.data.prediction.classification,
+                                         "feedface")
+                        self.assertEqual(repo.data.prediction.confidence, 0.42)
+                    with self.subTest(src_url=empty_src_url):
+                        repo = await sourceContext.repo(empty_src_url)
+                        self.assertFalse(repo.data.prediction.classification)
+                        self.assertFalse(repo.data.prediction.confidence)

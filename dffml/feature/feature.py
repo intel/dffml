@@ -10,6 +10,7 @@ import asyncio
 import traceback
 import concurrent.futures as futures
 import pkg_resources
+from contextlib import AsyncExitStack
 from functools import singledispatch, partial
 from typing import Optional, List, Dict, Type, AsyncIterator, Any, Callable
 
@@ -247,15 +248,16 @@ def DefFeature(name, dtype, length):
 
     return DefinedFeature(name=name, dtype=dtype, length=length)
 
-class Features(AsyncContextManagerList, Monitor):
+class Features(list, Monitor):
 
     TIMEOUT: int = 60 * 2
 
     LOGGER = LOGGER.getChild('Features')
 
     def __init__(self, *args: Feature, timeout: int = None) -> None:
-        super().__init__(*args)
+        list.__init__(self, args)
         Monitor.__init__(self)
+        self._stack = None
         self.timeout = timeout if not timeout is None \
                 else self.TIMEOUT
 
@@ -410,3 +412,13 @@ class Features(AsyncContextManagerList, Monitor):
         if found is None:
             raise TypeError('Failed to convert_dtype %r' % (dtype,))
         return found
+
+    async def __aenter__(self):
+        self._stack = AsyncExitStack()
+        await self._stack.__aenter__()
+        for item in self:
+            await self._stack.enter_async_context(item)
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        await self._stack.aclose()

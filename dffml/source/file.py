@@ -8,85 +8,80 @@ import bz2
 import lzma
 import zipfile
 import io
-from .source import Source
-from .log import LOGGER
+from typing import NamedTuple, Tuple, Dict
 from contextlib import contextmanager
 
-LOGGER = LOGGER.getChild('file')
+from ..base import BaseConfig
+from .source import BaseSource
+from ..util.cli.arg import Arg
+from ..util.cli.cmd import CMD
 
-class FileSource(Source):
+class FileSourceConfig(BaseConfig, NamedTuple):
+    filename: str
+    readonly: bool = False
+
+class FileSource(BaseSource):
     '''
     FileSource reads and write from a file on open / close.
     '''
 
-    @property
-    def readonly(self) -> bool:
-        return bool(self.src[::-1].startswith((':ro')[::-1]))
+    ENTRY_POINT_ORIG_LABEL = 'file'
+    ENTRY_POINT_LABEL = ENTRY_POINT_ORIG_LABEL
 
-    @property
-    def filename(self):
-        '''
-        Path to JSON file used for storage on disk.
-        '''
-        if self.readonly:
-            return self.src[:-3]
-        return self.src
+    async def __aenter__(self) -> 'BaseSourceContext':
+        await self._open()
+        return self
 
-    def __repr__(self):
-        return '%s(%r)' % (self.__class__.__qualname__, self.filename)
-
-    async def open(self):
-        await asyncio.shield(self._open())
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        await self._close()
 
     async def _open(self):
-        if not os.path.exists(self.filename) \
-                or os.path.isdir(self.filename):
-            LOGGER.debug('%r is not a file, initializing memory to empty dict',
-                         self.filename)
+        if not os.path.exists(self.config.filename) \
+                or os.path.isdir(self.config.filename):
+            self.logger.debug(('%r is not a file, ' \
+                                % (self.config.filename,)) + \
+                              'initializing memory to empty dict')
             self.mem = {}
             return
-        if self.filename[::-1].startswith(('.gz')[::-1]):
-            opener = gzip.open(self.filename, 'rt')
-        elif self.filename[::-1].startswith(('.bz2')[::-1]):
-            opener = bz2.open(self.filename, 'rt')
-        elif self.filename[::-1].startswith(('.xz')[::-1]) or \
-                self.filename[::-1].startswith(('.lzma')[::-1]):
-            opener = lzma.open(self.filename, 'rt')
-        elif self.filename[::-1].startswith(('.zip')[::-1]):
+        if self.config.filename[::-1].startswith(('.gz')[::-1]):
+            opener = gzip.open(self.config.filename, 'rt')
+        elif self.config.filename[::-1].startswith(('.bz2')[::-1]):
+            opener = bz2.open(self.config.filename, 'rt')
+        elif self.config.filename[::-1].startswith(('.xz')[::-1]) or \
+                self.config.filename[::-1].startswith(('.lzma')[::-1]):
+            opener = lzma.open(self.config.filename, 'rt')
+        elif self.config.filename[::-1].startswith(('.zip')[::-1]):
             opener = self.zip_opener_helper()
         else:
-            opener = open(self.filename, 'r')
+            opener = open(self.config.filename, 'r')
         with opener as fd:
             await self.load_fd(fd)
 
-    async def close(self):
-        await asyncio.shield(self._close())
-
     async def _close(self):
-        if not self.readonly:
-            if self.filename[::-1].startswith(('.gz')[::-1]):
-                close = gzip.open(self.filename, 'wt')
-            elif self.filename[::-1].startswith(('.bz2')[::-1]):
-                close = bz2.open(self.filename, 'wt')
-            elif self.filename[::-1].startswith(('.xz')[::-1]) or \
-                    self.filename[::-1].startswith(('.lzma')[::-1]):
-                close = lzma.open(self.filename, 'wt')
-            elif self.filename[::-1].startswith(('.zip')[::-1]):
+        if not self.config.readonly:
+            if self.config.filename[::-1].startswith(('.gz')[::-1]):
+                close = gzip.open(self.config.filename, 'wt')
+            elif self.config.filename[::-1].startswith(('.bz2')[::-1]):
+                close = bz2.open(self.config.filename, 'wt')
+            elif self.config.filename[::-1].startswith(('.xz')[::-1]) or \
+                    self.config.filename[::-1].startswith(('.lzma')[::-1]):
+                close = lzma.open(self.config.filename, 'wt')
+            elif self.config.filename[::-1].startswith(('.zip')[::-1]):
                 close = self.zip_closer_helper()
             else:
-                close = open(self.filename, 'w')
+                close = open(self.config.filename, 'w')
             with close as fd:
                 await self.dump_fd(fd)
 
     @contextmanager
     def zip_opener_helper(self):
-        with zipfile.ZipFile(self.filename) as archive:
+        with zipfile.ZipFile(self.config.filename) as archive:
             with archive.open(self.__class__.__qualname__, mode='r') as fd:
                 yield fd
 
     @contextmanager
     def zip_closer_helper(self):
-        with zipfile.ZipFile(self.filename, 'w',
+        with zipfile.ZipFile(self.config.filename, 'w',
                              compression=zipfile.ZIP_BZIP2) as archive:
             with io.TextIOWrapper(archive.open(self.__class__.__qualname__,
                                                mode='w',
@@ -100,3 +95,19 @@ class FileSource(Source):
     @abc.abstractmethod
     async def dump_fd(self, fd):
         pass # pragma: no cover
+
+    @classmethod
+    def args(cls, args, *above) -> Dict[str, Arg]:
+        cls.config_set(args, above, 'filename', Arg())
+        cls.config_set(args, above, 'readonly',
+                Arg(type=bool,
+                    action='store_true',
+                    default=False))
+        return args
+
+    @classmethod
+    def config(cls, config, *above):
+        return FileSourceConfig(
+            filename=cls.config_get(config, above, 'filename'),
+            readonly=cls.config_get(config, above, 'readonly')
+            )

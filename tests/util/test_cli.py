@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 import sys
+import copy
 import json
 import asyncio
 import logging
@@ -10,26 +11,22 @@ from unittest.mock import patch
 from dffml.repo import Repo
 from dffml.port import Port
 from dffml.feature import Feature, Features
-from dffml.source import Source, Sources
+from dffml.source.source import BaseSource
 from dffml.model import Model
 
-from dffml.util.cli.base import \
-        Arg, \
-        JSONEncoder, \
-        CMD, \
-        Parser
+from dffml.util.cli.arg import Arg, parse_unknown
 
-from dffml.util.cli.parser import \
-        ParseSourcesAction, \
-        ParseFeaturesAction, \
-        ParseModelAction, \
-        ParsePortAction, \
+from dffml.util.cli.cmd import JSONEncoder, \
+                               CMD, \
+                               Parser
+
+from dffml.util.cli.parser import list_action, \
         ParseLoggingAction, \
         ParseOutputSpecsAction, \
         ParseInputsAction, \
         ParseRemapAction
 
-from dffml.util.cli.cmd import \
+from dffml.util.cli.cmds import \
         ListEntrypoint, \
         FeaturesCMD, \
         ModelCMD
@@ -45,42 +42,19 @@ def Namespace(**kwargs):
 
 class TestParseActions(unittest.TestCase):
 
-    def test_sources(self):
-        def load_from_dict(toload):
-            return toload
-        namespace = Namespace(sources=False)
-        with patch.object(Source, 'load_from_dict',
-                          new=load_from_dict) \
-                          as mock_method:
-            action = ParseSourcesAction(dest='sources', option_strings='')
-            action(None, namespace, ['first=src0', 'second=src1'])
-            self.assertEqual(len(namespace.sources), 2)
-            self.assertEqual(namespace.sources[0], 'first')
-            self.assertEqual(namespace.sources[1], 'second')
-            action(None, namespace, 'second=src2')
-            self.assertEqual(len(namespace.sources), 1)
-            self.assertEqual(namespace.sources[0], 'second')
-
-    def test_features(self):
-        dest, cls, parser = ('features', Features, ParseFeaturesAction)
+    def test_list_action(self):
+        dest, cls, parser = ('features', Features, list_action(Features))
         namespace = Namespace(**{dest: False})
-        with patch.object(cls, 'load') as mock_method:
+        with self.subTest(single=dest):
             action = parser(dest=dest, option_strings='')
-            action(None, namespace, 'fake_%s' % (dest,))
-            mock_method.assert_called_once_with(*('fake_%s' % (dest,)))
-            self.assertTrue(getattr(namespace, dest, False))
-
-    def test_features_model_port(self):
-        for dest, cls, parser in [('model', Model, ParseModelAction),
-                                  ('port', Port, ParsePortAction)]:
-            namespace = Namespace(**{dest: False})
-            with self.subTest(dest=dest, cls=cls, parser=parser):
-                with patch.object(cls, 'load',
-                                  return_value=lambda: True) as mock_method:
-                    action = parser(dest=dest, option_strings='')
-                    action(None, namespace, 'fake_%s' % (dest,))
-                    mock_method.assert_called_once_with('fake_%s' % (dest,))
-                    self.assertTrue(getattr(namespace, dest, False))
+            action(None, namespace, 'feed')
+            self.assertEqual(getattr(namespace, dest, False),
+                             Features('feed'))
+        with self.subTest(multiple=dest):
+            action = parser(dest=dest, option_strings='')
+            action(None, namespace, ['feed', 'face'])
+            self.assertEqual(getattr(namespace, dest, False),
+                             Features('feed', 'face'))
 
     def test_logging(self):
         namespace = Namespace(log=False)
@@ -210,6 +184,12 @@ class TestCMD(AsyncTestCase):
             secondary = Secondary
         self.assertEqual(await Primary.cli('secondary'), 2)
 
+    async def test_cli_run_single(self):
+        class Primary(CMD):
+            async def run(self):
+                return 2
+        self.assertEqual(await Primary.cli(), 2)
+
     def test_sanitize_args(self):
         args = {'cmd': True, 'non_internal': True}
         args = CMD().sanitize_args(args)
@@ -230,9 +210,44 @@ class TestCMD(AsyncTestCase):
                 return True
         class Primary(CMD):
             secondary = Secondary
-        with patch.object(json, 'dump') as mock_method:
+        with patch.object(json, 'dump') as mock_method, \
+                patch('builtins.print'):
             Primary.main(loop=asyncio.new_event_loop(), argv=['t', 'secondary'])
             mock_method.assert_called_once()
+
+class TestArg(unittest.TestCase):
+
+    def test_parse_unknown(self):
+        parsed = parse_unknown(
+                '-rchecker-memory-kvstore', 'withargs',
+                '-rchecker-memory-kvstore-withargs-filename', 'somefile')
+        self.assertEqual(parsed, {
+                "rchecker": {
+                    "arg": None,
+                    "config": {
+                        "memory": {
+                            "arg": None,
+                            "config": {
+                                "kvstore": {
+                                    "arg": ["withargs"],
+                                    "config": {
+                                        "withargs": {
+                                            "arg": None,
+                                            "config": {
+                                                "filename": {
+                                                    "arg": ["somefile"],
+                                                    "config": {},
+                                                }
+                                            },
+                                        }
+                                    },
+                                }
+                            },
+                        }
+                    },
+                }
+            })
+
 
 class TestParser(unittest.TestCase):
 
@@ -284,7 +299,7 @@ class TestListEntrypoint(AsyncTestCase):
 class TestFeaturesCMD(unittest.TestCase):
 
     def test_set_timeout(self):
-        cmd = FeaturesCMD(timeout=5)
+        cmd = FeaturesCMD(timeout=5, features=Features())
         self.assertEqual(cmd.features.timeout, 5)
 
 class TestModelCMD(unittest.TestCase):

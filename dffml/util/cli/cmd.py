@@ -1,200 +1,143 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
-import os
-import sys
 import ast
-import copy
+import sys
 import json
-import asyncio
-import inspect
 import logging
+import inspect
+import asyncio
 import argparse
-from typing import Optional
+from typing import Tuple, Dict, Any
 
 from ...repo import Repo
-from ...port import Port
-from ...feature import Feature, Features
-from ...source import Source, Sources, JSONSource
-from ...model import Model
+from ...feature import Feature
 
-from ...df.linker import Linker
-from ...df.base import Input, \
-                  BaseInputNetwork, \
-                  BaseOperationNetwork, \
-                  BaseLockNetwork, \
-                  BaseRedundancyChecker, \
-                  BaseOperationImplementationNetwork, \
-                  BaseOrchestrator, \
-                  StringInputSetContext
+from .arg import Arg, parse_unknown
 
-from ...df.memory import MemoryInputNetwork, \
-                  MemoryOperationNetwork, \
-                  MemoryLockNetwork, \
-                  MemoryRedundancyChecker, \
-                  MemoryOperationImplementationNetwork, \
-                  MemoryOrchestrator, \
-                  MemoryInputSet, \
-                  MemoryInputSetConfig
+DisplayHelp = 'Display help message'
 
-from ...df.dff import DataFlowFacilitator
+class ParseLoggingAction(argparse.Action):
 
-from .base import CMD, Arg
+    def __call__(self, parser, namespace, value, option_string=None):
+        setattr(namespace, self.dest,
+                getattr(logging, value.upper(), logging.INFO))
+        logging.basicConfig(level=getattr(namespace, self.dest))
 
-from .parser import ParseFeaturesAction, \
-                    ParseSourcesAction, \
-                    ParseModelAction, \
-                    ParsePortAction, \
-                    ParseOperationAction, \
-                    ParseOperationImplementationAction, \
-                    ParseInputNetworkAction, \
-                    ParseOperationNetworkAction, \
-                    ParseLockNetworkAction, \
-                    ParseRedundancyCheckerAction, \
-                    ParseOperationImplementationNetworkAction, \
-                    ParseOrchestratorAction, \
-                    ParseOutputSpecsAction, \
-                    ParseInputsAction, \
-                    ParseRemapAction
-
-from .log import LOGGER
-
-LOGGER = LOGGER.getChild('cmd')
-
-class ListEntrypoint(CMD):
+class JSONEncoder(json.JSONEncoder):
     '''
-    Subclass this with an Entrypoint to display all registered classes.
+    Encodes dffml types to JSON representation.
     '''
 
-    def display(self, cls):
+    def default(self, obj):
+        if isinstance(obj, Repo):
+            return obj.dict()
+        elif isinstance(obj, Feature):
+            return obj.NAME
+        return json.JSONEncoder.default(self, obj)
+
+class Parser(argparse.ArgumentParser):
+
+    def add_subs(self, add_from: 'CMD'):
         '''
-        Print out the loaded but uninstantiated class
+        Add sub commands and arguments recursively
         '''
-        if not cls.__doc__ is None:
-            print('%s:' % (cls.__qualname__))
-            print(cls.__doc__.rstrip())
-        else:
-            print('%s' % (cls.__qualname__))
-        print()
+        # Only one subparser should be created even if multiple sub commands
+        subparsers = None
+        for name, method in [(name.lower().replace('_', ''), method) \
+                for name, method in inspect.getmembers(add_from)]:
+            if inspect.isclass(method) and issubclass(method, CMD):
+                if subparsers is None: # pragma: no cover
+                    subparsers = self.add_subparsers() # pragma: no cover
+                parser = subparsers.add_parser(name, help=None \
+                        if method.__doc__ is None else method.__doc__.strip())
+                parser.set_defaults(cmd=method)
+                parser.set_defaults(parser=parser)
+                parser.add_subs(method) # type: ignore
+            elif isinstance(method, Arg):
+                self.add_argument(method.name, **method)
 
-    async def run(self):
-        '''
-        Display all classes registered with the entrypoint
-        '''
-        for cls in self.ENTRYPOINT.load():
-            self.display(cls)
+class CMD(object):
 
-class FeaturesCMD(CMD):
-    '''
-    Set timeout for features
-    '''
+    JSONEncoder = JSONEncoder
+    EXTRA_CONFIG_ARGS = {}
 
-    arg_features = Arg('-features', nargs='+', required=True,
-            default=Features(), action=ParseFeaturesAction)
-    arg_timeout = Arg('-timeout', help='Feature evaluation timeout',
-            required=False, default=Features.TIMEOUT, type=int)
+    arg_log = Arg('-log', help='Logging level', action=ParseLoggingAction,
+            required=False, default=logging.INFO)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.features.timeout = self.timeout
+    def __init__(self, extra_config=None, **kwargs) -> None:
+        self.logger = logging.getLogger('%s.%s' % (self.__class__.__module__,
+                                                   self.__class__.__qualname__))
+        if extra_config is None:
+            extra_config = {}
+        self.extra_config = extra_config
+        for name, method in [(name.lower().replace('arg_', ''), method) \
+                for name, method in inspect.getmembers(self) \
+                if isinstance(method, Arg)]:
+            if not name in kwargs and method.name in kwargs:
+                name = method.name
+            if not name in kwargs and 'default' in method:
+                kwargs[name] = method['default']
+            if name in kwargs:
+                self.logger.debug('Setting %s = %r', name, kwargs[name])
+                setattr(self, name, kwargs[name])
+            else:
+                self.logger.debug('Ignored %s', name)
 
-class SourcesCMD(CMD):
+    async def __aenter__(self):
+        pass
 
-    arg_sources = Arg('-sources', help='Sources for loading and saving',
-            nargs='+', default=Sources(JSONSource(os.path.join(
-                os.path.expanduser('~'), '.cache', 'dffml.json'))),
-            action=ParseSourcesAction)
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        pass
 
-class ModelCMD(CMD):
-    '''
-    Set a models model dir.
-    '''
-
-    arg_model = Arg('-model', help='Model used for ML',
-            action=ParseModelAction, required=True)
-    arg_model_dir = Arg('-model_dir', help='Model directory for ML',
-            default=os.path.join(os.path.expanduser('~'), '.cache', 'dffml'))
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.model.model_dir = self.model_dir
-
-class PortCMD(CMD):
-
-    arg_port = Arg('port', action=ParsePortAction)
-
-class KeysCMD(CMD):
-
-    arg_keys = Arg('-keys', help='Key used for source lookup and evaluation',
-            nargs='+', required=True)
-
-class BaseDataFlowFacilitatorCMD(CMD):
-    '''
-    Set timeout for features
-    '''
-
-    arg_ops = Arg('-ops', required=True, nargs='+',
-            action=ParseOperationAction)
-    arg_input_network = Arg('-input-network',
-            action=ParseInputNetworkAction, default=MemoryInputNetwork)
-    arg_operation_network = Arg('-operation-network',
-            action=ParseOperationNetworkAction, default=MemoryOperationNetwork)
-    arg_lock_network = Arg('-lock-network',
-            action=ParseLockNetworkAction, default=MemoryLockNetwork)
-    arg_rchecker = Arg('-rchecker',
-            action=ParseRedundancyCheckerAction,
-            default=MemoryRedundancyChecker)
-    # TODO We should be able to specify multiple operation implementation
-    # networks. This would enable operations to live in different place,
-    # accessed via the orchestrator transparently.
-    arg_opimpn = Arg('-opimpn',
-            action=ParseOperationImplementationNetworkAction,
-            default=MemoryOperationImplementationNetwork)
-    arg_orchestrator = Arg('-orchestrator',
-            action=ParseOrchestratorAction, default=MemoryOrchestrator)
-    arg_output_specs = Arg('-output-specs', required=True, nargs='+',
-            action=ParseOutputSpecsAction)
-    arg_inputs = Arg('-inputs', nargs='+',
-            action=ParseInputsAction, default=[],
-            help='Other inputs to add under each ctx (repo\'s src_url will ' + \
-                 'be used as the context)')
-    arg_repo_def = Arg('-repo-def', default=False, type=str,
-            help='Definition to be used for repo.src_url.' + \
-                 'If set, repo.src_url will be added to the set of inputs ' + \
-                 'under each context (which is also the repo\'s src_url)')
-    arg_remap = Arg('-remap', nargs='+', required=True,
-            action=ParseRemapAction,
-            help='For each repo, -remap output_operation_name.sub=feature_name')
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.dff = DataFlowFacilitator(
-            input_network=self.input_network.withconfig(self),
-            operation_network=self.operation_network.withconfig(self),
-            lock_network=self.lock_network.withconfig(self),
-            rchecker=self.rchecker.withconfig(self),
-            opimp_network=self.opimpn.withconfig(self),
-            orchestrator=self.orchestrator.withconfig(self)
-        )
-        self.linker = Linker()
-        self.exported = self.linker.export(*self.ops)
-        self.definitions, self.operations, _outputs = \
-                self.linker.resolve(self.exported)
-
-    # Load all entrypoints which may possibly be selected. Then have them add
-    # their arguments to the DataFlowFacilitator-tots command.
     @classmethod
-    def add_bases(cls):
-        class LoadedDataFlowFacilitator(cls):
-            pass
-        for base in [BaseInputNetwork,
-                     BaseOperationNetwork,
-                     BaseLockNetwork,
-                     BaseRedundancyChecker,
-                     BaseOperationImplementationNetwork,
-                     BaseOrchestrator]:
-            for loaded in base.load():
-                for arg_name, arg in loaded.args().items():
-                    setattr(LoadedDataFlowFacilitator, arg_name, arg)
-        return LoadedDataFlowFacilitator
+    async def parse_args(cls, *args):
+        parser = Parser()
+        parser.add_subs(cls)
+        return parser, parser.parse_known_args(args)
 
-DataFlowFacilitatorCMD = BaseDataFlowFacilitatorCMD.add_bases()
+    @classmethod
+    async def cli(cls, *args):
+        parser, (args, unknown) = await cls.parse_args(*args)
+        args.extra_config = parse_unknown(*unknown)
+        if getattr(cls, 'run', None) is not None \
+                and getattr(args, 'cmd', None) is None:
+            args.cmd = cls
+        if getattr(args, 'cmd', None) is None:
+            parser.print_help()
+            return DisplayHelp
+        if getattr(args.cmd, 'run', None) is None:
+            args.parser.print_help()
+            return DisplayHelp
+        cmd = args.cmd(**cls.sanitize_args(vars(args)))
+        async with cmd:
+            if inspect.isasyncgenfunction(cmd.run):
+                return [res async for res in cmd.run()]
+            else:
+                return await cmd.run()
+
+    @classmethod
+    def sanitize_args(cls, args):
+        '''
+        Remove CMD internals from arguments passed to subclasses of CMD.
+        '''
+        for rm in ['cmd', 'parser', 'log']:
+            if rm in args:
+                del args[rm]
+        return args
+
+    @classmethod
+    def main(cls, loop=asyncio.get_event_loop(), argv=sys.argv):
+        '''
+        Runs cli commands in asyncio loop and outputs in appropriate format
+        '''
+        result = None
+        try:
+            result = loop.run_until_complete(cls.cli(*argv[1:]))
+        except KeyboardInterrupt: # pragma: no cover
+            pass # pragma: no cover
+        loop.run_until_complete(loop.shutdown_asyncgens())
+        loop.close()
+        if not result is None and result is not DisplayHelp:
+            json.dump(result, sys.stdout, sort_keys=True, indent=4,
+                      separators=(',', ': '), cls=cls.JSONEncoder)
+            print()

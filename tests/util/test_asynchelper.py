@@ -1,7 +1,29 @@
 import asyncio
+from contextlib import asynccontextmanager
 
-from dffml.util.asynchelper import concurrently
+from dffml.util.asynchelper import AsyncContextManagerList, concurrently
 from dffml.util.asynctestcase import AsyncTestCase
+
+@asynccontextmanager
+async def set_key_on_aenter(obj, key, value):
+    obj[key] = value
+    yield
+    del obj[key]
+
+class TestAsyncContextManagerList(AsyncTestCase):
+
+    async def test_aenter_all(self):
+        one = {}
+        two = {}
+        set_one = set_key_on_aenter(one, 1, True)
+        set_two = set_key_on_aenter(two, 2, False)
+        async with AsyncContextManagerList(set_one, set_two) as l:
+            self.assertIn(1, one)
+            self.assertTrue(one[1])
+            self.assertIn(2, two)
+            self.assertFalse(two[2])
+        self.assertNotIn(1, one)
+        self.assertNotIn(2, two)
 
 class TestConcurrently(AsyncTestCase):
 

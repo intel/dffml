@@ -3,18 +3,12 @@
 '''
 Loads repos from a csv file, using columns as features
 '''
-import os
 import csv
 import ast
-import urllib.request
 
 from ..repo import Repo
 from .memory import MemorySource
 from .file import FileSource
-
-from .log import LOGGER
-
-LOGGER = LOGGER.getChild('csv')
 
 csv.register_dialect('strip', skipinitialspace=True)
 
@@ -64,7 +58,7 @@ class CSVSource(FileSource, MemorySource):
             repo = Repo(str(i), data=repo_data)
             i += 1
             self.mem[repo.src_url] = repo
-        LOGGER.debug('%r loaded %d records', self, len(self.mem))
+        self.logger.debug('%r loaded %d records', self, len(self.mem))
 
     async def dump_fd(self, fd):
         '''
@@ -92,4 +86,4 @@ class CSVSource(FileSource, MemorySource):
                 row['prediction'] = repo_data['prediction']['classification']
                 row['confidence'] = repo_data['prediction']['confidence']
             writer.writerow(row)
-        LOGGER.debug('%r saved %d records', self, len(self.mem))
+        self.logger.debug('%r saved %d records', self, len(self.mem))

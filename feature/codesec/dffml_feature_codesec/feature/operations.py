@@ -12,8 +12,10 @@ from elftools.elf.elffile import ELFFile
 from rpmfile import RPMFile
 from rpmfile.errors import RPMError
 
-from dffml.df import op, Stage, Operation, OperationImplementation, \
-    OperationImplementationContext
+from dffml.df.types import Stage, Operation
+from dffml.df.base import op, \
+                          OperationImplementationContext, \
+                          OperationImplementation
 
 from dffml_feature_git.util.proc import check_output
 
