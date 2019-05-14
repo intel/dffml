@@ -1,6 +1,6 @@
 import sys
 
-from dffml.df import Definition
+from dffml.df.base import Definition
 
 definitions = [
     Definition(

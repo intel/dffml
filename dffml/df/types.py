@@ -4,6 +4,8 @@ from enum import Enum
 import pkg_resources
 from typing import NamedTuple, Union, List, Dict, Optional, Any, Iterator
 
+from ..util.entrypoint import Entrypoint, base_entry_point
+
 class Definition(NamedTuple):
     '''
     List[type] is how to specify a list
@@ -30,19 +32,34 @@ class Stage(Enum):
     CLEANUP = 'cleanup'
     OUTPUT = 'output'
 
-class Operation(NamedTuple):
-    name: str
-    inputs: Dict[str, Definition]
-    outputs: Dict[str, Definition]
-    conditions: List[Definition]
-    stage: Stage = Stage.PROCESSING
-    expand: Union[bool, List[str]] = False
+@base_entry_point('dffml.operation', 'operation')
+class Operation(Entrypoint):
 
-    ENTRY_POINT = 'dffml.operation'
+    def __init__(self,
+                 name: str,
+                 inputs: Dict[str, Definition],
+                 outputs: Dict[str, Definition],
+                 conditions: List[Definition],
+                 stage: Stage = Stage.PROCESSING,
+                 expand: Optional[List[str]] = None):
+        super().__init__()
+        self.name = name
+        self.inputs = inputs
+        self.outputs = outputs
+        self.conditions = conditions
+        self.stage = stage
+        if expand is None:
+            expand = []
+        self.expand = expand
 
     def export(self):
-        exported = dict(self._asdict())
-        del exported['name']
+        exported = {
+            'inputs': self.inputs.copy(),
+            'outputs': self.outputs.copy(),
+            'conditions': self.conditions.copy(),
+            'stage': self.stage,
+            'expand': self.expand.copy(),
+            }
         for to_string in ['conditions']:
             exported[to_string] = list(map(lambda definition: definition.name,
                                            exported[to_string]))
@@ -50,37 +67,26 @@ class Operation(NamedTuple):
             exported[to_string] = dict(map(lambda key_def: \
                                            (key_def[0], key_def[1].name),
                                            exported[to_string].items()))
-        if not self.conditions:
+        if not exported['conditions']:
             del exported['conditions']
-        if not self.stage:
-            del exported['stage']
-        if not self.expand:
+        if not exported['expand']:
             del exported['expand']
         return exported
 
     @classmethod
     def load(cls, loading=None):
-        '''
-        Loads all installed loading and returns them as a list. Sources to be
-        loaded should be registered to ENTRY_POINT via setuptools.
-        '''
-        raise NotImplementedError()
-
-    @classmethod
-    def load_multiple(cls, to_load: List[str]):
-        '''
-        Loads each class requested without instantiating it.
-        '''
-        loading_classes = {}
+        loading_classes = []
         for i in pkg_resources.iter_entry_points(cls.ENTRY_POINT):
             loaded = i.load()
-            if isinstance(loaded, cls) and i.name in to_load:
-                loading_classes[loaded.name] = loaded
-        for loading in to_load:
-            if not loading in loading_classes:
-                raise KeyError('%s was not found in (%s)' % \
-                        (repr(loading),
-                         ', '.join(list(map(str, loading_classes)))))
+            loaded.ENTRY_POINT_LABEL = i.name
+            if isinstance(loaded, cls):
+                loading_classes.append(loaded)
+                if loading is not None and loaded.name == loading:
+                    return loaded
+        if loading is not None:
+            raise KeyError('%s was not found in (%s)' % \
+                    (repr(loading), ', '.join(
+                     list(map(lambda op: op.name, loading_classes)))))
         return loading_classes
 
 class Output(NamedTuple):

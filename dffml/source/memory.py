@@ -4,40 +4,46 @@
 Fake data sources used for testing
 '''
 import asyncio
-from typing import Dict, AsyncIterator
+from typing import Any, Dict, List, NamedTuple, AsyncIterator
 
+from ..base import BaseConfig
 from ..repo import Repo
-from .source import Source
+from .source import BaseSourceContext, \
+                    BaseSource
 
-class MemorySource(Source):
+class MemorySourceContext(BaseSourceContext):
+
+    async def update(self, repo):
+        self.parent.mem[repo.src_url] = repo
+
+    async def repos(self) -> AsyncIterator[Repo]:
+        for repo in self.parent.mem.values():
+            yield repo
+
+    async def repo(self, src_url: str) -> Repo:
+        return self.parent.mem.get(src_url, Repo(src_url))
+
+class MemorySourceConfig(BaseConfig, NamedTuple):
+    repos: List[Repo]
+
+class MemorySource(BaseSource):
     '''
     Stores repos in a dict in memory
     '''
 
-    def __init__(self, src: str) -> None:
-        super().__init__(src)
+    CONTEXT = MemorySourceContext
+
+    def __init__(self, config: BaseConfig) -> None:
+        super().__init__(config)
         self.mem: Dict[str, Repo] = {}
-        self.lock = asyncio.Lock()
+        if isinstance(self.config, MemorySourceConfig):
+            self.mem = {repo.src_url: repo for repo in self.config.repos}
 
-    async def update(self, repo):
-        async with self.lock:
-            self.mem[repo.src_url] = repo
+    @classmethod
+    def args(self) -> Dict[str, Any]:
+        return {}
 
-    async def repos(self) -> AsyncIterator[Repo]:
-        # NOTE No lock used here because sometimes we iterate and update
-        # Feel free to debate this by opening an issue.
-        for repo in self.mem.values():
-            yield repo
-
-    async def repo(self, src_url: str) -> Repo:
-        async with self.lock:
-            return self.mem.get(src_url, Repo(src_url))
-
-class RepoSource(MemorySource):
-    '''
-    Takes repo data from instantiation arguments. Stores repos in memory.
-    '''
-
-    def __init__(self, *args: Repo, src: str = '') -> None:
-        super().__init__(src)
-        self.mem = {repo.src_url: repo for repo in args}
+    @classmethod
+    def config(cls, cmd) -> Dict[str, Any]:
+        keys = getattr(cmd, 'keys', [])
+        return MemorySourceConfig(repos=list(map(Repo, keys)))
