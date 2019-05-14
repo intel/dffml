@@ -17,10 +17,12 @@ from contextlib import contextmanager
 from typing import List, Dict, Any, Optional, Tuple, AsyncIterator
 
 from dffml.repo import Repo
-from dffml.source import Sources, FileSource
+from dffml.source.source import BaseSourceContext
+from dffml.source.file import FileSource, FileSourceConfig
+from dffml.util.cli.arg import Arg, parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
 
-class FakeFileSource(FileSource):
+class FakeFileSourceContext(BaseSourceContext):
 
     async def update(self, repo: Repo):
         pass # pragma: no cover
@@ -30,6 +32,10 @@ class FakeFileSource(FileSource):
 
     async def repo(self, src_url: str):
         pass # pragma: no cover
+
+class FakeFileSource(FileSource):
+
+    CONTEXT = FakeFileSourceContext
 
     async def load_fd(self, fd):
         self.loaded_fd = fd
@@ -43,119 +49,150 @@ def yield_42():
 
 class TestFileSource(AsyncTestCase):
 
-    def test_readonly(self) -> bool:
-        self.assertTrue(FakeFileSource('testfile:ro').readonly)
-        self.assertFalse(FakeFileSource('testfile').readonly)
+    def test_args(self):
+        self.assertEqual(FileSource.args({}), {
+            'source': {
+                'arg': None,
+                'config': {
+                    'file': {
+                        'arg': None,
+                        'config': {
+                            'filename': {
+                                'arg': Arg(),
+                                'config': {}
+                                },
+                            'readonly': {
+                                'arg': Arg(type=bool,
+                                           action='store_true',
+                                           default=False),
+                                'config': {}
+                                }
+                            }
+                        }
+                    }
+                }
+            })
 
-    def test_filename(self) -> bool:
-        self.assertEqual(FakeFileSource('testfile').filename,
-                         'testfile')
+    def test_config_readonly_default(self):
+        config = FileSource.config(parse_unknown(
+            '--source-file-filename', 'feedface'))
+        self.assertEqual(config.filename, 'feedface')
+        self.assertFalse(config.readonly)
 
-    def test_filename_readonly(self) -> bool:
-        self.assertEqual(FakeFileSource('testfile:ro').filename,
-                         'testfile')
+    def test_config_readonly_set(self):
+        config = FileSource.config(parse_unknown(
+            '--source-file-filename', 'feedface',
+            '--source-file-readonly'))
+        self.assertEqual(config.filename, 'feedface')
+        self.assertTrue(config.readonly)
 
-    def test_repr(self):
-        self.assertEqual(repr(FakeFileSource('testfile')),
-                         'FakeFileSource(\'testfile\')')
+    def config(self, filename, readonly=False):
+        return FileSourceConfig(
+            filename=filename,
+            readonly=readonly,
+            )
 
     async def test_open(self):
-        source = FakeFileSource('testfile')
         m_open = mock_open()
         with patch('os.path.exists', return_value=True), \
                 patch('builtins.open', m_open):
-            await source.open()
-            m_open.assert_called_once_with('testfile', 'r')
+            async with FakeFileSource(self.config('testfile', readonly=True)):
+                m_open.assert_called_once_with('testfile', 'r')
 
     async def test_open_gz(self):
         source = FakeFileSource('testfile.gz')
         m_open = mock_open()
         with patch('os.path.exists', return_value=True), \
                 patch('gzip.open', m_open):
-            await source.open()
-            m_open.assert_called_once_with('testfile.gz', 'rt')
+            async with FakeFileSource(self.config('testfile.gz', readonly=True)):
+                m_open.assert_called_once_with('testfile.gz', 'rt')
 
     async def test_open_bz2(self):
-        source = FakeFileSource('testfile.bz2')
         m_open = mock_open()
         with patch('os.path.exists', return_value=True), \
                 patch('bz2.open', m_open):
-            await source.open()
-            m_open.assert_called_once_with('testfile.bz2', 'rt')
+            async with FakeFileSource(self.config('testfile.bz2', readonly=True)):
+                m_open.assert_called_once_with('testfile.bz2', 'rt')
 
     async def test_open_lzma(self):
-        source = FakeFileSource('testfile.lzma')
         m_open = mock_open()
         with patch('os.path.exists', return_value=True), \
                 patch('lzma.open', m_open):
-            await source.open()
-            m_open.assert_called_once_with('testfile.lzma', 'rt')
+            async with FakeFileSource(self.config('testfile.lzma', readonly=True)):
+                m_open.assert_called_once_with('testfile.lzma', 'rt')
 
     async def test_open_xz(self):
-        source = FakeFileSource('testfile.xz')
         m_open = mock_open()
         with patch('os.path.exists', return_value=True), \
                 patch('lzma.open', m_open):
-            await source.open()
-            m_open.assert_called_once_with('testfile.xz', 'rt')
+            async with FakeFileSource(self.config('testfile.xz', readonly=True)):
+                m_open.assert_called_once_with('testfile.xz', 'rt')
 
     async def test_open_zip(self):
-        source = FakeFileSource('testfile.zip')
+        source = FakeFileSource(self.config('testfile.zip', readonly=True))
         with patch('os.path.exists', return_value=True), \
                 patch.object(source, 'zip_opener_helper', yield_42):
-            await source.open()
-            self.assertEqual(source.loaded_fd, 42)
+            async with source:
+                self.assertEqual(source.loaded_fd, 42)
 
     async def test_open_no_file(self):
-        source = FakeFileSource('testfile')
-        with patch('os.path.isfile', return_value=False):
-            await source.open()
-            self.assertTrue(isinstance(source.mem, dict))
+        with patch('os.path.exists', return_value=False), \
+                patch('os.path.isfile', return_value=False):
+            async with FakeFileSource(self.config('testfile', readonly=True)) as source:
+                self.assertTrue(isinstance(source.mem, dict))
 
     async def test_close(self):
-        source = FakeFileSource('testfile')
         m_open = mock_open()
-        with patch('builtins.open', m_open):
-            await source.close()
+        with patch('os.path.exists', return_value=False), \
+                patch('builtins.open', m_open):
+            async with FakeFileSource(self.config('testfile')):
+                pass
             m_open.assert_called_once_with('testfile', 'w')
 
     async def test_close_gz(self):
-        source = FakeFileSource('testfile.gz')
         m_open = mock_open()
-        with patch('gzip.open', m_open):
-            await source.close()
+        with patch('os.path.exists', return_value=False), \
+                patch('gzip.open', m_open):
+            async with FakeFileSource(self.config('testfile.gz')):
+                pass
             m_open.assert_called_once_with('testfile.gz', 'wt')
 
     async def test_close_bz2(self):
-        source = FakeFileSource('testfile.bz2')
         m_open = mock_open()
-        with patch('bz2.open', m_open):
-            await source.close()
+        with patch('os.path.exists', return_value=False), \
+                patch('bz2.open', m_open):
+            async with FakeFileSource(self.config('testfile.bz2')):
+                pass
             m_open.assert_called_once_with('testfile.bz2', 'wt')
 
     async def test_close_lzma(self):
-        source = FakeFileSource('testfile.lzma')
         m_open = mock_open()
-        with patch('lzma.open', m_open):
-            await source.close()
+        with patch('os.path.exists', return_value=False), \
+                patch('lzma.open', m_open):
+            async with FakeFileSource(self.config('testfile.lzma')):
+                pass
             m_open.assert_called_once_with('testfile.lzma', 'wt')
 
     async def test_close_xz(self):
-        source = FakeFileSource('testfile.xz')
         m_open = mock_open()
-        with patch('lzma.open', m_open):
-            await source.close()
+        with patch('os.path.exists', return_value=False), \
+                patch('lzma.open', m_open):
+            async with FakeFileSource(self.config('testfile.xz')):
+                pass
             m_open.assert_called_once_with('testfile.xz', 'wt')
 
     async def test_close_zip(self):
-        source = FakeFileSource('testfile.zip')
-        with patch.object(source, 'zip_closer_helper', yield_42):
-            await source.close()
+        source = FakeFileSource(self.config('testfile.zip'))
+        with patch('os.path.exists', return_value=False), \
+                patch.object(source, 'zip_closer_helper', yield_42):
+            async with source:
+                pass
             self.assertEqual(source.dumped_fd, 42)
 
     async def test_close_readonly(self):
-        source = FakeFileSource('testfile:ro')
         m_open = mock_open()
-        with patch('builtins.open', m_open):
-            await source.close()
+        with patch('os.path.exists', return_value=False), \
+                patch('builtins.open', m_open):
+            async with FakeFileSource(self.config('testfile', readonly=True)):
+                pass
             m_open.assert_not_called()

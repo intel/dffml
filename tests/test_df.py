@@ -19,7 +19,29 @@ from contextlib import asynccontextmanager, AsyncExitStack
 from typing import AsyncIterator, Dict, List, Tuple, Any, NamedTuple, Union, \
         get_type_hints, NewType, Optional, Set, Iterator
 
-from dffml.df import *
+from dffml.df.types import Definition, \
+                           Input
+from dffml.df.linker import Linker
+from dffml.df.base import op, \
+                          opwraped_in, \
+                          operation_in, \
+                          opimp_in, \
+                          BaseConfig, \
+                          BaseRedundancyCheckerConfig, \
+                          StringInputSetContext
+from dffml.df.memory import MemoryInputNetwork, \
+                            MemoryOperationNetwork, \
+                            MemoryOperationNetworkConfig, \
+                            MemoryLockNetwork, \
+                            MemoryRedundancyChecker, \
+                            MemoryKeyValueStore, \
+                            MemoryOperationImplementationNetwork, \
+                            MemoryOperationImplementationNetworkConfig, \
+                            MemoryOrchestratorConfig, \
+                            MemoryOrchestrator, \
+                            MemoryInputSet, \
+                            MemoryInputSetConfig
+
 from dffml.operation.output import GetSingle
 from dffml.util.asynctestcase import AsyncTestCase
 
@@ -93,14 +115,16 @@ class TestMemoryKeyValueStore(AsyncTestCase):
         self.kvStore = MemoryKeyValueStore(BaseConfig())
 
     async def test_set(self):
-        async with self.kvStore as ctx:
-            await ctx.set('feed', b'face')
+        async with self.kvStore as kvstore:
+            async with kvstore() as ctx:
+                await ctx.set('feed', b'face')
         self.assertEqual(self.kvStore.memory.get('feed'), b'face')
 
     async def test_get(self):
         self.kvStore.memory['feed'] = b'face'
-        async with self.kvStore as ctx:
-            self.assertEqual(await ctx.get('feed'), b'face')
+        async with self.kvStore as kvstore:
+            async with kvstore() as ctx:
+                self.assertEqual(await ctx.get('feed'), b'face')
 
 class TestMemoryOperationImplementationNetwork(AsyncTestCase):
 
@@ -203,35 +227,32 @@ class TestRunner(AsyncTestCase):
             definition=definitions['get_single_spec'],
             parents=False)
 
-        dff = DataFlowFacilitator(
-            input_network = MemoryInputNetwork(BaseConfig()),
-            operation_network = MemoryOperationNetwork(
+        # Orchestrate the running of these operations
+        async with MemoryOrchestrator(MemoryOrchestratorConfig(
+            input_network=MemoryInputNetwork(BaseConfig()),
+            operation_network=MemoryOperationNetwork(
                 MemoryOperationNetworkConfig(
                     operations=list(operations.values())
                 )
             ),
-            lock_network = MemoryLockNetwork(BaseConfig()),
-            rchecker = MemoryRedundancyChecker(
+            lock_network=MemoryLockNetwork(BaseConfig()),
+            rchecker=MemoryRedundancyChecker(
                 BaseRedundancyCheckerConfig(
                     key_value_store=MemoryKeyValueStore(BaseConfig())
                 )
             ),
-            opimp_network = MemoryOperationImplementationNetwork(
+            opimp_network=MemoryOperationImplementationNetwork(
                 MemoryOperationImplementationNetworkConfig(
                     operations={imp.op.name: imp \
                                 for imp in \
                                 [Imp(BaseConfig()) for Imp in OPIMPS]}
                 )
-            ),
-            orchestrator = MemoryOrchestrator(BaseConfig())
-        )
-
-        # Orchestrate the running of these operations
-        async with dff as dff:
-            async with dff() as dffctx:
+            )
+        )) as orchestrator:
+            async with orchestrator() as octx:
                 # Add our inputs to the input network with the context being the URL
                 for to_calc in calc_strings_check.keys():
-                    await dffctx.ictx.add(
+                    await octx.ictx.add(
                         MemoryInputSet(
                             MemoryInputSetConfig(
                                 ctx=StringInputSetContext(to_calc),
@@ -240,7 +261,7 @@ class TestRunner(AsyncTestCase):
                             )
                         )
                     )
-                async for ctx, results in dffctx.evaluate(strict=True):
+                async for ctx, results in octx.run_operations(strict=True):
                     ctx_str = (await ctx.handle()).as_string()
                     print()
                     print(ctx_str,

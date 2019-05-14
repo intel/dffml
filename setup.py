@@ -49,7 +49,7 @@ setup(
             'dffml = dffml.cli:CLI.main',
         ],
         'dffml.source': [
-            'csv = dffml.source.csvfile:CSVSource',
+            'csv = dffml.source.csv:CSVSource',
             'json = dffml.source.json:JSONSource',
             'memory = dffml.source.memory:MemorySource',
         ],

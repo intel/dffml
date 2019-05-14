@@ -3,7 +3,8 @@ import collections
 from typing import Dict, Any, NamedTuple
 
 from ..df.types import Definition, Operation, Stage
-from ..df.base import OperationImplementationContext, \
+from ..df.base import op, \
+                      OperationImplementationContext, \
                       BaseInputSetContext, \
                       BaseInputNetworkContext
 from ..df.exceptions import DefinitionNotInContext
@@ -39,19 +40,15 @@ class GroupBySpec(NamedTuple):
             exported[convert] = await ictx.definition(ctx, exported[convert])
         return cls(**exported)
 
+@op(name='group_by',
+    inputs={
+        'spec': group_by_spec
+    },
+    outputs={
+        'output': group_by_output
+    },
+    stage=Stage.OUTPUT)
 class GroupBy(OperationImplementationContext):
-
-    op = Operation(
-                   name='group_by',
-                   inputs={
-                       'spec': group_by_spec
-                       },
-                   outputs={
-                       'output': group_by_output
-                       },
-                   conditions=[],
-                   stage=Stage.OUTPUT
-        )
 
     async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
         # Convert group_by_spec into a dict with values being of the NamedTuple
@@ -113,19 +110,15 @@ get_single_output = Definition(
     primitive='Dict[str, Any]'
 )
 
+@op(name='get_single',
+    inputs={
+        'spec': get_single_spec
+    },
+    outputs={
+        'output': get_single_output
+    },
+    stage=Stage.OUTPUT)
 class GetSingle(OperationImplementationContext):
-
-    op = Operation(
-                   name='get_single',
-                   inputs={
-                       'spec': get_single_spec
-                       },
-                   outputs={
-                       'output': get_single_output
-                       },
-                   conditions=[],
-                   stage=Stage.OUTPUT
-        )
 
     async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
         # TODO Address the need to copy operation implementation inputs dict
@@ -157,19 +150,16 @@ associate_output = Definition(
     primitive='Dict[str, Any]'
 )
 
-class Associate(OperationImplementationContext):
 
-    op = Operation(
-                   name='associate',
-                   inputs={
-                       'spec': associate_spec
-                       },
-                   outputs={
-                       'output': associate_output
-                       },
-                   conditions=[],
-                   stage=Stage.OUTPUT
-        )
+@op(name='associate',
+    inputs={
+        'spec': associate_spec
+    },
+    outputs={
+        'output': associate_output
+    },
+    stage=Stage.OUTPUT)
+class Associate(OperationImplementationContext):
 
     async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
         # TODO Address the need to copy operation implementation inputs dict

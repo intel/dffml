@@ -23,7 +23,8 @@ from typing import AsyncIterator, Dict, List, Tuple, Any, NamedTuple, Union, \
 
 from dateutil.relativedelta import relativedelta
 
-from dffml.df import op, Stage
+from dffml.df.types import Stage
+from dffml.df.base import op
 
 from .definitions import *
 

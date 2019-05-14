@@ -6,23 +6,22 @@ source project's source URL.
 '''
 import abc
 import asyncio
-from typing import AsyncIterator, Dict, List, Optional, Callable
+from typing import AsyncIterator, Dict, List, Optional, Callable, Tuple, Any
 
-from .log import LOGGER
+from ..base import BaseConfig, \
+                   BaseDataFlowFacilitatorObjectContext, \
+                   BaseDataFlowFacilitatorObject
 from ..repo import Repo, RepoData
-from ..util.asynchelper import AsyncContextManagerList
+from ..util.asynchelper import AsyncContextManagerListContext, \
+                               AsyncContextManagerList
 from ..util.entrypoint import Entrypoint
 
-class Source(abc.ABC, Entrypoint):
-    '''
-    Abstract base class for all sources. New sources must be derived from this
-    class and implement the repos method.
-    '''
+from .log import LOGGER
 
-    ENTRY_POINT = 'dffml.source'
+class BaseSourceContext(BaseDataFlowFacilitatorObjectContext):
 
-    def __init__(self, src: str) -> None:
-        self.src = src
+    def __init__(self, parent: 'BaseSource') -> None:
+        self.parent = parent
 
     @abc.abstractmethod
     async def update(self, repo: Repo):
@@ -44,34 +43,19 @@ class Source(abc.ABC, Entrypoint):
         Get a repo from the source or add it if it doesn't exist
         '''
 
-    @classmethod
-    def load_from_dict(cls, sources: Dict[str, str]):
-        '''
-        Loads each source requested and instantiates it with its src_url.
-        '''
-        loaded: Dict[str, Source] = {}
-        for src_url, name in sources.items():
-            loaded[src_url] = cls.load(name)(src_url)
-        return loaded
+class BaseSource(BaseDataFlowFacilitatorObject):
+    '''
+    Abstract base class for all sources. New sources must be derived from this
+    class and implement the repos method.
+    '''
 
-    def __repr__(self):
-        return '%s(%r)' % (self.__class__.__qualname__, self.src)
+    ENTRY_POINT = 'dffml.source'
+    ENTRY_POINT_NAME = ['source']
 
-    async def open(self):
-        return
+    def __call__(self) -> BaseSourceContext:
+        return self.CONTEXT(self)
 
-    async def close(self):
-        return
-
-    async def __aenter__(self):
-        await self.open()
-        # TODO Context management
-        return self
-
-    async def __aexit__(self, exc_type, exc_value, traceback):
-        await self.close()
-
-class Sources(AsyncContextManagerList):
+class SourcesContext(AsyncContextManagerListContext):
 
     async def update(self, repo: Repo):
         '''
@@ -125,23 +109,17 @@ class Sources(AsyncContextManagerList):
         async for repo in self.repos(lambda repo: bool(repo.features(features))):
             yield repo
 
-class SubsetSources(Sources):
-    '''
-    Restricts access to a subset of repos during iteration based on their keys.
-    '''
+class Sources(AsyncContextManagerList):
 
-    def __init__(self, *args: Source, keys: Optional[List[str]] = None) \
-            -> None:
-        super().__init__(*args)
-        if keys is None:
-            keys = []
-        self.keys = keys
+    CONTEXT = SourcesContext
+
+class ValidationSourcesContext(SourcesContext):
 
     async def repos(self, validation: Optional[Callable[[Repo], bool]] = None) \
             -> AsyncIterator[Repo]:
-        for key in self.keys:
-            repo = await self.repo(key)
-            if validation is None or validation(repo):
+        async for repo in super().repos():
+            if self.parent.validation(repo) \
+                    and (validation is None or validation(repo)):
                 yield repo
 
 class ValidationSources(Sources):
@@ -150,14 +128,26 @@ class ValidationSources(Sources):
     function.
     '''
 
-    def __init__(self, *args: Source, validation: Callable[[Repo], bool]) \
-            -> None:
+    CONTEXT = ValidationSourcesContext
+
+    def __init__(self,
+                 validation: Callable[[Repo], bool],
+                 *args: BaseSource) -> None:
         super().__init__(*args)
         self.validation = validation
 
-    async def repos(self, validation: Optional[Callable[[Repo], bool]] = None) \
-            -> AsyncIterator[Repo]:
-        async for repo in super().repos():
-            if self.validation(repo) \
-                    and (validation is None or validation(repo)):
-                yield repo
+class SubsetSources(ValidationSources):
+    '''
+    Restricts access to a subset of repos during iteration based on their keys.
+    '''
+
+    def __init__(self,
+                 *args: BaseSource,
+                 keys: Optional[List[str]] = None) -> None:
+        super().__init__(self.__validation, *args)
+        if keys is None:
+            keys = []
+        self.keys = keys
+
+    def __validation(self, repo: Repo) -> bool:
+        return bool(repo.src_url in self.keys)

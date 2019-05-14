@@ -9,7 +9,7 @@ import abc
 from typing import AsyncIterator, Tuple, Any, List, Optional
 
 from ..repo import Repo
-from ..source import Sources
+from ..source.source import Sources
 from ..feature import Features
 from ..accuracy import Accuracy
 from ..util.entrypoint import Entrypoint
