@@ -36,16 +36,6 @@ class Linker(object):
                     raise KeyError('Definition missing while resolving %s.%s' \
                             % (name, arg,)) from error
             operations[name] = Operation(name=name, **kwargs)
-        for name, kwargs in source.get('outputs', {}).items():
-            if not 'select' in kwargs:
-                raise KeyError('output %s missing `select` field' % (name,))
-            for i in range(0, len(kwargs['select'])):
-                def_name = kwargs['select'][i]
-                if not def_name in definitions:
-                    raise KeyError('Definition missing while resolving ' + \
-                                   'output %s.%s' % (name, def_name,))
-                kwargs['select'][i] = definitions[def_name]
-            outputs[name] = Output(name=name, **kwargs)
         return definitions, operations, outputs
 
     def export(self, *args):
