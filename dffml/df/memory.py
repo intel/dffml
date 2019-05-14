@@ -55,6 +55,8 @@ class MemoryKeyValueStore(BaseKeyValueStore):
     Key Value store backed by dict
     '''
 
+    CONTEXT = MemoryKeyValueStoreContext
+
     def __init__(self, config: BaseConfig) -> None:
         super().__init__(config)
         self.memory: Dict[str, bytes] = {}
@@ -323,6 +325,8 @@ class MemoryInputNetwork(BaseInputNetwork):
     Inputs backed by a set
     '''
 
+    CONTEXT = MemoryInputNetworkContext
+
     def __init__(self, config: BaseConfig) -> None:
         super().__init__(config)
         self.ctx_notification_set = NotificationSet()
@@ -331,9 +335,6 @@ class MemoryInputNetwork(BaseInputNetwork):
         self.ctxhd: Dict[str, Dict[Definition, Any]] = {}
         # TODO Create ctxhd_locks dict to manage a per context lock
         self.ctxhd_lock = asyncio.Lock()
-
-    def __call__(self) -> MemoryInputNetworkContext:
-        return MemoryInputNetworkContext(self)
 
     @classmethod
     def args(cls) -> Dict[str, Arg]:
@@ -377,13 +378,12 @@ class MemoryOperationNetwork(BaseOperationNetwork):
     Operations backed by a set
     '''
 
+    CONTEXT = MemoryOperationNetworkContext
+
     def __init__(self, config: BaseConfig) -> None:
         super().__init__(config)
         self.memory = config.operations
         self.lock = asyncio.Lock()
-
-    def __call__(self) -> MemoryOperationNetworkContext:
-        return MemoryOperationNetworkContext(self)
 
     @classmethod
     def args(cls) -> Dict[str, Arg]:
@@ -445,12 +445,11 @@ class MemoryRedundancyChecker(BaseRedundancyChecker):
     Redundancy Checker backed by Memory Key Value Store
     '''
 
+    CONTEXT = MemoryRedundancyCheckerContext
+
     def __init__(self, config: BaseRedundancyCheckerConfig) -> None:
         super().__init__(config)
         self.key_value_store = config.key_value_store
-
-    def __call__(self) -> MemoryRedundancyCheckerContext:
-        return MemoryRedundancyCheckerContext(self)
 
     @classmethod
     def args(cls) -> Dict[str, Arg]:
@@ -505,13 +504,12 @@ class MemoryLockNetworkContext(BaseLockNetworkContext):
 
 class MemoryLockNetwork(BaseLockNetwork):
 
+    CONTEXT = MemoryLockNetworkContext
+
     def __init__(self, config: BaseConfig) -> None:
         super().__init__(config)
         self.lock = asyncio.Lock()
         self.locks: Dict[str, asyncio.Lock] = {}
-
-    def __call__(self) -> MemoryLockNetworkContext:
-        return MemoryLockNetworkContext(self)
 
     @classmethod
     def args(cls) -> Dict[str, Arg]:
@@ -662,14 +660,13 @@ class MemoryOperationImplementationNetworkContext(BaseOperationImplementationNet
 
 class MemoryOperationImplementationNetwork(BaseOperationImplementationNetwork):
 
+    CONTEXT = MemoryOperationImplementationNetworkContext
+
     def __init__(self, config: MemoryOperationImplementationNetworkConfig) -> None:
         super().__init__(config)
         self.opimps = self.config.operations
         self.operations = {}
         self.completed_event = asyncio.Event()
-
-    def __call__(self) -> MemoryOperationImplementationNetworkContext:
-        return MemoryOperationImplementationNetworkContext(self)
 
     @classmethod
     def args(cls) -> Dict[str, Arg]:

@@ -145,6 +145,8 @@ class TestLinker(unittest.TestCase):
         self.assertIn('add', exported['operations'])
         self.assertIn('inputs', exported['operations']['add'])
         self.assertIn('outputs', exported['operations']['add'])
+        self.assertIn('conditions', exported['operations']['add'])
+        self.assertIn('is_add', exported['operations']['add']['conditions'])
         self.assertIn('numbers', exported['operations']['add']['inputs'])
         self.assertEqual('numbers',
                          exported['operations']['add']['inputs']['numbers'])
@@ -161,6 +163,18 @@ class TestLinker(unittest.TestCase):
         self.assertIn('primitive', exported['definitions']['result'])
         self.assertEqual('int',
                          exported['definitions']['result']['primitive'])
+
+    def test_resolve_missing_condition_definition(self):
+        exported = self.linker.export(add.op)
+        del exported['definitions']['is_add']
+        with self.assertRaisesRegex(KeyError, 'Definition missing'):
+            self.linker.resolve(exported)
+
+    def test_resolve_missing_input_output_definition(self):
+        exported = self.linker.export(add.op)
+        del exported['definitions']['result']
+        with self.assertRaisesRegex(KeyError, 'Definition missing'):
+            self.linker.resolve(exported)
 
 OPWRAPED = opwraped_in(sys.modules[__name__])
 OPERATIONS = operation_in(sys.modules[__name__]) + \

@@ -9,26 +9,31 @@ from .types import Operation, Input, Parameter, Stage, Definition
 
 from .log import LOGGER
 
+from ..base import BaseConfig, \
+                   BaseDataFlowFacilitatorObjectContext, \
+                   BaseDataFlowFacilitatorObject
 from ..util.cli.base import Arg, CMD
 from ..util.entrypoint import Entrypoint
 
-class DFEntrypoint(abc.ABC, Entrypoint):
+class BaseDataFlowObjectContext(BaseDataFlowFacilitatorObjectContext):
+    '''
+    Data Flow Object Contexts are instantiated by only being passed their
+    parent, a BaseDataFlowObject.
+    '''
 
-    @classmethod
-    @abc.abstractmethod
-    def args(cls) -> Dict[str, Arg]:
-        pass
+    def __init__(self, parent: 'BaseDataFlowObject') -> None:
+        self.parent = parent
 
-    @classmethod
-    @abc.abstractmethod
-    def config(cls, cmd: CMD):
-        pass
+class BaseDataFlowObject(BaseDataFlowFacilitatorObject):
+    '''
+    Data Flow Objects create their child contexts' by passing only itself as an
+    argument to the child's __init__ (of type BaseDataFlowObjectContext).
+    '''
 
-    @classmethod
-    def withconfig(cls, cmd: CMD):
-        return cls(cls.config(cmd))
+    def __call__(self) -> BaseDataFlowObjectContext:
+        return self.CONTEXT(self)
 
-class OperationImplementationContext(abc.ABC):
+class OperationImplementationContext(BaseDataFlowObjectContext):
 
     def __init__(self,
                  parent: 'OperationImplementation',
@@ -37,31 +42,18 @@ class OperationImplementationContext(abc.ABC):
         self.parent = parent
         self.ctx = ctx
         self.ictx = ictx
-        self.logger = LOGGER.getChild(self.__class__.__qualname__)
 
     @abc.abstractmethod
     async def run(self, inputs: Dict[str, Any]) -> Union[bool, Dict[str, Any]]:
         pass
 
-    async def __aenter__(self) -> 'OperationImplementationContext':
-        return self
-
-    async def __aexit__(self, exc_type, exc_value, traceback):
-        pass
-
     @classmethod
     def implementation(cls, operation: Operation):
+
         class Implementation(OperationImplementation):
 
             op = operation
-
-            def __init__(self, config: 'BaseConfig') -> None:
-                self.config = config
-
-            def __call__(self,
-                         ctx: 'BaseInputSetContext',
-                         ictx: 'BaseInputNetworkContext') -> cls:
-                return cls(self, ctx, ictx)
+            CONTEXT = cls
 
         return Implementation
 
@@ -69,29 +61,39 @@ class OperationImplementationContext(abc.ABC):
     def imp(cls, config: 'BaseConfig'):
         return cls.implementation(cls.op)(config)
 
-class OperationImplementation(object):
+class OperationImplementation(BaseDataFlowObject):
 
     ENTRY_POINT = 'dffml.operation.implementation'
 
     def __init__(self, config: 'BaseConfig') -> None:
-        self.config = config
-        self.logger = LOGGER.getChild(self.__class__.__qualname__)
+        super().__init__(config)
         if not getattr(self, 'op', False):
             raise ValueError('OperationImplementation\'s may not be ' + \
                              'created without an `op`')
 
-    @abc.abstractmethod
-    async def __call__(self,
-                       ctx: 'BaseInputSetContext',
-                       ictx: 'BaseInputNetworkContext') \
+    def __call__(self,
+                 ctx: 'BaseInputSetContext',
+                 ictx: 'BaseInputNetworkContext') \
             -> OperationImplementationContext:
-        return OperationImplementationContext(self, ctx, ictx)
+        return self.CONTEXT(self, ctx, ictx)
 
-    async def __aenter__(self) -> 'OperationImplementation':
-        return self
+    @classmethod
+    def args(cls) -> Dict[str, Any]:
+        '''
+        Most Operation Implementations won't require any special config. So
+        remove the abstract method requirement from descendants by filling in
+        the args method here. Returns an empty dict.
+        '''
+        return {}
 
-    async def __aexit__(self, exc_type, exc_value, traceback):
-        pass
+    @classmethod
+    def config(cls, cmd):
+        '''
+        Most Operation Implementations won't require any special config. So
+        remove the abstract method requirement from descendants by filling in
+        the config method here. Returns an empty config (BaseConfig).
+        '''
+        return BaseConfig()
 
     @classmethod
     def load(cls, loading=None):
@@ -212,17 +214,13 @@ opwraped_in = mk_base_in(isopwraped)
 operation_in = mk_base_in(isoperation)
 opimp_in = mk_base_in(isopimp)
 
-class BaseConfig(NamedTuple):
-    pass
-
-class BaseKeyValueStoreContext(abc.ABC):
+class BaseKeyValueStoreContext(BaseDataFlowObjectContext):
     '''
     Abstract Base Class for key value storage context
     '''
 
     def __init__(self, parent: 'BaseKeyValueStore') -> None:
         self.parent = parent
-        self.logger = LOGGER.getChild(self.__class__.__qualname__)
 
     @abc.abstractmethod
     async def get(self, key: str) -> Union[bytes, None]:
@@ -232,7 +230,7 @@ class BaseKeyValueStoreContext(abc.ABC):
     async def set(self, name: str, value: bytes):
         pass
 
-class BaseKeyValueStore(DFEntrypoint):
+class BaseKeyValueStore(BaseDataFlowObject):
     '''
     Abstract Base Class for key value storage
     '''
@@ -240,8 +238,7 @@ class BaseKeyValueStore(DFEntrypoint):
     ENTRY_POINT = 'dffml.kvstore'
 
     def __init__(self, config: BaseConfig) -> None:
-        self.config = config
-        self.logger = LOGGER.getChild(self.__class__.__qualname__)
+        super().__init__(config)
 
     @abc.abstractmethod
     async def __aenter__(self) -> BaseKeyValueStoreContext:
@@ -335,14 +332,13 @@ class BaseParameterSet(abc.ABC):
         return {parameter.key: parameter.value \
                 async for parameter in self.parameters()}
 
-class BaseDefinitionSetContext(abc.ABC):
+class BaseDefinitionSetContext(BaseDataFlowObjectContext):
 
     def __init__(self,
                  parent: 'BaseInputNetworkContext',
                  ctx: 'BaseInputSetContext') -> None:
-        self.parent = parent
+        super().__init__(parent)
         self.ctx = ctx
-        self.logger = LOGGER.getChild(self.__class__.__qualname__)
 
     @abc.abstractmethod
     async def inputs(self, Definition: Definition) -> AsyncIterator[Input]:
@@ -352,20 +348,10 @@ class BaseDefinitionSetContext(abc.ABC):
         '''
         pass
 
-    async def __aenter__(self) -> 'BaseDefinitionSetContext':
-        return self
-
-    async def __aexit__(self, exc_type, exc_value, traceback):
-        pass
-
-class BaseInputNetworkContext(abc.ABC):
+class BaseInputNetworkContext(BaseDataFlowObjectContext):
     '''
     Abstract Base Class for context managing input_set
     '''
-
-    def __init__(self, parent: 'BaseInputNetwork') -> None:
-        self.parent = parent
-        self.logger = LOGGER.getChild(self.__class__.__qualname__)
 
     @abc.abstractmethod
     async def add(self, input_set: BaseInputSet):
@@ -418,35 +404,17 @@ class BaseInputNetworkContext(abc.ABC):
         '''
         pass
 
-    async def __aenter__(self) -> 'BaseInputNetworkContext':
-        return self
-
-    async def __aexit__(self, exc_type, exc_value, traceback):
-        pass
-
-class BaseInputNetwork(DFEntrypoint):
+class BaseInputNetwork(BaseDataFlowObject):
     '''
     Abstract Base Class for managing input_set
     '''
 
     ENTRY_POINT = 'dffml.input.network'
 
-    def __init__(self, config: BaseConfig) -> None:
-        self.config = config
-        self.logger = LOGGER.getChild(self.__class__.__qualname__)
-
-    @abc.abstractmethod
-    def __call__(self) -> 'BaseInputNetworkContext':
-        pass
-
-class BaseOperationNetworkContext(abc.ABC):
+class BaseOperationNetworkContext(BaseDataFlowObjectContext):
     '''
     Abstract Base Class for context managing operations
     '''
-
-    def __init__(self, parent: 'BaseOperationNetwork') -> None:
-        self.parent = parent
-        self.logger = LOGGER.getChild(self.__class__.__qualname__)
 
     @abc.abstractmethod
     async def add(self, operations: List[Operation]):
@@ -458,28 +426,14 @@ class BaseOperationNetworkContext(abc.ABC):
             stage: Stage = Stage.PROCESSING) -> AsyncIterator[Operation]:
         pass
 
-    async def __aenter__(self) -> 'BaseOperationNetworkContext':
-        return self
-
-    async def __aexit__(self, exc_type, exc_value, traceback):
-        pass
-
 # TODO Make this operate like a BaseInputNetwork were operations can
 # be added dynamically
-class BaseOperationNetwork(DFEntrypoint):
+class BaseOperationNetwork(BaseDataFlowObject):
     '''
     Abstract Base Class for managing operations
     '''
 
     ENTRY_POINT = 'dffml.operation.network'
-
-    def __init__(self, config: BaseConfig) -> None:
-        self.config = config
-        self.logger = LOGGER.getChild(self.__class__.__qualname__)
-
-    @abc.abstractmethod
-    def __call__(self) -> 'BaseOperationNetworkContext':
-        pass
 
 class BaseRedundancyCheckerConfig(NamedTuple):
     key_value_store: BaseKeyValueStore
@@ -488,14 +442,10 @@ class BaseRedundancyCheckerConfig(NamedTuple):
 # to remove all associated with a particular handle. Aka allow us to clean up
 # the input, redundancy, etc. networks after execution of a context completes
 # via the orchestrator.
-class BaseRedundancyCheckerContext(abc.ABC):
+class BaseRedundancyCheckerContext(BaseDataFlowObjectContext):
     '''
     Abstract Base Class for redundancy checking context
     '''
-
-    def __init__(self, parent: 'BaseRedundancyChecker') -> None:
-        self.parent = parent
-        self.logger = LOGGER.getChild(self.__class__.__qualname__)
 
     @abc.abstractmethod
     async def exists(self,
@@ -509,63 +459,29 @@ class BaseRedundancyCheckerContext(abc.ABC):
             parameter_set: BaseParameterSet):
         pass
 
-    async def __aenter__(self) -> 'BaseRedundancyCheckerContext':
-        return self
-
-    async def __aexit__(self, exc_type, exc_value, traceback):
-        pass
-
-class BaseRedundancyChecker(DFEntrypoint):
+class BaseRedundancyChecker(BaseDataFlowObject):
     '''
-    Abstract Base Class for redundancy checking
+    Redundancy Checkers ensure that each operation within a context only gets
+    run with a give permutation of inputs once.
     '''
 
     ENTRY_POINT = 'dffml.redundancy.checker'
 
-    def __init__(self, config: BaseConfig) -> None:
-        self.config = config
-        self.logger = LOGGER.getChild(self.__class__.__qualname__)
-
-    async def __call__(self) -> BaseRedundancyCheckerContext:
-        return BaseRedundancyCheckerContext(self)
-
 # TODO Provide a way to clear out all locks for inputs within a context
-class BaseLockNetworkContext(abc.ABC):
-
-    def __init__(self, parent: 'BaseLockNetwork') -> None:
-        self.parent = parent
-        self.logger = LOGGER.getChild(self.__class__.__qualname__)
+class BaseLockNetworkContext(BaseDataFlowObjectContext):
 
     @abc.abstractmethod
     async def acquire(self, parameter_set: BaseParameterSet) -> bool:
         pass
 
-    async def __aenter__(self) -> 'BaseLockNetworkContext':
-        return self
-
-    async def __aexit__(self, exc_type, exc_value, traceback):
-        pass
-
-class BaseLockNetwork(DFEntrypoint):
+class BaseLockNetwork(BaseDataFlowObject):
     '''
     Acquires locks on inputs which may not be used simultaneously
     '''
 
     ENTRY_POINT = 'dffml.lock.network'
 
-    def __init__(self, config: BaseConfig) -> None:
-        self.config = config
-        self.logger = LOGGER.getChild(self.__class__.__qualname__)
-
-    @abc.abstractmethod
-    def __call__(self) -> BaseLockNetworkContext:
-        pass
-
-class BaseOperationImplementationNetworkContext(abc.ABC):
-
-    def __init__(self, parent: 'BaseOperationImplementationNetwork') -> None:
-        self.parent = parent
-        self.logger = LOGGER.getChild(self.__class__.__qualname__)
+class BaseOperationImplementationNetworkContext(BaseDataFlowObjectContext):
 
     @abc.abstractmethod
     async def contains(self, operation: Operation) -> bool:
@@ -621,28 +537,14 @@ class BaseOperationImplementationNetworkContext(abc.ABC):
         '''
         pass
 
-    async def __aenter__(self) -> 'BaseOperationImplementationNetworkContext':
-        return self
-
-    async def __aexit__(self, exc_type, exc_value, traceback):
-        pass
-
-class BaseOperationImplementationNetwork(DFEntrypoint):
+class BaseOperationImplementationNetwork(BaseDataFlowObject):
     '''
     Knows where operations are or if they can be made
     '''
 
     ENTRY_POINT = 'dffml.operation.implementation.network'
 
-    def __init__(self, config: BaseConfig) -> None:
-        self.config = config
-        self.logger = LOGGER.getChild(self.__class__.__qualname__)
-
-    @abc.abstractmethod
-    def __call__(self) -> BaseOperationImplementationNetworkContext:
-        pass
-
-class BaseOrchestratorContext(object):
+class BaseOrchestratorContext(BaseDataFlowObjectContext):
 
     def __init__(self,
             ictx: BaseInputNetworkContext,
@@ -655,40 +557,18 @@ class BaseOrchestratorContext(object):
         self.lctx = lctx
         self.nctx = nctx
         self.rctx = rctx
-        self.logger = LOGGER.getChild(self.__class__.__qualname__)
 
     @abc.abstractmethod
     async def run_operations(self, strict: bool = False) \
             -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
         '''
-        Run all Stage.PROCESSING operations
-        '''
-        pass
-
-    async def run_until_complete(self, strict: bool = False) \
-            -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
-        '''
         Run all the operations then run cleanup and output operations
         '''
-        # Run all operations until no more are run
-        async for ctx, results in self.run_operations(strict=strict):
-            yield ctx, results
-
-    async def __aenter__(self) -> 'BaseOrchestratorContext':
-        return self
-
-    async def __aexit__(self, exc_type, exc_value, traceback):
         pass
 
-class BaseOrchestrator(DFEntrypoint):
-
-    CONTEXT = BaseOrchestratorContext
+class BaseOrchestrator(BaseDataFlowObject):
 
     ENTRY_POINT = 'dffml.orchestrator'
-
-    def __init__(self, config: BaseConfig) -> None:
-        self.config = config
-        self.logger = LOGGER.getChild(self.__class__.__qualname__)
 
     def __call__(self,
             ictx: BaseInputNetworkContext,

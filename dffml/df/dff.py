@@ -31,7 +31,7 @@ class DataFlowFacilitatorContext(object):
         # Orchestrate the running of these operations
         async with self.orchestrator(self.ictx, self.octx, self.lctx, self.nctx,
                                      self.rctx) as orchestrate:
-            async for ctx, results in orchestrate.run_until_complete(strict=strict):
+            async for ctx, results in orchestrate.run_operations(strict=strict):
                 yield ctx, results
 
     async def __aenter__(self) -> 'DataFlowFacilitatorContext':
@@ -87,18 +87,18 @@ class DataFlowFacilitator(object):
     async def __aenter__(self) -> 'DataFlowFacilitator':
         self.__stack = AsyncExitStack()
         await self.__stack.__aenter__()
-        # self.rchecker = await self.__stack.enter_async_context(
-        #         self.rchecker)
-        # self.input_network = await self.__stack.enter_async_context(
-        #         self.input_network)
-        # self.operation_network = await self.__stack.enter_async_context(
-        #         self.operation_network)
-        # self.lock_network = await self.__stack.enter_async_context(
-        #         self.lock_network)
+        self.rchecker = await self.__stack.enter_async_context(
+                self.rchecker)
+        self.input_network = await self.__stack.enter_async_context(
+                self.input_network)
+        self.operation_network = await self.__stack.enter_async_context(
+                self.operation_network)
+        self.lock_network = await self.__stack.enter_async_context(
+                self.lock_network)
         self.opimp_network = await self.__stack.enter_async_context(
                 self.opimp_network)
-        # self.orchestrator = await self.__stack.enter_async_context(
-        #         self.orchestrator)
+        self.orchestrator = await self.__stack.enter_async_context(
+                self.orchestrator)
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):

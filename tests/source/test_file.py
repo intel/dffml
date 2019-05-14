@@ -37,27 +37,6 @@ class FakeFileSource(FileSource):
     async def dump_fd(self, fd):
         self.dumped_fd = fd
 
-class MockZipFile(object):
-
-    def __init__(self, *_args, **_kwargs):
-        self.files = [Mock(filename='foo'), Mock(filename='bar')]
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        return
-
-    def infolist(self):
-        return self.files
-
-    @classmethod
-    def opener(cls):
-        class mzip(cls):
-            pass
-        mzip.open = mock_open()
-        return mzip
-
 @contextmanager
 def yield_42():
     yield 42
