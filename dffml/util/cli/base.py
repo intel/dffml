@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 import os
+import abc
 import sys
 import ast
 import copy
@@ -9,7 +10,7 @@ import asyncio
 import inspect
 import logging
 import argparse
-from typing import Optional
+from typing import Optional, Dict
 
 from .log import LOGGER
 from ...repo import Repo
