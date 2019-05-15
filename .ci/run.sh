@@ -2,7 +2,11 @@
 set -e
 
 function run_plugin() {
-  python setup.py install && cd "$PLUGIN" && coverage run setup.py test && cd -
+  python setup.py install
+  cd "$PLUGIN"
+  coverage run setup.py test
+  coverage report -m
+  cd -
 
   if [ "x$PLUGIN" = "x." ]; then
     ./scripts/create.sh feature travis_test_feature
