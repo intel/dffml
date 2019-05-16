@@ -12,7 +12,9 @@ import hashlib
 import tempfile
 import unittest
 import itertools
+import subprocess
 import collections
+import asyncio.subprocess
 from itertools import product
 from datetime import datetime
 from contextlib import asynccontextmanager, AsyncExitStack
@@ -34,6 +36,30 @@ if sys.platform == 'win32':
     asyncio.set_event_loop(loop)
 
 TIME_FORMAT_MINTUE_RESOLUTION = '%Y-%m-%d %H:%M'
+
+async def exec_with_logging_reader(label, reader):
+    while True:
+        line = await reader.readline()
+        if not line:
+            break
+        LOGGER.debug('%s: %r', label, line)
+
+async def exec_with_logging(*args):
+    label = ' '.join(args)
+    LOGGER.debug('%s', label)
+
+    proc = await asyncio.subprocess.create_subprocess_exec(
+            *args,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
+
+    _, _, exit_code = await asyncio.gather(
+        exec_with_logging_reader(label, proc.stdout),
+        exec_with_logging_reader(label, proc.stderr),
+        proc.wait(),
+        )
+
+    return exit_code
 
 @op(inputs={
         'date': quarter_start_date,
@@ -65,14 +91,9 @@ async def quarters_back_to_date(date: str, number: int):
         }
 )
 async def check_if_valid_git_repository_URL(URL: str):
-    try:
-        LOGGER.debug('git ls-remote %r', URL)
-        await check_output('git', 'ls-remote', URL)
-        res = True
-    except:
-        res = False
+    exit_code = await exec_with_logging('git', 'ls-remote', URL)
     return {
-            'valid': res
+            'valid': bool(exit_code == 0)
             }
 
 @op(inputs={
@@ -84,18 +105,18 @@ async def check_if_valid_git_repository_URL(URL: str):
     conditions=[valid_git_repository_URL]
 )
 async def clone_git_repo(URL: str):
-    repo = {
-            'URL': URL,
-            'directory': tempfile.mkdtemp(prefix='dffml-feature-git-')
-            }
-    try:
-        await check_output('git', 'clone', URL, repo['directory'])
-        return {
-                'repo': repo
-                }
-    except:
+    directory = tempfile.mkdtemp(prefix='dffml-feature-git-')
+    exit_code = await exec_with_logging('git', 'clone', URL, directory)
+    if exit_code != 0:
         shutil.rmtree(repo['directory'])
-        raise
+        raise RuntimeError('Failed to clone git repo %r' % (URL,))
+
+    return {
+            'repo': {
+                'URL': URL,
+                'directory': directory
+            }
+        }
 
 @op(inputs={
         'repo': git_repository,
