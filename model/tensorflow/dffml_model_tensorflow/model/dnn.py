@@ -3,36 +3,40 @@ Uses Tensorflow to create a generic DNN which learns on all of the features in a
 repo.
 '''
 import os
-import asyncio
 import hashlib
 import inspect
 import numpy as np
 import tensorflow
-from typing import List, Dict, Any, AsyncIterator, Tuple, Optional
+from typing import List, Dict, Any, AsyncIterator, Tuple, Optional, NamedTuple
 
 from dffml.repo import Repo
 from dffml.feature import Feature, Features
-from dffml.source import Sources
-from dffml.model import Model
+from dffml.source.source import Sources
+from dffml.model.model import ModelConfig, ModelContext, Model
 from dffml.accuracy import Accuracy
+from dffml.util.entrypoint import entry_point
+from dffml.base import BaseConfig
+from dffml.util.cli.arg import Arg
 
 from .log import LOGGER
 
 LOGGER = LOGGER.getChild('dnn')
 
-class DNN(Model):
+class DNNConfig(ModelConfig, NamedTuple):
+    directory: str
+    steps: int
+    num_epochs: int
+    hidden: List[int]
+
+class DNNContext(ModelContext):
     '''
     Model using tensorflow to make predictions. Handels creation of feature
     columns for real valued, string, and list of real valued features.
     '''
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent):
+        super().__init__(parent)
         self._model = None
-        # Load packages with lots of dependencies durring instantiation so that
-        # users can choose to install these or not.
-        self.__np = np
-        self._tf = tensorflow
 
     def mkclassifications(self, classifications):
         classifications = {value: key for key, value in \
@@ -66,22 +70,22 @@ class DNN(Model):
                 sources.classified_with_features(features) \
                 if repo.classification() in classifications]:
             for feature, results in repo.features(features).items():
-                x_cols[feature].append(self.__np.array(results))
+                x_cols[feature].append(np.array(results))
             y_cols.append(classifications[repo.classification()])
         presplit = len(y_cols)
         if not presplit:
             raise ValueError('No repos to train on')
         split = 0.7
         split = int(float(presplit) * split)
-        y_cols = self.__np.array(y_cols[:split])
+        y_cols = np.array(y_cols[:split])
         for feature in x_cols:
-            x_cols[feature] = self.__np.array(x_cols[feature][:split])
+            x_cols[feature] = np.array(x_cols[feature][:split])
         LOGGER.info('------ Repo Data ------')
         LOGGER.info('total:     %d', presplit)
         LOGGER.info('x_cols:    %d', len(list(x_cols.values())[0]))
         LOGGER.info('y_cols:    %d', len(y_cols))
         LOGGER.info('-----------------------')
-        input_fn = self._tf.estimator.inputs.numpy_input_fn(x_cols,
+        input_fn = tensorflow.estimator.inputs.numpy_input_fn(x_cols,
                 y_cols, batch_size=batch_size,
                 shuffle=shuffle, num_epochs=num_epochs, **kwargs)
         return input_fn
@@ -100,20 +104,20 @@ class DNN(Model):
                 sources.classified_with_features(features) \
                 if repo.classification() in classifications]:
             for feature, results in repo.features(features).items():
-                x_cols[feature].append(self.__np.array(results))
+                x_cols[feature].append(np.array(results))
             y_cols.append(classifications[repo.classification()])
         presplit = len(y_cols)
         split = 0.7
         split = int(float(presplit) * split)
-        y_cols = self.__np.array(y_cols[split:])
+        y_cols = np.array(y_cols[split:])
         for feature in x_cols:
-            x_cols[feature] = self.__np.array(x_cols[feature][split:])
+            x_cols[feature] = np.array(x_cols[feature][split:])
         LOGGER.info('------ Repo Data ------')
         LOGGER.info('total:     %d', presplit)
         LOGGER.info('x_cols:    %d', len(list(x_cols.values())[0]))
         LOGGER.info('y_cols:    %d', len(y_cols))
         LOGGER.info('-----------------------')
-        input_fn = self._tf.estimator.inputs.numpy_input_fn(x_cols,
+        input_fn = tensorflow.estimator.inputs.numpy_input_fn(x_cols,
                 y_cols, batch_size=batch_size,
                 shuffle=shuffle, num_epochs=num_epochs, **kwargs)
         return input_fn
@@ -132,13 +136,13 @@ class DNN(Model):
                 continue
             ret_repos.append(repo)
             for feature, results in repo.features(features).items():
-                x_cols[feature].append(self.__np.array(results))
+                x_cols[feature].append(np.array(results))
         for feature in x_cols:
-            x_cols[feature] = self.__np.array(x_cols[feature])
+            x_cols[feature] = np.array(x_cols[feature])
         LOGGER.info('------ Repo Data ------')
         LOGGER.info('x_cols:    %d', len(list(x_cols.values())[0]))
         LOGGER.info('-----------------------')
-        input_fn = self._tf.estimator.inputs.numpy_input_fn(x_cols,
+        input_fn = tensorflow.estimator.inputs.numpy_input_fn(x_cols,
                 shuffle=False, num_epochs=1, **kwargs)
         return input_fn, ret_repos
 
@@ -163,7 +167,7 @@ class DNN(Model):
             return None
         if dtype is int or issubclass(dtype, int) \
                 or dtype is float or issubclass(dtype, float):
-            return self._tf.feature_column.numeric_column(feature.NAME,
+            return tensorflow.feature_column.numeric_column(feature.NAME,
                     shape=feature.length())
         LOGGER.warning('Unknown dtype %r. Cound not create column' % (dtype))
         return None
@@ -171,15 +175,15 @@ class DNN(Model):
     def model_dir_path(self, features: Features):
         '''
         Creates the path to the model dir by using the provided model dir and
-        the sha256 hash of the concatenated feature names.
+        the sha384 hash of the concatenated feature names.
         '''
-        if self.model_dir is None:
+        if self.parent.config.directory is None:
             return None
-        model = hashlib.sha256(''.join(features.names()).encode('utf-8'))\
+        model = hashlib.sha384(''.join(features.names()).encode('utf-8'))\
                 .hexdigest()
-        if not os.path.isdir(self.model_dir):
-            raise NotADirectoryError('%s is not a directory' % (self.model_dir))
-        return os.path.join(self.model_dir, model)
+        if not os.path.isdir(self.parent.config.directory):
+            raise NotADirectoryError('%s is not a directory' % (self.parent.config.directory))
+        return os.path.join(self.parent.config.directory, model)
 
     async def model(self, features: Features, classifications: List[Any]):
         '''
@@ -191,23 +195,24 @@ class DNN(Model):
         # 2 classifications whitelist or blacklist
         LOGGER.debug('Loading model with classifications(%d): %r',
                 len(classifications), classifications)
-        self._model = self._tf.estimator.DNNClassifier(
+        self._model = tensorflow.estimator.DNNClassifier(
                 feature_columns=list((await self.features(features)).values()),
-                hidden_units=[12, 40, 15],
+                hidden_units=self.parent.config.hidden,
                 n_classes=len(classifications),
                 model_dir=self.model_dir_path(features))
         return self._model
 
     async def train(self, sources: Sources, features: Features,
-            classifications: List[Any], steps: int, num_epochs: int):
+            classifications: List[Any]):
         '''
         Train on data submitted via classify.
         '''
         input_fn = await self.training_input_fn(sources, features,
                 classifications,
-                batch_size=20, shuffle=True, num_epochs=num_epochs)
+                batch_size=20, shuffle=True,
+                num_epochs=self.parent.config.num_epochs)
         (await self.model(features, classifications))\
-                .train(input_fn=input_fn, steps=steps)
+                .train(input_fn=input_fn, steps=self.parent.config.steps)
 
     async def accuracy(self, sources: Sources, features: Features,
             classifications: List[Any]) -> Accuracy:
@@ -243,3 +248,28 @@ class DNN(Model):
             class_id = pred_dict['class_ids'][0]
             probability = pred_dict['probabilities'][class_id]
             yield repo, cids[class_id], probability
+
+@entry_point('dnn')
+class DNN(Model):
+
+    CONTEXT = DNNContext
+
+    @classmethod
+    def args(cls, args, *above) -> Dict[str, Arg]:
+        cls.config_set(args, above, 'directory', Arg(
+            default=os.path.join(os.path.expanduser('~'), '.cache', 'dffml',
+                                 'tensorflow')))
+        cls.config_set(args, above, 'steps', Arg(type=int, default=3000))
+        cls.config_set(args, above, 'num_epochs', Arg(type=int, default=30))
+        cls.config_set(args, above, 'hidden', Arg(type=int, nargs='+',
+                                                  default=[12, 40, 15]))
+        return args
+
+    @classmethod
+    def config(cls, config, *above) -> BaseConfig:
+        return DNNConfig(
+            directory=cls.config_get(config, above, 'directory'),
+            steps=cls.config_get(config, above, 'steps'),
+            num_epochs=cls.config_get(config, above, 'num_epochs'),
+            hidden=cls.config_get(config, above, 'hidden'),
+        )
