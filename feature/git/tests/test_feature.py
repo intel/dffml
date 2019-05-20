@@ -2,7 +2,6 @@
 import unittest
 
 from dffml.feature import Feature, Features
-from dffml.source import MemorySource
 from dffml.util.asynctestcase import AsyncTestCase
 
 # Git Repo based features

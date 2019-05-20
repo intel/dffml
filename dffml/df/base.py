@@ -180,8 +180,16 @@ def mk_base_in(predicate):
     return base_in
 
 opwraped_in = mk_base_in(isopwraped)
-operation_in = mk_base_in(isoperation)
-opimp_in = mk_base_in(isopimp)
+
+__operation_in = mk_base_in(isoperation)
+def operation_in(iterable):
+    return __operation_in(iterable) + list(map(lambda item: item.op,
+                                               opwraped_in(iterable)))
+
+__opimp_in = mk_base_in(isopimp)
+def opimp_in(iterable):
+    return __opimp_in(iterable) + list(map(lambda item: item.imp,
+                                           opwraped_in(iterable)))
 
 class BaseKeyValueStoreContext(BaseDataFlowObjectContext):
     '''

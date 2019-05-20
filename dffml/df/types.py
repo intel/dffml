@@ -74,6 +74,22 @@ class Operation(Entrypoint):
         return exported
 
     @classmethod
+    def definitions(cls, *args: 'Operation'):
+        '''
+        Create key value mapping of definition names to definitions for all
+        given operations.
+        '''
+        definitions = {}
+        for op in args:
+            for has_definition in ['inputs', 'outputs']:
+                for definition in getattr(op, has_definition, {}).values():
+                    definitions[definition.name] = definition
+            for has_definition in ['conditions']:
+                for definition in getattr(op, has_definition, []):
+                    definitions[definition.name] = definition
+        return definitions
+
+    @classmethod
     def load(cls, loading=None):
         loading_classes = []
         for i in pkg_resources.iter_entry_points(cls.ENTRY_POINT):

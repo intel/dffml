@@ -19,7 +19,8 @@ from contextlib import asynccontextmanager, AsyncExitStack
 from typing import AsyncIterator, Dict, List, Tuple, Any, NamedTuple, Union, \
         get_type_hints, NewType, Optional, Set, Iterator
 
-from dffml.df.types import Definition, \
+from dffml.df.types import Operation, \
+                           Definition, \
                            Input
 from dffml.df.linker import Linker
 from dffml.df.base import op, \
@@ -108,6 +109,9 @@ async def parse_line(line: str):
         'mult': 'mult' in line,
         'numbers': [int(item) for item in line.split() if item.isdigit()]
         }
+
+OPERATIONS = operation_in(sys.modules[__name__])
+OPIMPS = opimp_in(sys.modules[__name__])
 
 class TestMemoryKeyValueStore(AsyncTestCase):
 
@@ -200,55 +204,31 @@ class TestLinker(unittest.TestCase):
         with self.assertRaisesRegex(KeyError, 'Definition missing'):
             self.linker.resolve(exported)
 
-OPWRAPED = opwraped_in(sys.modules[__name__])
-OPERATIONS = operation_in(sys.modules[__name__]) + \
-             list(map(lambda item: item.op, OPWRAPED))
-OPIMPS = opimp_in(sys.modules[__name__]) + \
-         list(map(lambda item: item.imp, OPWRAPED))
-
 class TestRunner(AsyncTestCase):
 
     async def test_run(self):
-        linker = Linker()
-        exported = linker.export(*OPERATIONS)
-        definitions, operations, _outputs = linker.resolve(exported)
-
         calc_strings_check = {
                 'add 40 and 2': 42,
                 'multiply 42 and 10': 420
                 }
-        calc_strings = {to_calc: Input(
-                                       value=to_calc,
-                                       definition=definitions['calc_string'],
-                                       parents=False) \
-                        for to_calc in calc_strings_check.keys()}
-        get_single_spec = Input(
-            value=['result'],
-            definition=definitions['get_single_spec'],
-            parents=False)
 
         # Orchestrate the running of these operations
-        async with MemoryOrchestrator(MemoryOrchestratorConfig(
-            input_network=MemoryInputNetwork(BaseConfig()),
-            operation_network=MemoryOperationNetwork(
-                MemoryOperationNetworkConfig(
-                    operations=list(operations.values())
-                )
-            ),
-            lock_network=MemoryLockNetwork(BaseConfig()),
-            rchecker=MemoryRedundancyChecker(
-                BaseRedundancyCheckerConfig(
-                    key_value_store=MemoryKeyValueStore(BaseConfig())
-                )
-            ),
-            opimp_network=MemoryOperationImplementationNetwork(
-                MemoryOperationImplementationNetworkConfig(
-                    operations={imp.op.name: imp \
-                                for imp in \
-                                [Imp(BaseConfig()) for Imp in OPIMPS]}
-                )
-            )
-        )) as orchestrator:
+        async with MemoryOrchestrator.basic_config(
+                operations=OPERATIONS,
+                opimps={imp.op.name: imp for imp in \
+                        [Imp(BaseConfig()) for Imp in OPIMPS]}) as orchestrator:
+
+            definitions = Operation.definitions(*OPERATIONS)
+
+            calc_strings = {to_calc: Input(value=to_calc,
+                                           definition=definitions['calc_string'],
+                                           parents=False) \
+                            for to_calc in calc_strings_check.keys()}
+
+            get_single_spec = Input(value=['result'],
+                                    definition=definitions['get_single_spec'],
+                                    parents=False)
+
             async with orchestrator() as octx:
                 # Add our inputs to the input network with the context being the URL
                 for to_calc in calc_strings_check.keys():
@@ -263,10 +243,5 @@ class TestRunner(AsyncTestCase):
                     )
                 async for ctx, results in octx.run_operations(strict=True):
                     ctx_str = (await ctx.handle()).as_string()
-                    print()
-                    print(ctx_str,
-                          json.dumps(results, sort_keys=True,
-                                     indent=4, separators=(',', ':')))
-                    print()
                     self.assertEqual(calc_strings_check[ctx_str],
                                      results['get_single']['result'])
