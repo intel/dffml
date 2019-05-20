@@ -3,7 +3,9 @@ import tempfile
 from typing import Type
 
 from dffml.repo import Repo, RepoData
-from dffml.source import Sources, RepoSource
+from dffml.model.model import ModelConfig
+from dffml.source.source import Sources
+from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Data, Feature, Features
 from dffml.util.asynctestcase import AsyncTestCase
 
@@ -28,8 +30,7 @@ class TestMisc(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
         cls.model_dir = tempfile.TemporaryDirectory()
-        cls.model = Misc()
-        cls.model.model_dir = cls.model_dir.name
+        cls.model = Misc(ModelConfig(directory=cls.model_dir.name))
         cls.feature = StartsWithA()
         cls.features = Features(cls.feature)
         cls.classifications = ['a', 'not a']
@@ -39,30 +40,36 @@ class TestMisc(AsyncTestCase):
         cls.repos += [Repo('b' + str(random.random()),
             data={'features': {cls.feature.NAME: 0},
                 'classification': 'not a'}) for _ in range(0, 1000)]
-        cls.sources = Sources(RepoSource(*cls.repos))
+        cls.sources = \
+            Sources(MemorySource(MemorySourceConfig(repos=cls.repos)))
 
     @classmethod
     def tearDownClass(cls):
         cls.model_dir.cleanup()
 
     async def test_00_train(self):
-        async with self.sources as sources, self.features as features:
-            await self.model.train(sources, features,
-                    self.classifications, steps=1000,
-                    num_epochs=30)
+        async with self.sources as sources, self.features as features, \
+                self.model as model:
+            async with sources() as sctx, model() as mctx:
+                await mctx.train(sctx, features,
+                        self.classifications)
 
     async def test_01_accuracy(self):
-        async with self.sources as sources, self.features as features:
-            res = await self.model.accuracy(sources, features,
-                    self.classifications)
-            self.assertGreater(res, 0.9)
+        async with self.sources as sources, self.features as features, \
+                self.model as model:
+            async with sources() as sctx, model() as mctx:
+                res = await mctx.accuracy(sctx, features,
+                        self.classifications)
+                self.assertGreater(res, 0.9)
 
     async def test_02_predict(self):
         a = Repo('a', data={'features': {self.feature.NAME: 1}})
-        sources = Sources(RepoSource(a))
-        async with sources as sources, self.features as features:
-            res = [repo async for repo in self.model.predict(sources.repos(),
-                features, self.classifications)]
-            self.assertEqual(len(res), 1)
-            self.assertEqual(res[0][0].src_url, a.src_url)
-            self.assertTrue(res[0][1])
+        async with Sources(MemorySource(MemorySourceConfig(repos=[a]))) as sources, \
+                self.features as features, \
+                self.model as model:
+            async with sources() as sctx, model() as mctx:
+                res = [repo async for repo in mctx.predict(sctx.repos(),
+                    features, self.classifications)]
+                self.assertEqual(len(res), 1)
+                self.assertEqual(res[0][0].src_url, a.src_url)
+                self.assertTrue(res[0][1])
