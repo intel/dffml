@@ -5,30 +5,35 @@ Model subclasses are responsible for training themselves on repos, making
 predictions about the classifications of repos, and assessing their prediction
 accuracy.
 '''
+import os
 import abc
-from typing import AsyncIterator, Tuple, Any, List, Optional
+from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Dict
 
+from ..base import BaseConfig, \
+                   BaseDataFlowFacilitatorObjectContext, \
+                   BaseDataFlowFacilitatorObject
+from ..util.cli.arg import Arg
 from ..repo import Repo
 from ..source.source import Sources
 from ..feature import Features
 from ..accuracy import Accuracy
-from ..util.entrypoint import Entrypoint
+from ..util.entrypoint import Entrypoint, base_entry_point
 
-class Model(abc.ABC, Entrypoint):
+class ModelConfig(BaseConfig, NamedTuple):
+    directory: str
+
+class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
     '''
     Abstract base class which should be derived from and implmented using
     various machine learning frameworks or concepts.
     '''
 
-    ENTRY_POINT = 'dffml.model'
-
-    def __init__(self, model_dir: Optional[str] = None) -> None:
-        super().__init__()
-        self.model_dir = model_dir
+    def __init__(self, parent: 'Model') -> None:
+        self.parent = parent
 
     @abc.abstractmethod
     async def train(self, sources: Sources, features: Features,
-            classifications: List[Any], steps: int, num_epochs: int):
+            classifications: List[Any]):
         '''
         Train using repos as the data to learn from.
         '''
@@ -53,6 +58,30 @@ class Model(abc.ABC, Entrypoint):
         raise NotImplementedError()
         yield (Repo(''), '', 0.0)
 
+@base_entry_point('dffml.model', 'model')
+class Model(BaseDataFlowFacilitatorObject):
+    '''
+    Abstract base class which should be derived from and implmented using
+    various machine learning frameworks or concepts.
+    '''
+
+    def __call__(self) -> ModelContext:
+        # If the config object for this model contains the directory property
+        # then create it if it does not exist
+        directory = getattr(self.config, 'directory', None)
+        if directory is not None and not os.path.isdir(directory):
+            os.makedirs(directory)
+        return self.CONTEXT(self)
+
     @classmethod
-    def installed(cls):
-        return {key: model() for key, model in cls.load().items()}
+    def args(cls, args, *above) -> Dict[str, Arg]:
+        cls.config_set(args, above, 'directory', Arg(
+            default=os.path.join(os.path.expanduser('~'), '.cache', 'dffml')))
+        return args
+
+    @classmethod
+    def config(cls, config, *above) -> BaseConfig:
+        return ModelConfig(
+            directory=cls.config_get(config, above, 'directory')
+        )
+
