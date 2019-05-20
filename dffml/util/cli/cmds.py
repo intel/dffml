@@ -106,12 +106,10 @@ class ModelCMD(CMD):
 
     arg_model = Arg('-model', help='Model used for ML',
             type=Model.load, required=True)
-    arg_model_dir = Arg('-model_dir', help='Model directory for ML',
-            default=os.path.join(os.path.expanduser('~'), '.cache', 'dffml'))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.model.model_dir = self.model_dir
+        self.model = self.model.withconfig(self.extra_config)
 
 class PortCMD(CMD):
 

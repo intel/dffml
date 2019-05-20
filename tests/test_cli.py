@@ -22,10 +22,11 @@ from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.source.file  import FileSourceConfig
 from dffml.source.json  import JSONSource
-from dffml.model import Model
+from dffml.model.model import ModelContext, Model
 from dffml.df.types import Operation
 from dffml.df.base import OperationImplementation
 from dffml.accuracy import Accuracy as AccuracyType
+from dffml.util.entrypoint import entry_point
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.util.cli.cmd import DisplayHelp
 
@@ -86,21 +87,42 @@ class FakeFeature(Feature):
     async def calc(self, data):
         return float(data.src_url)
 
-class FakeModel(Model):
+class FakeModelContext(ModelContext):
 
     async def train(self, sources: Sources, features: Features,
-            classifications: List[Any], steps: int, num_epochs: int):
+            classifications: List[Any]):
         pass
 
     async def accuracy(self, sources: Sources, features: Features,
             classifications: List[Any]) -> AccuracyType:
-        return AccuracyType(1.00)
+        return AccuracyType(0.42)
 
     async def predict(self, repos: AsyncIterator[Repo], features: Features,
             classifications: List[Any]) -> \
                     AsyncIterator[Tuple[Repo, Any, float]]:
         async for repo in repos:
-            yield repo, '', 1.0
+            yield repo, '', float(repo.src_url)
+
+@entry_point('fake')
+class FakeModel(Model):
+
+    CONTEXT = FakeModelContext
+
+def feature_load(loading):
+    return FakeFeature()
+
+def model_load(loading):
+    return FakeModel
+
+def op_load(loading):
+    return list(filter(lambda op: loading == op.name,
+                       OPERATIONS))[0]
+
+def opimp_load(loading=None):
+    if loading is not None:
+        return list(filter(lambda imp: loading == imp.op.name,
+                           OPIMPS))[0]
+    return OPIMPS
 
 class TestListRepos(ReposTestCase):
 
@@ -117,18 +139,6 @@ class TestListRepos(ReposTestCase):
 
 class TestOperationsAll(ReposTestCase):
 
-    def _op_load(self, loading=None):
-        if loading is not None:
-            return list(filter(lambda op: loading == op.name,
-                               OPERATIONS))[0]
-        return OPERATIONS
-
-    def _opimp_load(self, loading=None):
-        if loading is not None:
-            return list(filter(lambda imp: loading == imp.op.name,
-                               OPIMPS))[0]
-        return OPIMPS
-
     async def test_run(self):
         self.repo_keys = {
             'add 40 and 2': 42,
@@ -143,8 +153,8 @@ class TestOperationsAll(ReposTestCase):
             async with source() as sctx:
                 for repo in self.repos:
                     await sctx.update(repo)
-        with patch.object(OperationImplementation, 'load', self._opimp_load), \
-                patch.object(Operation, 'load', self._op_load):
+        with patch.object(OperationImplementation, 'load', opimp_load), \
+                patch.object(Operation, 'load', op_load):
             results = await OperationsAll.cli('-sources', 'primary=json',
                     '-source-filename', self.temp_json_fileobj.name,
                     '-repo-def', 'calc_string',
@@ -162,7 +172,7 @@ class TestOperationsAll(ReposTestCase):
                 self.assertEqual(self.repo_keys[repo.src_url],
                                  results[repo.src_url])
 
-class TestOperationsRepo(TestOperationsAll):
+class TestOperationsRepo(ReposTestCase):
 
     async def test_run(self):
         test_key = 'multiply 42 and 10'
@@ -179,8 +189,8 @@ class TestOperationsRepo(TestOperationsAll):
             async with source() as sctx:
                 for repo in self.repos:
                     await sctx.update(repo)
-        with patch.object(OperationImplementation, 'load', self._opimp_load), \
-                patch.object(Operation, 'load', self._op_load):
+        with patch.object(OperationImplementation, 'load', opimp_load), \
+                patch.object(Operation, 'load', op_load):
             results = await OperationsRepo.cli('-sources', 'primary=json',
                     '-source-filename', self.temp_json_fileobj.name,
                     '-keys', test_key,
@@ -197,14 +207,9 @@ class TestOperationsRepo(TestOperationsAll):
 
 class TestEvaluateAll(ReposTestCase):
 
-    def _feature_load(self, loading=None):
-        if loading == 'fake':
-            return FakeFeature()
-        return [FakeFeature()]
-
     async def test_run(self):
         with patch.object(EvaluateAll, 'arg_features',
-                EvaluateRepo.arg_features.modify(type=self._feature_load)):
+                EvaluateRepo.arg_features.modify(type=feature_load)):
             results = await EvaluateAll.cli('-sources', 'primary=json',
                     '-source-filename', self.temp_json_fileobj.name,
                     '-features', 'fake')
@@ -221,7 +226,7 @@ class TestEvaluateRepo(TestEvaluateAll):
     async def test_run(self):
         subset = self.repos[:(int(len(self.repos) / 2))]
         with patch.object(EvaluateRepo, 'arg_features',
-                EvaluateRepo.arg_features.modify(type=self._feature_load)):
+                EvaluateRepo.arg_features.modify(type=feature_load)):
             subset_urls = list(map(lambda repo: repo.src_url, subset))
             results = await EvaluateRepo.cli('-sources', 'primary=json',
                     '-source-filename', self.temp_json_fileobj.name,
@@ -236,28 +241,69 @@ class TestEvaluateRepo(TestEvaluateAll):
                 self.assertEqual(float(repo.src_url),
                                  results[repo.src_url])
 
-class TestTrain(AsyncTestCase):
+class TestTrain(ReposTestCase):
 
     async def test_run(self):
-        await self.cli.run()
+        with patch.object(Train, 'arg_model',
+                    Train.arg_model.modify(type=model_load)), \
+                patch.object(Train, 'arg_features',
+                    Train.arg_features.modify(type=feature_load)):
+            await Train.cli('-sources', 'primary=json',
+                    '-source-filename', self.temp_json_fileobj.name,
+                    '-model', 'fake',
+                    '-classifications', 'misc',
+                    '-features', 'fake')
 
-class TestAccuracy(AsyncTestCase):
+class TestAccuracy(TestTrain):
 
     async def test_run(self):
-        self.assertEqual(1.0, await self.cli.run())
+        with patch.object(Accuracy, 'arg_model',
+                    Accuracy.arg_model.modify(type=model_load)), \
+                patch.object(Accuracy, 'arg_features',
+                    Accuracy.arg_features.modify(type=feature_load)):
+            result = await Accuracy.cli('-sources', 'primary=json',
+                    '-source-filename', self.temp_json_fileobj.name,
+                    '-model', 'fake',
+                    '-classifications', 'misc',
+                    '-features', 'fake')
+            self.assertEqual(result, 0.42)
 
 class TestPredictAll(ReposTestCase):
 
     async def test_run(self):
-        repos = {repo.src_url: repo async for repo in self.cli.run()}
-        self.assertEqual(len(repos), len(self.repos))
-        for repo in self.repos:
-            self.assertIn(repo.src_url, repos)
+        with patch.object(PredictAll, 'arg_model',
+                    PredictAll.arg_model.modify(type=model_load)), \
+                patch.object(PredictAll, 'arg_features',
+                    PredictAll.arg_features.modify(type=feature_load)):
+            results = await PredictAll.cli('-sources', 'primary=json',
+                    '-source-filename', self.temp_json_fileobj.name,
+                    '-model', 'fake',
+                    '-classifications', 'misc',
+                    '-features', 'fake')
+            results = {repo.src_url: \
+                       repo.prediction().confidence \
+                       for repo in results}
+            for repo in self.repos:
+                self.assertEqual(float(repo.src_url), results[repo.src_url])
 
 class TestPredictRepo(ReposTestCase):
 
     async def test_run(self):
-        repos = {repo.src_url: repo async for repo in self.cli.run()}
-        self.assertEqual(len(repos), len(self.subset))
-        for repo in self.subset:
-            self.assertIn(repo.src_url, repos)
+        subset = self.repos[:(int(len(self.repos) / 2))]
+        with patch.object(PredictRepo, 'arg_model',
+                    PredictRepo.arg_model.modify(type=model_load)), \
+                patch.object(PredictRepo, 'arg_features',
+                    PredictRepo.arg_features.modify(type=feature_load)):
+            subset_urls = list(map(lambda repo: repo.src_url, subset))
+            results = await PredictRepo.cli('-sources', 'primary=json',
+                    '-source-filename', self.temp_json_fileobj.name,
+                    '-model', 'fake',
+                    '-classifications', 'misc',
+                    '-features', 'fake',
+                    '-keys', *subset_urls)
+            self.assertEqual(len(results), len(subset))
+            results = {repo.src_url: \
+                       repo.prediction().confidence \
+                       for repo in results}
+            for repo in subset:
+                self.assertEqual(float(repo.src_url), results[repo.src_url])
