@@ -1,5 +1,7 @@
 import os
+import sys
 import ast
+import subprocess
 from io import open
 
 from setuptools import find_packages, setup
@@ -21,6 +23,18 @@ INSTALL_REQUIRES = [
     # 'rpmfile>=1.0.0',
     'pyelftools>=0.25',
     ]
+
+git_rpmfile = 'git+https://github.com/pdxjohnny/rpmfile@subfile_close'
+
+try:
+    import rpmfile
+except (ModuleNotFoundError, ImportError):
+    if '--user' in sys.argv:
+        subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade',
+            '--user', git_rpmfile], check=False)
+    else:
+        subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade',
+            git_rpmfile], check=False)
 
 setup(
     name='dffml_feature_codesec',

@@ -353,6 +353,8 @@ class MemoryOperationNetworkContext(BaseOperationNetworkContext):
             # the operation's inputs to verify we are only looking at the subset
             if input_set is not None:
                 if not [item for item in operation.inputs.values() \
+                        if item in input_definitions] \
+                        and not [item for item in operation.conditions \
                         if item in input_definitions]:
                     continue
             yield operation
@@ -885,10 +887,38 @@ class MemoryOrchestrator(BaseOrchestrator):
         lock_network = cls.config_get(config, above, 'lock', 'network')
         rchecker = cls.config_get(config, above, 'rchecker')
         above = cls.add_label(*above)
-        return BaseOrchestratorConfig(
+        return MemoryOrchestratorConfig(
             input_network=input_network.withconfig(config, *above),
             operation_network=operation_network.withconfig(config, *above),
             lock_network=lock_network.withconfig(config, *above),
             opimp_network=opimp_network.withconfig(config, *above),
             rchecker=rchecker.withconfig(config, *above)
             )
+
+    @classmethod
+    def basic_config(cls,
+                     operations: List[Operation],
+                     opimps: List[OperationImplementation]):
+        '''
+        Creates a Memory Orchestrator which will be backed by other objects
+        within dffml.df.memory.
+        '''
+        return MemoryOrchestrator(MemoryOrchestratorConfig(
+            input_network = MemoryInputNetwork(BaseConfig()),
+            operation_network = MemoryOperationNetwork(
+                MemoryOperationNetworkConfig(
+                    operations=operations
+                )
+            ),
+            lock_network = MemoryLockNetwork(BaseConfig()),
+            rchecker = MemoryRedundancyChecker(
+                BaseRedundancyCheckerConfig(
+                    key_value_store=MemoryKeyValueStore(BaseConfig())
+                )
+            ),
+            opimp_network = MemoryOperationImplementationNetwork(
+                MemoryOperationImplementationNetworkConfig(
+                    operations=opimps
+                )
+            )
+        ))
