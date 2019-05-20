@@ -84,4 +84,3 @@ class Model(BaseDataFlowFacilitatorObject):
         return ModelConfig(
             directory=cls.config_get(config, above, 'directory')
         )
-
