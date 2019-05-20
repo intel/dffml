@@ -286,54 +286,48 @@ class MLCMD(ModelCMD, FeaturesCMD, SourcesCMD):
     Commands which use models share many similar arguments.
     '''
 
-    arg_classifications = Arg('-classifications', nargs='+', required=True,
-            default=[])
+    arg_classifications = Arg('-classifications', nargs='+', required=True)
 
 class Train(MLCMD):
     '''Train a model on data from given sources'''
 
-    arg_steps = Arg('-steps', help='Number of steps', required=True, type=int,
-            default=5000)
-    arg_num_epochs = Arg('-num_epochs', help='Number of epochs', required=True,
-            type=int, default=30)
-
     async def run(self):
-        if not self.model_dir is None and not os.path.isdir(self.model_dir):
-            os.makedirs(self.model_dir)
-        async with self.sources as sources, self.features as features:
-            async with sources() as sctx:
-                return await self.model.train(sctx, features,
-                        self.classifications, self.steps, self.num_epochs)
+        async with self.sources as sources, self.features as features, \
+                self.model as model:
+            async with sources() as sctx, model() as mctx:
+                return await mctx.train(sctx, features, self.classifications)
 
 class Accuracy(MLCMD):
     '''Assess model accuracy on data from given sources'''
 
     async def run(self):
-        async with self.sources as sources, self.features as features:
-            return float(await self.model.accuracy(sources, features,
-                self.classifications))
+        async with self.sources as sources, self.features as features, \
+                self.model as model:
+            async with sources() as sctx, model() as mctx:
+                return float(await mctx.accuracy(sources, features,
+                    self.classifications))
 
 class PredictAll(EvaluateAll, MLCMD):
     '''Predicts for all sources'''
 
-    async def predict(self, sources, features, repos):
-        async with sources() as sctx:
+    async def predict(self, model, sources, features, repos):
+        async with sources() as sctx, model() as mctx:
             async for repo, classification, confidence in \
-                    self.model.predict(repos, features, self.classifications):
+                    mctx.predict(repos, features, self.classifications):
                 repo.predicted(classification, confidence)
                 yield repo
                 if self.update:
                     await sctx.update(repo)
 
     async def run(self):
-        async with self.sources as sources, self.features as features:
-            async for repo in self.predict(sources, features,
+        async with self.sources as sources, self.features as features, \
+                self.model as model:
+            async for repo in self.predict(model, sources, features,
                     self.evaluate(sources, features)):
                 yield repo
 
 class PredictRepo(PredictAll, EvaluateRepo):
     '''Predictions for individual repos'''
-    pass
 
 class Predict(CMD):
     '''Evaluate features against repos and produce a prediction'''

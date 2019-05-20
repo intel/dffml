@@ -102,23 +102,6 @@ class TestParseActions(unittest.TestCase):
         self.assertEqual(namespace.inputs[0],
                          ('get_single', 'result', 'string_calculator',))
 
-class TestArg(unittest.TestCase):
-
-    def test_init(self):
-        arg = Arg('-test', key='value')
-        self.assertEqual(arg.name, '-test')
-        self.assertIn('key', arg)
-        self.assertEqual(arg['key'], 'value')
-
-    def test_modify(self):
-        arg = Arg('-test', key='value')
-        first = arg.modify(name='-first')
-        second = arg.modify(key='new_value')
-        self.assertEqual(arg.name, '-test')
-        self.assertEqual(first.name, '-first')
-        self.assertEqual(second.name, '-test')
-        self.assertEqual(second['key'], 'new_value')
-
 class TestJSONEncoder(unittest.TestCase):
 
     def test_default(self):
@@ -217,6 +200,21 @@ class TestCMD(AsyncTestCase):
 
 class TestArg(unittest.TestCase):
 
+    def test_init(self):
+        arg = Arg('-test', key='value')
+        self.assertEqual(arg.name, '-test')
+        self.assertIn('key', arg)
+        self.assertEqual(arg['key'], 'value')
+
+    def test_modify(self):
+        arg = Arg('-test', key='value')
+        first = arg.modify(name='-first')
+        second = arg.modify(key='new_value')
+        self.assertEqual(arg.name, '-test')
+        self.assertEqual(first.name, '-first')
+        self.assertEqual(second.name, '-test')
+        self.assertEqual(second['key'], 'new_value')
+
     def test_parse_unknown(self):
         parsed = parse_unknown(
                 '-rchecker-memory-kvstore', 'withargs',
@@ -301,10 +299,3 @@ class TestFeaturesCMD(unittest.TestCase):
     def test_set_timeout(self):
         cmd = FeaturesCMD(timeout=5, features=Features())
         self.assertEqual(cmd.features.timeout, 5)
-
-class TestModelCMD(unittest.TestCase):
-
-    def test_set_model_dir(self):
-        with patch.multiple(Model, __abstractmethods__=set()):
-            cmd = ModelCMD(model_dir='feed', model=Model)
-            self.assertEqual(cmd.model.model_dir, 'feed')
