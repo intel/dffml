@@ -7,22 +7,19 @@ import abc
 from typing import AsyncIterator, Tuple, Any, List, Optional
 
 from dffml.repo import Repo
-from dffml.source import Sources
+from dffml.source.source import Sources
 from dffml.feature import Features
 from dffml.accuracy import Accuracy
-from dffml.model import Model
+from dffml.model.model import ModelContext, Model
+from dffml.util.entrypoint import entry_point
 
-class Misc(Model):
+class MiscContext(ModelContext):
     '''
     Model wraping model_name API
     '''
 
-    def __init__(self, model_dir: Optional[str] = None) -> None:
-        super().__init__()
-        self.model_dir = model_dir
-
     async def train(self, sources: Sources, features: Features,
-            classifications: List[Any], steps: int, num_epochs: int):
+            classifications: List[Any]):
         '''
         Train using repos as the data to learn from.
         '''
@@ -45,3 +42,8 @@ class Misc(Model):
         '''
         async for repo in repos:
             yield repo, classifications[0], 1.0
+
+@entry_point('misc')
+class Misc(Model):
+
+    CONTEXT = MiscContext
