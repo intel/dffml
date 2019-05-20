@@ -18,17 +18,35 @@ from datetime import datetime
 from typing import AsyncIterator, Dict, List, Tuple, Any, NamedTuple, Union, \
         get_type_hints, NewType, Optional, Set, Iterator
 
-from dffml.df import *
-from dffml.operation.output import GroupBy
-from dffml_feature_git.feature.operations import *
+from dffml.df.types import Definition, \
+                           Input
+from dffml.df.linker import Linker
+from dffml.df.base import op, \
+                          operation_in, \
+                          opimp_in, \
+                          BaseConfig, \
+                          BaseRedundancyCheckerConfig, \
+                          StringInputSetContext
+from dffml.df.memory import MemoryInputNetwork, \
+                            MemoryOperationNetwork, \
+                            MemoryOperationNetworkConfig, \
+                            MemoryLockNetwork, \
+                            MemoryRedundancyChecker, \
+                            MemoryKeyValueStore, \
+                            MemoryOperationImplementationNetwork, \
+                            MemoryOperationImplementationNetworkConfig, \
+                            MemoryOrchestratorConfig, \
+                            MemoryOrchestrator, \
+                            MemoryInputSet, \
+                            MemoryInputSetConfig
 
+from dffml.operation.output import GroupBy
 from dffml.util.asynctestcase import AsyncTestCase
 
-OPWRAPED = opwraped_in(sys.modules[__name__])
-OPERATIONS = operation_in(sys.modules[__name__]) + \
-             list(map(lambda item: item.op, OPWRAPED))
-OPIMPS = opimp_in(sys.modules[__name__]) + \
-         list(map(lambda item: item.imp, OPWRAPED))
+from dffml_feature_git.feature.operations import *
+
+OPERATIONS = operation_in(sys.modules[__name__])
+OPIMPS = opimp_in(sys.modules[__name__])
 
 class TestRunner(AsyncTestCase):
 
@@ -91,36 +109,17 @@ class TestRunner(AsyncTestCase):
             definition=definitions['group_by_spec'],
             parents=False)
 
-        opimps = {imp.op.name: imp \
-                  for imp in \
-                  [Imp(BaseConfig()) for Imp in OPIMPS]}
-
-        dff = DataFlowFacilitator(
-            input_network = MemoryInputNetwork(BaseConfig()),
-            operation_network = MemoryOperationNetwork(
-                MemoryOperationNetworkConfig(
-                    operations=list(operations.values())
-                )
-            ),
-            lock_network = MemoryLockNetwork(BaseConfig()),
-            rchecker = MemoryRedundancyChecker(
-                BaseRedundancyCheckerConfig(
-                    key_value_store=MemoryKeyValueStore(BaseConfig())
-                )
-            ),
-            opimp_network = MemoryOperationImplementationNetwork(
-                MemoryOperationImplementationNetworkConfig(
-                    operations=opimps
-                )
-            ),
-            orchestrator = MemoryOrchestrator(BaseConfig()))
-
         # Orchestrate the running of these operations
-        async with dff as dff:
-            async with dff() as dffctx:
+        async with MemoryOrchestrator.basic_config(
+                    operations=OPERATIONS,
+                    opimps={imp.op.name: imp \
+                                for imp in \
+                                [Imp(BaseConfig()) for Imp in OPIMPS]}
+                ) as orchestrator:
+            async with orchestrator() as octx:
                 # Add our inputs to the input network with the context being the URL
                 for url in urls:
-                    await dffctx.ictx.add(
+                    await octx.ictx.add(
                         MemoryInputSet(
                             MemoryInputSetConfig(
                                 ctx=StringInputSetContext(url.value),
@@ -130,10 +129,5 @@ class TestRunner(AsyncTestCase):
                             )
                         )
                     )
-                async for ctx, results in dffctx.evaluate():
-                    print()
-                    print((await ctx.handle()).as_string(),
-                          json.dumps(results, sort_keys=True,
-                                     indent=4, separators=(',', ':')))
-                    print()
+                async for ctx, results in octx.run_operations(strict=True):
                     self.assertTrue(results)

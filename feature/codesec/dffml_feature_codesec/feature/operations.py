@@ -17,8 +17,6 @@ from dffml.df.base import op, \
                           OperationImplementationContext, \
                           OperationImplementation
 
-from dffml_feature_git.util.proc import check_output
-
 # pylint: disable=no-name-in-module
 from .definitions import URL, \
     URLBytes, \
@@ -60,17 +58,12 @@ class URLToURLBytesContext(OperationImplementationContext):
 class URLToURLBytes(OperationImplementation):
 
     op = url_to_urlbytes
+    CONTEXT = URLToURLBytesContext
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.client = None
         self.session = None
-
-    def __call__(self,
-                 ctx: 'BaseInputSetContext',
-                 ictx: 'BaseInputNetworkContext') \
-            -> URLToURLBytesContext:
-        return URLToURLBytesContext(self, ctx, ictx)
 
     async def __aenter__(self) -> 'OperationImplementationContext':
         self.client = aiohttp.ClientSession(trust_env=True)
@@ -131,59 +124,23 @@ async def files_in_rpm(rpm: RPMFile):
         'files': list(map(lambda rpminfo: rpminfo.name, rpm.getmembers()))
     }
 
-is_binary_pie = Operation(
-    name='is_binary_pie',
-    inputs={
+@op(inputs={
         'rpm': RPMObject,
         'filename': rpm_filename
     },
     outputs={
         'is_pie': binary_is_PIE
-    },
-    conditions=[])
-
-class IsBinaryPIEContext(OperationImplementationContext):
-
-    async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
-        rpm: RPMfile = inputs['rpm']
-        filename: str = inputs['filename']
-        with rpm.extractfile(filename) as handle:
-            sig = handle.read(4)
-            if len(sig) != 4 or sig != b'\x7fELF':
-                return
-            handle.seek(0)
-            return {
-                'is_pie': bool(describe_e_type(ELFFile(handle).header.e_type)
-                               .split()[0] == 'DYN')
-            }
-
-class IsBinaryPIE(OperationImplementation):
-
-    op = is_binary_pie
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.loop = None
-        self.pool = None
-        self.__pool = None
-
-    def __call__(self,
-                 ctx: 'BaseInputSetContext',
-                 ictx: 'BaseInputNetworkContext') \
-            -> IsBinaryPIEContext:
-        return IsBinaryPIEContext(self, ctx, ictx)
-
-    async def __aenter__(self) -> 'OperationImplementationContext':
-        self.loop = asyncio.get_event_loop()
-        self.pool = concurrent.futures.ThreadPoolExecutor()
-        self.__pool = self.pool.__enter__()
-        return self
-
-    async def __aexit__(self, exc_type, exc_value, traceback):
-        self.__pool.__exit__(exc_type, exc_value, traceback)
-        self.__pool = None
-        self.pool = None
-        self.loop = None
+    })
+async def is_binary_pie(rpm: RPMFile, filename: str) -> Dict[str, Any]:
+    with rpm.extractfile(filename) as handle:
+        sig = handle.read(4)
+        if len(sig) != 4 or sig != b'\x7fELF':
+            return
+        handle.seek(0)
+        return {
+            'is_pie': bool(describe_e_type(ELFFile(handle).header.e_type)
+                           .split()[0] == 'DYN')
+        }
 
 @op(inputs={
         'rpm': RPMObject
