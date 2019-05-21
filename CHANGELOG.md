@@ -12,7 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation on the Data Flow Facilitator subsystem
 - codesec plugin containing operations which gather security related metrics on
   code and binaries.
-- auth plugin containing operations such as password hashing
+- auth plugin containing an scrypt operation as an example of thread pool usage.
+### Changed
+- Standardized the API for most classes in DFFML via inheritance from dffml.base
+- Configuration of classes is now done via the args() and config() methods
 ### Fixed
 - Corrected maxsplit in util.cli.parser
 - Check that dtype is a class in Tensorlfow DNN
