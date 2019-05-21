@@ -1,24 +1,16 @@
-import io
 import os
-import sys
 import hashlib
 import asyncio
 import concurrent.futures
-from typing import Dict, Any, NamedTuple
+from typing import Dict, Any
 
-from dffml.df.types import Stage, \
-                           Operation
-from dffml.df.base import op, \
-                          OperationImplementationContext, \
+from dffml.df.types import Operation
+from dffml.df.base import OperationImplementationContext, \
                           OperationImplementation
-
-from dffml_feature_git.util.proc import check_output
 
 # pylint: disable=no-name-in-module
 from .definitions import UnhashedPassword, \
                          ScryptPassword
-
-from .log import LOGGER
 
 scrypt = Operation(
     name='scrypt',
@@ -108,18 +100,13 @@ class ScryptContext(OperationImplementationContext):
 class Scrypt(OperationImplementation):
 
     op = scrypt
+    CONTEXT = ScryptContext
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.loop = None
         self.pool = None
         self.__pool = None
-
-    def __call__(self,
-                 ctx: 'BaseInputSetContext',
-                 ictx: 'BaseInputNetworkContext') \
-            -> ScryptContext:
-        return ScryptContext(self, ctx, ictx)
 
     async def __aenter__(self) -> 'OperationImplementationContext':
         self.loop = asyncio.get_event_loop()
