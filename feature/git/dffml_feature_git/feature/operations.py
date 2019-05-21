@@ -32,9 +32,8 @@ from dffml_feature_git.util.proc import check_output, create, stop, inpath
 
 from .log import LOGGER
 
-if sys.platform == 'win32':
-    loop = asyncio.ProactorEventLoop()
-    asyncio.set_event_loop(loop)
+if sys.platform == 'win32': # pragma: no cov
+    asyncio.set_event_loop(asyncio.ProactorEventLoop())
 
 TIME_FORMAT_MINTUE_RESOLUTION = '%Y-%m-%d %H:%M'
 
