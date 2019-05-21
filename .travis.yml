@@ -23,30 +23,12 @@ env:
 cache:
   directories:
     - /home/travis/.cache/
-    - /home/travis/.cargo/
     - /home/travis/.local/
 before_install:
 - mkdir -p /home/travis/.cache/
+- mkdir -p /home/travis/.local/bin/
 - pip install coverage codecov
-- |
-  if [ ! -f "$HOME/.cargo/bin/tokei" ]; then
-    curl https://sh.rustup.rs -sSf | sh -s -- -y
-    source "$HOME/.cargo/env"
-    export tokeisrc=/home/travis/.cache/tokeisrc/
-    mkdir -p $tokeisrc
-    git clone https://github.com/Aaronepower/tokei.git --depth 1 $tokeisrc
-    cd $tokeisrc
-    cargo build --release
-    cd -
-    mv $tokeisrc/target/release/tokei "$HOME/.cargo/bin/tokei"
-  fi
-- |
-  export clocpath="$HOME/.cargo/bin/cloc"
-  mkdir -p $(dirname $clocpath)
-  if [ ! -f "$clocpath" ]; then
-    curl -o $clocpath -sSL https://github.com/AlDanial/cloc/raw/1.80/cloc
-  fi
-- ''
+- curl -sSL https://github.com/XAMPPRocky/tokei/releases/download/v9.1.1/tokei-v9.1.1-x86_64-unknown-linux-gnu.tar.gz | tar xvz -C "$HOME/.local/bin/"
 script:
 - ./.ci/run.sh
 after_success:
