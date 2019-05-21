@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
+if [ -d "$HOME/.local/bin" ]; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
 function run_plugin() {
   python setup.py install
   cd "$PLUGIN"
