@@ -8,14 +8,9 @@ Git features scrape data from Git repositories.
 
 ## Usage
 
-Here's how you scrape data on the number of commits using the `commit` feature.
-
-```console
-dffml evaluate repo -keys https://github.com/intel/dffml -features commits \
-  -log debug
-```
-
-## Data Flow Usage
+Scrape lines of comments to lines of code ratio, diversity of authorship, number
+of commits, number of authors, and frequency of release data for a given Git
+repo.
 
 ```console
 export OPIMPS="group_by quarters_back_to_date check_if_valid_git_repository_URL clone_git_repo git_repo_default_branch git_repo_checkout git_repo_commit_from_date git_repo_author_lines_for_dates work git_repo_release lines_of_code_by_language lines_of_code_to_comments git_commits count_authors cleanup_git_repo"
@@ -30,8 +25,8 @@ dffml operations repo \
     group_by.commits=commits \
     group_by.authors=authors \
     group_by.relase=release \
-  -ops $OPIMPS \
-  -opimpn-memory-opimps $OPIMPS \
+  -dff-memory-operation-network-ops $OPIMPS \
+  -dff-memory-opimp-network-opimps $OPIMPS \
   -inputs \
     {0,1,2,3,4,5,6,7,8,9}=quarter \
     "'2019-03-29 13:24'=quarter_start_date" \
