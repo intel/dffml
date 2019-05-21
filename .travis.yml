@@ -11,7 +11,8 @@ addons:
 env:
   global:
   - LOGGING=debug
-  - secure: HFt5s9J80XaUoIxfXRTd7ysJRQXX6We38XZ8z6ex01OqAGix027obDmarWzoi917o7IOtsLybn2gX+4oYvlENv45n52FoX/A1dmfA/JNfixZ5zEu+KsCnT3xynUgIvkxmiTUTm+BjpS1uvFBYSOLMyy2g3PArQ6te5Mgxxnks1rogNdhJlB0mp1J1zif8jL5wdjg0i6mSNsNKwPt/h1NnBC6spwhqSySFxUUNpRJjgwwtGalC2/MogA/fkOGmbG+ihu/5MR7rq9p91EyUtfqhFB1deKn7fkMWcvbOQ1aPjnZB16nPp5L8rjnmUgKRu1WXS6kaNP0ZMz62sjzJmVUTpdTdCAabRf4EAcK3WXGxYl2sqnp8U5S1UhkFlWSvAOESF8BAMenunYnV6GufT0k/JOulTPeVrw6EBlKHBGVkeUiNQxOVek4k38jvZrOM8FbfrYtNCGoqTD7IPEV2Ipib03oee1g5zlUoZMFKbpZMnmd85R1XaOC86bxh7obIHUxGUs5kvnUFpCOcQf8rdF4N+QRKoo9XBC2sulvUCbTrl4N+OyZEEvbnvHNpPBW+nwyXyM+liRaxArvfQFznrUswSiGCj+hm6vvnSwy0y0GnfmwUNz4pTPK1Nu/dOfqh9BmPWd63yb33Y2fI62pHgTZ2cZ5h6zIgWTWYtv9C2RtdYU=
+  - secure: "HFt5s9J80XaUoIxfXRTd7ysJRQXX6We38XZ8z6ex01OqAGix027obDmarWzoi917o7IOtsLybn2gX+4oYvlENv45n52FoX/A1dmfA/JNfixZ5zEu+KsCnT3xynUgIvkxmiTUTm+BjpS1uvFBYSOLMyy2g3PArQ6te5Mgxxnks1rogNdhJlB0mp1J1zif8jL5wdjg0i6mSNsNKwPt/h1NnBC6spwhqSySFxUUNpRJjgwwtGalC2/MogA/fkOGmbG+ihu/5MR7rq9p91EyUtfqhFB1deKn7fkMWcvbOQ1aPjnZB16nPp5L8rjnmUgKRu1WXS6kaNP0ZMz62sjzJmVUTpdTdCAabRf4EAcK3WXGxYl2sqnp8U5S1UhkFlWSvAOESF8BAMenunYnV6GufT0k/JOulTPeVrw6EBlKHBGVkeUiNQxOVek4k38jvZrOM8FbfrYtNCGoqTD7IPEV2Ipib03oee1g5zlUoZMFKbpZMnmd85R1XaOC86bxh7obIHUxGUs5kvnUFpCOcQf8rdF4N+QRKoo9XBC2sulvUCbTrl4N+OyZEEvbnvHNpPBW+nwyXyM+liRaxArvfQFznrUswSiGCj+hm6vvnSwy0y0GnfmwUNz4pTPK1Nu/dOfqh9BmPWd63yb33Y2fI62pHgTZ2cZ5h6zIgWTWYtv9C2RtdYU="
+  - secure: "YM5Balt2JpwgJG5eAkMB94LmTmrJUVMeFM10n1bajBuaij9OIIPsJd9iI7fcByAWX7EgKNcvH+1nGfXSBeWPszJyU4EaEWa9kofbHzwbc2Vu59dU1WXY7oM5ShuuoDXWwgIrrLMZrnJbHEETU64UBvZvc2pVLaSObYOSkKchYb7UDpJ4gnlJHF6NCzVHbnzT9jVK6Qk+opSIFwxTZEHyK8mroe4NnJEFJAcS0J5jscPdkHvnXBwAWCCUQBlrRpggQ6Oa1vhNS0GFIfNtpTYBOJzpt/KzrzH5Rq4A5hdySSRbgLeF3Kj9UxqtlPzvhRFKgnsSpO2XL17ydrYZlvpULnYI5LpujPpGBB97SNiCakKnLt8spzkNvvvxR3iCehjD8OqrZkW8A0nW5Ov2/fnNXD9W0pzk8+gSt3J8GoNdZoejF5+X1KVx517u4KEq00s1Yh09k618yc4YNHDHoqnXgu3LhfuXI7tOPpHNj2ezl6TznUhDeA3xdixMs3JCCHdALryouPKdFsrcbwLub7NVvBZenjWKVwKTjkTEo826K2Gw8SA1jTNx4+KbcGwBJBSfI9hZ99CD5Er45JfOIYAmkiyZ28kx8VEeWPI+CgAS72mkdl4SG5U/DsZnjwKtqmD0CpMpOhREFUXD5nFuco0TnC4GH5zCODBX7Km1Ec6j0Yg="
   matrix:
   - PLUGIN=.
   - PLUGIN=model/tensorflow
@@ -27,12 +28,22 @@ cache:
 before_install:
 - mkdir -p /home/travis/.cache/
 - mkdir -p /home/travis/.local/bin/
-- pip install coverage codecov
+- pip install coverage codecov sphinx
 - curl -sSL https://github.com/XAMPPRocky/tokei/releases/download/v9.1.1/tokei-v9.1.1-x86_64-unknown-linux-gnu.tar.gz | tar xvz -C "$HOME/.local/bin/"
 script:
 - ./.ci/run.sh
+- sphinx-build -b html docs pages
+- cp -r docs/images pages/images
 after_success:
 - |
   if [ "x$PLUGIN" = "x." ]; then
       codecov
   fi
+deploy:
+  provider: pages
+  local_dir: pages/
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  keep_history: false
+  on:
+    master
