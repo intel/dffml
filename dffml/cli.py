@@ -134,13 +134,14 @@ class Merge(CMD):
     Merge repo data between sources
     '''
 
-    arg_dest = Arg(name='dest', help='Sources merge repos into',
+    arg_dest = Arg('dest', help='Sources merge repos into',
             type=BaseSource.load)
     arg_src = Arg('src', help='Sources to pull repos from',
             type=BaseSource.load)
 
     async def run(self):
-        async with self.src as src, self.dest as dest:
+        async with self.src.withconfig(self.extra_config) as src, \
+                self.dest.withconfig(self.extra_config) as dest:
             async with self.src() as sctx, dest() as dctx:
                 async for repo in sctx.repos():
                     repo.merge(await dctx.repo(repo.src_url))
@@ -160,6 +161,10 @@ class OperationsCMD(OrchestratorCMD, SourcesCMD):
 class OperationsAll(OperationsCMD):
     '''Operations all repos in sources'''
 
+    async def repos(self, sctx):
+        async for repo in sctx.repos():
+            yield repo
+
     async def run_operations(self, dff, sources):
         # Orchestrate the running of these operations
         async with dff() as dffctx, sources() as sctx:
@@ -171,7 +176,7 @@ class OperationsAll(OperationsCMD):
 
             # Add our inputs to the input network with the context being the
             # repo src_url
-            async for repo in sctx.repos():
+            async for repo in self.repos(sctx):
                 inputs = []
                 for value, def_name in self.inputs:
                     inputs.append(Input(value=value,
@@ -225,6 +230,10 @@ class OperationsAll(OperationsCMD):
 
 class OperationsRepo(OperationsAll, KeysCMD):
     '''Operations features on individual repos'''
+
+    async def repos(self, sctx):
+        for src_url in self.keys:
+            yield await sctx.repo(src_url)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
