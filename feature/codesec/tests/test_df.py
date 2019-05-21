@@ -1,5 +1,3 @@
-import json
-
 from dffml.df.types import Definition, \
                            Input
 from dffml.df.linker import Linker

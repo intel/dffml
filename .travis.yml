@@ -17,6 +17,7 @@ env:
   - PLUGIN=model/tensorflow
   - PLUGIN=feature/git
   - PLUGIN=feature/codesec
+  - PLUGIN=feature/auth
   - CHANGELOG=1
   - WHITESPACE=1
 cache:
