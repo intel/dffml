@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Git Repo Maintenance Tracker</title>
+    <script type="text/javascript" src="main.js"></script>
+    <link rel="stylesheet" type="text/css" href="theme.css">
+  </head>
+  <body>
+    <h1>Git Repo Maintenance Tracker</h1>
+
+    <hr />
+
+    <div>
+      <p>Submit or change the maintenance status of a repo.</p>
+      <input id="URL" placeholder="git://server.git/repo"></input>
+      <button id="maintained" class="good">Maintained</button>
+      <button id="unmaintained" class="dangerous">Unmaintained</button>
+    </div>
+
+    <br />
+
+    <div>
+      <table id="table" style="width:100%">
+      </table>
+    </div>
+
+  </body>
+</html>

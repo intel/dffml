@@ -328,10 +328,14 @@ async def lines_of_code_by_language(repo: Dict[str, str]):
         },
 )
 async def lines_of_code_to_comments(langs: Dict[str, Dict[str, int]]):
+    try:
+        code_to_comment_ratio = int(100 * langs['sum']['comment'] / \
+                (langs['sum']['comment'] + langs['sum']['code']))
+    except ZeroDivisionError:
+        code_to_comment_ratio = 0
     return {
-            'code_to_comment_ratio': int(100 * langs['sum']['comment'] / \
-                    (langs['sum']['comment'] + langs['sum']['code']))
-            }
+        'code_to_comment_ratio': code_to_comment_ratio
+        }
 
 @op(inputs={
         'repo': git_repository,
