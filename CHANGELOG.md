@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Standardized the API for most classes in DFFML via inheritance from dffml.base
 - Configuration of classes is now done via the args() and config() methods
+- Documentation is now generated using Sphinx
 ### Fixed
 - Corrected maxsplit in util.cli.parser
 - Check that dtype is a class in Tensorlfow DNN
