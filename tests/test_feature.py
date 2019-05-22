@@ -104,6 +104,19 @@ class TestFeature(AsyncTestCase):
     async def test_default_applicable(self):
         self.assertEqual(await self.feature.applicable(Data('test')), True)
 
+    def test_load_def(self):
+        feature = Feature.load_def('test', 'float', 10)
+        self.assertEqual(feature.NAME, 'test')
+        self.assertEqual(feature.dtype(), float)
+        self.assertEqual(feature.length(), 10)
+
+    def test_convert_dtype(self):
+        self.assertEqual(Feature.convert_dtype('float'), float)
+
+    def test_convert_dtype_invalid(self):
+        with self.assertRaisesRegex(TypeError, 'Failed to convert'):
+            Feature.convert_dtype('not a python data type')
+
 class TestDefFeature(AsyncTestCase):
 
     def test_deffeature(self):
@@ -163,27 +176,3 @@ class TestFeatures(AsyncTestCase):
             self.assertIn(progress.NAME, results)
             self.assertEqual(len(results), 1)
             self.assertEqual(results[progress.NAME], True)
-
-    def test_load_def(self):
-        feature = Features.load_def('test', 'float', 10)
-        self.assertEqual(feature.NAME, 'test')
-        self.assertEqual(feature.dtype(), float)
-        self.assertEqual(feature.length(), 10)
-
-    def test_load_defs(self):
-        no_def, (one, two) = Features.load_defs('na', 'def:one:float:10',
-                                               'def:two:bool:1')
-        self.assertEqual(no_def, ['na'])
-        self.assertEqual(one.NAME, 'one')
-        self.assertEqual(one.dtype(), float)
-        self.assertEqual(one.length(), 10)
-        self.assertEqual(two.NAME, 'two')
-        self.assertEqual(two.dtype(), bool)
-        self.assertEqual(two.length(), 1)
-
-    def test_convert_dtype(self):
-        self.assertEqual(Features.convert_dtype('float'), float)
-
-    def test_convert_dtype_invalid(self):
-        with self.assertRaisesRegex(TypeError, 'Failed to convert'):
-            Features.convert_dtype('not a python data type')

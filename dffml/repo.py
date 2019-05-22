@@ -7,6 +7,7 @@ import os
 from datetime import datetime
 from typing import Optional, List, Dict, Any, AsyncIterator
 
+from .util.data import merge
 from .log import LOGGER
 
 LOGGER = LOGGER.getChild('repo')
@@ -77,7 +78,9 @@ class RepoData(object):
 
     def dict(self):
         data = {key: getattr(self, key, []) for key in self.EXPORTED \
-                if len(getattr(self, key, []))}
+                if not isinstance(getattr(self, key, {}), dict) or \
+                (isinstance(getattr(self, key, {}), dict) and \
+                getattr(self, key, {}))}
         # Do not report if there has been no change since instantiation to
         # a default time value
         if self.last_updated != self.last_updated_default:
@@ -136,7 +139,7 @@ class Repo(object):
 
     def merge(self, repo: 'Repo'):
         data = self.data.dict()
-        data.update(repo.data.dict())
+        merge(data, repo.data.dict())
         self.data = self.REPO_DATA(**data)
         self.extra.update(repo.extra) # type: ignore
 

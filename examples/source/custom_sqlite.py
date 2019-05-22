@@ -117,6 +117,6 @@ class CustomSQLiteSource(BaseSource):
 
     @classmethod
     def config(cls, config, *above):
-        return SQLiteSourceConfig(
+        return CustomSQLiteSourceConfig(
             filename=cls.config_get(config, above, 'filename'),
             )

@@ -212,6 +212,23 @@ class Feature(abc.ABC, Entrypoint):
         '''
         pass
 
+    @classmethod
+    def load(cls, loading=None):
+        if loading is not None and loading.startswith('def:'):
+            return cls.load_def(*loading.replace('def:', '').split(':'))
+        return super().load(loading)
+
+    @classmethod
+    def load_def(cls, name: str, dtype: str, length: str):
+        return DefFeature(name, cls.convert_dtype(dtype), int(length))
+
+    @classmethod
+    def convert_dtype(cls, dtype: str):
+        found = pydoc.locate(dtype)
+        if found is None:
+            raise TypeError('Failed to convert_dtype %r' % (dtype,))
+        return found
+
     async def __aenter__(self):
         await self.open()
         # TODO Context management
@@ -372,46 +389,6 @@ class Features(list, Monitor):
     async def submit(self, src: str):
         return await super().start(partial(self.evaluate, src), src,
                 mktask=self.mktask)
-
-    @classmethod
-    def load(cls, *these: str):
-        '''
-        Loads all installed loading and returns them as a list. Sources to be
-        loaded should be registered to ENTRY_POINT via setuptools.
-        '''
-        these, loading_classes = cls.load_defs(*these)
-        for i in pkg_resources.iter_entry_points(Feature.ENTRY_POINT):
-            loaded = i.load()
-            if issubclass(loaded, Feature) and loaded.NAME in these:
-                loading_classes.append(loaded())
-        self = cls(*loading_classes)
-        for name in these:
-            if not name in self.names():
-                raise KeyError('%s was not found in (%s)' % \
-                        (repr(name), ', '.join(map(str, loading_classes))))
-        if not self.names():
-            raise KeyError('No features were loaded')
-        return self
-
-    @classmethod
-    def load_defs(cls, *args: str):
-        defs = []
-        no_def = [arg for arg in args if not arg.startswith('def:')]
-        for arg in args:
-            if arg.startswith('def:'):
-                defs.append(cls.load_def(*arg.replace('def:', '').split(':')))
-        return no_def, defs
-
-    @classmethod
-    def load_def(cls, name: str, dtype: str, length: str):
-        return DefFeature(name, cls.convert_dtype(dtype), int(length))
-
-    @classmethod
-    def convert_dtype(cls, dtype: str):
-        found = pydoc.locate(dtype)
-        if found is None:
-            raise TypeError('Failed to convert_dtype %r' % (dtype,))
-        return found
 
     async def __aenter__(self):
         self._stack = AsyncExitStack()

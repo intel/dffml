@@ -73,7 +73,7 @@ setup(
             'urlbytes_to_tarfile = dffml_feature_codesec.feature.operations:urlbytes_to_tarfile.op',
             'urlbytes_to_rpmfile = dffml_feature_codesec.feature.operations:urlbytes_to_rpmfile.op',
             'files_in_rpm = dffml_feature_codesec.feature.operations:files_in_rpm.op',
-            'is_binary_pie = dffml_feature_codesec.feature.operations:is_binary_pie',
+            'is_binary_pie = dffml_feature_codesec.feature.operations:is_binary_pie.op',
             'cleanup_rpm = dffml_feature_codesec.feature.operations:cleanup_rpm.op',
         ],
         'dffml.operation.implementation': [
@@ -81,7 +81,7 @@ setup(
             'urlbytes_to_tarfile = dffml_feature_codesec.feature.operations:urlbytes_to_tarfile.imp',
             'urlbytes_to_rpmfile = dffml_feature_codesec.feature.operations:urlbytes_to_rpmfile.imp',
             'files_in_rpm = dffml_feature_codesec.feature.operations:files_in_rpm.imp',
-            'is_binary_pie = dffml_feature_codesec.feature.operations:IsBinaryPIE',
+            'is_binary_pie = dffml_feature_codesec.feature.operations:is_binary_pie.imp',
             'cleanup_rpm = dffml_feature_codesec.feature.operations:cleanup_rpm.imp',
         ],
     },

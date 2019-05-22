@@ -3,6 +3,13 @@ Various helper functions for manipulating python data structures and values
 '''
 from functools import wraps
 
+def merge(one, two):
+    for key, value in two.items():
+        if key in one and isinstance(value, dict):
+            merge(one[key], two[key])
+        else:
+            one[key] = two[key]
+
 def traverse_config_set(target, *args):
     '''
     >>> traverse_set({'level': {'one': 1}}, 'level', 'one', 42)

@@ -52,16 +52,6 @@ setup(
 
     packages=find_packages(),
     entry_points={
-        'dffml.feature': [
-            'git = dffml_feature_git.feature.git:GitFeature',
-            'work = dffml_feature_git.feature.work:GitWorkFeature',
-            'cloc = dffml_feature_git.feature.cloc:GitClocFeature',
-            'lang = dffml_feature_git.feature.lang:GitLangFeature',
-            'langs = dffml_feature_git.feature.lang:GitLangsFeature',
-            'commits = dffml_feature_git.feature.commits:GitCommitsFeature',
-            'authors = dffml_feature_git.feature.authors:GitAuthorsFeature',
-            'release = dffml_feature_git.feature.release:GitReleaseFeature',
-        ],
         'dffml.operation': [
             'quarters_back_to_date = dffml_feature_git.feature.operations:quarters_back_to_date.op',
             'check_if_valid_git_repository_URL = dffml_feature_git.feature.operations:check_if_valid_git_repository_URL.op',
