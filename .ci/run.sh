@@ -13,6 +13,10 @@ function run_plugin() {
   cd -
 
   if [ "x$PLUGIN" = "x." ]; then
+    cd examples
+    python -m pip install -r requirements.txt
+    python -m unittest discover
+    cd ..
     ./scripts/create.sh feature travis_test_feature
     ./scripts/create.sh model travis_test_model
   fi

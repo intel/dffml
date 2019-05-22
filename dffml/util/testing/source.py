@@ -54,12 +54,15 @@ class SourceTest(abc.ABC):
         })
 
         with tempfile.NamedTemporaryFile() as testfile:
+            self.maxDiff = 3000
             await self.setUpFile(testfile)
-            async with (await self.setUpSource(testfile)) as testSource:
+            source = await self.setUpSource(testfile)
+            async with source as testSource:
                 # Open, update, and close
                 async with testSource() as sourceContext:
                     await sourceContext.update(full_repo)
                     await sourceContext.update(empty_repo)
+            async with source as testSource:
                 # Open and confirm we saved and loaded correctly
                 async with testSource() as sourceContext:
                     with self.subTest(src_url=full_src_url):
@@ -71,3 +74,12 @@ class SourceTest(abc.ABC):
                         repo = await sourceContext.repo(empty_src_url)
                         self.assertFalse(repo.data.prediction.classification)
                         self.assertFalse(repo.data.prediction.confidence)
+                    with self.subTest(both=[full_src_url, empty_src_url]):
+                        repos = {repo.src_url: repo \
+                                 async for repo in sourceContext.repos()}
+                        self.assertIn(full_src_url, repos)
+                        self.assertIn(empty_src_url, repos)
+                        self.assertEqual(repos[full_src_url].features(),
+                                         full_repo.features())
+                        self.assertEqual(repos[empty_src_url].features(),
+                                         empty_repo.features())

@@ -6,15 +6,19 @@
 Welcome to DFFML's documentation!
 =================================
 
+Data Flow Facilitator for Machine Learning (DFFML)
+
 .. toctree::
+   :glob:
    :maxdepth: 2
    :caption: Contents:
 
+   usage/*
+   api
 
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
