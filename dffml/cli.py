@@ -15,6 +15,7 @@ import pkg_resources
 
 from .log import LOGGER
 from .version import VERSION
+from .repo import Repo
 from .port import Port
 from .feature import Feature, Features, Data
 from .source.source import BaseSource, Sources, SubsetSources
@@ -135,15 +136,17 @@ class Merge(CMD):
     '''
 
     arg_dest = Arg('dest', help='Sources merge repos into',
-            type=BaseSource.load)
+            type=BaseSource.load_labeled)
     arg_src = Arg('src', help='Sources to pull repos from',
-            type=BaseSource.load)
+            type=BaseSource.load_labeled)
 
     async def run(self):
         async with self.src.withconfig(self.extra_config) as src, \
                 self.dest.withconfig(self.extra_config) as dest:
-            async with self.src() as sctx, dest() as dctx:
-                async for repo in sctx.repos():
+            async with src() as sctx, dest() as dctx:
+                async for src in sctx.repos():
+                    repo = Repo(src.src_url)
+                    repo.merge(src)
                     repo.merge(await dctx.repo(repo.src_url))
                     await dctx.update(repo)
 
@@ -313,27 +316,27 @@ class Accuracy(MLCMD):
         async with self.sources as sources, self.features as features, \
                 self.model as model:
             async with sources() as sctx, model() as mctx:
-                return float(await mctx.accuracy(sources, features,
+                return float(await mctx.accuracy(sctx, features,
                     self.classifications))
 
 class PredictAll(EvaluateAll, MLCMD):
     '''Predicts for all sources'''
 
-    async def predict(self, model, sources, features, repos):
-        async with sources() as sctx, model() as mctx:
-            async for repo, classification, confidence in \
-                    mctx.predict(repos, features, self.classifications):
-                repo.predicted(classification, confidence)
-                yield repo
-                if self.update:
-                    await sctx.update(repo)
+    async def predict(self, mctx, sctx, features, repos):
+        async for repo, classification, confidence in \
+                mctx.predict(repos, features, self.classifications):
+            repo.predicted(classification, confidence)
+            yield repo
+            if self.update:
+                await sctx.update(repo)
 
     async def run(self):
         async with self.sources as sources, self.features as features, \
                 self.model as model:
-            async for repo in self.predict(model, sources, features,
-                    self.evaluate(sources, features)):
-                yield repo
+            async with sources() as sctx, model() as mctx:
+                async for repo in self.predict(mctx, sctx, features,
+                        sctx.repos()):
+                    yield repo
 
 class PredictRepo(PredictAll, EvaluateRepo):
     '''Predictions for individual repos'''
