@@ -38,5 +38,6 @@ elif action == 'set':
 else:
     print json.dumps(dict(error='Unknown action'))
 
+sys.stdout.flush()
 cursor.close()
 cnx.close()

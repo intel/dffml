@@ -439,5 +439,150 @@ Modifying the Legacy App
 
 Now let's add a 'Predict' button to the app. The button will trigger the
 operations to be run on the new URL, and then the prediction. The demo app will
-then take the predicted classification and rcord that as the classification in
+then take the predicted classification and record that as the classification in
 the database.
+
+**examples/maintained/index.html**
+
+.. code-block:: html
+
+    <div>
+      <p>Submit or change the maintenance status of a repo.</p>
+      <input id="URL" placeholder="git://server.git/repo"></input>
+      <button id="maintained" class="good">Maintained</button>
+      <button id="unmaintained" class="dangerous">Unmaintained</button>
+      <button id="predict">Predict</button>
+    </div>
+
+The predict button will trigger an HTTP call to the CGI API. The CGI script will
+run the same commands we just ran on the command line, and parse the output,
+which is in JSON format, and set the resulting prediction classification in the
+database.
+
+**examples/maintained/cgi-bin/api.py**
+
+.. code-block:: python
+
+    # Add the imports we'll be using to the top of api.py
+    import subprocess
+    from datetime import datetime
+
+    # ...
+
+    elif action == 'predict':
+        today = datetime.now().strftime('%Y-%m-%d %H:%M')
+        operations = [
+            'group_by',
+            'quarters_back_to_date',
+            'check_if_valid_git_repository_URL',
+            'clone_git_repo',
+            'git_repo_default_branch',
+            'git_repo_checkout',
+            'git_repo_commit_from_date',
+            'git_repo_author_lines_for_dates',
+            'work',
+            'git_repo_release',
+            'git_commits',
+            'count_authors',
+            'cleanup_git_repo'
+            ]
+        subprocess.check_call(([
+            'dffml', 'operations', 'repo',
+            '-log', 'debug',
+            '-sources', 'db=demoapp',
+            '-update',
+            '-keys', query['URL'],
+            '-repo-def', 'URL',
+            '-remap',
+            'group_by.work=work',
+            'group_by.commits=commits',
+            'group_by.authors=authors',
+            '-dff-memory-operation-network-ops'] + operations + [
+            '-dff-memory-opimp-network-opimps'] + operations + [
+            '-inputs'] + \
+            ['%d=quarter' % (i,) for i in range(0, 10)] + [
+            '\'%s\'=quarter_start_date' % (today,),
+            'True=no_git_branch_given',
+            '-output-specs', '''{
+                "authors": {
+                  "group": "quarter",
+                  "by": "author_count",
+                  "fill": 0
+                },
+                "work": {
+                  "group": "quarter",
+                  "by": "work_spread",
+                  "fill": 0
+                },
+                "commits": {
+                  "group": "quarter",
+                  "by": "commit_count",
+                  "fill": 0
+                }
+              }=group_by_spec''']))
+        result = subprocess.check_output([
+            'dffml', 'predict', 'repo',
+            '-keys', query['URL'],
+            '-model', 'dnn',
+            '-sources', 'db=demoapp',
+            '-classifications', '0', '1',
+            '-features',
+            'def:authors:int:10',
+            'def:commits:int:10',
+            'def:work:int:10',
+            '-log', 'critical',
+            '-update'])
+        result = json.loads(result)
+        cursor.execute("REPLACE INTO status (src_url, maintained) VALUES(%s, %s)",
+                       (query['URL'], result[0]['prediction']['classification'],))
+        cnx.commit()
+        print json.dumps(dict(success=True))
+
+Hook up the predict button to call our new API.
+
+**examples/maintained/ml.js**
+
+.. code-block:: javascript
+
+    function predict(URL) {
+      return fetch('cgi-bin/api.py?action=predict' +
+        '&maintained=' + Number(maintained) +
+        '&URL=' + URL)
+      .then(function(response) {
+        return response.json()
+      }.bind(this));
+    }
+
+    window.addEventListener('DOMContentLoaded', function(event) {
+      var tableDOM = document.getElementById('table');
+      var URLDOM = document.getElementById('URL');
+      var predictDOM = document.getElementById('predict');
+
+      predictDOM.addEventListener('click', function(event) {
+        predict(URLDOM.value)
+        .then(function() {
+          refreshTable(tableDOM);
+        });
+      });
+    });
+
+Finally, import the new script into the main page.
+
+**examples/maintained/index.html**
+
+.. code-block:: html
+
+    <head>
+      <title>Git Repo Maintenance Tracker</title>
+      <script type="text/javascript" src="main.js"></script>
+      <script type="text/javascript" src="ml.js"></script>
+      <link rel="stylesheet" type="text/css" href="theme.css">
+    </head>
+
+Visit the web app, and input a Git repo to evaluate into the input field. Then
+click predict. The demo gif has had all the entries DROPed from the database.
+But you can look through the table and you'll find that a prediction has been
+run on the repo. Congratulations! You've automated a manual classification
+process, and integrated machine learning into a legacy application.
+
+.. image:: /images/integration_demo.gif
