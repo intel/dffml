@@ -2,76 +2,21 @@
 
 [![Build Status](https://travis-ci.org/intel/dffml.svg?branch=master)](https://travis-ci.org/intel/dffml) [![codecov](https://codecov.io/gh/intel/dffml/branch/master/graph/badge.svg)](https://codecov.io/gh/intel/dffml) [![CII](https://bestpractices.coreinfrastructure.org/projects/2594/badge)](https://bestpractices.coreinfrastructure.org/projects/2594) [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.svg)](https://gitter.im/dffml/community)
 
-DFFML provides APIs for dataset generation and storage, and model definition
-using any machine learning framework, from high level down to low level use is
-supported.
-
-The goal of DFFML is to build a community driven library of plugins for dataset
-generation and model definition. So that we as developers and researchers can
-quickly and easily plug and play various pieces of data with various model
-implementations.
-
-Here's a quick demo showing how DFFML can be used to train on the iris dataset.
-The more we build up the library of plugins (which anyone can maintain, they
-don't have to be contributed upstream unless you want to) the more variations on
-model implementations and feature data generators we all have to work with.
-
-![Demo](https://github.com/intel/dffml/raw/master/docs/images/iris_demo.gif)
-
-Right now we've released a wrapper around the Tensorflow DNN estimator, and a
-set of feature generators which gather data from git repositories.
-
-## Installation
-
-DFFML currently should work with Python 3.6. However, only Python 3.7 is
-officially supported. This is because there are a lot of nice helper methods
-Python 3.7 implemented that we intend to use instead of re-implementing.
-
-```python
-python3.7 -m pip install -U dffml
-```
-
-You can also install the Features for Git Version Control, and Models for
-Tensorflow Library all at once.
-
-- [DFFML Features for Git Version Control](feature/git/README.md)
-- [DFFML Models for Tensorflow Library](model/tensorflow/README.md)
-
-If you want a quick how to on the iris dataset head to the
-[DFFML Models for Tensorflow Library](model/tensorflow/README.md) repo.
-
-```python
-python3.7 -m pip install -U dffml[git,tensorflow]
-```
-
-If you don't have Python 3.7 we have a docker image for you, or you can install
-`pyenv` which will quickly and easily give you Python 3.7. See
-[docs/INSTALL.md](docs/INSTALL.md) for more details.
-
-## Usage
-
-To start using `dffml` for data set generation with a single CLI command see
-[DFFML Features for Git Version Control](feature/git/README.md).
-
-To start using `dffml` for machine learning with a few CLI commands see
-[DFFML Models for Tensorflow Library](model/tensorflow/README.md).
-
 ## Documentation
 
-Start with [Architecture](docs/ARCHITECTURE.md).
+Documentation is hosted at https://intel.github.io/dffml/
 
 ## Contributing
 
-DFFML is meant to be a community driven application. There are various segments you can help with:
- 
-- Found a bug, error in the docs or have a new idea, create an issue [here](https://github.com/intel/dffml/issues/new/choose).
-- Help us fix an [issue](https://github.com/intel/dffml/issues), refer to [HACKING](docs/HACKING.md) in the docs.
-- Make sure you go through [CONTRIBUTING.md](CONTRIBUTING.md) before contributing.
+DFFML is meant to be a community driven application. There are various segments
+you can help with:
 
-### Tutorials
-Got an idea for a new feature/model, tutorials will help you write code that takes full advantage of the DFFML API. Making your next machine learning project a breeze to write!
-- Features: The [new feature tutorial](docs/tutorial/FEATURE.md) will walk you through how to write a new DFFML feature to generate new data for a dataset.
-- Models: The [new model tutorial](docs/tutorial/MODEL.md) will walk you through how to wrap your favorite framework or a custom implementation in the DFFML library's model API.
+- Found a bug, error in the docs or have a new idea, create an issue
+  [here](https://github.com/intel/dffml/issues/new/choose).
+- Help us fix an [issue](https://github.com/intel/dffml/issues), refer to
+  [HACKING](HACKING.md) in the docs.
+- Make sure you go through [CONTRIBUTING.md](CONTRIBUTING.md) before
+  contributing.
 
 ## License
 
