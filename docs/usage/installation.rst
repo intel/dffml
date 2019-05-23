@@ -17,3 +17,10 @@ If you want to stay on the bleeding edge of bug fixes, etc. Install via git.
 .. code-block:: bash
 
     python3.7 -m pip install git+https://github.com/intel/dffml
+
+You can also install the Features for Git Version Control, and Models for
+Tensorflow Library all at once.
+
+.. code-block:: bash
+
+    python3.7 -m pip install -U dffml[git,tensorflow]
