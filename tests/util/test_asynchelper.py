@@ -4,14 +4,15 @@ from contextlib import asynccontextmanager
 from dffml.util.asynchelper import AsyncContextManagerList, concurrently
 from dffml.util.asynctestcase import AsyncTestCase
 
+
 @asynccontextmanager
 async def set_key_on_aenter(obj, key, value):
     obj[key] = value
     yield
     del obj[key]
 
-class TestAsyncContextManagerList(AsyncTestCase):
 
+class TestAsyncContextManagerList(AsyncTestCase):
     async def test_aenter_all(self):
         one = {}
         two = {}
@@ -25,8 +26,8 @@ class TestAsyncContextManagerList(AsyncTestCase):
         self.assertNotIn(1, one)
         self.assertNotIn(2, two)
 
-class TestConcurrently(AsyncTestCase):
 
+class TestConcurrently(AsyncTestCase):
     async def _test_method(self, i):
         return (i * 2) + 7
 
@@ -36,12 +37,14 @@ class TestConcurrently(AsyncTestCase):
         return (i * 2) + 7
 
     async def test_no_errors(self):
-        work = {asyncio.create_task(self._test_method(i)): i \
-                for i in range(0, 10)}
+        work = {
+            asyncio.create_task(self._test_method(i)): i for i in range(0, 10)
+        }
 
-        results = [(i, double_i_7,) \
-                   async for i, double_i_7 in \
-                   concurrently(work, errors='ignore')]
+        results = [
+            (i, double_i_7)
+            async for i, double_i_7 in concurrently(work, errors="ignore")
+        ]
 
         self.assertEqual(len(results), 10)
 
@@ -49,12 +52,15 @@ class TestConcurrently(AsyncTestCase):
             self.assertEqual(double_i_7, (i * 2) + 7)
 
     async def test_ignore_errors(self):
-        work = {asyncio.create_task(self._test_bad_method(i)): i \
-                for i in range(0, 10)}
+        work = {
+            asyncio.create_task(self._test_bad_method(i)): i
+            for i in range(0, 10)
+        }
 
-        results = [(i, double_i_7,) \
-                   async for i, double_i_7 in \
-                   concurrently(work, errors='ignore')]
+        results = [
+            (i, double_i_7)
+            async for i, double_i_7 in concurrently(work, errors="ignore")
+        ]
 
         self.assertEqual(len(results), 5)
 
@@ -62,10 +68,13 @@ class TestConcurrently(AsyncTestCase):
             self.assertEqual(double_i_7, (i * 2) + 7)
 
     async def test_raise_errors(self):
-        work = {asyncio.create_task(self._test_bad_method(i)): i \
-                for i in range(0, 10)}
+        work = {
+            asyncio.create_task(self._test_bad_method(i)): i
+            for i in range(0, 10)
+        }
 
         with self.assertRaises(ValueError):
-            results = [(i, double_i_7,) \
-                       async for i, double_i_7 in \
-                       concurrently(work, errors='strict')]
+            results = [
+                (i, double_i_7)
+                async for i, double_i_7 in concurrently(work, errors="strict")
+            ]

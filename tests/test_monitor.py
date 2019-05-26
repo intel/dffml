@@ -6,14 +6,17 @@ import unittest
 from dffml.util.monitor import Monitor, Task
 from dffml.util.asynctestcase import AsyncTestCase
 
+
 async def test_task(task=Task()):
     for i in range(0, 10):
         await asyncio.sleep(0.01)
         await task.update(i)
 
+
 async def log_task(task=Task()):
     for i in range(0, 10):
-        await task.log('i is now %d', i)
+        await task.log("i is now %d", i)
+
 
 async def recv_statuses(status, sleep):
     log = []
@@ -22,8 +25,8 @@ async def recv_statuses(status, sleep):
         log.append(msg)
     return log
 
-class TestMonitor(AsyncTestCase):
 
+class TestMonitor(AsyncTestCase):
     def setUp(self):
         self.monitor = Monitor()
 
@@ -40,8 +43,11 @@ class TestMonitor(AsyncTestCase):
     async def test_02_multiple_watching(self):
         task = await self.monitor.start(test_task)
         res = await asyncio.gather(
-                *[recv_statuses(self.monitor.status(task.key), i * 0.01)
-                    for i in range(0, 5)])
+            *[
+                recv_statuses(self.monitor.status(task.key), i * 0.01)
+                for i in range(0, 5)
+            ]
+        )
         for statuses in res:
             self.assertEqual(len(statuses), 10)
             for i in range(0, 10):
@@ -63,7 +69,8 @@ class TestMonitor(AsyncTestCase):
     async def test_06_log_status(self):
         i = 0
         async for msg in self.monitor.log_status(
-                (await self.monitor.start(test_task)).key):
+            (await self.monitor.start(test_task)).key
+        ):
             self.assertEqual(msg, i)
             i += 1
         self.assertEqual(i, 10)
