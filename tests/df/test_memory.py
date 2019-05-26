@@ -30,14 +30,15 @@ class KeyValueStoreWithArguments(BaseKeyValueStore):
             filename=cls.config_get(config, above, "filename")
         )
 
+
 def load_kvstore_with_args(loading=None):
     if loading == "withargs":
         return KeyValueStoreWithArguments
     return [KeyValueStoreWithArguments]
 
-class TestMemoryRedundancyChecker(AsyncTestCase):
 
-    @patch.object(BaseKeyValueStore, 'load', load_kvstore_with_args)
+class TestMemoryRedundancyChecker(AsyncTestCase):
+    @patch.object(BaseKeyValueStore, "load", load_kvstore_with_args)
     def test_args(self):
         self.assertEqual(
             MemoryRedundancyChecker.args({}),
@@ -72,7 +73,7 @@ class TestMemoryRedundancyChecker(AsyncTestCase):
             },
         )
 
-    @patch.object(BaseKeyValueStore, 'load', load_kvstore_with_args)
+    @patch.object(BaseKeyValueStore, "load", load_kvstore_with_args)
     def test_config_default_label(self):
         was = MemoryRedundancyChecker.config(
             parse_unknown(
@@ -83,11 +84,8 @@ class TestMemoryRedundancyChecker(AsyncTestCase):
             )
         )
         self.assertEqual(type(was), BaseRedundancyCheckerConfig)
+        self.assertEqual(type(was.key_value_store), KeyValueStoreWithArguments)
         self.assertEqual(
-            type(was.key_value_store), KeyValueStoreWithArguments
-        )
-        self.assertEqual(
-            type(was.key_value_store.config),
-            KeyValueStoreWithArgumentsConfig,
+            type(was.key_value_store.config), KeyValueStoreWithArgumentsConfig
         )
         self.assertEqual(was.key_value_store.config.filename, "somefile")

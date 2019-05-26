@@ -52,10 +52,16 @@ function run_whitespace() {
   fi
 }
 
+function run_style() {
+  black --check dffml tests examples
+}
+
 if [ "x$PLUGIN" != "x" ]; then
   run_plugin
 elif [ "x$CHANGELOG" != "x" ]; then
   run_changelog
 elif [ "x$WHITESPACE" != "x" ]; then
   run_whitespace
+elif [ "x$STYLE" != "x" ]; then
+  run_style
 fi

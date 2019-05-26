@@ -3,21 +3,20 @@ import collections
 from typing import Dict, Any, NamedTuple
 
 from ..df.types import Definition, Operation, Stage
-from ..df.base import op, \
-                      OperationImplementationContext, \
-                      BaseInputSetContext, \
-                      BaseInputNetworkContext
+from ..df.base import (
+    op,
+    OperationImplementationContext,
+    BaseInputSetContext,
+    BaseInputNetworkContext,
+)
 from ..df.exceptions import DefinitionNotInContext
 
-group_by_spec = Definition(
-    name='group_by_spec',
-    primitive='Dict[str, Any]'
-)
+group_by_spec = Definition(name="group_by_spec", primitive="Dict[str, Any]")
 
 group_by_output = Definition(
-    name='group_by_output',
-    primitive='Dict[str, List[Any]]'
+    name="group_by_output", primitive="Dict[str, List[Any]]"
 )
+
 
 class GroupBySpec(NamedTuple):
     group: Definition
@@ -28,34 +27,36 @@ class GroupBySpec(NamedTuple):
     # ismap: bool = False
 
     @classmethod
-    async def resolve(cls,
-                      ctx: BaseInputSetContext,
-                      ictx: BaseInputNetworkContext,
-                      exported: Dict[str, Any]):
+    async def resolve(
+        cls,
+        ctx: BaseInputSetContext,
+        ictx: BaseInputNetworkContext,
+        exported: Dict[str, Any],
+    ):
         # TODO Address the need to copy operation implementation inputs dict
         # In case the input is used elsewhere in the network
         exported = copy.deepcopy(exported)
         # Look up the definiton for the group and by fields
-        for convert in ['group', 'by']:
+        for convert in ["group", "by"]:
             exported[convert] = await ictx.definition(ctx, exported[convert])
         return cls(**exported)
 
-@op(name='group_by',
-    inputs={
-        'spec': group_by_spec
-    },
-    outputs={
-        'output': group_by_output
-    },
-    stage=Stage.OUTPUT)
-class GroupBy(OperationImplementationContext):
 
+@op(
+    name="group_by",
+    inputs={"spec": group_by_spec},
+    outputs={"output": group_by_output},
+    stage=Stage.OUTPUT,
+)
+class GroupBy(OperationImplementationContext):
     async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
         # Convert group_by_spec into a dict with values being of the NamedTuple
         # type GroupBySpec
-        outputs = {key: await GroupBySpec.resolve(self.ctx, self.ictx, value) \
-                   for key, value in inputs['spec'].items()}
-        self.logger.debug('output spec: %s', outputs)
+        outputs = {
+            key: await GroupBySpec.resolve(self.ctx, self.ictx, value)
+            for key, value in inputs["spec"].items()
+        }
+        self.logger.debug("output spec: %s", outputs)
         # Acquire all definitions within the context
         async with self.ictx.definitions(self.ctx) as od:
             # Output dict
@@ -100,35 +101,31 @@ class GroupBy(OperationImplementationContext):
 
             return want
 
-get_single_spec = Definition(
-    name='get_single_spec',
-    primitive='List[str]'
-)
+
+get_single_spec = Definition(name="get_single_spec", primitive="List[str]")
 
 get_single_output = Definition(
-    name='get_single_output',
-    primitive='Dict[str, Any]'
+    name="get_single_output", primitive="Dict[str, Any]"
 )
 
-@op(name='get_single',
-    inputs={
-        'spec': get_single_spec
-    },
-    outputs={
-        'output': get_single_output
-    },
-    stage=Stage.OUTPUT)
-class GetSingle(OperationImplementationContext):
 
+@op(
+    name="get_single",
+    inputs={"spec": get_single_spec},
+    outputs={"output": get_single_output},
+    stage=Stage.OUTPUT,
+)
+class GetSingle(OperationImplementationContext):
     async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
         # TODO Address the need to copy operation implementation inputs dict
         # In case the input is used elsewhere in the network
-        exported = copy.deepcopy(inputs['spec'])
+        exported = copy.deepcopy(inputs["spec"])
         # Look up the definiton for each
         for convert in range(0, len(exported)):
-            exported[convert] = await self.ictx.definition(self.ctx,
-                                                           exported[convert])
-        self.logger.debug('output spec: %s', exported)
+            exported[convert] = await self.ictx.definition(
+                self.ctx, exported[convert]
+            )
+        self.logger.debug("output spec: %s", exported)
         # Acquire all definitions within the context
         async with self.ictx.definitions(self.ctx) as od:
             # Output dict
@@ -140,36 +137,31 @@ class GetSingle(OperationImplementationContext):
                     break
             return want
 
-associate_spec = Definition(
-    name='associate_spec',
-    primitive='List[str]'
-)
+
+associate_spec = Definition(name="associate_spec", primitive="List[str]")
 
 associate_output = Definition(
-    name='associate_output',
-    primitive='Dict[str, Any]'
+    name="associate_output", primitive="Dict[str, Any]"
 )
 
 
-@op(name='associate',
-    inputs={
-        'spec': associate_spec
-    },
-    outputs={
-        'output': associate_output
-    },
-    stage=Stage.OUTPUT)
+@op(
+    name="associate",
+    inputs={"spec": associate_spec},
+    outputs={"output": associate_output},
+    stage=Stage.OUTPUT,
+)
 class Associate(OperationImplementationContext):
-
     async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
         # TODO Address the need to copy operation implementation inputs dict
         # In case the input is used elsewhere in the network
-        exported = copy.deepcopy(inputs['spec'])
+        exported = copy.deepcopy(inputs["spec"])
         # Look up the definiton for each
         try:
             for convert in range(0, len(exported)):
-                exported[convert] = await self.ictx.definition(self.ctx,
-                                                               exported[convert])
+                exported[convert] = await self.ictx.definition(
+                    self.ctx, exported[convert]
+                )
         except DefinitionNotInContext:
             return {exported[1]: {}}
         # Make exported into key, value which it will be in output

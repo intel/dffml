@@ -7,8 +7,8 @@ from typing import List
 from dffml.util.tempdir import TempDir
 from dffml.util.asynctestcase import AsyncTestCase
 
-class TestTempDir(unittest.TestCase):
 
+class TestTempDir(unittest.TestCase):
     def test_mktempdir(self):
         dirname = TempDir().mktempdir()
         self.assertEqual(os.path.isdir(dirname), True)
@@ -21,8 +21,8 @@ class TestTempDir(unittest.TestCase):
         tempdir.rmtempdirs()
         self.assertEqual(os.path.isdir(dirname), False)
 
-class TestTempDirAsyncContextManager(AsyncTestCase):
 
+class TestTempDirAsyncContextManager(AsyncTestCase):
     async def test_removes_on_aexit(self):
         length: int = 10
         dirs: List[str] = []

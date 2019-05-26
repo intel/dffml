@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
-'''Logging'''
+"""Logging"""
 import logging
+
 LOGGER = logging.getLogger(__package__)
