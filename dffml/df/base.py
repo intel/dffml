@@ -76,6 +76,18 @@ class OperationImplementation(BaseDataFlowObject):
             -> OperationImplementationContext:
         return self.CONTEXT(self, ctx, ictx)
 
+    @classmethod
+    def add_orig_label(cls, *above):
+        return (
+            list(above) + cls.op.name.split('_')
+        )
+
+    @classmethod
+    def add_label(cls, *above):
+        return (
+            list(above) + cls.op.name.split('_')
+        )
+
 def op(**kwargs):
     def wrap(func):
         if not 'name' in kwargs:

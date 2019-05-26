@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- OperationImplementation add_label and add_orig_label methods now use op.name
+  instead of ENTRY_POINT_ORIG_LABEL and ENTRY_POINT_NAME.
 
 ## [0.2.0] - 2019-05-23
 ### Added
