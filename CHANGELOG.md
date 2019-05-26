@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - MemoryOperationImplementationNetwork instantiates OperationImplementations
   using their `withconfig()` method.
+- MemorySource now decorated with `entry_point`
+- MemorySource takes arguments correctly via `config_set` and `config_get`
 
 ## [0.2.0] - 2019-05-23
 ### Added
