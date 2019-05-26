@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - OperationImplementation add_label and add_orig_label methods now use op.name
   instead of ENTRY_POINT_ORIG_LABEL and ENTRY_POINT_NAME.
+### Fixed
+- MemoryOperationImplementationNetwork instantiates OperationImplementations
+  using their `withconfig()` method.
 
 ## [0.2.0] - 2019-05-23
 ### Added

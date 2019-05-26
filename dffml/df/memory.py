@@ -681,7 +681,7 @@ class MemoryOperationImplementationNetwork(BaseOperationImplementationNetwork):
         return MemoryOperationImplementationNetworkConfig(
                 operations={imp.op.name: imp \
                             for imp in \
-                            [Imp(BaseConfig()) \
+                            [Imp.withconfig(config, 'opimp') \
                             for Imp in cls.config_get(config, above, 'opimps')]}
             )
 
