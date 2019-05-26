@@ -128,8 +128,8 @@ class BaseOrchestratorCMD(CMD):
     arg_dff = Arg('-dff',
             type=BaseOrchestrator.load,
             default=MemoryOrchestrator)
-    arg_output_specs = Arg('-output-specs', required=True, nargs='+',
-            action=ParseOutputSpecsAction)
+    arg_output_specs = Arg('-output-specs', nargs='+',
+            action=ParseOutputSpecsAction, default=[])
     arg_inputs = Arg('-inputs', nargs='+',
             action=ParseInputsAction, default=[],
             help='Other inputs to add under each ctx (repo\'s src_url will ' + \
@@ -138,7 +138,7 @@ class BaseOrchestratorCMD(CMD):
             help='Definition to be used for repo.src_url.' + \
                  'If set, repo.src_url will be added to the set of inputs ' + \
                  'under each context (which is also the repo\'s src_url)')
-    arg_remap = Arg('-remap', nargs='+', required=True,
+    arg_remap = Arg('-remap', nargs='+', default=[],
             action=ParseRemapAction,
             help='For each repo, -remap output_operation_name.sub=feature_name')
 
