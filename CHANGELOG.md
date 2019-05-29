@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Definition spec field to specify a class representative of key value pairs for
+  definitions with primitives which are dictionaries
+- Auto generation of documentation for operation implementations, models, and
+  sources. Generated docs include information on configuration options and
+  inputs and outputs for operation implementations.
 ### Changed
 - OperationImplementation add_label and add_orig_label methods now use op.name
   instead of ENTRY_POINT_ORIG_LABEL and ENTRY_POINT_NAME.

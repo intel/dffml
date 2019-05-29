@@ -25,7 +25,7 @@ dffml train \
     def:SepalWidth:float:1 \
     def:PetalLength:float:1 \
     def:PetalWidth:float:1 \
-  -num_epochs 3000 \
+  -epochs 3000 \
   -steps 20000 \
   -log debug
 dffml accuracy \

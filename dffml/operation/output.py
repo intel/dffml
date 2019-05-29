@@ -11,12 +11,6 @@ from ..df.base import (
 )
 from ..df.exceptions import DefinitionNotInContext
 
-group_by_spec = Definition(name="group_by_spec", primitive="Dict[str, Any]")
-
-group_by_output = Definition(
-    name="group_by_output", primitive="Dict[str, List[Any]]"
-)
-
 
 class GroupBySpec(NamedTuple):
     group: Definition
@@ -40,6 +34,15 @@ class GroupBySpec(NamedTuple):
         for convert in ["group", "by"]:
             exported[convert] = await ictx.definition(ctx, exported[convert])
         return cls(**exported)
+
+
+group_by_spec = Definition(
+    name="group_by_spec", primitive="Dict[str, Any]", spec=GroupBySpec
+)
+
+group_by_output = Definition(
+    name="group_by_output", primitive="Dict[str, List[Any]]"
+)
 
 
 @op(
