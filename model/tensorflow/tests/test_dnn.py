@@ -29,7 +29,7 @@ class TestDNN(AsyncTestCase):
         cls.model = DNN(DNNConfig(
             directory=cls.model_dir.name,
             steps=1000,
-            num_epochs=30,
+            epochs=30,
             hidden=[10, 20, 10]))
         cls.feature = StartsWithA()
         cls.features = Features(cls.feature)
@@ -52,7 +52,7 @@ class TestDNN(AsyncTestCase):
         self.assertEqual(config.directory, os.path.join(os.path.expanduser('~'),
             '.cache', 'dffml', 'tensorflow'))
         self.assertEqual(config.steps, 3000)
-        self.assertEqual(config.num_epochs, 30)
+        self.assertEqual(config.epochs, 30)
         self.assertEqual(config.hidden, [12, 40, 15])
 
     async def test_00_train(self):

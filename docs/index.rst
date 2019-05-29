@@ -28,7 +28,10 @@ set of feature generators which gather data from git repositories.
    :maxdepth: 2
    :caption: Contents:
 
+   community
    usage/*
+   concepts/index
+   plugins/index
    api
 
 

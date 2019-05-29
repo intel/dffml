@@ -15,6 +15,8 @@ class Definition(NamedTuple):
     name: str
     primitive: str
     lock: bool = False
+    # spec is a NamedTuple which could be populated via a dict
+    spec: NamedTuple = None
 
     def __repr__(self):
         return self.name
