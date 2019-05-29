@@ -292,7 +292,7 @@ to train on our dataset.
 
     $ dffml train all \
         -model dnn \
-        -model-num_epochs 400 \
+        -model-epochs 400 \
         -model-steps 4000 \
         -sources db=demoapp \
         -classifications 0 1 \
