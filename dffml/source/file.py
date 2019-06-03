@@ -19,6 +19,7 @@ from ..util.cli.cmd import CMD
 
 class FileSourceConfig(BaseConfig, NamedTuple):
     filename: str
+    label: str = "unlabeled"
     readonly: bool = False
 
 
@@ -114,6 +115,9 @@ class FileSource(BaseSource):
             "readonly",
             Arg(type=bool, action="store_true", default=False),
         )
+        cls.config_set(
+            args, above, "label", Arg(type=str, default="unlabeled")
+        )
         return args
 
     @classmethod
@@ -121,4 +125,5 @@ class FileSource(BaseSource):
         return FileSourceConfig(
             filename=cls.config_get(config, above, "filename"),
             readonly=cls.config_get(config, above, "readonly"),
+            label=cls.config_get(config, above, "label"),
         )
