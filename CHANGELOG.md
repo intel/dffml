@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   includes more explanation in comments.
 ### Fixed
 - Docs get version from dffml.version.VERSION.
+- FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
+  the underlying file object to return str instances rather than bytes.
 
 ## [0.2.1] - 2019-06-07
 ### Added
