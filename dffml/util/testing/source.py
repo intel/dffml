@@ -118,3 +118,19 @@ class FileSourceTest(SourceTest):
                         testdir, str(random.random) + "." + extension
                     )
                     await super().test_update()
+
+    async def test_label(self):
+        with tempfile.TemporaryDirectory() as testdir:
+            self.testfile = os.path.join(testdir, str(random.random))
+            unlabeled = await self.setUpSource()
+            labeled = await self.setUpSource()
+            labeled.config = labeled.config._replace(label="somelabel")
+            async with unlabeled:
+                async with unlabeled() as uctx:
+                    await uctx.update(
+                        Repo("0", data={"features": {"life": 42}})
+                    )
+            async with labeled:
+                async with labeled() as lctx:
+                    repo = await lctx.repo("0")
+                    self.assertNotIn("life", repo.features())

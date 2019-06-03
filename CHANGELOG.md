@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Async helper concurrently nocancel optional keyword argument which, if set is
   a set of tasks not to cancel when the concurrently execution loop completes.
+- FileSourceTest has a `test_label` method which checks that a FileSource knows
+  how to properly load and save repos under a given label.
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
