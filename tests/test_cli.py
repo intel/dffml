@@ -46,24 +46,21 @@ from .test_df import OPERATIONS, OPIMPS
 
 
 @contextmanager
-def empty_json_file():
+def non_existant_tempfile():
     """
-    JSONSource will try to parse a file if it exists and so it needs to be
-    given a file with an empty JSON object in it, {}.
+    Yield the filename of a non-existant file within a temporary directory
     """
-    with tempfile.NamedTemporaryFile() as fileobj:
-        fileobj.write(b"{}")
-        fileobj.seek(0)
-        yield fileobj
+    with tempfile.TemporaryDirectory() as testdir:
+        yield os.path.join(testdir, str(random.random))
 
 
 class ReposTestCase(AsyncTestCase):
     async def setUp(self):
         super().setUp()
         self.repos = [Repo(str(random.random())) for _ in range(0, 10)]
-        self.__temp_json_fileobj = empty_json_file()
-        self.temp_json_fileobj = self.__temp_json_fileobj.__enter__()
-        self.sconfig = FileSourceConfig(filename=self.temp_json_fileobj.name)
+        self.__temp_filename = non_existant_tempfile()
+        self.temp_filename = self.__temp_filename.__enter__()
+        self.sconfig = FileSourceConfig(filename=self.temp_filename)
         async with JSONSource(self.sconfig) as source:
             async with source() as sctx:
                 for repo in self.repos:
@@ -71,7 +68,7 @@ class ReposTestCase(AsyncTestCase):
 
     def tearDown(self):
         super().tearDown()
-        self.__temp_json_fileobj.__exit__(None, None, None)
+        self.__temp_filename.__exit__(None, None, None)
 
 
 class FakeFeature(Feature):
@@ -149,7 +146,7 @@ class TestListRepos(ReposTestCase):
                 "-sources",
                 "primary=json",
                 "-source-primary-filename",
-                self.temp_json_fileobj.name,
+                self.temp_filename,
                 "-source-primary-readonly",
                 "false",
             )
@@ -161,10 +158,7 @@ class TestOperationsAll(ReposTestCase):
     async def test_run(self):
         self.repo_keys = {"add 40 and 2": 42, "multiply 42 and 10": 420}
         self.repos = list(map(Repo, self.repo_keys.keys()))
-        self.temp_json_fileobj.seek(0)
-        self.temp_json_fileobj.truncate(0)
-        self.temp_json_fileobj.write(b"{}")
-        self.temp_json_fileobj.flush()
+        os.unlink(self.temp_filename)
         async with JSONSource(self.sconfig) as source:
             async with source() as sctx:
                 for repo in self.repos:
@@ -176,7 +170,7 @@ class TestOperationsAll(ReposTestCase):
                 "-sources",
                 "primary=json",
                 "-source-filename",
-                self.temp_json_fileobj.name,
+                self.temp_filename,
                 "-repo-def",
                 "calc_string",
                 "-remap",
@@ -206,10 +200,7 @@ class TestOperationsRepo(ReposTestCase):
         test_key = "multiply 42 and 10"
         self.repo_keys = {"add 40 and 2": 42, "multiply 42 and 10": 420}
         self.repos = list(map(Repo, self.repo_keys.keys()))
-        self.temp_json_fileobj.seek(0)
-        self.temp_json_fileobj.truncate(0)
-        self.temp_json_fileobj.write(b"{}")
-        self.temp_json_fileobj.flush()
+        os.unlink(self.temp_filename)
         async with JSONSource(self.sconfig) as source:
             async with source() as sctx:
                 for repo in self.repos:
@@ -221,7 +212,7 @@ class TestOperationsRepo(ReposTestCase):
                 "-sources",
                 "primary=json",
                 "-source-filename",
-                self.temp_json_fileobj.name,
+                self.temp_filename,
                 "-keys",
                 test_key,
                 "-repo-def",
@@ -255,7 +246,7 @@ class TestEvaluateAll(ReposTestCase):
                 "-sources",
                 "primary=json",
                 "-source-filename",
-                self.temp_json_fileobj.name,
+                self.temp_filename,
                 "-features",
                 "fake",
             )
@@ -281,7 +272,7 @@ class TestEvaluateRepo(TestEvaluateAll):
                 "-sources",
                 "primary=json",
                 "-source-filename",
-                self.temp_json_fileobj.name,
+                self.temp_filename,
                 "-features",
                 "fake",
                 "-keys",
@@ -308,7 +299,7 @@ class TestTrain(ReposTestCase):
                 "-sources",
                 "primary=json",
                 "-source-filename",
-                self.temp_json_fileobj.name,
+                self.temp_filename,
                 "-model",
                 "fake",
                 "-classifications",
@@ -331,7 +322,7 @@ class TestAccuracy(TestTrain):
                 "-sources",
                 "primary=json",
                 "-source-filename",
-                self.temp_json_fileobj.name,
+                self.temp_filename,
                 "-model",
                 "fake",
                 "-classifications",
@@ -357,7 +348,7 @@ class TestPredictAll(ReposTestCase):
                 "-sources",
                 "primary=json",
                 "-source-filename",
-                self.temp_json_fileobj.name,
+                self.temp_filename,
                 "-model",
                 "fake",
                 "-classifications",
@@ -389,7 +380,7 @@ class TestPredictRepo(ReposTestCase):
                 "-sources",
                 "primary=json",
                 "-source-filename",
-                self.temp_json_fileobj.name,
+                self.temp_filename,
                 "-model",
                 "fake",
                 "-classifications",
