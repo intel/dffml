@@ -17,16 +17,21 @@ class JSONSource(FileSource, MemorySource):
     stored in memory.
     """
 
+    def __init__(self, config):
+        super().__init__(config)
+        self.repos = {}
+
     async def load_fd(self, fd):
-        repos = json.load(fd)
+        self.repos = json.load(fd)
         self.mem = {
             src_url: Repo(src_url, data=data)
-            for src_url, data in repos.items()
+            for src_url, data in self.repos.get(self.config.label, {}).items()
         }
         LOGGER.debug("%r loaded %d records", self, len(self.mem))
 
     async def dump_fd(self, fd):
-        json.dump(
-            {repo.src_url: repo.dict() for repo in self.mem.values()}, fd
-        )
+        self.repos[self.config.label] = {
+            repo.src_url: repo.dict() for repo in self.mem.values()
+        }
+        json.dump(self.repos, fd)
         LOGGER.debug("%r saved %d records", self, len(self.mem))

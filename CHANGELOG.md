@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   sources.
 - A temporary directory is used to replicate `mktemp -u` functionality so as to
   provide tests using a FileSource with a valid tempfile name.
+- Labels for JSON sources
 
 ## [0.2.1] - 2019-06-07
 ### Added
