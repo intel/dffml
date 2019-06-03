@@ -82,20 +82,20 @@ class FileSource(BaseSource):
     @contextmanager
     def zip_opener_helper(self):
         with zipfile.ZipFile(self.config.filename) as archive:
-            with archive.open(self.__class__.__qualname__, mode="r") as fd:
-                yield fd
+            with archive.open(self.__class__.__qualname__, mode="r") as zip_fd:
+                with io.TextIOWrapper(zip_fd, write_through=True) as fd:
+                    yield fd
 
     @contextmanager
     def zip_closer_helper(self):
         with zipfile.ZipFile(
             self.config.filename, "w", compression=zipfile.ZIP_BZIP2
         ) as archive:
-            with io.TextIOWrapper(
-                archive.open(
-                    self.__class__.__qualname__, mode="w", force_zip64=True
-                )
-            ) as fd:
-                yield fd
+            with archive.open(
+                self.__class__.__qualname__, mode="w", force_zip64=True
+            ) as zip_fd:
+                with io.TextIOWrapper(zip_fd, write_through=True) as fd:
+                    yield fd
 
     @abc.abstractmethod
     async def load_fd(self, fd):
