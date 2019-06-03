@@ -7,6 +7,5 @@ from dffml.util.asynctestcase import AsyncTestCase
 
 
 class TestJSONSource(FileSourceTest, AsyncTestCase):
-
     async def setUpSource(self):
         return JSONSource(FileSourceConfig(filename=self.testfile))

@@ -1,16 +1,19 @@
-from dffml.util.testing.source import SourceTest
+import unittest
+
+from dffml.util.testing.source import FileSourceTest
 from dffml.util.asynctestcase import AsyncTestCase
 
 from .custom_sqlite import CustomSQLiteSourceConfig, CustomSQLiteSource
 
 
-class TestJSONSource(SourceTest, AsyncTestCase):
-    async def setUpFile(self, fileobj):
-        return
-        fileobj.write(b"{}")
-        fileobj.seek(0)
-
-    async def setUpSource(self, fileobj):
+class TestJSONSource(FileSourceTest, AsyncTestCase):
+    async def setUpSource(self):
         return CustomSQLiteSource(
-            CustomSQLiteSourceConfig(filename=fileobj.name)
+            CustomSQLiteSourceConfig(filename=self.testfile)
         )
+
+    @unittest.skip("Labels not implemented")
+    async def test_label(self):
+        """
+        Labels not implemented
+        """
