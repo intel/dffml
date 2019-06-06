@@ -11,8 +11,8 @@ from ..asynctestcase import AsyncTestCase
 
 class SourceTest(abc.ABC):
     """
-    Test case class used to test a Source implementation. Subclass from and set
-    the SOURCE property to run tests on that source.
+    Test case class used to test a Source implementation. Subclass from and
+    implement the setUpSource method.
 
     >>> from dffml.source.file import FileSourceConfig
     >>> from dffml.source.json import JSONSource
@@ -95,8 +95,7 @@ class SourceTest(abc.ABC):
 
 class FileSourceTest(SourceTest):
     """
-    Test case class used to test a Source implementation. Subclass from and set
-    the SOURCE property to run tests on that source.
+    Test case class used to test a FileSource implementation.
 
     >>> from dffml.source.file import FileSourceConfig
     >>> from dffml.source.json import JSONSource
@@ -110,7 +109,7 @@ class FileSourceTest(SourceTest):
     async def test_update(self):
         with tempfile.TemporaryDirectory() as testdir:
             with self.subTest(extension=None):
-                self.testfile = os.path.join(testdir, str(random.random))
+                self.testfile = os.path.join(testdir, str(random.random()))
                 await super().test_update()
             for extension in ["xz", "gz", "bz2", "lzma", "zip"]:
                 with self.subTest(extension=extension):
@@ -121,7 +120,7 @@ class FileSourceTest(SourceTest):
 
     async def test_label(self):
         with tempfile.TemporaryDirectory() as testdir:
-            self.testfile = os.path.join(testdir, str(random.random))
+            self.testfile = os.path.join(testdir, str(random.random()))
             unlabeled = await self.setUpSource()
             labeled = await self.setUpSource()
             labeled.config = labeled.config._replace(label="somelabel")
