@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - OperationImplementation add_label and add_orig_label methods now use op.name
   instead of ENTRY_POINT_ORIG_LABEL and ENTRY_POINT_NAME.
 - Make output specs and remap arguments optional for Operations CLI commands.
+- Feature skeleton project is now operations skeleton project
 ### Fixed
 - MemoryOperationImplementationNetwork instantiates OperationImplementations
   using their `withconfig()` method.
