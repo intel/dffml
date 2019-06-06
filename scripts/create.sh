@@ -8,7 +8,7 @@ MODULE_PATH="$(dirname "$0")/.."
 SKEL="${MODULE_PATH}/scripts/skel/${PROJECT_TYPE}/"
 
 if [ "x$PROJECT_TYPE" = "x" ] || [ "x$NAME" = "x" ]; then
-  echo "Usage: $0 feature|model name_of_new_thing" >&2
+  echo "Usage: $0 operations|model name_of_new_thing" >&2
   exit 1
 fi
 
@@ -18,6 +18,7 @@ if [ ! -d "${SKEL}" ]; then
 fi
 
 rm -rf "${MODULE_PATH}/${PROJECT_TYPE}/${NAME}"
+mkdir -p "${MODULE_PATH}/${PROJECT_TYPE}/"
 cp -r "${SKEL}" "${MODULE_PATH}/${PROJECT_TYPE}/${NAME}"
 
 cd "${MODULE_PATH}/${PROJECT_TYPE}/${NAME}"
