@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   using their `withconfig()` method.
 - MemorySource now decorated with `entry_point`
 - MemorySource takes arguments correctly via `config_set` and `config_get`
+- skel modules have `long_description_content_type` set to "text/markdown"
 
 ## [0.2.0] - 2019-05-23
 ### Added

@@ -18,7 +18,7 @@ function run_plugin() {
     python -m unittest discover
     cd ..
     ./scripts/docs.sh
-    ./scripts/create.sh feature travis_test_feature
+    ./scripts/create.sh operations travis_test_operations
     ./scripts/create.sh model travis_test_model
   fi
 }
