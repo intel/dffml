@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - skel modules have `long_description_content_type` set to "text/markdown"
 - Base Orchestrator `__aenter__` and `__aexit__` methods were moved to the
   Memory Orchestrator because they are specific to that config.
+- Async helper `aenter_stack` uses `inspect.isfunction` so it will bind lambdas
 
 ## [0.2.0] - 2019-05-23
 ### Added
