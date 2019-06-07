@@ -34,10 +34,13 @@ release = version
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.intersphinx',
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinxcontrib.asyncio',
 ]
+
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
