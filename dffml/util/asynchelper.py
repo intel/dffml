@@ -127,8 +127,7 @@ async def aenter_stack(
     if context_managers is not None:
         for key, ctxmanager in context_managers.items():
             if call:
-                # Bind if not bound
-                if hasattr(ctxmanager, "__self__"):
+                if inspect.isfunction(ctxmanager):
                     ctxmanager = ctxmanager.__get__(obj, obj.__class__)
                 setattr(
                     obj, key, await stack.enter_async_context(ctxmanager())
