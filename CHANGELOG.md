@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   inputs and outputs for operation implementations.
 - Async helpers got an `aenter_stack` method which creates and returns and
   `contextlib.AsyncExitStack` after entering all the context's passed to it.
+- Example of how to use Data Flow Facilitator / Orchestrator / Operations by
+  writing a Python meta static analysis tool,
+  [shouldi](https://pypi.org/project/shouldi/)
 ### Changed
 - OperationImplementation add_label and add_orig_label methods now use op.name
   instead of ENTRY_POINT_ORIG_LABEL and ENTRY_POINT_NAME.
