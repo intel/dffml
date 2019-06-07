@@ -32,7 +32,7 @@ set of feature generators which gather data from git repositories.
    usage/*
    concepts/index
    plugins/index
-   api
+   api/index
 
 
 Indices and tables

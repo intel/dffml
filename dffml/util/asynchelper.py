@@ -8,7 +8,7 @@ import inspect
 import asyncio
 from collections import UserList
 from contextlib import AsyncExitStack
-from typing import Dict, Any, AsyncIterator, Tuple
+from typing import Dict, Any, AsyncIterator, Tuple, Type, AsyncContextManager
 
 from .log import LOGGER
 
@@ -106,3 +106,57 @@ async def concurrently(
                 # For tasks which are done but have expections which we didn't
                 # raise, collect their execptions
                 task.exception()
+
+
+async def aenter_stack(
+    obj: Any,
+    context_managers: Dict[str, AsyncContextManager],
+    call: bool = True,
+) -> AsyncExitStack:
+    """
+    Create a :py:class:`contextlib.AsyncExitStack` then go through each key,
+    value pair in the dict of async context managers. Enter the context of each
+    async context manager and call setattr on ``obj`` to set the attribute by
+    the name of ``key`` to the value yielded by the async context manager.
+
+    If ``call`` is true then the context entered will be the context returned by
+    calling each context manager respectively.
+    """
+    stack = AsyncExitStack()
+    await stack.__aenter__()
+    if context_managers is not None:
+        for key, ctxmanager in context_managers.items():
+            if call:
+                # Bind if not bound
+                if hasattr(ctxmanager, "__self__"):
+                    ctxmanager = ctxmanager.__get__(obj, obj.__class__)
+                setattr(
+                    obj, key, await stack.enter_async_context(ctxmanager())
+                )
+            else:
+                setattr(obj, key, await stack.enter_async_context(ctxmanager))
+    return stack
+
+
+def context_stacker(
+    inherit: Type, context_managers: Dict[str, AsyncContextManager]
+) -> Type:
+    """
+    Using :func:`aenter_stack`
+    """
+
+    class ContextStacker(inherit):
+        def __init__(self, *args, **kwargs) -> None:
+            super().__init__(*args, **kwargs)
+            self._stack = None
+
+        async def __aenter__(self):
+            await super().__aenter__()
+            self._stack = await aenter_stack(self, context_managers)
+            return self
+
+        async def __aexit__(self, exc_type, exc_value, traceback):
+            await super().__aexit__(exc_type, exc_value, traceback)
+            await self._stack.aclose()
+
+    return ContextStacker
