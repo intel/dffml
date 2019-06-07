@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>dffml.source.source &#8212; DFFML 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dffml.source.source</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: MIT</span>
+<span class="c1"># Copyright (c) 2019 Intel Corporation</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Source subclasses are responsible for generating an integer value given an open</span>
+<span class="sd">source project&#39;s source URL.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">AsyncIterator</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">..base</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">BaseConfig</span><span class="p">,</span>
+    <span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">,</span>
+    <span class="n">BaseDataFlowFacilitatorObject</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..repo</span> <span class="k">import</span> <span class="n">Repo</span><span class="p">,</span> <span class="n">RepoData</span>
+<span class="kn">from</span> <span class="nn">..util.asynchelper</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">AsyncContextManagerListContext</span><span class="p">,</span>
+    <span class="n">AsyncContextManagerList</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="k">import</span> <span class="n">Entrypoint</span>
+
+<span class="kn">from</span> <span class="nn">.log</span> <span class="k">import</span> <span class="n">LOGGER</span>
+
+
+<div class="viewcode-block" id="BaseSourceContext"><a class="viewcode-back" href="../../../api/source/index.html#dffml.source.source.BaseSourceContext">[docs]</a><span class="k">class</span> <span class="nc">BaseSourceContext</span><span class="p">(</span><span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;BaseSource&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+
+<div class="viewcode-block" id="BaseSourceContext.update"><a class="viewcode-back" href="../../../api/source/index.html#dffml.source.source.BaseSourceContext.update">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo</span><span class="p">:</span> <span class="n">Repo</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates a repo for a source</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="BaseSourceContext.repos"><a class="viewcode-back" href="../../../api/source/index.html#dffml.source.source.BaseSourceContext.repos">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">repos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Repo</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of repos retrieved from self.src</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># mypy ignores AsyncIterator[Repo], therefore this is needed</span>
+        <span class="k">yield</span> <span class="n">Repo</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span></div>
+
+<div class="viewcode-block" id="BaseSourceContext.repo"><a class="viewcode-back" href="../../../api/source/index.html#dffml.source.source.BaseSourceContext.repo">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">repo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a repo from the source or add it if it doesn&#39;t exist</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="BaseSource"><a class="viewcode-back" href="../../../api/source/base.html#dffml.source.source.BaseSource">[docs]</a><span class="k">class</span> <span class="nc">BaseSource</span><span class="p">(</span><span class="n">BaseDataFlowFacilitatorObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract base class for all sources. New sources must be derived from this</span>
+<span class="sd">    class and implement the repos method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ENTRY_POINT</span> <span class="o">=</span> <span class="s2">&quot;dffml.source&quot;</span>
+    <span class="n">ENTRY_POINT_NAME</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseSourceContext</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONTEXT</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SourcesContext"><a class="viewcode-back" href="../../../api/source/base.html#dffml.source.source.SourcesContext">[docs]</a><span class="k">class</span> <span class="nc">SourcesContext</span><span class="p">(</span><span class="n">AsyncContextManagerListContext</span><span class="p">):</span>
+<div class="viewcode-block" id="SourcesContext.update"><a class="viewcode-back" href="../../../api/source/base.html#dffml.source.source.SourcesContext.update">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo</span><span class="p">:</span> <span class="n">Repo</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates a repo for a source</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Updating </span><span class="si">%r</span><span class="s2">: </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">repo</span><span class="o">.</span><span class="n">src_url</span><span class="p">,</span> <span class="n">repo</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">source</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SourcesContext.repos"><a class="viewcode-back" href="../../../api/source/base.html#dffml.source.source.SourcesContext.repos">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">repos</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">validation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Repo</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Repo</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves repos from all sources</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">repos</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">validation</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">validation</span><span class="p">(</span><span class="n">repo</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">repo</span></div>
+
+<div class="viewcode-block" id="SourcesContext.repo"><a class="viewcode-back" href="../../../api/source/base.html#dffml.source.source.SourcesContext.repo">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">repo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve and or register repo will all sources</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">repo</span> <span class="o">=</span> <span class="n">Repo</span><span class="p">(</span><span class="n">src_url</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">repo</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="k">await</span> <span class="n">source</span><span class="o">.</span><span class="n">repo</span><span class="p">(</span><span class="n">src_url</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">repo</span></div>
+
+<div class="viewcode-block" id="SourcesContext.classified_with_features"><a class="viewcode-back" href="../../../api/source/base.html#dffml.source.source.SourcesContext.classified_with_features">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">classified_with_features</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Repo</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns all classified repos which have the requested features</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">repos</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">repo</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span> <span class="ow">and</span> <span class="n">repo</span><span class="o">.</span><span class="n">classified</span><span class="p">())</span>
+        <span class="p">):</span>
+            <span class="k">yield</span> <span class="n">repo</span></div>
+
+<div class="viewcode-block" id="SourcesContext.unclassified_with_features"><a class="viewcode-back" href="../../../api/source/base.html#dffml.source.source.SourcesContext.unclassified_with_features">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">unclassified_with_features</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Repo</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns all unclassified repos which have the requested features</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">repos</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">repo</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span>
+                <span class="n">repo</span><span class="o">.</span><span class="n">features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">repo</span><span class="o">.</span><span class="n">classified</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">yield</span> <span class="n">repo</span></div>
+
+<div class="viewcode-block" id="SourcesContext.with_features"><a class="viewcode-back" href="../../../api/source/base.html#dffml.source.source.SourcesContext.with_features">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">with_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Repo</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns all repos which have the requested features</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">repos</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">repo</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">features</span><span class="p">(</span><span class="n">features</span><span class="p">))</span>
+        <span class="p">):</span>
+            <span class="k">yield</span> <span class="n">repo</span></div></div>
+
+
+<div class="viewcode-block" id="Sources"><a class="viewcode-back" href="../../../api/source/base.html#dffml.source.source.Sources">[docs]</a><span class="k">class</span> <span class="nc">Sources</span><span class="p">(</span><span class="n">AsyncContextManagerList</span><span class="p">):</span>
+
+    <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">SourcesContext</span></div>
+
+
+<div class="viewcode-block" id="ValidationSourcesContext"><a class="viewcode-back" href="../../../api/source/base.html#dffml.source.source.ValidationSourcesContext">[docs]</a><span class="k">class</span> <span class="nc">ValidationSourcesContext</span><span class="p">(</span><span class="n">SourcesContext</span><span class="p">):</span>
+<div class="viewcode-block" id="ValidationSourcesContext.repos"><a class="viewcode-back" href="../../../api/source/base.html#dffml.source.source.ValidationSourcesContext.repos">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">repos</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">validation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Repo</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Repo</span><span class="p">]:</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">repos</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">validation</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+                <span class="n">validation</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">validation</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">yield</span> <span class="n">repo</span></div></div>
+
+
+<div class="viewcode-block" id="ValidationSources"><a class="viewcode-back" href="../../../api/source/base.html#dffml.source.source.ValidationSources">[docs]</a><span class="k">class</span> <span class="nc">ValidationSources</span><span class="p">(</span><span class="n">Sources</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Restricts access to a subset of repos during iteration based on a validation</span>
+<span class="sd">    function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">ValidationSourcesContext</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">validation</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Repo</span><span class="p">],</span> <span class="nb">bool</span><span class="p">],</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">BaseSource</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validation</span> <span class="o">=</span> <span class="n">validation</span></div>
+
+
+<div class="viewcode-block" id="SubsetSources"><a class="viewcode-back" href="../../../api/source/base.html#dffml.source.source.SubsetSources">[docs]</a><span class="k">class</span> <span class="nc">SubsetSources</span><span class="p">(</span><span class="n">ValidationSources</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Restricts access to a subset of repos during iteration based on their keys.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">BaseSource</span><span class="p">,</span> <span class="n">keys</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__validation</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">keys</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span>
+
+    <span class="k">def</span> <span class="nf">__validation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo</span><span class="p">:</span> <span class="n">Repo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">src_url</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">DFFML</a></h1>
+
+
+
+<p class="blurb">The fastest path to machine learning integration</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/intel/dffml">
+    <img
+        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+    />
+</a>
+</p>
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://codecov.io/github/intel/dffml">
+    <img
+    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    />
+</a>
+</p>
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/integration.html">Example Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/operations.html">Example Data Flow Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

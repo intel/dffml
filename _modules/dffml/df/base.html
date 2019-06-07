@@ -1,0 +1,777 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>dffml.df.base &#8212; DFFML 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dffml.df.base</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">AsyncExitStack</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">AsyncIterator</span><span class="p">,</span>
+    <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Tuple</span><span class="p">,</span>
+    <span class="n">Any</span><span class="p">,</span>
+    <span class="n">NamedTuple</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Set</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="k">import</span> <span class="n">NotOpImp</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="k">import</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">Stage</span><span class="p">,</span> <span class="n">Definition</span>
+
+<span class="kn">from</span> <span class="nn">.log</span> <span class="k">import</span> <span class="n">LOGGER</span>
+
+<span class="kn">from</span> <span class="nn">..base</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">BaseConfig</span><span class="p">,</span>
+    <span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">,</span>
+    <span class="n">BaseDataFlowFacilitatorObject</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="k">import</span> <span class="n">Arg</span>
+<span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="k">import</span> <span class="n">CMD</span>
+<span class="kn">from</span> <span class="nn">..util.asynchelper</span> <span class="k">import</span> <span class="n">context_stacker</span><span class="p">,</span> <span class="n">aenter_stack</span>
+<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="k">import</span> <span class="n">base_entry_point</span>
+
+
+<div class="viewcode-block" id="BaseDataFlowObjectContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseDataFlowObjectContext">[docs]</a><span class="k">class</span> <span class="nc">BaseDataFlowObjectContext</span><span class="p">(</span><span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Data Flow Object Contexts are instantiated by only being passed their</span>
+<span class="sd">    parent, a BaseDataFlowObject.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;BaseDataFlowObject&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span></div>
+
+
+<div class="viewcode-block" id="BaseDataFlowObject"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseDataFlowObject">[docs]</a><span class="k">class</span> <span class="nc">BaseDataFlowObject</span><span class="p">(</span><span class="n">BaseDataFlowFacilitatorObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Data Flow Objects create their child contexts&#39; by passing only itself as an</span>
+<span class="sd">    argument to the child&#39;s __init__ (of type BaseDataFlowObjectContext).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseDataFlowObjectContext</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONTEXT</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BaseDataFlowObject.args"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseDataFlowObject.args">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Arg</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">args</span></div>
+
+<div class="viewcode-block" id="BaseDataFlowObject.config"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseDataFlowObject.config">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseConfig</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">BaseConfig</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="OperationImplementationContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.OperationImplementationContext">[docs]</a><span class="k">class</span> <span class="nc">OperationImplementationContext</span><span class="p">(</span><span class="n">BaseDataFlowObjectContext</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;OperationImplementation&quot;</span><span class="p">,</span>
+        <span class="n">ctx</span><span class="p">:</span> <span class="s2">&quot;BaseInputSetContext&quot;</span><span class="p">,</span>
+        <span class="n">ictx</span><span class="p">:</span> <span class="s2">&quot;BaseInputNetworkContext&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span> <span class="o">=</span> <span class="n">ctx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ictx</span> <span class="o">=</span> <span class="n">ictx</span>
+
+<div class="viewcode-block" id="OperationImplementationContext.run"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.OperationImplementationContext.run">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Implementation of the operation goes here. Should take and return a dict</span>
+<span class="sd">        with keys matching the input and output parameters of the Operation</span>
+<span class="sd">        object associated with this operation implementation context.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="OperationImplementation"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.OperationImplementation">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.operation.implementation&quot;</span><span class="p">,</span> <span class="s2">&quot;opimp&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">OperationImplementation</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="s2">&quot;BaseConfig&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;op&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;OperationImplementation&#39;s may not be &quot;</span>
+                <span class="o">+</span> <span class="s2">&quot;created without an `op`&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="s2">&quot;BaseInputSetContext&quot;</span><span class="p">,</span> <span class="n">ictx</span><span class="p">:</span> <span class="s2">&quot;BaseInputNetworkContext&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OperationImplementationContext</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONTEXT</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">ictx</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">add_orig_label</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">above</span><span class="p">)</span> <span class="o">+</span> <span class="bp">cls</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">add_label</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">above</span><span class="p">)</span> <span class="o">+</span> <span class="bp">cls</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">op</span><span class="p">(</span><span class="n">imp_enter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ctx_enter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;name&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>
+        <span class="c1"># TODO Make this grab from the defaults for Operation</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;conditions&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">func</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">Operation</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">func</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span>
+            <span class="n">func</span><span class="p">,</span> <span class="n">OperationImplementationContext</span>
+        <span class="p">):</span>
+
+            <span class="k">class</span> <span class="nc">Implementation</span><span class="p">(</span>
+                <span class="n">context_stacker</span><span class="p">(</span><span class="n">OperationImplementation</span><span class="p">,</span> <span class="n">imp_enter</span><span class="p">)</span>
+            <span class="p">):</span>
+
+                <span class="n">op</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">op</span>
+                <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">func</span>
+
+            <span class="n">func</span><span class="o">.</span><span class="n">imp</span> <span class="o">=</span> <span class="n">Implementation</span>
+            <span class="k">return</span> <span class="n">func</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">class</span> <span class="nc">ImplementationContext</span><span class="p">(</span>
+                <span class="n">context_stacker</span><span class="p">(</span><span class="n">OperationImplementationContext</span><span class="p">,</span> <span class="n">ctx_enter</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+                <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+                    <span class="c1"># TODO Add auto thread pooling of non-async functions</span>
+                    <span class="c1"># If imp_enter or ctx_enter exist then bind the function to</span>
+                    <span class="c1"># the ImplementationContext so that it has access to the</span>
+                    <span class="c1"># context and it&#39;s parent</span>
+                    <span class="k">if</span> <span class="n">imp_enter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">ctx_enter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="k">await</span> <span class="p">(</span>
+                            <span class="n">func</span><span class="o">.</span><span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+                        <span class="p">)</span>
+                    <span class="k">return</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+
+            <span class="k">class</span> <span class="nc">Implementation</span><span class="p">(</span>
+                <span class="n">context_stacker</span><span class="p">(</span><span class="n">OperationImplementation</span><span class="p">,</span> <span class="n">imp_enter</span><span class="p">)</span>
+            <span class="p">):</span>
+
+                <span class="n">op</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">op</span>
+                <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">ImplementationContext</span>
+
+            <span class="n">func</span><span class="o">.</span><span class="n">imp</span> <span class="o">=</span> <span class="n">Implementation</span>
+            <span class="k">return</span> <span class="n">func</span>
+
+    <span class="k">return</span> <span class="n">wrap</span>
+
+
+<span class="k">def</span> <span class="nf">opimp_name</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">OperationImplementation</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">OperationImplementation</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">inspect</span><span class="o">.</span><span class="n">ismethod</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="vm">__self__</span><span class="p">,</span> <span class="n">OperationImplementationContext</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;imp&quot;</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="vm">__self__</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span>
+    <span class="k">raise</span> <span class="n">NotOpImp</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="isopimp"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.isopimp">[docs]</a><span class="k">def</span> <span class="nf">isopimp</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Similar to inspect.isclass and that family of functions. Returns true if</span>
+<span class="sd">    item is a subclass of OperationImpelmentation.</span>
+
+<span class="sd">    &gt;&gt;&gt; # Get all operation implementations imported in a file</span>
+<span class="sd">    &gt;&gt;&gt; list(map(lambda item: item[1],</span>
+<span class="sd">    &gt;&gt;&gt;          inspect.getmembers(sys.modules[__name__],</span>
+<span class="sd">    &gt;&gt;&gt;                             predicate=isopimp)))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span>
+        <span class="p">(</span>
+            <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">OperationImplementation</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">OperationImplementation</span>
+        <span class="p">)</span>
+        <span class="ow">or</span> <span class="p">(</span>
+            <span class="n">inspect</span><span class="o">.</span><span class="n">ismethod</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="vm">__self__</span><span class="p">,</span> <span class="n">OperationImplementationContext</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;imp&quot;</span>
+        <span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="isoperation"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.isoperation">[docs]</a><span class="k">def</span> <span class="nf">isoperation</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Similar to inspect.isclass and that family of functions. Returns true if</span>
+<span class="sd">    item is an instance of Operation.</span>
+
+<span class="sd">    &gt;&gt;&gt; # Get all operations imported in a file</span>
+<span class="sd">    &gt;&gt;&gt; list(map(lambda item: item[1],</span>
+<span class="sd">    &gt;&gt;&gt;          inspect.getmembers(sys.modules[__name__],</span>
+<span class="sd">    &gt;&gt;&gt;                             predicate=isoperation)))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Operation</span><span class="p">)</span> <span class="ow">and</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">Operation</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="isopwraped"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.isopwraped">[docs]</a><span class="k">def</span> <span class="nf">isopwraped</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Similar to inspect.isclass and that family of functions. Returns true if a</span>
+<span class="sd">    function has been wrapped with `op`.</span>
+
+<span class="sd">    &gt;&gt;&gt; # Get all functions imported in a file that have been wrapped with `op`</span>
+<span class="sd">    &gt;&gt;&gt; list(map(lambda item: item[1],</span>
+<span class="sd">    &gt;&gt;&gt;          inspect.getmembers(sys.modules[__name__],</span>
+<span class="sd">    &gt;&gt;&gt;                             predicate=isopwraped)))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;op&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;imp&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">isoperation</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">op</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">isopimp</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">imp</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="mk_base_in"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.mk_base_in">[docs]</a><span class="k">def</span> <span class="nf">mk_base_in</span><span class="p">(</span><span class="n">predicate</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates the functions which use inspect getmembers to extract operations or</span>
+<span class="sd">    implementations from some list which.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">base_in</span><span class="p">(</span><span class="n">to_check</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="nb">map</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">to_check</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="n">predicate</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">base_in</span></div>
+
+
+<span class="n">opwraped_in</span> <span class="o">=</span> <span class="n">mk_base_in</span><span class="p">(</span><span class="n">isopwraped</span><span class="p">)</span>
+
+<span class="n">__operation_in</span> <span class="o">=</span> <span class="n">mk_base_in</span><span class="p">(</span><span class="n">isoperation</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">operation_in</span><span class="p">(</span><span class="n">iterable</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">__operation_in</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span>
+        <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="n">opwraped_in</span><span class="p">(</span><span class="n">iterable</span><span class="p">))</span>
+    <span class="p">)</span>
+
+
+<span class="n">__opimp_in</span> <span class="o">=</span> <span class="n">mk_base_in</span><span class="p">(</span><span class="n">isopimp</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">opimp_in</span><span class="p">(</span><span class="n">iterable</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">__opimp_in</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span>
+        <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">imp</span><span class="p">,</span> <span class="n">opwraped_in</span><span class="p">(</span><span class="n">iterable</span><span class="p">))</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="BaseKeyValueStoreContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseKeyValueStoreContext">[docs]</a><span class="k">class</span> <span class="nc">BaseKeyValueStoreContext</span><span class="p">(</span><span class="n">BaseDataFlowObjectContext</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract Base Class for key value storage context</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;BaseKeyValueStore&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+
+<div class="viewcode-block" id="BaseKeyValueStoreContext.get"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseKeyValueStoreContext.get">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a value from the key value store</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="BaseKeyValueStoreContext.set"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseKeyValueStoreContext.set">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a value in the key value store</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="BaseKeyValueStore"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseKeyValueStore">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.kvstore&quot;</span><span class="p">,</span> <span class="s2">&quot;kvstore&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">BaseKeyValueStore</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract Base Class for key value storage</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="BaseContextHandle"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseContextHandle">[docs]</a><span class="k">class</span> <span class="nc">BaseContextHandle</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="s2">&quot;BaseInputSetContext&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span> <span class="o">=</span> <span class="n">ctx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">LOGGER</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">)</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="BaseInputSetContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseInputSetContext">[docs]</a><span class="k">class</span> <span class="nc">BaseInputSetContext</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseContextHandle</span><span class="p">:</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="StringContextHandle"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.StringContextHandle">[docs]</a><span class="k">class</span> <span class="nc">StringContextHandle</span><span class="p">(</span><span class="n">BaseContextHandle</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">as_string</span></div>
+
+
+<div class="viewcode-block" id="StringInputSetContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.StringInputSetContext">[docs]</a><span class="k">class</span> <span class="nc">StringInputSetContext</span><span class="p">(</span><span class="n">BaseInputSetContext</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">as_string</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">as_string</span> <span class="o">=</span> <span class="n">as_string</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseContextHandle</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">StringContextHandle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_string</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BaseInputSetConfig"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseInputSetConfig">[docs]</a><span class="k">class</span> <span class="nc">BaseInputSetConfig</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span></div>
+
+
+<div class="viewcode-block" id="BaseInputSet"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseInputSet">[docs]</a><span class="k">class</span> <span class="nc">BaseInputSet</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseInputSetConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">ctx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">LOGGER</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">)</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">definitions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Definition</span><span class="p">]:</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Input</span><span class="p">]:</span>
+        <span class="k">pass</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an input definition name to input value dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">value</span> <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">()</span>
+        <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="BaseParameterSetConfig"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseParameterSetConfig">[docs]</a><span class="k">class</span> <span class="nc">BaseParameterSetConfig</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span></div>
+
+
+<div class="viewcode-block" id="BaseParameterSet"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseParameterSet">[docs]</a><span class="k">class</span> <span class="nc">BaseParameterSet</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseParameterSetConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">ctx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">LOGGER</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">)</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Parameter</span><span class="p">]:</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Input</span><span class="p">]:</span>
+        <span class="k">pass</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an parameter definition name to parameter value dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">parameter</span><span class="o">.</span><span class="n">key</span><span class="p">:</span> <span class="n">parameter</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span>
+        <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="BaseDefinitionSetContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseDefinitionSetContext">[docs]</a><span class="k">class</span> <span class="nc">BaseDefinitionSetContext</span><span class="p">(</span><span class="n">BaseDataFlowObjectContext</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;BaseInputNetworkContext&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="s2">&quot;BaseInputSetContext&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span> <span class="o">=</span> <span class="n">ctx</span>
+
+<div class="viewcode-block" id="BaseDefinitionSetContext.inputs"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseDefinitionSetContext.inputs">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Definition</span><span class="p">:</span> <span class="n">Definition</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Input</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Asynchronous iterator of all inputs within a context, which are of a</span>
+<span class="sd">        definition.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="BaseInputNetworkContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseInputNetworkContext">[docs]</a><span class="k">class</span> <span class="nc">BaseInputNetworkContext</span><span class="p">(</span><span class="n">BaseDataFlowObjectContext</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract Base Class for context managing input_set</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BaseInputNetworkContext.add"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseInputNetworkContext.add">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_set</span><span class="p">:</span> <span class="n">BaseInputSet</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds new input set to the network</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="BaseInputNetworkContext.ctx"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseInputNetworkContext.ctx">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">ctx</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseInputSetContext</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns when a new input set context has entered the network</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="BaseInputNetworkContext.added"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseInputNetworkContext.added">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">added</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseInputSet</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns when a new input set has entered the network within a context</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">definition</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span> <span class="n">definition</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Definition</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Search for the definition within a context given its name as a string.</span>
+<span class="sd">        Return the definition. Otherwise raise a DefinitionNotInContext</span>
+<span class="sd">        error. If the context is not present, raise a ContextNotPresent error.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BaseInputNetworkContext.definition"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseInputNetworkContext.definition">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">definition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseDefinitionSetContext</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a DefinitionSet context that can be used to access the inputs</span>
+<span class="sd">        within the given context, by definition.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="BaseInputNetworkContext.gather_inputs"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseInputNetworkContext.gather_inputs">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">gather_inputs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">rctx</span><span class="p">:</span> <span class="s2">&quot;BaseRedundancyCheckerContext&quot;</span><span class="p">,</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
+        <span class="n">ctx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseInputSetContext</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">BaseParameterSet</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate all possible permutations of applicable inputs for an operation</span>
+<span class="sd">        that, according to the redundancy checker, haven&#39;t been run yet.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="BaseInputNetwork"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseInputNetwork">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.input.network&quot;</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="s2">&quot;network&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">BaseInputNetwork</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Input networks store all of the input data and output data of operations,</span>
+<span class="sd">    which in turn becomes input data to other operations.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="BaseOperationNetworkContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOperationNetworkContext">[docs]</a><span class="k">class</span> <span class="nc">BaseOperationNetworkContext</span><span class="p">(</span><span class="n">BaseDataFlowObjectContext</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract Base Class for context managing operations</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Operation</span><span class="p">]):</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">operations</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">input_set</span><span class="p">:</span> <span class="n">BaseInputSet</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">stage</span><span class="p">:</span> <span class="n">Stage</span> <span class="o">=</span> <span class="n">Stage</span><span class="o">.</span><span class="n">PROCESSING</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Operation</span><span class="p">]:</span>
+        <span class="k">pass</span></div>
+
+
+<span class="c1"># TODO Make this operate like a BaseInputNetwork were operations can</span>
+<span class="c1"># be added dynamically</span>
+<div class="viewcode-block" id="BaseOperationNetwork"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOperationNetwork">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.operation.network&quot;</span><span class="p">,</span> <span class="s2">&quot;operation&quot;</span><span class="p">,</span> <span class="s2">&quot;network&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">BaseOperationNetwork</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Operation networks hold Operation objects to allow for looking up of their</span>
+<span class="sd">    inputs, outputs, and conditions.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="BaseRedundancyCheckerConfig"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseRedundancyCheckerConfig">[docs]</a><span class="k">class</span> <span class="nc">BaseRedundancyCheckerConfig</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">key_value_store</span><span class="p">:</span> <span class="n">BaseKeyValueStore</span></div>
+
+
+<span class="c1"># TODO store redundancy checks by BaseInputSetContext.handle() and add method</span>
+<span class="c1"># to remove all associated with a particular handle. Aka allow us to clean up</span>
+<span class="c1"># the input, redundancy, etc. networks after execution of a context completes</span>
+<span class="c1"># via the orchestrator.</span>
+<div class="viewcode-block" id="BaseRedundancyCheckerContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseRedundancyCheckerContext">[docs]</a><span class="k">class</span> <span class="nc">BaseRedundancyCheckerContext</span><span class="p">(</span><span class="n">BaseDataFlowObjectContext</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract Base Class for redundancy checking context</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">:</span> <span class="n">BaseParameterSet</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">:</span> <span class="n">BaseParameterSet</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="BaseRedundancyChecker"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseRedundancyChecker">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.redundancy.checker&quot;</span><span class="p">,</span> <span class="s2">&quot;rchecker&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">BaseRedundancyChecker</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Redundancy Checkers ensure that each operation within a context only gets</span>
+<span class="sd">    run with a give permutation of inputs once.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<span class="c1"># TODO Provide a way to clear out all locks for inputs within a context</span>
+<div class="viewcode-block" id="BaseLockNetworkContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseLockNetworkContext">[docs]</a><span class="k">class</span> <span class="nc">BaseLockNetworkContext</span><span class="p">(</span><span class="n">BaseDataFlowObjectContext</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseLockNetworkContext.acquire"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseLockNetworkContext.acquire">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">:</span> <span class="n">BaseParameterSet</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        An async context manager which will acquire locks of all inputs within</span>
+<span class="sd">        the parameter set.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="BaseLockNetwork"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseLockNetwork">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.lock.network&quot;</span><span class="p">,</span> <span class="s2">&quot;lock&quot;</span><span class="p">,</span> <span class="s2">&quot;network&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">BaseLockNetwork</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Acquires locks on inputs which may not be used simultaneously</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="BaseOperationImplementationNetworkContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOperationImplementationNetworkContext">[docs]</a><span class="k">class</span> <span class="nc">BaseOperationImplementationNetworkContext</span><span class="p">(</span><span class="n">BaseDataFlowObjectContext</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseOperationImplementationNetworkContext.contains"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOperationImplementationNetworkContext.contains">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the network contains / has the ability to run a given</span>
+<span class="sd">        operation.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="BaseOperationImplementationNetworkContext.instantiable"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOperationImplementationNetworkContext.instantiable">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">instantiable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prior to figuring out which operation implementation networks contain</span>
+<span class="sd">        an operation, if none do, they will need to instantiate it on the fly.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="BaseOperationImplementationNetworkContext.instantiate"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOperationImplementationNetworkContext.instantiate">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">instantiate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Instantiate a given operation so that it can be run within this network.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="BaseOperationImplementationNetworkContext.run"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOperationImplementationNetworkContext.run">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find the operation implementation for the given operation and create an</span>
+<span class="sd">        operation implementation context, call the run method of the context and</span>
+<span class="sd">        return the results.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="BaseOperationImplementationNetworkContext.operation_completed"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOperationImplementationNetworkContext.operation_completed">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">operation_completed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns when an operation finishes</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="BaseOperationImplementationNetworkContext.dispatch"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOperationImplementationNetworkContext.dispatch">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ictx</span><span class="p">:</span> <span class="n">BaseInputNetworkContext</span><span class="p">,</span>
+        <span class="n">lctx</span><span class="p">:</span> <span class="n">BaseLockNetworkContext</span><span class="p">,</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
+        <span class="n">parameter_set</span><span class="p">:</span> <span class="n">BaseParameterSet</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Schedule the running of an operation</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="BaseOperationImplementationNetworkContext.operations_parameter_set_pairs"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOperationImplementationNetworkContext.operations_parameter_set_pairs">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">operations_parameter_set_pairs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ictx</span><span class="p">:</span> <span class="n">BaseInputNetworkContext</span><span class="p">,</span>
+        <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOperationNetworkContext</span><span class="p">,</span>
+        <span class="n">rctx</span><span class="p">:</span> <span class="n">BaseRedundancyCheckerContext</span><span class="p">,</span>
+        <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">new_input_set</span><span class="p">:</span> <span class="n">BaseInputSet</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">stage</span><span class="p">:</span> <span class="n">Stage</span> <span class="o">=</span> <span class="n">Stage</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Operation</span><span class="p">,</span> <span class="n">BaseParameterSet</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Use new_input_set to determine which operations in the network might be</span>
+<span class="sd">        up for running. Cross check using existing inputs to generate per</span>
+<span class="sd">        input set context novel input pairings. Yield novel input pairings</span>
+<span class="sd">        along with their operations as they are generated.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
+
+
+<span class="c1"># TODO We should be able to specify multiple operation implementation  networks.</span>
+<span class="c1"># This would enable operations to live in different place, accessed via the</span>
+<span class="c1"># orchestrator transparently. This will probably invlove</span>
+<span class="c1"># dffml.util.asynchelper.AsyncContextManagerList</span>
+<div class="viewcode-block" id="BaseOperationImplementationNetwork"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOperationImplementationNetwork">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.operation.implementation.network&quot;</span><span class="p">,</span> <span class="s2">&quot;opimp&quot;</span><span class="p">,</span> <span class="s2">&quot;network&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">BaseOperationImplementationNetwork</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Knows where operations are or if they can be made</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="BaseOrchestratorConfig"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOrchestratorConfig">[docs]</a><span class="k">class</span> <span class="nc">BaseOrchestratorConfig</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">input_network</span><span class="p">:</span> <span class="n">BaseInputNetwork</span>
+    <span class="n">operation_network</span><span class="p">:</span> <span class="n">BaseOperationNetwork</span>
+    <span class="n">lock_network</span><span class="p">:</span> <span class="n">BaseLockNetwork</span>
+    <span class="n">opimp_network</span><span class="p">:</span> <span class="n">BaseOperationImplementationNetwork</span>
+    <span class="n">rchecker</span><span class="p">:</span> <span class="n">BaseRedundancyChecker</span></div>
+
+
+<div class="viewcode-block" id="BaseOrchestratorContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOrchestratorContext">[docs]</a><span class="k">class</span> <span class="nc">BaseOrchestratorContext</span><span class="p">(</span><span class="n">BaseDataFlowObjectContext</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseOrchestratorContext.run_operations"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOrchestratorContext.run_operations">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_operations</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">BaseContextHandle</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run all the operations then run cleanup and output operations</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="BaseOrchestrator"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOrchestrator">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.orchestrator&quot;</span><span class="p">,</span> <span class="s2">&quot;dff&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">BaseOrchestrator</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">):</span>
+    <span class="k">pass</span>  <span class="c1"># pragma: no cov</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">DFFML</a></h1>
+
+
+
+<p class="blurb">The fastest path to machine learning integration</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/intel/dffml">
+    <img
+        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+    />
+</a>
+</p>
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://codecov.io/github/intel/dffml">
+    <img
+    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    />
+</a>
+</p>
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/integration.html">Example Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/operations.html">Example Data Flow Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

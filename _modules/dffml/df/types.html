@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>dffml.df.types &#8212; DFFML 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dffml.df.types</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span>
+
+<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="k">import</span> <span class="n">Entrypoint</span><span class="p">,</span> <span class="n">base_entry_point</span>
+
+
+<div class="viewcode-block" id="Definition"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Definition">[docs]</a><span class="k">class</span> <span class="nc">Definition</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    List[type] is how to specify a list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">lock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># spec is a NamedTuple which could be populated via a dict</span>
+    <span class="n">spec</span><span class="p">:</span> <span class="n">NamedTuple</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">exported</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_asdict</span><span class="p">())</span>
+        <span class="k">del</span> <span class="n">exported</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">exported</span><span class="p">[</span><span class="s2">&quot;lock&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">exported</span></div>
+
+
+<div class="viewcode-block" id="Stage"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Stage">[docs]</a><span class="k">class</span> <span class="nc">Stage</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">PROCESSING</span> <span class="o">=</span> <span class="s2">&quot;processing&quot;</span>
+    <span class="n">CLEANUP</span> <span class="o">=</span> <span class="s2">&quot;cleanup&quot;</span>
+    <span class="n">OUTPUT</span> <span class="o">=</span> <span class="s2">&quot;output&quot;</span></div>
+
+
+<div class="viewcode-block" id="Operation"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Operation">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.operation&quot;</span><span class="p">,</span> <span class="s2">&quot;operation&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Operation</span><span class="p">(</span><span class="n">Entrypoint</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Definition</span><span class="p">],</span>
+        <span class="n">outputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Definition</span><span class="p">],</span>
+        <span class="n">conditions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Definition</span><span class="p">],</span>
+        <span class="n">stage</span><span class="p">:</span> <span class="n">Stage</span> <span class="o">=</span> <span class="n">Stage</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span>
+        <span class="n">expand</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="n">outputs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conditions</span> <span class="o">=</span> <span class="n">conditions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stage</span> <span class="o">=</span> <span class="n">stage</span>
+        <span class="k">if</span> <span class="n">expand</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">expand</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expand</span> <span class="o">=</span> <span class="n">expand</span>
+
+    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">exported</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;inputs&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="s2">&quot;conditions&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="s2">&quot;stage&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage</span><span class="p">,</span>
+            <span class="s2">&quot;expand&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">expand</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">to_string</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">]:</span>
+            <span class="n">exported</span><span class="p">[</span><span class="n">to_string</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">definition</span><span class="p">:</span> <span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">exported</span><span class="p">[</span><span class="n">to_string</span><span class="p">])</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="n">to_string</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">,</span> <span class="s2">&quot;outputs&quot;</span><span class="p">]:</span>
+            <span class="n">exported</span><span class="p">[</span><span class="n">to_string</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="nb">map</span><span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">key_def</span><span class="p">:</span> <span class="p">(</span><span class="n">key_def</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">key_def</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                    <span class="n">exported</span><span class="p">[</span><span class="n">to_string</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">exported</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">]:</span>
+            <span class="k">del</span> <span class="n">exported</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">exported</span><span class="p">[</span><span class="s2">&quot;expand&quot;</span><span class="p">]:</span>
+            <span class="k">del</span> <span class="n">exported</span><span class="p">[</span><span class="s2">&quot;expand&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">exported</span>
+
+<div class="viewcode-block" id="Operation.definitions"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Operation.definitions">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">definitions</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="s2">&quot;Operation&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create key value mapping of definition names to definitions for all</span>
+<span class="sd">        given operations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">definitions</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">op</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">has_definition</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">,</span> <span class="s2">&quot;outputs&quot;</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">definition</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">has_definition</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">definitions</span><span class="p">[</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">definition</span>
+            <span class="k">for</span> <span class="n">has_definition</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">]:</span>
+                <span class="k">for</span> <span class="n">definition</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">has_definition</span><span class="p">,</span> <span class="p">[]):</span>
+                    <span class="n">definitions</span><span class="p">[</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">definition</span>
+        <span class="k">return</span> <span class="n">definitions</span></div>
+
+<div class="viewcode-block" id="Operation.load"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Operation.load">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">loading</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">loading_classes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">iter_entry_points</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_POINT</span><span class="p">):</span>
+            <span class="n">loaded</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+            <span class="n">loaded</span><span class="o">.</span><span class="n">ENTRY_POINT_LABEL</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">loaded</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+                <span class="n">loading_classes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loaded</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">loading</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">loaded</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">loading</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">loaded</span>
+        <span class="k">if</span> <span class="n">loading</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> was not found in (</span><span class="si">%s</span><span class="s2">)&quot;</span>
+                <span class="o">%</span> <span class="p">(</span>
+                    <span class="nb">repr</span><span class="p">(</span><span class="n">loading</span><span class="p">),</span>
+                    <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">op</span><span class="p">:</span> <span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">loading_classes</span><span class="p">))),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">loading_classes</span></div></div>
+
+
+<div class="viewcode-block" id="Output"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Output">[docs]</a><span class="k">class</span> <span class="nc">Output</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">select</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Definition</span><span class="p">]</span>
+    <span class="n">fill</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="n">single</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">ismap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Input"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Input">[docs]</a><span class="k">class</span> <span class="nc">Input</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    All inputs have a unique id. Without it they can&#39;t be tracked for locking</span>
+<span class="sd">    purposes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">definition</span><span class="p">:</span> <span class="n">Definition</span><span class="p">,</span>
+        <span class="n">parents</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;Input&quot;</span><span class="p">],</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">definition</span> <span class="o">=</span> <span class="n">definition</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parents</span> <span class="o">=</span> <span class="n">parents</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uid</span> <span class="o">=</span> <span class="n">uid</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">uid</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">uid</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
+        <span class="c1"># Must explictly set parents to False to get an empty list of parents</span>
+        <span class="k">if</span> <span class="n">parents</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parents</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">get_parents</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="s2">&quot;Input&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="nb">set</span><span class="p">(</span>
+                <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span>
+                    <span class="o">*</span><span class="p">[</span>
+                        <span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">get_parents</span><span class="p">()))</span>
+                        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parents</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Parameter"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Parameter">[docs]</a><span class="k">class</span> <span class="nc">Parameter</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="n">origin</span><span class="p">:</span> <span class="n">Input</span>
+    <span class="n">definition</span><span class="p">:</span> <span class="n">Definition</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">DFFML</a></h1>
+
+
+
+<p class="blurb">The fastest path to machine learning integration</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/intel/dffml">
+    <img
+        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+    />
+</a>
+</p>
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://codecov.io/github/intel/dffml">
+    <img
+    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    />
+</a>
+</p>
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/integration.html">Example Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/operations.html">Example Data Flow Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
