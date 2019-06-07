@@ -1,6 +1,6 @@
 [run]
 source =
-    dffml_operations_operations_name
+    shouldi
     tests
 branch = True
 
