@@ -1,0 +1,219 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Base Model &#8212; DFFML 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Sources" href="../source/index.html" />
+    <link rel="prev" title="Models" href="index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-dffml.model.model">
+<span id="base-model"></span><h1>Base Model<a class="headerlink" href="#module-dffml.model.model" title="Permalink to this headline">¶</a></h1>
+<p>Model subclasses are responsible for training themselves on repos, making
+predictions about the classifications of repos, and assessing their prediction
+accuracy.</p>
+<dl class="class">
+<dt id="dffml.model.model.Model">
+<em class="property">class </em><code class="descclassname">dffml.model.model.</code><code class="descname">Model</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#Model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.Model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class which should be derived from and implmented using
+various machine learning frameworks or concepts.</p>
+<dl class="classmethod">
+<dt id="dffml.model.model.Model.args">
+<em class="property">classmethod </em><code class="descname">args</code><span class="sig-paren">(</span><em>args</em>, <em>*above</em><span class="sig-paren">)</span> &#x2192; Dict[str, dffml.util.cli.arg.Arg]<a class="reference internal" href="../../_modules/dffml/model/model.html#Model.args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.Model.args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict containing arguments required for this class</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dffml.model.model.Model.config">
+<em class="property">classmethod </em><code class="descname">config</code><span class="sig-paren">(</span><em>config</em>, <em>*above</em><span class="sig-paren">)</span> &#x2192; dffml.base.BaseConfig<a class="reference internal" href="../../_modules/dffml/model/model.html#Model.config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.Model.config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the BaseConfig required to instantiate this class by parsing the
+config dict.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dffml.model.model.ModelConfig">
+<em class="property">class </em><code class="descclassname">dffml.model.model.</code><code class="descname">ModelConfig</code><span class="sig-paren">(</span><em>directory</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.ModelConfig" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="dffml.model.model.ModelConfig.directory">
+<code class="descname">directory</code><a class="headerlink" href="#dffml.model.model.ModelConfig.directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dffml.model.model.ModelContext">
+<em class="property">class </em><code class="descclassname">dffml.model.model.</code><code class="descname">ModelContext</code><span class="sig-paren">(</span><em>parent: dffml.model.model.Model</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.ModelContext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class which should be derived from and implmented using
+various machine learning frameworks or concepts.</p>
+<dl class="method">
+<dt id="dffml.model.model.ModelContext.accuracy">
+<em class="property">coroutine </em><code class="descname">accuracy</code><span class="sig-paren">(</span><em>sources: dffml.source.source.Sources, features: dffml.feature.feature.Features, classifications: List[Any]</em><span class="sig-paren">)</span> &#x2192; dffml.accuracy.Accuracy<a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext.accuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.ModelContext.accuracy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the accuracy of our model after training using the input repos
+as test data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.model.model.ModelContext.predict">
+<code class="descname">predict</code><span class="sig-paren">(</span><em>repos: AsyncIterator[dffml.repo.Repo], features: dffml.feature.feature.Features, classifications: List[Any]</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[Tuple[dffml.repo.Repo, Any, float]]<a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.ModelContext.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses trained data to make a prediction about the quality of a repo.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.model.model.ModelContext.train">
+<em class="property">coroutine </em><code class="descname">train</code><span class="sig-paren">(</span><em>sources: dffml.source.source.Sources, features: dffml.feature.feature.Features, classifications: List[Any]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.ModelContext.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Train using repos as the data to learn from.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">DFFML</a></h1>
+
+
+
+<p class="blurb">The fastest path to machine learning integration</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/intel/dffml">
+    <img
+        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+    />
+</a>
+</p>
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://codecov.io/github/intel/dffml">
+    <img
+    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    />
+</a>
+</p>
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/integration.html">Example Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/operations.html">Example Data Flow Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../repo.html">Repo</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">API Helper Utilities Reference</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">Models</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Models</a></li>
+      <li>Next: <a href="../source/index.html" title="next chapter">Sources</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/api/model/base.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

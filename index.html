@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome to DFFML’s documentation! &#8212; DFFML 0.1.2 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Community" href="community.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-dffml-s-documentation">
+<h1>Welcome to DFFML’s documentation!<a class="headerlink" href="#welcome-to-dffml-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Data Flow Facilitator for Machine Learning (DFFML) provides APIs for dataset
+generation and storage, and model definition using any machine learning
+framework, from high level down to low level use is supported.</p>
+<p>The goal of DFFML is to build a community driven library of plugins for dataset
+generation and model definition. So that we as developers and researchers can
+quickly and easily plug and play various pieces of data with various model
+implementations.</p>
+<p>The more we build up the library of plugins (which anyone can maintain, they
+don’t have to be contributed upstream unless you want to) the more variations on
+model implementations, feature data generators, and database backend
+abstractions, we all have to work with.</p>
+<p>Right now we’ve released a wrapper around the Tensorflow DNN estimator, and a
+set of feature generators which gather data from git repositories.</p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/integration.html">Example Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage/integration.html#demo-app-setup">Demo App Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage/integration.html#gathering-data">Gathering Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage/integration.html#pulling-from-the-database">Pulling from the Database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage/integration.html#training-our-model">Training our Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage/integration.html#making-a-prediction">Making a Prediction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage/integration.html#modifying-the-legacy-app">Modifying the Legacy App</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage/operations.html">Example Data Flow Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage/operations.html#creating-our-package">Creating our Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage/operations.html#installing-static-analysis-tools">Installing Static Analysis Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage/operations.html#our-zeroth-operation">Our Zeroth Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage/operations.html#safety-operation">Safety Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage/operations.html#cli">CLI</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="concepts/index.html">Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concepts/data_flow.html">Data Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plugins/dffml_source.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/dffml_model.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/dffml_operation_implementation.html">Operation Implementations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/df/index.html">Data Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/feature.html">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/repo.html">Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/source/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/util/index.html">API Helper Utilities Reference</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">DFFML</a></h1>
+
+
+
+<p class="blurb">The fastest path to machine learning integration</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/intel/dffml">
+    <img
+        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+    />
+</a>
+</p>
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://codecov.io/github/intel/dffml">
+    <img
+    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    />
+</a>
+</p>
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/integration.html">Example Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/operations.html">Example Data Flow Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts/index.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="community.html" title="next chapter">Community</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
