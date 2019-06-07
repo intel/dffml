@@ -26,6 +26,7 @@ from ..base import (
 )
 from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
+from ..util.asynchelper import context_stacker, aenter_stack
 from ..util.entrypoint import base_entry_point
 
 
@@ -101,7 +102,7 @@ class OperationImplementation(BaseDataFlowObject):
         return list(above) + cls.op.name.split("_")
 
 
-def op(**kwargs):
+def op(imp_enter=None, ctx_enter=None, **kwargs):
     def wrap(func):
         if not "name" in kwargs:
             kwargs["name"] = func.__name__
@@ -115,7 +116,9 @@ def op(**kwargs):
             func, OperationImplementationContext
         ):
 
-            class Implementation(OperationImplementation):
+            class Implementation(
+                context_stacker(OperationImplementation, imp_enter)
+            ):
 
                 op = func.op
                 CONTEXT = func
@@ -124,14 +127,25 @@ def op(**kwargs):
             return func
         else:
 
-            class ImplementationContext(OperationImplementationContext):
+            class ImplementationContext(
+                context_stacker(OperationImplementationContext, ctx_enter)
+            ):
                 async def run(
                     self, inputs: Dict[str, Any]
                 ) -> Union[bool, Dict[str, Any]]:
                     # TODO Add auto thread pooling of non-async functions
+                    # If imp_enter or ctx_enter exist then bind the function to
+                    # the ImplementationContext so that it has access to the
+                    # context and it's parent
+                    if imp_enter is not None or ctx_enter is not None:
+                        return await (
+                            func.__get__(self, self.__class__)(**inputs)
+                        )
                     return await func(**inputs)
 
-            class Implementation(OperationImplementation):
+            class Implementation(
+                context_stacker(OperationImplementation, imp_enter)
+            ):
 
                 op = func.op
                 CONTEXT = ImplementationContext
@@ -609,37 +623,6 @@ class BaseOrchestratorConfig(BaseConfig, NamedTuple):
 
 
 class BaseOrchestratorContext(BaseDataFlowObjectContext):
-    def __init__(self, parent: "BaseOrchestrator") -> None:
-        super().__init__(parent)
-        self.__stack = None
-
-    async def __aenter__(self) -> "BaseOrchestratorContext":
-        """
-        Ahoy matey, enter if ye dare into the management of the contexts. Eh
-        well not sure if there's really any context being managed here...
-        """
-        self.__stack = AsyncExitStack()
-        await self.__stack.__aenter__()
-        self.rctx = await self.__stack.enter_async_context(
-            self.parent.rchecker()
-        )
-        self.ictx = await self.__stack.enter_async_context(
-            self.parent.input_network()
-        )
-        self.octx = await self.__stack.enter_async_context(
-            self.parent.operation_network()
-        )
-        self.lctx = await self.__stack.enter_async_context(
-            self.parent.lock_network()
-        )
-        self.nctx = await self.__stack.enter_async_context(
-            self.parent.opimp_network()
-        )
-        return self
-
-    async def __aexit__(self, exc_type, exc_value, traceback):
-        await self.__stack.aclose()
-
     @abc.abstractmethod
     async def run_operations(
         self, strict: bool = False
@@ -651,29 +634,4 @@ class BaseOrchestratorContext(BaseDataFlowObjectContext):
 
 @base_entry_point("dffml.orchestrator", "dff")
 class BaseOrchestrator(BaseDataFlowObject):
-    def __init__(self, config: "BaseConfig") -> None:
-        super().__init__(config)
-        self.__stack = None
-
-    async def __aenter__(self) -> "DataFlowFacilitator":
-        self.__stack = AsyncExitStack()
-        await self.__stack.__aenter__()
-        self.rchecker = await self.__stack.enter_async_context(
-            self.config.rchecker
-        )
-        self.input_network = await self.__stack.enter_async_context(
-            self.config.input_network
-        )
-        self.operation_network = await self.__stack.enter_async_context(
-            self.config.operation_network
-        )
-        self.lock_network = await self.__stack.enter_async_context(
-            self.config.lock_network
-        )
-        self.opimp_network = await self.__stack.enter_async_context(
-            self.config.opimp_network
-        )
-        return self
-
-    async def __aexit__(self, exc_type, exc_value, traceback):
-        await self.__stack.aclose()
+    pass  # pragma: no cov

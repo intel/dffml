@@ -49,6 +49,7 @@ from ..util.entrypoint import entry_point
 from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
 from ..util.data import ignore_args
+from ..util.asynchelper import context_stacker, aenter_stack
 
 from .log import LOGGER
 
@@ -804,6 +805,27 @@ class MemoryOrchestratorConfig(BaseOrchestratorConfig):
 
 
 class MemoryOrchestratorContext(BaseOrchestratorContext):
+    def __init__(self, parent: "BaseOrchestrator") -> None:
+        super().__init__(parent)
+        self._stack = None
+
+    async def __aenter__(self) -> "BaseOrchestratorContext":
+        self._stack = AsyncExitStack()
+        self._stack = await aenter_stack(
+            self,
+            {
+                "rctx": self.parent.rchecker,
+                "ictx": self.parent.input_network,
+                "octx": self.parent.operation_network,
+                "lctx": self.parent.lock_network,
+                "nctx": self.parent.opimp_network,
+            },
+        )
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        await self._stack.aclose()
+
     async def run_operations(
         self, strict: bool = False
     ) -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
@@ -994,6 +1016,27 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
 class MemoryOrchestrator(BaseOrchestrator):
 
     CONTEXT = MemoryOrchestratorContext
+
+    def __init__(self, config: "BaseConfig") -> None:
+        super().__init__(config)
+        self._stack = None
+
+    async def __aenter__(self) -> "DataFlowFacilitator":
+        self._stack = await aenter_stack(
+            self,
+            {
+                "rchecker": self.config.rchecker,
+                "input_network": self.config.input_network,
+                "operation_network": self.config.operation_network,
+                "lock_network": self.config.lock_network,
+                "opimp_network": self.config.opimp_network,
+            },
+            call=False,
+        )
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        await self._stack.aclose()
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:

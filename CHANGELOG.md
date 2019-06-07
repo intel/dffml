@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Auto generation of documentation for operation implementations, models, and
   sources. Generated docs include information on configuration options and
   inputs and outputs for operation implementations.
+- Async helpers got an `aenter_stack` method which creates and returns and
+  `contextlib.AsyncExitStack` after entering all the context's passed to it.
 ### Changed
 - OperationImplementation add_label and add_orig_label methods now use op.name
   instead of ENTRY_POINT_ORIG_LABEL and ENTRY_POINT_NAME.
@@ -22,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - MemorySource now decorated with `entry_point`
 - MemorySource takes arguments correctly via `config_set` and `config_get`
 - skel modules have `long_description_content_type` set to "text/markdown"
+- Base Orchestrator `__aenter__` and `__aexit__` methods were moved to the
+  Memory Orchestrator because they are specific to that config.
 
 ## [0.2.0] - 2019-05-23
 ### Added
