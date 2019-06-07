@@ -12,8 +12,12 @@ If you have questions about you might go about integrating machine learning, or
 using data flow programming, hop on the meeting and we'll do Q & A at the end of
 the agenda.
 
-- `Join Meeting <https://hangouts.google.com/call/WpnVSFrZFJl-QfLReYcfAEEE>`_
 - `Meeting Minutes <https://docs.google.com/document/d/16u9Tev3O0CcUDe2nfikHmrO3Xnd4ASJ45myFgQLpvzM/>`_
+
+The meeting link will be posted in the Gitter channel shortly before starting.
+To join the meeting, click on the Google calendar below for the day you are
+trying to join, then click "more details" which will open your Google calendar,
+then click "Join Hangouts".
 
 If you have developed a plugin for DFFML and would like it listed in the docs,
 please open an `issue <https://github.com/intel/dffml/issues/new?assignees=&labels=documentation&template=new_plugin.md&title=plugin%3A+new%3A+>`_.
