@@ -76,7 +76,7 @@ class FileSource(BaseSource):
             elif self.config.filename[::-1].startswith((".zip")[::-1]):
                 close = self.zip_closer_helper()
             else:
-                close = open(self.config.filename, "w")
+                close = open(self.config.filename, "w+")
             with close as fd:
                 await self.dump_fd(fd)
 
