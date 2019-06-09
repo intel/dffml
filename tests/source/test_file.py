@@ -181,7 +181,7 @@ class TestFileSource(AsyncTestCase):
         ):
             async with FakeFileSource(self.config("testfile")):
                 pass
-            m_open.assert_called_once_with("testfile", "w")
+            m_open.assert_called_once_with("testfile", "w+")
 
     async def test_close_gz(self):
         m_open = mock_open()
