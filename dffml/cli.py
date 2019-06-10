@@ -215,7 +215,7 @@ class OperationsAll(OperationsCMD):
                 Input(
                     value=value,
                     definition=self.definitions[def_name],
-                    parents=False,
+                    parents=None,
                 )
                 for value, def_name in self.output_specs
             ]
@@ -229,7 +229,7 @@ class OperationsAll(OperationsCMD):
                         Input(
                             value=value,
                             definition=self.definitions[def_name],
-                            parents=False,
+                            parents=None,
                         )
                     )
                 if self.repo_def:
@@ -237,7 +237,7 @@ class OperationsAll(OperationsCMD):
                         Input(
                             value=repo.src_url,
                             definition=self.definitions[self.repo_def],
-                            parents=False,
+                            parents=None,
                         )
                     )
 

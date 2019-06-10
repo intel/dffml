@@ -101,8 +101,8 @@ async def parse_line(line: str):
     }
 
 
-OPERATIONS = operation_in(sys.modules[__name__])
 OPIMPS = opimp_in(sys.modules[__name__])
+OPERATIONS = operation_in(sys.modules[__name__])
 
 
 class TestMemoryKeyValueStore(AsyncTestCase):
@@ -202,48 +202,24 @@ class TestLinker(unittest.TestCase):
 class TestRunner(AsyncTestCase):
     async def test_run(self):
         calc_strings_check = {"add 40 and 2": 42, "multiply 42 and 10": 420}
-
-        # Orchestrate the running of these operations
-        async with MemoryOrchestrator.basic_config(
-            operations=OPERATIONS,
-            opimps={
-                imp.op.name: imp
-                for imp in [Imp(BaseConfig()) for Imp in OPIMPS]
-            },
-        ) as orchestrator:
-
-            definitions = Operation.definitions(*OPERATIONS)
-
-            calc_strings = {
-                to_calc: Input(
-                    value=to_calc,
-                    definition=definitions["calc_string"],
-                    parents=False,
-                )
-                for to_calc in calc_strings_check.keys()
-            }
-
-            get_single_spec = Input(
-                value=["result"],
-                definition=definitions["get_single_spec"],
-                parents=False,
-            )
-
+        async with MemoryOrchestrator.basic_config(*OPIMPS) as orchestrator:
             async with orchestrator() as octx:
-                # Add our inputs to the input network with the context being the URL
                 for to_calc in calc_strings_check.keys():
-                    await octx.ictx.add(
-                        MemoryInputSet(
-                            MemoryInputSetConfig(
-                                ctx=StringInputSetContext(to_calc),
-                                inputs=[calc_strings[to_calc]]
-                                + [get_single_spec],
-                            )
-                        )
+                    await octx.ictx.sadd(
+                        to_calc,
+                        Input(
+                            value=to_calc,
+                            definition=parse_line.op.inputs["line"],
+                        ),
+                        Input(
+                            value=[add.op.outputs["sum"].name],
+                            definition=GetSingle.op.inputs["spec"],
+                        ),
                     )
-                async for ctx, results in octx.run_operations(strict=True):
+                async for ctx, results in octx.run_operations():
                     ctx_str = (await ctx.handle()).as_string()
+                    results = results[GetSingle.op.name]
                     self.assertEqual(
                         calc_strings_check[ctx_str],
-                        results["get_single"]["result"],
+                        results[add.op.outputs["sum"].name],
                     )
