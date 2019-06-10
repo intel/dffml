@@ -38,6 +38,9 @@ class FileSource(BaseSource):
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self._close()
 
+    async def _empty_file_init(self):
+        return {}
+
     async def _open(self):
         if not os.path.exists(self.config.filename) or os.path.isdir(
             self.config.filename
@@ -46,7 +49,7 @@ class FileSource(BaseSource):
                 ("%r is not a file, " % (self.config.filename,))
                 + "initializing memory to empty dict"
             )
-            self.mem = {}
+            self.mem = await self._empty_file_init()
             return
         if self.config.filename[::-1].startswith((".gz")[::-1]):
             opener = gzip.open(self.config.filename, "rt")
