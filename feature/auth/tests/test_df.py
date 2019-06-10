@@ -23,22 +23,17 @@ class TestRunner(AsyncTestCase):
             ]
 
         # Orchestrate the running of these operations
-        async with MemoryOrchestrator.basic_config(
-                operations=OPERATIONS,
-                opimps={imp.op.name: imp \
-                  for imp in \
-                  [Imp(BaseConfig()) for Imp in OPIMPS]}
-                ) as orchestrator:
+        async with MemoryOrchestrator.basic_config(*OPIMPS) as orchestrator:
 
             definitions = Operation.definitions(*OPERATIONS)
 
             passwords = [Input(value=password,
                                definition=definitions['UnhashedPassword'],
-                               parents=False) for password in passwords]
+                               parents=None) for password in passwords]
 
             output_spec = Input(value=['ScryptPassword'],
                                 definition=definitions['get_single_spec'],
-                                parents=False)
+                                parents=None)
 
             async with orchestrator() as octx:
                 # Add our inputs to the input network with the context being the URL

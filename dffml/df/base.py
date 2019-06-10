@@ -630,7 +630,7 @@ class BaseOrchestratorConfig(BaseConfig, NamedTuple):
 class BaseOrchestratorContext(BaseDataFlowObjectContext):
     @abc.abstractmethod
     async def run_operations(
-        self, strict: bool = False
+        self, strict: bool = True
     ) -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
         """
         Run all the operations then run cleanup and output operations

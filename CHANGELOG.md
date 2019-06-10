@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - feature/codesec became it's own branch, binsec
+- BaseOrchestratorContext `run_operations` strict is default to true. With
+  strict as true errors will be raised and not just logged.
+- MemoryInputNetworkContext got an `sadd` method which is shorthand for creating
+  a MemoryInputSet with a StringInputSetContext.
+- MemoryOrchestrator `basic_config` method takes list of operations and optional
+  config for them.
+- shouldi example uses updated `MemoryOrchestrator.basic_config` method and
+  includes more explanation in comments.
+### Fixed
+- Docs get version from dffml.version.VERSION.
 
 ## [0.2.1] - 2019-06-07
 ### Added
