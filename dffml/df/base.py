@@ -465,13 +465,18 @@ class BaseOperationNetworkContext(BaseDataFlowObjectContext):
 
     @abc.abstractmethod
     async def add(self, operations: List[Operation]):
-        pass
+        """
+        Add operations to the network
+        """
 
     @abc.abstractmethod
     async def operations(
         self, input_set: BaseInputSet = None, stage: Stage = Stage.PROCESSING
     ) -> AsyncIterator[Operation]:
-        pass
+        """
+        Retrieve all operations in the network of a given stage filtering by
+        operations who have inputs with definitions in the input set.
+        """
 
 
 # TODO Make this operate like a BaseInputNetwork were operations can
