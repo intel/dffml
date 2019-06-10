@@ -225,19 +225,19 @@ code coverage.
     reading manifest template 'MANIFEST.in'
     writing manifest file 'shouldi.egg-info/SOURCES.txt'
     running build_ext
-    test_install (tests.test_cli.TestCLI) ... ok
     test_run (tests.test_safety.TestSafetyCheck) ... ok
+    test_install (tests.test_cli.TestCLI) ... ok
     test_run (tests.test_pypi.TestPyPiLatestPackageVersion) ... ok
 
     ----------------------------------------------------------------------
-    Ran 3 tests in 2.314s
+    Ran 3 tests in 1.282s
 
     OK
     $ python3.7 -m coverage report -m
     Name                     Stmts   Miss Branch BrPart  Cover   Missing
     --------------------------------------------------------------------
     shouldi/__init__.py          0      0      0      0   100%
-    shouldi/cli.py              30      0     11      0   100%
+    shouldi/cli.py              27      0      6      0   100%
     shouldi/definitions.py       5      0      2      0   100%
     shouldi/pypi.py             12      0      2      0   100%
     shouldi/safety.py           18      0      0      0   100%
@@ -247,7 +247,7 @@ code coverage.
     tests/test_pypi.py           9      0      0      0   100%
     tests/test_safety.py         9      0      0      0   100%
     --------------------------------------------------------------------
-    TOTAL                       95      0     15      0   100%
+    TOTAL                       92      0     10      0   100%
 
 We want this to be usable as a command line utility, Python's
 :py:mod:`setuptools` allows us to define console ``entry_points``. All we have

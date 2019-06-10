@@ -139,19 +139,18 @@ class Input(object):
         self,
         value: Any,
         definition: Definition,
-        parents: List["Input"],
+        parents: Optional[List["Input"]] = None,
         *,
         uid: Optional[str] = "",
     ):
+        if parents is None:
+            parents = []
         self.value = value
         self.definition = definition
         self.parents = parents
         self.uid = uid
         if not self.uid:
             self.uid = str(uuid.uuid4())
-        # Must explictly set parents to False to get an empty list of parents
-        if parents == False:
-            self.parents = []
 
     def get_parents(self) -> Iterator["Input"]:
         return list(

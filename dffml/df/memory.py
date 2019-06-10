@@ -26,6 +26,7 @@ from .base import (
     BaseKeyValueStoreContext,
     BaseKeyValueStore,
     BaseInputSetContext,
+    StringInputSetContext,
     BaseInputSet,
     BaseParameterSet,
     BaseDefinitionSetContext,
@@ -238,6 +239,28 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                 self.parent.ctxhd[handle_string].definitions[
                     item.definition
                 ].append(item)
+
+    async def sadd(self, context_handle_string, *args: Input):
+        """
+        Shorthand for creating a MemoryInputSet with a StringInputSetContext.
+
+        >>> await octx.ictx.add(
+        ...     MemoryInputSet(
+        ...         MemoryInputSetConfig(
+        ...             ctx=StringInputSetContext(context_handle_string),
+        ...             inputs=list(args),
+        ...         )
+        ...     )
+        ... )
+        """
+        await self.add(
+            MemoryInputSet(
+                MemoryInputSetConfig(
+                    ctx=StringInputSetContext(context_handle_string),
+                    inputs=list(args),
+                )
+            )
+        )
 
     async def ctx(self) -> Tuple[bool, BaseInputSetContext]:
         async with self.parent.ctx_notification_set() as ctx:
@@ -902,7 +925,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                     task.exception()
 
     async def run_operations_for_ctx(
-        self, ctx: BaseContextHandle, *, strict: bool = False
+        self, ctx: BaseContextHandle, *, strict: bool = True
     ) -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
         # Track if there are more inputs
         more = True
@@ -1115,17 +1138,21 @@ class MemoryOrchestrator(BaseOrchestrator):
 
     @classmethod
     def basic_config(
-        cls, operations: List[Operation], opimps: List[OperationImplementation]
+        cls, *args: OperationImplementation, config: Dict[str, Any] = None
     ):
         """
         Creates a Memory Orchestrator which will be backed by other objects
         within dffml.df.memory.
         """
+        if config is None:
+            config = {}
         return MemoryOrchestrator(
             MemoryOrchestratorConfig(
                 input_network=MemoryInputNetwork(BaseConfig()),
                 operation_network=MemoryOperationNetwork(
-                    MemoryOperationNetworkConfig(operations=operations)
+                    MemoryOperationNetworkConfig(
+                        operations=[Imp.op for Imp in args]
+                    )
                 ),
                 lock_network=MemoryLockNetwork(BaseConfig()),
                 rchecker=MemoryRedundancyChecker(
@@ -1135,7 +1162,10 @@ class MemoryOrchestrator(BaseOrchestrator):
                 ),
                 opimp_network=MemoryOperationImplementationNetwork(
                     MemoryOperationImplementationNetworkConfig(
-                        operations=opimps
+                        operations={
+                            imp.op.name: imp
+                            for imp in [Imp.withconfig(config) for Imp in args]
+                        }
                     )
                 ),
             )

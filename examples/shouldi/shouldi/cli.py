@@ -1,27 +1,17 @@
 import sys
 
+from dffml.df.types import Input
+from dffml.df.base import operation_in, opimp_in, Operation
+from dffml.df.memory import MemoryOrchestrator
+from dffml.operation.output import GetSingle
 from dffml.util.cli.cmd import CMD
 from dffml.util.cli.arg import Arg
-
-from dffml.df.types import Input
-from dffml.df.base import (
-    operation_in,
-    opimp_in,
-    Operation,
-    BaseConfig,
-    StringInputSetContext,
-)
-from dffml.df.memory import (
-    MemoryOrchestrator,
-    MemoryInputSet,
-    MemoryInputSetConfig,
-)
-from dffml.operation.output import GetSingle
 
 from shouldi.pypi import pypi_latest_package_version
 from shouldi.safety import safety_check
 
-OPERATIONS = operation_in(sys.modules[__name__])
+# sys.modules[__name__] is a list of everything we've imported in this file.
+# opimp_in returns a subset of that list, any OperationImplementations
 OPIMPS = opimp_in(sys.modules[__name__])
 
 
@@ -32,47 +22,46 @@ class Install(CMD):
     )
 
     async def run(self):
-        async with MemoryOrchestrator.basic_config(
-            operations=OPERATIONS,
-            opimps={
-                imp.op.name: imp
-                for imp in [Imp(BaseConfig()) for Imp in OPIMPS]
-            },
-        ) as orchestrator:
-
-            definitions = Operation.definitions(*OPERATIONS)
-
-            packages = {
-                package_name: Input(
-                    value=package_name,
-                    definition=definitions["package"],
-                    parents=False,
-                )
-                for package_name in self.packages
-            }
-
-            get_single_spec = Input(
-                value=["safety_check_number_of_issues"],
-                definition=definitions["get_single_spec"],
-                parents=False,
-            )
-
+        # Create an Orchestrator which will manage the running of our operations
+        async with MemoryOrchestrator.basic_config(*OPIMPS) as orchestrator:
+            # Create a orchestrator context, everything in DFFML follows this
+            # one-two context entry pattern
             async with orchestrator() as octx:
-                # Add our inputs to the input network with the context being the URL
-                for package_name in packages.keys():
-                    await octx.ictx.add(
-                        MemoryInputSet(
-                            MemoryInputSetConfig(
-                                ctx=StringInputSetContext(package_name),
-                                inputs=[packages[package_name]]
-                                + [get_single_spec],
-                            )
-                        )
+                for package_name in self.packages:
+                    # For each package add a new input set to the network of
+                    # inputs (ictx). Operations run under a context, the context
+                    # here is the package_name to evaluate (the first argument).
+                    # The next arguments are all the inputs we're seeding the
+                    # network with for that context. We give the package name
+                    # because pypi_latest_package_version needs it to find the
+                    # version, which safety will then use. We also give an input
+                    # to the output operation GetSingle, which takes a list of
+                    # data type definitions we want to select as our results.
+                    await octx.ictx.sadd(
+                        package_name,
+                        Input(
+                            value=package_name,
+                            definition=pypi_latest_package_version.op.inputs[
+                                "package"
+                            ],
+                        ),
+                        Input(
+                            value=[safety_check.op.outputs["issues"].name],
+                            definition=GetSingle.op.inputs["spec"],
+                        ),
                     )
 
-                async for ctx, results in octx.run_operations(strict=True):
+                # Run all the operations, Each iteration of this loop happens
+                # when all inputs are exhausted for a context, the output
+                # operations are then run and their results are yielded
+                async for ctx, results in octx.run_operations():
+                    # The context for this data flow was the package name
                     package_name = (await ctx.handle()).as_string()
-                    results = results["get_single"]
+                    # Get the results of the GetSingle output operation
+                    results = results[GetSingle.op.name]
+                    # Check if any of the values of the operations evaluate to
+                    # true, so if the number of issues found by safety is
+                    # non-zero then this will be true
                     any_issues = any(map(bool, results.values()))
                     if any_issues:
                         print(f"Do not install {package_name}! {results!r}")
