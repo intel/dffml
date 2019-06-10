@@ -114,7 +114,7 @@ class FileSourceTest(SourceTest):
             for extension in ["xz", "gz", "bz2", "lzma", "zip"]:
                 with self.subTest(extension=extension):
                     self.testfile = os.path.join(
-                        testdir, str(random.random) + "." + extension
+                        testdir, str(random.random()) + "." + extension
                     )
                     await super().test_update()
 
@@ -124,12 +124,17 @@ class FileSourceTest(SourceTest):
             unlabeled = await self.setUpSource()
             labeled = await self.setUpSource()
             labeled.config = labeled.config._replace(label="somelabel")
-            async with unlabeled:
-                async with unlabeled() as uctx:
+            async with unlabeled, labeled:
+                async with unlabeled() as uctx, labeled() as lctx:
                     await uctx.update(
-                        Repo("0", data={"features": {"life": 42}})
+                        Repo("0", data={"features": {"feed": 1}})
                     )
-            async with labeled:
-                async with labeled() as lctx:
+                    await lctx.update(
+                        Repo("0", data={"features": {"face": 2}})
+                    )
+            async with unlabeled, labeled:
+                async with unlabeled() as uctx, labeled() as lctx:
+                    repo = await uctx.repo("0")
+                    self.assertIn("feed", repo.features())
                     repo = await lctx.repo("0")
-                    self.assertNotIn("life", repo.features())
+                    self.assertIn("face", repo.features())
