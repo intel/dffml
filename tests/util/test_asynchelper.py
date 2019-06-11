@@ -78,3 +78,58 @@ class TestConcurrently(AsyncTestCase):
                 (i, double_i_7)
                 async for i, double_i_7 in concurrently(work, errors="strict")
             ]
+
+    async def test_more_tasks_on_the_fly(self):
+        work = {
+            asyncio.create_task(self._test_method(i)): i for i in range(0, 10)
+        }
+
+        results = []
+        async for i, double_i_7 in concurrently(work, errors="ignore"):
+            results.append((i, double_i_7))
+            if i == 9:
+                work[asyncio.create_task(self._test_method(i + 1))] = i + 1
+
+        self.assertEqual(len(results), 11)
+
+        for i, double_i_7 in results:
+            self.assertEqual(double_i_7, (i * 2) + 7)
+
+    async def _cancel_later(self, event):
+        await event.wait()
+
+    async def test_no_cancel(self):
+        work = {
+            asyncio.create_task(self._test_method(i)): i for i in range(0, 10)
+        }
+        wait_forever = asyncio.create_task(self._cancel_later(asyncio.Event()))
+        work[wait_forever] = 10
+
+        results = []
+        async for i, double_i_7 in concurrently(work, nocancel=[wait_forever]):
+            results.append((i, double_i_7))
+            if len(results) == 10:
+                break
+
+        # Cancel the last event, will raise exception if it was already
+        # cancelled.
+        wait_forever.cancel()
+
+    async def test_cancel_not_done(self):
+        first = asyncio.Event()
+        second = asyncio.Event()
+        work = {
+            asyncio.create_task(self._cancel_later(first)): 0,
+            asyncio.create_task(self._cancel_later(second)): 0,
+        }
+
+        first.set()
+
+        try:
+            async for i, _ in concurrently(work):
+                raise ValueError()
+        except ValueError:
+            pass
+
+        with self.assertRaises(asyncio.CancelledError):
+            await list(work.keys())[0]
