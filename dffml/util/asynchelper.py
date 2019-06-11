@@ -8,7 +8,16 @@ import inspect
 import asyncio
 from collections import UserList
 from contextlib import AsyncExitStack
-from typing import Dict, Any, AsyncIterator, Tuple, Type, AsyncContextManager
+from typing import (
+    Dict,
+    Any,
+    AsyncIterator,
+    Tuple,
+    Type,
+    AsyncContextManager,
+    Optional,
+    Set,
+)
 
 from .log import LOGGER
 
@@ -67,7 +76,10 @@ class AsyncContextManagerList(UserList):
 
 
 async def concurrently(
-    work: Dict[asyncio.Task, Any], *, errors: str = "strict"
+    work: Dict[asyncio.Task, Any],
+    *,
+    errors: str = "strict",
+    nocancel: Optional[Set[asyncio.Task]] = None,
 ) -> AsyncIterator[Tuple[Any, Any]]:
     # Set up logger
     logger = LOGGER.getChild("concurrently")
@@ -93,14 +105,19 @@ async def concurrently(
                 if errors == "strict" and exception is not None:
                     raise exception
                 if exception is None:
-                    yield work[task], task.result()
+                    # Remove the compeleted task from work
+                    complete = work[task]
+                    del work[task]
+                    yield complete, task.result()
+                    # Update tasks in case work has been updated by called
+                    tasks = set(work.keys())
                 else:
                     logger.debug(
                         "[%s] Ignoring exception: %s", task, exception
                     )
     finally:
         for task in tasks:
-            if not task.done():
+            if not task.done() and (nocancel is None or task not in nocancel):
                 task.cancel()
             else:
                 # For tasks which are done but have expections which we didn't
