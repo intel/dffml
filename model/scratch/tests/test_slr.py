@@ -9,7 +9,7 @@ from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Data, DefFeature, Features
 from dffml.util.asynctestcase import AsyncTestCase
 
-from dffml_model_scratch.model.misc import SLRContext
+from dffml_model_scratch.model.slr import SLR, SLRConfig
 
 
 FEATURE_DATA = [
@@ -51,7 +51,7 @@ class TestMisc(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
         cls.model_dir = tempfile.TemporaryDirectory()
-        cls.model = Misc(ModelConfig(directory=cls.model_dir.name, predict='Salary'))
+        cls.model = SLR(SLRConfig(directory=cls.model_dir.name, predict='Salary'))
         cls.feature = DefFeature('YearsExperience', float, 1)
         cls.features = Features(cls.feature)
         YearsExperience, Salary = list(zip(*FEATURE_DATA))
@@ -85,4 +85,4 @@ class TestMisc(AsyncTestCase):
                     features)]
                 self.assertEqual(len(res), 1)
                 self.assertEqual(res[0][0].src_url, a.src_url)
-self.assertTrue(res[0][1])
+                self.assertTrue(res[0][1])
