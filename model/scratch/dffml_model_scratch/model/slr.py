@@ -55,9 +55,6 @@ class SLRContext(ModelContext):
         return usable
 
     async def best_fit_line(self, xs, ys):
-        # This causes an error, xs and ys are regular python lists at this point
-        # xs = [1.1, 1.3, 1.5, 2.0, 2.2, 2.9, 3.0, 3.2, 3.2, 3.7, 3.9, 4.0, 4.0, 4.1, 4.5, 4.9, 5.1, 5.3, 5.9, 6.0, 6.8, 7.1, 7.9, 8.2, 8.7, 9.0, 9.5, 9.6, 10.3, 10.5]
-        # ys = [42393.0, 49255.0, 40781.0, 46575.0, 42941.0, 59692.0, 63200.0, 57495.0, 67495.0, 60239.0, 66268.0, 58844.0, 60007.0, 60131.0, 64161.0, 70988.0, 69079.0, 86138.0, 84413.0, 96990.0, 94788.0, 101323.0, 104352.0, 116862.0, 112481.0, 108632.0, 120019.0, 115685.0, 125441.0, 124922.0]
         m = ((mean(xs)*mean(ys)) - mean(xs*ys))/((mean(xs)*mean(xs)) - (mean(xs*xs)))
         b = mean(ys) - (m*mean(xs))
         regression_line = [m*x + b for x in xs]
