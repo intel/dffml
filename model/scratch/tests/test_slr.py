@@ -46,7 +46,7 @@ FEATURE_DATA = [
 ]
 
 
-class TestMisc(AsyncTestCase):
+class TestSLR(AsyncTestCase):
 
     @classmethod
     def setUpClass(cls):
