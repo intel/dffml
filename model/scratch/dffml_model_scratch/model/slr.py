@@ -29,17 +29,17 @@ class SLRContext(ModelContext):
     '''
     def __init__(self, parent):
         super().__init__(parent)
-        self.xData = np.array([])
-        self.yData = np.array([])
+        self.xData = np.array([0.0])
+        self.yData = np.array([0.0])
         self.regression_line = None
 
-    async def squared_error(ys, yline):
+    async def squared_error(self, ys, yline):
         return sum((ys - yline)**2)
 
-    async def coeff_of_deter(ys, regression_line):
+    async def coeff_of_deter(self, ys, regression_line):
         y_mean_line = [mean(ys) for y in ys]
-        squared_error_mean = await squared_error(ys, y_mean_line)
-        squared_error_regression = await squared_error(ys, regression_line)
+        squared_error_mean = await self.squared_error(ys, y_mean_line)
+        squared_error_regression = await self.squared_error(ys, regression_line)
         return 1 - (squared_error_regression/squared_error_mean)
 
     async def applicable_features(self, features: Features):
@@ -56,13 +56,12 @@ class SLRContext(ModelContext):
 
     async def best_fit_line(self, xs, ys):
         # This causes an error, xs and ys are regular python lists at this point
-        mean(xs*xs)
         # xs = [1.1, 1.3, 1.5, 2.0, 2.2, 2.9, 3.0, 3.2, 3.2, 3.7, 3.9, 4.0, 4.0, 4.1, 4.5, 4.9, 5.1, 5.3, 5.9, 6.0, 6.8, 7.1, 7.9, 8.2, 8.7, 9.0, 9.5, 9.6, 10.3, 10.5]
         # ys = [42393.0, 49255.0, 40781.0, 46575.0, 42941.0, 59692.0, 63200.0, 57495.0, 67495.0, 60239.0, 66268.0, 58844.0, 60007.0, 60131.0, 64161.0, 70988.0, 69079.0, 86138.0, 84413.0, 96990.0, 94788.0, 101323.0, 104352.0, 116862.0, 112481.0, 108632.0, 120019.0, 115685.0, 125441.0, 124922.0]
         m = ((mean(xs)*mean(ys)) - mean(xs*ys))/((mean(xs)*mean(xs)) - (mean(xs*xs)))
         b = mean(ys) - (m*mean(xs))
         regression_line = [m*x + b for x in xs]
-        accuracy = await coeff_of_deter(ys, regression_line)
+        accuracy = await self.coeff_of_deter(ys, regression_line)
         return (m, b, accuracy)
 
     async def train(self, sources: Sources, features: Features):
@@ -74,10 +73,10 @@ class SLRContext(ModelContext):
             # Grab a subset of the feature data being stored within the repo
             # The subset is the feature_we_care_about and the feature we are want to predict
             feature_data = repo.features(feature + [self.parent.config.predict])
-            self.xData.append(feature_data[feature[0]])
-            self.yData.append(feature_data[self.parent.config.predict])
+            self.xData = np.append(self.xData, feature_data[feature[0]])
+            self.yData = np.append(self.yData, feature_data[self.parent.config.predict])
         self.regression_line = await self.best_fit_line(self.xData, self.yData)
-
+        
     async def accuracy(self, sources: Sources, features: Features) -> Accuracy:
         '''
         Evaluates the accuracy of our model after training using the input repos
