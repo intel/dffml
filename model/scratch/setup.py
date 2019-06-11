@@ -52,7 +52,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'dffml.model': [
-            'dnn = dffml_model_scratch.model.misc:Misc',
+            'slr = dffml_model_scratch.model.slr:SLR',
         ],
     },
 )

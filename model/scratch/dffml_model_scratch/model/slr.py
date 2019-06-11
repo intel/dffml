@@ -29,8 +29,8 @@ class SLRContext(ModelContext):
     '''
     def __init__(self, parent):
         super().__init__(parent)
-        self.xData = []
-        self.yData = []
+        self.xData = np.array([])
+        self.yData = np.array([])
         self.regression_line = None
 
     async def squared_error(ys, yline):
