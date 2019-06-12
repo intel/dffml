@@ -61,6 +61,10 @@ class SLRContext(ModelContext):
         accuracy = await self.coeff_of_deter(ys, regression_line)
         return (m, b, accuracy)
 
+    async def predict_input(self, x):
+        prediction = self.regression_line[0]*x+self.regression_line[1]
+        return prediction
+
     async def train(self, sources: Sources, features: Features):
         '''
         Train using repos as the data to learn from.
@@ -89,8 +93,10 @@ class SLRContext(ModelContext):
         '''
         Uses trained data to make a prediction about the quality of a repo.
         '''
+        feature = await self.applicable_features(features)
         async for repo in repos:
-            yield repo, classifications[0], 1.0
+            feature_data = repo.features(feature)
+            yield repo, self.predict_input(feature_data[feature[0]]), self.regression_line[2]
 
 
 @entry_point('slr')
