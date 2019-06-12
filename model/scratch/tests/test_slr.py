@@ -81,8 +81,8 @@ class TestSLR(AsyncTestCase):
                 res = await mctx.accuracy(sctx, features)
                 self.assertGreater(res, 0.9)
                 # Test predict
-                res = [repo async for repo in mctx.predict(sctx.repos(),
-                    features)]
-                self.assertEqual(len(res), 1)
-                self.assertEqual(res[0][0].src_url, a.src_url)
-                self.assertTrue(res[0][1])
+                async for repo, prediction, confidence in mctx.predict(sctx.repos(), features):
+                    correct = FEATURE_DATA[int(repo.src_url)][1]
+                    # Comparison of correct to prediction to make sure prediction is within a reasonable range
+                    self.assertGreater(prediction, correct - (correct * 0.10))
+                    self.assertLess(prediction, correct + (correct * 0.10))

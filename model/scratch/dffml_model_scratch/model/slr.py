@@ -96,7 +96,7 @@ class SLRContext(ModelContext):
         feature = await self.applicable_features(features)
         async for repo in repos:
             feature_data = repo.features(feature)
-            yield repo, self.predict_input(feature_data[feature[0]]), self.regression_line[2]
+            yield repo, await self.predict_input(feature_data[feature[0]]), self.regression_line[2]
 
 
 @entry_point('slr')
