@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   config for them.
 - shouldi example uses updated `MemoryOrchestrator.basic_config` method and
   includes more explanation in comments.
+- enable setting repo src_url
 ### Fixed
 - Docs get version from dffml.version.VERSION.
 
