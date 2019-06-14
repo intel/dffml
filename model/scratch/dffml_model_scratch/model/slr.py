@@ -5,6 +5,8 @@ Description of what this model does
 '''
 import os
 import abc
+import hashlib
+import json
 from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Dict
 from statistics import mean
 import numpy as np
@@ -29,9 +31,17 @@ class SLRContext(ModelContext):
     '''
     def __init__(self, parent):
         super().__init__(parent)
-        self.xData = np.array([0.0])
-        self.yData = np.array([0.0])
-        self.regression_line = None
+        self.xData = np.array([])
+        self.yData = np.array([])
+        self.regression_line = self.get_regression_line()
+
+    def get_regression_line(self):
+        if self.parent.saved.get('regression_line') is None:
+            return None
+        return self.parent.saved.get('regression_line')
+
+    async def set_regression_line(self, slope, constant, accuracy):
+        self.parent.saved['regression_line'] = (slope, constant, accuracy)
 
     async def squared_error(self, ys, yline):
         return sum((ys - yline)**2)
@@ -59,6 +69,7 @@ class SLRContext(ModelContext):
         b = mean(ys) - (m*mean(xs))
         regression_line = [m*x + b for x in xs]
         accuracy = await self.coeff_of_deter(ys, regression_line)
+        await self.set_regression_line(m, b, accuracy)
         return (m, b, accuracy)
 
     async def predict_input(self, x):
@@ -103,6 +114,28 @@ class SLRContext(ModelContext):
 class SLR(Model):
 
     CONTEXT = SLRContext
+    
+    def __init__(self, config: SLRConfig) -> None:
+        super().__init__(config)
+        self.saved = {'regression_line': None}
+
+    def _filename(self):
+        # Create a file path that is specific to the data we are predicting on
+        return os.path.join(self.config.directory, hashlib.sha384(self.config.predict.encode()).hexdigest() + '.json')
+
+    async def __aenter__(self) -> 'SLRContext':
+        filename = self._filename()
+        if os.path.isfile(filename):
+            with open(filename) as read:
+                self.saved = json.load(read)
+        return self
+        # Load from file using open, and json.load. You'll want to make a self.saved property (in __init__ or something)
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        # Save to the file using open, and json.dump. Dump out the self.saved property to the file.
+        filename = self._filename()
+        with open(filename, 'w') as write:
+            json.dump(self.saved, write)                                  
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
