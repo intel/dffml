@@ -15,39 +15,19 @@ class TestCSVSource(SourceTest, AsyncTestCase):
 
 class CSVTest(SourceTest, AsyncTestCase):
     async def setUpSource(self, fileobj):
-        return CSVSource(
-            FileSourceConfig(filename=fileobj.name, key="classification")
-        )
+        return CSVSource(FileSourceConfig(filename=fileobj.name))
 
     async def test_key(self):
-        repo_with_key = Repo(
-            "0",
-            data={
-                "classification": "2",
-                "features": {
-                    "PetalLength": 3.9,
-                    "PetalWidth": 1.2,
-                    "SepalLength": 5.8,
-                    "SepalWidth": 2.7,
-                },
-                "prediction": {
-                    "classification": "feedface",
-                    "confidence": 0.42,
-                },
-            },
-        )
-        set_key = repo_with_key.data.classification
-
-        with tempfile.NamedTemporaryFile() as testfile:
-            await self.setUpFile(testfile)
-            source = await self.setUpSource(testfile)
-            async with source as testSource:
-                async with testSource() as sourceContext:
-                    await sourceContext.update(repo_with_key)
-            async with source as testSource:
-                async with testSource() as sourceContext:
-                    with self.subTest(src_url=set_key):
-                        repo = await sourceContext.repo(set_key)
-                        self.assertEqual(
-                            repo.src_url, repo_with_key.data.classification
-                        )
+        with tempfile.NamedTemporaryFile() as fileobj:
+            fileobj.write(b"KeyHeader,ValueColumn\n")
+            fileobj.write(b"a,42\n")
+            fileobj.write(b"b,420\n")
+            fileobj.seek(0)
+            async with CSVSource(
+                FileSourceConfig(filename=fileobj.name, key="KeyHeader")
+            ) as source:
+                async with source() as sctx:
+                    repo_a = await sctx.repo("a")
+                    repo_b = await sctx.repo("b")
+                    self.assertEqual(repo_a.data.features["ValueColumn"], 42)
+                    self.assertEqual(repo_b.data.features["ValueColumn"], 420)
