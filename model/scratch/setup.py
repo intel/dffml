@@ -25,8 +25,10 @@ setup(
     description='',
     long_description=readme,
     long_description_content_type="text/markdown",
-    author='John Andersen',
-    author_email='john.s.andersen@intel.com',
+    author='Yash Lamba',
+    author_email='yashlamba2000@gmail.com',
+    maintainer='John Andersen',
+    maintainer_email='john.s.andersen@intel.com',
     url='https://github.com/intel/dffml/blob/master/model/scratch/README.md',
     license='MIT',
 

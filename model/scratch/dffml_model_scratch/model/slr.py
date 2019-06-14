@@ -36,9 +36,7 @@ class SLRContext(ModelContext):
         self.regression_line = self.get_regression_line()
 
     def get_regression_line(self):
-        if self.parent.saved.get('regression_line') is None:
-            return None
-        return self.parent.saved.get('regression_line')
+        return self.parent.saved.get('regression_line', None)
 
     async def set_regression_line(self, slope, constant, accuracy):
         self.parent.saved['regression_line'] = (slope, constant, accuracy)
@@ -126,7 +124,7 @@ class SLR(Model):
     async def __aenter__(self) -> 'SLRContext':
         filename = self._filename()
         if os.path.isfile(filename):
-            with open(filename) as read:
+            with open(filename, 'r') as read:
                 self.saved = json.load(read)
         return self
         # Load from file using open, and json.load. You'll want to make a self.saved property (in __init__ or something)
@@ -135,7 +133,7 @@ class SLR(Model):
         # Save to the file using open, and json.dump. Dump out the self.saved property to the file.
         filename = self._filename()
         with open(filename, 'w') as write:
-            json.dump(self.saved, write)                                  
+            json.dump(self.saved, write)
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
