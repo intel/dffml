@@ -59,7 +59,7 @@ class CSVSource(FileSource, MemorySource):
                         }
                     }
                 )
-            if self.config.src_url == key:
+            if self.config.key is not None and self.config.key == key:
                 #Create repo with given column name's value as src_url
                 repo = Repo(value, data=repo_data)
             else:

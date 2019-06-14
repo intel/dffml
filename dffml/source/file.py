@@ -19,7 +19,7 @@ from ..util.cli.cmd import CMD
 
 class FileSourceConfig(BaseConfig, NamedTuple):
     filename: str
-    src_url: str = "DefaultSourceURL"
+    key: str = None
     readonly: bool = False
 
 
@@ -117,8 +117,8 @@ class FileSource(BaseSource):
         )
         cls.config_set(args,
                        above,
-                       "src_url",
-                       Arg(type=str, default="DefaultSourceURL"))
+                       "key",
+                       Arg(type=str, default=None))
         return args
 
     @classmethod
@@ -126,5 +126,5 @@ class FileSource(BaseSource):
         return FileSourceConfig(
             filename=cls.config_get(config, above, "filename"),
             readonly=cls.config_get(config, above, "readonly"),
-            src_url = cls.config_get(config, above, "src_url"),
+            key=cls.config_get(config, above, "key"),
         )
