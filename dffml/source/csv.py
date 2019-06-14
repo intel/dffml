@@ -45,6 +45,11 @@ class CSVSource(FileSource, MemorySource):
                         repo_data["features"][key] = ast.literal_eval(value)
                     except (SyntaxError, ValueError):
                         repo_data["features"][key] = value
+                if self.config.key is not None and self.config.key == key:
+                    src_url = value
+                if self.config.key is None:
+                    src_url = str(i)
+            i += 1
             # Correct types and structure of repo data from csv_meta
             if "classification" in csv_meta:
                 repo_data.update(
@@ -59,9 +64,7 @@ class CSVSource(FileSource, MemorySource):
                         }
                     }
                 )
-            # Create the repo with the source URL being the row index
-            repo = Repo(str(i), data=repo_data)
-            i += 1
+            repo = Repo(src_url, data=repo_data)
             self.mem[repo.src_url] = repo
         self.logger.debug("%r loaded %d records", self, len(self.mem))
 
