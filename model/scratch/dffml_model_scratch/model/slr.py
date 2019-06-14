@@ -33,13 +33,14 @@ class SLRContext(ModelContext):
         super().__init__(parent)
         self.xData = np.array([])
         self.yData = np.array([])
+        self.key = None
         self.regression_line = self.get_regression_line()
 
     def get_regression_line(self):
-        return self.parent.saved.get('regression_line', None)
+        return self.parent.saved.get(self.key, None)
 
     async def set_regression_line(self, slope, constant, accuracy):
-        self.parent.saved['regression_line'] = (slope, constant, accuracy)
+        self.parent.saved[self.key] = (slope, constant, accuracy)
 
     async def squared_error(self, ys, yline):
         return sum((ys - yline)**2)
@@ -74,11 +75,12 @@ class SLRContext(ModelContext):
         prediction = self.regression_line[0]*x+self.regression_line[1]
         return prediction
 
-    async def train(self, sources: Sources, features: Features):
+    async def train(self, sources: Sources, features: Features, _classifications):
         '''
         Train using repos as the data to learn from.
         '''
         feature = await self.applicable_features(features)
+        self.key = hashlib.sha384((''.join(sorted(feature))).encode()).hexdigest()
         async for repo in sources.with_features(feature):
             # Grab a subset of the feature data being stored within the repo
             # The subset is the feature_we_care_about and the feature we are want to predict
@@ -87,7 +89,7 @@ class SLRContext(ModelContext):
             self.yData = np.append(self.yData, feature_data[self.parent.config.predict])
         self.regression_line = await self.best_fit_line(self.xData, self.yData)
         
-    async def accuracy(self, sources: Sources, features: Features) -> Accuracy:
+    async def accuracy(self, sources: Sources, features: Features, _classifications) -> Accuracy:
         '''
         Evaluates the accuracy of our model after training using the input repos
         as test data.
@@ -97,7 +99,7 @@ class SLRContext(ModelContext):
         accuracy_value = self.regression_line[2]
         return Accuracy(accuracy_value)
 
-    async def predict(self, repos: AsyncIterator[Repo], features: Features) -> \
+    async def predict(self, repos: AsyncIterator[Repo], features: Features, _classifications) -> \
                     AsyncIterator[Tuple[Repo, Any, float]]:
         '''
         Uses trained data to make a prediction about the quality of a repo.
@@ -115,7 +117,7 @@ class SLR(Model):
     
     def __init__(self, config: SLRConfig) -> None:
         super().__init__(config)
-        self.saved = {'regression_line': None}
+        self.saved = {}
 
     def _filename(self):
         # Create a file path that is specific to the data we are predicting on
