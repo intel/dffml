@@ -9,3 +9,10 @@ from dffml.util.asynctestcase import AsyncTestCase
 class TestCSVSource(SourceTest, AsyncTestCase):
     async def setUpSource(self, fileobj):
         return CSVSource(FileSourceConfig(filename=fileobj.name))
+
+class CSVTest(SourceTest, AsyncTestCase):
+    async def setUpSource(self, fileobj):
+        return CSVSource(FileSourceConfig(filename=fileobj.name, key="UniqueFeature"))
+
+    async def test_key(self):
+        file =

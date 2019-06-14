@@ -115,10 +115,7 @@ class FileSource(BaseSource):
             "readonly",
             Arg(type=bool, action="store_true", default=False),
         )
-        cls.config_set(args,
-                       above,
-                       "key",
-                       Arg(type=str, default=None))
+        cls.config_set(args, above, "key", Arg(type=str, default=None))
         return args
 
     @classmethod

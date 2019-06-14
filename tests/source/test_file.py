@@ -71,10 +71,7 @@ class TestFileSource(AsyncTestCase):
                                     "config": {},
                                 },
                                 "key": {
-                                    "arg": Arg(
-                                        type=str,
-                                        default=None,
-                                    ),
+                                    "arg": Arg(type=str, default=None),
                                     "config": {},
                                 },
                             },
