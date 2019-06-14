@@ -59,9 +59,14 @@ class CSVSource(FileSource, MemorySource):
                         }
                     }
                 )
-            # Create the repo with the source URL being the row index
-            repo = Repo(str(i), data=repo_data)
-            i += 1
+            if self.config.src_url == key:
+                #Create repo with given column name's value as src_url
+                repo = Repo(value, data=repo_data)
+            else:
+                # Create the repo with the source URL being the row index
+                repo = Repo(str(i), data=repo_data)
+                i += 1
+
             self.mem[repo.src_url] = repo
         self.logger.debug("%r loaded %d records", self, len(self.mem))
 

@@ -19,6 +19,7 @@ from ..util.cli.cmd import CMD
 
 class FileSourceConfig(BaseConfig, NamedTuple):
     filename: str
+    src_url: str = "DefaultSourceURL"
     readonly: bool = False
 
 
@@ -114,6 +115,10 @@ class FileSource(BaseSource):
             "readonly",
             Arg(type=bool, action="store_true", default=False),
         )
+        cls.config_set(args,
+                       above,
+                       "src_url",
+                       Arg(type=str, default="DefaultSourceURL"))
         return args
 
     @classmethod
@@ -121,4 +126,5 @@ class FileSource(BaseSource):
         return FileSourceConfig(
             filename=cls.config_get(config, above, "filename"),
             readonly=cls.config_get(config, above, "readonly"),
+            src_url = cls.config_get(config, above, "src_url"),
         )

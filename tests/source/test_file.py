@@ -70,6 +70,13 @@ class TestFileSource(AsyncTestCase):
                                     ),
                                     "config": {},
                                 },
+                                "src_url": {
+                                    "arg": Arg(
+                                        type=str,
+                                        default="DefaultSourceURL",
+                                    ),
+                                    "config": {},
+                                },
                             },
                         }
                     },
@@ -82,19 +89,25 @@ class TestFileSource(AsyncTestCase):
             parse_unknown("--source-file-filename", "feedface")
         )
         self.assertEqual(config.filename, "feedface")
+        self.assertEqual(config.src_url, "DefaultSourceURL")
         self.assertFalse(config.readonly)
 
     def test_config_readonly_set(self):
         config = FileSource.config(
             parse_unknown(
-                "--source-file-filename", "feedface", "--source-file-readonly"
+                "--source-file-filename",
+                "feedface",
+                "--source-file-src_url",
+                "default-src_url",
+                "--source-file-readonly",
             )
         )
         self.assertEqual(config.filename, "feedface")
+        self.assertEqual(config.src_url, "default-src_url")
         self.assertTrue(config.readonly)
 
-    def config(self, filename, readonly=False):
-        return FileSourceConfig(filename=filename, readonly=readonly)
+    def config(self, filename, src_url="DefaultSourceURL", readonly=False):
+        return FileSourceConfig(filename=filename, readonly=readonly, src_url=src_url)
 
     async def test_open(self):
         m_open = mock_open()
