@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Async helper concurrently nocancel optional keyword argument which, if set is
   a set of tasks not to cancel when the concurrently execution loop completes.
+- FileSourceTest has a `test_label` method which checks that a FileSource knows
+  how to properly load and save repos under a given label.
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
@@ -21,6 +23,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CSVSource allows for setting the Repo's `src_url` from a csv column
 ### Fixed
 - Docs get version from dffml.version.VERSION.
+- FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
+  the underlying file object to return str instances rather than bytes.
+- FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
+  the underlying file object to return str instances rather than bytes.
+- FileSourceTest inherits from SourceTest and is used to test json and csv
+  sources.
+- A temporary directory is used to replicate `mktemp -u` functionality so as to
+  provide tests using a FileSource with a valid tempfile name.
+- Labels for JSON sources
 
 ## [0.2.1] - 2019-06-07
 ### Added
@@ -35,8 +46,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   writing a Python meta static analysis tool,
   [shouldi](https://pypi.org/project/shouldi/)
 ### Changed
-- OperationImplementation add_label and add_orig_label methods now use op.name
-  instead of ENTRY_POINT_ORIG_LABEL and ENTRY_POINT_NAME.
+- OperationImplementation `add_label` and `add_orig_label` methods now use
+  op.name instead of `ENTRY_POINT_ORIG_LABEL` and `ENTRY_POINT_NAME`.
 - Make output specs and remap arguments optional for Operations CLI commands.
 - Feature skeleton project is now operations skeleton project
 ### Fixed

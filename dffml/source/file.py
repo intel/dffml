@@ -20,6 +20,7 @@ from ..util.cli.cmd import CMD
 class FileSourceConfig(BaseConfig, NamedTuple):
     filename: str
     key: str = None
+    label: str = "unlabeled"
     readonly: bool = False
 
 
@@ -38,6 +39,9 @@ class FileSource(BaseSource):
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self._close()
 
+    async def _empty_file_init(self):
+        return {}
+
     async def _open(self):
         if not os.path.exists(self.config.filename) or os.path.isdir(
             self.config.filename
@@ -46,7 +50,7 @@ class FileSource(BaseSource):
                 ("%r is not a file, " % (self.config.filename,))
                 + "initializing memory to empty dict"
             )
-            self.mem = {}
+            self.mem = await self._empty_file_init()
             return
         if self.config.filename[::-1].startswith((".gz")[::-1]):
             opener = gzip.open(self.config.filename, "rt")
@@ -76,27 +80,27 @@ class FileSource(BaseSource):
             elif self.config.filename[::-1].startswith((".zip")[::-1]):
                 close = self.zip_closer_helper()
             else:
-                close = open(self.config.filename, "w")
+                close = open(self.config.filename, "w+")
             with close as fd:
                 await self.dump_fd(fd)
 
     @contextmanager
     def zip_opener_helper(self):
         with zipfile.ZipFile(self.config.filename) as archive:
-            with archive.open(self.__class__.__qualname__, mode="r") as fd:
-                yield fd
+            with archive.open(self.__class__.__qualname__, mode="r") as zip_fd:
+                with io.TextIOWrapper(zip_fd, write_through=True) as fd:
+                    yield fd
 
     @contextmanager
     def zip_closer_helper(self):
         with zipfile.ZipFile(
             self.config.filename, "w", compression=zipfile.ZIP_BZIP2
         ) as archive:
-            with io.TextIOWrapper(
-                archive.open(
-                    self.__class__.__qualname__, mode="w", force_zip64=True
-                )
-            ) as fd:
-                yield fd
+            with archive.open(
+                self.__class__.__qualname__, mode="w", force_zip64=True
+            ) as zip_fd:
+                with io.TextIOWrapper(zip_fd, write_through=True) as fd:
+                    yield fd
 
     @abc.abstractmethod
     async def load_fd(self, fd):
@@ -116,6 +120,9 @@ class FileSource(BaseSource):
             Arg(type=bool, action="store_true", default=False),
         )
         cls.config_set(args, above, "key", Arg(type=str, default=None))
+        cls.config_set(
+            args, above, "label", Arg(type=str, default="unlabeled")
+        )
         return args
 
     @classmethod
@@ -124,4 +131,5 @@ class FileSource(BaseSource):
             filename=cls.config_get(config, above, "filename"),
             readonly=cls.config_get(config, above, "readonly"),
             key=cls.config_get(config, above, "key"),
+            label=cls.config_get(config, above, "label"),
         )

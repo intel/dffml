@@ -74,6 +74,10 @@ class TestFileSource(AsyncTestCase):
                                     "arg": Arg(type=str, default=None),
                                     "config": {},
                                 },
+                                "label": {
+                                    "arg": Arg(type=str, default="unlabeled"),
+                                    "config": {},
+                                },
                             },
                         }
                     },
@@ -87,6 +91,7 @@ class TestFileSource(AsyncTestCase):
         )
         self.assertEqual(config.filename, "feedface")
         self.assertEqual(config.key, None)
+        self.assertEqual(config.label, "unlabeled")
         self.assertFalse(config.readonly)
 
     def test_config_readonly_set(self):
@@ -96,15 +101,19 @@ class TestFileSource(AsyncTestCase):
                 "feedface",
                 "--source-file-key",
                 "default-key",
+                "--source-file-label",
+                "default-label",
                 "--source-file-readonly",
             )
         )
         self.assertEqual(config.filename, "feedface")
         self.assertEqual(config.key, "default-key")
+        self.assertEqual(config.label, "default-label")
         self.assertTrue(config.readonly)
 
-    def config(self, filename, key=None, readonly=False):
-        return FileSourceConfig(filename=filename, readonly=readonly, key=key)
+    def config(self, filename, label="unlabeled", readonly=False, key=None):
+        return FileSourceConfig(
+            filename=filename, readonly=readonly, label=label,  key=key)
 
     async def test_open(self):
         m_open = mock_open()
@@ -179,7 +188,7 @@ class TestFileSource(AsyncTestCase):
         ):
             async with FakeFileSource(self.config("testfile")):
                 pass
-            m_open.assert_called_once_with("testfile", "w")
+            m_open.assert_called_once_with("testfile", "w+")
 
     async def test_close_gz(self):
         m_open = mock_open()
