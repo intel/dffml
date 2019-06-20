@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 import unittest
+import tempfile
 
 from dffml.source.file import FileSourceConfig
 from dffml.source.csv import CSVSource, CSVSourceConfig
@@ -8,7 +9,6 @@ from dffml.util.testing.source import FileSourceTest
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.repo import Repo
 from dffml.util.cli.arg import parse_unknown
-import tempfile
 
 
 class TestCSVSource(FileSourceTest, AsyncTestCase):
@@ -48,7 +48,7 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
         self.assertTrue(config.readonly)
 
     def config(self, filename, label="unlabeled", key=None, readonly=False):
-        return FileSourceConfig(
+        return CSVSourceConfig(
             filename=filename, readonly=readonly, key=key, label=label
         )
 

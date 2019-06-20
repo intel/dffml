@@ -5,11 +5,11 @@ Loads repos from a csv file, using columns as features
 """
 import csv
 import ast
+from typing import NamedTuple, Dict
 
 from ..repo import Repo
 from .memory import MemorySource
 from .file import FileSource, FileSourceConfig
-from typing import NamedTuple, Dict
 from ..util.cli.arg import Arg
 
 csv.register_dialect("strip", skipinitialspace=True)
