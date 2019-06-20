@@ -32,6 +32,16 @@ class CSVSource(FileSource, MemorySource):
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
+        cls.config_set(args, above, "filename", Arg())
+        cls.config_set(
+            args,
+            above,
+            "readonly",
+            Arg(type=bool, action="store_true", default=False),
+        )
+        cls.config_set(
+            args, above, "label", Arg(type=str, default="unlabeled")
+        )
         cls.config_set(args, above, "key", Arg(type=str, default=None))
         return args
 

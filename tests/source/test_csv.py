@@ -7,6 +7,7 @@ from dffml.source.csv import CSVSource, CSVSourceConfig
 from dffml.util.testing.source import FileSourceTest
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.repo import Repo
+from dffml.util.cli.arg import parse_unknown
 import tempfile
 
 
@@ -19,6 +20,37 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
         """
         Labels not implemented yet for CSV files
         """
+
+    def test_config_readonly_default(self):
+        config = CSVSource.config(
+            parse_unknown("--source-file-filename", "feedface")
+        )
+        self.assertEqual(config.filename, "feedface")
+        self.assertEqual(config.label, "unlabeled")
+        self.assertEqual(config.key, None)
+        self.assertFalse(config.readonly)
+
+    def test_config_readonly_set(self):
+        config = CSVSource.config(
+            parse_unknown(
+                "--source-file-filename",
+                "feedface",
+                "--source-file-label",
+                "default-label",
+                "--source-file-key",
+                "SourceURLColumn",
+                "--source-file-readonly",
+            )
+        )
+        self.assertEqual(config.filename, "feedface")
+        self.assertEqual(config.label, "default-label")
+        self.assertEqual(config.key, "SourceURLColumn")
+        self.assertTrue(config.readonly)
+
+    def config(self, filename, label="unlabeled", key=None, readonly=False):
+        return FileSourceConfig(
+            filename=filename, readonly=readonly, key=key, label=label
+        )
 
     async def test_key(self):
         with tempfile.NamedTemporaryFile() as fileobj:
