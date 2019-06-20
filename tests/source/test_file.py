@@ -70,10 +70,6 @@ class TestFileSource(AsyncTestCase):
                                     ),
                                     "config": {},
                                 },
-                                "key": {
-                                    "arg": Arg(type=str, default=None),
-                                    "config": {},
-                                },
                                 "label": {
                                     "arg": Arg(type=str, default="unlabeled"),
                                     "config": {},
@@ -90,7 +86,6 @@ class TestFileSource(AsyncTestCase):
             parse_unknown("--source-file-filename", "feedface")
         )
         self.assertEqual(config.filename, "feedface")
-        self.assertEqual(config.key, None)
         self.assertEqual(config.label, "unlabeled")
         self.assertFalse(config.readonly)
 
@@ -99,21 +94,19 @@ class TestFileSource(AsyncTestCase):
             parse_unknown(
                 "--source-file-filename",
                 "feedface",
-                "--source-file-key",
-                "default-key",
                 "--source-file-label",
                 "default-label",
                 "--source-file-readonly",
             )
         )
         self.assertEqual(config.filename, "feedface")
-        self.assertEqual(config.key, "default-key")
         self.assertEqual(config.label, "default-label")
         self.assertTrue(config.readonly)
 
-    def config(self, filename, label="unlabeled", readonly=False, key=None):
+    def config(self, filename, label="unlabeled", readonly=False):
         return FileSourceConfig(
-            filename=filename, readonly=readonly, label=label,  key=key)
+            filename=filename, readonly=readonly, label=label
+        )
 
     async def test_open(self):
         m_open = mock_open()

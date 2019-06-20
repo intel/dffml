@@ -8,9 +8,18 @@ import ast
 
 from ..repo import Repo
 from .memory import MemorySource
-from .file import FileSource
+from .file import FileSource, FileSourceConfig
+from typing import NamedTuple, Dict
+from ..util.cli.arg import Arg
 
 csv.register_dialect("strip", skipinitialspace=True)
+
+
+class CSVSourceConfig(FileSourceConfig, NamedTuple):
+    filename: str
+    label: str = "unlabeled"
+    readonly: bool = False
+    key: str = None
 
 
 class CSVSource(FileSource, MemorySource):
@@ -20,6 +29,20 @@ class CSVSource(FileSource, MemorySource):
 
     # Headers we've added to track data other than feature data for a repo
     CSV_HEADERS = ["prediction", "confidence", "classification"]
+
+    @classmethod
+    def args(cls, args, *above) -> Dict[str, Arg]:
+        cls.config_set(args, above, "key", Arg(type=str, default=None))
+        return args
+
+    @classmethod
+    def config(cls, config, *above):
+        return CSVSourceConfig(
+            filename=cls.config_get(config, above, "filename"),
+            readonly=cls.config_get(config, above, "readonly"),
+            label=cls.config_get(config, above, "label"),
+            key=cls.config_get(config, above, "key"),
+        )
 
     async def load_fd(self, fd):
         """
