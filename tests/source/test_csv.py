@@ -47,11 +47,6 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
         self.assertEqual(config.key, "SourceURLColumn")
         self.assertTrue(config.readonly)
 
-    def config(self, filename, label="unlabeled", key=None, readonly=False):
-        return CSVSourceConfig(
-            filename=filename, readonly=readonly, key=key, label=label
-        )
-
     async def test_key(self):
         with tempfile.NamedTemporaryFile() as fileobj:
             fileobj.write(b"KeyHeader,ValueColumn\n")
