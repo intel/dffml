@@ -5,12 +5,21 @@ Loads repos from a csv file, using columns as features
 """
 import csv
 import ast
+from typing import NamedTuple, Dict
 
 from ..repo import Repo
 from .memory import MemorySource
-from .file import FileSource
+from .file import FileSource, FileSourceConfig
+from ..util.cli.arg import Arg
 
 csv.register_dialect("strip", skipinitialspace=True)
+
+
+class CSVSourceConfig(FileSourceConfig, NamedTuple):
+    filename: str
+    label: str = "unlabeled"
+    readonly: bool = False
+    key: str = None
 
 
 class CSVSource(FileSource, MemorySource):
@@ -20,6 +29,30 @@ class CSVSource(FileSource, MemorySource):
 
     # Headers we've added to track data other than feature data for a repo
     CSV_HEADERS = ["prediction", "confidence", "classification"]
+
+    @classmethod
+    def args(cls, args, *above) -> Dict[str, Arg]:
+        cls.config_set(args, above, "filename", Arg())
+        cls.config_set(
+            args,
+            above,
+            "readonly",
+            Arg(type=bool, action="store_true", default=False),
+        )
+        cls.config_set(
+            args, above, "label", Arg(type=str, default="unlabeled")
+        )
+        cls.config_set(args, above, "key", Arg(type=str, default=None))
+        return args
+
+    @classmethod
+    def config(cls, config, *above):
+        return CSVSourceConfig(
+            filename=cls.config_get(config, above, "filename"),
+            readonly=cls.config_get(config, above, "readonly"),
+            label=cls.config_get(config, above, "label"),
+            key=cls.config_get(config, above, "key"),
+        )
 
     async def load_fd(self, fd):
         """
@@ -45,6 +78,11 @@ class CSVSource(FileSource, MemorySource):
                         repo_data["features"][key] = ast.literal_eval(value)
                     except (SyntaxError, ValueError):
                         repo_data["features"][key] = value
+                if self.config.key is not None and self.config.key == key:
+                    src_url = value
+                if self.config.key is None:
+                    src_url = str(i)
+            i += 1
             # Correct types and structure of repo data from csv_meta
             if "classification" in csv_meta:
                 repo_data.update(
@@ -59,9 +97,7 @@ class CSVSource(FileSource, MemorySource):
                         }
                     }
                 )
-            # Create the repo with the source URL being the row index
-            repo = Repo(str(i), data=repo_data)
-            i += 1
+            repo = Repo(src_url, data=repo_data)
             self.mem[repo.src_url] = repo
         self.logger.debug("%r loaded %d records", self, len(self.mem))
 

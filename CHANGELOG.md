@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   config for them.
 - shouldi example uses updated `MemoryOrchestrator.basic_config` method and
   includes more explanation in comments.
+- CSVSource allows for setting the Repo's `src_url` from a csv column
 ### Fixed
 - Docs get version from dffml.version.VERSION.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
