@@ -96,21 +96,14 @@ class FakeFeature(Feature):
 
 
 class FakeModelContext(ModelContext):
-    async def train(
-        self, sources: Sources, features: Features, classifications: List[Any]
-    ):
+    async def train(self, sources: Sources):
         pass
 
-    async def accuracy(
-        self, sources: Sources, features: Features, classifications: List[Any]
-    ) -> AccuracyType:
+    async def accuracy(self, sources: Sources) -> AccuracyType:
         return AccuracyType(0.42)
 
     async def predict(
-        self,
-        repos: AsyncIterator[Repo],
-        features: Features,
-        classifications: List[Any],
+        self, repos: AsyncIterator[Repo]
     ) -> AsyncIterator[Tuple[Repo, Any, float]]:
         async for repo in repos:
             yield repo, "", float(repo.src_url)
@@ -335,8 +328,6 @@ class TestTrain(ReposTestCase):
                 self.temp_filename,
                 "-model",
                 "fake",
-                "-classifications",
-                "misc",
                 "-features",
                 "fake",
             )
@@ -358,8 +349,6 @@ class TestAccuracy(TestTrain):
                 self.temp_filename,
                 "-model",
                 "fake",
-                "-classifications",
-                "misc",
                 "-features",
                 "fake",
             )
@@ -384,8 +373,6 @@ class TestPredictAll(ReposTestCase):
                 self.temp_filename,
                 "-model",
                 "fake",
-                "-classifications",
-                "misc",
                 "-features",
                 "fake",
             )
@@ -416,8 +403,6 @@ class TestPredictRepo(ReposTestCase):
                 self.temp_filename,
                 "-model",
                 "fake",
-                "-classifications",
-                "misc",
                 "-features",
                 "fake",
                 "-keys",

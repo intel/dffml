@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - FileSourceTest has a `test_label` method which checks that a FileSource knows
   how to properly load and save repos under a given label.
 - Test case for Merge CLI command
+- Repo.feature method to select a single piece of feature data within a repo.
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
@@ -24,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CSVSource allows for setting the Repo's `src_url` from a csv column
 - util Entrypoint defines a new class for each loaded class and sets the
   `ENTRY_POINT_LABEL` parameter within the newly defined class.
+- Tensorflow model removed usages of repo.classifications methods.
 ### Fixed
 - Docs get version from dffml.version.VERSION.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
@@ -35,6 +37,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A temporary directory is used to replicate `mktemp -u` functionality so as to
   provide tests using a FileSource with a valid tempfile name.
 - Labels for JSON sources
+### Removed
+- Repo objects are no longer classification specific. Their `classify`,
+  `classified`, and `classification` methods were removed.
 
 ## [0.2.1] - 2019-06-07
 ### Added

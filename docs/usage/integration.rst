@@ -291,11 +291,12 @@ to train on our dataset.
 .. code-block:: bash
 
     $ dffml train all \
-        -model dnn \
+        -model tfdnnc \
         -model-epochs 400 \
         -model-steps 4000 \
+        -model-classification maintained \
+        -model-classifications 0 1 \
         -sources db=demoapp \
-        -classifications 0 1 \
         -features \
           def:authors:int:10 \
           def:commits:int:10 \
@@ -309,9 +310,10 @@ meaningless unless you threw out the dataset and put in real classifications.
 .. code-block:: bash
 
     $ dffml accuracy \
-        -model dnn \
+        -model tfdnnc \
+        -model-classification maintained \
+        -model-classifications 0 1 \
         -sources db=demoapp \
-        -classifications 0 1 \
         -features \
           def:authors:int:10 \
           def:commits:int:10 \
@@ -371,9 +373,10 @@ Now that we have the data for the new repo, ask the model for a prediction.
 
     $ dffml predict repo \
         -keys https://github.com/intel/dffml.git \
-        -model dnn \
+        -model tfdnnc \
+        -model-classification maintained \
+        -model-classifications 0 1 \
         -sources db=demoapp \
-        -classifications 0 1 \
         -features \
           def:authors:int:10 \
           def:commits:int:10 \
@@ -385,7 +388,6 @@ Now that we have the data for the new repo, ask the model for a prediction.
     2019-05-23 10:33:03.469235: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>
     [
         {
-            "classification": "",
             "extra": {},
             "features": {
                 "authors": [
@@ -427,7 +429,7 @@ Now that we have the data for the new repo, ask the model for a prediction.
             },
             "last_updated": "2019-05-23T10:33:03Z",
             "prediction": {
-                "classification": "0",
+                "value": "0",
                 "confidence": 1.0
             },
             "src_url": "https://github.com/intel/dffml.git"
@@ -523,9 +525,10 @@ database.
         result = subprocess.check_output([
             'dffml', 'predict', 'repo',
             '-keys', query['URL'],
-            '-model', 'dnn',
+            '-model', 'tfdnnc',
+            '-model-classification', 'maintained',
+            '-model-classifications', '0', '1',
             '-sources', 'db=demoapp',
-            '-classifications', '0', '1',
             '-features',
             'def:authors:int:10',
             'def:commits:int:10',
@@ -534,7 +537,7 @@ database.
             '-update'])
         result = json.loads(result)
         cursor.execute("REPLACE INTO status (src_url, maintained) VALUES(%s, %s)",
-                       (query['URL'], result[0]['prediction']['classification'],))
+                       (query['URL'], result[0]['prediction']['value'],))
         cnx.commit()
         print json.dumps(dict(success=True))
 

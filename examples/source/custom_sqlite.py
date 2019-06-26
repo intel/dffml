@@ -39,13 +39,6 @@ class CustomSQLiteSourceContext(BaseSourceContext):
                 "VALUES(?, " + ", ".join("?" * len(prediction_cols)) + ")",
                 [repo.src_url] + list(prediction_data.values()),
             )
-        # Store classification
-        if repo.classified():
-            await db.execute(
-                "INSERT OR REPLACE INTO classification "
-                "(src_url, classification) VALUES(?, ?)",
-                [repo.src_url, repo.classification()],
-            )
 
     async def repos(self) -> AsyncIterator[Repo]:
         # NOTE This logic probably isn't what you want. Only for demo purposes.
@@ -71,16 +64,7 @@ class CustomSQLiteSourceContext(BaseSourceContext):
         )
         prediction = await prediction.fetchone()
         if prediction is not None:
-            repo.predicted(
-                prediction["classification"], prediction["confidence"]
-            )
-        # Get classification
-        classification = await db.execute(
-            "SELECT * FROM classification WHERE " "src_url=?", (repo.src_url,)
-        )
-        classification = await classification.fetchone()
-        if classification is not None:
-            repo.classify(classification["classification"])
+            repo.predicted(prediction["value"], prediction["confidence"])
         return repo
 
     async def __aexit__(self, exc_type, exc_value, traceback):
@@ -91,8 +75,7 @@ class CustomSQLiteSource(BaseSource):
 
     CONTEXT = CustomSQLiteSourceContext
     FEATURE_COLS = ["PetalLength", "PetalWidth", "SepalLength", "SepalWidth"]
-    PREDICTION_COLS = ["classification", "confidence"]
-    CLASSIFICATION_COLS = ["classification"]
+    PREDICTION_COLS = ["value", "confidence"]
 
     async def __aenter__(self) -> "BaseSourceContext":
         self.__db = aiosqlite.connect(self.config.filename)
@@ -109,14 +92,8 @@ class CustomSQLiteSource(BaseSource):
         # Create table for predictions
         await self.db.execute(
             "CREATE TABLE IF NOT EXISTS prediction ("
-            "src_url TEXT PRIMARY KEY, " + "classification TEXT, "
+            "src_url TEXT PRIMARY KEY, " + "value TEXT, "
             "confidence REAL"
-            ")"
-        )
-        # Create table for classification
-        await self.db.execute(
-            "CREATE TABLE IF NOT EXISTS classification ("
-            "src_url TEXT PRIMARY KEY, " + "classification TEXT"
             ")"
         )
         return self

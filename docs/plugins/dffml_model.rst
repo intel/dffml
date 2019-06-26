@@ -7,8 +7,8 @@ abstract the usage of machine learning models.
 dffml_model_tensorflow
 ----------------------
 
-dnn
-~~~
+tfdnnc
+~~~~~~
 
 *Core*
 
