@@ -28,7 +28,7 @@ class CSVSource(FileSource, MemorySource):
     """
 
     # Headers we've added to track data other than feature data for a repo
-    CSV_HEADERS = ["prediction", "confidence", "classification"]
+    CSV_HEADERS = ["prediction", "confidence"]
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
@@ -84,15 +84,11 @@ class CSVSource(FileSource, MemorySource):
                     src_url = str(i)
             i += 1
             # Correct types and structure of repo data from csv_meta
-            if "classification" in csv_meta:
-                repo_data.update(
-                    {"classification": str(csv_meta["classification"])}
-                )
             if "prediction" in csv_meta and "confidence" in csv_meta:
                 repo_data.update(
                     {
                         "prediction": {
-                            "classification": str(csv_meta["prediction"]),
+                            "value": str(csv_meta["prediction"]),
                             "confidence": float(csv_meta["confidence"]),
                         }
                     }
@@ -121,10 +117,8 @@ class CSVSource(FileSource, MemorySource):
             row = {}
             for key, value in repo_data["features"].items():
                 row[key] = value
-            if "classification" in repo_data:
-                row["classification"] = repo_data["classification"]
             if "prediction" in repo_data:
-                row["prediction"] = repo_data["prediction"]["classification"]
+                row["prediction"] = repo_data["prediction"]["value"]
                 row["confidence"] = repo_data["prediction"]["confidence"]
             writer.writerow(row)
         self.logger.debug("%r saved %d records", self, len(self.mem))

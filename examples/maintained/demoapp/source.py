@@ -55,9 +55,9 @@ class DemoAppSourceContext(BaseSourceContext):
         await db.execute(
             "SELECT maintained FROM `status` WHERE src_url=%s", (src_url,)
         )
-        classification = await db.fetchone()
-        if classification is not None and classification[0] is not None:
-            repo.classify(str(classification[0]))
+        maintained = await db.fetchone()
+        if maintained is not None and maintained[0] is not None:
+            repo.evaluated({"maintained": str(maintained[0])})
         return repo
 
     async def __aenter__(self) -> "DemoAppSourceContext":
@@ -74,9 +74,6 @@ class DemoAppSourceContext(BaseSourceContext):
 class DemoAppSource(BaseSource):
 
     CONTEXT = DemoAppSourceContext
-    FEATURE_COLS = ["commits", "authors", "work"]
-    PREDICTION_COLS = ["classification", "confidence"]
-    CLASSIFICATION_COLS = ["classification"]
 
     async def __aenter__(self) -> "DemoAppSource":
         self.pool = await aiomysql.create_pool(

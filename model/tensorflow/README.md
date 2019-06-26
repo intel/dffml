@@ -29,9 +29,11 @@ head iris_training.csv
 sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' *.csv
 head iris_training.csv
 dffml train \
-  -model dnn \
-  -sources csv=iris_training.csv \
-  -classifications 0 1 2 \
+  -model tfdnnc \
+  -model-classification classification \
+  -model-classifications 0 1 2 \
+  -sources iris=csv \
+  -source-csv-filename iris_test.csv \
   -features \
     def:SepalLength:float:1 \
     def:SepalWidth:float:1 \
@@ -41,9 +43,11 @@ dffml train \
   -steps 20000 \
   -log debug
 dffml accuracy \
-  -model dnn \
-  -sources csv=iris_test.csv \
-  -classifications 0 1 2 \
+  -model tfdnnc \
+  -model-classification classification \
+  -model-classifications 0 1 2 \
+  -sources iris=csv \
+  -source-csv-filename iris_test.csv \
   -features \
     def:SepalLength:float:1 \
     def:SepalWidth:float:1 \
@@ -51,9 +55,11 @@ dffml accuracy \
     def:PetalWidth:float:1 \
   -log critical
 dffml predict all \
-  -model dnn \
-  -sources csv=iris_test.csv \
-  -classifications 0 1 2 \
+  -model tfdnnc \
+  -model-classification classification \
+  -model-classifications 0 1 2 \
+  -sources iris=csv \
+  -source-csv-filename iris_test.csv \
   -features \
     def:SepalLength:float:1 \
     def:SepalWidth:float:1 \

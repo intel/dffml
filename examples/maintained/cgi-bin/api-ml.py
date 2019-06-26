@@ -91,9 +91,10 @@ elif action == 'predict':
     result = subprocess.check_output([
         'dffml', 'predict', 'repo',
         '-keys', query['URL'],
-        '-model', 'dnn',
+        '-model', 'tfdnnc',
+        '-model-classification', 'maintained',
+        '-model-classifications', '0', '1',
         '-sources', 'db=demoapp',
-        '-classifications', '0', '1',
         '-features',
         'def:authors:int:10',
         'def:commits:int:10',
@@ -102,7 +103,7 @@ elif action == 'predict':
         '-update'])
     result = json.loads(result)
     cursor.execute("REPLACE INTO status (src_url, maintained) VALUES(%s, %s)",
-                   (query['URL'], result[0]['prediction']['classification'],))
+                   (query['URL'], result[0]['prediction']['value'],))
     cnx.commit()
     print json.dumps(dict(success=True))
 else:
