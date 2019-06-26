@@ -90,30 +90,6 @@ class SourcesContext(AsyncContextManagerListContext):
             repo.merge(await source.repo(src_url))
         return repo
 
-    async def classified_with_features(
-        self, features: List[str]
-    ) -> AsyncIterator[Repo]:
-        """
-        Returns all classified repos which have the requested features
-        """
-        async for repo in self.repos(
-            lambda repo: bool(repo.features(features) and repo.classified())
-        ):
-            yield repo
-
-    async def unclassified_with_features(
-        self, features: List[str]
-    ) -> AsyncIterator[Repo]:
-        """
-        Returns all unclassified repos which have the requested features
-        """
-        async for repo in self.repos(
-            lambda repo: bool(
-                repo.features(features) and not repo.classified()
-            )
-        ):
-            yield repo
-
     async def with_features(self, features: List[str]) -> AsyncIterator[Repo]:
         """
         Returns all repos which have the requested features

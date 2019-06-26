@@ -7,10 +7,10 @@ from dffml.repo import RepoPrediction, RepoData, Repo
 
 class TestRepoPrediction(unittest.TestCase):
     def setUp(self):
+        self.value = "good"
         self.confidence = 0.42
-        self.classification = "good"
         self.full = RepoPrediction(
-            confidence=self.confidence, classification=self.classification
+            confidence=self.confidence, value=self.value
         )
         self.null = RepoPrediction()
 
@@ -18,9 +18,9 @@ class TestRepoPrediction(unittest.TestCase):
         self.assertEqual(self.confidence, self.full["confidence"])
         self.assertEqual(self.full.confidence, self.full["confidence"])
 
-    def test_full_property_classification(self):
-        self.assertEqual(self.classification, self.full["classification"])
-        self.assertEqual(self.full.classification, self.full["classification"])
+    def test_full_property_value(self):
+        self.assertEqual(self.value, self.full["value"])
+        self.assertEqual(self.full.value, self.full["value"])
 
     def test_full_dict_returns_self(self):
         self.assertEqual(self.full, self.full.dict())
@@ -44,11 +44,7 @@ class TestRepoPrediction(unittest.TestCase):
 class TestRepoData(unittest.TestCase):
     def setUp(self):
         self.full = RepoData(
-            src_url=None,
-            features=None,
-            classification=None,
-            prediction=None,
-            last_updated=None,
+            src_url=None, features=None, prediction=None, last_updated=None
         )
         self.null = RepoData()
 
@@ -78,10 +74,8 @@ class TestRepo(unittest.TestCase):
     def test_str(self):
         self.full.prediction = RepoPrediction()
         self.assertIn("Undetermined", str(self.full))
-        self.full.data.prediction = RepoPrediction(classification="Good")
+        self.full.data.prediction = RepoPrediction(value="Good")
         self.assertIn("Good", str(self.full))
-        self.full.data.classification = "Great"
-        self.assertIn("Great", str(self.full))
         self.full.extra.update(dict(hi=5))
         self.assertIn("5", str(self.full))
         self.full.extra = dict()
@@ -121,20 +115,3 @@ class TestRepo(unittest.TestCase):
     def test_prediction(self):
         self.full.predicted("feed", 1.00)
         self.assertTrue(self.full.prediction())
-
-    def test_classify(self):
-        self.full.classify("face")
-        self.assertEqual(self.full.data.classification, "face")
-
-    def test_classified(self):
-        self.full.classify("")
-        self.assertFalse(self.full.classified())
-        self.full.classify(True)
-        self.assertTrue(self.full.classified())
-
-    def test_classification(self):
-        self.full.classify(True)
-        self.assertTrue(self.full.classification())
-        self.full.classify("")
-        with self.assertRaisesRegex(ValueError, "Unclassified"):
-            self.full.classification()

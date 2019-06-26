@@ -13,23 +13,25 @@ from .log import LOGGER
 LOGGER = LOGGER.getChild("repo")
 
 
+class NoSuchFeature(KeyError):
+    pass  # pragma: no cov
+
+
 class RepoPrediction(dict):
 
-    EXPORTED = ["classification", "confidence"]
+    EXPORTED = ["value", "confidence"]
 
-    def __init__(
-        self, *, confidence: float = 0.0, classification: Any = ""
-    ) -> None:
+    def __init__(self, *, confidence: float = 0.0, value: Any = "") -> None:
         self["confidence"] = confidence
-        self["classification"] = classification
+        self["value"] = value
 
     @property
     def confidence(self):
         return self["confidence"]
 
     @property
-    def classification(self):
-        return self["classification"]
+    def value(self):
+        return self["value"]
 
     def dict(self):
         if not self:
@@ -37,7 +39,7 @@ class RepoPrediction(dict):
         return self
 
     def __len__(self):
-        if self["confidence"] == 0.0 and not self["classification"]:
+        if self["confidence"] == 0.0 and not self["value"]:
             return 0
         return 2
 
@@ -50,14 +52,13 @@ class RepoPrediction(dict):
 class RepoData(object):
 
     DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
-    EXPORTED = ["src_url", "features", "classification", "prediction"]
+    EXPORTED = ["src_url", "features", "prediction"]
 
     def __init__(
         self,
         *,
         src_url: Optional[str] = None,
         features: Optional[Dict[str, Any]] = None,
-        classification: Optional[str] = None,
         prediction: Optional[RepoPrediction] = None,
         last_updated: Optional[datetime] = None,
     ) -> None:
@@ -68,8 +69,6 @@ class RepoData(object):
             src_url = ""
         if features is None:
             features = {}
-        if classification is None:
-            classification = ""
         if prediction is None:
             prediction = RepoPrediction()
         if last_updated is None:
@@ -78,7 +77,6 @@ class RepoData(object):
             last_updated = datetime.strptime(last_updated, self.DATE_FORMAT)
         self.src_url = src_url
         self.features = features
-        self.classification = classification
         self.prediction = RepoPrediction(**prediction)
         self.last_updated = last_updated
 
@@ -139,19 +137,17 @@ class Repo(object):
 
     def __str__(self):
         if not self.data.prediction:
-            confidence, classification = (0.0, "Undetermined")
+            confidence, value = (0.0, "Undetermined")
         else:
-            confidence, classification = (
+            confidence, value = (
                 self.data.prediction.confidence,
-                self.data.prediction.classification,
+                self.data.prediction.value,
             )
         header = "%-11s (%2.1f%% confidence) %s" % (
-            classification,
+            value,
             100.0 * confidence,
             self.src_url,
         )
-        if self.classified():
-            header += " classified as: %s" % (self.classification(),)
         if len(self.extra.keys()):
             header += " " + str(self.extra)
         return "\n".join(
@@ -197,12 +193,20 @@ class Repo(object):
                 return {}
         return {name: self.data.features[name] for name in subset}
 
-    def predicted(self, classification: Any, confidence: float):
+    def feature(self, name: str) -> Any:
+        """
+        Returns a feature of the repo.
+        """
+        if name not in self.data.features:
+            raise NoSuchFeature(name)
+        return self.data.features[name]
+
+    def predicted(self, value: Any, confidence: float):
         """
         Set the prediction for this repo
         """
         self.data.prediction = RepoPrediction(
-            classification=classification, confidence=float(confidence)
+            value=value, confidence=float(confidence)
         )
         self.data.last_updated = datetime.now()
 
@@ -211,31 +215,3 @@ class Repo(object):
         Get the prediction for this repo
         """
         return self.data.prediction
-
-    def classify(self, classification):
-        """
-        Set the classification for the repo
-        """
-        self.data.classification = classification
-
-    def classified(self):
-        """
-        Return True if the repo has a classification
-        """
-        if self.data.classification == "":
-            return False
-        return True
-
-    def classification(self):
-        """
-        Repo classification or value error if unclassified
-        """
-        if not self.classified():
-            raise ValueError("Unclassified")
-        return self.data.classification
-
-    async def asyncgen(self) -> AsyncIterator["Repo"]:
-        """
-        Async gen for a single repo
-        """
-        yield self

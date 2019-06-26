@@ -385,16 +385,14 @@ class MLCMD(ModelCMD, FeaturesCMD, SourcesCMD):
     Commands which use models share many similar arguments.
     """
 
-    arg_classifications = Arg("-classifications", nargs="+", required=True)
-
 
 class Train(MLCMD):
     """Train a model on data from given sources"""
 
     async def run(self):
         async with self.sources as sources, self.features as features, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                return await mctx.train(sctx, features, self.classifications)
+            async with sources() as sctx, model(features) as mctx:
+                return await mctx.train(sctx)
 
 
 class Accuracy(MLCMD):
@@ -402,30 +400,24 @@ class Accuracy(MLCMD):
 
     async def run(self):
         async with self.sources as sources, self.features as features, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                return float(
-                    await mctx.accuracy(sctx, features, self.classifications)
-                )
+            async with sources() as sctx, model(features) as mctx:
+                return float(await mctx.accuracy(sctx))
 
 
 class PredictAll(EvaluateAll, MLCMD):
     """Predicts for all sources"""
 
-    async def predict(self, mctx, sctx, features, repos):
-        async for repo, classification, confidence in mctx.predict(
-            repos, features, self.classifications
-        ):
-            repo.predicted(classification, confidence)
+    async def predict(self, mctx, sctx, repos):
+        async for repo, value, confidence in mctx.predict(repos):
+            repo.predicted(value, confidence)
             yield repo
             if self.update:
                 await sctx.update(repo)
 
     async def run(self):
         async with self.sources as sources, self.features as features, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                async for repo in self.predict(
-                    mctx, sctx, features, sctx.repos()
-                ):
+            async with sources() as sctx, model(features) as mctx:
+                async for repo in self.predict(mctx, sctx, sctx.repos()):
                     yield repo
 
 

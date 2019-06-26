@@ -33,29 +33,24 @@ class SourceTest(abc.ABC):
         full_repo = Repo(
             full_src_url,
             data={
-                "classification": "1",
                 "features": {
                     "PetalLength": 3.9,
                     "PetalWidth": 1.2,
                     "SepalLength": 5.8,
                     "SepalWidth": 2.7,
                 },
-                "prediction": {
-                    "classification": "feedface",
-                    "confidence": 0.42,
-                },
+                "prediction": {"value": "feedface", "confidence": 0.42},
             },
         )
         empty_repo = Repo(
             empty_src_url,
             data={
-                "classification": "1",
                 "features": {
                     "PetalLength": 3.9,
                     "PetalWidth": 1.2,
                     "SepalLength": 5.8,
                     "SepalWidth": 2.7,
-                },
+                }
             },
         )
 
@@ -70,13 +65,11 @@ class SourceTest(abc.ABC):
             async with testSource() as sourceContext:
                 with self.subTest(src_url=full_src_url):
                     repo = await sourceContext.repo(full_src_url)
-                    self.assertEqual(
-                        repo.data.prediction.classification, "feedface"
-                    )
+                    self.assertEqual(repo.data.prediction.value, "feedface")
                     self.assertEqual(repo.data.prediction.confidence, 0.42)
                 with self.subTest(src_url=empty_src_url):
                     repo = await sourceContext.repo(empty_src_url)
-                    self.assertFalse(repo.data.prediction.classification)
+                    self.assertFalse(repo.data.prediction.value)
                     self.assertFalse(repo.data.prediction.confidence)
                 with self.subTest(both=[full_src_url, empty_src_url]):
                     repos = {

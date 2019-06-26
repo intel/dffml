@@ -2,8 +2,8 @@
 # Copyright (c) 2019 Intel Corporation
 """
 Model subclasses are responsible for training themselves on repos, making
-predictions about the classifications of repos, and assessing their prediction
-accuracy.
+predictions about the value of a feature in the repo, and assessing thei
+prediction accuracy.
 """
 import os
 import abc
@@ -32,22 +32,19 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
     various machine learning frameworks or concepts.
     """
 
-    def __init__(self, parent: "Model") -> None:
+    def __init__(self, parent: "Model", features: Features) -> None:
         self.parent = parent
+        self.features = features
 
     @abc.abstractmethod
-    async def train(
-        self, sources: Sources, features: Features, classifications: List[Any]
-    ):
+    async def train(self, sources: Sources):
         """
         Train using repos as the data to learn from.
         """
         raise NotImplementedError()
 
     @abc.abstractmethod
-    async def accuracy(
-        self, sources: Sources, features: Features, classifications: List[Any]
-    ) -> Accuracy:
+    async def accuracy(self, sources: Sources) -> Accuracy:
         """
         Evaluates the accuracy of our model after training using the input repos
         as test data.
@@ -56,10 +53,7 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
 
     @abc.abstractmethod
     async def predict(
-        self,
-        repos: AsyncIterator[Repo],
-        features: Features,
-        classifications: List[Any],
+        self, repos: AsyncIterator[Repo]
     ) -> AsyncIterator[Tuple[Repo, Any, float]]:
         """
         Uses trained data to make a prediction about the quality of a repo.
@@ -75,13 +69,13 @@ class Model(BaseDataFlowFacilitatorObject):
     various machine learning frameworks or concepts.
     """
 
-    def __call__(self) -> ModelContext:
+    def __call__(self, features: Features) -> ModelContext:
         # If the config object for this model contains the directory property
         # then create it if it does not exist
         directory = getattr(self.config, "directory", None)
         if directory is not None and not os.path.isdir(directory):
             os.makedirs(directory)
-        return self.CONTEXT(self)
+        return self.CONTEXT(self, features)
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
