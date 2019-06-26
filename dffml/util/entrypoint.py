@@ -139,6 +139,8 @@ class Entrypoint(object):
                 "Correct syntax: label=%s"
                 % (label_and_loading, label_and_loading)
             )
-        loaded = copy.deepcopy(cls.load(loading))
-        loaded.ENTRY_POINT_LABEL = label
-        return loaded
+
+        class Loaded(cls.load(loading)):
+            ENTRY_POINT_LABEL = label
+
+        return Loaded

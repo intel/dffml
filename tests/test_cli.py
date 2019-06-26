@@ -31,6 +31,7 @@ from dffml.util.asynctestcase import AsyncTestCase
 from dffml.util.cli.cmd import DisplayHelp
 
 from dffml.cli import (
+    Merge,
     OperationsAll,
     OperationsRepo,
     EvaluateAll,
@@ -137,6 +138,38 @@ def opimp_load(loading=None):
     if loading is not None:
         return list(filter(lambda imp: loading == imp.op.name, OPIMPS))[0]
     return OPIMPS
+
+
+class TestMerge(ReposTestCase):
+    async def test_json_label(self):
+        await Merge.cli(
+            "dest=json",
+            "src=json",
+            "-source-dest-filename",
+            self.temp_filename,
+            "-source-dest-label",
+            "somelabel",
+            "-source-src-filename",
+            self.temp_filename,
+        )
+        # Check the unlabeled source
+        with self.subTest(labeled=None):
+            async with JSONSource(
+                FileSourceConfig(filename=self.temp_filename)
+            ) as source:
+                async with source() as sctx:
+                    repos = [repo async for repo in sctx.repos()]
+                    self.assertEqual(len(repos), len(self.repos))
+        # Check the labeled source
+        with self.subTest(labeled="somelabel"):
+            async with JSONSource(
+                FileSourceConfig(
+                    filename=self.temp_filename, label="somelabel"
+                )
+            ) as source:
+                async with source() as sctx:
+                    repos = [repo async for repo in sctx.repos()]
+                    self.assertEqual(len(repos), len(self.repos))
 
 
 class TestListRepos(ReposTestCase):
