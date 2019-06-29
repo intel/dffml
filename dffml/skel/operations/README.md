@@ -1,6 +1,6 @@
-# DFFML operations_name Operations
+# DFFML REPLACE_PACKAGE_NAME Operations
 
-operations_name description.
+REPLACE_PACKAGE_NAME description.
 
 ## Usage
 
@@ -21,4 +21,4 @@ dffml operations all \
 
 ## License
 
-DFFML operations_name are distributed under the [MIT License](LICENSE).
+DFFML REPLACE_PACKAGE_NAME is distributed under the [MIT License](LICENSE).

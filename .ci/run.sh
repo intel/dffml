@@ -18,8 +18,19 @@ function run_plugin() {
     python -m unittest discover
     cd ..
     ./scripts/docs.sh
-    ./scripts/create.sh operations travis_test_operations
-    ./scripts/create.sh model travis_test_model
+    # Try running create for real
+    cd $(mktemp -d)
+    # Create model
+    dffml service create model travis-test-model
+    cd travis-test-model
+    python setup.py install
+    python setup.py test
+    cd ..
+    # Create operations
+    dffml service create operations travis-test-operations
+    cd travis-test-operations
+    python setup.py install
+    python setup.py test
   fi
 }
 

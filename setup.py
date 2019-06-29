@@ -40,6 +40,7 @@ setup(
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
     packages=find_packages(),
+    include_package_data=True,
     extras_require={
         'tensorflow': ['dffml-model-tensorflow'],
         'git': ['dffml-feature-git'],
@@ -55,6 +56,9 @@ setup(
         ],
         'dffml.port': [
             'json = dffml.port.json:JSON',
+        ],
+        'dffml.service.cli': [
+            'create = dffml.service.create:Create',
         ],
         # Data Flow
         'dffml.operation': [
