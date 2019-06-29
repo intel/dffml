@@ -1,26 +1,31 @@
 import os
 import ast
 from io import open
-
 from setuptools import find_packages, setup
 
-self_path = os.path.dirname(os.path.realpath(__file__))
+ORG = "REPLACE_ORG_NAME"
+NAME = "REPLACE_PACKAGE_NAME"
+DESCRIPTION = "REPLACE_DESCRIPTION"
+AUTHOR_NAME = "REPLACE_AUTHOR_NAME"
+AUTHOR_EMAIL = "REPLACE_AUTHOR_EMAIL"
+INSTALL_REQUIRES = ["dffml>=REPLACE_DFFML_VERSION"]
 
-NAME = "dffml_operations_operations_name"
-AUTHOR_NAME = "John Andersen"
-AUTHOR_EMAIL = "john.s.andersen@intel.com"
-DESCRIPTION = "Opeartions for a calculator"
+IMPORT_NAME = (
+    NAME
+    if "replace_package_name".upper() != NAME
+    else "replace_import_package_name".upper()
+).replace("-", "_")
 
-with open(os.path.join(self_path, NAME, "version.py"), "r") as f:
+SELF_PATH = os.path.dirname(os.path.realpath(__file__))
+
+with open(os.path.join(SELF_PATH, IMPORT_NAME, "version.py"), "r") as f:
     for line in f:
         if line.startswith("VERSION"):
             version = ast.literal_eval(line.strip().split("=")[-1].strip())
             break
 
-with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
+with open(os.path.join(SELF_PATH, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
-
-INSTALL_REQUIRES = []
 
 setup(
     name=NAME,
@@ -32,33 +37,32 @@ setup(
     author_email=AUTHOR_EMAIL,
     maintainer=AUTHOR_NAME,
     maintainer_email=AUTHOR_EMAIL,
-    url="https://github.com/intel/dffml/blob/master/operations/operations_name/README.md",
+    url=f"https://github.com/{ORG}/{NAME}",
     license="MIT",
-    keywords=[""],
+    keywords=["dffml"],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
-        "License :: OSI Approved :: Apache Software License",
         "Natural Language :: English",
         "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3 :: Only",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
     install_requires=INSTALL_REQUIRES,
-    tests_require=[],
     packages=find_packages(),
     entry_points={
         "dffml.operation": [
-            "calc_add = " + NAME + ".operations:calc_add.op",
-            "calc_mult = " + NAME + ".operations:calc_mult.op",
-            "calc_parse_line = " + NAME + ".operations:calc_parse_line.op",
+            f"calc_add = {IMPORT_NAME}.operations:calc_add.op",
+            f"calc_mult = {IMPORT_NAME}.operations:calc_mult.op",
+            f"calc_parse_line = {IMPORT_NAME}.operations:calc_parse_line.op",
         ],
         "dffml.operation.implementation": [
-            "calc_add = " + NAME + ".operations:calc_add.imp",
-            "calc_mult = " + NAME + ".operations:calc_mult.imp",
-            "calc_parse_line = " + NAME + ".operations:calc_parse_line.imp",
+            f"calc_add = {IMPORT_NAME}.operations:calc_add.imp",
+            f"calc_mult = {IMPORT_NAME}.operations:calc_mult.imp",
+            f"calc_parse_line = {IMPORT_NAME}.operations:calc_parse_line.imp",
         ],
     },
 )
