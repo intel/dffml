@@ -1,6 +1,6 @@
 [run]
 source =
-    dffml_model_model_name
+    REPLACE_IMPORT_PACKAGE_NAME
     tests
 branch = True
 

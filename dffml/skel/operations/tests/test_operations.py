@@ -6,7 +6,7 @@ from dffml.df.memory import MemoryOrchestrator
 from dffml.operation.output import GetSingle
 from dffml.util.asynctestcase import AsyncTestCase
 
-from dffml_operations_operations_name.operations import *
+from REPLACE_IMPORT_PACKAGE_NAME.operations import *
 
 OPIMPS = opimp_in(sys.modules[__name__])
 
