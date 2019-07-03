@@ -4,9 +4,11 @@ repo.
 """
 import os
 import abc
+import pydoc
 import hashlib
 import inspect
-from typing import List, Dict, Any, AsyncIterator, Tuple, Optional, NamedTuple
+from dataclasses import dataclass
+from typing import List, Dict, Any, AsyncIterator, Tuple, Optional, Type
 
 import numpy as np
 import tensorflow
@@ -85,13 +87,20 @@ class TensorflowModelContext(ModelContext):
         """
 
 
-class DNNClassifierModelConfig(ModelConfig, NamedTuple):
+@dataclass(init=True, eq=True)
+class DNNClassifierModelConfig:
     directory: str
     steps: int
     epochs: int
     hidden: List[int]
     classification: str
     classifications: List[str]
+    clstype: Type
+
+    def __post_init__(self):
+        self.classifications = list(
+            map(self.clstype, self.classifications)
+        )
 
 
 class DNNClassifierModelContext(TensorflowModelContext):
@@ -193,16 +202,12 @@ class DNNClassifierModelContext(TensorflowModelContext):
             y_cols.append(
                 self.classifications[repo.feature(self.classification)]
             )
-        presplit = len(y_cols)
-        if not presplit:
+        if not y_cols:
             raise ValueError("No repos to train on")
-        split = 0.7
-        split = int(float(presplit) * split)
-        y_cols = np.array(y_cols[:split])
+        y_cols = np.array(y_cols)
         for feature in x_cols:
-            x_cols[feature] = np.array(x_cols[feature][:split])
+            x_cols[feature] = np.array(x_cols[feature])
         self.logger.info("------ Repo Data ------")
-        self.logger.info("total:     %d", presplit)
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
@@ -241,14 +246,10 @@ class DNNClassifierModelContext(TensorflowModelContext):
             y_cols.append(
                 self.classifications[repo.feature(self.classification)]
             )
-        presplit = len(y_cols)
-        split = 0.7
-        split = int(float(presplit) * split)
-        y_cols = np.array(y_cols[split:])
+        y_cols = np.array(y_cols)
         for feature in x_cols:
-            x_cols[feature] = np.array(x_cols[feature][split:])
+            x_cols[feature] = np.array(x_cols[feature])
         self.logger.info("------ Repo Data ------")
-        self.logger.info("total:     %d", presplit)
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
@@ -392,6 +393,16 @@ class DNNClassifierModel(Model):
             "classifications",
             Arg(nargs="+", help="Options for value of classification"),
         )
+        cls.config_set(
+            args,
+            above,
+            "clstype",
+            Arg(
+                type=pydoc.locate,
+                default=str,
+                help="Data type of classifications values (default: str)",
+            ),
+        )
         return args
 
     @classmethod
@@ -403,4 +414,5 @@ class DNNClassifierModel(Model):
             hidden=cls.config_get(config, above, "hidden"),
             classification=cls.config_get(config, above, "classification"),
             classifications=cls.config_get(config, above, "classifications"),
+            clstype=cls.config_get(config, above, "clstype"),
         )
