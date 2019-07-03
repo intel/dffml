@@ -39,6 +39,7 @@ class TestDNN(AsyncTestCase):
                 hidden=[10, 20, 10],
                 classification="string",
                 classifications=["a", "not a"],
+                clstype=str
             )
         )
         cls.feature = StartsWithA()
@@ -71,9 +72,11 @@ class TestDNN(AsyncTestCase):
                 "--model-classification",
                 "feature_name",
                 "--model-classifications",
-                "a",
-                "b",
-                "c",
+                "0",
+                "1",
+                "2",
+                "--model-clstype",
+                "int"
             )
         )
         self.assertEqual(
@@ -86,7 +89,8 @@ class TestDNN(AsyncTestCase):
         self.assertEqual(config.epochs, 30)
         self.assertEqual(config.hidden, [12, 40, 15])
         self.assertEqual(config.classification, "feature_name")
-        self.assertEqual(config.classifications, ["a", "b", "c"])
+        self.assertEqual(config.classifications, [0, 1, 2])
+        self.assertEqual(config.clstype, int)
 
     async def test_00_train(self):
         async with self.sources as sources, self.features as features, self.model as model:
