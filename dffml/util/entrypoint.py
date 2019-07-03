@@ -4,9 +4,15 @@
 Loader subclasses know how to load classes under their entry point which conform
 to their subclasses.
 """
+import sys
 import copy
+import traceback
 import pkg_resources
 from typing import List, Dict
+
+
+class EntrypointNotFound(Exception):
+    pass  # pragma: no cover
 
 
 class MissingLabel(Exception):
@@ -100,7 +106,15 @@ class Entrypoint(object):
         loaded_names = []
         loading_classes = []
         for i in pkg_resources.iter_entry_points(cls.ENTRY_POINT):
-            loaded = i.load()
+            try:
+                loaded = i.load()
+            except Exception as error:
+                print(
+                    f"Error loading {cls.ENTRY_POINT}.{i.name}: {traceback.format_exc().strip()}",
+                    file=sys.stderr,
+                    flush=True,
+                )
+                raise
             loaded.ENTRY_POINT_LABEL = i.name
             if issubclass(loaded, cls):
                 loaded_names.append(i.name)
@@ -108,9 +122,8 @@ class Entrypoint(object):
                 if loading is not None and i.name == loading:
                     return loaded
         if loading is not None:
-            raise KeyError(
-                "%s was not found in (%s)"
-                % (repr(loading), ", ".join(loaded_names))
+            raise EntrypointNotFound(
+                f"{loading!r} was not found in: {loaded_names}"
             )
         return loading_classes
 
