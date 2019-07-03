@@ -6,7 +6,7 @@ import pkg_resources
 from unittest.mock import patch
 from typing import Type
 
-from dffml.util.entrypoint import Entrypoint
+from dffml.util.entrypoint import Entrypoint, EntrypointNotFound
 
 
 class Loadable(object):
@@ -58,7 +58,7 @@ class TestEntrypoint(unittest.TestCase):
         with patch.object(
             pkg_resources, "iter_entry_points", return_value=self.FAKE_ITER
         ) as mock_method:
-            with self.assertRaisesRegex(KeyError, "was not found in"):
+            with self.assertRaises(EntrypointNotFound):
                 FakeEntrypoint.load("four")
 
     def test_load_multiple(self):
