@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Repo.feature method to select a single piece of feature data within a repo.
 - Create service to start from template when creating new python packages for
   DFFML models and operations.
+- Classification type parameter to DNNClassifierModelConfig to specifiy data
+  type of given classification options.
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
@@ -30,6 +32,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tensorflow model removed usages of repo.classifications methods.
 - Entrypoint prints traceback of loaded classes to standard error if they fail
   to load.
+- Updated Tensorflow model README.md to match functionality of
+  DNNClassifierModel.
+- DNNClassifierModel no longer splits data for the user.
 ### Fixed
 - Docs get version from dffml.version.VERSION.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
