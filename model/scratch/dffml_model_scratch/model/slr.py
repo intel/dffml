@@ -22,34 +22,22 @@ from dffml.util.cli.arg import Arg
 
 class SLRConfig(ModelConfig, NamedTuple):
     predict: str
-    directory: str
+    directory: str  
 
 
 class SLRContext(ModelContext):
-    '''
-    Model wraping scratch API
-    '''
+
     def __init__(self, parent):
         super().__init__(parent)
         self.xData = np.array([])
         self.yData = np.array([])
-        self.key = None
-        self.regression_line = self.get_regression_line()
+        # self.regression_line = []
 
-    def get_regression_line(self):
-        return self.parent.saved.get(self.key, None)
+    def get_regression_line(self, features: List[str]):
+        return self.parent.saved.get(hashlib.sha384((''.join(sorted(features))).encode()).hexdigest(), None)
 
-    async def set_regression_line(self, slope, constant, accuracy):
-        self.parent.saved[self.key] = (slope, constant, accuracy)
-
-    async def squared_error(self, ys, yline):
-        return sum((ys - yline)**2)
-
-    async def coeff_of_deter(self, ys, regression_line):
-        y_mean_line = [mean(ys) for y in ys]
-        squared_error_mean = await self.squared_error(ys, y_mean_line)
-        squared_error_regression = await self.squared_error(ys, regression_line)
-        return 1 - (squared_error_regression/squared_error_mean)
+    def set_regression_line(self, features: List[str], slope, constant, accuracy):
+        self.parent.saved[hashlib.sha384((''.join(sorted(feature))).encode()).hexdigest()] = (slope, constant, accuracy)
 
     async def applicable_features(self, features: Features):
         usable = []
@@ -63,32 +51,46 @@ class SLRContext(ModelContext):
             usable.append(feature.NAME)
         return usable
 
-    async def best_fit_line(self, xs, ys):
-        m = ((mean(xs)*mean(ys)) - mean(xs*ys))/((mean(xs)*mean(xs)) - (mean(xs*xs)))
-        b = mean(ys) - (m*mean(xs))
-        regression_line = [m*x + b for x in xs]
-        accuracy = await self.coeff_of_deter(ys, regression_line)
-        await self.set_regression_line(m, b, accuracy)
-        return (m, b, accuracy)
-
     async def predict_input(self, x):
         prediction = self.regression_line[0]*x+self.regression_line[1]
         return prediction
 
-    async def train(self, sources: Sources, features: Features, _classifications):
+    async def squared_error(self, ys, yline):
+        return sum((ys - yline)**2)
+
+    async def coeff_of_deter(self, ys, regression_line):
+        y_mean_line = [mean(ys) for y in ys]
+        squared_error_mean = await self.squared_error(ys, y_mean_line)
+        squared_error_regression = await self.squared_error(ys, regression_line)
+        return 1 - (squared_error_regression/squared_error_mean)
+
+    async def best_fit_line(self, features: List[str]):
+        x = self.xData
+        y = self.yData
+        mean_x = np.mean(self.xData)
+        mean_y = np.mean(self.yData)
+        m = (mean_x*mean_y - np.mean(x*y))/((mean_x**2) - np.mean(x*x))
+        b = mean_y - (m*mean_x)
+        regression_line = [m*x + b for x in x]
+        accuracy = await self.coeff_of_deter(y, regression_line)
+        await self.set_regression_line(features, m, b, accuracy)
+        return (m, b, accuracy)
+
+    async def train(self,
+                    sources: Sources,
+                    features: Features,
+                    _classifications):
         '''
-        Train using repos as the data to learn from.
+        Train using repos as data and calculate the regression line
         '''
         feature = await self.applicable_features(features)
-        self.key = hashlib.sha384((''.join(sorted(feature))).encode()).hexdigest()
         async for repo in sources.with_features(feature):
-            # Grab a subset of the feature data being stored within the repo
-            # The subset is the feature_we_care_about and the feature we are want to predict
-            feature_data = repo.features(feature + [self.parent.config.predict])
+            feature_data = repo.features(feature
+                                         + [self.parent.config.predict])
             self.xData = np.append(self.xData, feature_data[feature[0]])
             self.yData = np.append(self.yData, feature_data[self.parent.config.predict])
-        self.regression_line = await self.best_fit_line(self.xData, self.yData)
-        
+        self.regression_line = await self.best_fit_line(feature)
+
     async def accuracy(self, sources: Sources, features: Features, _classifications) -> Accuracy:
         '''
         Evaluates the accuracy of our model after training using the input repos
@@ -114,13 +116,12 @@ class SLRContext(ModelContext):
 class SLR(Model):
 
     CONTEXT = SLRContext
-    
+
     def __init__(self, config: SLRConfig) -> None:
         super().__init__(config)
         self.saved = {}
 
     def _filename(self):
-        # Create a file path that is specific to the data we are predicting on
         return os.path.join(self.config.directory, hashlib.sha384(self.config.predict.encode()).hexdigest() + '.json')
 
     async def __aenter__(self) -> 'SLRContext':
@@ -129,10 +130,8 @@ class SLR(Model):
             with open(filename, 'r') as read:
                 self.saved = json.load(read)
         return self
-        # Load from file using open, and json.load. You'll want to make a self.saved property (in __init__ or something)
-
+        
     async def __aexit__(self, exc_type, exc_value, traceback):
-        # Save to the file using open, and json.dump. Dump out the self.saved property to the file.
         filename = self._filename()
         with open(filename, 'w') as write:
             json.dump(self.saved, write)
