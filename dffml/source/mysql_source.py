@@ -23,20 +23,16 @@ class MysqlSourceConfig(BaseConfig, NamedTuple):
 class MysqlSourceContext(BaseSourceContext):
     async def update(self, repo: Repo):
         db = self.conn
-        # Just dump it (if you want a setup the queries easily, then you need to
-        # massage the columns in this table to your liking, and perhaps add more
-        # tables.
         marshall = json.dumps(repo.dict())
         await db.execute(
-            "INSERT INTO source_data (src_url, json) VALUES(%s, %s) "
-            "ON DUPLICATE KEY UPDATE json = %s",
+            self.config.query,
             (repo.src_url, marshall, marshall),
         )
         self.logger.debug("updated: %s", marshall)
         self.logger.debug("update: %s", await self.repo(repo.src_url))
 
     async def repos(self) -> AsyncIterator[Repo]:
-        ## SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos;
+        ## SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos
         query = self.config.query
         await self.conn.execute(query)
         src_urls = set(map(lambda row: row[0], await self.conn.fetchall()))
@@ -44,8 +40,7 @@ class MysqlSourceContext(BaseSourceContext):
             yield await self.repo(src_url)
 
     async def repo(self, src_url: str):
-        ##SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos WHERE
-        ## key=%s; -> repo() %s == repo.src_url
+        ##SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos WHERE key=%s; -> repo() %s == repo.src_url
         query = self.config.query
         repo = Repo(src_url)
         db = self.conn
@@ -97,7 +92,13 @@ class MysqlSource(BaseSource):
         cls.config_set(args, above, "user", Arg(default="user"))
         cls.config_set(args, above, "password", Arg(default="pass"))
         cls.config_set(args, above, "db", Arg(default="db"))
-        cls.config_set(args, above, "query", Arg(type=str))
+        cls.config_set(args, above, "query",
+                       Arg(type=str, help="For repos:"                      
+                                        "SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos, "
+                                        "For repo:"
+                                        "SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos WHERE key=%s -> %s = repo.src_url"
+                                        "For update:"
+                                        "INSERT INTO source_data (src_url, json) VALUES(%s, %s) ON DUPLICATE KEY UPDATE json = %s"))
         return args
 
     @classmethod
