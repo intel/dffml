@@ -48,7 +48,7 @@ class MysqlSourceContext(BaseSourceContext):
         return repo
 
     async def __aenter__(self) -> "MysqlSourceContext":
-        self.__conn = self.parent.db.cursor()
+        self.__conn = self.parent.db.cursor(aiomysql.DictCursor)
         self.conn = await self.__conn.__aenter__()
         return self
 
