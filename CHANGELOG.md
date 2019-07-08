@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   DFFML models and operations.
 - Classification type parameter to DNNClassifierModelConfig to specifiy data
   type of given classification options.
+- Mysql Source feature to work with data from a mysql database
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
