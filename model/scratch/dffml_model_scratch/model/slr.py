@@ -10,7 +10,6 @@ import json
 from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Dict
 from statistics import mean
 import numpy as np
-import matplotlib.pyplot as plt
 
 from dffml.repo import Repo
 from dffml.source.source import Sources
@@ -96,9 +95,6 @@ class SLRContext(ModelContext):
     async def predict(self, repos: AsyncIterator[Repo]) -> \
                     AsyncIterator[Tuple[Repo, Any, float]]:
         regression_line = [await self.predict_input(i) for i in self.xData]
-        plt.scatter(self.xData, self.yData)
-        plt.plot(self.xData, regression_line)
-        plt.show()
         regression_line = self.get_regression_line()
         async for repo in repos:
             feature_data = repo.features(self.features)
