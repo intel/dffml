@@ -13,29 +13,36 @@ from dffml_model_scratch.model.slr import SLR, SLRConfig
 
 
 FEATURE_DATA = [
-    [12.39999962,11.19999981],
-    [14.30000019,12.5],
-    [14.5,12.69999981],
-    [14.89999962,13.10000038],
-    [16.10000038,14.10000038],
-    [16.89999962,14.80000019],
-    [16.5,14.39999962],
-    [15.39999962,13.39999962],
-    [17,14.89999962],
-    [17.89999962,15.60000038],
-    [18.79999924,16.39999962],
-    [20.29999924,17.70000076],
-    [22.39999962,19.60000038],
-    [19.39999962,16.89999962],
-    [15.5,14],
-    [16.70000076,14.60000038],
-    [17.29999924,15.10000038],
-    [18.39999962,16.10000038],
-    [19.20000076,16.79999924],
-    [17.39999962,15.19999981],
-    [19.5,17],
-    [19.70000076,17.20000076],
-    [21.20000076,18.60000038],
+    [1.1, 42393.0],
+    [1.3, 49255.0],
+    [1.5, 40781.0],
+    [2.0, 46575.0],
+    [2.2, 42941.0],
+    [2.9, 59692.0],
+    [3.0, 63200.0],
+    [3.2, 57495.0],
+    [3.2, 67495.0],
+    [3.7, 60239.0],
+    [3.9, 66268.0],
+    [4.0, 58844.0],
+    [4.0, 60007.0],
+    [4.1, 60131.0],
+    [4.5, 64161.0],
+    [4.9, 70988.0],
+    [5.1, 69079.0],
+    [5.3, 86138.0],
+    [5.9, 84413.0],
+    [6.0, 96990.0],
+    [6.8, 94788.0],
+    [7.1, 101323.0],
+    [7.9, 104352.0],
+    [8.2, 116862.0],
+    [8.7, 112481.0],
+    [9.0, 108632.0],
+    [9.5, 120019.0],
+    [9.6, 115685.0],
+    [10.3, 125441.0],
+    [10.5, 124922.0]
 ]
 
 
@@ -67,15 +74,15 @@ class TestSLR(AsyncTestCase):
     async def test_context(self):
         async with self.sources as sources, self.features as features, \
                 self.model as model:
-            async with sources() as sctx, model() as mctx:
+            async with sources() as sctx, model(features) as mctx:
                 # Test train
-                await mctx.train(sctx, features, [])
+                await mctx.train(sctx)
                 # Test accuracy
-                res = await mctx.accuracy(sctx, features, [])
-                self.assertGreater(res, 0.9)
+                res = await mctx.accuracy(sctx)
+                self.assertTrue(0.0 <= res < 1.0)
                 # Test predict
-                async for repo, prediction, confidence in mctx.predict(sctx.repos(), features, []):
+                async for repo, prediction, confidence in mctx.predict(sctx.repos()):
                     correct = FEATURE_DATA[int(repo.src_url)][1]
                     # Comparison of correct to prediction to make sure prediction is within a reasonable range
-                    self.assertGreater(prediction, correct - (correct * 0.10))
-                    self.assertLess(prediction, correct + (correct * 0.10))
+                    self.assertGreater(prediction, correct - (correct * (1-res)))
+                    self.assertLess(prediction, correct + (correct * (1-res)))
