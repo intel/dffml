@@ -105,7 +105,6 @@ class SLRContext(ModelContext):
 class SLR(Model):
 
     CONTEXT = SLRContext
-
     def __init__(self, config: SLRConfig) -> None:
         super().__init__(config)
         self.saved = {}
