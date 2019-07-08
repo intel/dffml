@@ -1,7 +1,5 @@
 import json
-import asyncio
 import aiomysql
-from collections import OrderedDict
 from typing import AsyncIterator, NamedTuple, Dict
 
 from dffml.base import BaseConfig
@@ -29,7 +27,8 @@ class MysqlSourceContext(BaseSourceContext):
         self.logger.debug("update: %s", await self.repo(repo.src_url))
 
     async def repos(self) -> AsyncIterator[Repo]:
-        ## SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos
+        # Query Format:
+        # SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos
         query = self.config.query
         await self.conn.execute(query)
         src_urls = set(map(lambda row: row[0], await self.conn.fetchall()))
@@ -37,11 +36,11 @@ class MysqlSourceContext(BaseSourceContext):
             yield await self.repo(src_url)
 
     async def repo(self, src_url: str):
-        ##SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos WHERE key=%s; -> repo() %s == repo.src_url
+        # Query Format:
+        # SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos WHERE key=%s; -> repo() %s == repo.src_url
         query = self.config.query
         repo = Repo(src_url)
         db = self.conn
-        # Get features
         await db.execute(query, (src_url,))
         dump = await db.fetchone()
         if dump is not None and dump[0] is not None:
