@@ -103,8 +103,12 @@ class SLRContext(ModelContext):
 
 @entry_point('slr')
 class SLR(Model):
-
+    '''
+    Simple Linear Regression Model for 2 variables implemented from scratch. Models are saved under the
+    ``directory`` in subdirectories named after the hash of their feature names.
+    '''
     CONTEXT = SLRContext
+
     def __init__(self, config: SLRConfig) -> None:
         super().__init__(config)
         self.saved = {}
@@ -126,10 +130,26 @@ class SLR(Model):
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
-        cls.config_set(args, above, 'directory', Arg(
-            default=os.path.join(os.path.expanduser('~'), '.cache', 'dffml',
-                                 'scratch')))
-        cls.config_set(args, above, 'predict', Arg(type=str))
+        cls.config_set(
+            args,
+            above,
+            'directory',
+            Arg(
+                default=os.path.join(
+                    os.path.expanduser('~'), '.cache', 'dffml', 'scratch'
+                ),
+                help="Directory where state should be saved",
+            ),
+        )
+        cls.config_set(
+            args,
+            above,
+            'predict',
+            Arg(
+                type=str,
+                help="Label or the value to be predicted",
+            ),
+        )
         return args
 
     @classmethod
