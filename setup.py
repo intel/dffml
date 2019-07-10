@@ -40,6 +40,9 @@ setup(
         'Programming Language :: Python :: Implementation :: PyPy',
     ],
     packages=find_packages(),
+    install_requires=[
+        "aiomysql>=0.0.20",
+    ],
     include_package_data=True,
     extras_require={
         'tensorflow': ['dffml-model-tensorflow'],
