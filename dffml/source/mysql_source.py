@@ -81,9 +81,9 @@ class MysqlSource(BaseSource):
     def args(cls, args, *above) -> Dict[str, Arg]:
         cls.config_set(args, above, "host", Arg(default="127.0.0.1"))
         cls.config_set(args, above, "port", Arg(type=int, default=3306))
-        cls.config_set(args, above, "user", Arg(default="user"))
-        cls.config_set(args, above, "password", Arg(default="pass"))
-        cls.config_set(args, above, "db", Arg(default="db"))
+        cls.config_set(args, above, "user", Arg())
+        cls.config_set(args, above, "password", Arg())
+        cls.config_set(args, above, "db", Arg())
         cls.config_set(
             args,
             above,
