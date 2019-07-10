@@ -22,23 +22,21 @@ class MysqlSourceContext(BaseSourceContext):
     async def update(self, repo: Repo):
         db = self.conn
         marshall = json.dumps(repo.dict())
-        await db.execute(self.config.query, (repo.src_url, marshall, marshall))
+        await db.execute(
+            self.config.update_query, (repo.src_url, marshall, marshall)
+        )
         self.logger.debug("updated: %s", marshall)
         self.logger.debug("update: %s", await self.repo(repo.src_url))
 
     async def repos(self) -> AsyncIterator[Repo]:
-        # Query Format:
-        # SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos
-        query = self.config.query
+        query = self.config.repos_query
         await self.conn.execute(query)
         src_urls = set(map(lambda row: row[0], await self.conn.fetchall()))
         for src_url in src_urls:
             yield await self.repo(src_url)
 
     async def repo(self, src_url: str):
-        # Query Format:
-        # SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos WHERE key=%s; -> repo() %s == repo.src_url
-        query = self.config.query
+        query = self.config.repo_query
         repo = Repo(src_url)
         db = self.conn
         await db.execute(query, (src_url,))
@@ -89,15 +87,28 @@ class MysqlSource(BaseSource):
         cls.config_set(
             args,
             above,
-            "query",
+            "repos-query",
             Arg(
                 type=str,
-                help="For repos:"
-                "SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos, "
-                "For repo:"
-                "SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos WHERE key=%s -> %s = repo.src_url"
-                "For update:"
-                "INSERT INTO source_data (src_url, json) VALUES(%s, %s) ON DUPLICATE KEY UPDATE json = %s",
+                help="SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos",
+            ),
+        )
+        cls.config_set(
+            args,
+            above,
+            "repo-query",
+            Arg(
+                type=str,
+                help="SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos WHERE key=%s",
+            ),
+        )
+        cls.config_set(
+            args,
+            above,
+            "update-query",
+            Arg(
+                type=str,
+                help="INSERT INTO source_data (src_url, json) VALUES(%s, %s) ON DUPLICATE KEY UPDATE json = %s",
             ),
         )
         return args
@@ -110,5 +121,7 @@ class MysqlSource(BaseSource):
             user=cls.config_get(config, above, "user"),
             password=cls.config_get(config, above, "password"),
             db=cls.config_get(config, above, "db"),
-            query=cls.config_get(config, above, "query"),
+            repos_query=cls.config_get(config, above, "repos-query"),
+            repo_query=cls.config_get(config, above, "repo-query"),
+            update_query=cls.config_get(config, above, "update-query"),
         )
