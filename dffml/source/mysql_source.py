@@ -15,7 +15,9 @@ class MysqlSourceConfig(BaseConfig, NamedTuple):
     user: str
     password: str
     db: str
-    query: str
+    update_query: str
+    repos_query: str
+    repo_query: str
 
 
 class MysqlSourceContext(BaseSourceContext):
