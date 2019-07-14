@@ -3,12 +3,12 @@ import ast
 from io import open
 from setuptools import find_packages, setup
 
-ORG = "nucleon"
-NAME = "scikit"
+ORG = "intel"
+NAME = "dffml-model-scikit"
 DESCRIPTION = "DFFML model scikit"
 AUTHOR_NAME = "Yash Lamba"
 AUTHOR_EMAIL = "yashlamba2000@gmail.com"
-INSTALL_REQUIRES = ["dffml>=0.2.1"]
+INSTALL_REQUIRES = []
 
 IMPORT_NAME = (
     NAME
@@ -37,7 +37,7 @@ setup(
     author_email=AUTHOR_EMAIL,
     maintainer=AUTHOR_NAME,
     maintainer_email=AUTHOR_EMAIL,
-    url=f"https://github.com/{ORG}/{NAME}",
+    url=f"https://github.com/{ORG}/dffml/tree/{NAME}",
     license="MIT",
     keywords=["dffml"],
     classifiers=[
