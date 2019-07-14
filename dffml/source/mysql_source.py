@@ -22,30 +22,51 @@ class MysqlSourceConfig(BaseConfig, NamedTuple):
 
 class MysqlSourceContext(BaseSourceContext):
     async def update(self, repo: Repo):
-        db = self.conn
-        marshall = json.dumps(repo.dict())
-        await db.execute(
-            self.config.update_query, (repo.src_url, marshall, marshall)
-        )
-        self.logger.debug("updated: %s", marshall)
-        self.logger.debug("update: %s", await self.repo(repo.src_url))
+        if self.parent.config.update_query != "":
+            db = self.conn
+            marshall = json.dumps(repo.dict())
+            await db.execute(
+                self.parent.config.update_query,
+                (repo.src_url, marshall, marshall),
+            )
+            self.logger.debug("updated: %s", marshall)
+            self.logger.debug("update: %s", await self.repo(repo.src_url))
 
     async def repos(self) -> AsyncIterator[Repo]:
-        query = self.config.repos_query
-        await self.conn.execute(query)
-        src_urls = set(map(lambda row: row[0], await self.conn.fetchall()))
-        for src_url in src_urls:
-            yield await self.repo(src_url)
+        if self.parent.config.repos_query != "":
+            query = self.parent.config.repos_query
+            await self.conn.execute(query)
+            src_urls = set(map(lambda row: row[0], await self.conn.fetchall()))
+            for src_url in src_urls:
+                yield await self.repo(src_url)
 
     async def repo(self, src_url: str):
-        query = self.config.repo_query
-        repo = Repo(src_url)
-        db = self.conn
-        await db.execute(query, (src_url,))
-        dump = await db.fetchone()
-        if dump is not None and dump[0] is not None:
-            repo.merge(Repo(src_url, data=json.loads(dump[0])))
-        return repo
+        if self.parent.config.repo_query != "":
+            query = self.parent.config.repo_query
+            repo = Repo(src_url)
+            print("\n\n REPO ")
+            print(repo.src_url)
+            db = self.conn
+            await db.execute(query, (src_url,))
+            row = await db.fetchone()
+            print("\n\n DUMP")
+            print(row)
+            if row is not None:
+                repo.merge(
+                    Repo(
+                        row["src_url"],
+                        data={
+                            "features": {
+                                key.replace("feature_", ""): value
+                                for key, value in row.items()
+                                if key.startswith("feature_")
+                            }
+                        },
+                    )
+                )
+            print("\n\n FINAL REPO")
+            print(repo.__dict__)
+            return repo
 
     async def __aenter__(self) -> "MysqlSourceContext":
         self.__conn = self.parent.db.cursor(aiomysql.DictCursor)
