@@ -29,33 +29,41 @@ class MysqlSourceContext(BaseSourceContext):
         key_value_pairs = OrderedDict()
         for key in model_columns:
             if key.startswith("feature_"):
-                modified_key = key.replace("feature_","")
-                key_value_pairs[modified_key] = repo.data.features[modified_key]
+                modified_key = key.replace("feature_", "")
+                key_value_pairs[modified_key] = repo.data.features[
+                    modified_key
+                ]
             elif key.startswith("prediction_"):
-                modified_key = key.replace("prediction_","")
-                key_value_pairs[modified_key] = repo.data.prediction[modified_key]
+                modified_key = key.replace("prediction_", "")
+                key_value_pairs[modified_key] = repo.data.prediction[
+                    modified_key
+                ]
             else:
-                key_value_pairs[key] =  repo.data.__dict__[key]
+                key_value_pairs[key] = repo.data.__dict__[key]
         db = self.conn
-        await db.execute(update_query, (list(key_value_pairs.values()) +list(key_value_pairs.values())))
+        await db.execute(
+            update_query,
+            (list(key_value_pairs.values()) + list(key_value_pairs.values())),
+        )
         self.logger.debug("update: %s", await self.repo(repo.src_url))
 
     def convert_to_repo(self, result):
         modified_repo = {
-            'src_url': "",
-            'data' : {
-                'features' : {},
-                'prediction' : {}
-            }
+            "src_url": "",
+            "data": {"features": {}, "prediction": {}},
         }
-        for key, value in modified_repo.items():
-            if key.startswith('feature_'):
-                modified_repo['data']['features'][key.replace("feature_","")] = value
-            elif key.startswith('prediction_'):
-                modified_repo['data']['prediction'][key.replace("prediction_","")] = value
+        for key, value in result.items():
+            if key.startswith("feature_"):
+                modified_repo["data"]["features"][
+                    key.replace("feature_", "")
+                ] = value
+            elif key.startswith("prediction_"):
+                modified_repo["data"]["prediction"][
+                    key.replace("prediction_", "")
+                ] = value
             else:
                 modified_repo[key] = value
-        return Repo((modified_repo['src_url'].replace("'","")), data = modified_repo['data'])
+        return Repo(modified_repo["src_url"], data=modified_repo["data"])
 
     async def repos(self) -> AsyncIterator[Repo]:
         query = self.parent.config.repos_query
@@ -63,7 +71,6 @@ class MysqlSourceContext(BaseSourceContext):
         result = await self.conn.fetchall()
         for repo in result:
             yield self.convert_to_repo(repo)
-
 
     async def repo(self, src_url: str):
         query = self.parent.config.repo_query
