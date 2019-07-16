@@ -35,17 +35,33 @@ class MysqlSourceContext(BaseSourceContext):
                 modified_key = key.replace("prediction_","")
                 key_value_pairs[modified_key] = repo.data.prediction[modified_key]
             else:
-                key_value_pairs[key] = repo.data.__dict__[key]
+                key_value_pairs[key] =  repo.data.__dict__[key]
         db = self.conn
         await db.execute(update_query, (list(key_value_pairs.values()) +list(key_value_pairs.values())))
         self.logger.debug("update: %s", await self.repo(repo.src_url))
 
+    def convert_to_repos(self, result):
+        modified_repos = []
+        for repo in result:
+            modified_repo = {}
+            for key, value in repo.items():
+                if key.startswith('feature_'):
+                    modified_repo[key.replace("feature_","")] = value
+                elif key.startswith('prediction_'):
+                    modified_repo[key.replace("prediction_","")] = value
+                else:
+                    modified_repo[key] = value
+            modified_repos.append(modified_repo)
+        return modified_repos
+
     async def repos(self) -> AsyncIterator[Repo]:
         query = self.parent.config.repos_query
         await self.conn.execute(query)
-        src_urls = set(map(lambda row: row[0], await self.conn.fetchall()))
-        for src_url in src_urls:
-            yield await self.repo(src_url)
+        result = await self.conn.fetchall()
+        repos_list = self.convert_to_repos(result)
+        for repo in repos_list:
+            yield repo
+
 
     async def repo(self, src_url: str):
         query = self.parent.config.repo_query
