@@ -8,7 +8,6 @@ import abc
 import hashlib
 import json
 from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Dict
-from statistics import mean
 import numpy as np
 
 from dffml.repo import Repo
@@ -54,18 +53,20 @@ class SLRContext(ModelContext):
     async def predict_input(self, x):
         regression_line = self.get_regression_line()
         prediction = regression_line[0]*x+regression_line[1]
+        self.logger.debug("Predicted Value of {} {}:".format(self.parent.config.predict, prediction))
         return prediction
 
     async def squared_error(self, ys, yline):
         return sum((ys - yline)**2)
 
     async def coeff_of_deter(self, ys, regression_line):
-        y_mean_line = [mean(ys) for y in ys]
+        y_mean_line = [np.mean(ys) for y in ys]
         squared_error_mean = await self.squared_error(ys, y_mean_line)
         squared_error_regression = await self.squared_error(ys, regression_line)
         return 1 - (squared_error_regression/squared_error_mean)
 
     async def best_fit_line(self):
+        self.logger.debug("Number of input repos: {}".format(len(self.xData)))
         x = self.xData
         y = self.yData
         mean_x = np.mean(self.xData)
