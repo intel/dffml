@@ -40,33 +40,29 @@ class MysqlSourceContext(BaseSourceContext):
         await db.execute(update_query, (list(key_value_pairs.values()) +list(key_value_pairs.values())))
         self.logger.debug("update: %s", await self.repo(repo.src_url))
 
-    def convert_to_repos(self, result):
-        modified_repos = []
-        for repo in result:
-            modified_repo = {
-                'src_url': "",
-                'data' : {
-                    'features' : {},
-                    'prediction' : {}
-                }
+    def convert_to_repo(self, result):
+        modified_repo = {
+            'src_url': "",
+            'data' : {
+                'features' : {},
+                'prediction' : {}
             }
-            for key, value in repo.items():
-                if key.startswith('feature_'):
-                    modified_repo['data']['features'][key.replace("feature_","")] = value
-                elif key.startswith('prediction_'):
-                    modified_repo['data']['prediction'][key.replace("prediction_","")] = value
-                else:
-                    modified_repo[key] = value
-            modified_repos.append(modified_repo)
-        return modified_repos
+        }
+        for key, value in modified_repo.items():
+            if key.startswith('feature_'):
+                modified_repo['data']['features'][key.replace("feature_","")] = value
+            elif key.startswith('prediction_'):
+                modified_repo['data']['prediction'][key.replace("prediction_","")] = value
+            else:
+                modified_repo[key] = value
+        return Repo((modified_repo['src_url'].replace("'","")), data = modified_repo['data'])
 
     async def repos(self) -> AsyncIterator[Repo]:
         query = self.parent.config.repos_query
         await self.conn.execute(query)
         result = await self.conn.fetchall()
-        repos_list = self.convert_to_repos(result)
-        for repo in repos_list:
-            yield Repo((repo['src_url'].replace("'","")), data = repo['data'])
+        for repo in result:
+            yield self.convert_to_repo(repo)
 
 
     async def repo(self, src_url: str):
