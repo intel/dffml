@@ -16,100 +16,62 @@ class MysqlSourceConfig(BaseConfig, NamedTuple):
     user: str
     password: str
     db: str
-    table: str
     update_query: str
     repos_query: str
     repo_query: str
-    model_columns: str
+    model_columns: list = [str]
 
 
 class MysqlSourceContext(BaseSourceContext):
     async def update(self, repo: Repo):
         update_query = self.parent.config.update_query
-        if update_query == "":
-            update_query = "insert into " + self.parent.config.table + "("
-            values = "("
-            column_value_pair = OrderedDict()
-            for column_name in self.parent.config.model_columns.split():
-                if column_name.startswith("feature_"):
-                    key = column_name.replace("feature_", "")
-                    if key in repo.data.features.keys():
-                        values += str(repo.data.features[key]) + ","
-                        column_value_pair[column_name] = repo.data.features[
-                            key
-                        ]
-                        update_query += column_name + ","
-                elif column_name.startswith("prediction_"):
-                    key = column_name.replace("prediction_", "")
-                    if (
-                        "prediction" in repo.data.__dict__.keys()
-                        and key in repo.data.prediction.keys()
-                    ):
-                        if key == "value":
-                            values += (
-                                "'" + str(repo.data.prediction[key]) + "',"
-                            )
-                            column_value_pair[column_name] = (
-                                "'" + str(repo.data.prediction[key]) + "'"
-                            )
-                        else:
-                            values += str(repo.data.prediction[key]) + ","
-                            column_value_pair[
-                                column_name
-                            ] = repo.data.prediction[key]
-                        update_query += column_name + ","
-                else:
-                    key = column_name
-                    if key in repo.data.__dict__.keys():
-                        values += repo.data.__dict__[key] + ","
-                        column_value_pair[column_name] = repo.data.__dict__[
-                            key
-                        ]
-                        update_query += column_name + ","
-            update_query = update_query[:-1] + ")"
-            values = values[:-1] + ")"
-            update_query += " values " + values + "on duplicate key update "
-            for key, value in column_value_pair.items():
-                update_query += key + "=" + str(value) + ","
-            update_query = update_query[:-1]
+        model_columns = self.parent.config.model_columns.split()
+        key_value_pairs = OrderedDict()
+        for key in model_columns:
+            if key.startswith("feature_"):
+                modified_key = key.replace("feature_","")
+                key_value_pairs[modified_key] = repo.data.features[modified_key]
+            elif key.startswith("prediction_"):
+                modified_key = key.replace("prediction_","")
+                key_value_pairs[modified_key] = repo.data.prediction[modified_key]
+            else:
+                key_value_pairs[key] = repo.data.__dict__[key]
         db = self.conn
-        await db.execute(update_query)
+        await db.execute(update_query, (list(key_value_pairs.values()) +list(key_value_pairs.values())))
         self.logger.debug("update: %s", await self.repo(repo.src_url))
 
     async def repos(self) -> AsyncIterator[Repo]:
-        if self.parent.config.repos_query != "":
-            query = self.parent.config.repos_query
-            await self.conn.execute(query)
-            src_urls = set(map(lambda row: row[0], await self.conn.fetchall()))
-            for src_url in src_urls:
-                yield await self.repo(src_url)
+        query = self.parent.config.repos_query
+        await self.conn.execute(query)
+        src_urls = set(map(lambda row: row[0], await self.conn.fetchall()))
+        for src_url in src_urls:
+            yield await self.repo(src_url)
 
     async def repo(self, src_url: str):
-        if self.parent.config.repo_query != "":
-            query = self.parent.config.repo_query
-            repo = Repo(src_url)
-            db = self.conn
-            await db.execute(query, (src_url,))
-            row = await db.fetchone()
-            if row is not None:
-                repo.merge(
-                    Repo(
-                        row["src_url"],
-                        data={
-                            "features": {
-                                key.replace("feature_", ""): value
-                                for key, value in row.items()
-                                if key.startswith("feature_")
-                            },
-                            "prediction": {
-                                key.replace("prediction_", ""): value
-                                for key, value in row.items()
-                                if key.startswith("prediction_")
-                            },
+        query = self.parent.config.repo_query
+        repo = Repo(src_url)
+        db = self.conn
+        await db.execute(query, (src_url,))
+        row = await db.fetchone()
+        if row is not None:
+            repo.merge(
+                Repo(
+                    row["src_url"],
+                    data={
+                        "features": {
+                            key.replace("feature_", ""): value
+                            for key, value in row.items()
+                            if key.startswith("feature_")
                         },
-                    )
+                        "prediction": {
+                            key.replace("prediction_", ""): value
+                            for key, value in row.items()
+                            if key.startswith("prediction_")
+                        },
+                    },
                 )
-            return repo
+            )
+        return repo
 
     async def __aenter__(self) -> "MysqlSourceContext":
         self.__conn = self.parent.db.cursor(aiomysql.DictCursor)
@@ -150,7 +112,6 @@ class MysqlSource(BaseSource):
         cls.config_set(args, above, "user", Arg())
         cls.config_set(args, above, "password", Arg())
         cls.config_set(args, above, "db", Arg())
-        cls.config_set(args, above, "table", Arg())
         cls.config_set(
             args,
             above,
@@ -182,7 +143,7 @@ class MysqlSource(BaseSource):
             args,
             above,
             "model_columns",
-            Arg(type=OrderedDict, help="Order of Columns in table"),
+            Arg(type=str, nargs="+", help="Order of Columns in table"),
         )
         return args
 
@@ -194,7 +155,6 @@ class MysqlSource(BaseSource):
             user=cls.config_get(config, above, "user"),
             password=cls.config_get(config, above, "password"),
             db=cls.config_get(config, above, "db"),
-            table=cls.config_get(config, above, "table"),
             repos_query=cls.config_get(config, above, "repos-query"),
             repo_query=cls.config_get(config, above, "repo-query"),
             update_query=cls.config_get(config, above, "update-query"),
