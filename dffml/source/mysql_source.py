@@ -43,12 +43,19 @@ class MysqlSourceContext(BaseSourceContext):
     def convert_to_repos(self, result):
         modified_repos = []
         for repo in result:
-            modified_repo = {}
+            modified_repo = {
+                'src_url': "",
+                'data' : {
+                    'features' : {},
+                    'prediction' : {}
+                }
+
+            }
             for key, value in repo.items():
                 if key.startswith('feature_'):
-                    modified_repo[key.replace("feature_","")] = value
+                    modified_repo['data']['features'][key.replace("feature_","")] = value
                 elif key.startswith('prediction_'):
-                    modified_repo[key.replace("prediction_","")] = value
+                    modified_repo['data']['prediction'][key.replace("prediction_","")] = value
                 else:
                     modified_repo[key] = value
             modified_repos.append(modified_repo)
@@ -60,7 +67,7 @@ class MysqlSourceContext(BaseSourceContext):
         result = await self.conn.fetchall()
         repos_list = self.convert_to_repos(result)
         for repo in repos_list:
-            yield repo
+            yield Repo(repo['src_url'], data = repo['data'])
 
 
     async def repo(self, src_url: str):
