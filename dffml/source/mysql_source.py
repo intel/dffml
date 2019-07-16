@@ -49,7 +49,6 @@ class MysqlSourceContext(BaseSourceContext):
                     'features' : {},
                     'prediction' : {}
                 }
-
             }
             for key, value in repo.items():
                 if key.startswith('feature_'):
@@ -67,7 +66,7 @@ class MysqlSourceContext(BaseSourceContext):
         result = await self.conn.fetchall()
         repos_list = self.convert_to_repos(result)
         for repo in repos_list:
-            yield Repo(repo['src_url'], data = repo['data'])
+            yield Repo((repo['src_url'].replace("'","")), data = repo['data'])
 
 
     async def repo(self, src_url: str):
