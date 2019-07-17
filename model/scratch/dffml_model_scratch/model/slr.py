@@ -89,7 +89,6 @@ class SLRContext(ModelContext):
         self.regression_line = await self.best_fit_line()
 
     async def accuracy(self, sources: Sources) -> Accuracy:
-        # regression_line = self.get_regression_line()
         if self.regression_line is None:
             raise ValueError('Model Not Trained')
         accuracy_value = self.regression_line[2]
@@ -97,8 +96,6 @@ class SLRContext(ModelContext):
 
     async def predict(self, repos: AsyncIterator[Repo]) -> \
                     AsyncIterator[Tuple[Repo, Any, float]]:
-        # regression_line = [await self.predict_input(i) for i in self.xData]
-        # regression_line = self.get_regression_line()
         async for repo in repos:
             feature_data = repo.features(self.features)
             yield repo, await self.predict_input(feature_data[self.features[0]]), self.regression_line[2]
