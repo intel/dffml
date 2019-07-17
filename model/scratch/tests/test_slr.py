@@ -79,3 +79,22 @@ class TestSLR(AsyncTestCase):
                     # Comparison of correct to prediction to make sure prediction is within a reasonable range
                     self.assertGreater(prediction, correct - (correct * 0.10))
                     self.assertLess(prediction, correct + (correct * 0.10))
+
+    async def test_00_train(self):
+        async with self.sources as sources, self.features as features, self.model as model:
+            async with sources() as sctx, model(features) as mctx:
+                await mctx.train(sctx)
+    
+    async def test_01_accuracy(self):
+        async with self.sources as sources, self.features as features, self.model as model:
+            async with sources() as sctx, model(features) as mctx:
+                res = await mctx.accuracy(sctx)
+                self.assertTrue(0.0 <= res < 1.0)
+    
+    async def test_02_predict(self):
+        async with self.sources as sources, self.features as features, self.model as model:
+            async with sources() as sctx, model(features) as mctx:
+                async for repo, prediction, confidence in mctx.predict(sctx.repos()):
+                    correct = FEATURE_DATA[int(repo.src_url)][1]
+                    self.assertGreater(prediction, correct - (correct * 0.10))
+                    self.assertLess(prediction, correct + (correct * 0.10))

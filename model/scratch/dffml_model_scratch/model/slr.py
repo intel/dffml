@@ -31,28 +31,30 @@ class SLRContext(ModelContext):
         self.xData = np.array([])
         self.yData = np.array([])
         self.features = self.applicable_features(features)
+        self._features_hash_ = hashlib.sha384((''.join(sorted(self.features))).encode()).hexdigest()
 
-    def get_regression_line(self):
-        return self.parent.saved.get(hashlib.sha384((''.join(sorted(self.features))).encode()).hexdigest(), None)
+    @property
+    def regression_line(self):
+        return self.parent.saved.get(self._features_hash_, None)
 
-    def set_regression_line(self, slope, constant, accuracy):
-        self.parent.saved[hashlib.sha384((''.join(sorted(self.features))).encode()).hexdigest()] = (slope, constant, accuracy)
+    @regression_line.setter
+    def regression_line(self, rline):
+        self.parent.saved[self._features_hash_] = rline
 
-    def applicable_features(self, featuress):
+    def applicable_features(self, features):
         usable = []
-        if len(featuress) != 1:
+        if len(features) != 1:
             raise ValueError("Simple Linear Regression doesn't support features other than 1")
-        for feature in featuress:
+        for feature in features:
             if feature.dtype() != int and feature.dtype() != float:
                 raise ValueError("Simple Linear Regression only supports int or float feature")
             if feature.length() != 1:
                 raise ValueError("Simple LR only supports single values (non-matrix / array)")
             usable.append(feature.NAME)
-        return usable
+        return sorted(usable)
 
     async def predict_input(self, x):
-        regression_line = self.get_regression_line()
-        prediction = regression_line[0]*x+regression_line[1]
+        prediction = self.regression_line[0]*x+self.regression_line[1]
         self.logger.debug("Predicted Value of {} {}:".format(self.parent.config.predict, prediction))
         return prediction
 
@@ -75,31 +77,31 @@ class SLRContext(ModelContext):
         b = mean_y - (m*mean_x)
         regression_line = [m*x + b for x in x]
         accuracy = await self.coeff_of_deter(y, regression_line)
-        self.set_regression_line(m, b, accuracy)
         return (m, b, accuracy)
 
     async def train(self, sources: Sources):
-        async for repo in sources.with_features(self.features):
-            feature_data = repo.features(self.features
-                                         + [self.parent.config.predict])
+        async for repo in sources.with_features(self.features +
+                                                [self.parent.config.predict]):
+            feature_data = repo.features(self.features +
+                                         [self.parent.config.predict])
             self.xData = np.append(self.xData, feature_data[self.features[0]])
             self.yData = np.append(self.yData, feature_data[self.parent.config.predict])
         self.regression_line = await self.best_fit_line()
 
     async def accuracy(self, sources: Sources) -> Accuracy:
-        regression_line = self.get_regression_line()
+        # regression_line = self.get_regression_line()
         if self.regression_line is None:
             raise ValueError('Model Not Trained')
-        accuracy_value = regression_line[2]
+        accuracy_value = self.regression_line[2]
         return Accuracy(accuracy_value)
 
     async def predict(self, repos: AsyncIterator[Repo]) -> \
                     AsyncIterator[Tuple[Repo, Any, float]]:
-        regression_line = [await self.predict_input(i) for i in self.xData]
-        regression_line = self.get_regression_line()
+        # regression_line = [await self.predict_input(i) for i in self.xData]
+        # regression_line = self.get_regression_line()
         async for repo in repos:
             feature_data = repo.features(self.features)
-            yield repo, await self.predict_input(feature_data[self.features[0]]), regression_line[2]
+            yield repo, await self.predict_input(feature_data[self.features[0]]), self.regression_line[2]
 
 
 @entry_point('slr')
