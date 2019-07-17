@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Repo.feature method to select a single piece of feature data within a repo.
 - Create service to start from template when creating new python packages for
   DFFML models and operations.
+- Added Simple Linear Regression Model from Scratch
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
