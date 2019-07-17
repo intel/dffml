@@ -9,7 +9,7 @@ from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Data, DefFeature, Features
 from dffml.util.asynctestcase import AsyncTestCase
 
-from model.scikit.scikit.sciLR import LR, LRConfig
+from dffml_model_scikit.sciLR import LR, LRConfig
 
 
 FEATURE_DATA = [
