@@ -108,7 +108,14 @@ class CMD(object):
 
     @classmethod
     async def parse_args(cls, *args):
-        parser = Parser()
+        parser = Parser(
+            description=cls.__doc__,
+            formatter_class=getattr(
+                cls,
+                "CLI_FORMATTER_CLASS",
+                argparse.ArgumentDefaultsHelpFormatter,
+            ),
+        )
         parser.add_subs(cls)
         return parser, parser.parse_known_args(args)
 
