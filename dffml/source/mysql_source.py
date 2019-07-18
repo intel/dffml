@@ -143,7 +143,7 @@ class MysqlSource(BaseSource):
             "repos-query",
             Arg(
                 type=str,
-                help="SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos",
+                help="SELECT `key` as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data",
             ),
         )
         cls.config_set(
@@ -152,7 +152,7 @@ class MysqlSource(BaseSource):
             "repo-query",
             Arg(
                 type=str,
-                help="SELECT key as src_url, data_1 as feature_1, data_2 as feature_2 FROM list_of_all_repos WHERE key=%s",
+                help="SELECT `key` as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data WHERE `key`=%s",
             ),
         )
         cls.config_set(
@@ -161,7 +161,7 @@ class MysqlSource(BaseSource):
             "update-query",
             Arg(
                 type=str,
-                help="INSERT INTO source_data (src_url, json) VALUES(%s, %s) ON DUPLICATE KEY UPDATE json = %s",
+                help="INSERT INTO repo_data (`key`, data_1, data_2) VALUES(%s, %s, %s) ON DUPLICATE KEY UPDATE data_1 = %s, data_2=%s",
             ),
         )
         cls.config_set(
