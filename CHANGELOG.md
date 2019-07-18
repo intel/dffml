@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   DFFML models and operations.
 - Classification type parameter to DNNClassifierModelConfig to specifiy data
   type of given classification options.
+- util.cli CMD classes have their argparse description set to their docstring.
+- util.cli CMD classes can specify the formatter class used in
+  `argparse.ArgumentParser` via the `CLI_FORMATTER_CLASS` property.
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
