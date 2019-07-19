@@ -21,7 +21,7 @@ from dffml.util.cli.arg import Arg
 
 class SLRConfig(ModelConfig, NamedTuple):
     predict: str
-    directory: str  
+    directory: str
 
 
 class SLRContext(ModelContext):
