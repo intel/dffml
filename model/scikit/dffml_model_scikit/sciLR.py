@@ -5,6 +5,7 @@ Description of what this model does
 """
 import os
 import abc
+import json
 import hashlib
 import numpy as np
 import pandas as pd
@@ -33,11 +34,16 @@ class LRContext(ModelContext):
 
     def __init__(self, parent, features):
         super().__init__(parent, features)
-        self.xData = np.array([])
-        self.yData = np.array([])
         self.features = self.applicable_features(features)
-        self.confidence = None
         self.clf = None
+
+    @property
+    def confidence(self):
+        return self.parent.saved.get("confidence", None)
+
+    @confidence.setter
+    def confidence(self, confidence):
+        self.parent.saved["confidence"] = confidence
 
     def _filename(self):
         return os.path.join(
@@ -71,10 +77,9 @@ class LRContext(ModelContext):
                                          + [self.parent.config.predict])
             data.append(feature_data)
         df = pd.DataFrame(data)
-        xData = np.array(df.drop([self.parent.config.predict], 1))
-        # xData = preprocessing.scale(xData)
-        yData = np.array(df[self.parent.config.predict])
-        self.clf.fit(xData, yData)
+        xdata = np.array(df.drop([self.parent.config.predict], 1))
+        ydata = np.array(df[self.parent.config.predict])
+        self.clf.fit(xdata, ydata)
         joblib.dump(self.clf, self._filename())
 
     async def accuracy(self, sources: Sources) -> Accuracy:
@@ -85,10 +90,9 @@ class LRContext(ModelContext):
                                          + [self.parent.config.predict])
                 data.append(feature_data)
             df = pd.DataFrame(data)
-            xData = np.array(df.drop([self.parent.config.predict], 1))
-            # xData = preprocessing.scale(xData)
-            yData = np.array(df[self.parent.config.predict])
-            self.confidence = self.clf.score(xData, yData)
+            xdata = np.array(df.drop([self.parent.config.predict], 1))
+            ydata = np.array(df[self.parent.config.predict])
+            self.confidence = self.clf.score(xdata, ydata)
         else:
             raise ValueError('Model Not Trained')
         return self.confidence
@@ -108,6 +112,28 @@ class LRContext(ModelContext):
 class LR(Model):
 
     CONTEXT = LRContext
+
+    def __init__(self, config: LRConfig) -> None:
+        super().__init__(config)
+        self.saved = {}
+
+    def _filename(self):
+        return os.path.join(
+            self.config.directory,
+            hashlib.sha384(self.config.predict.encode()).hexdigest() + '.json'
+        )
+
+    async def __aenter__(self) -> LRContext:
+        filename = self._filename()
+        if os.path.isfile(filename):
+            with open(filename, 'r') as read:
+                self.saved = json.load(read)
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        filename = self._filename()
+        with open(filename, 'w') as write:
+            json.dump(self.saved, write)
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
@@ -131,22 +157,10 @@ class LR(Model):
                 help="Label or the value to be predicted",
             ),
         )
-        # cls.config_set(
-        #     args,
-        #     above,
-        #     "scale",
-        #     Arg(
-        #         type=bool,
-        #         action="store_true",
-        #         help="Enable dataset scaling"
-        #     ),
-        # )
-        # return args
 
     @classmethod
     def config(cls, config, *above) -> "LRConfig":
         return LRConfig(
             directory=cls.config_get(config, above, "directory"),
             predict=cls.config_get(config, above, "predict"),
-            # scale=cls.config_get(config, above, "scale"),
         )
