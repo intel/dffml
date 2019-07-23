@@ -45,12 +45,10 @@ class TestLR(AsyncTestCase):
     def setUpClass(cls):
         cls.model_dir = tempfile.TemporaryDirectory()
         cls.model = LR(LRConfig(directory=cls.model_dir.name, predict='Z'))
-        cls.feature = DefFeature('X', float, 1)
-        cls.features = Features(cls.feature)
-        cls.feature = DefFeature('Y', float, 1)
-        cls.features.append(cls.feature)
-        cls.feature = DefFeature('W', float, 1)
-        cls.features.append(cls.feature)
+        cls.features = Features()
+        cls.features.append(DefFeature('X', float, 1))
+        cls.features.append(DefFeature('Y', float, 1))
+        cls.features.append(DefFeature('W', float, 1))
         X, Y, W, Z = list(zip(*FEATURE_DATA))
         cls.repos = [
             Repo(str(i),
@@ -79,7 +77,7 @@ class TestLR(AsyncTestCase):
                 # Test accuracy
                 res = await mctx.accuracy(sctx)
                 print(res)
-                self.assertTrue(0.0 <= res < 1.0)
+                self.assertTrue(0.0 <= res <= 1.0)
                 # Test predict
                 async for repo, prediction, confidence in mctx.predict(sctx.repos()):
                     correct = FEATURE_DATA[int(repo.src_url)][3]
