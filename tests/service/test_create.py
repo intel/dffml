@@ -108,3 +108,9 @@ class TestCreate(AsyncTestCase):
                 ("tests", "test_operations.py"),
             ],
         )
+
+    async def test_service(self):
+        await self.generic_test(
+            "service",
+            [("{import_name}", "misc.py"), ("tests", "test_service.py")],
+        )
