@@ -1,0 +1,13 @@
+path_classifiers:
+  docs:
+    - scripts/docs.py
+  test:
+    - tests
+  python:
+    python_setup:
+      setup_py: setup.py
+      version: 3
+    index:
+      include:
+       - "dffml/**"
+       - "examples/**"
