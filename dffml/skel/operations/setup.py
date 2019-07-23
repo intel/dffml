@@ -1,4 +1,5 @@
 import os
+import sys
 import ast
 from io import open
 from setuptools import find_packages, setup
@@ -8,7 +9,26 @@ NAME = "REPLACE_PACKAGE_NAME"
 DESCRIPTION = "REPLACE_DESCRIPTION"
 AUTHOR_NAME = "REPLACE_AUTHOR_NAME"
 AUTHOR_EMAIL = "REPLACE_AUTHOR_EMAIL"
-INSTALL_REQUIRES = ["dffml>=REPLACE_DFFML_VERSION"]
+# Install dffml if it is not installed in development mode
+INSTALL_REQUIRES = (
+    [] + ["dffml>=REPLACE_DFFML_VERSION"]
+    if not any(
+        list(
+            map(
+                os.path.isfile,
+                list(
+                    map(
+                        lambda syspath: os.path.join(
+                            syspath, "dffml.egg-link"
+                        ),
+                        sys.path,
+                    )
+                ),
+            )
+        )
+    )
+    else []
+)
 
 IMPORT_NAME = (
     NAME
