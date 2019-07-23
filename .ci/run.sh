@@ -31,6 +31,13 @@ function run_plugin() {
     cd travis-test-operations
     python setup.py install
     python setup.py test
+    cd ..
+    # Create service
+    dffml service create service travis-test-service
+    cd travis-test-service
+    python setup.py install
+    python setup.py test
+    cd ..
   fi
 }
 
