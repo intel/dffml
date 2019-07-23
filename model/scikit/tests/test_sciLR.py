@@ -68,23 +68,6 @@ class TestLR(AsyncTestCase):
     def tearDownClass(cls):
         cls.model_dir.cleanup()
 
-    async def test_context(self):
-        async with self.sources as sources, self.features as features, \
-                self.model as model:
-            async with sources() as sctx, model(features) as mctx:
-                # Test train
-                await mctx.train(sctx)
-                # Test accuracy
-                res = await mctx.accuracy(sctx)
-                print(res)
-                self.assertTrue(0.0 <= res <= 1.0)
-                # Test predict
-                async for repo, prediction, confidence in mctx.predict(sctx.repos()):
-                    correct = FEATURE_DATA[int(repo.src_url)][3]
-                    # Comparison of correct to prediction to make sure prediction is within a reasonable range
-                    self.assertGreater(prediction, correct - (correct * 0.20))
-                    self.assertLess(prediction, correct + (correct * 0.20))
-
     async def test_00_train(self):
         async with self.sources as sources, self.features as features, self.model as model:
             async with sources() as sctx, model(features) as mctx:
@@ -102,4 +85,4 @@ class TestLR(AsyncTestCase):
                 async for repo, prediction, confidence in mctx.predict(sctx.repos()):
                     correct = FEATURE_DATA[int(repo.src_url)][3]
                     self.assertGreater(prediction, correct - (correct * 0.20))
-                    self.assertLess(prediction, correct + (correct * 0.20)) 
+                    self.assertLess(prediction, correct + (correct * 0.20))

@@ -7,13 +7,14 @@ import os
 import abc
 import json
 import hashlib
+from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Dict
+
+import joblib
 import numpy as np
 import pandas as pd
 from sklearn import preprocessing, svm
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.externals import joblib
-from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Dict
 
 from dffml.repo import Repo
 from dffml.source.source import Sources
@@ -39,16 +40,19 @@ class LRContext(ModelContext):
 
     @property
     def confidence(self):
-        return self.parent.saved.get("confidence", None)
+        return self.parent.saved.get(self._feature_predict_hash(), None)
 
     @confidence.setter
     def confidence(self, confidence):
-        self.parent.saved["confidence"] = confidence
+        self.parent.saved[self._feature_predict_hash()] = confidence
+
+    def _feature_predict_hash(self):
+        return hashlib.sha384(''.join(self.features + [self.parent.config.predict]).encode()).hexdigest()
 
     def _filename(self):
         return os.path.join(
             self.parent.config.directory,
-            hashlib.sha384(self.parent.config.predict.encode()).hexdigest() + '.joblib')
+            self._feature_predict_hash() + '.joblib')
 
     async def __aenter__(self):
         if(os.path.isfile(self._filename())):

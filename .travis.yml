@@ -15,6 +15,7 @@ env:
   matrix:
   - PLUGIN=.
   - PLUGIN=model/tensorflow
+  - PLUGIN=model/scikit
   - PLUGIN=feature/git
   - PLUGIN=feature/auth
   - CHANGELOG=1
