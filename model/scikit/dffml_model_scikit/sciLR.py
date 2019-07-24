@@ -12,8 +12,6 @@ from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Dict
 import joblib
 import numpy as np
 import pandas as pd
-from sklearn import preprocessing, svm
-from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 
 from dffml.repo import Repo
@@ -28,7 +26,6 @@ from dffml.util.cli.arg import Arg
 class LRConfig(ModelConfig, NamedTuple):
     directory: str
     predict: str
-    # scale: bool
 
 
 class LRContext(ModelContext):
@@ -114,6 +111,10 @@ class LRContext(ModelContext):
 
 @entry_point("sciLR")
 class LR(Model):
+    """
+    Linear Regression Model implemented using scikit. Models are saved under the
+    ``directory`` in subdirectories named after the hash of their feature names.
+    """
 
     CONTEXT = LRContext
 
