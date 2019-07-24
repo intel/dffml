@@ -176,6 +176,10 @@ class Merge(CMD):
 
 class OperationsCMD(OrchestratorCMD, SourcesCMD):
 
+    def __init__(self, *args, **kwargs):
+        OrchestratorCMD.__init__(self, *args, **kwargs)
+        SourcesCMD.__init__(self, *args, **kwargs)
+
     arg_sources = SourcesCMD.arg_sources.modify(required=False)
     arg_caching = Arg(
         "-caching",
@@ -308,6 +312,10 @@ class Operations(CMD):
 
 class EvaluateCMD(FeaturesCMD, SourcesCMD):
 
+    def __init__(self, *args, **kwargs):
+        FeaturesCMD.__init__(self, *args, **kwargs)
+        SourcesCMD.__init__(self, *args, **kwargs)
+
     arg_sources = SourcesCMD.arg_sources.modify(required=False)
     arg_caching = Arg(
         "-caching",
@@ -385,6 +393,11 @@ class MLCMD(ModelCMD, FeaturesCMD, SourcesCMD):
     Commands which use models share many similar arguments.
     """
 
+    def __init__(self, *args, **kwargs):
+        ModelCMD.__init__(self, *args, **kwargs)
+        FeaturesCMD.__init__(self, *args, **kwargs)
+        SourcesCMD.__init__(self, *args, **kwargs)
+
 
 class Train(MLCMD):
     """Train a model on data from given sources"""
@@ -424,6 +437,9 @@ class PredictAll(EvaluateAll, MLCMD):
 class PredictRepo(PredictAll, EvaluateRepo):
     """Predictions for individual repos"""
 
+    def __init__(self, *args, **kwargs):
+        PredictAll.__init__(self, *args, **kwargs)
+        EvaluateRepo.__init__(self, *args, **kwargs)
 
 class Predict(CMD):
     """Evaluate features against repos and produce a prediction"""
