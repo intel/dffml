@@ -11,6 +11,7 @@ from ..repo import Repo
 from .memory import MemorySource
 from .file import FileSource, FileSourceConfig
 from ..util.cli.arg import Arg
+from ..util.entrypoint import entry_point
 
 csv.register_dialect("strip", skipinitialspace=True)
 
@@ -22,6 +23,7 @@ class CSVSourceConfig(FileSourceConfig, NamedTuple):
     key: str = None
 
 
+@entry_point("csv")
 class CSVSource(FileSource, MemorySource):
     """
     Uses a CSV file as the source of repo feature data

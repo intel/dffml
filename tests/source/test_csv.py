@@ -23,7 +23,7 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
 
     def test_config_readonly_default(self):
         config = CSVSource.config(
-            parse_unknown("--source-file-filename", "feedface")
+            parse_unknown("--source-csv-filename", "feedface")
         )
         self.assertEqual(config.filename, "feedface")
         self.assertEqual(config.label, "unlabeled")
@@ -33,13 +33,13 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
     def test_config_readonly_set(self):
         config = CSVSource.config(
             parse_unknown(
-                "--source-file-filename",
+                "--source-csv-filename",
                 "feedface",
-                "--source-file-label",
+                "--source-csv-label",
                 "default-label",
-                "--source-file-key",
+                "--source-csv-key",
                 "SourceURLColumn",
-                "--source-file-readonly",
+                "--source-csv-readonly",
             )
         )
         self.assertEqual(config.filename, "feedface")

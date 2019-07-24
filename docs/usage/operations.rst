@@ -118,7 +118,7 @@ Run the tests
 Safety Operation
 ----------------
 
-The output of the last operation will automatticly be combined with the package
+The output of the last operation will automatically be combined with the package
 name to create a call you our new operation, ``SafetyCheck``.
 
 This is how running safety on the command line works.
@@ -197,7 +197,7 @@ based on :py:mod:`argparse` which will speed things up.
 
 .. literalinclude:: /../examples/shouldi/shouldi/cli.py
 
-Let's test out the code in ``shouldi.cli`` before making it accessable via the
+Let's test out the code in ``shouldi.cli`` before making it accessible via the
 command line.
 
 .. literalinclude:: /../examples/shouldi/tests/test_cli.py

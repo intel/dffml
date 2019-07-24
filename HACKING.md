@@ -36,13 +36,13 @@ You'll need to fork the repo on GitHub too. Then add that as a remote.
 git remote add $USER git@github.com:$USER/dffml
 ```
 
-Once you've commited a change on that branch you can push it to your fork.
+Once you've committed a change on that branch you can push it to your fork.
 
 ```console
 git push -u $USER my_new_thing
 ```
 
-Then you can keep commiting on this branch and just use `git push` to send your
+Then you can keep committing on this branch and just use `git push` to send your
 new commits to GitHub.
 
 # Testing
