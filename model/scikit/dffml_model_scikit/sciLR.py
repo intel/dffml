@@ -80,6 +80,7 @@ class LRContext(ModelContext):
         df = pd.DataFrame(data)
         xdata = np.array(df.drop([self.parent.config.predict], 1))
         ydata = np.array(df[self.parent.config.predict])
+        self.logger.debug("Number of input repos: {}".format(len(xdata)))
         self.clf.fit(xdata, ydata)
         joblib.dump(self.clf, self._filename())
 
@@ -93,6 +94,7 @@ class LRContext(ModelContext):
             df = pd.DataFrame(data)
             xdata = np.array(df.drop([self.parent.config.predict], 1))
             ydata = np.array(df[self.parent.config.predict])
+            self.logger.debug("Number of input repos: {}".format(len(xdata)))
             self.confidence = self.clf.score(xdata, ydata)
         else:
             raise ValueError('Model Not Trained')
@@ -106,6 +108,11 @@ class LRContext(ModelContext):
             feature_data = repo.features(self.features)
             df = pd.DataFrame(feature_data, index=[0])
             predict = np.array(df)
+            self.logger.debug(
+                "Predicted Value of {} for {}: {}".format(
+                    self.parent.config.predict, predict, self.clf.predict(predict)
+                )
+            )
             yield repo, self.clf.predict(predict), self.confidence
 
 

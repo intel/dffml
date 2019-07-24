@@ -26,7 +26,6 @@ For implementing linear regression to a dataset, let us take a simple example:
 |          5           |     11     |      1.2     |   60   |
 
 ```console
-```console
 $ cat > dataset.csv << EOF
 Years,Expertise,Trust,Salary
 0,01,0.2,10
