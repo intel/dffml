@@ -62,7 +62,10 @@ class Parser(argparse.ArgumentParser):
                 parser.set_defaults(parser=parser)
                 parser.add_subs(method)  # type: ignore
             elif isinstance(method, Arg):
-                self.add_argument(method.name, **method)
+                try:
+                    self.add_argument(method.name, **method)
+                except argparse.ArgumentError as error:
+                    raise Exception(repr(add_from)) from error
 
 
 class CMD(object):
