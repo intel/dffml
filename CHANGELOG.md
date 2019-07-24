@@ -50,6 +50,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A temporary directory is used to replicate `mktemp -u` functionality so as to
   provide tests using a FileSource with a valid tempfile name.
 - Labels for JSON sources
+- util.cli CMD's correcly set the description of subparsers instead of their
+  help, they also accept the `CLI_FORMATTER_CLASS` property.
 ### Removed
 - Repo objects are no longer classification specific. Their `classify`,
   `classified`, and `classification` methods were removed.

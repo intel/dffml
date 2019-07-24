@@ -54,9 +54,14 @@ class Parser(argparse.ArgumentParser):
                     subparsers = self.add_subparsers()  # pragma: no cover
                 parser = subparsers.add_parser(
                     name,
-                    help=None
+                    description=None
                     if method.__doc__ is None
-                    else method.__doc__.strip(),
+                    else method.__doc__,
+                    formatter_class=getattr(
+                        method,
+                        "CLI_FORMATTER_CLASS",
+                        argparse.ArgumentDefaultsHelpFormatter,
+                    ),
                 )
                 parser.set_defaults(cmd=method)
                 parser.set_defaults(parser=parser)
