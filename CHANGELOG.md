@@ -43,8 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Docs get version from dffml.version.VERSION.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
   the underlying file object to return str instances rather than bytes.
-- FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
-  the underlying file object to return str instances rather than bytes.
 - FileSourceTest inherits from SourceTest and is used to test json and csv
   sources.
 - A temporary directory is used to replicate `mktemp -u` functionality so as to
@@ -53,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - util.cli CMD's correcly set the description of subparsers instead of their
   help, they also accept the `CLI_FORMATTER_CLASS` property.
 - CSV source now has `entry_point` decoration
+- JSON source now has `entry_point` decoration
 ### Removed
 - Repo objects are no longer classification specific. Their `classify`,
   `classified`, and `classification` methods were removed.
