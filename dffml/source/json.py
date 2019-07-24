@@ -9,6 +9,7 @@ from typing import Dict
 from ..repo import Repo
 from .memory import MemorySource
 from .file import FileSource
+from ..util.entrypoint import entry_point
 
 from .log import LOGGER
 
@@ -31,6 +32,7 @@ class OpenJSONFile:
             return bool(self.active < 1)
 
 
+@entry_point("json")
 class JSONSource(FileSource, MemorySource):
     """
     JSONSource reads and write from a JSON file on open / close. Otherwise
