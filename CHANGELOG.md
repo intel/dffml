@@ -54,6 +54,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CSV source now has `entry_point` decoration
 - JSON source now has `entry_point` decoration
 - cli CMDs now invoke all of their superclasses `__init__` methods.
+- df base classes with multiple superclasses now invoke all of their
+  superclasses `__init__` methods.
+- df BaseOperationImplementationNetworkContext run method signature
+  has been updated to match that of MemoryOperationImplementationNetworkContext.
+  a BaseInputSetContext and BaseInputNetworkContext are now required as well as
+  the operation and its inputs.
 ### Removed
 - Repo objects are no longer classification specific. Their `classify`,
   `classified`, and `classification` methods were removed.

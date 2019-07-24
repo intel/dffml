@@ -65,7 +65,7 @@ class OperationImplementationContext(BaseDataFlowObjectContext):
         ctx: "BaseInputSetContext",
         ictx: "BaseInputNetworkContext",
     ) -> None:
-        self.parent = parent
+        super().__init__(parent)
         self.ctx = ctx
         self.ictx = ictx
 
@@ -270,7 +270,7 @@ class BaseKeyValueStoreContext(BaseDataFlowObjectContext):
     """
 
     def __init__(self, parent: "BaseKeyValueStore") -> None:
-        self.parent = parent
+        super().__init__(parent)
 
     @abc.abstractmethod
     async def get(self, key: str) -> Union[bytes, None]:
@@ -563,7 +563,11 @@ class BaseOperationImplementationNetworkContext(BaseDataFlowObjectContext):
 
     @abc.abstractmethod
     async def run(
-        self, operation: Operation, inputs: Dict[str, Any]
+        self,
+        ctx: BaseInputSetContext,
+        ictx: BaseInputNetworkContext,
+        operation: Operation,
+        inputs: Dict[str, Any],
     ) -> Union[bool, Dict[str, Any]]:
         """
         Find the operation implementation for the given operation and create an
