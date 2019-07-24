@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - util.cli CMD classes have their argparse description set to their docstring.
 - util.cli CMD classes can specify the formatter class used in
   `argparse.ArgumentParser` via the `CLI_FORMATTER_CLASS` property.
-- Skeleton for service creation was added
+- skeleton for service creation was added
 - Simple Linear Regression model from scratch
 ### Changed
 - feature/codesec became it's own branch, binsec
