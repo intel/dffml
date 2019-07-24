@@ -2,58 +2,43 @@
 
 ## About
 
-model_name models.
+Models created using scikit.
 
-## Demo
+## Install
 
-![Demo](https://github.com/intel/dffml/raw/master/docs/images/model_demo.gif)
+```console
+python3.7 -m pip install --user dffml-model-scikit
+```
 
 ## Usage
 
+1. Linear Regression Model
+
+For implementing linear regression to a dataset, let us take a simple example:
+
+| Years of Experience  |  Expertise | Trust Factor | Salary |
+| -------------------- | ---------- | ------------ | ------ |
+|          0           |     01     |      0.2     |   10   |
+|          1           |     03     |      0.4     |   20   |
+|          2           |     05     |      0.6     |   30   |
+|          3           |     07     |      0.8     |   40   |
+|          4           |     09     |      1.0     |   50   |
+|          5           |     11     |      1.2     |   60   |
+
 ```console
-wget http://download.tensorflow.org/data/iris_training.csv
-wget http://download.tensorflow.org/data/iris_test.csv
-head iris_training.csv
-sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' *.csv
-head iris_training.csv
-dffml train \
-  -model model_name \
-  -sources csv=iris_training.csv \
-  -classifications 0 1 2 \
-  -features \
-    def:SepalLength:float:1 \
-    def:SepalWidth:float:1 \
-    def:PetalLength:float:1 \
-    def:PetalWidth:float:1 \
-  -epochs 3000 \
-  -steps 20000 \
-  -log debug
-dffml accuracy \
-  -model model_name \
-  -sources csv=iris_training.csv \
-  -classifications 0 1 2 \
-  -features \
-    def:SepalLength:float:1 \
-    def:SepalWidth:float:1 \
-    def:PetalLength:float:1 \
-    def:PetalWidth:float:1 \
-  -log critical
-dffml predict all \
-  -model model_name \
-  -sources csv=iris_test.csv \
-  -classifications 0 1 2 \
-  -features \
-    def:SepalLength:float:1 \
-    def:SepalWidth:float:1 \
-    def:PetalLength:float:1 \
-    def:PetalWidth:float:1 \
-  -caching \
-  -log critical \
-  > results.json
-head -n 33 results.json
+```console
+$ cat > dataset.csv << EOF
+Years,Expertise,Trust,Salary
+0,01,0.2,10
+1,03,0.4,20
+2,05,0.6,30
+3,07,0.8,40
+4,09,1.0,50
+5,11,1.2,60
+EOF
 ```
 
 ## License
 
-model_name Models are distributed under the terms of the
+Scikit Models are distributed under the terms of the
 [MIT License](LICENSE).
