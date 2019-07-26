@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `argparse.ArgumentParser` via the `CLI_FORMATTER_CLASS` property.
 - Skeleton for service creation was added
 - Simple Linear Regression model from scratch
+- Community link in CONTRIBUTING.md.
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
@@ -53,8 +54,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   help, they also accept the `CLI_FORMATTER_CLASS` property.
 - CSV source now has `entry_point` decoration
 - JSON source now has `entry_point` decoration
-- Added Community link in CONTRIBUTING.md.
-
 ### Removed
 - Repo objects are no longer classification specific. Their `classify`,
   `classified`, and `classification` methods were removed.
