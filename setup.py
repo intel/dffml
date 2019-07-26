@@ -15,7 +15,7 @@ with open('README.md', 'r', encoding='utf-8') as f:
 
 setup(
     name='dffml',
-    version=version,
+    version=VERSION,
     description='Data Flow Facilitator for Machine Learning',
     long_description=readme,
     long_description_content_type='text/markdown',
