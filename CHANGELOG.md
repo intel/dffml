@@ -53,6 +53,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   help, they also accept the `CLI_FORMATTER_CLASS` property.
 - CSV source now has `entry_point` decoration
 - JSON source now has `entry_point` decoration
+- Added Community link in CONTRIBUTING.md.
+
 ### Removed
 - Repo objects are no longer classification specific. Their `classify`,
   `classified`, and `classification` methods were removed.
