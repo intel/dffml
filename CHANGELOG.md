@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - DNNClassifierModel no longer splits data for the user.
 - Update `pip` in Dockerfile.
 - Capitalize `version` in setup.py.
+- Capitalize `version` in setup.py for all sub-folders under dffml/skel
 ### Fixed
 - Docs get version from dffml.version.VERSION.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
