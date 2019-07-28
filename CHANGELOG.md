@@ -16,6 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   DFFML models and operations.
 - Classification type parameter to DNNClassifierModelConfig to specifiy data
   type of given classification options.
+- util.cli CMD classes have their argparse description set to their docstring.
+- util.cli CMD classes can specify the formatter class used in
+  `argparse.ArgumentParser` via the `CLI_FORMATTER_CLASS` property.
+- Skeleton for service creation was added
+- Simple Linear Regression model from scratch
+- Community link in CONTRIBUTING.md.
 - Mysql Source to work with data from a mysql database
 ### Changed
 - feature/codesec became it's own branch, binsec
@@ -36,10 +42,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated Tensorflow model README.md to match functionality of
   DNNClassifierModel.
 - DNNClassifierModel no longer splits data for the user.
+- Update `pip` in Dockerfile.
 ### Fixed
 - Docs get version from dffml.version.VERSION.
-- FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
-  the underlying file object to return str instances rather than bytes.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
   the underlying file object to return str instances rather than bytes.
 - FileSourceTest inherits from SourceTest and is used to test json and csv
@@ -47,6 +52,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A temporary directory is used to replicate `mktemp -u` functionality so as to
   provide tests using a FileSource with a valid tempfile name.
 - Labels for JSON sources
+- util.cli CMD's correcly set the description of subparsers instead of their
+  help, they also accept the `CLI_FORMATTER_CLASS` property.
+- CSV source now has `entry_point` decoration
+- JSON source now has `entry_point` decoration
 ### Removed
 - Repo objects are no longer classification specific. Their `classify`,
   `classified`, and `classification` methods were removed.

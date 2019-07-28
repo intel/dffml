@@ -73,5 +73,5 @@ setup(
     ],
     install_requires=INSTALL_REQUIRES,
     packages=find_packages(),
-    entry_points={"dffml.model": [f"misc = {IMPORT_NAME}.misc:Misc"]},
+    entry_points={"dffml.service": [f"misc = {IMPORT_NAME}.misc:Misc"]},
 )

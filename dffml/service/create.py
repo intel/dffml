@@ -110,3 +110,4 @@ class Create(CMD):
 
     model = create_from_skel("model")
     operations = create_from_skel("operations")
+    service = create_from_skel("service")

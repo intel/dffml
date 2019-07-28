@@ -55,5 +55,5 @@ python3.7 -m http.server --directory htmlcov/ 8080
 
 ## Community
 
-- Join the community. Ask questions, share ideas, request features and what not.
-  Join our [gitter](https://gitter.im/dffml/community) room and say Hi!
+- Join the [Community](https://intel.github.io/dffml/community.html). Ask questions, share ideas, request features and what not.
+- Join our [gitter](https://gitter.im/dffml/community) room and say Hi!

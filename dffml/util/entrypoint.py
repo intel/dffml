@@ -153,7 +153,7 @@ class Entrypoint(object):
                 % (label_and_loading, label_and_loading)
             )
 
-        class Loaded(cls.load(loading)):
-            ENTRY_POINT_LABEL = label
-
-        return Loaded
+        loaded = cls.load(loading)
+        return type(
+            loaded.__qualname__, (loaded,), {"ENTRY_POINT_LABEL": label}
+        )
