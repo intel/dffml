@@ -2,16 +2,24 @@ import os
 import sys
 import ast
 from io import open
+
 from setuptools import find_packages, setup
 
-ORG = "REPLACE_ORG_NAME"
-NAME = "REPLACE_PACKAGE_NAME"
-DESCRIPTION = "REPLACE_DESCRIPTION"
-AUTHOR_NAME = "REPLACE_AUTHOR_NAME"
-AUTHOR_EMAIL = "REPLACE_AUTHOR_EMAIL"
-# Install dffml if it is not installed in development mode
+self_path = os.path.dirname(os.path.realpath(__file__))
+
+with open(
+    os.path.join(self_path, "dffml_model_scratch", "version.py"), "r"
+) as f:
+    for line in f:
+        if line.startswith("VERSION"):
+            version = ast.literal_eval(line.strip().split("=")[-1].strip())
+            break
+
+with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
+    readme = f.read()
+
 INSTALL_REQUIRES = (
-    [] + ["dffml>=REPLACE_DFFML_VERSION"]
+    ["numpy>=1.16.4"] + ["dffml>=REPLACE_DFFML_VERSION"]
     if not any(
         list(
             map(
@@ -30,40 +38,24 @@ INSTALL_REQUIRES = (
     else []
 )
 
-IMPORT_NAME = (
-    NAME
-    if "replace_package_name".upper() != NAME
-    else "replace_import_package_name".upper()
-).replace("-", "_")
-
-SELF_PATH = os.path.dirname(os.path.realpath(__file__))
-
-with open(os.path.join(SELF_PATH, IMPORT_NAME, "version.py"), "r") as f:
-    for line in f:
-        if line.startswith("VERSION"):
-            version = ast.literal_eval(line.strip().split("=")[-1].strip())
-            break
-
-with open(os.path.join(SELF_PATH, "README.md"), "r", encoding="utf-8") as f:
-    readme = f.read()
-
 setup(
-    name=NAME,
+    name="dffml-model-scratch",
     version=version,
-    description=DESCRIPTION,
+    description="",
     long_description=readme,
     long_description_content_type="text/markdown",
-    author=AUTHOR_NAME,
-    author_email=AUTHOR_EMAIL,
-    maintainer=AUTHOR_NAME,
-    maintainer_email=AUTHOR_EMAIL,
-    url=f"https://github.com/{ORG}/{NAME}",
+    author="Yash Lamba",
+    author_email="yashlamba2000@gmail.com",
+    maintainer="John Andersen",
+    maintainer_email="john.s.andersen@intel.com",
+    url="https://github.com/intel/dffml/blob/master/model/scratch/README.md",
     license="MIT",
     keywords=["dffml"],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: Apache Software License",
         "Natural Language :: English",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3 :: Only",
@@ -73,5 +65,5 @@ setup(
     ],
     install_requires=INSTALL_REQUIRES,
     packages=find_packages(),
-    entry_points={"dffml.model": [f"misc = {IMPORT_NAME}.misc:Misc"]},
+    entry_points={"dffml.model": ["scratchslr = dffml_model_scratch.slr:SLR"]},
 )
