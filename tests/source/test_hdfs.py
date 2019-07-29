@@ -20,10 +20,3 @@ class TestHDFSSource(FileSourceTest, AsyncTestCase):
     async def test_label(self):
         pass
 
-    async def test_update(self):
-        source = await self.setUpSource()
-        async with source as testSource:
-            # Open and confirm we saved and loaded correctly
-            async with testSource() as sourceContext:
-                repo = await sourceContext.__aenter__()
-        pass
