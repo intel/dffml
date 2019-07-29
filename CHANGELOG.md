@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Skeleton for service creation was added
 - Simple Linear Regression model from scratch
 - Community link in CONTRIBUTING.md.
+- To work with data from a Hadoop source
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
