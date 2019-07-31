@@ -36,3 +36,16 @@ Implemented using Tensorflow's DNNClassifier. Models are saved under the
 
   - default: [12, 40, 15]
   - List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer
+
+- classification: String
+
+  - Feature name holding classification value
+
+- classifications: List of strings
+
+  - Options for value of classification
+
+- clstype: locate
+
+  - default: <class 'str'>
+  - Data type of classifications values (default: str)
