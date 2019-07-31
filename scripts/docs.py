@@ -16,6 +16,16 @@ def traverse_get_config(target, *args):
         current = last["config"]
     return current
 
+MODULE_TEMPLATE = """{name}
+{underline}
+
+.. code-block:: console
+
+    pip install {install}
+
+
+"""
+
 
 TEMPLATE = """{name}
 {underline}
@@ -150,7 +160,11 @@ def gen_docs(entrypoint: str, modules: List[str], maintenance: str = "Core"):
         per_module[i.module_name.split(".")[0]].append(formatted)
     return "\n\n".join(
         [
-            name + "\n" + "-" * len(name) + "\n\n" + "\n\n".join(docs)
+            MODULE_TEMPLATE.format(**{
+            "name": name,
+            "install": name.replace("_", "-"),
+            "underline": "-" * len(name),
+            }) + "\n\n".join(docs)
             for name, docs in per_module.items()
             if docs
         ]

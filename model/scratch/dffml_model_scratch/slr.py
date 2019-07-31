@@ -127,8 +127,62 @@ class SLRContext(ModelContext):
 @entry_point("slr")
 class SLR(Model):
     """
-    Simple Linear Regression Model for 2 variables implemented from scratch. Models are saved under the
-    ``directory`` in subdirectories named after the hash of their feature names.
+    Simple Linear Regression Model for 2 variables implemented from scratch.
+    Models are saved under the ``directory`` in subdirectories named after the
+    hash of their feature names.
+
+    .. code-block:: console
+
+        $ cat > dataset.csv << EOF
+        Years,Salary
+        1,40
+        2,50
+        3,60
+        4,70
+        5,80
+        EOF
+        $ dffml train \\
+            -model scratchslr \\
+            -features def:Years:int:1 \\
+            -model-predict Salary \\
+            -sources f=csv \\
+            -source-filename dataset.csv \\
+            -source-readonly \\
+            -log debug
+        $ dffml accuracy \\
+            -model scratchslr \\
+            -features def:Years:int:1 \\
+            -model-predict Salary \\
+            -sources f=csv \\
+            -source-filename dataset.csv \\
+            -source-readonly \\
+            -log debug
+        1.0
+        $ echo -e 'Years,Salary\\n6,0\\n' | \\
+          dffml predict all \\
+            -model scratchslr \\
+            -features def:Years:int:1 \\
+            -model-predict Salary \\
+            -sources f=csv \\
+            -source-filename /dev/stdin \\
+            -source-readonly \\
+            -log debug
+        [
+            {
+                "extra": {},
+                "features": {
+                    "Salary": 0,
+                    "Years": 6
+                },
+                "last_updated": "2019-07-19T09:46:45Z",
+                "prediction": {
+                    "confidence": 1.0,
+                    "value": 90.0
+                },
+                "src_url": "0"
+            }
+        ]
+
     """
 
     CONTEXT = SLRContext

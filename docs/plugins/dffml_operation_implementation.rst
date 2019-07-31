@@ -8,6 +8,11 @@ which could do anything, make HTTP requests, do inference, etc.
 dffml
 -----
 
+.. code-block:: console
+
+    pip install dffml
+
+
 associate
 ~~~~~~~~~
 
@@ -71,6 +76,11 @@ No description
 
 dffml_feature_git
 -----------------
+
+.. code-block:: console
+
+    pip install dffml-feature-git
+
 
 check_if_valid_git_repository_URL
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -353,8 +363,13 @@ No description
 
 - work: work_spread(type: int)
 
-dffml_feature_codesec
----------------------
+dffml_operations_binsec
+-----------------------
+
+.. code-block:: console
+
+    pip install dffml-operations-binsec
+
 
 cleanup_rpm
 ~~~~~~~~~~~
@@ -469,6 +484,11 @@ No description
 
 dffml_feature_auth
 ------------------
+
+.. code-block:: console
+
+    pip install dffml-feature-auth
+
 
 scrypt
 ~~~~~~
