@@ -14,3 +14,4 @@ open an `issue <https://github.com/intel/dffml/issues/new?assignees=&labels=docu
     dffml_source
     dffml_model
     dffml_operation_implementation
+    dffml_service_cli

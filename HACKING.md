@@ -61,3 +61,13 @@ coverage run setup.py test
 coverage report
 coverage html
 ```
+
+# Working on skel/
+
+If you want to work on any of the packages in `skel/`, you'll need to run the
+`skel link` command first fromt he `dev` service. This will symlink required
+files in from `common/` so that testing will work.
+
+```console
+dffml service dev skel link
+```

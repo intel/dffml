@@ -181,3 +181,11 @@ class CMD(object):
                 cls=cls.JSONEncoder,
             )
             print()
+
+    @classmethod
+    def args(cls, args, *above) -> Dict[str, Any]:
+        """
+        For compatibility with scripts/docs.py. Nothing else at the moment so if
+        it doesn't work with other things that's why.
+        """
+        return args
