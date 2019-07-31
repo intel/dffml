@@ -19,11 +19,11 @@ If you want to stay on the bleeding edge of bug fixes, etc. Install via git.
     python3.7 -m pip install git+https://github.com/intel/dffml
 
 You can also install the Features for Git Version Control, and Models for
-Tensorflow Library all at once.
+Tensorflow Library and Models implemented from scratch all at once.
 
 .. code-block:: bash
 
-    python3.7 -m pip install -U dffml[git,tensorflow]
+    python3.7 -m pip install -U dffml[git,models]
 
 Docker
 ------
@@ -36,7 +36,7 @@ This is a good option if you don't want to deal with installing Python 3.7.
 
 .. code-block:: bash
 
-    docker build -t dffml .
+    docker build -t intelotc/dffml .
 
 You can then make bash function to run the dffml docker container.
 
@@ -46,7 +46,7 @@ You can then make bash function to run the dffml docker container.
       docker run --rm -ti \
         -v $HOME/.local:/home/$USER/.local/ \
         -v $HOME/.cache:/home/$USER/.cache/ \
-        -v $PWD:/workdir -w /workdir -e UID=$(id -u) -e USER=$USER dffml $@
+        -v $PWD:/workdir -w /workdir -e UID=$(id -u) -e USER=$USER intelotc/dffml $@
     }
 
 This creates an alias that takes your current working directory and mounts it

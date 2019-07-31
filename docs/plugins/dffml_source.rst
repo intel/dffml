@@ -7,6 +7,11 @@ abstract the loading and storage of data / datasets.
 dffml
 -----
 
+.. code-block:: console
+
+    pip install dffml
+
+
 csv
 ~~~
 
