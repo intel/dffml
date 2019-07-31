@@ -42,7 +42,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     extras_require={
-        'tensorflow': ['dffml-model-tensorflow'],
+        'models': ['dffml-model-tensorflow', 'dffml-model-scratch'],
         'git': ['dffml-feature-git'],
     },
     entry_points={

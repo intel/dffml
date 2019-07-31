@@ -333,6 +333,94 @@ class DNNClassifierModel(Model):
     """
     Implemented using Tensorflow's DNNClassifier. Models are saved under the
     ``directory`` in subdirectories named after the hash of their feature names.
+
+    .. code-block:: console
+
+        $ wget http://download.tensorflow.org/data/iris_training.csv
+        $ wget http://download.tensorflow.org/data/iris_test.csv
+        $ head iris_training.csv
+        $ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' *.csv
+        $ head iris_training.csv
+        $ dffml train \\
+          -model tfdnnc \\
+          -model-epochs 3000 \\
+          -model-steps 20000 \\
+          -model-classification classification \\
+          -model-classifications 0 1 2 \\
+          -model-clstype int \\
+          -sources iris=csv \\
+          -source-filename iris_training.csv \\
+          -features \\
+            def:SepalLength:float:1 \\
+            def:SepalWidth:float:1 \\
+            def:PetalLength:float:1 \\
+            def:PetalWidth:float:1 \\
+          -log debug
+        ... lots of output ...
+        $ dffml accuracy \\
+          -model tfdnnc \\
+          -model-classification classification \\
+          -model-classifications 0 1 2 \\
+          -model-clstype int \\
+          -sources iris=csv \\
+          -source-filename iris_test.csv \\
+          -features \\
+            def:SepalLength:float:1 \\
+            def:SepalWidth:float:1 \\
+            def:PetalLength:float:1 \\
+            def:PetalWidth:float:1 \\
+          -log critical
+        0.99996233782
+        $ dffml predict all \\
+          -model tfdnnc \\
+          -model-classification classification \\
+          -model-classifications 0 1 2 \\
+          -model-clstype int \\
+          -sources iris=csv \\
+          -source-filename iris_test.csv \\
+          -features \\
+            def:SepalLength:float:1 \\
+            def:SepalWidth:float:1 \\
+            def:PetalLength:float:1 \\
+            def:PetalWidth:float:1 \\
+          -caching \\
+          -log critical \\
+          > results.json
+        $ head -n 33 results.json
+        [
+            {
+                "extra": {},
+                "features": {
+                    "PetalLength": 4.2,
+                    "PetalWidth": 1.5,
+                    "SepalLength": 5.9,
+                    "SepalWidth": 3.0,
+                    "classification": 1
+                },
+                "last_updated": "2019-07-31T02:00:12Z",
+                "prediction": {
+                    "confidence": 0.9999997615814209,
+                    "value": 1
+                },
+                "src_url": "0"
+            },
+            {
+                "extra": {},
+                "features": {
+                    "PetalLength": 5.4,
+                    "PetalWidth": 2.1,
+                    "SepalLength": 6.9,
+                    "SepalWidth": 3.1,
+                    "classification": 2
+                },
+                "last_updated": "2019-07-31T02:00:12Z",
+                "prediction": {
+                    "confidence": 0.9999984502792358,
+                    "value": 2
+                },
+                "src_url": "1"
+            },
+
     """
 
     CONTEXT = DNNClassifierModelContext
