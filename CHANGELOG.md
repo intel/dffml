@@ -12,8 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   how to properly load and save repos under a given label.
 - Test case for Merge CLI command
 - Repo.feature method to select a single piece of feature data within a repo.
-- Create service to start from template when creating new python packages for
-  DFFML models and operations.
+- Dev service to help with hacking on DFFML and to create models from templates
+  in the skel/ directory.
 - Classification type parameter to DNNClassifierModelConfig to specifiy data
   type of given classification options.
 - util.cli CMD classes have their argparse description set to their docstring.

@@ -58,7 +58,7 @@ setup(
             'json = dffml.port.json:JSON',
         ],
         'dffml.service.cli': [
-            'create = dffml.service.create:Create',
+            'dev = dffml.service.dev:Develop',
         ],
         # Data Flow
         'dffml.operation': [

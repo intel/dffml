@@ -1,3 +1,4 @@
 dffml.operation.implementation dffml dffml_feature_git dffml_feature_codesec dffml_feature_auth
 dffml.model dffml dffml_model_tensorflow dffml_model_scratch
 dffml.source dffml
+dffml.service.cli dffml
