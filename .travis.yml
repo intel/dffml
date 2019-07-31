@@ -16,6 +16,7 @@ env:
   - PLUGIN=.
   - PLUGIN=model/tensorflow
   - PLUGIN=model/scratch
+  - PLUGIN=model/scikit
   - PLUGIN=feature/git
   - PLUGIN=feature/auth
   - CHANGELOG=1
