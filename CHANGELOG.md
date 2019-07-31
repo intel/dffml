@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `argparse.ArgumentParser` via the `CLI_FORMATTER_CLASS` property.
 - Skeleton for service creation was added
 - Simple Linear Regression model from scratch
+- Scikit Linear Regression model
 - Community link in CONTRIBUTING.md.
 - Explained three main parts of DFFML on docs homepage
 - Documentation on how to use ML models on docs Models plugin page.

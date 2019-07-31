@@ -223,3 +223,87 @@ hash of their feature names.
 - predict: String
 
   - Label or the value to be predicted
+
+dffml_model_scikit
+------------------
+
+.. code-block:: console
+
+    pip install dffml-model-scikit
+
+
+scikitlr
+~~~~~~~~
+
+*Core*
+
+Linear Regression Model implemented using scikit. Models are saved under the
+``directory`` in subdirectories named after the hash of their feature names.
+
+.. code-block:: console
+
+    $ cat > train.csv << EOF
+    Years,Expertise,Trust,Salary
+    0,1,0.2,10
+    1,3,0.4,20
+    2,5,0.6,30
+    3,7,0.8,40
+    EOF
+    $ cat > test.csv << EOF
+    Years,Expertise,Trust,Salary
+    4,9,1.0,50
+    5,11,1.2,60
+    EOF
+    $ dffml train \
+        -model scikitlr \
+        -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \
+        -model-predict Salary \
+        -sources f=csv \
+        -source-filename train.csv \
+        -source-readonly \
+        -log debug
+    $ dffml accuracy \
+        -model scikitlr \
+        -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \
+        -model-predict Salary \
+        -sources f=csv \
+        -source-filename test.csv \
+        -source-readonly \
+        -log debug
+    1.0
+    $ echo -e 'Years,Expertise,Trust\n6,13,1.4\n' | \
+      dffml predict all \
+        -model scikitlr \
+        -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \
+        -model-predict Salary \
+        -sources f=csv \
+        -source-filename /dev/stdin \
+        -source-readonly \
+        -log debug
+    [
+        {
+            "extra": {},
+            "features": {
+                "Expertise": 13,
+                "Trust": 1.4,
+                "Years": 6
+            },
+            "last_updated": "2019-07-31T08:40:59Z",
+            "prediction": {
+                "confidence": 1.0,
+                "value": 70.0
+            },
+            "src_url": "0"
+        }
+    ]
+
+**Args**
+
+- directory: String
+
+  - default: /home/user/.cache/dffml/scikit
+  - Directory where state should be saved
+
+- predict: String
+
+  - Label or the value to be predicted
