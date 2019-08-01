@@ -1,4 +1,3 @@
-import json
 import aiomysql
 from typing import AsyncIterator, NamedTuple, Dict
 from collections import OrderedDict
