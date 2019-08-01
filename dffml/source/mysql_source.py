@@ -1,7 +1,6 @@
 import aiomysql
 from typing import AsyncIterator, NamedTuple, Dict
 from collections import OrderedDict
-import ssl
 import os
 
 from dffml.base import BaseConfig
@@ -114,17 +113,12 @@ class MysqlSource(BaseSource):
 
     CONTEXT = MysqlSourceContext
     async def __aenter__(self) -> "MysqlSource":
-        ssl_ctx = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
-        ssl_ctx.check_hostname = False
-        ssl_ctx.load_verify_locations(cafile=os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                                          '../../tests/ssl_resources/ca.pem'))
         self.pool = await aiomysql.create_pool(
             host=self.config.host,
             port=self.config.port,
             user=self.config.user,
             password=self.config.password,
             db=self.config.db,
-            ssl=ssl_ctx,
         )
         self.__db = self.pool.acquire()
         self.db = await self.__db.__aenter__()
