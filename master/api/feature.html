@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Features &#8212; DFFML 0.2.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Repo" href="repo.html" />
+    <link rel="prev" title="Data Flow Memory Objects" href="df/memory.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-dffml.feature">
+<span id="features"></span><h1>Features<a class="headerlink" href="#module-dffml.feature" title="Permalink to this headline">¶</a></h1>
+<p>All features registered to the dffml.feature entry point using setuptools are
+derived from the Feature class. To add a feature, create a module which has a
+setup.py which specifies where to find your Feature subclass within your module.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;myfeatures&#39;</span><span class="p">,</span>
+<span class="gp">...</span>
+    <span class="n">entry_points</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;dffml.feature&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s1">&#39;numfiles = myfeatures:NumFilesFeature&#39;</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<span class="target" id="module-dffml.feature.feature"></span><p>Feature subclasses are responsible for generating an integer value given an open
+feature project’s feature URL.</p>
+<dl class="class">
+<dt id="dffml.feature.feature.Data">
+<em class="property">class </em><code class="descclassname">dffml.feature.feature.</code><code class="descname">Data</code><span class="sig-paren">(</span><em>src_url: str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Passed to each feature during evaluation. Shared between all features a repo
+is being evaluated with</p>
+<dl class="method">
+<dt id="dffml.feature.feature.Data.mklock">
+<em class="property">coroutine </em><code class="descname">mklock</code><span class="sig-paren">(</span><em>name: str</em><span class="sig-paren">)</span> &#x2192; asyncio.locks.Lock<a class="reference internal" href="../_modules/dffml/feature/feature.html#Data.mklock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Data.mklock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a lock stored in data under the key <cite>name</cite>. Create the lock if it
+does not exist.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dffml.feature.feature.Feature">
+<em class="property">class </em><code class="descclassname">dffml.feature.feature.</code><code class="descname">Feature</code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for all features. New features must be derived from this
+class and implement the fetch, parse, and calc methods. These methods are
+always expected to be called in order. Anything you add to your feature
+subclass in fetch or parse is accessible in calc.</p>
+<p>A feature is provided with the feature URL of the package (in self._src_url)
+and is expected to fetch any data it needs to calculate itself when fetch
+is called. All data fetched should be stored in tempdir() if it must reside
+on disk.</p>
+<p>Once the appropriate data is fetched the parse method is responsible for
+storing the parts of that data which will be used to calculate in the
+subclass</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">__example_parsed_value_name</span> <span class="o">=</span> <span class="n">example_value</span>
+</pre></div>
+</div>
+<p>The calc method then uses variables set in parse to output an integer value.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__example_parsed_value_name</span>
+</pre></div>
+</div>
+<p>Full example of a feature implementation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">from</span> <span class="nn">dffml.feature</span> <span class="k">import</span> <span class="n">Feature</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="k">class</span> <span class="nc">NumFilesFeature</span><span class="p">(</span><span class="n">Feature</span><span class="p">):</span>
+<span class="go">&gt;&gt;&gt;</span>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_downloader</span><span class="o">.</span><span class="n">vcs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_src_url</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tempdir</span><span class="p">(</span><span class="s1">&#39;src&#39;</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__num_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tempdir</span><span class="p">(),</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__num_files</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="dffml.feature.feature.Feature.calc">
+<em class="property">coroutine </em><code class="descname">calc</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.calc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.calc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the score for this feature based on data found by parse().</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.feature.feature.Feature.close">
+<em class="property">coroutine </em><code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes any opened resources</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.feature.feature.Feature.dtype">
+<code class="descname">dtype</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Type[CT_co]<a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.dtype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.dtype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Models need to know a Feature’s datatype.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.feature.feature.Feature.fetch">
+<em class="property">coroutine </em><code class="descname">fetch</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.fetch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch retrieves any additional information about the software we are
+evaluating. Any data fetched should be stored in tempdir().</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.feature.feature.Feature.length">
+<code class="descname">length</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Models need to know a Feature’s length, 1 means single value, more than
+that is the length of the array calc returns.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dffml.feature.feature.Feature.load">
+<em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>loading=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads all installed loading and returns them as a list. Sources to be
+loaded should be registered to ENTRY_POINT via setuptools.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.feature.feature.Feature.open">
+<em class="property">coroutine </em><code class="descname">open</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens any resources needed</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.feature.feature.Feature.parse">
+<em class="property">coroutine </em><code class="descname">parse</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the data we downloaded in fetch() into a usable form.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.feature.feature.Feature.setUp">
+<em class="property">coroutine </em><code class="descname">setUp</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.setUp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Preform setup</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.feature.feature.Feature.tearDown">
+<em class="property">coroutine </em><code class="descname">tearDown</code><span class="sig-paren">(</span><em>data</em>, <em>error=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.tearDown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.tearDown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Release any post calculation resources</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dffml.feature.feature.Features">
+<em class="property">class </em><code class="descclassname">dffml.feature.feature.</code><code class="descname">Features</code><span class="sig-paren">(</span><em>*args</em>, <em>timeout: int = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Features" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="dffml.feature.feature.Frequency">
+<em class="property">class </em><code class="descclassname">dffml.feature.feature.</code><code class="descname">Frequency</code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Frequency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Frequency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Frequency in months</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dffml.feature.feature.Quarterly">
+<em class="property">class </em><code class="descclassname">dffml.feature.feature.</code><code class="descname">Quarterly</code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Quarterly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Quarterly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate on a quarterly basis (every 3 months).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dffml.feature.feature.Yearly">
+<em class="property">class </em><code class="descclassname">dffml.feature.feature.</code><code class="descname">Yearly</code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Yearly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Yearly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate on a yearly basis.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">DFFML</a></h1>
+
+
+
+<p class="blurb">The fastest path to machine learning integration</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/intel/dffml">
+    <img
+        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+    />
+</a>
+</p>
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://codecov.io/github/intel/dffml">
+    <img
+    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    />
+</a>
+</p>
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="df/index.html">Data Flow</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repo.html">Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="util/index.html">API Helper Utilities Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">API Reference</a><ul>
+      <li>Previous: <a href="df/memory.html" title="previous chapter">Data Flow Memory Objects</a></li>
+      <li>Next: <a href="repo.html" title="next chapter">Repo</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/api/feature.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

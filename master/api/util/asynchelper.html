@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Asyncio Helpers &#8212; DFFML 0.2.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Community" href="../../community.html" />
+    <link rel="prev" title="API Helper Utilities Reference" href="index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-dffml.util.asynchelper">
+<span id="asyncio-helpers"></span><h1>Asyncio Helpers<a class="headerlink" href="#module-dffml.util.asynchelper" title="Permalink to this headline">¶</a></h1>
+<p>WARNING: concurrent can be much slower for quick tasks. It is best used for long
+running concurrent tasks.</p>
+<dl class="class">
+<dt id="dffml.util.asynchelper.AsyncContextManagerList">
+<em class="property">class </em><code class="descclassname">dffml.util.asynchelper.</code><code class="descname">AsyncContextManagerList</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/asynchelper.html#AsyncContextManagerList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.asynchelper.AsyncContextManagerList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="dffml.util.asynchelper.AsyncContextManagerListContext">
+<em class="property">class </em><code class="descclassname">dffml.util.asynchelper.</code><code class="descname">AsyncContextManagerListContext</code><span class="sig-paren">(</span><em>parent: dffml.util.asynchelper.AsyncContextManagerList</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/asynchelper.html#AsyncContextManagerListContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.asynchelper.AsyncContextManagerListContext" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="dffml.util.asynchelper.aenter_stack">
+<em class="property">coroutine </em><code class="descclassname">dffml.util.asynchelper.</code><code class="descname">aenter_stack</code><span class="sig-paren">(</span><em>obj: Any, context_managers: Dict[str, AbstractAsyncContextManager[T_co]], call: bool = True</em><span class="sig-paren">)</span> &#x2192; contextlib.AsyncExitStack<a class="reference internal" href="../../_modules/dffml/util/asynchelper.html#aenter_stack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.asynchelper.aenter_stack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a <a class="reference external" href="https://docs.python.org/3/library/contextlib.html#contextlib.AsyncExitStack" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">contextlib.AsyncExitStack</span></code></a> then go through each key,
+value pair in the dict of async context managers. Enter the context of each
+async context manager and call setattr on <code class="docutils literal notranslate"><span class="pre">obj</span></code> to set the attribute by
+the name of <code class="docutils literal notranslate"><span class="pre">key</span></code> to the value yielded by the async context manager.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">call</span></code> is true then the context entered will be the context returned by
+calling each context manager respectively.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="dffml.util.asynchelper.context_stacker">
+<code class="descclassname">dffml.util.asynchelper.</code><code class="descname">context_stacker</code><span class="sig-paren">(</span><em>inherit: Type[CT_co], context_managers: Dict[str, AbstractAsyncContextManager[T_co]]</em><span class="sig-paren">)</span> &#x2192; Type[CT_co]<a class="reference internal" href="../../_modules/dffml/util/asynchelper.html#context_stacker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.asynchelper.context_stacker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Using <a class="reference internal" href="#dffml.util.asynchelper.aenter_stack" title="dffml.util.asynchelper.aenter_stack"><code class="xref py py-func docutils literal notranslate"><span class="pre">aenter_stack()</span></code></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">DFFML</a></h1>
+
+
+
+<p class="blurb">The fastest path to machine learning integration</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/intel/dffml">
+    <img
+        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+    />
+</a>
+</p>
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://codecov.io/github/intel/dffml">
+    <img
+    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    />
+</a>
+</p>
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../repo.html">Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">API Helper Utilities Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../community.html">Community</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">API Reference</a><ul>
+  <li><a href="index.html">API Helper Utilities Reference</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">API Helper Utilities Reference</a></li>
+      <li>Next: <a href="../../community.html" title="next chapter">Community</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/api/util/asynchelper.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

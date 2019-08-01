@@ -1,0 +1,459 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Models &#8212; DFFML 0.2.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Operation Implementations" href="dffml_operation_implementation.html" />
+    <link rel="prev" title="Sources" href="dffml_source.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="models">
+<span id="plugin-models"></span><h1>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h1>
+<p>Models are implementations of <a class="reference internal" href="../api/model/base.html#dffml.model.model.Model" title="dffml.model.model.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.model.model.Model</span></code></a>, they
+abstract the usage of machine learning models.</p>
+<p>If you want to get started creating your own model, check out the
+<a class="reference internal" href="../tutorials/model.html#model-tutorial"><span class="std std-ref">New Model Tutorial</span></a>.</p>
+<div class="section" id="dffml-model-tensorflow">
+<h2>dffml_model_tensorflow<a class="headerlink" href="#dffml-model-tensorflow" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-tensorflow</span>
+</pre></div>
+</div>
+<div class="section" id="tfdnnc">
+<h3>tfdnnc<a class="headerlink" href="#tfdnnc" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>Implemented using Tensorflow’s DNNClassifier. Models are saved under the
+<code class="docutils literal notranslate"><span class="pre">directory</span></code> in subdirectories named after the hash of their feature names.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> wget http://download.tensorflow.org/data/iris_training.csv
+<span class="gp">$</span> wget http://download.tensorflow.org/data/iris_test.csv
+<span class="gp">$</span> head iris_training.csv
+<span class="gp">$</span> sed -i <span class="s1">&#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g&#39;</span> *.csv
+<span class="gp">$</span> head iris_training.csv
+<span class="gp">$</span> dffml train <span class="se">\</span>
+  -model tfdnnc <span class="se">\</span>
+  -model-epochs <span class="m">3000</span> <span class="se">\</span>
+  -model-steps <span class="m">20000</span> <span class="se">\</span>
+  -model-classification classification <span class="se">\</span>
+  -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="se">\</span>
+  -model-clstype int <span class="se">\</span>
+  -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
+  -source-filename iris_training.csv <span class="se">\</span>
+  -features <span class="se">\</span>
+    def:SepalLength:float:1 <span class="se">\</span>
+    def:SepalWidth:float:1 <span class="se">\</span>
+    def:PetalLength:float:1 <span class="se">\</span>
+    def:PetalWidth:float:1 <span class="se">\</span>
+  -log debug
+<span class="go">... lots of output ...</span>
+<span class="gp">$</span> dffml accuracy <span class="se">\</span>
+  -model tfdnnc <span class="se">\</span>
+  -model-classification classification <span class="se">\</span>
+  -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="se">\</span>
+  -model-clstype int <span class="se">\</span>
+  -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
+  -source-filename iris_test.csv <span class="se">\</span>
+  -features <span class="se">\</span>
+    def:SepalLength:float:1 <span class="se">\</span>
+    def:SepalWidth:float:1 <span class="se">\</span>
+    def:PetalLength:float:1 <span class="se">\</span>
+    def:PetalWidth:float:1 <span class="se">\</span>
+  -log critical
+<span class="go">0.99996233782</span>
+<span class="gp">$</span> dffml predict all <span class="se">\</span>
+  -model tfdnnc <span class="se">\</span>
+  -model-classification classification <span class="se">\</span>
+  -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="se">\</span>
+  -model-clstype int <span class="se">\</span>
+  -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
+  -source-filename iris_test.csv <span class="se">\</span>
+  -features <span class="se">\</span>
+    def:SepalLength:float:1 <span class="se">\</span>
+    def:SepalWidth:float:1 <span class="se">\</span>
+    def:PetalLength:float:1 <span class="se">\</span>
+    def:PetalWidth:float:1 <span class="se">\</span>
+  -caching <span class="se">\</span>
+  -log critical <span class="se">\</span>
+  &gt; results.json
+<span class="gp">$</span> head -n <span class="m">33</span> results.json
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;PetalLength&quot;: 4.2,</span>
+<span class="go">            &quot;PetalWidth&quot;: 1.5,</span>
+<span class="go">            &quot;SepalLength&quot;: 5.9,</span>
+<span class="go">            &quot;SepalWidth&quot;: 3.0,</span>
+<span class="go">            &quot;classification&quot;: 1</span>
+<span class="go">        },</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2019-07-31T02:00:12Z&quot;,</span>
+<span class="go">        &quot;prediction&quot;: {</span>
+<span class="go">            &quot;confidence&quot;: 0.9999997615814209,</span>
+<span class="go">            &quot;value&quot;: 1</span>
+<span class="go">        },</span>
+<span class="go">        &quot;src_url&quot;: &quot;0&quot;</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;PetalLength&quot;: 5.4,</span>
+<span class="go">            &quot;PetalWidth&quot;: 2.1,</span>
+<span class="go">            &quot;SepalLength&quot;: 6.9,</span>
+<span class="go">            &quot;SepalWidth&quot;: 3.1,</span>
+<span class="go">            &quot;classification&quot;: 2</span>
+<span class="go">        },</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2019-07-31T02:00:12Z&quot;,</span>
+<span class="go">        &quot;prediction&quot;: {</span>
+<span class="go">            &quot;confidence&quot;: 0.9999984502792358,</span>
+<span class="go">            &quot;value&quot;: 2</span>
+<span class="go">        },</span>
+<span class="go">        &quot;src_url&quot;: &quot;1&quot;</span>
+<span class="go">    },</span>
+</pre></div>
+</div>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>directory: String</p>
+<ul>
+<li><p>default: /home/user/.cache/dffml/tensorflow</p></li>
+<li><p>Directory where state should be saved</p></li>
+</ul>
+</li>
+<li><p>steps: Integer</p>
+<ul>
+<li><p>default: 3000</p></li>
+<li><p>Number of steps to train the model</p></li>
+</ul>
+</li>
+<li><p>epochs: Integer</p>
+<ul>
+<li><p>default: 30</p></li>
+<li><p>Number of iterations to pass over all repos in a source</p></li>
+</ul>
+</li>
+<li><p>hidden: List of integers</p>
+<ul>
+<li><p>default: [12, 40, 15]</p></li>
+<li><p>List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer</p></li>
+</ul>
+</li>
+<li><p>classification: String</p>
+<ul>
+<li><p>Feature name holding classification value</p></li>
+</ul>
+</li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
+<li><p>clstype: locate</p>
+<ul>
+<li><p>default: &lt;class ‘str’&gt;</p></li>
+<li><p>Data type of classifications values (default: str)</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="dffml-model-scratch">
+<h2>dffml_model_scratch<a class="headerlink" href="#dffml-model-scratch" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-scratch</span>
+</pre></div>
+</div>
+<div class="section" id="scratchslr">
+<h3>scratchslr<a class="headerlink" href="#scratchslr" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>Simple Linear Regression Model for 2 variables implemented from scratch.
+Models are saved under the <code class="docutils literal notranslate"><span class="pre">directory</span></code> in subdirectories named after the
+hash of their feature names.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; dataset.csv &lt;&lt; EOF
+<span class="go">Years,Salary</span>
+<span class="go">1,40</span>
+<span class="go">2,50</span>
+<span class="go">3,60</span>
+<span class="go">4,70</span>
+<span class="go">5,80</span>
+<span class="go">EOF</span>
+<span class="gp">$</span> dffml train <span class="se">\</span>
+    -model scratchslr <span class="se">\</span>
+    -features def:Years:int:1 <span class="se">\</span>
+    -model-predict Salary <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename dataset.csv <span class="se">\</span>
+    -source-readonly <span class="se">\</span>
+    -log debug
+<span class="gp">$</span> dffml accuracy <span class="se">\</span>
+    -model scratchslr <span class="se">\</span>
+    -features def:Years:int:1 <span class="se">\</span>
+    -model-predict Salary <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename dataset.csv <span class="se">\</span>
+    -source-readonly <span class="se">\</span>
+    -log debug
+<span class="go">1.0</span>
+<span class="gp">$</span> <span class="nb">echo</span> -e <span class="s1">&#39;Years,Salary\n6,0\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
+  dffml predict all <span class="se">\</span>
+    -model scratchslr <span class="se">\</span>
+    -features def:Years:int:1 <span class="se">\</span>
+    -model-predict Salary <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename /dev/stdin <span class="se">\</span>
+    -source-readonly <span class="se">\</span>
+    -log debug
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;Salary&quot;: 0,</span>
+<span class="go">            &quot;Years&quot;: 6</span>
+<span class="go">        },</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2019-07-19T09:46:45Z&quot;,</span>
+<span class="go">        &quot;prediction&quot;: {</span>
+<span class="go">            &quot;confidence&quot;: 1.0,</span>
+<span class="go">            &quot;value&quot;: 90.0</span>
+<span class="go">        },</span>
+<span class="go">        &quot;src_url&quot;: &quot;0&quot;</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>directory: String</p>
+<ul>
+<li><p>default: /home/user/.cache/dffml/scratch</p></li>
+<li><p>Directory where state should be saved</p></li>
+</ul>
+</li>
+<li><p>predict: String</p>
+<ul>
+<li><p>Label or the value to be predicted</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="dffml-model-scikit">
+<h2>dffml_model_scikit<a class="headerlink" href="#dffml-model-scikit" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-scikit</span>
+</pre></div>
+</div>
+<div class="section" id="scikitlr">
+<h3>scikitlr<a class="headerlink" href="#scikitlr" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>Linear Regression Model implemented using scikit. Models are saved under the
+<code class="docutils literal notranslate"><span class="pre">directory</span></code> in subdirectories named after the hash of their feature names.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; train.csv &lt;&lt; EOF
+<span class="go">Years,Expertise,Trust,Salary</span>
+<span class="go">0,1,0.2,10</span>
+<span class="go">1,3,0.4,20</span>
+<span class="go">2,5,0.6,30</span>
+<span class="go">3,7,0.8,40</span>
+<span class="go">EOF</span>
+<span class="gp">$</span> cat &gt; test.csv &lt;&lt; EOF
+<span class="go">Years,Expertise,Trust,Salary</span>
+<span class="go">4,9,1.0,50</span>
+<span class="go">5,11,1.2,60</span>
+<span class="go">EOF</span>
+<span class="gp">$</span> dffml train <span class="se">\</span>
+    -model scikitlr <span class="se">\</span>
+    -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 <span class="se">\</span>
+    -model-predict Salary <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename train.csv <span class="se">\</span>
+    -source-readonly <span class="se">\</span>
+    -log debug
+<span class="gp">$</span> dffml accuracy <span class="se">\</span>
+    -model scikitlr <span class="se">\</span>
+    -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 <span class="se">\</span>
+    -model-predict Salary <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename test.csv <span class="se">\</span>
+    -source-readonly <span class="se">\</span>
+    -log debug
+<span class="go">1.0</span>
+<span class="gp">$</span> <span class="nb">echo</span> -e <span class="s1">&#39;Years,Expertise,Trust\n6,13,1.4\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
+  dffml predict all <span class="se">\</span>
+    -model scikitlr <span class="se">\</span>
+    -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 <span class="se">\</span>
+    -model-predict Salary <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename /dev/stdin <span class="se">\</span>
+    -source-readonly <span class="se">\</span>
+    -log debug
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;Expertise&quot;: 13,</span>
+<span class="go">            &quot;Trust&quot;: 1.4,</span>
+<span class="go">            &quot;Years&quot;: 6</span>
+<span class="go">        },</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2019-07-31T08:40:59Z&quot;,</span>
+<span class="go">        &quot;prediction&quot;: {</span>
+<span class="go">            &quot;confidence&quot;: 1.0,</span>
+<span class="go">            &quot;value&quot;: 70.0</span>
+<span class="go">        },</span>
+<span class="go">        &quot;src_url&quot;: &quot;0&quot;</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>directory: String</p>
+<ul>
+<li><p>default: /home/user/.cache/dffml/scikit</p></li>
+<li><p>Directory where state should be saved</p></li>
+</ul>
+</li>
+<li><p>predict: String</p>
+<ul>
+<li><p>Label or the value to be predicted</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">DFFML</a></h1>
+
+
+
+<p class="blurb">The fastest path to machine learning integration</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/intel/dffml">
+    <img
+        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+    />
+</a>
+</p>
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://codecov.io/github/intel/dffml">
+    <img
+    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    />
+</a>
+</p>
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dffml_source.html">Sources</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dffml_operation_implementation.html">Operation Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dffml_service_cli.html">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Plugins</a><ul>
+      <li>Previous: <a href="dffml_source.html" title="previous chapter">Sources</a></li>
+      <li>Next: <a href="dffml_operation_implementation.html" title="next chapter">Operation Implementations</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/plugins/dffml_model.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

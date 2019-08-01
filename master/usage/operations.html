@@ -1,0 +1,548 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Data Set Generation &#8212; DFFML 0.2.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Plugins" href="../plugins/index.html" />
+    <link rel="prev" title="Integrating Machine Learning" href="integration.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="data-set-generation">
+<h1>Data Set Generation<a class="headerlink" href="#data-set-generation" title="Permalink to this headline">¶</a></h1>
+<p>This example will show you how to generate a dataset using operations.</p>
+<p>Operations are the core of DFFML, they have inputs and outputs, are configurable
+and are run by the Data Flow Facilitator in what amounts to a large event loop.
+The events in the event loop are pieces of data entering the network. When a
+piece of data which matches the data types of one of the operations inputs
+enters the network, that operation is then run.</p>
+<p>We’re going to write a few operations which will run some Python static analysis
+tools. With the goal being to create a command line utility called <code class="docutils literal notranslate"><span class="pre">shouldi</span></code>
+which will provide us with the information we need to make the decision, should
+I install Python package X? When it’s done it’ll look like this</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> shouldi install insecure-package bandit
+<span class="go">bandit is okay to install</span>
+<span class="go">Do not install insecure-package! {&#39;safety_check_number_of_issues&#39;: 1}</span>
+</pre></div>
+</div>
+<div class="section" id="creating-our-package">
+<h2>Creating our Package<a class="headerlink" href="#creating-our-package" title="Permalink to this headline">¶</a></h2>
+<p>Clone a copy of DFFML and navigate the top of the source directory.</p>
+<p>Create a new package using the create script.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./scripts/create.sh operations shouldi
+</pre></div>
+</div>
+<p>You can now move this to another directory if you wish (the copy for this
+example is located under <code class="docutils literal notranslate"><span class="pre">examples/shouldi</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mv operations/shouldi ../shouldi
+<span class="gp">$</span> <span class="nb">cd</span> ../shouldi
+</pre></div>
+</div>
+<p>We’re going to change the name of the package to <code class="docutils literal notranslate"><span class="pre">shouldi</span></code> instead of the
+default, <code class="docutils literal notranslate"><span class="pre">dffml_operations_shouldi</span></code>.</p>
+<p><strong>setup.py</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">NAME</span> <span class="o">=</span> <span class="s2">&quot;shouldi&quot;</span>
+</pre></div>
+</div>
+<p>We need to rename the directory as well.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mv dffml_operations_shouldi shouldi
+</pre></div>
+</div>
+<p>And the directory within the coveragerc file</p>
+<p><strong>.coveragerc</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">=</span>
+    <span class="n">shouldi</span>
+    <span class="n">tests</span>
+</pre></div>
+</div>
+<p>Now install your freshly renamed module!</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install -e .
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-static-analysis-tools">
+<h2>Installing Static Analysis Tools<a class="headerlink" href="#installing-static-analysis-tools" title="Permalink to this headline">¶</a></h2>
+<p>For simplicities sake the beginning of this example will use subprocesses to
+interact with command line Python static analysis tools. Let’s install them all
+via <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install -U safety pylint bandit
+</pre></div>
+</div>
+<p>We need to make http requests so let’s install <code class="docutils literal notranslate"><span class="pre">aiohttp</span></code>.</p>
+<p><strong>setup.py</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">INSTALL_REQUIRES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;aiohttp&gt;=3.5.4&quot;</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="our-zeroth-operation">
+<h2>Our Zeroth Operation<a class="headerlink" href="#our-zeroth-operation" title="Permalink to this headline">¶</a></h2>
+<p>We’ll write an operation to check for CVEs in a package by using <code class="docutils literal notranslate"><span class="pre">safety</span></code>.</p>
+<p>Safety uses the package name and version to tell us if there are any security
+issues in the package for that version.</p>
+<p>To use safety, we have to have the version of the package we want to check.</p>
+<p>Let’s write an operation to grab the version of a package.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">aiohttp</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">dffml.df.types</span> <span class="k">import</span> <span class="n">Definition</span>
+<span class="kn">from</span> <span class="nn">dffml.df.base</span> <span class="k">import</span> <span class="n">op</span>
+
+<span class="n">package</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;package&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
+<span class="n">package_version</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;package_version&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@op</span><span class="p">(</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;package&quot;</span><span class="p">:</span> <span class="n">package</span><span class="p">},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">package_version</span><span class="p">},</span>
+    <span class="n">imp_enter</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;session&quot;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">(</span><span class="n">trust_env</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">pypi_latest_package_version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">package</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;https://pypi.org/pypi/</span><span class="si">{package}</span><span class="s2">/json&quot;</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+        <span class="n">package</span> <span class="o">=</span> <span class="k">await</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">package</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">][</span><span class="s2">&quot;version&quot;</span><span class="p">]}</span>
+</pre></div>
+</div>
+<p>Write a test for it</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml.df.base</span> <span class="k">import</span> <span class="n">BaseConfig</span>
+<span class="kn">from</span> <span class="nn">dffml.util.asynctestcase</span> <span class="k">import</span> <span class="n">AsyncTestCase</span>
+
+<span class="kn">from</span> <span class="nn">shouldi.pypi</span> <span class="k">import</span> <span class="n">pypi_latest_package_version</span>
+
+
+<span class="k">class</span> <span class="nc">TestPyPiLatestPackageVersion</span><span class="p">(</span><span class="n">AsyncTestCase</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">pypi_latest_package_version</span><span class="o">.</span><span class="n">imp</span><span class="p">(</span>
+            <span class="n">BaseConfig</span><span class="p">()</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">pypi_latest</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="n">pypi_latest</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+                <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">run</span><span class="p">({</span><span class="s2">&quot;package&quot;</span><span class="p">:</span> <span class="s2">&quot;insecure-package&quot;</span><span class="p">})</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">],</span> <span class="s2">&quot;0.1.0&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Run the tests</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 setup.py <span class="nb">test</span> -s tests.test_pypi
+</pre></div>
+</div>
+</div>
+<div class="section" id="safety-operation">
+<h2>Safety Operation<a class="headerlink" href="#safety-operation" title="Permalink to this headline">¶</a></h2>
+<p>The output of the last operation will automatically be combined with the package
+name to create a call you our new operation, <code class="docutils literal notranslate"><span class="pre">SafetyCheck</span></code>.</p>
+<p>This is how running safety on the command line works.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">echo</span> insecure-package<span class="o">==</span><span class="m">0</span>.1.0 <span class="p">|</span> safety check --stdin
+<span class="go">╒══════════════════════════════════════════════════════════════════════════════╕</span>
+<span class="go">│                                                                              │</span>
+<span class="go">│                               /$$$$$$            /$$                         │</span>
+<span class="go">│                              /$$__  $$          | $$                         │</span>
+<span class="go">│           /$$$$$$$  /$$$$$$ | $$  \__//$$$$$$  /$$$$$$   /$$   /$$           │</span>
+<span class="go">│          /$$_____/ |____  $$| $$$$   /$$__  $$|_  $$_/  | $$  | $$           │</span>
+<span class="go">│         |  $$$$$$   /$$$$$$$| $$_/  | $$$$$$$$  | $$    | $$  | $$           │</span>
+<span class="go">│          \____  $$ /$$__  $$| $$    | $$_____/  | $$ /$$| $$  | $$           │</span>
+<span class="go">│          /$$$$$$$/|  $$$$$$$| $$    |  $$$$$$$  |  $$$$/|  $$$$$$$           │</span>
+<span class="go">│         |_______/  \_______/|__/     \_______/   \___/   \____  $$           │</span>
+<span class="go">│                                                          /$$  | $$           │</span>
+<span class="go">│                                                         |  $$$$$$/           │</span>
+<span class="go">│  by pyup.io                                              \______/            │</span>
+<span class="go">│                                                                              │</span>
+<span class="go">╞══════════════════════════════════════════════════════════════════════════════╡</span>
+<span class="go">│ REPORT                                                                       │</span>
+<span class="go">│ checked 1 packages, using default DB                                         │</span>
+<span class="go">╞════════════════════════════╤═══════════╤══════════════════════════╤══════════╡</span>
+<span class="go">│ package                    │ installed │ affected                 │ ID       │</span>
+<span class="go">╞════════════════════════════╧═══════════╧══════════════════════════╧══════════╡</span>
+<span class="go">│ insecure-package           │ 0.1.0     │ &lt;0.2.0                   │ 25853    │</span>
+<span class="go">╘══════════════════════════════════════════════════════════════════════════════╛</span>
+</pre></div>
+</div>
+<p>We want parsable output, so let’s try it with the <code class="docutils literal notranslate"><span class="pre">--json</span></code> flag.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">echo</span> insecure-package<span class="o">==</span><span class="m">0</span>.1.0 <span class="p">|</span> safety check --stdin --json
+<span class="go">[</span>
+<span class="go">    [</span>
+<span class="go">        &quot;insecure-package&quot;,</span>
+<span class="go">        &quot;&lt;0.2.0&quot;,</span>
+<span class="go">        &quot;0.1.0&quot;,</span>
+<span class="go">        &quot;This is an insecure package with lots of exploitable security vulnerabilities.&quot;,</span>
+<span class="go">        &quot;25853&quot;</span>
+<span class="go">    ]</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+<p>Let’s now write the operation to call <code class="docutils literal notranslate"><span class="pre">safety</span></code> via a subprocess.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">dffml.df.types</span> <span class="k">import</span> <span class="n">Definition</span>
+<span class="kn">from</span> <span class="nn">dffml.df.base</span> <span class="k">import</span> <span class="n">op</span>
+
+<span class="kn">from</span> <span class="nn">.pypi</span> <span class="k">import</span> <span class="n">package</span><span class="p">,</span> <span class="n">package_version</span>
+
+<span class="n">safety_check_number_of_issues</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;safety_check_number_of_issues&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;int&quot;</span>
+<span class="p">)</span>
+
+
+<span class="nd">@op</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;safety_check&quot;</span><span class="p">,</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;package&quot;</span><span class="p">:</span> <span class="n">package</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">package_version</span><span class="p">},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;issues&quot;</span><span class="p">:</span> <span class="n">safety_check_number_of_issues</span><span class="p">},</span>
+    <span class="n">conditions</span><span class="o">=</span><span class="p">[],</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">safety_check</span><span class="p">(</span><span class="n">package</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="n">pinned</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;</span><span class="si">{package}</span><span class="s2">==</span><span class="si">{version}</span><span class="s2">&quot;</span>
+
+    <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span>
+        <span class="s2">&quot;safety&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;check&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--stdin&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--json&quot;</span><span class="p">,</span>
+        <span class="n">stdin</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+        <span class="n">stdout</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+        <span class="n">stderr</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">proc</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pinned</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+    <span class="n">proc</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">proc</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">stdout</span><span class="p">,</span> <span class="n">_stderr</span> <span class="o">=</span> <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+
+    <span class="n">issues</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">stdout</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;issues&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">issues</span><span class="p">)}</span>
+</pre></div>
+</div>
+<p>Write a test for it</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml.df.base</span> <span class="k">import</span> <span class="n">BaseConfig</span>
+<span class="kn">from</span> <span class="nn">dffml.util.asynctestcase</span> <span class="k">import</span> <span class="n">AsyncTestCase</span>
+
+<span class="kn">from</span> <span class="nn">shouldi.safety</span> <span class="k">import</span> <span class="n">safety_check</span>
+
+
+<span class="k">class</span> <span class="nc">TestSafetyCheck</span><span class="p">(</span><span class="n">AsyncTestCase</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">safety_check</span><span class="o">.</span><span class="n">imp</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">())</span> <span class="k">as</span> <span class="n">safety</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="n">safety</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+                <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                    <span class="p">{</span><span class="s2">&quot;package&quot;</span><span class="p">:</span> <span class="s2">&quot;insecure-package&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.1.0&quot;</span><span class="p">}</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;issues&quot;</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Run the tests</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 setup.py <span class="nb">test</span> -s tests.test_safety
+</pre></div>
+</div>
+</div>
+<div class="section" id="cli">
+<h2>CLI<a class="headerlink" href="#cli" title="Permalink to this headline">¶</a></h2>
+<p>Writing the CLI is as simple as importing our operations and having the memory
+orchestrator run them. DFFML also provides a quick and dirty CLI abstraction
+based on <a class="reference external" href="https://docs.python.org/3/library/argparse.html#module-argparse" title="(in Python v3.7)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">argparse</span></code></a> which will speed things up.</p>
+<p><strong>shouldi/cli.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">dffml.df.types</span> <span class="k">import</span> <span class="n">Input</span>
+<span class="kn">from</span> <span class="nn">dffml.df.base</span> <span class="k">import</span> <span class="n">operation_in</span><span class="p">,</span> <span class="n">opimp_in</span><span class="p">,</span> <span class="n">Operation</span>
+<span class="kn">from</span> <span class="nn">dffml.df.memory</span> <span class="k">import</span> <span class="n">MemoryOrchestrator</span>
+<span class="kn">from</span> <span class="nn">dffml.operation.output</span> <span class="k">import</span> <span class="n">GetSingle</span>
+<span class="kn">from</span> <span class="nn">dffml.util.cli.cmd</span> <span class="k">import</span> <span class="n">CMD</span>
+<span class="kn">from</span> <span class="nn">dffml.util.cli.arg</span> <span class="k">import</span> <span class="n">Arg</span>
+
+<span class="kn">from</span> <span class="nn">shouldi.pypi</span> <span class="k">import</span> <span class="n">pypi_latest_package_version</span>
+<span class="kn">from</span> <span class="nn">shouldi.safety</span> <span class="k">import</span> <span class="n">safety_check</span>
+
+<span class="c1"># sys.modules[__name__] is a list of everything we&#39;ve imported in this file.</span>
+<span class="c1"># opimp_in returns a subset of that list, any OperationImplementations</span>
+<span class="n">OPIMPS</span> <span class="o">=</span> <span class="n">opimp_in</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">])</span>
+
+
+<span class="k">class</span> <span class="nc">Install</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+
+    <span class="n">arg_packages</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
+        <span class="s2">&quot;packages&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Package to check if we should install&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Create an Orchestrator which will manage the running of our operations</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">basic_config</span><span class="p">(</span><span class="o">*</span><span class="n">OPIMPS</span><span class="p">)</span> <span class="k">as</span> <span class="n">orchestrator</span><span class="p">:</span>
+            <span class="c1"># Create a orchestrator context, everything in DFFML follows this</span>
+            <span class="c1"># one-two context entry pattern</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="n">orchestrator</span><span class="p">()</span> <span class="k">as</span> <span class="n">octx</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">package_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">packages</span><span class="p">:</span>
+                    <span class="c1"># For each package add a new input set to the network of</span>
+                    <span class="c1"># inputs (ictx). Operations run under a context, the context</span>
+                    <span class="c1"># here is the package_name to evaluate (the first argument).</span>
+                    <span class="c1"># The next arguments are all the inputs we&#39;re seeding the</span>
+                    <span class="c1"># network with for that context. We give the package name</span>
+                    <span class="c1"># because pypi_latest_package_version needs it to find the</span>
+                    <span class="c1"># version, which safety will then use. We also give an input</span>
+                    <span class="c1"># to the output operation GetSingle, which takes a list of</span>
+                    <span class="c1"># data type definitions we want to select as our results.</span>
+                    <span class="k">await</span> <span class="n">octx</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span>
+                        <span class="n">package_name</span><span class="p">,</span>
+                        <span class="n">Input</span><span class="p">(</span>
+                            <span class="n">value</span><span class="o">=</span><span class="n">package_name</span><span class="p">,</span>
+                            <span class="n">definition</span><span class="o">=</span><span class="n">pypi_latest_package_version</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span>
+                                <span class="s2">&quot;package&quot;</span>
+                            <span class="p">],</span>
+                        <span class="p">),</span>
+                        <span class="n">Input</span><span class="p">(</span>
+                            <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">safety_check</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;issues&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+                            <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+                        <span class="p">),</span>
+                    <span class="p">)</span>
+
+                <span class="c1"># Run all the operations, Each iteration of this loop happens</span>
+                <span class="c1"># when all inputs are exhausted for a context, the output</span>
+                <span class="c1"># operations are then run and their results are yielded</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">octx</span><span class="o">.</span><span class="n">run_operations</span><span class="p">():</span>
+                    <span class="c1"># The context for this data flow was the package name</span>
+                    <span class="n">package_name</span> <span class="o">=</span> <span class="p">(</span><span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">())</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span>
+                    <span class="c1"># Get the results of the GetSingle output operation</span>
+                    <span class="n">results</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+                    <span class="c1"># Check if any of the values of the operations evaluate to</span>
+                    <span class="c1"># true, so if the number of issues found by safety is</span>
+                    <span class="c1"># non-zero then this will be true</span>
+                    <span class="n">any_issues</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">results</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+                    <span class="k">if</span> <span class="n">any_issues</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Do not install </span><span class="si">{package_name}</span><span class="s2">! </span><span class="si">{results!r}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;</span><span class="si">{package_name}</span><span class="s2"> is okay to install&quot;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">ShouldI</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+
+    <span class="n">install</span> <span class="o">=</span> <span class="n">Install</span>
+</pre></div>
+</div>
+<p>Let’s test out the code in <code class="docutils literal notranslate"><span class="pre">shouldi.cli</span></code> before making it accessible via the
+command line.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="k">import</span> <span class="n">patch</span>
+
+<span class="kn">from</span> <span class="nn">dffml.util.asynctestcase</span> <span class="k">import</span> <span class="n">AsyncTestCase</span>
+
+<span class="kn">from</span> <span class="nn">shouldi.cli</span> <span class="k">import</span> <span class="n">ShouldI</span>
+
+
+<span class="k">class</span> <span class="nc">TestCLI</span><span class="p">(</span><span class="n">AsyncTestCase</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_install</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s2">&quot;sys.stdout&quot;</span><span class="p">,</span> <span class="n">new_callable</span><span class="o">=</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">)</span> <span class="k">as</span> <span class="n">stdout</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">ShouldI</span><span class="o">.</span><span class="n">install</span><span class="o">.</span><span class="n">cli</span><span class="p">(</span><span class="s2">&quot;insecure-package&quot;</span><span class="p">,</span> <span class="s2">&quot;bandit&quot;</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">stdout</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s2">&quot;bandit is okay to install&quot;</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertIn</span><span class="p">(</span><span class="s2">&quot;Do not install insecure-package!&quot;</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Run the all the tests this time</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 setup.py <span class="nb">test</span>
+</pre></div>
+</div>
+<p>If you have coverage installed (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">coverage</span></code>) you can also check the
+code coverage.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m coverage run setup.py <span class="nb">test</span>
+<span class="go">running test</span>
+<span class="go">running egg_info</span>
+<span class="go">writing shouldi.egg-info/PKG-INFO</span>
+<span class="go">writing dependency_links to shouldi.egg-info/dependency_links.txt</span>
+<span class="go">writing entry points to shouldi.egg-info/entry_points.txt</span>
+<span class="go">writing requirements to shouldi.egg-info/requires.txt</span>
+<span class="go">writing top-level names to shouldi.egg-info/top_level.txt</span>
+<span class="go">reading manifest file &#39;shouldi.egg-info/SOURCES.txt&#39;</span>
+<span class="go">reading manifest template &#39;MANIFEST.in&#39;</span>
+<span class="go">writing manifest file &#39;shouldi.egg-info/SOURCES.txt&#39;</span>
+<span class="go">running build_ext</span>
+<span class="go">test_run (tests.test_safety.TestSafetyCheck) ... ok</span>
+<span class="go">test_install (tests.test_cli.TestCLI) ... ok</span>
+<span class="go">test_run (tests.test_pypi.TestPyPiLatestPackageVersion) ... ok</span>
+
+<span class="go">----------------------------------------------------------------------</span>
+<span class="go">Ran 3 tests in 1.282s</span>
+
+<span class="go">OK</span>
+<span class="gp">$</span> python3.7 -m coverage report -m
+<span class="go">Name                     Stmts   Miss Branch BrPart  Cover   Missing</span>
+<span class="go">--------------------------------------------------------------------</span>
+<span class="go">shouldi/__init__.py          0      0      0      0   100%</span>
+<span class="go">shouldi/cli.py              27      0      6      0   100%</span>
+<span class="go">shouldi/definitions.py       5      0      2      0   100%</span>
+<span class="go">shouldi/pypi.py             12      0      2      0   100%</span>
+<span class="go">shouldi/safety.py           18      0      0      0   100%</span>
+<span class="go">shouldi/version.py           1      0      0      0   100%</span>
+<span class="go">tests/__init__.py            0      0      0      0   100%</span>
+<span class="go">tests/test_cli.py           11      0      0      0   100%</span>
+<span class="go">tests/test_pypi.py           9      0      0      0   100%</span>
+<span class="go">tests/test_safety.py         9      0      0      0   100%</span>
+<span class="go">--------------------------------------------------------------------</span>
+<span class="go">TOTAL                       92      0     10      0   100%</span>
+</pre></div>
+</div>
+<p>We want this to be usable as a command line utility, Python’s
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">setuptools</span></code> allows us to define console <code class="docutils literal notranslate"><span class="pre">entry_points</span></code>. All we have
+to do is tell <code class="xref py py-mod docutils literal notranslate"><span class="pre">setuptools</span></code> what Python function we want it to call when
+a user runs a given command line application. The name of our CLI is <code class="docutils literal notranslate"><span class="pre">shouldi</span></code>
+and the function we want to run is <code class="docutils literal notranslate"><span class="pre">main</span></code> in the <code class="docutils literal notranslate"><span class="pre">ShouldI</span></code> class which is in
+the <code class="docutils literal notranslate"><span class="pre">shouldi.cli</span></code> module.</p>
+<p><strong>setup.py</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">entry_points</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;console_scripts&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;shouldi = shouldi.cli:ShouldI.main&quot;</span><span class="p">]},</span>
+</pre></div>
+</div>
+<p>Re-install the package via pip</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install -e .
+</pre></div>
+</div>
+<p>Now we should be able to run our new tool via the CLI! (Provided your <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>
+is set up correctly.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> shouldi install insecure-package bandit
+<span class="go">bandit is okay to install</span>
+<span class="go">Do not install insecure-package! {&#39;safety_check_number_of_issues&#39;: 1}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">DFFML</a></h1>
+
+
+
+<p class="blurb">The fastest path to machine learning integration</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/intel/dffml">
+    <img
+        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+    />
+</a>
+</p>
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://codecov.io/github/intel/dffml">
+    <img
+    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    />
+</a>
+</p>
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="integration.html">Integrating Machine Learning</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Data Set Generation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Usage Examples</a><ul>
+      <li>Previous: <a href="integration.html" title="previous chapter">Integrating Machine Learning</a></li>
+      <li>Next: <a href="../plugins/index.html" title="next chapter">Plugins</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/usage/operations.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

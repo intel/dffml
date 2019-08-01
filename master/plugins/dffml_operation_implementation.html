@@ -1,0 +1,535 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Operation Implementations &#8212; DFFML 0.2.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Services" href="dffml_service_cli.html" />
+    <link rel="prev" title="Models" href="dffml_model.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="operation-implementations">
+<h1>Operation Implementations<a class="headerlink" href="#operation-implementations" title="Permalink to this headline">¶</a></h1>
+<p>Operations Implementations are subclasses of
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.OperationImplementation" title="dffml.df.base.OperationImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.df.base.OperationImplementation</span></code></a>, they are functions or classes
+which could do anything, make HTTP requests, do inference, etc.</p>
+<div class="section" id="dffml">
+<h2>dffml<a class="headerlink" href="#dffml" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml</span>
+</pre></div>
+</div>
+<div class="section" id="associate">
+<h3>associate<a class="headerlink" href="#associate" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: output</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>spec: associate_spec(type: List[str])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>output: associate_output(type: Dict[str, Any])</p></li>
+</ul>
+</div>
+<div class="section" id="get-single">
+<h3>get_single<a class="headerlink" href="#get-single" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: output</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>spec: get_single_spec(type: List[str])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>output: get_single_output(type: Dict[str, Any])</p></li>
+</ul>
+</div>
+<div class="section" id="group-by">
+<h3>group_by<a class="headerlink" href="#group-by" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: output</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>spec: group_by_spec(type: Dict[str, Any])</p>
+<ul>
+<li><p>group: Definition</p></li>
+<li><p>by: Definition</p></li>
+<li><p>fill: typing.Any</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>output: group_by_output(type: Dict[str, List[Any]])</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="dffml-feature-git">
+<h2>dffml_feature_git<a class="headerlink" href="#dffml-feature-git" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-feature-git</span>
+</pre></div>
+</div>
+<div class="section" id="check-if-valid-git-repository-url">
+<h3>check_if_valid_git_repository_URL<a class="headerlink" href="#check-if-valid-git-repository-url" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>URL: URL(type: string)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>valid: valid_git_repository_URL(type: boolean)</p></li>
+</ul>
+</div>
+<div class="section" id="cleanup-git-repo">
+<h3>cleanup_git_repo<a class="headerlink" href="#cleanup-git-repo" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: cleanup</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>repo: git_repository(type: Dict[str, str])</p></li>
+</ul>
+</div>
+<div class="section" id="clone-git-repo">
+<h3>clone_git_repo<a class="headerlink" href="#clone-git-repo" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>URL: URL(type: string)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>repo: git_repository(type: Dict[str, str])</p></li>
+</ul>
+<p><strong>Conditions</strong></p>
+<ul class="simple">
+<li><p>valid_git_repository_URL: boolean</p></li>
+</ul>
+</div>
+<div class="section" id="count-authors">
+<h3>count_authors<a class="headerlink" href="#count-authors" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>author_lines: author_line_count(type: Dict[str, int])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>authors: author_count(type: int)</p></li>
+</ul>
+</div>
+<div class="section" id="git-commits">
+<h3>git_commits<a class="headerlink" href="#git-commits" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>repo: git_repository(type: Dict[str, str])</p></li>
+<li><p>branch: git_branch(type: str)</p></li>
+<li><p>start_end: date_pair(type: List[date])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>commits: commit_count(type: int)</p></li>
+</ul>
+</div>
+<div class="section" id="git-repo-author-lines-for-dates">
+<h3>git_repo_author_lines_for_dates<a class="headerlink" href="#git-repo-author-lines-for-dates" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>repo: git_repository(type: Dict[str, str])</p></li>
+<li><p>branch: git_branch(type: str)</p></li>
+<li><p>start_end: date_pair(type: List[date])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>author_lines: author_line_count(type: Dict[str, int])</p></li>
+</ul>
+</div>
+<div class="section" id="git-repo-checkout">
+<h3>git_repo_checkout<a class="headerlink" href="#git-repo-checkout" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>repo: git_repository(type: Dict[str, str])</p></li>
+<li><p>commit: git_commit(type: string)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>repo: git_repository_checked_out(type: Dict[str, str])</p></li>
+</ul>
+</div>
+<div class="section" id="git-repo-commit-from-date">
+<h3>git_repo_commit_from_date<a class="headerlink" href="#git-repo-commit-from-date" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>repo: git_repository(type: Dict[str, str])</p></li>
+<li><p>branch: git_branch(type: str)</p></li>
+<li><p>date: date(type: string)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>commit: git_commit(type: string)</p></li>
+</ul>
+</div>
+<div class="section" id="git-repo-default-branch">
+<h3>git_repo_default_branch<a class="headerlink" href="#git-repo-default-branch" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>repo: git_repository(type: Dict[str, str])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>branch: git_branch(type: str)</p></li>
+</ul>
+<p><strong>Conditions</strong></p>
+<ul class="simple">
+<li><p>no_git_branch_given: boolean</p></li>
+</ul>
+</div>
+<div class="section" id="git-repo-release">
+<h3>git_repo_release<a class="headerlink" href="#git-repo-release" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>repo: git_repository(type: Dict[str, str])</p></li>
+<li><p>branch: git_branch(type: str)</p></li>
+<li><p>start_end: date_pair(type: List[date])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>present: release_within_period(type: bool)</p></li>
+</ul>
+</div>
+<div class="section" id="lines-of-code-by-language">
+<h3>lines_of_code_by_language<a class="headerlink" href="#lines-of-code-by-language" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>repo: git_repository_checked_out(type: Dict[str, str])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>lines_by_language: lines_by_language_count(type: Dict[str, Dict[str, int]])</p></li>
+</ul>
+</div>
+<div class="section" id="lines-of-code-to-comments">
+<h3>lines_of_code_to_comments<a class="headerlink" href="#lines-of-code-to-comments" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>langs: lines_by_language_count(type: Dict[str, Dict[str, int]])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>code_to_comment_ratio: language_to_comment_ratio(type: int)</p></li>
+</ul>
+</div>
+<div class="section" id="quarters-back-to-date">
+<h3>quarters_back_to_date<a class="headerlink" href="#quarters-back-to-date" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>date: quarter_start_date(type: int)</p></li>
+<li><p>number: quarter(type: int)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>date: date(type: string)</p></li>
+<li><p>start_end: date_pair(type: List[date])</p></li>
+</ul>
+</div>
+<div class="section" id="work">
+<h3>work<a class="headerlink" href="#work" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>author_lines: author_line_count(type: Dict[str, int])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>work: work_spread(type: int)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="dffml-operations-binsec">
+<h2>dffml_operations_binsec<a class="headerlink" href="#dffml-operations-binsec" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-binsec</span>
+</pre></div>
+</div>
+<div class="section" id="cleanup-rpm">
+<h3>cleanup_rpm<a class="headerlink" href="#cleanup-rpm" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: cleanup</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+</ul>
+</div>
+<div class="section" id="files-in-rpm">
+<h3>files_in_rpm<a class="headerlink" href="#files-in-rpm" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>files: rpm_filename(type: str)</p></li>
+</ul>
+</div>
+<div class="section" id="is-binary-pie">
+<h3>is_binary_pie<a class="headerlink" href="#is-binary-pie" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+<li><p>filename: rpm_filename(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>is_pie: binary_is_PIE(type: bool)</p></li>
+</ul>
+</div>
+<div class="section" id="url-to-urlbytes">
+<h3>url_to_urlbytes<a class="headerlink" href="#url-to-urlbytes" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>URL: URL(type: string)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>download: URLBytes(type: python_obj)</p></li>
+</ul>
+</div>
+<div class="section" id="urlbytes-to-rpmfile">
+<h3>urlbytes_to_rpmfile<a class="headerlink" href="#urlbytes-to-rpmfile" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>download: URLBytes(type: python_obj)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+</ul>
+</div>
+<div class="section" id="urlbytes-to-tarfile">
+<h3>urlbytes_to_tarfile<a class="headerlink" href="#urlbytes-to-tarfile" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>download: URLBytes(type: python_obj)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="dffml-feature-auth">
+<h2>dffml_feature_auth<a class="headerlink" href="#dffml-feature-auth" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-feature-auth</span>
+</pre></div>
+</div>
+<div class="section" id="scrypt">
+<h3>scrypt<a class="headerlink" href="#scrypt" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>password: UnhashedPassword(type: string)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>password: ScryptPassword(type: string)</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">DFFML</a></h1>
+
+
+
+<p class="blurb">The fastest path to machine learning integration</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/intel/dffml">
+    <img
+        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+    />
+</a>
+</p>
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://codecov.io/github/intel/dffml">
+    <img
+    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    />
+</a>
+</p>
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dffml_source.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dffml_model.html">Models</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Operation Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dffml_service_cli.html">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Plugins</a><ul>
+      <li>Previous: <a href="dffml_model.html" title="previous chapter">Models</a></li>
+      <li>Next: <a href="dffml_service_cli.html" title="next chapter">Services</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/plugins/dffml_operation_implementation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
