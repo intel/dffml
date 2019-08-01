@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   DNNClassifierModel.
 - DNNClassifierModel no longer splits data for the user.
 - Update `pip` in Dockerfile.
+- Restructured documentation
 ### Fixed
 - Docs get version from dffml.version.VERSION.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects

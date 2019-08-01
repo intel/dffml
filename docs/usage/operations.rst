@@ -1,5 +1,5 @@
-Example Data Flow Usage
-=======================
+Data Set Generation
+===================
 
 This example will show you how to generate a dataset using operations.
 
