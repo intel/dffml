@@ -5,7 +5,7 @@ Install in development mode via pip.
 ```console
 git clone https://github.com/intel/dffml
 cd dffml
-pip install --user -e .
+pip install --user -e .[dev]
 ```
 
 If you are working on Git features or Tensorflow models, `cd` into those
@@ -60,6 +60,16 @@ opening the `index.html` in a web browser.
 coverage run setup.py test
 coverage report
 coverage html
+```
+
+# Documentation
+
+To build and view the documentation run the docs script.
+
+```console
+rm -rf pages/
+./scripts/docs.sh
+python3.7 -m http.server --directory pages/ 7000
 ```
 
 # Working on skel/

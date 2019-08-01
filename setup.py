@@ -44,6 +44,7 @@ setup(
     extras_require={
         'models': ['dffml-model-tensorflow', 'dffml-model-scratch'],
         'git': ['dffml-feature-git'],
+        'dev': ['coverage', 'codecov', 'sphinx', 'sphinxcontrib-asyncio', 'black'],
     },
     entry_points={
         'console_scripts': [
