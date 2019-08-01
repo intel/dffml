@@ -1,5 +1,5 @@
-Example Integration
-===================
+Integrating Machine Learning
+============================
 
 This example will show you how to automate a manual classification process,
 determining if a Git repo is maintained or abandoned.

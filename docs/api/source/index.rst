@@ -21,20 +21,3 @@ CLI and other services.
     base
     memory
     file
-
-Developers can of course define their own sources. For example if you have an
-existing SQL database you want to pull feature data from, you would implement a
-source that queries that database and SELECTs data from the applicable columns.
-
-The implementation of a source consists mainly of creating a subclass of
-:class:`dffml.source.source.BaseSourceContext`. Often there will be some initial
-connection establishment in the :class:`dffml.source.source.BaseSource` as well
-(as we will see in the sqlite example).
-
-.. autoclass:: dffml.source.source.BaseSourceContext
-    :members:
-    :noindex:
-
-Here's how a source to query custom columns might be implemented.
-
-.. literalinclude:: /../examples/source/custom_sqlite.py
