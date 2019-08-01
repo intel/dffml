@@ -14,7 +14,7 @@ CREATE TABLE `repo_data` (
   `prediction_confidence` float DEFAULT NULL,
   `prediction_value` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`src_url`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
 LOCK TABLES `repo_data` WRITE;
