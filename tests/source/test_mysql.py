@@ -21,7 +21,7 @@ CREATE TABLE `repo_data` (
 
 MYSQL_SOURCE_CONFIG = MysqlSourceConfig(
     host="127.0.0.1",
-    port=3306,
+    port=443,
     user="root",
     password="",
     db="dffml_source",
