@@ -12,8 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   how to properly load and save repos under a given label.
 - Test case for Merge CLI command
 - Repo.feature method to select a single piece of feature data within a repo.
-- Create service to start from template when creating new python packages for
-  DFFML models and operations.
+- Dev service to help with hacking on DFFML and to create models from templates
+  in the skel/ directory.
 - Classification type parameter to DNNClassifierModelConfig to specifiy data
   type of given classification options.
 - util.cli CMD classes have their argparse description set to their docstring.
@@ -21,7 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `argparse.ArgumentParser` via the `CLI_FORMATTER_CLASS` property.
 - Skeleton for service creation was added
 - Simple Linear Regression model from scratch
+- Scikit Linear Regression model
 - Community link in CONTRIBUTING.md.
+- Explained three main parts of DFFML on docs homepage
+- Documentation on how to use ML models on docs Models plugin page.
 - Mysql Source to work with data from a mysql database
 ### Changed
 - feature/codesec became it's own branch, binsec
@@ -43,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   DNNClassifierModel.
 - DNNClassifierModel no longer splits data for the user.
 - Update `pip` in Dockerfile.
+- Restructured documentation
 ### Fixed
 - Docs get version from dffml.version.VERSION.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
@@ -56,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   help, they also accept the `CLI_FORMATTER_CLASS` property.
 - CSV source now has `entry_point` decoration
 - JSON source now has `entry_point` decoration
+- Strict flag in df.memory is now on by default
 ### Removed
 - Repo objects are no longer classification specific. Their `classify`,
   `classified`, and `classification` methods were removed.

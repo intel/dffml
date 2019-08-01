@@ -1,6 +1,6 @@
 [run]
 source =
-    REPLACE_IMPORT_PACKAGE_NAME
+    dffml_model_scikit
     tests
 branch = True
 

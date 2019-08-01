@@ -21,20 +21,26 @@ function run_plugin() {
     # Try running create for real
     cd $(mktemp -d)
     # Create model
-    dffml service create model travis-test-model
+    dffml service dev create model travis-test-model
     cd travis-test-model
     python setup.py install
     python setup.py test
     cd ..
     # Create operations
-    dffml service create operations travis-test-operations
+    dffml service dev create operations travis-test-operations
     cd travis-test-operations
     python setup.py install
     python setup.py test
     cd ..
     # Create service
-    dffml service create service travis-test-service
+    dffml service dev create service travis-test-service
     cd travis-test-service
+    python setup.py install
+    python setup.py test
+    cd ..
+    # Create source
+    dffml service dev create source travis-test-source
+    cd travis-test-source
     python setup.py install
     python setup.py test
     cd ..

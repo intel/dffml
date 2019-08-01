@@ -19,6 +19,16 @@ To join the meeting, click on the Google calendar below for the day you are
 trying to join, then click "more details" which will open your Google calendar,
 then click "Join Hangouts".
 
+The goal of DFFML is to build a community driven library of plugins for dataset
+generation and model definition. So that we as developers and researchers can
+quickly and easily plug and play various pieces of data with various model
+implementations.
+
+The more we build up the library of plugins (which anyone can maintain, they
+don't have to be contributed upstream unless you want to) the more variations on
+model implementations, feature data generators, and database backend
+abstractions, we all have to work with.
+
 If you have developed a plugin for DFFML and would like it listed in the docs,
 please open an `issue <https://github.com/intel/dffml/issues/new?assignees=&labels=documentation&template=new_plugin.md&title=plugin%3A+new%3A+>`_.
 

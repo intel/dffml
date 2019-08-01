@@ -45,7 +45,7 @@ setup(
     ],
     include_package_data=True,
     extras_require={
-        'tensorflow': ['dffml-model-tensorflow'],
+        'models': ['dffml-model-tensorflow', 'dffml-model-scratch'],
         'git': ['dffml-feature-git'],
     },
     entry_points={
@@ -61,7 +61,7 @@ setup(
             'json = dffml.port.json:JSON',
         ],
         'dffml.service.cli': [
-            'create = dffml.service.create:Create',
+            'dev = dffml.service.dev:Develop',
         ],
         # Data Flow
         'dffml.operation': [

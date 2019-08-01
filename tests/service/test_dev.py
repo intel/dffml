@@ -1,23 +1,17 @@
 import os
 import glob
 import tempfile
-from contextlib import contextmanager
+from pathlib import Path
 
-from dffml.service.create import Create
+from dffml.service.dev import Develop
+from dffml.util.os import chdir
+from dffml.util.skel import Skel
 from dffml.util.asynctestcase import AsyncTestCase
 
-
-@contextmanager
-def chdir(path):
-    old_path = os.getcwd()
-    os.chdir(path)
-    try:
-        yield
-    finally:
-        os.chdir(old_path)
+from ..util.test_skel import COMMON_FILES
 
 
-class TestCreate(AsyncTestCase):
+class TestDevelopCreate(AsyncTestCase):
     def verify(self, root, name, package_specific_files):
         import_name = name.replace("-", "_")
         package_specific_files = list(
@@ -59,7 +53,7 @@ class TestCreate(AsyncTestCase):
     async def generic_test(self, name, package_specific_files):
         package_name = "test-package"
         # Acquire the CreateCMD class of specified type
-        cli_class = getattr(Create, name)
+        cli_class = getattr(Develop.create, name)
         # Create tempdir to copy files to
         with tempfile.TemporaryDirectory() as tempdir:
             # Create directories in tempdir, one we cd into and one we use as
@@ -114,3 +108,25 @@ class TestCreate(AsyncTestCase):
             "service",
             [("{import_name}", "misc.py"), ("tests", "test_service.py")],
         )
+
+
+class TestDevelopSkelLink(AsyncTestCase):
+
+    skel = Skel()
+
+    async def test_run(self):
+        await Develop.cli("skel", "link")
+        common_files = [
+            path.relative_to(self.skel.common)
+            for path in self.skel.common_files()
+        ]
+        # At time of writing there are 4 plugins in skel/ change this as needed
+        plugins = self.skel.plugins()
+        self.assertGreater(len(plugins), 3)
+        for plugin in plugins:
+            for check in COMMON_FILES:
+                with chdir(plugin):
+                    self.assertTrue(
+                        check.is_symlink(),
+                        f"{check.resolve()} is not a symlink",
+                    )

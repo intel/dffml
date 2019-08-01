@@ -1,11 +1,21 @@
+.. _plugin_sources:
+
 Sources
 =======
 
 Sources are implementations of :class:`dffml.source.source.BaseSource`, they
 abstract the loading and storage of data / datasets.
 
+If you want to get started creating your own source, check out the
+:ref:`source_tutorial`.
+
 dffml
 -----
+
+.. code-block:: console
+
+    pip install dffml
+
 
 csv
 ~~~
@@ -22,6 +32,14 @@ Uses a CSV file as the source of repo feature data
 
   - default: False
 
+- label: String
+
+  - default: unlabeled
+
+- key: String
+
+  - default: None
+
 json
 ~~~~
 
@@ -37,6 +55,10 @@ stored in memory.
 - readonly: Boolean
 
   - default: False
+
+- label: String
+
+  - default: unlabeled
 
 memory
 ~~~~~~

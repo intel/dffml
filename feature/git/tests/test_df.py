@@ -140,7 +140,6 @@ class TestRunner(AsyncTestCase):
         )
 
         # Orchestrate the running of these operations
-        help(MemoryOrchestrator.basic_config)
         async with MemoryOrchestrator.basic_config(*OPIMPS) as orchestrator:
             async with orchestrator() as octx:
                 # Add our inputs to the input network with the context being the URL

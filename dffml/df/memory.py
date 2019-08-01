@@ -850,7 +850,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         await self._stack.aclose()
 
     async def run_operations(
-        self, strict: bool = False
+        self, strict: bool = True
     ) -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
         # Track if there are more contexts
         more = True
