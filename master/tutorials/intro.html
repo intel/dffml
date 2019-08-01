@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Introduction to DFFML &#8212; DFFML 0.2.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="New Source Tutorial" href="source.html" />
+    <link rel="prev" title="Tutorials" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="introduction-to-dffml">
+<h1>Introduction to DFFML<a class="headerlink" href="#introduction-to-dffml" title="Permalink to this headline">¶</a></h1>
+<p>DFFML aims to streamline the training and use of various machine learning
+models, dataset collection, and storage. As such there are three sides to the
+DFFML triangle.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#intro-sources"><span class="std std-ref">Sources</span></a> abstract the storage of datasets.</p></li>
+<li><p><a class="reference internal" href="#intro-models"><span class="std std-ref">Models</span></a> abstract implementations of machine learning algorithms.</p></li>
+<li><p>The <a class="reference internal" href="#intro-data-flow"><span class="std std-ref">Data Flow</span></a> side of things is used to generate a dataset, as well as
+modify existing datasets.</p></li>
+</ul>
+<div class="section" id="sources">
+<span id="intro-sources"></span><h2>Sources<a class="headerlink" href="#sources" title="Permalink to this headline">¶</a></h2>
+<p>A <code class="docutils literal notranslate"><span class="pre">Source</span></code> of data might be something like a CSV file, SQL database, or HDFS.</p>
+<p>By providing a generic abstraction around where data is being saved and stored,
+model implementations can access the data via the same API no matter where it is
+stored.</p>
+<div class="section" id="repos">
+<h3>Repos<a class="headerlink" href="#repos" title="Permalink to this headline">¶</a></h3>
+<p>A common construct within DFFML is the <code class="docutils literal notranslate"><span class="pre">Repo</span></code>. A <code class="docutils literal notranslate"><span class="pre">Repo</span></code> object is a
+repository of information associated with a unique key. The <code class="docutils literal notranslate"><span class="pre">Repo</span></code> holds all
+the data associated with that key.</p>
+<p>Say for instance you generated a dataset that had to do with cities. Your unique
+key might be the name of the city, the state or province it’s in, and the
+country it’s in. For example: <code class="docutils literal notranslate"><span class="pre">Portland,</span> <span class="pre">OR,</span> <span class="pre">USA</span></code>.</p>
+<p>The data associated with a <code class="docutils literal notranslate"><span class="pre">Repo</span></code> is called the feature data. Its stored
+within a key value mapping within the <code class="docutils literal notranslate"><span class="pre">Repo</span></code> accessible via the
+<code class="docutils literal notranslate"><span class="pre">features()</span></code> method. Our city example might have the following feature data.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;climate&quot;</span><span class="p">:</span> <span class="s2">&quot;rainy&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;population&quot;</span><span class="p">:</span> <span class="s2">&quot;too many&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;traffic&quot;</span><span class="p">:</span> <span class="s2">&quot;heavy&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="models">
+<span id="intro-models"></span><h2>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h2>
+<p>A <code class="docutils literal notranslate"><span class="pre">Model</span></code> could be any implementation of a machine learning algorithm.</p>
+<p>By wrapping various implementations of machine learning algorithms in DFFMLs
+API, applications using DFFML via its Python library interface, command line
+interface (, or coming soon its HTTP interface), can benefit from them being
+wrapped in a similar design pattern. This means that switching from a model
+implementing with one major framework to another is painless.</p>
+</div>
+<div class="section" id="data-flow">
+<span id="intro-data-flow"></span><h2>Data Flow<a class="headerlink" href="#data-flow" title="Permalink to this headline">¶</a></h2>
+<p>One can think of the data flow side of DFFML as a event loop running at a high
+level of abstraction. Event loop usually refers to waiting for <code class="docutils literal notranslate"><span class="pre">read</span></code>,
+<code class="docutils literal notranslate"><span class="pre">write</span></code>, and <code class="docutils literal notranslate"><span class="pre">error</span></code> events on network connections, files, or if you’re in
+JavaScript, a click on the page for instance.</p>
+<p>The idea behind event loops is that when a new event comes in, it triggers some
+processing of the data associated with that event.</p>
+<p>For DFFML we define data types that we care about, and then define operations
+(essentially functions) that get run when new data of our defined data types
+shows up.</p>
+<p>One benefit of using the data flow programming abstraction provided by DFFML is
+it runs everything concurrently and manages locking of data used by the routines
+running concurrently. In addition to running concurrently, <code class="docutils literal notranslate"><span class="pre">asyncio</span></code>, which
+DFFML makes heavy use of, makes it easy to run things in parallel, so as to
+fully utilize a CPUs cores and threads.</p>
+<p>The following are the key concepts relating to data flow.</p>
+<div class="section" id="definition">
+<h3>Definition<a class="headerlink" href="#definition" title="Permalink to this headline">¶</a></h3>
+<p>The name of the data type, and what it’s primitive is. Primitive meaning is it a
+string, integer, float, etc.</p>
+<p>If a piece of data created or used of this data type needs to be locked. The
+definition will also specify that (<code class="docutils literal notranslate"><span class="pre">lock=True</span></code>).</p>
+</div>
+<div class="section" id="operation">
+<h3>Operation<a class="headerlink" href="#operation" title="Permalink to this headline">¶</a></h3>
+<p>A name associated with some routine or function that will process some input
+data and produce some output data.</p>
+</div>
+<div class="section" id="stage">
+<h3>Stage<a class="headerlink" href="#stage" title="Permalink to this headline">¶</a></h3>
+<p>Operations can be run at various different stages.</p>
+<ul class="simple">
+<li><p>Processing</p>
+<ul>
+<li><p>Operations with this stage will be run until no new permutations of their
+input parameters exist.</p></li>
+</ul>
+</li>
+<li><p>Cleanup</p>
+<ul>
+<li><p>After there are no operations to be run in the processing stage, cleanup
+operations are run to free any resources created during processing.</p></li>
+</ul>
+</li>
+<li><p>Output</p>
+<ul>
+<li><p>Used to get data out of the network. Operations running in the output Stage
+will produce the data used as the result of running all the operations.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="operation-implementation">
+<h3>Operation Implementation<a class="headerlink" href="#operation-implementation" title="Permalink to this headline">¶</a></h3>
+<p>The routine or function responsible for preforming an Operation.</p>
+</div>
+<div class="section" id="input-network">
+<h3>Input Network<a class="headerlink" href="#input-network" title="Permalink to this headline">¶</a></h3>
+<p>All data, inputs and outputs live within the Input Network, since outputs of one
+operation are usually inputs to another, we refer to them all as inputs.
+Therefore, they all reside within the Input Network.</p>
+</div>
+<div class="section" id="operation-network">
+<h3>Operation Network<a class="headerlink" href="#operation-network" title="Permalink to this headline">¶</a></h3>
+<p>All the definitions of Operations reside in the Operation Network.</p>
+</div>
+<div class="section" id="operation-implementation-network">
+<h3>Operation Implementation Network<a class="headerlink" href="#operation-implementation-network" title="Permalink to this headline">¶</a></h3>
+<p>All the references to implementations of Operations reside in the Operation
+Implementation Network.</p>
+<p>This network is responsible for the execution of any given Operation within it.</p>
+</div>
+<div class="section" id="redundancy-checker">
+<h3>Redundancy Checker<a class="headerlink" href="#redundancy-checker" title="Permalink to this headline">¶</a></h3>
+<p>Checks if an operation has been called before with a given set of input
+parameters.</p>
+</div>
+<div class="section" id="lock-network">
+<h3>Lock Network<a class="headerlink" href="#lock-network" title="Permalink to this headline">¶</a></h3>
+<p>Manges locking for Inputs.</p>
+</div>
+<div class="section" id="orchestrator">
+<h3>Orchestrator<a class="headerlink" href="#orchestrator" title="Permalink to this headline">¶</a></h3>
+<p>All data flow objects are utilized via an Orchestrator</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">DFFML</a></h1>
+
+
+
+<p class="blurb">The fastest path to machine learning integration</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/intel/dffml">
+    <img
+        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+    />
+</a>
+</p>
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://codecov.io/github/intel/dffml">
+    <img
+    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    />
+</a>
+</p>
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction to DFFML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source.html">New Source Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html">New Model Tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Tutorials</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Tutorials</a></li>
+      <li>Next: <a href="source.html" title="next chapter">New Source Tutorial</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/tutorials/intro.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

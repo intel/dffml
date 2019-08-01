@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>New Source Tutorial &#8212; DFFML 0.2.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="New Model Tutorial" href="model.html" />
+    <link rel="prev" title="Introduction to DFFML" href="intro.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="new-source-tutorial">
+<span id="source-tutorial"></span><h1>New Source Tutorial<a class="headerlink" href="#new-source-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial is for implementing a data source. Which is probably what you want
+if the way you store your data doesn’t have an existing <a class="reference internal" href="../plugins/dffml_source.html#plugin-sources"><span class="std std-ref">Sources</span></a>
+plugin. Or even more likely, you have a very specific way an existing
+application you’re trying to integrate with stores data you want in it’s
+database.</p>
+<div class="section" id="create-the-package">
+<h2>Create the Package<a class="headerlink" href="#create-the-package" title="Permalink to this headline">¶</a></h2>
+<p>To create a new source we first create a new python package. DFFML has a script
+to create it for you.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev create <span class="nb">source</span> my-source
+<span class="gp">$</span> <span class="nb">cd</span> my-source
+</pre></div>
+</div>
+<p>This creates a Python package for you with a source that stores <code class="docutils literal notranslate"><span class="pre">Repo</span></code> objects
+in memory, called <code class="docutils literal notranslate"><span class="pre">MiscSource</span></code>, and some tests.</p>
+</div>
+<div class="section" id="edit-the-source">
+<h2>Edit the Source<a class="headerlink" href="#edit-the-source" title="Permalink to this headline">¶</a></h2>
+<p>For this tutorial we’ll be implementing a source which knows how to save and
+load data from a <code class="docutils literal notranslate"><span class="pre">sqlite</span></code> database. We’ll be using the <code class="docutils literal notranslate"><span class="pre">aiosqlite</span></code> package
+to do this.</p>
+<div class="section" id="imports">
+<h3>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">¶</a></h3>
+<p>We’re going to need a few modules from the standard library, let’s import them.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">aiosqlite</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="interact-with-the-database">
+<h3>Interact with the Database<a class="headerlink" href="#interact-with-the-database" title="Permalink to this headline">¶</a></h3>
+<p><em>This section is way under-explained and should be improved</em></p>
+<p>The implementation of a source consists mainly of creating a subclass of
+<a class="reference internal" href="../api/source/base.html#dffml.source.source.BaseSourceContext" title="dffml.source.source.BaseSourceContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.source.BaseSourceContext</span></code></a>. Often there will be some initial
+connection establishment in the <a class="reference internal" href="../api/source/base.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.source.BaseSource</span></code></a> as well
+(as we will see in the sqlite example).</p>
+<dl class="class">
+<dt>
+<em class="property">class </em><code class="descclassname">dffml.source.source.</code><code class="descname">BaseSourceContext</code><span class="sig-paren">(</span><em>parent: dffml.source.source.BaseSource</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/source/source.html#BaseSourceContext"><span class="viewcode-link">[source]</span></a></dt>
+<dd><dl class="method">
+<dt>
+<em class="property">coroutine </em><code class="descname">repo</code><span class="sig-paren">(</span><em>src_url: str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/source/source.html#BaseSourceContext.repo"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Get a repo from the source or add it if it doesn’t exist</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<code class="descname">repos</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../_modules/dffml/source/source.html#BaseSourceContext.repos"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Returns a list of repos retrieved from self.src</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">coroutine </em><code class="descname">update</code><span class="sig-paren">(</span><em>repo: dffml.repo.Repo</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/source/source.html#BaseSourceContext.update"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Updates a repo for a source</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>If we had a <code class="docutils literal notranslate"><span class="pre">sqlite</span></code> database will custom columns we could implement it like
+so.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">aiosqlite</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">AsyncIterator</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">from</span> <span class="nn">dffml.base</span> <span class="k">import</span> <span class="n">BaseConfig</span>
+<span class="kn">from</span> <span class="nn">dffml.repo</span> <span class="k">import</span> <span class="n">Repo</span>
+<span class="kn">from</span> <span class="nn">dffml.source.source</span> <span class="k">import</span> <span class="n">BaseSourceContext</span><span class="p">,</span> <span class="n">BaseSource</span>
+<span class="kn">from</span> <span class="nn">dffml.util.cli.arg</span> <span class="k">import</span> <span class="n">Arg</span>
+
+
+<span class="k">class</span> <span class="nc">CustomSQLiteSourceConfig</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="k">class</span> <span class="nc">CustomSQLiteSourceContext</span><span class="p">(</span><span class="n">BaseSourceContext</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo</span><span class="p">:</span> <span class="n">Repo</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">db</span>
+        <span class="c1"># Store feature data</span>
+        <span class="n">feature_cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">FEATURE_COLS</span>
+        <span class="n">feature_data</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">feature_cols</span><span class="p">)</span>
+        <span class="n">feature_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">features</span><span class="p">(</span><span class="n">feature_cols</span><span class="p">))</span>
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;INSERT OR REPLACE INTO features (src_url, &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">feature_cols</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;) &quot;</span>
+            <span class="s2">&quot;VALUES(?, &quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;?&quot;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">feature_cols</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">repo</span><span class="o">.</span><span class="n">src_url</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">feature_data</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+        <span class="p">)</span>
+        <span class="c1"># Store prediction</span>
+        <span class="n">prediction</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">prediction</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">prediction</span><span class="p">:</span>
+            <span class="n">prediction_cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">PREDICTION_COLS</span>
+            <span class="n">prediction_data</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">prediction_cols</span><span class="p">)</span>
+            <span class="n">prediction_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">prediction</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
+            <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                <span class="s2">&quot;INSERT OR REPLACE INTO prediction (src_url, &quot;</span>
+                <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">prediction_cols</span><span class="p">)</span>
+                <span class="o">+</span> <span class="s2">&quot;) &quot;</span>
+                <span class="s2">&quot;VALUES(?, &quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;?&quot;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">prediction_cols</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">repo</span><span class="o">.</span><span class="n">src_url</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">prediction_data</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+            <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">repos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Repo</span><span class="p">]:</span>
+        <span class="c1"># NOTE This logic probably isn&#39;t what you want. Only for demo purposes.</span>
+        <span class="n">src_urls</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT src_url FROM features&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="k">await</span> <span class="n">src_urls</span><span class="o">.</span><span class="n">fetchall</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;src_url&quot;</span><span class="p">])</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">repo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">db</span>
+        <span class="n">repo</span> <span class="o">=</span> <span class="n">Repo</span><span class="p">(</span><span class="n">src_url</span><span class="p">)</span>
+        <span class="c1"># Get features</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;SELECT &quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">FEATURE_COLS</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span>
+            <span class="s2">&quot;FROM features WHERE src_url=?&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">src_url</span><span class="p">,),</span>
+        <span class="p">)</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="k">await</span> <span class="n">features</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">features</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">repo</span><span class="o">.</span><span class="n">evaluated</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+        <span class="c1"># Get prediction</span>
+        <span class="n">prediction</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;SELECT * FROM prediction WHERE &quot;</span> <span class="s2">&quot;src_url=?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">src_url</span><span class="p">,)</span>
+        <span class="p">)</span>
+        <span class="n">prediction</span> <span class="o">=</span> <span class="k">await</span> <span class="n">prediction</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">prediction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">repo</span><span class="o">.</span><span class="n">predicted</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;confidence&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">repo</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">CustomSQLiteSource</span><span class="p">(</span><span class="n">BaseSource</span><span class="p">):</span>
+
+    <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">CustomSQLiteSourceContext</span>
+    <span class="n">FEATURE_COLS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;PetalLength&quot;</span><span class="p">,</span> <span class="s2">&quot;PetalWidth&quot;</span><span class="p">,</span> <span class="s2">&quot;SepalLength&quot;</span><span class="p">,</span> <span class="s2">&quot;SepalWidth&quot;</span><span class="p">]</span>
+    <span class="n">PREDICTION_COLS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;confidence&quot;</span><span class="p">]</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseSourceContext&quot;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__db</span> <span class="o">=</span> <span class="n">aiosqlite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__db</span><span class="o">.</span><span class="fm">__aenter__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">row_factory</span> <span class="o">=</span> <span class="n">aiosqlite</span><span class="o">.</span><span class="n">Row</span>
+        <span class="c1"># Create table for feature data</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;CREATE TABLE IF NOT EXISTS features (&quot;</span>
+            <span class="s2">&quot;src_url TEXT PRIMARY KEY NOT NULL, &quot;</span>
+            <span class="o">+</span> <span class="p">(</span><span class="s2">&quot; REAL, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">FEATURE_COLS</span><span class="p">))</span>
+            <span class="o">+</span> <span class="s2">&quot; REAL&quot;</span>
+            <span class="s2">&quot;)&quot;</span>
+        <span class="p">)</span>
+        <span class="c1"># Create table for predictions</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;CREATE TABLE IF NOT EXISTS prediction (&quot;</span>
+            <span class="s2">&quot;src_url TEXT PRIMARY KEY, &quot;</span> <span class="o">+</span> <span class="s2">&quot;value TEXT, &quot;</span>
+            <span class="s2">&quot;confidence REAL&quot;</span>
+            <span class="s2">&quot;)&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__db</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Arg</span><span class="p">]:</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">config_set</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;filename&quot;</span><span class="p">,</span> <span class="n">Arg</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">args</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">CustomSQLiteSourceConfig</span><span class="p">(</span>
+            <span class="n">filename</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">config_get</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;filename&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-the-tests">
+<h3>Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 setup.py <span class="nb">test</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">DFFML</a></h1>
+
+
+
+<p class="blurb">The fastest path to machine learning integration</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/intel/dffml">
+    <img
+        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+    />
+</a>
+</p>
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://codecov.io/github/intel/dffml">
+    <img
+    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    />
+</a>
+</p>
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">Introduction to DFFML</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">New Source Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="model.html">New Model Tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Tutorials</a><ul>
+      <li>Previous: <a href="intro.html" title="previous chapter">Introduction to DFFML</a></li>
+      <li>Next: <a href="model.html" title="next chapter">New Model Tutorial</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/tutorials/source.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
