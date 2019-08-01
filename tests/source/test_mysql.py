@@ -20,7 +20,7 @@ CREATE TABLE `repo_data` (
 """
 
 MYSQL_SOURCE_CONFIG = MysqlSourceConfig(
-    host="localhost",
+    host="127.0.0.1",
     port=3306,
     user="root",
     password="",
