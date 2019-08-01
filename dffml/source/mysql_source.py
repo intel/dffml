@@ -112,6 +112,7 @@ class MysqlSourceContext(BaseSourceContext):
 class MysqlSource(BaseSource):
 
     CONTEXT = MysqlSourceContext
+
     async def __aenter__(self) -> "MysqlSource":
         self.pool = await aiomysql.create_pool(
             host=self.config.host,
