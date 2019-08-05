@@ -6,6 +6,14 @@
 
 Documentation is hosted at https://intel.github.io/dffml/
 
+## Help
+
+- Ask a question via an [issue](https://github.com/intel/dffml/issues/new?assignees=&labels=question&template=question.md&title=question%3A+)
+- Send an email to dffml-users@lists.01.org
+  - You can subscribe to the users mailing list here
+    https://lists.01.org/mailman/listinfo/dffml-users
+- Ask a question on the [Gitter chat](https://gitter.im/dffml/community)
+
 ## Contributing
 
 DFFML is meant to be a community driven application. There are various segments
