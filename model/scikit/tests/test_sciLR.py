@@ -9,7 +9,8 @@ from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Data, DefFeature, Features
 from dffml.util.asynctestcase import AsyncTestCase
 
-from dffml_model_scikit.sciLR import LR, LRConfig
+from dffml_model_scikit.sciLR import LR
+from dffml_model_scikit.scikitbase import ScikitConfig
 
 
 FEATURE_DATA = [
@@ -44,7 +45,7 @@ class TestLR(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
         cls.model_dir = tempfile.TemporaryDirectory()
-        cls.model = LR(LRConfig(directory=cls.model_dir.name, predict='Z'))
+        cls.model = LR(ScikitConfig(directory=cls.model_dir.name, predict='Z'))
         cls.features = Features()
         cls.features.append(DefFeature('X', float, 1))
         cls.features.append(DefFeature('Y', float, 1))
