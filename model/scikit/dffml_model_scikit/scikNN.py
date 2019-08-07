@@ -3,30 +3,30 @@
 """
 Description of what this model does
 """
-from sklearn.linear_model import LinearRegression
+from sklearn.neighbors import KNeighborsClassifier
 
 from dffml.util.entrypoint import entry_point
 from dffml_model_scikit.scikitbase import Scikit, ScikitContext
 
 
-class LRContext(ScikitContext):
+class kNNContext(ScikitContext):
 
     def applicable_features(self, features):
         usable = []
         for feature in features:
             if feature.dtype() != int and feature.dtype() != float:
                 raise ValueError(
-                    "Linear Regression only supports int or float feature"
+                    "kNN only supports int or float feature"
                 )
             if feature.length() != 1:
                 raise ValueError(
-                    "Linear Regression only supports single values (non-matrix / array)"
+                    "kNN only supports single values (non-matrix / array)"
                 )
             usable.append(feature.NAME)
         return sorted(usable)
 
-@entry_point("scikitlr")
-class LR(Scikit):
+@entry_point("scikitknn")
+class kNN(Scikit):
 
-    CONTEXT = LRContext
-    SCIKIT_MODEL = LinearRegression(n_jobs=-1)
+    CONTEXT = kNNContext
+    SCIKIT_MODEL = KNeighborsClassifier(n_jobs=-1)
