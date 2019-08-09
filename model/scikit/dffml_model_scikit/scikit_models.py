@@ -18,6 +18,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+from sklearn.linear_model import LinearRegression
 
 from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entry_point
@@ -51,7 +52,8 @@ for entry_point_name, name, cls, applicable_features_function in [
     ("scikitrfc", "RandomForestClassifier", RandomForestClassifier, applicable_features),
     ("scikitmlp", "MLPClassifier", MLPClassifier, applicable_features),
     ("scikitgnb", "GaussianNB", GaussianNB, applicable_features),
-    ("scikitqda", "QuadraticDiscriminantAnalysis", QuadraticDiscriminantAnalysis, applicable_features)
+    ("scikitqda", "QuadraticDiscriminantAnalysis", QuadraticDiscriminantAnalysis, applicable_features),
+    ("scikitlr", "LinearRegression", LinearRegression, applicable_features)
 ]:
 
     parameters = inspect.signature(cls).parameters

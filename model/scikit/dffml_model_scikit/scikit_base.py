@@ -140,7 +140,7 @@ class Scikit(Model):
     #         above,
     #         "directory",
     #         Arg(
-    #             default=os.path.join(
+    #             default=os.path.joins(
     #                 os.path.expanduser("~"), ".cache", "dffml", "scikit"
     #             ),
     #             help="Directory where state should be saved",
