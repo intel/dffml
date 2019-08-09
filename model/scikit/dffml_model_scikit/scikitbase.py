@@ -90,6 +90,7 @@ class ScikitContext(ModelContext):
         ydata = np.array(df[self.parent.config.predict])
         self.logger.debug("Number of input repos: {}".format(len(xdata)))
         self.confidence = self.clf.score(xdata, ydata)
+        print(self.confidence)
         return self.confidence
 
     async def predict(
@@ -108,6 +109,11 @@ class ScikitContext(ModelContext):
                     self.clf.predict(predict),
                 )
             )
+            print("Predicted Value of {} for {}: {}".format(
+                self.parent.config.predict,
+                predict,
+                self.clf.predict(predict),
+            ))
             yield repo, self.clf.predict(predict)[0], self.confidence
 
 

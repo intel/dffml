@@ -10,6 +10,7 @@ from collections import namedtuple
 from typing import Dict
 
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import AdaBoostClassifier
 
 from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entry_point
@@ -34,10 +35,17 @@ def kNN_applicable_features(self, features):
 class NoDefaultValue:
     pass
 
-
 # [(entry_point_name (command line usage), class name, scikit class, applicable_features_function]
 for entry_point_name, name, cls, applicable_features_function in [
-    ("scikitknn", "kNN", KNeighborsClassifier, kNN_applicable_features)
+    ("scikitknn", "KNeighborsClassifier", KNeighborsClassifier, kNN_applicable_features),
+    ("scikitadaboost", "AdaBoostClassifier", AdaBoostClassifier, kNN_applicable_features),
+    # ("scikitsvc", "SVC", SVC, kNN_applicable_features),
+    # ("scikitgpc", "GaussianProcessClassifier", GaussianProcessClassifier, kNN_applicable_features),
+    # ("scikitdtc", "DecisonTreeClassifier", DecisonTreeClassifier, kNN_applicable_features),
+    # ("scikitrfc", "RandomForestClassifier", RandomForestClassifier, kNN_applicable_features),
+    # ("scikitmlp", "MLPClassifier", MLPClassifier, kNN_applicable_features),
+    # ("scikitgnb", "GaussianNB", GaussianNB, kNN_applicable_features),
+    # ("scikitqda", "QuadraticDiscriminantAnalysis", QuadraticDiscriminantAnalysis, kNN_applicable_features)
 ]:
 
     # Create the config namedtuple
