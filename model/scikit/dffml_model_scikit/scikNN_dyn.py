@@ -98,7 +98,7 @@ for entry_point_name, name, cls, applicable_features_function in [
                 args,
                 above,
                 param.name,
-                Args(
+                Arg(
                     type=param.annotation,
                     default=NoDefaultValue
                     if param.default == inspect._empty
@@ -132,7 +132,7 @@ for entry_point_name, name, cls, applicable_features_function in [
         {
             "CONFIG": config,
             "CONTEXT": dffml_cls_ctx,
-            "SCIKIT_MODEL": cls,
+            "SCIKIT_MODEL": cls(),
             "args": args,
             "config": config,
         },
