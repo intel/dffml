@@ -1,13 +1,10 @@
 import sys
-import random
 import tempfile
-from typing import Type
 
-from dffml.repo import Repo, RepoData
-from dffml.model.model import ModelConfig
+from dffml.repo import Repo
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml.feature import Data, DefFeature, Features
+from dffml.feature import DefFeature, Features
 from dffml.util.asynctestcase import AsyncTestCase
 
 import dffml_model_scikit.scikit_models

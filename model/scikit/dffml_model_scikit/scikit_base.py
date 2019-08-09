@@ -4,12 +4,10 @@
 Description of what this model does
 """
 import os
-import abc
 import json
 import hashlib
-import inspect
 from pathlib import Path
-from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Dict
+from typing import AsyncIterator, Tuple, Any, NamedTuple
 
 import joblib
 import numpy as np
@@ -17,11 +15,8 @@ import pandas as pd
 
 from dffml.repo import Repo
 from dffml.source.source import Sources
-from dffml.feature import Features
 from dffml.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model
-from dffml.util.entrypoint import entry_point
-from dffml.util.cli.arg import Arg
 
 
 class ScikitConfig(ModelConfig, NamedTuple):
@@ -132,31 +127,3 @@ class Scikit(Model):
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         Path(self._filename()).write_text(json.dumps(self.saved))
-
-    # @classmethod
-    # def args(cls, args, *above) -> Dict[str, Arg]:
-    #     cls.config_set(
-    #         args,
-    #         above,
-    #         "directory",
-    #         Arg(
-    #             default=os.path.joins(
-    #                 os.path.expanduser("~"), ".cache", "dffml", "scikit"
-    #             ),
-    #             help="Directory where state should be saved",
-    #         ),
-    #     )
-    #     cls.config_set(
-    #         args,
-    #         above,
-    #         "predict",
-    #         Arg(type=str, help="Label or the value to be predicted"),
-    #     )
-    #     return args
-
-    # @classmethod
-    # def config(cls, config, *above) -> "ScikitConfig":
-    #     return ScikitConfig(
-    #         directory=cls.config_get(config, above, "directory"),
-    #         predict=cls.config_get(config, above, "predict"),
-        # )
