@@ -9,22 +9,29 @@ import inspect
 from collections import namedtuple
 from typing import Dict
 
+from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.ensemble import AdaBoostClassifier
+from sklearn.svm import SVC
+from sklearn.gaussian_process import GaussianProcessClassifier
+from sklearn.gaussian_process.kernels import RBF
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 
 from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entry_point
-from dffml_model_scikit.scikitbase import Scikit, ScikitContext
+from dffml_model_scikit.scikit_base import Scikit, ScikitContext
 
 
-def kNN_applicable_features(self, features):
+def applicable_features(self, features):
     usable = []
     for feature in features:
         if feature.dtype() != int and feature.dtype() != float:
-            raise ValueError("kNN only supports int or float feature")
+            raise ValueError("Models only supports int or float feature")
         if feature.length() != 1:
             raise ValueError(
-                "kNN only supports single values (non-matrix / array)"
+                "Models only supports single values (non-matrix / array)"
             )
         usable.append(feature.NAME)
     return sorted(usable)
@@ -35,20 +42,18 @@ def kNN_applicable_features(self, features):
 class NoDefaultValue:
     pass
 
-# [(entry_point_name (command line usage), class name, scikit class, applicable_features_function]
 for entry_point_name, name, cls, applicable_features_function in [
-    ("scikitknn", "KNeighborsClassifier", KNeighborsClassifier, kNN_applicable_features),
-    ("scikitadaboost", "AdaBoostClassifier", AdaBoostClassifier, kNN_applicable_features),
-    # ("scikitsvc", "SVC", SVC, kNN_applicable_features),
-    # ("scikitgpc", "GaussianProcessClassifier", GaussianProcessClassifier, kNN_applicable_features),
-    # ("scikitdtc", "DecisonTreeClassifier", DecisonTreeClassifier, kNN_applicable_features),
-    # ("scikitrfc", "RandomForestClassifier", RandomForestClassifier, kNN_applicable_features),
-    # ("scikitmlp", "MLPClassifier", MLPClassifier, kNN_applicable_features),
-    # ("scikitgnb", "GaussianNB", GaussianNB, kNN_applicable_features),
-    # ("scikitqda", "QuadraticDiscriminantAnalysis", QuadraticDiscriminantAnalysis, kNN_applicable_features)
+    ("scikitknn", "KNeighborsClassifier", KNeighborsClassifier, applicable_features),
+    ("scikitadaboost", "AdaBoostClassifier", AdaBoostClassifier, applicable_features),
+    ("scikitsvc", "SVC", SVC, applicable_features),
+    ("scikitgpc", "GaussianProcessClassifier", GaussianProcessClassifier, applicable_features),
+    ("scikitdtc", "DecisionTreeClassifier", DecisionTreeClassifier, applicable_features),
+    ("scikitrfc", "RandomForestClassifier", RandomForestClassifier, applicable_features),
+    ("scikitmlp", "MLPClassifier", MLPClassifier, applicable_features),
+    ("scikitgnb", "GaussianNB", GaussianNB, applicable_features),
+    ("scikitqda", "QuadraticDiscriminantAnalysis", QuadraticDiscriminantAnalysis, applicable_features)
 ]:
 
-    # Create the config namedtuple
     parameters = inspect.signature(cls).parameters
     defaults = [
         os.path.join(
@@ -76,7 +81,6 @@ for entry_point_name, name, cls, applicable_features_function in [
 
     setattr(sys.modules[__name__], config.__qualname__, config)
 
-    # Define args and config methods
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
         cls.config_set(
@@ -115,9 +119,6 @@ for entry_point_name, name, cls, applicable_features_function in [
             )
         return args
 
-    # -models feature1=scikitknn feature2=scikitknn
-    # -model-feature1-predict feed -> feature1_model = kNNModel(kNNModelConfig(predict="face"))
-    # -model-feature2-predict face -> feature2_model = kNNModel(kNNModelConfig(predict="face"))
     @classmethod
     def config(cls, config, *above):
         params = dict(

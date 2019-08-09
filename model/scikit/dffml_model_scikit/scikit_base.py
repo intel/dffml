@@ -90,7 +90,7 @@ class ScikitContext(ModelContext):
         ydata = np.array(df[self.parent.config.predict])
         self.logger.debug("Number of input repos: {}".format(len(xdata)))
         self.confidence = self.clf.score(xdata, ydata)
-        print(self.confidence)
+        self.logger.debug("Model Accuracy: {}".format(self.confidence))
         return self.confidence
 
     async def predict(
@@ -109,15 +109,9 @@ class ScikitContext(ModelContext):
                     self.clf.predict(predict),
                 )
             )
-            print("Predicted Value of {} for {}: {}".format(
-                self.parent.config.predict,
-                predict,
-                self.clf.predict(predict),
-            ))
             yield repo, self.clf.predict(predict)[0], self.confidence
 
 
-@entry_point("scikitlr")
 class Scikit(Model):
 
     def __init__(self, config) -> None:
@@ -139,30 +133,30 @@ class Scikit(Model):
     async def __aexit__(self, exc_type, exc_value, traceback):
         Path(self._filename()).write_text(json.dumps(self.saved))
 
-    @classmethod
-    def args(cls, args, *above) -> Dict[str, Arg]:
-        cls.config_set(
-            args,
-            above,
-            "directory",
-            Arg(
-                default=os.path.join(
-                    os.path.expanduser("~"), ".cache", "dffml", "scikit"
-                ),
-                help="Directory where state should be saved",
-            ),
-        )
-        cls.config_set(
-            args,
-            above,
-            "predict",
-            Arg(type=str, help="Label or the value to be predicted"),
-        )
-        return args
+    # @classmethod
+    # def args(cls, args, *above) -> Dict[str, Arg]:
+    #     cls.config_set(
+    #         args,
+    #         above,
+    #         "directory",
+    #         Arg(
+    #             default=os.path.join(
+    #                 os.path.expanduser("~"), ".cache", "dffml", "scikit"
+    #             ),
+    #             help="Directory where state should be saved",
+    #         ),
+    #     )
+    #     cls.config_set(
+    #         args,
+    #         above,
+    #         "predict",
+    #         Arg(type=str, help="Label or the value to be predicted"),
+    #     )
+    #     return args
 
-    @classmethod
-    def config(cls, config, *above) -> "ScikitConfig":
-        return ScikitConfig(
-            directory=cls.config_get(config, above, "directory"),
-            predict=cls.config_get(config, above, "predict"),
-        )
+    # @classmethod
+    # def config(cls, config, *above) -> "ScikitConfig":
+    #     return ScikitConfig(
+    #         directory=cls.config_get(config, above, "directory"),
+    #         predict=cls.config_get(config, above, "predict"),
+        # )

@@ -6,7 +6,7 @@ Description of what this model does
 from sklearn.linear_model import LinearRegression
 
 from dffml.util.entrypoint import entry_point
-from dffml_model_scikit.scikitbase import Scikit, ScikitContext
+from dffml_model_scikit.scikit_base import Scikit, ScikitContext
 
 
 class LRContext(ScikitContext):

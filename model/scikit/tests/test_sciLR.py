@@ -10,7 +10,7 @@ from dffml.feature import Data, DefFeature, Features
 from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml_model_scikit.sciLR import LR
-from dffml_model_scikit.scikitbase import ScikitConfig
+from dffml_model_scikit.scikit_base import ScikitConfig
 
 
 FEATURE_DATA = [
