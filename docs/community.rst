@@ -1,9 +1,14 @@
 Community
 =========
 
-Miscellaneous questions can be asked on
-`Gitter <https://gitter.im/dffml/community>`_ or in the
-`GitHub Issue <https://github.com/intel/dffml/issues/12>`_ meant for questions.
+Questions can be asked via
+
+- `GitHub Issue <https://github.com/intel/dffml/issues/new?assignees=&labels=question&template=question.md&title=question%3A+>`_
+- `Gitter <https://gitter.im/dffml/community>`_
+- Email `dffml-users@lists.01.org <dffml-users@lists.01.org>`_
+
+  - To subscribe to the users mailing list visit:
+    https://lists.01.org/mailman/listinfo/dffml-users
 
 We hold weekly meetings on Tuesday's at 9 AM PST. Meetings are held via Google
 Hangouts.
@@ -31,6 +36,12 @@ abstractions, we all have to work with.
 
 If you have developed a plugin for DFFML and would like it listed in the docs,
 please open an `issue <https://github.com/intel/dffml/issues/new?assignees=&labels=documentation&template=new_plugin.md&title=plugin%3A+new%3A+>`_.
+
+For work on DFFML itself and the core plugins, there is a mailing list you
+should subscribe, and send questions to: `dffml-dev@lists.01.org <dffml-dev@lists.01.org>`_
+
+  - To subscribe to the dev mailing list visit:
+    https://lists.01.org/mailman/listinfo/dffml-dev
 
 .. raw:: html
 

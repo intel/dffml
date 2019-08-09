@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Community link in CONTRIBUTING.md.
 - Explained three main parts of DFFML on docs homepage
 - Documentation on how to use ML models on docs Models plugin page.
+- Mailing list info
+- Issue template for questions
 - Multiple Scikit Models with dynamic config
 ### Changed
 - feature/codesec became it's own branch, binsec
