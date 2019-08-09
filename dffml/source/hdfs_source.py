@@ -6,6 +6,7 @@ from hdfs import *
 
 from dffml.base import BaseConfig
 from dffml.repo import Repo
+from dffml.source.file import FileSource
 from dffml.source.source import BaseSourceContext, BaseSource
 from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entry_point
@@ -13,10 +14,10 @@ from dffml.util.entrypoint import entry_point
 
 class HDFSSourceConfig(BaseConfig, NamedTuple):
     host: str
-    port: str
+    port: int
     user: str
     filepath: str
-    source: BaseSource.load
+    source: FileSource
 
 
 @entry_point("dffml.source")
@@ -36,10 +37,10 @@ class HDFSSource(BaseSource):
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
         cls.config_set(args, above, "host", Arg(type=str))
-        cls.config_set(args, above, "port", Arg(type=str))
+        cls.config_set(args, above, "port", Arg(type=int))
         cls.config_set(args, above, "user", Arg(type=str))
         cls.config_set(args, above, "filepath", Arg(type=str))
-        cls.config_set(args, above, "source", Arg(type=BaseSource.load))
+        cls.config_set(args, above, "source", Arg(type=FileSource))
         for loaded in BaseSource.load():
             loaded.args(args, *cls.add_orig_label(*above))
         return args
