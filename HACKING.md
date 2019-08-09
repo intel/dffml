@@ -47,7 +47,7 @@ new commits to GitHub.
 
 # Testing
 
-To get the Debug Output while testing
+To get the debug output while testing:
 
 ```console
 export LOGGING=debug
