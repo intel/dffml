@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 """
-Description of what this model does
+Base class for Scikit models
 """
 import os
 import json
@@ -23,11 +23,12 @@ class ScikitConfig(ModelConfig, NamedTuple):
     directory: str
     predict: str
 
+
 class ScikitContext(ModelContext):
     def __init__(self, parent, features):
         super().__init__(parent, features)
         self.features = self.applicable_features(features)
-        self._features_hash = self._feature_predict_hash() 
+        self._features_hash = self._feature_predict_hash()
         self.clf = None
 
     @property
@@ -45,8 +46,7 @@ class ScikitContext(ModelContext):
 
     def _filename(self):
         return os.path.join(
-            self.parent.config.directory,
-            self._features_hash + ".joblib",
+            self.parent.config.directory, self._features_hash + ".joblib"
         )
 
     async def __aenter__(self):
@@ -108,7 +108,6 @@ class ScikitContext(ModelContext):
 
 
 class Scikit(Model):
-
     def __init__(self, config) -> None:
         super().__init__(config)
         self.saved = {}
@@ -119,7 +118,7 @@ class Scikit(Model):
             hashlib.sha384(self.config.predict.encode()).hexdigest() + ".json",
         )
 
-    async def __aenter__(self) -> 'Scikit':
+    async def __aenter__(self) -> "Scikit":
         path = Path(self._filename())
         if path.is_file():
             self.saved = json.loads(path.read_text())

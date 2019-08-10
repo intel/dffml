@@ -42,17 +42,48 @@ def applicable_features(self, features):
 class NoDefaultValue:
     pass
 
+
 for entry_point_name, name, cls, applicable_features_function in [
-    ("scikitknn", "KNeighborsClassifier", KNeighborsClassifier, applicable_features),
-    ("scikitadaboost", "AdaBoostClassifier", AdaBoostClassifier, applicable_features),
+    (
+        "scikitknn",
+        "KNeighborsClassifier",
+        KNeighborsClassifier,
+        applicable_features,
+    ),
+    (
+        "scikitadaboost",
+        "AdaBoostClassifier",
+        AdaBoostClassifier,
+        applicable_features,
+    ),
     ("scikitsvc", "SVC", SVC, applicable_features),
-    ("scikitgpc", "GaussianProcessClassifier", GaussianProcessClassifier, applicable_features),
-    ("scikitdtc", "DecisionTreeClassifier", DecisionTreeClassifier, applicable_features),
-    ("scikitrfc", "RandomForestClassifier", RandomForestClassifier, applicable_features),
+    (
+        "scikitgpc",
+        "GaussianProcessClassifier",
+        GaussianProcessClassifier,
+        applicable_features,
+    ),
+    (
+        "scikitdtc",
+        "DecisionTreeClassifier",
+        DecisionTreeClassifier,
+        applicable_features,
+    ),
+    (
+        "scikitrfc",
+        "RandomForestClassifier",
+        RandomForestClassifier,
+        applicable_features,
+    ),
     ("scikitmlp", "MLPClassifier", MLPClassifier, applicable_features),
     ("scikitgnb", "GaussianNB", GaussianNB, applicable_features),
-    ("scikitqda", "QuadraticDiscriminantAnalysis", QuadraticDiscriminantAnalysis, applicable_features),
-    ("scikitlr", "LinearRegression", LinearRegression, applicable_features)
+    (
+        "scikitqda",
+        "QuadraticDiscriminantAnalysis",
+        QuadraticDiscriminantAnalysis,
+        applicable_features,
+    ),
+    ("scikitlr", "LinearRegression", LinearRegression, applicable_features),
 ]:
 
     parameters = inspect.signature(cls).parameters
