@@ -185,9 +185,10 @@ async def git_repo_commit_from_date(repo: Dict[str, str],
         },
 )
 async def get_pylint_score(repo: Dict[str, str]):
-    command = "python -m pylint dffml_feature_git"
+    lint_log = await check_output(sys.executable, '-m', 'pylint', '--exit-zero',
+                                  repo['directory'])
     return {
-            'score': command
+            'score': lint_log
             }
 
 @op(inputs={

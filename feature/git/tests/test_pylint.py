@@ -2,6 +2,7 @@ from dffml.df.base import BaseConfig
 from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml_feature_git.feature.operations import get_pylint_score
+import os
 
 
 class TestRunPylintScore(AsyncTestCase):
@@ -10,6 +11,6 @@ class TestRunPylintScore(AsyncTestCase):
             BaseConfig()
         ) as pylint_latest:
             async with pylint_latest(None, None) as ctx:
-                results = await ctx.run({"repo": "test"})
+                results = await ctx.run({"repo": {"directory": os.getcwd()}})
                 print(results)
                 self.assertEqual(results["score"], "test")
