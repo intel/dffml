@@ -80,7 +80,11 @@ definitions = [
     Definition(
         name="date_generator_spec",
         primitive="Dict[str, Any]"
-    )
+    ),
+    Definition(
+        name="pylint_score",
+        primitive="float"
+    ),
 ]
 
 for definition in definitions:

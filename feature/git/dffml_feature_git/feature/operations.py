@@ -178,6 +178,19 @@ async def git_repo_commit_from_date(repo: Dict[str, str],
             }
 
 @op(inputs={
+        'repo': git_repository
+        },
+    outputs={
+        'score': pylint_score
+        },
+)
+async def get_pylint_score(repo: Dict[str, str]):
+    command = "python -m pylint dffml_feature_git"
+    return {
+            'score': command
+            }
+
+@op(inputs={
         'repo': git_repository,
         'branch': git_branch,
         'start_end': date_pair,
