@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation on how to use ML models on docs Models plugin page.
 - Mailing list info
 - Issue template for questions
+- Multiple Scikit Models with dynamic config
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
