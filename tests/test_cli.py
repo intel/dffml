@@ -2,6 +2,7 @@
 # Copyright (c) 2019 Intel Corporation
 import os
 import io
+import json
 import atexit
 import shutil
 import random
@@ -11,6 +12,7 @@ import logging
 import tempfile
 import unittest
 import collections
+from pathlib import Path
 from unittest.mock import patch
 from functools import wraps
 from contextlib import contextmanager, ExitStack
@@ -22,6 +24,7 @@ from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.source.file import FileSourceConfig
 from dffml.source.json import JSONSource
+from dffml.source.csv import CSVSource, CSVSourceConfig
 from dffml.model.model import ModelContext, Model
 from dffml.df.types import Operation
 from dffml.df.base import OperationImplementation
@@ -52,24 +55,35 @@ def non_existant_tempfile():
     Yield the filename of a non-existant file within a temporary directory
     """
     with tempfile.TemporaryDirectory() as testdir:
-        yield os.path.join(testdir, str(random.random))
+        yield os.path.join(testdir, str(random.random()))
 
 
 class ReposTestCase(AsyncTestCase):
     async def setUp(self):
         super().setUp()
         self.repos = [Repo(str(random.random())) for _ in range(0, 10)]
-        self.__temp_filename = non_existant_tempfile()
-        self.temp_filename = self.__temp_filename.__enter__()
+        self.__stack = ExitStack()
+        self._stack = self.__stack.__enter__()
+        self.temp_filename = self.mktempfile()
         self.sconfig = FileSourceConfig(filename=self.temp_filename)
         async with JSONSource(self.sconfig) as source:
             async with source() as sctx:
                 for repo in self.repos:
                     await sctx.update(repo)
+        contents = json.loads(Path(self.sconfig.filename).read_text())
+        # Ensure there are repos in the file
+        self.assertEqual(
+            len(contents.get(self.sconfig.label)),
+            len(self.repos),
+            "ReposTestCase JSON file erroneously initialized as empty",
+        )
 
     def tearDown(self):
         super().tearDown()
-        self.__temp_filename.__exit__(None, None, None)
+        self.__stack.__exit__(None, None, None)
+
+    def mktempfile(self):
+        return self._stack.enter_context(non_existant_tempfile())
 
 
 class FakeFeature(Feature):
@@ -163,6 +177,79 @@ class TestMerge(ReposTestCase):
                 async with source() as sctx:
                     repos = [repo async for repo in sctx.repos()]
                     self.assertEqual(len(repos), len(self.repos))
+
+    async def test_json_to_csv(self):
+        with non_existant_tempfile() as csv_tempfile:
+            await Merge.cli(
+                "dest=csv",
+                "src=json",
+                "-source-dest-filename",
+                csv_tempfile,
+                "-source-dest-key",
+                "src_url",
+                "-source-src-filename",
+                self.temp_filename,
+            )
+            contents = Path(csv_tempfile).read_text()
+            self.assertEqual(
+                contents,
+                "src_url,label,prediction,confidence\n"
+                + "\n".join(
+                    [f"{repo.src_url},unlabeled,," for repo in self.repos]
+                )
+                + "\n",
+                "Incorrect data in csv file",
+            )
+
+    async def test_csv_label(self):
+        with non_existant_tempfile() as csv_tempfile:
+            # Move the pre-populated json data to a csv source
+            with self.subTest(json_to_csv=True):
+                await Merge.cli(
+                    "dest=csv",
+                    "src=json",
+                    "-source-dest-filename",
+                    csv_tempfile,
+                    "-source-src-filename",
+                    self.temp_filename,
+                )
+            # Merge one label to another within the same file
+            with self.subTest(merge_same_file=True):
+                await Merge.cli(
+                    "dest=csv",
+                    "src=csv",
+                    "-source-dest-filename",
+                    csv_tempfile,
+                    "-source-dest-label",
+                    "somelabel",
+                    "-source-src-filename",
+                    csv_tempfile,
+                )
+            contents = Path(csv_tempfile).read_text()
+            self.assertIn("unlabeled", contents)
+            self.assertIn("somelabel", contents)
+            # Check the unlabeled source
+            with self.subTest(labeled=None):
+                async with CSVSource(
+                    CSVSourceConfig(filename=csv_tempfile)
+                ) as source:
+                    async with source() as sctx:
+                        repos = [repo async for repo in sctx.repos()]
+                        self.assertEqual(len(repos), len(self.repos))
+            contents = Path(csv_tempfile).read_text()
+            self.assertIn("somelabel", contents)
+            self.assertIn("unlabeled", contents)
+            # Check the labeled source
+            with self.subTest(labeled="somelabel"):
+                async with CSVSource(
+                    CSVSourceConfig(filename=csv_tempfile, label="somelabel")
+                ) as source:
+                    async with source() as sctx:
+                        repos = [repo async for repo in sctx.repos()]
+                        self.assertEqual(len(repos), len(self.repos))
+            contents = Path(csv_tempfile).read_text()
+            self.assertIn("somelabel", contents)
+            self.assertIn("unlabeled", contents)
 
 
 class TestListRepos(ReposTestCase):
