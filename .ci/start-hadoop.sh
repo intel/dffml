@@ -1,5 +1,6 @@
 #!/bin/bash
- 
+source /usr/local/hadoop/hadoop_config
+
 # start ssh server
 /etc/init.d/ssh start
  

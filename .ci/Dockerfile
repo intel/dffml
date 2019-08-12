@@ -11,7 +11,6 @@ RUN \
   vim \
   openjdk-8-jdk
 
-# download and extract hadoop, set JAVA_HOME in hadoop-env.sh, update path
 RUN \
   wget http://apache.mirrors.tds.net/hadoop/common/hadoop-3.1.2/hadoop-3.1.2.tar.gz && \
   tar -xzf hadoop-3.1.2.tar.gz && \
@@ -23,24 +22,6 @@ ADD configs/hadoop_config /usr/local/hadoop
 CMD cat /usr/local/hadoop/hadoop_config >> ~/.bashrc
 
 CMD bash ~/.bashrc
-  ##echo "export JAVA_HOME=$JAVA_HOME" >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
-  ##echo "PATH=$PATH:$HADOOP_HOME/bin" >> ~/.bashrc
-
-##ssh setup
-##RUN \
-##    mkdir ~/.ssh \
-##    chmod 700 ~/.ssh
-
-CMD bash cat "" >> ~/.ssh/authorized_keys \
-    chmod 600 ~/.ssh/authorized_keys
-
-## ssh key gen
-RUN \
-    ssh-keygen -t rsa -P "" -f ~/.ssh/id_rsa
-
-CMD bash cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
-    ssh-copy-id -i ~/.ssh/id_rsa.pub localhost \
-    ssh localhost
 
 # copy hadoop configs
 ADD configs/*xml $HADOOP_HOME/etc/hadoop/
@@ -54,12 +35,3 @@ EXPOSE 9000 8088 50070 50075 50030 50060
 # start hadoop
 RUN chmod a+x /start-hadoop.sh
 CMD bash start-hadoop.sh
-
-## start hdfs
-##RUN \
-##    hdf namenode -format \
-##    start-dfs.sh \
-##    start-yarn.sh
-
-# expose various ports
-##EXPOSE 8000 9000 8088 50070 50075 50030 50060
