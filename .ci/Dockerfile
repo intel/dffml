@@ -1,33 +1,35 @@
 FROM ubuntu:16.04
 
 ENV HADOOP_HOME /usr/local/hadoop
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 
-#java setup
+# install packages
 RUN \
-    apt purge openjdk* \
-    add-apt-repository -y ppa:webupd8team/java \
-    apt update \
-    apt install -y oracle-java8-installer \
-    echo "export JAVA_HOME=/usr" >> $HADOOP_HOME/etc/hadoop \
-    ##source $HADOOP_HOME/etc/profile
+  apt-get update && apt-get install -y \
+  ssh \
+  rsync \
+  vim \
+  openjdk-8-jdk
 
-#setup hadoopuser
+# download and extract hadoop, set JAVA_HOME in hadoop-env.sh, update path
 RUN \
-    addgroup hadoopgroup \
-    adduser -ingroup hadoopgroup hadoopuser \
-    apt install ssh \
-    systemctl enable ssh \
-    systemctl start ssh
+  wget http://apache.mirrors.tds.net/hadoop/common/hadoop-3.1.2/hadoop-3.1.2.tar.gz && \
+  tar -xzf hadoop-3.1.2.tar.gz && \
+  rm -rf hadoop-3.1.2.tar.gz && \
+  mv hadoop-3.1.2 /usr/local && \
+  ln -sf /usr/local/hadoop-3.1.2/ /usr/local/hadoop \
+  cat hadoop_config >> ~/.bashrc \
+
+CMD bash ~/.bashrc
+  ##echo "export JAVA_HOME=$JAVA_HOME" >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
+  ##echo "PATH=$PATH:$HADOOP_HOME/bin" >> ~/.bashrc
 
 ##ssh setup
 RUN \
-    su - hadoopuser \
-    echo "DIRECTORY SETUP STARTED" \
     mkdir ~/.ssh \
     chmod 700 ~/.ssh \
     touch ~/.ssh/authorized_keys \
     chmod 600 ~/.ssh/authorized_keys \
-    echo "DIRECTORY SETUP DONE"
 
 ## ssh key gen
 RUN \
@@ -37,22 +39,24 @@ RUN \
     ssh-copy-id -i ~/.ssh/id_rsa.pub localhost \
     ssh localhost
 
-##download apache
-RUN \
-    wget http://it.apache.contactlab.it/hadoop/common/hadoop-3.1.2/hadoop-3.1.2.tar.gz \
-    tar xzf hadoop-3.1.2.tar.gz \
-    rm -rf hadoop-3.1.2.tar.gz \
-    mv hadoop-3.1.2 /usr/local \
-    ln -sf /usr/local/hadoop-3.1.2/ /usr/local/hadoop \
-    chown -R hadoopuser:hadoopgroup /usr/local/hadoop-3.1.2/ \
-    cat hadoop_config >> ~/.bashrc \
-    source ~/.bashrc
+# copy hadoop configs
+ADD configs/*xml $HADOOP_HOME/etc/hadoop/
 
-## start hdfs
-RUN \
-    hdf namenode -format \
-    start-dfs.sh \
-    start-yarn.sh
+# copy script to start hadoop
+ADD start-hadoop.sh start-hadoop.sh
 
 # expose various ports
-EXPOSE 8000 9000 8088 50070 50075 50030 50060
+EXPOSE 9000 8088 50070 50075 50030 50060
+
+# start hadoop
+RUN chmod a+x /start-hadoop.sh
+CMD bash start-hadoop.sh
+
+## start hdfs
+##RUN \
+##    hdf namenode -format \
+##    start-dfs.sh \
+##    start-yarn.sh
+
+# expose various ports
+##EXPOSE 8000 9000 8088 50070 50075 50030 50060

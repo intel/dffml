@@ -12,4 +12,4 @@ $HADOOP_HOME/sbin/start-yarn.sh
 #$HADOOP_HOME/sbin/mr-jobhistory-daemon.sh start historyserver
  
 # keep container running
-tail -f /dev/null
+##tail -f /dev/null
