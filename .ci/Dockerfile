@@ -17,25 +17,27 @@ RUN \
   tar -xzf hadoop-3.1.2.tar.gz && \
   rm -rf hadoop-3.1.2.tar.gz && \
   mv hadoop-3.1.2 /usr/local && \
-  ln -sf /usr/local/hadoop-3.1.2/ /usr/local/hadoop \
-  cat hadoop_config >> ~/.bashrc \
+  ln -sf /usr/local/hadoop-3.1.2/ /usr/local/hadoop
+
+CMD cat hadoop_config >> ~/.bashrc
 
 CMD bash ~/.bashrc
   ##echo "export JAVA_HOME=$JAVA_HOME" >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
   ##echo "PATH=$PATH:$HADOOP_HOME/bin" >> ~/.bashrc
 
 ##ssh setup
-RUN \
-    mkdir ~/.ssh \
-    chmod 700 ~/.ssh \
-    touch ~/.ssh/authorized_keys \
-    chmod 600 ~/.ssh/authorized_keys \
+##RUN \
+##    mkdir ~/.ssh \
+##    chmod 700 ~/.ssh
+
+CMD bash cat "" >> ~/.ssh/authorized_keys \
+    chmod 600 ~/.ssh/authorized_keys
 
 ## ssh key gen
 RUN \
-    ssh-keygen -t rsa -P "" -f ~/.ssh/id_rsa \
-    cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
-    chmod 600 ~/.ssh/authorized_keys \
+    ssh-keygen -t rsa -P "" -f ~/.ssh/id_rsa
+
+CMD bash cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
     ssh-copy-id -i ~/.ssh/id_rsa.pub localhost \
     ssh localhost
 
