@@ -3,16 +3,17 @@ import json
 import random
 import unittest
 import subprocess
+import contextlib
 
 from dffml.util.testing.source import SourceTest
 from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml_source_mysql.source import MysqlSourceConfig, MysqlSource
 
-from .test_docker import DockerTestCase, DOCKER_ENV
+from dffml_source_mysql.util.mysql_docker import mysql, DOCKER_ENV
 
 
-class TestMySQLSource(SourceTest, DockerTestCase, AsyncTestCase):
+class TestMySQLSource(AsyncTestCase, SourceTest):
 
     SQL_SETUP = """
 DROP TABLE IF EXISTS `repo_data`;
@@ -28,9 +29,16 @@ CREATE TABLE `repo_data` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 """
 
-    async def setUp(self):
-        self.source_config = MysqlSourceConfig(
-            host=self.container_ip,
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls._exit_stack = contextlib.ExitStack()
+        cls.exit_stack = cls._exit_stack.__enter__()
+        cls.container_ip = cls.exit_stack.enter_context(
+            mysql(sql_setup=cls.SQL_SETUP)
+        )
+        cls.source_config = MysqlSourceConfig(
+            host=cls.container_ip,
             port=3306,
             user=DOCKER_ENV["MYSQL_USER"],
             password=DOCKER_ENV["MYSQL_PASSWORD"],
@@ -40,13 +48,11 @@ CREATE TABLE `repo_data` (
             repos_query="select * from repo_data",
             model_columns="src_url feature_PetalLength feature_PetalWidth feature_SepalLength feature_SepalWidth prediction_confidence prediction_value",
         )
-        async with (await self.setUpSource()) as source:
-            async with source() as sctx:
-                await sctx.conn.execute(DROP_TABLE_QUERY)
-                await sctx.conn.execute(CREATE_TABLE_QUERY)
 
-    async def tearDown(self):
-        subprocess.check_output(["docker", "stop", self.container_name])
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        cls._exit_stack.__exit__(None, None, None)
 
     async def setUpSource(self):
         return MysqlSource(self.source_config)
