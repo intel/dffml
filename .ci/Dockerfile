@@ -19,7 +19,8 @@ RUN \
   mv hadoop-3.1.2 /usr/local && \
   ln -sf /usr/local/hadoop-3.1.2/ /usr/local/hadoop
 
-CMD cat hadoop_config >> ~/.bashrc
+ADD configs/hadoop_config /usr/local/hadoop
+CMD cat /usr/local/hadoop/hadoop_config >> ~/.bashrc
 
 CMD bash ~/.bashrc
   ##echo "export JAVA_HOME=$JAVA_HOME" >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
