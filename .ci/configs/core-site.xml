@@ -1,6 +1,14 @@
 <configuration>
     <property>
         <name>fs.defaultFS</name>
-        <value>hdfs://0.0.0.0:9000</value>
+        <value>hdfs://localhost:9000</value>
+    </property>
+    <property>
+        <name>hadoop.proxyuser.hadoopgroup.groups</name>
+        <value>*</value>
+    </property>
+    <property>
+        <name>hadoop.proxyuser.hadoopuser.hosts</name>
+        <value>*</value>
     </property>
 </configuration>
