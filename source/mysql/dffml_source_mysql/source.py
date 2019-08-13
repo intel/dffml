@@ -1,7 +1,9 @@
-import aiomysql
-from typing import AsyncIterator, NamedTuple, Dict
-from collections import OrderedDict
 import os
+import ssl
+import collections
+from typing import AsyncIterator, NamedTuple, Dict, List
+
+import aiomysql
 
 from dffml.base import BaseConfig
 from dffml.repo import Repo
@@ -10,7 +12,7 @@ from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entry_point
 
 
-class MysqlSourceConfig(BaseConfig, NamedTuple):
+class MySQLSourceConfig(BaseConfig, NamedTuple):
     host: str
     port: int
     user: str
@@ -19,14 +21,15 @@ class MysqlSourceConfig(BaseConfig, NamedTuple):
     update_query: str
     repos_query: str
     repo_query: str
-    model_columns: list = [str]
+    model_columns: List[str]
+    ca: str = None
 
 
-class MysqlSourceContext(BaseSourceContext):
+class MySQLSourceContext(BaseSourceContext):
     async def update(self, repo: Repo):
         update_query = self.parent.config.update_query
         model_columns = self.parent.config.model_columns.split()
-        key_value_pairs = OrderedDict()
+        key_value_pairs = collections.OrderedDict()
         for key in model_columns:
             if key.startswith("feature_"):
                 modified_key = key.replace("feature_", "")
@@ -98,7 +101,7 @@ class MysqlSourceContext(BaseSourceContext):
             )
         return repo
 
-    async def __aenter__(self) -> "MysqlSourceContext":
+    async def __aenter__(self) -> "MySQLSourceContext":
         self.__conn = self.parent.db.cursor(aiomysql.DictCursor)
         self.conn = await self.__conn.__aenter__()
         return self
@@ -108,18 +111,25 @@ class MysqlSourceContext(BaseSourceContext):
         await self.parent.db.commit()
 
 
-@entry_point("dffml.source")
-class MysqlSource(BaseSource):
+@entry_point("mysql")
+class MySQLSource(BaseSource):
 
-    CONTEXT = MysqlSourceContext
+    CONTEXT = MySQLSourceContext
 
-    async def __aenter__(self) -> "MysqlSource":
+    async def __aenter__(self) -> "MySQLSource":
+        # Verify MySQL connection using provided certificate, if given
+        ssl_ctx = None
+        if self.config.ca is not None:
+            ssl_ctx = ssl.create_default_context()
+            ssl_ctx.load_verify_locations(self.config.ca)
+        # Connect to MySQL
         self.pool = await aiomysql.create_pool(
             host=self.config.host,
             port=self.config.port,
             user=self.config.user,
             password=self.config.password,
             db=self.config.db,
+            ssl=ssl_ctx,
         )
         self.__db = self.pool.acquire()
         self.db = await self.__db.__aenter__()
@@ -167,14 +177,20 @@ class MysqlSource(BaseSource):
         cls.config_set(
             args,
             above,
-            "model_columns",
+            "model-columns",
             Arg(type=str, nargs="+", help="Order of Columns in table"),
+        )
+        cls.config_set(
+            args,
+            above,
+            "ca",
+            Arg(type=str, help="Path to server TLS certificate", default=None),
         )
         return args
 
     @classmethod
     def config(cls, config, *above):
-        return MysqlSourceConfig(
+        return MySQLSourceConfig(
             host=cls.config_get(config, above, "host"),
             port=cls.config_get(config, above, "port"),
             user=cls.config_get(config, above, "user"),
@@ -183,5 +199,6 @@ class MysqlSource(BaseSource):
             repos_query=cls.config_get(config, above, "repos-query"),
             repo_query=cls.config_get(config, above, "repo-query"),
             update_query=cls.config_get(config, above, "update-query"),
-            model_columns=cls.config_get(config, above, "model_columns"),
+            model_columns=cls.config_get(config, above, "model-columns"),
+            ca=cls.config_get(config, above, "ca"),
         )

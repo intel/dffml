@@ -8,7 +8,7 @@ import contextlib
 from dffml.util.testing.source import SourceTest
 from dffml.util.asynctestcase import AsyncTestCase
 
-from dffml_source_mysql.source import MysqlSourceConfig, MysqlSource
+from dffml_source_mysql.source import MySQLSourceConfig, MySQLSource
 
 from dffml_source_mysql.util.mysql_docker import mysql, DOCKER_ENV
 
@@ -34,10 +34,10 @@ CREATE TABLE `repo_data` (
         super().setUpClass()
         cls._exit_stack = contextlib.ExitStack()
         cls.exit_stack = cls._exit_stack.__enter__()
-        cls.container_ip = cls.exit_stack.enter_context(
+        cls.container_ip, cls.ca = cls.exit_stack.enter_context(
             mysql(sql_setup=cls.SQL_SETUP)
         )
-        cls.source_config = MysqlSourceConfig(
+        cls.source_config = MySQLSourceConfig(
             host=cls.container_ip,
             port=3306,
             user=DOCKER_ENV["MYSQL_USER"],
@@ -47,6 +47,7 @@ CREATE TABLE `repo_data` (
             update_query="""insert into repo_data (`src_url`, `feature_PetalLength`, `feature_PetalWidth`, `feature_SepalLength`, `feature_SepalWidth`, `prediction_confidence`, `prediction_value`) values (%s,%s,%s,%s,%s,%s,%s) on duplicate key update src_url=%s, feature_PetalLength=%s, feature_PetalWidth=%s, feature_SepalLength=%s, feature_SepalWidth=%s, prediction_confidence=%s, prediction_value=%s""",
             repos_query="select * from repo_data",
             model_columns="src_url feature_PetalLength feature_PetalWidth feature_SepalLength feature_SepalWidth prediction_confidence prediction_value",
+            ca=cls.ca,
         )
 
     @classmethod
@@ -55,7 +56,7 @@ CREATE TABLE `repo_data` (
         cls._exit_stack.__exit__(None, None, None)
 
     async def setUpSource(self):
-        return MysqlSource(self.source_config)
+        return MySQLSource(self.source_config)
 
     @unittest.skip("Labels not implemented")
     async def test_label(self):
