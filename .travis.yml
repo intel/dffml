@@ -8,6 +8,8 @@ addons:
     - git
     - subversion
     - cloc
+services:
+- docker
 env:
   global:
   - LOGGING=debug
@@ -17,6 +19,7 @@ env:
   - PLUGIN=model/tensorflow
   - PLUGIN=model/scratch
   - PLUGIN=model/scikit
+  - PLUGIN=source/mysql
   - PLUGIN=feature/git
   - PLUGIN=feature/auth
   - CHANGELOG=1
@@ -27,11 +30,11 @@ cache:
     - /home/travis/.cache/
     - /home/travis/.local/
 before_install:
+- docker pull mysql:8.0
 - mkdir -p /home/travis/.cache/
 - mkdir -p /home/travis/.local/bin/
 - pip install coverage codecov sphinx sphinxcontrib-asyncio black
 - curl -sSL https://github.com/XAMPPRocky/tokei/releases/download/v9.1.1/tokei-v9.1.1-x86_64-unknown-linux-gnu.tar.gz | tar xvz -C "$HOME/.local/bin/"
-- mysql -u root --password="" < test-db.sql
 script:
 - ./.ci/run.sh
 after_success:
@@ -39,5 +42,3 @@ after_success:
   if [ "x$PLUGIN" = "x." ]; then
       codecov
   fi
-services:
-- mysql

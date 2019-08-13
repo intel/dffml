@@ -10,6 +10,7 @@ import docker
 
 LOGGER = logging.getLogger(__package__)
 
+DOCKER_IMAGE = "mysql:8.0"
 # MySQL daemons default listing port
 DEFAULT_PORT = 3306
 # Environment variables passed to MySQL container
@@ -90,7 +91,7 @@ def mysql(*, sql_setup: Optional[str] = None):
         # Tell the docker daemon to start MySQL
         LOGGER.debug("Starting MySQL...")
         container = docker_client.containers.run(
-            "mysql:8.0",
+            DOCKER_IMAGE,
             detach=True,
             auto_remove=True,
             volumes={
