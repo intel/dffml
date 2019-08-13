@@ -120,8 +120,7 @@ class MySQLSource(BaseSource):
         # Verify MySQL connection using provided certificate, if given
         ssl_ctx = None
         if self.config.ca is not None:
-            ssl_ctx = ssl.create_default_context()
-            ssl_ctx.load_verify_locations(self.config.ca)
+            ssl_ctx = ssl.create_default_context(cafile=self.config.ca)
         # Connect to MySQL
         self.pool = await aiomysql.create_pool(
             host=self.config.host,

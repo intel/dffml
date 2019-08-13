@@ -29,8 +29,8 @@ DOCKER_ENV = {
 # MySQL server config file
 MY_CONF = """[mysqld]
 have_ssl=YES
-ssl_ca=/conf/certs/ca.pem
-ssl_cert=/conf/certs/ca.pem
+ssl_ca=/conf/certs/server.pem
+ssl_cert=/conf/certs/server.pem
 ssl_key=/conf/certs/server.key
 require_secure_transport=ON
 """
@@ -134,27 +134,57 @@ def mysql(*, sql_setup: Optional[str] = None):
             inspect = docker_client.api.inspect_container(container.id)
             container_ip = inspect["NetworkSettings"]["IPAddress"]
             # Create certificate
-            ca_cert_path = pathlib.Path(cert_dir_path, "ca.pem")
-            key_path = pathlib.Path(cert_dir_path, "server.key")
-            subprocess.call(
+            cmds = [
+                ["openssl", "genrsa", "-out", "root.key", "2048"],
                 [
                     "openssl",
                     "req",
-                    "-x509",
-                    "-newkey",
-                    "rsa:2048",
-                    "-keyout",
-                    key_path.resolve(),
-                    "-out",
-                    ca_cert_path.resolve(),
                     "-days",
-                    "365",
-                    "-nodes",
-                    "-sha256",
+                    "1",
+                    "-new",
+                    "-x509",
+                    "-key",
+                    "root.key",
+                    "-out",
+                    "root.pem",
                     "-subj",
-                    f"/C=US/ST=Oregon/L=Portland/O=Feedface/OU=Org/CN={container_ip}",
-                ]
-            )
+                    "/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Org/CN=localhost",
+                ],
+                ["openssl", "genrsa", "-out", "server.key", "2048"],
+                [
+                    "openssl",
+                    "req",
+                    "-new",
+                    "-key",
+                    "server.key",
+                    "-out",
+                    "server.csr",
+                    "-subj",
+                    f"/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Org/CN={container_ip}",
+                ],
+                [
+                    "openssl",
+                    "x509",
+                    "-days",
+                    "1",
+                    "-req",
+                    "-in",
+                    "server.csr",
+                    "-CA",
+                    "root.pem",
+                    "-CAkey",
+                    "root.key",
+                    "-set_serial",
+                    "0x1",
+                    "-out",
+                    "server.pem",
+                ],
+            ]
+            for cmd in cmds:
+                subprocess.call(cmd, cwd=cert_dir_path.resolve())
+            root_cert_path = pathlib.Path(cert_dir_path, "root.pem")
+            ca_cert_path = pathlib.Path(cert_dir_path, "server.pem")
+            key_path = pathlib.Path(cert_dir_path, "server.key")
             ca_cert_path.chmod(0o664)
             key_path.chmod(0o660)
             pathlib.Path(cert_dir_path, "ready").write_text("ready")
@@ -174,6 +204,6 @@ def mysql(*, sql_setup: Optional[str] = None):
                 pass
             LOGGER.debug("MySQL running")
             # Yield IP of container to caller
-            yield container_ip, ca_cert_path.resolve()
+            yield container_ip, root_cert_path.resolve()
         finally:
             cleanup()
