@@ -6,11 +6,16 @@ import os
 
 
 class TestRunPylintScore(AsyncTestCase):
+    print(os.getcwd())
     async def test_run(self):
         async with get_pylint_score.imp(
             BaseConfig()
         ) as pylint_latest:
             async with pylint_latest(None, None) as ctx:
-                results = await ctx.run({"repo": {"directory": os.getcwd()}})
-                print(results)
-                self.assertEqual(results["score"], "test")
+                results = await ctx.run({"repo": {
+                    "URL": "dummy",
+                    "directory": os.getcwd()
+                    }
+                })
+                print(results["score"])
+                self.assertGreaterEqual(float(results["score"]), 5.0)

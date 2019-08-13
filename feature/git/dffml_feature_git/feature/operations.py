@@ -187,8 +187,9 @@ async def git_repo_commit_from_date(repo: Dict[str, str],
 async def get_pylint_score(repo: Dict[str, str]):
     lint_log = await check_output(sys.executable, '-m', 'pylint', '--exit-zero',
                                   repo['directory'])
+    lint_score = lint_log.partition("/10")[0].split()[-1]
     return {
-            'score': lint_log
+            'score': lint_score
             }
 
 @op(inputs={
