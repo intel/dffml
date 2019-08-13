@@ -27,7 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation on how to use ML models on docs Models plugin page.
 - Mailing list info
 - Issue template for questions
-- Mysql Source to work with data from a mysql database
+- Multiple Scikit Models with dynamic config
+- MySQL protocol source to work with data from a MySQL protocol compatable db
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
@@ -58,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A temporary directory is used to replicate `mktemp -u` functionality so as to
   provide tests using a FileSource with a valid tempfile name.
 - Labels for JSON sources
+- Labels for CSV sources
 - util.cli CMD's correcly set the description of subparsers instead of their
   help, they also accept the `CLI_FORMATTER_CLASS` property.
 - CSV source now has `entry_point` decoration
