@@ -82,8 +82,8 @@ definitions = [
         primitive="Dict[str, Any]"
     ),
     Definition(
-        name="pylint_score",
-        primitive="float"
+        name="bandit_output",
+        primitive="Dict[str, Any]"
     ),
 ]
 

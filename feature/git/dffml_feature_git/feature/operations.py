@@ -181,15 +181,15 @@ async def git_repo_commit_from_date(repo: Dict[str, str],
         'repo': git_repository
         },
     outputs={
-        'score': pylint_score
+        'score': bandit_output
         },
 )
-async def get_pylint_score(repo: Dict[str, str]):
-    lint_log = await check_output(sys.executable, '-m', 'pylint', '--exit-zero',
+async def run_bandit(repo: Dict[str, str]):
+    bandit_op = await check_output(sys.executable, '-m', 'bandit', 
                                   repo['directory'])
-    lint_score = lint_log.partition("/10")[0].split()[-1]
+    print(bandit_op)
     return {
-            'score': lint_score
+            'score': bandit_op
             }
 
 @op(inputs={
