@@ -16,7 +16,7 @@ LOGGER = logging.getLogger(__package__)
 
 logging.basicConfig(level=logging.DEBUG)
 
-DOCKER_IMAGE = "mysql:8.0"
+DOCKER_IMAGE = "mariadb:10"
 # MySQL daemons default listing port
 DEFAULT_PORT = 3306
 # Environment variables passed to MySQL container
@@ -28,11 +28,9 @@ DOCKER_ENV = {
 }
 # MySQL server config file
 MY_CONF = """[mysqld]
-have_ssl=YES
-ssl_ca=/conf/certs/server.pem
-ssl_cert=/conf/certs/server.pem
-ssl_key=/conf/certs/server.key
-require_secure_transport=ON
+ssl-ca=/conf/certs/root.pem
+ssl-cert=/conf/certs/server.pem
+ssl-key=/conf/certs/server-pkcs1.pem
 """
 DOCKER_NA: str = "Failed to connect to docker daemon"
 DOCKER_AVAILABLE: bool = False
@@ -112,12 +110,12 @@ def mysql(*, sql_setup: Optional[str] = None):
         LOGGER.debug("Starting MySQL...")
         container = docker_client.containers.run(
             DOCKER_IMAGE,
-            command="bash -c 'while ! test -f /conf/certs/ready; do sleep 0.1; done; chown mysql:mysql /etc/my.conf; ls -lAF /etc/my.conf; cat /etc/my.conf; chown mysql:mysql /conf/certs/*; ls -lAF /conf/certs/; bash -xe /entrypoint.sh mysqld'",
+            command="bash -c 'set -x; while ! test -f /conf/certs/ready; do sleep 0.1; done; chown mysql:mysql /etc/mysql/conf.d/ssl.cnf && chown mysql:mysql /conf/certs/* && ls -lAF /conf/certs/ && cat /conf/certs/server.pem && bash -xe /usr/local/bin/docker-entrypoint.sh mysqld'",
             environment=DOCKER_ENV,
             detach=True,
             auto_remove=True,
             volumes={
-                sql_conf_path.resolve(): {"bind": "/etc/my.conf"},
+                sql_conf_path.resolve(): {"bind": "/etc/mysql/conf.d/ssl.cnf"},
                 sql_setup_path.resolve(): {
                     "bind": "/docker-entrypoint-initdb.d/dump.sql"
                 },
@@ -180,12 +178,14 @@ def mysql(*, sql_setup: Optional[str] = None):
                     "intermediate.pem",
                 ],
                 ["openssl", "genrsa", "-out", "server.key", "2048"],
+                ["openssl", "pkcs8", "-topk8", "-inform", "pem", "-in", "server.key", "-outform", "pem", "-nocrypt", "-out", "server-pkcs8.pem"],
+                ["openssl", "rsa", "-in", "server-pkcs8.pem", "-out", "server-pkcs1.pem"],
                 [
                     "openssl",
                     "req",
                     "-new",
                     "-key",
-                    "server.key",
+                    "server-pkcs1.pem",
                     "-out",
                     "server.csr",
                     "-subj",
@@ -212,10 +212,25 @@ def mysql(*, sql_setup: Optional[str] = None):
             for cmd in cmds:
                 subprocess.call(cmd, cwd=cert_dir_path.resolve())
             root_cert_path = pathlib.Path(cert_dir_path, "root.pem")
-            ca_cert_path = pathlib.Path(cert_dir_path, "server.pem")
-            key_path = pathlib.Path(cert_dir_path, "server.key")
-            ca_cert_path.chmod(0o664)
-            key_path.chmod(0o660)
+            intermediate_cert_path = pathlib.Path(cert_dir_path, "intermediate.pem")
+            server_cert_path = pathlib.Path(cert_dir_path, "server.pem")
+            server_key_path = pathlib.Path(cert_dir_path, "server-pkcs1.pem")
+            # Contact certs together
+            # https://www.digicert.com/ssl-support/pem-ssl-creation.htm
+            root_cert = root_cert_path.read_text().strip()
+            intermediate_cert = intermediate_cert_path.read_text().strip()
+            server_cert = server_cert_path.read_text().strip()
+            server_key = server_key_path.read_text().strip()
+            server_cert_path.write_text("\n".join([
+                server_key,
+                root_cert,
+                intermediate_cert,
+                server_cert,
+            ]))
+            print(server_cert_path.read_text().strip())
+            # Set permissions
+            server_cert_path.chmod(0o660)
+            server_key_path.chmod(0o660)
             pathlib.Path(cert_dir_path, "ready").write_text("ready")
             # Wait until MySQL reports it's ready for connections
             ready = False
