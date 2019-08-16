@@ -1,5 +1,6 @@
 import os
 import ast
+import sys
 from io import open
 
 from setuptools import find_packages, setup
@@ -20,7 +21,25 @@ with open(os.path.join(self_path, NAME, "version.py"), "r") as f:
 with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
-INSTALL_REQUIRES = ["aiohttp>=3.5.4", "dffml>=0.2.1"]
+INSTALL_REQUIRES = ["aiohttp>=3.5.4"] + (
+    ["dffml>=0.2.1"]
+    if not any(
+        list(
+            map(
+                os.path.isfile,
+                list(
+                    map(
+                        lambda syspath: os.path.join(
+                            syspath, "dffml.egg-link"
+                        ),
+                        sys.path,
+                    )
+                ),
+            )
+        )
+    )
+    else []
+)
 
 setup(
     name=NAME,
