@@ -181,15 +181,26 @@ async def git_repo_commit_from_date(repo: Dict[str, str],
         'repo': git_repository
         },
     outputs={
-        'score': bandit_output
+        'report': bandit_output
         },
 )
 async def run_bandit(repo: Dict[str, str]):
-    bandit_op = await check_output(sys.executable, '-m', 'bandit', 
-                                  repo['directory'])
-    print(bandit_op)
+    try:
+        bandit_op = subprocess.check_output([sys.executable,"-m", "bandit",
+                                     "-r", "-f", "json",repo['directory']])
+    except subprocess.CalledProcessError as e:
+        bandit_op = e.output
+    bandit_op = json.loads(bandit_op)
+    t_results = bandit_op["results"]
+    high_sev_high_conf = 0
+    for item in t_results:
+        if item["issue_confidence"] == "HIGH" and\
+            item["issue_severity"] == "HIGH":
+               high_sev_high_conf += 1
+    final_result = bandit_op["metrics"]["_totals"]
+    final_result["CONFIDENCE.HIGH_AND_SEVERITY.HIGH"] = high_sev_high_conf
     return {
-            'score': bandit_op
+            'report': final_result
             }
 
 @op(inputs={

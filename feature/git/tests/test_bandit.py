@@ -16,5 +16,5 @@ class TestRunBanditOp(AsyncTestCase):
                     "directory": os.getcwd()
                     }
                 })
-                #print(results["score"])
-                #self.assertGreaterEqual(float(results["score"]), 5.0)
+                self.assertLessEqual(int(results['report']
+                            ["CONFIDENCE.HIGH_AND_SEVERITY.HIGH"]), 5.0)
