@@ -120,7 +120,9 @@ class MySQLSource(BaseSource):
         # Verify MySQL connection using provided certificate, if given
         ssl_ctx = None
         if self.config.ca is not None:
-            self.logger.debug(f"Secure connection to MySQL: CA file: {self.config.ca}")
+            self.logger.debug(
+                f"Secure connection to MySQL: CA file: {self.config.ca}"
+            )
             ssl_ctx = ssl.create_default_context(cafile=self.config.ca)
         else:
             self.logger.critical("Insecure connection to MySQL")

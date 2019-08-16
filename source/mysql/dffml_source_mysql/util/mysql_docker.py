@@ -7,6 +7,7 @@ import socket
 import pathlib
 import logging
 import tempfile
+import unittest
 import subprocess
 from contextlib import contextmanager
 from typing import Optional
@@ -92,6 +93,8 @@ def mysql(*, sql_setup: Optional[str] = None):
     connections. ``sql_setup`` should be the .sql file used to initialize the
     database.
     """
+    if not DOCKER_AVAILABLE:
+        raise unittest.SkipTest("Need docker to run MySQL")
 
     docker_client: docker.DockerClient = docker.from_env()
     with tempfile.TemporaryDirectory() as tempdir:
@@ -133,15 +136,60 @@ def mysql(*, sql_setup: Optional[str] = None):
             inspect = docker_client.api.inspect_container(container.id)
             container_ip = inspect["NetworkSettings"]["IPAddress"]
             # Create certificate
+            # From: https://mariadb.com/kb/en/library/certificate-creation-with-openssl/
             cmds = [
                 ["openssl", "genrsa", "-out", "ca-key.pem", "2048"],
-                ["openssl", "req", "-new", "-x509", "-nodes",
-                    "-key", "ca-key.pem", "-out", "ca.pem", "-subj",
-                    f"/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Root Cert/CN=mysql.unittest"],
-                ["openssl", "req", "-newkey", "rsa:2048", "-nodes", "-keyout", "server-key.pem", "-out", "server-req.pem", "-subj",
-                    f"/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Server Cert/CN=mysql.unittest"],
-                ["openssl", "rsa", "-in", "server-key.pem", "-out", "server-key.pem"],
-                ["openssl", "x509", "-req", "-in", "server-req.pem", "-days", "1", "-CA", "ca.pem", "-CAkey", "ca-key.pem", "-set_serial", "01", "-out", "server-cert.pem"],
+                [
+                    "openssl",
+                    "req",
+                    "-new",
+                    "-x509",
+                    "-nodes",
+                    "-key",
+                    "ca-key.pem",
+                    "-out",
+                    "ca.pem",
+                    "-subj",
+                    f"/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Root Cert/CN=mysql.unittest",
+                ],
+                [
+                    "openssl",
+                    "req",
+                    "-newkey",
+                    "rsa:2048",
+                    "-nodes",
+                    "-keyout",
+                    "server-key.pem",
+                    "-out",
+                    "server-req.pem",
+                    "-subj",
+                    f"/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Server Cert/CN=mysql.unittest",
+                ],
+                [
+                    "openssl",
+                    "rsa",
+                    "-in",
+                    "server-key.pem",
+                    "-out",
+                    "server-key.pem",
+                ],
+                [
+                    "openssl",
+                    "x509",
+                    "-req",
+                    "-in",
+                    "server-req.pem",
+                    "-days",
+                    "1",
+                    "-CA",
+                    "ca.pem",
+                    "-CAkey",
+                    "ca-key.pem",
+                    "-set_serial",
+                    "01",
+                    "-out",
+                    "server-cert.pem",
+                ],
             ]
             for cmd in cmds:
                 subprocess.call(cmd, cwd=cert_dir_path.resolve())
@@ -152,25 +200,32 @@ def mysql(*, sql_setup: Optional[str] = None):
             server_key_path.chmod(0o660)
             pathlib.Path(cert_dir_path, "ready").write_text("ready")
             # Wait until MySQL reports it's ready for connections
-            ready = False
+            container_start_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
+            ready = 0
             for line in container.logs(stream=True, follow=True):
+                now_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
                 LOGGER.debug(
-                    "MySQL log: %s", line.decode(errors="ignore").strip()
+                    "MySQL log (%0.02f seconds): %s", (now_time - container_start_time), line.decode(errors="ignore").strip()
                 )
                 if b"ready for connections" in line:
-                    ready = True
+                    ready += 1
+                if ready == 2:
                     break
-            if not ready:
-                raise MySQLFailedToStart("Never saw \"ready for connections\"")
+            if ready != 2:
+                raise MySQLFailedToStart('Never saw "ready for connections"')
             # Ensure that we can make a connection
             start_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
-            max_timeout = 300.0
-            LOGGER.debug("Attempting to connect to MySQL: Timeout of %d seconds", max_timeout)
+            max_timeout = float(os.getenv("MYSQL_START_TIMEOUT", "600"))
+            LOGGER.debug(
+                "Attempting to connect to MySQL: Timeout of %d seconds",
+                max_timeout,
+            )
             while not check_connection(container_ip, DEFAULT_PORT):
                 end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
                 if (end_time - start_time) >= max_timeout:
                     raise MySQLFailedToStart("Timed out waiting for MySQL")
-            LOGGER.debug("MySQL running")
+            end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
+            LOGGER.debug("MySQL running: Took %0.02f seconds", end_time - container_start_time)
             # Yield IP of container to caller
             yield container_ip, root_cert_path.resolve()
         finally:

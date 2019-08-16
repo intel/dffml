@@ -51,9 +51,22 @@ CREATE TABLE `repo_data` (
             model_columns="src_url feature_PetalLength feature_PetalWidth feature_SepalLength feature_SepalWidth prediction_confidence prediction_value",
             ca=cls.ca,
         )
-        cls.exit_stack.enter_context(patch('socket.getaddrinfo',
-            return_value=[(socket.AF_INET, socket.SOCK_STREAM,
-                 6, '', (cls.container_ip, 3306),)]))
+        # Make it so that when the client tries to connect to mysql.unittest the
+        # address it get's back is the one for the container
+        cls.exit_stack.enter_context(
+            patch(
+                "socket.getaddrinfo",
+                return_value=[
+                    (
+                        socket.AF_INET,
+                        socket.SOCK_STREAM,
+                        6,
+                        "",
+                        (cls.container_ip, 3306),
+                    )
+                ],
+            )
+        )
 
     @classmethod
     def tearDownClass(cls):
