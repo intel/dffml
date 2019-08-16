@@ -98,9 +98,7 @@ class DNNClassifierModelConfig:
     clstype: Type
 
     def __post_init__(self):
-        self.classifications = list(
-            map(self.clstype, self.classifications)
-        )
+        self.classifications = list(map(self.clstype, self.classifications))
 
 
 class DNNClassifierModelContext(TensorflowModelContext):
