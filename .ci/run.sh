@@ -77,7 +77,7 @@ function run_whitespace() {
 }
 
 function run_style() {
-  black --check dffml tests examples
+  black --check .
 }
 
 if [ "x$PLUGIN" != "x" ]; then
