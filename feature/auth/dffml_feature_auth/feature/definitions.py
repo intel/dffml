@@ -3,14 +3,8 @@ import sys
 from dffml.df.base import Definition
 
 definitions = [
-    Definition(
-        name="UnhashedPassword",
-        primitive="string",
-    ),
-    Definition(
-        name="ScryptPassword",
-        primitive="string",
-    )
+    Definition(name="UnhashedPassword", primitive="string"),
+    Definition(name="ScryptPassword", primitive="string"),
 ]
 
 for definition in definitions:
