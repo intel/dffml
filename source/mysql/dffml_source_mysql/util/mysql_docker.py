@@ -1,5 +1,6 @@
 import os
 import ssl
+import time
 import shutil
 import atexit
 import socket
@@ -28,9 +29,9 @@ DOCKER_ENV = {
 }
 # MySQL server config file
 MY_CONF = """[mysqld]
-ssl-ca=/conf/certs/root.pem
-ssl-cert=/conf/certs/server.pem
-ssl-key=/conf/certs/server-pkcs1.pem
+ssl-ca=/conf/certs/ca.pem
+ssl-cert=/conf/certs/server-cert.pem
+ssl-key=/conf/certs/server-key.pem
 """
 DOCKER_NA: str = "Failed to connect to docker daemon"
 DOCKER_AVAILABLE: bool = False
@@ -53,10 +54,10 @@ def check_connection(addr: str, port: int, *, timeout: float = 0.1) -> bool:
     the timeout.
     """
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.settimeout(timeout)
+        s.settimeout(float(timeout))
         try:
             s.connect((addr, port))
-        except:
+        except Exception as error:
             return False
     return True
 
@@ -110,7 +111,7 @@ def mysql(*, sql_setup: Optional[str] = None):
         LOGGER.debug("Starting MySQL...")
         container = docker_client.containers.run(
             DOCKER_IMAGE,
-            command="bash -c 'set -x; while ! test -f /conf/certs/ready; do sleep 0.1; done; chown mysql:mysql /etc/mysql/conf.d/ssl.cnf && chown mysql:mysql /conf/certs/* && ls -lAF /conf/certs/ && cat /conf/certs/server.pem && bash -xe /usr/local/bin/docker-entrypoint.sh mysqld'",
+            command="bash -c 'set -x; while ! test -f /conf/certs/ready; do sleep 0.1; done; chown mysql:mysql /etc/mysql/conf.d/ssl.cnf && chown mysql:mysql /conf/certs/* && ls -lAF /conf/certs/ && cat /conf/certs/server-*.pem && bash -xe /usr/local/bin/docker-entrypoint.sh mysqld'",
             environment=DOCKER_ENV,
             detach=True,
             auto_remove=True,
@@ -133,102 +134,20 @@ def mysql(*, sql_setup: Optional[str] = None):
             container_ip = inspect["NetworkSettings"]["IPAddress"]
             # Create certificate
             cmds = [
-                ["openssl", "genrsa", "-out", "root.key", "2048"],
-                [
-                    "openssl",
-                    "req",
-                    "-days",
-                    "1",
-                    "-new",
-                    "-x509",
-                    "-key",
-                    "root.key",
-                    "-out",
-                    "root.pem",
-                    "-subj",
-                    f"/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Root Cert/CN={container_ip}",
-                ],
-                ["openssl", "genrsa", "-out", "intermediate.key", "2048"],
-                [
-                    "openssl",
-                    "req",
-                    "-new",
-                    "-key",
-                    "intermediate.key",
-                    "-out",
-                    "intermediate.csr",
-                    "-subj",
-                    f"/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Intermediate/CN={container_ip}",
-                ],
-                [
-                    "openssl",
-                    "x509",
-                    "-days",
-                    "1",
-                    "-req",
-                    "-in",
-                    "intermediate.csr",
-                    "-CA",
-                    "root.pem",
-                    "-CAkey",
-                    "root.key",
-                    "-set_serial",
-                    "0x1",
-                    "-out",
-                    "intermediate.pem",
-                ],
-                ["openssl", "genrsa", "-out", "server.key", "2048"],
-                ["openssl", "pkcs8", "-topk8", "-inform", "pem", "-in", "server.key", "-outform", "pem", "-nocrypt", "-out", "server-pkcs8.pem"],
-                ["openssl", "rsa", "-in", "server-pkcs8.pem", "-out", "server-pkcs1.pem"],
-                [
-                    "openssl",
-                    "req",
-                    "-new",
-                    "-key",
-                    "server-pkcs1.pem",
-                    "-out",
-                    "server.csr",
-                    "-subj",
-                    f"/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Server/CN={container_ip}",
-                ],
-                [
-                    "openssl",
-                    "x509",
-                    "-days",
-                    "1",
-                    "-req",
-                    "-in",
-                    "server.csr",
-                    "-CA",
-                    "intermediate.pem",
-                    "-CAkey",
-                    "intermediate.key",
-                    "-set_serial",
-                    "0x1",
-                    "-out",
-                    "server.pem",
-                ],
+                ["openssl", "genrsa", "-out", "ca-key.pem", "2048"],
+                ["openssl", "req", "-new", "-x509", "-nodes",
+                    "-key", "ca-key.pem", "-out", "ca.pem", "-subj",
+                    f"/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Root Cert/CN=mysql.unittest"],
+                ["openssl", "req", "-newkey", "rsa:2048", "-nodes", "-keyout", "server-key.pem", "-out", "server-req.pem", "-subj",
+                    f"/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Server Cert/CN=mysql.unittest"],
+                ["openssl", "rsa", "-in", "server-key.pem", "-out", "server-key.pem"],
+                ["openssl", "x509", "-req", "-in", "server-req.pem", "-days", "1", "-CA", "ca.pem", "-CAkey", "ca-key.pem", "-set_serial", "01", "-out", "server-cert.pem"],
             ]
             for cmd in cmds:
                 subprocess.call(cmd, cwd=cert_dir_path.resolve())
-            root_cert_path = pathlib.Path(cert_dir_path, "root.pem")
-            intermediate_cert_path = pathlib.Path(cert_dir_path, "intermediate.pem")
-            server_cert_path = pathlib.Path(cert_dir_path, "server.pem")
-            server_key_path = pathlib.Path(cert_dir_path, "server-pkcs1.pem")
-            # Contact certs together
-            # https://www.digicert.com/ssl-support/pem-ssl-creation.htm
-            root_cert = root_cert_path.read_text().strip()
-            intermediate_cert = intermediate_cert_path.read_text().strip()
-            server_cert = server_cert_path.read_text().strip()
-            server_key = server_key_path.read_text().strip()
-            server_cert_path.write_text("\n".join([
-                server_key,
-                root_cert,
-                intermediate_cert,
-                server_cert,
-            ]))
-            print(server_cert_path.read_text().strip())
-            # Set permissions
+            root_cert_path = pathlib.Path(cert_dir_path, "ca.pem")
+            server_cert_path = pathlib.Path(cert_dir_path, "server-cert.pem")
+            server_key_path = pathlib.Path(cert_dir_path, "server-key.pem")
             server_cert_path.chmod(0o660)
             server_key_path.chmod(0o660)
             pathlib.Path(cert_dir_path, "ready").write_text("ready")
@@ -242,10 +161,15 @@ def mysql(*, sql_setup: Optional[str] = None):
                     ready = True
                     break
             if not ready:
-                raise MySQLFailedToStart()
+                raise MySQLFailedToStart("Never saw \"ready for connections\"")
             # Ensure that we can make a connection
+            start_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
+            max_timeout = 300.0
+            LOGGER.debug("Attempting to connect to MySQL: Timeout of %d seconds", max_timeout)
             while not check_connection(container_ip, DEFAULT_PORT):
-                pass
+                end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
+                if (end_time - start_time) >= max_timeout:
+                    raise MySQLFailedToStart("Timed out waiting for MySQL")
             LOGGER.debug("MySQL running")
             # Yield IP of container to caller
             yield container_ip, root_cert_path.resolve()

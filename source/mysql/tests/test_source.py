@@ -1,9 +1,11 @@
 import os
 import json
 import random
+import socket
 import unittest
 import subprocess
 import contextlib
+from unittest.mock import patch
 
 from dffml.util.testing.source import SourceTest
 from dffml.util.asynctestcase import AsyncTestCase
@@ -38,7 +40,7 @@ CREATE TABLE `repo_data` (
             mysql(sql_setup=cls.SQL_SETUP)
         )
         cls.source_config = MySQLSourceConfig(
-            host=cls.container_ip,
+            host="mysql.unittest",
             port=3306,
             user=DOCKER_ENV["MYSQL_USER"],
             password=DOCKER_ENV["MYSQL_PASSWORD"],
@@ -49,6 +51,9 @@ CREATE TABLE `repo_data` (
             model_columns="src_url feature_PetalLength feature_PetalWidth feature_SepalLength feature_SepalWidth prediction_confidence prediction_value",
             ca=cls.ca,
         )
+        cls.exit_stack.enter_context(patch('socket.getaddrinfo',
+            return_value=[(socket.AF_INET, socket.SOCK_STREAM,
+                 6, '', (cls.container_ip, 3306),)]))
 
     @classmethod
     def tearDownClass(cls):
