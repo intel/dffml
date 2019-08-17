@@ -39,7 +39,7 @@ class TestDNN(AsyncTestCase):
                 hidden=[10, 20, 10],
                 classification="string",
                 classifications=["a", "not a"],
-                clstype=str
+                clstype=str,
             )
         )
         cls.feature = StartsWithA()
@@ -76,7 +76,7 @@ class TestDNN(AsyncTestCase):
                 "1",
                 "2",
                 "--model-clstype",
-                "int"
+                "int",
             )
         )
         self.assertEqual(

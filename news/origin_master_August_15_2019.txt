@@ -1,0 +1,133 @@
+========================= origin/master news everyone! =========================
+
+
+This is our first issue of the newsletter! What's the occasion? Lot's been
+happing lately in the master branch. We're due for a release soon! The next
+release will feature changes to the following areas:
+
+- Sources
+- Models
+- Documentation
+
+
+=================================== Sources ====================================
+
+
+Labels for CSV sources were merged into master. Enabling users to save multiple
+versions of datasets within the same CSV file.
+
+Example:
+
+$ cat > /tmp/dataset.csv << EOF
+src_url,year,safe
+Drinking Water,1000AD,0
+Drinking Water,2000AD,1
+Leaches,1000AD,1
+Leaches,2000AD,0
+EOF
+
+$ dffml list repos -sources civ=csv -source-filename /tmp/dataset.csv \
+    -source-labelcol year -source-label 2000AD
+Undetermined (0.0% confidence) Drinking Water
+safe                          1
+Undetermined (0.0% confidence) Leaches
+safe                          0
+
+$ dffml list repos -sources civ=csv -source-filename /tmp/dataset.csv \
+    -source-labelcol year -source-label 1000AD
+Undetermined (0.0% confidence) Drinking Water
+safe                          0
+Undetermined (0.0% confidence) Leaches
+safe                          1
+
+Work continues on the MySQL and Hadoop Sources.
+
+
+=================================== Models  ====================================
+
+
+Machine Learning model packages from scratch and using the scikit machine
+learning library (sklearn) have been merged into master. With these additions
+developers will be able to use DFFML to make numerical predictions.
+
+Example:
+
+$ cat > dataset.csv << EOF
+Years,Salary
+1,40
+2,50
+3,60
+4,70
+5,80
+EOF
+$ dffml train \
+    -model scratchslr \
+    -features def:Years:int:1 \
+    -model-predict Salary \
+    -sources f=csv \
+    -source-filename dataset.csv \
+    -source-readonly \
+    -log debug
+$ dffml accuracy \
+    -model scratchslr \
+    -features def:Years:int:1 \
+    -model-predict Salary \
+    -sources f=csv \
+    -source-filename dataset.csv \
+    -source-readonly \
+    -log debug
+1.0
+$ echo -e 'Years,Salary\n6,0\n' | \
+  dffml predict all \
+    -model scratchslr \
+    -features def:Years:int:1 \
+    -model-predict Salary \
+    -sources f=csv \
+    -source-filename /dev/stdin \
+    -source-readonly \
+    -log debug
+[
+    {
+        "extra": {},
+        "features": {
+            "Salary": 0,
+            "Years": 6
+        },
+        "last_updated": "2019-07-19T09:46:45Z",
+        "prediction": {
+            "confidence": 1.0,
+            "value": 90.0
+        },
+        "src_url": "0"
+    }
+]
+
+
+================================== HTTP API ====================================
+
+
+An HTTP API for DFFML has been written to allow users to do all the things they
+could with the command line interface and library. This will pave the way for a
+web UI allowing non-technical users to start doing machine learning!
+
+
+=================================== Thanks =====================================
+
+
+- Sudharsana K J L
+  - Adding labels to the JSON and CSV sources
+  - Working on the MySQL and HDFS sources
+- Yash Lamba
+  - Adding the Simple Linear Regression model from scratch using numpy
+  - Adding sklearn based models
+- Saksham Arora
+  - For updating HACKING with adding logging output to test runs
+- Pradeep Bhadani
+  - Making sure the Dockerfile updates pip
+- Neeraj Bhadani
+  - Updating CONTRIBUTING.md with a link to
+    https://intel.github.io/dffml/community.html
+- Joseph Kato
+  - For fixing typos in the docs
+- @freddieee
+  - For updating docs with unit test coverage instructions

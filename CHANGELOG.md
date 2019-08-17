@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation on how to use ML models on docs Models plugin page.
 - Mailing list info
 - Issue template for questions
+- Multiple Scikit Models with dynamic config
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
@@ -48,6 +49,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - DNNClassifierModel no longer splits data for the user.
 - Update `pip` in Dockerfile.
 - Restructured documentation
+- Ran `black` on whole codebase, including all submodules
+- CI style check now checks whole codebase
 ### Fixed
 - Docs get version from dffml.version.VERSION.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
@@ -57,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A temporary directory is used to replicate `mktemp -u` functionality so as to
   provide tests using a FileSource with a valid tempfile name.
 - Labels for JSON sources
+- Labels for CSV sources
 - util.cli CMD's correcly set the description of subparsers instead of their
   help, they also accept the `CLI_FORMATTER_CLASS` property.
 - CSV source now has `entry_point` decoration

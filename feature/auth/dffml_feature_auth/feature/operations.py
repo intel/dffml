@@ -5,25 +5,23 @@ import concurrent.futures
 from typing import Dict, Any
 
 from dffml.df.types import Operation
-from dffml.df.base import OperationImplementationContext, \
-                          OperationImplementation
+from dffml.df.base import (
+    OperationImplementationContext,
+    OperationImplementation,
+)
 
 # pylint: disable=no-name-in-module
-from .definitions import UnhashedPassword, \
-                         ScryptPassword
+from .definitions import UnhashedPassword, ScryptPassword
 
 scrypt = Operation(
-    name='scrypt',
-    inputs={
-        'password': UnhashedPassword,
-    },
-    outputs={
-        'password': ScryptPassword
-    },
-    conditions=[])
+    name="scrypt",
+    inputs={"password": UnhashedPassword},
+    outputs={"password": ScryptPassword},
+    conditions=[],
+)
+
 
 class ScryptContext(OperationImplementationContext):
-
     @staticmethod
     def hash_password(password):
         # ---- BEGIN Python hashlib docs ----
@@ -69,7 +67,7 @@ class ScryptContext(OperationImplementationContext):
 
         # ---- END RFC 7914 ----
 
-        password = password.encode('utf-8')
+        password = password.encode("utf-8")
 
         salt = os.urandom(16 * 4)
         n = 2 ** 10
@@ -89,13 +87,10 @@ class ScryptContext(OperationImplementationContext):
         # we submit to the thread pool. Weird behavior can happen if we raise in
         # there.
         hashed_password, salt = await self.parent.loop.run_in_executor(
-                self.parent.pool, self.hash_password, inputs['password'])
-        return {
-            'password': {
-                'hashed': hashed_password,
-                'salt': salt,
-                }
-            }
+            self.parent.pool, self.hash_password, inputs["password"]
+        )
+        return {"password": {"hashed": hashed_password, "salt": salt}}
+
 
 class Scrypt(OperationImplementation):
 
@@ -108,7 +103,7 @@ class Scrypt(OperationImplementation):
         self.pool = None
         self.__pool = None
 
-    async def __aenter__(self) -> 'OperationImplementationContext':
+    async def __aenter__(self) -> "OperationImplementationContext":
         self.loop = asyncio.get_event_loop()
         # ProcessPoolExecutor is slightly faster but deprecated and will be
         # removed in 3.9

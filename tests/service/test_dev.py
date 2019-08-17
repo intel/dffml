@@ -87,6 +87,8 @@ class TestDevelopCreate(AsyncTestCase):
                                 package_name,
                                 package_specific_files,
                             )
+                        else:  # pragma: no cov
+                            pass
 
     async def test_model(self):
         await self.generic_test(

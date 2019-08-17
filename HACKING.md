@@ -47,6 +47,14 @@ new commits to GitHub.
 
 # Testing
 
+To get the debug output while testing:
+
+```console
+export LOGGING=debug
+```
+
+To run the tests:
+
 ```console
 python3.7 setup.py test
 ```
