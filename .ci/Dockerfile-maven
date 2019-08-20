@@ -1,3 +1,6 @@
+# Usage:
+# $ docker build -t dffml:hadoop - < .ci/Dockerfile-maven
+# $ docker run --rm -ti --net=host dffml:hadoop
 FROM maven:latest
 
 RUN \
