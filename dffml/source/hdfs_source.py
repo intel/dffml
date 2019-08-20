@@ -25,13 +25,16 @@ class HDFSSource(BaseSource):
 
     CONTEXT = BaseSourceContext
 
+    async def new_open(self):
+        with self.client.read(self.config.filepath, encoding="utf-8") as fd:
+            await self.config.source.load_fd(fd)
+
     async def __aenter__(self) -> "BaseSource":
         self.client = InsecureClient(
             "http://" + self.config.host + ":" + self.config.port,
             user="hadoopuser",
         )
-        with self.client.read(self.config.filepath, encoding="utf-8") as fd:
-            await self.config.source.load_fd(fd)
+        self.config.source._open = self.new_open()
         return self
 
     @classmethod

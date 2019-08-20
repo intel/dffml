@@ -1,0 +1,22 @@
+FROM maven:latest
+
+
+RUN \
+  apt-get update && apt-get install -y \
+  ssh \
+  rsync \
+  vim \
+  unzip 
+
+#install protobuf
+RUN \
+ curl -OL https://github.com/google/protobuf/releases/download/v3.2.0/protoc-3.2.0-linux-x86_64.zip \
+ unzip protoc-3.2.0-linux-x86_64.zip -d protoc3 \
+ mv protoc3/bin/* /usr/local/bin/ \
+ mv protoc3/include/* /usr/local/include/ 
+
+#hadoop tarball
+RUN \
+ mvn clean install -DskipTests \
+ mvn package -Pdist -Dtar -DskipTests -Dmaven.javadoc.skip \
+ HADOOP_CLASSPATH=share/hadoop/yarn/test/hadoop-yarn-server-tests-2.9.2-tests.jar bin/hadoop jar ./share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.9.2-tests.jar minicluster -rmport RM_PORT -jhsport JHS_PORT
