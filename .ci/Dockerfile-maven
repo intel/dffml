@@ -1,22 +1,29 @@
+# Usage:
+# $ docker build -t dffml:hadoop - < .ci/Dockerfile-maven
+# $ docker run --rm -ti --net=host dffml:hadoop
 FROM maven:latest
-
 
 RUN \
   apt-get update && apt-get install -y \
   ssh \
   rsync \
+  wget \
   vim \
   unzip 
 
-#install protobuf
 RUN \
- curl -OL https://github.com/google/protobuf/releases/download/v3.2.0/protoc-3.2.0-linux-x86_64.zip \
- unzip protoc-3.2.0-linux-x86_64.zip -d protoc3 \
- mv protoc3/bin/* /usr/local/bin/ \
- mv protoc3/include/* /usr/local/include/ 
+  cd /usr/local && \
+  curl -L http://apache.mirrors.tds.net/hadoop/common/hadoop-2.9.2/hadoop-2.9.2.tar.gz | tar -xz && \
+  ln -sf /usr/local/hadoop-2.9.2/ /usr/local/hadoop
 
-#hadoop tarball
-RUN \
- mvn clean install -DskipTests \
- mvn package -Pdist -Dtar -DskipTests -Dmaven.javadoc.skip \
- HADOOP_CLASSPATH=share/hadoop/yarn/test/hadoop-yarn-server-tests-2.9.2-tests.jar bin/hadoop jar ./share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.9.2-tests.jar minicluster -rmport RM_PORT -jhsport JHS_PORT
+WORKDIR /usr/local/hadoop
+
+# From: https://stackoverflow.com/questions/51118358/noclassdeffounderror-org-apache-hadoop-yarn-server-timelineservice-collector-tim
+RUN cp ./share/hadoop/yarn/timelineservice/hadoop-yarn-server-timelineservice-2.9.2.jar ./share/hadoop/yarn/ && \
+	mkdir -p target/test/data/dfs/name1 && \
+	mkdir -p target/test/data/dfs/name2
+
+ENV HADOOP_CLASSPATH share/hadoop/yarn/test/hadoop-yarn-server-tests-2.9.2-tests.jar
+
+CMD ["bin/hadoop", "jar", "./share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-2.9.2-tests.jar", "minicluster", "-rmport", "50070", "-jhsport", "50071", "-format"]
+
