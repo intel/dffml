@@ -23,12 +23,13 @@ class HDFSSourceConfig(BaseConfig, NamedTuple):
 @entry_point("dffml.source")
 class HDFSSource(BaseSource):
 
+    CONTEXT = BaseSourceContext
     async def new_open(self):
         with self.client.read(self.config.filepath, encoding="utf-8") as fd:
             await self.config.source.load_fd(fd)
 
     async def new_close(self):
-        with self.client.read(self.config.filepath, encoding="utf-8") as fd:
+        with self.client.write(self.config.filepath, encoding="utf-8") as fd:
             await self.config.source.dump_fd(fd)
 
     async def __aenter__(self) -> "BaseSource":
@@ -36,12 +37,12 @@ class HDFSSource(BaseSource):
             "http://" + self.config.host + ":" + self.config.port,
             user="hadoopuser",
         )
-        self.config.source._open = self.new_open()
-        self.config.source._close = self.new_close()
+        self.config.source._open = await self.new_open()
+        self.config.source._close = await self.new_close()
         return self
 
     def __call__(self) -> BaseSourceContext:
-        return self.source()
+        return self.config.source()
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
