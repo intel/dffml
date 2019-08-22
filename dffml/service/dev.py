@@ -1,6 +1,7 @@
 import os
 import getpass
 import configparser
+import pkg_resources
 from pathlib import Path
 
 from ..util.skel import Skel
@@ -115,6 +116,22 @@ class Skeleton(CMD):
     link = Link
 
 
+class ListEntrypoints(CMD):
+
+    arg_entrypoint = Arg(
+        "entrypoint", help="Entrypoint to list, example: dffml.model"
+    )
+
+    async def run(self):
+        for entrypoint in pkg_resources.iter_entry_points(self.entrypoint):
+            print(f"{entrypoint} -> {entrypoint.dist!r}")
+
+
+class Entrypoints(CMD):
+
+    _list = ListEntrypoints
+
+
 class Develop(CMD):
     """
     Development utilities for hacking on DFFML itself
@@ -122,3 +139,4 @@ class Develop(CMD):
 
     create = Create
     skel = Skeleton
+    entrypoints = Entrypoints
