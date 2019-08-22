@@ -53,5 +53,18 @@ setup(
     ],
     install_requires=INSTALL_REQUIRES,
     packages=find_packages(),
-    entry_points={"dffml.model": [f"scikitlr = {IMPORT_NAME}.sciLR:LR"]},
+    entry_points={
+        "dffml.model": [
+            f"scikitknn = {IMPORT_NAME}.scikit_models:KNeighborsClassifier",
+            f"scikitadaboost = {IMPORT_NAME}.scikit_models:AdaBoostClassifier",
+            f"scikitgpc = {IMPORT_NAME}.scikit_models:GaussianProcessClassifier",
+            f"scikitdtc = {IMPORT_NAME}.scikit_models:DecisionTreeClassifier",
+            f"scikitrfc = {IMPORT_NAME}.scikit_models:RandomForestClassifier",
+            f"scikitmlp = {IMPORT_NAME}.scikit_models:MLPClassifier",
+            f"scikitgnb = {IMPORT_NAME}.scikit_models:GaussianNB",
+            f"scikitqda = {IMPORT_NAME}.scikit_models:QuadraticDiscriminantAnalysis",
+            f"scikitsvc = {IMPORT_NAME}.scikit_models:SVC",
+            f"scikitlr = {IMPORT_NAME}.scikit_models:LinearRegression",
+        ]
+    },
 )
