@@ -55,16 +55,16 @@ setup(
     packages=find_packages(),
     entry_points={
         "dffml.model": [
-            f"scikitknn = {IMPORT_NAME}.scikit_models:KNeighborsClassifier",
-            f"scikitadaboost = {IMPORT_NAME}.scikit_models:AdaBoostClassifier",
-            f"scikitgpc = {IMPORT_NAME}.scikit_models:GaussianProcessClassifier",
-            f"scikitdtc = {IMPORT_NAME}.scikit_models:DecisionTreeClassifier",
-            f"scikitrfc = {IMPORT_NAME}.scikit_models:RandomForestClassifier",
-            f"scikitmlp = {IMPORT_NAME}.scikit_models:MLPClassifier",
-            f"scikitgnb = {IMPORT_NAME}.scikit_models:GaussianNB",
-            f"scikitqda = {IMPORT_NAME}.scikit_models:QuadraticDiscriminantAnalysis",
-            f"scikitsvc = {IMPORT_NAME}.scikit_models:SVC",
-            f"scikitlr = {IMPORT_NAME}.scikit_models:LinearRegression",
+            f"scikitknn = {IMPORT_NAME}.scikit_models:KNeighborsClassifierModel",
+            f"scikitadaboost = {IMPORT_NAME}.scikit_models:AdaBoostClassifierModel",
+            f"scikitgpc = {IMPORT_NAME}.scikit_models:GaussianProcessClassifierModel",
+            f"scikitdtc = {IMPORT_NAME}.scikit_models:DecisionTreeClassifierModel",
+            f"scikitrfc = {IMPORT_NAME}.scikit_models:RandomForestClassifierModel",
+            f"scikitmlp = {IMPORT_NAME}.scikit_models:MLPClassifierModel",
+            f"scikitgnb = {IMPORT_NAME}.scikit_models:GaussianNBModel",
+            f"scikitqda = {IMPORT_NAME}.scikit_models:QuadraticDiscriminantAnalysisModel",
+            f"scikitsvc = {IMPORT_NAME}.scikit_models:SVCModel",
+            f"scikitlr = {IMPORT_NAME}.scikit_models:LinearRegressionModel",
         ]
     },
 )
