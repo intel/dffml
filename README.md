@@ -16,19 +16,12 @@ Documentation is hosted at https://intel.github.io/dffml/
 
 ## Contributing
 
-DFFML is meant to be a community driven application. There are various segments
-you can help with:
-
-- Found a bug, error in the docs or have a new idea, create an issue
-  [here](https://github.com/intel/dffml/issues/new/choose).
-- Help us fix an [issue](https://github.com/intel/dffml/issues), refer to
-  [HACKING](HACKING.md) in the docs.
-- Make sure you go through [CONTRIBUTING.md](CONTRIBUTING.md) before
-  contributing.
+[CONTRIBUTING.md](CONTRIBUTING.md) will guide you through getting setup and
+contributing to DFFML.
 
 ## License
 
-dffml is distributed under the [MIT License](LICENSE).
+DFFML is distributed under the [MIT License](LICENSE).
 
 ## Legal
 
