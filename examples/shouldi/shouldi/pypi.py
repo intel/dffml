@@ -23,16 +23,21 @@ async def pypi_package_json(self, package: str) -> Dict[str, Any]:
         package_json = await resp.json()
         return {"response_json": package_json}
 
+
 @op(
     inputs={"response_json": package_json},
-    outputs={"version": package_version}
+    outputs={"version": package_version},
 )
 async def pypi_latest_package_version(package_json: Dict[str, Any]) -> str:
     return {"version": package_json["info"]["version"]}
 
-#@op(
-#    inputs={"response_json": package_json},
-#    outputs={"url": package_url}
-#)
-#async def pypi_package_url(package_json: Dict["str", Any]) -> str:
 
+@op(inputs={"response_json": package_json}, outputs={"url": package_url})
+async def pypi_package_url(package_json: Dict["str", Any]) -> str:
+    url_dicts = package_json["urls"]
+    for url_dict in url_dicts:
+        if (
+            url_dict["python_version"] == "source"
+            and url_dict["packagetype"] == "sdist"
+        ):
+            return {"url": url_dict["url"]}
