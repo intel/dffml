@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Restructured documentation
 - Ran `black` on whole codebase, including all submodules
 - CI style check now checks whole codebase
+- Merged HACKING.md into CONTRIBUTING.md
 ### Fixed
 - Docs get version from dffml.version.VERSION.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
