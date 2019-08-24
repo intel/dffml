@@ -2,6 +2,7 @@ import json
 from typing import AsyncIterator, NamedTuple, Dict
 from collections import OrderedDict
 import os
+from contextlib import AsyncExitStack
 from hdfs import *
 
 from dffml.base import BaseConfig
@@ -29,7 +30,7 @@ class HDFSSource(BaseSource):
             await self.config.source.load_fd(fd)
 
     async def new_close(self):
-        with self.client.write(self.config.filepath, encoding="utf-8") as fd:
+        with self.client.write(self.config.filepath, encoding="utf-8", overwrite=True) as fd:
             await self.config.source.dump_fd(fd)
 
     async def __aenter__(self) -> "BaseSource":
@@ -37,12 +38,21 @@ class HDFSSource(BaseSource):
             "http://" + self.config.host + ":" + self.config.port,
             user="hadoopuser",
         )
-        self.config.source._open = await self.new_open()
-        self.config.source._close = await self.new_close()
+        self.config.source._open = self.new_open.__get__(self.config.source, self.config.source.__class__)
+        self.config.source._close = self.new_close.__get__(self.config.source, self.config.source.__class__)
+        self.__stack = AsyncExitStack()
+        await self.__stack.__aenter__()
+        self.source = await self.__stack.enter_async_context(self.config.source)
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        if self.__stack is not None:
+            await self.__stack.__aexit__(exc_type, exc_value, traceback)
+            self.__stack = None
         return self
 
     def __call__(self) -> BaseSourceContext:
-        return self.config.source()
+        return self.source()
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
