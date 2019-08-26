@@ -33,6 +33,7 @@ and other functionality in more specific packages.
     tutorials/index
     usage/index
     plugins/index
+    plugins/service/http/index
     api/index
     community
 
