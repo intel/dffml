@@ -6,7 +6,7 @@ from dffml.util.asynctestcase import AsyncTestCase
 from .custom_sqlite import CustomSQLiteSourceConfig, CustomSQLiteSource
 
 
-class TestJSONSource(FileSourceTest, AsyncTestCase):
+class TestCustomSQliteSource(FileSourceTest, AsyncTestCase):
     async def setUpSource(self):
         return CustomSQLiteSource(
             CustomSQLiteSourceConfig(filename=self.testfile)
