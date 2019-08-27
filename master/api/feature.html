@@ -52,21 +52,14 @@ setup.py which specifies where to find your Feature subclass within your module.
 feature project’s feature URL.</p>
 <dl class="class">
 <dt id="dffml.feature.feature.Data">
-<em class="property">class </em><code class="descclassname">dffml.feature.feature.</code><code class="descname">Data</code><span class="sig-paren">(</span><em>src_url: str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Data" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Data</code><span class="sig-paren">(</span><em class="sig-param">src_url: str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Passed to each feature during evaluation. Shared between all features a repo
 is being evaluated with</p>
-<dl class="method">
-<dt id="dffml.feature.feature.Data.mklock">
-<em class="property">coroutine </em><code class="descname">mklock</code><span class="sig-paren">(</span><em>name: str</em><span class="sig-paren">)</span> &#x2192; asyncio.locks.Lock<a class="reference internal" href="../_modules/dffml/feature/feature.html#Data.mklock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Data.mklock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a lock stored in data under the key <cite>name</cite>. Create the lock if it
-does not exist.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="class">
 <dt id="dffml.feature.feature.Feature">
-<em class="property">class </em><code class="descclassname">dffml.feature.feature.</code><code class="descname">Feature</code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Feature</code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract base class for all features. New features must be derived from this
 class and implement the fetch, parse, and calc methods. These methods are
 always expected to be called in order. Anything you add to your feature
@@ -106,90 +99,47 @@ subclass</p>
 </pre></div>
 </div>
 <dl class="method">
-<dt id="dffml.feature.feature.Feature.calc">
-<em class="property">coroutine </em><code class="descname">calc</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.calc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.calc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the score for this feature based on data found by parse().</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="dffml.feature.feature.Feature.close">
-<em class="property">coroutine </em><code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.close" title="Permalink to this definition">¶</a></dt>
-<dd><p>Closes any opened resources</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="dffml.feature.feature.Feature.dtype">
-<code class="descname">dtype</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Type[CT_co]<a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.dtype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.dtype" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">dtype</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Type<a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.dtype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.dtype" title="Permalink to this definition">¶</a></dt>
 <dd><p>Models need to know a Feature’s datatype.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="dffml.feature.feature.Feature.fetch">
-<em class="property">coroutine </em><code class="descname">fetch</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.fetch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.fetch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch retrieves any additional information about the software we are
-evaluating. Any data fetched should be stored in tempdir().</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="dffml.feature.feature.Feature.length">
-<code class="descname">length</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.length" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">length</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.length" title="Permalink to this definition">¶</a></dt>
 <dd><p>Models need to know a Feature’s length, 1 means single value, more than
 that is the length of the array calc returns.</p>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="dffml.feature.feature.Feature.load">
-<em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>loading=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.load" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">loading=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads all installed loading and returns them as a list. Sources to be
 loaded should be registered to ENTRY_POINT via setuptools.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="dffml.feature.feature.Feature.open">
-<em class="property">coroutine </em><code class="descname">open</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.open" title="Permalink to this definition">¶</a></dt>
-<dd><p>Opens any resources needed</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="dffml.feature.feature.Feature.parse">
-<em class="property">coroutine </em><code class="descname">parse</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.parse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.parse" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse the data we downloaded in fetch() into a usable form.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="dffml.feature.feature.Feature.setUp">
-<em class="property">coroutine </em><code class="descname">setUp</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.setUp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.setUp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Preform setup</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="dffml.feature.feature.Feature.tearDown">
-<em class="property">coroutine </em><code class="descname">tearDown</code><span class="sig-paren">(</span><em>data</em>, <em>error=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.tearDown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.tearDown" title="Permalink to this definition">¶</a></dt>
-<dd><p>Release any post calculation resources</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="dffml.feature.feature.Features">
-<em class="property">class </em><code class="descclassname">dffml.feature.feature.</code><code class="descname">Features</code><span class="sig-paren">(</span><em>*args</em>, <em>timeout: int = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Features" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Features</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">timeout: int = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Features" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
 <dt id="dffml.feature.feature.Frequency">
-<em class="property">class </em><code class="descclassname">dffml.feature.feature.</code><code class="descname">Frequency</code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Frequency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Frequency" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Frequency</code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Frequency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Frequency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Frequency in months</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="dffml.feature.feature.Quarterly">
-<em class="property">class </em><code class="descclassname">dffml.feature.feature.</code><code class="descname">Quarterly</code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Quarterly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Quarterly" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Quarterly</code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Quarterly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Quarterly" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate on a quarterly basis (every 3 months).</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="dffml.feature.feature.Yearly">
-<em class="property">class </em><code class="descclassname">dffml.feature.feature.</code><code class="descname">Yearly</code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Yearly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Yearly" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Yearly</code><a class="reference internal" href="../_modules/dffml/feature/feature.html#Yearly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Yearly" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate on a yearly basis.</p>
 </dd></dl>
 
@@ -251,6 +201,7 @@ loaded should be registered to ENTRY_POINT via setuptools.</p>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="df/index.html">Data Flow</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Features</a></li>
@@ -275,10 +226,10 @@ loaded should be registered to ENTRY_POINT via setuptools.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -300,7 +251,7 @@ loaded should be registered to ENTRY_POINT via setuptools.</p>
       &copy;2019, Intel.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
