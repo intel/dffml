@@ -53,14 +53,14 @@
 <span id="json"></span><h2>JSON<a class="headerlink" href="#module-dffml.source.json" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="dffml.source.json.JSONSource">
-<em class="property">class </em><code class="descclassname">dffml.source.json.</code><code class="descname">JSONSource</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/json.html#JSONSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.json.JSONSource" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.json.</code><code class="sig-name descname">JSONSource</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/json.html#JSONSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.json.JSONSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>JSONSource reads and write from a JSON file on open / close. Otherwise
 stored in memory.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="dffml.source.json.OpenJSONFile">
-<em class="property">class </em><code class="descclassname">dffml.source.json.</code><code class="descname">OpenJSONFile</code><span class="sig-paren">(</span><em>data: Dict[str, Dict], active: int, lock: asyncio.locks.Lock</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/json.html#OpenJSONFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.json.OpenJSONFile" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.json.</code><code class="sig-name descname">OpenJSONFile</code><span class="sig-paren">(</span><em class="sig-param">data: Dict[str, Dict], active: int, lock: asyncio.locks.Lock</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/json.html#OpenJSONFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.json.OpenJSONFile" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -69,80 +69,79 @@ stored in memory.</p>
 <p>Loads repos from a csv file, using columns as features</p>
 <dl class="class">
 <dt id="dffml.source.csv.CSVSource">
-<em class="property">class </em><code class="descclassname">dffml.source.csv.</code><code class="descname">CSVSource</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.csv.</code><code class="sig-name descname">CSVSource</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses a CSV file as the source of repo feature data</p>
-<dl class="classmethod">
+<dl class="method">
 <dt id="dffml.source.csv.CSVSource.args">
-<em class="property">classmethod </em><code class="descname">args</code><span class="sig-paren">(</span><em>args</em>, <em>*above</em><span class="sig-paren">)</span> &#x2192; Dict[str, dffml.util.cli.arg.Arg]<a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource.args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource.args" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">args</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">*above</em><span class="sig-paren">)</span> &#x2192; Dict[str, dffml.util.cli.arg.Arg]<a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource.args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource.args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dict containing arguments required for this class</p>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="dffml.source.csv.CSVSource.config">
-<em class="property">classmethod </em><code class="descname">config</code><span class="sig-paren">(</span><em>config</em>, <em>*above</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource.config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource.config" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">config</code><span class="sig-paren">(</span><em class="sig-param">config</em>, <em class="sig-param">*above</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource.config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource.config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the BaseConfig required to instantiate this class by parsing the
 config dict.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="dffml.source.csv.CSVSource.dump_fd">
-<em class="property">coroutine </em><code class="descname">dump_fd</code><span class="sig-paren">(</span><em>fd</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource.dump_fd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource.dump_fd" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dumps data into a CSV stream</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="dffml.source.csv.CSVSource.load_fd">
-<em class="property">coroutine </em><code class="descname">load_fd</code><span class="sig-paren">(</span><em>fd</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource.load_fd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource.load_fd" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses a CSV stream into Repo instances</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="dffml.source.csv.CSVSourceConfig">
-<em class="property">class </em><code class="descclassname">dffml.source.csv.</code><code class="descname">CSVSourceConfig</code><span class="sig-paren">(</span><em>filename</em>, <em>label</em>, <em>readonly</em>, <em>key</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.csv.</code><code class="sig-name descname">CSVSourceConfig</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">readonly</em>, <em class="sig-param">key</em>, <em class="sig-param">label</em>, <em class="sig-param">label_column</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
 <dt id="dffml.source.csv.CSVSourceConfig.filename">
-<code class="descname">filename</code><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig.filename" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">filename</code><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig.filename" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.source.csv.CSVSourceConfig.key">
-<code class="descname">key</code><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig.key" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 3</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="dffml.source.csv.CSVSourceConfig.label">
-<code class="descname">label</code><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig.label" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 1</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="dffml.source.csv.CSVSourceConfig.readonly">
-<code class="descname">readonly</code><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig.readonly" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">key</code><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig.key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="dffml.source.csv.CSVSourceConfig.label">
+<em class="property">property </em><code class="sig-name descname">label</code><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
 </dd></dl>
+
+<dl class="method">
+<dt id="dffml.source.csv.CSVSourceConfig.label_column">
+<em class="property">property </em><code class="sig-name descname">label_column</code><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig.label_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 4</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.source.csv.CSVSourceConfig.readonly">
+<em class="property">property </em><code class="sig-name descname">readonly</code><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig.readonly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dffml.source.csv.OpenCSVFile">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.csv.</code><code class="sig-name descname">OpenCSVFile</code><span class="sig-paren">(</span><em class="sig-param">write_out: Dict</em>, <em class="sig-param">active: int</em>, <em class="sig-param">lock: asyncio.locks.Lock</em>, <em class="sig-param">write_back_key: bool = True</em>, <em class="sig-param">write_back_label: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#OpenCSVFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.OpenCSVFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <div class="section" id="module-dffml.source.file">
 <span id="generic-file-based"></span><h2>Generic File Based<a class="headerlink" href="#module-dffml.source.file" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="dffml.source.file.FileSource">
-<em class="property">class </em><code class="descclassname">dffml.source.file.</code><code class="descname">FileSource</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#FileSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.FileSource" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.file.</code><code class="sig-name descname">FileSource</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#FileSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.FileSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>FileSource reads and write from a file on open / close.</p>
-<dl class="classmethod">
+<dl class="method">
 <dt id="dffml.source.file.FileSource.args">
-<em class="property">classmethod </em><code class="descname">args</code><span class="sig-paren">(</span><em>args</em>, <em>*above</em><span class="sig-paren">)</span> &#x2192; Dict[str, dffml.util.cli.arg.Arg]<a class="reference internal" href="../../_modules/dffml/source/file.html#FileSource.args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.FileSource.args" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">args</code><span class="sig-paren">(</span><em class="sig-param">args</em>, <em class="sig-param">*above</em><span class="sig-paren">)</span> &#x2192; Dict[str, dffml.util.cli.arg.Arg]<a class="reference internal" href="../../_modules/dffml/source/file.html#FileSource.args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.FileSource.args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dict containing arguments required for this class</p>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="dffml.source.file.FileSource.config">
-<em class="property">classmethod </em><code class="descname">config</code><span class="sig-paren">(</span><em>config</em>, <em>*above</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#FileSource.config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.FileSource.config" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">config</code><span class="sig-paren">(</span><em class="sig-param">config</em>, <em class="sig-param">*above</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#FileSource.config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.FileSource.config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the BaseConfig required to instantiate this class by parsing the
 config dict.</p>
 </dd></dl>
@@ -151,22 +150,22 @@ config dict.</p>
 
 <dl class="class">
 <dt id="dffml.source.file.FileSourceConfig">
-<em class="property">class </em><code class="descclassname">dffml.source.file.</code><code class="descname">FileSourceConfig</code><span class="sig-paren">(</span><em>filename</em>, <em>label</em>, <em>readonly</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#FileSourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.FileSourceConfig" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.file.</code><code class="sig-name descname">FileSourceConfig</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">label</em>, <em class="sig-param">readonly</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#FileSourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.FileSourceConfig" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
 <dt id="dffml.source.file.FileSourceConfig.filename">
-<code class="descname">filename</code><a class="headerlink" href="#dffml.source.file.FileSourceConfig.filename" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">filename</code><a class="headerlink" href="#dffml.source.file.FileSourceConfig.filename" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.source.file.FileSourceConfig.label">
-<code class="descname">label</code><a class="headerlink" href="#dffml.source.file.FileSourceConfig.label" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">label</code><a class="headerlink" href="#dffml.source.file.FileSourceConfig.label" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.source.file.FileSourceConfig.readonly">
-<code class="descname">readonly</code><a class="headerlink" href="#dffml.source.file.FileSourceConfig.readonly" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">readonly</code><a class="headerlink" href="#dffml.source.file.FileSourceConfig.readonly" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 
@@ -231,6 +230,7 @@ config dict.</p>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
@@ -257,10 +257,10 @@ config dict.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -282,7 +282,7 @@ config dict.</p>
       &copy;2019, Intel.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

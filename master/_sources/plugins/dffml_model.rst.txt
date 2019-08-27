@@ -235,78 +235,578 @@ dffml_model_scikit
     pip install dffml-model-scikit
 
 
-scikitlr
-~~~~~~~~
+scikitadaboost
+~~~~~~~~~~~~~~
 
 *Core*
 
-Linear Regression Model implemented using scikit. Models are saved under the
-``directory`` in subdirectories named after the hash of their feature names.
-
-.. code-block:: console
-
-    $ cat > train.csv << EOF
-    Years,Expertise,Trust,Salary
-    0,1,0.2,10
-    1,3,0.4,20
-    2,5,0.6,30
-    3,7,0.8,40
-    EOF
-    $ cat > test.csv << EOF
-    Years,Expertise,Trust,Salary
-    4,9,1.0,50
-    5,11,1.2,60
-    EOF
-    $ dffml train \
-        -model scikitlr \
-        -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \
-        -model-predict Salary \
-        -sources f=csv \
-        -source-filename train.csv \
-        -source-readonly \
-        -log debug
-    $ dffml accuracy \
-        -model scikitlr \
-        -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \
-        -model-predict Salary \
-        -sources f=csv \
-        -source-filename test.csv \
-        -source-readonly \
-        -log debug
-    1.0
-    $ echo -e 'Years,Expertise,Trust\n6,13,1.4\n' | \
-      dffml predict all \
-        -model scikitlr \
-        -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \
-        -model-predict Salary \
-        -sources f=csv \
-        -source-filename /dev/stdin \
-        -source-readonly \
-        -log debug
-    [
-        {
-            "extra": {},
-            "features": {
-                "Expertise": 13,
-                "Trust": 1.4,
-                "Years": 6
-            },
-            "last_updated": "2019-07-31T08:40:59Z",
-            "prediction": {
-                "confidence": 1.0,
-                "value": 70.0
-            },
-            "src_url": "0"
-        }
-    ]
+No description
 
 **Args**
 
 - directory: String
 
-  - default: /home/user/.cache/dffml/scikit
+  - default: /home/user/.cache/dffml/scikit-scikitlr
   - Directory where state should be saved
 
 - predict: String
 
   - Label or the value to be predicted
+
+- base_estimator: _empty
+
+  - default: None
+
+- n_estimators: _empty
+
+  - default: 50
+
+- learning_rate: _empty
+
+  - default: 1.0
+
+- algorithm: _empty
+
+  - default: SAMME.R
+
+- random_state: _empty
+
+  - default: None
+
+scikitdtc
+~~~~~~~~~
+
+*Core*
+
+No description
+
+**Args**
+
+- directory: String
+
+  - default: /home/user/.cache/dffml/scikit-scikitlr
+  - Directory where state should be saved
+
+- predict: String
+
+  - Label or the value to be predicted
+
+- criterion: _empty
+
+  - default: gini
+
+- splitter: _empty
+
+  - default: best
+
+- max_depth: _empty
+
+  - default: None
+
+- min_samples_split: _empty
+
+  - default: 2
+
+- min_samples_leaf: _empty
+
+  - default: 1
+
+- min_weight_fraction_leaf: _empty
+
+  - default: 0.0
+
+- max_features: _empty
+
+  - default: None
+
+- random_state: _empty
+
+  - default: None
+
+- max_leaf_nodes: _empty
+
+  - default: None
+
+- min_impurity_decrease: _empty
+
+  - default: 0.0
+
+- min_impurity_split: _empty
+
+  - default: None
+
+- class_weight: _empty
+
+  - default: None
+
+- presort: _empty
+
+  - default: False
+
+scikitgnb
+~~~~~~~~~
+
+*Core*
+
+No description
+
+**Args**
+
+- directory: String
+
+  - default: /home/user/.cache/dffml/scikit-scikitlr
+  - Directory where state should be saved
+
+- predict: String
+
+  - Label or the value to be predicted
+
+- priors: _empty
+
+  - default: None
+
+- var_smoothing: _empty
+
+  - default: 1e-09
+
+scikitgpc
+~~~~~~~~~
+
+*Core*
+
+No description
+
+**Args**
+
+- directory: String
+
+  - default: /home/user/.cache/dffml/scikit-scikitlr
+  - Directory where state should be saved
+
+- predict: String
+
+  - Label or the value to be predicted
+
+- kernel: _empty
+
+  - default: None
+
+- optimizer: _empty
+
+  - default: fmin_l_bfgs_b
+
+- n_restarts_optimizer: _empty
+
+  - default: 0
+
+- max_iter_predict: _empty
+
+  - default: 100
+
+- warm_start: _empty
+
+  - default: False
+
+- copy_X_train: _empty
+
+  - default: True
+
+- random_state: _empty
+
+  - default: None
+
+- multi_class: _empty
+
+  - default: one_vs_rest
+
+- n_jobs: _empty
+
+  - default: None
+
+scikitknn
+~~~~~~~~~
+
+*Core*
+
+No description
+
+**Args**
+
+- directory: String
+
+  - default: /home/user/.cache/dffml/scikit-scikitlr
+  - Directory where state should be saved
+
+- predict: String
+
+  - Label or the value to be predicted
+
+- n_neighbors: _empty
+
+  - default: 5
+
+- weights: _empty
+
+  - default: uniform
+
+- algorithm: _empty
+
+  - default: auto
+
+- leaf_size: _empty
+
+  - default: 30
+
+- p: _empty
+
+  - default: 2
+
+- metric: _empty
+
+  - default: minkowski
+
+- metric_params: _empty
+
+  - default: None
+
+- n_jobs: _empty
+
+  - default: None
+
+- kwargs: _empty
+
+  - default: <class 'dffml_model_scikit.scikit_models.NoDefaultValue'>
+
+scikitlr
+~~~~~~~~
+
+*Core*
+
+No description
+
+**Args**
+
+- directory: String
+
+  - default: /home/user/.cache/dffml/scikit-scikitlr
+  - Directory where state should be saved
+
+- predict: String
+
+  - Label or the value to be predicted
+
+- fit_intercept: _empty
+
+  - default: True
+
+- normalize: _empty
+
+  - default: False
+
+- copy_X: _empty
+
+  - default: True
+
+- n_jobs: _empty
+
+  - default: None
+
+scikitmlp
+~~~~~~~~~
+
+*Core*
+
+No description
+
+**Args**
+
+- directory: String
+
+  - default: /home/user/.cache/dffml/scikit-scikitlr
+  - Directory where state should be saved
+
+- predict: String
+
+  - Label or the value to be predicted
+
+- hidden_layer_sizes: _empty
+
+  - default: (100,)
+
+- activation: _empty
+
+  - default: relu
+
+- solver: _empty
+
+  - default: adam
+
+- alpha: _empty
+
+  - default: 0.0001
+
+- batch_size: _empty
+
+  - default: auto
+
+- learning_rate: _empty
+
+  - default: constant
+
+- learning_rate_init: _empty
+
+  - default: 0.001
+
+- power_t: _empty
+
+  - default: 0.5
+
+- max_iter: _empty
+
+  - default: 200
+
+- shuffle: _empty
+
+  - default: True
+
+- random_state: _empty
+
+  - default: None
+
+- tol: _empty
+
+  - default: 0.0001
+
+- verbose: _empty
+
+  - default: False
+
+- warm_start: _empty
+
+  - default: False
+
+- momentum: _empty
+
+  - default: 0.9
+
+- nesterovs_momentum: _empty
+
+  - default: True
+
+- early_stopping: _empty
+
+  - default: False
+
+- validation_fraction: _empty
+
+  - default: 0.1
+
+- beta_1: _empty
+
+  - default: 0.9
+
+- beta_2: _empty
+
+  - default: 0.999
+
+- epsilon: _empty
+
+  - default: 1e-08
+
+- n_iter_no_change: _empty
+
+  - default: 10
+
+scikitqda
+~~~~~~~~~
+
+*Core*
+
+No description
+
+**Args**
+
+- directory: String
+
+  - default: /home/user/.cache/dffml/scikit-scikitlr
+  - Directory where state should be saved
+
+- predict: String
+
+  - Label or the value to be predicted
+
+- priors: _empty
+
+  - default: None
+
+- reg_param: _empty
+
+  - default: 0.0
+
+- store_covariance: _empty
+
+  - default: False
+
+- tol: _empty
+
+  - default: 0.0001
+
+scikitrfc
+~~~~~~~~~
+
+*Core*
+
+No description
+
+**Args**
+
+- directory: String
+
+  - default: /home/user/.cache/dffml/scikit-scikitlr
+  - Directory where state should be saved
+
+- predict: String
+
+  - Label or the value to be predicted
+
+- n_estimators: _empty
+
+  - default: warn
+
+- criterion: _empty
+
+  - default: gini
+
+- max_depth: _empty
+
+  - default: None
+
+- min_samples_split: _empty
+
+  - default: 2
+
+- min_samples_leaf: _empty
+
+  - default: 1
+
+- min_weight_fraction_leaf: _empty
+
+  - default: 0.0
+
+- max_features: _empty
+
+  - default: auto
+
+- max_leaf_nodes: _empty
+
+  - default: None
+
+- min_impurity_decrease: _empty
+
+  - default: 0.0
+
+- min_impurity_split: _empty
+
+  - default: None
+
+- bootstrap: _empty
+
+  - default: True
+
+- oob_score: _empty
+
+  - default: False
+
+- n_jobs: _empty
+
+  - default: None
+
+- random_state: _empty
+
+  - default: None
+
+- verbose: _empty
+
+  - default: 0
+
+- warm_start: _empty
+
+  - default: False
+
+- class_weight: _empty
+
+  - default: None
+
+scikitsvc
+~~~~~~~~~
+
+*Core*
+
+No description
+
+**Args**
+
+- directory: String
+
+  - default: /home/user/.cache/dffml/scikit-scikitlr
+  - Directory where state should be saved
+
+- predict: String
+
+  - Label or the value to be predicted
+
+- C: _empty
+
+  - default: 1.0
+
+- kernel: _empty
+
+  - default: rbf
+
+- degree: _empty
+
+  - default: 3
+
+- gamma: _empty
+
+  - default: auto_deprecated
+
+- coef0: _empty
+
+  - default: 0.0
+
+- shrinking: _empty
+
+  - default: True
+
+- probability: _empty
+
+  - default: False
+
+- tol: _empty
+
+  - default: 0.001
+
+- cache_size: _empty
+
+  - default: 200
+
+- class_weight: _empty
+
+  - default: None
+
+- verbose: _empty
+
+  - default: False
+
+- max_iter: _empty
+
+  - default: -1
+
+- decision_function_shape: _empty
+
+  - default: ovr
+
+- random_state: _empty
+
+  - default: None

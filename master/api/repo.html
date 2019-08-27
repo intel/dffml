@@ -37,35 +37,35 @@
 <p>Repository of information about a unique key.</p>
 <dl class="class">
 <dt id="dffml.repo.Repo">
-<em class="property">class </em><code class="descclassname">dffml.repo.</code><code class="descname">Repo</code><span class="sig-paren">(</span><em>src_url: str</em>, <em>*</em>, <em>data: Optional[Dict[str</em>, <em>Any]] = None</em>, <em>extra: Optional[Dict[str</em>, <em>Any]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/repo.html#Repo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.repo.Repo" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.repo.</code><code class="sig-name descname">Repo</code><span class="sig-paren">(</span><em class="sig-param">src_url: str</em>, <em class="sig-param">*</em>, <em class="sig-param">data: Optional[Dict[str</em>, <em class="sig-param">Any]] = None</em>, <em class="sig-param">extra: Optional[Dict[str</em>, <em class="sig-param">Any]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/repo.html#Repo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.repo.Repo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Manages feature independent information and actions for a repo.</p>
 <dl class="method">
 <dt id="dffml.repo.Repo.evaluated">
-<code class="descname">evaluated</code><span class="sig-paren">(</span><em>results: Dict[str, Any], overwrite=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/repo.html#Repo.evaluated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.repo.Repo.evaluated" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">evaluated</code><span class="sig-paren">(</span><em class="sig-param">results: Dict[str, Any], overwrite=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/repo.html#Repo.evaluated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.repo.Repo.evaluated" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates features with the result dict</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="dffml.repo.Repo.feature">
-<code class="descname">feature</code><span class="sig-paren">(</span><em>name: str</em><span class="sig-paren">)</span> &#x2192; Any<a class="reference internal" href="../_modules/dffml/repo.html#Repo.feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.repo.Repo.feature" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">feature</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span> &#x2192; Any<a class="reference internal" href="../_modules/dffml/repo.html#Repo.feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.repo.Repo.feature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a feature of the repo.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="dffml.repo.Repo.features">
-<code class="descname">features</code><span class="sig-paren">(</span><em>subset: List[str] = []</em><span class="sig-paren">)</span> &#x2192; Dict[str, Any]<a class="reference internal" href="../_modules/dffml/repo.html#Repo.features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.repo.Repo.features" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">features</code><span class="sig-paren">(</span><em class="sig-param">subset: List[str] = []</em><span class="sig-paren">)</span> &#x2192; Dict[str, Any]<a class="reference internal" href="../_modules/dffml/repo.html#Repo.features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.repo.Repo.features" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns all features for the repo or the subset specified.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="dffml.repo.Repo.predicted">
-<code class="descname">predicted</code><span class="sig-paren">(</span><em>value: Any</em>, <em>confidence: float</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/repo.html#Repo.predicted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.repo.Repo.predicted" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predicted</code><span class="sig-paren">(</span><em class="sig-param">value: Any</em>, <em class="sig-param">confidence: float</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/repo.html#Repo.predicted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.repo.Repo.predicted" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the prediction for this repo</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="dffml.repo.Repo.prediction">
-<code class="descname">prediction</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dffml.repo.RepoPrediction<a class="reference internal" href="../_modules/dffml/repo.html#Repo.prediction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.repo.Repo.prediction" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">prediction</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dffml.repo.RepoPrediction<a class="reference internal" href="../_modules/dffml/repo.html#Repo.prediction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.repo.Repo.prediction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the prediction for this repo</p>
 </dd></dl>
 
@@ -129,6 +129,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="df/index.html">Data Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="feature.html">Features</a></li>
@@ -153,10 +154,10 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -178,7 +179,7 @@
       &copy;2019, Intel.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

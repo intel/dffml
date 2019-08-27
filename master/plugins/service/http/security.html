@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Security &#8212; DFFML 0.2.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="API Reference" href="../../../api/index.html" />
+    <link rel="prev" title="API" href="api.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="security">
+<h1>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h1>
+<p>Vulnerabilities should be reported via <a class="reference external" href="https://intel.com/security">https://intel.com/security</a></p>
+<div class="section" id="cors">
+<h2>CORS<a class="headerlink" href="#cors" title="Permalink to this headline">¶</a></h2>
+<p>You’ll want to configure the domains that should be able to request the API via
+the CORS flag, if you are putting this on a different domain.</p>
+<p>For example if you are hosting the API service on
+<code class="docutils literal notranslate"><span class="pre">https://dffml.example-api.com</span></code> and you’re web UI on
+<code class="docutils literal notranslate"><span class="pre">https://dffml.example.com</span></code>, you’ll need to add the URL of the web UI to the
+CORS list.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -cors <span class="s1">&#39;https://dffml.example-api.com&#39;</span>
+</pre></div>
+</div>
+<p>You may just want to throw all of this CORS buisness out the window when
+developing (we don’t blame you). In which case you could enable connections from
+all origins via <code class="docutils literal notranslate"><span class="pre">*</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -cors <span class="s1">&#39;*&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="multitenancy">
+<h2>Multitenancy<a class="headerlink" href="#multitenancy" title="Permalink to this headline">¶</a></h2>
+<p>The HTTP API service is <strong>not</strong> intended for multi-tenant use, and most likely
+never will be.</p>
+<p>This means that its currently assumed that anyone allowed to connect to the
+server (TLS client authentication protects anyone you haven’t given a <code class="docutils literal notranslate"><span class="pre">.key</span></code>
+and <code class="docutils literal notranslate"><span class="pre">.pem</span></code> file to from connecting. So two people could access it at the same
+time, but they won’t be stopped from clobbering each other’s work.</p>
+</div>
+<div class="section" id="file-network-etc-access">
+<h2>File, Network, Etc. Access<a class="headerlink" href="#file-network-etc-access" title="Permalink to this headline">¶</a></h2>
+<p>Since this just exposes existing DFFML APIs, its damn near impossible for use to
+lock everything down within all the plugins of DFFML you might choose to expose
+via this HTTP API. So we’re not going to try. What this means is that if you’re
+running this you should sandbox it appropriately.</p>
+<p>For example, if you expose the DFFML CSV source using this API, it takes a
+filename parameter, which is the file containing the CSV data. Now if you say
+that filename is at <code class="docutils literal notranslate"><span class="pre">/root/some/file.csv</span></code> and you’re running this as root
+then it’s going to have access to that file therefore, <strong>DO NOT RUN THIS AS
+ROOT</strong>, as anyone who is able to connect will have read write access to all
+files on your system, you do not want to take this chance!</p>
+<p>Similarly, if you expose the DFFML MySQL source, when you initialize new
+MySQL protocol connections they will be originating from whatever machine is
+running the HTTP API. So that means it might have access to internal databases
+or something listing only on <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code>.</p>
+</div>
+<div class="section" id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
+<p>TLS client authentication is currently used. There are scripts to generate basic
+functioning certs. These certs should <strong>not</strong> be used in a production capacity.</p>
+<p>In the future, we’ll probably support JSON Web Tokens (JWT) signed with a public
+key. And then you’ll be able to provision your certs in a more reasonable way
+(cert-manager if Kubernetes or something else). But for now this is what we’ve
+got.</p>
+<p>First, generate the server key and cert. The cert generated is only valid for
+<code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code>. This will produce the server’s private key file, <code class="docutils literal notranslate"><span class="pre">server.key</span></code>,
+and the server’s certificate, <code class="docutils literal notranslate"><span class="pre">server.pem</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http createtls server
+<span class="go">Generating a RSA private key</span>
+<span class="go">......................................++++</span>
+<span class="go">.................................++++</span>
+<span class="go">writing new private key to &#39;server.key&#39;</span>
+<span class="go">-----</span>
+</pre></div>
+</div>
+<p>Then, generate the client key and cert. It will be signed by the server cert to
+make it acceptable to the server. This will produce the client’s private key
+file, <code class="docutils literal notranslate"><span class="pre">client.key</span></code>, the client’s certificate, <code class="docutils literal notranslate"><span class="pre">client.pem</span></code>, and the client’s
+certificate signing request <code class="docutils literal notranslate"><span class="pre">client.csr</span></code> (which is unnecessary after the
+command is run because it’s already been used to create <code class="docutils literal notranslate"><span class="pre">client.pem</span></code>).</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http createtls client
+<span class="go">Generating a RSA private key</span>
+<span class="go">.................................................++++</span>
+<span class="go">........++++</span>
+<span class="go">writing new private key to &#39;client.key&#39;</span>
+<span class="go">-----</span>
+<span class="go">Signature ok</span>
+<span class="go">subject=CN = RealUser</span>
+<span class="go">Getting CA Private Key</span>
+</pre></div>
+</div>
+<p>Now you can run the server without the <code class="docutils literal notranslate"><span class="pre">-insecure</span></code> flag.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -port <span class="m">5000</span>
+<span class="gp">$</span> curl -w <span class="s1">&#39;\n&#39;</span> <span class="se">\</span>
+    --cacert server.pem <span class="se">\</span>
+    --cert client.pem <span class="se">\</span>
+    --key client.key <span class="se">\</span>
+    https://127.0.0.1:5000/list/sources/
+<span class="go">... JSON output ...</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">DFFML</a></h1>
+
+
+
+<p class="blurb">The fastest path to machine learning integration</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://travis-ci.org/intel/dffml">
+    <img
+        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
+    />
+</a>
+</p>
+
+
+
+
+    
+
+<p>
+<a class="badge" href="https://codecov.io/github/intel/dffml">
+    <img
+    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
+    />
+</a>
+</p>
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Plugins</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">HTTP API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Security</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../community.html">Community</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">HTTP API</a><ul>
+      <li>Previous: <a href="api.html" title="previous chapter">API</a></li>
+      <li>Next: <a href="../../../api/index.html" title="next chapter">API Reference</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/plugins/service/http/security.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
