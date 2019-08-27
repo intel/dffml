@@ -30,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Multiple Scikit Models with dynamic config
 - Entrypoint listing command to development service to aid in debugging issues
   with entrypoints.
+- HTTP API service to enable interacting with DFFML over HTTP. Currently
+  includes APIs for configuring and using Sources.
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
