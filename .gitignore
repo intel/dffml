@@ -19,3 +19,4 @@ htmlcov/
 .venv/
 html/
 pages/
+examples/shouldi/response.json

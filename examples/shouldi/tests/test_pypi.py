@@ -7,11 +7,13 @@ from dffml.util.asynctestcase import AsyncTestCase
 from shouldi.pypi import pypi_package_json
 from shouldi.pypi import pypi_latest_package_version
 from shouldi.pypi import pypi_package_url
+from shouldi.pypi import pypi_package_contents
 
 
 class TestPyPiOperations(AsyncTestCase):
     PACKAGE = "insecure-package"
     INT_RESULT_JSON = {}
+    PACKAGE_URL = None
 
     async def test_000_package_json(self):
         async with pypi_package_json.imp(BaseConfig()) as pypi_package:
@@ -33,3 +35,11 @@ class TestPyPiOperations(AsyncTestCase):
             async with pypi_url(None, None) as ctx:
                 results = await ctx.run({"package_json": self.INT_RESULT_JSON})
                 self.assertIn("insecure-package-0.1.0.tar.gz", results["url"])
+                self.PACKAGE_URL = results["url"]
+
+    async def test_003_package_contents(self):
+        PACKAGE_URL = "https://files.pythonhosted.org/packages/dd/b7/b7318693b356d0e0ba566fb22b72a349a10337880c254e5e7e9f24f4f9b3/insecure-package-0.1.0.tar.gz"
+        async with pypi_package_contents.imp(BaseConfig()) as pypi_cont:
+            async with pypi_cont(None, None) as ctx:
+                results = await ctx.run({"package_url": PACKAGE_URL})
+                print(results["directory"])

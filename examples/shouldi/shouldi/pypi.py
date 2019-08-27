@@ -1,4 +1,6 @@
 import aiohttp
+import tempfile
+import shutil
 from typing import Dict, Any
 
 from dffml.df.types import Definition
@@ -8,6 +10,7 @@ package = Definition(name="package", primitive="str")
 package_json = Definition(name="package_json", primitive="Dict[str, Any]")
 package_version = Definition(name="package_version", primitive="str")
 package_url = Definition(name="package_url", primitive="str")
+package_src_dir = Definition(name="package_src_dir", primitive="str")
 
 
 @op(
@@ -41,3 +44,20 @@ async def pypi_package_url(package_json: Dict["str", Any]) -> str:
             and url_dict["packagetype"] == "sdist"
         ):
             return {"url": url_dict["url"]}
+
+
+@op(
+    inputs={"url": package_url},
+    outputs={"directory": package_src_dir},
+    imp_enter={
+        "session": (lambda self: aiohttp.ClientSession(trust_env=True))
+    },
+)
+async def pypi_package_contents(self, package_url: str) -> str:
+     package_src_dir = tempfile.mkdtemp(prefix="pypi-")
+     async with self.parent.session.get(package_url) as resp:
+        if resp.status == 200:
+            package_src_file = tempfile.TemporaryFile(prefix="pypi-", suffix=".tar.gz")
+            package_src_file.write(await resp.read())
+            shutil.unpack_archive(package_src_file, package_src_dir)
+            return {"directory": package_src_dir}
