@@ -157,7 +157,7 @@ for entry_point_name, name, cls, applicable_features_function in [
             directory=cls.config_get(config, above, "directory"),
             predict=cls.config_get(config, above, "predict"),
         )
-        for name in inspect.signature(self.SCIKIT_MODEL).parameters.keys():
+        for name in inspect.signature(cls.SCIKIT_MODEL).parameters.keys():
             params[name] = cls.config_get(args, above, name)
         return cls.CONFIG(**params)
 
