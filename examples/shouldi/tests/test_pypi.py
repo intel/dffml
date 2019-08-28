@@ -1,4 +1,7 @@
 import json
+import os
+import shutil
+import tempfile
 from pathlib import Path
 
 from dffml.df.base import BaseConfig
@@ -8,6 +11,7 @@ from shouldi.pypi import pypi_package_json
 from shouldi.pypi import pypi_latest_package_version
 from shouldi.pypi import pypi_package_url
 from shouldi.pypi import pypi_package_contents
+from shouldi.pypi import cleanup_pypi_package
 
 
 class TestPyPiOperations(AsyncTestCase):
@@ -42,4 +46,13 @@ class TestPyPiOperations(AsyncTestCase):
         async with pypi_package_contents.imp(BaseConfig()) as pypi_cont:
             async with pypi_cont(None, None) as ctx:
                 results = await ctx.run({"package_url": PACKAGE_URL})
-                print(results["directory"])
+                no_files = os.listdir(results["directory"])
+                self.assertGreater(len(no_files), 0)
+                shutil.rmtree(results["directory"])
+
+    async def test_004_cleanup_package(self):
+        temp_dir = tempfile.mkdtemp(prefix="temp-")
+        async with cleanup_pypi_package.imp(BaseConfig()) as cleanup_cont:
+            async with cleanup_cont(None, None) as ctx:
+                results = await ctx.run({"directory": temp_dir})
+                self.assertDictEqual(results, {})

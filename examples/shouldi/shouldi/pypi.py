@@ -3,7 +3,7 @@ import tempfile
 import shutil
 from typing import Dict, Any
 
-from dffml.df.types import Definition
+from dffml.df.types import Definition, Stage
 from dffml.df.base import op
 
 package = Definition(name="package", primitive="str")
@@ -54,10 +54,21 @@ async def pypi_package_url(package_json: Dict["str", Any]) -> str:
     },
 )
 async def pypi_package_contents(self, package_url: str) -> str:
-     package_src_dir = tempfile.mkdtemp(prefix="pypi-")
-     async with self.parent.session.get(package_url) as resp:
+    package_src_dir = tempfile.mkdtemp(prefix="pypi-")
+    async with self.parent.session.get(package_url) as resp:
         if resp.status == 200:
-            package_src_file = tempfile.TemporaryFile(prefix="pypi-", suffix=".tar.gz")
+            package_src_file = tempfile.NamedTemporaryFile(
+                prefix="pypi-", suffix=".tar.gz"
+            )
             package_src_file.write(await resp.read())
-            shutil.unpack_archive(package_src_file, package_src_dir)
+            shutil.unpack_archive(package_src_file.name, package_src_dir)
             return {"directory": package_src_dir}
+
+
+@op(inputs={"directory": package_src_dir}, outputs={}, stage=Stage.CLEANUP)
+async def cleanup_pypi_package(directory: str):
+    try:
+        shutil.rmtree(directory)
+    except FileNotFoundError:
+        return {"op": "failed"}
+    return {}
