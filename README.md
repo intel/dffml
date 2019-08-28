@@ -4,7 +4,15 @@
 
 ## Documentation
 
-Documentation is hosted at https://intel.github.io/dffml/
+Documentation for the latest release is hosted at https://intel.github.io/dffml/
+
+Documentation for the master branch is hosted at
+https://intel.github.io/dffml/master/index.html
+
+## Contributing
+
+[CONTRIBUTING.md](CONTRIBUTING.md) will guide you through getting setup and
+contributing to DFFML.
 
 ## Help
 
@@ -13,11 +21,6 @@ Documentation is hosted at https://intel.github.io/dffml/
   - You can subscribe to the users mailing list here
     https://lists.01.org/mailman/listinfo/dffml-users
 - Ask a question on the [Gitter chat](https://gitter.im/dffml/community)
-
-## Contributing
-
-[CONTRIBUTING.md](CONTRIBUTING.md) will guide you through getting setup and
-contributing to DFFML.
 
 ## License
 
