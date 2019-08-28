@@ -7,6 +7,8 @@ import argparse
 import pkg_resources
 from typing import List
 
+import dffml_model_scikit
+
 
 def traverse_get_config(target, *args):
     current = target
@@ -168,7 +170,11 @@ def gen_docs(entrypoint: str, modules: List[str], maintenance: str = "Core"):
                     "underline": "-" * len(name),
                 }
             )
-            + "\n\n".join(docs)
+            + (
+                "\n\n".join(docs)
+                if name != "dffml_model_scikit"
+                else inspect.getdoc(dffml_model_scikit)
+            )
             for name, docs in per_module.items()
             if docs
         ]
