@@ -9,12 +9,12 @@ from typing import Dict, Any
 from dffml.df.types import Definition
 from dffml.df.base import op
 
-git_repository = Definition(name="git_repository", primitive="Dict[str,str]")
+pypi_pkg_dir = Definition(name="pypi_pkg_dir", primitive="str")
 bandit_output = Definition(name="bandit_output", primitive="Dict[str, Any]")
 
 
-@op(inputs={"repo": git_repository}, outputs={"report": bandit_output})
-async def run_bandit(repo: Dict[str, str]) -> Dict[str, Any]:
+@op(inputs={"pkg": pypi_pkg_dir}, outputs={"report": bandit_output})
+async def run_bandit(pkg: str) -> Dict[str, Any]:
     proc = await asyncio.create_subprocess_exec(
         sys.executable,
         "-m",
@@ -22,7 +22,7 @@ async def run_bandit(repo: Dict[str, str]) -> Dict[str, Any]:
         "-r",
         "-f",
         "json",
-        repo["directory"],
+        pkg,
         stdin=asyncio.subprocess.PIPE,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
