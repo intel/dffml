@@ -8,12 +8,12 @@ from typing import Dict, Any
 
 from dffml.df.types import Definition
 from dffml.df.base import op
+from .pypi import package_src_dir
 
-pypi_pkg_dir = Definition(name="pypi_pkg_dir", primitive="str")
 bandit_output = Definition(name="bandit_output", primitive="Dict[str, Any]")
 
 
-@op(inputs={"pkg": pypi_pkg_dir}, outputs={"report": bandit_output})
+@op(inputs={"pkg": package_src_dir}, outputs={"report": bandit_output})
 async def run_bandit(pkg: str) -> Dict[str, Any]:
     proc = await asyncio.create_subprocess_exec(
         sys.executable,
