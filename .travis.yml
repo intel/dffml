@@ -8,6 +8,8 @@ addons:
     - git
     - subversion
     - cloc
+services:
+- docker
 env:
   global:
   - LOGGING=debug
@@ -19,6 +21,7 @@ env:
   - PLUGIN=model/scikit
   - PLUGIN=feature/git
   - PLUGIN=feature/auth
+  - PLUGIN=source/hdfs
   - CHANGELOG=1
   - WHITESPACE=1
   - STYLE=1
