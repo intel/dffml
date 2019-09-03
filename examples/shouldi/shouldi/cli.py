@@ -7,7 +7,9 @@ from dffml.operation.output import GetSingle
 from dffml.util.cli.cmd import CMD
 from dffml.util.cli.arg import Arg
 
+from shouldi.bandit import run_bandit
 from shouldi.pypi import pypi_latest_package_version
+from shouldi.pypi import pypi_package_contents
 from shouldi.safety import safety_check
 
 # sys.modules[__name__] is a list of everything we've imported in this file.
@@ -42,12 +44,16 @@ class Install(CMD):
                         Input(
                             value=package_name,
                             definition=pypi_latest_package_version.op.inputs[
-                                "package"
+                                "package_json"
                             ],
                         ),
                         Input(
                             value=[safety_check.op.outputs["issues"].name],
                             definition=GetSingle.op.inputs["spec"],
+                        ),
+                        Input(
+                            value=[run_bandit.op.outputs["report"].name],
+                            definition=run_bandit.op.inputs["pkg"],
                         ),
                     )
 
