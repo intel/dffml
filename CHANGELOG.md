@@ -71,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CSV source now has `entry_point` decoration
 - JSON source now has `entry_point` decoration
 - Strict flag in df.memory is now on by default
+- Dynamicly created scikit models get config args correctly
 ### Removed
 - Repo objects are no longer classification specific. Their `classify`,
   `classified`, and `classification` methods were removed.
