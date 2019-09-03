@@ -39,6 +39,7 @@ setup(
     ],
     packages=find_packages(),
     include_package_data=True,
+    zip_safe=False,
     extras_require={
         "models": ["dffml-model-tensorflow", "dffml-model-scratch"],
         "git": ["dffml-feature-git"],
