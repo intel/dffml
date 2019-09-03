@@ -29,6 +29,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Issue template for questions
 - Multiple Scikit Models with dynamic config
 - To work with data from a Hadoop source
+- Entrypoint listing command to development service to aid in debugging issues
+  with entrypoints.
+- HTTP API service to enable interacting with DFFML over HTTP. Currently
+  includes APIs for configuring and using Sources.
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
@@ -52,6 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Restructured documentation
 - Ran `black` on whole codebase, including all submodules
 - CI style check now checks whole codebase
+- Merged HACKING.md into CONTRIBUTING.md
 ### Fixed
 - Docs get version from dffml.version.VERSION.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects

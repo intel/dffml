@@ -53,7 +53,10 @@ class ScikitContext(ModelContext):
         if os.path.isfile(self._filename()):
             self.clf = joblib.load(self._filename())
         else:
-            self.clf = self.parent.SCIKIT_MODEL
+            config = self.parent.config._asdict()
+            del config["directory"]
+            del config["predict"]
+            self.clf = self.parent.SCIKIT_MODEL(**config)
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
