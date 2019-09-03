@@ -1,4 +1,4 @@
-from dffml.source.hdfs import HDFSSourceConfig, HDFSSource
+from dffml_source_hdfs.source import HDFSSourceConfig, HDFSSource
 
 from dffml.util.testing.source import SourceTest
 from dffml.util.asynctestcase import AsyncTestCase
