@@ -80,6 +80,7 @@ class BaseConfigurable(abc.ABC):
         context's.
         """
         self.config = config
+        self.logger.debug(self.config)
 
     @classmethod
     def add_orig_label(cls, *above):
