@@ -7,17 +7,17 @@ from setuptools import find_packages, setup
 with open("dffml/version.py", "r") as f:
     for line in f:
         if line.startswith("VERSION"):
-            version = ast.literal_eval(line.strip().split("=")[-1].strip())
+            VERSION = ast.literal_eval(line.strip().split("=")[-1].strip())
             break
 
 with open("README.md", "r", encoding="utf-8") as f:
-    readme = f.read()
+    README = f.read()
 
 setup(
     name="dffml",
-    version=version,
+    version=VERSION,
     description="Data Flow Facilitator for Machine Learning",
-    long_description=readme,
+    long_description=README,
     long_description_content_type="text/markdown",
     author="John Andersen",
     author_email="john.s.andersen@intel.com",
@@ -39,6 +39,7 @@ setup(
     ],
     packages=find_packages(),
     include_package_data=True,
+    zip_safe=False,
     extras_require={
         "models": ["dffml-model-tensorflow", "dffml-model-scratch"],
         "git": ["dffml-feature-git"],

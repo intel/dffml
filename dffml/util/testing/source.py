@@ -18,7 +18,7 @@ class SourceTest(abc.ABC):
     >>> from dffml.source.json import JSONSource
     >>> from dffml.util.testing.source import SourceTest
     >>> from dffml.util.asynctestcase import AsyncTestCase
-    >>> class TestJSONSource(SourceTest, AsyncTestCase):
+    >>> class TestCustomSQliteSource(SourceTest, AsyncTestCase):
     >>>     async def setUpSource(self):
     >>>         return MemorySource(MemorySourceConfig(repos=[Repo('a')]))
     """
@@ -94,7 +94,7 @@ class FileSourceTest(SourceTest):
     >>> from dffml.source.json import JSONSource
     >>> from dffml.util.testing.source import FileSourceTest
     >>> from dffml.util.asynctestcase import AsyncTestCase
-    >>> class TestJSONSource(FileSourceTest, AsyncTestCase):
+    >>> class TestCustomSQliteSource(FileSourceTest, AsyncTestCase):
     >>>     async def setUpSource(self):
     >>>         return JSONSource(FileSourceConfig(filename=self.testfile))
     """

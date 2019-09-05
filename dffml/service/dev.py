@@ -5,6 +5,7 @@ import pydoc
 import getpass
 import importlib
 import configparser
+import pkg_resources
 from pathlib import Path
 
 from ..util.skel import Skel
@@ -124,6 +125,7 @@ class Skeleton(CMD):
     link = Link
 
 
+
 class Run(CMD):
     """
     Run a single operation
@@ -205,6 +207,21 @@ class Run(CMD):
                     # the same data type that only one will be shown
                     return results[GetSingle.op.name]
 
+class ListEntrypoints(CMD):
+
+    arg_entrypoint = Arg(
+        "entrypoint", help="Entrypoint to list, example: dffml.model"
+    )
+
+    async def run(self):
+        for entrypoint in pkg_resources.iter_entry_points(self.entrypoint):
+            print(f"{entrypoint} -> {entrypoint.dist!r}")
+
+
+class Entrypoints(CMD):
+
+    _list = ListEntrypoints
+
 
 class Develop(CMD):
     """
@@ -214,3 +231,4 @@ class Develop(CMD):
     create = Create
     skel = Skeleton
     run = Run
+    entrypoints = Entrypoints

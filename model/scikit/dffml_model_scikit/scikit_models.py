@@ -5,6 +5,7 @@ Description of what this model does
 """
 import os
 import sys
+import ast
 import inspect
 from collections import namedtuple
 from typing import Dict
@@ -100,7 +101,7 @@ for entry_point_name, name, cls, applicable_features_function in [
         for name, param in parameters.items()
         if param.default != inspect._empty
     ]
-    config = namedtuple(
+    dffml_config = namedtuple(
         name + "ModelConfig",
         ["directory", "predict"]
         + [
@@ -111,7 +112,7 @@ for entry_point_name, name, cls, applicable_features_function in [
         defaults=defaults,
     )
 
-    setattr(sys.modules[__name__], config.__qualname__, config)
+    setattr(sys.modules[__name__], dffml_config.__qualname__, dffml_config)
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
@@ -135,15 +136,15 @@ for entry_point_name, name, cls, applicable_features_function in [
             "predict",
             Arg(type=str, help="Label or the value to be predicted"),
         )
-        for _, param in inspect.signature(cls.SCIKIT_MODEL):
+        for param in inspect.signature(cls.SCIKIT_MODEL).parameters.values():
             # TODO if param.default is an array then Args needs to get a
             # nargs="+"
-            self.config_set(
+            cls.config_set(
                 args,
                 above,
                 param.name,
                 Arg(
-                    type=param.annotation,
+                    type=cls.type_for(param),
                     default=NoDefaultValue
                     if param.default == inspect._empty
                     else param.default,
@@ -157,8 +158,8 @@ for entry_point_name, name, cls, applicable_features_function in [
             directory=cls.config_get(config, above, "directory"),
             predict=cls.config_get(config, above, "predict"),
         )
-        for name, _ in inspect.signature(self.SCIKIT_MODEL):
-            params[name] = self.config_get(args, above, name)
+        for name in inspect.signature(cls.SCIKIT_MODEL).parameters.keys():
+            params[name] = cls.config_get(config, above, name)
         return cls.CONFIG(**params)
 
     dffml_cls_ctx = type(
@@ -171,9 +172,9 @@ for entry_point_name, name, cls, applicable_features_function in [
         name + "Model",
         (Scikit,),
         {
-            "CONFIG": config,
+            "CONFIG": dffml_config,
             "CONTEXT": dffml_cls_ctx,
-            "SCIKIT_MODEL": cls(),
+            "SCIKIT_MODEL": cls,
             "args": args,
             "config": config,
         },

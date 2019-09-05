@@ -28,6 +28,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Mailing list info
 - Issue template for questions
 - Multiple Scikit Models with dynamic config
+- Entrypoint listing command to development service to aid in debugging issues
+  with entrypoints.
+- HTTP API service to enable interacting with DFFML over HTTP. Currently
+  includes APIs for configuring and using Sources.
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
@@ -51,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Restructured documentation
 - Ran `black` on whole codebase, including all submodules
 - CI style check now checks whole codebase
+- Merged HACKING.md into CONTRIBUTING.md
 ### Fixed
 - Docs get version from dffml.version.VERSION.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
@@ -66,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CSV source now has `entry_point` decoration
 - JSON source now has `entry_point` decoration
 - Strict flag in df.memory is now on by default
+- Dynamicly created scikit models get config args correctly
 ### Removed
 - Repo objects are no longer classification specific. Their `classify`,
   `classified`, and `classification` methods were removed.
