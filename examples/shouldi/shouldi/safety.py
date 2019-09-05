@@ -1,5 +1,6 @@
 import io
 import json
+import sys
 import asyncio
 from typing import Dict, Any
 
@@ -23,6 +24,8 @@ async def safety_check(package: str, version: str) -> Dict[str, Any]:
     pinned = f"{package}=={version}"
 
     proc = await asyncio.create_subprocess_exec(
+        sys.executable,
+        "-m",
         "safety",
         "check",
         "--stdin",
