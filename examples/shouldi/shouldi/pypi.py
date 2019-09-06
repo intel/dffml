@@ -31,13 +31,13 @@ async def pypi_package_json(self, package: str) -> Dict[str, Any]:
     inputs={"response_json": package_json},
     outputs={"version": package_version},
 )
-async def pypi_latest_package_version(package_json: Dict[str, Any]) -> str:
-    return {"version": package_json["info"]["version"]}
+async def pypi_latest_package_version(response_json: Dict[str, Any]) -> str:
+    return {"version": response_json["info"]["version"]}
 
 
 @op(inputs={"response_json": package_json}, outputs={"url": package_url})
-async def pypi_package_url(package_json: Dict["str", Any]) -> str:
-    url_dicts = package_json["urls"]
+async def pypi_package_url(response_json: Dict["str", Any]) -> str:
+    url_dicts = response_json["urls"]
     for url_dict in url_dicts:
         if (
             url_dict["python_version"] == "source"
@@ -53,9 +53,9 @@ async def pypi_package_url(package_json: Dict["str", Any]) -> str:
         "session": (lambda self: aiohttp.ClientSession(trust_env=True))
     },
 )
-async def pypi_package_contents(self, package_url: str) -> str:
+async def pypi_package_contents(self, url: str) -> str:
     package_src_dir = tempfile.mkdtemp(prefix="pypi-")
-    async with self.parent.session.get(package_url) as resp:
+    async with self.parent.session.get(url) as resp:
         if resp.status == 200:
             package_src_file = tempfile.NamedTemporaryFile(
                 prefix="pypi-", suffix=".tar.gz"

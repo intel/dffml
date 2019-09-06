@@ -31,13 +31,13 @@ class TestPyPiOperations(AsyncTestCase):
             BaseConfig()
         ) as pypi_latest:
             async with pypi_latest(None, None) as ctx:
-                results = await ctx.run({"package_json": self.INT_RESULT_JSON})
+                results = await ctx.run({"response_json": self.INT_RESULT_JSON})
                 self.assertEqual(results["version"], "0.1.0")
 
     async def test_002_package_url(self):
         async with pypi_package_url.imp(BaseConfig()) as pypi_url:
             async with pypi_url(None, None) as ctx:
-                results = await ctx.run({"package_json": self.INT_RESULT_JSON})
+                results = await ctx.run({"response_json": self.INT_RESULT_JSON})
                 self.assertIn("insecure-package-0.1.0.tar.gz", results["url"])
                 self.PACKAGE_URL = results["url"]
 
@@ -45,7 +45,7 @@ class TestPyPiOperations(AsyncTestCase):
         PACKAGE_URL = "https://files.pythonhosted.org/packages/dd/b7/b7318693b356d0e0ba566fb22b72a349a10337880c254e5e7e9f24f4f9b3/insecure-package-0.1.0.tar.gz"
         async with pypi_package_contents.imp(BaseConfig()) as pypi_cont:
             async with pypi_cont(None, None) as ctx:
-                results = await ctx.run({"package_url": PACKAGE_URL})
+                results = await ctx.run({"url": PACKAGE_URL})
                 no_files = os.listdir(results["directory"])
                 self.assertGreater(len(no_files), 0)
                 shutil.rmtree(results["directory"])
