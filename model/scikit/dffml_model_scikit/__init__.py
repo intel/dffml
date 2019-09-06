@@ -1,5 +1,7 @@
 """
-Machine Learning models implemented with `scikit-learn <https://scikit-learn.org/stable/>`_. Models are saved under the directory in subdirectories named after the hash of their feature names.
+Machine Learning models implemented with `scikit-learn <https://scikit-learn.org/stable/>`_.
+Models are saved under the directory in subdirectories named after the hash of
+their feature names.
 
 **General Usage:**
 
@@ -100,7 +102,6 @@ Example below uses LinearRegression Model on a small dataset.
         -source-filename dataset.csv \\
         -source-readonly \\
         -log debug
-    
     1.0
     $ echo -e 'Years,Salary\\n6,0\\n' | \\
         dffml predict all \\
@@ -126,4 +127,5 @@ Example below uses LinearRegression Model on a small dataset.
             "src_url": "0"
         }
     ]
+
 """

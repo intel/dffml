@@ -4,10 +4,9 @@ import os
 import getpass
 import inspect
 import argparse
+import importlib
 import pkg_resources
 from typing import List
-
-import dffml_model_scikit
 
 
 def traverse_get_config(target, *args):
@@ -137,11 +136,13 @@ def format_op(op):
 
 
 def gen_docs(entrypoint: str, modules: List[str], maintenance: str = "Core"):
-    per_module = {name: [] for name in modules}
+    per_module = {name: [None, []] for name in modules}
     for i in pkg_resources.iter_entry_points(entrypoint):
         cls = i.load()
-        if i.module_name.split(".")[0] not in modules:
+        module_name = i.module_name.split(".")[0]
+        if module_name not in modules:
             continue
+        per_module[module_name][0] = importlib.import_module(module_name)
         doc = cls.__doc__
         if doc is None:
             doc = "No description"
@@ -160,7 +161,7 @@ def gen_docs(entrypoint: str, modules: List[str], maintenance: str = "Core"):
         if defaults:
             config = traverse_get_config(defaults, *cls.add_orig_label())
             formatted += "\n\n" + build_args(config)
-        per_module[i.module_name.split(".")[0]].append(formatted)
+        per_module[module_name][1].append(formatted)
     return "\n\n".join(
         [
             MODULE_TEMPLATE.format(
@@ -171,11 +172,16 @@ def gen_docs(entrypoint: str, modules: List[str], maintenance: str = "Core"):
                 }
             )
             + (
-                "\n\n".join(docs)
-                if name != "dffml_model_scikit"
-                else inspect.getdoc(dffml_model_scikit)
+                (
+                    (
+                        inspect.getdoc(module) + "\n\n"
+                        if inspect.getdoc(module)
+                        else ""
+                    )
+                    + "\n\n".join(docs)
+                )
             )
-            for name, docs in per_module.items()
+            for name, (module, docs) in per_module.items()
             if docs
         ]
     )
