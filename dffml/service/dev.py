@@ -1,4 +1,5 @@
 import os
+import sys
 import uuid
 import json
 import pydoc
@@ -134,6 +135,9 @@ class Run(CMD):
     arg_operation = Arg("operation", help="Python path to operation")
 
     async def run(self):
+        # Push current directory into front of path so we can run things
+        # relative to where we are in the shell
+        sys.path.insert(0, os.getcwd())
         # Lookup
         modname, qualname_separator, qualname = self.operation.partition(":")
         obj = importlib.import_module(modname)
