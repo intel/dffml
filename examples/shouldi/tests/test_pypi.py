@@ -31,13 +31,17 @@ class TestPyPiOperations(AsyncTestCase):
             BaseConfig()
         ) as pypi_latest:
             async with pypi_latest(None, None) as ctx:
-                results = await ctx.run({"response_json": self.INT_RESULT_JSON})
+                results = await ctx.run(
+                    {"response_json": self.INT_RESULT_JSON}
+                )
                 self.assertEqual(results["version"], "0.1.0")
 
     async def test_002_package_url(self):
         async with pypi_package_url.imp(BaseConfig()) as pypi_url:
             async with pypi_url(None, None) as ctx:
-                results = await ctx.run({"response_json": self.INT_RESULT_JSON})
+                results = await ctx.run(
+                    {"response_json": self.INT_RESULT_JSON}
+                )
                 self.assertIn("insecure-package-0.1.0.tar.gz", results["url"])
                 self.PACKAGE_URL = results["url"]
 

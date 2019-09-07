@@ -45,12 +45,13 @@ class Install(CMD):
                         package_name,
                         Input(
                             value=package_name,
-                            definition=pypi_package_json.op.inputs[
-                                "package"
-                            ],
+                            definition=pypi_package_json.op.inputs["package"],
                         ),
                         Input(
-                            value=[safety_check.op.outputs["issues"].name, run_bandit.op.outputs["report"].name],
+                            value=[
+                                safety_check.op.outputs["issues"].name,
+                                run_bandit.op.outputs["report"].name,
+                            ],
                             definition=GetSingle.op.inputs["spec"],
                         ),
                     )
@@ -66,13 +67,15 @@ class Install(CMD):
                     # Check if any of the values of the operations evaluate to
                     # true, so if the number of issues found by safety is
                     # non-zero then this will be true
-                    #any_issues = any(map(bool, results.values()))
-                    any_issues = results.values()
-                    print("HEELOasdfa")
-                    #if any_issues[0] or any_issues[1]['CONFIDENCE.HIGH_AND_SEVERITY.HIGH'] > 5:
-                    #    print(f"Do not install {package_name}! {results!r}")
-                    #else:
-                    #    print(f"{package_name} is okay to install")
+                    any_issues = list(results.values())
+                    if (
+                        any_issues[0] > 0
+                        or any_issues[1]["CONFIDENCE.HIGH_AND_SEVERITY.HIGH"]
+                        > 5
+                    ):
+                        print(f"Do not install {package_name}! {results!r}")
+                    else:
+                        print(f"{package_name} is okay to install")
 
 
 class ShouldI(CMD):
