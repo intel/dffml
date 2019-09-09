@@ -8,11 +8,7 @@ NAME = "dffml-model-scikit"
 DESCRIPTION = "DFFML model scikit"
 AUTHOR_NAME = "Yash Lamba"
 AUTHOR_EMAIL = "yashlamba2000@gmail.com"
-INSTALL_REQUIRES = [
-    "scikit-learn>=0.21.2",
-    "joblib>=0.13.2",
-    "pandas>=0.25.0",
-    ]
+INSTALL_REQUIRES = ["scikit-learn>=0.21.2", "joblib>=0.13.2", "pandas>=0.25.0"]
 
 IMPORT_NAME = (
     NAME
@@ -57,5 +53,18 @@ setup(
     ],
     install_requires=INSTALL_REQUIRES,
     packages=find_packages(),
-    entry_points={"dffml.model": [f"scikitlr = {IMPORT_NAME}.sciLR:LR"]},
+    entry_points={
+        "dffml.model": [
+            f"scikitknn = {IMPORT_NAME}.scikit_models:KNeighborsClassifierModel",
+            f"scikitadaboost = {IMPORT_NAME}.scikit_models:AdaBoostClassifierModel",
+            f"scikitgpc = {IMPORT_NAME}.scikit_models:GaussianProcessClassifierModel",
+            f"scikitdtc = {IMPORT_NAME}.scikit_models:DecisionTreeClassifierModel",
+            f"scikitrfc = {IMPORT_NAME}.scikit_models:RandomForestClassifierModel",
+            f"scikitmlp = {IMPORT_NAME}.scikit_models:MLPClassifierModel",
+            f"scikitgnb = {IMPORT_NAME}.scikit_models:GaussianNBModel",
+            f"scikitqda = {IMPORT_NAME}.scikit_models:QuadraticDiscriminantAnalysisModel",
+            f"scikitsvc = {IMPORT_NAME}.scikit_models:SVCModel",
+            f"scikitlr = {IMPORT_NAME}.scikit_models:LinearRegressionModel",
+        ]
+    },
 )

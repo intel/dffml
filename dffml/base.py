@@ -3,6 +3,7 @@ Base classes for DFFML. All classes in DFFML should inherit from these so that
 they follow a similar API for instantiation and usage.
 """
 import abc
+import inspect
 from argparse import ArgumentParser
 from typing import Dict, Any, Tuple, NamedTuple
 
@@ -80,6 +81,7 @@ class BaseConfigurable(abc.ABC):
         context's.
         """
         self.config = config
+        self.logger.debug(self.config)
 
     @classmethod
     def add_orig_label(cls, *above):
@@ -96,6 +98,35 @@ class BaseConfigurable(abc.ABC):
         return traverse_config_set(
             args, *(cls.add_orig_label(*above) + list(path))
         )
+
+    @staticmethod
+    def parser_helper(value):
+        if value.lower() in ["null", "nil", "none"]:
+            return None
+        elif value.lower() in ["yes", "true", "1", "on"]:
+            return True
+        elif value.lower() in ["no", "false", "0", "off"]:
+            return False
+        try:
+            return ast.literal_eval(value)
+        except:
+            return value
+
+    @classmethod
+    def type_for(cls, param: inspect.Parameter):
+        """
+        Guess the type based off the default value of the parameter, for when a
+        parameter doesn't have a type annotation.
+        """
+        if param.annotation != inspect._empty:
+            return param.annotation
+        elif param.default is None:
+            return cls.parser_helper
+        else:
+            type_of = type(param.default)
+            if type_of is bool:
+                return lambda value: bool(cls.parser_helper(value))
+            return type_of
 
     @classmethod
     def config_get(cls, config, above, *path) -> BaseConfig:

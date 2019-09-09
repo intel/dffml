@@ -19,3 +19,4 @@ htmlcov/
 .venv/
 html/
 pages/
+docs/plugins/service/http

@@ -23,6 +23,7 @@ env:
   - PLUGIN=source/mysql
   - PLUGIN=feature/git
   - PLUGIN=feature/auth
+  - PLUGIN=service/http
   - CHANGELOG=1
   - WHITESPACE=1
   - STYLE=1
