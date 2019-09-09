@@ -205,7 +205,9 @@ def mysql(*, sql_setup: Optional[str] = None):
             for line in container.logs(stream=True, follow=True):
                 now_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
                 LOGGER.debug(
-                    "MySQL log (%0.02f seconds): %s", (now_time - container_start_time), line.decode(errors="ignore").strip()
+                    "MySQL log (%0.02f seconds): %s",
+                    (now_time - container_start_time),
+                    line.decode(errors="ignore").strip(),
                 )
                 if b"ready for connections" in line:
                     ready += 1
@@ -225,7 +227,10 @@ def mysql(*, sql_setup: Optional[str] = None):
                 if (end_time - start_time) >= max_timeout:
                     raise MySQLFailedToStart("Timed out waiting for MySQL")
             end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
-            LOGGER.debug("MySQL running: Took %0.02f seconds", end_time - container_start_time)
+            LOGGER.debug(
+                "MySQL running: Took %0.02f seconds",
+                end_time - container_start_time,
+            )
             # Yield IP of container to caller
             yield container_ip, root_cert_path.resolve()
         finally:
