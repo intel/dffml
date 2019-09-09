@@ -5,7 +5,7 @@ from io import open
 from pathlib import Path
 from setuptools import find_packages
 
-ORG = "pdxjohnny"
+ORG = "intel"
 NAME = "dffml-source-mysql"
 DESCRIPTION = "DFFML Source for MySQL Protocol"
 AUTHOR_NAME = "Sudharsana K J L"
@@ -60,7 +60,7 @@ SETUP_KWARGS = dict(
     author_email=AUTHOR_EMAIL,
     maintainer="John Andersen",
     maintainer_email="johnandersenpdx@gmail.com",
-    url=f"https://github.com/{ORG}/{NAME}",
+    url=f"https://github.com/{ORG}/dffml/blob/master/source/{NAME}/README.md",
     license="MIT",
     keywords=["dffml"],
     classifiers=[
