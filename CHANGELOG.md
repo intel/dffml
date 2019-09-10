@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   with entrypoints.
 - HTTP API service to enable interacting with DFFML over HTTP. Currently
   includes APIs for configuring and using Sources.
+- MySQL protocol source to work with data from a MySQL protocol compatable db
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With

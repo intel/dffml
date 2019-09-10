@@ -8,6 +8,9 @@ addons:
     - git
     - subversion
     - cloc
+    - openssl
+services:
+- docker
 env:
   global:
   - LOGGING=debug
@@ -17,6 +20,7 @@ env:
   - PLUGIN=model/tensorflow
   - PLUGIN=model/scratch
   - PLUGIN=model/scikit
+  - PLUGIN=source/mysql
   - PLUGIN=feature/git
   - PLUGIN=feature/auth
   - PLUGIN=service/http
@@ -28,6 +32,7 @@ cache:
     - /home/travis/.cache/
     - /home/travis/.local/
 before_install:
+- docker pull mariadb:10
 - mkdir -p /home/travis/.cache/
 - mkdir -p /home/travis/.local/bin/
 - pip install coverage codecov sphinx sphinxcontrib-asyncio black
