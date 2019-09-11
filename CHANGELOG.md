@@ -32,11 +32,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   with entrypoints.
 - HTTP API service to enable interacting with DFFML over HTTP. Currently
   includes APIs for configuring and using Sources.
-- MySQL protocol source to work with data from a MySQL protocol compatable db
-- Bandit module which checks for high confidence and high severity issues.
-- Download python package obtained from package json url and extract to a 
-  temporary directory and clean up after it's usage.
-- Run a single operation in a standalone fashion.
+- MySQL protocol source to work with data from a MySQL protocol compatible db
+- shouldi example got a bandit operation which tells users not to install if
+  there are more than 5 issues of high severity and confidence.
+- dev service got the ability to run a single operation in a standalone fashion.
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
@@ -61,8 +60,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ran `black` on whole codebase, including all submodules
 - CI style check now checks whole codebase
 - Merged HACKING.md into CONTRIBUTING.md
-- shouldi/cli to run bandit and safety checks.
-- The way safety gets called.
+- shouldi example runs bandit now in addition to safety
+- The way safety gets called
+- Switched documentation to Read The Docs theme
 ### Fixed
 - Docs get version from dffml.version.VERSION.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
@@ -78,7 +78,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CSV source now has `entry_point` decoration
 - JSON source now has `entry_point` decoration
 - Strict flag in df.memory is now on by default
-- Dynamicly created scikit models get config args correctly
+- Dynamically created scikit models get config args correctly
 ### Removed
 - Repo objects are no longer classification specific. Their `classify`,
   `classified`, and `classification` methods were removed.
