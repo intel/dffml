@@ -36,7 +36,7 @@ before_install:
 - docker pull mariadb:10
 - mkdir -p /home/travis/.cache/
 - mkdir -p /home/travis/.local/bin/
-- pip install coverage codecov sphinx sphinxcontrib-asyncio black
+- pip install coverage codecov sphinx sphinxcontrib-asyncio black sphinx_rtd_theme
 - curl -sSL https://github.com/XAMPPRocky/tokei/releases/download/v9.1.1/tokei-v9.1.1-x86_64-unknown-linux-gnu.tar.gz | tar xvz -C "$HOME/.local/bin/"
 script:
 - ./.ci/run.sh
