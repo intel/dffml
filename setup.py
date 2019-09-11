@@ -49,6 +49,7 @@ setup(
             "sphinx",
             "sphinxcontrib-asyncio",
             "black",
+            "sphinx_rtd_theme",
         ],
     },
     entry_points={
