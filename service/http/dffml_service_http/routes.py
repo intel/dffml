@@ -26,6 +26,7 @@ SECRETS_TOKEN_BYTES = int(SECRETS_TOKEN_BITS / 8)
 
 OK = {"error": None}
 SOURCE_NOT_LOADED = {"error": "Source not loaded"}
+MULTICOMM_NOT_LOADED = {"error": "MutliComm not loaded"}
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -50,6 +51,26 @@ class IterkeyEntry:
 
     first: Union[Repo, None]
     repos: AsyncIterator[Repo]
+
+
+def mcctx_route(handler):
+    """
+    Ensure that the labeled multicomm context requested is loaded. Return the
+    mcctx if it is loaded and an error otherwise.
+    """
+
+    @wraps(handler)
+    async def get_mcctx(self, request):
+        mcctx = request.app["multicomm_contexts"].get(
+            request.match_info["label"], None
+        )
+        if mcctx is None:
+            return web.json_response(
+                MULTICOMM_NOT_LOADED, status=HTTPStatus.NOT_FOUND
+            )
+        return await handler(self, request, sctx)
+
+    return get_mcctx
 
 
 def sctx_route(handler):
@@ -173,6 +194,11 @@ class Routes:
 
         return web.json_response(OK)
 
+    @mcctx_route
+    async def multicomm_register(self, request, sctx):
+        await mcctx.register(mcctx.register_config()(**(await request.json())))
+        return web.json_response(OK)
+
     @sctx_route
     async def source_repo(self, request, sctx):
         return web.json_response(
@@ -269,6 +295,7 @@ class Routes:
         self.app["exit_stack"] = AsyncExitStack()
         await self.app["exit_stack"].__aenter__()
         self.app.on_shutdown.append(self.on_shutdown)
+        self.app["multicomm_contexts"] = {"self": self}
         self.app["sources"] = {}
         self.app["source_contexts"] = {}
         self.app["source_repos_iterkeys"] = {}
@@ -283,6 +310,8 @@ class Routes:
                 "/configure/source/{source}/{label}",
                 self.configure_source,
             ),
+            # MutliComm APIs (Data Flow)
+            ("POST", "/mutlicomm/{label}/register", self.multicomm_register),
             # Source APIs
             ("GET", "/source/{label}/repo/{key}", self.source_repo),
             ("POST", "/source/{label}/update/{key}", self.source_update),

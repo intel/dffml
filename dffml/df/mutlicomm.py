@@ -25,6 +25,12 @@ class BaseMultiCommContext(BaseDataFlowObjectContext, abc.ABC):
         Register a communication channel with the multicomm context.
         """
 
+    @abc.abstractmethod
+    def register_config(self) -> BaseCommChannelConfig:
+        """
+        Return the config object to be passed to the resigter method
+        """
+
 
 @base_entry_point("dffml.mutlicomm", "mc")
 class BaseMultiComm(BaseDataFlowObject):
