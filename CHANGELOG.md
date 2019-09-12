@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   with entrypoints.
 - HTTP API service to enable interacting with DFFML over HTTP. Currently
   includes APIs for configuring and using Sources.
+- MySQL protocol source to work with data from a MySQL protocol compatable db
 - Bandit module which checks for high confidence and high severity issues.
 - Download python package obtained from package json url and extract to a 
   temporary directory and clean up after it's usage.
