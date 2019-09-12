@@ -94,9 +94,55 @@ def sctx_route(handler):
 
 
 class Routes:
+    async def get_registered_handler(self, request):
+        headers = request.headers.copy()
+        self.logger.debug("headers: %s", headers)
+        path = request.path
+        self.logger.debug("path: %r", path)
+
+    async def run_dataflow(self, request, handler):
+        return web.Response(
+            headers=res.headers,
+            status=res.status,
+            body=await res.read(),
+        )
+
+    async def run_dataflow_async(self, request, handler):
+        if (
+            headers.get("connection", "").lower() == "upgrade"
+            and headers.get("upgrade", "").lower() == "websocket"
+            and req.method == "GET"
+        ):
+            ws_server = web.WebSocketResponse()
+            await ws_server.prepare(req)
+            self.loop.create_task(
+                asyncio.wait(
+                    [
+                        self.wsforward(ws_server, ws_client),
+                        self.wsforward(ws_client, ws_server),
+                    ],
+                    return_when=asyncio.FIRST_COMPLETED,
+                )
+            )
+            return ws_server
+        else:
+            # TODO http/2
+            return web.json_response(
+                {"error": f"Must use websockets"},
+                status=HTTPStatus.UPGRADE_REQUIRED,
+            )
+
     @web.middleware
     async def error_middleware(self, request, handler):
         try:
+            # HACK This checks if aiohttp's builtin not found handler is going
+            # to be called
+            # Check if handler is the not found handler
+            if "Not Found" in str(handler):
+                # Run get_registered_handler to see if we can find the handler
+                new_handler = await self.get_registered_handler(request)
+                if new_handler is not None:
+                    handler = new_handler
             return await handler(request)
         except web.HTTPException as error:
             return web.json_response(

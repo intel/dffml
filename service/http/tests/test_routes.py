@@ -148,6 +148,23 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                 pass  # pramga: no cov
 
 
+class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
+    async def test_source_not_found(self):
+        # with self.assertRaisesRegex(ServerException, ""):
+        async with self.get("/some/non-existant-url"):
+            pass  # pramga: no cov
+
+    async def test_update(self):
+        return
+        key = "1"
+        new_repo = Repo(key, data={"features": {"by_ten": 10}})
+        async with self.post(
+            f"/source/{self.label}/update/{key}", json=new_repo.dict()
+        ) as r:
+            self.assertEqual(await r.json(), OK)
+        self.assertEqual((await self.sctx.repo(key)).feature("by_ten"), 10)
+
+
 class TestRoutesSource(TestRoutesRunning, AsyncTestCase):
     @asynccontextmanager
     async def _add_memory_source(self):
