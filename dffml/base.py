@@ -81,7 +81,10 @@ class BaseConfigurable(abc.ABC):
         context's.
         """
         self.config = config
-        self.logger.debug(self.config)
+        str_config = str(self.config)
+        self.logger.debug(
+            str_config if len(str_config) < 512 else (str_config[:512] + "...")
+        )
 
     @classmethod
     def add_orig_label(cls, *above):
