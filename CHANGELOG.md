@@ -32,6 +32,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   with entrypoints.
 - HTTP API service to enable interacting with DFFML over HTTP. Currently
   includes APIs for configuring and using Sources.
+- Bandit module which checks for high confidence and high severity issues.
+- Download python package obtained from package json url and extract to a 
+  temporary directory and clean up after it's usage.
+- Run a single operation in a standalone fashion.
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
@@ -56,6 +60,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ran `black` on whole codebase, including all submodules
 - CI style check now checks whole codebase
 - Merged HACKING.md into CONTRIBUTING.md
+- shouldi/cli to run bandit and safety checks.
+- The way safety gets called.
 ### Fixed
 - Docs get version from dffml.version.VERSION.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
