@@ -126,7 +126,6 @@ class Skeleton(CMD):
     link = Link
 
 
-
 class Run(CMD):
     """
     Run a single operation
@@ -210,6 +209,7 @@ class Run(CMD):
                     # TODO There is probably an issue if multiple outputs have
                     # the same data type that only one will be shown
                     return results[GetSingle.op.name]
+
 
 class ListEntrypoints(CMD):
 
