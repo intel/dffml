@@ -21,7 +21,7 @@ with open(os.path.join(self_path, NAME, "version.py"), "r") as f:
 with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
-INSTALL_REQUIRES = ["aiohttp>=3.5.4"] + (
+INSTALL_REQUIRES = ["aiohttp>=3.5.4", "bandit>=1.6.2", "safety>=1.8.5"] + (
     ["dffml>=0.2.1"]
     if not any(
         list(
