@@ -7,7 +7,11 @@ from dffml.operation.output import GetSingle
 from dffml.util.cli.cmd import CMD
 from dffml.util.cli.arg import Arg
 
+from shouldi.bandit import run_bandit
 from shouldi.pypi import pypi_latest_package_version
+from shouldi.pypi import pypi_package_json
+from shouldi.pypi import pypi_package_url
+from shouldi.pypi import pypi_package_contents
 from shouldi.safety import safety_check
 
 # sys.modules[__name__] is a list of everything we've imported in this file.
@@ -41,12 +45,13 @@ class Install(CMD):
                         package_name,
                         Input(
                             value=package_name,
-                            definition=pypi_latest_package_version.op.inputs[
-                                "package"
-                            ],
+                            definition=pypi_package_json.op.inputs["package"],
                         ),
                         Input(
-                            value=[safety_check.op.outputs["issues"].name],
+                            value=[
+                                safety_check.op.outputs["issues"].name,
+                                run_bandit.op.outputs["report"].name,
+                            ],
                             definition=GetSingle.op.inputs["spec"],
                         ),
                     )
@@ -62,8 +67,12 @@ class Install(CMD):
                     # Check if any of the values of the operations evaluate to
                     # true, so if the number of issues found by safety is
                     # non-zero then this will be true
-                    any_issues = any(map(bool, results.values()))
-                    if any_issues:
+                    any_issues = list(results.values())
+                    if (
+                        any_issues[0] > 0
+                        or any_issues[1]["CONFIDENCE.HIGH_AND_SEVERITY.HIGH"]
+                        > 5
+                    ):
                         print(f"Do not install {package_name}! {results!r}")
                     else:
                         print(f"{package_name} is okay to install")

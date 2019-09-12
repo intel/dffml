@@ -59,6 +59,9 @@ class Operation(Entrypoint):
             expand = []
         self.expand = expand
 
+    def __repr__(self):
+        return str(self.export())
+
     def export(self):
         exported = {
             "inputs": self.inputs.copy(),
