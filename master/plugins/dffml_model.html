@@ -1,36 +1,192 @@
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title>Models &#8212; DFFML 0.2.1 documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Models &mdash; DFFML 0.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Operation Implementations" href="dffml_operation_implementation.html" />
-    <link rel="prev" title="Sources" href="dffml_source.html" />
+    <link rel="prev" title="Sources" href="dffml_source.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
           
 
-          <div class="body" role="main">
+          
+            <a href="../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dffml_source.html">Sources</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-tensorflow">dffml_model_tensorflow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tfdnnc">tfdnnc</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-scratch">dffml_model_scratch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scratchslr">scratchslr</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-scikit">dffml_model_scikit</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scikitadaboost">scikitadaboost</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scikitdtc">scikitdtc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scikitgnb">scikitgnb</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scikitgpc">scikitgpc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scikitknn">scikitknn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scikitlr">scikitlr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scikitmlp">scikitmlp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scikitqda">scikitqda</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scikitrfc">scikitrfc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scikitsvc">scikitsvc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dffml_operation_implementation.html">Operation Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dffml_service_cli.html">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Plugins</a> &raquo;</li>
+        
+      <li>Models</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/plugins/dffml_model.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="models">
 <span id="plugin-models"></span><h1>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h1>
@@ -279,27 +435,27 @@ hash of their feature names.</p>
 <li><p>Label or the value to be predicted</p></li>
 </ul>
 </li>
-<li><p>base_estimator: _empty</p>
+<li><p>base_estimator: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>n_estimators: _empty</p>
+<li><p>n_estimators: Integer</p>
 <ul>
 <li><p>default: 50</p></li>
 </ul>
 </li>
-<li><p>learning_rate: _empty</p>
+<li><p>learning_rate: float</p>
 <ul>
 <li><p>default: 1.0</p></li>
 </ul>
 </li>
-<li><p>algorithm: _empty</p>
+<li><p>algorithm: String</p>
 <ul>
 <li><p>default: SAMME.R</p></li>
 </ul>
 </li>
-<li><p>random_state: _empty</p>
+<li><p>random_state: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
@@ -323,67 +479,67 @@ hash of their feature names.</p>
 <li><p>Label or the value to be predicted</p></li>
 </ul>
 </li>
-<li><p>criterion: _empty</p>
+<li><p>criterion: String</p>
 <ul>
 <li><p>default: gini</p></li>
 </ul>
 </li>
-<li><p>splitter: _empty</p>
+<li><p>splitter: String</p>
 <ul>
 <li><p>default: best</p></li>
 </ul>
 </li>
-<li><p>max_depth: _empty</p>
+<li><p>max_depth: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>min_samples_split: _empty</p>
+<li><p>min_samples_split: Integer</p>
 <ul>
 <li><p>default: 2</p></li>
 </ul>
 </li>
-<li><p>min_samples_leaf: _empty</p>
+<li><p>min_samples_leaf: Integer</p>
 <ul>
 <li><p>default: 1</p></li>
 </ul>
 </li>
-<li><p>min_weight_fraction_leaf: _empty</p>
+<li><p>min_weight_fraction_leaf: float</p>
 <ul>
 <li><p>default: 0.0</p></li>
 </ul>
 </li>
-<li><p>max_features: _empty</p>
+<li><p>max_features: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>random_state: _empty</p>
+<li><p>random_state: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>max_leaf_nodes: _empty</p>
+<li><p>max_leaf_nodes: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>min_impurity_decrease: _empty</p>
+<li><p>min_impurity_decrease: float</p>
 <ul>
 <li><p>default: 0.0</p></li>
 </ul>
 </li>
-<li><p>min_impurity_split: _empty</p>
+<li><p>min_impurity_split: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>class_weight: _empty</p>
+<li><p>class_weight: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>presort: _empty</p>
+<li><p>presort: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
@@ -407,12 +563,12 @@ hash of their feature names.</p>
 <li><p>Label or the value to be predicted</p></li>
 </ul>
 </li>
-<li><p>priors: _empty</p>
+<li><p>priors: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>var_smoothing: _empty</p>
+<li><p>var_smoothing: float</p>
 <ul>
 <li><p>default: 1e-09</p></li>
 </ul>
@@ -436,47 +592,47 @@ hash of their feature names.</p>
 <li><p>Label or the value to be predicted</p></li>
 </ul>
 </li>
-<li><p>kernel: _empty</p>
+<li><p>kernel: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>optimizer: _empty</p>
+<li><p>optimizer: String</p>
 <ul>
 <li><p>default: fmin_l_bfgs_b</p></li>
 </ul>
 </li>
-<li><p>n_restarts_optimizer: _empty</p>
+<li><p>n_restarts_optimizer: Integer</p>
 <ul>
 <li><p>default: 0</p></li>
 </ul>
 </li>
-<li><p>max_iter_predict: _empty</p>
+<li><p>max_iter_predict: Integer</p>
 <ul>
 <li><p>default: 100</p></li>
 </ul>
 </li>
-<li><p>warm_start: _empty</p>
+<li><p>warm_start: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
 </li>
-<li><p>copy_X_train: _empty</p>
+<li><p>copy_X_train: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: True</p></li>
 </ul>
 </li>
-<li><p>random_state: _empty</p>
+<li><p>random_state: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>multi_class: _empty</p>
+<li><p>multi_class: String</p>
 <ul>
 <li><p>default: one_vs_rest</p></li>
 </ul>
 </li>
-<li><p>n_jobs: _empty</p>
+<li><p>n_jobs: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
@@ -500,47 +656,47 @@ hash of their feature names.</p>
 <li><p>Label or the value to be predicted</p></li>
 </ul>
 </li>
-<li><p>n_neighbors: _empty</p>
+<li><p>n_neighbors: Integer</p>
 <ul>
 <li><p>default: 5</p></li>
 </ul>
 </li>
-<li><p>weights: _empty</p>
+<li><p>weights: String</p>
 <ul>
 <li><p>default: uniform</p></li>
 </ul>
 </li>
-<li><p>algorithm: _empty</p>
+<li><p>algorithm: String</p>
 <ul>
 <li><p>default: auto</p></li>
 </ul>
 </li>
-<li><p>leaf_size: _empty</p>
+<li><p>leaf_size: Integer</p>
 <ul>
 <li><p>default: 30</p></li>
 </ul>
 </li>
-<li><p>p: _empty</p>
+<li><p>p: Integer</p>
 <ul>
 <li><p>default: 2</p></li>
 </ul>
 </li>
-<li><p>metric: _empty</p>
+<li><p>metric: String</p>
 <ul>
 <li><p>default: minkowski</p></li>
 </ul>
 </li>
-<li><p>metric_params: _empty</p>
+<li><p>metric_params: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>n_jobs: _empty</p>
+<li><p>n_jobs: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>kwargs: _empty</p>
+<li><p>kwargs: type</p>
 <ul>
 <li><p>default: &lt;class ‘dffml_model_scikit.scikit_models.NoDefaultValue’&gt;</p></li>
 </ul>
@@ -564,22 +720,22 @@ hash of their feature names.</p>
 <li><p>Label or the value to be predicted</p></li>
 </ul>
 </li>
-<li><p>fit_intercept: _empty</p>
+<li><p>fit_intercept: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: True</p></li>
 </ul>
 </li>
-<li><p>normalize: _empty</p>
+<li><p>normalize: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
 </li>
-<li><p>copy_X: _empty</p>
+<li><p>copy_X: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: True</p></li>
 </ul>
 </li>
-<li><p>n_jobs: _empty</p>
+<li><p>n_jobs: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
@@ -603,112 +759,112 @@ hash of their feature names.</p>
 <li><p>Label or the value to be predicted</p></li>
 </ul>
 </li>
-<li><p>hidden_layer_sizes: _empty</p>
+<li><p>hidden_layer_sizes: tuple</p>
 <ul>
 <li><p>default: (100,)</p></li>
 </ul>
 </li>
-<li><p>activation: _empty</p>
+<li><p>activation: String</p>
 <ul>
 <li><p>default: relu</p></li>
 </ul>
 </li>
-<li><p>solver: _empty</p>
+<li><p>solver: String</p>
 <ul>
 <li><p>default: adam</p></li>
 </ul>
 </li>
-<li><p>alpha: _empty</p>
+<li><p>alpha: float</p>
 <ul>
 <li><p>default: 0.0001</p></li>
 </ul>
 </li>
-<li><p>batch_size: _empty</p>
+<li><p>batch_size: String</p>
 <ul>
 <li><p>default: auto</p></li>
 </ul>
 </li>
-<li><p>learning_rate: _empty</p>
+<li><p>learning_rate: String</p>
 <ul>
 <li><p>default: constant</p></li>
 </ul>
 </li>
-<li><p>learning_rate_init: _empty</p>
+<li><p>learning_rate_init: float</p>
 <ul>
 <li><p>default: 0.001</p></li>
 </ul>
 </li>
-<li><p>power_t: _empty</p>
+<li><p>power_t: float</p>
 <ul>
 <li><p>default: 0.5</p></li>
 </ul>
 </li>
-<li><p>max_iter: _empty</p>
+<li><p>max_iter: Integer</p>
 <ul>
 <li><p>default: 200</p></li>
 </ul>
 </li>
-<li><p>shuffle: _empty</p>
+<li><p>shuffle: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: True</p></li>
 </ul>
 </li>
-<li><p>random_state: _empty</p>
+<li><p>random_state: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>tol: _empty</p>
+<li><p>tol: float</p>
 <ul>
 <li><p>default: 0.0001</p></li>
 </ul>
 </li>
-<li><p>verbose: _empty</p>
+<li><p>verbose: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
 </li>
-<li><p>warm_start: _empty</p>
+<li><p>warm_start: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
 </li>
-<li><p>momentum: _empty</p>
+<li><p>momentum: float</p>
 <ul>
 <li><p>default: 0.9</p></li>
 </ul>
 </li>
-<li><p>nesterovs_momentum: _empty</p>
+<li><p>nesterovs_momentum: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: True</p></li>
 </ul>
 </li>
-<li><p>early_stopping: _empty</p>
+<li><p>early_stopping: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
 </li>
-<li><p>validation_fraction: _empty</p>
+<li><p>validation_fraction: float</p>
 <ul>
 <li><p>default: 0.1</p></li>
 </ul>
 </li>
-<li><p>beta_1: _empty</p>
+<li><p>beta_1: float</p>
 <ul>
 <li><p>default: 0.9</p></li>
 </ul>
 </li>
-<li><p>beta_2: _empty</p>
+<li><p>beta_2: float</p>
 <ul>
 <li><p>default: 0.999</p></li>
 </ul>
 </li>
-<li><p>epsilon: _empty</p>
+<li><p>epsilon: float</p>
 <ul>
 <li><p>default: 1e-08</p></li>
 </ul>
 </li>
-<li><p>n_iter_no_change: _empty</p>
+<li><p>n_iter_no_change: Integer</p>
 <ul>
 <li><p>default: 10</p></li>
 </ul>
@@ -732,22 +888,22 @@ hash of their feature names.</p>
 <li><p>Label or the value to be predicted</p></li>
 </ul>
 </li>
-<li><p>priors: _empty</p>
+<li><p>priors: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>reg_param: _empty</p>
+<li><p>reg_param: float</p>
 <ul>
 <li><p>default: 0.0</p></li>
 </ul>
 </li>
-<li><p>store_covariance: _empty</p>
+<li><p>store_covariance: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
 </li>
-<li><p>tol: _empty</p>
+<li><p>tol: float</p>
 <ul>
 <li><p>default: 0.0001</p></li>
 </ul>
@@ -771,87 +927,87 @@ hash of their feature names.</p>
 <li><p>Label or the value to be predicted</p></li>
 </ul>
 </li>
-<li><p>n_estimators: _empty</p>
+<li><p>n_estimators: String</p>
 <ul>
 <li><p>default: warn</p></li>
 </ul>
 </li>
-<li><p>criterion: _empty</p>
+<li><p>criterion: String</p>
 <ul>
 <li><p>default: gini</p></li>
 </ul>
 </li>
-<li><p>max_depth: _empty</p>
+<li><p>max_depth: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>min_samples_split: _empty</p>
+<li><p>min_samples_split: Integer</p>
 <ul>
 <li><p>default: 2</p></li>
 </ul>
 </li>
-<li><p>min_samples_leaf: _empty</p>
+<li><p>min_samples_leaf: Integer</p>
 <ul>
 <li><p>default: 1</p></li>
 </ul>
 </li>
-<li><p>min_weight_fraction_leaf: _empty</p>
+<li><p>min_weight_fraction_leaf: float</p>
 <ul>
 <li><p>default: 0.0</p></li>
 </ul>
 </li>
-<li><p>max_features: _empty</p>
+<li><p>max_features: String</p>
 <ul>
 <li><p>default: auto</p></li>
 </ul>
 </li>
-<li><p>max_leaf_nodes: _empty</p>
+<li><p>max_leaf_nodes: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>min_impurity_decrease: _empty</p>
+<li><p>min_impurity_decrease: float</p>
 <ul>
 <li><p>default: 0.0</p></li>
 </ul>
 </li>
-<li><p>min_impurity_split: _empty</p>
+<li><p>min_impurity_split: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>bootstrap: _empty</p>
+<li><p>bootstrap: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: True</p></li>
 </ul>
 </li>
-<li><p>oob_score: _empty</p>
+<li><p>oob_score: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
 </li>
-<li><p>n_jobs: _empty</p>
+<li><p>n_jobs: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>random_state: _empty</p>
+<li><p>random_state: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>verbose: _empty</p>
+<li><p>verbose: Integer</p>
 <ul>
 <li><p>default: 0</p></li>
 </ul>
 </li>
-<li><p>warm_start: _empty</p>
+<li><p>warm_start: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
 </li>
-<li><p>class_weight: _empty</p>
+<li><p>class_weight: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
@@ -875,72 +1031,72 @@ hash of their feature names.</p>
 <li><p>Label or the value to be predicted</p></li>
 </ul>
 </li>
-<li><p>C: _empty</p>
+<li><p>C: float</p>
 <ul>
 <li><p>default: 1.0</p></li>
 </ul>
 </li>
-<li><p>kernel: _empty</p>
+<li><p>kernel: String</p>
 <ul>
 <li><p>default: rbf</p></li>
 </ul>
 </li>
-<li><p>degree: _empty</p>
+<li><p>degree: Integer</p>
 <ul>
 <li><p>default: 3</p></li>
 </ul>
 </li>
-<li><p>gamma: _empty</p>
+<li><p>gamma: String</p>
 <ul>
 <li><p>default: auto_deprecated</p></li>
 </ul>
 </li>
-<li><p>coef0: _empty</p>
+<li><p>coef0: float</p>
 <ul>
 <li><p>default: 0.0</p></li>
 </ul>
 </li>
-<li><p>shrinking: _empty</p>
+<li><p>shrinking: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: True</p></li>
 </ul>
 </li>
-<li><p>probability: _empty</p>
+<li><p>probability: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
 </li>
-<li><p>tol: _empty</p>
+<li><p>tol: float</p>
 <ul>
 <li><p>default: 0.001</p></li>
 </ul>
 </li>
-<li><p>cache_size: _empty</p>
+<li><p>cache_size: Integer</p>
 <ul>
 <li><p>default: 200</p></li>
 </ul>
 </li>
-<li><p>class_weight: _empty</p>
+<li><p>class_weight: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
 </li>
-<li><p>verbose: _empty</p>
+<li><p>verbose: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
 <ul>
 <li><p>default: False</p></li>
 </ul>
 </li>
-<li><p>max_iter: _empty</p>
+<li><p>max_iter: Integer</p>
 <ul>
 <li><p>default: -1</p></li>
 </ul>
 </li>
-<li><p>decision_function_shape: _empty</p>
+<li><p>decision_function_shape: String</p>
 <ul>
 <li><p>default: ovr</p></li>
 </ul>
 </li>
-<li><p>random_state: _empty</p>
+<li><p>random_state: BaseConfigurable.parser_helper</p>
 <ul>
 <li><p>default: None</p></li>
 </ul>
@@ -951,119 +1107,52 @@ hash of their feature names.</p>
 </div>
 
 
+           </div>
+           
           </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">DFFML</a></h1>
-
-
-
-<p class="blurb">The fastest path to machine learning integration</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-    
-
-<p>
-<a class="badge" href="https://travis-ci.org/intel/dffml">
-    <img
-        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
-        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
-    />
-</a>
-</p>
-
-
-
-
-    
-
-<p>
-<a class="badge" href="https://codecov.io/github/intel/dffml">
-    <img
-    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
-    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
-    />
-</a>
-</p>
-<h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="dffml_source.html">Sources</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dffml_operation_implementation.html">Operation Implementations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dffml_service_cli.html">Services</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="service/http/index.html">HTTP API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">Plugins</a><ul>
-      <li>Previous: <a href="dffml_source.html" title="previous chapter">Sources</a></li>
-      <li>Next: <a href="dffml_operation_implementation.html" title="next chapter">Operation Implementations</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dffml_operation_implementation.html" class="btn btn-neutral float-right" title="Operation Implementations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dffml_source.html" class="btn btn-neutral float-left" title="Sources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  
 
+  <hr/>
 
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Intel
 
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-
-
-
+</footer>
 
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2019, Intel.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="../_sources/plugins/dffml_model.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
     
-  </body>
+   
+
+</body>
 </html>

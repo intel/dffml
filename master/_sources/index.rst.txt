@@ -1,6 +1,22 @@
 Welcome to DFFML!
 =================
 
+.. image:: https://travis-ci.org/intel/dffml.svg?branch=master
+    :target: https://travis-ci.org/intel/dffml
+    :alt: Build Status
+.. image:: https://codecov.io/gh/intel/dffml/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/intel/dffml
+    :alt: codecov
+.. image:: https://bestpractices.coreinfrastructure.org/projects/2594/badge
+    :target: https://bestpractices.coreinfrastructure.org/projects/2594
+    :alt: CII
+.. image:: https://badges.gitter.im/gitterHQ/gitter.svg
+    :target: https://gitter.im/dffml/community
+    :alt: Gitter chat
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/psf/black
+    :alt: Code style: black
+
 Data Flow Facilitator for Machine Learning (DFFML) provides APIs for dataset
 generation, storage, and model definition.
 
