@@ -108,5 +108,5 @@ Now you can run the server without the ``-insecure`` flag.
         --cacert server.pem \
         --cert client.pem \
         --key client.key \
-        https://127.0.0.1:5000/list/sources/
+        https://127.0.0.1:5000/list/sources
     ... JSON output ...

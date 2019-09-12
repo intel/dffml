@@ -1,36 +1,207 @@
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title>Operation Implementations &#8212; DFFML 0.2.1 documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Operation Implementations &mdash; DFFML 0.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Services" href="dffml_service_cli.html" />
-    <link rel="prev" title="Models" href="dffml_model.html" />
+    <link rel="prev" title="Models" href="dffml_model.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
           
 
-          <div class="body" role="main">
+          
+            <a href="../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dffml_source.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dffml_model.html">Models</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Operation Implementations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dffml">dffml</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#associate">associate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-single">get_single</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#group-by">group_by</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-feature-git">dffml_feature_git</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#check-if-valid-git-repository-url">check_if_valid_git_repository_URL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cleanup-git-repo">cleanup_git_repo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clone-git-repo">clone_git_repo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#count-authors">count_authors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#git-commits">git_commits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#git-repo-author-lines-for-dates">git_repo_author_lines_for_dates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#git-repo-checkout">git_repo_checkout</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#git-repo-commit-from-date">git_repo_commit_from_date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#git-repo-default-branch">git_repo_default_branch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#git-repo-release">git_repo_release</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lines-of-code-by-language">lines_of_code_by_language</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lines-of-code-to-comments">lines_of_code_to_comments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#quarters-back-to-date">quarters_back_to_date</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#work">work</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-operations-binsec">dffml_operations_binsec</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cleanup-rpm">cleanup_rpm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#files-in-rpm">files_in_rpm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#is-binary-pie">is_binary_pie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#url-to-urlbytes">url_to_urlbytes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#urlbytes-to-rpmfile">urlbytes_to_rpmfile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#urlbytes-to-tarfile">urlbytes_to_tarfile</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-feature-auth">dffml_feature_auth</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scrypt">scrypt</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dffml_service_cli.html">Services</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Plugins</a> &raquo;</li>
+        
+      <li>Operation Implementations</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/plugins/dffml_operation_implementation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="operation-implementations">
 <h1>Operation Implementations<a class="headerlink" href="#operation-implementations" title="Permalink to this headline">¶</a></h1>
@@ -418,119 +589,52 @@ which could do anything, make HTTP requests, do inference, etc.</p>
 </div>
 
 
+           </div>
+           
           </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">DFFML</a></h1>
-
-
-
-<p class="blurb">The fastest path to machine learning integration</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-    
-
-<p>
-<a class="badge" href="https://travis-ci.org/intel/dffml">
-    <img
-        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
-        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
-    />
-</a>
-</p>
-
-
-
-
-    
-
-<p>
-<a class="badge" href="https://codecov.io/github/intel/dffml">
-    <img
-    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
-    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
-    />
-</a>
-</p>
-<h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="dffml_source.html">Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dffml_model.html">Models</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Operation Implementations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dffml_service_cli.html">Services</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="service/http/index.html">HTTP API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">Plugins</a><ul>
-      <li>Previous: <a href="dffml_model.html" title="previous chapter">Models</a></li>
-      <li>Next: <a href="dffml_service_cli.html" title="next chapter">Services</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dffml_service_cli.html" class="btn btn-neutral float-right" title="Services" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dffml_model.html" class="btn btn-neutral float-left" title="Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  
 
+  <hr/>
 
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Intel
 
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-
-
-
+</footer>
 
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2019, Intel.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="../_sources/plugins/dffml_operation_implementation.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
     
-  </body>
+   
+
+</body>
 </html>

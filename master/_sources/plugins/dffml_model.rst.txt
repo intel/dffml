@@ -253,23 +253,23 @@ No description
 
   - Label or the value to be predicted
 
-- base_estimator: _empty
+- base_estimator: BaseConfigurable.parser_helper
 
   - default: None
 
-- n_estimators: _empty
+- n_estimators: Integer
 
   - default: 50
 
-- learning_rate: _empty
+- learning_rate: float
 
   - default: 1.0
 
-- algorithm: _empty
+- algorithm: String
 
   - default: SAMME.R
 
-- random_state: _empty
+- random_state: BaseConfigurable.parser_helper
 
   - default: None
 
@@ -291,55 +291,55 @@ No description
 
   - Label or the value to be predicted
 
-- criterion: _empty
+- criterion: String
 
   - default: gini
 
-- splitter: _empty
+- splitter: String
 
   - default: best
 
-- max_depth: _empty
+- max_depth: BaseConfigurable.parser_helper
 
   - default: None
 
-- min_samples_split: _empty
+- min_samples_split: Integer
 
   - default: 2
 
-- min_samples_leaf: _empty
+- min_samples_leaf: Integer
 
   - default: 1
 
-- min_weight_fraction_leaf: _empty
+- min_weight_fraction_leaf: float
 
   - default: 0.0
 
-- max_features: _empty
+- max_features: BaseConfigurable.parser_helper
 
   - default: None
 
-- random_state: _empty
+- random_state: BaseConfigurable.parser_helper
 
   - default: None
 
-- max_leaf_nodes: _empty
+- max_leaf_nodes: BaseConfigurable.parser_helper
 
   - default: None
 
-- min_impurity_decrease: _empty
+- min_impurity_decrease: float
 
   - default: 0.0
 
-- min_impurity_split: _empty
+- min_impurity_split: BaseConfigurable.parser_helper
 
   - default: None
 
-- class_weight: _empty
+- class_weight: BaseConfigurable.parser_helper
 
   - default: None
 
-- presort: _empty
+- presort: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: False
 
@@ -361,11 +361,11 @@ No description
 
   - Label or the value to be predicted
 
-- priors: _empty
+- priors: BaseConfigurable.parser_helper
 
   - default: None
 
-- var_smoothing: _empty
+- var_smoothing: float
 
   - default: 1e-09
 
@@ -387,39 +387,39 @@ No description
 
   - Label or the value to be predicted
 
-- kernel: _empty
+- kernel: BaseConfigurable.parser_helper
 
   - default: None
 
-- optimizer: _empty
+- optimizer: String
 
   - default: fmin_l_bfgs_b
 
-- n_restarts_optimizer: _empty
+- n_restarts_optimizer: Integer
 
   - default: 0
 
-- max_iter_predict: _empty
+- max_iter_predict: Integer
 
   - default: 100
 
-- warm_start: _empty
+- warm_start: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: False
 
-- copy_X_train: _empty
+- copy_X_train: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: True
 
-- random_state: _empty
+- random_state: BaseConfigurable.parser_helper
 
   - default: None
 
-- multi_class: _empty
+- multi_class: String
 
   - default: one_vs_rest
 
-- n_jobs: _empty
+- n_jobs: BaseConfigurable.parser_helper
 
   - default: None
 
@@ -441,39 +441,39 @@ No description
 
   - Label or the value to be predicted
 
-- n_neighbors: _empty
+- n_neighbors: Integer
 
   - default: 5
 
-- weights: _empty
+- weights: String
 
   - default: uniform
 
-- algorithm: _empty
+- algorithm: String
 
   - default: auto
 
-- leaf_size: _empty
+- leaf_size: Integer
 
   - default: 30
 
-- p: _empty
+- p: Integer
 
   - default: 2
 
-- metric: _empty
+- metric: String
 
   - default: minkowski
 
-- metric_params: _empty
+- metric_params: BaseConfigurable.parser_helper
 
   - default: None
 
-- n_jobs: _empty
+- n_jobs: BaseConfigurable.parser_helper
 
   - default: None
 
-- kwargs: _empty
+- kwargs: type
 
   - default: <class 'dffml_model_scikit.scikit_models.NoDefaultValue'>
 
@@ -495,19 +495,19 @@ No description
 
   - Label or the value to be predicted
 
-- fit_intercept: _empty
+- fit_intercept: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: True
 
-- normalize: _empty
+- normalize: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: False
 
-- copy_X: _empty
+- copy_X: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: True
 
-- n_jobs: _empty
+- n_jobs: BaseConfigurable.parser_helper
 
   - default: None
 
@@ -529,91 +529,91 @@ No description
 
   - Label or the value to be predicted
 
-- hidden_layer_sizes: _empty
+- hidden_layer_sizes: tuple
 
   - default: (100,)
 
-- activation: _empty
+- activation: String
 
   - default: relu
 
-- solver: _empty
+- solver: String
 
   - default: adam
 
-- alpha: _empty
+- alpha: float
 
   - default: 0.0001
 
-- batch_size: _empty
+- batch_size: String
 
   - default: auto
 
-- learning_rate: _empty
+- learning_rate: String
 
   - default: constant
 
-- learning_rate_init: _empty
+- learning_rate_init: float
 
   - default: 0.001
 
-- power_t: _empty
+- power_t: float
 
   - default: 0.5
 
-- max_iter: _empty
+- max_iter: Integer
 
   - default: 200
 
-- shuffle: _empty
+- shuffle: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: True
 
-- random_state: _empty
+- random_state: BaseConfigurable.parser_helper
 
   - default: None
 
-- tol: _empty
+- tol: float
 
   - default: 0.0001
 
-- verbose: _empty
+- verbose: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: False
 
-- warm_start: _empty
+- warm_start: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: False
 
-- momentum: _empty
+- momentum: float
 
   - default: 0.9
 
-- nesterovs_momentum: _empty
+- nesterovs_momentum: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: True
 
-- early_stopping: _empty
+- early_stopping: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: False
 
-- validation_fraction: _empty
+- validation_fraction: float
 
   - default: 0.1
 
-- beta_1: _empty
+- beta_1: float
 
   - default: 0.9
 
-- beta_2: _empty
+- beta_2: float
 
   - default: 0.999
 
-- epsilon: _empty
+- epsilon: float
 
   - default: 1e-08
 
-- n_iter_no_change: _empty
+- n_iter_no_change: Integer
 
   - default: 10
 
@@ -635,19 +635,19 @@ No description
 
   - Label or the value to be predicted
 
-- priors: _empty
+- priors: BaseConfigurable.parser_helper
 
   - default: None
 
-- reg_param: _empty
+- reg_param: float
 
   - default: 0.0
 
-- store_covariance: _empty
+- store_covariance: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: False
 
-- tol: _empty
+- tol: float
 
   - default: 0.0001
 
@@ -669,71 +669,71 @@ No description
 
   - Label or the value to be predicted
 
-- n_estimators: _empty
+- n_estimators: String
 
   - default: warn
 
-- criterion: _empty
+- criterion: String
 
   - default: gini
 
-- max_depth: _empty
+- max_depth: BaseConfigurable.parser_helper
 
   - default: None
 
-- min_samples_split: _empty
+- min_samples_split: Integer
 
   - default: 2
 
-- min_samples_leaf: _empty
+- min_samples_leaf: Integer
 
   - default: 1
 
-- min_weight_fraction_leaf: _empty
+- min_weight_fraction_leaf: float
 
   - default: 0.0
 
-- max_features: _empty
+- max_features: String
 
   - default: auto
 
-- max_leaf_nodes: _empty
+- max_leaf_nodes: BaseConfigurable.parser_helper
 
   - default: None
 
-- min_impurity_decrease: _empty
+- min_impurity_decrease: float
 
   - default: 0.0
 
-- min_impurity_split: _empty
+- min_impurity_split: BaseConfigurable.parser_helper
 
   - default: None
 
-- bootstrap: _empty
+- bootstrap: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: True
 
-- oob_score: _empty
+- oob_score: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: False
 
-- n_jobs: _empty
+- n_jobs: BaseConfigurable.parser_helper
 
   - default: None
 
-- random_state: _empty
+- random_state: BaseConfigurable.parser_helper
 
   - default: None
 
-- verbose: _empty
+- verbose: Integer
 
   - default: 0
 
-- warm_start: _empty
+- warm_start: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: False
 
-- class_weight: _empty
+- class_weight: BaseConfigurable.parser_helper
 
   - default: None
 
@@ -755,58 +755,58 @@ No description
 
   - Label or the value to be predicted
 
-- C: _empty
+- C: float
 
   - default: 1.0
 
-- kernel: _empty
+- kernel: String
 
   - default: rbf
 
-- degree: _empty
+- degree: Integer
 
   - default: 3
 
-- gamma: _empty
+- gamma: String
 
   - default: auto_deprecated
 
-- coef0: _empty
+- coef0: float
 
   - default: 0.0
 
-- shrinking: _empty
+- shrinking: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: True
 
-- probability: _empty
+- probability: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: False
 
-- tol: _empty
+- tol: float
 
   - default: 0.001
 
-- cache_size: _empty
+- cache_size: Integer
 
   - default: 200
 
-- class_weight: _empty
+- class_weight: BaseConfigurable.parser_helper
 
   - default: None
 
-- verbose: _empty
+- verbose: BaseConfigurable.type_for.<locals>.<lambda>
 
   - default: False
 
-- max_iter: _empty
+- max_iter: Integer
 
   - default: -1
 
-- decision_function_shape: _empty
+- decision_function_shape: String
 
   - default: ovr
 
-- random_state: _empty
+- random_state: BaseConfigurable.parser_helper
 
   - default: None
