@@ -1,0 +1,76 @@
+Metadata-Version: 2.1
+Name: dffml
+Version: 0.2.1
+Summary: Data Flow Facilitator for Machine Learning
+Home-page: https://github.com/intel/dffml
+Author: John Andersen
+Author-email: john.s.andersen@intel.com
+Maintainer: John Andersen
+Maintainer-email: john.s.andersen@intel.com
+License: MIT
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+Requires-Dist: coverage ; extra == 'dev'
+Requires-Dist: codecov ; extra == 'dev'
+Requires-Dist: sphinx ; extra == 'dev'
+Requires-Dist: sphinxcontrib-asyncio ; extra == 'dev'
+Requires-Dist: black ; extra == 'dev'
+Provides-Extra: git
+Requires-Dist: dffml-feature-git ; extra == 'git'
+Provides-Extra: models
+Requires-Dist: dffml-model-tensorflow ; extra == 'models'
+Requires-Dist: dffml-model-scratch ; extra == 'models'
+
+# Data Flow Facilitator for Machine Learning (dffml)
+
+[![Build Status](https://travis-ci.org/intel/dffml.svg?branch=master)](https://travis-ci.org/intel/dffml) [![codecov](https://codecov.io/gh/intel/dffml/branch/master/graph/badge.svg)](https://codecov.io/gh/intel/dffml) [![CII](https://bestpractices.coreinfrastructure.org/projects/2594/badge)](https://bestpractices.coreinfrastructure.org/projects/2594) [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.svg)](https://gitter.im/dffml/community)
+
+## Documentation
+
+Documentation is hosted at https://intel.github.io/dffml/
+
+## Help
+
+- Ask a question via an [issue](https://github.com/intel/dffml/issues/new?assignees=&labels=question&template=question.md&title=question%3A+)
+- Send an email to dffml-users@lists.01.org
+  - You can subscribe to the users mailing list here
+    https://lists.01.org/mailman/listinfo/dffml-users
+- Ask a question on the [Gitter chat](https://gitter.im/dffml/community)
+
+## Contributing
+
+DFFML is meant to be a community driven application. There are various segments
+you can help with:
+
+- Found a bug, error in the docs or have a new idea, create an issue
+  [here](https://github.com/intel/dffml/issues/new/choose).
+- Help us fix an [issue](https://github.com/intel/dffml/issues), refer to
+  [HACKING](HACKING.md) in the docs.
+- Make sure you go through [CONTRIBUTING.md](CONTRIBUTING.md) before
+  contributing.
+
+## License
+
+dffml is distributed under the [MIT License](LICENSE).
+
+## Legal
+
+> This software is subject to the U.S. Export Administration Regulations and
+> other U.S. law, and may not be exported or re-exported to certain countries
+> (Cuba, Iran, Crimea Region of Ukraine, North Korea, Sudan, and Syria) or to
+> persons or entities prohibited from receiving U.S. exports (including
+> Denied Parties, Specially Designated Nationals, and entities on the Bureau
+> of Export Administration Entity List or involved with missile technology or
+> nuclear, chemical or biological weapons).
+
+
