@@ -39,6 +39,7 @@ from .base import (
     BaseRedundancyChecker,
     BaseLockNetworkContext,
     BaseLockNetwork,
+    OperationImplementationNotInNetwork,
     BaseOperationImplementationNetworkContext,
     BaseOperationImplementationNetwork,
     BaseOrchestratorConfig,
@@ -597,6 +598,7 @@ class MemoryLockNetwork(BaseLockNetwork):
 
 class MemoryOperationImplementationNetworkConfig(NamedTuple):
     operations: Dict[str, OperationImplementation]
+    configs: Dict[str, BaseConfig]
 
 
 class MemoryOperationImplementationNetworkContext(
@@ -612,7 +614,12 @@ class MemoryOperationImplementationNetworkContext(
         """
         Looks for class registered with ____ entrypoint using pkg_resources.
         """
-        raise NotImplementedError()
+        opimp = OperationImplementation.load(operation.name)
+        self.logger.critical("OperationImplementation %r is instantiable: %r",
+                operation.name, opimp)
+        if asdlfkjsdf:
+            asdflkj
+        return True
 
     async def instantiate(
         self, operation: Operation, config: BaseConfig
@@ -621,7 +628,10 @@ class MemoryOperationImplementationNetworkContext(
         Instantiate class registered with ____ entrypoint using pkg_resources.
         Return true if instantiation was successful.
         """
-        raise NotImplementedError()
+        # TODO Check that this works
+        if asdlfkjsdf:
+            asdflkj
+        self.parent.operations[operation.name] = await self.parent._stack.enter_async_context(OperationImplementation.load(operation.name))
 
     async def run(
         self,
@@ -633,6 +643,20 @@ class MemoryOperationImplementationNetworkContext(
         """
         Run an operation in our network.
         """
+        # Check that our network contains the operation
+        if not await self.contains(operation):
+            if not await self.instantiable(operation):
+                # If we don't have it, and can't load it, raise an error
+                raise OperationImplementationNotInNetwork(operation.name)
+            else:
+                # TODO Provide method to add a config for an operation
+                # Load it if possible and use the config provided if it exists
+                config = self.parent.configs.get(operation.name, None)
+                if config is None:
+                    self.logger.info("Instantiated %r with empty config")
+                    config = BaseConfig()
+                await self.instantiate(operation, config)
+        # Create an opimp context and run the opertion
         async with self.parent.operations[operation.name](ctx, ictx) as opctx:
             self.logger.debug("---")
             self.logger.debug(
@@ -671,6 +695,7 @@ class MemoryOperationImplementationNetworkContext(
         Run an operation in the background and add its outputs to the input
         network when complete
         """
+        # Ensure that we can run the operation
         # Lock all inputs which cannot be used simultaneously
         async with lctx.acquire(parameter_set):
             # Run the operation
@@ -772,24 +797,25 @@ class MemoryOperationImplementationNetwork(BaseOperationImplementationNetwork):
     ) -> None:
         super().__init__(config)
         self.opimps = self.config.operations
+        self.configs = self.config.configs
         self.operations = {}
         self.completed_event = asyncio.Event()
 
     async def __aenter__(
         self
     ) -> "MemoryOperationImplementationNetworkContext":
-        self.__stack = AsyncExitStack()
-        await self.__stack.__aenter__()
+        self._stack = AsyncExitStack()
+        await self._stack.__aenter__()
         self.operations = {
-            opimp.op.name: await self.__stack.enter_async_context(opimp)
+            opimp.op.name: await self._stack.enter_async_context(opimp)
             for opimp in self.opimps.values()
         }
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
-        if self.__stack is not None:
-            await self.__stack.aclose()
-            self.__stack = None
+        if self._stack is not None:
+            await self._stack.__aexit__(exc_type, exc_value, traceback)
+            self._stack = None
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:

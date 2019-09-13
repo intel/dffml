@@ -2,12 +2,12 @@ import os
 import json
 import secrets
 import traceback
-from functools import wraps
+from functools import wraps, partial
 from http import HTTPStatus
 from functools import partial
 from dataclasses import dataclass
 from contextlib import AsyncExitStack
-from typing import List, Union, AsyncIterator
+from typing import List, Union, AsyncIterator, Type
 
 from aiohttp import web
 import aiohttp_cors
@@ -93,21 +93,55 @@ def sctx_route(handler):
     return get_sctx
 
 
+class HTTPChannelConfig(NamedTuple):
+    path: str
+    df: Dict[str, Dict]
+
 class Routes:
     async def get_registered_handler(self, request):
-        headers = request.headers.copy()
-        self.logger.debug("headers: %s", headers)
-        path = request.path
-        self.logger.debug("path: %r", path)
+        return self.app["multicomm_routes"].get(request.path, None):
 
-    async def run_dataflow(self, request, handler):
-        return web.Response(
-            headers=res.headers,
-            status=res.status,
-            body=await res.read(),
-        )
+    async def multicomm_dataflow(self, config, request):
+        # Seed the network with inputs given by caller
+        # TODO allow list of valid definitions to seed
+        # TODO convert inputs into Input instances
+        inputs = []
+        # Accept a list of input data
+        for input_data in (await request.json()):
+            # TODO validate that input data is list and each item has definition
+            # and value properties
+            if not input_data["definition"] in config.df.definitions:
+                return web.json_response({"error": f"Missing definition for {input_data['definition']} in dataflow"}, status=HTTPStatus.NOT_FOUND)
+            inputs.append(
+                Input(
+                    value=input_data["value"]
+                    definition=config.df.definitions[input_data["definition"]],
+                )
+            )
+        # Run the operation in an orchestrator
+        # TODO Create the orchestrator on startup of the HTTP API itself
+        async with MemoryOrchestrator.basic_config(
+            opimp.imp, GetSingle.imp
+        ) as orchestrator:
+            async with orchestrator() as octx:
+                # TODO Assign a sha384 string as the random string context
+                await octx.ictx.sadd(
+                    str(uuid.uuid4()),
+                    Input(
+                        value=[
+                            definition.name
+                            for definition in opimp.op.outputs.values()
+                        ],
+                        definition=GetSingle.op.inputs["spec"],
+                    ),
+                    *inputs,
+                )
+                async for ctx, results in octx.run_operations():
+                    return web.json_response(results)
 
-    async def run_dataflow_async(self, request, handler):
+    async def multicomm_dataflow_asynchronous(self, config, request):
+        # TODO allow list of valid definitions to seed
+        raise NotImplementedError("asynchronous data flows not yet implemented")
         if (
             headers.get("connection", "").lower() == "upgrade"
             and headers.get("upgrade", "").lower() == "websocket"
@@ -240,6 +274,16 @@ class Routes:
 
         return web.json_response(OK)
 
+    def register_config(self) -> Type[HTTPChannelConfig]:
+        return HTTPChannelConfig
+
+    async def register(self, config: HTTPChannelConfig) -> None:
+        if config.asynchronous:
+            handler = self.multicomm_dataflow_asynchronous
+        else:
+            handler = self.multicomm_dataflow
+        self.app["multicomm_routes"][config.path] = partial(handler, config)
+
     @mcctx_route
     async def multicomm_register(self, request, sctx):
         await mcctx.register(mcctx.register_config()(**(await request.json())))
@@ -342,6 +386,7 @@ class Routes:
         await self.app["exit_stack"].__aenter__()
         self.app.on_shutdown.append(self.on_shutdown)
         self.app["multicomm_contexts"] = {"self": self}
+        self.app["multicomm_routes"] = {}
         self.app["sources"] = {}
         self.app["source_contexts"] = {}
         self.app["source_repos_iterkeys"] = {}
@@ -357,7 +402,7 @@ class Routes:
                 self.configure_source,
             ),
             # MutliComm APIs (Data Flow)
-            ("POST", "/mutlicomm/{label}/register", self.multicomm_register),
+            ("POST", "/multicomm/{label}/register", self.multicomm_register),
             # Source APIs
             ("GET", "/source/{label}/repo/{key}", self.source_repo),
             ("POST", "/source/{label}/update/{key}", self.source_update),
