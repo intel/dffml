@@ -6,6 +6,7 @@ import inspect
 import argparse
 import importlib
 import pkg_resources
+import configparser
 from typing import List
 
 
@@ -137,6 +138,8 @@ def format_op(op):
 
 def gen_docs(entrypoint: str, modules: List[str], maintenance: str = "Core"):
     per_module = {name: [None, []] for name in modules}
+    packagesconfig = configparser.ConfigParser()
+    packagesconfig.read("scripts/packagesconfig.ini")
     for i in pkg_resources.iter_entry_points(entrypoint):
         cls = i.load()
         module_name = i.module_name.split(".")[0]
@@ -173,12 +176,14 @@ def gen_docs(entrypoint: str, modules: List[str], maintenance: str = "Core"):
             )
             + (
                 (
-                    (
-                        inspect.getdoc(module) + "\n\n"
-                        if inspect.getdoc(module)
-                        else ""
-                    )
-                    + "\n\n".join(docs)
+                    inspect.getdoc(module) + "\n\n"
+                    if inspect.getdoc(module)
+                    else ""
+                )
+                + (
+                    "\n\n".join(docs)
+                    if name not in packagesconfig["NO ARGS"]
+                    else ""
                 )
             )
             for name, (module, docs) in per_module.items()
