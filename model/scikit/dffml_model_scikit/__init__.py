@@ -75,57 +75,81 @@ Predicting with trained model:
 
 Example below uses LinearRegression Model on a small dataset.
 
+Let us take a simple example:
+
++----------------------+------------+--------------+--------+
+| Years of Experience  |  Expertise | Trust Factor | Salary |
++======================+============+==============+========+
+|          0           |     01     |      0.2     |   10   |
++----------------------+------------+--------------+--------+
+|          1           |     03     |      0.4     |   20   |
++----------------------+------------+--------------+--------+
+|          2           |     05     |      0.6     |   30   |
++----------------------+------------+--------------+--------+
+|          3           |     07     |      0.8     |   40   |
++----------------------+------------+--------------+--------+
+|          4           |     09     |      1.0     |   50   |
++----------------------+------------+--------------+--------+
+|          5           |     11     |      1.2     |   60   |
++----------------------+------------+--------------+--------+
+
 .. code-block:: console
 
-    $ cat > dataset.csv << EOF
-    Years,Salary
-    1,40
-    2,50
-    3,60
-    4,70
-    5,80
+    $ cat > train.csv << EOF
+    Years,Expertise,Trust,Salary
+    0,1,0.2,10
+    1,3,0.4,20
+    2,5,0.6,30
+    3,7,0.8,40
+    EOF
+    $ cat > test.csv << EOF
+    Years,Expertise,Trust,Salary
+    4,9,1.0,50
+    5,11,1.2,60
     EOF
     $ dffml train \\
         -model scikitlr \\
-        -features def:Years:int:1 \\
+        -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \\
         -model-predict Salary \\
-        -model-n_jobs 2 \\
         -sources f=csv \\
-        -source-filename dataset.csv \\
+        -source-filename train.csv \\
         -source-readonly \\
         -log debug
+   
     $ dffml accuracy \\
         -model scikitlr \\
-        -features def:Years:int:1 \\
+        -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \\
         -model-predict Salary \\
         -sources f=csv \\
-        -source-filename dataset.csv \\
+        -source-filename test.csv \\
         -source-readonly \\
         -log debug
+
     1.0
-    $ echo -e 'Years,Salary\\n6,0\\n' | \\
-        dffml predict all \\
+    $ echo -e 'Years,Expertise,Trust\\n6,13,1.4\\n' | \\
+    dffml predict all \\
         -model scikitlr \\
-        -features def:Years:int:1 \\
+        -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \\
         -model-predict Salary \\
         -sources f=csv \\
         -source-filename /dev/stdin \\
         -source-readonly \\
         -log debug
+
     [
         {
             "extra": {},
             "features": {
-                "Salary": 0,
+                "Expertise": 13,
+                "Trust": 1.4,
                 "Years": 6
             },
-            "last_updated": "2019-07-19T09:46:45Z",
+            "last_updated": "2019-09-18T19:04:18Z",
             "prediction": {
                 "confidence": 1.0,
-                "value": 90.0
+                "value": 70.00000000000001
             },
-            "src_url": "0"
+            "src_url": 0
         }
     ]
-
 """
