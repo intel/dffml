@@ -125,7 +125,7 @@ Let us take a simple example:
         -log debug
     1.0
     $ echo -e 'Years,Expertise,Trust\\n6,13,1.4\\n' | \\
-    dffml predict all \\
+      dffml predict all \\
         -model scikitlr \\
         -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \\
         -model-predict Salary \\
