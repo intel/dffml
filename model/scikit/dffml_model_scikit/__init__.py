@@ -133,7 +133,6 @@ Let us take a simple example:
         -source-filename /dev/stdin \\
         -source-readonly \\
         -log debug
-
     [
         {
             "extra": {},
