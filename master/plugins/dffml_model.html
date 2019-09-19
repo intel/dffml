@@ -100,19 +100,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#scratchslr">scratchslr</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#dffml-model-scikit">dffml_model_scikit</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#scikitadaboost">scikitadaboost</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#scikitdtc">scikitdtc</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#scikitgnb">scikitgnb</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#scikitgpc">scikitgpc</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#scikitknn">scikitknn</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#scikitlr">scikitlr</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#scikitmlp">scikitmlp</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#scikitqda">scikitqda</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#scikitrfc">scikitrfc</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#scikitsvc">scikitsvc</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-scikit">dffml_model_scikit</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="dffml_operation_implementation.html">Operation Implementations</a></li>
@@ -418,690 +406,205 @@ hash of their feature names.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-scikit</span>
 </pre></div>
 </div>
-<div class="section" id="scikitadaboost">
-<h3>scikitadaboost<a class="headerlink" href="#scikitadaboost" title="Permalink to this headline">¶</a></h3>
-<p><em>Core</em></p>
-<p>No description</p>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>directory: String</p>
-<ul>
-<li><p>default: /home/user/.cache/dffml/scikit-scikitlr</p></li>
-<li><p>Directory where state should be saved</p></li>
-</ul>
-</li>
-<li><p>predict: String</p>
-<ul>
-<li><p>Label or the value to be predicted</p></li>
-</ul>
-</li>
-<li><p>base_estimator: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>n_estimators: Integer</p>
-<ul>
-<li><p>default: 50</p></li>
-</ul>
-</li>
-<li><p>learning_rate: float</p>
-<ul>
-<li><p>default: 1.0</p></li>
-</ul>
-</li>
-<li><p>algorithm: String</p>
-<ul>
-<li><p>default: SAMME.R</p></li>
-</ul>
-</li>
-<li><p>random_state: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-</ul>
+<p>Machine Learning models implemented with <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a>.
+Models are saved under the directory in subdirectories named after the hash of
+their feature names.</p>
+<p><strong>General Usage:</strong></p>
+<p>Training:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+    -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
+    -features FEATURE_DEFINITION <span class="se">\</span>
+    -model-predict TO_PREDICT <span class="se">\</span>
+    -model-SCIKIT_PARAMETER_NAME SCIKIT_PARAMETER_VALUE <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>TRAINING_DATA_SOURCE_TYPE <span class="se">\</span>
+    -source-filename TRAINING_DATA_FILE_NAME <span class="se">\</span>
+    -source-readonly <span class="se">\</span>
+    -log debug
+</pre></div>
 </div>
-<div class="section" id="scikitdtc">
-<h3>scikitdtc<a class="headerlink" href="#scikitdtc" title="Permalink to this headline">¶</a></h3>
-<p><em>Core</em></p>
-<p>No description</p>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>directory: String</p>
-<ul>
-<li><p>default: /home/user/.cache/dffml/scikit-scikitlr</p></li>
-<li><p>Directory where state should be saved</p></li>
-</ul>
-</li>
-<li><p>predict: String</p>
-<ul>
-<li><p>Label or the value to be predicted</p></li>
-</ul>
-</li>
-<li><p>criterion: String</p>
-<ul>
-<li><p>default: gini</p></li>
-</ul>
-</li>
-<li><p>splitter: String</p>
-<ul>
-<li><p>default: best</p></li>
-</ul>
-</li>
-<li><p>max_depth: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>min_samples_split: Integer</p>
-<ul>
-<li><p>default: 2</p></li>
-</ul>
-</li>
-<li><p>min_samples_leaf: Integer</p>
-<ul>
-<li><p>default: 1</p></li>
-</ul>
-</li>
-<li><p>min_weight_fraction_leaf: float</p>
-<ul>
-<li><p>default: 0.0</p></li>
-</ul>
-</li>
-<li><p>max_features: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>random_state: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>max_leaf_nodes: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>min_impurity_decrease: float</p>
-<ul>
-<li><p>default: 0.0</p></li>
-</ul>
-</li>
-<li><p>min_impurity_split: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>class_weight: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>presort: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: False</p></li>
-</ul>
-</li>
-</ul>
+<p>Testing and Accuracy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
+    -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
+    -features FEATURE_DEFINITION <span class="se">\</span>
+    -model-predict TO_PREDICT <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>TESTING_DATA_SOURCE_TYPE <span class="se">\</span>
+    -source-filename TESTING_DATA_FILE_NAME <span class="se">\</span>
+    -source-readonly <span class="se">\</span>
+    -log debug
+</pre></div>
 </div>
-<div class="section" id="scikitgnb">
-<h3>scikitgnb<a class="headerlink" href="#scikitgnb" title="Permalink to this headline">¶</a></h3>
-<p><em>Core</em></p>
-<p>No description</p>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>directory: String</p>
-<ul>
-<li><p>default: /home/user/.cache/dffml/scikit-scikitlr</p></li>
-<li><p>Directory where state should be saved</p></li>
-</ul>
-</li>
-<li><p>predict: String</p>
-<ul>
-<li><p>Label or the value to be predicted</p></li>
-</ul>
-</li>
-<li><p>priors: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>var_smoothing: float</p>
-<ul>
-<li><p>default: 1e-09</p></li>
-</ul>
-</li>
-</ul>
+<p>Predicting with trained model:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict all <span class="se">\</span>
+    -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
+    -features FEATURE_DEFINITION <span class="se">\</span>
+    -model-predict TO_PREDICT <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>PREDICT_DATA_SOURCE_TYPE <span class="se">\</span>
+    -source-filename PREDICT_DATA_FILE_NAME <span class="se">\</span>
+    -source-readonly <span class="se">\</span>
+    -log debug
+</pre></div>
 </div>
-<div class="section" id="scikitgpc">
-<h3>scikitgpc<a class="headerlink" href="#scikitgpc" title="Permalink to this headline">¶</a></h3>
-<p><em>Core</em></p>
-<p>No description</p>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>directory: String</p>
-<ul>
-<li><p>default: /home/user/.cache/dffml/scikit-scikitlr</p></li>
-<li><p>Directory where state should be saved</p></li>
-</ul>
-</li>
-<li><p>predict: String</p>
-<ul>
-<li><p>Label or the value to be predicted</p></li>
-</ul>
-</li>
-<li><p>kernel: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>optimizer: String</p>
-<ul>
-<li><p>default: fmin_l_bfgs_b</p></li>
-</ul>
-</li>
-<li><p>n_restarts_optimizer: Integer</p>
-<ul>
-<li><p>default: 0</p></li>
-</ul>
-</li>
-<li><p>max_iter_predict: Integer</p>
-<ul>
-<li><p>default: 100</p></li>
-</ul>
-</li>
-<li><p>warm_start: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: False</p></li>
-</ul>
-</li>
-<li><p>copy_X_train: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: True</p></li>
-</ul>
-</li>
-<li><p>random_state: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>multi_class: String</p>
-<ul>
-<li><p>default: one_vs_rest</p></li>
-</ul>
-</li>
-<li><p>n_jobs: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="scikitknn">
-<h3>scikitknn<a class="headerlink" href="#scikitknn" title="Permalink to this headline">¶</a></h3>
-<p><em>Core</em></p>
-<p>No description</p>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>directory: String</p>
-<ul>
-<li><p>default: /home/user/.cache/dffml/scikit-scikitlr</p></li>
-<li><p>Directory where state should be saved</p></li>
-</ul>
-</li>
-<li><p>predict: String</p>
-<ul>
-<li><p>Label or the value to be predicted</p></li>
-</ul>
-</li>
-<li><p>n_neighbors: Integer</p>
-<ul>
-<li><p>default: 5</p></li>
-</ul>
-</li>
-<li><p>weights: String</p>
-<ul>
-<li><p>default: uniform</p></li>
-</ul>
-</li>
-<li><p>algorithm: String</p>
-<ul>
-<li><p>default: auto</p></li>
-</ul>
-</li>
-<li><p>leaf_size: Integer</p>
-<ul>
-<li><p>default: 30</p></li>
-</ul>
-</li>
-<li><p>p: Integer</p>
-<ul>
-<li><p>default: 2</p></li>
-</ul>
-</li>
-<li><p>metric: String</p>
-<ul>
-<li><p>default: minkowski</p></li>
-</ul>
-</li>
-<li><p>metric_params: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>n_jobs: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>kwargs: type</p>
-<ul>
-<li><p>default: &lt;class ‘dffml_model_scikit.scikit_models.NoDefaultValue’&gt;</p></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="scikitlr">
-<h3>scikitlr<a class="headerlink" href="#scikitlr" title="Permalink to this headline">¶</a></h3>
-<p><em>Core</em></p>
-<p>No description</p>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>directory: String</p>
-<ul>
-<li><p>default: /home/user/.cache/dffml/scikit-scikitlr</p></li>
-<li><p>Directory where state should be saved</p></li>
-</ul>
-</li>
-<li><p>predict: String</p>
-<ul>
-<li><p>Label or the value to be predicted</p></li>
-</ul>
-</li>
-<li><p>fit_intercept: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: True</p></li>
-</ul>
-</li>
-<li><p>normalize: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: False</p></li>
-</ul>
-</li>
-<li><p>copy_X: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: True</p></li>
-</ul>
-</li>
-<li><p>n_jobs: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="scikitmlp">
-<h3>scikitmlp<a class="headerlink" href="#scikitmlp" title="Permalink to this headline">¶</a></h3>
-<p><em>Core</em></p>
-<p>No description</p>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>directory: String</p>
-<ul>
-<li><p>default: /home/user/.cache/dffml/scikit-scikitlr</p></li>
-<li><p>Directory where state should be saved</p></li>
-</ul>
-</li>
-<li><p>predict: String</p>
-<ul>
-<li><p>Label or the value to be predicted</p></li>
-</ul>
-</li>
-<li><p>hidden_layer_sizes: tuple</p>
-<ul>
-<li><p>default: (100,)</p></li>
-</ul>
-</li>
-<li><p>activation: String</p>
-<ul>
-<li><p>default: relu</p></li>
-</ul>
-</li>
-<li><p>solver: String</p>
-<ul>
-<li><p>default: adam</p></li>
-</ul>
-</li>
-<li><p>alpha: float</p>
-<ul>
-<li><p>default: 0.0001</p></li>
-</ul>
-</li>
-<li><p>batch_size: String</p>
-<ul>
-<li><p>default: auto</p></li>
-</ul>
-</li>
-<li><p>learning_rate: String</p>
-<ul>
-<li><p>default: constant</p></li>
-</ul>
-</li>
-<li><p>learning_rate_init: float</p>
-<ul>
-<li><p>default: 0.001</p></li>
-</ul>
-</li>
-<li><p>power_t: float</p>
-<ul>
-<li><p>default: 0.5</p></li>
-</ul>
-</li>
-<li><p>max_iter: Integer</p>
-<ul>
-<li><p>default: 200</p></li>
-</ul>
-</li>
-<li><p>shuffle: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: True</p></li>
-</ul>
-</li>
-<li><p>random_state: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>tol: float</p>
-<ul>
-<li><p>default: 0.0001</p></li>
-</ul>
-</li>
-<li><p>verbose: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: False</p></li>
-</ul>
-</li>
-<li><p>warm_start: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: False</p></li>
-</ul>
-</li>
-<li><p>momentum: float</p>
-<ul>
-<li><p>default: 0.9</p></li>
-</ul>
-</li>
-<li><p>nesterovs_momentum: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: True</p></li>
-</ul>
-</li>
-<li><p>early_stopping: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: False</p></li>
-</ul>
-</li>
-<li><p>validation_fraction: float</p>
-<ul>
-<li><p>default: 0.1</p></li>
-</ul>
-</li>
-<li><p>beta_1: float</p>
-<ul>
-<li><p>default: 0.9</p></li>
-</ul>
-</li>
-<li><p>beta_2: float</p>
-<ul>
-<li><p>default: 0.999</p></li>
-</ul>
-</li>
-<li><p>epsilon: float</p>
-<ul>
-<li><p>default: 1e-08</p></li>
-</ul>
-</li>
-<li><p>n_iter_no_change: Integer</p>
-<ul>
-<li><p>default: 10</p></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="scikitqda">
-<h3>scikitqda<a class="headerlink" href="#scikitqda" title="Permalink to this headline">¶</a></h3>
-<p><em>Core</em></p>
-<p>No description</p>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>directory: String</p>
-<ul>
-<li><p>default: /home/user/.cache/dffml/scikit-scikitlr</p></li>
-<li><p>Directory where state should be saved</p></li>
-</ul>
-</li>
-<li><p>predict: String</p>
-<ul>
-<li><p>Label or the value to be predicted</p></li>
-</ul>
-</li>
-<li><p>priors: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>reg_param: float</p>
-<ul>
-<li><p>default: 0.0</p></li>
-</ul>
-</li>
-<li><p>store_covariance: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: False</p></li>
-</ul>
-</li>
-<li><p>tol: float</p>
-<ul>
-<li><p>default: 0.0001</p></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="scikitrfc">
-<h3>scikitrfc<a class="headerlink" href="#scikitrfc" title="Permalink to this headline">¶</a></h3>
-<p><em>Core</em></p>
-<p>No description</p>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>directory: String</p>
-<ul>
-<li><p>default: /home/user/.cache/dffml/scikit-scikitlr</p></li>
-<li><p>Directory where state should be saved</p></li>
-</ul>
-</li>
-<li><p>predict: String</p>
-<ul>
-<li><p>Label or the value to be predicted</p></li>
-</ul>
-</li>
-<li><p>n_estimators: String</p>
-<ul>
-<li><p>default: warn</p></li>
-</ul>
-</li>
-<li><p>criterion: String</p>
-<ul>
-<li><p>default: gini</p></li>
-</ul>
-</li>
-<li><p>max_depth: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>min_samples_split: Integer</p>
-<ul>
-<li><p>default: 2</p></li>
-</ul>
-</li>
-<li><p>min_samples_leaf: Integer</p>
-<ul>
-<li><p>default: 1</p></li>
-</ul>
-</li>
-<li><p>min_weight_fraction_leaf: float</p>
-<ul>
-<li><p>default: 0.0</p></li>
-</ul>
-</li>
-<li><p>max_features: String</p>
-<ul>
-<li><p>default: auto</p></li>
-</ul>
-</li>
-<li><p>max_leaf_nodes: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>min_impurity_decrease: float</p>
-<ul>
-<li><p>default: 0.0</p></li>
-</ul>
-</li>
-<li><p>min_impurity_split: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>bootstrap: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: True</p></li>
-</ul>
-</li>
-<li><p>oob_score: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: False</p></li>
-</ul>
-</li>
-<li><p>n_jobs: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>random_state: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>verbose: Integer</p>
-<ul>
-<li><p>default: 0</p></li>
-</ul>
-</li>
-<li><p>warm_start: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: False</p></li>
-</ul>
-</li>
-<li><p>class_weight: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="scikitsvc">
-<h3>scikitsvc<a class="headerlink" href="#scikitsvc" title="Permalink to this headline">¶</a></h3>
-<p><em>Core</em></p>
-<p>No description</p>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>directory: String</p>
-<ul>
-<li><p>default: /home/user/.cache/dffml/scikit-scikitlr</p></li>
-<li><p>Directory where state should be saved</p></li>
-</ul>
-</li>
-<li><p>predict: String</p>
-<ul>
-<li><p>Label or the value to be predicted</p></li>
-</ul>
-</li>
-<li><p>C: float</p>
-<ul>
-<li><p>default: 1.0</p></li>
-</ul>
-</li>
-<li><p>kernel: String</p>
-<ul>
-<li><p>default: rbf</p></li>
-</ul>
-</li>
-<li><p>degree: Integer</p>
-<ul>
-<li><p>default: 3</p></li>
-</ul>
-</li>
-<li><p>gamma: String</p>
-<ul>
-<li><p>default: auto_deprecated</p></li>
-</ul>
-</li>
-<li><p>coef0: float</p>
-<ul>
-<li><p>default: 0.0</p></li>
-</ul>
-</li>
-<li><p>shrinking: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: True</p></li>
-</ul>
-</li>
-<li><p>probability: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: False</p></li>
-</ul>
-</li>
-<li><p>tol: float</p>
-<ul>
-<li><p>default: 0.001</p></li>
-</ul>
-</li>
-<li><p>cache_size: Integer</p>
-<ul>
-<li><p>default: 200</p></li>
-</ul>
-</li>
-<li><p>class_weight: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-<li><p>verbose: BaseConfigurable.type_for.&lt;locals&gt;.&lt;lambda&gt;</p>
-<ul>
-<li><p>default: False</p></li>
-</ul>
-</li>
-<li><p>max_iter: Integer</p>
-<ul>
-<li><p>default: -1</p></li>
-</ul>
-</li>
-<li><p>decision_function_shape: String</p>
-<ul>
-<li><p>default: ovr</p></li>
-</ul>
-</li>
-<li><p>random_state: BaseConfigurable.parser_helper</p>
-<ul>
-<li><p>default: None</p></li>
-</ul>
-</li>
-</ul>
+<p><strong>Models Available:</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 12%" />
+<col style="width: 6%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Model</p></th>
+<th class="head"><p>Entrypoint</p></th>
+<th class="head"><p>Parameters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Regression</p></td>
+<td><p>LinearRegression</p></td>
+<td><p>scikitlr</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression/">scikitlr</a></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="8"><p>Classification</p></td>
+<td><p>KNeighborsClassifier</p></td>
+<td><p>scikitknn</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier/">scikitknn</a></p></td>
+</tr>
+<tr class="row-even"><td><p>AdaBoostClassifier</p></td>
+<td><p>scikitadaboost</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html#sklearn.ensemble.AdaBoostClassifier/">scikitadaboost</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>GaussianProcessClassifier</p></td>
+<td><p>scikitgpc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.gaussian_process.GaussianProcessClassifier.html#sklearn.gaussian_process.GaussianProcessClassifier/">scikitgpc</a></p></td>
+</tr>
+<tr class="row-even"><td><p>DecisionTreeClassifier</p></td>
+<td><p>scikitdtc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier/">scikitdtc</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>RandomForestClassifier</p></td>
+<td><p>scikitrfc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier/">scikitrfc</a></p></td>
+</tr>
+<tr class="row-even"><td><p>QuadraticDiscriminantAnalysis</p></td>
+<td><p>scikitqda</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis.html#sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis/">scikitqda</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>MLPClassifier</p></td>
+<td><p>scikitmlp</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier/">scikitmlp</a></p></td>
+</tr>
+<tr class="row-even"><td><p>GaussianNB</p></td>
+<td><p>scikitgnb</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB/">scikitgnb</a></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Usage Example:</strong></p>
+<p>Example below uses LinearRegression Model on a small dataset.</p>
+<p>Let us take a simple example:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 39%" />
+<col style="width: 21%" />
+<col style="width: 25%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Years of Experience</p></th>
+<th class="head"><p>Expertise</p></th>
+<th class="head"><p>Trust Factor</p></th>
+<th class="head"><p>Salary</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>01</p></td>
+<td><p>0.2</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>03</p></td>
+<td><p>0.4</p></td>
+<td><p>20</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>05</p></td>
+<td><p>0.6</p></td>
+<td><p>30</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>07</p></td>
+<td><p>0.8</p></td>
+<td><p>40</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>09</p></td>
+<td><p>1.0</p></td>
+<td><p>50</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>11</p></td>
+<td><p>1.2</p></td>
+<td><p>60</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; train.csv &lt;&lt; EOF
+<span class="go">Years,Expertise,Trust,Salary</span>
+<span class="go">0,1,0.2,10</span>
+<span class="go">1,3,0.4,20</span>
+<span class="go">2,5,0.6,30</span>
+<span class="go">3,7,0.8,40</span>
+<span class="go">EOF</span>
+<span class="gp">$</span> cat &gt; test.csv &lt;&lt; EOF
+<span class="go">Years,Expertise,Trust,Salary</span>
+<span class="go">4,9,1.0,50</span>
+<span class="go">5,11,1.2,60</span>
+<span class="go">EOF</span>
+<span class="gp">$</span> dffml train <span class="se">\</span>
+    -model scikitlr <span class="se">\</span>
+    -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 <span class="se">\</span>
+    -model-predict Salary <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename train.csv <span class="se">\</span>
+    -source-readonly <span class="se">\</span>
+    -log debug
+<span class="gp">$</span> dffml accuracy <span class="se">\</span>
+    -model scikitlr <span class="se">\</span>
+    -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 <span class="se">\</span>
+    -model-predict Salary <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename test.csv <span class="se">\</span>
+    -source-readonly <span class="se">\</span>
+    -log debug
+<span class="go">1.0</span>
+<span class="gp">$</span> <span class="nb">echo</span> -e <span class="s1">&#39;Years,Expertise,Trust\n6,13,1.4\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
+  dffml predict all <span class="se">\</span>
+    -model scikitlr <span class="se">\</span>
+    -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 <span class="se">\</span>
+    -model-predict Salary <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename /dev/stdin <span class="se">\</span>
+    -source-readonly <span class="se">\</span>
+    -log debug
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;Expertise&quot;: 13,</span>
+<span class="go">            &quot;Trust&quot;: 1.4,</span>
+<span class="go">            &quot;Years&quot;: 6</span>
+<span class="go">        },</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2019-09-18T19:04:18Z&quot;,</span>
+<span class="go">        &quot;prediction&quot;: {</span>
+<span class="go">            &quot;confidence&quot;: 1.0,</span>
+<span class="go">            &quot;value&quot;: 70.00000000000001</span>
+<span class="go">        },</span>
+<span class="go">        &quot;src_url&quot;: 0</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+</pre></div>
 </div>
 </div>
 </div>
