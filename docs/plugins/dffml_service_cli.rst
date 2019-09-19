@@ -65,4 +65,4 @@ http
 
 *Core*
 
-HTTP interface to access DFFML API
+HTTP interface to access DFFML API.

@@ -115,7 +115,6 @@ Let us take a simple example:
         -source-filename train.csv \\
         -source-readonly \\
         -log debug
-   
     $ dffml accuracy \\
         -model scikitlr \\
         -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \\
@@ -124,7 +123,6 @@ Let us take a simple example:
         -source-filename test.csv \\
         -source-readonly \\
         -log debug
-
     1.0
     $ echo -e 'Years,Expertise,Trust\\n6,13,1.4\\n' | \\
     dffml predict all \\
