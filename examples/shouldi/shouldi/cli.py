@@ -123,6 +123,12 @@ class Install(CMD):
                     else:
                         print(f"{package_name} is okay to install")
 
+class LinkerTest(CMD):
+
+    async def run(self):
+        linker = Linker()
+        exported = linker.export(run_bandit.op, pypi_latest_package_version.op, pypi_package_json.op, pypi_package_url.op, pypi_package_contents.op, safety_check.op)
+        return exported
 
 class LinkerTest(CMD):
     arg_path_info = Arg(
