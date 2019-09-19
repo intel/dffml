@@ -36,9 +36,13 @@ Uses a CSV file as the source of repo feature data
 
   - default: unlabeled
 
+- labelcol: String
+
+  - default: label
+
 - key: String
 
-  - default: None
+  - default: src_url
 
 json
 ~~~~
