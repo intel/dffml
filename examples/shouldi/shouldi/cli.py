@@ -123,12 +123,39 @@ class Install(CMD):
                     else:
                         print(f"{package_name} is okay to install")
 
-class LinkerTest(CMD):
 
-    async def run(self):
+class LinkerTest(CMD):
+    async def export(self):
         linker = Linker()
-        exported = linker.export(run_bandit.op, pypi_latest_package_version.op, pypi_package_json.op, pypi_package_url.op, pypi_package_contents.op, safety_check.op)
+        exported = linker.export(
+            run_bandit.op,
+            pypi_latest_package_version.op,
+            pypi_package_json.op,
+            pypi_package_url.op,
+            pypi_package_contents.op,
+            safety_check.op,
+        )
         return exported
+    
+    ##TODO Multiple INPUT and Multiple OUTPUT cases
+    async def run(self):
+        temp = await self.export()
+        dest_operation = "run_bandit"
+        init_inp = "package"
+        operations_dict = temp["operations"]
+        for name,operation in operations_dict.items():
+            operation["inputs"] = list(operation["inputs"].values())[0]
+            operation["outputs"] = list(operation["outputs"].values())[0]
+        inp = operations_dict[dest_operation]["inputs"]
+        backtrack_list = [dest_operation]
+        while inp != init_inp:
+            for name, operation in operations_dict.items():
+                if operation["outputs"] == inp:
+                    backtrack_list.append(name)
+                    inp = operation["inputs"]
+
+        return backtrack_list
+
 
 class LinkerTest(CMD):
     arg_path_info = Arg(
