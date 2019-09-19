@@ -125,6 +125,12 @@ class Install(CMD):
 
 
 class LinkerTest(CMD):
+    arg_path_info = Arg(
+        "path_info",
+        nargs="+",
+        help="end and start points for finding a back path",
+    )
+
     async def export(self):
         linker = Linker()
         exported = linker.export(
@@ -136,14 +142,14 @@ class LinkerTest(CMD):
             safety_check.op,
         )
         return exported
-    
+
     ##TODO Multiple INPUT and Multiple OUTPUT cases
     async def run(self):
         temp = await self.export()
-        dest_operation = "run_bandit"
-        init_inp = "package"
+        dest_operation = self.path_info[0]
+        init_inp = self.path_info[1]
         operations_dict = temp["operations"]
-        for name,operation in operations_dict.items():
+        for name, operation in operations_dict.items():
             operation["inputs"] = list(operation["inputs"].values())[0]
             operation["outputs"] = list(operation["outputs"].values())[0]
         inp = operations_dict[dest_operation]["inputs"]
@@ -154,6 +160,7 @@ class LinkerTest(CMD):
                     backtrack_list.append(name)
                     inp = operation["inputs"]
 
+        backtrack_list.reverse()
         return backtrack_list
 
 
