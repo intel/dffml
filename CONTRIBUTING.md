@@ -173,7 +173,7 @@ python3.7 -m http.server --directory htmlcov/ 8080
 
 You can now view the coverage report at http://127.0.0.1:8080/
 
-# Documentation
+## Documentation
 
 To build and view the documentation run the docs script.
 
@@ -183,9 +183,20 @@ $ ./scripts/docs.sh
 $ python3.7 -m http.server --directory pages/ 7000
 ```
 
-# Working on skel/
+## Notes on Various Subsystems
+
+DFFML is comprised of various subsystems. The following are some notes
+that might be helpful when working on each of them.
+
+### Working on skel/
 
 The packages in `skel/` are used to create new DFFML packages.
+
+> For example, to create a new package containing operations.
+
+```console
+$ dffml service dev create operations dffml-operations-feedface
+```
 
 If you want to work on any of the packages in `skel/`, you'll need to run the
 `skel link` command first fromt he `dev` service. This will symlink required
