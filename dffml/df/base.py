@@ -458,6 +458,13 @@ class BaseInputNetwork(BaseDataFlowObject):
     """
 
 
+class OperationImplementationNotInNetwork(Exception):
+    """
+    Attempted to run an operation that does not exist in the network, and could
+    not be instantiated.
+    """
+
+
 class BaseOperationNetworkContext(BaseDataFlowObjectContext):
     """
     Abstract Base Class for context managing operations

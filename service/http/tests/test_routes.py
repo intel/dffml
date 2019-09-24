@@ -149,20 +149,45 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
 
 
 class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
-    async def test_source_not_found(self):
-        # with self.assertRaisesRegex(ServerException, ""):
-        async with self.get("/some/non-existant-url"):
-            pass  # pramga: no cov
-
-    async def test_update(self):
-        return
-        key = "1"
-        new_repo = Repo(key, data={"features": {"by_ten": 10}})
+    async def test_register(self):
+        url: str = "/some/url"
+        message: str = "Hello World"
+        # Test that URL does not exist
+        with self.assertRaisesRegex(ServerException, "Not Found"):
+            async with self.get(url):
+                pass  # pramga: no cov
+        # Register the data flow
         async with self.post(
-            f"/source/{self.label}/update/{key}", json=new_repo.dict()
+            f"/multicomm/self/register", json={
+                "path": url,
+                "asynchronous": False,
+                "dataflow": {
+                    "definitions": {
+                        "message": {
+                            "primitive": "string"
+                        }
+                    },
+                    "operations": {
+                        "say.hello": {
+                            "name": "say",
+                            "inputs": {},
+                            "outputs": {
+                                "string": "message"
+                            }
+                        }
+                    },
+                    "configs": {
+                        "say.hello": {
+                            "message": message
+                        },
+                    }
+                },
+            }
         ) as r:
             self.assertEqual(await r.json(), OK)
-        self.assertEqual((await self.sctx.repo(key)).feature("by_ten"), 10)
+        # Test the URL now does exist
+        async with self.get(url) as response:
+            self.assertEqual(message, await response.text())
 
 
 class TestRoutesSource(TestRoutesRunning, AsyncTestCase):

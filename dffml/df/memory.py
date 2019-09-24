@@ -598,7 +598,6 @@ class MemoryLockNetwork(BaseLockNetwork):
 
 class MemoryOperationImplementationNetworkConfig(NamedTuple):
     operations: Dict[str, OperationImplementation]
-    configs: Dict[str, BaseConfig]
 
 
 class MemoryOperationImplementationNetworkContext(
@@ -646,16 +645,9 @@ class MemoryOperationImplementationNetworkContext(
         # Check that our network contains the operation
         if not await self.contains(operation):
             if not await self.instantiable(operation):
-                # If we don't have it, and can't load it, raise an error
-                raise OperationImplementationNotInNetwork(operation.name)
+                raise OperationImplementationNotInstantiable(operation.name)
             else:
-                # TODO Provide method to add a config for an operation
-                # Load it if possible and use the config provided if it exists
-                config = self.parent.configs.get(operation.name, None)
-                if config is None:
-                    self.logger.info("Instantiated %r with empty config")
-                    config = BaseConfig()
-                await self.instantiate(operation, config)
+                raise OperationImplementationNotInNetwork(operation.name)
         # Create an opimp context and run the opertion
         async with self.parent.operations[operation.name](ctx, ictx) as opctx:
             self.logger.debug("---")
@@ -797,7 +789,6 @@ class MemoryOperationImplementationNetwork(BaseOperationImplementationNetwork):
     ) -> None:
         super().__init__(config)
         self.opimps = self.config.operations
-        self.configs = self.config.configs
         self.operations = {}
         self.completed_event = asyncio.Event()
 
@@ -821,6 +812,7 @@ class MemoryOperationImplementationNetwork(BaseOperationImplementationNetwork):
     def args(cls, args, *above) -> Dict[str, Arg]:
         # Enable the user to specify operation implementations to be loaded via
         # the entrypoint system (by ParseOperationImplementationAction)
+        # TODO opimps should be operations
         cls.config_set(
             args,
             above,

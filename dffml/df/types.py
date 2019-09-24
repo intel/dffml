@@ -1,9 +1,11 @@
 import uuid
 import itertools
-from enum import Enum
 import pkg_resources
+from enum import Enum
+from types import SimpleNamespace
 from typing import NamedTuple, Union, List, Dict, Optional, Any, Iterator
 
+from ..base import BaseConfig
 from ..util.entrypoint import Entrypoint, base_entry_point
 
 
@@ -179,3 +181,13 @@ class Parameter(NamedTuple):
     value: Any
     origin: Input
     definition: Definition
+
+
+class DataFlow(NamedTuple):
+    definitions: Dict[str, Definition]
+    operations: Dict[str, Operation]
+    configs: Dict[str, BaseConfig]
+
+    @classmethod
+    def _fromdict(cls, obj):
+        return cls(**obj)

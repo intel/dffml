@@ -7,14 +7,16 @@ from http import HTTPStatus
 from functools import partial
 from dataclasses import dataclass
 from contextlib import AsyncExitStack
-from typing import List, Union, AsyncIterator, Type
+from typing import List, Union, AsyncIterator, Type, NamedTuple, Dict
 
 from aiohttp import web
 import aiohttp_cors
 
 from dffml.repo import Repo
+from dffml.df.types import DataFlow
 from dffml.base import MissingConfig
 from dffml.source.source import BaseSource
+from dffml.df.memory import MemoryOrchestrator
 from dffml.util.entrypoint import EntrypointNotFound
 
 
@@ -68,7 +70,7 @@ def mcctx_route(handler):
             return web.json_response(
                 MULTICOMM_NOT_LOADED, status=HTTPStatus.NOT_FOUND
             )
-        return await handler(self, request, sctx)
+        return await handler(self, request, mcctx)
 
     return get_mcctx
 
@@ -95,29 +97,37 @@ def sctx_route(handler):
 
 class HTTPChannelConfig(NamedTuple):
     path: str
-    df: Dict[str, Dict]
+    asynchronous: bool
+    dataflow: DataFlow
+
+    @classmethod
+    def _fromdict(cls, obj):
+        obj['dataflow'] = DataFlow._fromdict(obj['dataflow'])
+        return cls(**obj)
+
 
 class Routes:
     async def get_registered_handler(self, request):
-        return self.app["multicomm_routes"].get(request.path, None):
+        return self.app["multicomm_routes"].get(request.path, None)
 
     async def multicomm_dataflow(self, config, request):
         # Seed the network with inputs given by caller
         # TODO allow list of valid definitions to seed
         # TODO convert inputs into Input instances
         inputs = []
-        # Accept a list of input data
-        for input_data in (await request.json()):
-            # TODO validate that input data is list and each item has definition
-            # and value properties
-            if not input_data["definition"] in config.df.definitions:
-                return web.json_response({"error": f"Missing definition for {input_data['definition']} in dataflow"}, status=HTTPStatus.NOT_FOUND)
-            inputs.append(
-                Input(
-                    value=input_data["value"]
-                    definition=config.df.definitions[input_data["definition"]],
+        if request.method == "POST":
+            # Accept a list of input data
+            for input_data in (await request.json()):
+                # TODO validate that input data is list and each item has definition
+                # and value properties
+                if not input_data["definition"] in config.df.definitions:
+                    return web.json_response({"error": f"Missing definition for {input_data['definition']} in dataflow"}, status=HTTPStatus.NOT_FOUND)
+                inputs.append(
+                    Input(
+                        value=input_data["value"],
+                        definition=config.df.definitions[input_data["definition"]],
+                    )
                 )
-            )
         # Run the operation in an orchestrator
         # TODO Create the orchestrator on startup of the HTTP API itself
         async with MemoryOrchestrator.basic_config(
@@ -285,8 +295,10 @@ class Routes:
         self.app["multicomm_routes"][config.path] = partial(handler, config)
 
     @mcctx_route
-    async def multicomm_register(self, request, sctx):
-        await mcctx.register(mcctx.register_config()(**(await request.json())))
+    async def multicomm_register(self, request, mcctx):
+        config = mcctx.register_config()._fromdict(await request.json())
+        self.logger.debug("Register new mutlicomm route: %r", config)
+        await mcctx.register(config)
         return web.json_response(OK)
 
     @sctx_route
