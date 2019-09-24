@@ -193,7 +193,7 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
         super().tearDownClass()
         cls._exit_stack.__exit__(None, None, None)
 
-    async def test_register(self):
+    async def test_no_post(self):
         url: str = "/some/url"
         message: str = "Hello World"
         # Test that URL does not exist
@@ -241,6 +241,60 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
             self.assertEqual(await r.json(), OK)
         # Test the URL now does exist
         async with self.get(url) as response:
+            self.assertEqual(
+                json.dumps({"response": message}), await response.text()
+            )
+
+    async def test_post(self):
+        url: str = "/some/url"
+        message: str = "Hello Feedface"
+        # Test that URL does not exist
+        with self.assertRaisesRegex(ServerException, "Not Found"):
+            async with self.get(url):
+                pass  # pramga: no cov
+        # Register the data flow
+        async with self.post(
+            f"/multicomm/self/register",
+            json={
+                "path": url,
+                "asynchronous": False,
+                "dataflow": {
+                    "operations": {
+                        "hello_blank": formatter.op.export(),
+                        "get_formatted_message": GetSingle.op.export(),
+                    },
+                    # TODO use configs for format instead of seed
+                    "configs": {"say.hello": {"format": "Hello {}"}},
+                    "seed": [
+                        {
+                            "value": "Hello {}",
+                            "definition": formatter.op.inputs[
+                                "formatting"
+                            ].export(),
+                        },
+                        {
+                            "value": [formatter.op.outputs["string"].name],
+                            "definition": GetSingle.op.inputs["spec"].export(),
+                        },
+                    ],
+                    "remap": {
+                        "response": [
+                            GetSingle.op.name,
+                            formatter.op.outputs["string"].name,
+                        ]
+                    },
+                },
+            },
+        ) as r:
+            self.assertEqual(await r.json(), OK)
+        # Test the URL now does exist (and send data for formatting)
+        async with self.post(url, json=[
+                {
+                    "value": "Feedface",
+                    "definition": formatter.op.inputs["data"].export(),
+                },
+            ],
+        ) as response:
             self.assertEqual(
                 json.dumps({"response": message}), await response.text()
             )
