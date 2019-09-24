@@ -458,10 +458,15 @@ class BaseInputNetwork(BaseDataFlowObject):
     """
 
 
+class OperationImplementationNotInstantiable(Exception):
+    """
+    OperationImplementation cannot be instantiated and is required to continue.
+    """
+
+
 class OperationImplementationNotInNetwork(Exception):
     """
-    Attempted to run an operation that does not exist in the network, and could
-    not be instantiated.
+    OperationImplementation is not in the network and was required to continue.
     """
 
 

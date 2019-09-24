@@ -19,6 +19,7 @@ from dffml.df.types import DataFlow, Input
 from dffml.source.source import BaseSource
 from dffml.df.memory import MemoryOrchestrator
 from dffml.util.entrypoint import EntrypointNotFound
+from dffml.df.base import OperationImplementationNotInstantiable
 
 
 # TODO Add test for this
@@ -149,7 +150,11 @@ class Routes:
                     instance_name,
                     operation,
                 ) in config.dataflow.operations.items():
-                    print(await octx.nctx.instantiable(operation))
+                    if not await octx.nctx.contains(operation):
+                        if not await octx.nctx.instantiable(operation):
+                            raise OperationImplementationNotInstantiable(operation.name)
+                        else:
+                            await octx.nctx.instantiate(operation)
                 # Add all the inputs
                 # TODO Assign a sha384 string as the random string context
                 await octx.ictx.sadd(str(uuid.uuid4()), *inputs)

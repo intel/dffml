@@ -9,6 +9,9 @@ from contextlib import asynccontextmanager, ExitStack
 import aiohttp
 
 from dffml.repo import Repo
+from dffml.df.base import op
+from dffml.df.types import Definition
+from dffml.util.entrypoint import EntrypointNotFound
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.source.csv import CSVSourceConfig
 from dffml.util.cli.arg import parse_unknown
@@ -147,16 +150,48 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
             ):
                 pass  # pramga: no cov
 
+@op(inputs={
+        "data": Definition(
+            name="format_data",
+            primitive="string",
+        ),
+        "formatting": Definition(
+            name="format_string",
+            primitive="string",
+        ),
+    },
+    outputs={
+        "string": Definition(
+            name="message",
+            primitive="string",
+        )
+    },
+)
+def formatter(formatting: str, data: str):
+    return {
+        "string": formatting.format(data)
+        }
 
 class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
+    OPIMPS = {
+        "formatter": formatter
+    }
+
+    @classmethod
+    def patch_operation_implementation_load(cls, loading):
+        try:
+            return cls.OPIMPS[loading].imp
+        except KeyError as error:
+            raise EntrypointNotFound(f"{loading} not found in {list(cls.OPIMPS.keys())}") from error
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
         cls._exit_stack = ExitStack()
         cls.exit_stack = cls._exit_stack.__enter__()
-        return
         cls.exit_stack.enter_context(patch(
-
+            "dffml.df.base.OperationImplementation.load",
+            new=cls.patch_operation_implementation_load
         ))
 
     @classmethod
@@ -179,14 +214,14 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                 "asynchronous": False,
                 "dataflow": {
                     "operations": {
-                        "say.hello": {
+                        "formatter.hello_blank": {
                             "name": "formatter",
                             "inputs": {
                                 "data": {
                                     "name": "format_data",
                                     "primitive": "string",
                                 },
-                                "format": {
+                                "formatting": {
                                     "name": "format_string",
                                     "primitive": "string",
                                 },

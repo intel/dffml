@@ -40,6 +40,7 @@ from .base import (
     BaseLockNetworkContext,
     BaseLockNetwork,
     OperationImplementationNotInNetwork,
+    OperationImplementationNotInstantiable,
     BaseOperationImplementationNetworkContext,
     BaseOperationImplementationNetwork,
     BaseOrchestratorConfig,
@@ -640,6 +641,17 @@ class MemoryOperationImplementationNetworkContext(
             OperationImplementation.load(operation.name)
         )
 
+    async def ensure_contains(self, operation: Operation):
+        """
+        Raise errors if we don't have and can't instantiate an operation.
+        """
+        # Check that our network contains the operation
+        if not await self.contains(operation):
+            if not await self.instantiable(operation):
+                raise OperationImplementationNotInstantiable(operation.name)
+            else:
+                raise OperationImplementationNotInNetwork(operation.name)
+
     async def run(
         self,
         ctx: BaseInputSetContext,
@@ -651,11 +663,7 @@ class MemoryOperationImplementationNetworkContext(
         Run an operation in our network.
         """
         # Check that our network contains the operation
-        if not await self.contains(operation):
-            if not await self.instantiable(operation):
-                raise OperationImplementationNotInstantiable(operation.name)
-            else:
-                raise OperationImplementationNotInNetwork(operation.name)
+        await self.ensure_contains(operation)
         # Create an opimp context and run the opertion
         async with self.parent.operations[operation.name](ctx, ictx) as opctx:
             self.logger.debug("---")
