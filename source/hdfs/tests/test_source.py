@@ -12,9 +12,9 @@ class TestHDFSSource(SourceTest, AsyncTestCase):
             HDFSSourceConfig(
                 host="localhost",
                 port="50070",
-                user="hadoopuser",
+                user="root",
                 source=CSVSource(CSVSourceConfig(filename="sample_data.csv")),
-                filepath="./home/hadoopuser/dffml-source/sample_data.csv",
+                filepath="./home/dffml-source/sample_data.csv",
             )
         )
 
