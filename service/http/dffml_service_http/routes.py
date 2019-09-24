@@ -144,12 +144,16 @@ class Routes:
         # TODO Create the orchestrator on startup of the HTTP API itself
         async with MemoryOrchestrator.basic_config() as orchestrator:
             async with orchestrator() as octx:
-                # Instantiate all operations
                 print(config.dataflow)
+                # Add operations to operations network context
+                await octx.octx.add(config.dataflow.operations.values())
+                # Instantiate all operations
                 for (
                     instance_name,
                     operation,
                 ) in config.dataflow.operations.items():
+                    # Add and instantiate operation implementation if not
+                    # present
                     if not await octx.nctx.contains(operation):
                         if not await octx.nctx.instantiable(operation):
                             raise OperationImplementationNotInstantiable(operation.name)
@@ -162,6 +166,7 @@ class Routes:
                             await octx.nctx.instantiate(operation, opimp_config)
                 # Add all the inputs
                 # TODO Assign a sha384 string as the random string context
+                self.logger.debug("Adding inputs: %s", inputs)
                 await octx.ictx.sadd(str(uuid.uuid4()), *inputs)
                 # Return the output
                 async for ctx, results in octx.run_operations():

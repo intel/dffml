@@ -407,7 +407,8 @@ class MemoryOperationNetworkConfig(NamedTuple):
 class MemoryOperationNetworkContext(BaseOperationNetworkContext):
     async def add(self, operations: List[Operation]):
         async with self.parent.lock:
-            map(self.parent.memory.add, operations)
+            for operation in operations:
+                self.parent.memory[operation.name] = operation
 
     async def operations(
         self,
@@ -418,7 +419,7 @@ class MemoryOperationNetworkContext(BaseOperationNetworkContext):
         if not input_set is None:
             input_definitions = await input_set.definitions()
         # Yield all operations with an input in the input set
-        for operation in self.parent.memory:
+        for operation in self.parent.memory.values():
             # Only run operations of the requested stage
             if operation.stage != stage:
                 continue
@@ -448,7 +449,8 @@ class MemoryOperationNetwork(BaseOperationNetwork):
 
     def __init__(self, config: BaseConfig) -> None:
         super().__init__(config)
-        self.memory = config.operations.copy()
+        self.memory = {operation.name: operation
+                       for operation in config.operations}
         self.lock = asyncio.Lock()
 
     @classmethod

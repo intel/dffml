@@ -134,7 +134,6 @@ def op(imp_enter=None, ctx_enter=None, **kwargs):
                 async def run(
                     self, inputs: Dict[str, Any]
                 ) -> Union[bool, Dict[str, Any]]:
-                    # TODO Add auto thread pooling of non-async functions
                     # If imp_enter or ctx_enter exist then bind the function to
                     # the ImplementationContext so that it has access to the
                     # context and it's parent
@@ -142,7 +141,11 @@ def op(imp_enter=None, ctx_enter=None, **kwargs):
                         return await (
                             func.__get__(self, self.__class__)(**inputs)
                         )
-                    return await func(**inputs)
+                    if inspect.iscoroutinefunction(func):
+                        return await func(**inputs)
+                    else:
+                        # TODO Add auto thread pooling of non-async functions
+                        return func(**inputs)
 
             class Implementation(
                 context_stacker(OperationImplementation, imp_enter)
