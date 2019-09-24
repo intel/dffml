@@ -28,9 +28,10 @@ class Definition(NamedTuple):
 
     def export(self):
         exported = dict(self._asdict())
-        del exported["name"]
         if not self.lock:
             del exported["lock"]
+        if not self.spec:
+            del exported["spec"]
         return exported
 
     @classmethod
@@ -56,10 +57,11 @@ class Operation(NamedTuple, Entrypoint):
 
     def export(self):
         exported = {
+            "name": self.name,
             "inputs": self.inputs.copy(),
             "outputs": self.outputs.copy(),
             "conditions": self.conditions.copy(),
-            "stage": self.stage,
+            "stage": self.stage.value,
             "expand": self.expand.copy(),
         }
         for to_string in ["conditions"]:
@@ -69,7 +71,7 @@ class Operation(NamedTuple, Entrypoint):
         for to_string in ["inputs", "outputs"]:
             exported[to_string] = dict(
                 map(
-                    lambda key_def: (key_def[0], key_def[1].name),
+                    lambda key_def: (key_def[0], key_def[1].export()),
                     exported[to_string].items(),
                 )
             )
@@ -122,6 +124,8 @@ class Operation(NamedTuple, Entrypoint):
                 argument_name: Definition._fromdict(**definition)
                 for argument_name, definition in kwargs[prop].items()
             }
+        if "stage" in kwargs:
+            kwargs["stage"] = Stage[kwargs["stage"].upper()]
         return cls(**kwargs)
 
 

@@ -11,6 +11,7 @@ import aiohttp
 from dffml.repo import Repo
 from dffml.df.base import op
 from dffml.df.types import Definition
+from dffml.operation.output import GetSingle
 from dffml.util.entrypoint import EntrypointNotFound
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.source.csv import CSVSourceConfig
@@ -174,7 +175,8 @@ def formatter(formatting: str, data: str):
 
 class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
     OPIMPS = {
-        "formatter": formatter
+        "formatter": formatter,
+        "get_single": GetSingle,
     }
 
     @classmethod
@@ -214,42 +216,19 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                 "asynchronous": False,
                 "dataflow": {
                     "operations": {
-                        "formatter.hello_blank": {
-                            "name": "formatter",
-                            "inputs": {
-                                "data": {
-                                    "name": "format_data",
-                                    "primitive": "string",
-                                },
-                                "formatting": {
-                                    "name": "format_string",
-                                    "primitive": "string",
-                                },
-                            },
-                            "outputs": {
-                                "string": {
-                                    "name": "message",
-                                    "primitive": "string",
-                                }
-                            },
-                        }
+                        "hello_blank": formatter.op.export(),
+                        "get_formatted_message": GetSingle.op.export(),
                     },
                     # TODO use configs for format instead of seed
                     "configs": {"say.hello": {"format": "Hello {}"}},
                     "seed": [
                         {
                             "value": "World",
-                            "definition": {
-                                "name": "format_data",
-                                "primitive": "string",
-                            },
+                            "definition": formatter.op.inputs["data"].export(),
                         },
                         {
                             "value": "Hello {}",
-                            "definition": {
-                                "name": "format_string",
-                                "primitive": "string",
-                            },
+                            "definition": formatter.op.inputs["formatting"].export(),
                         },
                     ],
                 },
