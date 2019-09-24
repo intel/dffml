@@ -230,6 +230,10 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                             "value": "Hello {}",
                             "definition": formatter.op.inputs["formatting"].export(),
                         },
+                        {
+                            "value": [formatter.op.outputs["string"].name],
+                            "definition": GetSingle.op.inputs["spec"].export(),
+                        },
                     ],
                 },
             },
