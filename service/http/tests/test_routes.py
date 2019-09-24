@@ -1,5 +1,6 @@
 import os
 import io
+import json
 import asyncio
 import tempfile
 from http import HTTPStatus
@@ -229,7 +230,7 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                         },
                     ],
                     "remap": {
-                        "output": [
+                        "response": [
                             GetSingle.op.name,
                             formatter.op.outputs["string"].name,
                         ]
@@ -240,9 +241,9 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
             self.assertEqual(await r.json(), OK)
         # Test the URL now does exist
         async with self.get(url) as response:
-            text = await response.text()
-            print(f"\n\n{text}\n")
-            self.assertEqual(message, text)
+            self.assertEqual(
+                json.dumps({"response": message}), await response.text()
+            )
 
 
 class TestRoutesSource(TestRoutesRunning, AsyncTestCase):
