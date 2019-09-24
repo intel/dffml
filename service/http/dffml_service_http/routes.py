@@ -108,6 +108,24 @@ class HTTPChannelConfig(NamedTuple):
         return cls(**kwargs)
 
 
+class RemapFailure(Exception):
+    """
+    Raised whem results of a dataflow could not be remapped.
+    """
+
+
+def traverse_get(target, *args):
+    """
+    Travel down through a dict
+    >>> traverse_get({"one": {"two": 3}}, ["one", "two"])
+    3
+    """
+    current = target
+    for level in args:
+        current = current[level]
+    return current
+
+
 class Routes:
     async def get_registered_handler(self, request):
         return self.app["multicomm_routes"].get(request.path, None)
@@ -156,20 +174,47 @@ class Routes:
                     # present
                     if not await octx.nctx.contains(operation):
                         if not await octx.nctx.instantiable(operation):
-                            raise OperationImplementationNotInstantiable(operation.name)
+                            raise OperationImplementationNotInstantiable(
+                                operation.name
+                            )
                         else:
-                            opimp_config = config.dataflow.configs.get(operation.instance_name, None)
+                            opimp_config = config.dataflow.configs.get(
+                                operation.instance_name, None
+                            )
                             if opimp_config is None:
-                                self.logger.debug("Instantiating operation implementation %s(%s) with base config",
-                                        operation.instance_name, operation.name)
+                                self.logger.debug(
+                                    "Instantiating operation implementation %s(%s) with base config",
+                                    operation.instance_name,
+                                    operation.name,
+                                )
                                 opimp_config = BaseConfig()
-                            await octx.nctx.instantiate(operation, opimp_config)
+                            await octx.nctx.instantiate(
+                                operation, opimp_config
+                            )
                 # Add all the inputs
                 # TODO Assign a sha384 string as the random string context
                 self.logger.debug("Adding inputs: %s", inputs)
                 await octx.ictx.sadd(str(uuid.uuid4()), *inputs)
                 # Return the output
                 async for ctx, results in octx.run_operations():
+                    # Remap the output operations to their feature (copied logic
+                    # from CLI)
+                    remap = {}
+                    for (
+                        feature_name,
+                        traverse,
+                    ) in config.dataflow.remap.items():
+                        try:
+                            remap[feature_name] = traverse_get(
+                                results, *traverse
+                            )
+                        except KeyError:
+                            raise RemapFailure(
+                                "failed to remap %r. Results do not contain %r: %s"
+                                % (feature_name, ".".join(traverse), results)
+                            )
+                        # Results have been remaped
+                        results = remap
                     # TODO Format output according to the config
                     return web.json_response(results)
 

@@ -151,50 +151,41 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
             ):
                 pass  # pramga: no cov
 
-@op(inputs={
-        "data": Definition(
-            name="format_data",
-            primitive="string",
-        ),
-        "formatting": Definition(
-            name="format_string",
-            primitive="string",
-        ),
+
+@op(
+    inputs={
+        "data": Definition(name="format_data", primitive="string"),
+        "formatting": Definition(name="format_string", primitive="string"),
     },
-    outputs={
-        "string": Definition(
-            name="message",
-            primitive="string",
-        )
-    },
+    outputs={"string": Definition(name="message", primitive="string")},
 )
 def formatter(formatting: str, data: str):
-    return {
-        "string": formatting.format(data)
-        }
+    return {"string": formatting.format(data)}
+
 
 class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
-    OPIMPS = {
-        "formatter": formatter,
-        "get_single": GetSingle,
-    }
+    OPIMPS = {"formatter": formatter, "get_single": GetSingle}
 
     @classmethod
     def patch_operation_implementation_load(cls, loading):
         try:
             return cls.OPIMPS[loading].imp
         except KeyError as error:
-            raise EntrypointNotFound(f"{loading} not found in {list(cls.OPIMPS.keys())}") from error
+            raise EntrypointNotFound(
+                f"{loading} not found in {list(cls.OPIMPS.keys())}"
+            ) from error
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
         cls._exit_stack = ExitStack()
         cls.exit_stack = cls._exit_stack.__enter__()
-        cls.exit_stack.enter_context(patch(
-            "dffml.df.base.OperationImplementation.load",
-            new=cls.patch_operation_implementation_load
-        ))
+        cls.exit_stack.enter_context(
+            patch(
+                "dffml.df.base.OperationImplementation.load",
+                new=cls.patch_operation_implementation_load,
+            )
+        )
 
     @classmethod
     def tearDownClass(cls):
@@ -228,13 +219,21 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                         },
                         {
                             "value": "Hello {}",
-                            "definition": formatter.op.inputs["formatting"].export(),
+                            "definition": formatter.op.inputs[
+                                "formatting"
+                            ].export(),
                         },
                         {
                             "value": [formatter.op.outputs["string"].name],
                             "definition": GetSingle.op.inputs["spec"].export(),
                         },
                     ],
+                    "remap": {
+                        "output": [
+                            GetSingle.op.name,
+                            formatter.op.outputs["string"].name,
+                        ]
+                    },
                 },
             },
         ) as r:

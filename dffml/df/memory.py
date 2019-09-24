@@ -449,8 +449,9 @@ class MemoryOperationNetwork(BaseOperationNetwork):
 
     def __init__(self, config: BaseConfig) -> None:
         super().__init__(config)
-        self.memory = {operation.name: operation
-                       for operation in config.operations}
+        self.memory = {
+            operation.name: operation for operation in config.operations
+        }
         self.lock = asyncio.Lock()
 
     @classmethod

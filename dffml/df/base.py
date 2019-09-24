@@ -152,7 +152,11 @@ def op(imp_enter=None, ctx_enter=None, **kwargs):
             ):
 
                 op = func.op
-                CONTEXT = type(f"{cls_name}ImplementationContext", (ImplementationContext,), {})
+                CONTEXT = type(
+                    f"{cls_name}ImplementationContext",
+                    (ImplementationContext,),
+                    {},
+                )
 
             func.imp = type(f"{cls_name}Implementation", (Implementation,), {})
             return func

@@ -196,26 +196,38 @@ class DataFlow(NamedTuple):
     definitions: Dict[str, Definition]
     operations: Dict[str, Operation]
     configs: Dict[str, BaseConfig]
+    remap: Dict[str, List[str]]
 
     @classmethod
     def _fromdict(cls, **kwargs):
         # Import all operations
         kwargs["operations"] = {
-            instance_name: Operation._fromdict(instance_name=instance_name, **operation)
+            instance_name: Operation._fromdict(
+                instance_name=instance_name, **operation
+            )
             for instance_name, operation in kwargs["operations"].items()
         }
         # Grab all definitions from operations
         operations = list(kwargs["operations"].values())
-        definitions = list(set(itertools.chain(*[
-            itertools.chain(operation.inputs.values(), operation.outputs.values())
-            for operation in operations
-        ])))
-        definitions = {definition.name: definition
-                       for definition in definitions}
+        definitions = list(
+            set(
+                itertools.chain(
+                    *[
+                        itertools.chain(
+                            operation.inputs.values(),
+                            operation.outputs.values(),
+                        )
+                        for operation in operations
+                    ]
+                )
+            )
+        )
+        definitions = {
+            definition.name: definition for definition in definitions
+        }
         kwargs["definitions"] = definitions
         # Import seed inputs
         kwargs["seed"] = [
-            Input._fromdict(**input_data)
-            for input_data in kwargs["seed"]
+            Input._fromdict(**input_data) for input_data in kwargs["seed"]
         ]
         return cls(**kwargs)
