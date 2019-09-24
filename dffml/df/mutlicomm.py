@@ -1,15 +1,14 @@
 import abc
 
-from .base import (
-    BaseDataFlowObjectContext,
-    BaseDataFlowObject,
-)
+from .base import BaseDataFlowObjectContext, BaseDataFlowObject
 from ..util.entrypoint import base_entry_point
+
 
 class BaseCommChannelConfig:
     """
     Config structure for a communication channel
     """
+
 
 class BaseMultiCommContext(BaseDataFlowObjectContext, abc.ABC):
     """

@@ -47,7 +47,7 @@ from .base import (
     BaseOrchestrator,
 )
 
-from ..util.entrypoint import entry_point
+from ..util.entrypoint import entry_point, EntrypointNotFound
 from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
 from ..util.data import ignore_args
@@ -613,11 +613,15 @@ class MemoryOperationImplementationNetworkContext(
         """
         Looks for class registered with ____ entrypoint using pkg_resources.
         """
-        opimp = OperationImplementation.load(operation.name)
-        self.logger.critical("OperationImplementation %r is instantiable: %r",
-                operation.name, opimp)
-        if asdlfkjsdf:
-            asdflkj
+        try:
+            opimp = OperationImplementation.load(operation.name)
+        except EntrypointNotFound as error:
+            self.logger.debug(
+                "OperationImplementation %r is not instantiable: %s",
+                operation.name,
+                error,
+            )
+            return False
         return True
 
     async def instantiate(
@@ -630,7 +634,11 @@ class MemoryOperationImplementationNetworkContext(
         # TODO Check that this works
         if asdlfkjsdf:
             asdflkj
-        self.parent.operations[operation.name] = await self.parent._stack.enter_async_context(OperationImplementation.load(operation.name))
+        self.parent.operations[
+            operation.name
+        ] = await self.parent._stack.enter_async_context(
+            OperationImplementation.load(operation.name)
+        )
 
     async def run(
         self,

@@ -1,5 +1,6 @@
 import os
 import json
+import uuid
 import secrets
 import traceback
 from functools import wraps, partial
@@ -13,8 +14,8 @@ from aiohttp import web
 import aiohttp_cors
 
 from dffml.repo import Repo
-from dffml.df.types import DataFlow
 from dffml.base import MissingConfig
+from dffml.df.types import DataFlow, Input
 from dffml.source.source import BaseSource
 from dffml.df.memory import MemoryOrchestrator
 from dffml.util.entrypoint import EntrypointNotFound
@@ -101,9 +102,9 @@ class HTTPChannelConfig(NamedTuple):
     dataflow: DataFlow
 
     @classmethod
-    def _fromdict(cls, obj):
-        obj['dataflow'] = DataFlow._fromdict(obj['dataflow'])
-        return cls(**obj)
+    def _fromdict(cls, **kwargs):
+        kwargs["dataflow"] = DataFlow._fromdict(**kwargs["dataflow"])
+        return cls(**kwargs)
 
 
 class Routes:
@@ -115,43 +116,53 @@ class Routes:
         # TODO allow list of valid definitions to seed
         # TODO convert inputs into Input instances
         inputs = []
+        # Add all seed inputs
+        list(map(inputs.append, config.dataflow.seed))
+        # If data was sent add those inputs
         if request.method == "POST":
             # Accept a list of input data
-            for input_data in (await request.json()):
+            for input_data in await request.json():
                 # TODO validate that input data is list and each item has definition
                 # and value properties
-                if not input_data["definition"] in config.df.definitions:
-                    return web.json_response({"error": f"Missing definition for {input_data['definition']} in dataflow"}, status=HTTPStatus.NOT_FOUND)
+                if not input_data["definition"] in config.dataflow.definitions:
+                    return web.json_response(
+                        {
+                            "error": f"Missing definition for {input_data['definition']} in dataflow"
+                        },
+                        status=HTTPStatus.NOT_FOUND,
+                    )
                 inputs.append(
                     Input(
                         value=input_data["value"],
-                        definition=config.df.definitions[input_data["definition"]],
+                        definition=config.dataflow.definitions[
+                            input_data["definition"]
+                        ],
                     )
                 )
         # Run the operation in an orchestrator
         # TODO Create the orchestrator on startup of the HTTP API itself
-        async with MemoryOrchestrator.basic_config(
-            opimp.imp, GetSingle.imp
-        ) as orchestrator:
+        async with MemoryOrchestrator.basic_config() as orchestrator:
             async with orchestrator() as octx:
+                # Instantiate all operations
+                print(config.dataflow)
+                for (
+                    instance_name,
+                    operation,
+                ) in config.dataflow.operations.items():
+                    print(await octx.nctx.instantiable(operation))
+                # Add all the inputs
                 # TODO Assign a sha384 string as the random string context
-                await octx.ictx.sadd(
-                    str(uuid.uuid4()),
-                    Input(
-                        value=[
-                            definition.name
-                            for definition in opimp.op.outputs.values()
-                        ],
-                        definition=GetSingle.op.inputs["spec"],
-                    ),
-                    *inputs,
-                )
+                await octx.ictx.sadd(str(uuid.uuid4()), *inputs)
+                # Return the output
                 async for ctx, results in octx.run_operations():
+                    # TODO Format output according to the config
                     return web.json_response(results)
 
     async def multicomm_dataflow_asynchronous(self, config, request):
         # TODO allow list of valid definitions to seed
-        raise NotImplementedError("asynchronous data flows not yet implemented")
+        raise NotImplementedError(
+            "asynchronous data flows not yet implemented"
+        )
         if (
             headers.get("connection", "").lower() == "upgrade"
             and headers.get("upgrade", "").lower() == "websocket"
@@ -296,7 +307,7 @@ class Routes:
 
     @mcctx_route
     async def multicomm_register(self, request, mcctx):
-        config = mcctx.register_config()._fromdict(await request.json())
+        config = mcctx.register_config()._fromdict(**(await request.json()))
         self.logger.debug("Register new mutlicomm route: %r", config)
         await mcctx.register(config)
         return web.json_response(OK)

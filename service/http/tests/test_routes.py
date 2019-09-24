@@ -4,7 +4,7 @@ import asyncio
 import tempfile
 from http import HTTPStatus
 from unittest.mock import patch
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, ExitStack
 
 import aiohttp
 
@@ -149,6 +149,21 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
 
 
 class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls._exit_stack = ExitStack()
+        cls.exit_stack = cls._exit_stack.__enter__()
+        return
+        cls.exit_stack.enter_context(patch(
+
+        ))
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        cls._exit_stack.__exit__(None, None, None)
+
     async def test_register(self):
         url: str = "/some/url"
         message: str = "Hello World"
@@ -158,36 +173,59 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                 pass  # pramga: no cov
         # Register the data flow
         async with self.post(
-            f"/multicomm/self/register", json={
+            f"/multicomm/self/register",
+            json={
                 "path": url,
                 "asynchronous": False,
                 "dataflow": {
-                    "definitions": {
-                        "message": {
-                            "primitive": "string"
-                        }
-                    },
                     "operations": {
                         "say.hello": {
-                            "name": "say",
-                            "inputs": {},
+                            "name": "formatter",
+                            "inputs": {
+                                "data": {
+                                    "name": "format_data",
+                                    "primitive": "string",
+                                },
+                                "format": {
+                                    "name": "format_string",
+                                    "primitive": "string",
+                                },
+                            },
                             "outputs": {
-                                "string": "message"
-                            }
+                                "string": {
+                                    "name": "message",
+                                    "primitive": "string",
+                                }
+                            },
                         }
                     },
-                    "configs": {
-                        "say.hello": {
-                            "message": message
+                    # TODO use configs for format instead of seed
+                    "configs": {"say.hello": {"format": "Hello {}"}},
+                    "seed": [
+                        {
+                            "value": "World",
+                            "definition": {
+                                "name": "format_data",
+                                "primitive": "string",
+                            },
                         },
-                    }
+                        {
+                            "value": "Hello {}",
+                            "definition": {
+                                "name": "format_string",
+                                "primitive": "string",
+                            },
+                        },
+                    ],
                 },
-            }
+            },
         ) as r:
             self.assertEqual(await r.json(), OK)
         # Test the URL now does exist
         async with self.get(url) as response:
-            self.assertEqual(message, await response.text())
+            text = await response.text()
+            print(f"\n\n{text}\n")
+            self.assertEqual(message, text)
 
 
 class TestRoutesSource(TestRoutesRunning, AsyncTestCase):

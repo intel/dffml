@@ -33,6 +33,10 @@ class Definition(NamedTuple):
             del exported["lock"]
         return exported
 
+    @classmethod
+    def _fromdict(cls, **kwargs):
+        return cls(**kwargs)
+
 
 class Stage(Enum):
     PROCESSING = "processing"
@@ -41,28 +45,14 @@ class Stage(Enum):
 
 
 @base_entry_point("dffml.operation", "operation")
-class Operation(Entrypoint):
-    def __init__(
-        self,
-        name: str,
-        inputs: Dict[str, Definition],
-        outputs: Dict[str, Definition],
-        conditions: List[Definition],
-        stage: Stage = Stage.PROCESSING,
-        expand: Optional[List[str]] = None,
-    ):
-        super().__init__()
-        self.name = name
-        self.inputs = inputs
-        self.outputs = outputs
-        self.conditions = conditions
-        self.stage = stage
-        if expand is None:
-            expand = []
-        self.expand = expand
-
-    def __repr__(self):
-        return str(self.export())
+class Operation(NamedTuple, Entrypoint):
+    name: str
+    inputs: Dict[str, Definition]
+    outputs: Dict[str, Definition]
+    stage: Stage = Stage.PROCESSING
+    conditions: Optional[List[Definition]] = []
+    expand: Optional[List[str]] = []
+    instance_name: Optional[str] = None
 
     def export(self):
         exported = {
@@ -125,6 +115,15 @@ class Operation(Entrypoint):
             )
         return loading_classes
 
+    @classmethod
+    def _fromdict(cls, **kwargs):
+        for prop in ["inputs", "outputs"]:
+            kwargs[prop] = {
+                argument_name: Definition._fromdict(**definition)
+                for argument_name, definition in kwargs[prop].items()
+            }
+        return cls(**kwargs)
+
 
 class Output(NamedTuple):
     name: str
@@ -175,6 +174,11 @@ class Input(object):
     def __str__(self):
         return repr(self)
 
+    @classmethod
+    def _fromdict(cls, **kwargs):
+        kwargs["definition"] = Definition._fromdict(**kwargs["definition"])
+        return cls(**kwargs)
+
 
 class Parameter(NamedTuple):
     key: str
@@ -184,10 +188,30 @@ class Parameter(NamedTuple):
 
 
 class DataFlow(NamedTuple):
+    seed: List[Input]
     definitions: Dict[str, Definition]
     operations: Dict[str, Operation]
     configs: Dict[str, BaseConfig]
 
     @classmethod
-    def _fromdict(cls, obj):
-        return cls(**obj)
+    def _fromdict(cls, **kwargs):
+        # Import all operations
+        kwargs["operations"] = {
+            instance_name: Operation._fromdict(instance_name=instance_name, **operation)
+            for instance_name, operation in kwargs["operations"].items()
+        }
+        # Grab all definitions from operations
+        operations = list(kwargs["operations"].values())
+        definitions = list(set(itertools.chain(*[
+            itertools.chain(operation.inputs.values(), operation.outputs.values())
+            for operation in operations
+        ])))
+        definitions = {definition.name: definition
+                       for definition in definitions}
+        kwargs["definitions"] = definitions
+        # Import seed inputs
+        kwargs["seed"] = [
+            Input._fromdict(**input_data)
+            for input_data in kwargs["seed"]
+        ]
+        return cls(**kwargs)
