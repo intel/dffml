@@ -111,6 +111,7 @@ def op(imp_enter=None, ctx_enter=None, **kwargs):
             kwargs["conditions"] = []
 
         func.op = Operation(**kwargs)
+        cls_name = func.op.name.replace("_", " ").title().replace(" ", "")
 
         if inspect.isclass(func) and issubclass(
             func, OperationImplementationContext
@@ -123,7 +124,7 @@ def op(imp_enter=None, ctx_enter=None, **kwargs):
                 op = func.op
                 CONTEXT = func
 
-            func.imp = Implementation
+            func.imp = type(f"{cls_name}Implementation", (Implementation,), {})
             return func
         else:
 
@@ -148,9 +149,9 @@ def op(imp_enter=None, ctx_enter=None, **kwargs):
             ):
 
                 op = func.op
-                CONTEXT = ImplementationContext
+                CONTEXT = type(f"{cls_name}ImplementationContext", (ImplementationContext,), {})
 
-            func.imp = Implementation
+            func.imp = type(f"{cls_name}Implementation", (Implementation,), {})
             return func
 
     return wrap

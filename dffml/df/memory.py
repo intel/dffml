@@ -632,13 +632,10 @@ class MemoryOperationImplementationNetworkContext(
         Instantiate class registered with ____ entrypoint using pkg_resources.
         Return true if instantiation was successful.
         """
-        # TODO Check that this works
-        if asdlfkjsdf:
-            asdflkj
         self.parent.operations[
             operation.name
         ] = await self.parent._stack.enter_async_context(
-            OperationImplementation.load(operation.name)
+            OperationImplementation.load(operation.name)(config)
         )
 
     async def ensure_contains(self, operation: Operation):

@@ -14,7 +14,7 @@ from aiohttp import web
 import aiohttp_cors
 
 from dffml.repo import Repo
-from dffml.base import MissingConfig
+from dffml.base import BaseConfig, MissingConfig
 from dffml.df.types import DataFlow, Input
 from dffml.source.source import BaseSource
 from dffml.df.memory import MemoryOrchestrator
@@ -154,7 +154,12 @@ class Routes:
                         if not await octx.nctx.instantiable(operation):
                             raise OperationImplementationNotInstantiable(operation.name)
                         else:
-                            await octx.nctx.instantiate(operation)
+                            opimp_config = config.dataflow.configs.get(operation.instance_name, None)
+                            if opimp_config is None:
+                                self.logger.debug("Instantiating operation implementation %s(%s) with base config",
+                                        operation.instance_name, operation.name)
+                                opimp_config = BaseConfig()
+                            await octx.nctx.instantiate(operation, opimp_config)
                 # Add all the inputs
                 # TODO Assign a sha384 string as the random string context
                 await octx.ictx.sadd(str(uuid.uuid4()), *inputs)
