@@ -113,6 +113,28 @@ def op(imp_enter=None, ctx_enter=None, **kwargs):
         func.op = Operation(**kwargs)
         cls_name = func.op.name.replace("_", " ").title().replace(" ", "")
 
+        # Check if the function wants to use the orchestraction context or the
+        # operation implementation config
+        # We can't match on issubclass(param.annotation, BaseConfig) because
+        # something about NamedTuple makes that not work. So instead check if
+        # there is any argument named op_config.
+        sig = inspect.signature(func)
+        # If the function uses the config, then we want to expand the dict value
+        # of the config into the type given via the type hinting information
+        # provided by the function
+        uses_config = bool([name
+                            for name in sig.parameters.keys()
+                            if name == "op_config"])
+        if uses_config:
+            config_cls = [param.annotation
+                            for name, param in sig.parameters.items()
+                            if name == "op_config"]
+            if not config_cls:
+                # TODO Create a real exception class for this
+                raise Exception("op_config parameter of {} has not type hint. A type hint is required.")
+            else:
+                config_cls = config_cls[0]
+
         if inspect.isclass(func) and issubclass(
             func, OperationImplementationContext
         ):
@@ -134,6 +156,10 @@ def op(imp_enter=None, ctx_enter=None, **kwargs):
                 async def run(
                     self, inputs: Dict[str, Any]
                 ) -> Union[bool, Dict[str, Any]]:
+                    # Pass config and ochestration context if typing on
+                    # arguemnts matches
+                    if uses_config:
+                        inputs["op_config"] = self.parent.config
                     # If imp_enter or ctx_enter exist then bind the function to
                     # the ImplementationContext so that it has access to the
                     # context and it's parent
@@ -157,6 +183,16 @@ def op(imp_enter=None, ctx_enter=None, **kwargs):
                     (ImplementationContext,),
                     {},
                 )
+
+                def __init__(self, config):
+                    super().__init__(config)
+                    if uses_config:
+                        if getattr(config_cls, "_fromdict", None) is not None:
+                            # Use _fromdict method if it exists
+                            self.config = config_cls._fromdict(**self.config)
+                        elif isinstance(self.config, dict):
+                            # Otherwise expand if existing config is a dict
+                            self.config = config_cls(**self.config)
 
             func.imp = type(f"{cls_name}Implementation", (Implementation,), {})
             return func

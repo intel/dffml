@@ -901,6 +901,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         3. Seed input network context with given inputs
         4. Return outputs
         """
+        self.logger.debug("Running dataflow: %s", dataflow)
         if inputs is None:
             # Create a list if extra inputs were not given
             inputs = []

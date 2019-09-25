@@ -6,6 +6,7 @@ import tempfile
 from http import HTTPStatus
 from unittest.mock import patch
 from contextlib import asynccontextmanager, ExitStack
+from typing import NamedTuple
 
 import aiohttp
 
@@ -153,15 +154,18 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                 pass  # pramga: no cov
 
 
+class FormatterConfig(NamedTuple):
+    formatting: str
+
+
 @op(
     inputs={
         "data": Definition(name="format_data", primitive="string"),
-        "formatting": Definition(name="format_string", primitive="string"),
     },
     outputs={"string": Definition(name="message", primitive="string")},
 )
-def formatter(formatting: str, data: str):
-    return {"string": formatting.format(data)}
+def formatter(data: str, op_config: FormatterConfig):
+    return {"string": op_config.formatting.format(data)}
 
 
 class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
@@ -212,18 +216,11 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                         "hello_blank": formatter.op.export(),
                         "get_formatted_message": GetSingle.op.export(),
                     },
-                    # TODO use configs for format instead of seed
-                    "configs": {"say.hello": {"format": "Hello {}"}},
+                    "configs": {"hello_blank": {"formatting": "Hello {}"}},
                     "seed": [
                         {
                             "value": "World",
                             "definition": formatter.op.inputs["data"].export(),
-                        },
-                        {
-                            "value": "Hello {}",
-                            "definition": formatter.op.inputs[
-                                "formatting"
-                            ].export(),
                         },
                         {
                             "value": [formatter.op.outputs["string"].name],
@@ -265,13 +262,8 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                         "hello_blank": formatter.op,
                         "get_formatted_message": GetSingle.op,
                     },
-                    # TODO use configs for format instead of seed
-                    configs={"say.hello": {"format": "Hello {}"}},
+                    configs={"hello_blank": {"formatting": "Hello {}"}},
                     seed=[
-                        Input(
-                            value="Hello {}",
-                            definition=formatter.op.inputs["formatting"],
-                        ),
                         Input(
                             value=[formatter.op.outputs["string"].name],
                             definition=GetSingle.op.inputs["spec"],
