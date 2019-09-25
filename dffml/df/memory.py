@@ -264,14 +264,16 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         ...     )
         ... )
         """
+        ctx = StringInputSetContext(context_handle_string)
         await self.add(
             MemoryInputSet(
                 MemoryInputSetConfig(
-                    ctx=StringInputSetContext(context_handle_string),
+                    ctx=ctx,
                     inputs=list(args),
                 )
             )
         )
+        return ctx
 
     async def cadd(self, ctx, *args: Input):
         """
@@ -294,6 +296,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                 )
             )
         )
+        return ctx
 
     async def ctx(self) -> Tuple[bool, BaseInputSetContext]:
         async with self.parent.ctx_notification_set() as ctx:
@@ -984,7 +987,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
             await self.ictx.cadd(ctx, *inputs)
         else:
             # Otherwise create new context
-            await self.ictx.uadd(*inputs)
+            ctx = await self.ictx.uadd(*inputs)
         # Return the output
         async for ctx, result in self.run_operations():
             # TODO Add check that ctx returned is the ctx corresponding to uadd.

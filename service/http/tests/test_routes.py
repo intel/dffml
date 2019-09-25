@@ -200,7 +200,6 @@ async def remap(dataflow: DataFlow,
                 ctx: BaseInputSetContext,
                 octx: BaseOrchestratorContext):
     dataflow = DataFlow._fromdict(**dataflow)
-    print(ctx)
     results = await octx.run_dataflow(dataflow, ctx=ctx)
     # Remap the output operations to their feature (copied logic
     # from CLI)
