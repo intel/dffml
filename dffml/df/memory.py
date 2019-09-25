@@ -874,6 +874,20 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         self._stack = None
 
     async def __aenter__(self) -> "BaseOrchestratorContext":
+        # TODO(subflows) In all of these contexts we are about to enter, they
+        # all reach into their parents and store things in the parents memory
+        # (or similar). What should be done is to have them create their own
+        # storage space, so that each context is unique (which seems quite
+        # unsupprising now, not sure what I was thinking before). If an
+        # operation wants to initiate a subflow. It will need to call a method
+        # we have yet to write within the orchestrator context which will reach
+        # up to the parent of that orchestrator context and create a new
+        # orchestrator context, thus triggering this __aenter__ method for the
+        # new context. The only case where an operation will not want to reach
+        # up to the parent to get all new contexts, is when it's an output
+        # operation which desires to execute a subflow. If the output operation
+        # created new contexts, then there would be no inputs in them, so that
+        # would be pointless.
         self._stack = AsyncExitStack()
         self._stack = await aenter_stack(
             self,
