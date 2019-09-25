@@ -1,6 +1,6 @@
 import io
-import uuid
 import asyncio
+import secrets
 import hashlib
 import itertools
 from datetime import datetime
@@ -242,6 +242,14 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                 self.parent.ctxhd[handle_string].definitions[
                     item.definition
                 ].append(item)
+
+    async def uadd(self, *args: Input):
+        """
+        Shorthand for creating a MemoryInputSet with a StringInputSetContext
+        containing a random value for the string.
+        """
+        # TODO(security) Allow for tuning nbytes
+        return await self.sadd(secrets.token_hex(), *args)
 
     async def sadd(self, context_handle_string, *args: Input):
         """
@@ -930,9 +938,8 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                         operation, opimp_config
                     )
         # Add all the inputs
-        # TODO Assign a sha384 string as the random string context
-        self.logger.debug("Adding inputs: %s", inputs)
-        await self.ictx.sadd(str(uuid.uuid4()), *inputs)
+        self.logger.debug("Seeding dataflow with inputs: %s", inputs)
+        await self.ictx.uadd(*inputs)
         # Return the output
         async for ctx, result in self.run_operations():
             # Remap the output operations to their feature (copied logic
