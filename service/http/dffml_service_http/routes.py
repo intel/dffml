@@ -18,6 +18,7 @@ from dffml.base import BaseConfig, MissingConfig
 from dffml.df.types import DataFlow, Input
 from dffml.source.source import BaseSource
 from dffml.df.memory import MemoryOrchestrator
+from dffml.util.data import traverse_get
 from dffml.util.entrypoint import EntrypointNotFound
 from dffml.df.base import OperationImplementationNotInstantiable
 
@@ -115,18 +116,6 @@ class RemapFailure(Exception):
     """
 
 
-def traverse_get(target, *args):
-    """
-    Travel down through a dict
-    >>> traverse_get({"one": {"two": 3}}, ["one", "two"])
-    3
-    """
-    current = target
-    for level in args:
-        current = current[level]
-    return current
-
-
 class Routes:
     PRESENTATION_OPTIONS = ["json", "blob", "text"]
 
@@ -138,8 +127,6 @@ class Routes:
         # TODO allow list of valid definitions to seed
         # TODO convert inputs into Input instances
         inputs = []
-        # Add all seed inputs
-        list(map(inputs.append, config.dataflow.seed))
         # If data was sent add those inputs
         if request.method == "POST":
             # Accept a list of input data
@@ -168,65 +155,13 @@ class Routes:
         # TODO Create the orchestrator on startup of the HTTP API itself
         async with MemoryOrchestrator.basic_config() as orchestrator:
             async with orchestrator() as octx:
-                self.logger.debug(config.dataflow)
-                # Add operations to operations network context
-                await octx.octx.add(config.dataflow.operations.values())
-                # Instantiate all operations
-                for (
-                    instance_name,
-                    operation,
-                ) in config.dataflow.operations.items():
-                    # Add and instantiate operation implementation if not
-                    # present
-                    if not await octx.nctx.contains(operation):
-                        if not await octx.nctx.instantiable(operation):
-                            raise OperationImplementationNotInstantiable(
-                                operation.name
-                            )
-                        else:
-                            opimp_config = config.dataflow.configs.get(
-                                operation.instance_name, None
-                            )
-                            if opimp_config is None:
-                                self.logger.debug(
-                                    "Instantiating operation implementation %s(%s) with base config",
-                                    operation.instance_name,
-                                    operation.name,
-                                )
-                                opimp_config = BaseConfig()
-                            await octx.nctx.instantiate(
-                                operation, opimp_config
-                            )
-                # Add all the inputs
-                # TODO Assign a sha384 string as the random string context
-                self.logger.debug("Adding inputs: %s", inputs)
-                await octx.ictx.sadd(str(uuid.uuid4()), *inputs)
-                # Return the output
-                async for ctx, result in octx.run_operations():
-                    # Remap the output operations to their feature (copied logic
-                    # from CLI)
-                    remap = {}
-                    for (
-                        feature_name,
-                        traverse,
-                    ) in config.dataflow.remap.items():
-                        try:
-                            remap[feature_name] = traverse_get(
-                                result, *traverse
-                            )
-                        except KeyError:
-                            raise RemapFailure(
-                                "failed to remap %r. Results do not contain %r: %s"
-                                % (feature_name, ".".join(traverse), result)
-                            )
-                        # Results have been remaped
-                        result = remap
-                    if config.presentation == "blob":
-                        return web.Response(body=result)
-                    elif config.presentation == "text":
-                        return web.Response(text=result)
-                    else:
-                        return web.json_response(result)
+                result = await octx.run_dataflow(config.dataflow, inputs=inputs)
+                if config.presentation == "blob":
+                    return web.Response(body=result)
+                elif config.presentation == "text":
+                    return web.Response(text=result)
+                else:
+                    return web.json_response(result)
 
     async def multicomm_dataflow_asynchronous(self, config, request):
         # TODO allow list of valid definitions to seed

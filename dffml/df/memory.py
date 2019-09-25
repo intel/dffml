@@ -1,4 +1,5 @@
 import io
+import uuid
 import asyncio
 import hashlib
 import itertools
@@ -18,7 +19,7 @@ from typing import (
 )
 
 from .exceptions import ContextNotPresent, DefinitionNotInContext
-from .types import Input, Parameter, Definition, Operation, Stage
+from .types import Input, Parameter, Definition, Operation, Stage, DataFlow
 from .base import (
     OperationImplementation,
     BaseConfig,
@@ -51,7 +52,7 @@ from .base import (
 from ..util.entrypoint import entry_point, EntrypointNotFound
 from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
-from ..util.data import ignore_args
+from ..util.data import ignore_args, traverse_get
 from ..util.asynchelper import context_stacker, aenter_stack
 
 from .log import LOGGER
@@ -880,6 +881,78 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self._stack.aclose()
+
+    async def run_dataflow(self, dataflow: DataFlow,
+            *, inputs: Optional[List[Input]] = None):
+        """
+        Run a DataFlow by preforming the following steps.
+
+        1. Add operations the operation network context
+        2. Instantiate operation implementations which are not instantiated
+           within the operation implementation network context
+        3. Seed input network context with given inputs
+        4. Return outputs
+        """
+        if inputs is None:
+            # Create a list if extra inputs were not given
+            inputs = []
+        else:
+            # Do not modify the callers list if extra inputs were given
+            inputs = inputs.copy()
+        # Add seed values to inputs
+        list(map(inputs.append, dataflow.seed))
+        # Add operations to operations network context
+        await self.octx.add(dataflow.operations.values())
+        # Instantiate all operations
+        for (
+            instance_name,
+            operation,
+        ) in dataflow.operations.items():
+            # Add and instantiate operation implementation if not
+            # present
+            if not await self.nctx.contains(operation):
+                if not await self.nctx.instantiable(operation):
+                    raise OperationImplementationNotInstantiable(
+                        operation.name
+                    )
+                else:
+                    opimp_config = dataflow.configs.get(
+                        operation.instance_name, None
+                    )
+                    if opimp_config is None:
+                        self.logger.debug(
+                            "Instantiating operation implementation %s(%s) with base config",
+                            operation.instance_name,
+                            operation.name,
+                        )
+                        opimp_config = BaseConfig()
+                    await self.nctx.instantiate(
+                        operation, opimp_config
+                    )
+        # Add all the inputs
+        # TODO Assign a sha384 string as the random string context
+        self.logger.debug("Adding inputs: %s", inputs)
+        await self.ictx.sadd(str(uuid.uuid4()), *inputs)
+        # Return the output
+        async for ctx, result in self.run_operations():
+            # Remap the output operations to their feature (copied logic
+            # from CLI)
+            remap = {}
+            for (
+                feature_name,
+                traverse,
+            ) in dataflow.remap.items():
+                try:
+                    remap[feature_name] = traverse_get(
+                        result, *traverse
+                    )
+                except KeyError:
+                    raise RemapFailure(
+                        "failed to remap %r. Results do not contain %r: %s"
+                        % (feature_name, ".".join(traverse), result)
+                    )
+                # Results have been remapped
+                return remap
 
     async def run_operations(
         self, strict: bool = True

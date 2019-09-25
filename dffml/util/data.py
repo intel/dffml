@@ -43,6 +43,18 @@ def traverse_config_get(target, *args):
     return last["arg"]
 
 
+def traverse_get(target, *args):
+    """
+    Travel down through a dict
+    >>> traverse_get({"one": {"two": 3}}, ["one", "two"])
+    3
+    """
+    current = target
+    for level in args:
+        current = current[level]
+    return current
+
+
 def ignore_args(func):
     """
     Decorator to call the decorated function without any arguments passed to it.
