@@ -99,6 +99,7 @@ def sctx_route(handler):
 
 class HTTPChannelConfig(NamedTuple):
     path: str
+    presentation: str
     asynchronous: bool
     dataflow: DataFlow
 
@@ -127,6 +128,8 @@ def traverse_get(target, *args):
 
 
 class Routes:
+    PRESENTATION_OPTIONS = ["json", "blob", "text"]
+
     async def get_registered_handler(self, request):
         return self.app["multicomm_routes"].get(request.path, None)
 
@@ -165,7 +168,7 @@ class Routes:
         # TODO Create the orchestrator on startup of the HTTP API itself
         async with MemoryOrchestrator.basic_config() as orchestrator:
             async with orchestrator() as octx:
-                print(config.dataflow)
+                self.logger.debug(config.dataflow)
                 # Add operations to operations network context
                 await octx.octx.add(config.dataflow.operations.values())
                 # Instantiate all operations
@@ -199,7 +202,7 @@ class Routes:
                 self.logger.debug("Adding inputs: %s", inputs)
                 await octx.ictx.sadd(str(uuid.uuid4()), *inputs)
                 # Return the output
-                async for ctx, results in octx.run_operations():
+                async for ctx, result in octx.run_operations():
                     # Remap the output operations to their feature (copied logic
                     # from CLI)
                     remap = {}
@@ -209,17 +212,21 @@ class Routes:
                     ) in config.dataflow.remap.items():
                         try:
                             remap[feature_name] = traverse_get(
-                                results, *traverse
+                                result, *traverse
                             )
                         except KeyError:
                             raise RemapFailure(
                                 "failed to remap %r. Results do not contain %r: %s"
-                                % (feature_name, ".".join(traverse), results)
+                                % (feature_name, ".".join(traverse), result)
                             )
                         # Results have been remaped
-                        results = remap
-                    # TODO Format output according to the config
-                    return web.json_response(results)
+                        result = remap
+                    if config.presentation == "blob":
+                        return web.Response(body=result)
+                    elif config.presentation == "text":
+                        return web.Response(text=result)
+                    else:
+                        return web.json_response(result)
 
     async def multicomm_dataflow_asynchronous(self, config, request):
         # TODO allow list of valid definitions to seed
@@ -371,6 +378,11 @@ class Routes:
     @mcctx_route
     async def multicomm_register(self, request, mcctx):
         config = mcctx.register_config()._fromdict(**(await request.json()))
+        if config.presentation not in self.PRESENTATION_OPTIONS:
+            return web.json_response(
+                {"error": f"{config.presentation!r} is not a valid presentation option: {self.PRESENTATION_OPTIONS!r}"},
+                status=HTTPStatus.BAD_REQUEST,
+            )
         self.logger.debug("Register new mutlicomm route: %r", config)
         await mcctx.register(config)
         return web.json_response(OK)
