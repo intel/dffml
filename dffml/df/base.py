@@ -63,11 +63,11 @@ class OperationImplementationContext(BaseDataFlowObjectContext):
         self,
         parent: "OperationImplementation",
         ctx: "BaseInputSetContext",
-        ictx: "BaseInputNetworkContext",
+        octx: "BaseOrchestratorContext",
     ) -> None:
         self.parent = parent
         self.ctx = ctx
-        self.ictx = ictx
+        self.octx = octx
 
     @abc.abstractmethod
     async def run(self, inputs: Dict[str, Any]) -> Union[bool, Dict[str, Any]]:
@@ -89,9 +89,9 @@ class OperationImplementation(BaseDataFlowObject):
             )
 
     def __call__(
-        self, ctx: "BaseInputSetContext", ictx: "BaseInputNetworkContext"
+        self, ctx: "BaseInputSetContext", octx: "BaseOrchestratorContext"
     ) -> OperationImplementationContext:
-        return self.CONTEXT(self, ctx, ictx)
+        return self.CONTEXT(self, ctx, octx)
 
     @classmethod
     def add_orig_label(cls, *above):
@@ -134,6 +134,20 @@ def op(imp_enter=None, ctx_enter=None, **kwargs):
                 raise Exception("op_config parameter of {} has not type hint. A type hint is required.")
             else:
                 config_cls = config_cls[0]
+        # Check if the function uses the orchestrator context
+        uses_octx = [name
+                     for name, param in sig.parameters.items()
+                     if param.annotation is BaseOrchestratorContext]
+        if uses_octx:
+            # Grab the name of the parameter that uses the orchestrator context
+            uses_octx = uses_octx[0]
+        # Check if the function uses the inputset context
+        uses_ctx = [name
+                     for name, param in sig.parameters.items()
+                     if param.annotation is BaseInputSetContext]
+        if uses_ctx:
+            # Grab the name of the parameter that uses the inputset context
+            uses_ctx = uses_ctx[0]
 
         if inspect.isclass(func) and issubclass(
             func, OperationImplementationContext
@@ -160,6 +174,10 @@ def op(imp_enter=None, ctx_enter=None, **kwargs):
                     # arguemnts matches
                     if uses_config:
                         inputs["op_config"] = self.parent.config
+                    if uses_octx:
+                        inputs[uses_octx] = self.octx
+                    if uses_ctx:
+                        inputs[uses_ctx] = self.ctx
                     # If imp_enter or ctx_enter exist then bind the function to
                     # the ImplementationContext so that it has access to the
                     # context and it's parent

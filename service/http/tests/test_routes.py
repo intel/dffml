@@ -12,7 +12,7 @@ from typing import NamedTuple, Dict, List
 import aiohttp
 
 from dffml.repo import Repo
-from dffml.df.base import op, BaseOrchestratorContext
+from dffml.df.base import op, BaseInputSetContext, BaseOrchestratorContext
 from dffml.df.types import Definition, Input, DataFlow, Stage
 from dffml.operation.output import GetSingle
 from dffml.util.entrypoint import EntrypointNotFound
@@ -195,9 +195,13 @@ class RemapFailure(Exception):
     outputs={"response": Definition(name="message", primitive="string")},
     stage=Stage.OUTPUT,
 )
-def remap(dataflow: DataFlow, spec: Dict[str, List[str]], octx: BaseOrchestratorContext):
+async def remap(dataflow: DataFlow,
+                spec: Dict[str, List[str]],
+                ctx: BaseInputSetContext,
+                octx: BaseOrchestratorContext):
     dataflow = DataFlow._fromdict(**dataflow)
-    print(dataflow)
+    print(ctx)
+    results = await octx.run_dataflow(dataflow, ctx=ctx)
     # Remap the output operations to their feature (copied logic
     # from CLI)
     remap = {}

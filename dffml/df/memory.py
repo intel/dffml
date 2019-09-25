@@ -273,6 +273,28 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
             )
         )
 
+    async def cadd(self, ctx, *args: Input):
+        """
+        Shorthand for creating a MemoryInputSet with an existing context.
+
+        >>> await octx.ictx.add(
+        ...     MemoryInputSet(
+        ...         MemoryInputSetConfig(
+        ...             ctx=ctx,
+        ...             inputs=list(args),
+        ...         )
+        ...     )
+        ... )
+        """
+        await self.add(
+            MemoryInputSet(
+                MemoryInputSetConfig(
+                    ctx=ctx,
+                    inputs=list(args),
+                )
+            )
+        )
+
     async def ctx(self) -> Tuple[bool, BaseInputSetContext]:
         async with self.parent.ctx_notification_set() as ctx:
             return await ctx.added()
@@ -904,8 +926,11 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self._stack.aclose()
 
-    async def run_dataflow(self, dataflow: DataFlow,
-            *, inputs: Optional[List[Input]] = None):
+    async def run_dataflow(self,
+                           dataflow: DataFlow,
+                           *,
+                           ctx: Optional[BaseInputSetContext] = None,
+                           inputs: Optional[List[Input]] = None):
         """
         Run a DataFlow by preforming the following steps.
 
@@ -954,7 +979,12 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                     )
         # Add all the inputs
         self.logger.debug("Seeding dataflow with inputs: %s", inputs)
-        await self.ictx.uadd(*inputs)
+        if ctx is not None:
+            # Add under existing context if given
+            await self.ictx.cadd(ctx, *inputs)
+        else:
+            # Otherwise create new context
+            await self.ictx.uadd(*inputs)
         # Return the output
         async for ctx, result in self.run_operations():
             # TODO Add check that ctx returned is the ctx corresponding to uadd.
@@ -1142,7 +1172,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
             await self.rctx.add(operation, parameter_set)
             # Run the operation, input set pair
             yield operation, await self.nctx.run(
-                ctx, self.ictx, operation, await parameter_set._asdict()
+                ctx, self, operation, await parameter_set._asdict()
             )
 
 

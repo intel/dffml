@@ -56,12 +56,12 @@ class GroupBy(OperationImplementationContext):
         # Convert group_by_spec into a dict with values being of the NamedTuple
         # type GroupBySpec
         outputs = {
-            key: await GroupBySpec.resolve(self.ctx, self.ictx, value)
+            key: await GroupBySpec.resolve(self.ctx, self.octx.ictx, value)
             for key, value in inputs["spec"].items()
         }
         self.logger.debug("output spec: %s", outputs)
         # Acquire all definitions within the context
-        async with self.ictx.definitions(self.ctx) as od:
+        async with self.octx.ictx.definitions(self.ctx) as od:
             # Output dict
             want = {}
             # Group each requested output
@@ -125,12 +125,12 @@ class GetSingle(OperationImplementationContext):
         exported = copy.deepcopy(inputs["spec"])
         # Look up the definiton for each
         for convert in range(0, len(exported)):
-            exported[convert] = await self.ictx.definition(
+            exported[convert] = await self.octx.ictx.definition(
                 self.ctx, exported[convert]
             )
         self.logger.debug("output spec: %s", exported)
         # Acquire all definitions within the context
-        async with self.ictx.definitions(self.ctx) as od:
+        async with self.octx.ictx.definitions(self.ctx) as od:
             # Output dict
             want = {}
             # Group each requested output
@@ -162,7 +162,7 @@ class Associate(OperationImplementationContext):
         # Look up the definiton for each
         try:
             for convert in range(0, len(exported)):
-                exported[convert] = await self.ictx.definition(
+                exported[convert] = await self.octx.ictx.definition(
                     self.ctx, exported[convert]
                 )
         except DefinitionNotInContext:
@@ -170,7 +170,7 @@ class Associate(OperationImplementationContext):
         # Make exported into key, value which it will be in output
         key, value = exported
         # Acquire all definitions within the context
-        async with self.ictx.definitions(self.ctx) as od:
+        async with self.octx.ictx.definitions(self.ctx) as od:
             # Output dict
             want = {}
             async for item in od.inputs(value):
