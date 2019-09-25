@@ -11,7 +11,7 @@ import aiohttp
 
 from dffml.repo import Repo
 from dffml.df.base import op
-from dffml.df.types import Definition
+from dffml.df.types import Definition, Input, DataFlow
 from dffml.operation.output import GetSingle
 from dffml.util.entrypoint import EntrypointNotFound
 from dffml.source.memory import MemorySource, MemorySourceConfig
@@ -260,32 +260,30 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                 "path": url,
                 "presentation": "json",
                 "asynchronous": False,
-                "dataflow": {
-                    "operations": {
-                        "hello_blank": formatter.op.export(),
-                        "get_formatted_message": GetSingle.op.export(),
+                "dataflow": DataFlow(
+                    operations={
+                        "hello_blank": formatter.op,
+                        "get_formatted_message": GetSingle.op,
                     },
                     # TODO use configs for format instead of seed
-                    "configs": {"say.hello": {"format": "Hello {}"}},
-                    "seed": [
-                        {
-                            "value": "Hello {}",
-                            "definition": formatter.op.inputs[
-                                "formatting"
-                            ].export(),
-                        },
-                        {
-                            "value": [formatter.op.outputs["string"].name],
-                            "definition": GetSingle.op.inputs["spec"].export(),
-                        },
+                    configs={"say.hello": {"format": "Hello {}"}},
+                    seed=[
+                        Input(
+                            value="Hello {}",
+                            definition=formatter.op.inputs["formatting"],
+                        ),
+                        Input(
+                            value=[formatter.op.outputs["string"].name],
+                            definition=GetSingle.op.inputs["spec"],
+                        ),
                     ],
-                    "remap": {
+                    remap={
                         "response": [
                             GetSingle.op.name,
                             formatter.op.outputs["string"].name,
                         ]
                     },
-                },
+                ).export(),
             },
         ) as r:
             self.assertEqual(await r.json(), OK)

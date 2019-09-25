@@ -3,6 +3,7 @@ import itertools
 import pkg_resources
 from enum import Enum
 from types import SimpleNamespace
+from dataclasses import dataclass, field
 from typing import NamedTuple, Union, List, Dict, Optional, Any, Iterator
 
 from ..base import BaseConfig
@@ -178,6 +179,12 @@ class Input(object):
     def __str__(self):
         return repr(self)
 
+    def export(self):
+        return dict(
+            value=self.value,
+            definition=self.definition.export(),
+            )
+
     @classmethod
     def _fromdict(cls, **kwargs):
         kwargs["definition"] = Definition._fromdict(**kwargs["definition"])
@@ -191,24 +198,17 @@ class Parameter(NamedTuple):
     definition: Definition
 
 
-class DataFlow(NamedTuple):
-    seed: List[Input]
-    definitions: Dict[str, Definition]
+@dataclass
+class DataFlow:
     operations: Dict[str, Operation]
     configs: Dict[str, BaseConfig]
+    seed: List[Input]
     remap: Dict[str, List[str]]
+    definitions: Dict[str, Definition] = field(init=False)
 
-    @classmethod
-    def _fromdict(cls, **kwargs):
-        # Import all operations
-        kwargs["operations"] = {
-            instance_name: Operation._fromdict(
-                instance_name=instance_name, **operation
-            )
-            for instance_name, operation in kwargs["operations"].items()
-        }
+    def __post_init__(self):
         # Grab all definitions from operations
-        operations = list(kwargs["operations"].values())
+        operations = list(self.operations.values())
         definitions = list(
             set(
                 itertools.chain(
@@ -225,7 +225,30 @@ class DataFlow(NamedTuple):
         definitions = {
             definition.name: definition for definition in definitions
         }
-        kwargs["definitions"] = definitions
+        self.definitions = definitions
+
+    def export(self):
+        return dict(
+            operations={
+                instance_name: operation.export()
+                for instance_name, operation in self.operations.items()
+            },
+            seed=[
+                input_data.export() for input_data in self.seed
+            ],
+            configs=self.configs.copy(),
+            remap=self.remap.copy(),
+        )
+
+    @classmethod
+    def _fromdict(cls, **kwargs):
+        # Import all operations
+        kwargs["operations"] = {
+            instance_name: Operation._fromdict(
+                instance_name=instance_name, **operation
+            )
+            for instance_name, operation in kwargs["operations"].items()
+        }
         # Import seed inputs
         kwargs["seed"] = [
             Input._fromdict(**input_data) for input_data in kwargs["seed"]
