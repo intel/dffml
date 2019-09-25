@@ -1,7 +1,7 @@
 import sys
 
-from dffml.df.types import Input
-from dffml.df.base import operation_in, opimp_in, Operation
+from dffml.df.types import Input, Operation, DataFlow
+from dffml.df.base import operation_in, opimp_in
 from dffml.df.memory import MemoryOrchestrator
 from dffml.operation.output import GetSingle
 from dffml.util.cli.cmd import CMD
@@ -17,6 +17,17 @@ from shouldi.safety import safety_check
 # sys.modules[__name__] is a list of everything we've imported in this file.
 # opimp_in returns a subset of that list, any OperationImplementations
 OPIMPS = opimp_in(sys.modules[__name__])
+
+DATAFLOW = DataFlow(
+    operations={
+        "bandit": run_bandit.op,
+        "pkg.version": pypi_latest_package_version.op,
+        "pkg.json": pypi_package_json.op,
+        "pkg.url": pypi_package_url.op,
+        "pkg.contents": pypi_package_contents.op,
+        "safety": safety_check.op,
+    },
+)
 
 
 class Install(CMD):

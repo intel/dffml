@@ -227,6 +227,41 @@ class Entrypoints(CMD):
     _list = ListEntrypoints
 
 
+import json
+from pathlib import Path
+
+from ..df.types import DataFlow
+
+class Diagram(CMD):
+
+    arg_dataflow = Arg(
+        "dataflow", help="Data flow file"
+    )
+
+    async def run(self):
+        dataflow = DataFlow._fromdict(**json.loads(Path(self.dataflow).read_text()))
+        print(dataflow)
+
+
+class Export(CMD):
+
+    arg_export = Arg(
+        "export", help="Python path to object to export"
+    )
+
+    async def run(self):
+        # Push current directory into front of path so we can run things
+        # relative to where we are in the shell
+        sys.path.insert(0, os.getcwd())
+        # Lookup
+        modname, qualname_separator, qualname = self.export.partition(":")
+        obj = importlib.import_module(modname)
+        if qualname_separator:
+            for attr in qualname.split("."):
+                obj = getattr(obj, attr)
+                self.logger.debug("Loaded object: %s(%s)", attr, obj)
+                return obj.export()
+
 class Develop(CMD):
     """
     Development utilities for hacking on DFFML itself
@@ -235,4 +270,6 @@ class Develop(CMD):
     create = Create
     skel = Skeleton
     run = Run
+    diagram = Diagram
+    export = Export
     entrypoints = Entrypoints
