@@ -143,7 +143,10 @@ class Routes:
             for input_data in await request.json():
                 # TODO validate that input data is list and each item has definition
                 # and value properties
-                if not input_data["definition"]["name"] in config.dataflow.definitions:
+                if (
+                    not input_data["definition"]["name"]
+                    in config.dataflow.definitions
+                ):
                     return web.json_response(
                         {
                             "error": f"Missing definition for {input_data['definition']['name']} in dataflow"

@@ -288,11 +288,13 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
         ) as r:
             self.assertEqual(await r.json(), OK)
         # Test the URL now does exist (and send data for formatting)
-        async with self.post(url, json=[
+        async with self.post(
+            url,
+            json=[
                 {
                     "value": "Feedface",
                     "definition": formatter.op.inputs["data"].export(),
-                },
+                }
             ],
         ) as response:
             self.assertEqual(
