@@ -655,7 +655,7 @@ class MemoryOperationImplementationNetworkContext(
     async def run(
         self,
         ctx: BaseInputSetContext,
-        ictx: BaseInputNetworkContext,
+        octx: BaseOrchestratorContext,
         operation: Operation,
         inputs: Dict[str, Any],
     ) -> Union[bool, Dict[str, Any]]:
@@ -665,7 +665,7 @@ class MemoryOperationImplementationNetworkContext(
         # Check that our network contains the operation
         await self.ensure_contains(operation)
         # Create an opimp context and run the opertion
-        async with self.parent.operations[operation.name](ctx, ictx) as opctx:
+        async with self.parent.operations[operation.name](ctx, octx) as opctx:
             self.logger.debug("---")
             self.logger.debug(
                 "Stage: %s: %s", operation.stage.value.upper(), operation.name
@@ -694,8 +694,7 @@ class MemoryOperationImplementationNetworkContext(
 
     async def run_dispatch(
         self,
-        ictx: BaseInputNetworkContext,
-        lctx: BaseLockNetworkContext,
+        octx: BaseOrchestratorContext,
         operation: Operation,
         parameter_set: BaseParameterSet,
     ):
@@ -705,11 +704,11 @@ class MemoryOperationImplementationNetworkContext(
         """
         # Ensure that we can run the operation
         # Lock all inputs which cannot be used simultaneously
-        async with lctx.acquire(parameter_set):
+        async with octx.lctx.acquire(parameter_set):
             # Run the operation
             outputs = await self.run(
                 parameter_set.ctx,
-                ictx,
+                octx,
                 operation,
                 await parameter_set._asdict(),
             )
@@ -744,7 +743,7 @@ class MemoryOperationImplementationNetworkContext(
                 )
             ) from error
         # Add the input set made from the outputs to the input set network
-        await ictx.add(
+        await octx.ictx.add(
             MemoryInputSet(
                 MemoryInputSetConfig(ctx=parameter_set.ctx, inputs=inputs)
             )
@@ -753,8 +752,7 @@ class MemoryOperationImplementationNetworkContext(
 
     async def dispatch(
         self,
-        ictx: BaseInputNetworkContext,
-        lctx: BaseLockNetworkContext,
+        octx: BaseOrchestratorContext,
         operation: Operation,
         parameter_set: BaseParameterSet,
     ):
@@ -763,7 +761,7 @@ class MemoryOperationImplementationNetworkContext(
         """
         self.logger.debug("[DISPATCH] %s", operation.name)
         task = asyncio.create_task(
-            self.run_dispatch(ictx, lctx, operation, parameter_set)
+            self.run_dispatch(octx, operation, parameter_set)
         )
         task.add_done_callback(ignore_args(self.parent.completed_event.set))
         return task
@@ -1016,8 +1014,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                                 await self.rctx.add(operation, parameter_set)
                                 # Dispatch the operation and input set for running
                                 dispatch_operation = await self.nctx.dispatch(
-                                    self.ictx,
-                                    self.lctx,
+                                    self,
                                     operation,
                                     parameter_set,
                                 )
