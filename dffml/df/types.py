@@ -180,10 +180,7 @@ class Input(object):
         return repr(self)
 
     def export(self):
-        return dict(
-            value=self.value,
-            definition=self.definition.export(),
-            )
+        return dict(value=self.value, definition=self.definition.export())
 
     @classmethod
     def _fromdict(cls, **kwargs):
@@ -238,9 +235,7 @@ class DataFlow:
                 instance_name: operation.export()
                 for instance_name, operation in self.operations.items()
             },
-            seed=[
-                input_data.export() for input_data in self.seed
-            ],
+            seed=[input_data.export() for input_data in self.seed],
             configs=self.configs.copy(),
         )
 

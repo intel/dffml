@@ -266,12 +266,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         """
         ctx = StringInputSetContext(context_handle_string)
         await self.add(
-            MemoryInputSet(
-                MemoryInputSetConfig(
-                    ctx=ctx,
-                    inputs=list(args),
-                )
-            )
+            MemoryInputSet(MemoryInputSetConfig(ctx=ctx, inputs=list(args)))
         )
         return ctx
 
@@ -289,12 +284,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         ... )
         """
         await self.add(
-            MemoryInputSet(
-                MemoryInputSetConfig(
-                    ctx=ctx,
-                    inputs=list(args),
-                )
-            )
+            MemoryInputSet(MemoryInputSetConfig(ctx=ctx, inputs=list(args)))
         )
         return ctx
 
@@ -929,11 +919,13 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self._stack.aclose()
 
-    async def run_dataflow(self,
-                           dataflow: DataFlow,
-                           *,
-                           ctx: Optional[BaseInputSetContext] = None,
-                           inputs: Optional[List[Input]] = None):
+    async def run_dataflow(
+        self,
+        dataflow: DataFlow,
+        *,
+        ctx: Optional[BaseInputSetContext] = None,
+        inputs: Optional[List[Input]] = None,
+    ):
         """
         Run a DataFlow by preforming the following steps.
 
@@ -955,10 +947,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # Add operations to operations network context
         await self.octx.add(dataflow.operations.values())
         # Instantiate all operations
-        for (
-            instance_name,
-            operation,
-        ) in dataflow.operations.items():
+        for (instance_name, operation) in dataflow.operations.items():
             # Add and instantiate operation implementation if not
             # present
             if not await self.nctx.contains(operation):
@@ -977,9 +966,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                             operation.name,
                         )
                         opimp_config = BaseConfig()
-                    await self.nctx.instantiate(
-                        operation, opimp_config
-                    )
+                    await self.nctx.instantiate(operation, opimp_config)
         # Add all the inputs
         self.logger.debug("Seeding dataflow with inputs: %s", inputs)
         if ctx is not None:
@@ -1127,9 +1114,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                                 await self.rctx.add(operation, parameter_set)
                                 # Dispatch the operation and input set for running
                                 dispatch_operation = await self.nctx.dispatch(
-                                    self,
-                                    operation,
-                                    parameter_set,
+                                    self, operation, parameter_set
                                 )
                                 tasks.add(dispatch_operation)
                                 self.logger.debug(

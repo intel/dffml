@@ -148,7 +148,9 @@ class Routes:
         # TODO Create the orchestrator on startup of the HTTP API itself
         async with MemoryOrchestrator.basic_config() as orchestrator:
             async with orchestrator() as octx:
-                result = await octx.run_dataflow(config.dataflow, inputs=inputs)
+                result = await octx.run_dataflow(
+                    config.dataflow, inputs=inputs
+                )
                 if config.presentation == "blob":
                     return web.Response(body=result)
                 elif config.presentation == "text":
@@ -308,7 +310,9 @@ class Routes:
         config = mcctx.register_config()._fromdict(**(await request.json()))
         if config.presentation not in self.PRESENTATION_OPTIONS:
             return web.json_response(
-                {"error": f"{config.presentation!r} is not a valid presentation option: {self.PRESENTATION_OPTIONS!r}"},
+                {
+                    "error": f"{config.presentation!r} is not a valid presentation option: {self.PRESENTATION_OPTIONS!r}"
+                },
                 status=HTTPStatus.BAD_REQUEST,
             )
         self.logger.debug("Register new mutlicomm route: %r", config)

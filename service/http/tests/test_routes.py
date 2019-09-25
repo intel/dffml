@@ -161,9 +161,7 @@ class FormatterConfig(NamedTuple):
 
 
 @op(
-    inputs={
-        "data": Definition(name="format_data", primitive="string"),
-    },
+    inputs={"data": Definition(name="format_data", primitive="string")},
     outputs={"string": Definition(name="message", primitive="string")},
 )
 def formatter(data: str, op_config: FormatterConfig):
@@ -180,10 +178,12 @@ class RemapConfig(NamedTuple):
         kwargs["dataflow"] = DataFlow._fromdict(**kwargs["dataflow"])
         return cls(**kwargs)
 
+
 class RemapFailure(Exception):
     """
     Raised whem results of a dataflow could not be remapped.
     """
+
 
 # TODO Make it so that only one output operation gets run, the result of that
 # operation is the result of the dataflow
@@ -195,23 +195,20 @@ class RemapFailure(Exception):
     outputs={"response": Definition(name="message", primitive="string")},
     stage=Stage.OUTPUT,
 )
-async def remap(dataflow: DataFlow,
-                spec: Dict[str, List[str]],
-                ctx: BaseInputSetContext,
-                octx: BaseOrchestratorContext):
+async def remap(
+    dataflow: DataFlow,
+    spec: Dict[str, List[str]],
+    ctx: BaseInputSetContext,
+    octx: BaseOrchestratorContext,
+):
     dataflow = DataFlow._fromdict(**dataflow)
     results = await octx.run_dataflow(dataflow, ctx=ctx)
     # Remap the output operations to their feature (copied logic
     # from CLI)
     remap = {}
-    for (
-        feature_name,
-        traverse,
-    ) in spec.items():
+    for (feature_name, traverse) in spec.items():
         try:
-            remap[feature_name] = traverse_get(
-                result, *traverse
-            )
+            remap[feature_name] = traverse_get(result, *traverse)
         except KeyError:
             raise RemapFailure(
                 "failed to remap %r. Results do not contain %r: %s"
@@ -280,13 +277,15 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                         Input(
                             value=DataFlow(
                                 operations={
-                                    "get_formatted_message": GetSingle.op,
+                                    "get_formatted_message": GetSingle.op
                                 },
                                 seed=[
                                     Input(
-                                        value=[formatter.op.outputs["string"].name],
+                                        value=[
+                                            formatter.op.outputs["string"].name
+                                        ],
                                         definition=GetSingle.op.inputs["spec"],
-                                    ),
+                                    )
                                 ],
                             ).export(),
                             definition=remap.op.inputs["dataflow"],
@@ -296,7 +295,7 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                                 "response": [
                                     GetSingle.op.name,
                                     formatter.op.outputs["string"].name,
-                                ],
+                                ]
                             },
                             definition=remap.op.inputs["spec"],
                         ),
@@ -336,7 +335,7 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                         Input(
                             value=[formatter.op.outputs["string"].name],
                             definition=GetSingle.op.inputs["spec"],
-                        ),
+                        )
                     ],
                     remap={
                         "response": [

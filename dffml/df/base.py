@@ -122,29 +122,37 @@ def op(imp_enter=None, ctx_enter=None, **kwargs):
         # If the function uses the config, then we want to expand the dict value
         # of the config into the type given via the type hinting information
         # provided by the function
-        uses_config = bool([name
-                            for name in sig.parameters.keys()
-                            if name == "op_config"])
+        uses_config = bool(
+            [name for name in sig.parameters.keys() if name == "op_config"]
+        )
         if uses_config:
-            config_cls = [param.annotation
-                            for name, param in sig.parameters.items()
-                            if name == "op_config"]
+            config_cls = [
+                param.annotation
+                for name, param in sig.parameters.items()
+                if name == "op_config"
+            ]
             if not config_cls:
                 # TODO Create a real exception class for this
-                raise Exception("op_config parameter of {} has not type hint. A type hint is required.")
+                raise Exception(
+                    "op_config parameter of {} has not type hint. A type hint is required."
+                )
             else:
                 config_cls = config_cls[0]
         # Check if the function uses the orchestrator context
-        uses_octx = [name
-                     for name, param in sig.parameters.items()
-                     if param.annotation is BaseOrchestratorContext]
+        uses_octx = [
+            name
+            for name, param in sig.parameters.items()
+            if param.annotation is BaseOrchestratorContext
+        ]
         if uses_octx:
             # Grab the name of the parameter that uses the orchestrator context
             uses_octx = uses_octx[0]
         # Check if the function uses the inputset context
-        uses_ctx = [name
-                     for name, param in sig.parameters.items()
-                     if param.annotation is BaseInputSetContext]
+        uses_ctx = [
+            name
+            for name, param in sig.parameters.items()
+            if param.annotation is BaseInputSetContext
+        ]
         if uses_ctx:
             # Grab the name of the parameter that uses the inputset context
             uses_ctx = uses_ctx[0]
