@@ -31,6 +31,7 @@ DATAFLOW = DataFlow(
         "pkg.cleanup": cleanup_pypi_package.op,
         "bandit": run_bandit.op,
         "safety": safety_check.op,
+        "output": GetSingle.op,
     },
     # The flow defines how data will move between operation instances. For the
     # input of each operation, we specify where it will come from. The origin
