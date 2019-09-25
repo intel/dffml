@@ -7,17 +7,18 @@ import unittest
 from http import HTTPStatus
 from unittest.mock import patch
 from contextlib import asynccontextmanager, ExitStack
-from typing import NamedTuple
+from typing import NamedTuple, Dict, List
 
 import aiohttp
 
 from dffml.repo import Repo
-from dffml.df.base import op
-from dffml.df.types import Definition, Input, DataFlow
+from dffml.df.base import op, BaseOrchestratorContext
+from dffml.df.types import Definition, Input, DataFlow, Stage
 from dffml.operation.output import GetSingle
 from dffml.util.entrypoint import EntrypointNotFound
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.source.csv import CSVSourceConfig
+from dffml.util.data import traverse_get
 from dffml.util.cli.arg import parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
 
@@ -169,8 +170,57 @@ def formatter(data: str, op_config: FormatterConfig):
     return {"string": op_config.formatting.format(data)}
 
 
+# TODO Make it so that operations with no arguments get called at least once
+# until then this config will go unused in favor of an input parameter
+class RemapConfig(NamedTuple):
+    dataflow: DataFlow
+
+    @classmethod
+    def _fromdict(cls, **kwargs):
+        kwargs["dataflow"] = DataFlow._fromdict(**kwargs["dataflow"])
+        return cls(**kwargs)
+
+class RemapFailure(Exception):
+    """
+    Raised whem results of a dataflow could not be remapped.
+    """
+
+# TODO Make it so that only one output operation gets run, the result of that
+# operation is the result of the dataflow
+@op(
+    inputs={
+        "dataflow": Definition(name="remap_dataflow", primitive="map"),
+        "spec": Definition(name="remap_spec", primitive="map"),
+    },
+    outputs={"response": Definition(name="message", primitive="string")},
+    stage=Stage.OUTPUT,
+)
+def remap(dataflow: DataFlow, spec: Dict[str, List[str]], octx: BaseOrchestratorContext):
+    dataflow = DataFlow._fromdict(**dataflow)
+    print(dataflow)
+    # Remap the output operations to their feature (copied logic
+    # from CLI)
+    remap = {}
+    for (
+        feature_name,
+        traverse,
+    ) in spec.items():
+        try:
+            remap[feature_name] = traverse_get(
+                result, *traverse
+            )
+        except KeyError:
+            raise RemapFailure(
+                "failed to remap %r. Results do not contain %r: %s"
+                % (feature_name, ".".join(traverse), result)
+            )
+    # Results have been remapped
+    return {"response": "deadbeef"}
+    return remap
+
+
 class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
-    OPIMPS = {"formatter": formatter, "get_single": GetSingle}
+    OPIMPS = {"formatter": formatter, "get_single": GetSingle, "remap": remap}
 
     @classmethod
     def patch_operation_implementation_load(cls, loading):
@@ -212,29 +262,43 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                 "path": url,
                 "presentation": "json",
                 "asynchronous": False,
-                "dataflow": {
-                    "operations": {
-                        "hello_blank": formatter.op.export(),
-                        "get_formatted_message": GetSingle.op.export(),
+                "dataflow": DataFlow(
+                    operations={
+                        "hello_blank": formatter.op,
+                        "remap_to_response": remap.op,
                     },
-                    "configs": {"hello_blank": {"formatting": "Hello {}"}},
-                    "seed": [
-                        {
-                            "value": "World",
-                            "definition": formatter.op.inputs["data"].export(),
-                        },
-                        {
-                            "value": [formatter.op.outputs["string"].name],
-                            "definition": GetSingle.op.inputs["spec"].export(),
-                        },
+                    configs={"hello_blank": {"formatting": "Hello {}"}},
+                    seed=[
+                        Input(
+                            value="World",
+                            definition=formatter.op.inputs["data"],
+                        ),
+                        # TODO These should go in the remap config
+                        Input(
+                            value=DataFlow(
+                                operations={
+                                    "get_formatted_message": GetSingle.op,
+                                },
+                                seed=[
+                                    Input(
+                                        value=[formatter.op.outputs["string"].name],
+                                        definition=GetSingle.op.inputs["spec"],
+                                    ),
+                                ],
+                            ).export(),
+                            definition=remap.op.inputs["dataflow"],
+                        ),
+                        Input(
+                            value={
+                                "response": [
+                                    GetSingle.op.name,
+                                    formatter.op.outputs["string"].name,
+                                ],
+                            },
+                            definition=remap.op.inputs["spec"],
+                        ),
                     ],
-                    "remap": {
-                        "response": [
-                            GetSingle.op.name,
-                            formatter.op.outputs["string"].name,
-                        ]
-                    },
-                },
+                ).export(),
             },
         ) as r:
             self.assertEqual(await r.json(), OK)

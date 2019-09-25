@@ -18,7 +18,6 @@ from dffml.base import BaseConfig, MissingConfig
 from dffml.df.types import DataFlow, Input
 from dffml.source.source import BaseSource
 from dffml.df.memory import MemoryOrchestrator
-from dffml.util.data import traverse_get
 from dffml.util.entrypoint import EntrypointNotFound
 from dffml.df.base import OperationImplementationNotInstantiable
 
@@ -108,12 +107,6 @@ class HTTPChannelConfig(NamedTuple):
     def _fromdict(cls, **kwargs):
         kwargs["dataflow"] = DataFlow._fromdict(**kwargs["dataflow"])
         return cls(**kwargs)
-
-
-class RemapFailure(Exception):
-    """
-    Raised whem results of a dataflow could not be remapped.
-    """
 
 
 class Routes:

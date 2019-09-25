@@ -957,24 +957,9 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         await self.ictx.uadd(*inputs)
         # Return the output
         async for ctx, result in self.run_operations():
-            # Remap the output operations to their feature (copied logic
-            # from CLI)
-            remap = {}
-            for (
-                feature_name,
-                traverse,
-            ) in dataflow.remap.items():
-                try:
-                    remap[feature_name] = traverse_get(
-                        result, *traverse
-                    )
-                except KeyError:
-                    raise RemapFailure(
-                        "failed to remap %r. Results do not contain %r: %s"
-                        % (feature_name, ".".join(traverse), result)
-                    )
-            # Results have been remapped
-            return remap
+            # TODO Add check that ctx returned is the ctx corresponding to uadd.
+            # We'll have to make uadd return the ctx so we can compare.
+            return result
 
     async def run_operations(
         self, strict: bool = True

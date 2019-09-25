@@ -201,12 +201,17 @@ class Parameter(NamedTuple):
 @dataclass
 class DataFlow:
     operations: Dict[str, Operation]
-    configs: Dict[str, BaseConfig]
-    seed: List[Input]
-    remap: Dict[str, List[str]]
+    seed: List[Input] = field(default=None)
+    configs: Dict[str, BaseConfig] = field(default=None)
     definitions: Dict[str, Definition] = field(init=False)
 
     def __post_init__(self):
+        # Prevent usage of a global dict (if we set default to {} then all the
+        # instances will share the same instance of that dict, or list)
+        if self.seed is None:
+            self.seed = []
+        if self.configs is None:
+            self.configs = {}
         # Grab all definitions from operations
         operations = list(self.operations.values())
         definitions = list(
@@ -237,7 +242,6 @@ class DataFlow:
                 input_data.export() for input_data in self.seed
             ],
             configs=self.configs.copy(),
-            remap=self.remap.copy(),
         )
 
     @classmethod
