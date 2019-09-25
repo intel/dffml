@@ -1,6 +1,6 @@
 import sys
 
-from dffml.df.types import Input, Operation, DataFlow
+from dffml.df.types import Input, Operation, DataFlow, InputFlow
 from dffml.df.base import operation_in, opimp_in
 from dffml.df.memory import MemoryOrchestrator
 from dffml.operation.output import GetSingle
@@ -12,6 +12,7 @@ from shouldi.pypi import pypi_latest_package_version
 from shouldi.pypi import pypi_package_json
 from shouldi.pypi import pypi_package_url
 from shouldi.pypi import pypi_package_contents
+from shouldi.pypi import cleanup_pypi_package
 from shouldi.safety import safety_check
 
 # sys.modules[__name__] is a list of everything we've imported in this file.
@@ -19,14 +20,47 @@ from shouldi.safety import safety_check
 OPIMPS = opimp_in(sys.modules[__name__])
 
 DATAFLOW = DataFlow(
+    # The keys in the operations dict are the names of the instances of these
+    # operations. This is needed because two of the same operation could be
+    # instantiated with different configs.
     operations={
-        "bandit": run_bandit.op,
-        "pkg.version": pypi_latest_package_version.op,
         "pkg.json": pypi_package_json.op,
+        "pkg.version": pypi_latest_package_version.op,
         "pkg.url": pypi_package_url.op,
         "pkg.contents": pypi_package_contents.op,
+        "pkg.cleanup": cleanup_pypi_package.op,
+        "bandit": run_bandit.op,
         "safety": safety_check.op,
     },
+    # The flow defines how data will move between operation instances. For the
+    # input of each operation, we specify where it will come from. The origin
+    # could be a seed value to the network (a reserved word) or it could be in
+    # the format of instance_name.output_parameter. We define a list of places
+    # it could come from to ensure data could come from varying operations.
+    flow={
+        "pkg.json": InputFlow(
+            package=["seed"],
+        ),
+        "pkg.version": InputFlow(
+            response_json=["pkg.json.response_json"]
+        ),
+        "pkg.url": InputFlow(
+            response_json=["pkg.json.response_json"]
+        ),
+        "pkg.contents": InputFlow(
+            url=["pkg.url.url"]
+        ),
+        "pkg.cleanup": InputFlow(
+            directory=["pkg.contents.directory"]
+        ),
+        "bandit": InputFlow(
+            pkg=["pkg.contents.directory"]
+        ),
+        "safety": InputFlow(
+            package=["seed"],
+            version=["pkg.version.version"],
+        )
+    }
 )
 
 

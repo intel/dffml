@@ -2,7 +2,6 @@ import uuid
 import itertools
 import pkg_resources
 from enum import Enum
-from types import SimpleNamespace
 from dataclasses import dataclass, field
 from typing import NamedTuple, Union, List, Dict, Optional, Any, Iterator
 
@@ -195,12 +194,23 @@ class Parameter(NamedTuple):
     definition: Definition
 
 
+class InputFlow(dict):
+    """
+    Inputs of an operation by their name as used by the operation implementation
+    mapped to a list of locations they can come from. The list contains strings
+    in the format of operation_instance_name.key_in_output_mapping or the
+    literal "seed" which specifies that the value could be seeded to the
+    network.
+    """
+
+
 @dataclass
 class DataFlow:
     operations: Dict[str, Operation]
     seed: List[Input] = field(default=None)
     configs: Dict[str, BaseConfig] = field(default=None)
     definitions: Dict[str, Definition] = field(init=False)
+    flow: Dict[str, InputFlow] = field(default=None)
 
     def __post_init__(self):
         # Prevent usage of a global dict (if we set default to {} then all the
@@ -209,6 +219,8 @@ class DataFlow:
             self.seed = []
         if self.configs is None:
             self.configs = {}
+        if self.flow is None:
+            self.flow = {}
         # Grab all definitions from operations
         operations = list(self.operations.values())
         definitions = list(
@@ -237,6 +249,7 @@ class DataFlow:
             },
             seed=[input_data.export() for input_data in self.seed],
             configs=self.configs.copy(),
+            flow=self.flow.copy(),
         )
 
     @classmethod
@@ -252,4 +265,9 @@ class DataFlow:
         kwargs["seed"] = [
             Input._fromdict(**input_data) for input_data in kwargs["seed"]
         ]
+        # Import input flows
+        kwargs["flow"] = {
+            instance_name: InputFlow(input_flow)
+            for instance_name, input_flow in kwargs["flow"].items()
+        }
         return cls(**kwargs)

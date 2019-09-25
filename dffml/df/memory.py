@@ -659,6 +659,7 @@ class MemoryOperationImplementationNetworkContext(
         Instantiate class registered with ____ entrypoint using pkg_resources.
         Return true if instantiation was successful.
         """
+        # TODO(dfass) This should be the opeartion instance_name
         self.parent.operations[
             operation.name
         ] = await self.parent._stack.enter_async_context(

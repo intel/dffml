@@ -228,6 +228,7 @@ class Entrypoints(CMD):
 
 
 import json
+import hashlib
 from pathlib import Path
 
 from ..df.types import DataFlow
@@ -240,7 +241,31 @@ class Diagram(CMD):
 
     async def run(self):
         dataflow = DataFlow._fromdict(**json.loads(Path(self.dataflow).read_text()))
-        print(dataflow)
+        print("graph TD")
+        for instance_name, operation in dataflow.operations.items():
+            subgraph_node = hashlib.sha384(("subgraph" + instance_name).encode()).hexdigest()
+            node = hashlib.sha384(instance_name.encode()).hexdigest()
+            print(f"subgraph {subgraph_node}[{instance_name}]")
+            print(f"{node}[{operation.name}]")
+            for input_name in operation.inputs.keys():
+                input_node = hashlib.sha384((instance_name + "." + input_name).encode()).hexdigest()
+                print(f"{input_node}({input_name})")
+                print(f"{input_node} --> {node}")
+            for output_name in operation.outputs.keys():
+                output_node = hashlib.sha384((instance_name + "." + output_name).encode()).hexdigest()
+                print(f"{output_node}({output_name})")
+                print(f"{node} --> {output_node}")
+            print(f"end")
+        for instance_name, input_flow in dataflow.flow.items():
+            node = hashlib.sha384(instance_name.encode()).hexdigest()
+            print(f"{node}[{instance_name}]")
+            for input_name, sources in input_flow.items():
+                for source in sources:
+                    if source == "seed":
+                        continue
+                    source_output_node = hashlib.sha384(source.encode()).hexdigest()
+                    input_node = hashlib.sha384((instance_name + "." + input_name).encode()).hexdigest()
+                    print(f"{source_output_node} --> {input_node}")
 
 
 class Export(CMD):
