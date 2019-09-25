@@ -958,8 +958,8 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                         "failed to remap %r. Results do not contain %r: %s"
                         % (feature_name, ".".join(traverse), result)
                     )
-                # Results have been remapped
-                return remap
+            # Results have been remapped
+            return remap
 
     async def run_operations(
         self, strict: bool = True
