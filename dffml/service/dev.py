@@ -235,13 +235,19 @@ from ..df.types import DataFlow, Stage
 
 class Diagram(CMD):
 
+    arg_display = Arg(
+        "-display",
+        help="How to display (TD: top down, LR, RL, BT)",
+        default="LR",
+        required=False
+    )
     arg_dataflow = Arg(
         "dataflow", help="Data flow file"
     )
 
     async def run(self):
         dataflow = DataFlow._fromdict(**json.loads(Path(self.dataflow).read_text()))
-        print("graph TD")
+        print(f"graph {self.display}")
         for stage in Stage:
             stage_node = hashlib.sha384(("stage." + stage.value).encode()).hexdigest()
             print(f"subgraph {stage_node}[{stage.value.title()} Stage]")
@@ -269,6 +275,12 @@ class Diagram(CMD):
             for input_name, sources in input_flow.items():
                 for source in sources:
                     if source == "seed":
+                        operation = dataflow.operations[instance_name]
+                        input_definition = operation .inputs[input_name]
+                        seed_input_node = hashlib.sha384(input_definition.name.encode()).hexdigest()
+                        input_node = hashlib.sha384((instance_name + "." + input_name).encode()).hexdigest()
+                        print(f"{seed_input_node}[{input_definition.name}]")
+                        print(f"{seed_input_node} --> {input_node}")
                         continue
                     source_output_node = hashlib.sha384(source.encode()).hexdigest()
                     input_node = hashlib.sha384((instance_name + "." + input_name).encode()).hexdigest()
