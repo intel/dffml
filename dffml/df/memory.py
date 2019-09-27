@@ -977,9 +977,10 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
             # Otherwise create new context
             ctx = await self.ictx.uadd(*inputs)
         # Return the output
-        async for ctx, result in self.run_operations(ctx=ctx, dataflow=dataflow):
+        async for nctx, result in self.run_operations(ctx=ctx, dataflow=dataflow):
             # TODO Add check that ctx returned is the ctx corresponding to uadd.
             # We'll have to make uadd return the ctx so we can compare.
+            self.logger.debug("dataflow: %s, result: %s", dataflow, result)
             return result
 
     async def run_operations(
@@ -1162,16 +1163,21 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 ctx, Stage.CLEANUP
             ):
                 pass
-        # Run output and return context along with output
-        return (
-            ctx,
-            {
+        # Run output operations and create a dict mapping the operation name to
+        # the output of that operation
+        # TODO(dfass) operation instance name instead of operation name
+        output = {
                 operation.name: results
                 async for operation, results in self.run_stage(
                     ctx, Stage.OUTPUT
                 )
-            },
-        )
+            }
+        # If there is only one output operation, return only it's result instead
+        # of a dict with it as the only key value pair
+        if len(output) == 1:
+            output = list(output.values())[0]
+        # Return the context along with it's output
+        return ctx, output
 
     async def run_stage(self, ctx: BaseInputSetContext, stage: Stage):
         # Identify which operations have complete contextually appropriate

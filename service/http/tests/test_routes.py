@@ -198,7 +198,9 @@ async def remap(
     ctx: BaseInputSetContext,
     octx: BaseOrchestratorContext,
 ):
+    print("\nPRE\n")
     results = await octx.run_dataflow(op_config.dataflow, ctx=ctx)
+    print("\nPOST\n")
     # Remap the output operations to their feature (copied logic
     # from CLI)
     remap = {}
