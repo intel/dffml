@@ -188,21 +188,17 @@ class RemapFailure(Exception):
 # TODO Make it so that only one output operation gets run, the result of that
 # operation is the result of the dataflow
 @op(
-    inputs={
-        "dataflow": Definition(name="remap_dataflow", primitive="map"),
-        "spec": Definition(name="remap_spec", primitive="map"),
-    },
+    inputs={"spec": Definition(name="remap_spec", primitive="map")},
     outputs={"response": Definition(name="message", primitive="string")},
     stage=Stage.OUTPUT,
 )
 async def remap(
-    dataflow: DataFlow,
     spec: Dict[str, List[str]],
+    op_config: RemapConfig,
     ctx: BaseInputSetContext,
     octx: BaseOrchestratorContext,
 ):
-    dataflow = DataFlow._fromdict(**dataflow)
-    results = await octx.run_dataflow(dataflow, ctx=ctx)
+    results = await octx.run_dataflow(op_config.dataflow, ctx=ctx)
     # Remap the output operations to their feature (copied logic
     # from CLI)
     remap = {}
@@ -267,15 +263,10 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                         "hello_blank": formatter.op,
                         "remap_to_response": remap.op,
                     },
-                    configs={"hello_blank": {"formatting": "Hello {}"}},
-                    seed=[
-                        Input(
-                            value="World",
-                            definition=formatter.op.inputs["data"],
-                        ),
-                        # TODO These should go in the remap config
-                        Input(
-                            value=DataFlow(
+                    configs={
+                        "hello_blank": {"formatting": "Hello {}"},
+                        "remap_to_response": {
+                            "dataflow": DataFlow(
                                 operations={
                                     "get_formatted_message": GetSingle.op
                                 },
@@ -287,8 +278,13 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                                         definition=GetSingle.op.inputs["spec"],
                                     )
                                 ],
-                            ).export(),
-                            definition=remap.op.inputs["dataflow"],
+                            ).export()
+                        },
+                    },
+                    seed=[
+                        Input(
+                            value="World",
+                            definition=formatter.op.inputs["data"],
                         ),
                         Input(
                             value={
