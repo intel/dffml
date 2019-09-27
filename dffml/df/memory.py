@@ -977,18 +977,36 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
             # Otherwise create new context
             ctx = await self.ictx.uadd(*inputs)
         # Return the output
-        async for ctx, result in self.run_operations():
+        async for ctx, result in self.run_operations(ctx=ctx, dataflow=dataflow):
             # TODO Add check that ctx returned is the ctx corresponding to uadd.
             # We'll have to make uadd return the ctx so we can compare.
             return result
 
     async def run_operations(
-        self, strict: bool = True
+        self,
+        *,
+        strict: bool = True,
+        ctx: Optional[BaseInputSetContext] = None,
+        dataflow: Optional[DataFlow] = None,
     ) -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
         # Track if there are more contexts
         more = True
         # Set of tasks we are waiting on
         tasks = set()
+        # If we are a subflow of a given context initiate runing operation witin
+        # that context
+        if ctx is not None:
+            self.logger.debug(
+                "kickstarting context: %s",
+                (await ctx.handle()).as_string(),
+            )
+            tasks.add(
+                asyncio.create_task(
+                    self.run_operations_for_ctx(
+                        ctx, strict=strict
+                    )
+                )
+            )
         # Create initial events to wait on
         new_context_enters_network = asyncio.create_task(self.ictx.ctx())
         tasks.add(new_context_enters_network)
@@ -1058,7 +1076,11 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                     task.exception()
 
     async def run_operations_for_ctx(
-        self, ctx: BaseContextHandle, *, strict: bool = True
+        self,
+        ctx: BaseContextHandle,
+        *,
+        strict: bool = True,
+        dataflow: DataFlow = None,
     ) -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
         # Track if there are more inputs
         more = True
