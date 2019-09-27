@@ -238,6 +238,7 @@ class Diagram(CMD):
     arg_stages = Arg(
         "-stages",
         help="Which stages to display: (processing, cleanup, output)",
+        nargs="+",
         default=[],
         required=False
     )
