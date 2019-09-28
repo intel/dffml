@@ -22,6 +22,8 @@ from .exceptions import ContextNotPresent, DefinitionNotInContext
 from .types import Input, Parameter, Definition, Operation, Stage, DataFlow
 from .base import (
     OperationImplementation,
+    BaseDataFlowObject,
+    BaseDataFlowObjectContext,
     BaseConfig,
     BaseContextHandle,
     BaseKeyValueStoreContext,
@@ -57,6 +59,16 @@ from ..util.asynchelper import context_stacker, aenter_stack
 
 from .log import LOGGER
 
+class MemoryDataFlowObjectContextConfig(NamedTuple):
+    # Unique ID of the context, in other implementations this might be a JWT or
+    # something
+    uid: str
+
+class BaseMemoryDataFlowObject(BaseDataFlowObject):
+
+    def __call__(self) -> BaseDataFlowObjectContext:
+        return self.CONTEXT(MemoryDataFlowObjectContextConfig(uid=secrets.token_hex()), self)
+
 
 class MemoryKeyValueStoreContext(BaseKeyValueStoreContext):
     async def get(self, key: str) -> Union[bytes, None]:
@@ -69,7 +81,7 @@ class MemoryKeyValueStoreContext(BaseKeyValueStoreContext):
 
 
 @entry_point("memory")
-class MemoryKeyValueStore(BaseKeyValueStore):
+class MemoryKeyValueStore(BaseKeyValueStore, BaseMemoryDataFlowObject):
     """
     Key Value store backed by dict
     """
@@ -337,7 +349,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
     def definitions(
         self, ctx: BaseInputSetContext
     ) -> BaseDefinitionSetContext:
-        return MemoryDefinitionSetContext(self.parent, ctx)
+        return MemoryDefinitionSetContext(self.config, self.parent, ctx)
 
     async def gather_inputs(
         self,
@@ -406,7 +418,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
 
 
 @entry_point("memory")
-class MemoryInputNetwork(BaseInputNetwork):
+class MemoryInputNetwork(BaseInputNetwork, BaseMemoryDataFlowObject):
     """
     Inputs backed by a set
     """
@@ -464,7 +476,7 @@ class MemoryOperationNetworkContext(BaseOperationNetworkContext):
 
 
 @entry_point("memory")
-class MemoryOperationNetwork(BaseOperationNetwork):
+class MemoryOperationNetwork(BaseOperationNetwork, BaseMemoryDataFlowObject):
     """
     Operations backed by a set
     """
@@ -542,7 +554,7 @@ class MemoryRedundancyCheckerContext(BaseRedundancyCheckerContext):
 
 
 @entry_point("memory")
-class MemoryRedundancyChecker(BaseRedundancyChecker):
+class MemoryRedundancyChecker(BaseRedundancyChecker, BaseMemoryDataFlowObject):
     """
     Redundancy Checker backed by Memory Key Value Store
     """
@@ -614,7 +626,7 @@ class MemoryLockNetworkContext(BaseLockNetworkContext):
 
 
 @entry_point("memory")
-class MemoryLockNetwork(BaseLockNetwork):
+class MemoryLockNetwork(BaseLockNetwork, BaseMemoryDataFlowObject):
 
     CONTEXT = MemoryLockNetworkContext
 
@@ -819,7 +831,7 @@ class MemoryOperationImplementationNetworkContext(
 
 
 @entry_point("memory")
-class MemoryOperationImplementationNetwork(BaseOperationImplementationNetwork):
+class MemoryOperationImplementationNetwork(BaseOperationImplementationNetwork, BaseMemoryDataFlowObject):
 
     CONTEXT = MemoryOperationImplementationNetworkContext
 
@@ -885,8 +897,8 @@ class MemoryOrchestratorConfig(BaseOrchestratorConfig):
 
 
 class MemoryOrchestratorContext(BaseOrchestratorContext):
-    def __init__(self, parent: "BaseOrchestrator") -> None:
-        super().__init__(parent)
+    def __init__(self, config: MemoryDataFlowObjectContextConfig, parent: "BaseOrchestrator") -> None:
+        super().__init__(config, parent)
         self._stack = None
 
     async def __aenter__(self) -> "BaseOrchestratorContext":
@@ -1235,7 +1247,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
 
 
 @entry_point("memory")
-class MemoryOrchestrator(BaseOrchestrator):
+class MemoryOrchestrator(BaseOrchestrator, BaseMemoryDataFlowObject):
 
     CONTEXT = MemoryOrchestratorContext
 

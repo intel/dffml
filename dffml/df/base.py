@@ -32,11 +32,12 @@ from ..util.entrypoint import base_entry_point
 
 class BaseDataFlowObjectContext(BaseDataFlowFacilitatorObjectContext):
     """
-    Data Flow Object Contexts are instantiated by only being passed their
-    parent, a BaseDataFlowObject.
+    Data Flow Object Contexts are instantiated by being passed their
+    config, and their parent, a BaseDataFlowObject.
     """
 
-    def __init__(self, parent: "BaseDataFlowObject") -> None:
+    def __init__(self, config: BaseConfig, parent: "BaseDataFlowObject") -> None:
+        self.config = config
         self.parent = parent
 
 
@@ -45,9 +46,6 @@ class BaseDataFlowObject(BaseDataFlowFacilitatorObject):
     Data Flow Objects create their child contexts' by passing only itself as an
     argument to the child's __init__ (of type BaseDataFlowObjectContext).
     """
-
-    def __call__(self) -> BaseDataFlowObjectContext:
-        return self.CONTEXT(self)
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
@@ -318,9 +316,6 @@ class BaseKeyValueStoreContext(BaseDataFlowObjectContext):
     Abstract Base Class for key value storage context
     """
 
-    def __init__(self, parent: "BaseKeyValueStore") -> None:
-        self.parent = parent
-
     @abc.abstractmethod
     async def get(self, key: str) -> Union[bytes, None]:
         """
@@ -433,9 +428,9 @@ class BaseParameterSet(abc.ABC):
 
 class BaseDefinitionSetContext(BaseDataFlowObjectContext):
     def __init__(
-        self, parent: "BaseInputNetworkContext", ctx: "BaseInputSetContext"
+        self, config: BaseConfig, parent: "BaseInputNetworkContext", ctx: "BaseInputSetContext"
     ) -> None:
-        super().__init__(parent)
+        super().__init__(config, parent)
         self.ctx = ctx
 
     @abc.abstractmethod
