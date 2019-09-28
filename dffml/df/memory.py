@@ -920,7 +920,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self._stack.aclose()
 
-    async def run_dataflow(
+    async def initialize_dataflow(
         self,
         dataflow: DataFlow,
         *,
@@ -928,15 +928,14 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         inputs: Optional[List[Input]] = None,
     ):
         """
-        Run a DataFlow by preforming the following steps.
+        Initialize a DataFlow by preforming the following steps.
 
         1. Add operations the operation network context
         2. Instantiate operation implementations which are not instantiated
            within the operation implementation network context
         3. Seed input network context with given inputs
-        4. Return outputs
         """
-        self.logger.debug("Running dataflow: %s", dataflow)
+        self.logger.debug("Initializing dataflow: %s", dataflow)
         if inputs is None:
             # Create a list if extra inputs were not given
             inputs = []
@@ -976,12 +975,54 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         else:
             # Otherwise create new context
             ctx = await self.ictx.uadd(*inputs)
+        return ctx
+
+    async def run_dataflow(
+        self,
+        dataflow: DataFlow,
+        *,
+        ctx: Optional[BaseInputSetContext] = None,
+        inputs: Optional[List[Input]] = None,
+    ):
+        """
+        Run a DataFlow.
+        """
+        await self.initialize_dataflow(dataflow, ctx=ctx, inputs=inputs)
+        self.logger.debug("Running dataflow: %s", dataflow)
         # Return the output
         async for nctx, result in self.run_operations(ctx=ctx, dataflow=dataflow):
             # TODO Add check that ctx returned is the ctx corresponding to uadd.
             # We'll have to make uadd return the ctx so we can compare.
             self.logger.debug("dataflow: %s, result: %s", dataflow, result)
             return result
+
+    async def output_subflow(
+        self,
+        dataflow: DataFlow,
+        *,
+        ctx: Optional[BaseInputSetContext] = None,
+        inputs: Optional[List[Input]] = None,
+    ):
+        """
+        Run a DataFlow but only run output operations.
+        """
+        ctx = await self.initialize_dataflow(dataflow, ctx=ctx, inputs=inputs)
+        self.logger.debug("Running output subflow: %s", dataflow)
+        # Run output operations and create a dict mapping the operation name to
+        # the output of that operation
+        # TODO(dfass) operation instance name instead of operation name
+        output = {
+                operation.name: results
+                async for operation, results in self.run_stage(
+                    ctx, Stage.OUTPUT
+                )
+            }
+        # If there is only one output operation, return only it's result instead
+        # of a dict with it as the only key value pair
+        if len(output) == 1:
+            output = list(output.values())[0]
+        # Return the context along with it's output
+        return ctx, output
 
     async def run_operations(
         self,

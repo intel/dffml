@@ -199,7 +199,7 @@ async def remap(
     spec: Dict[str, List[str]],
 ):
     print("\nPRE\n")
-    results = await self.octx.run_dataflow(self.config.dataflow, ctx=self.ctx)
+    _, result = await self.octx.output_subflow(self.config.dataflow, ctx=self.ctx)
     print("\nPOST\n")
     # Remap the output operations to their feature (copied logic
     # from CLI)
@@ -291,7 +291,6 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                         Input(
                             value={
                                 "response": [
-                                    GetSingle.op.name,
                                     formatter.op.outputs["string"].name,
                                 ]
                             },
