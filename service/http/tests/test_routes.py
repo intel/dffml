@@ -12,7 +12,7 @@ from typing import NamedTuple, Dict, List
 import aiohttp
 
 from dffml.repo import Repo
-from dffml.df.base import op, BaseInputSetContext, BaseOrchestratorContext
+from dffml.df.base import op, BaseInputSetContext, BaseOrchestratorContext, OperationImplementationContext
 from dffml.df.types import Definition, Input, DataFlow, Stage
 from dffml.operation.output import GetSingle
 from dffml.util.entrypoint import EntrypointNotFound
@@ -163,6 +163,7 @@ class FormatterConfig(NamedTuple):
 @op(
     inputs={"data": Definition(name="format_data", primitive="string")},
     outputs={"string": Definition(name="message", primitive="string")},
+    config_cls=FormatterConfig,
 )
 def formatter(data: str, op_config: FormatterConfig):
     return {"string": op_config.formatting.format(data)}
@@ -191,15 +192,14 @@ class RemapFailure(Exception):
     inputs={"spec": Definition(name="remap_spec", primitive="map")},
     outputs={"response": Definition(name="message", primitive="string")},
     stage=Stage.OUTPUT,
+    config_cls=RemapConfig,
 )
 async def remap(
+    self: OperationImplementationContext,
     spec: Dict[str, List[str]],
-    op_config: RemapConfig,
-    ctx: BaseInputSetContext,
-    octx: BaseOrchestratorContext,
 ):
     print("\nPRE\n")
-    results = await octx.run_dataflow(op_config.dataflow, ctx=ctx)
+    results = await self.octx.run_dataflow(self.config.dataflow, ctx=self.ctx)
     print("\nPOST\n")
     # Remap the output operations to their feature (copied logic
     # from CLI)

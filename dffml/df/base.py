@@ -69,6 +69,13 @@ class OperationImplementationContext(BaseDataFlowObjectContext):
         self.ctx = ctx
         self.octx = octx
 
+    @property
+    def config(self):
+        """
+        Alias for self.parent.config
+        """
+        return self.parent.config
+
     @abc.abstractmethod
     async def run(self, inputs: Dict[str, Any]) -> Union[bool, Dict[str, Any]]:
         """
@@ -102,7 +109,7 @@ class OperationImplementation(BaseDataFlowObject):
         return list(above) + cls.op.name.split("_")
 
 
-def op(imp_enter=None, ctx_enter=None, **kwargs):
+def op(imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
     def wrap(func):
         if not "name" in kwargs:
             kwargs["name"] = func.__name__
@@ -113,62 +120,47 @@ def op(imp_enter=None, ctx_enter=None, **kwargs):
         func.op = Operation(**kwargs)
         cls_name = func.op.name.replace("_", " ").title().replace(" ", "")
 
-        # Check if the function wants to use the orchestraction context or the
-        # operation implementation config
-        # We can't match on issubclass(param.annotation, BaseConfig) because
-        # something about NamedTuple makes that not work. So instead check if
-        # there is any argument named op_config.
         sig = inspect.signature(func)
-        # If the function uses the config, then we want to expand the dict value
-        # of the config into the type given via the type hinting information
-        # provided by the function
-        uses_config = bool(
-            [name for name in sig.parameters.keys() if name == "op_config"]
+        # Check if the function uses the operation implementation context
+        uses_self = bool(
+            imp_enter is not None
+            or ctx_enter is not None
+            or (
+                [
+                    name
+                    for name, param in sig.parameters.items()
+                    if param.annotation is OperationImplementationContext
+                ]
+            )
         )
-        if uses_config:
-            config_cls = [
-                param.annotation
-                for name, param in sig.parameters.items()
-                if name == "op_config"
-            ]
-            if not config_cls:
-                # TODO Create a real exception class for this
-                raise Exception(
-                    "op_config parameter of {} has not type hint. A type hint is required."
-                )
-            else:
-                config_cls = config_cls[0]
-        # Check if the function uses the orchestrator context
-        uses_octx = [
-            name
-            for name, param in sig.parameters.items()
-            if param.annotation is BaseOrchestratorContext
-        ]
-        if uses_octx:
-            # Grab the name of the parameter that uses the orchestrator context
-            uses_octx = uses_octx[0]
-        # Check if the function uses the inputset context
-        uses_ctx = [
-            name
-            for name, param in sig.parameters.items()
-            if param.annotation is BaseInputSetContext
-        ]
-        if uses_ctx:
-            # Grab the name of the parameter that uses the inputset context
-            uses_ctx = uses_ctx[0]
+        # Check if the function uses the operation implementation config
+        uses_config = None
+        if config_cls is not None:
+            for name, param in sig.parameters.items():
+                if param.annotation is config_cls:
+                    uses_config = name
+
+        class Implementation(
+            context_stacker(OperationImplementation, imp_enter)
+        ):
+            def __init__(self, config):
+                if config_cls is not None and isinstance(config, dict):
+                    if getattr(config_cls, "_fromdict", None) is not None:
+                        # Use _fromdict method if it exists
+                        config = config_cls._fromdict(**config)
+                    else:
+                        # Otherwise expand if existing config is a dict
+                        config = config_cls(**config)
+                super().__init__(config)
 
         if inspect.isclass(func) and issubclass(
             func, OperationImplementationContext
         ):
-
-            class Implementation(
-                context_stacker(OperationImplementation, imp_enter)
-            ):
-
-                op = func.op
-                CONTEXT = func
-
-            func.imp = type(f"{cls_name}Implementation", (Implementation,), {})
+            func.imp = type(
+                f"{cls_name}Implementation",
+                (Implementation,),
+                {"op": func.op, "CONTEXT": func},
+            )
             return func
         else:
 
@@ -178,49 +170,36 @@ def op(imp_enter=None, ctx_enter=None, **kwargs):
                 async def run(
                     self, inputs: Dict[str, Any]
                 ) -> Union[bool, Dict[str, Any]]:
-                    # Pass config and ochestration context if typing on
-                    # arguemnts matches
-                    if uses_config:
-                        inputs["op_config"] = self.parent.config
-                    if uses_octx:
-                        inputs[uses_octx] = self.octx
-                    if uses_ctx:
-                        inputs[uses_ctx] = self.ctx
+                    # Add config to inputs if it's used by the function
+                    if uses_config is not None:
+                        inputs[uses_config] = self.parent.config
                     # If imp_enter or ctx_enter exist then bind the function to
                     # the ImplementationContext so that it has access to the
                     # context and it's parent
-                    if imp_enter is not None or ctx_enter is not None:
+                    if uses_self:
+                        # We can't pass self to functions running in threads
+                        # Its not thread safe!
                         return await (
                             func.__get__(self, self.__class__)(**inputs)
                         )
-                    if inspect.iscoroutinefunction(func):
+                    elif inspect.iscoroutinefunction(func):
                         return await func(**inputs)
                     else:
                         # TODO Add auto thread pooling of non-async functions
                         return func(**inputs)
 
-            class Implementation(
-                context_stacker(OperationImplementation, imp_enter)
-            ):
-
-                op = func.op
-                CONTEXT = type(
-                    f"{cls_name}ImplementationContext",
-                    (ImplementationContext,),
-                    {},
-                )
-
-                def __init__(self, config):
-                    super().__init__(config)
-                    if uses_config:
-                        if getattr(config_cls, "_fromdict", None) is not None:
-                            # Use _fromdict method if it exists
-                            self.config = config_cls._fromdict(**self.config)
-                        elif isinstance(self.config, dict):
-                            # Otherwise expand if existing config is a dict
-                            self.config = config_cls(**self.config)
-
-            func.imp = type(f"{cls_name}Implementation", (Implementation,), {})
+            func.imp = type(
+                f"{cls_name}Implementation",
+                (Implementation,),
+                {
+                    "op": func.op,
+                    "CONTEXT": type(
+                        f"{cls_name}ImplementationContext",
+                        (ImplementationContext,),
+                        {},
+                    ),
+                },
+            )
             return func
 
     return wrap
