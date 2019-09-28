@@ -41,29 +41,14 @@ DATAFLOW = DataFlow(
     # the format of instance_name.output_parameter. We define a list of places
     # it could come from to ensure data could come from varying operations.
     flow={
-        "pkg.json": InputFlow(
-            package=["seed"],
-        ),
-        "pkg.version": InputFlow(
-            response_json=["pkg.json.response_json"]
-        ),
-        "pkg.url": InputFlow(
-            response_json=["pkg.json.response_json"]
-        ),
-        "pkg.contents": InputFlow(
-            url=["pkg.url.url"]
-        ),
-        "pkg.cleanup": InputFlow(
-            directory=["pkg.contents.directory"]
-        ),
-        "bandit": InputFlow(
-            pkg=["pkg.contents.directory"]
-        ),
-        "safety": InputFlow(
-            package=["seed"],
-            version=["pkg.version.version"],
-        )
-    }
+        "pkg.json": InputFlow(package=["seed"]),
+        "pkg.version": InputFlow(response_json=["pkg.json.response_json"]),
+        "pkg.url": InputFlow(response_json=["pkg.json.response_json"]),
+        "pkg.contents": InputFlow(url=["pkg.url.url"]),
+        "pkg.cleanup": InputFlow(directory=["pkg.contents.directory"]),
+        "bandit": InputFlow(pkg=["pkg.contents.directory"]),
+        "safety": InputFlow(package=["seed"], version=["pkg.version.version"]),
+    },
 )
 
 
@@ -171,38 +156,40 @@ class LinkerTest(CMD):
         help="end and start points for finding a back path",
     )
 
-    async def export(self):
-        linker = Linker()
-        exported = linker.export(
-            run_bandit.op,
-            pypi_latest_package_version.op,
+    # async def export(self):
+    #    linker = Linker()
+    #    exported = linker.export(
+    #        run_bandit.op,
+    #        pypi_latest_package_version.op,
+    #        pypi_package_json.op,
+    #        pypi_package_url.op,
+    #        pypi_package_contents.op,
+    #        safety_check.op,
+    #    )
+    #    return exported
+
+    async def dep_backtrack(self, *operations):
+        output_dict = {}
+        for operation in operations:
+            temp_dict = {operation.name: operation}
+            op_outputs = list(operation.outputs.values())
+            for output in op_outputs:
+                output_dict[str(output)] = temp_dict
+        #flow_dict = {}
+        return #output_dict
+
+    async def run(self):
+        backtrack_list = await self.dep_backtrack(
             pypi_package_json.op,
+            pypi_latest_package_version.op,
             pypi_package_url.op,
             pypi_package_contents.op,
+            cleanup_pypi_package.op,
+            run_bandit.op,
             safety_check.op,
         )
-        return exported
 
-    ##TODO Multiple INPUT and Multiple OUTPUT cases
-    async def run(self):
-        temp = await self.export()
-        dest_operation = self.path_info[0]
-        init_inp = self.path_info[1]
-        operations_dict = temp["operations"]
-        for name, operation in operations_dict.items():
-            operation["inputs"] = list(operation["inputs"].values())[0]
-            operation["outputs"] = list(operation["outputs"].values())[0]
-        inp = operations_dict[dest_operation]["inputs"]
-        backtrack_list = [dest_operation]
-        while inp != init_inp:
-            for name, operation in operations_dict.items():
-                if operation["outputs"] == inp:
-                    backtrack_list.append(name)
-                    inp = operation["inputs"]
-
-        backtrack_list.reverse()
         return backtrack_list
-
 
 class ShouldI(CMD):
 
