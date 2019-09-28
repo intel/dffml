@@ -895,9 +895,14 @@ class MemoryOrchestratorConfig(BaseOrchestratorConfig):
     Same as base orchestrator config
     """
 
+class MemoryOrchestratorContextConfig(NamedTuple):
+    uid: str
+    # Context objects to reuse. If not present in this dict a new context object
+    # will be created.
+    reuse: Dict[str, BaseDataFlowObjectContext]
 
 class MemoryOrchestratorContext(BaseOrchestratorContext):
-    def __init__(self, config: MemoryDataFlowObjectContextConfig, parent: "BaseOrchestrator") -> None:
+    def __init__(self, config: MemoryOrchestratorContextConfig, parent: "BaseOrchestrator") -> None:
         super().__init__(config, parent)
         self._stack = None
 
@@ -916,17 +921,23 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # operation which desires to execute a subflow. If the output operation
         # created new contexts, then there would be no inputs in them, so that
         # would be pointless.
-        self._stack = AsyncExitStack()
-        self._stack = await aenter_stack(
-            self,
-            {
+        enter = {
                 "rctx": self.parent.rchecker,
                 "ictx": self.parent.input_network,
                 "octx": self.parent.operation_network,
                 "lctx": self.parent.lock_network,
                 "nctx": self.parent.opimp_network,
-            },
-        )
+            }
+        # If we were told to reuse a context, don't enter it. Just set the
+        # attribute now.
+        for name, ctx in self.config.reuse.items():
+            if name in enter:
+                self.logger.debug("Reusing %s: %s", name, ctx)
+                del enter[name]
+                setattr(self, name, ctx)
+        # Creat the exit stack and enter all the contexts we won't be reusing
+        self._stack = AsyncExitStack()
+        self._stack = await aenter_stack(self, enter)
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
@@ -1271,6 +1282,14 @@ class MemoryOrchestrator(BaseOrchestrator, BaseMemoryDataFlowObject):
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self._stack.aclose()
+
+    def __call__(self, **kwargs) -> BaseDataFlowObjectContext:
+        return self.CONTEXT(
+            MemoryOrchestratorContextConfig(
+                uid=secrets.token_hex(),
+                reuse=kwargs,
+            ),
+            self)
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:

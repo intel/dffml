@@ -198,9 +198,11 @@ async def remap(
     self: OperationImplementationContext,
     spec: Dict[str, List[str]],
 ):
-    print("\nPRE\n")
-    _, result = await self.octx.output_subflow(self.config.dataflow, ctx=self.ctx)
-    print("\nPOST\n")
+    # Create a new orchestrator context. Specify that it should use the existing
+    # input set context, this way the output operations we'll be running have
+    # access to the data from this data flow rather than a new sub flow.
+    async with self.octx.parent(ictx=self.octx.ictx) as octx:
+        result = await octx.run_dataflow(self.config.dataflow, ctx=self.ctx)
     # Remap the output operations to their feature (copied logic
     # from CLI)
     remap = {}
