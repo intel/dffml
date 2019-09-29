@@ -645,11 +645,33 @@ class MemoryOperationImplementationNetworkConfig(NamedTuple):
 class MemoryOperationImplementationNetworkContext(
     BaseOperationImplementationNetworkContext
 ):
+    def __init__(self, config: BaseConfig, parent: "MemoryOperationImplementationNetwork") -> None:
+        super().__init__(config, parent)
+        self.opimps = self.parent.config.operations
+        self.operations = {}
+        self.completed_event = asyncio.Event()
+
+    async def __aenter__(
+        self
+    ) -> "MemoryOperationImplementationNetworkContext":
+        self._stack = AsyncExitStack()
+        await self._stack.__aenter__()
+        self.operations = {
+            opimp.op.name: await self._stack.enter_async_context(opimp)
+            for opimp in self.opimps.values()
+        }
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        if self._stack is not None:
+            await self._stack.__aexit__(exc_type, exc_value, traceback)
+            self._stack = None
+
     async def contains(self, operation: Operation) -> bool:
         """
         Checks if operation in is operations we have loaded in memory
         """
-        return operation.name in self.parent.operations
+        return operation.name in self.operations
 
     async def instantiable(self, operation: Operation) -> bool:
         """
@@ -674,9 +696,9 @@ class MemoryOperationImplementationNetworkContext(
         Return true if instantiation was successful.
         """
         # TODO(dfass) This should be the opeartion instance_name
-        self.parent.operations[
+        self.operations[
             operation.name
-        ] = await self.parent._stack.enter_async_context(
+        ] = await self._stack.enter_async_context(
             OperationImplementation.load(operation.name)(config)
         )
 
@@ -704,7 +726,7 @@ class MemoryOperationImplementationNetworkContext(
         # Check that our network contains the operation
         await self.ensure_contains(operation)
         # Create an opimp context and run the opertion
-        async with self.parent.operations[operation.name](ctx, octx) as opctx:
+        async with self.operations[operation.name](ctx, octx) as opctx:
             self.logger.debug("---")
             self.logger.debug(
                 "[%s] Stage: %s: %s", self.config.uid, operation.stage.value.upper(), operation.name
@@ -730,8 +752,8 @@ class MemoryOperationImplementationNetworkContext(
             return outputs
 
     async def operation_completed(self):
-        await self.parent.completed_event.wait()
-        self.parent.completed_event.clear()
+        await self.completed_event.wait()
+        self.completed_event.clear()
 
     async def run_dispatch(
         self,
@@ -804,7 +826,7 @@ class MemoryOperationImplementationNetworkContext(
         task = asyncio.create_task(
             self.run_dispatch(octx, operation, parameter_set)
         )
-        task.add_done_callback(ignore_args(self.parent.completed_event.set))
+        task.add_done_callback(ignore_args(self.completed_event.set))
         return task
 
     async def operations_parameter_set_pairs(
@@ -838,30 +860,6 @@ class MemoryOperationImplementationNetworkContext(
 class MemoryOperationImplementationNetwork(BaseOperationImplementationNetwork, BaseMemoryDataFlowObject):
 
     CONTEXT = MemoryOperationImplementationNetworkContext
-
-    def __init__(
-        self, config: MemoryOperationImplementationNetworkConfig
-    ) -> None:
-        super().__init__(config)
-        self.opimps = self.config.operations
-        self.operations = {}
-        self.completed_event = asyncio.Event()
-
-    async def __aenter__(
-        self
-    ) -> "MemoryOperationImplementationNetworkContext":
-        self._stack = AsyncExitStack()
-        await self._stack.__aenter__()
-        self.operations = {
-            opimp.op.name: await self._stack.enter_async_context(opimp)
-            for opimp in self.opimps.values()
-        }
-        return self
-
-    async def __aexit__(self, exc_type, exc_value, traceback):
-        if self._stack is not None:
-            await self._stack.__aexit__(exc_type, exc_value, traceback)
-            self._stack = None
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
