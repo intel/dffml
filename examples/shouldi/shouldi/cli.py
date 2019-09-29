@@ -108,16 +108,14 @@ class Install(CMD):
                 # Run all the operations, Each iteration of this loop happens
                 # when all inputs are exhausted for a context, the output
                 # operations are then run and their results are yielded
-                async for ctx, results in octx.run_operations():
-                    # The context for this data flow was the package name
-                    package_name = (await ctx.handle()).as_string()
-                    # Check if any of the values of the operations evaluate to
-                    # true, so if the number of issues found by safety is
-                    # non-zero then this will be true
-                    any_issues = list(results.values())
+                async for package_name, results in octx.run_operations():
+                    # Grab the number of saftey issues and the bandit report
+                    # from the results dict
+                    safety_issues = results[safety_check.op.outputs["issues"].name]
+                    bandit_report = results[run_bandit.op.outputs["report"].name]
                     if (
-                        any_issues[0] > 0
-                        or any_issues[1]["CONFIDENCE.HIGH_AND_SEVERITY.HIGH"]
+                        safety_issues > 0
+                        or bandit_report["CONFIDENCE.HIGH_AND_SEVERITY.HIGH"]
                         > 5
                     ):
                         print(f"Do not install {package_name}! {results!r}")
