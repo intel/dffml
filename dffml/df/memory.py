@@ -71,13 +71,18 @@ class BaseMemoryDataFlowObject(BaseDataFlowObject):
 
 
 class MemoryKeyValueStoreContext(BaseKeyValueStoreContext):
+    def __init__(self, config: BaseConfig, parent: "MemoryKeyValueStore") -> None:
+        super().__init__(config, parent)
+        self.memory: Dict[str, bytes] = {}
+        self.lock = asyncio.Lock()
+
     async def get(self, key: str) -> Union[bytes, None]:
-        async with self.parent.lock:
-            return self.parent.memory.get(key)
+        async with self.lock:
+            return self.memory.get(key)
 
     async def set(self, key: str, value: bytes):
-        async with self.parent.lock:
-            self.parent.memory[key] = value
+        async with self.lock:
+            self.memory[key] = value
 
 
 @entry_point("memory")
@@ -87,11 +92,6 @@ class MemoryKeyValueStore(BaseKeyValueStore, BaseMemoryDataFlowObject):
     """
 
     CONTEXT = MemoryKeyValueStoreContext
-
-    def __init__(self, config: BaseConfig) -> None:
-        super().__init__(config)
-        self.memory: Dict[str, bytes] = {}
-        self.lock = asyncio.Lock()
 
 
 class MemoryInputSetConfig(NamedTuple):
@@ -441,10 +441,15 @@ class MemoryOperationNetworkConfig(NamedTuple):
 
 
 class MemoryOperationNetworkContext(BaseOperationNetworkContext):
+    def __init__(self, config: BaseConfig, parent: "MemoryOperationNetwork") -> None:
+        super().__init__(config, parent)
+        self.memory = {}
+        self.lock = asyncio.Lock()
+
     async def add(self, operations: List[Operation]):
-        async with self.parent.lock:
+        async with self.lock:
             for operation in operations:
-                self.parent.memory[operation.name] = operation
+                self.memory[operation.name] = operation
 
     async def operations(
         self,
@@ -455,7 +460,7 @@ class MemoryOperationNetworkContext(BaseOperationNetworkContext):
         if not input_set is None:
             input_definitions = await input_set.definitions()
         # Yield all operations with an input in the input set
-        for operation in self.parent.memory.values():
+        for operation in self.memory.values():
             # Only run operations of the requested stage
             if operation.stage != stage:
                 continue
@@ -483,13 +488,6 @@ class MemoryOperationNetwork(BaseOperationNetwork, BaseMemoryDataFlowObject):
 
     CONTEXT = MemoryOperationNetworkContext
 
-    def __init__(self, config: BaseConfig) -> None:
-        super().__init__(config)
-        self.memory = {
-            operation.name: operation for operation in config.operations
-        }
-        self.lock = asyncio.Lock()
-
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
         cls.config_set(args, above, "ops", Arg(type=Operation.load, nargs="+"))
@@ -503,6 +501,10 @@ class MemoryOperationNetwork(BaseOperationNetwork, BaseMemoryDataFlowObject):
 
 
 class MemoryRedundancyCheckerContext(BaseRedundancyCheckerContext):
+    def __init__(self, config: BaseConfig, parent: "MemoryRedundancyChecker") -> None:
+        super().__init__(config, parent)
+        self.kvctx = None
+
     async def __aenter__(self) -> "MemoryRedundancyCheckerContext":
         self.__stack = AsyncExitStack()
         await self.__stack.__aenter__()
@@ -570,7 +572,7 @@ class MemoryRedundancyChecker(BaseRedundancyChecker, BaseMemoryDataFlowObject):
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
-        await self.__stack.aclose()
+        await self.__stack.__aexit__(exc_type, exc_value, traceback)
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
@@ -595,6 +597,11 @@ class MemoryRedundancyChecker(BaseRedundancyChecker, BaseMemoryDataFlowObject):
 
 
 class MemoryLockNetworkContext(BaseLockNetworkContext):
+    def __init__(self, config: BaseConfig, parent: "MemoryLockNetwork") -> None:
+        super().__init__(config, parent)
+        self.lock = asyncio.Lock()
+        self.locks: Dict[str, asyncio.Lock] = {}
+
     @asynccontextmanager
     async def acquire(self, parameter_set: BaseParameterSet):
         """
@@ -603,16 +610,16 @@ class MemoryLockNetworkContext(BaseLockNetworkContext):
         """
         need_lock = {}
         # Acquire the master lock to find and or create needed locks
-        async with self.parent.lock:
+        async with self.lock:
             # Get all the inputs up the ancestry tree
             inputs = [item async for item in parameter_set.inputs()]
             # Only lock the ones which require it
             for item in filter(lambda item: item.definition.lock, inputs):
                 # Create the lock for the input if not present
-                if not item.uid in self.parent.locks:
-                    self.parent.locks[item.uid] = asyncio.Lock()
+                if not item.uid in self.locks:
+                    self.locks[item.uid] = asyncio.Lock()
                 # Retrieve the lock
-                need_lock[item.uid] = (item, self.parent.locks[item.uid])
+                need_lock[item.uid] = (item, self.locks[item.uid])
         # Use AsyncExitStack to lock the variable amount of inputs required
         async with AsyncExitStack() as stack:
             # Take all the locks we found we needed for this parameter set
@@ -629,11 +636,6 @@ class MemoryLockNetworkContext(BaseLockNetworkContext):
 class MemoryLockNetwork(BaseLockNetwork, BaseMemoryDataFlowObject):
 
     CONTEXT = MemoryLockNetworkContext
-
-    def __init__(self, config: BaseConfig) -> None:
-        super().__init__(config)
-        self.lock = asyncio.Lock()
-        self.locks: Dict[str, asyncio.Lock] = {}
 
 
 class MemoryOperationImplementationNetworkConfig(NamedTuple):
@@ -705,7 +707,7 @@ class MemoryOperationImplementationNetworkContext(
         async with self.parent.operations[operation.name](ctx, octx) as opctx:
             self.logger.debug("---")
             self.logger.debug(
-                "Stage: %s: %s", operation.stage.value.upper(), operation.name
+                "[%s] Stage: %s: %s", self.config.uid, operation.stage.value.upper(), operation.name
             )
             self.logger.debug("Inputs: %s", inputs)
             self.logger.debug(
@@ -720,6 +722,8 @@ class MemoryOperationImplementationNetworkContext(
                     )
                 ),
             )
+            # TODO(dfass) DEBUG
+            # input("continue: ")
             outputs = await opctx.run(inputs)
             self.logger.debug("Output: %s", outputs)
             self.logger.debug("---")
