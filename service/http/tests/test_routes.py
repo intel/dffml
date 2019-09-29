@@ -215,7 +215,6 @@ async def remap(
                 % (feature_name, ".".join(traverse), result)
             )
     # Results have been remapped
-    return {"response": "deadbeef"}
     return remap
 
 
