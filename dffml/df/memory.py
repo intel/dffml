@@ -449,7 +449,7 @@ class MemoryOperationNetworkContext(BaseOperationNetworkContext):
     async def add(self, operations: List[Operation]):
         async with self.lock:
             for operation in operations:
-                self.memory[operation.name] = operation
+                self.memory[operation.instance_name] = operation
 
     async def operations(
         self,
@@ -521,7 +521,7 @@ class MemoryRedundancyCheckerContext(BaseRedundancyCheckerContext):
     ) -> str:
         """
         SHA384 hash of the parameter set context handle as a string, the
-        operation name, and the sorted list of input uuids.
+        operation.instance_name, and the sorted list of input uuids.
         """
         uid_list = sorted(
             map(
@@ -530,7 +530,7 @@ class MemoryRedundancyCheckerContext(BaseRedundancyCheckerContext):
             )
         )
         uid_list.insert(0, (await parameter_set.ctx.handle()).as_string())
-        uid_list.insert(0, operation.name)
+        uid_list.insert(0, operation.instance_name)
         return hashlib.sha384(", ".join(uid_list).encode("utf-8")).hexdigest()
 
     async def exists(
@@ -671,7 +671,7 @@ class MemoryOperationImplementationNetworkContext(
         """
         Checks if operation in is operations we have loaded in memory
         """
-        return operation.name in self.operations
+        return operation.instance_name in self.operations
 
     async def instantiable(self, operation: Operation) -> bool:
         """
@@ -697,7 +697,7 @@ class MemoryOperationImplementationNetworkContext(
         """
         # TODO(dfass) This should be the opeartion instance_name
         self.operations[
-            operation.name
+            operation.instance_name
         ] = await self._stack.enter_async_context(
             OperationImplementation.load(operation.name)(config)
         )
@@ -711,7 +711,7 @@ class MemoryOperationImplementationNetworkContext(
             if not await self.instantiable(operation):
                 raise OperationImplementationNotInstantiable(operation.name)
             else:
-                raise OperationImplementationNotInNetwork(operation.name)
+                raise OperationImplementationNotInNetwork(operation.instance_name)
 
     async def run(
         self,
@@ -726,10 +726,10 @@ class MemoryOperationImplementationNetworkContext(
         # Check that our network contains the operation
         await self.ensure_contains(operation)
         # Create an opimp context and run the opertion
-        async with self.operations[operation.name](ctx, octx) as opctx:
+        async with self.operations[operation.instance_name](ctx, octx) as opctx:
             self.logger.debug("---")
             self.logger.debug(
-                "Stage: %s: %s", operation.stage.value.upper(), operation.name
+                "Stage: %s: %s", operation.stage.value.upper(), operation.instance_name
             )
             self.logger.debug("Inputs: %s", inputs)
             self.logger.debug(
@@ -801,7 +801,7 @@ class MemoryOperationImplementationNetworkContext(
                 "Value %s missing from output:definition mapping %s(%s)"
                 % (
                     str(error),
-                    operation.name,
+                    operation.instance_name,
                     ", ".join(operation.outputs.keys()),
                 )
             ) from error
@@ -822,7 +822,7 @@ class MemoryOperationImplementationNetworkContext(
         """
         Schedule the running of an operation
         """
-        self.logger.debug("[DISPATCH] %s", operation.name)
+        self.logger.debug("[DISPATCH] %s", operation.instance_name)
         task = asyncio.create_task(
             self.run_dispatch(octx, operation, parameter_set)
         )
@@ -1037,7 +1037,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # the output of that operation
         # TODO(dfass) operation instance name instead of operation name
         output = {
-                operation.name: results
+                operation.instance_name: results
                 async for operation, results in self.run_stage(
                     ctx, Stage.OUTPUT
                 )
@@ -1210,7 +1210,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                                 self.logger.debug(
                                     "[%s]: dispatch operation: %s",
                                     ctx_str,
-                                    operation.name,
+                                    operation.instance_name,
                                 )
                         # Create a another task to waits for new input sets
                         input_set_enters_network = asyncio.create_task(
@@ -1233,7 +1233,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # the output of that operation
         # TODO(dfass) operation instance name instead of operation name
         output = {
-                operation.name: results
+                operation.instance_name: results
                 async for operation, results in self.run_stage(
                     ctx, Stage.OUTPUT
                 )
