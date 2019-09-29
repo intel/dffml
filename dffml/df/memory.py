@@ -708,7 +708,6 @@ class MemoryOperationImplementationNetworkContext(
         Instantiate class registered with ____ entrypoint using pkg_resources.
         Return true if instantiation was successful.
         """
-        # TODO(dfass) This should be the opeartion instance_name
         self.operations[
             operation.instance_name
         ] = await self._stack.enter_async_context(
@@ -757,8 +756,6 @@ class MemoryOperationImplementationNetworkContext(
                     )
                 ),
             )
-            # TODO(dfass) DEBUG
-            # input("continue: ")
             outputs = await opctx.run(inputs)
             self.logger.debug("Output: %s", outputs)
             self.logger.debug("---")
@@ -1060,7 +1057,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         self.logger.debug("Running output subflow: %s", dataflow)
         # Run output operations and create a dict mapping the operation name to
         # the output of that operation
-        # TODO(dfass) operation instance name instead of operation name
         output = {
                 operation.instance_name: results
                 async for operation, results in self.run_stage(
@@ -1256,7 +1252,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 pass
         # Run output operations and create a dict mapping the operation name to
         # the output of that operation
-        # TODO(dfass) operation instance name instead of operation name
         output = {
                 operation.instance_name: results
                 async for operation, results in self.run_stage(
