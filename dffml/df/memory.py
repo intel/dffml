@@ -673,10 +673,19 @@ class MemoryOperationImplementationNetworkContext(
         """
         return operation.instance_name in self.operations
 
-    async def instantiable(self, operation: Operation) -> bool:
+    async def instantiable(
+        self,
+        operation: Operation,
+        *,
+        opimp: OperationImplementation = None,
+        ) -> bool:
         """
         Looks for class registered with ____ entrypoint using pkg_resources.
         """
+        # This is pure Python, so if we're given an operation implementation we
+        # will be able to instantiate it
+        if opimp is not None:
+            return True
         try:
             opimp = OperationImplementation.load(operation.name)
         except EntrypointNotFound as error:
@@ -689,7 +698,11 @@ class MemoryOperationImplementationNetworkContext(
         return True
 
     async def instantiate(
-        self, operation: Operation, config: BaseConfig
+        self,
+        operation: Operation,
+        config: BaseConfig,
+        *,
+        opimp: OperationImplementation = None,
     ) -> bool:
         """
         Instantiate class registered with ____ entrypoint using pkg_resources.
@@ -699,7 +712,7 @@ class MemoryOperationImplementationNetworkContext(
         self.operations[
             operation.instance_name
         ] = await self._stack.enter_async_context(
-            OperationImplementation.load(operation.name)(config)
+            opimp(config) if opimp is not None else OperationImplementation.load(operation.name)(config)
         )
 
     async def ensure_contains(self, operation: Operation):
@@ -976,7 +989,13 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
             # Add and instantiate operation implementation if not
             # present
             if not await self.nctx.contains(operation):
-                if not await self.nctx.instantiable(operation):
+                # We may have been provided with the implemenation. Attempt to
+                # look it up from within the dataflow.
+                opimp = dataflow.implementations.get(operation.name, None)
+                # There is a possiblity the operation implemenation network will
+                # be able to instantiate from the given operation implementation
+                # if present. But we can't count on it.
+                if not await self.nctx.instantiable(operation, opimp=opimp):
                     raise OperationImplementationNotInstantiable(
                         operation.name
                     )
@@ -991,15 +1010,17 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                             operation.name,
                         )
                         opimp_config = BaseConfig()
-                    await self.nctx.instantiate(operation, opimp_config)
+                    await self.nctx.instantiate(operation, opimp_config,
+                        opimp=opimp)
         # Add all the inputs
-        self.logger.debug("Seeding dataflow with inputs: %s", inputs)
-        if ctx is not None:
-            # Add under existing context if given
-            await self.ictx.cadd(ctx, *inputs)
-        else:
-            # Otherwise create new context
-            ctx = await self.ictx.uadd(*inputs)
+        if inputs:
+            self.logger.debug("Seeding dataflow with inputs: %s", inputs)
+            if ctx is not None:
+                # Add under existing context if given
+                await self.ictx.cadd(ctx, *inputs)
+            else:
+                # Otherwise create new context
+                ctx = await self.ictx.uadd(*inputs)
         return ctx
 
     async def run_dataflow(
@@ -1018,6 +1039,10 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         async for nctx, result in self.run_operations(ctx=ctx, dataflow=dataflow):
             # TODO Add check that ctx returned is the ctx corresponding to uadd.
             # We'll have to make uadd return the ctx so we can compare.
+            # TODO Send the context back into some list maintained by
+            # run_operations so that if there is another run_dataflow method
+            # running on the same orchestrator context it will get the context
+            # it's waiting for and return
             self.logger.debug("dataflow: %s, result: %s", dataflow, result)
             return result
 

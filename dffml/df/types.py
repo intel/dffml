@@ -3,7 +3,7 @@ import itertools
 import pkg_resources
 from enum import Enum
 from dataclasses import dataclass, field
-from typing import NamedTuple, Union, List, Dict, Optional, Any, Iterator
+from typing import NamedTuple, Union, List, Dict, Optional, Any, Iterator, Callable
 
 from ..base import BaseConfig
 from ..util.entrypoint import Entrypoint, base_entry_point
@@ -206,11 +206,14 @@ class InputFlow(dict):
 
 @dataclass
 class DataFlow:
-    operations: Dict[str, Operation]
+    operations: Dict[str, Union[Operation, Callable]]
     seed: List[Input] = field(default=None)
     configs: Dict[str, BaseConfig] = field(default=None)
     definitions: Dict[str, Definition] = field(init=False)
     flow: Dict[str, InputFlow] = field(default=None)
+    # Implementations can be provided in case they haven't been registered via
+    # the entrypoint system.
+    implementations: Dict[str, "OperationImplementation"] = field(default=None)
 
     def __post_init__(self):
         # Prevent usage of a global dict (if we set default to {} then all the
@@ -221,6 +224,25 @@ class DataFlow:
             self.configs = {}
         if self.flow is None:
             self.flow = {}
+        if self.implementations is None:
+            self.implementations = {}
+        # Allow callers to pass in functions decorated with op. Iterate over the
+        # given operations and replace any which have been decorated with their
+        # operation. Add the implementation to our dict of implementations.
+        for instance_name, value in self.operations.items():
+            if getattr(value, "imp", None) is not None \
+                    and getattr(value, "op", None) is not None:
+                # Get the operation and implementation from the wrapped object
+                operation = getattr(value, "op", None)
+                opimp = getattr(value, "imp", None)
+                # Set the implementation if not explicitly set
+                self.implementations.setdefault(operation.name, opimp)
+                # Change this entry to the instance of Operation associated with
+                # the wrapped object
+                self.operations[instance_name] = operation
+                value = operation
+            # Make sure every operation has the correct instance name
+            self.operations[instance_name] = value._replace(instance_name=instance_name)
         # Grab all definitions from operations
         operations = list(self.operations.values())
         definitions = list(
