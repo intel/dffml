@@ -214,28 +214,37 @@ class MemoryDefinitionSetContext(BaseDefinitionSetContext):
 
 
 class MemoryInputNetworkContext(BaseInputNetworkContext):
+    def __init__(self, config: BaseConfig, parent: "MemoryInputNetwork") -> None:
+        super().__init__(config, parent)
+        self.ctx_notification_set = NotificationSet()
+        self.input_notification_set = {}
+        # Organize by context handle string then by definition within that
+        self.ctxhd: Dict[str, Dict[Definition, Any]] = {}
+        # TODO Create ctxhd_locks dict to manage a per context lock
+        self.ctxhd_lock = asyncio.Lock()
+
     async def add(self, input_set: BaseInputSet):
         # Grab the input set context handle
         handle = await input_set.ctx.handle()
         handle_string = handle.as_string()
         # If the context for this input set does not exist create a
         # NotificationSet for it to notify the orchestrator
-        if not handle_string in self.parent.input_notification_set:
-            self.parent.input_notification_set[
+        if not handle_string in self.input_notification_set:
+            self.input_notification_set[
                 handle_string
             ] = NotificationSet()
-            async with self.parent.ctx_notification_set() as ctx:
+            async with self.ctx_notification_set() as ctx:
                 await ctx.add(input_set.ctx, [])
         # Add the input set to the incoming inputs
-        async with self.parent.input_notification_set[handle_string]() as ctx:
+        async with self.input_notification_set[handle_string]() as ctx:
             await ctx.add(
                 input_set, [item async for item in input_set.inputs()]
             )
         # Associate inputs with their context handle grouped by definition
-        async with self.parent.ctxhd_lock:
+        async with self.ctxhd_lock:
             # Create dict for handle_string if not present
-            if not handle_string in self.parent.ctxhd:
-                self.parent.ctxhd[
+            if not handle_string in self.ctxhd:
+                self.ctxhd[
                     handle_string
                 ] = MemoryInputNetworkContextEntry(
                     ctx=input_set.ctx, definitions={}
@@ -245,13 +254,13 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                 # Create set for item definition if not present
                 if (
                     not item.definition
-                    in self.parent.ctxhd[handle_string].definitions
+                    in self.ctxhd[handle_string].definitions
                 ):
-                    self.parent.ctxhd[handle_string].definitions[
+                    self.ctxhd[handle_string].definitions[
                         item.definition
                     ] = []
                 # Add input to by defintion set
-                self.parent.ctxhd[handle_string].definitions[
+                self.ctxhd[handle_string].definitions[
                     item.definition
                 ].append(item)
 
@@ -301,7 +310,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         return ctx
 
     async def ctx(self) -> Tuple[bool, BaseInputSetContext]:
-        async with self.parent.ctx_notification_set() as ctx:
+        async with self.ctx_notification_set() as ctx:
             return await ctx.added()
 
     async def added(
@@ -310,7 +319,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         # Grab the input set context handle
         handle_string = (await watch_ctx.handle()).as_string()
         # Notify whatever is listening for new inputs in this context
-        async with self.parent.input_notification_set[handle_string]() as ctx:
+        async with self.input_notification_set[handle_string]() as ctx:
             """
             return await ctx.added()
             """
@@ -325,17 +334,17 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
     async def definition(
         self, ctx: BaseInputSetContext, definition: str
     ) -> Definition:
-        async with self.parent.ctxhd_lock:
+        async with self.ctxhd_lock:
             # Grab the input set context handle
             handle_string = (await ctx.handle()).as_string()
             # Ensure that the handle_string is present in ctxhd
-            if not handle_string in self.parent.ctxhd:
+            if not handle_string in self.ctxhd:
                 raise ContextNotPresent(handle_string)
             # Search through the definitions to find one with a matching name
             found = list(
                 filter(
                     lambda check: check.name == definition,
-                    self.parent.ctxhd[handle_string].definitions,
+                    self.ctxhd[handle_string].definitions,
                 )
             )
             # Raise an error if the definition was not found in given context
@@ -349,7 +358,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
     def definitions(
         self, ctx: BaseInputSetContext
     ) -> BaseDefinitionSetContext:
-        return MemoryDefinitionSetContext(self.config, self.parent, ctx)
+        return MemoryDefinitionSetContext(self.config, self, ctx)
 
     async def gather_inputs(
         self,
@@ -359,19 +368,19 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
     ) -> AsyncIterator[BaseParameterSet]:
         # Create a mapping of definitions to inputs for that definition
         gather: Dict[str, List[Parameter]] = {}
-        async with self.parent.ctxhd_lock:
+        async with self.ctxhd_lock:
             # If no context is given we will generate input pairs for all
             # contexts
-            contexts = self.parent.ctxhd.values()
+            contexts = self.ctxhd.values()
             # If a context is given only search definitions within that context
             if not ctx is None:
                 # Grab the input set context handle
                 handle_string = (await ctx.handle()).as_string()
                 # Ensure that the handle_string is present in ctxhd
-                if not handle_string in self.parent.ctxhd:
+                if not handle_string in self.ctxhd:
                     return
                 # Limit search to given context via context handle
-                contexts = [self.parent.ctxhd[handle_string]]
+                contexts = [self.ctxhd[handle_string]]
             for ctx, definitions in contexts:
                 # Check that all conditions are present and logicly True
                 if not all(
@@ -424,15 +433,6 @@ class MemoryInputNetwork(BaseInputNetwork, BaseMemoryDataFlowObject):
     """
 
     CONTEXT = MemoryInputNetworkContext
-
-    def __init__(self, config: BaseConfig) -> None:
-        super().__init__(config)
-        self.ctx_notification_set = NotificationSet()
-        self.input_notification_set = {}
-        # Organize by context handle string then by definition within that
-        self.ctxhd: Dict[str, Dict[Definition, Any]] = {}
-        # TODO Create ctxhd_locks dict to manage a per context lock
-        self.ctxhd_lock = asyncio.Lock()
 
 
 class MemoryOperationNetworkConfig(NamedTuple):
