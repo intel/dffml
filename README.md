@@ -9,6 +9,8 @@ Documentation for the latest release is hosted at https://intel.github.io/dffml/
 Documentation for the master branch is hosted at
 https://intel.github.io/dffml/master/index.html
 
+You can start using or hacking on DFFML right away [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/intel/dffml)
+
 ## Contributing
 
 [CONTRIBUTING.md](CONTRIBUTING.md) will guide you through getting setup and
