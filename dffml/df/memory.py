@@ -729,7 +729,7 @@ class MemoryOperationImplementationNetworkContext(
         async with self.operations[operation.name](ctx, octx) as opctx:
             self.logger.debug("---")
             self.logger.debug(
-                "[%s] Stage: %s: %s", self.config.uid, operation.stage.value.upper(), operation.name
+                "Stage: %s: %s", operation.stage.value.upper(), operation.name
             )
             self.logger.debug("Inputs: %s", inputs)
             self.logger.debug(

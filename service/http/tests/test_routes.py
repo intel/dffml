@@ -308,7 +308,6 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                 json.dumps({"response": message}), await response.text()
             )
 
-    @unittest.skip("until subflows work")
     async def test_post(self):
         url: str = "/some/url"
         message: str = "Hello Feedface"
@@ -326,21 +325,36 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                 "dataflow": DataFlow(
                     operations={
                         "hello_blank": formatter.op,
-                        "get_formatted_message": GetSingle.op,
+                        "remap_to_response": remap.op,
                     },
-                    configs={"hello_blank": {"formatting": "Hello {}"}},
+                    configs={
+                        "hello_blank": {"formatting": "Hello {}"},
+                        "remap_to_response": {
+                            "dataflow": DataFlow(
+                                operations={
+                                    "get_formatted_message": GetSingle.op
+                                },
+                                seed=[
+                                    Input(
+                                        value=[
+                                            formatter.op.outputs["string"].name
+                                        ],
+                                        definition=GetSingle.op.inputs["spec"],
+                                    )
+                                ],
+                            ).export()
+                        },
+                    },
                     seed=[
                         Input(
-                            value=[formatter.op.outputs["string"].name],
-                            definition=GetSingle.op.inputs["spec"],
-                        )
+                            value={
+                                "response": [
+                                    formatter.op.outputs["string"].name,
+                                ]
+                            },
+                            definition=remap.op.inputs["spec"],
+                        ),
                     ],
-                    remap={
-                        "response": [
-                            GetSingle.op.name,
-                            formatter.op.outputs["string"].name,
-                        ]
-                    },
                 ).export(),
             },
         ) as r:
