@@ -1,16 +1,18 @@
 import inspect
 import itertools
 
-from .types import Definition, Operation, Output
+from .types import Definition, Operation, Output, DataFlow
 
 
 class Linker(object):
-    def resolve(self, source: dict):
+    @classmethod
+    def resolve(cls, source: dict):
         definitions = {}
         operations = {}
         outputs = {}
         for name, kwargs in source.get("definitions", {}).items():
-            definitions[name] = Definition(name=name, **kwargs)
+            kwargs.setdefault("name", name)
+            definitions[name] = Definition(**kwargs)
         sig = inspect.signature(Operation)
         for name, kwargs in source.get("operations", {}).items():
             for arg, parameter in sig.parameters.items():
@@ -25,6 +27,8 @@ class Linker(object):
                     kwargs[arg] = parameter.annotation.__origin__()
             # Replaces strings referencing definitions with definitions
             for arg in ["conditions"]:
+                if not arg in kwargs:
+                    continue
                 try:
                     kwargs[arg] = [definitions[i] for i in kwargs[arg]]
                 except KeyError as error:
@@ -33,22 +37,26 @@ class Linker(object):
                         % (name, arg)
                     ) from error
             for arg in ["inputs", "outputs"]:
+                if not arg in kwargs:
+                    continue
                 try:
                     kwargs[arg] = {
-                        i: definitions[kwargs[arg][i]] for i in kwargs[arg]
+                        i: definitions[kwargs[arg][i]["name"]] for i in kwargs[arg]
                     }
                 except KeyError as error:
                     raise KeyError(
                         "Definition missing while resolving %s.%s"
                         % (name, arg)
                     ) from error
-            operations[name] = Operation(name=name, **kwargs)
-        return definitions, operations, outputs
+            kwargs.setdefault("name", name)
+            operations[name] = Operation(**kwargs)
+        return DataFlow(operations=operations)
 
-    def export(self, *args):
+    @classmethod
+    def export(cls, dataflow: DataFlow):
         exported = {"definitions": {}, "operations": {}}
-        for operation in args:
-            exported["operations"][operation.name] = operation.export()
+        for operation in dataflow.operations.values():
+            exported["operations"][operation.instance_name] = operation.export()
             exported["definitions"].update(
                 {
                     definition.name: definition.export()
@@ -59,4 +67,6 @@ class Linker(object):
                     )
                 }
             )
+        if dataflow.flow:
+            exported["flow"] = dataflow.export()["flow"].copy()
         return exported

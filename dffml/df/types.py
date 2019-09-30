@@ -203,6 +203,8 @@ class InputFlow(dict):
     network.
     """
 
+    def export(self):
+        return dict(self)
 
 @dataclass
 class DataFlow:
@@ -271,7 +273,10 @@ class DataFlow:
             },
             seed=[input_data.export() for input_data in self.seed],
             configs=self.configs.copy(),
-            flow=self.flow.copy(),
+            flow={
+                instance_name: input_flow.export()
+                for instance_name, input_flow in self.flow.items()
+            },
         )
 
     @classmethod

@@ -320,6 +320,9 @@ class Diagram(CMD):
                             source_operation_node = hashlib.sha384(source_operation.encode()).hexdigest()
                             print(f"{source_operation_node} --> {node}")
 
+# TODO Make yaml its own plugin
+import yaml
+from dffml.df.linker import Linker
 
 class Export(CMD):
 
@@ -338,7 +341,11 @@ class Export(CMD):
             for attr in qualname.split("."):
                 obj = getattr(obj, attr)
                 self.logger.debug("Loaded object: %s(%s)", attr, obj)
-                return obj.export()
+                if isinstance(obj, DataFlow):
+                    exported = yaml.dump(Linker.export(obj)).strip()
+                    # Ensure re-import works
+                    imported = Linker.resolve(yaml.safe_load(exported))
+                    print(exported)
 
 class Develop(CMD):
     """
