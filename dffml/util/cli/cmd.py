@@ -3,6 +3,7 @@
 import ast
 import sys
 import json
+import enum
 import logging
 import inspect
 import asyncio
@@ -35,6 +36,8 @@ class JSONEncoder(json.JSONEncoder):
             return obj.dict()
         elif isinstance(obj, Feature):
             return obj.NAME
+        elif isinstance(obj, enum.Enum):
+            return str(obj.value)
         return json.JSONEncoder.default(self, obj)
 
 

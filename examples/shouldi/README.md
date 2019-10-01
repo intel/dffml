@@ -36,3 +36,9 @@ Right now `shouldi` runs the following static analysis tools and complains if:
 ## License
 
 shouldi is distributed under the [MIT License](LICENSE).
+
+#### What's This Really Called
+
+The real name of this package is "DFFML Evaluator for PyPi Packages". `shouldi`
+is mearly the command line invokation, and we claim `shouldi`, the package name
+on PyPi, to avoid a supply chain attack.
