@@ -92,9 +92,8 @@ class TestScikitModel:
     async def test_02_predict(self):
         async with self.sources as sources, self.features as features, self.model as model:
             async with sources() as sctx, model(features) as mctx:
-                async for repo, prediction, confidence in mctx.predict(
-                    sctx.repos()
-                ):
+                async for repo in mctx.predict(sctx.repos()):
+                    prediction = repo.prediction().value
                     if self.MODEL_TYPE is "CLASSIFICATION":
                         self.assertIn(prediction, [2, 4])
                     elif self.MODEL_TYPE is "REGRESSION":

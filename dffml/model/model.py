@@ -52,9 +52,7 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    async def predict(
-        self, repos: AsyncIterator[Repo]
-    ) -> AsyncIterator[Tuple[Repo, Any, float]]:
+    async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
         """
         Uses trained data to make a prediction about the quality of a repo.
         """
