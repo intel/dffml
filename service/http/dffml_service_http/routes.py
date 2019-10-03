@@ -7,14 +7,16 @@ from http import HTTPStatus
 from functools import partial
 from dataclasses import dataclass
 from contextlib import AsyncExitStack
-from typing import List, Union, AsyncIterator
+from typing import List, Union, AsyncIterator, Dict
 
 from aiohttp import web
 import aiohttp_cors
 
 from dffml.repo import Repo
 from dffml.base import MissingConfig
-from dffml.source.source import BaseSource
+from dffml.model import Model
+from dffml.feature import Features
+from dffml.source.source import BaseSource, SourcesContext
 from dffml.util.entrypoint import EntrypointNotFound
 
 
@@ -26,6 +28,8 @@ SECRETS_TOKEN_BYTES = int(SECRETS_TOKEN_BITS / 8)
 
 OK = {"error": None}
 SOURCE_NOT_LOADED = {"error": "Source not loaded"}
+MODEL_NOT_LOADED = {"error": "Model not loaded"}
+MODEL_NO_SOURCES = {"error": "No source context labels given"}
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -54,7 +58,7 @@ class IterkeyEntry:
 
 def sctx_route(handler):
     """
-    Ensure that the labeled sctx requested is loaded. Return the sctx
+    Ensure that the labeled source context requested is loaded. Return the sctx
     if it is loaded and an error otherwise.
     """
 
@@ -72,15 +76,36 @@ def sctx_route(handler):
     return get_sctx
 
 
+def mctx_route(handler):
+    """
+    Ensure that the labeled model context requested is loaded. Return the mctx
+    if it is loaded and an error otherwise.
+    """
+
+    @wraps(handler)
+    async def get_mctx(self, request):
+        mctx = request.app["model_contexts"].get(
+            request.match_info["label"], None
+        )
+        if mctx is None:
+            return web.json_response(
+                MODEL_NOT_LOADED, status=HTTPStatus.NOT_FOUND
+            )
+        return await handler(self, request, mctx)
+
+    return get_mctx
+
+
 class Routes:
     @web.middleware
     async def error_middleware(self, request, handler):
         try:
             return await handler(request)
         except web.HTTPException as error:
-            return web.json_response(
-                {"error": error.reason}, status=error.status
-            )
+            response = {"error": error.reason}
+            if error.text is not None:
+                response["error"] = error.text
+            return web.json_response(response, status=error.status)
         except Exception as error:  #  pragma: no cov
             self.logger.error(
                 "ERROR handling %s: %s",
@@ -160,6 +185,9 @@ class Routes:
         try:
             source = source.withconfig(config)
         except MissingConfig as error:
+            self.logger.error(
+                f"failed to configure source {source_name}: {error}"
+            )
             return web.json_response(
                 {"error": str(error)}, status=HTTPStatus.BAD_REQUEST
             )
@@ -168,15 +196,102 @@ class Routes:
         exit_stack = request.app["exit_stack"]
         source = await exit_stack.enter_async_context(source)
         request.app["sources"][label] = source
-        sctx = await exit_stack.enter_async_context(source())
-        request.app["source_contexts"][label] = sctx
+
+        return web.json_response(OK)
+
+    async def context_source(self, request):
+        label = request.match_info["label"]
+        ctx_label = request.match_info["ctx_label"]
+
+        if not label in request.app["sources"]:
+            return web.json_response(
+                {"error": f"{label} source not found"},
+                status=HTTPStatus.NOT_FOUND,
+            )
+
+        # Enter the source context and pass the features
+        exit_stack = request.app["exit_stack"]
+        source = request.app["sources"][label]
+        mctx = await exit_stack.enter_async_context(source())
+        request.app["source_contexts"][ctx_label] = mctx
+
+        return web.json_response(OK)
+
+    async def list_models(self, request):
+        return web.json_response(
+            {
+                model.ENTRY_POINT_ORIG_LABEL: model.args({})
+                for model in Model.load()
+            },
+            dumps=partial(json.dumps, cls=JSONEncoder),
+        )
+
+    async def configure_model(self, request):
+        model_name = request.match_info["model"]
+        label = request.match_info["label"]
+
+        config = await request.json()
+
+        try:
+            model = Model.load_labeled(f"{label}={model_name}")
+        except EntrypointNotFound as error:
+            self.logger.error(
+                f"/configure/model/ failed to load model: {error}"
+            )
+            return web.json_response(
+                {"error": f"model {model_name} not found"},
+                status=HTTPStatus.NOT_FOUND,
+            )
+
+        try:
+            model = model.withconfig(config)
+        except MissingConfig as error:
+            self.logger.error(
+                f"failed to configure model {model_name}: {error}"
+            )
+            return web.json_response(
+                {"error": str(error)}, status=HTTPStatus.BAD_REQUEST
+            )
+
+        # DFFML objects all follow a double context entry pattern
+        exit_stack = request.app["exit_stack"]
+        model = await exit_stack.enter_async_context(model)
+        request.app["models"][label] = model
+
+        return web.json_response(OK)
+
+    async def context_model(self, request):
+        label = request.match_info["label"]
+        ctx_label = request.match_info["ctx_label"]
+
+        if not label in request.app["models"]:
+            return web.json_response(
+                {"error": f"{label} model not found"},
+                status=HTTPStatus.NOT_FOUND,
+            )
+
+        features_dict = await request.json()
+
+        try:
+            features = Features._fromdict(**features_dict)
+        except:
+            return web.json_response(
+                {"error": "Incorrect format for features"},
+                status=HTTPStatus.BAD_REQUEST,
+            )
+
+        # Enter the model context and pass the features
+        exit_stack = request.app["exit_stack"]
+        model = request.app["models"][label]
+        mctx = await exit_stack.enter_async_context(model(features))
+        request.app["model_contexts"][ctx_label] = mctx
 
         return web.json_response(OK)
 
     @sctx_route
     async def source_repo(self, request, sctx):
         return web.json_response(
-            (await sctx.repo(request.match_info["key"])).dict()
+            (await sctx.repo(request.match_info["key"])).export()
         )
 
     @sctx_route
@@ -232,7 +347,7 @@ class Routes:
         return web.json_response(
             {
                 "iterkey": iterkey,
-                "repos": {repo.src_url: repo.dict() for repo in repos},
+                "repos": {repo.src_url: repo.export() for repo in repos},
             }
         )
 
@@ -245,7 +360,73 @@ class Routes:
         return web.json_response(
             {
                 "iterkey": iterkey,
-                "repos": {repo.src_url: repo.dict() for repo in repos},
+                "repos": {repo.src_url: repo.export() for repo in repos},
+            }
+        )
+
+    async def get_source_contexts(self, request, sctx_label_list):
+        sources_context = SourcesContext([])
+        for label in sctx_label_list:
+            sctx = request.app["source_contexts"].get(label, None)
+            if sctx is None:
+                raise web.HTTPNotFound(
+                    text=list(SOURCE_NOT_LOADED.values())[0],
+                    content_type="application/json",
+                )
+            sources_context.append(sctx)
+        if not sources_context:
+            raise web.HTTPBadRequest(
+                text=list(MODEL_NO_SOURCES.values())[0],
+                content_type="application/json",
+            )
+        return sources_context
+
+    @mctx_route
+    async def model_train(self, request, mctx):
+        # Get the list of source context labels to pass to mctx.train
+        sctx_label_list = await request.json()
+        # Get all the source contexts
+        sources = await self.get_source_contexts(request, sctx_label_list)
+        # Train the model on the sources
+        await mctx.train(sources)
+        return web.json_response(OK)
+
+    @mctx_route
+    async def model_accuracy(self, request, mctx):
+        # Get the list of source context labels to pass to mctx.train
+        sctx_label_list = await request.json()
+        # Get all the source contexts
+        sources = await self.get_source_contexts(request, sctx_label_list)
+        # Train the model on the sources
+        return web.json_response({"accuracy": await mctx.accuracy(sources)})
+
+    @mctx_route
+    async def model_predict(self, request, mctx):
+        # TODO Provide an iterkey method for model prediction
+        chunk_size = int(request.match_info["chunk_size"])
+        if chunk_size != 0:
+            return web.json_response(
+                {"error": "Multiple request iteration not yet supported"},
+                status=HTTPStatus.BAD_REQUEST,
+            )
+        # Get the repos
+        repos: Dict[str, Repo] = {
+            src_url: Repo(src_url, data=repo_data)
+            for src_url, repo_data in (await request.json()).items()
+        }
+        # Create an async generator to feed repos
+        async def repo_gen():
+            for repo in repos.values():
+                yield repo
+
+        # Feed them through prediction
+        return web.json_response(
+            {
+                "iterkey": None,
+                "repos": {
+                    repo.src_url: repo.export()
+                    async for repo in mctx.predict(repo_gen())
+                },
             }
         )
 
@@ -272,6 +453,8 @@ class Routes:
         self.app["sources"] = {}
         self.app["source_contexts"] = {}
         self.app["source_repos_iterkeys"] = {}
+        self.app["models"] = {}
+        self.app["model_contexts"] = {}
         self.app.update(kwargs)
         self.routes = [
             # HTTP Service specific APIs
@@ -283,6 +466,14 @@ class Routes:
                 "/configure/source/{source}/{label}",
                 self.configure_source,
             ),
+            (
+                "GET",
+                "/context/source/{label}/{ctx_label}",
+                self.context_source,
+            ),
+            ("GET", "/list/models", self.list_models),
+            ("POST", "/configure/model/{model}/{label}", self.configure_model),
+            ("POST", "/context/model/{label}/{ctx_label}", self.context_model),
             # Source APIs
             ("GET", "/source/{label}/repo/{key}", self.source_repo),
             ("POST", "/source/{label}/update/{key}", self.source_update),
@@ -293,6 +484,15 @@ class Routes:
                 self.source_repos_iter,
             ),
             # TODO route to delete iterkey before iteration has completed
+            # Model APIs
+            ("POST", "/model/{label}/train", self.model_train),
+            ("POST", "/model/{label}/accuracy", self.model_accuracy),
+            # TODO Provide an iterkey method for model prediction
+            (
+                "POST",
+                "/model/{label}/predict/{chunk_size}",
+                self.model_predict,
+            ),
         ]
         for route in self.routes:
             route = self.app.router.add_route(*route)

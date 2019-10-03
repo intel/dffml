@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Entrypoint listing command to development service to aid in debugging issues
   with entrypoints.
 - HTTP API service to enable interacting with DFFML over HTTP. Currently
-  includes APIs for configuring and using Sources.
+  includes APIs for configuring and using Sources and Models.
 - MySQL protocol source to work with data from a MySQL protocol compatible db
 - shouldi example got a bandit operation which tells users not to install if
   there are more than 5 issues of high severity and confidence.
