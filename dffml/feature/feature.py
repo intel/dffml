@@ -159,6 +159,17 @@ class Feature(abc.ABC, Entrypoint):
     def __repr__(self):
         return "%s[%r, %d]" % (self.__str__(), self.dtype(), self.length())
 
+    def export(self):
+        return {
+            "name": self.NAME,
+            "dtype": self.dtype().__qualname__,
+            "length": self.length(),
+        }
+
+    @classmethod
+    def _fromdict(cls, **kwargs):
+        return cls.load_def(**kwargs)
+
     def dtype(self) -> Type:
         """
         Models need to know a Feature's datatype.
@@ -289,6 +300,20 @@ class Features(list, Monitor):
 
     def names(self) -> List[str]:
         return list(({feature.NAME: True for feature in self}).keys())
+
+    def export(self):
+        return {feature.NAME: feature.export() for feature in self}
+
+    @classmethod
+    def _fromdict(cls, **kwargs):
+        for name, feature_def in kwargs.items():
+            feature_def.setdefault("name", name)
+        return cls(
+            *[
+                Feature._fromdict(**feature_data)
+                for feature_data in kwargs.values()
+            ]
+        )
 
     async def evaluate(self, src: str, task: Task = None) -> Dict[str, Any]:
         return await asyncio.wait_for(
