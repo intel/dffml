@@ -91,9 +91,7 @@ class ScikitContext(ModelContext):
         self.logger.debug("Model Accuracy: {}".format(self.confidence))
         return self.confidence
 
-    async def predict(
-        self, repos: AsyncIterator[Repo]
-    ) -> AsyncIterator[Tuple[Repo, Any, float]]:
+    async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
         if self.confidence is None:
             raise ValueError("Model Not Trained")
         async for repo in repos:
@@ -107,7 +105,8 @@ class ScikitContext(ModelContext):
                     self.clf.predict(predict),
                 )
             )
-            yield repo, self.clf.predict(predict)[0], self.confidence
+            repo.predicted(self.clf.predict(predict)[0], self.confidence)
+            yield repo
 
 
 class Scikit(Model):

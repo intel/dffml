@@ -114,14 +114,14 @@ class SLRContext(ModelContext):
         accuracy_value = self.regression_line[2]
         return Accuracy(accuracy_value)
 
-    async def predict(
-        self, repos: AsyncIterator[Repo]
-    ) -> AsyncIterator[Tuple[Repo, Any, float]]:
+    async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
         async for repo in repos:
             feature_data = repo.features(self.features)
-            yield repo, await self.predict_input(
-                feature_data[self.features[0]]
-            ), self.regression_line[2]
+            repo.predicted(
+                await self.predict_input(feature_data[self.features[0]]),
+                self.regression_line[2],
+            )
+            yield repo
 
 
 @entry_point("slr")

@@ -4,6 +4,7 @@
 Information on the software to evaluate is stored in a Repo instance.
 """
 import os
+import warnings
 from datetime import datetime
 from typing import Optional, List, Dict, Any, AsyncIterator
 
@@ -21,7 +22,7 @@ class RepoPrediction(dict):
 
     EXPORTED = ["value", "confidence"]
 
-    def __init__(self, *, confidence: float = 0.0, value: Any = "") -> None:
+    def __init__(self, *, confidence: float = 0.0, value: Any = None) -> None:
         self["confidence"] = confidence
         self["value"] = value
 
@@ -39,7 +40,7 @@ class RepoPrediction(dict):
         return self
 
     def __len__(self):
-        if self["confidence"] == 0.0 and not self["value"]:
+        if self["confidence"] == 0.0 and self["value"] is None:
             return 0
         return 2
 
@@ -128,6 +129,15 @@ class Repo(object):
         self.extra = extra
 
     def dict(self):
+        # TODO Remove dict method in favor of export
+        warnings.warn(
+            "dict method will be removed in favor of export",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.export()
+
+    def export(self):
         data = self.data.dict()
         data["extra"] = self.extra
         return data

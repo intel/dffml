@@ -63,6 +63,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - shouldi example runs bandit now in addition to safety
 - The way safety gets called
 - Switched documentation to Read The Docs theme
+- Models yield only a repo object instead of the value and confidence of the
+  prediction as well. Models are not responsible for calling the predicted
+  method on the repo. This will ease the process of making predict feature
+  specific.
 ### Fixed
 - Docs get version from dffml.version.VERSION.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
