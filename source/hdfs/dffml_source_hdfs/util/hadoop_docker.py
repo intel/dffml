@@ -18,7 +18,7 @@ LOGGER = logging.getLogger(__package__)
 
 logging.basicConfig(level=logging.DEBUG)
 
-# DOCKER_IMAGE = "mariadb:10"
+DOCKER_IMAGE = "cloudera/quickstart:latest"
 # MySQL daemons default listing port
 # DEFAULT_PORT = 3306
 # Environment variables passed to MySQL container
@@ -34,14 +34,20 @@ logging.basicConfig(level=logging.DEBUG)
 # ssl-cert=/conf/certs/server-cert.pem
 # ssl-key=/conf/certs/server-key.pem
 # """
-# DOCKER_NA: str = "Failed to connect to docker daemon"
-# DOCKER_AVAILABLE: bool = False
-# try:
-#     DOCKER_CLIENT: docker.DockerClient = docker.from_env()
-#     DOCKER_AVAILABLE = DOCKER_CLIENT.ping()
-#     DOCKER_CLIENT.close()
-# except:
-#     pass
+DOCKER_NA: str = "Failed to connect to docker daemon"
+DOCKER_AVAILABLE: bool = False
+
+DOCKER_CLIENT: docker.DockerClient = docker.from_env()
+print("DOCKERRRR CLIENNNTTT")
+print(DOCKER_CLIENT)
+
+DOCKER_AVAILABLE = DOCKER_CLIENT.ping()
+print("DOCKERRRR AVAILABLE")
+print(DOCKER_CLIENT)
+DOCKER_CLIENT.close()
+
+print("EXCEPTION PASSED")
+    
 
 
 class HadoopFailedToStart(Exception):
@@ -54,6 +60,7 @@ def check_connection(addr: str, port: int, *, timeout: float = 0.1) -> bool:
     less than ``timeout`` seconds. Return True if a connection is made within
     the timeout.
     """
+    print("CCHECKKK CONNECITON")
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.settimeout(float(timeout))
         try:
@@ -70,6 +77,8 @@ def mkcleanup(docker_client, container):
     ensure that the container is stopped before Python exits. It will unregister
     itself whenever it is called.
     """
+    print("CHECKKK CONNECITON mkcleanup")
+
     func = None
 
     def cleanup():
@@ -87,50 +96,55 @@ def mkcleanup(docker_client, container):
 
 
 @contextmanager
-def hadoop(*, hadoop_setup: Optional[str] = None):
+def hadoop():
     """
     Start a MySQL container and yield the IP of the container once ready for
     connections. ``sql_setup`` should be the .sql file used to initialize the
     database.
     """
+    print("CHECK CONNECITON HADOOP")
+
     if not DOCKER_AVAILABLE:
         raise unittest.SkipTest("Need docker to run Hadoop")
 
     docker_client: docker.DockerClient = docker.from_env()
+    print("\n\n Docker client retrieved")
     with tempfile.TemporaryDirectory() as tempdir:
         # Create server config
-        sql_conf_path = pathlib.Path(tempdir, "my.conf")
-        sql_conf_path.write_text(MY_CONF)
-        sql_conf_path.chmod(0o660)
+        # sql_conf_path = pathlib.Path(tempdir, "my.conf")
+        # sql_conf_path.write_text(MY_CONF)
+        # sql_conf_path.chmod(0o660)
         # Create cert folder
-        cert_dir_path = pathlib.Path(tempdir, "certs")
-        cert_dir_path.mkdir(mode=0o755)
+        # cert_dir_path = pathlib.Path(tempdir, "certs")
+        # cert_dir_path.mkdir(mode=0o755)
         # Dump out SQL query to file
-        if sql_setup is not None:
-            sql_setup_path = pathlib.Path(tempdir, "sample_data.csv")
-            sql_setup_path.write_text(sql_setup)
-            sql_setup_path.chmod(0o555)
+        # if sql_setup is not None:
+        #     sql_setup_path = pathlib.Path(tempdir, "sample_data.csv")
+        #     sql_setup_path.write_text(sql_setup)
+        #     sql_setup_path.chmod(0o555)
         # Tell the docker daemon to start MySQL
         LOGGER.debug("Starting Hadoop...")
+        # os.system("bash")
         container = docker_client.containers.run(
-            # DOCKER_IMAGE,
-            "cloudera/quickstart",
+            DOCKER_IMAGE,
             command="/usr/bin/docker-quickstart",
             # environment=DOCKER_ENV,
             hostname="quickstart.cloudera",
-            privileged=true,
+            privileged=True,
             detach=True,
             auto_remove=True,
-            volumes={
-                # sql_conf_path.resolve(): {"bind": "/etc/mysql/conf.d/ssl.cnf"},
-                # sql_setup_path.resolve(): {
-                #     "bind": "/docker-entrypoint-initdb.d/dump.sql"
-                # },
-                # cert_dir_path.resolve(): {"bind": "/conf/certs/"},
-            }
-            if hadoop_setup is not None
-            else None,
+            # ports={
+            # 8888:8888,
+            # 7180:7180,
+            # 80:80,
+            # 50070:50070,
+            # 8020:8020,
+            # },
+            
         )
+
+        print("\n\n\n DOCKERR RUN DONE")
+
         # Sometimes very bad things happen, this ensures that the container will
         # be cleaned up on process exit no matter what
         cleanup = mkcleanup(docker_client, container)
@@ -208,7 +222,7 @@ def hadoop(*, hadoop_setup: Optional[str] = None):
             for line in container.logs(stream=True, follow=True):
                 now_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
                 LOGGER.debug(
-                    "MySQL log (%0.02f seconds): %s",
+                    "HADOOP log (%0.02f seconds): %s",
                     (now_time - container_start_time),
                     line.decode(errors="ignore").strip(),
                 )
@@ -228,7 +242,7 @@ def hadoop(*, hadoop_setup: Optional[str] = None):
             while not check_connection(container_ip, DEFAULT_PORT):
                 end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
                 if (end_time - start_time) >= max_timeout:
-                    raise HadoopFailedToStart("Timed out waiting for MySQL")
+                    raise HadoopFailedToStart("Timed out waiting for Hadoop")
             end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
             LOGGER.debug(
                 "Hadoop running: Took %0.02f seconds",
