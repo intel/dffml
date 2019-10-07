@@ -152,73 +152,9 @@ def hadoop():
             # Get the IP from the docker daemon
             inspect = docker_client.api.inspect_container(container.id)
             container_ip = inspect["NetworkSettings"]["IPAddress"]
-            # Create certificate
-            # From: https://mariadb.com/kb/en/library/certificate-creation-with-openssl/
-            cmds = [
-                ["openssl", "genrsa", "-out", "ca-key.pem", "2048"],
-                [
-                    "openssl",
-                    "req",
-                    "-new",
-                    "-x509",
-                    "-nodes",
-                    "-key",
-                    "ca-key.pem",
-                    "-out",
-                    "ca.pem",
-                    "-subj",
-                    f"/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Root Cert/CN=mysql.unittest",
-                ],
-                [
-                    "openssl",
-                    "req",
-                    "-newkey",
-                    "rsa:2048",
-                    "-nodes",
-                    "-keyout",
-                    "server-key.pem",
-                    "-out",
-                    "server-req.pem",
-                    "-subj",
-                    f"/C=US/ST=Oregon/L=Portland/O=Company Name/OU=Server Cert/CN=mysql.unittest",
-                ],
-                [
-                    "openssl",
-                    "rsa",
-                    "-in",
-                    "server-key.pem",
-                    "-out",
-                    "server-key.pem",
-                ],
-                [
-                    "openssl",
-                    "x509",
-                    "-req",
-                    "-in",
-                    "server-req.pem",
-                    "-days",
-                    "1",
-                    "-CA",
-                    "ca.pem",
-                    "-CAkey",
-                    "ca-key.pem",
-                    "-set_serial",
-                    "01",
-                    "-out",
-                    "server-cert.pem",
-                ],
-            ]
-            for cmd in cmds:
-                subprocess.call(cmd, cwd=cert_dir_path.resolve())
-            root_cert_path = pathlib.Path(cert_dir_path, "ca.pem")
-            server_cert_path = pathlib.Path(cert_dir_path, "server-cert.pem")
-            server_key_path = pathlib.Path(cert_dir_path, "server-key.pem")
-            server_cert_path.chmod(0o660)
-            server_key_path.chmod(0o660)
-            pathlib.Path(cert_dir_path, "ready").write_text("ready")
             # Wait until MySQL reports it's ready for connections
             container_start_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
-            ready = 0
+            ready = False
             for line in container.logs(stream=True, follow=True):
                 now_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
                 LOGGER.debug(
@@ -226,29 +162,19 @@ def hadoop():
                     (now_time - container_start_time),
                     line.decode(errors="ignore").strip(),
                 )
-                if b"ready for connections" in line:
-                    ready += 1
-                if ready == 2:
+                if b"Starting Solr server daemon:[  OK  ]" in line:
+                    ready = True
                     break
-            if ready != 2:
-                raise HadoopFailedToStart('Never saw "ready for connections"')
+            if not ready:
+                raise HadoopFailedToStart('Never saw "Starting Solr server daemon:[  OK  ]"')
             # Ensure that we can make a connection
-            start_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
-            max_timeout = float(os.getenv("HADOOP_START_TIMEOUT", "600"))
-            LOGGER.debug(
-                "Attempting to connect to Hadoop: Timeout of %d seconds",
-                max_timeout,
-            )
-            while not check_connection(container_ip, DEFAULT_PORT):
-                end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
-                if (end_time - start_time) >= max_timeout:
-                    raise HadoopFailedToStart("Timed out waiting for Hadoop")
             end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
             LOGGER.debug(
                 "Hadoop running: Took %0.02f seconds",
                 end_time - container_start_time,
             )
             # Yield IP of container to caller
-            yield container_ip, root_cert_path.resolve()
+            yield container_ip
         finally:
+            LOGGER.debug("HADOOP shutting down...")
             cleanup()

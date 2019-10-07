@@ -31,7 +31,7 @@ class TestHDFSSource(SourceTest, AsyncTestCase):
         super().setUpClass()
         cls._exit_stack = contextlib.ExitStack()
         cls.exit_stack = cls._exit_stack.__enter__()
-        cls.container_ip, cls.ca = cls.exit_stack.enter_context(
+        cls.container_ip = cls.exit_stack.enter_context(
             hadoop()
         )
         cls.source_config = HDFSSourceConfig(
@@ -40,7 +40,6 @@ class TestHDFSSource(SourceTest, AsyncTestCase):
                 user="root",
                 source=CSVSource(CSVSourceConfig(filename="sample_data.csv")),
                 filepath="./home/dffml-source/sample_data.csv",
-                ca=cls.ca,
             )
         os.system("bash")
         cls.exit_stack.enter_context(
