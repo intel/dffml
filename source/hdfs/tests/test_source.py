@@ -5,6 +5,7 @@ import socket
 import unittest
 import subprocess
 import contextlib
+from unittest.mock import patch
 
 
 from dffml_source_hdfs.source import HDFSSourceConfig, HDFSSource
@@ -41,14 +42,13 @@ class TestHDFSSource(SourceTest, AsyncTestCase):
                 source=CSVSource(CSVSourceConfig(filename="sample_data.csv")),
                 filepath="./home/dffml-source/sample_data.csv",
             )
-        os.system("bash")
         cls.exit_stack.enter_context(
             patch(
                 "socket.getaddrinfo",
                 new=cls.fake_socket_getaddrinfo
             )
         )
-        
+        os.system("bash")
 
     @classmethod
     def tearDownClass(cls):

@@ -25,19 +25,20 @@ class HDFSSourceConfig(BaseConfig, NamedTuple):
 class HDFSSource(BaseSource):
 
     CONTEXT = BaseSourceContext
-    async def new_open(self):
-        with self.client.read(self.config.filepath, encoding="utf-8") as fd:
-            await self.config.source.load_fd(fd)
-
-    async def new_close(self):
-        with self.client.write(self.config.filepath, encoding="utf-8", overwrite=True) as fd:
-            await self.config.source.dump_fd(fd)
-
     async def __aenter__(self) -> "BaseSource":
-        self.client = InsecureClient(
+        self.client = client = InsecureClient(
             "http://" + self.config.host + ":" + self.config.port,
             user="hadoopuser",
         )
+
+        async def new_open(self):
+            with client.read(self.config.filepath, encoding="utf-8") as fd:
+                await self.load_fd(fd)
+
+        async def new_close(self):
+            with client.write(self.config.filepath, encoding="utf-8", overwrite=True) as fd:
+                await self.dump_fd(fd)
+
         self.config.source._open = self.new_open.__get__(self.config.source, self.config.source.__class__)
         self.config.source._close = self.new_close.__get__(self.config.source, self.config.source.__class__)
         self.__stack = AsyncExitStack()

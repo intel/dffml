@@ -130,6 +130,7 @@ def hadoop():
             command="/usr/bin/docker-quickstart",
             # environment=DOCKER_ENV,
             hostname="quickstart.cloudera",
+            tty=True,
             privileged=True,
             detach=True,
             auto_remove=True,
