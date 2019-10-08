@@ -162,25 +162,62 @@ class LinkerTest(CMD):
             temp_dict = {operation.name: operation}
             op_outputs = list(operation.outputs.values())
             for output in op_outputs:
+                # TODO .update(temp-dict) if key exists, otherwise set
                 output_dict[output.name] = temp_dict
+        # Now we have a dict, output_dict, mapping all of the definitions to the
+        # operations that create them.
         
         flow_dict = {}
+        # Got through all the operations and look at their inputs
         for operation in operations:
-            op_inputs = list(operation.inputs.values())
-            for op_input in op_inputs:
+            flow_dict.setdefault(operation.name, {})
+            # Example operation:
+            # Operation(
+            #     name="pypi_package_json",
+            #     # internal_name: package
+            #     # definition: package = Definition(name="package", primitive="str")
+            #     inputs={"package": package},
+            #     # internal_name: response_json
+            #     # definition: package_json = Definition(name="package_json", primitive="Dict")
+            #     outputs={"response_json": package_json},
+            # )
+            # For each input
+            for internal_name, definition in operation.inputs.items():
+                # With pypi_package_json example
+                # internal_name = "package"
+                # definition = package
+                #            = Definition(name="package", primitive="str")
                 temp_l = []
-                if op_input.name in output_dict:
-                    temp_l = list(output_dict[op_input.name])
-                if op_input.name in flow_dict:
-                    flow_dict[op_input.name] += temp_l
+                if definition.name in output_dict:
+                    # Grab the dict of operations that produce this definition
+                    # as an output
+                    producing_operations = output_dict[definition.name]
+                    # If the input could be produced by an operation in the
+                    # network, then it's definition name will be in output_dict.
+                    flow_dict[operation.name][internal_name] = []
+                    # We look through the outputs and add any one that matches
+                    # the definition and add it to the list in format of
+                    # operation_name . internal_name (of output)
+                    for producting_operation in producing_operations.values():
+                        for internal_name_of_output, output_definition in producting_operation.outputs.items():
+                            if output_definition == definition:
+                                flow_dict[operation.name][internal_name].append(
+                                    producting_operation.name + '.' + internal_name_of_output
+                                )
                 else:
-                    flow_dict[op_input.name] = temp_l
+                    flow_dict[operation.name][internal_name] = ["seed"]
         #print(output_dict)
         print("--------------------------")
 
         return flow_dict
 
     async def run(self):
+        # Instead of path_info being start and end, make it list of loadable
+        # paths to operations.
+        # Meaning things that could be passed to the dffml.service.dev:Run
+        # command. Look at that for more info. And copy paste the code to load
+        # an operation, then once you have the code to load an operation. Append
+        # the operation to a list and pass it to dep_backtrack.
         backtrack_list = await self.dep_backtrack(
             pypi_package_json.op,
             pypi_latest_package_version.op,
