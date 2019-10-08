@@ -1,8 +1,8 @@
 import sys
 
 from dffml.df.types import Input, Operation, DataFlow, InputFlow
-from dffml.df.base import operation_in, opimp_in
-from dffml.df.memory import MemoryOrchestrator
+from dffml.df.base import operation_in, opimp_in 
+from dffml.df.memory import MemoryOrchestrator 
 from dffml.df.linker import Linker
 from dffml.operation.output import GetSingle
 from dffml.util.cli.cmd import CMD
@@ -156,27 +156,29 @@ class LinkerTest(CMD):
         help="end and start points for finding a back path",
     )
 
-    # async def export(self):
-    #    linker = Linker()
-    #    exported = linker.export(
-    #        run_bandit.op,
-    #        pypi_latest_package_version.op,
-    #        pypi_package_json.op,
-    #        pypi_package_url.op,
-    #        pypi_package_contents.op,
-    #        safety_check.op,
-    #    )
-    #    return exported
-
     async def dep_backtrack(self, *operations):
         output_dict = {}
         for operation in operations:
             temp_dict = {operation.name: operation}
             op_outputs = list(operation.outputs.values())
             for output in op_outputs:
-                output_dict[str(output)] = temp_dict
-        #flow_dict = {}
-        return #output_dict
+                output_dict[output.name] = temp_dict
+        
+        flow_dict = {}
+        for operation in operations:
+            op_inputs = list(operation.inputs.values())
+            for op_input in op_inputs:
+                temp_l = []
+                if op_input.name in output_dict:
+                    temp_l = list(output_dict[op_input.name])
+                if op_input.name in flow_dict:
+                    flow_dict[op_input.name] += temp_l
+                else:
+                    flow_dict[op_input.name] = temp_l
+        #print(output_dict)
+        print("--------------------------")
+
+        return flow_dict
 
     async def run(self):
         backtrack_list = await self.dep_backtrack(
