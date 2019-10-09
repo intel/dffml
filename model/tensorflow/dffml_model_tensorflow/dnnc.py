@@ -107,8 +107,8 @@ class DNNClassifierModelContext(TensorflowModelContext):
     columns for real valued, string, and list of real valued features.
     """
 
-    def __init__(self, config, parent) -> None:
-        super().__init__(config, parent)
+    def __init__(self, features, parent) -> None:
+        super().__init__(features, parent)
         self.cids = self._mkcids(self.parent.config.classifications)
         self.classifications = self._classifications(self.cids)
         self.model_dir_path = self._model_dir_path()
