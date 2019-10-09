@@ -83,6 +83,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - JSON source now has `entry_point` decoration
 - Strict flag in df.memory is now on by default
 - Dynamically created scikit models get config args correctly
+- Renamed `DNNClassifierModelContext` first init arg from `config` to `features`
 ### Removed
 - Repo objects are no longer classification specific. Their `classify`,
   `classified`, and `classification` methods were removed.
