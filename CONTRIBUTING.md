@@ -10,6 +10,7 @@ You can get involved in DFFML via the following channels.
 
 - [Gitter Chat](https://gitter.im/dffml/community)
 - [Weekly Meetings](https://intel.github.io/dffml/community.html)
+  - Recordings: https://www.youtube.com/channel/UCorEDRWGikwBH3dsJdDK1qA
 - Open an [issue](https://github.com/intel/dffml/issues/new/choose)
 - Users of DFFML Discussion Mailing List
   - Ask by emailing: [dffml-users@lists.01.org](mailto:dffml-users@lists.01.org)
