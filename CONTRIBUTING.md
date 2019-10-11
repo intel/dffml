@@ -13,10 +13,10 @@ You can get involved in DFFML via the following channels.
 - Open an [issue](https://github.com/intel/dffml/issues/new/choose)
 - Users of DFFML Discussion Mailing List
   - Ask by emailing: [dffml-users@lists.01.org](mailto:dffml-users@lists.01.org)
-  - Subscribe: https://lists.01.org/mailman/listinfo/dffml-users
+  - Subscribe: https://lists.01.org/postorius/lists/dffml-users.lists.01.org/
 - Development of DFFML Discussion Mailing List
   - Send emails to: [dffml-dev@lists.01.org](mailto:dffml-dev@lists.01.org)
-  - Subscribe: https://lists.01.org/mailman/listinfo/dffml-dev
+  - Subscribe: https://lists.01.org/postorius/lists/dffml-dev.lists.01.org/
 
 ## Getting Set Up To Work On DFFML
 

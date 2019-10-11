@@ -19,7 +19,7 @@ contributing to DFFML.
 - Ask a question via an [issue](https://github.com/intel/dffml/issues/new?assignees=&labels=question&template=question.md&title=question%3A+)
 - Send an email to dffml-users@lists.01.org
   - You can subscribe to the users mailing list here
-    https://lists.01.org/mailman/listinfo/dffml-users
+    https://lists.01.org/postorius/lists/dffml-users.lists.01.org/
 - Ask a question on the [Gitter chat](https://gitter.im/dffml/community)
 
 ## License
