@@ -18,6 +18,7 @@ using data flow programming, hop on the meeting and we'll do Q & A at the end of
 the agenda.
 
 - `Meeting Minutes <https://docs.google.com/document/d/16u9Tev3O0CcUDe2nfikHmrO3Xnd4ASJ45myFgQLpvzM/>`_
+- `Recordings <https://www.youtube.com/channel/UCorEDRWGikwBH3dsJdDK1qA>`_
 
 The meeting link will be posted in the Gitter channel shortly before starting.
 To join the meeting, click on the Google calendar below for the day you are
