@@ -8,7 +8,7 @@ Questions can be asked via
 - Email `dffml-users@lists.01.org <dffml-users@lists.01.org>`_
 
   - To subscribe to the users mailing list visit:
-    https://lists.01.org/mailman/listinfo/dffml-users
+    https://lists.01.org/postorius/lists/dffml-users.lists.01.org/
 
 We hold weekly meetings on Tuesday's at 9 AM PST. Meetings are held via Google
 Hangouts.
@@ -41,7 +41,7 @@ For work on DFFML itself and the core plugins, there is a mailing list you
 should subscribe, and send questions to: `dffml-dev@lists.01.org <dffml-dev@lists.01.org>`_
 
   - To subscribe to the dev mailing list visit:
-    https://lists.01.org/mailman/listinfo/dffml-dev
+    https://lists.01.org/postorius/lists/dffml-dev.lists.01.org/
 
 .. raw:: html
 
