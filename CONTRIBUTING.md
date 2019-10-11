@@ -18,6 +18,17 @@ You can get involved in DFFML via the following channels.
   - Send emails to: [dffml-dev@lists.01.org](mailto:dffml-dev@lists.01.org)
   - Subscribe: https://lists.01.org/postorius/lists/dffml-dev.lists.01.org/
 
+## Communication
+
+Logs, screenshots, the command you were running, and any files involved make
+it easier for other developers to replicate whatever happened so they can help
+you fix the problem.
+
+Even better than a screenshot is an
+[asciicast](https://asciinema.org/docs/installation). It lets you create a
+recording of your terminal that can be shared via a asciinema.org link or sent
+privately as a JSON file.
+
 ## Getting Set Up To Work On DFFML
 
 To start contributing code to DFFML you'll need to download and install it in
