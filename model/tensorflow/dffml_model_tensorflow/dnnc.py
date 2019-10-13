@@ -145,8 +145,9 @@ class DNNClassifierModelContext(TensorflowModelContext):
         """
         if self.parent.config.directory is None:
             return None
+        _to_hash = self.features+list(map(str,self.parent.config.hidden))
         model = hashlib.sha384(
-            "".join(self.features).encode("utf-8")
+            "".join(_to_hash).encode("utf-8")
         ).hexdigest()
         if not os.path.isdir(self.parent.config.directory):
             raise NotADirectoryError(
