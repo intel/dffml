@@ -20,9 +20,10 @@ from .port import Port
 from .feature import Feature, Features, Data
 from .source.source import BaseSource, Sources, SubsetSources
 from .model import Model
-from .df.types import Input
+from .df.types import Input, Operation, DataFlow
 from .df.base import StringInputSetContext
 from .df.memory import MemoryInputSet, MemoryInputSetConfig
+from .util.entrypoint import load
 from .util.cli.arg import Arg
 from .util.cli.cmd import CMD
 from .util.cli.cmds import (
@@ -456,6 +457,27 @@ class Export(ImportExportCMD):
                 return await self.port.export_to_file(sctx, self.filename)
 
 
+class DataflowCreate(CMD):
+    arg_operations = Arg(
+        "operations", nargs="+", help="Operations to create a dataflow for"
+    )
+
+    async def run(self):
+        operations = []
+        for load_operation in self.operations:
+            if ":" in load_operation:
+                operations += list(load(load_operation))
+            else:
+                operations += [Operation.load(load_operation)]
+        return DataFlow.auto(*operations).export()
+
+
+# Name collision
+class Dataflow(CMD):
+
+    create = DataflowCreate
+
+
 def services():
     """
     Loads dffml.services.cli entrypoint and creates a CMD class incorporating
@@ -494,3 +516,4 @@ class CLI(CMD):
     evaluate = Evaluate
     service = services()
     applicable = Applicable
+    dataflow = Dataflow

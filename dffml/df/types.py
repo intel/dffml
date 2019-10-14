@@ -111,7 +111,6 @@ class Operation(NamedTuple, Entrypoint):
         loading_classes = []
         for i in pkg_resources.iter_entry_points(cls.ENTRY_POINT):
             loaded = i.load()
-            loaded.ENTRY_POINT_LABEL = i.name
             if isinstance(loaded, cls):
                 loading_classes.append(loaded)
                 if loading is not None and loaded.name == loading:
@@ -312,3 +311,62 @@ class DataFlow:
             for instance_name, input_flow in kwargs["flow"].items()
         }
         return cls(**kwargs)
+
+    @classmethod
+    def auto(cls, *operations):
+        flow_dict = {}
+        # Create output_dict, which maps all of the definitions to the
+        # operations that create them.
+        output_dict = {}
+        for operation in operations:
+            for output in operation.outputs.values():
+                output_dict.setdefault(output.name, {})
+                output_dict[output.name].update({operation.name: operation})
+        # Got through all the operations and look at their inputs
+        for operation in operations:
+            flow_dict.setdefault(operation.name, InputFlow())
+            # Example operation:
+            # Operation(
+            #     name="pypi_package_json",
+            #     # internal_name: package
+            #     # definition: package = Definition(name="package", primitive="str")
+            #     inputs={"package": package},
+            #     # internal_name: response_json
+            #     # definition: package_json = Definition(name="package_json", primitive="Dict")
+            #     outputs={"response_json": package_json},
+            # )
+            # For each input
+            for internal_name, definition in operation.inputs.items():
+                # With pypi_package_json example
+                # internal_name = "package"
+                # definition = package
+                #            = Definition(name="package", primitive="str")
+                if definition.name in output_dict:
+                    # Grab the dict of operations that produce this definition
+                    # as an output
+                    producing_operations = output_dict[definition.name]
+                    # If the input could be produced by an operation in the
+                    # network, then it's definition name will be in output_dict.
+                    flow_dict[operation.name][internal_name] = []
+                    # We look through the outputs and add any one that matches
+                    # the definition and add it to the list in format of
+                    # operation_name . internal_name (of output)
+                    for producting_operation in producing_operations.values():
+                        for (
+                            internal_name_of_output,
+                            output_definition,
+                        ) in producting_operation.outputs.items():
+                            if output_definition == definition:
+                                flow_dict[operation.name][
+                                    internal_name
+                                ].append(
+                                    producting_operation.name
+                                    + "."
+                                    + internal_name_of_output
+                                )
+                else:
+                    flow_dict[operation.name][internal_name] = ["seed"]
+        return cls(
+            operations={operation.name: operation for operation in operations},
+            flow=flow_dict,
+        )
