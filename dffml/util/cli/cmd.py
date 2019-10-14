@@ -38,6 +38,10 @@ class JSONEncoder(json.JSONEncoder):
             return obj.NAME
         elif isinstance(obj, enum.Enum):
             return str(obj.value)
+        elif isinstance(obj, type):
+            return str(obj.__qualname__)
+        elif str(obj).startswith("typing."):
+            return str(obj).split(".")[-1]
         return json.JSONEncoder.default(self, obj)
 
 

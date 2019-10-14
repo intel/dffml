@@ -41,6 +41,8 @@ class Definition(NamedTuple):
             del exported["lock"]
         if not self.spec:
             del exported["spec"]
+        else:
+            exported["spec"] = exported["spec"]._field_types
         return exported
 
     @classmethod
