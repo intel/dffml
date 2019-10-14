@@ -3,7 +3,16 @@ import itertools
 import pkg_resources
 from enum import Enum
 from dataclasses import dataclass, field
-from typing import NamedTuple, Union, List, Dict, Optional, Any, Iterator, Callable
+from typing import (
+    NamedTuple,
+    Union,
+    List,
+    Dict,
+    Optional,
+    Any,
+    Iterator,
+    Callable,
+)
 
 from ..base import BaseConfig
 from ..util.entrypoint import Entrypoint, base_entry_point
@@ -206,6 +215,7 @@ class InputFlow(dict):
     def export(self):
         return dict(self)
 
+
 @dataclass
 class DataFlow:
     operations: Dict[str, Union[Operation, Callable]]
@@ -232,8 +242,10 @@ class DataFlow:
         # given operations and replace any which have been decorated with their
         # operation. Add the implementation to our dict of implementations.
         for instance_name, value in self.operations.items():
-            if getattr(value, "imp", None) is not None \
-                    and getattr(value, "op", None) is not None:
+            if (
+                getattr(value, "imp", None) is not None
+                and getattr(value, "op", None) is not None
+            ):
                 # Get the operation and implementation from the wrapped object
                 operation = getattr(value, "op", None)
                 opimp = getattr(value, "imp", None)
@@ -244,7 +256,9 @@ class DataFlow:
                 self.operations[instance_name] = operation
                 value = operation
             # Make sure every operation has the correct instance name
-            self.operations[instance_name] = value._replace(instance_name=instance_name)
+            self.operations[instance_name] = value._replace(
+                instance_name=instance_name
+            )
         # Grab all definitions from operations
         operations = list(self.operations.values())
         definitions = list(

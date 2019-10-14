@@ -41,7 +41,8 @@ class Linker(object):
                     continue
                 try:
                     kwargs[arg] = {
-                        i: definitions[kwargs[arg][i]["name"]] for i in kwargs[arg]
+                        i: definitions[kwargs[arg][i]["name"]]
+                        for i in kwargs[arg]
                     }
                 except KeyError as error:
                     raise KeyError(
@@ -56,7 +57,9 @@ class Linker(object):
     def export(cls, dataflow: DataFlow):
         exported = {"definitions": {}, "operations": {}}
         for operation in dataflow.operations.values():
-            exported["operations"][operation.instance_name] = operation.export()
+            exported["operations"][
+                operation.instance_name
+            ] = operation.export()
             exported["definitions"].update(
                 {
                     definition.name: definition.export()

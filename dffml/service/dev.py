@@ -233,6 +233,7 @@ from pathlib import Path
 
 from ..df.types import DataFlow, Stage
 
+
 class Diagram(CMD):
 
     arg_stages = Arg(
@@ -240,52 +241,60 @@ class Diagram(CMD):
         help="Which stages to display: (processing, cleanup, output)",
         nargs="+",
         default=[],
-        required=False
+        required=False,
     )
     arg_simple = Arg(
         "-simple",
         help="Don't display input and output names",
         default=False,
         action="store_true",
-        required=False
+        required=False,
     )
     arg_display = Arg(
         "-display",
         help="How to display (TD: top down, LR, RL, BT)",
         default="TD",
-        required=False
+        required=False,
     )
-    arg_dataflow = Arg(
-        "dataflow", help="Data flow file"
-    )
+    arg_dataflow = Arg("dataflow", help="Data flow file")
 
     async def run(self):
-        dataflow = DataFlow._fromdict(**json.loads(Path(self.dataflow).read_text()))
+        dataflow = DataFlow._fromdict(
+            **json.loads(Path(self.dataflow).read_text())
+        )
         print(f"graph {self.display}")
         for stage in Stage:
             # Skip stage if not wanted
             if self.stages and stage.value not in self.stages:
                 continue
-            stage_node = hashlib.sha384(("stage." + stage.value).encode()).hexdigest()
+            stage_node = hashlib.sha384(
+                ("stage." + stage.value).encode()
+            ).hexdigest()
             if len(self.stages) != 1:
                 print(f"subgraph {stage_node}[{stage.value.title()} Stage]")
                 print(f"style {stage_node} fill:#afd388b5,stroke:#a4ca7a")
             for instance_name, operation in dataflow.operations.items():
                 if operation.stage != stage:
                     continue
-                subgraph_node = hashlib.sha384(("subgraph." + instance_name).encode()).hexdigest()
+                subgraph_node = hashlib.sha384(
+                    ("subgraph." + instance_name).encode()
+                ).hexdigest()
                 node = hashlib.sha384(instance_name.encode()).hexdigest()
                 if not self.simple:
                     print(f"subgraph {subgraph_node}[{instance_name}]")
                     print(f"style {subgraph_node} fill:#fff4de,stroke:#cece71")
                 print(f"{node}[{operation.name}]")
                 for input_name in operation.inputs.keys():
-                    input_node = hashlib.sha384((instance_name + "." + input_name).encode()).hexdigest()
+                    input_node = hashlib.sha384(
+                        (instance_name + "." + input_name).encode()
+                    ).hexdigest()
                     if not self.simple:
                         print(f"{input_node}({input_name})")
                         print(f"{input_node} --> {node}")
                 for output_name in operation.outputs.keys():
-                    output_node = hashlib.sha384((instance_name + "." + output_name).encode()).hexdigest()
+                    output_node = hashlib.sha384(
+                        (instance_name + "." + output_name).encode()
+                    ).hexdigest()
                     if not self.simple:
                         print(f"{output_node}({output_name})")
                         print(f"{node} --> {output_node}")
@@ -302,33 +311,45 @@ class Diagram(CMD):
                     for source in sources:
                         if source == "seed":
                             input_definition = operation.inputs[input_name]
-                            seed_input_node = hashlib.sha384(input_definition.name.encode()).hexdigest()
-                            print(f"{seed_input_node}({input_definition.name})")
+                            seed_input_node = hashlib.sha384(
+                                input_definition.name.encode()
+                            ).hexdigest()
+                            print(
+                                f"{seed_input_node}({input_definition.name})"
+                            )
                             if not self.simple:
-                                input_node = hashlib.sha384((instance_name + "." + input_name).encode()).hexdigest()
+                                input_node = hashlib.sha384(
+                                    (instance_name + "." + input_name).encode()
+                                ).hexdigest()
                                 print(f"{seed_input_node} --> {input_node}")
                             else:
                                 print(f"{seed_input_node} --> {node}")
                             continue
                         if not self.simple:
-                            source_output_node = hashlib.sha384(source.encode()).hexdigest()
-                            input_node = hashlib.sha384((instance_name + "." + input_name).encode()).hexdigest()
+                            source_output_node = hashlib.sha384(
+                                source.encode()
+                            ).hexdigest()
+                            input_node = hashlib.sha384(
+                                (instance_name + "." + input_name).encode()
+                            ).hexdigest()
                             print(f"{source_output_node} --> {input_node}")
                         else:
-                            source_split = source.split('.')
-                            source_operation = '.'.join(source_split[:-1])
-                            source_operation_node = hashlib.sha384(source_operation.encode()).hexdigest()
+                            source_split = source.split(".")
+                            source_operation = ".".join(source_split[:-1])
+                            source_operation_node = hashlib.sha384(
+                                source_operation.encode()
+                            ).hexdigest()
                             print(f"{source_operation_node} --> {node}")
+
 
 # TODO Make yaml its own plugin
 import yaml
 from dffml.df.linker import Linker
 
+
 class Export(CMD):
 
-    arg_export = Arg(
-        "export", help="Python path to object to export"
-    )
+    arg_export = Arg("export", help="Python path to object to export")
 
     async def run(self):
         # Push current directory into front of path so we can run things
@@ -346,6 +367,7 @@ class Export(CMD):
                     # Ensure re-import works
                     imported = Linker.resolve(yaml.safe_load(exported))
                     print(exported)
+
 
 class Develop(CMD):
     """

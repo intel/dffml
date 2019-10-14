@@ -59,19 +59,24 @@ from ..util.asynchelper import context_stacker, aenter_stack
 
 from .log import LOGGER
 
+
 class MemoryDataFlowObjectContextConfig(NamedTuple):
     # Unique ID of the context, in other implementations this might be a JWT or
     # something
     uid: str
 
-class BaseMemoryDataFlowObject(BaseDataFlowObject):
 
+class BaseMemoryDataFlowObject(BaseDataFlowObject):
     def __call__(self) -> BaseDataFlowObjectContext:
-        return self.CONTEXT(MemoryDataFlowObjectContextConfig(uid=secrets.token_hex()), self)
+        return self.CONTEXT(
+            MemoryDataFlowObjectContextConfig(uid=secrets.token_hex()), self
+        )
 
 
 class MemoryKeyValueStoreContext(BaseKeyValueStoreContext):
-    def __init__(self, config: BaseConfig, parent: "MemoryKeyValueStore") -> None:
+    def __init__(
+        self, config: BaseConfig, parent: "MemoryKeyValueStore"
+    ) -> None:
         super().__init__(config, parent)
         self.memory: Dict[str, bytes] = {}
         self.lock = asyncio.Lock()
@@ -214,7 +219,9 @@ class MemoryDefinitionSetContext(BaseDefinitionSetContext):
 
 
 class MemoryInputNetworkContext(BaseInputNetworkContext):
-    def __init__(self, config: BaseConfig, parent: "MemoryInputNetwork") -> None:
+    def __init__(
+        self, config: BaseConfig, parent: "MemoryInputNetwork"
+    ) -> None:
         super().__init__(config, parent)
         self.ctx_notification_set = NotificationSet()
         self.input_notification_set = {}
@@ -230,9 +237,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         # If the context for this input set does not exist create a
         # NotificationSet for it to notify the orchestrator
         if not handle_string in self.input_notification_set:
-            self.input_notification_set[
-                handle_string
-            ] = NotificationSet()
+            self.input_notification_set[handle_string] = NotificationSet()
             async with self.ctx_notification_set() as ctx:
                 await ctx.add(input_set.ctx, [])
         # Add the input set to the incoming inputs
@@ -244,9 +249,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         async with self.ctxhd_lock:
             # Create dict for handle_string if not present
             if not handle_string in self.ctxhd:
-                self.ctxhd[
-                    handle_string
-                ] = MemoryInputNetworkContextEntry(
+                self.ctxhd[handle_string] = MemoryInputNetworkContextEntry(
                     ctx=input_set.ctx, definitions={}
                 )
             # Go through each item in the input set
@@ -256,13 +259,11 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                     not item.definition
                     in self.ctxhd[handle_string].definitions
                 ):
-                    self.ctxhd[handle_string].definitions[
-                        item.definition
-                    ] = []
+                    self.ctxhd[handle_string].definitions[item.definition] = []
                 # Add input to by defintion set
-                self.ctxhd[handle_string].definitions[
-                    item.definition
-                ].append(item)
+                self.ctxhd[handle_string].definitions[item.definition].append(
+                    item
+                )
 
     async def uadd(self, *args: Input):
         """
@@ -441,7 +442,9 @@ class MemoryOperationNetworkConfig(NamedTuple):
 
 
 class MemoryOperationNetworkContext(BaseOperationNetworkContext):
-    def __init__(self, config: BaseConfig, parent: "MemoryOperationNetwork") -> None:
+    def __init__(
+        self, config: BaseConfig, parent: "MemoryOperationNetwork"
+    ) -> None:
         super().__init__(config, parent)
         self.memory = {}
         self.lock = asyncio.Lock()
@@ -501,7 +504,9 @@ class MemoryOperationNetwork(BaseOperationNetwork, BaseMemoryDataFlowObject):
 
 
 class MemoryRedundancyCheckerContext(BaseRedundancyCheckerContext):
-    def __init__(self, config: BaseConfig, parent: "MemoryRedundancyChecker") -> None:
+    def __init__(
+        self, config: BaseConfig, parent: "MemoryRedundancyChecker"
+    ) -> None:
         super().__init__(config, parent)
         self.kvctx = None
 
@@ -597,7 +602,9 @@ class MemoryRedundancyChecker(BaseRedundancyChecker, BaseMemoryDataFlowObject):
 
 
 class MemoryLockNetworkContext(BaseLockNetworkContext):
-    def __init__(self, config: BaseConfig, parent: "MemoryLockNetwork") -> None:
+    def __init__(
+        self, config: BaseConfig, parent: "MemoryLockNetwork"
+    ) -> None:
         super().__init__(config, parent)
         self.lock = asyncio.Lock()
         self.locks: Dict[str, asyncio.Lock] = {}
@@ -645,7 +652,11 @@ class MemoryOperationImplementationNetworkConfig(NamedTuple):
 class MemoryOperationImplementationNetworkContext(
     BaseOperationImplementationNetworkContext
 ):
-    def __init__(self, config: BaseConfig, parent: "MemoryOperationImplementationNetwork") -> None:
+    def __init__(
+        self,
+        config: BaseConfig,
+        parent: "MemoryOperationImplementationNetwork",
+    ) -> None:
         super().__init__(config, parent)
         self.opimps = self.parent.config.operations
         self.operations = {}
@@ -674,11 +685,8 @@ class MemoryOperationImplementationNetworkContext(
         return operation.instance_name in self.operations
 
     async def instantiable(
-        self,
-        operation: Operation,
-        *,
-        opimp: OperationImplementation = None,
-        ) -> bool:
+        self, operation: Operation, *, opimp: OperationImplementation = None
+    ) -> bool:
         """
         Looks for class registered with ____ entrypoint using pkg_resources.
         """
@@ -711,7 +719,9 @@ class MemoryOperationImplementationNetworkContext(
         self.operations[
             operation.instance_name
         ] = await self._stack.enter_async_context(
-            opimp(config) if opimp is not None else OperationImplementation.load(operation.name)(config)
+            opimp(config)
+            if opimp is not None
+            else OperationImplementation.load(operation.name)(config)
         )
 
     async def ensure_contains(self, operation: Operation):
@@ -723,7 +733,9 @@ class MemoryOperationImplementationNetworkContext(
             if not await self.instantiable(operation):
                 raise OperationImplementationNotInstantiable(operation.name)
             else:
-                raise OperationImplementationNotInNetwork(operation.instance_name)
+                raise OperationImplementationNotInNetwork(
+                    operation.instance_name
+                )
 
     async def run(
         self,
@@ -738,10 +750,14 @@ class MemoryOperationImplementationNetworkContext(
         # Check that our network contains the operation
         await self.ensure_contains(operation)
         # Create an opimp context and run the opertion
-        async with self.operations[operation.instance_name](ctx, octx) as opctx:
+        async with self.operations[operation.instance_name](
+            ctx, octx
+        ) as opctx:
             self.logger.debug("---")
             self.logger.debug(
-                "Stage: %s: %s", operation.stage.value.upper(), operation.instance_name
+                "Stage: %s: %s",
+                operation.stage.value.upper(),
+                operation.instance_name,
             )
             self.logger.debug("Inputs: %s", inputs)
             self.logger.debug(
@@ -867,7 +883,9 @@ class MemoryOperationImplementationNetworkContext(
 
 
 @entry_point("memory")
-class MemoryOperationImplementationNetwork(BaseOperationImplementationNetwork, BaseMemoryDataFlowObject):
+class MemoryOperationImplementationNetwork(
+    BaseOperationImplementationNetwork, BaseMemoryDataFlowObject
+):
 
     CONTEXT = MemoryOperationImplementationNetworkContext
 
@@ -907,14 +925,20 @@ class MemoryOrchestratorConfig(BaseOrchestratorConfig):
     Same as base orchestrator config
     """
 
+
 class MemoryOrchestratorContextConfig(NamedTuple):
     uid: str
     # Context objects to reuse. If not present in this dict a new context object
     # will be created.
     reuse: Dict[str, BaseDataFlowObjectContext]
 
+
 class MemoryOrchestratorContext(BaseOrchestratorContext):
-    def __init__(self, config: MemoryOrchestratorContextConfig, parent: "BaseOrchestrator") -> None:
+    def __init__(
+        self,
+        config: MemoryOrchestratorContextConfig,
+        parent: "BaseOrchestrator",
+    ) -> None:
         super().__init__(config, parent)
         self._stack = None
 
@@ -934,12 +958,12 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # created new contexts, then there would be no inputs in them, so that
         # would be pointless.
         enter = {
-                "rctx": self.parent.rchecker,
-                "ictx": self.parent.input_network,
-                "octx": self.parent.operation_network,
-                "lctx": self.parent.lock_network,
-                "nctx": self.parent.opimp_network,
-            }
+            "rctx": self.parent.rchecker,
+            "ictx": self.parent.input_network,
+            "octx": self.parent.operation_network,
+            "lctx": self.parent.lock_network,
+            "nctx": self.parent.opimp_network,
+        }
         # If we were told to reuse a context, don't enter it. Just set the
         # attribute now.
         for name, ctx in self.config.reuse.items():
@@ -1007,8 +1031,9 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                             operation.name,
                         )
                         opimp_config = BaseConfig()
-                    await self.nctx.instantiate(operation, opimp_config,
-                        opimp=opimp)
+                    await self.nctx.instantiate(
+                        operation, opimp_config, opimp=opimp
+                    )
         # Add all the inputs
         if inputs:
             self.logger.debug("Seeding dataflow with inputs: %s", inputs)
@@ -1033,7 +1058,9 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         await self.initialize_dataflow(dataflow, ctx=ctx, inputs=inputs)
         self.logger.debug("Running dataflow: %s", dataflow)
         # Return the output
-        async for nctx, result in self.run_operations(ctx=ctx, dataflow=dataflow):
+        async for nctx, result in self.run_operations(
+            ctx=ctx, dataflow=dataflow
+        ):
             # TODO Add check that ctx returned is the ctx corresponding to uadd.
             # We'll have to make uadd return the ctx so we can compare.
             # TODO Send the context back into some list maintained by
@@ -1058,11 +1085,9 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # Run output operations and create a dict mapping the operation name to
         # the output of that operation
         output = {
-                operation.instance_name: results
-                async for operation, results in self.run_stage(
-                    ctx, Stage.OUTPUT
-                )
-            }
+            operation.instance_name: results
+            async for operation, results in self.run_stage(ctx, Stage.OUTPUT)
+        }
         # If there is only one output operation, return only it's result instead
         # of a dict with it as the only key value pair
         if len(output) == 1:
@@ -1085,14 +1110,11 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # that context
         if ctx is not None:
             self.logger.debug(
-                "kickstarting context: %s",
-                (await ctx.handle()).as_string(),
+                "kickstarting context: %s", (await ctx.handle()).as_string()
             )
             tasks.add(
                 asyncio.create_task(
-                    self.run_operations_for_ctx(
-                        ctx, strict=strict
-                    )
+                    self.run_operations_for_ctx(ctx, strict=strict)
                 )
             )
         # Create initial events to wait on
@@ -1253,11 +1275,9 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # Run output operations and create a dict mapping the operation name to
         # the output of that operation
         output = {
-                operation.instance_name: results
-                async for operation, results in self.run_stage(
-                    ctx, Stage.OUTPUT
-                )
-            }
+            operation.instance_name: results
+            async for operation, results in self.run_stage(ctx, Stage.OUTPUT)
+        }
         # If there is only one output operation, return only it's result instead
         # of a dict with it as the only key value pair
         if len(output) == 1:
@@ -1308,10 +1328,10 @@ class MemoryOrchestrator(BaseOrchestrator, BaseMemoryDataFlowObject):
     def __call__(self, **kwargs) -> BaseDataFlowObjectContext:
         return self.CONTEXT(
             MemoryOrchestratorContextConfig(
-                uid=secrets.token_hex(),
-                reuse=kwargs,
+                uid=secrets.token_hex(), reuse=kwargs
             ),
-            self)
+            self,
+        )
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:

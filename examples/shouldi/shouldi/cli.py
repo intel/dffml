@@ -1,8 +1,8 @@
 import sys
 
 from dffml.df.types import Input, Operation, DataFlow, InputFlow
-from dffml.df.base import operation_in, opimp_in 
-from dffml.df.memory import MemoryOrchestrator 
+from dffml.df.base import operation_in, opimp_in
+from dffml.df.memory import MemoryOrchestrator
 from dffml.df.linker import Linker
 from dffml.operation.output import GetSingle
 from dffml.util.cli.cmd import CMD
@@ -97,8 +97,12 @@ class Install(CMD):
                 async for package_name, results in octx.run_operations():
                     # Grab the number of saftey issues and the bandit report
                     # from the results dict
-                    safety_issues = results[safety_check.op.outputs["issues"].name]
-                    bandit_report = results[run_bandit.op.outputs["report"].name]
+                    safety_issues = results[
+                        safety_check.op.outputs["issues"].name
+                    ]
+                    bandit_report = results[
+                        run_bandit.op.outputs["report"].name
+                    ]
                     if (
                         safety_issues > 0
                         or bandit_report["CONFIDENCE.HIGH_AND_SEVERITY.HIGH"]
@@ -166,7 +170,7 @@ class LinkerTest(CMD):
                 output_dict[output.name] = temp_dict
         # Now we have a dict, output_dict, mapping all of the definitions to the
         # operations that create them.
-        
+
         flow_dict = {}
         # Got through all the operations and look at their inputs
         for operation in operations:
@@ -199,14 +203,21 @@ class LinkerTest(CMD):
                     # the definition and add it to the list in format of
                     # operation_name . internal_name (of output)
                     for producting_operation in producing_operations.values():
-                        for internal_name_of_output, output_definition in producting_operation.outputs.items():
+                        for (
+                            internal_name_of_output,
+                            output_definition,
+                        ) in producting_operation.outputs.items():
                             if output_definition == definition:
-                                flow_dict[operation.name][internal_name].append(
-                                    producting_operation.name + '.' + internal_name_of_output
+                                flow_dict[operation.name][
+                                    internal_name
+                                ].append(
+                                    producting_operation.name
+                                    + "."
+                                    + internal_name_of_output
                                 )
                 else:
                     flow_dict[operation.name][internal_name] = ["seed"]
-        #print(output_dict)
+        # print(output_dict)
         print("--------------------------")
 
         return flow_dict
@@ -229,6 +240,7 @@ class LinkerTest(CMD):
         )
 
         return backtrack_list
+
 
 class ShouldI(CMD):
 

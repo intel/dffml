@@ -12,7 +12,12 @@ from typing import NamedTuple, Dict, List
 import aiohttp
 
 from dffml.repo import Repo
-from dffml.df.base import op, BaseInputSetContext, BaseOrchestratorContext, OperationImplementationContext
+from dffml.df.base import (
+    op,
+    BaseInputSetContext,
+    BaseOrchestratorContext,
+    OperationImplementationContext,
+)
 from dffml.df.types import Definition, Input, DataFlow, Stage
 from dffml.operation.output import GetSingle
 from dffml.util.entrypoint import EntrypointNotFound
@@ -195,8 +200,7 @@ class RemapFailure(Exception):
     config_cls=RemapConfig,
 )
 async def remap(
-    self: OperationImplementationContext,
-    spec: Dict[str, List[str]],
+    self: OperationImplementationContext, spec: Dict[str, List[str]]
 ):
     # Create a new orchestrator context. Specify that it should use the existing
     # input set context, this way the output operations we'll be running have
@@ -292,7 +296,7 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                         Input(
                             value={
                                 "response": [
-                                    formatter.op.outputs["string"].name,
+                                    formatter.op.outputs["string"].name
                                 ]
                             },
                             definition=remap.op.inputs["spec"],
@@ -349,11 +353,11 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
                         Input(
                             value={
                                 "response": [
-                                    formatter.op.outputs["string"].name,
+                                    formatter.op.outputs["string"].name
                                 ]
                             },
                             definition=remap.op.inputs["spec"],
-                        ),
+                        )
                     ],
                 ).export(),
             },

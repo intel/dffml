@@ -36,7 +36,9 @@ class BaseDataFlowObjectContext(BaseDataFlowFacilitatorObjectContext):
     config, and their parent, a BaseDataFlowObject.
     """
 
-    def __init__(self, config: BaseConfig, parent: "BaseDataFlowObject") -> None:
+    def __init__(
+        self, config: BaseConfig, parent: "BaseDataFlowObject"
+    ) -> None:
         self.config = config
         self.parent = parent
 
@@ -428,7 +430,10 @@ class BaseParameterSet(abc.ABC):
 
 class BaseDefinitionSetContext(BaseDataFlowObjectContext):
     def __init__(
-        self, config: BaseConfig, parent: "BaseInputNetworkContext", ctx: "BaseInputSetContext"
+        self,
+        config: BaseConfig,
+        parent: "BaseInputNetworkContext",
+        ctx: "BaseInputSetContext",
     ) -> None:
         super().__init__(config, parent)
         self.ctx = ctx
