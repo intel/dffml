@@ -302,10 +302,13 @@ class Diagram(CMD):
                     print(f"end")
             if len(self.stages) != 1:
                 print(f"end")
-        print(f"subgraph inputs[Inputs]")
-        print(f"style inputs fill:#f6dbf9,stroke:#a178ca")
+        if len(self.stages) != 1:
+            print(f"subgraph inputs[Inputs]")
+            print(f"style inputs fill:#f6dbf9,stroke:#a178ca")
         for instance_name, input_flow in dataflow.flow.items():
             operation = dataflow.operations[instance_name]
+            if not operation.stage.value in self.stages:
+                continue
             node = hashlib.md5(instance_name.encode()).hexdigest()
             for input_name, sources in input_flow.items():
                 for source in sources:
@@ -317,6 +320,8 @@ class Diagram(CMD):
                         print(
                             f"{seed_input_node}({input_definition.name})"
                         )
+                        if len(self.stages) == 1:
+                            print(f"style {seed_input_node} fill:#f6dbf9,stroke:#a178ca")
                         if not self.simple:
                             input_node = hashlib.md5(
                                 ("input." + instance_name + "." + input_name).encode()
@@ -340,7 +345,8 @@ class Diagram(CMD):
                             source_operation.encode()
                         ).hexdigest()
                         print(f"{source_operation_node} --> {node}")
-        print(f"end")
+        if len(self.stages) != 1:
+            print(f"end")
 
 
 # TODO Make yaml its own plugin
