@@ -96,15 +96,27 @@
 <li class="toctree-l4"><a class="reference internal" href="#upload">Upload</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#list">List</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#sources">Sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#list">List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configure">Configure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#source">Source</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#model">Model</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#configure">Configure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#source">Source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#context">Context</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Source</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">Model</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Source</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#repo">Repo</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#update">Update</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#repos">Repos</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#train">Train</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#accuracy">Accuracy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#predict">Predict</a></li>
 </ul>
 </li>
 </ul>
@@ -181,28 +193,44 @@
            <div itemprop="articleBody">
             
   <div class="section" id="api">
-<h1><a class="toc-backref" href="#id4">API</a><a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<h1><a class="toc-backref" href="#id10">API</a><a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<p>An example of using the API from JavaScript can be found in
+<a class="reference external" href="https://github.com/intel/dffml/blob/master/service/http/examples/web/api.js">examples/web/api.js</a>.</p>
 <div class="contents topic" id="rest-like-http-api">
 <p class="topic-title first">REST-like HTTP API</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#api" id="id4">API</a></p>
+<li><p><a class="reference internal" href="#api" id="id10">API</a></p>
 <ul>
-<li><p><a class="reference internal" href="#service" id="id5">Service</a></p>
+<li><p><a class="reference internal" href="#service" id="id11">Service</a></p>
 <ul>
-<li><p><a class="reference internal" href="#upload" id="id6">Upload</a></p></li>
+<li><p><a class="reference internal" href="#upload" id="id12">Upload</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#list" id="id7">List</a></p>
+<li><p><a class="reference internal" href="#list" id="id13">List</a></p></li>
+<li><p><a class="reference internal" href="#configure" id="id14">Configure</a></p>
 <ul>
-<li><p><a class="reference internal" href="#sources" id="id8">Sources</a></p></li>
+<li><p><a class="reference internal" href="#source" id="id15">Source</a></p></li>
+<li><p><a class="reference internal" href="#model" id="id16">Model</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#configure" id="id9">Configure</a></p></li>
-<li><p><a class="reference internal" href="#source" id="id10">Source</a></p>
+<li><p><a class="reference internal" href="#context" id="id17">Context</a></p>
 <ul>
-<li><p><a class="reference internal" href="#repo" id="id11">Repo</a></p></li>
-<li><p><a class="reference internal" href="#update" id="id12">Update</a></p></li>
-<li><p><a class="reference internal" href="#repos" id="id13">Repos</a></p></li>
+<li><p><a class="reference internal" href="#id4" id="id18">Source</a></p></li>
+<li><p><a class="reference internal" href="#id5" id="id19">Model</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#id6" id="id20">Source</a></p>
+<ul>
+<li><p><a class="reference internal" href="#repo" id="id21">Repo</a></p></li>
+<li><p><a class="reference internal" href="#update" id="id22">Update</a></p></li>
+<li><p><a class="reference internal" href="#repos" id="id23">Repos</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#id8" id="id24">Model</a></p>
+<ul>
+<li><p><a class="reference internal" href="#train" id="id25">Train</a></p></li>
+<li><p><a class="reference internal" href="#accuracy" id="id26">Accuracy</a></p></li>
+<li><p><a class="reference internal" href="#predict" id="id27">Predict</a></p></li>
 </ul>
 </li>
 </ul>
@@ -210,10 +238,10 @@
 </ul>
 </div>
 <div class="section" id="service">
-<h2><a class="toc-backref" href="#id5">Service</a><a class="headerlink" href="#service" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id11">Service</a><a class="headerlink" href="#service" title="Permalink to this headline">¶</a></h2>
 <p>Various APIs specific to this service rather than DFFML are under this path.</p>
 <div class="section" id="upload">
-<h3><a class="toc-backref" href="#id6">Upload</a><a class="headerlink" href="#upload" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id12">Upload</a><a class="headerlink" href="#upload" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">/service/upload/{filename}</span></code></p></li>
 </ul>
@@ -242,15 +270,21 @@ will get an error. The HTTP status code will be 400, Bad Request.</p>
 </div>
 </div>
 <div class="section" id="list">
-<span id="id1"></span><h2><a class="toc-backref" href="#id7">List</a><a class="headerlink" href="#list" title="Permalink to this headline">¶</a></h2>
+<span id="id1"></span><h2><a class="toc-backref" href="#id13">List</a><a class="headerlink" href="#list" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">/list/{thing</span> <span class="pre">to</span> <span class="pre">list}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/list/{plugin_type}</span></code></p></li>
 </ul>
 <p>List APIs return JSON objects where the keys are the names of the loadable
 classes for a given type of DFFML plugin. The values are that plugin’s
 configuration options.</p>
-<div class="section" id="sources">
-<h3><a class="toc-backref" href="#id8">Sources</a><a class="headerlink" href="#sources" title="Permalink to this headline">¶</a></h3>
+<p>Current supported DFFML plugins are as follows.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sources</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">models</span></code></p></li>
+</ul>
+<p>To list available plugins, send a <code class="docutils literal notranslate"><span class="pre">GET</span></code> request to the endpoint.</p>
+<p>The following is an example response body for a request to list available
+sources.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">/list/sources</span></code></p></li>
 </ul>
@@ -297,23 +331,35 @@ configuration options.</p>
 </pre></div>
 </div>
 </div>
-</div>
 <div class="section" id="configure">
-<span id="id2"></span><h2><a class="toc-backref" href="#id9">Configure</a><a class="headerlink" href="#configure" title="Permalink to this headline">¶</a></h2>
+<span id="id2"></span><h2><a class="toc-backref" href="#id14">Configure</a><a class="headerlink" href="#configure" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">/configure/{dffml</span> <span class="pre">plugin</span> <span class="pre">type}/{plugin</span> <span class="pre">name}/{label}</span></code></p></li>
 </ul>
 <p>The configure API allows for creation of instances of DFFML plugin types.
 Callers supply the type of plugin to instantiate, the name of that plugin, and
 then label it will be assigned when using it.</p>
-<p>Configuration options can be found in the <a class="reference external" href="https://intel.github.io/dffml/plugins/">DFFML Plugin docs</a>
-or via the <a class="reference internal" href="#list"><span class="std std-ref">List</span></a> endpoint.</p>
-<p>Current supported DFFML plugins are as follows.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">source</span></code></p></li>
-</ul>
+<p>Configuration options can be found in the docs for the various plugins or via
+the <a class="reference internal" href="#list"><span class="std std-ref">List</span></a> endpoint.</p>
 <p>To configure a plugin, send a <code class="docutils literal notranslate"><span class="pre">POST</span></code> request to the endpoint containing only
 the JSON object to be used as the configuration of the requested plugin.</p>
+<p>On successful creation and configuration the server will return <code class="docutils literal notranslate"><span class="pre">null</span></code>
+for <code class="docutils literal notranslate"><span class="pre">error</span></code>.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>If the plugin name requested is not loadable the server will return a HTTP
+status code of 404, Not Found.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;source non-existant not found&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>If there is a problem with configuration the server will tell the client. The
+HTTP status code will be 400, Bad Request.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;CSVSource missing &#39;filename&#39; from source.mydataset&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="source">
+<h3><a class="toc-backref" href="#id15">Source</a><a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h3>
 <p>The following is an example request body to configure the <code class="docutils literal notranslate"><span class="pre">csv</span></code> source. The
 URL this <code class="docutils literal notranslate"><span class="pre">POST</span></code> request is sent to is.</p>
 <ul class="simple">
@@ -340,43 +386,115 @@ URL this <code class="docutils literal notranslate"><span class="pre">POST</span
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>On successful creation and configuration the server will return <code class="docutils literal notranslate"><span class="pre">null</span></code>
-for <code class="docutils literal notranslate"><span class="pre">error</span></code>.</p>
+</div>
+<div class="section" id="model">
+<h3><a class="toc-backref" href="#id16">Model</a><a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h3>
+<p>The following is an example request body to configure a model. The URL this
+<code class="docutils literal notranslate"><span class="pre">POST</span></code> request is sent to is.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/configure/source/fake/mymodel</span></code></p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;model&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;arg&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="nt">&quot;config&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;directory&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;arg&quot;</span><span class="p">:</span> <span class="p">[</span>
+          <span class="s2">&quot;/home/user/modeldirs/mymodel&quot;</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;config&quot;</span><span class="p">:</span> <span class="p">{}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="context">
+<span id="id3"></span><h2><a class="toc-backref" href="#id17">Context</a><a class="headerlink" href="#context" title="Permalink to this headline">¶</a></h2>
+<p>After a plugin has been configured, a context must be created. The context label
+will be used in all requests for that plugin type, to reference which context
+the respective methods should be called on.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/context/{plugin_type}/{label}/{ctx_label}</span></code></p></li>
+</ul>
+<p>To create a context, send a <code class="docutils literal notranslate"><span class="pre">GET</span></code> or <code class="docutils literal notranslate"><span class="pre">POST</span></code> request to the endpoint
+containing the JSON object to be used as the configuration parameters of the
+requested plugin context type.</p>
+<p>On successful creation of a context the server will return <code class="docutils literal notranslate"><span class="pre">null</span></code> for
+<code class="docutils literal notranslate"><span class="pre">error</span></code>.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>If the plugin name requested is not loadable the server will return a HTTP
-status code of 404, Not Found.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;source non-existant not found&quot;</span><span class="p">}</span>
+<p>If there is no configured plugin for the given label the server will return a
+HTTP status code of 404, Not Found.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;mydataset source not found&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>If there is a problem with configuration the server will tell the client. The
-HTTP status code will be 400, Bad Request.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;CSVSource missing &#39;filename&#39; from source.mydataset&quot;</span><span class="p">}</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="source">
-<h2><a class="toc-backref" href="#id10">Source</a><a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h3><a class="toc-backref" href="#id18">Source</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>The following is an example request body to create a source context. The URL
+this <code class="docutils literal notranslate"><span class="pre">GET</span></code> request is sent to is.</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">/source/{label}/{source</span> <span class="pre">context</span> <span class="pre">method}/{...}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/context/source/mydataset/ctx_mydataset</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h3><a class="toc-backref" href="#id19">Model</a><a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>To create a model context, the features the context will use for training,
+prediction, and accuracy assessment on must be sent.</p>
+<p>The following is an example request body to create a model context. The URL this
+<code class="docutils literal notranslate"><span class="pre">POST</span></code> request is sent to is.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/context/model/mymodel/ctx_mymodel</span></code></p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;Years&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;dtype&quot;</span><span class="p">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;length&quot;</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;Experiance&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;dtype&quot;</span><span class="p">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;length&quot;</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;Trust&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;dtype&quot;</span><span class="p">:</span> <span class="s2">&quot;float&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;length&quot;</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If the request JSON object, and object for each feature, doesn’t match the
+format in the example above, the server will return a HTTP status code of 400,
+Bad Request.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Incorrect format for features&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id6">
+<h2><a class="toc-backref" href="#id20">Source</a><a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/{source</span> <span class="pre">context</span> <span class="pre">method}/{...}</span></code></p></li>
 </ul>
 <p>The source endpoint exposes all of the methods you’d find in
-<code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.BaseSourceContext</span></code>. The label parameter in the URL is
-the label of the source that was configured with the <a class="reference internal" href="#configure"><span class="std std-ref">Configure</span></a> API.</p>
-<p>If the label provided does not exists, for instance the configure API was not
-used prior to calling a source method, the server will return a 404, Not Found
-response.</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.BaseSourceContext</span></code>. The ctx_label parameter in the URL
+is the label of the source context that was configured via the <a class="reference internal" href="#configure"><span class="std std-ref">Configure</span></a>
+and then the <a class="reference internal" href="#context"><span class="std std-ref">Context</span></a> APIs.</p>
+<p>If the ctx_label provided does not exist, for instance the configure and
+context APIs were not used prior to calling a source method, the server will
+return a 404, Not Found response.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Source not loaded&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
 <div class="section" id="repo">
-<span id="id3"></span><h3><a class="toc-backref" href="#id11">Repo</a><a class="headerlink" href="#repo" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">/source/{label}/repo/{key}</span></code></p></li>
-</ul>
+<span id="id7"></span><h3><a class="toc-backref" href="#id21">Repo</a><a class="headerlink" href="#repo" title="Permalink to this headline">¶</a></h3>
 <p>Access a repo by it’s unique key. The response will be the JSON representation
-of the repo. Here’s an example response.</p>
+of the repo. Here’s an example response for a <code class="docutils literal notranslate"><span class="pre">GET</span></code> request.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/repo/{key}</span></code></p></li>
+</ul>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;src_url&quot;</span><span class="p">:</span> <span class="s2">&quot;myrepo&quot;</span><span class="p">,</span>
   <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -386,15 +504,15 @@ of the repo. Here’s an example response.</p>
 </pre></div>
 </div>
 <p>Just as with DFFML, you’ll still get a repo even if the repo doesn’t exist
-within the source.</p>
+within the source. However, it will only contain the <code class="docutils literal notranslate"><span class="pre">src_url</span></code>.</p>
 </div>
 <div class="section" id="update">
-<h3><a class="toc-backref" href="#id12">Update</a><a class="headerlink" href="#update" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">/source/{label}/update/{key}</span></code></p></li>
-</ul>
+<h3><a class="toc-backref" href="#id22">Update</a><a class="headerlink" href="#update" title="Permalink to this headline">¶</a></h3>
 <p>Update a repo by it’s unique key. <code class="docutils literal notranslate"><span class="pre">POST</span></code> data in the same format received from
-<a class="reference internal" href="#repo"><span class="std std-ref">Repo</span></a>.</p>
+repo.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/update/{key}</span></code></p></li>
+</ul>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;src_url&quot;</span><span class="p">:</span> <span class="s2">&quot;myrepo&quot;</span><span class="p">,</span>
   <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -403,19 +521,16 @@ within the source.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Unless something goes wrong within the source, you’ll get a null error response.</p>
+<p>Unless something goes wrong within the source, you’ll get a <code class="docutils literal notranslate"><span class="pre">null</span></code> error
+response.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="repos">
-<h3><a class="toc-backref" href="#id13">Repos</a><a class="headerlink" href="#repos" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">/source/{label}/repos/{chunk_size}</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">/source/{label}/repos/{iterkey}/{chunk_size}</span></code></p></li>
-</ul>
-<p>Initially, client makes a request to the API with the <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> for the
-first iteration. <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> is the number of repos to return in one
+<h3><a class="toc-backref" href="#id23">Repos</a><a class="headerlink" href="#repos" title="Permalink to this headline">¶</a></h3>
+<p>Initially, client makes a <code class="docutils literal notranslate"><span class="pre">GET</span></code> request to the API with the <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> for
+the first iteration. <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> is the number of repos to return in one
 iteration. The response object will have two properties, <code class="docutils literal notranslate"><span class="pre">iterkey</span></code> and
 <code class="docutils literal notranslate"><span class="pre">repos</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">repos</span></code> is a key value mapping of repo <code class="docutils literal notranslate"><span class="pre">src_url</span></code>’s to their JSON serialized
@@ -425,7 +540,11 @@ repo object.</p>
 should be called using the response’s <code class="docutils literal notranslate"><span class="pre">iterkey</span></code> value until the response
 contains an <code class="docutils literal notranslate"><span class="pre">iterkey</span></code> value of <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p>
 <p>Sample response where <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> is <code class="docutils literal notranslate"><span class="pre">1</span></code> and there are more repos to
-iterate over.</p>
+iterate over. We continue making <code class="docutils literal notranslate"><span class="pre">GET</span></code> requests until <code class="docutils literal notranslate"><span class="pre">iterkey</span></code> is <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/repos/{chunk_size}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/repos/{iterkey}/{chunk_size}</span></code></p></li>
+</ul>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;iterkey&quot;</span><span class="p">:</span> <span class="s2">&quot;1a164836c6d8a27fdf9cd12688440aaa16a852fd1814b170c924a89fba4e084c8ea7522c34f9f5a539803d6237238e90&quot;</span><span class="p">,</span>
   <span class="nt">&quot;repos&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -448,6 +567,101 @@ iterate over.</p>
       <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="nt">&quot;myfeature&quot;</span><span class="p">:</span> <span class="s2">&quot;othervalue&quot;</span>
       <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id8">
+<h2><a class="toc-backref" href="#id24">Model</a><a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/model/{ctx_label}/{model</span> <span class="pre">context</span> <span class="pre">method}/{...}</span></code></p></li>
+</ul>
+<p>The model endpoint exposes all of the methods you’d find in
+<code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.model.ModelContext</span></code>. The ctx_label parameter in the URL
+is the label of the model context that was configured via the <a class="reference internal" href="#configure"><span class="std std-ref">Configure</span></a>
+and then the <a class="reference internal" href="#context"><span class="std std-ref">Context</span></a> APIs.</p>
+<p>If the ctx_label provided does not exist, for instance the configure and
+context APIs were not used prior to calling a model method, the server will
+return a 404, Not Found response.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Model not loaded&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="train">
+<span id="id9"></span><h3><a class="toc-backref" href="#id25">Train</a><a class="headerlink" href="#train" title="Permalink to this headline">¶</a></h3>
+<p>Send a <code class="docutils literal notranslate"><span class="pre">POST</span></code> request with the JSON body being a list of source context labels
+to use as training data.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/model/{ctx_label}/train</span></code></p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+  <span class="s2">&quot;my_training_dataset&quot;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Unless something goes wrong within the model, you’ll get a <code class="docutils literal notranslate"><span class="pre">null</span></code> error
+response.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="accuracy">
+<h3><a class="toc-backref" href="#id26">Accuracy</a><a class="headerlink" href="#accuracy" title="Permalink to this headline">¶</a></h3>
+<p>Send a <code class="docutils literal notranslate"><span class="pre">POST</span></code> request with the JSON body being a list of source context labels
+to use as test data.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/model/{ctx_label}/accuracy</span></code></p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+  <span class="s2">&quot;my_test_dataset&quot;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The response will be a JSON object containing the <code class="docutils literal notranslate"><span class="pre">accuracy</span></code> as a float value.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;accuracy&quot;</span><span class="p">:</span> <span class="mf">0.42</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Unless something goes wrong within the model, you’ll get a <code class="docutils literal notranslate"><span class="pre">null</span></code> error
+response.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="predict">
+<h3><a class="toc-backref" href="#id27">Predict</a><a class="headerlink" href="#predict" title="Permalink to this headline">¶</a></h3>
+<p>To use a model for prediction, send a <code class="docutils literal notranslate"><span class="pre">POST</span></code> request to the following URL with
+the body being a JSON object mapping <code class="docutils literal notranslate"><span class="pre">src_url</span></code> of the repo to the JSON
+representation of <a class="reference internal" href="../../../api/repo.html#dffml.repo.Repo" title="dffml.repo.Repo"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.repo.Repo</span></code></a> as received by the source repo
+endpoint.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/model/{ctx_label}/predict/0</span></code></p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;42&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;by_ten&quot;</span><span class="p">:</span> <span class="mi">420</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Sample response.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;iterkey&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;repos&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;42&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;src_url&quot;</span><span class="p">:</span> <span class="s2">&quot;42&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;by_ten&quot;</span><span class="p">:</span> <span class="mi">420</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+        <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">4200</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2019-10-15T08:19:41Z&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{}</span>
     <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">}</span>
