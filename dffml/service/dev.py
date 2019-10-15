@@ -267,7 +267,7 @@ class Diagram(CMD):
             # Skip stage if not wanted
             if self.stages and stage.value not in self.stages:
                 continue
-            stage_node = hashlib.sha384(
+            stage_node = hashlib.md5(
                 ("stage." + stage.value).encode()
             ).hexdigest()
             if len(self.stages) != 1:
@@ -276,24 +276,24 @@ class Diagram(CMD):
             for instance_name, operation in dataflow.operations.items():
                 if operation.stage != stage:
                     continue
-                subgraph_node = hashlib.sha384(
+                subgraph_node = hashlib.md5(
                     ("subgraph." + instance_name).encode()
                 ).hexdigest()
-                node = hashlib.sha384(instance_name.encode()).hexdigest()
+                node = hashlib.md5(instance_name.encode()).hexdigest()
                 if not self.simple:
                     print(f"subgraph {subgraph_node}[{instance_name}]")
                     print(f"style {subgraph_node} fill:#fff4de,stroke:#cece71")
                 print(f"{node}[{operation.name}]")
                 for input_name in operation.inputs.keys():
-                    input_node = hashlib.sha384(
-                        (instance_name + "." + input_name).encode()
+                    input_node = hashlib.md5(
+                        ("input." + instance_name + "." + input_name).encode()
                     ).hexdigest()
                     if not self.simple:
                         print(f"{input_node}({input_name})")
                         print(f"{input_node} --> {node}")
                 for output_name in operation.outputs.keys():
-                    output_node = hashlib.sha384(
-                        (instance_name + "." + output_name).encode()
+                    output_node = hashlib.md5(
+                        ("output." + instance_name + "." + output_name).encode()
                     ).hexdigest()
                     if not self.simple:
                         print(f"{output_node}({output_name})")
@@ -302,44 +302,45 @@ class Diagram(CMD):
                     print(f"end")
             if len(self.stages) != 1:
                 print(f"end")
-            for instance_name, input_flow in dataflow.flow.items():
-                operation = dataflow.operations[instance_name]
-                if operation.stage != stage:
-                    continue
-                node = hashlib.sha384(instance_name.encode()).hexdigest()
-                for input_name, sources in input_flow.items():
-                    for source in sources:
-                        if source == "seed":
-                            input_definition = operation.inputs[input_name]
-                            seed_input_node = hashlib.sha384(
-                                input_definition.name.encode()
-                            ).hexdigest()
-                            print(
-                                f"{seed_input_node}({input_definition.name})"
-                            )
-                            if not self.simple:
-                                input_node = hashlib.sha384(
-                                    (instance_name + "." + input_name).encode()
-                                ).hexdigest()
-                                print(f"{seed_input_node} --> {input_node}")
-                            else:
-                                print(f"{seed_input_node} --> {node}")
-                            continue
+        print(f"subgraph inputs[Inputs]")
+        print(f"style inputs fill:#f6dbf9,stroke:#a178ca")
+        for instance_name, input_flow in dataflow.flow.items():
+            operation = dataflow.operations[instance_name]
+            node = hashlib.md5(instance_name.encode()).hexdigest()
+            for input_name, sources in input_flow.items():
+                for source in sources:
+                    if source == "seed":
+                        input_definition = operation.inputs[input_name]
+                        seed_input_node = hashlib.md5(
+                            input_definition.name.encode()
+                        ).hexdigest()
+                        print(
+                            f"{seed_input_node}({input_definition.name})"
+                        )
                         if not self.simple:
-                            source_output_node = hashlib.sha384(
-                                source.encode()
+                            input_node = hashlib.md5(
+                                ("input." + instance_name + "." + input_name).encode()
                             ).hexdigest()
-                            input_node = hashlib.sha384(
-                                (instance_name + "." + input_name).encode()
-                            ).hexdigest()
-                            print(f"{source_output_node} --> {input_node}")
+                            print(f"{seed_input_node} --> {input_node}")
                         else:
-                            source_split = source.split(".")
-                            source_operation = ".".join(source_split[:-1])
-                            source_operation_node = hashlib.sha384(
-                                source_operation.encode()
-                            ).hexdigest()
-                            print(f"{source_operation_node} --> {node}")
+                            print(f"{seed_input_node} --> {node}")
+                        continue
+                    if not self.simple:
+                        source_output_node = hashlib.md5(
+                            ("output." + source).encode()
+                        ).hexdigest()
+                        input_node = hashlib.md5(
+                            ("input." + instance_name + "." + input_name).encode()
+                        ).hexdigest()
+                        print(f"{source_output_node} --> {input_node}")
+                    else:
+                        source_split = source.split(".")
+                        source_operation = ".".join(source_split[:-1])
+                        source_operation_node = hashlib.md5(
+                            source_operation.encode()
+                        ).hexdigest()
+                        print(f"{source_operation_node} --> {node}")
+        print(f"end")
 
 
 # TODO Make yaml its own plugin
