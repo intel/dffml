@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - shouldi example got a bandit operation which tells users not to install if
   there are more than 5 issues of high severity and confidence.
 - dev service got the ability to run a single operation in a standalone fashion.
+- About page to docs.
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
