@@ -33,9 +33,10 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Data Set Generation" href="operations.html" />
+    <link rel="next" title="DataFlows - shouldi" href="operations.html" />
     <link rel="prev" title="Usage Examples" href="index.html" /> 
 </head>
 
@@ -86,6 +87,8 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage Examples</a><ul class="current">
@@ -98,13 +101,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#modifying-the-legacy-app">Modifying the Legacy App</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="operations.html">Data Set Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html">DataFlows - shouldi</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
 </ul>
 
             
@@ -296,8 +298,12 @@ range.</p>
 </div>
 <p>Since operations are run concurrently with each other, DFFML manages locking of
 input data, such as git repositories. This is done via <code class="docutils literal notranslate"><span class="pre">Definitions</span></code> which are
-the variables used as values in the <code class="docutils literal notranslate"><span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code> dictionaries.</p>
-<p>We’re going to use the operations provided in <code class="docutils literal notranslate"><span class="pre">dffml-feature-git</span></code> to gather
+the variables used as values in the <code class="docutils literal notranslate"><span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code> dictionaries. We
+link together all of the operations in a <code class="docutils literal notranslate"><span class="pre">DataFlow</span></code>. The pink boxes in the
+diagram below are the inputs to the network. The purple are the different
+operations. Arrows show how data moves between operations.</p>
+<img alt="Diagram showing Dataflow" src="../_images/integration_dataflow.svg" /><p>We can also visualize how the individual inputs and outputs are linked together.</p>
+<img alt="Diagram showing detailed version of Dataflow" src="../_images/integration_dataflow_complex.svg" /><p>We’re going to use the operations provided in <code class="docutils literal notranslate"><span class="pre">dffml-feature-git</span></code> to gather
 our dataset. First we’ll define which operations we are going to use.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ cat &gt; /tmp/operations <span class="s">&lt;&lt;EOF</span>
 <span class="s">group_by</span>
@@ -701,7 +707,7 @@ process, and integrated machine learning into a legacy application.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="operations.html" class="btn btn-neutral float-right" title="Data Set Generation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="operations.html" class="btn btn-neutral float-right" title="DataFlows - shouldi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral float-left" title="Usage Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

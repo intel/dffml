@@ -156,7 +156,22 @@ range.
 
 Since operations are run concurrently with each other, DFFML manages locking of
 input data, such as git repositories. This is done via ``Definitions`` which are
-the variables used as values in the ``input`` and ``output`` dictionaries.
+the variables used as values in the ``input`` and ``output`` dictionaries. We
+link together all of the operations in a ``DataFlow``. The pink boxes in the
+diagram below are the inputs to the network. The purple are the different
+operations. Arrows show how data moves between operations.
+
+.. TODO Autogenerate this from the dataflow
+
+.. image:: /images/integration_dataflow.svg
+    :alt: Diagram showing Dataflow
+
+We can also visualize how the individual inputs and outputs are linked together.
+
+.. TODO Autogenerate this from the dataflow
+
+.. image:: /images/integration_dataflow_complex.svg
+    :alt: Diagram showing detailed version of Dataflow
 
 We're going to use the operations provided in ``dffml-feature-git`` to gather
 our dataset. First we'll define which operations we are going to use.
