@@ -4,7 +4,7 @@ Provide access to DFFML APIs via HTTP interface.
 
 ## Documentation
 
-Documentation is hosted at https://intel.gitlab.io/dffml/master/plugins/service/http/
+Documentation is hosted at https://intel.github.io/dffml/plugins/service/http/
 
 ## License
 
