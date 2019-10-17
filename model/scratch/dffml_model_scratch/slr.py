@@ -121,9 +121,11 @@ class SLRContext(ModelContext):
             raise ModelNotTrained("Train model before prediction.")
         async for repo in repos:
             feature_data = repo.features(self.features)
-            yield repo, await self.predict_input(
-                feature_data[self.features[0]]
-            ), self.regression_line[2]
+            repo.predicted(
+                await self.predict_input(feature_data[self.features[0]]),
+                self.regression_line[2],
+            )
+            yield repo
 
 
 @entry_point("slr")

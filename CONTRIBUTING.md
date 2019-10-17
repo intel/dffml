@@ -10,13 +10,25 @@ You can get involved in DFFML via the following channels.
 
 - [Gitter Chat](https://gitter.im/dffml/community)
 - [Weekly Meetings](https://intel.github.io/dffml/community.html)
+  - Recordings: https://www.youtube.com/channel/UCorEDRWGikwBH3dsJdDK1qA
 - Open an [issue](https://github.com/intel/dffml/issues/new/choose)
 - Users of DFFML Discussion Mailing List
   - Ask by emailing: [dffml-users@lists.01.org](mailto:dffml-users@lists.01.org)
-  - Subscribe: https://lists.01.org/mailman/listinfo/dffml-users
+  - Subscribe: https://lists.01.org/postorius/lists/dffml-users.lists.01.org/
 - Development of DFFML Discussion Mailing List
   - Send emails to: [dffml-dev@lists.01.org](mailto:dffml-dev@lists.01.org)
-  - Subscribe: https://lists.01.org/mailman/listinfo/dffml-dev
+  - Subscribe: https://lists.01.org/postorius/lists/dffml-dev.lists.01.org/
+
+## Communication
+
+Logs, screenshots, the command you were running, and any files involved make
+it easier for other developers to replicate whatever happened so they can help
+you fix the problem.
+
+Even better than a screenshot is an
+[asciicast](https://asciinema.org/docs/installation). It lets you create a
+recording of your terminal that can be shared via a asciinema.org link or sent
+privately as a JSON file.
 
 ## Getting Set Up To Work On DFFML
 

@@ -107,8 +107,8 @@ class DNNClassifierModelContext(TensorflowModelContext):
     columns for real valued, string, and list of real valued features.
     """
 
-    def __init__(self, config, parent) -> None:
-        super().__init__(config, parent)
+    def __init__(self, features, parent) -> None:
+        super().__init__(features, parent)
         self.cids = self._mkcids(self.parent.config.classifications)
         self.classifications = self._classifications(self.cids)
         self.model_dir_path = self._model_dir_path()
@@ -145,9 +145,8 @@ class DNNClassifierModelContext(TensorflowModelContext):
         """
         if self.parent.config.directory is None:
             return None
-        model = hashlib.sha384(
-            "".join(self.features).encode("utf-8")
-        ).hexdigest()
+        _to_hash = self.features + list(map(str, self.parent.config.hidden))
+        model = hashlib.sha384("".join(_to_hash).encode("utf-8")).hexdigest()
         if not os.path.isdir(self.parent.config.directory):
             raise NotADirectoryError(
                 "%s is not a directory" % (self.parent.config.directory)
@@ -308,9 +307,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         accuracy_score = self.model.evaluate(input_fn=input_fn)
         return Accuracy(accuracy_score["accuracy"])
 
-    async def predict(
-        self, repos: AsyncIterator[Repo]
-    ) -> AsyncIterator[Tuple[Repo, Any, float]]:
+    async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
         """
         Uses trained data to make a prediction about the quality of a repo.
         """
@@ -323,7 +320,8 @@ class DNNClassifierModelContext(TensorflowModelContext):
         for repo, pred_dict in zip(predict, predictions):
             class_id = pred_dict["class_ids"][0]
             probability = pred_dict["probabilities"][class_id]
-            yield repo, self.cids[class_id], probability
+            repo.predicted(self.cids[class_id], probability)
+            yield repo
 
 
 @entry_point("tfdnnc")

@@ -110,7 +110,8 @@ class ScikitContext(ModelContext):
                     self.clf.predict(predict),
                 )
             )
-            yield repo, self.clf.predict(predict)[0], self.confidence
+            repo.predicted(self.clf.predict(predict)[0], self.confidence)
+            yield repo
 
 
 class Scikit(Model):

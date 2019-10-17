@@ -31,11 +31,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Entrypoint listing command to development service to aid in debugging issues
   with entrypoints.
 - HTTP API service to enable interacting with DFFML over HTTP. Currently
-  includes APIs for configuring and using Sources.
+  includes APIs for configuring and using Sources and Models.
 - MySQL protocol source to work with data from a MySQL protocol compatible db
 - shouldi example got a bandit operation which tells users not to install if
   there are more than 5 issues of high severity and confidence.
 - dev service got the ability to run a single operation in a standalone fashion.
+- About page to docs.
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
@@ -63,6 +64,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - shouldi example runs bandit now in addition to safety
 - The way safety gets called
 - Switched documentation to Read The Docs theme
+- Models yield only a repo object instead of the value and confidence of the
+  prediction as well. Models are not responsible for calling the predicted
+  method on the repo. This will ease the process of making predict feature
+  specific.
 ### Fixed
 - Docs get version from dffml.version.VERSION.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
@@ -79,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - JSON source now has `entry_point` decoration
 - Strict flag in df.memory is now on by default
 - Dynamically created scikit models get config args correctly
+- Renamed `DNNClassifierModelContext` first init arg from `config` to `features`
 ### Removed
 - Repo objects are no longer classification specific. Their `classify`,
   `classified`, and `classification` methods were removed.

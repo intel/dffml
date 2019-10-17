@@ -8,7 +8,7 @@ Questions can be asked via
 - Email `dffml-users@lists.01.org <dffml-users@lists.01.org>`_
 
   - To subscribe to the users mailing list visit:
-    https://lists.01.org/mailman/listinfo/dffml-users
+    https://lists.01.org/postorius/lists/dffml-users.lists.01.org/
 
 We hold weekly meetings on Tuesday's at 9 AM PST. Meetings are held via Google
 Hangouts.
@@ -18,21 +18,11 @@ using data flow programming, hop on the meeting and we'll do Q & A at the end of
 the agenda.
 
 - `Meeting Minutes <https://docs.google.com/document/d/16u9Tev3O0CcUDe2nfikHmrO3Xnd4ASJ45myFgQLpvzM/>`_
+- `Recordings <https://www.youtube.com/channel/UCorEDRWGikwBH3dsJdDK1qA>`_
 
-The meeting link will be posted in the Gitter channel shortly before starting.
 To join the meeting, click on the Google calendar below for the day you are
 trying to join, then click "more details" which will open your Google calendar,
 then click "Join Hangouts".
-
-The goal of DFFML is to build a community driven library of plugins for dataset
-generation and model definition. So that we as developers and researchers can
-quickly and easily plug and play various pieces of data with various model
-implementations.
-
-The more we build up the library of plugins (which anyone can maintain, they
-don't have to be contributed upstream unless you want to) the more variations on
-model implementations, feature data generators, and database backend
-abstractions, we all have to work with.
 
 If you have developed a plugin for DFFML and would like it listed in the docs,
 please open an `issue <https://github.com/intel/dffml/issues/new?assignees=&labels=documentation&template=new_plugin.md&title=plugin%3A+new%3A+>`_.
@@ -41,7 +31,7 @@ For work on DFFML itself and the core plugins, there is a mailing list you
 should subscribe, and send questions to: `dffml-dev@lists.01.org <dffml-dev@lists.01.org>`_
 
   - To subscribe to the dev mailing list visit:
-    https://lists.01.org/mailman/listinfo/dffml-dev
+    https://lists.01.org/postorius/lists/dffml-dev.lists.01.org/
 
 .. raw:: html
 
