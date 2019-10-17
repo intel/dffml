@@ -16,7 +16,7 @@ import tensorflow
 from dffml.repo import Repo
 from dffml.feature import Feature, Features
 from dffml.source.source import Sources
-from dffml.model.model import ModelConfig, ModelContext, Model
+from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml.accuracy import Accuracy
 from dffml.util.entrypoint import entry_point
 from dffml.base import BaseConfig
@@ -301,7 +301,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         as test data.
         """
         if not os.path.isdir(self.model_dir_path):
-            raise NotADirectoryError("Model not trained")
+            raise ModelNotTrained("Train model before assessing for accuracy.")
         input_fn = await self.accuracy_input_fn(
             sources, batch_size=20, shuffle=False, epochs=1
         )
@@ -315,7 +315,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         Uses trained data to make a prediction about the quality of a repo.
         """
         if not os.path.isdir(self.model_dir_path):
-            raise NotADirectoryError("Model not trained")
+            raise ModelNotTrained("Train model before prediction.")
         # Create the input function
         input_fn, predict = await self.predict_input_fn(repos)
         # Makes predictions on classifications

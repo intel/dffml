@@ -15,7 +15,7 @@ from dffml.repo import Repo
 from dffml.source.source import Sources
 from dffml.feature import Features
 from dffml.accuracy import Accuracy
-from dffml.model.model import ModelConfig, ModelContext, Model
+from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml.util.entrypoint import entry_point
 from dffml.util.cli.arg import Arg
 
@@ -110,13 +110,15 @@ class SLRContext(ModelContext):
 
     async def accuracy(self, sources: Sources) -> Accuracy:
         if self.regression_line is None:
-            raise ValueError("Model Not Trained")
+            raise ModelNotTrained("Train model before assessing for accuracy.")
         accuracy_value = self.regression_line[2]
         return Accuracy(accuracy_value)
 
     async def predict(
         self, repos: AsyncIterator[Repo]
     ) -> AsyncIterator[Tuple[Repo, Any, float]]:
+        if self.regression_line is None:
+            raise ModelNotTrained("Train model before prediction.")
         async for repo in repos:
             feature_data = repo.features(self.features)
             yield repo, await self.predict_input(

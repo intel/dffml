@@ -22,6 +22,10 @@ from ..accuracy import Accuracy
 from ..util.entrypoint import Entrypoint, base_entry_point
 
 
+class ModelNotTrained(Exception):
+    pass
+
+
 class ModelConfig(BaseConfig, NamedTuple):
     directory: str
 

@@ -5,6 +5,7 @@ Base class for Scikit models
 """
 import os
 import json
+import math
 import hashlib
 from pathlib import Path
 from typing import AsyncIterator, Tuple, Any, NamedTuple
@@ -16,7 +17,7 @@ import pandas as pd
 from dffml.repo import Repo
 from dffml.source.source import Sources
 from dffml.accuracy import Accuracy
-from dffml.model.model import ModelConfig, ModelContext, Model
+from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 
 
 class ScikitConfig(ModelConfig, NamedTuple):
@@ -33,7 +34,7 @@ class ScikitContext(ModelContext):
 
     @property
     def confidence(self):
-        return self.parent.saved.get(self._features_hash, None)
+        return self.parent.saved.get(self._features_hash, float("nan"))
 
     @confidence.setter
     def confidence(self, confidence):
@@ -60,7 +61,7 @@ class ScikitContext(ModelContext):
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
-        joblib.dump(self.clf, self._filename())
+        pass
 
     async def train(self, sources: Sources):
         data = []
@@ -77,6 +78,8 @@ class ScikitContext(ModelContext):
         joblib.dump(self.clf, self._filename())
 
     async def accuracy(self, sources: Sources) -> Accuracy:
+        if not os.path.isfile(self._filename()):
+            raise ModelNotTrained("Train model before assessing for accuracy.")
         data = []
         async for repo in sources.with_features(self.features):
             feature_data = repo.features(
@@ -94,8 +97,8 @@ class ScikitContext(ModelContext):
     async def predict(
         self, repos: AsyncIterator[Repo]
     ) -> AsyncIterator[Tuple[Repo, Any, float]]:
-        if self.confidence is None:
-            raise ValueError("Model Not Trained")
+        if not os.path.isfile(self._filename()):
+            raise ModelNotTrained("Train model before prediction.")
         async for repo in repos:
             feature_data = repo.features(self.features)
             df = pd.DataFrame(feature_data, index=[0])
