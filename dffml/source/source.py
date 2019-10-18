@@ -18,7 +18,7 @@ from ..util.asynchelper import (
     AsyncContextManagerListContext,
     AsyncContextManagerList,
 )
-from ..util.entrypoint import Entrypoint
+from ..util.entrypoint import Entrypoint, base_entry_point
 
 from .log import LOGGER
 
@@ -48,14 +48,12 @@ class BaseSourceContext(BaseDataFlowFacilitatorObjectContext):
         """
 
 
+@base_entry_point("dffml.source", "source")
 class BaseSource(BaseDataFlowFacilitatorObject):
     """
     Abstract base class for all sources. New sources must be derived from this
     class and implement the repos method.
     """
-
-    ENTRY_POINT = "dffml.source"
-    ENTRY_POINT_NAME = ["source"]
 
     def __call__(self) -> BaseSourceContext:
         return self.CONTEXT(self)
