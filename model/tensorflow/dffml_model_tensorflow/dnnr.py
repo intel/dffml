@@ -27,7 +27,7 @@ class DNNRegressionModelConfig:
     steps: int
     epochs: int
     hidden: List[int]
-    label_name : str # feature_name holding target values 
+    predict : str # feature_name holding target values 
     
     
 
@@ -40,23 +40,9 @@ class DNNRegressionModelContext(TensorflowModelContext):
     def __init__(self, config, parent) -> None:
         super().__init__(config, parent)
         self.model_dir_path = self._model_dir_path()
-        self.label_name=self.parent.config.label_name
-        self.all_features=self.features+[self.label_name]
+        self.all_features=self.features+[self.parent.config.predict]
   
-    def _model_dir_path(self):
-        """
-        Creates the path to the model dir by using the provided model dir and
-        the sha384 hash of the concatenated feature names.
-        """
-        if self.parent.config.directory is None:
-            return None
-        _to_hash = self.features + list(map(str, self.parent.config.hidden))
-        model = hashlib.sha384("".join(_to_hash).encode("utf-8")).hexdigest()
-        if not os.path.isdir(self.parent.config.directory):
-            raise NotADirectoryError(
-                "%s is not a directory" % (self.parent.config.directory)
-            )
-        return os.path.join(self.parent.config.directory, model)
+    
 
     @property
     def model(self):
@@ -90,7 +76,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
             for feature, results in repo.features(self.features).items():
                 
                 x_cols[feature].append(np.array(results))
-            y_cols.append(repo.feature(self.label_name))
+            y_cols.append(repo.feature(self.parent.config.predict))
 
         y_cols = np.array(y_cols)
         for feature in x_cols:
@@ -119,7 +105,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
         async for repo in sources.with_features(self.all_features ):
             for feature, results in repo.features(self.features).items():
                 x_cols[feature].append(np.array(results))
-            y_cols.append(repo.feature(self.label_name))
+            y_cols.append(repo.feature(self.parent.config.predict))
 
         y_cols = np.array(y_cols)
         for feature in x_cols:
@@ -138,39 +124,6 @@ class DNNRegressionModelContext(TensorflowModelContext):
         )
         return input_fn
 
-    async def predict_input_fn(self, repos: AsyncIterator[Repo], **kwargs):
-        """
-        Uses the numpy input function with data from repo features.
-        """
-        x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
-        ret_repos = []
-        async for repo in repos:
-            if not repo.features(self.features):
-                continue
-            ret_repos.append(repo)
-            for feature, results in repo.features(self.features).items():
-                x_cols[feature].append(np.array(results))
-        for feature in x_cols:
-            x_cols[feature] = np.array(x_cols[feature])
-        self.logger.info("------ Repo Data ------")
-        self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
-        self.logger.info("-----------------------")
-        input_fn = tensorflow.estimator.inputs.numpy_input_fn(
-            x_cols, shuffle=False, num_epochs=1, **kwargs
-        )
-        return input_fn, ret_repos
-
-    async def train(self, sources: Sources):
-        """
-        Train on data submitted via classify.
-        """
-        input_fn = await self.training_input_fn(
-            sources,
-            batch_size=20,
-            shuffle=True,
-            epochs=self.parent.config.epochs,
-        )
-        self.model.train(input_fn=input_fn, steps=self.parent.config.steps)
 
     async def accuracy(self, sources: Sources) -> Accuracy:
         """
@@ -210,7 +163,7 @@ class DNNRegressionModel(Model):
     ``directory`` in subdirectories named after the hash of their feature names and hidden layer config.
 
     usage :
-        * label_name : column_name of target
+        * predict : column_name of target
         * NOTE : if multiple models are trained then `model-hidden` should be passed to hash to the
                     model directory
 
@@ -218,7 +171,7 @@ class DNNRegressionModel(Model):
           -model tfdnnr \
           -model-epochs 300 \
           -model-steps 2000 \
-          -model-label_name {$TARGET_COLUMN_NAME} \
+          -model-predict {$TARGET_COLUMN_NAME} \
           -model-hidden 12 40 50 \
           -sources s=csv \
           -source-readonly \
@@ -231,7 +184,7 @@ class DNNRegressionModel(Model):
     
      dffml accuracy \
           -model tfdnnr \
-          -model-label_name {$TARGET_COLUMN_NAME} \
+          -model-predict {$TARGET_COLUMN_NAME} \
           -model-hidden 12 40 50 \
           -sources s=csv \
           -source-readonly \
@@ -244,7 +197,7 @@ class DNNRegressionModel(Model):
     
     dffml predict all \
           -model tfdnnr \
-          -model-label_name {$TARGET_COLUMN_NAME} \
+          -model-predict {$TARGET_COLUMN_NAME} \
           -model-hidden 12 40 50 \
           -sources s=csv \
           -source-readonly \
@@ -305,7 +258,7 @@ class DNNRegressionModel(Model):
         cls.config_set(
             args,
             above,
-            "label_name",
+            "predict",
             Arg(help="Feature name holding truth value"),
         )
        
@@ -318,6 +271,6 @@ class DNNRegressionModel(Model):
             steps=cls.config_get(config, above, "steps"),
             epochs=cls.config_get(config, above, "epochs"),
             hidden=cls.config_get(config, above, "hidden"),
-            label_name=cls.config_get(config, above, "label_name"),
+            predict=cls.config_get(config, above, "predict"),
            
         )
