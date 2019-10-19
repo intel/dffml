@@ -205,7 +205,56 @@ class DNNRegressionModelContext(TensorflowModelContext):
 
 @entry_point("tfdnnr")
 class DNNRegressionModel(Model):
-   
+    """
+    Implemented using Tensorflow's DNNEstimator. Models are saved under the
+    ``directory`` in subdirectories named after the hash of their feature names and hidden layer config.
+
+    usage :
+        * label_name : column_name of target
+        * NOTE : if multiple models are trained then `model-hidden` should be passed to hash to the
+                    model directory
+
+    dffml train \
+          -model tfdnnr \
+          -model-epochs 300 \
+          -model-steps 2000 \
+          -model-label_name {$TARGET_COLUMN_NAME} \
+          -model-hidden 12 40 50 \
+          -sources s=csv \
+          -source-readonly \
+          -source-filename {$TRAIN_DATA_FILENAME}.csv \
+          -features \
+            def:{$feature1}:float:1 \
+            def:{$feature2}:float:1 \
+            def:{$feature3}:float:1 \
+          -log debug
+    
+     dffml accuracy \
+          -model tfdnnr \
+          -model-label_name {$TARGET_COLUMN_NAME} \
+          -model-hidden 12 40 50 \
+          -sources s=csv \
+          -source-readonly \
+          -source-filename {$TRAIN_DATA_FILENAME}.csv \
+          -features \
+            def:{$feature1}:float:1 \
+            def:{$feature2}:float:1 \
+            def:{$feature3}:float:1 \
+          -log debug
+    
+    dffml predict all \
+          -model tfdnnr \
+          -model-label_name {$TARGET_COLUMN_NAME} \
+          -model-hidden 12 40 50 \
+          -sources s=csv \
+          -source-readonly \
+          -source-filename {$TEST_DATA_FILENAME}.csv \
+          -features \
+            def:{$feature1}:float:1 \
+            def:{$feature2}:float:1 \
+            def:{$feature3}:float:1 \
+          -log debug
+   """
 
     CONTEXT = DNNRegressionModelContext
 
