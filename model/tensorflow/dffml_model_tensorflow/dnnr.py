@@ -3,20 +3,16 @@ Uses Tensorflow to create a generic DNN which learns on all of the features in a
 repo.
 """
 import os
-import abc
-import pydoc
 import hashlib
-import inspect
 from dataclasses import dataclass
-from typing import List, Dict, Any, AsyncIterator, Tuple, Optional, Type
+from typing import List, Dict, Any, AsyncIterator
 
 import numpy as np
 import tensorflow
 
 from dffml.repo import Repo
-from dffml.feature import Feature, Features
 from dffml.source.source import Sources
-from dffml.model.model import ModelConfig, ModelContext, Model
+from dffml.model.model import  Model
 from dffml.accuracy import Accuracy
 from dffml.util.entrypoint import entry_point
 from dffml.base import BaseConfig
