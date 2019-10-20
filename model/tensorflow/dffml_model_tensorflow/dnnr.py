@@ -164,49 +164,86 @@ class DNNRegressionModel(Model):
 
     usage :
         * predict : column_name of target
-        * NOTE : if multiple models are trained then `model-hidden` should be passed to hash to the
-                    model directory
+        * NOTE : if multiple models are trained then `model-hidden` should be passed as an argument 
+                    as it is used to hash to the model directory
+    
+     # Generating train and test data
+        * This creates files `train_data.csv` and `test_data.csv`,
+            make sure to take a BACKUP of files with same name in the directory
+            from where this command is run as it overwrites any existing files
+    
+    .. code-block:: console
 
-    dffml train \
+    $ awk -v n=1000 -v seed="$RANDOM" 'BEGIN { 
+        srand(seed); 
+        for (i=0; i<n; ++i) 
+        {
+            x=rand();y=rand();z=(2*x+3*y);
+            printf("%.2f,%.2f,%.2f\n", x,y,z)
+        }
+
+        }' > train_data.csv
+    $ sed -i '1s/^/Feature1,Feature2,TARGET\n/' train_data.csv
+    $ head train_data.csv
+
+    $ awk -v n=50 -v seed="$RANDOM" 'BEGIN { 
+        srand(seed+1); 
+        for (i=0; i<n; ++i) 
+        {
+            x=rand();y=rand();
+            printf("%.2f,%.2f\n", x,y)
+        }
+
+        }' > test_data.csv
+    $ sed -i '1s/^/Feature1,Feature2\n/' test_data.csv
+
+    $ head test_data.csv 
+
+    $ dffml train \
           -model tfdnnr \
           -model-epochs 300 \
           -model-steps 2000 \
-          -model-predict {$TARGET_COLUMN_NAME} \
-          -model-hidden 12 40 50 \
+          -model-predict TARGET \
+          -model-hidden 8 16 8 \
           -sources s=csv \
           -source-readonly \
-          -source-filename {$TRAIN_DATA_FILENAME}.csv \
+          -source-filename train_data.csv \
           -features \
-            def:{$feature1}:float:1 \
-            def:{$feature2}:float:1 \
-            def:{$feature3}:float:1 \
+            def:Feature1:float:1 \
+            def:Feature2:float:1 \
           -log debug
-    
-     dffml accuracy \
+      >> OUTPUTS LOG AND LOSSESS <<
+    $ dffml accuracy \
           -model tfdnnr \
-          -model-predict {$TARGET_COLUMN_NAME} \
-          -model-hidden 12 40 50 \
+          -model-predict TARGET \
+          -model-hidden 8 16 8 \
           -sources s=csv \
           -source-readonly \
-          -source-filename {$TRAIN_DATA_FILENAME}.csv \
+          -source-filename train_data.csv \
           -features \
-            def:{$feature1}:float:1 \
-            def:{$feature2}:float:1 \
-            def:{$feature3}:float:1 \
-          -log debug
-    
-    dffml predict all \
+            def:Feature1:float:1 \
+            def:Feature2:float:1 \
+          -log critical
+     
+      >> 0.9998210011 << 
+      >> Output accuracy may slightly vary due to random initialisation of train and test set <<
+
+    $ dffml predict all \
           -model tfdnnr \
-          -model-predict {$TARGET_COLUMN_NAME} \
-          -model-hidden 12 40 50 \
+          -model-predict TARGET \
+          -model-hidden 8 16 8 \
           -sources s=csv \
           -source-readonly \
-          -source-filename {$TEST_DATA_FILENAME}.csv \
+          -source-filename test_data.csv \
           -features \
-            def:{$feature1}:float:1 \
-            def:{$feature2}:float:1 \
-            def:{$feature3}:float:1 \
-          -log debug
+            def:Feature1:float:1 \
+            def:Feature2:float:1 \
+          -log critical > results.json
+    
+    $ head -n 40 results.json
+     
+     ** Dont mind the `NaN` in `confidence` thats the expected behaviour
+    
    """
 
     CONTEXT = DNNRegressionModelContext
