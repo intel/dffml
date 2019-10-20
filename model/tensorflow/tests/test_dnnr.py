@@ -49,7 +49,7 @@ class TestDNN(AsyncTestCase):
                 steps=1000,
                 epochs=30,
                 hidden=[10, 20, 10],
-                label_name="TARGET",
+                predict="TARGET",
             )
         )
         cls.feature1 = Feature_1()
@@ -82,7 +82,7 @@ class TestDNN(AsyncTestCase):
     async def test_config(self):
         # Setting up configuration for model
         config = self.model.__class__.config(
-            parse_unknown("--model-label_name", "TARGET")
+            parse_unknown("--model-predict", "TARGET")
         )
         self.assertEqual(
             config.directory,
@@ -93,7 +93,7 @@ class TestDNN(AsyncTestCase):
         self.assertEqual(config.steps, 3000)
         self.assertEqual(config.epochs, 30)
         self.assertEqual(config.hidden, [12, 40, 15])
-        self.assertEqual(config.label_name, "TARGET")
+        self.assertEqual(config.predict, "TARGET")
 
     async def test_00_train(self):
         async with self.sources as sources, self.features as features, self.model as model:
@@ -108,10 +108,14 @@ class TestDNN(AsyncTestCase):
 
     async def test_02_predict(self):
 
+        test_feature_val = [0,1.5,2] # inserting zero so that its 1-indexable
+        test_target = 2*test_feature_val[1] + 3*test_feature_val[2] 
+                            # should be same function used in TestDNN.setupclass
         a = Repo(
             "a",
             data={
-                "features": {self.feature1.NAME: 1.5, self.feature2.NAME: 2}
+                "features": {self.feature1.NAME: test_feature_val[1] , 
+                    self.feature2.NAME: test_feature_val[2]}
             },
         )
         async with Sources(
@@ -121,4 +125,8 @@ class TestDNN(AsyncTestCase):
                 res = [repo async for repo in mctx.predict(sctx.repos())]
                 self.assertEqual(len(res), 1)
             self.assertEqual(res[0].src_url, a.src_url)
-            self.assertTrue(res[0].prediction().value)
+            test_error_norm = abs((test_target-res[0].prediction().value)/test_target+1e-6)
+            error_threshold = 0.2
+            self.assertLess(test_error_norm,error_threshold)
+            
+
