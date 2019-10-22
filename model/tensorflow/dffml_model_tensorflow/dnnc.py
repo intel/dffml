@@ -93,7 +93,7 @@ class TensorflowModelContext(ModelContext):
                 "%s is not a directory" % (self.parent.config.directory)
             )
         return os.path.join(self.parent.config.directory, model)
-    
+
     async def predict_input_fn(self, repos: AsyncIterator[Repo], **kwargs):
         """
         Uses the numpy input function with data from repo features.
@@ -115,7 +115,7 @@ class TensorflowModelContext(ModelContext):
             x_cols, shuffle=False, num_epochs=1, **kwargs
         )
         return input_fn, ret_repos
-    
+
     async def train(self, sources: Sources):
         """
         Train on data submitted via classify.
@@ -186,8 +186,6 @@ class DNNClassifierModelContext(TensorflowModelContext):
             "classifications(%d): %r", len(classifications), classifications
         )
         return classifications
-
-    
 
     @property
     def model(self):
@@ -295,8 +293,6 @@ class DNNClassifierModelContext(TensorflowModelContext):
             **kwargs,
         )
         return input_fn
-
-    
 
     async def accuracy(self, sources: Sources) -> Accuracy:
         """
