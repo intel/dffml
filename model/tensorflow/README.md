@@ -21,7 +21,7 @@ python3.7 -m pip install --user -U dffml[tensorflow]
 ```
 
 ## Usage
-
+### Classifier
 ```console
 wget http://download.tensorflow.org/data/iris_training.csv
 wget http://download.tensorflow.org/data/iris_test.csv
@@ -73,6 +73,87 @@ dffml predict all \
   > results.json
 head -n 33 results.json
 ```
+### Regressor
+* Generating data,this creates files `train_data.csv` and `test_data.csv`,
+  make sure to take a BACKUP of files with same name in the directory
+  from where this command is run as it overwrites any existing files
+#### Train_data
+```
+  $ awk -v n=1000 -v seed="$RANDOM" 'BEGIN { 
+        srand(seed); 
+        for (i=0; i<n; ++i) 
+        {
+            x=rand();y=rand();z=(2*x+3*y);
+            printf("%.2f,%.2f,%.2f\n", x,y,z)
+        }
+
+        }' > train_data.csv
+  $ sed -i '1s/^/Feature1,Feature2,TARGET\n/' train_data.csv
+  $ head train_data.csv
+```
+#### Test_data
+```
+  $ awk -v n=50 -v seed="$RANDOM" 'BEGIN { 
+      srand(seed+1); 
+      for (i=0; i<n; ++i) 
+      {
+          x=rand();y=rand();
+          printf("%.2f,%.2f\n", x,y)
+      }
+
+      }' > test_data.csv
+  $ sed -i '1s/^/Feature1,Feature2\n/' test_data.csv
+
+  $ head test_data.csv 
+```
+#### Using the model
+```
+  $ dffml train \
+        -model tfdnnr \
+        -model-epochs 300 \
+        -model-steps 2000 \
+        -model-predict TARGET \
+        -model-hidden 8 16 8 \
+        -sources s=csv \
+        -source-readonly \
+        -source-filename train_data.csv \
+        -features \
+          def:Feature1:float:1 \
+          def:Feature2:float:1 \
+        -log debug
+    >> OUTPUTS LOG AND LOSSESS <<
+    
+    $ dffml accuracy \
+          -model tfdnnr \
+          -model-predict TARGET \
+          -model-hidden 8 16 8 \
+          -sources s=csv \
+          -source-readonly \
+          -source-filename train_data.csv \
+          -features \
+            def:Feature1:float:1 \
+            def:Feature2:float:1 \
+          -log critical
+     
+      >> 0.9998210011 << 
+      >> Output accuracy may slightly vary due to random initialisation of train and test set <<
+
+    $ dffml predict all \
+          -model tfdnnr \
+          -model-predict TARGET \
+          -model-hidden 8 16 8 \
+          -sources s=csv \
+          -source-readonly \
+          -source-filename test_data.csv \
+          -features \
+            def:Feature1:float:1 \
+            def:Feature2:float:1 \
+          -log critical > results.json
+    
+    $ head -n 40 results.json
+     
+```
+   Dont mind the `NaN` in `confidence` thats the expected behaviour
 
 ## License
 
