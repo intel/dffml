@@ -47,7 +47,7 @@ setup(
     entry_points={
         "dffml.model": [
             "tfdnnc = dffml_model_tensorflow.dnnc:DNNClassifierModel",
-            "tfdnnr = dffml_model_tensorflow.dnnr:DNNRegressionModel"
+            "tfdnnr = dffml_model_tensorflow.dnnr:DNNRegressionModel",
         ]
     },
 )
