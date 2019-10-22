@@ -116,13 +116,9 @@ class FakeModelContext(ModelContext):
     async def accuracy(self, sources: Sources) -> AccuracyType:
         return AccuracyType(0.42)
 
-  
-
-    async def predict(
-        self, repos: AsyncIterator[Repo]
-    ) -> AsyncIterator[Repo]:
+    async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
         async for repo in repos:
-            repo.predicted(random.random(),float(repo.src_url))
+            repo.predicted(random.random(), float(repo.src_url))
             yield repo
 
 
@@ -473,8 +469,6 @@ class TestPredictAll(ReposTestCase):
 
             for repo in self.repos:
                 self.assertEqual(float(repo.src_url), results[repo.src_url])
-                
-
 
 
 class TestPredictRepo(ReposTestCase):
