@@ -108,14 +108,20 @@ class TestDNN(AsyncTestCase):
 
     async def test_02_predict(self):
 
-        test_feature_val = [0,1.5,2] # inserting zero so that its 1-indexable
-        test_target = 2*test_feature_val[1] + 3*test_feature_val[2] 
-                            # should be same function used in TestDNN.setupclass
+        test_feature_val = [
+            0,
+            1.5,
+            2,
+        ]  # inserting zero so that its 1-indexable
+        test_target = 2 * test_feature_val[1] + 3 * test_feature_val[2]
+        # should be same function used in TestDNN.setupclass
         a = Repo(
             "a",
             data={
-                "features": {self.feature1.NAME: test_feature_val[1] , 
-                    self.feature2.NAME: test_feature_val[2]}
+                "features": {
+                    self.feature1.NAME: test_feature_val[1],
+                    self.feature2.NAME: test_feature_val[2],
+                }
             },
         )
         async with Sources(
@@ -125,8 +131,8 @@ class TestDNN(AsyncTestCase):
                 res = [repo async for repo in mctx.predict(sctx.repos())]
                 self.assertEqual(len(res), 1)
             self.assertEqual(res[0].src_url, a.src_url)
-            test_error_norm = abs((test_target-res[0].prediction().value)/test_target+1e-6)
+            test_error_norm = abs(
+                (test_target - res[0].prediction().value) / test_target + 1e-6
+            )
             error_threshold = 0.2
-            self.assertLess(test_error_norm,error_threshold)
-            
-
+            self.assertLess(test_error_norm, error_threshold)
