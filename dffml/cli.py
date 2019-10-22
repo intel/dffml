@@ -407,7 +407,6 @@ class Accuracy(MLCMD):
 class PredictAll(EvaluateAll, MLCMD):
     """Predicts for all sources"""
 
-
     async def predict(self, mctx, sctx, repos):
         async for repo in mctx.predict(repos):
             yield repo
