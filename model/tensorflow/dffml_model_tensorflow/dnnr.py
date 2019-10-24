@@ -19,8 +19,6 @@ from dffml.util.cli.arg import Arg
 
 from dffml_model_tensorflow.dnnc import TensorflowModelContext
 
-DEBUG = True
-
 
 @dataclass(init=True, eq=True)
 class DNNRegressionModelConfig:
@@ -161,9 +159,10 @@ class DNNRegressionModelContext(TensorflowModelContext):
         predictions = self.model.predict(input_fn=input_fn)
 
         for repo, pred_dict in zip(predict_repo, predictions):
+            # TODO Instead of float("nan") save accuracy value and use that.
             repo.predicted(
                 float(pred_dict["predictions"]), float("nan")
-            )  # 0,arbitary number to match fun signature -> (value,confidence)
+            )
 
             yield repo
 
@@ -171,92 +170,94 @@ class DNNRegressionModelContext(TensorflowModelContext):
 @entry_point("tfdnnr")
 class DNNRegressionModel(Model):
     """
-    Implemented using Tensorflow's DNNEstimator. Models are saved under the
-    ``directory`` in subdirectories named after the hash of their feature names and hidden layer config.
+    Implemented using Tensorflow's DNNEstimator.
 
-    usage :
-        * predict : column_name of target
-        * NOTE : if multiple models are trained then `model-hidden` should be passed as an argument 
-                    as it is used to hash to the model directory
-    
-     # Generating train and test data
-        * This creates files `train_data.csv` and `test_data.csv`,
-            make sure to take a BACKUP of files with same name in the directory
-            from where this command is run as it overwrites any existing files
-    
+    Usage:
+
+    * predict: Name of the feature we are trying to predict or using for training.
+
+    Generating train and test data
+
+    * This creates files `train.csv` and `test.csv`,
+      make sure to take a BACKUP of files with same name in the directory
+      from where this command is run as it overwrites any existing files.
+
     .. code-block:: console
 
-    $ awk -v n=1000 -v seed="$RANDOM" 'BEGIN { 
-        srand(seed); 
-        for (i=0; i<n; ++i) 
-        {
-            x=rand();y=rand();z=(2*x+3*y);
-            printf("%.2f,%.2f,%.2f\n", x,y,z)
-        }
-
-        }' > train_data.csv
-    $ sed -i '1s/^/Feature1,Feature2,TARGET\n/' train_data.csv
-    $ head train_data.csv
-
-    $ awk -v n=50 -v seed="$RANDOM" 'BEGIN { 
-        srand(seed+1); 
-        for (i=0; i<n; ++i) 
-        {
-            x=rand();y=rand();
-            printf("%.2f,%.2f\n", x,y)
-        }
-
-        }' > test_data.csv
-    $ sed -i '1s/^/Feature1,Feature2\n/' test_data.csv
-
-    $ head test_data.csv 
-
-    $ dffml train \
-          -model tfdnnr \
-          -model-epochs 300 \
-          -model-steps 2000 \
-          -model-predict TARGET \
-          -model-hidden 8 16 8 \
-          -sources s=csv \
-          -source-readonly \
-          -source-filename train_data.csv \
-          -features \
-            def:Feature1:float:1 \
-            def:Feature2:float:1 \
-          -log debug
-      >> OUTPUTS LOG AND LOSSESS <<
-    $ dffml accuracy \
-          -model tfdnnr \
-          -model-predict TARGET \
-          -model-hidden 8 16 8 \
-          -sources s=csv \
-          -source-readonly \
-          -source-filename train_data.csv \
-          -features \
-            def:Feature1:float:1 \
-            def:Feature2:float:1 \
+        $ cat > train.csv << EOF
+        Feature1,Feature2,TARGET
+        0.93,0.68,3.89
+        0.24,0.42,1.75
+        0.36,0.68,2.75
+        0.53,0.31,2.00
+        0.29,0.25,1.32
+        0.29,0.52,2.14
+        EOF
+        $ cat > test.csv << EOF
+        Feature1,Feature2,TARGET
+        0.57,0.84,3.65
+        0.95,0.19,2.46
+        0.23,0.15,0.93
+        EOF
+        $ dffml train \\
+            -model tfdnnr \\
+            -model-epochs 300 \\
+            -model-steps 2000 \\
+            -model-predict TARGET \\
+            -model-hidden 8 16 8 \\
+            -sources s=csv \\
+            -source-readonly \\
+            -source-filename train.csv \\
+            -features \\
+              def:Feature1:float:1 \\
+              def:Feature2:float:1 \\
+            -log debug
+        Enabling debug log shows tensorflow losses...
+        $ dffml accuracy \\
+            -model tfdnnr \\
+            -model-predict TARGET \\
+            -model-hidden 8 16 8 \\
+            -sources s=csv \\
+            -source-readonly \\
+            -source-filename test.csv \\
+            -features \\
+              def:Feature1:float:1 \\
+              def:Feature2:float:1 \\
+            -log critical
+        0.9468210011
+        $ echo -e 'Feature1,Feature2,TARGET\\n0.21,0.18,0.84\\n' | \\
+          dffml predict all \\
+          -model tfdnnr \\
+          -model-predict TARGET \\
+          -model-hidden 8 16 8 \\
+          -sources s=csv \\
+          -source-readonly \\
+          -source-filename /dev/stdin \\
+          -features \\
+            def:Feature1:float:1 \\
+            def:Feature2:float:1 \\
           -log critical
-     
-      >> 0.9998210011 << 
-      >> Output accuracy may slightly vary due to random initialisation of train and test set <<
+        [
+            {
+                "extra": {},
+                "features": {
+                    "Feature1": 0.21,
+                    "Feature2": 0.18,
+                    "TARGET": 0.84
+                },
+                "last_updated": "2019-10-24T15:26:41Z",
+                "prediction": {
+                    "confidence": NaN,
+                    "value": 1.1983429193496704
+                },
+                "src_url": 0
+            }
+        ]
 
-    $ dffml predict all \
-          -model tfdnnr \
-          -model-predict TARGET \
-          -model-hidden 8 16 8 \
-          -sources s=csv \
-          -source-readonly \
-          -source-filename test_data.csv \
-          -features \
-            def:Feature1:float:1 \
-            def:Feature2:float:1 \
-          -log critical > results.json
-    
-    $ head -n 40 results.json
-     
-     ** Dont mind the `NaN` in `confidence` thats the expected behaviour
-    
-   """
+    The ``NaN`` in ``confidence`` is the expected behaviour. (See TODO in
+    predict).
+
+    """
 
     CONTEXT = DNNRegressionModelContext
 

@@ -327,8 +327,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
 @entry_point("tfdnnc")
 class DNNClassifierModel(Model):
     """
-    Implemented using Tensorflow's DNNClassifier. Models are saved under the
-    ``directory`` in subdirectories named after the hash of their feature names.
+    Implemented using Tensorflow's DNNClassifier.
 
     .. code-block:: console
 

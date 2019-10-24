@@ -17,13 +17,22 @@ dffml_model_tensorflow
     pip install dffml-model-tensorflow
 
 
+.. note::
+
+    It's important to keep the hidden layer config and feature config the same
+    across invocations of train, predict, and accuracy methods.
+
+    Models are saved under the ``directory`` parameter in subdirectories named
+    after the hash of their feature names and hidden layer config. Which means
+    if any of those parameters change between invocations, it's being told to
+    look for a different saved model.
+
 tfdnnc
 ~~~~~~
 
 *Core*
 
-Implemented using Tensorflow's DNNClassifier. Models are saved under the
-``directory`` in subdirectories named after the hash of their feature names.
+Implemented using Tensorflow's DNNClassifier.
 
 .. code-block:: console
 
@@ -146,6 +155,124 @@ Implemented using Tensorflow's DNNClassifier. Models are saved under the
 
   - default: <class 'str'>
   - Data type of classifications values (default: str)
+
+tfdnnr
+~~~~~~
+
+*Core*
+
+Implemented using Tensorflow's DNNEstimator.
+
+Usage:
+
+* predict: Name of the feature we are trying to predict or using for training.
+
+Generating train and test data
+
+* This creates files `train.csv` and `test.csv`,
+  make sure to take a BACKUP of files with same name in the directory
+  from where this command is run as it overwrites any existing files.
+
+.. code-block:: console
+
+    $ cat > train.csv << EOF
+    Feature1,Feature2,TARGET
+    0.93,0.68,3.89
+    0.24,0.42,1.75
+    0.36,0.68,2.75
+    0.53,0.31,2.00
+    0.29,0.25,1.32
+    0.29,0.52,2.14
+    EOF
+    $ cat > test.csv << EOF
+    Feature1,Feature2,TARGET
+    0.57,0.84,3.65
+    0.95,0.19,2.46
+    0.23,0.15,0.93
+    EOF
+    $ dffml train \
+        -model tfdnnr \
+        -model-epochs 300 \
+        -model-steps 2000 \
+        -model-predict TARGET \
+        -model-hidden 8 16 8 \
+        -sources s=csv \
+        -source-readonly \
+        -source-filename train.csv \
+        -features \
+          def:Feature1:float:1 \
+          def:Feature2:float:1 \
+        -log debug
+    Enabling debug log shows tensorflow losses...
+    $ dffml accuracy \
+        -model tfdnnr \
+        -model-predict TARGET \
+        -model-hidden 8 16 8 \
+        -sources s=csv \
+        -source-readonly \
+        -source-filename test.csv \
+        -features \
+          def:Feature1:float:1 \
+          def:Feature2:float:1 \
+        -log critical
+    0.9468210011
+    $ echo -e 'Feature1,Feature2,TARGET\n0.21,0.18,0.84\n' | \
+      dffml predict all \
+      -model tfdnnr \
+      -model-predict TARGET \
+      -model-hidden 8 16 8 \
+      -sources s=csv \
+      -source-readonly \
+      -source-filename /dev/stdin \
+      -features \
+        def:Feature1:float:1 \
+        def:Feature2:float:1 \
+      -log critical
+    [
+        {
+            "extra": {},
+            "features": {
+                "Feature1": 0.21,
+                "Feature2": 0.18,
+                "TARGET": 0.84
+            },
+            "last_updated": "2019-10-24T15:26:41Z",
+            "prediction": {
+                "confidence": NaN,
+                "value": 1.1983429193496704
+            },
+            "src_url": 0
+        }
+    ]
+
+The ``NaN`` in ``confidence`` is the expected behaviour. (See TODO in
+predict).
+
+**Args**
+
+- directory: String
+
+  - default: /home/user/.cache/dffml/tensorflow
+  - Directory where state should be saved
+
+- steps: Integer
+
+  - default: 3000
+  - Number of steps to train the model
+
+- epochs: Integer
+
+  - default: 30
+  - Number of iterations to pass over all repos in a source
+
+- hidden: List of integers
+
+  - default: [12, 40, 15]
+  - List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer
+
+- predict: String
+
+  - Feature name holding truth value
 
 dffml_model_scratch
 -------------------

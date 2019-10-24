@@ -462,11 +462,9 @@ class TestPredictAll(ReposTestCase):
                 "-features",
                 "fake",
             )
-
             results = {
                 repo.src_url: repo.prediction().confidence for repo in results
             }
-
             for repo in self.repos:
                 self.assertEqual(float(repo.src_url), results[repo.src_url])
 
