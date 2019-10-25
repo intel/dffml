@@ -227,16 +227,16 @@ class DNNRegressionModel(Model):
         0.9468210011
         $ echo -e 'Feature1,Feature2,TARGET\\n0.21,0.18,0.84\\n' | \\
           dffml predict all \\
-          -model tfdnnr \\
-          -model-predict TARGET \\
-          -model-hidden 8 16 8 \\
-          -sources s=csv \\
-          -source-readonly \\
-          -source-filename /dev/stdin \\
-          -features \\
-            def:Feature1:float:1 \\
-            def:Feature2:float:1 \\
-          -log critical
+            -model tfdnnr \\
+            -model-predict TARGET \\
+            -model-hidden 8 16 8 \\
+            -sources s=csv \\
+            -source-readonly \\
+            -source-filename /dev/stdin \\
+            -features \\
+              def:Feature1:float:1 \\
+              def:Feature2:float:1 \\
+            -log critical
         [
             {
                 "extra": {},
