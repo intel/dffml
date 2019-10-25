@@ -160,9 +160,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
 
         for repo, pred_dict in zip(predict_repo, predictions):
             # TODO Instead of float("nan") save accuracy value and use that.
-            repo.predicted(
-                float(pred_dict["predictions"]), float("nan")
-            )
+            repo.predicted(float(pred_dict["predictions"]), float("nan"))
 
             yield repo
 
