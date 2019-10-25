@@ -46,7 +46,8 @@ setup(
     packages=find_packages(),
     entry_points={
         "dffml.model": [
-            "tfdnnc = dffml_model_tensorflow.dnnc:DNNClassifierModel"
+            "tfdnnc = dffml_model_tensorflow.dnnc:DNNClassifierModel",
+            "tfdnnr = dffml_model_tensorflow.dnnr:DNNRegressionModel",
         ]
     },
 )
