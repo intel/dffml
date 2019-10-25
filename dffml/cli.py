@@ -408,8 +408,7 @@ class PredictAll(EvaluateAll, MLCMD):
     """Predicts for all sources"""
 
     async def predict(self, mctx, sctx, repos):
-        async for repo, value, confidence in mctx.predict(repos):
-            repo.predicted(value, confidence)
+        async for repo in mctx.predict(repos):
             yield repo
             if self.update:
                 await sctx.update(repo)

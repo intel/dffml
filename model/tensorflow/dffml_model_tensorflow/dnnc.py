@@ -79,6 +79,55 @@ class TensorflowModelContext(ModelContext):
             if name in self.feature_columns
         ]
 
+    def _model_dir_path(self):
+        """
+        Creates the path to the model dir by using the provided model dir and
+        the sha384 hash of the concatenated feature names.
+        """
+        if self.parent.config.directory is None:
+            return None
+        _to_hash = self.features + list(map(str, self.parent.config.hidden))
+        model = hashlib.sha384("".join(_to_hash).encode("utf-8")).hexdigest()
+        if not os.path.isdir(self.parent.config.directory):
+            raise NotADirectoryError(
+                "%s is not a directory" % (self.parent.config.directory)
+            )
+        return os.path.join(self.parent.config.directory, model)
+
+    async def predict_input_fn(self, repos: AsyncIterator[Repo], **kwargs):
+        """
+        Uses the numpy input function with data from repo features.
+        """
+        x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
+        ret_repos = []
+        async for repo in repos:
+            if not repo.features(self.features):
+                continue
+            ret_repos.append(repo)
+            for feature, results in repo.features(self.features).items():
+                x_cols[feature].append(np.array(results))
+        for feature in x_cols:
+            x_cols[feature] = np.array(x_cols[feature])
+        self.logger.info("------ Repo Data ------")
+        self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
+        self.logger.info("-----------------------")
+        input_fn = tensorflow.estimator.inputs.numpy_input_fn(
+            x_cols, shuffle=False, num_epochs=1, **kwargs
+        )
+        return input_fn, ret_repos
+
+    async def train(self, sources: Sources):
+        """
+        Train on data submitted via classify.
+        """
+        input_fn = await self.training_input_fn(
+            sources,
+            batch_size=20,
+            shuffle=True,
+            epochs=self.parent.config.epochs,
+        )
+        self.model.train(input_fn=input_fn, steps=self.parent.config.steps)
+
     @property
     @abc.abstractmethod
     def model(self):
@@ -137,21 +186,6 @@ class DNNClassifierModelContext(TensorflowModelContext):
             "classifications(%d): %r", len(classifications), classifications
         )
         return classifications
-
-    def _model_dir_path(self):
-        """
-        Creates the path to the model dir by using the provided model dir and
-        the sha384 hash of the concatenated feature names.
-        """
-        if self.parent.config.directory is None:
-            return None
-        _to_hash = self.features + list(map(str, self.parent.config.hidden))
-        model = hashlib.sha384("".join(_to_hash).encode("utf-8")).hexdigest()
-        if not os.path.isdir(self.parent.config.directory):
-            raise NotADirectoryError(
-                "%s is not a directory" % (self.parent.config.directory)
-            )
-        return os.path.join(self.parent.config.directory, model)
 
     @property
     def model(self):
@@ -260,40 +294,6 @@ class DNNClassifierModelContext(TensorflowModelContext):
         )
         return input_fn
 
-    async def predict_input_fn(self, repos: AsyncIterator[Repo], **kwargs):
-        """
-        Uses the numpy input function with data from repo features.
-        """
-        x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
-        ret_repos = []
-        async for repo in repos:
-            if not repo.features(self.features):
-                continue
-            ret_repos.append(repo)
-            for feature, results in repo.features(self.features).items():
-                x_cols[feature].append(np.array(results))
-        for feature in x_cols:
-            x_cols[feature] = np.array(x_cols[feature])
-        self.logger.info("------ Repo Data ------")
-        self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
-        self.logger.info("-----------------------")
-        input_fn = tensorflow.estimator.inputs.numpy_input_fn(
-            x_cols, shuffle=False, num_epochs=1, **kwargs
-        )
-        return input_fn, ret_repos
-
-    async def train(self, sources: Sources):
-        """
-        Train on data submitted via classify.
-        """
-        input_fn = await self.training_input_fn(
-            sources,
-            batch_size=20,
-            shuffle=True,
-            epochs=self.parent.config.epochs,
-        )
-        self.model.train(input_fn=input_fn, steps=self.parent.config.steps)
-
     async def accuracy(self, sources: Sources) -> Accuracy:
         """
         Evaluates the accuracy of our model after training using the input repos
@@ -327,8 +327,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
 @entry_point("tfdnnc")
 class DNNClassifierModel(Model):
     """
-    Implemented using Tensorflow's DNNClassifier. Models are saved under the
-    ``directory`` in subdirectories named after the hash of their feature names.
+    Implemented using Tensorflow's DNNClassifier.
 
     .. code-block:: console
 
@@ -338,49 +337,49 @@ class DNNClassifierModel(Model):
         $ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' *.csv
         $ head iris_training.csv
         $ dffml train \\
-          -model tfdnnc \\
-          -model-epochs 3000 \\
-          -model-steps 20000 \\
-          -model-classification classification \\
-          -model-classifications 0 1 2 \\
-          -model-clstype int \\
-          -sources iris=csv \\
-          -source-filename iris_training.csv \\
-          -features \\
-            def:SepalLength:float:1 \\
-            def:SepalWidth:float:1 \\
-            def:PetalLength:float:1 \\
-            def:PetalWidth:float:1 \\
-          -log debug
+            -model tfdnnc \\
+            -model-epochs 3000 \\
+            -model-steps 20000 \\
+            -model-classification classification \\
+            -model-classifications 0 1 2 \\
+            -model-clstype int \\
+            -sources iris=csv \\
+            -source-filename iris_training.csv \\
+            -features \\
+              def:SepalLength:float:1 \\
+              def:SepalWidth:float:1 \\
+              def:PetalLength:float:1 \\
+              def:PetalWidth:float:1 \\
+            -log debug
         ... lots of output ...
         $ dffml accuracy \\
-          -model tfdnnc \\
-          -model-classification classification \\
-          -model-classifications 0 1 2 \\
-          -model-clstype int \\
-          -sources iris=csv \\
-          -source-filename iris_test.csv \\
-          -features \\
-            def:SepalLength:float:1 \\
-            def:SepalWidth:float:1 \\
-            def:PetalLength:float:1 \\
-            def:PetalWidth:float:1 \\
-          -log critical
+            -model tfdnnc \\
+            -model-classification classification \\
+            -model-classifications 0 1 2 \\
+            -model-clstype int \\
+            -sources iris=csv \\
+            -source-filename iris_test.csv \\
+            -features \\
+              def:SepalLength:float:1 \\
+              def:SepalWidth:float:1 \\
+              def:PetalLength:float:1 \\
+              def:PetalWidth:float:1 \\
+            -log critical
         0.99996233782
         $ dffml predict all \\
-          -model tfdnnc \\
-          -model-classification classification \\
-          -model-classifications 0 1 2 \\
-          -model-clstype int \\
-          -sources iris=csv \\
-          -source-filename iris_test.csv \\
-          -features \\
-            def:SepalLength:float:1 \\
-            def:SepalWidth:float:1 \\
-            def:PetalLength:float:1 \\
-            def:PetalWidth:float:1 \\
-          -caching \\
-          -log critical \\
+            -model tfdnnc \\
+            -model-classification classification \\
+            -model-classifications 0 1 2 \\
+            -model-clstype int \\
+            -sources iris=csv \\
+            -source-filename iris_test.csv \\
+            -features \\
+              def:SepalLength:float:1 \\
+              def:SepalWidth:float:1 \\
+              def:PetalLength:float:1 \\
+              def:PetalWidth:float:1 \\
+            -caching \\
+            -log critical \\
           > results.json
         $ head -n 33 results.json
         [

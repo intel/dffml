@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   there are more than 5 issues of high severity and confidence.
 - dev service got the ability to run a single operation in a standalone fashion.
 - About page to docs.
+- Tensorflow DNNEstimator based regression model.
 ### Changed
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
@@ -68,6 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   prediction as well. Models are not responsible for calling the predicted
   method on the repo. This will ease the process of making predict feature
   specific.
+- Updated Tensorflow model README.md to include usage of regression model
 ### Fixed
 - Docs get version from dffml.version.VERSION.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects

@@ -116,11 +116,10 @@ class FakeModelContext(ModelContext):
     async def accuracy(self, sources: Sources) -> AccuracyType:
         return AccuracyType(0.42)
 
-    async def predict(
-        self, repos: AsyncIterator[Repo]
-    ) -> AsyncIterator[Tuple[Repo, Any, float]]:
+    async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
         async for repo in repos:
-            yield repo, "", float(repo.src_url)
+            repo.predicted(random.random(), float(repo.src_url))
+            yield repo
 
 
 @entry_point("fake")
