@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.feature.feature &mdash; DFFML 0.2.1 documentation</title>
+  <title>dffml.feature.feature &mdash; DFFML 0.3.0 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.2.1
+                0.3.0
               </div>
             
           
@@ -91,8 +91,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Usage Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
 </ul>
 
             
@@ -242,7 +244,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">locks</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">mklock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">:</span>
+<div class="viewcode-block" id="Data.mklock"><a class="viewcode-back" href="../../../api/feature.html#dffml.feature.feature.Data.mklock">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">mklock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a lock stored in data under the key `name`. Create the lock if it</span>
 <span class="sd">        does not exist.</span>
@@ -252,7 +254,7 @@
             <span class="k">if</span> <span class="n">lock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">locks</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">lock</span>
-            <span class="k">return</span> <span class="n">lock</span>
+            <span class="k">return</span> <span class="n">lock</span></div>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">complete</span><span class="p">()</span>
@@ -346,48 +348,48 @@
     <span class="k">async</span> <span class="k">def</span> <span class="nf">applicable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<div class="viewcode-block" id="Feature.fetch"><a class="viewcode-back" href="../../../api/feature.html#dffml.feature.feature.Feature.fetch">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fetch retrieves any additional information about the software we are</span>
 <span class="sd">        evaluating. Any data fetched should be stored in tempdir().</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<div class="viewcode-block" id="Feature.parse"><a class="viewcode-back" href="../../../api/feature.html#dffml.feature.feature.Feature.parse">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parse the data we downloaded in fetch() into a usable form.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<div class="viewcode-block" id="Feature.calc"><a class="viewcode-back" href="../../../api/feature.html#dffml.feature.feature.Feature.calc">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculates the score for this feature based on data found by parse().</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<div class="viewcode-block" id="Feature.setUp"><a class="viewcode-back" href="../../../api/feature.html#dffml.feature.feature.Feature.setUp">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Preform setup</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Feature.tearDown"><a class="viewcode-back" href="../../../api/feature.html#dffml.feature.feature.Feature.tearDown">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Release any post calculation resources</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Feature.open"><a class="viewcode-back" href="../../../api/feature.html#dffml.feature.feature.Feature.open">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Opens any resources needed</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Feature.close"><a class="viewcode-back" href="../../../api/feature.html#dffml.feature.feature.Feature.close">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Closes any opened resources</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
+        <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="Feature.load"><a class="viewcode-back" href="../../../api/feature.html#dffml.feature.feature.Feature.load">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">loading</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>

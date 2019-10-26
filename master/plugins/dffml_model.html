@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Models &mdash; DFFML 0.2.1 documentation</title>
+  <title>Models &mdash; DFFML 0.3.0 documentation</title>
   
 
   
@@ -36,7 +36,7 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Operation Implementations" href="dffml_operation_implementation.html" />
+    <link rel="next" title="Operations" href="dffml_operation.html" />
     <link rel="prev" title="Sources" href="dffml_source.html" /> 
 </head>
 
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.2.1
+                0.3.0
               </div>
             
           
@@ -97,6 +97,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Models</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-tensorflow">dffml_model_tensorflow</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#tfdnnc">tfdnnc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tfdnnr">tfdnnr</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-scratch">dffml_model_scratch</a><ul>
@@ -106,12 +107,14 @@
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-scikit">dffml_model_scikit</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="dffml_operation_implementation.html">Operation Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dffml_operation.html">Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dffml_service_cli.html">Services</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
 </ul>
 
             
@@ -189,60 +192,68 @@ abstract the usage of machine learning models.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-tensorflow</span>
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It’s important to keep the hidden layer config and feature config the same
+across invocations of train, predict, and accuracy methods.</p>
+<p>Models are saved under the <code class="docutils literal notranslate"><span class="pre">directory</span></code> parameter in subdirectories named
+after the hash of their feature names and hidden layer config. Which means
+if any of those parameters change between invocations, it’s being told to
+look for a different saved model.</p>
+</div>
 <div class="section" id="tfdnnc">
 <h3>tfdnnc<a class="headerlink" href="#tfdnnc" title="Permalink to this headline">¶</a></h3>
 <p><em>Core</em></p>
-<p>Implemented using Tensorflow’s DNNClassifier. Models are saved under the
-<code class="docutils literal notranslate"><span class="pre">directory</span></code> in subdirectories named after the hash of their feature names.</p>
+<p>Implemented using Tensorflow’s DNNClassifier.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> wget http://download.tensorflow.org/data/iris_training.csv
 <span class="gp">$</span> wget http://download.tensorflow.org/data/iris_test.csv
 <span class="gp">$</span> head iris_training.csv
 <span class="gp">$</span> sed -i <span class="s1">&#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g&#39;</span> *.csv
 <span class="gp">$</span> head iris_training.csv
 <span class="gp">$</span> dffml train <span class="se">\</span>
-  -model tfdnnc <span class="se">\</span>
-  -model-epochs <span class="m">3000</span> <span class="se">\</span>
-  -model-steps <span class="m">20000</span> <span class="se">\</span>
-  -model-classification classification <span class="se">\</span>
-  -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="se">\</span>
-  -model-clstype int <span class="se">\</span>
-  -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
-  -source-filename iris_training.csv <span class="se">\</span>
-  -features <span class="se">\</span>
-    def:SepalLength:float:1 <span class="se">\</span>
-    def:SepalWidth:float:1 <span class="se">\</span>
-    def:PetalLength:float:1 <span class="se">\</span>
-    def:PetalWidth:float:1 <span class="se">\</span>
-  -log debug
+    -model tfdnnc <span class="se">\</span>
+    -model-epochs <span class="m">3000</span> <span class="se">\</span>
+    -model-steps <span class="m">20000</span> <span class="se">\</span>
+    -model-classification classification <span class="se">\</span>
+    -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="se">\</span>
+    -model-clstype int <span class="se">\</span>
+    -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_training.csv <span class="se">\</span>
+    -features <span class="se">\</span>
+      def:SepalLength:float:1 <span class="se">\</span>
+      def:SepalWidth:float:1 <span class="se">\</span>
+      def:PetalLength:float:1 <span class="se">\</span>
+      def:PetalWidth:float:1 <span class="se">\</span>
+    -log debug
 <span class="go">... lots of output ...</span>
 <span class="gp">$</span> dffml accuracy <span class="se">\</span>
-  -model tfdnnc <span class="se">\</span>
-  -model-classification classification <span class="se">\</span>
-  -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="se">\</span>
-  -model-clstype int <span class="se">\</span>
-  -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
-  -source-filename iris_test.csv <span class="se">\</span>
-  -features <span class="se">\</span>
-    def:SepalLength:float:1 <span class="se">\</span>
-    def:SepalWidth:float:1 <span class="se">\</span>
-    def:PetalLength:float:1 <span class="se">\</span>
-    def:PetalWidth:float:1 <span class="se">\</span>
-  -log critical
+    -model tfdnnc <span class="se">\</span>
+    -model-classification classification <span class="se">\</span>
+    -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="se">\</span>
+    -model-clstype int <span class="se">\</span>
+    -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_test.csv <span class="se">\</span>
+    -features <span class="se">\</span>
+      def:SepalLength:float:1 <span class="se">\</span>
+      def:SepalWidth:float:1 <span class="se">\</span>
+      def:PetalLength:float:1 <span class="se">\</span>
+      def:PetalWidth:float:1 <span class="se">\</span>
+    -log critical
 <span class="go">0.99996233782</span>
 <span class="gp">$</span> dffml predict all <span class="se">\</span>
-  -model tfdnnc <span class="se">\</span>
-  -model-classification classification <span class="se">\</span>
-  -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="se">\</span>
-  -model-clstype int <span class="se">\</span>
-  -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
-  -source-filename iris_test.csv <span class="se">\</span>
-  -features <span class="se">\</span>
-    def:SepalLength:float:1 <span class="se">\</span>
-    def:SepalWidth:float:1 <span class="se">\</span>
-    def:PetalLength:float:1 <span class="se">\</span>
-    def:PetalWidth:float:1 <span class="se">\</span>
-  -caching <span class="se">\</span>
-  -log critical <span class="se">\</span>
+    -model tfdnnc <span class="se">\</span>
+    -model-classification classification <span class="se">\</span>
+    -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="se">\</span>
+    -model-clstype int <span class="se">\</span>
+    -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename iris_test.csv <span class="se">\</span>
+    -features <span class="se">\</span>
+      def:SepalLength:float:1 <span class="se">\</span>
+      def:SepalWidth:float:1 <span class="se">\</span>
+      def:PetalLength:float:1 <span class="se">\</span>
+      def:PetalWidth:float:1 <span class="se">\</span>
+    -caching <span class="se">\</span>
+    -log critical <span class="se">\</span>
   &gt; results.json
 <span class="gp">$</span> head -n <span class="m">33</span> results.json
 <span class="go">[</span>
@@ -320,6 +331,126 @@ abstract the usage of machine learning models.</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
 <li><p>Data type of classifications values (default: str)</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="tfdnnr">
+<h3>tfdnnr<a class="headerlink" href="#tfdnnr" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>Implemented using Tensorflow’s DNNEstimator.</p>
+<p>Usage:</p>
+<ul class="simple">
+<li><p>predict: Name of the feature we are trying to predict or using for training.</p></li>
+</ul>
+<p>Generating train and test data</p>
+<ul class="simple">
+<li><p>This creates files <cite>train.csv</cite> and <cite>test.csv</cite>,
+make sure to take a BACKUP of files with same name in the directory
+from where this command is run as it overwrites any existing files.</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; train.csv &lt;&lt; EOF
+<span class="go">Feature1,Feature2,TARGET</span>
+<span class="go">0.93,0.68,3.89</span>
+<span class="go">0.24,0.42,1.75</span>
+<span class="go">0.36,0.68,2.75</span>
+<span class="go">0.53,0.31,2.00</span>
+<span class="go">0.29,0.25,1.32</span>
+<span class="go">0.29,0.52,2.14</span>
+<span class="go">EOF</span>
+<span class="gp">$</span> cat &gt; test.csv &lt;&lt; EOF
+<span class="go">Feature1,Feature2,TARGET</span>
+<span class="go">0.57,0.84,3.65</span>
+<span class="go">0.95,0.19,2.46</span>
+<span class="go">0.23,0.15,0.93</span>
+<span class="go">EOF</span>
+<span class="gp">$</span> dffml train <span class="se">\</span>
+    -model tfdnnr <span class="se">\</span>
+    -model-epochs <span class="m">300</span> <span class="se">\</span>
+    -model-steps <span class="m">2000</span> <span class="se">\</span>
+    -model-predict TARGET <span class="se">\</span>
+    -model-hidden <span class="m">8</span> <span class="m">16</span> <span class="m">8</span> <span class="se">\</span>
+    -sources <span class="nv">s</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-readonly <span class="se">\</span>
+    -source-filename train.csv <span class="se">\</span>
+    -features <span class="se">\</span>
+      def:Feature1:float:1 <span class="se">\</span>
+      def:Feature2:float:1 <span class="se">\</span>
+    -log debug
+<span class="go">Enabling debug log shows tensorflow losses...</span>
+<span class="gp">$</span> dffml accuracy <span class="se">\</span>
+    -model tfdnnr <span class="se">\</span>
+    -model-predict TARGET <span class="se">\</span>
+    -model-hidden <span class="m">8</span> <span class="m">16</span> <span class="m">8</span> <span class="se">\</span>
+    -sources <span class="nv">s</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-readonly <span class="se">\</span>
+    -source-filename test.csv <span class="se">\</span>
+    -features <span class="se">\</span>
+      def:Feature1:float:1 <span class="se">\</span>
+      def:Feature2:float:1 <span class="se">\</span>
+    -log critical
+<span class="go">0.9468210011</span>
+<span class="gp">$</span> <span class="nb">echo</span> -e <span class="s1">&#39;Feature1,Feature2,TARGET\n0.21,0.18,0.84\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
+  dffml predict all <span class="se">\</span>
+    -model tfdnnr <span class="se">\</span>
+    -model-predict TARGET <span class="se">\</span>
+    -model-hidden <span class="m">8</span> <span class="m">16</span> <span class="m">8</span> <span class="se">\</span>
+    -sources <span class="nv">s</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-readonly <span class="se">\</span>
+    -source-filename /dev/stdin <span class="se">\</span>
+    -features <span class="se">\</span>
+      def:Feature1:float:1 <span class="se">\</span>
+      def:Feature2:float:1 <span class="se">\</span>
+    -log critical
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;Feature1&quot;: 0.21,</span>
+<span class="go">            &quot;Feature2&quot;: 0.18,</span>
+<span class="go">            &quot;TARGET&quot;: 0.84</span>
+<span class="go">        },</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2019-10-24T15:26:41Z&quot;,</span>
+<span class="go">        &quot;prediction&quot;: {</span>
+<span class="go">            &quot;confidence&quot;: NaN,</span>
+<span class="go">            &quot;value&quot;: 1.1983429193496704</span>
+<span class="go">        },</span>
+<span class="go">        &quot;src_url&quot;: 0</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">NaN</span></code> in <code class="docutils literal notranslate"><span class="pre">confidence</span></code> is the expected behaviour. (See TODO in
+predict).</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>directory: String</p>
+<ul>
+<li><p>default: /home/user/.cache/dffml/tensorflow</p></li>
+<li><p>Directory where state should be saved</p></li>
+</ul>
+</li>
+<li><p>steps: Integer</p>
+<ul>
+<li><p>default: 3000</p></li>
+<li><p>Number of steps to train the model</p></li>
+</ul>
+</li>
+<li><p>epochs: Integer</p>
+<ul>
+<li><p>default: 30</p></li>
+<li><p>Number of iterations to pass over all repos in a source</p></li>
+</ul>
+</li>
+<li><p>hidden: List of integers</p>
+<ul>
+<li><p>default: [12, 40, 15]</p></li>
+<li><p>List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer</p></li>
+</ul>
+</li>
+<li><p>predict: String</p>
+<ul>
+<li><p>Feature name holding truth value</p></li>
 </ul>
 </li>
 </ul>
@@ -447,7 +578,7 @@ their feature names.</p>
 </pre></div>
 </div>
 <p><strong>Models Available:</strong></p>
-<table class="docutils align-default">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 6%" />
 <col style="width: 12%" />
@@ -505,7 +636,7 @@ their feature names.</p>
 <p><strong>Usage Example:</strong></p>
 <p>Example below uses LinearRegression Model on a small dataset.</p>
 <p>Let us take a simple example:</p>
-<table class="docutils align-default">
+<table class="docutils align-center">
 <colgroup>
 <col style="width: 39%" />
 <col style="width: 21%" />
@@ -619,7 +750,7 @@ their feature names.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="dffml_operation_implementation.html" class="btn btn-neutral float-right" title="Operation Implementations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="dffml_operation.html" class="btn btn-neutral float-right" title="Operations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="dffml_source.html" class="btn btn-neutral float-left" title="Sources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

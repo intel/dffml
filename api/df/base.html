@@ -1,36 +1,182 @@
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title>Data Flow Base Objects &#8212; DFFML 0.1.2 documentation</title>
-    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Data Flow Base Objects &mdash; DFFML 0.3.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Data Flow Memory Objects" href="memory.html" />
-    <link rel="prev" title="Data Flow Types" href="types.html" />
+    <link rel="prev" title="Data Flow Types" href="types.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
           
 
-          <div class="body" role="main">
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Data Flow</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="types.html">Data Flow Types</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Data Flow Base Objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="memory.html">Data Flow Memory Objects</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../repo.html">Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">API Helper Utilities Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Data Flow</a> &raquo;</li>
+        
+      <li>Data Flow Base Objects</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api/df/base.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="module-dffml.df.base">
 <span id="data-flow-base-objects"></span><h1>Data Flow Base Objects<a class="headerlink" href="#module-dffml.df.base" title="Permalink to this headline">¶</a></h1>
@@ -61,14 +207,14 @@ config dict.</p>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseDataFlowObjectContext">
-<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseDataFlowObjectContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseDataFlowObjectContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseDataFlowObjectContext" title="Permalink to this definition">¶</a></dt>
-<dd><p>Data Flow Object Contexts are instantiated by only being passed their
-parent, a BaseDataFlowObject.</p>
+<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseDataFlowObjectContext</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em>, <em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseDataFlowObjectContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseDataFlowObjectContext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data Flow Object Contexts are instantiated by being passed their
+config, and their parent, a BaseDataFlowObject.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseDefinitionSetContext">
-<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseDefinitionSetContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.BaseInputNetworkContext</em>, <em>ctx: dffml.df.base.BaseInputSetContext</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseDefinitionSetContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseDefinitionSetContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseDefinitionSetContext</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em>, <em>parent: dffml.df.base.BaseInputNetworkContext</em>, <em>ctx: dffml.df.base.BaseInputSetContext</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseDefinitionSetContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseDefinitionSetContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="dffml.df.base.BaseDefinitionSetContext.inputs">
 <em class="property">coroutine </em><code class="descname">inputs</code><span class="sig-paren">(</span><em>Definition: dffml.df.types.Definition</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.df.types.Input]<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseDefinitionSetContext.inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseDefinitionSetContext.inputs" title="Permalink to this definition">¶</a></dt>
@@ -87,7 +233,7 @@ which in turn becomes input data to other operations.</p>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseInputNetworkContext">
-<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseInputNetworkContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseInputNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseInputNetworkContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseInputNetworkContext</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em>, <em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseInputNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseInputNetworkContext" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract Base Class for context managing input_set</p>
 <dl class="method">
 <dt id="dffml.df.base.BaseInputNetworkContext.add">
@@ -126,7 +272,13 @@ that, according to the redundancy checker, haven’t been run yet.</p>
 <dl class="class">
 <dt id="dffml.df.base.BaseInputSet">
 <em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseInputSet</code><span class="sig-paren">(</span><em>config: dffml.df.base.BaseInputSetConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseInputSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseInputSet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="method">
+<dt id="dffml.df.base.BaseInputSet.add">
+<em class="property">coroutine </em><code class="descname">add</code><span class="sig-paren">(</span><em>item: dffml.df.types.Input</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseInputSet.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseInputSet.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an input to the input set.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseInputSetConfig">
@@ -152,7 +304,7 @@ that, according to the redundancy checker, haven’t been run yet.</p>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseKeyValueStoreContext">
-<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseKeyValueStoreContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.BaseKeyValueStore</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseKeyValueStoreContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseKeyValueStoreContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseKeyValueStoreContext</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em>, <em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseKeyValueStoreContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseKeyValueStoreContext" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract Base Class for key value storage context</p>
 <dl class="method">
 <dt id="dffml.df.base.BaseKeyValueStoreContext.get">
@@ -176,7 +328,7 @@ that, according to the redundancy checker, haven’t been run yet.</p>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseLockNetworkContext">
-<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseLockNetworkContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseLockNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseLockNetworkContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseLockNetworkContext</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em>, <em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseLockNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseLockNetworkContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="dffml.df.base.BaseLockNetworkContext.acquire">
 <em class="property">coroutine </em><code class="descname">acquire</code><span class="sig-paren">(</span><em>parameter_set: dffml.df.base.BaseParameterSet</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseLockNetworkContext.acquire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseLockNetworkContext.acquire" title="Permalink to this definition">¶</a></dt>
@@ -194,7 +346,7 @@ the parameter set.</p>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseOperationImplementationNetworkContext">
-<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseOperationImplementationNetworkContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationImplementationNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationImplementationNetworkContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseOperationImplementationNetworkContext</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em>, <em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationImplementationNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationImplementationNetworkContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="dffml.df.base.BaseOperationImplementationNetworkContext.contains">
 <em class="property">coroutine </em><code class="descname">contains</code><span class="sig-paren">(</span><em>operation: dffml.df.types.Operation</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationImplementationNetworkContext.contains"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationImplementationNetworkContext.contains" title="Permalink to this definition">¶</a></dt>
@@ -255,8 +407,21 @@ inputs, outputs, and conditions.</p>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseOperationNetworkContext">
-<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseOperationNetworkContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationNetworkContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseOperationNetworkContext</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em>, <em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationNetworkContext" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract Base Class for context managing operations</p>
+<dl class="method">
+<dt id="dffml.df.base.BaseOperationNetworkContext.add">
+<em class="property">coroutine </em><code class="descname">add</code><span class="sig-paren">(</span><em>operations: List[dffml.df.types.Operation]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationNetworkContext.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationNetworkContext.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add operations to the network</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.base.BaseOperationNetworkContext.operations">
+<em class="property">coroutine </em><code class="descname">operations</code><span class="sig-paren">(</span><em>input_set: dffml.df.base.BaseInputSet = None</em>, <em>stage: dffml.df.types.Stage = &lt;Stage.PROCESSING: 'processing'&gt;</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.df.types.Operation]<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationNetworkContext.operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationNetworkContext.operations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve all operations in the network of a given stage filtering by
+operations who have inputs with definitions in the input set.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -301,10 +466,10 @@ inputs, outputs, and conditions.</p>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseOrchestratorContext">
-<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseOrchestratorContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOrchestratorContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOrchestratorContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseOrchestratorContext</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em>, <em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOrchestratorContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOrchestratorContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="dffml.df.base.BaseOrchestratorContext.run_operations">
-<em class="property">coroutine </em><code class="descname">run_operations</code><span class="sig-paren">(</span><em>strict: bool = False</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[Tuple[dffml.df.base.BaseContextHandle, Dict[str, Any]]]<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOrchestratorContext.run_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOrchestratorContext.run_operations" title="Permalink to this definition">¶</a></dt>
+<em class="property">coroutine </em><code class="descname">run_operations</code><span class="sig-paren">(</span><em>strict: bool = True</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[Tuple[dffml.df.base.BaseContextHandle, Dict[str, Any]]]<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOrchestratorContext.run_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOrchestratorContext.run_operations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run all the operations then run cleanup and output operations</p>
 </dd></dl>
 
@@ -346,19 +511,39 @@ run with a give permutation of inputs once.</p>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseRedundancyCheckerContext">
-<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseRedundancyCheckerContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseRedundancyCheckerContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseRedundancyCheckerContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">BaseRedundancyCheckerContext</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em>, <em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseRedundancyCheckerContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseRedundancyCheckerContext" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract Base Class for redundancy checking context</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="dffml.df.base.FailedToLoadOperationImplementation">
+<em class="property">exception </em><code class="descclassname">dffml.df.base.</code><code class="descname">FailedToLoadOperationImplementation</code><a class="reference internal" href="../../_modules/dffml/df/base.html#FailedToLoadOperationImplementation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.FailedToLoadOperationImplementation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when an OperationImplementation wasn’t found to be registered with
+the dffml.operation entrypoint.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="dffml.df.base.OperationImplementation">
 <em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">OperationImplementation</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#OperationImplementation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OperationImplementation" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="classmethod">
+<dt id="dffml.df.base.OperationImplementation.load">
+<em class="property">classmethod </em><code class="descname">load</code><span class="sig-paren">(</span><em>loading=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#OperationImplementation.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OperationImplementation.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads all installed loading and returns them as a list. Sources to be
+loaded should be registered to ENTRY_POINT via setuptools.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="dffml.df.base.OperationImplementationContext">
-<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">OperationImplementationContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.OperationImplementation</em>, <em>ctx: dffml.df.base.BaseInputSetContext</em>, <em>ictx: dffml.df.base.BaseInputNetworkContext</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#OperationImplementationContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OperationImplementationContext" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<em class="property">class </em><code class="descclassname">dffml.df.base.</code><code class="descname">OperationImplementationContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.OperationImplementation</em>, <em>ctx: dffml.df.base.BaseInputSetContext</em>, <em>octx: dffml.df.base.BaseOrchestratorContext</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#OperationImplementationContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OperationImplementationContext" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="dffml.df.base.OperationImplementationContext.config">
+<code class="descname">config</code><a class="headerlink" href="#dffml.df.base.OperationImplementationContext.config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for self.parent.config</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="dffml.df.base.OperationImplementationContext.run">
 <em class="property">coroutine </em><code class="descname">run</code><span class="sig-paren">(</span><em>inputs: Dict[str, Any]</em><span class="sig-paren">)</span> &#x2192; Union[bool, Dict[str, Any]]<a class="reference internal" href="../../_modules/dffml/df/base.html#OperationImplementationContext.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OperationImplementationContext.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Implementation of the operation goes here. Should take and return a dict
@@ -366,6 +551,21 @@ with keys matching the input and output parameters of the Operation
 object associated with this operation implementation context.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="exception">
+<dt id="dffml.df.base.OperationImplementationNotInstantiable">
+<em class="property">exception </em><code class="descclassname">dffml.df.base.</code><code class="descname">OperationImplementationNotInstantiable</code><a class="reference internal" href="../../_modules/dffml/df/base.html#OperationImplementationNotInstantiable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OperationImplementationNotInstantiable" title="Permalink to this definition">¶</a></dt>
+<dd><p>OperationImplementation cannot be instantiated and is required to continue.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="dffml.df.base.OperationImplementationNotInstantiated">
+<em class="property">exception </em><code class="descclassname">dffml.df.base.</code><code class="descname">OperationImplementationNotInstantiated</code><a class="reference internal" href="../../_modules/dffml/df/base.html#OperationImplementationNotInstantiated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OperationImplementationNotInstantiated" title="Permalink to this definition">¶</a></dt>
+<dd><p>OperationImplementation is instantiable, but is not has not been
+instantiated within the network and was required to continue.</p>
+<p>Attempted to run operation which could be instantiated, but has not yet
+been.</p>
 </dd></dl>
 
 <dl class="class">
@@ -424,126 +624,73 @@ function has been wrapped with <cite>op</cite>.</p>
 implementations from some list which.</p>
 </dd></dl>
 
+<dl class="function">
+<dt id="dffml.df.base.op">
+<code class="descclassname">dffml.df.base.</code><code class="descname">op</code><span class="sig-paren">(</span><em>imp_enter=None</em>, <em>ctx_enter=None</em>, <em>config_cls=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#op"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.op" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">op</span></code> decorator creates a subclass of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.df.OperationImplementation</span></code> and assigns that
+<code class="docutils literal notranslate"><span class="pre">OperationImplementation</span></code> to the <code class="docutils literal notranslate"><span class="pre">.imp</span></code> parameter of the
+function it decorates.</p>
+<p>If the decorated object is not already a class which is a subclass of
+<code class="docutils literal notranslate"><span class="pre">OperationImplementationContext</span></code>, it creates an
+<code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.df.OperationImplementationContext</span></code>
+and assigns it to the <code class="docutils literal notranslate"><span class="pre">CONTEXT</span></code> class parameter of the
+<code class="docutils literal notranslate"><span class="pre">OperationImplementation</span></code> which was created.</p>
+<p>Upon context entry into the <code class="docutils literal notranslate"><span class="pre">OperationImplementation</span></code>, imp_enter is
+iterated over and the values in that <code class="docutils literal notranslate"><span class="pre">dict</span></code> are entered. The value yielded
+upon entry is assigned to a parameter in the <code class="docutils literal notranslate"><span class="pre">OperationImplementation</span></code>
+instance named after the respective key.</p>
+</dd></dl>
+
 </div>
 
 
+           </div>
+           
           </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../index.html">DFFML</a></h1>
-
-
-
-<p class="blurb">The fastest path to machine learning integration</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-    
-
-<p>
-<a class="badge" href="https://travis-ci.org/intel/dffml">
-    <img
-        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
-        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
-    />
-</a>
-</p>
-
-
-
-
-    
-
-<p>
-<a class="badge" href="https://codecov.io/github/intel/dffml">
-    <img
-    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
-    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
-    />
-</a>
-</p>
-<h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../community.html">Community</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage/installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage/integration.html">Example Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage/operations.html">Example Data Flow Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">Data Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../repo.html">Repo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../util/index.html">API Helper Utilities Reference</a></li>
-</ul>
-</li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../index.html">API Reference</a><ul>
-  <li><a href="index.html">Data Flow</a><ul>
-      <li>Previous: <a href="types.html" title="previous chapter">Data Flow Types</a></li>
-      <li>Next: <a href="memory.html" title="next chapter">Data Flow Memory Objects</a></li>
-  </ul></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-    </form>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="memory.html" class="btn btn-neutral float-right" title="Data Flow Memory Objects" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="types.html" class="btn btn-neutral float-left" title="Data Flow Types" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  
 
+  <hr/>
 
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Intel
 
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-
-
-
+</footer>
 
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2019, Intel.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="../../_sources/api/df/base.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
     
-  </body>
+   
+
+</body>
 </html>
