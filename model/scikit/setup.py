@@ -1,4 +1,5 @@
 import os
+import sys
 import ast
 from io import open
 from setuptools import find_packages, setup
@@ -8,7 +9,29 @@ NAME = "dffml-model-scikit"
 DESCRIPTION = "DFFML model scikit"
 AUTHOR_NAME = "Yash Lamba"
 AUTHOR_EMAIL = "yashlamba2000@gmail.com"
-INSTALL_REQUIRES = ["scikit-learn>=0.21.2", "joblib>=0.13.2", "pandas>=0.25.0"]
+INSTALL_REQUIRES = [
+    "scikit-learn>=0.21.2",
+    "joblib>=0.13.2",
+    "pandas>=0.25.0",
+] + (
+    ["dffml>=0.3.0"]
+    if not any(
+        list(
+            map(
+                os.path.isfile,
+                list(
+                    map(
+                        lambda syspath: os.path.join(
+                            syspath, "dffml.egg-link"
+                        ),
+                        sys.path,
+                    )
+                ),
+            )
+        )
+    )
+    else []
+)
 
 IMPORT_NAME = (
     NAME

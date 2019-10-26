@@ -127,7 +127,24 @@ class CreateTLS(TLSCMD):
     client = CreateTLSClient
 
 
-class Server(TLSCMD, Routes):
+class MultiCommCMD(CMD):
+
+    mc_config = Arg(
+        "-mc-config",
+        dest="mc_config",
+        default=None,
+        help="MultiComm config directory",
+    )
+    mc_atomic = Arg(
+        "-mc-atomic",
+        dest="mc_atomic",
+        action="store_true",
+        default=False,
+        help="No routes other than dataflows registered at startup",
+    )
+
+
+class Server(TLSCMD, MultiCommCMD, Routes):
     """
     HTTP server providing access to DFFML APIs
     """
@@ -198,10 +215,17 @@ class Server(TLSCMD, Routes):
         # Create dictionaries to hold configured sources and models
         await self.setup()
         await self.start()
+        # Load
+        if self.mc_config is not None:
+            # Restore atomic after config is set, allow setting for now
+            atomic = self.mc_atomic
+            self.mc_atomic = False
+            await self.register_directory(self.mc_config)
+            self.mc_atomic = atomic
         try:
             # If we are testing then RUN_YIELD will be an asyncio.Event
             if self.RUN_YIELD_START is not False:
-                self.RUN_YIELD_START.set()
+                await self.RUN_YIELD_START.put(self)
                 await self.RUN_YIELD_FINISH.wait()
             else:  # pragma: no cov
                 # Wait for ctrl-c

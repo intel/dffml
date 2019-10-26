@@ -16,9 +16,16 @@ For this tutorial we'll be implementing our own machine learning algorithm from
 scratch, which means that we're not using a machine learning focused library to
 handle calculations for us.
 
+.. warning::
+
+    This tutorial needs updating. It will be updated to follow the way
+    the `scratch model <https://github.com/intel/dffml/blob/master/model/scratch/dffml_model_scratch/slr.py>`_
+    works. For now you might want to skim through this, and then look at that as
+    a reference.
+
 You'll most likely want to use a popular machine learning framework eventually
 within your model class. For an example on how one might use ``scikit`` see the
-code for the `scikit models <https://github.com/intel/dffml/blob/master/model/scikit/dffml_model_scikit/sciLR.py>`_.
+code for the `scikit models <https://github.com/intel/dffml/blob/master/model/scikit/dffml_model_scikit/scikit_base.py>`_.
 
 Create the Package
 ------------------

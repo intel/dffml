@@ -1,14 +1,13 @@
-import io
-import json
 import sys
+import json
 import asyncio
 from typing import Dict, Any
 
-from dffml.df.types import Definition
 from dffml.df.base import op
+from dffml.df.types import Definition
 
-from .pypi import package, package_version
-
+package = Definition(name="package", primitive="str")
+package_version = Definition(name="package_version", primitive="str")
 safety_check_number_of_issues = Definition(
     name="safety_check_number_of_issues", primitive="int"
 )

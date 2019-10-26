@@ -9,5 +9,6 @@ or operations.
     :caption: Contents:
 
     intro
-    source
+    operations
     model
+    source

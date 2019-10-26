@@ -9,8 +9,16 @@ DFFML triangle.
 
 - :ref:`intro_models` abstract implementations of machine learning algorithms.
 
-- The :ref:`intro_data_flow` side of things is used to generate a dataset, as well as
+- :ref:`intro_data_flow` are used to generate a datasets, as well as
   modify existing datasets.
+
+Every part of DFFML is a plugin, which means that you can replace it with your
+own implementation without needing to modifying DFFML itself. It also means
+everyone can use each others plugins by publishing them to PyPi, or just
+creating a public Git repo.
+
+If you don't see the plugin you need already implemented under
+:doc:`/plugins/index`, you can :ref:`cli_service_dev_create` it yourself.
 
 .. _intro_sources:
 
@@ -20,8 +28,8 @@ Sources
 A ``Source`` of data might be something like a CSV file, SQL database, or HDFS.
 
 By providing a generic abstraction around where data is being saved and stored,
-model implementations can access the data via the same API no matter where it is
-stored.
+model implementations can access the data via the same API no matter where it
+is.
 
 Repos
 ~~~~~
@@ -29,6 +37,15 @@ Repos
 A common construct within DFFML is the ``Repo``. A ``Repo`` object is a
 repository of information associated with a unique key. The ``Repo`` holds all
 the data associated with that key.
+
+.. note::
+
+    DFFML started as a project centred around Git repos. As such, the unique key
+    for a Git repo was the upstream source URL. ``src_url`` was used as the
+    parameter to hold the unique key.
+
+    Issue `#233 <https://github.com/intel/dffml/issues/233>`_ is tracking the
+    need to change all instances of ``Repo.src_url`` to ``Repo.key``.
 
 Say for instance you generated a dataset that had to do with cities. Your unique
 key might be the name of the city, the state or province it's in, and the
@@ -61,13 +78,13 @@ implementing with one major framework to another is painless.
 
 .. _intro_data_flow:
 
-Data Flow
+DataFlows
 ---------
 
 One can think of the data flow side of DFFML as a event loop running at a high
 level of abstraction. Event loop usually refers to waiting for ``read``,
 ``write``, and ``error`` events on network connections, files, or if you're in
-JavaScript, a click on the page for instance.
+JavaScript, it might be a click.
 
 The idea behind event loops is that when a new event comes in, it triggers some
 processing of the data associated with that event.
@@ -82,7 +99,7 @@ running concurrently. In addition to running concurrently, ``asyncio``, which
 DFFML makes heavy use of, makes it easy to run things in parallel, so as to
 fully utilize a CPUs cores and threads.
 
-The following are the key concepts relating to data flow.
+The following are the key concepts relating to DataFlows.
 
 Definition
 ~~~~~~~~~~
@@ -90,14 +107,15 @@ Definition
 The name of the data type, and what it's primitive is. Primitive meaning is it a
 string, integer, float, etc.
 
-If a piece of data created or used of this data type needs to be locked. The
+If a piece of data created or used of this data type needs to be locked, the
 definition will also specify that (``lock=True``).
 
 Operation
 ~~~~~~~~~
 
-A name associated with some routine or function that will process some input
-data and produce some output data.
+The definition of some routine or function that will process some input
+data and produce some output data. It contains the names of the inputs and
+outputs, what stage the operation runs in, and the name of the operation.
 
 Stage
 ~~~~~
@@ -124,6 +142,11 @@ Operation Implementation
 
 The routine or function responsible for preforming an Operation.
 
+We separate the concept of an operation from its implementation because the goal
+is to allow for transparent execution of operations written in other languages,
+deployed as micro services, or parts of SaaS APIs. Transparent from the view of
+the DataFlow which defines the interconnections between operations.
+
 Input Network
 ~~~~~~~~~~~~~
 
@@ -148,14 +171,17 @@ Redundancy Checker
 ~~~~~~~~~~~~~~~~~~
 
 Checks if an operation has been called before with a given set of input
-parameters.
+parameters. This is used because a DataFlow runs by executing all possible
+permutations of inputs for any given operation, and completes when no new
+permutations of inputs exist for every operation.
 
 Lock Network
 ~~~~~~~~~~~~
 
-Manges locking for Inputs.
+Manges locking of input data so that operations can run concurrently without
+managing their own resource locking.
 
 Orchestrator
 ~~~~~~~~~~~~
 
-All data flow objects are utilized via an Orchestrator
+The orchestrator uses the various networks to execute dataflows.

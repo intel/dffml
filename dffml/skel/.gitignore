@@ -1,7 +1,7 @@
 */LICENSE
 */.gitignore
 */.coveragerc
-*/dffml_setup_common.py
+*/setup_common.py
 */pyproject.toml
 */MANIFEST.in
 */REPLACE_IMPORT_PACKAGE_NAME/version.py

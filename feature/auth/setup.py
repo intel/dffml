@@ -1,4 +1,5 @@
 import os
+import sys
 import ast
 from io import open
 
@@ -17,7 +18,25 @@ with open(
 with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
-INSTALL_REQUIRES = []
+INSTALL_REQUIRES = [] + (
+    ["dffml>=0.3.0"]
+    if not any(
+        list(
+            map(
+                os.path.isfile,
+                list(
+                    map(
+                        lambda syspath: os.path.join(
+                            syspath, "dffml.egg-link"
+                        ),
+                        sys.path,
+                    )
+                ),
+            )
+        )
+    )
+    else []
+)
 
 setup(
     name="dffml_feature_auth",
@@ -46,10 +65,7 @@ setup(
     packages=find_packages(),
     entry_points={
         "dffml.operation": [
-            "scrypt = dffml_feature_auth.feature.operations:scrypt"
-        ],
-        "dffml.operation.implementation": [
             "scrypt = dffml_feature_auth.feature.operations:Scrypt"
-        ],
+        ]
     },
 )
