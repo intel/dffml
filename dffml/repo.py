@@ -129,12 +129,7 @@ class Repo(object):
         self.extra = extra
 
     def dict(self):
-        # TODO Remove dict method in favor of export
-        warnings.warn(
-            "dict method will be removed in favor of export",
-            DeprecationWarning,
-            stacklevel=2,
-        )
+        # TODO(p2) Remove dict method in favor of export
         return self.export()
 
     def export(self):

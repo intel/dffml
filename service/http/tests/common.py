@@ -5,13 +5,13 @@ from contextlib import asynccontextmanager
 
 class ServerRunner:
     def __init__(self):
-        self.begin = asyncio.Event()
+        self.begin = asyncio.Queue()
         self.end = asyncio.Event()
         self.server_stopped = None
 
     async def start(self, coro):
         self.server_stopped = asyncio.create_task(coro)
-        server_started = asyncio.create_task(self.begin.wait())
+        server_started = asyncio.create_task(self.begin.get())
         done, pending = await asyncio.wait(
             {self.server_stopped, server_started},
             return_when=asyncio.FIRST_COMPLETED,
@@ -23,6 +23,7 @@ class ServerRunner:
                 exception = task.exception()
                 if exception is not None:
                     raise exception
+        return server_started.result()
 
     async def stop(self):
         self.end.set()

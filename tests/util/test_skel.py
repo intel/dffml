@@ -13,7 +13,7 @@ COMMON_FILES = list(
         [
             (".gitignore",),
             (".coveragerc",),
-            ("dffml_setup_common.py",),
+            ("setup_common.py",),
             ("MANIFEST.in",),
             ("REPLACE_IMPORT_PACKAGE_NAME", "version.py"),
             ("REPLACE_IMPORT_PACKAGE_NAME", "__init__.py"),

@@ -1,0 +1,205 @@
+{
+    "configs": {},
+    "definitions": {
+        "bandit_output": {
+            "name": "bandit_output",
+            "primitive": "Dict[str, Any]"
+        },
+        "get_single_output": {
+            "name": "get_single_output",
+            "primitive": "Dict[str, Any]"
+        },
+        "get_single_spec": {
+            "name": "get_single_spec",
+            "primitive": "List[str]"
+        },
+        "package": {
+            "name": "package",
+            "primitive": "str"
+        },
+        "package_json": {
+            "name": "package_json",
+            "primitive": "Dict[str, Any]"
+        },
+        "package_src_dir": {
+            "name": "package_src_dir",
+            "primitive": "str"
+        },
+        "package_url": {
+            "name": "package_url",
+            "primitive": "str"
+        },
+        "package_version": {
+            "name": "package_version",
+            "primitive": "str"
+        },
+        "safety_check_number_of_issues": {
+            "name": "safety_check_number_of_issues",
+            "primitive": "int"
+        }
+    },
+    "flow": {
+        "cleanup_pypi_package": {
+            "inputs": {
+                "directory": [
+                    {
+                        "pypi_package_contents": "directory"
+                    }
+                ]
+            }
+        },
+        "get_single": {
+            "inputs": {
+                "spec": [
+                    "seed"
+                ]
+            }
+        },
+        "pypi_latest_package_version": {
+            "inputs": {
+                "response_json": [
+                    {
+                        "pypi_package_json": "response_json"
+                    }
+                ]
+            }
+        },
+        "pypi_package_contents": {
+            "inputs": {
+                "url": [
+                    {
+                        "pypi_package_url": "url"
+                    }
+                ]
+            }
+        },
+        "pypi_package_json": {
+            "inputs": {
+                "package": [
+                    "seed"
+                ]
+            }
+        },
+        "pypi_package_url": {
+            "inputs": {
+                "response_json": [
+                    {
+                        "pypi_package_json": "response_json"
+                    }
+                ]
+            }
+        },
+        "run_bandit": {
+            "inputs": {
+                "pkg": [
+                    {
+                        "pypi_package_contents": "directory"
+                    }
+                ]
+            }
+        },
+        "safety_check": {
+            "inputs": {
+                "package": [
+                    "seed"
+                ],
+                "version": [
+                    {
+                        "pypi_latest_package_version": "version"
+                    }
+                ]
+            }
+        }
+    },
+    "linked": true,
+    "operations": {
+        "cleanup_pypi_package": {
+            "inputs": {
+                "directory": "package_src_dir"
+            },
+            "name": "cleanup_pypi_package",
+            "outputs": {},
+            "stage": "cleanup"
+        },
+        "get_single": {
+            "inputs": {
+                "spec": "get_single_spec"
+            },
+            "name": "get_single",
+            "outputs": {
+                "output": "get_single_output"
+            },
+            "stage": "output"
+        },
+        "pypi_latest_package_version": {
+            "inputs": {
+                "response_json": "package_json"
+            },
+            "name": "pypi_latest_package_version",
+            "outputs": {
+                "version": "package_version"
+            },
+            "stage": "processing"
+        },
+        "pypi_package_contents": {
+            "inputs": {
+                "url": "package_url"
+            },
+            "name": "pypi_package_contents",
+            "outputs": {
+                "directory": "package_src_dir"
+            },
+            "stage": "processing"
+        },
+        "pypi_package_json": {
+            "inputs": {
+                "package": "package"
+            },
+            "name": "pypi_package_json",
+            "outputs": {
+                "response_json": "package_json"
+            },
+            "stage": "processing"
+        },
+        "pypi_package_url": {
+            "inputs": {
+                "response_json": "package_json"
+            },
+            "name": "pypi_package_url",
+            "outputs": {
+                "url": "package_url"
+            },
+            "stage": "processing"
+        },
+        "run_bandit": {
+            "inputs": {
+                "pkg": "package_src_dir"
+            },
+            "name": "run_bandit",
+            "outputs": {
+                "report": "bandit_output"
+            },
+            "stage": "processing"
+        },
+        "safety_check": {
+            "inputs": {
+                "package": "package",
+                "version": "package_version"
+            },
+            "name": "safety_check",
+            "outputs": {
+                "issues": "safety_check_number_of_issues"
+            },
+            "stage": "processing"
+        }
+    },
+    "seed": [
+        {
+            "definition": "get_single_spec",
+            "value": [
+                "safety_check_number_of_issues",
+                "bandit_output"
+            ]
+        }
+    ]
+}

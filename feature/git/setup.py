@@ -1,4 +1,5 @@
 import os
+import sys
 import ast
 from io import open
 
@@ -17,7 +18,25 @@ with open(
 with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
-INSTALL_REQUIRES = ["python-dateutil>=2.7.3"]
+INSTALL_REQUIRES = ["python-dateutil>=2.7.3"] + (
+    ["dffml>=0.3.0"]
+    if not any(
+        list(
+            map(
+                os.path.isfile,
+                list(
+                    map(
+                        lambda syspath: os.path.join(
+                            syspath, "dffml.egg-link"
+                        ),
+                        sys.path,
+                    )
+                ),
+            )
+        )
+    )
+    else []
+)
 
 setup(
     name="dffml_feature_git",
@@ -46,36 +65,20 @@ setup(
     packages=find_packages(),
     entry_points={
         "dffml.operation": [
-            "quarters_back_to_date = dffml_feature_git.feature.operations:quarters_back_to_date.op",
-            "check_if_valid_git_repository_URL = dffml_feature_git.feature.operations:check_if_valid_git_repository_URL.op",
-            "clone_git_repo = dffml_feature_git.feature.operations:clone_git_repo.op",
-            "git_repo_default_branch = dffml_feature_git.feature.operations:git_repo_default_branch.op",
-            "git_repo_checkout = dffml_feature_git.feature.operations:git_repo_checkout.op",
-            "git_repo_commit_from_date = dffml_feature_git.feature.operations:git_repo_commit_from_date.op",
-            "git_repo_author_lines_for_dates = dffml_feature_git.feature.operations:git_repo_author_lines_for_dates.op",
-            "work = dffml_feature_git.feature.operations:work.op",
-            "git_repo_release = dffml_feature_git.feature.operations:git_repo_release.op",
-            "lines_of_code_by_language = dffml_feature_git.feature.operations:lines_of_code_by_language.op",
-            "lines_of_code_to_comments = dffml_feature_git.feature.operations:lines_of_code_to_comments.op",
-            "git_commits = dffml_feature_git.feature.operations:git_commits.op",
-            "count_authors = dffml_feature_git.feature.operations:count_authors.op",
-            "cleanup_git_repo = dffml_feature_git.feature.operations:cleanup_git_repo.op",
-        ],
-        "dffml.operation.implementation": [
-            "quarters_back_to_date = dffml_feature_git.feature.operations:quarters_back_to_date.imp",
-            "check_if_valid_git_repository_URL = dffml_feature_git.feature.operations:check_if_valid_git_repository_URL.imp",
-            "clone_git_repo = dffml_feature_git.feature.operations:clone_git_repo.imp",
-            "git_repo_default_branch = dffml_feature_git.feature.operations:git_repo_default_branch.imp",
-            "git_repo_checkout = dffml_feature_git.feature.operations:git_repo_checkout.imp",
-            "git_repo_commit_from_date = dffml_feature_git.feature.operations:git_repo_commit_from_date.imp",
-            "git_repo_author_lines_for_dates = dffml_feature_git.feature.operations:git_repo_author_lines_for_dates.imp",
-            "work = dffml_feature_git.feature.operations:work.imp",
-            "git_repo_release = dffml_feature_git.feature.operations:git_repo_release.imp",
-            "lines_of_code_by_language = dffml_feature_git.feature.operations:lines_of_code_by_language.imp",
-            "lines_of_code_to_comments = dffml_feature_git.feature.operations:lines_of_code_to_comments.imp",
-            "git_commits = dffml_feature_git.feature.operations:git_commits.imp",
-            "count_authors = dffml_feature_git.feature.operations:count_authors.imp",
-            "cleanup_git_repo = dffml_feature_git.feature.operations:cleanup_git_repo.imp",
-        ],
+            "quarters_back_to_date = dffml_feature_git.feature.operations:quarters_back_to_date",
+            "check_if_valid_git_repository_URL = dffml_feature_git.feature.operations:check_if_valid_git_repository_URL",
+            "clone_git_repo = dffml_feature_git.feature.operations:clone_git_repo",
+            "git_repo_default_branch = dffml_feature_git.feature.operations:git_repo_default_branch",
+            "git_repo_checkout = dffml_feature_git.feature.operations:git_repo_checkout",
+            "git_repo_commit_from_date = dffml_feature_git.feature.operations:git_repo_commit_from_date",
+            "git_repo_author_lines_for_dates = dffml_feature_git.feature.operations:git_repo_author_lines_for_dates",
+            "work = dffml_feature_git.feature.operations:work",
+            "git_repo_release = dffml_feature_git.feature.operations:git_repo_release",
+            "lines_of_code_by_language = dffml_feature_git.feature.operations:lines_of_code_by_language",
+            "lines_of_code_to_comments = dffml_feature_git.feature.operations:lines_of_code_to_comments",
+            "git_commits = dffml_feature_git.feature.operations:git_commits",
+            "count_authors = dffml_feature_git.feature.operations:count_authors",
+            "cleanup_git_repo = dffml_feature_git.feature.operations:cleanup_git_repo",
+        ]
     },
 )

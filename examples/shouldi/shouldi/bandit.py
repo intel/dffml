@@ -1,15 +1,12 @@
-import io
-import os
 import sys
 import json
 import asyncio
 from typing import Dict, Any
 
-
-from dffml.df.types import Definition
 from dffml.df.base import op
-from .pypi import package_src_dir
+from dffml.df.types import Definition
 
+package_src_dir = Definition(name="package_src_dir", primitive="str")
 bandit_output = Definition(name="bandit_output", primitive="Dict[str, Any]")
 
 

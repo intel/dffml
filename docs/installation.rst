@@ -31,6 +31,17 @@ can also use to get started working with DFFML right away.
 .. image:: https://gitpod.io/button/open-in-gitpod.svg
    :target: https://gitpod.io/#https://github.com/intel/dffml
 
+Ubuntu
+------
+
+For Ubuntu 18.XX python3 means Python 3.6 so far as ``apt`` is concerend.
+However, ``python3-pip`` works for all 3.X versions. So you'll need to install
+the following packages to get ``python3.7`` with ``pip``.
+
+.. code-block:: console
+
+    $ sudo apt-get update && sudo apt-get install -y python3.7 python3-pip
+
 Docker
 ------
 

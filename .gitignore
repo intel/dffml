@@ -21,3 +21,4 @@ html/
 pages/
 examples/shouldi/response.json
 docs/plugins/service/http
+*pip-wheel-metadata/

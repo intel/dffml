@@ -11,6 +11,7 @@ import asyncio
 import logging
 import tempfile
 import unittest
+import contextlib
 import collections
 from pathlib import Path
 from unittest.mock import patch
@@ -35,8 +36,7 @@ from dffml.util.cli.cmd import DisplayHelp
 
 from dffml.cli import (
     Merge,
-    OperationsAll,
-    OperationsRepo,
+    Dataflow,
     EvaluateAll,
     EvaluateRepo,
     Train,
@@ -266,7 +266,7 @@ class TestListRepos(ReposTestCase):
                 self.assertIn(repo.src_url, stdout.getvalue())
 
 
-class TestOperationsAll(ReposTestCase):
+class TestDataflowRunAllRepos(ReposTestCase):
     async def test_run(self):
         self.repo_keys = {"add 40 and 2": 42, "multiply 42 and 10": 420}
         self.repos = list(map(Repo, self.repo_keys.keys()))
@@ -277,28 +277,39 @@ class TestOperationsAll(ReposTestCase):
                     await sctx.update(repo)
         with patch.object(
             OperationImplementation, "load", opimp_load
-        ), patch.object(Operation, "load", op_load):
-            results = await OperationsAll.cli(
+        ), patch.object(
+            Operation, "load", op_load
+        ), tempfile.NamedTemporaryFile(
+            suffix=".json"
+        ) as dataflow_file:
+            dataflow = io.StringIO()
+            with contextlib.redirect_stdout(dataflow):
+                await Dataflow.cli(
+                    "create",
+                    "-config",
+                    "json",
+                    *map(lambda op: op.name, OPERATIONS),
+                )
+            dataflow_file.write(dataflow.getvalue().encode())
+            dataflow_file.seek(0)
+            results = await Dataflow.cli(
+                "run",
+                "repos",
+                "all",
+                "-dataflow",
+                dataflow_file.name,
+                "primary=json",
                 "-sources",
                 "primary=json",
                 "-source-filename",
                 self.temp_filename,
                 "-repo-def",
                 "calc_string",
-                "-remap",
-                "get_single.result=string_calculator",
-                "-output-specs",
+                "-inputs",
                 '["result"]=get_single_spec',
-                "-dff-memory-operation-network-ops",
-                *map(lambda op: op.name, OPERATIONS),
-                "-dff-memory-opimp-network-opimps",
-                *map(lambda imp: imp.op.name, OPIMPS),
             )
             results = {
-                result.src_url: result.features(["string_calculator"])[
-                    "string_calculator"
-                ]
-                for result in results
+                result.src_url: result.feature("result") for result in results
             }
             for repo in self.repos:
                 self.assertIn(repo.src_url, results)
@@ -307,7 +318,7 @@ class TestOperationsAll(ReposTestCase):
                 )
 
 
-class TestOperationsRepo(ReposTestCase):
+class TestDataflowRunRepoSet(ReposTestCase):
     async def test_run(self):
         test_key = "multiply 42 and 10"
         self.repo_keys = {"add 40 and 2": 42, "multiply 42 and 10": 420}
@@ -319,31 +330,42 @@ class TestOperationsRepo(ReposTestCase):
                     await sctx.update(repo)
         with patch.object(
             OperationImplementation, "load", opimp_load
-        ), patch.object(Operation, "load", op_load):
-            results = await OperationsRepo.cli(
+        ), patch.object(
+            Operation, "load", op_load
+        ), tempfile.NamedTemporaryFile(
+            suffix=".json"
+        ) as dataflow_file:
+            dataflow = io.StringIO()
+            with contextlib.redirect_stdout(dataflow):
+                await Dataflow.cli(
+                    "create",
+                    "-config",
+                    "json",
+                    *map(lambda op: op.name, OPERATIONS),
+                )
+            dataflow_file.write(dataflow.getvalue().encode())
+            dataflow_file.seek(0)
+            results = await Dataflow.cli(
+                "run",
+                "repos",
+                "set",
+                "-keys",
+                test_key,
+                "-dataflow",
+                dataflow_file.name,
+                "primary=json",
                 "-sources",
                 "primary=json",
                 "-source-filename",
                 self.temp_filename,
-                "-keys",
-                test_key,
                 "-repo-def",
                 "calc_string",
-                "-remap",
-                "get_single.result=string_calculator",
-                "-output-specs",
+                "-inputs",
                 '["result"]=get_single_spec',
-                "-dff-memory-operation-network-ops",
-                *map(lambda op: op.name, OPERATIONS),
-                "-dff-memory-opimp-network-opimps",
-                *map(lambda imp: imp.op.name, OPIMPS),
             )
             self.assertEqual(len(results), 1)
             self.assertEqual(
-                self.repo_keys[test_key],
-                results[0].features(["string_calculator"])[
-                    "string_calculator"
-                ],
+                self.repo_keys[test_key], results[0].feature("result")
             )
 
 

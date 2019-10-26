@@ -11,5 +11,5 @@ class TestCLI(AsyncTestCase):
         with patch("sys.stdout", new_callable=io.StringIO) as stdout:
             await ShouldI.install.cli("insecure-package", "shouldi")
             output = stdout.getvalue()
-            self.assertIn("shouldi is okay to install", output)
-            self.assertIn("Do not install insecure-package!", output)
+        self.assertIn("shouldi is okay to install", output)
+        self.assertIn("Do not install insecure-package!", output)

@@ -1,0 +1,302 @@
+configs: {}
+definitions:
+  URL:
+    name: URL
+    primitive: string
+  author_count:
+    name: author_count
+    primitive: int
+  author_line_count:
+    name: author_line_count
+    primitive: Dict[str, int]
+  commit_count:
+    name: commit_count
+    primitive: int
+  date:
+    name: date
+    primitive: string
+  date_pair:
+    name: date_pair
+    primitive: List[date]
+  git_branch:
+    name: git_branch
+    primitive: str
+  git_commit:
+    name: git_commit
+    primitive: string
+  git_repository:
+    lock: true
+    name: git_repository
+    primitive: Dict[str, str]
+    spec:
+      defaults: {}
+      name: GitRepoSpec
+      types:
+        URL: str
+        directory: str
+  git_repository_checked_out:
+    lock: true
+    name: git_repository_checked_out
+    primitive: Dict[str, str]
+    spec:
+      defaults: {}
+      name: GitRepoCheckedOutSpec
+      types:
+        URL: str
+        commit: str
+        directory: str
+  group_by_output:
+    name: group_by_output
+    primitive: Dict[str, List[Any]]
+  group_by_spec:
+    name: group_by_spec
+    primitive: Dict[str, Any]
+    spec:
+      defaults: {}
+      name: GroupBySpec
+      types:
+        by: Definition
+        fill: generic
+        group: Definition
+  no_git_branch_given:
+    name: no_git_branch_given
+    primitive: boolean
+  quarter:
+    name: quarter
+    primitive: int
+  quarter_start_date:
+    name: quarter_start_date
+    primitive: int
+  release_within_period:
+    name: release_within_period
+    primitive: bool
+  valid_git_repository_URL:
+    name: valid_git_repository_URL
+    primitive: boolean
+  work_spread:
+    name: work_spread
+    primitive: int
+flow:
+  check_if_valid_git_repository_URL:
+    inputs:
+      URL:
+      - seed
+  cleanup_git_repo:
+    inputs:
+      repo:
+      - clone_git_repo: repo
+  clone_git_repo:
+    conditions:
+    - check_if_valid_git_repository_URL: valid
+    inputs:
+      URL:
+      - seed
+  count_authors:
+    inputs:
+      author_lines:
+      - git_repo_author_lines_for_dates: author_lines
+  git_commits:
+    inputs:
+      branch:
+      - git_repo_default_branch: branch
+      repo:
+      - clone_git_repo: repo
+      start_end:
+      - quarters_back_to_date: start_end
+  git_repo_author_lines_for_dates:
+    inputs:
+      branch:
+      - git_repo_default_branch: branch
+      repo:
+      - clone_git_repo: repo
+      start_end:
+      - quarters_back_to_date: start_end
+  git_repo_checkout:
+    inputs:
+      commit:
+      - git_repo_commit_from_date: commit
+      repo:
+      - clone_git_repo: repo
+  git_repo_commit_from_date:
+    inputs:
+      branch:
+      - git_repo_default_branch: branch
+      date:
+      - quarters_back_to_date: date
+      repo:
+      - clone_git_repo: repo
+  git_repo_default_branch:
+    conditions:
+    - seed
+    inputs:
+      repo:
+      - clone_git_repo: repo
+  git_repo_release:
+    inputs:
+      branch:
+      - git_repo_default_branch: branch
+      repo:
+      - clone_git_repo: repo
+      start_end:
+      - quarters_back_to_date: start_end
+  group_by:
+    inputs:
+      spec:
+      - seed
+  quarters_back_to_date:
+    inputs:
+      date:
+      - seed
+      number:
+      - seed
+  work:
+    inputs:
+      author_lines:
+      - git_repo_author_lines_for_dates: author_lines
+linked: true
+operations:
+  check_if_valid_git_repository_URL:
+    inputs:
+      URL: URL
+    name: check_if_valid_git_repository_URL
+    outputs:
+      valid: valid_git_repository_URL
+    stage: processing
+  cleanup_git_repo:
+    inputs:
+      repo: git_repository
+    name: cleanup_git_repo
+    outputs: {}
+    stage: cleanup
+  clone_git_repo:
+    conditions:
+    - valid_git_repository_URL
+    inputs:
+      URL: URL
+    name: clone_git_repo
+    outputs:
+      repo: git_repository
+    stage: processing
+  count_authors:
+    inputs:
+      author_lines: author_line_count
+    name: count_authors
+    outputs:
+      authors: author_count
+    stage: processing
+  git_commits:
+    inputs:
+      branch: git_branch
+      repo: git_repository
+      start_end: date_pair
+    name: git_commits
+    outputs:
+      commits: commit_count
+    stage: processing
+  git_repo_author_lines_for_dates:
+    inputs:
+      branch: git_branch
+      repo: git_repository
+      start_end: date_pair
+    name: git_repo_author_lines_for_dates
+    outputs:
+      author_lines: author_line_count
+    stage: processing
+  git_repo_checkout:
+    inputs:
+      commit: git_commit
+      repo: git_repository
+    name: git_repo_checkout
+    outputs:
+      repo: git_repository_checked_out
+    stage: processing
+  git_repo_commit_from_date:
+    inputs:
+      branch: git_branch
+      date: date
+      repo: git_repository
+    name: git_repo_commit_from_date
+    outputs:
+      commit: git_commit
+    stage: processing
+  git_repo_default_branch:
+    conditions:
+    - no_git_branch_given
+    inputs:
+      repo: git_repository
+    name: git_repo_default_branch
+    outputs:
+      branch: git_branch
+    stage: processing
+  git_repo_release:
+    inputs:
+      branch: git_branch
+      repo: git_repository
+      start_end: date_pair
+    name: git_repo_release
+    outputs:
+      present: release_within_period
+    stage: processing
+  group_by:
+    inputs:
+      spec: group_by_spec
+    name: group_by
+    outputs:
+      output: group_by_output
+    stage: output
+  quarters_back_to_date:
+    expand:
+    - date
+    - start_end
+    inputs:
+      date: quarter_start_date
+      number: quarter
+    name: quarters_back_to_date
+    outputs:
+      date: date
+      start_end: date_pair
+    stage: processing
+  work:
+    inputs:
+      author_lines: author_line_count
+    name: work
+    outputs:
+      work: work_spread
+    stage: processing
+seed:
+- definition: group_by_spec
+  value:
+    authors:
+      group: author_count
+      by: quarter
+      fill: 0
+    work:
+      group: work_spread
+      by: quarter
+      fill: 0
+    commits:
+      group: commit_count
+      by: quarter
+      fill: 0
+- definition: quarter_start_date
+  value: 2019-03-29 13:24
+- definition: quarter
+  value: 0
+- definition: quarter
+  value: 1
+- definition: quarter
+  value: 2
+- definition: quarter
+  value: 3
+- definition: quarter
+  value: 4
+- definition: quarter
+  value: 5
+- definition: quarter
+  value: 6
+- definition: quarter
+  value: 7
+- definition: quarter
+  value: 8
+- definition: quarter
+  value: 9

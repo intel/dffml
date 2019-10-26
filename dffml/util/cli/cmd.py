@@ -38,6 +38,10 @@ class JSONEncoder(json.JSONEncoder):
             return obj.NAME
         elif isinstance(obj, enum.Enum):
             return str(obj.value)
+        elif isinstance(obj, type):
+            return str(obj.__qualname__)
+        elif str(obj).startswith("typing."):
+            return str(obj).split(".")[-1]
         return json.JSONEncoder.default(self, obj)
 
 
@@ -90,9 +94,11 @@ class CMD(object):
     )
 
     def __init__(self, extra_config=None, **kwargs) -> None:
-        self.logger = logging.getLogger(
-            "%s.%s" % (self.__class__.__module__, self.__class__.__qualname__)
-        )
+        if not hasattr(self, "logger"):
+            self.logger = logging.getLogger(
+                "%s.%s"
+                % (self.__class__.__module__, self.__class__.__qualname__)
+            )
         if extra_config is None:
             extra_config = {}
         self.extra_config = extra_config

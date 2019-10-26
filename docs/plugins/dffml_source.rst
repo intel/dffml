@@ -76,3 +76,55 @@ Stores repos in a dict in memory
 - keys: List of strings
 
   - default: []
+
+dffml_source_mysql
+------------------
+
+.. code-block:: console
+
+    pip install dffml-source-mysql
+
+
+mysql
+~~~~~
+
+*Core*
+
+No description
+
+**Args**
+
+- host: String
+
+  - default: 127.0.0.1
+
+- port: Integer
+
+  - default: 3306
+
+- user: String
+
+- password: String
+
+- db: String
+
+- repos-query: String
+
+  - SELECT `key` as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data
+
+- repo-query: String
+
+  - SELECT `key` as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data WHERE `key`=%s
+
+- update-query: String
+
+  - INSERT INTO repo_data (`key`, data_1, data_2) VALUES(%s, %s, %s) ON DUPLICATE KEY UPDATE data_1 = %s, data_2=%s
+
+- model-columns: List of strings
+
+  - Order of Columns in table
+
+- ca: String
+
+  - default: None
+  - Path to server TLS certificate

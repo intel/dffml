@@ -18,7 +18,6 @@ from ...source.file import FileSourceConfig
 from ...model import Model
 
 from ...df.types import Operation
-from ...df.linker import Linker
 from ...df.base import (
     Input,
     BaseInputNetwork,
@@ -162,8 +161,8 @@ class BaseOrchestratorCMD(CMD):
     Data Flow commands
     """
 
-    arg_dff = Arg(
-        "-dff", type=BaseOrchestrator.load, default=MemoryOrchestrator
+    arg_orchestrator = Arg(
+        "-orchestrator", type=BaseOrchestrator.load, default=MemoryOrchestrator
     )
     arg_output_specs = Arg(
         "-output-specs", nargs="+", action=ParseOutputSpecsAction, default=[]
@@ -184,24 +183,10 @@ class BaseOrchestratorCMD(CMD):
         + "If set, repo.src_url will be added to the set of inputs "
         + "under each context (which is also the repo's src_url)",
     )
-    arg_remap = Arg(
-        "-remap",
-        nargs="+",
-        default=[],
-        action=ParseRemapAction,
-        help="For each repo, -remap output_operation_name.sub=feature_name",
-    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.dff = self.dff.withconfig(self.extra_config)
-        self.linker = Linker()
-        self.exported = self.linker.export(
-            *self.dff.config.operation_network.config.operations
-        )
-        self.definitions, self.operations, _outputs = self.linker.resolve(
-            self.exported
-        )
+        self.orchestrator = self.orchestrator.withconfig(self.extra_config)
 
     # Load all entrypoints which may possibly be selected. Then have them add
     # their arguments to the DataFlowFacilitator-tots command.

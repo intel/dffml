@@ -1,22 +1,35 @@
 import os
 import io
+import json
 import asyncio
 import tempfile
+import unittest
 from http import HTTPStatus
 from unittest.mock import patch
-from contextlib import asynccontextmanager, AsyncExitStack
+from contextlib import asynccontextmanager, ExitStack, AsyncExitStack
 from typing import AsyncIterator, Tuple, Dict, Any, List, NamedTuple
 
 import aiohttp
 
 from dffml.repo import Repo
-from dffml.base import BaseConfig
+from dffml.df.base import (
+    op,
+    BaseConfig,
+    BaseInputSetContext,
+    BaseOrchestratorContext,
+    OperationImplementationContext,
+)
+from dffml.df.types import Definition, Input, DataFlow, Stage
+from dffml.operation.output import GetSingle
+from dffml.util.entrypoint import EntrypointNotFound
 from dffml.model.model import ModelContext, Model
 from dffml.accuracy import Accuracy
 from dffml.feature import Features, DefFeature
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.source.source import Sources
 from dffml.source.csv import CSVSourceConfig
+from dffml.util.data import traverse_get
+from dffml.util.cli.arg import parse_unknown
 from dffml.util.entrypoint import entry_point
 from dffml.util.cli.arg import Arg, parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
@@ -30,6 +43,12 @@ from dffml_service_http.routes import (
 )
 
 from .common import ServerRunner
+from .dataflow import (
+    HELLO_BLANK_DATAFLOW,
+    HELLO_WORLD_DATAFLOW,
+    formatter,
+    remap,
+)
 
 
 class ServerException(Exception):
@@ -329,6 +348,95 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                         f"/configure/{check}/feed face/label", json={}
                     ):
                         pass  # pramga: no cov
+
+
+class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
+    OPIMPS = {"formatter": formatter, "get_single": GetSingle, "remap": remap}
+
+    @classmethod
+    def patch_operation_implementation_load(cls, loading):
+        try:
+            return cls.OPIMPS[loading].imp
+        except KeyError as error:
+            raise EntrypointNotFound(
+                f"{loading} not found in {list(cls.OPIMPS.keys())}"
+            ) from error
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls._exit_stack = ExitStack()
+        cls.exit_stack = cls._exit_stack.__enter__()
+        cls.exit_stack.enter_context(
+            patch(
+                "dffml.df.base.OperationImplementation.load",
+                new=cls.patch_operation_implementation_load,
+            )
+        )
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        cls._exit_stack.__exit__(None, None, None)
+
+    async def test_no_post(self):
+        url: str = "/some/url"
+        message: str = "Hello World"
+        # Test that URL does not exist
+        with self.assertRaisesRegex(ServerException, "Not Found"):
+            async with self.get(url):
+                pass  # pramga: no cov
+        # Register the data flow
+        async with self.post(
+            f"/multicomm/self/register",
+            json={
+                "path": url,
+                "presentation": "json",
+                "asynchronous": False,
+                "dataflow": HELLO_WORLD_DATAFLOW.export(),
+            },
+        ) as r:
+            self.assertEqual(await r.json(), OK)
+        # Test the URL now does exist
+        async with self.get(url) as response:
+            self.assertEqual(
+                {"response": message},
+                list((await response.json()).values())[0],
+            )
+
+    async def test_post(self):
+        url: str = "/some/url"
+        message: str = "Hello Feedface"
+        # Test that URL does not exist
+        with self.assertRaisesRegex(ServerException, "Not Found"):
+            async with self.get(url):
+                pass  # pramga: no cov
+        # Register the data flow
+        async with self.post(
+            f"/multicomm/self/register",
+            json={
+                "path": url,
+                "presentation": "json",
+                "asynchronous": False,
+                "dataflow": HELLO_BLANK_DATAFLOW.export(),
+            },
+        ) as r:
+            self.assertEqual(await r.json(), OK)
+        # Test the URL now does exist (and send data for formatting)
+        async with self.post(
+            url,
+            json={
+                "Feedface": [
+                    {
+                        "value": "Feedface",
+                        "definition": formatter.op.inputs["data"].name,
+                    }
+                ]
+            },
+        ) as response:
+            self.assertEqual(
+                {"Feedface": {"response": message}}, await response.json()
+            )
 
 
 class TestRoutesSource(TestRoutesRunning, AsyncTestCase):
