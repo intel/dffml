@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Sources &mdash; DFFML 0.2.1 documentation</title>
+  <title>Sources &mdash; DFFML 0.3.0 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.2.1
+                0.3.0
               </div>
             
           
@@ -100,15 +100,21 @@
 <li class="toctree-l4"><a class="reference internal" href="#memory">memory</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-source-mysql">dffml_source_mysql</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mysql">mysql</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="dffml_model.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dffml_operation_implementation.html">Operation Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dffml_operation.html">Operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dffml_service_cli.html">Services</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
 </ul>
 
             
@@ -244,6 +250,59 @@ stored in memory.</p>
 <li><p>keys: List of strings</p>
 <ul>
 <li><p>default: []</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="dffml-source-mysql">
+<h2>dffml_source_mysql<a class="headerlink" href="#dffml-source-mysql" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-source-mysql</span>
+</pre></div>
+</div>
+<div class="section" id="mysql">
+<h3>mysql<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>host: String</p>
+<ul>
+<li><p>default: 127.0.0.1</p></li>
+</ul>
+</li>
+<li><p>port: Integer</p>
+<ul>
+<li><p>default: 3306</p></li>
+</ul>
+</li>
+<li><p>user: String</p></li>
+<li><p>password: String</p></li>
+<li><p>db: String</p></li>
+<li><p>repos-query: String</p>
+<ul>
+<li><p>SELECT <cite>key</cite> as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data</p></li>
+</ul>
+</li>
+<li><p>repo-query: String</p>
+<ul>
+<li><p>SELECT <cite>key</cite> as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data WHERE <a href="#id1"><span class="problematic" id="id2">`</span></a>key`=%s</p></li>
+</ul>
+</li>
+<li><p>update-query: String</p>
+<ul>
+<li><p>INSERT INTO repo_data (<cite>key</cite>, data_1, data_2) VALUES(%s, %s, %s) ON DUPLICATE KEY UPDATE data_1 = %s, data_2=%s</p></li>
+</ul>
+</li>
+<li><p>model-columns: List of strings</p>
+<ul>
+<li><p>Order of Columns in table</p></li>
+</ul>
+</li>
+<li><p>ca: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Path to server TLS certificate</p></li>
 </ul>
 </li>
 </ul>

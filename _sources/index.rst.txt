@@ -1,39 +1,60 @@
-.. DFFML documentation master file, created by
-   sphinx-quickstart on Tue May 21 16:11:19 2019.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Welcome to DFFML!
+=================
 
-Welcome to DFFML's documentation!
-=================================
+.. image:: https://travis-ci.org/intel/dffml.svg?branch=master
+    :target: https://travis-ci.org/intel/dffml
+    :alt: Build Status
+.. image:: https://codecov.io/gh/intel/dffml/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/intel/dffml
+    :alt: codecov
+.. image:: https://bestpractices.coreinfrastructure.org/projects/2594/badge
+    :target: https://bestpractices.coreinfrastructure.org/projects/2594
+    :alt: CII
+.. image:: https://badges.gitter.im/gitterHQ/gitter.svg
+    :target: https://gitter.im/dffml/community
+    :alt: Gitter chat
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/psf/black
+    :alt: Code style: black
 
 Data Flow Facilitator for Machine Learning (DFFML) provides APIs for dataset
-generation and storage, and model definition using any machine learning
-framework, from high level down to low level use is supported.
+generation, storage, and model definition.
 
-The goal of DFFML is to build a community driven library of plugins for dataset
-generation and model definition. So that we as developers and researchers can
-quickly and easily plug and play various pieces of data with various model
-implementations.
+DFFML abstracts three parts of the machine learning workflow.
 
-The more we build up the library of plugins (which anyone can maintain, they
-don't have to be contributed upstream unless you want to) the more variations on
-model implementations, feature data generators, and database backend
-abstractions, we all have to work with.
+- Models handle implementations of machine learning algorithms.
+  Likely wrapping code from a popular machine learning framework.
 
-Right now we've released a wrapper around the Tensorflow DNN estimator, and a
-set of feature generators which gather data from git repositories.
+  - To get started using existing machine learning models right away, head over
+    to :ref:`plugin_models`.
+
+- Sources handle the storage of datasets, saving and loading them from files,
+  databases, remote APIs, etc.
+
+- DataFlows are directed graphs used to generate a dataset, as well as modify
+  existing datasets. They can also be used to do non-machine learning tasks, you
+  could use them to build a web app for instance.
+
+You'll find the existing implementations of all of these on their respective
+:ref:`plugins` pages. DFFML has a plugin based architecture, which allows us to
+include some sources, models, and operations as a part of the main package,
+``dffml``, and other functionality in more specific packages.
 
 .. toctree::
-   :glob:
-   :maxdepth: 2
-   :caption: Contents:
+    :glob:
+    :maxdepth: 2
+    :caption: Contents:
 
-   community
-   usage/*
-   concepts/index
-   plugins/index
-   api/index
-
+    about
+    community
+    installation
+    tutorials/index
+    usage/index
+    plugins/index
+    cli
+    plugins/service/http/index
+    api/index
+    publications
 
 Indices and tables
 ==================

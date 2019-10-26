@@ -1,39 +1,205 @@
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title>File Based Sources &#8212; DFFML 0.1.2 documentation</title>
-    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>File Based Sources &mdash; DFFML 0.3.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="API Helper Utilities Reference" href="../util/index.html" />
-    <link rel="prev" title="Memory Source" href="memory.html" />
+    <link rel="prev" title="Memory Source" href="memory.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
           
 
-          <div class="body" role="main">
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../repo.html">Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Sources</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="base.html">Base Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="memory.html">Memory Source</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">File Based Sources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-dffml.source.json">JSON</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-dffml.source.csv">CSV</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-dffml.source.file">Generic File Based</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">API Helper Utilities Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Sources</a> &raquo;</li>
+        
+      <li>File Based Sources</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api/source/file.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="file-based-sources">
 <h1>File Based Sources<a class="headerlink" href="#file-based-sources" title="Permalink to this headline">¶</a></h1>
+<p><cite>FileSource</cite>: (Inherits Source class) FileSource class detects the type of source, opens it and calls abstract methods <cite>load_fd</cite> and <cite>dump_fd</cite> for parsing and dumping data in streams respectively.</p>
+<p>Supported Compressions:</p>
+<ol class="arabic simple">
+<li><p><cite>gzip</cite></p></li>
+<li><p><cite>bz2</cite></p></li>
+<li><p><cite>lzma</cite></p></li>
+<li><p><cite>xz</cite></p></li>
+<li><p><cite>zip</cite></p></li>
+</ol>
+<p># Data Sources</p>
+<p>DFFML supports data sources in <cite>CSV</cite> and <cite>JSON</cite> formats with respective methods defined in the following classes:</p>
+<ol class="arabic simple">
+<li><p><cite>CSVSource</cite>: (Inherits FileSource and MemorySource) Uses a CSV file as the source of the repo feature data. Abstract functions <cite>load_fd</cite> and <cite>dump_fd</cite> are defined.</p></li>
+<li><p><cite>JSONSource</cite>: (Inherits FileSource and MemorySource) Uses a JSON file as the source of the repo feature data. Abstract functions <cite>load_fd</cite> and <cite>dump_fd</cite> are defined.</p></li>
+</ol>
 <div class="section" id="module-dffml.source.json">
 <span id="json"></span><h2>JSON<a class="headerlink" href="#module-dffml.source.json" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -43,6 +209,11 @@
 stored in memory.</p>
 </dd></dl>
 
+<dl class="class">
+<dt id="dffml.source.json.OpenJSONFile">
+<em class="property">class </em><code class="descclassname">dffml.source.json.</code><code class="descname">OpenJSONFile</code><span class="sig-paren">(</span><em>data: Dict[str, Dict], active: int, lock: asyncio.locks.Lock</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/json.html#OpenJSONFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.json.OpenJSONFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 <div class="section" id="module-dffml.source.csv">
 <span id="csv"></span><h2>CSV<a class="headerlink" href="#module-dffml.source.csv" title="Permalink to this headline">¶</a></h2>
@@ -51,6 +222,19 @@ stored in memory.</p>
 <dt id="dffml.source.csv.CSVSource">
 <em class="property">class </em><code class="descclassname">dffml.source.csv.</code><code class="descname">CSVSource</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses a CSV file as the source of repo feature data</p>
+<dl class="classmethod">
+<dt id="dffml.source.csv.CSVSource.args">
+<em class="property">classmethod </em><code class="descname">args</code><span class="sig-paren">(</span><em>args</em>, <em>*above</em><span class="sig-paren">)</span> &#x2192; Dict[str, dffml.util.cli.arg.Arg]<a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource.args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource.args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict containing arguments required for this class</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="dffml.source.csv.CSVSource.config">
+<em class="property">classmethod </em><code class="descname">config</code><span class="sig-paren">(</span><em>config</em>, <em>*above</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource.config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource.config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the BaseConfig required to instantiate this class by parsing the
+config dict.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="dffml.source.csv.CSVSource.dump_fd">
 <em class="property">coroutine </em><code class="descname">dump_fd</code><span class="sig-paren">(</span><em>fd</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource.dump_fd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource.dump_fd" title="Permalink to this definition">¶</a></dt>
@@ -64,6 +248,46 @@ stored in memory.</p>
 </dd></dl>
 
 </dd></dl>
+
+<dl class="class">
+<dt id="dffml.source.csv.CSVSourceConfig">
+<em class="property">class </em><code class="descclassname">dffml.source.csv.</code><code class="descname">CSVSourceConfig</code><span class="sig-paren">(</span><em>filename</em>, <em>readonly</em>, <em>key</em>, <em>label</em>, <em>label_column</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="dffml.source.csv.CSVSourceConfig.filename">
+<code class="descname">filename</code><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig.filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dffml.source.csv.CSVSourceConfig.key">
+<code class="descname">key</code><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig.key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dffml.source.csv.CSVSourceConfig.label">
+<code class="descname">label</code><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dffml.source.csv.CSVSourceConfig.label_column">
+<code class="descname">label_column</code><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig.label_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 4</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dffml.source.csv.CSVSourceConfig.readonly">
+<code class="descname">readonly</code><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig.readonly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dffml.source.csv.OpenCSVFile">
+<em class="property">class </em><code class="descclassname">dffml.source.csv.</code><code class="descname">OpenCSVFile</code><span class="sig-paren">(</span><em>write_out: Dict</em>, <em>active: int</em>, <em>lock: asyncio.locks.Lock</em>, <em>write_back_key: bool = True</em>, <em>write_back_label: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#OpenCSVFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.OpenCSVFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <div class="section" id="module-dffml.source.file">
@@ -89,7 +313,7 @@ config dict.</p>
 
 <dl class="class">
 <dt id="dffml.source.file.FileSourceConfig">
-<em class="property">class </em><code class="descclassname">dffml.source.file.</code><code class="descname">FileSourceConfig</code><span class="sig-paren">(</span><em>filename</em>, <em>readonly</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#FileSourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.FileSourceConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.source.file.</code><code class="descname">FileSourceConfig</code><span class="sig-paren">(</span><em>filename</em>, <em>label</em>, <em>readonly</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#FileSourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.FileSourceConfig" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="attribute">
 <dt id="dffml.source.file.FileSourceConfig.filename">
 <code class="descname">filename</code><a class="headerlink" href="#dffml.source.file.FileSourceConfig.filename" title="Permalink to this definition">¶</a></dt>
@@ -97,134 +321,69 @@ config dict.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="dffml.source.file.FileSourceConfig.readonly">
-<code class="descname">readonly</code><a class="headerlink" href="#dffml.source.file.FileSourceConfig.readonly" title="Permalink to this definition">¶</a></dt>
+<dt id="dffml.source.file.FileSourceConfig.label">
+<code class="descname">label</code><a class="headerlink" href="#dffml.source.file.FileSourceConfig.label" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="dffml.source.file.FileSourceConfig.readonly">
+<code class="descname">readonly</code><a class="headerlink" href="#dffml.source.file.FileSourceConfig.readonly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
 </div>
 
 
+           </div>
+           
           </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../index.html">DFFML</a></h1>
-
-
-
-<p class="blurb">The fastest path to machine learning integration</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-    
-
-<p>
-<a class="badge" href="https://travis-ci.org/intel/dffml">
-    <img
-        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
-        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
-    />
-</a>
-</p>
-
-
-
-
-    
-
-<p>
-<a class="badge" href="https://codecov.io/github/intel/dffml">
-    <img
-    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
-    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
-    />
-</a>
-</p>
-<h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../community.html">Community</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage/installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage/integration.html">Example Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage/operations.html">Example Data Flow Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../repo.html">Repo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../util/index.html">API Helper Utilities Reference</a></li>
-</ul>
-</li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../index.html">API Reference</a><ul>
-  <li><a href="index.html">Sources</a><ul>
-      <li>Previous: <a href="memory.html" title="previous chapter">Memory Source</a></li>
-      <li>Next: <a href="../util/index.html" title="next chapter">API Helper Utilities Reference</a></li>
-  </ul></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-    </form>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../util/index.html" class="btn btn-neutral float-right" title="API Helper Utilities Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="memory.html" class="btn btn-neutral float-left" title="Memory Source" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  
 
+  <hr/>
 
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Intel
 
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-
-
-
+</footer>
 
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2019, Intel.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="../../_sources/api/source/file.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
     
-  </body>
+   
+
+</body>
 </html>

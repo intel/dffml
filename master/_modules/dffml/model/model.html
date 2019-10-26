@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.model.model &mdash; DFFML 0.2.1 documentation</title>
+  <title>dffml.model.model &mdash; DFFML 0.3.0 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.2.1
+                0.3.0
               </div>
             
           
@@ -91,8 +91,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Usage Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
 </ul>
 
             
@@ -180,6 +182,10 @@
 <span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="k">import</span> <span class="n">Entrypoint</span><span class="p">,</span> <span class="n">base_entry_point</span>
 
 
+<div class="viewcode-block" id="ModelNotTrained"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.ModelNotTrained">[docs]</a><span class="k">class</span> <span class="nc">ModelNotTrained</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
 <div class="viewcode-block" id="ModelConfig"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.ModelConfig">[docs]</a><span class="k">class</span> <span class="nc">ModelConfig</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">):</span>
     <span class="n">directory</span><span class="p">:</span> <span class="nb">str</span></div>
 
@@ -194,20 +200,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">features</span>
 
-    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+<div class="viewcode-block" id="ModelContext.train"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.ModelContext.train">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Train using repos as the data to learn from.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+<div class="viewcode-block" id="ModelContext.accuracy"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.ModelContext.accuracy">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Accuracy</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates the accuracy of our model after training using the input repos</span>
 <span class="sd">        as test data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ModelContext.predict"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.ModelContext.predict">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repos</span><span class="p">:</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Repo</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Repo</span><span class="p">]:</span>

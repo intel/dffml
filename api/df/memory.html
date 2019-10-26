@@ -1,42 +1,204 @@
 
-<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta charset="utf-8" />
-    <title>Data Flow Memory Objects &#8212; DFFML 0.1.2 documentation</title>
-    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/language_data.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Data Flow Memory Objects &mdash; DFFML 0.3.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Features" href="../feature.html" />
-    <link rel="prev" title="Data Flow Base Objects" href="base.html" />
+    <link rel="prev" title="Data Flow Base Objects" href="base.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
           
 
-          <div class="body" role="main">
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Data Flow</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="types.html">Data Flow Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="base.html">Data Flow Base Objects</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Data Flow Memory Objects</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../repo.html">Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">API Helper Utilities Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Data Flow</a> &raquo;</li>
+        
+      <li>Data Flow Memory Objects</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api/df/memory.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="module-dffml.df.memory">
 <span id="data-flow-memory-objects"></span><h1>Data Flow Memory Objects<a class="headerlink" href="#module-dffml.df.memory" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
+<dt id="dffml.df.memory.BaseMemoryDataFlowObject">
+<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">BaseMemoryDataFlowObject</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#BaseMemoryDataFlowObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.BaseMemoryDataFlowObject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="dffml.df.memory.MemoryDataFlowObjectContextConfig">
+<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryDataFlowObjectContextConfig</code><span class="sig-paren">(</span><em>uid</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryDataFlowObjectContextConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryDataFlowObjectContextConfig" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="dffml.df.memory.MemoryDataFlowObjectContextConfig.uid">
+<code class="descname">uid</code><a class="headerlink" href="#dffml.df.memory.MemoryDataFlowObjectContextConfig.uid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="dffml.df.memory.MemoryDefinitionSetContext">
-<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryDefinitionSetContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.BaseInputNetworkContext</em>, <em>ctx: dffml.df.base.BaseInputSetContext</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryDefinitionSetContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryDefinitionSetContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryDefinitionSetContext</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em>, <em>parent: dffml.df.base.BaseInputNetworkContext</em>, <em>ctx: dffml.df.base.BaseInputSetContext</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryDefinitionSetContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryDefinitionSetContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="dffml.df.memory.MemoryDefinitionSetContext.inputs">
 <code class="descname">inputs</code><span class="sig-paren">(</span><em>definition: dffml.df.types.Definition</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.df.types.Input]<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryDefinitionSetContext.inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryDefinitionSetContext.inputs" title="Permalink to this definition">¶</a></dt>
@@ -60,7 +222,7 @@ definition.</p>
 
 <dl class="class">
 <dt id="dffml.df.memory.MemoryInputNetworkContext">
-<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryInputNetworkContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryInputNetworkContext</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em>, <em>parent: dffml.df.memory.MemoryInputNetwork</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="dffml.df.memory.MemoryInputNetworkContext.add">
 <em class="property">coroutine </em><code class="descname">add</code><span class="sig-paren">(</span><em>input_set: dffml.df.base.BaseInputSet</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetworkContext.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContext.add" title="Permalink to this definition">¶</a></dt>
@@ -71,6 +233,22 @@ definition.</p>
 <dt id="dffml.df.memory.MemoryInputNetworkContext.added">
 <em class="property">coroutine </em><code class="descname">added</code><span class="sig-paren">(</span><em>watch_ctx: dffml.df.base.BaseInputSetContext</em><span class="sig-paren">)</span> &#x2192; Tuple[bool, dffml.df.base.BaseInputSet]<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetworkContext.added"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContext.added" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns when a new input set has entered the network within a context</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.memory.MemoryInputNetworkContext.cadd">
+<em class="property">coroutine </em><code class="descname">cadd</code><span class="sig-paren">(</span><em>ctx</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetworkContext.cadd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContext.cadd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shorthand for creating a MemoryInputSet with an existing context.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">await</span> <span class="n">octx</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">MemoryInputSet</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">MemoryInputSetConfig</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">inputs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="p">)</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -88,17 +266,46 @@ within the given context, by definition.</p>
 
 <dl class="method">
 <dt id="dffml.df.memory.MemoryInputNetworkContext.gather_inputs">
-<code class="descname">gather_inputs</code><span class="sig-paren">(</span><em>rctx: dffml.df.base.BaseRedundancyCheckerContext</em>, <em>operation: dffml.df.types.Operation</em>, <em>ctx: Optional[dffml.df.base.BaseInputSetContext] = None</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.df.base.BaseParameterSet]<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetworkContext.gather_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContext.gather_inputs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">gather_inputs</code><span class="sig-paren">(</span><em>rctx: dffml.df.base.BaseRedundancyCheckerContext</em>, <em>operation: dffml.df.types.Operation</em>, <em>dataflow: dffml.df.types.DataFlow</em>, <em>ctx: Optional[dffml.df.base.BaseInputSetContext] = None</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.df.base.BaseParameterSet]<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetworkContext.gather_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContext.gather_inputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate all possible permutations of applicable inputs for an operation
 that, according to the redundancy checker, haven’t been run yet.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.memory.MemoryInputNetworkContext.sadd">
+<em class="property">coroutine </em><code class="descname">sadd</code><span class="sig-paren">(</span><em>context_handle_string</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetworkContext.sadd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContext.sadd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shorthand for creating a MemoryInputSet with a StringInputSetContext.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">await</span> <span class="n">octx</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">MemoryInputSet</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">MemoryInputSetConfig</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">ctx</span><span class="o">=</span><span class="n">StringInputSetContext</span><span class="p">(</span><span class="n">context_handle_string</span><span class="p">),</span>
+<span class="gp">... </span>            <span class="n">inputs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="p">)</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.memory.MemoryInputNetworkContext.uadd">
+<em class="property">coroutine </em><code class="descname">uadd</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetworkContext.uadd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContext.uadd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shorthand for creating a MemoryInputSet with a StringInputSetContext
+containing a random value for the string.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="dffml.df.memory.MemoryInputNetworkContextEntry">
-<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryInputNetworkContextEntry</code><span class="sig-paren">(</span><em>ctx</em>, <em>definitions</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetworkContextEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContextEntry" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryInputNetworkContextEntry</code><span class="sig-paren">(</span><em>ctx</em>, <em>definitions</em>, <em>by_origin</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetworkContextEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContextEntry" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="attribute">
+<dt id="dffml.df.memory.MemoryInputNetworkContextEntry.by_origin">
+<code class="descname">by_origin</code><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContextEntry.by_origin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="dffml.df.memory.MemoryInputNetworkContextEntry.ctx">
 <code class="descname">ctx</code><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContextEntry.ctx" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
@@ -115,7 +322,13 @@ that, according to the redundancy checker, haven’t been run yet.</p>
 <dl class="class">
 <dt id="dffml.df.memory.MemoryInputSet">
 <em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryInputSet</code><span class="sig-paren">(</span><em>config: dffml.df.memory.MemoryInputSetConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputSet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="method">
+<dt id="dffml.df.memory.MemoryInputSet.add">
+<em class="property">coroutine </em><code class="descname">add</code><span class="sig-paren">(</span><em>item: dffml.df.types.Input</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputSet.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputSet.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an input to the input set.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="dffml.df.memory.MemoryInputSetConfig">
@@ -148,7 +361,7 @@ that, according to the redundancy checker, haven’t been run yet.</p>
 
 <dl class="class">
 <dt id="dffml.df.memory.MemoryKeyValueStoreContext">
-<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryKeyValueStoreContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.BaseKeyValueStore</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryKeyValueStoreContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryKeyValueStoreContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryKeyValueStoreContext</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em>, <em>parent: dffml.df.memory.MemoryKeyValueStore</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryKeyValueStoreContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryKeyValueStoreContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="dffml.df.memory.MemoryKeyValueStoreContext.get">
 <em class="property">coroutine </em><code class="descname">get</code><span class="sig-paren">(</span><em>key: str</em><span class="sig-paren">)</span> &#x2192; Optional[bytes]<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryKeyValueStoreContext.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryKeyValueStoreContext.get" title="Permalink to this definition">¶</a></dt>
@@ -176,7 +389,7 @@ that, according to the redundancy checker, haven’t been run yet.</p>
 
 <dl class="class">
 <dt id="dffml.df.memory.MemoryLockNetworkContext">
-<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryLockNetworkContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryLockNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryLockNetworkContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryLockNetworkContext</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em>, <em>parent: dffml.df.memory.MemoryLockNetwork</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryLockNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryLockNetworkContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="dffml.df.memory.MemoryLockNetworkContext.acquire">
 <code class="descname">acquire</code><span class="sig-paren">(</span><em>parameter_set: dffml.df.base.BaseParameterSet</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryLockNetworkContext.acquire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryLockNetworkContext.acquire" title="Permalink to this definition">¶</a></dt>
@@ -188,7 +401,7 @@ prior to running an operation using the input.</p>
 
 <dl class="class">
 <dt id="dffml.df.memory.MemoryOperationImplementationNetwork">
-<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryOperationImplementationNetwork</code><span class="sig-paren">(</span><em>config: dffml.df.memory.MemoryOperationImplementationNetworkConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetwork" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryOperationImplementationNetwork</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetwork" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="attribute">
 <dt id="dffml.df.memory.MemoryOperationImplementationNetwork.CONTEXT">
 <code class="descname">CONTEXT</code><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetwork.CONTEXT" title="Permalink to this definition">¶</a></dt>
@@ -223,7 +436,7 @@ config dict.</p>
 
 <dl class="class">
 <dt id="dffml.df.memory.MemoryOperationImplementationNetworkContext">
-<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryOperationImplementationNetworkContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryOperationImplementationNetworkContext</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em>, <em>parent: dffml.df.memory.MemoryOperationImplementationNetwork</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="dffml.df.memory.MemoryOperationImplementationNetworkContext.contains">
 <em class="property">coroutine </em><code class="descname">contains</code><span class="sig-paren">(</span><em>operation: dffml.df.types.Operation</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.contains"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.contains" title="Permalink to this definition">¶</a></dt>
@@ -232,19 +445,25 @@ config dict.</p>
 
 <dl class="method">
 <dt id="dffml.df.memory.MemoryOperationImplementationNetworkContext.dispatch">
-<em class="property">coroutine </em><code class="descname">dispatch</code><span class="sig-paren">(</span><em>ictx: dffml.df.base.BaseInputNetworkContext</em>, <em>lctx: dffml.df.base.BaseLockNetworkContext</em>, <em>operation: dffml.df.types.Operation</em>, <em>parameter_set: dffml.df.base.BaseParameterSet</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.dispatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.dispatch" title="Permalink to this definition">¶</a></dt>
+<em class="property">coroutine </em><code class="descname">dispatch</code><span class="sig-paren">(</span><em>octx: dffml.df.base.BaseOrchestratorContext</em>, <em>operation: dffml.df.types.Operation</em>, <em>parameter_set: dffml.df.base.BaseParameterSet</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.dispatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.dispatch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Schedule the running of an operation</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="dffml.df.memory.MemoryOperationImplementationNetworkContext.ensure_contains">
+<em class="property">coroutine </em><code class="descname">ensure_contains</code><span class="sig-paren">(</span><em>operation: dffml.df.types.Operation</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.ensure_contains"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.ensure_contains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raise errors if we don’t have and can’t instantiate an operation.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="dffml.df.memory.MemoryOperationImplementationNetworkContext.instantiable">
-<em class="property">coroutine </em><code class="descname">instantiable</code><span class="sig-paren">(</span><em>operation: dffml.df.types.Operation</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.instantiable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.instantiable" title="Permalink to this definition">¶</a></dt>
+<em class="property">coroutine </em><code class="descname">instantiable</code><span class="sig-paren">(</span><em>operation: dffml.df.types.Operation</em>, <em>*</em>, <em>opimp: dffml.df.base.OperationImplementation = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.instantiable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.instantiable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Looks for class registered with ____ entrypoint using pkg_resources.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="dffml.df.memory.MemoryOperationImplementationNetworkContext.instantiate">
-<em class="property">coroutine </em><code class="descname">instantiate</code><span class="sig-paren">(</span><em>operation: dffml.df.types.Operation</em>, <em>config: dffml.base.BaseConfig</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.instantiate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.instantiate" title="Permalink to this definition">¶</a></dt>
+<em class="property">coroutine </em><code class="descname">instantiate</code><span class="sig-paren">(</span><em>operation: dffml.df.types.Operation</em>, <em>config: dffml.base.BaseConfig</em>, <em>*</em>, <em>opimp: dffml.df.base.OperationImplementation = None</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.instantiate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.instantiate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Instantiate class registered with ____ entrypoint using pkg_resources.
 Return true if instantiation was successful.</p>
 </dd></dl>
@@ -257,7 +476,7 @@ Return true if instantiation was successful.</p>
 
 <dl class="method">
 <dt id="dffml.df.memory.MemoryOperationImplementationNetworkContext.operations_parameter_set_pairs">
-<code class="descname">operations_parameter_set_pairs</code><span class="sig-paren">(</span><em>ictx: dffml.df.base.BaseInputNetworkContext</em>, <em>octx: dffml.df.base.BaseOperationNetworkContext</em>, <em>rctx: dffml.df.base.BaseRedundancyCheckerContext</em>, <em>ctx: dffml.df.base.BaseInputSetContext</em>, <em>*</em>, <em>new_input_set: Optional[dffml.df.base.BaseInputSet] = None</em>, <em>stage: dffml.df.types.Stage = &lt;Stage.PROCESSING: 'processing'&gt;</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[Tuple[dffml.df.types.Operation, dffml.df.base.BaseInputSet]]<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.operations_parameter_set_pairs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.operations_parameter_set_pairs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">operations_parameter_set_pairs</code><span class="sig-paren">(</span><em>ictx: dffml.df.base.BaseInputNetworkContext</em>, <em>octx: dffml.df.base.BaseOperationNetworkContext</em>, <em>rctx: dffml.df.base.BaseRedundancyCheckerContext</em>, <em>ctx: dffml.df.base.BaseInputSetContext</em>, <em>dataflow: dffml.df.types.DataFlow</em>, <em>*</em>, <em>new_input_set: Optional[dffml.df.base.BaseInputSet] = None</em>, <em>stage: dffml.df.types.Stage = &lt;Stage.PROCESSING: 'processing'&gt;</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[Tuple[dffml.df.types.Operation, dffml.df.base.BaseInputSet]]<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.operations_parameter_set_pairs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.operations_parameter_set_pairs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use new_input_set to determine which operations in the network might be
 up for running. Cross check using existing inputs to generate per
 input set context novel input pairings. Yield novel input pairings
@@ -266,13 +485,13 @@ along with their operations as they are generated.</p>
 
 <dl class="method">
 <dt id="dffml.df.memory.MemoryOperationImplementationNetworkContext.run">
-<em class="property">coroutine </em><code class="descname">run</code><span class="sig-paren">(</span><em>ctx: dffml.df.base.BaseInputSetContext, ictx: dffml.df.base.BaseInputNetworkContext, operation: dffml.df.types.Operation, inputs: Dict[str, Any]</em><span class="sig-paren">)</span> &#x2192; Union[bool, Dict[str, Any]]<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.run" title="Permalink to this definition">¶</a></dt>
+<em class="property">coroutine </em><code class="descname">run</code><span class="sig-paren">(</span><em>ctx: dffml.df.base.BaseInputSetContext, octx: dffml.df.base.BaseOrchestratorContext, operation: dffml.df.types.Operation, inputs: Dict[str, Any]</em><span class="sig-paren">)</span> &#x2192; Union[bool, Dict[str, Any]]<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run an operation in our network.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="dffml.df.memory.MemoryOperationImplementationNetworkContext.run_dispatch">
-<em class="property">coroutine </em><code class="descname">run_dispatch</code><span class="sig-paren">(</span><em>ictx: dffml.df.base.BaseInputNetworkContext</em>, <em>lctx: dffml.df.base.BaseLockNetworkContext</em>, <em>operation: dffml.df.types.Operation</em>, <em>parameter_set: dffml.df.base.BaseParameterSet</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.run_dispatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.run_dispatch" title="Permalink to this definition">¶</a></dt>
+<em class="property">coroutine </em><code class="descname">run_dispatch</code><span class="sig-paren">(</span><em>octx: dffml.df.base.BaseOrchestratorContext</em>, <em>operation: dffml.df.types.Operation</em>, <em>parameter_set: dffml.df.base.BaseParameterSet</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.run_dispatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.run_dispatch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run an operation in the background and add its outputs to the input
 network when complete</p>
 </dd></dl>
@@ -317,8 +536,21 @@ config dict.</p>
 
 <dl class="class">
 <dt id="dffml.df.memory.MemoryOperationNetworkContext">
-<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryOperationNetworkContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationNetworkContext" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryOperationNetworkContext</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em>, <em>parent: dffml.df.memory.MemoryOperationNetwork</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationNetworkContext" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="dffml.df.memory.MemoryOperationNetworkContext.add">
+<em class="property">coroutine </em><code class="descname">add</code><span class="sig-paren">(</span><em>operations: List[dffml.df.types.Operation]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationNetworkContext.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationNetworkContext.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add operations to the network</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.memory.MemoryOperationNetworkContext.operations">
+<code class="descname">operations</code><span class="sig-paren">(</span><em>dataflow: dffml.df.types.DataFlow</em>, <em>*</em>, <em>input_set: Optional[dffml.df.base.BaseInputSet] = None</em>, <em>stage: dffml.df.types.Stage = &lt;Stage.PROCESSING: 'processing'&gt;</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.df.types.Operation]<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationNetworkContext.operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationNetworkContext.operations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve all operations in the network of a given stage filtering by
+operations who have inputs with definitions in the input set.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="dffml.df.memory.MemoryOrchestrator">
@@ -337,7 +569,7 @@ config dict.</p>
 
 <dl class="classmethod">
 <dt id="dffml.df.memory.MemoryOrchestrator.basic_config">
-<em class="property">classmethod </em><code class="descname">basic_config</code><span class="sig-paren">(</span><em>operations: List[dffml.df.types.Operation], opimps: List[dffml.df.base.OperationImplementation]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOrchestrator.basic_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOrchestrator.basic_config" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">basic_config</code><span class="sig-paren">(</span><em>*args</em>, <em>config: Dict[str</em>, <em>Any] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOrchestrator.basic_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOrchestrator.basic_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a Memory Orchestrator which will be backed by other objects
 within dffml.df.memory.</p>
 </dd></dl>
@@ -359,11 +591,46 @@ config dict.</p>
 
 <dl class="class">
 <dt id="dffml.df.memory.MemoryOrchestratorContext">
-<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryOrchestratorContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.BaseOrchestrator</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOrchestratorContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOrchestratorContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryOrchestratorContext</code><span class="sig-paren">(</span><em>config: dffml.df.memory.MemoryOrchestratorContextConfig</em>, <em>parent: dffml.df.base.BaseOrchestrator</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOrchestratorContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOrchestratorContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
-<dt id="dffml.df.memory.MemoryOrchestratorContext.run_operations">
-<code class="descname">run_operations</code><span class="sig-paren">(</span><em>strict: bool = False</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[Tuple[dffml.df.base.BaseContextHandle, Dict[str, Any]]]<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOrchestratorContext.run_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOrchestratorContext.run_operations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run all the operations then run cleanup and output operations</p>
+<dt id="dffml.df.memory.MemoryOrchestratorContext.initialize_dataflow">
+<em class="property">coroutine </em><code class="descname">initialize_dataflow</code><span class="sig-paren">(</span><em>dataflow: dffml.df.types.DataFlow</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOrchestratorContext.initialize_dataflow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOrchestratorContext.initialize_dataflow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a DataFlow by preforming the following steps.</p>
+<ol class="arabic simple">
+<li><p>Add operations the operation network context</p></li>
+<li><p>Instantiate operation implementations which are not instantiated
+within the operation implementation network context</p></li>
+<li><p>Seed input network context with given inputs</p></li>
+</ol>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.memory.MemoryOrchestratorContext.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>*input_sets</em>, <em>strict: bool = True</em>, <em>ctx: Optional[dffml.df.base.BaseInputSetContext] = None</em>, <em>halt: Optional[asyncio.locks.Event] = None</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[Tuple[dffml.df.base.BaseContextHandle, Dict[str, Any]]]<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOrchestratorContext.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOrchestratorContext.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a DataFlow.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dffml.df.memory.MemoryOrchestratorContextConfig">
+<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryOrchestratorContextConfig</code><span class="sig-paren">(</span><em>uid</em>, <em>dataflow</em>, <em>reuse</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOrchestratorContextConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOrchestratorContextConfig" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="dffml.df.memory.MemoryOrchestratorContextConfig.dataflow">
+<code class="descname">dataflow</code><a class="headerlink" href="#dffml.df.memory.MemoryOrchestratorContextConfig.dataflow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dffml.df.memory.MemoryOrchestratorContextConfig.reuse">
+<code class="descname">reuse</code><a class="headerlink" href="#dffml.df.memory.MemoryOrchestratorContextConfig.reuse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dffml.df.memory.MemoryOrchestratorContextConfig.uid">
+<code class="descname">uid</code><a class="headerlink" href="#dffml.df.memory.MemoryOrchestratorContextConfig.uid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
 </dd></dl>
 
 </dd></dl>
@@ -417,12 +684,12 @@ config dict.</p>
 
 <dl class="class">
 <dt id="dffml.df.memory.MemoryRedundancyCheckerContext">
-<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryRedundancyCheckerContext</code><span class="sig-paren">(</span><em>parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryRedundancyCheckerContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryRedundancyCheckerContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.df.memory.</code><code class="descname">MemoryRedundancyCheckerContext</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em>, <em>parent: dffml.df.memory.MemoryRedundancyChecker</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryRedundancyCheckerContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryRedundancyCheckerContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="dffml.df.memory.MemoryRedundancyCheckerContext.unique">
 <em class="property">coroutine </em><code class="descname">unique</code><span class="sig-paren">(</span><em>operation: dffml.df.types.Operation</em>, <em>parameter_set: dffml.df.base.BaseParameterSet</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryRedundancyCheckerContext.unique"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryRedundancyCheckerContext.unique" title="Permalink to this definition">¶</a></dt>
 <dd><p>SHA384 hash of the parameter set context handle as a string, the
-operation name, and the sorted list of input uuids.</p>
+operation.instance_name, and the sorted list of input uuids.</p>
 </dd></dl>
 
 </dd></dl>
@@ -436,123 +703,52 @@ operation name, and the sorted list of input uuids.</p>
 </div>
 
 
+           </div>
+           
           </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../index.html">DFFML</a></h1>
-
-
-
-<p class="blurb">The fastest path to machine learning integration</p>
-
-
-
-
-<p>
-<iframe src="https://ghbtns.com/github-btn.html?user=intel&repo=dffml&type=watch&count=true&size=large&v=2"
-  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
-</p>
-
-
-
-
-
-    
-
-<p>
-<a class="badge" href="https://travis-ci.org/intel/dffml">
-    <img
-        alt="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
-        src="https://secure.travis-ci.org/intel/dffml.svg?branch=master"
-    />
-</a>
-</p>
-
-
-
-
-    
-
-<p>
-<a class="badge" href="https://codecov.io/github/intel/dffml">
-    <img
-    alt="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
-    src="https://codecov.io/github/intel/dffml/coverage.svg?branch=master"
-    />
-</a>
-</p>
-<h3>Navigation</h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../community.html">Community</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage/installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage/integration.html">Example Integration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage/operations.html">Example Data Flow Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">Data Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../repo.html">Repo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../util/index.html">API Helper Utilities Reference</a></li>
-</ul>
-</li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../index.html">API Reference</a><ul>
-  <li><a href="index.html">Data Flow</a><ul>
-      <li>Previous: <a href="base.html" title="previous chapter">Data Flow Base Objects</a></li>
-      <li>Next: <a href="../feature.html" title="next chapter">Features</a></li>
-  </ul></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-    </form>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../feature.html" class="btn btn-neutral float-right" title="Features" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="base.html" class="btn btn-neutral float-left" title="Data Flow Base Objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  
 
+  <hr/>
 
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Intel
 
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-
-
-
+</footer>
 
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2019, Intel.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="../../_sources/api/df/memory.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
     
-  </body>
+   
+
+</body>
 </html>
