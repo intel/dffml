@@ -57,6 +57,12 @@ class BaseConfig(object):
     as their config.
     """
 
+    def __repr__(self):
+        return "BaseConfig()"
+
+    def __str__(self):
+        return repr(self)
+
 
 class ConfigurableParsingNamespace(object):
     def __init__(self):

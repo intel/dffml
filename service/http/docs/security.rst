@@ -26,6 +26,13 @@ all origins via ``*``.
 
     $ dffml service http server -cors '*'
 
+Atomic Mode
+-----------
+
+The ``-mc-atomic`` flag will disable all routes other than those registered via
+``-mc-config``. If you want the server to only respond using the specified
+dataflows, and provide no other functionality, use this option.
+
 Multitenancy
 ------------
 

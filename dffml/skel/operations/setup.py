@@ -1,18 +1,20 @@
+import os
+import importlib.util
 from setuptools import setup
 
-from dffml_setup_common import SETUP_KWARGS, IMPORT_NAME
+# Boilerplate to load commonalities
+spec = importlib.util.spec_from_file_location(
+    "setup_common", os.path.join(os.path.dirname(__file__), "setup_common.py")
+)
+common = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(common)
 
-SETUP_KWARGS["entry_points"] = {
+common.KWARGS["entry_points"] = {
     "dffml.operation": [
-        f"calc_add = {IMPORT_NAME}.operations:calc_add.op",
-        f"calc_mult = {IMPORT_NAME}.operations:calc_mult.op",
-        f"calc_parse_line = {IMPORT_NAME}.operations:calc_parse_line.op",
-    ],
-    "dffml.operation.implementation": [
-        f"calc_add = {IMPORT_NAME}.operations:calc_add.imp",
-        f"calc_mult = {IMPORT_NAME}.operations:calc_mult.imp",
-        f"calc_parse_line = {IMPORT_NAME}.operations:calc_parse_line.imp",
-    ],
+        f"calc_add = {common.IMPORT_NAME}.operations:calc_add",
+        f"calc_mult = {common.IMPORT_NAME}.operations:calc_mult",
+        f"calc_parse_line = {common.IMPORT_NAME}.operations:calc_parse_line",
+    ]
 }
 
-setup(**SETUP_KWARGS)
+setup(**common.KWARGS)

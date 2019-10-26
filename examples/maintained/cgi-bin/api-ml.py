@@ -39,55 +39,13 @@ elif action == 'set':
     print json.dumps(dict(success=True))
 elif action == 'predict':
     today = datetime.now().strftime('%Y-%m-%d %H:%M')
-    operations = [
-        'group_by',
-        'quarters_back_to_date',
-        'check_if_valid_git_repository_URL',
-        'clone_git_repo',
-        'git_repo_default_branch',
-        'git_repo_checkout',
-        'git_repo_commit_from_date',
-        'git_repo_author_lines_for_dates',
-        'work',
-        'git_repo_release',
-        'git_commits',
-        'count_authors',
-        'cleanup_git_repo'
-        ]
-    subprocess.check_call(([
-        'dffml', 'operations', 'repo',
-        '-log', 'debug',
-        '-sources', 'db=demoapp',
-        '-update',
-        '-keys', query['URL'],
-        '-repo-def', 'URL',
-        '-remap',
-        'group_by.work=work',
-        'group_by.commits=commits',
-        'group_by.authors=authors',
-        '-dff-memory-operation-network-ops'] + operations + [
-        '-dff-memory-opimp-network-opimps'] + operations + [
-        '-inputs'] + \
-        ['%d=quarter' % (i,) for i in range(0, 10)] + [
-        '\'%s\'=quarter_start_date' % (today,),
-        'True=no_git_branch_given',
-        '-output-specs', '''{
-            "authors": {
-              "group": "quarter",
-              "by": "author_count",
-              "fill": 0
-            },
-            "work": {
-              "group": "quarter",
-              "by": "work_spread",
-              "fill": 0
-            },
-            "commits": {
-              "group": "quarter",
-              "by": "commit_count",
-              "fill": 0
-            }
-          }=group_by_spec''']))
+    subprocess.check_call([
+        "dffml", "dataflow", "run", "repos", "set",
+        "-keys", query['URL'],
+        "-repo-def", "URL",
+        "-dataflow", os.path.join(os.path.dirname(__file__), "dataflow.yaml"),
+        "-sources", "db=demoapp",
+        ])
     result = subprocess.check_output([
         'dffml', 'predict', 'repo',
         '-keys', query['URL'],

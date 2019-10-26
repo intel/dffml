@@ -1,6 +1,6 @@
 import random
 
-from dffml.df.types import Operation, Input
+from dffml.df.types import Operation, Input, DataFlow
 from dffml.df.base import BaseConfig, StringInputSetContext
 from dffml.df.memory import (
     MemoryOrchestrator,
@@ -19,10 +19,11 @@ OPERATIONS = [Scrypt.op, GetSingle.imp.op]
 
 class TestRunner(AsyncTestCase):
     async def test_run(self):
+        dataflow = DataFlow.auto(*OPIMPS)
         passwords = [str(random.random()) for _ in range(0, 20)]
 
         # Orchestrate the running of these operations
-        async with MemoryOrchestrator.basic_config(*OPIMPS) as orchestrator:
+        async with MemoryOrchestrator.withconfig({}) as orchestrator:
 
             definitions = Operation.definitions(*OPERATIONS)
 
@@ -41,25 +42,14 @@ class TestRunner(AsyncTestCase):
                 parents=None,
             )
 
-            async with orchestrator() as octx:
-                # Add our inputs to the input network with the context being the URL
-                for password in passwords:
-                    await octx.ictx.add(
-                        MemoryInputSet(
-                            MemoryInputSetConfig(
-                                ctx=StringInputSetContext(password.value),
-                                inputs=[password, output_spec],
-                            )
-                        )
-                    )
+            async with orchestrator(dataflow) as octx:
                 try:
-                    async for _ctx, results in octx.run_operations(
-                        strict=True
+                    async for _ctx, results in octx.run(
+                        {
+                            password.value: [password, output_spec]
+                            for password in passwords
+                        }
                     ):
                         self.assertTrue(results)
                 except AttributeError as error:
-                    if "module 'hashlib' has no attribute 'scrypt'" in str(
-                        error
-                    ):
-                        return
                     raise

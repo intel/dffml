@@ -17,7 +17,10 @@ class KeyValueStoreWithArgumentsConfig(NamedTuple):
 @entry_point("withargs")
 class KeyValueStoreWithArguments(BaseKeyValueStore):
 
-    CONTEXT = True
+    CONTEXT = NotImplementedError
+
+    def __call__(self):
+        raise NotImplementedError
 
     @classmethod
     def args(cls, args, *above):

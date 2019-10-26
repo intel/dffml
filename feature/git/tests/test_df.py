@@ -30,8 +30,7 @@ from typing import (
     Iterator,
 )
 
-from dffml.df.types import Definition, Input
-from dffml.df.linker import Linker
+from dffml.df.types import Definition, Input, DataFlow
 from dffml.df.base import (
     op,
     operation_in,
@@ -66,9 +65,7 @@ OPIMPS = opimp_in(sys.modules[__name__])
 
 class TestRunner(AsyncTestCase):
     async def test_run(self):
-        linker = Linker()
-        exported = linker.export(*OPERATIONS)
-        definitions, operations, _outputs = linker.resolve(exported)
+        dataflow = DataFlow.auto(*OPIMPS)
 
         # Instantiate inputs
         repos = glob.glob(
@@ -91,23 +88,29 @@ class TestRunner(AsyncTestCase):
                 "https://github.com/intel/dffml",
                 "https://github.com/pdxjohnny/dffml",
             ]
-        repos = repos[:1]
+        repos = repos[:2]
         urls = [
-            Input(value=URL, definition=definitions["URL"], parents=None)
+            Input(
+                value=URL, definition=dataflow.definitions["URL"], parents=None
+            )
             for URL in repos
         ]
         no_git_branch_given = Input(
             value=True,
-            definition=definitions["no_git_branch_given"],
+            definition=dataflow.definitions["no_git_branch_given"],
             parents=None,
         )
         date_spec = Input(
             value=datetime.now().strftime(TIME_FORMAT_MINTUE_RESOLUTION),
-            definition=definitions["quarter_start_date"],
+            definition=dataflow.definitions["quarter_start_date"],
             parents=None,
         )
         quarters = [
-            Input(value=i, definition=definitions["quarter"], parents=None)
+            Input(
+                value=i,
+                definition=dataflow.definitions["quarter"],
+                parents=None,
+            )
             for i in range(0, 10)
         ]
 
@@ -135,22 +138,24 @@ class TestRunner(AsyncTestCase):
                     "fill": 0,
                 },
             },
-            definition=definitions["group_by_spec"],
+            definition=dataflow.definitions["group_by_spec"],
             parents=None,
         )
 
         # Orchestrate the running of these operations
-        async with MemoryOrchestrator.basic_config(*OPIMPS) as orchestrator:
-            async with orchestrator() as octx:
+        async with MemoryOrchestrator.basic_config() as orchestrator:
+            async with orchestrator(dataflow) as octx:
                 # Add our inputs to the input network with the context being the URL
-                for url in urls:
-                    await octx.ictx.sadd(
-                        url.value,
-                        url,
-                        no_git_branch_given,
-                        date_spec,
-                        group_by_spec,
-                        *quarters,
-                    )
-                async for ctx, results in octx.run_operations():
+                async for ctx, results in octx.run(
+                    {
+                        url.value: [
+                            url,
+                            no_git_branch_given,
+                            date_spec,
+                            group_by_spec,
+                            *quarters,
+                        ]
+                        for url in urls
+                    }
+                ):
                     self.assertTrue(results)

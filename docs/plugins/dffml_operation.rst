@@ -1,9 +1,13 @@
-Operation Implementations
-=========================
+Operations
+==========
 
 Operations Implementations are subclasses of
 :class:`dffml.df.base.OperationImplementation`, they are functions or classes
 which could do anything, make HTTP requests, do inference, etc.
+
+They don't necessarily have to be written in Python. Although DFFML isn't quite
+to the point where it can use operations written in other languages yet, it's on
+the roadmap.
 
 dffml
 -----
@@ -32,6 +36,46 @@ No description
 
 - output: associate_output(type: Dict[str, Any])
 
+dffml.mapping.create
+~~~~~~~~~~~~~~~~~~~~
+
+*Core*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- key: key(type: str)
+- value: value(type: generic)
+
+**Outputs**
+
+- mapping: mapping(type: map)
+
+dffml.mapping.extract
+~~~~~~~~~~~~~~~~~~~~~
+
+*Core*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- mapping: mapping(type: map)
+- traverse: mapping_traverse(type: List[str])
+
+**Outputs**
+
+- value: value(type: generic)
+
 get_single
 ~~~~~~~~~~
 
@@ -45,11 +89,11 @@ No description
 
 **Inputs**
 
-- spec: get_single_spec(type: List[str])
+- spec: get_single_spec(type: array)
 
 **Outputs**
 
-- output: get_single_output(type: Dict[str, Any])
+- output: get_single_output(type: map)
 
 group_by
 ~~~~~~~~
@@ -116,6 +160,9 @@ No description
 
 - repo: git_repository(type: Dict[str, str])
 
+  - URL: str
+  - directory: str
+
 clone_git_repo
 ~~~~~~~~~~~~~~
 
@@ -134,6 +181,9 @@ No description
 **Outputs**
 
 - repo: git_repository(type: Dict[str, str])
+
+  - URL: str
+  - directory: str
 
 **Conditions**
 
@@ -172,6 +222,9 @@ No description
 **Inputs**
 
 - repo: git_repository(type: Dict[str, str])
+
+  - URL: str
+  - directory: str
 - branch: git_branch(type: str)
 - start_end: date_pair(type: List[date])
 
@@ -193,6 +246,9 @@ No description
 **Inputs**
 
 - repo: git_repository(type: Dict[str, str])
+
+  - URL: str
+  - directory: str
 - branch: git_branch(type: str)
 - start_end: date_pair(type: List[date])
 
@@ -214,11 +270,18 @@ No description
 **Inputs**
 
 - repo: git_repository(type: Dict[str, str])
+
+  - URL: str
+  - directory: str
 - commit: git_commit(type: string)
 
 **Outputs**
 
 - repo: git_repository_checked_out(type: Dict[str, str])
+
+  - URL: str
+  - directory: str
+  - commit: str
 
 git_repo_commit_from_date
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -234,6 +297,9 @@ No description
 **Inputs**
 
 - repo: git_repository(type: Dict[str, str])
+
+  - URL: str
+  - directory: str
 - branch: git_branch(type: str)
 - date: date(type: string)
 
@@ -256,6 +322,9 @@ No description
 
 - repo: git_repository(type: Dict[str, str])
 
+  - URL: str
+  - directory: str
+
 **Outputs**
 
 - branch: git_branch(type: str)
@@ -269,7 +338,7 @@ git_repo_release
 
 *Core*
 
-No description
+Was there a release within this date range
 
 **Stage: processing**
 
@@ -278,6 +347,9 @@ No description
 **Inputs**
 
 - repo: git_repository(type: Dict[str, str])
+
+  - URL: str
+  - directory: str
 - branch: git_branch(type: str)
 - start_end: date_pair(type: List[date])
 
@@ -299,6 +371,10 @@ No description
 **Inputs**
 
 - repo: git_repository_checked_out(type: Dict[str, str])
+
+  - URL: str
+  - directory: str
+  - commit: str
 
 **Outputs**
 
@@ -362,125 +438,6 @@ No description
 **Outputs**
 
 - work: work_spread(type: int)
-
-dffml_operations_binsec
------------------------
-
-.. code-block:: console
-
-    pip install dffml-operations-binsec
-
-
-cleanup_rpm
-~~~~~~~~~~~
-
-*Core*
-
-No description
-
-**Stage: cleanup**
-
-
-
-**Inputs**
-
-- rpm: RPMObject(type: python_obj)
-
-files_in_rpm
-~~~~~~~~~~~~
-
-*Core*
-
-No description
-
-**Stage: processing**
-
-
-
-**Inputs**
-
-- rpm: RPMObject(type: python_obj)
-
-**Outputs**
-
-- files: rpm_filename(type: str)
-
-is_binary_pie
-~~~~~~~~~~~~~
-
-*Core*
-
-No description
-
-**Stage: processing**
-
-
-
-**Inputs**
-
-- rpm: RPMObject(type: python_obj)
-- filename: rpm_filename(type: str)
-
-**Outputs**
-
-- is_pie: binary_is_PIE(type: bool)
-
-url_to_urlbytes
-~~~~~~~~~~~~~~~
-
-*Core*
-
-No description
-
-**Stage: processing**
-
-
-
-**Inputs**
-
-- URL: URL(type: string)
-
-**Outputs**
-
-- download: URLBytes(type: python_obj)
-
-urlbytes_to_rpmfile
-~~~~~~~~~~~~~~~~~~~
-
-*Core*
-
-No description
-
-**Stage: processing**
-
-
-
-**Inputs**
-
-- download: URLBytes(type: python_obj)
-
-**Outputs**
-
-- rpm: RPMObject(type: python_obj)
-
-urlbytes_to_tarfile
-~~~~~~~~~~~~~~~~~~~
-
-*Core*
-
-No description
-
-**Stage: processing**
-
-
-
-**Inputs**
-
-- download: URLBytes(type: python_obj)
-
-**Outputs**
-
-- rpm: RPMObject(type: python_obj)
 
 dffml_feature_auth
 ------------------

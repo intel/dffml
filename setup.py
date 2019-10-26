@@ -41,8 +41,12 @@ setup(
     include_package_data=True,
     zip_safe=False,
     extras_require={
-        "models": ["dffml-model-tensorflow", "dffml-model-scratch"],
-        "git": ["dffml-feature-git"],
+        "models": [
+            "dffml-model-tensorflow",
+            "dffml-model-scratch",
+            "dffml-model-scikit",
+        ],
+        "sources": ["dffml-source-mysql"],
         "dev": [
             "coverage",
             "codecov",
@@ -53,7 +57,7 @@ setup(
         ],
     },
     entry_points={
-        "console_scripts": ["dffml = dffml.cli:CLI.main"],
+        "console_scripts": ["dffml = dffml.cli.cli:CLI.main"],
         "dffml.source": [
             "csv = dffml.source.csv:CSVSource",
             "json = dffml.source.json:JSONSource",
@@ -61,16 +65,16 @@ setup(
         ],
         "dffml.port": ["json = dffml.port.json:JSON"],
         "dffml.service.cli": ["dev = dffml.service.dev:Develop"],
+        "dffml.config": ["json = dffml.config.json:JSONConfigLoader"],
         # Data Flow
         "dffml.operation": [
-            "group_by = dffml.operation.output:GroupBy.op",
-            "get_single = dffml.operation.output:GetSingle.op",
-            "associate = dffml.operation.output:Associate.op",
-        ],
-        "dffml.operation.implementation": [
-            "group_by = dffml.operation.output:GroupBy.imp",
-            "get_single = dffml.operation.output:GetSingle.imp",
-            "associate = dffml.operation.output:Associate.imp",
+            # Output
+            "group_by = dffml.operation.output:GroupBy",
+            "get_single = dffml.operation.output:GetSingle",
+            "associate = dffml.operation.output:Associate",
+            # Mapping
+            "dffml.mapping.extract = dffml.operation.mapping:mapping_extract_value",
+            "dffml.mapping.create = dffml.operation.mapping:create_mapping",
         ],
         "dffml.kvstore": ["memory = dffml.df.memory:MemoryKeyValueStore"],
         "dffml.input.network": ["memory = dffml.df.memory:MemoryInputNetwork"],

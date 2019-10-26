@@ -1,8 +1,8 @@
 import copy
 import collections
-from typing import Dict, Any, NamedTuple
+from typing import Dict, Any, NamedTuple, List
 
-from ..df.types import Definition, Operation, Stage
+from ..df.types import Definition, Operation, Stage, DataFlow
 from ..df.base import (
     op,
     OperationImplementationContext,
@@ -10,15 +10,14 @@ from ..df.base import (
     BaseInputNetworkContext,
 )
 from ..df.exceptions import DefinitionNotInContext
+from ..util.data import traverse_get
 
 
+# TODO(p3) Remove fill, it doesn't get used anyway. Or use it somehow
 class GroupBySpec(NamedTuple):
     group: Definition
     by: Definition
     fill: Any
-    # TODO Add single and ismap attributes
-    # single: bool = False
-    # ismap: bool = False
 
     @classmethod
     async def resolve(
@@ -56,12 +55,12 @@ class GroupBy(OperationImplementationContext):
         # Convert group_by_spec into a dict with values being of the NamedTuple
         # type GroupBySpec
         outputs = {
-            key: await GroupBySpec.resolve(self.ctx, self.ictx, value)
+            key: await GroupBySpec.resolve(self.ctx, self.octx.ictx, value)
             for key, value in inputs["spec"].items()
         }
         self.logger.debug("output spec: %s", outputs)
         # Acquire all definitions within the context
-        async with self.ictx.definitions(self.ctx) as od:
+        async with self.octx.ictx.definitions(self.ctx) as od:
             # Output dict
             want = {}
             # Group each requested output
@@ -72,11 +71,11 @@ class GroupBy(OperationImplementationContext):
                 # by the values of the output.group definition as seen in the
                 # input network context
                 group_by = {}
-                async for item in od.inputs(output.group):
+                async for item in od.inputs(output.by):
                     group_by[item.value] = (item, {})
                 group_by = collections.OrderedDict(sorted(group_by.items()))
                 # Find all inputs within the input network for the by definition
-                async for item in od.inputs(output.by):
+                async for item in od.inputs(output.group):
                     # Get all the parents of the input
                     parents = list(item.get_parents())
                     for group, related in group_by.values():
@@ -105,11 +104,9 @@ class GroupBy(OperationImplementationContext):
             return want
 
 
-get_single_spec = Definition(name="get_single_spec", primitive="List[str]")
+get_single_spec = Definition(name="get_single_spec", primitive="array")
 
-get_single_output = Definition(
-    name="get_single_output", primitive="Dict[str, Any]"
-)
+get_single_output = Definition(name="get_single_output", primitive="map")
 
 
 @op(
@@ -125,12 +122,12 @@ class GetSingle(OperationImplementationContext):
         exported = copy.deepcopy(inputs["spec"])
         # Look up the definiton for each
         for convert in range(0, len(exported)):
-            exported[convert] = await self.ictx.definition(
+            exported[convert] = await self.octx.ictx.definition(
                 self.ctx, exported[convert]
             )
         self.logger.debug("output spec: %s", exported)
         # Acquire all definitions within the context
-        async with self.ictx.definitions(self.ctx) as od:
+        async with self.octx.ictx.definitions(self.ctx) as od:
             # Output dict
             want = {}
             # Group each requested output
@@ -162,7 +159,7 @@ class Associate(OperationImplementationContext):
         # Look up the definiton for each
         try:
             for convert in range(0, len(exported)):
-                exported[convert] = await self.ictx.definition(
+                exported[convert] = await self.octx.ictx.definition(
                     self.ctx, exported[convert]
                 )
         except DefinitionNotInContext:
@@ -170,7 +167,7 @@ class Associate(OperationImplementationContext):
         # Make exported into key, value which it will be in output
         key, value = exported
         # Acquire all definitions within the context
-        async with self.ictx.definitions(self.ctx) as od:
+        async with self.octx.ictx.definitions(self.ctx) as od:
             # Output dict
             want = {}
             async for item in od.inputs(value):
@@ -180,3 +177,51 @@ class Associate(OperationImplementationContext):
                         want[parent.value] = item.value
                         break
             return {value.name: want}
+
+
+class RemapConfig(NamedTuple):
+    dataflow: DataFlow
+
+    @classmethod
+    def _fromdict(cls, **kwargs):
+        kwargs["dataflow"] = DataFlow._fromdict(**kwargs["dataflow"])
+        return cls(**kwargs)
+
+
+class RemapFailure(Exception):
+    """
+    Raised whem results of a dataflow could not be remapped.
+    """
+
+
+# TODO Make it so that only one output operation gets run, the result of that
+# operation is the result of the dataflow
+@op(
+    inputs={"spec": Definition(name="remap_spec", primitive="map")},
+    outputs={"response": Definition(name="remap_output", primitive="map")},
+    stage=Stage.OUTPUT,
+    config_cls=RemapConfig,
+)
+async def remap(
+    self: OperationImplementationContext, spec: Dict[str, List[str]]
+):
+    # Create a new orchestrator context. Specify that it should use the existing
+    # input set context, this way the output operations we'll be running have
+    # access to the data from this data flow rather than a new sub flow.
+    async with self.octx.parent(
+        self.config.dataflow, ictx=self.octx.ictx
+    ) as octx:
+        _ctx, result = [result async for result in octx.run(ctx=self.ctx)][0]
+    # Remap the output operations to their feature (copied logic
+    # from CLI)
+    remap = {}
+    for (feature_name, traverse) in spec.items():
+        try:
+            remap[feature_name] = traverse_get(result, *traverse)
+        except KeyError as error:
+            raise RemapFailure(
+                "failed to remap %r. Results do not contain %r: %s"
+                % (feature_name, ".".join(traverse), result)
+            ) from error
+    # Results have been remapped
+    return remap

@@ -158,13 +158,16 @@ def gen_docs(entrypoint: str, modules: List[str], maintenance: str = "Core"):
             "help": doc,
         }
         formatted = TEMPLATE.format(**formatting)
+        if getattr(cls, "imp", False):
+            cls = cls.imp
         if getattr(cls, "op", False):
             formatted += "\n\n" + format_op(cls.op)
-        defaults = cls.args({})
-        if defaults:
-            config = traverse_get_config(defaults, *cls.add_orig_label())
-            formatted += "\n\n" + build_args(config)
-        per_module[module_name][1].append(formatted)
+        if getattr(cls, "args", False):
+            defaults = cls.args({})
+            if defaults:
+                config = traverse_get_config(defaults, *cls.add_orig_label())
+                formatted += "\n\n" + build_args(config)
+            per_module[module_name][1].append(formatted)
     return "\n\n".join(
         [
             MODULE_TEMPLATE.format(
@@ -195,7 +198,7 @@ def gen_docs(entrypoint: str, modules: List[str], maintenance: str = "Core"):
 def main():
     parser = argparse.ArgumentParser(description="Generate plugin docs")
     parser.add_argument("--entrypoint", help="Entrypoint to document")
-    parser.add_argument("--modules", help="Modules to care about")
+    parser.add_argument("--modules", help="Modules to care about", nargs="+")
     parser.add_argument(
         "--maintenance",
         default="Core",

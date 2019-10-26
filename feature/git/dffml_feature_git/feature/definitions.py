@@ -1,6 +1,19 @@
 import sys
+from typing import NamedTuple
 
-from dffml.df.base import Definition
+from dffml.df.types import Definition
+
+
+class GitRepoSpec(NamedTuple):
+    URL: str
+    directory: str
+
+
+class GitRepoCheckedOutSpec(NamedTuple):
+    URL: str
+    directory: str
+    commit: str
+
 
 definitions = [
     Definition(name="quarter_start_date", primitive="int"),
@@ -8,11 +21,17 @@ definitions = [
     Definition(name="URL", primitive="string"),
     Definition(name="valid_git_repository_URL", primitive="boolean"),
     Definition(name="git_branch", primitive="str"),
-    Definition(name="git_repository", primitive="Dict[str, str]", lock=True),
+    Definition(
+        name="git_repository",
+        primitive="Dict[str, str]",
+        lock=True,
+        spec=GitRepoSpec,
+    ),
     Definition(
         name="git_repository_checked_out",
         primitive="Dict[str, str]",
         lock=True,
+        spec=GitRepoCheckedOutSpec,
     ),
     Definition(name="git_commit", primitive="string"),
     Definition(name="date", primitive="string"),

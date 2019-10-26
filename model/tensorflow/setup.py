@@ -1,4 +1,5 @@
 import os
+import sys
 import ast
 from io import open
 
@@ -17,7 +18,25 @@ with open(
 with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
-INSTALL_REQUIRES = ["tensorflow>=1.13.1,<2.0.0"]
+INSTALL_REQUIRES = ["tensorflow>=1.13.1,<2.0.0"] + (
+    ["dffml>=0.3.0"]
+    if not any(
+        list(
+            map(
+                os.path.isfile,
+                list(
+                    map(
+                        lambda syspath: os.path.join(
+                            syspath, "dffml.egg-link"
+                        ),
+                        sys.path,
+                    )
+                ),
+            )
+        )
+    )
+    else []
+)
 
 setup(
     name="dffml-model-tensorflow",

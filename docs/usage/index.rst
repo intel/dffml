@@ -8,4 +8,4 @@ The following are some example use cases of DFFML.
     :caption: Contents:
 
     integration
-    operations
+    dataflows

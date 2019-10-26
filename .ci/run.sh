@@ -20,6 +20,7 @@ function run_plugin() {
     ./scripts/docs.sh
     # Try running create for real
     cd $(mktemp -d)
+    # TODO Bash array
     # Create model
     dffml service dev create model travis-test-model
     cd travis-test-model
@@ -41,6 +42,12 @@ function run_plugin() {
     # Create source
     dffml service dev create source travis-test-source
     cd travis-test-source
+    python setup.py install
+    python setup.py test
+    cd ..
+    # Create config
+    dffml service dev create config travis-test-config
+    cd travis-test-config
     python setup.py install
     python setup.py test
     cd ..
