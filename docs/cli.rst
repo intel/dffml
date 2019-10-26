@@ -2,14 +2,18 @@ Command Line
 ============
 
 Almost anything you can get done with the Python API you can get done with the
-command line interface too.
+command line interface too (and HTTP API).
+
+There are many more commands than what is listed here. Use the ``-h`` flag to
+see them all.
 
 .. contents:: Command Line Interface
 
 Model
 -----
 
-Train, asses accuracy, and use models for prediction.
+Train, asses accuracy, and use models for prediction. See the
+plugin docs for :doc:`/plugins/dffml_model` for usage.
 
 DataFlow
 --------
@@ -24,7 +28,7 @@ format.
 
 .. code-block:: console
 
-    $ dffml dataflow create -config yaml get_single clone_git_repo
+    $ dffml dataflow create -config yaml get_single clone_git_repo > df.yaml
 
 Merge
 ~~~~~
@@ -35,6 +39,26 @@ linked.
 .. code-block:: console
 
     $ dffml dataflow merge base.yaml overrides.yaml
+
+Run
+~~~
+
+Ouput the dataflow description to standard output using the specified config
+format.
+
+The ``-no-strict`` flag tell DFFML not to exit if one key fails, continue
+running the dataflow until everything is complete, useful for error prone
+scraping tasks.
+
+.. code-block:: console
+
+    $ dffml dataflow run repos set \
+        -keys https://github.com/intel/dffml \
+        -repo-def URL \
+        -dataflow df.yaml \
+        -sources gathered=json \
+        -source-filename /tmp/data.json \
+        -no-strict
 
 Diagram
 ~~~~~~~
@@ -48,16 +72,6 @@ Output a mermaidjs graph description of a DataFlow.
 You can now copy the graph description and paste it in the
 `mermaidjs live editor <https://mermaidjs.github.io/mermaid-live-editor>`_ (or
 use the CLI tool) to generate an SVG or other format of the graph.
-
-Create
-~~~~~~
-
-Ouput the dataflow description to standard output using the specified config
-format.
-
-.. code-block:: console
-
-    $ dffml dataflow create -config yaml get_single clone_git_repo
 
 Config
 ------
