@@ -438,6 +438,8 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                                 return
                 # Gather all inputs with matching definitions and contexts
                 for input_name, input_sources in input_flow.inputs.items():
+                    # Create parameters for all the inputs
+                    gather[input_name] = []
                     for input_source in input_sources:
                         # Create a list of places this input originates from
                         origins = []
@@ -446,8 +448,6 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                                 origins.append(origin)
                         else:
                             origins.append(input_source)
-                        # Create parameters for all the inputs
-                        gather[input_name] = []
                         for origin in origins:
                             # Don't try to grab inputs from an origin that
                             # doesn't have any to give us
@@ -484,9 +484,9 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                                         ],
                                     )
                                 )
-                        # Return if there is no data for an input
-                        if not gather[input_name]:
-                            return
+                    # Return if there is no data for an input
+                    if not gather[input_name]:
+                        return
         # Generate all possible permutations of applicable inputs
         for permutation in product(*list(gather.values())):
             # Create the parameter set
