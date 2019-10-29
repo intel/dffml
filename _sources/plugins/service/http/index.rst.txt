@@ -4,9 +4,7 @@ HTTP API
 This project provides access to ``dffml`` APIs via an HTTP interface.
 
 It exposes a REST-like API which mimics that of ``dffml``'s command line
-interface (CLI). Currently, the following APIs are supported.
-
-- Sources
+interface (CLI) and usage as Python module.
 
 You can install the HTTP API service via ``pip``
 
