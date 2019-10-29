@@ -734,7 +734,7 @@ class MemoryOperationImplementationNetworkContext(
         self.completed_event = asyncio.Event()
 
     async def __aenter__(
-        self
+        self,
     ) -> "MemoryOperationImplementationNetworkContext":
         self._stack = AsyncExitStack()
         await self._stack.__aenter__()
@@ -1281,9 +1281,10 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                         self.logger.error("%s", output.getvalue().rstrip())
                         output.close()
                     elif task is input_set_enters_network:
-                        more, new_input_sets = (
-                            input_set_enters_network.result()
-                        )
+                        (
+                            more,
+                            new_input_sets,
+                        ) = input_set_enters_network.result()
                         for new_input_set in new_input_sets:
                             # Identify which operations have complete contextually
                             # appropriate input sets which haven't been run yet
