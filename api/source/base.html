@@ -184,28 +184,40 @@
 source project’s source URL.</p>
 <dl class="class">
 <dt id="dffml.source.source.BaseSource">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">BaseSource</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSource" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.source.source.</code><code class="descname">BaseSource</code><span class="sig-paren">(</span><em>config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract base class for all sources. New sources must be derived from this
 class and implement the repos method.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="dffml.source.source.BaseSourceContext">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">BaseSourceContext</code><span class="sig-paren">(</span><em class="sig-param">parent: dffml.source.source.BaseSource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSourceContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSourceContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.source.source.</code><code class="descname">BaseSourceContext</code><span class="sig-paren">(</span><em>parent: dffml.source.source.BaseSource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSourceContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSourceContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
+<dt id="dffml.source.source.BaseSourceContext.repo">
+<em class="property">coroutine </em><code class="descname">repo</code><span class="sig-paren">(</span><em>src_url: str</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSourceContext.repo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSourceContext.repo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a repo from the source or add it if it doesn’t exist</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="dffml.source.source.BaseSourceContext.repos">
-<em class="property">abstract </em><code class="sig-name descname">repos</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSourceContext.repos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSourceContext.repos" title="Permalink to this definition">¶</a></dt>
+<code class="descname">repos</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSourceContext.repos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSourceContext.repos" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of repos retrieved from self.src</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.source.source.BaseSourceContext.update">
+<em class="property">coroutine </em><code class="descname">update</code><span class="sig-paren">(</span><em>repo: dffml.repo.Repo</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSourceContext.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSourceContext.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates a repo for a source</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="dffml.source.source.Sources">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">Sources</code><span class="sig-paren">(</span><em class="sig-param">*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#Sources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.Sources" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.source.source.</code><code class="descname">Sources</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#Sources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.Sources" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="attribute">
 <dt id="dffml.source.source.Sources.CONTEXT">
-<code class="sig-name descname">CONTEXT</code><a class="headerlink" href="#dffml.source.source.Sources.CONTEXT" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CONTEXT</code><a class="headerlink" href="#dffml.source.source.Sources.CONTEXT" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#dffml.source.source.SourcesContext" title="dffml.source.source.SourcesContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">SourcesContext</span></code></a></p>
 </dd></dl>
 
@@ -213,16 +225,28 @@ class and implement the repos method.</p>
 
 <dl class="class">
 <dt id="dffml.source.source.SourcesContext">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">SourcesContext</code><span class="sig-paren">(</span><em class="sig-param">parent: dffml.util.asynchelper.AsyncContextManagerList</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#SourcesContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SourcesContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.source.source.</code><code class="descname">SourcesContext</code><span class="sig-paren">(</span><em>parent: dffml.util.asynchelper.AsyncContextManagerList</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#SourcesContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SourcesContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
+<dt id="dffml.source.source.SourcesContext.repo">
+<em class="property">coroutine </em><code class="descname">repo</code><span class="sig-paren">(</span><em>src_url: str</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#SourcesContext.repo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SourcesContext.repo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve and or register repo will all sources</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="dffml.source.source.SourcesContext.repos">
-<code class="sig-name descname">repos</code><span class="sig-paren">(</span><em class="sig-param">validation: Optional[Callable[[dffml.repo.Repo], bool]] = None</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../../_modules/dffml/source/source.html#SourcesContext.repos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SourcesContext.repos" title="Permalink to this definition">¶</a></dt>
+<code class="descname">repos</code><span class="sig-paren">(</span><em>validation: Optional[Callable[[dffml.repo.Repo], bool]] = None</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../../_modules/dffml/source/source.html#SourcesContext.repos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SourcesContext.repos" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves repos from all sources</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="dffml.source.source.SourcesContext.update">
+<em class="property">coroutine </em><code class="descname">update</code><span class="sig-paren">(</span><em>repo: dffml.repo.Repo</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#SourcesContext.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SourcesContext.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates a repo for a source</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="dffml.source.source.SourcesContext.with_features">
-<code class="sig-name descname">with_features</code><span class="sig-paren">(</span><em class="sig-param">features: List[str]</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../../_modules/dffml/source/source.html#SourcesContext.with_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SourcesContext.with_features" title="Permalink to this definition">¶</a></dt>
+<code class="descname">with_features</code><span class="sig-paren">(</span><em>features: List[str]</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../../_modules/dffml/source/source.html#SourcesContext.with_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SourcesContext.with_features" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns all repos which have the requested features</p>
 </dd></dl>
 
@@ -230,18 +254,18 @@ class and implement the repos method.</p>
 
 <dl class="class">
 <dt id="dffml.source.source.SubsetSources">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">SubsetSources</code><span class="sig-paren">(</span><em class="sig-param">*args: dffml.source.source.BaseSource</em>, <em class="sig-param">keys: Optional[List[str]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#SubsetSources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SubsetSources" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.source.source.</code><code class="descname">SubsetSources</code><span class="sig-paren">(</span><em>*args</em>, <em>keys: Optional[List[str]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#SubsetSources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SubsetSources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Restricts access to a subset of repos during iteration based on their keys.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="dffml.source.source.ValidationSources">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">ValidationSources</code><span class="sig-paren">(</span><em class="sig-param">validation: Callable[[dffml.repo.Repo], bool], *args: dffml.source.source.BaseSource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#ValidationSources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.ValidationSources" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.source.source.</code><code class="descname">ValidationSources</code><span class="sig-paren">(</span><em>validation: Callable[[dffml.repo.Repo], bool], *args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#ValidationSources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.ValidationSources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Restricts access to a subset of repos during iteration based on a validation
 function.</p>
 <dl class="attribute">
 <dt id="dffml.source.source.ValidationSources.CONTEXT">
-<code class="sig-name descname">CONTEXT</code><a class="headerlink" href="#dffml.source.source.ValidationSources.CONTEXT" title="Permalink to this definition">¶</a></dt>
+<code class="descname">CONTEXT</code><a class="headerlink" href="#dffml.source.source.ValidationSources.CONTEXT" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#dffml.source.source.ValidationSourcesContext" title="dffml.source.source.ValidationSourcesContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValidationSourcesContext</span></code></a></p>
 </dd></dl>
 
@@ -249,10 +273,10 @@ function.</p>
 
 <dl class="class">
 <dt id="dffml.source.source.ValidationSourcesContext">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">ValidationSourcesContext</code><span class="sig-paren">(</span><em class="sig-param">parent: dffml.util.asynchelper.AsyncContextManagerList</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#ValidationSourcesContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.ValidationSourcesContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">dffml.source.source.</code><code class="descname">ValidationSourcesContext</code><span class="sig-paren">(</span><em>parent: dffml.util.asynchelper.AsyncContextManagerList</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#ValidationSourcesContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.ValidationSourcesContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="dffml.source.source.ValidationSourcesContext.repos">
-<code class="sig-name descname">repos</code><span class="sig-paren">(</span><em class="sig-param">validation: Optional[Callable[[dffml.repo.Repo], bool]] = None</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../../_modules/dffml/source/source.html#ValidationSourcesContext.repos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.ValidationSourcesContext.repos" title="Permalink to this definition">¶</a></dt>
+<code class="descname">repos</code><span class="sig-paren">(</span><em>validation: Optional[Callable[[dffml.repo.Repo], bool]] = None</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../../_modules/dffml/source/source.html#ValidationSourcesContext.repos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.ValidationSourcesContext.repos" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves repos from all sources</p>
 </dd></dl>
 
