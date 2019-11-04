@@ -4,14 +4,56 @@ they follow a similar API for instantiation and usage.
 """
 import abc
 import inspect
+import argparse
+import contextlib
+import dataclasses
 from argparse import ArgumentParser
-from typing import Dict, Any, Tuple, NamedTuple
+from typing import Dict, Any, Tuple, NamedTuple, Type
 
+try:
+    from typing import get_origin, get_args
+except ImportError:
+    # Added in Python 3.8
+    def get_origin(t):
+        return getattr(t, "__origin__", None)
+
+    def get_args(t):
+        return getattr(t, "__args__", None)
+
+
+from .util.cli.arg import Arg
 from .util.data import traverse_config_set, traverse_config_get
 
 from .util.entrypoint import Entrypoint
 
 from .log import LOGGER
+
+
+class ParseExpandAction(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        if not isinstance(values, list):
+            values = [values]
+        setattr(namespace, self.dest, self.LIST_CLS(*values))
+
+
+# Maps classes to their ParseClassNameAction
+LIST_ACTIONS: Dict[Type, Type] = {}
+
+
+def list_action(list_cls):
+    """
+    Action to take a list of values and make them values in the list of type
+    list_class. Which will be a class descendent from AsyncContextManagerList.
+    """
+    LIST_ACTIONS.setdefault(
+        list_cls,
+        type(
+            f"Parse{list_cls.__qualname__}Action",
+            (ParseExpandAction,),
+            {"LIST_CLS": list_cls},
+        ),
+    )
+    return LIST_ACTIONS[list_cls]
 
 
 class MissingArg(Exception):
@@ -62,6 +104,13 @@ class BaseConfig(object):
 
     def __str__(self):
         return repr(self)
+
+
+def config(cls):
+    """
+    Decorator to create a dataclass
+    """
+    return dataclasses.dataclass(eq=True, frozen=True)(cls)
 
 
 class ConfigurableParsingNamespace(object):
@@ -144,9 +193,14 @@ class BaseConfigurable(abc.ABC):
         args_above = cls.add_orig_label() + list(path)
         label_above = cls.add_label(*above) + list(path)
         no_label_above = cls.add_label(*above)[:-1] + list(path)
+
+        arg = None
         try:
             arg = traverse_config_get(args, *args_above)
         except KeyError as error:
+            pass
+
+        if arg is None:
             raise MissingArg(
                 "Arg %r missing from %s%s%s"
                 % (
@@ -155,23 +209,30 @@ class BaseConfigurable(abc.ABC):
                     "." if args_above[:-1] else "",
                     ".".join(args_above[:-1]),
                 )
-            ) from error
-        try:
+            )
+
+        value = None
+        # Try to get the value specific to this label
+        with contextlib.suppress(KeyError):
             value = traverse_config_get(config, *label_above)
-        except KeyError as error:
-            try:
+
+        # Try to get the value specific to this plugin
+        if value is None:
+            with contextlib.suppress(KeyError):
                 value = traverse_config_get(config, *no_label_above)
-            except KeyError as error:
-                if "default" in arg:
-                    return arg["default"]
-                raise MissingConfig(
-                    "%s missing %r from %s"
-                    % (
-                        cls.__qualname__,
-                        label_above[-1],
-                        ".".join(label_above[:-1]),
-                    )
-                ) from error
+
+        if value is None:
+            # Return default if not found and available
+            if "default" in arg:
+                return arg["default"]
+            raise MissingConfig(
+                "%s missing %r from %s"
+                % (
+                    cls.__qualname__,
+                    label_above[-1],
+                    ".".join(label_above[:-1]),
+                )
+            )
 
         if value is None and "default" in arg:
             return arg["default"]
@@ -197,19 +258,67 @@ class BaseConfigurable(abc.ABC):
         return value
 
     @classmethod
-    @abc.abstractmethod
-    def args(cls, *above) -> Dict[str, Any]:
+    def args(cls, args, *above) -> Dict[str, Arg]:
         """
         Return a dict containing arguments required for this class
         """
+        if getattr(cls, "CONFIG", None) is None:
+            raise AttributeError(
+                f"{cls.__qualname__} requires CONFIG property or implementation of args() classmethod"
+            )
+        for field in dataclasses.fields(cls.CONFIG):
+            arg = Arg(type=field.type)
+            # HACK For detecting dataclasses._MISSING_TYPE
+            if "dataclasses._MISSING_TYPE" not in repr(field.default):
+                arg["default"] = field.default
+            if field.type == bool:
+                arg["action"] = "store_true"
+            elif inspect.isclass(field.type):
+                if issubclass(field.type, list):
+                    arg["nargs"] = "+"
+                    if not hasattr(field.type, "SINGLETON"):
+                        raise AttributeError(
+                            f"{field.type.__qualname__} missing attribute SINGLETON"
+                        )
+                    arg["action"] = list_action(field.type)
+                    arg["type"] = field.type.SINGLETON
+                if hasattr(arg["type"], "load"):
+                    # TODO (python3.8) Use Protocol
+                    arg["type"] = arg["type"].load
+            elif get_origin(field.type) is list:
+                arg["type"] = get_args(field.type)[0]
+                arg["nargs"] = "+"
+            if "help" in field.metadata:
+                arg["help"] = field.metadata["help"]
+            cls.config_set(args, above, field.name, arg)
+        return args
 
     @classmethod
-    @abc.abstractmethod
     def config(cls, config, *above):
         """
         Create the BaseConfig required to instantiate this class by parsing the
         config dict.
         """
+        if getattr(cls, "CONFIG", None) is None:
+            raise AttributeError(
+                f"{cls.__qualname__} requires CONFIG property or implementation of config() classmethod"
+            )
+        # Build the arguments to the CONFIG class
+        kwargs: Dict[str, Any] = {}
+        for field in dataclasses.fields(cls.CONFIG):
+            kwargs[field.name] = got = cls.config_get(
+                config, above, field.name
+            )
+            if inspect.isclass(got) and issubclass(got, BaseConfigurable):
+                try:
+                    kwargs[field.name] = got.withconfig(
+                        config, *above, *cls.add_label()
+                    )
+                except MissingConfig:
+                    kwargs[field.name] = got.withconfig(
+                        config, *above, *cls.add_label()[:-1]
+                    )
+        return cls.CONFIG(**kwargs)
 
     @classmethod
     def withconfig(cls, config, *above):
