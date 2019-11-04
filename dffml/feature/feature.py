@@ -301,6 +301,7 @@ def DefFeature(name, dtype, length):
 class Features(list):
 
     TIMEOUT: int = 60 * 2
+    SINGLETON = Feature
 
     LOGGER = LOGGER.getChild("Features")
 
