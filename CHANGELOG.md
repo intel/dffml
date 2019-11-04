@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Features were moved from ModelContext to ModelConfig
 - CI is now run via GitHub Actions
 - CI testing script is now verbose
+- args and config methods of all classes no longer require implementation.
+  BaseConfigurable handles exporting of arguments and creation of config objects
+  for each class based off of the CONFIG property of that class. The CONFIG
+  property is a class which has been decorated with dffml.base.config to make it
+  a dataclass.
 ### Fixed
 - DataFlows with multiple possibilities for a source for an input, now correctly
   look through all possible sources instead of just the first one.
