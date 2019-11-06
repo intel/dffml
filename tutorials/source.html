@@ -203,23 +203,11 @@ connection establishment in the <a class="reference internal" href="../api/sourc
 (as we will see in the sqlite example).</p>
 <dl class="class">
 <dt>
-<em class="property">class </em><code class="descclassname">dffml.source.source.</code><code class="descname">BaseSourceContext</code><span class="sig-paren">(</span><em>parent: dffml.source.source.BaseSource</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/source/source.html#BaseSourceContext"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">BaseSourceContext</code><span class="sig-paren">(</span><em class="sig-param">parent: dffml.source.source.BaseSource</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/source/source.html#BaseSourceContext"><span class="viewcode-link">[source]</span></a></dt>
 <dd><dl class="method">
 <dt>
-<em class="property">coroutine </em><code class="descname">repo</code><span class="sig-paren">(</span><em>src_url: str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/source/source.html#BaseSourceContext.repo"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Get a repo from the source or add it if it doesn’t exist</p>
-</dd></dl>
-
-<dl class="method">
-<dt>
-<code class="descname">repos</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../_modules/dffml/source/source.html#BaseSourceContext.repos"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">abstract </em><code class="sig-name descname">repos</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../_modules/dffml/source/source.html#BaseSourceContext.repos"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Returns a list of repos retrieved from self.src</p>
-</dd></dl>
-
-<dl class="method">
-<dt>
-<em class="property">coroutine </em><code class="descname">update</code><span class="sig-paren">(</span><em>repo: dffml.repo.Repo</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/source/source.html#BaseSourceContext.update"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Updates a repo for a source</p>
 </dd></dl>
 
 </dd></dl>
