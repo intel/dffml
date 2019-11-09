@@ -382,6 +382,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         ctx: Optional[BaseInputSetContext] = None,
     ) -> AsyncIterator[BaseParameterSet]:
         import time
+
         start_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
         # Create a mapping of definitions to inputs for that definition
         gather: Dict[str, List[Parameter]] = {}
@@ -494,15 +495,22 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         self.logger.debug("Gathering took: %f", end_time - start_time)
         start_time = end_time
 
-        self.logger.debug("Length of gather values: %s",
-                {key: len(val) for key, val in gather.items()})
+        self.logger.debug(
+            "Length of gather values: %s",
+            {key: len(val) for key, val in gather.items()},
+        )
 
         # Generate all possible permutations of applicable inputs
         # Create the parameter set
 
-        products = list(map(lambda permutation: MemoryParameterSet(
-            MemoryParameterSetConfig(ctx=ctx, parameters=permutation)
-        ), product(*list(gather.values()))))
+        products = list(
+            map(
+                lambda permutation: MemoryParameterSet(
+                    MemoryParameterSetConfig(ctx=ctx, parameters=permutation)
+                ),
+                product(*list(gather.values())),
+            )
+        )
 
         end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
         self.logger.debug("Products took: %f", end_time - start_time)
@@ -634,7 +642,9 @@ class MemoryRedundancyCheckerContext(BaseRedundancyCheckerContext):
         uid_list = [
             operation.instance_name,
             (await parameter_set.ctx.handle()).as_string(),
-        ] + sorted([item.origin.uid async for item in parameter_set.parameters()])
+        ] + sorted(
+            [item.origin.uid async for item in parameter_set.parameters()]
+        )
         return hashlib.sha384("".join(uid_list).encode("utf-8")).hexdigest()
 
     async def _exists(self, coro) -> bool:
@@ -649,17 +659,23 @@ class MemoryRedundancyCheckerContext(BaseRedundancyCheckerContext):
         # if len(parameter_sets) < 2:
         if False:
             for parameter_set in parameter_sets:
-                yield parameter_set, await self._exists(self.unique(operation, parameter_set))
+                yield parameter_set, await self._exists(
+                    self.unique(operation, parameter_set)
+                )
         else:
             import time
+
             start_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
             arg_lists = {
                 parameter_set: [
                     operation.instance_name,
-                     (await parameter_set.ctx.handle()).as_string(),
-                     *[item.origin.uid async for item in parameter_set.parameters()]
-                 ]
-                 for parameter_set in parameter_sets
+                    (await parameter_set.ctx.handle()).as_string(),
+                    *[
+                        item.origin.uid
+                        async for item in parameter_set.parameters()
+                    ],
+                ]
+                for parameter_set in parameter_sets
             }
             end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
             self.logger.debug("Arg lists: %f", end_time - start_time)
@@ -684,9 +700,7 @@ class MemoryRedundancyCheckerContext(BaseRedundancyCheckerContext):
                 asyncio.create_task(
                     self._exists(
                         self.parent.loop.run_in_executor(
-                            self.parent.pool,
-                            self._unique,
-                            *arg_list,
+                            self.parent.pool, self._unique, *arg_list
                         )
                     )
                 ): parameter_set
@@ -734,7 +748,9 @@ class MemoryRedundancyChecker(BaseRedundancyChecker, BaseMemoryDataFlowObject):
             self.config.key_value_store
         )
         self.loop = asyncio.get_event_loop()
-        self.pool = self.__exit_stack.enter_context(concurrent.futures.ThreadPoolExecutor())
+        self.pool = self.__exit_stack.enter_context(
+            concurrent.futures.ThreadPoolExecutor()
+        )
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
@@ -925,7 +941,9 @@ class MemoryOperationImplementationNetworkContext(
             str_inputs = str(inputs)
             self.logger.debug(
                 "Inputs: %s",
-                str_inputs if len(str_inputs) < 512 else (str_inputs[:512] + "...")
+                str_inputs
+                if len(str_inputs) < 512
+                else (str_inputs[:512] + "..."),
             )
             self.logger.debug(
                 "Conditions: %s",
@@ -943,7 +961,9 @@ class MemoryOperationImplementationNetworkContext(
             str_outputs = str(outputs)
             self.logger.debug(
                 "Outputs: %s",
-                str_outputs if len(str_outputs) < 512 else (str_outputs[:512] + "...")
+                str_outputs
+                if len(str_outputs) < 512
+                else (str_outputs[:512] + "..."),
             )
             self.logger.debug("---")
             return outputs
@@ -981,7 +1001,9 @@ class MemoryOperationImplementationNetworkContext(
                 expand = operation.expand
             else:
                 expand = []
-            parents = [item.origin async for item in parameter_set.parameters()]
+            parents = [
+                item.origin async for item in parameter_set.parameters()
+            ]
             for key, output in outputs.items():
                 if not key in expand:
                     output = [output]

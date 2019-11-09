@@ -12,6 +12,8 @@ from ..df.base import (
 from ..df.exceptions import DefinitionNotInContext
 from ..util.data import traverse_get
 
+from .mapping import MAPPING
+
 
 # TODO(p3) Remove fill, it doesn't get used anyway. Or use it somehow
 class GroupBySpec(NamedTuple):
@@ -101,6 +103,38 @@ class GroupBy(OperationImplementationContext):
                 # elif output.ismap:
                 #     want[output_name] = dict(want[output_name])
 
+            return want
+
+
+get_multi_spec = Definition(name="get_multi_spec", primitive="array")
+
+
+@op(
+    name="get_multi",
+    inputs={"spec": get_multi_spec},
+    outputs={"output": MAPPING},
+    stage=Stage.OUTPUT,
+)
+class GetMutli(OperationImplementationContext):
+    async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
+        # TODO Address the need to copy operation implementation inputs dict
+        # In case the input is used elsewhere in the network
+        exported = copy.deepcopy(inputs["spec"])
+        # Look up the definiton for each
+        for convert in range(0, len(exported)):
+            exported[convert] = await self.octx.ictx.definition(
+                self.ctx, exported[convert]
+            )
+        self.logger.debug("output spec: %s", exported)
+        # Acquire all definitions within the context
+        async with self.octx.ictx.definitions(self.ctx) as od:
+            # Output dict
+            want = {}
+            # Group each requested output
+            for definition in exported:
+                async for item in od.inputs(definition):
+                    want.setdefault(definition.name, [])
+                    want[definition.name].append(item.value)
             return want
 
 
