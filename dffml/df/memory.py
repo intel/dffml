@@ -488,9 +488,6 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                                     )
                                 )
                     # Return if there is no data for an input
-                    # print()
-                    # print(operation.instance_name, input_name, gather[input_name])
-                    # print()
                     if not gather[input_name]:
                         return
         end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
@@ -514,7 +511,6 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         # Check if this permutation has been executed before
         sets = []
         async for parameter_set, exists in rctx.exists(operation, *products):
-            # print(exists, parameter_set)
             # If not then yield the permutation
             if not exists:
                 sets.append(parameter_set)
@@ -567,19 +563,14 @@ class MemoryOperationNetworkContext(BaseOperationNetworkContext):
             for operation in chain(*dataflow.by_origin[stage].values()):
                 operations[operation.instance_name] = operation
         else:
-            # print()
             async for item in input_set.inputs():
                 origin = item.origin
                 if isinstance(origin, Operation):
                     origin = origin.instance_name
-                # print()
-                # print(item, origin, dataflow.by_origin[stage])
                 if origin not in dataflow.by_origin[stage]:
                     continue
                 for operation in dataflow.by_origin[stage][origin]:
                     operations[operation.instance_name] = operation
-                # print()
-            # print()
         for operation in operations.values():
             yield operation
 
@@ -990,7 +981,7 @@ class MemoryOperationImplementationNetworkContext(
                 expand = operation.expand
             else:
                 expand = []
-            parents = [item async for item in parameter_set.inputs()]
+            parents = [item.origin async for item in parameter_set.parameters()]
             for key, output in outputs.items():
                 if not key in expand:
                     output = [output]
