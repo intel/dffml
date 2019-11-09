@@ -488,9 +488,9 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                                     )
                                 )
                     # Return if there is no data for an input
-                    print()
-                    print(operation.instance_name, input_name, gather[input_name])
-                    print()
+                    # print()
+                    # print(operation.instance_name, input_name, gather[input_name])
+                    # print()
                     if not gather[input_name]:
                         return
         end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
@@ -514,7 +514,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         # Check if this permutation has been executed before
         sets = []
         async for parameter_set, exists in rctx.exists(operation, *products):
-            print(exists, parameter_set)
+            # print(exists, parameter_set)
             # If not then yield the permutation
             if not exists:
                 sets.append(parameter_set)
@@ -567,19 +567,19 @@ class MemoryOperationNetworkContext(BaseOperationNetworkContext):
             for operation in chain(*dataflow.by_origin[stage].values()):
                 operations[operation.instance_name] = operation
         else:
-            print()
+            # print()
             async for item in input_set.inputs():
                 origin = item.origin
                 if isinstance(origin, Operation):
                     origin = origin.instance_name
-                print()
-                print(item, origin, dataflow.by_origin[stage])
+                # print()
+                # print(item, origin, dataflow.by_origin[stage])
                 if origin not in dataflow.by_origin[stage]:
                     continue
                 for operation in dataflow.by_origin[stage][origin]:
                     operations[operation.instance_name] = operation
-                print()
-            print()
+                # print()
+            # print()
         for operation in operations.values():
             yield operation
 
@@ -643,7 +643,7 @@ class MemoryRedundancyCheckerContext(BaseRedundancyCheckerContext):
         uid_list = [
             operation.instance_name,
             (await parameter_set.ctx.handle()).as_string(),
-        ] + sorted([item.uid async for item in parameter_set.inputs()])
+        ] + sorted([item.origin.uid async for item in parameter_set.parameters()])
         return hashlib.sha384("".join(uid_list).encode("utf-8")).hexdigest()
 
     async def _exists(self, coro) -> bool:
@@ -931,7 +931,11 @@ class MemoryOperationImplementationNetworkContext(
                 operation.stage.value.upper(),
                 operation.instance_name,
             )
-            self.logger.debug("Inputs: %s", inputs)
+            str_inputs = str(inputs)
+            self.logger.debug(
+                "Inputs: %s",
+                str_inputs if len(str_inputs) < 512 else (str_inputs[:512] + "...")
+            )
             self.logger.debug(
                 "Conditions: %s",
                 dict(
@@ -945,7 +949,11 @@ class MemoryOperationImplementationNetworkContext(
                 ),
             )
             outputs = await opctx.run(inputs)
-            self.logger.debug("Output: %s", outputs)
+            str_outputs = str(outputs)
+            self.logger.debug(
+                "Outputs: %s",
+                str_outputs if len(str_outputs) < 512 else (str_outputs[:512] + "...")
+            )
             self.logger.debug("---")
             return outputs
 
