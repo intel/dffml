@@ -16,6 +16,8 @@ from dffml.accuracy import Accuracy
 from dffml.util.entrypoint import entry_point
 from dffml.base import BaseConfig
 from dffml.util.cli.arg import Arg
+from dffml.feature.feature import Feature, Features
+from dffml.util.cli.parser import list_action
 
 from dffml_model_tensorflow.dnnc import TensorflowModelContext
 
@@ -27,6 +29,7 @@ class DNNRegressionModelConfig:
     epochs: int
     hidden: List[int]
     predict: str  # feature_name holding target values
+    features: Features
 
 
 class DNNRegressionModelContext(TensorflowModelContext):
@@ -35,10 +38,13 @@ class DNNRegressionModelContext(TensorflowModelContext):
     columns for real valued, string, and list of real valued features.
     """
 
-    def __init__(self, config, parent) -> None:
-        super().__init__(config, parent)
+    def __init__(self, parent) -> None:
+        super().__init__(parent)
         self.model_dir_path = self._model_dir_path()
-        self.all_features = self.features + [self.parent.config.predict]
+        self.all_features = self.parent.config.features.names() + [
+            self.parent.config.predict
+        ]
+        self.features = self._applicable_features()
 
     @property
     def model(self):
@@ -206,7 +212,7 @@ class DNNRegressionModel(Model):
             -sources s=csv \\
             -source-readonly \\
             -source-filename train.csv \\
-            -features \\
+            -model-features \\
               def:Feature1:float:1 \\
               def:Feature2:float:1 \\
             -log debug
@@ -218,7 +224,7 @@ class DNNRegressionModel(Model):
             -sources s=csv \\
             -source-readonly \\
             -source-filename test.csv \\
-            -features \\
+            -model-features \\
               def:Feature1:float:1 \\
               def:Feature2:float:1 \\
             -log critical
@@ -231,7 +237,7 @@ class DNNRegressionModel(Model):
             -sources s=csv \\
             -source-readonly \\
             -source-filename /dev/stdin \\
-            -features \\
+            -model-features \\
               def:Feature1:float:1 \\
               def:Feature2:float:1 \\
             -log critical
@@ -309,7 +315,18 @@ class DNNRegressionModel(Model):
             "predict",
             Arg(help="Feature name holding truth value"),
         )
-
+        cls.config_set(
+            args,
+            above,
+            "features",
+            Arg(
+                nargs="+",
+                required=True,
+                type=Feature.load,
+                action=list_action(Features),
+                help="Features to train on",
+            ),
+        )
         return args
 
     @classmethod
@@ -320,4 +337,5 @@ class DNNRegressionModel(Model):
             epochs=cls.config_get(config, above, "epochs"),
             hidden=cls.config_get(config, above, "hidden"),
             predict=cls.config_get(config, above, "predict"),
+            features=cls.config_get(config, above, "features"),
         )

@@ -24,6 +24,9 @@ from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entry_point
 from dffml_model_scikit.scikit_base import Scikit, ScikitContext
 
+from dffml.feature.feature import Feature, Features
+from dffml.util.cli.parser import list_action
+
 
 def applicable_features(self, features):
     usable = []
@@ -103,7 +106,7 @@ for entry_point_name, name, cls, applicable_features_function in [
     ]
     dffml_config = namedtuple(
         name + "ModelConfig",
-        ["directory", "predict"]
+        ["directory", "predict", "features"]
         + [
             param.name
             for _, param in parameters.items()
@@ -136,6 +139,20 @@ for entry_point_name, name, cls, applicable_features_function in [
             "predict",
             Arg(type=str, help="Label or the value to be predicted"),
         )
+
+        cls.config_set(
+            args,
+            above,
+            "features",
+            Arg(
+                nargs="+",
+                required=True,
+                type=Feature.load,
+                action=list_action(Features),
+                help="Features to train on",
+            ),
+        )
+
         for param in inspect.signature(cls.SCIKIT_MODEL).parameters.values():
             # TODO if param.default is an array then Args needs to get a
             # nargs="+"
@@ -157,6 +174,7 @@ for entry_point_name, name, cls, applicable_features_function in [
         params = dict(
             directory=cls.config_get(config, above, "directory"),
             predict=cls.config_get(config, above, "predict"),
+            features=cls.config_get(config, above, "features"),
         )
         for name in inspect.signature(cls.SCIKIT_MODEL).parameters.keys():
             params[name] = cls.config_get(config, above, name)

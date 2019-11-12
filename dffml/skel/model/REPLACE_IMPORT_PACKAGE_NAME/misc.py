@@ -19,6 +19,7 @@ class MiscModelConfig(ModelConfig, NamedTuple):
     # and load data from disk you will need to
     directory: str
     classifications: List[str]
+    features: Features
 
 
 class MiscModelContext(ModelContext):
@@ -48,7 +49,7 @@ class MiscModelContext(ModelContext):
         """
         async for repo in repos:
             yield repo, self.parent.config.classifications[
-                repo.feature(self.features.names()[0])
+                repo.feature(self.parent.config.features.names()[0])
             ], 1.0
 
 

@@ -153,6 +153,11 @@ class Feature(abc.ABC, Entrypoint):
     # FREQUENCY: Type[Frequency] = Quarterly
     ENTRY_POINT = "dffml.feature"
 
+    def __eq__(self, other):
+        self_tuple = (self.NAME, self.dtype(), self.length())
+        other_tuple = (other.NAME, other.dtype(), other.length())
+        return bool(self_tuple == other_tuple)
+
     def __str__(self):
         return "%s(%s)" % (self.NAME, self.__class__.__qualname__)
 
@@ -233,8 +238,15 @@ class Feature(abc.ABC, Entrypoint):
 
     @classmethod
     def load(cls, loading=None):
-        if loading is not None and loading.startswith("def:"):
-            return cls.load_def(*loading.replace("def:", "").split(":"))
+        # CLI or dict compatibility
+        # TODO Consolidate this
+        if loading is not None:
+            if isinstance(loading, dict):
+                return cls.load_def(
+                    loading["name"], loading["dtype"], loading["length"]
+                )
+            elif loading.startswith("def:"):
+                return cls.load_def(*loading.replace("def:", "").split(":"))
         return super().load(loading)
 
     @classmethod
@@ -286,15 +298,14 @@ def DefFeature(name, dtype, length):
     return DefinedFeature(name=name, dtype=dtype, length=length)
 
 
-class Features(list, Monitor):
+class Features(list):
 
     TIMEOUT: int = 60 * 2
 
     LOGGER = LOGGER.getChild("Features")
 
     def __init__(self, *args: Feature, timeout: int = None) -> None:
-        list.__init__(self, args)
-        Monitor.__init__(self)
+        super().__init__(args)
         self._stack = None
         self.timeout = timeout if not timeout is None else self.TIMEOUT
 

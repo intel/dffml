@@ -171,25 +171,6 @@ class DFFMLHTTPAPIModel extends DFFMLHTTPAPIObject {
   constructor(api) {
     super("model", DFFMLHTTPAPIModelContext, api);
   }
-
-  async context(ctx_label, features) {
-    var response = await this.api.request("/context/" + this.plugin_type + "/" + this.label + "/" + ctx_label, {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, cors, *same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'omit', // include, *same-origin, omit
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow', // manual, *follow, error
-      referrer: 'no-referrer', // no-referrer, *client
-      body: JSON.stringify(features), // body data type must match "Content-Type" header
-    });
-
-    await response.json();
-
-    return new this.context_cls(this.api, this, ctx_label);
-  }
 }
 
 class DFFMLHTTPAPI {
@@ -340,6 +321,26 @@ var runit = async function() {
             "Salary"
           ],
           "config": {}
+        },
+        "features": {
+          "arg": [
+            {
+              "name": "Years",
+              "dtype": "int",
+              "length": 1
+            },
+            {
+              "name": "Expertise",
+              "dtype": "int",
+              "length": 1
+            },
+            {
+              "name": "Trust",
+              "dtype": "float",
+              "length": 1
+            }
+          ],
+          "config": {}
         }
       }
     }
@@ -347,23 +348,7 @@ var runit = async function() {
 
   console.log("Configured model", model);
 
-  var mctx = await model.context("mymodel_context", {
-    "Years": {
-      // "name": "Years",
-      "dtype": "int",
-      "length": 1
-    },
-    "Expertise": {
-      "name": "Expertise",
-      "dtype": "int",
-      "length": 1
-    },
-    "Trust": {
-      "name": "Trust",
-      "dtype": "float",
-      "length": 1
-    }
-  });
+  var mctx = await model.context("mymodel_context");
   console.log("Created model context", mctx);
 
   await mctx.train([training_sctx]);

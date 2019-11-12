@@ -15,7 +15,6 @@ from ...repo import Repo
 from ...port import Port
 from ...feature import Feature, Features
 from ...source.source import BaseSource, Sources
-from ...model import Model
 
 from ...df.base import Operation, OperationImplementation
 

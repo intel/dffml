@@ -50,7 +50,7 @@ Implemented using Tensorflow's DNNClassifier.
         -model-clstype int \
         -sources iris=csv \
         -source-filename iris_training.csv \
-        -features \
+        -model-features \
           def:SepalLength:float:1 \
           def:SepalWidth:float:1 \
           def:PetalLength:float:1 \
@@ -64,7 +64,7 @@ Implemented using Tensorflow's DNNClassifier.
         -model-clstype int \
         -sources iris=csv \
         -source-filename iris_test.csv \
-        -features \
+        -model-features \
           def:SepalLength:float:1 \
           def:SepalWidth:float:1 \
           def:PetalLength:float:1 \
@@ -78,7 +78,7 @@ Implemented using Tensorflow's DNNClassifier.
         -model-clstype int \
         -sources iris=csv \
         -source-filename iris_test.csv \
-        -features \
+        -model-features \
           def:SepalLength:float:1 \
           def:SepalWidth:float:1 \
           def:PetalLength:float:1 \
@@ -156,6 +156,10 @@ Implemented using Tensorflow's DNNClassifier.
   - default: <class 'str'>
   - Data type of classifications values (default: str)
 
+- features: List of feature.loads
+
+  - Features to train on
+
 tfdnnr
 ~~~~~~
 
@@ -199,7 +203,7 @@ Generating train and test data
         -sources s=csv \
         -source-readonly \
         -source-filename train.csv \
-        -features \
+        -model-features \
           def:Feature1:float:1 \
           def:Feature2:float:1 \
         -log debug
@@ -211,7 +215,7 @@ Generating train and test data
         -sources s=csv \
         -source-readonly \
         -source-filename test.csv \
-        -features \
+        -model-features \
           def:Feature1:float:1 \
           def:Feature2:float:1 \
         -log critical
@@ -224,7 +228,7 @@ Generating train and test data
         -sources s=csv \
         -source-readonly \
         -source-filename /dev/stdin \
-        -features \
+        -model-features \
           def:Feature1:float:1 \
           def:Feature2:float:1 \
         -log critical
@@ -274,6 +278,10 @@ predict).
 
   - Feature name holding truth value
 
+- features: List of feature.loads
+
+  - Features to train on
+
 dffml_model_scratch
 -------------------
 
@@ -303,7 +311,7 @@ hash of their feature names.
     EOF
     $ dffml train \
         -model scratchslr \
-        -features def:Years:int:1 \
+        -model-features def:Years:int:1 \
         -model-predict Salary \
         -sources f=csv \
         -source-filename dataset.csv \
@@ -311,7 +319,7 @@ hash of their feature names.
         -log debug
     $ dffml accuracy \
         -model scratchslr \
-        -features def:Years:int:1 \
+        -model-features def:Years:int:1 \
         -model-predict Salary \
         -sources f=csv \
         -source-filename dataset.csv \
@@ -321,7 +329,7 @@ hash of their feature names.
     $ echo -e 'Years,Salary\n6,0\n' | \
       dffml predict all \
         -model scratchslr \
-        -features def:Years:int:1 \
+        -model-features def:Years:int:1 \
         -model-predict Salary \
         -sources f=csv \
         -source-filename /dev/stdin \
@@ -353,6 +361,10 @@ hash of their feature names.
 - predict: String
 
   - Label or the value to be predicted
+
+- features: List of feature.loads
+
+  - Features to train on
 
 dffml_model_scikit
 ------------------

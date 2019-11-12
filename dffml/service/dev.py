@@ -3,6 +3,7 @@ import sys
 import uuid
 import json
 import pydoc
+import asyncio
 import hashlib
 import getpass
 import importlib
@@ -19,6 +20,7 @@ from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
 from ..util.entrypoint import load
 from ..base import MissingConfig
+from ..util.packaging import is_develop
 from ..util.data import traverse_config_get
 from ..df.types import Input, DataFlow, Stage
 from ..df.base import Operation
@@ -33,6 +35,18 @@ config.read(Path("~", ".gitconfig").expanduser())
 USER = getpass.getuser()
 NAME = config.get("user", "name", fallback="Unknown")
 EMAIL = config.get("user", "email", fallback="unknown@example.com")
+
+CORE_PLUGINS = [
+    ("config", "yaml"),
+    ("model", "tensorflow"),
+    ("model", "scratch"),
+    ("model", "scikit"),
+    ("examples", "shouldi"),
+    ("feature", "git"),
+    ("feature", "auth"),
+    ("service", "http"),
+    ("source", "mysql"),
+]
 
 
 def create_from_skel(name):
@@ -406,6 +420,34 @@ class Export(CMD):
                         )
 
 
+# TODO (p3) Remove production packages. Download full source if not already
+# installed in development mode.
+class Install(CMD):
+    """
+    Uninstall production packages and install dffml in development mode.
+    """
+
+    async def run(self):
+        main_package = is_develop("dffml")
+        if not main_package:
+            raise NotImplementedError(
+                "Currenty you need to have at least the main package already installed in development mode."
+            )
+        # Packages fail to install if we run pip processes in parallel
+        for package in CORE_PLUGINS:
+            package = Path(*main_package.parts, *package)
+            self.logger.info("Installing %s in development mode", package)
+            proc = await asyncio.create_subprocess_exec(
+                sys.executable,
+                "-m",
+                "pip",
+                "install",
+                "-e",
+                str(package.absolute()),
+            )
+            await proc.wait()
+
+
 class Develop(CMD):
     """
     Development utilities for hacking on DFFML itself
@@ -417,3 +459,4 @@ class Develop(CMD):
     diagram = Diagram
     export = Export
     entrypoints = Entrypoints
+    install = Install

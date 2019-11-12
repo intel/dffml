@@ -10,7 +10,7 @@ common = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(common)
 
 common.KWARGS["entry_points"] = {
-    "dffml.source": [f"misc = {common.IMPORT_NAME}.misc:Misc"]
+    "dffml.source": [f"misc = {common.IMPORT_NAME}.misc:MiscSource"]
 }
 
 setup(**common.KWARGS)
