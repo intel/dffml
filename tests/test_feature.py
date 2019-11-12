@@ -170,16 +170,3 @@ class TestFeatures(AsyncTestCase):
             self.assertIn(self.two.NAME, results)
             self.assertEqual(len(results), 1)
             self.assertEqual(results[self.two.NAME], True)
-
-    async def test_monitor_progess(self):
-        progress = ProgessFeatureTester()
-        features = Features(progress)
-        async with features:
-            data = await features.submit("test")
-            logs = await data.logs()
-            results = await data.result()
-            self.assertTrue(logs)
-            self.assertIn("Hi", logs)
-            self.assertIn(progress.NAME, results)
-            self.assertEqual(len(results), 1)
-            self.assertEqual(results[progress.NAME], True)

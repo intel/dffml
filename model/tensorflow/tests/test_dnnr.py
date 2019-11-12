@@ -43,6 +43,9 @@ class TestDNN(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
         cls.model_dir = tempfile.TemporaryDirectory()
+        cls.feature1 = Feature_1()
+        cls.feature2 = Feature_2()
+        cls.features = Features(cls.feature1, cls.feature2)
         cls.model = DNNRegressionModel(
             DNNRegressionModelConfig(
                 directory=cls.model_dir.name,
@@ -50,11 +53,9 @@ class TestDNN(AsyncTestCase):
                 epochs=30,
                 hidden=[10, 20, 10],
                 predict="TARGET",
+                features=cls.features,
             )
         )
-        cls.feature1 = Feature_1()
-        cls.feature2 = Feature_2()
-        cls.features = Features(cls.feature1, cls.feature2)
         # Generating data f(x1,x2) = 2*x1 + 3*x2
         _n_data = 1000
         _temp_data = np.random.rand(2, _n_data)
@@ -82,7 +83,14 @@ class TestDNN(AsyncTestCase):
     async def test_config(self):
         # Setting up configuration for model
         config = self.model.__class__.config(
-            parse_unknown("--model-predict", "TARGET")
+            parse_unknown(
+                "--model-predict",
+                "TARGET",
+                "--model-features",
+                "def:feature_1:float:1",
+                "--model-features",
+                "def:feature_2:float:1",
+            )
         )
         self.assertEqual(
             config.directory,
@@ -96,18 +104,17 @@ class TestDNN(AsyncTestCase):
         self.assertEqual(config.predict, "TARGET")
 
     async def test_00_train(self):
-        async with self.sources as sources, self.features as features, self.model as model:
-            async with sources() as sctx, model(features) as mctx:
+        async with self.sources as sources, self.model as model:
+            async with sources() as sctx, model() as mctx:
                 await mctx.train(sctx)
 
     async def test_01_accuracy(self):
-        async with self.sources as sources, self.features as features, self.model as model:
-            async with sources() as sctx, model(features) as mctx:
+        async with self.sources as sources, self.model as model:
+            async with sources() as sctx, model() as mctx:
                 res = await mctx.accuracy(sctx)
                 self.assertGreater(res, 0.9)
 
     async def test_02_predict(self):
-
         test_feature_val = [
             0,
             1.5,
@@ -126,8 +133,8 @@ class TestDNN(AsyncTestCase):
         )
         async with Sources(
             MemorySource(MemorySourceConfig(repos=[a]))
-        ) as sources, self.features as features, self.model as model:
-            async with sources() as sctx, model(features) as mctx:
+        ) as sources, self.model as model:
+            async with sources() as sctx, model() as mctx:
                 res = [repo async for repo in mctx.predict(sctx.repos())]
                 self.assertEqual(len(res), 1)
             self.assertEqual(res[0].src_url, a.src_url)

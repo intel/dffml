@@ -26,7 +26,7 @@ from dffml.util.cli.parser import (
     ParseRemapAction,
 )
 
-from dffml.util.cli.cmds import ListEntrypoint, FeaturesCMD, ModelCMD
+from dffml.util.cli.cmds import ListEntrypoint, ModelCMD
 
 from dffml.util.asynctestcase import AsyncTestCase
 
@@ -325,9 +325,3 @@ class TestListEntrypoint(AsyncTestCase):
         with patch.object(sys.stdout, "write") as mock_method:
             await FakeListEntrypoint().run()
             mock_method.assert_any_call("docstring!")
-
-
-class TestFeaturesCMD(unittest.TestCase):
-    def test_set_timeout(self):
-        cmd = FeaturesCMD(timeout=5, features=Features())
-        self.assertEqual(cmd.features.timeout, 5)

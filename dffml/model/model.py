@@ -17,9 +17,10 @@ from ..base import (
 from ..util.cli.arg import Arg
 from ..repo import Repo
 from ..source.source import Sources
-from ..feature import Features
+from ..feature import Feature, Features
 from ..accuracy import Accuracy
 from ..util.entrypoint import Entrypoint, base_entry_point
+from ..util.cli.parser import list_action
 
 
 class ModelNotTrained(Exception):
@@ -28,6 +29,7 @@ class ModelNotTrained(Exception):
 
 class ModelConfig(BaseConfig, NamedTuple):
     directory: str
+    features: Features
 
 
 class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
@@ -36,9 +38,8 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
     various machine learning frameworks or concepts.
     """
 
-    def __init__(self, parent: "Model", features: Features) -> None:
+    def __init__(self, parent: "Model") -> None:
         self.parent = parent
-        self.features = features
 
     @abc.abstractmethod
     async def train(self, sources: Sources):
@@ -71,13 +72,13 @@ class Model(BaseDataFlowFacilitatorObject):
     various machine learning frameworks or concepts.
     """
 
-    def __call__(self, features: Features) -> ModelContext:
+    def __call__(self) -> ModelContext:
         # If the config object for this model contains the directory property
         # then create it if it does not exist
         directory = getattr(self.config, "directory", None)
         if directory is not None and not os.path.isdir(directory):
             os.makedirs(directory)
-        return self.CONTEXT(self, features)
+        return self.CONTEXT(self)
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
@@ -91,10 +92,23 @@ class Model(BaseDataFlowFacilitatorObject):
                 )
             ),
         )
+        cls.config_set(
+            args,
+            above,
+            "features",
+            Arg(
+                nargs="+",
+                required=True,
+                type=Feature.load,
+                action=list_action(Features),
+            ),
+        )
+
         return args
 
     @classmethod
     def config(cls, config, *above) -> BaseConfig:
         return ModelConfig(
-            directory=cls.config_get(config, above, "directory")
+            directory=cls.config_get(config, above, "directory"),
+            features=cls.config_get(config, above, "features"),
         )

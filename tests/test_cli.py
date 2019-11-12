@@ -32,19 +32,9 @@ from dffml.df.base import OperationImplementation
 from dffml.accuracy import Accuracy as AccuracyType
 from dffml.util.entrypoint import entry_point
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.util.cli.cmd import DisplayHelp
+from dffml.util.cli.cmds import ModelCMD
 
-from dffml.cli import (
-    Merge,
-    Dataflow,
-    EvaluateAll,
-    EvaluateRepo,
-    Train,
-    Accuracy,
-    PredictAll,
-    PredictRepo,
-    ListRepos,
-)
+from dffml.cli import Merge, Dataflow, Train, Accuracy, Predict, List
 
 from .test_df import OPERATIONS, OPIMPS
 
@@ -62,8 +52,7 @@ class ReposTestCase(AsyncTestCase):
     async def setUp(self):
         super().setUp()
         self.repos = [Repo(str(random.random())) for _ in range(0, 10)]
-        self.__stack = ExitStack()
-        self._stack = self.__stack.__enter__()
+        self._stack = ExitStack().__enter__()
         self.temp_filename = self.mktempfile()
         self.sconfig = FileSourceConfig(filename=self.temp_filename)
         async with JSONSource(self.sconfig) as source:
@@ -77,10 +66,29 @@ class ReposTestCase(AsyncTestCase):
             len(self.repos),
             "ReposTestCase JSON file erroneously initialized as empty",
         )
+        # TODO(p3) For some reason patching Model.load doesn't work
+        # self._stack.enter_context(patch("dffml.model.model.Model.load",
+        #     new=model_load))
+        self._stack.enter_context(
+            patch.object(
+                ModelCMD,
+                "arg_model",
+                new=ModelCMD.arg_model.modify(type=model_load),
+            )
+        )
+        self._stack.enter_context(
+            patch("dffml.feature.feature.Feature.load", new=feature_load)
+        )
+        self._stack.enter_context(
+            patch("dffml.df.base.OperationImplementation.load", new=opimp_load)
+        )
+        self._stack.enter_context(
+            patch("dffml.df.types.Operation.load", new=op_load)
+        )
 
     def tearDown(self):
         super().tearDown()
-        self.__stack.__exit__(None, None, None)
+        self._stack.__exit__(None, None, None)
 
     def mktempfile(self):
         return self._stack.enter_context(non_existant_tempfile())
@@ -128,12 +136,16 @@ class FakeModel(Model):
     CONTEXT = FakeModelContext
 
 
-def feature_load(loading):
-    return FakeFeature()
+def feature_load(loading=None):
+    if loading == "fake":
+        return FakeFeature()
+    return [FakeFeature()]
 
 
 def model_load(loading):
-    return FakeModel
+    if loading == "fake":
+        return FakeModel
+    return [FakeModel]
 
 
 def op_load(loading):
@@ -253,8 +265,10 @@ class TestMerge(ReposTestCase):
 
 class TestListRepos(ReposTestCase):
     async def test_run(self):
-        with patch("sys.stdout", new_callable=io.StringIO) as stdout:
-            result = await ListRepos.cli(
+        stdout = io.StringIO()
+        with contextlib.redirect_stdout(stdout):
+            result = await List.cli(
+                "repos",
                 "-sources",
                 "primary=json",
                 "-source-primary-filename",
@@ -262,8 +276,8 @@ class TestListRepos(ReposTestCase):
                 "-source-primary-readonly",
                 "false",
             )
-            for repo in self.repos:
-                self.assertIn(repo.src_url, stdout.getvalue())
+        for repo in self.repos:
+            self.assertIn(repo.src_url, stdout.getvalue())
 
 
 class TestDataflowRunAllRepos(ReposTestCase):
@@ -275,13 +289,7 @@ class TestDataflowRunAllRepos(ReposTestCase):
             async with source() as sctx:
                 for repo in self.repos:
                     await sctx.update(repo)
-        with patch.object(
-            OperationImplementation, "load", opimp_load
-        ), patch.object(
-            Operation, "load", op_load
-        ), tempfile.NamedTemporaryFile(
-            suffix=".json"
-        ) as dataflow_file:
+        with tempfile.NamedTemporaryFile(suffix=".json") as dataflow_file:
             dataflow = io.StringIO()
             with contextlib.redirect_stdout(dataflow):
                 await Dataflow.cli(
@@ -328,13 +336,7 @@ class TestDataflowRunRepoSet(ReposTestCase):
             async with source() as sctx:
                 for repo in self.repos:
                     await sctx.update(repo)
-        with patch.object(
-            OperationImplementation, "load", opimp_load
-        ), patch.object(
-            Operation, "load", op_load
-        ), tempfile.NamedTemporaryFile(
-            suffix=".json"
-        ) as dataflow_file:
+        with tempfile.NamedTemporaryFile(suffix=".json") as dataflow_file:
             dataflow = io.StringIO()
             with contextlib.redirect_stdout(dataflow):
                 await Dataflow.cli(
@@ -369,156 +371,73 @@ class TestDataflowRunRepoSet(ReposTestCase):
             )
 
 
-class TestEvaluateAll(ReposTestCase):
-    async def test_run(self):
-        with patch.object(
-            EvaluateAll,
-            "arg_features",
-            EvaluateRepo.arg_features.modify(type=feature_load),
-        ):
-            results = await EvaluateAll.cli(
-                "-sources",
-                "primary=json",
-                "-source-filename",
-                self.temp_filename,
-                "-features",
-                "fake",
-            )
-            results = {
-                result.src_url: result.features(["fake"])["fake"]
-                for result in results
-            }
-            for repo in self.repos:
-                self.assertIn(repo.src_url, results)
-                self.assertEqual(float(repo.src_url), results[repo.src_url])
-
-
-class TestEvaluateRepo(TestEvaluateAll):
-    async def test_run(self):
-        subset = self.repos[: (int(len(self.repos) / 2))]
-        with patch.object(
-            EvaluateRepo,
-            "arg_features",
-            EvaluateRepo.arg_features.modify(type=feature_load),
-        ):
-            subset_urls = list(map(lambda repo: repo.src_url, subset))
-            results = await EvaluateRepo.cli(
-                "-sources",
-                "primary=json",
-                "-source-filename",
-                self.temp_filename,
-                "-features",
-                "fake",
-                "-keys",
-                *subset_urls,
-            )
-            self.assertEqual(len(results), len(subset))
-            results = {
-                result.src_url: result.features(["fake"])["fake"]
-                for result in results
-            }
-            for repo in subset:
-                self.assertIn(repo.src_url, results)
-                self.assertEqual(float(repo.src_url), results[repo.src_url])
-
-
 class TestTrain(ReposTestCase):
     async def test_run(self):
-        with patch.object(
-            Train, "arg_model", Train.arg_model.modify(type=model_load)
-        ), patch.object(
-            Train, "arg_features", Train.arg_features.modify(type=feature_load)
-        ):
-            await Train.cli(
-                "-sources",
-                "primary=json",
-                "-source-filename",
-                self.temp_filename,
-                "-model",
-                "fake",
-                "-features",
-                "fake",
-            )
+        await Train.cli(
+            "-sources",
+            "primary=json",
+            "-source-filename",
+            self.temp_filename,
+            "-model",
+            "fake",
+            "-model-features",
+            "fake",
+        )
 
 
-class TestAccuracy(TestTrain):
+class TestAccuracy(ReposTestCase):
     async def test_run(self):
-        with patch.object(
-            Accuracy, "arg_model", Accuracy.arg_model.modify(type=model_load)
-        ), patch.object(
-            Accuracy,
-            "arg_features",
-            Accuracy.arg_features.modify(type=feature_load),
-        ):
-            result = await Accuracy.cli(
-                "-sources",
-                "primary=json",
-                "-source-filename",
-                self.temp_filename,
-                "-model",
-                "fake",
-                "-features",
-                "fake",
-            )
-            self.assertEqual(result, 0.42)
+        result = await Accuracy.cli(
+            "-sources",
+            "primary=json",
+            "-source-filename",
+            self.temp_filename,
+            "-model",
+            "fake",
+            "-model-features",
+            "fake",
+        )
+        self.assertEqual(result, 0.42)
 
 
-class TestPredictAll(ReposTestCase):
-    async def test_run(self):
-        with patch.object(
-            PredictAll,
-            "arg_model",
-            PredictAll.arg_model.modify(type=model_load),
-        ), patch.object(
-            PredictAll,
-            "arg_features",
-            PredictAll.arg_features.modify(type=feature_load),
-        ):
-            results = await PredictAll.cli(
-                "-sources",
-                "primary=json",
-                "-source-filename",
-                self.temp_filename,
-                "-model",
-                "fake",
-                "-features",
-                "fake",
-            )
-            results = {
-                repo.src_url: repo.prediction().confidence for repo in results
-            }
-            for repo in self.repos:
-                self.assertEqual(float(repo.src_url), results[repo.src_url])
+class TestPredict(ReposTestCase):
+    async def test_all(self):
+        results = await Predict.cli(
+            "all",
+            "-sources",
+            "primary=json",
+            "-source-filename",
+            self.temp_filename,
+            "-model",
+            "fake",
+            "-model-features",
+            "fake",
+        )
+        results = {
+            repo.src_url: repo.prediction().confidence for repo in results
+        }
+        for repo in self.repos:
+            self.assertEqual(float(repo.src_url), results[repo.src_url])
 
-
-class TestPredictRepo(ReposTestCase):
-    async def test_run(self):
+    async def test_repo(self):
         subset = self.repos[: (int(len(self.repos) / 2))]
-        with patch.object(
-            PredictRepo,
-            "arg_model",
-            PredictRepo.arg_model.modify(type=model_load),
-        ), patch.object(
-            PredictRepo,
-            "arg_features",
-            PredictRepo.arg_features.modify(type=feature_load),
-        ):
-            subset_urls = list(map(lambda repo: repo.src_url, subset))
-            results = await PredictRepo.cli(
-                "-sources",
-                "primary=json",
-                "-source-filename",
-                self.temp_filename,
-                "-model",
-                "fake",
-                "-features",
-                "fake",
-                "-keys",
-                *subset_urls,
-            )
-            self.assertEqual(len(results), len(subset))
-            results = {
-                repo.src_url: repo.prediction().confidence for repo in results
-            }
-            for repo in subset:
-                self.assertEqual(float(repo.src_url), results[repo.src_url])
+        subset_urls = list(map(lambda repo: repo.src_url, subset))
+        results = await Predict.cli(
+            "repo",
+            "-sources",
+            "primary=json",
+            "-source-filename",
+            self.temp_filename,
+            "-model",
+            "fake",
+            "-model-features",
+            "fake",
+            "-keys",
+            *subset_urls,
+        )
+        self.assertEqual(len(results), len(subset))
+        results = {
+            repo.src_url: repo.prediction().confidence for repo in results
+        }
+        for repo in subset:
+            self.assertEqual(float(repo.src_url), results[repo.src_url])

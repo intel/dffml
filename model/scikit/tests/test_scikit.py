@@ -14,9 +14,6 @@ class TestScikitModel:
     @classmethod
     def setUpClass(cls):
         cls.model_dir = tempfile.TemporaryDirectory()
-        cls.model = cls.MODEL(
-            cls.MODEL_CONFIG(directory=cls.model_dir.name, predict="X")
-        )
         cls.features = Features()
         if cls.MODEL_TYPE is "CLASSIFICATION":
             cls.features.append(DefFeature("A", float, 1))
@@ -73,25 +70,32 @@ class TestScikitModel:
         cls.sources = Sources(
             MemorySource(MemorySourceConfig(repos=cls.repos))
         )
+        cls.model = cls.MODEL(
+            cls.MODEL_CONFIG(
+                directory=cls.model_dir.name,
+                predict="X",
+                features=cls.features,
+            )
+        )
 
     @classmethod
     def tearDownClass(cls):
         cls.model_dir.cleanup()
 
     async def test_00_train(self):
-        async with self.sources as sources, self.features as features, self.model as model:
-            async with sources() as sctx, model(features) as mctx:
+        async with self.sources as sources, self.model as model:
+            async with sources() as sctx, model() as mctx:
                 await mctx.train(sctx)
 
     async def test_01_accuracy(self):
-        async with self.sources as sources, self.features as features, self.model as model:
-            async with sources() as sctx, model(features) as mctx:
+        async with self.sources as sources, self.model as model:
+            async with sources() as sctx, model() as mctx:
                 res = await mctx.accuracy(sctx)
                 self.assertTrue(0.0 <= res <= 1.0)
 
     async def test_02_predict(self):
-        async with self.sources as sources, self.features as features, self.model as model:
-            async with sources() as sctx, model(features) as mctx:
+        async with self.sources as sources, self.model as model:
+            async with sources() as sctx, model() as mctx:
                 async for repo in mctx.predict(sctx.repos()):
                     prediction = repo.prediction().value
                     if self.MODEL_TYPE is "CLASSIFICATION":

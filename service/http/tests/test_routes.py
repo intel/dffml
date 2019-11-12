@@ -33,6 +33,8 @@ from dffml.util.cli.arg import parse_unknown
 from dffml.util.entrypoint import entry_point
 from dffml.util.cli.arg import Arg, parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
+from dffml.feature.feature import Feature, Features
+from dffml.util.cli.parser import list_action
 
 from dffml_service_http.cli import Server
 from dffml_service_http.routes import (
@@ -57,11 +59,12 @@ class ServerException(Exception):
 
 class FakeModelConfig(NamedTuple):
     directory: str
+    features: Features
 
 
 class FakeModelContext(ModelContext):
-    def __init__(self, parent, features):
-        super().__init__(parent, features)
+    def __init__(self, parent):
+        super().__init__(parent)
         self.trained_on: Dict[str, Repo] = {}
 
     async def train(self, sources: Sources):
@@ -88,12 +91,24 @@ class FakeModel(Model):
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
         cls.config_set(args, above, "directory", Arg())
+        cls.config_set(
+            args,
+            above,
+            "features",
+            Arg(
+                nargs="+",
+                required=True,
+                type=Feature.load,
+                action=list_action(Features),
+            ),
+        )
         return args
 
     @classmethod
     def config(cls, config, *above) -> BaseConfig:
         return FakeModelConfig(
-            directory=cls.config_get(config, above, "directory")
+            directory=cls.config_get(config, above, "directory"),
+            features=cls.config_get(config, above, "features"),
         )
 
 
@@ -140,7 +155,6 @@ class TestRoutesRunning:
 
     @asynccontextmanager
     async def _add_memory_source(self):
-        self.features = Features(DefFeature("by_ten", int, 1))
         async with MemorySource(
             MemorySourceConfig(
                 repos=[
@@ -158,7 +172,7 @@ class TestRoutesRunning:
     async def _add_fake_model(self):
         async with FakeModel(BaseConfig()) as model:
             self.model = self.cli.app["models"][self.mlabel] = model
-            async with model(self.features) as mctx:
+            async with model() as mctx:
                 self.mctx = self.cli.app["model_contexts"][self.mlabel] = mctx
                 yield
 
@@ -265,7 +279,13 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
         with tempfile.TemporaryDirectory() as tempdir, patch.object(
             Model, "load", new=model_load
         ):
-            config = parse_unknown("--model-directory", tempdir)
+            config = parse_unknown(
+                "--model-directory",
+                tempdir,
+                "--model-features",
+                "def:Years:int:1",
+                "def:Experiance:int:1",
+            )
             async with self.post(
                 "/configure/model/fake/salary", json=config
             ) as r:
@@ -273,56 +293,29 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                 self.assertIn("salary", self.cli.app["models"])
                 self.assertEqual(
                     self.cli.app["models"]["salary"].config,
-                    FakeModelConfig(directory=tempdir),
+                    FakeModelConfig(
+                        directory=tempdir,
+                        features=Features(
+                            DefFeature("Years", int, 1),
+                            DefFeature("Experiance", int, 1),
+                        ),
+                    ),
                 )
                 with self.subTest(context="salaryctx"):
-                    # Define the features
-                    features = Features(
-                        DefFeature("Years", int, 1),
-                        DefFeature("Experiance", int, 1),
-                    )
-                    exported_features = features.export()
-                    # Check that we can send shorthand version of feature_def
-                    for name, feature_def in exported_features.items():
-                        del feature_def["name"]
                     # Create the context
-                    async with self.post(
-                        "/context/model/salary/salaryctx",
-                        json=exported_features,
+                    async with self.get(
+                        "/context/model/salary/salaryctx"
                     ) as r:
                         self.assertEqual(await r.json(), OK)
                         self.assertIn(
                             "salaryctx", self.cli.app["model_contexts"]
                         )
-                        self.assertEqual(
-                            self.cli.app["model_contexts"][
-                                "salaryctx"
-                            ].features.export(),
-                            features.export(),
-                        )
-
-    async def test_model_bad_features(self):
-        with tempfile.TemporaryDirectory() as tempdir, patch.object(
-            Model, "load", new=model_load
-        ):
-            config = parse_unknown("--model-directory", tempdir)
-            async with self.post(
-                "/configure/model/fake/salary", json=config
-            ) as r:
-                self.assertEqual(await r.json(), OK)
-                with self.assertRaisesRegex(
-                    ServerException, "Incorrect format for features"
-                ):
-                    async with self.post(
-                        "/context/model/salary/salaryctx", json=[]
-                    ) as r:
-                        pass  # pramga: no cov
 
     async def test_model_config_error(self):
         # Should be directory, not folder
-        config = parse_unknown("--model-folder", "mymodel_dir")
+        config = parse_unknown("--model-directory", "mymodel_dir")
         with patch.object(Model, "load", new=model_load):
-            with self.assertRaisesRegex(ServerException, "missing.*directory"):
+            with self.assertRaisesRegex(ServerException, "missing.*features"):
                 async with self.post(
                     "/configure/model/fake/salary", json=config
                 ):
@@ -332,10 +325,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
         with self.assertRaisesRegex(
             ServerException, f"salary model not found"
         ):
-            features = Features()
-            async with self.post(
-                "/context/model/salary/salaryctx", json=features.export()
-            ) as r:
+            async with self.get("/context/model/salary/salaryctx") as r:
                 pass  # pramga: no cov
 
     async def test_not_found(self):
