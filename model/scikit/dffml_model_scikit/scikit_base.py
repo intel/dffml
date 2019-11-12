@@ -18,17 +18,19 @@ from dffml.repo import Repo
 from dffml.source.source import Sources
 from dffml.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
+from dffml.feature.feature import Features
 
 
 class ScikitConfig(ModelConfig, NamedTuple):
     directory: str
     predict: str
+    features: Features
 
 
 class ScikitContext(ModelContext):
-    def __init__(self, parent, features):
-        super().__init__(parent, features)
-        self.features = self.applicable_features(features)
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.features = self.applicable_features(self.parent.config.features)
         self._features_hash = self._feature_predict_hash()
         self.clf = None
 
@@ -57,6 +59,7 @@ class ScikitContext(ModelContext):
             config = self.parent.config._asdict()
             del config["directory"]
             del config["predict"]
+            del config["features"]
             self.clf = self.parent.SCIKIT_MODEL(**config)
         return self
 
@@ -65,7 +68,9 @@ class ScikitContext(ModelContext):
 
     async def train(self, sources: Sources):
         data = []
-        async for repo in sources.with_features(self.features):
+        async for repo in sources.with_features(
+            self.features + [self.parent.config.predict]
+        ):
             feature_data = repo.features(
                 self.features + [self.parent.config.predict]
             )

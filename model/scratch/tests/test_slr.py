@@ -43,7 +43,6 @@ class TestSLR(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
         cls.model_dir = tempfile.TemporaryDirectory()
-        cls.model = SLR(SLRConfig(directory=cls.model_dir.name, predict="Y"))
         cls.feature = DefFeature("X", float, 1)
         cls.features = Features(cls.feature)
         X, Y = list(zip(*FEATURE_DATA))
@@ -54,14 +53,21 @@ class TestSLR(AsyncTestCase):
         cls.sources = Sources(
             MemorySource(MemorySourceConfig(repos=cls.repos))
         )
+        cls.model = SLR(
+            SLRConfig(
+                directory=cls.model_dir.name,
+                predict="Y",
+                features=cls.features,
+            )
+        )
 
     @classmethod
     def tearDownClass(cls):
         cls.model_dir.cleanup()
 
     async def test_context(self):
-        async with self.sources as sources, self.features as features, self.model as model:
-            async with sources() as sctx, model(features) as mctx:
+        async with self.sources as sources, self.model as model:
+            async with sources() as sctx, model() as mctx:
                 # Test train
                 await mctx.train(sctx)
                 # Test accuracy
@@ -76,19 +82,19 @@ class TestSLR(AsyncTestCase):
                     self.assertLess(prediction, correct + (correct * 0.10))
 
     async def test_00_train(self):
-        async with self.sources as sources, self.features as features, self.model as model:
-            async with sources() as sctx, model(features) as mctx:
+        async with self.sources as sources, self.model as model:
+            async with sources() as sctx, model() as mctx:
                 await mctx.train(sctx)
 
     async def test_01_accuracy(self):
-        async with self.sources as sources, self.features as features, self.model as model:
-            async with sources() as sctx, model(features) as mctx:
+        async with self.sources as sources, self.model as model:
+            async with sources() as sctx, model() as mctx:
                 res = await mctx.accuracy(sctx)
                 self.assertTrue(0.0 <= res < 1.0)
 
     async def test_02_predict(self):
-        async with self.sources as sources, self.features as features, self.model as model:
-            async with sources() as sctx, model(features) as mctx:
+        async with self.sources as sources, self.model as model:
+            async with sources() as sctx, model() as mctx:
                 async for repo in mctx.predict(sctx.repos()):
                     correct = FEATURE_DATA[int(repo.src_url)][1]
                     prediction = repo.prediction().value

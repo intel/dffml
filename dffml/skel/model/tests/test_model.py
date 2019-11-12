@@ -28,14 +28,16 @@ class StartsWithA(Feature):
 class TestMisc(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
+        cls.feature = StartsWithA()
+        cls.features = Features(cls.feature)
         cls.model_dir = tempfile.TemporaryDirectory()
         cls.model = MiscModel(
             MiscModelConfig(
-                directory=cls.model_dir.name, classifications=["not a", "a"]
+                directory=cls.model_dir.name,
+                classifications=["not a", "a"],
+                features=cls.features,
             )
         )
-        cls.feature = StartsWithA()
-        cls.features = Features(cls.feature)
         cls.repos = [
             Repo(
                 "a" + str(random.random()),
@@ -59,13 +61,13 @@ class TestMisc(AsyncTestCase):
         cls.model_dir.cleanup()
 
     async def test_00_train(self):
-        async with self.sources as sources, self.features as features, self.model as model:
-            async with sources() as sctx, model(features) as mctx:
+        async with self.sources as sources, self.model as model:
+            async with sources() as sctx, model() as mctx:
                 await mctx.train(sctx)
 
     async def test_01_accuracy(self):
-        async with self.sources as sources, self.features as features, self.model as model:
-            async with sources() as sctx, model(features) as mctx:
+        async with self.sources as sources, self.model as model:
+            async with sources() as sctx, model() as mctx:
                 res = await mctx.accuracy(sctx)
                 self.assertGreater(res, 0.9)
 
@@ -74,8 +76,8 @@ class TestMisc(AsyncTestCase):
         b = Repo("not a", data={"features": {self.feature.NAME: 0}})
         async with Sources(
             MemorySource(MemorySourceConfig(repos=[a, b]))
-        ) as sources, self.features as features, self.model as model:
-            async with sources() as sctx, model(features) as mctx:
+        ) as sources, self.model as model:
+            async with sources() as sctx, model() as mctx:
                 num = 0
                 async for repo, prediction, confidence in mctx.predict(
                     sctx.repos()

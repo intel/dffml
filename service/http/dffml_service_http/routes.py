@@ -415,20 +415,10 @@ class Routes(BaseMultiCommContext):
                 status=HTTPStatus.NOT_FOUND,
             )
 
-        features_dict = await request.json()
-
-        try:
-            features = Features._fromdict(**features_dict)
-        except:
-            return web.json_response(
-                {"error": "Incorrect format for features"},
-                status=HTTPStatus.BAD_REQUEST,
-            )
-
         # Enter the model context and pass the features
         exit_stack = request.app["exit_stack"]
         model = request.app["models"][label]
-        mctx = await exit_stack.enter_async_context(model(features))
+        mctx = await exit_stack.enter_async_context(model())
         request.app["model_contexts"][ctx_label] = mctx
 
         return web.json_response(OK)
@@ -661,7 +651,7 @@ class Routes(BaseMultiCommContext):
                     self.configure_model,
                 ),
                 (
-                    "POST",
+                    "GET",
                     "/context/model/{label}/{ctx_label}",
                     self.context_model,
                 ),

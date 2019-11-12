@@ -74,31 +74,6 @@ class ListEntrypoint(CMD):
             self.display(cls)
 
 
-class FeaturesCMD(CMD):
-    """
-    Set timeout for features
-    """
-
-    arg_features = Arg(
-        "-features",
-        nargs="+",
-        required=True,
-        type=Feature.load,
-        action=list_action(Features),
-    )
-    arg_timeout = Arg(
-        "-timeout",
-        help="Feature evaluation timeout",
-        required=False,
-        default=Features.TIMEOUT,
-        type=int,
-    )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.features.timeout = self.timeout
-
-
 class SourcesCMD(CMD):
 
     arg_sources = Arg(

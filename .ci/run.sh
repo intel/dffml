@@ -5,52 +5,61 @@ if [ -d "$HOME/.local/bin" ]; then
   export PATH="$HOME/.local/bin:$PATH"
 fi
 
+SRC_ROOT=${SRC_ROOT:-"${PWD}"}
+PYTHON=${PYTHON:-"python3.7"}
+
+TEMP_DIRS=()
+
 function run_plugin() {
-  python setup.py install
-  cd "$PLUGIN"
-  coverage run setup.py test
-  coverage report -m
+  # Create a virtualenv
+  venv_dir="$(mktemp -d)"
+  TEMP_DIRS+=("${venv_dir}")
+  "${PYTHON}" -m venv "${venv_dir}"
+  source "${venv_dir}/bin/activate"
+  "${PYTHON}" -m pip install -U pip
+
+  "${PYTHON}" -m pip install -U "${SRC_ROOT}"
+
+  cd "${PLUGIN}"
+  "${PYTHON}" setup.py test
   cd -
 
-  if [ "x$PLUGIN" = "x." ]; then
-    cd examples
-    python -m pip install -r requirements.txt
-    python -m unittest discover
-    cd ..
+  if [ "x${PLUGIN}" = "x." ]; then
+    # Try running create command
+    plugin_creation_dir="$(mktemp -d)"
+    TEMP_DIRS+=("${plugin_creation_dir}")
+    cd "${plugin_creation_dir}"
+    # Plugins we know how to make
+    PLUGINS=(\
+      "model" \
+      "operations" \
+      "service" \
+      "source" \
+      "config")
+    for plugin in ${PLUGINS[@]}; do
+      dffml service dev create "${plugin}" "travis-test-${plugin}"
+      cd "travis-test-${plugin}"
+      "${PYTHON}" -m pip install -U .
+      "${PYTHON}" setup.py test
+      cd "${plugin_creation_dir}"
+    done
+
+    # Run the examples
+    cd "${SRC_ROOT}/examples"
+    "${PYTHON}" -m pip install -r requirements.txt
+    "${PYTHON}" -m unittest discover
+
+    # Deactivate venv
+    deactivate
+
+    # Create the docs
+    cd "${SRC_ROOT}"
+    "${PYTHON}" -m pip install -U -e "${SRC_ROOT}[dev]"
+    "${PYTHON}" -m dffml service dev install
     ./scripts/docs.sh
-    # Try running create for real
-    cd $(mktemp -d)
-    # TODO Bash array
-    # Create model
-    dffml service dev create model travis-test-model
-    cd travis-test-model
-    python setup.py install
-    python setup.py test
-    cd ..
-    # Create operations
-    dffml service dev create operations travis-test-operations
-    cd travis-test-operations
-    python setup.py install
-    python setup.py test
-    cd ..
-    # Create service
-    dffml service dev create service travis-test-service
-    cd travis-test-service
-    python setup.py install
-    python setup.py test
-    cd ..
-    # Create source
-    dffml service dev create source travis-test-source
-    cd travis-test-source
-    python setup.py install
-    python setup.py test
-    cd ..
-    # Create config
-    dffml service dev create config travis-test-config
-    cd travis-test-config
-    python setup.py install
-    python setup.py test
-    cd ..
+
+    # Run with coverage
+    "${PYTHON}" -m coverage run setup.py test
   fi
 }
 
@@ -84,15 +93,27 @@ function run_whitespace() {
 }
 
 function run_style() {
-  black --check .
+  black --check "${SRC_ROOT}"
 }
 
-if [ "x$PLUGIN" != "x" ]; then
+function cleanup_temp_dirs() {
+  if [ "x${NO_RM_TEMP}" != "x" ]; then
+    return
+  fi
+  for temp_dir in ${TEMP_DIRS[@]}; do
+    rm -rf "${temp_dir}"
+  done
+}
+
+# Clean up temporary directories on exit
+trap cleanup_temp_dirs EXIT
+
+if [ "x${PLUGIN}" != "x" ]; then
   run_plugin
-elif [ "x$CHANGELOG" != "x" ]; then
+elif [ "x${CHANGELOG}" != "x" ]; then
   run_changelog
-elif [ "x$WHITESPACE" != "x" ]; then
+elif [ "x${WHITESPACE}" != "x" ]; then
   run_whitespace
-elif [ "x$STYLE" != "x" ]; then
+elif [ "x${STYLE}" != "x" ]; then
   run_style
 fi

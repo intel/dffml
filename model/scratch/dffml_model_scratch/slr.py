@@ -18,19 +18,22 @@ from dffml.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml.util.entrypoint import entry_point
 from dffml.util.cli.arg import Arg
+from dffml.feature.feature import Feature, Features
+from dffml.util.cli.parser import list_action
 
 
 class SLRConfig(ModelConfig, NamedTuple):
     predict: str
     directory: str
+    features: Features
 
 
 class SLRContext(ModelContext):
-    def __init__(self, parent, features):
-        super().__init__(parent, features)
+    def __init__(self, parent):
+        super().__init__(parent)
         self.xData = np.array([])
         self.yData = np.array([])
-        self.features = self.applicable_features(features)
+        self.features = self.applicable_features(self.parent.config.features)
         self._features_hash_ = hashlib.sha384(
             ("".join(sorted(self.features))).encode()
         ).hexdigest()
@@ -147,7 +150,7 @@ class SLR(Model):
         EOF
         $ dffml train \\
             -model scratchslr \\
-            -features def:Years:int:1 \\
+            -model-features def:Years:int:1 \\
             -model-predict Salary \\
             -sources f=csv \\
             -source-filename dataset.csv \\
@@ -155,7 +158,7 @@ class SLR(Model):
             -log debug
         $ dffml accuracy \\
             -model scratchslr \\
-            -features def:Years:int:1 \\
+            -model-features def:Years:int:1 \\
             -model-predict Salary \\
             -sources f=csv \\
             -source-filename dataset.csv \\
@@ -165,7 +168,7 @@ class SLR(Model):
         $ echo -e 'Years,Salary\\n6,0\\n' | \\
           dffml predict all \\
             -model scratchslr \\
-            -features def:Years:int:1 \\
+            -model-features def:Years:int:1 \\
             -model-predict Salary \\
             -sources f=csv \\
             -source-filename /dev/stdin \\
@@ -226,11 +229,25 @@ class SLR(Model):
                 help="Directory where state should be saved",
             ),
         )
+
         cls.config_set(
             args,
             above,
             "predict",
             Arg(type=str, help="Label or the value to be predicted"),
+        )
+
+        cls.config_set(
+            args,
+            above,
+            "features",
+            Arg(
+                nargs="+",
+                required=True,
+                type=Feature.load,
+                action=list_action(Features),
+                help="Features to train on",
+            ),
         )
         return args
 
@@ -239,4 +256,5 @@ class SLR(Model):
         return SLRConfig(
             directory=cls.config_get(config, above, "directory"),
             predict=cls.config_get(config, above, "predict"),
+            features=cls.config_get(config, above, "features"),
         )

@@ -21,6 +21,8 @@ from dffml.accuracy import Accuracy
 from dffml.util.entrypoint import entry_point
 from dffml.base import BaseConfig
 from dffml.util.cli.arg import Arg
+from dffml.feature.feature import Feature, Features
+from dffml.util.cli.parser import list_action
 
 
 class TensorflowModelContext(ModelContext):
@@ -30,11 +32,10 @@ class TensorflowModelContext(ModelContext):
     columns.
     """
 
-    def __init__(self, parent, features):
-        super().__init__(parent, features)
+    def __init__(self, parent):
+        super().__init__(parent)
         self._model = None
         self.feature_columns = self._feature_columns()
-        self.all_features = self.features
         self.features = self._applicable_features()
 
     def _feature_columns(self):
@@ -42,7 +43,7 @@ class TensorflowModelContext(ModelContext):
         Converts repos into training data
         """
         cols: Dict[str, Any] = {}
-        for feature in self.features:
+        for feature in self.parent.config.features:
             col = self._feature_feature_column(feature)
             if not col is None:
                 cols[feature.NAME] = col
@@ -75,7 +76,7 @@ class TensorflowModelContext(ModelContext):
     def _applicable_features(self):
         return [
             name
-            for name in self.features.names()
+            for name in self.parent.config.features.names()
             if name in self.feature_columns
         ]
 
@@ -145,6 +146,7 @@ class DNNClassifierModelConfig:
     classification: str
     classifications: List[str]
     clstype: Type
+    features: Features
 
     def __post_init__(self):
         self.classifications = list(map(self.clstype, self.classifications))
@@ -156,8 +158,8 @@ class DNNClassifierModelContext(TensorflowModelContext):
     columns for real valued, string, and list of real valued features.
     """
 
-    def __init__(self, features, parent) -> None:
-        super().__init__(features, parent)
+    def __init__(self, parent) -> None:
+        super().__init__(parent)
         self.cids = self._mkcids(self.parent.config.classifications)
         self.classifications = self._classifications(self.cids)
         self.model_dir_path = self._model_dir_path()
@@ -345,7 +347,7 @@ class DNNClassifierModel(Model):
             -model-clstype int \\
             -sources iris=csv \\
             -source-filename iris_training.csv \\
-            -features \\
+            -model-features \\
               def:SepalLength:float:1 \\
               def:SepalWidth:float:1 \\
               def:PetalLength:float:1 \\
@@ -359,7 +361,7 @@ class DNNClassifierModel(Model):
             -model-clstype int \\
             -sources iris=csv \\
             -source-filename iris_test.csv \\
-            -features \\
+            -model-features \\
               def:SepalLength:float:1 \\
               def:SepalWidth:float:1 \\
               def:PetalLength:float:1 \\
@@ -373,7 +375,7 @@ class DNNClassifierModel(Model):
             -model-clstype int \\
             -sources iris=csv \\
             -source-filename iris_test.csv \\
-            -features \\
+            -model-features \\
               def:SepalLength:float:1 \\
               def:SepalWidth:float:1 \\
               def:PetalLength:float:1 \\
@@ -486,6 +488,18 @@ class DNNClassifierModel(Model):
                 help="Data type of classifications values (default: str)",
             ),
         )
+        cls.config_set(
+            args,
+            above,
+            "features",
+            Arg(
+                nargs="+",
+                required=True,
+                type=Feature.load,
+                action=list_action(Features),
+                help="Features to train on",
+            ),
+        )
         return args
 
     @classmethod
@@ -498,4 +512,5 @@ class DNNClassifierModel(Model):
             classification=cls.config_get(config, above, "classification"),
             classifications=cls.config_get(config, above, "classifications"),
             clstype=cls.config_get(config, above, "clstype"),
+            features=cls.config_get(config, above, "features"),
         )

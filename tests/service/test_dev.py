@@ -1,11 +1,13 @@
 import os
 import glob
 import tempfile
+import unittest
 from pathlib import Path
 
 from dffml.service.dev import Develop
 from dffml.util.os import chdir
 from dffml.util.skel import Skel
+from dffml.util.packaging import is_develop
 from dffml.util.asynctestcase import AsyncTestCase
 
 from ..util.test_skel import COMMON_FILES
@@ -117,6 +119,9 @@ class TestDevelopSkelLink(AsyncTestCase):
     skel = Skel()
 
     async def test_run(self):
+        # Skip if not in development mode
+        if not is_develop("dffml"):
+            self.skipTest("dffml not installed in development mode")
         await Develop.cli("skel", "link")
         common_files = [
             path.relative_to(self.skel.common)
