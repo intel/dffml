@@ -3,13 +3,13 @@ name: Testing
 on: [push, pull_request]
 
 jobs:
-  changelog:
+  checks:
 
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 40
       matrix:
-        CHANGELOG: [1]
+        check: [CHANGELOG, WHITESPACE, STYLE]
         python-version: [3.7]
 
     steps:
@@ -24,53 +24,7 @@ jobs:
         pip install -U -e .[dev]
     - name: Run check
       run: |
-        ./.ci/run.sh
-
-  whitespace:
-
-    runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 40
-      matrix:
-        WHITESPACE: [1]
-        python-version: [3.7]
-
-    steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip 
-        pip install -U -e .[dev]
-    - name: Run check
-      run: |
-        ./.ci/run.sh
-
-  style:
-
-    runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 40
-      matrix:
-        STYLE: [1]
-        python-version: [3.7]
-
-    steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip 
-        pip install -U -e .[dev]
-    - name: Run check
-      run: |
-        ./.ci/run.sh
+        ${{ matrix.check }}=1 ./.ci/run.sh
 
   build:
 
@@ -78,7 +32,7 @@ jobs:
     strategy:
       max-parallel: 40
       matrix:
-        PLUGIN: [., examples/shouldi, model/tensorflow, model/scratch, model/scikit, source/mysql, feature/git, feature/auth, service/http]
+        plugin: [., examples/shouldi, model/tensorflow, model/scratch, model/scikit, source/mysql, feature/git, feature/auth, service/http]
         python-version: [3.7]
 
     steps:
@@ -93,4 +47,4 @@ jobs:
         pip install -U -e .[dev]
     - name: Test
       run: |
-        ./.ci/run.sh
+        PLUGIN=${{ matrix.plugin }} ./.ci/run.sh
