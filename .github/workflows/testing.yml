@@ -9,9 +9,9 @@ jobs:
     strategy:
       max-parallel: 40
       matrix:
-        CHANGELOG: 1
-        WHITESPACE: 1
-        STYLE: 1
+        CHANGELOG: [1]
+        WHITESPACE: [1]
+        STYLE: [1]
         python-version: [3.7]
 
     steps:
