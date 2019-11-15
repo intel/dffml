@@ -35,8 +35,8 @@ INSTALL_REQUIRES = [
 
 IMPORT_NAME = (
     NAME
-    if "replace_package_name".upper() != NAME
-    else "replace_import_package_name".upper()
+    if "dffml-model-scikit".upper() != NAME
+    else "dffml-model-scikit".upper()
 ).replace("-", "_")
 
 SELF_PATH = os.path.dirname(os.path.realpath(__file__))
