@@ -60,6 +60,6 @@ jobs:
       run: |
         export PATH="${HOME}/.local/bin:${PATH}"
         PLUGIN=${{ matrix.plugin }} LOGGING=debug ./.ci/run.sh
-        if [ "x${{ matrix.plugin }} = "x." ]; then
+        if [ "x${{ matrix.plugin }}" = "x." ]; then
           codecov
         fi
