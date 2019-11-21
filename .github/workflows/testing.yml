@@ -59,8 +59,7 @@ jobs:
     - name: Test
       run: |
         export PATH="${HOME}/.local/bin:${PATH}"
-        PLUGIN=${{ matrix.plugin }} ./.ci/run.sh
-        if [ "${{ matrix.plugin }}" == "feature/git" ]; then
-          curl -sSL https://github.com/XAMPPRocky/tokei/releases/download/v9.1.1/tokei-v9.1.1-x86_64-unknown-linux-gnu.tar.gz | tar xvz -C "$HOME/.local/bin/"
-          sudo apt-get update && sudo apt-get install -y git subversion cloc openssl
+        PLUGIN=${{ matrix.plugin }} LOGGING=debug ./.ci/run.sh
+        if [ "x${{ matrix.plugin }} = "x." ]; then
+          codecov
         fi
