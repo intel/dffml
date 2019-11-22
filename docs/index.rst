@@ -1,9 +1,9 @@
 Welcome to DFFML!
 =================
 
-.. image:: https://travis-ci.org/intel/dffml.svg?branch=master
-    :target: https://travis-ci.org/intel/dffml
-    :alt: Build Status
+.. image:: https://github.com/intel/dffml/workflows/Testing/badge.svg
+    :target: https://github.com/intel/dffml/actions
+    :alt: Test Status
 .. image:: https://codecov.io/gh/intel/dffml/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/intel/dffml
     :alt: codecov

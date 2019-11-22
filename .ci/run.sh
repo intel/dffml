@@ -37,8 +37,8 @@ function run_plugin() {
       "source" \
       "config")
     for plugin in ${PLUGINS[@]}; do
-      dffml service dev create "${plugin}" "travis-test-${plugin}"
-      cd "travis-test-${plugin}"
+      dffml service dev create "${plugin}" "ci-test-${plugin}"
+      cd "ci-test-${plugin}"
       "${PYTHON}" -m pip install -U .
       "${PYTHON}" setup.py test
       cd "${plugin_creation_dir}"
@@ -65,7 +65,7 @@ function run_plugin() {
 
 function run_changelog() {
   # Only run this check on pull requests
-  if [ "x$TRAVIS_PULL_REQUEST" == "xfalse" ]; then
+  if [ "x$GITHUB_EVENT_NAME" != "xpull_request" ]; then
     exit 0
   fi
   # Ensure the number of lines added in the changelog is not 0
