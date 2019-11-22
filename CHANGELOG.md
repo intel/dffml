@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Features were moved from ModelContext to ModelConfig
 - CI is now run via GitHub Actions
+- CI testing script is now verbose
 ### Fixed
 - DataFlows with multiple possibilities for a source for an input, now correctly
   look through all possible sources instead of just the first one.
