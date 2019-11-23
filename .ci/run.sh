@@ -83,11 +83,11 @@ function run_whitespace() {
     rm -f "$whitespace"
   }
   trap rmtempfile EXIT
-  ( find dffml -type f -name \*.py -exec grep -EHn " +$" {} \; ) 2>&1 \
-    | tee "$whitespace"
+  find . -type f -name '*.py' -exec grep -EHn " +$" {} \; 2>&1 > "$whitespace"
   lines=$(wc -l < "$whitespace")
   if [ "$lines" -ne 0 ]; then
     echo "Trailing whitespace found" >&2
+    cat "${whitespace}" >&2
     exit 1
   fi
 }
