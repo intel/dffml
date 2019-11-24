@@ -5,9 +5,10 @@ import hashlib
 import inspect
 import itertools
 import traceback
+import concurrent.futures
 from datetime import datetime
 from itertools import product, chain
-from contextlib import asynccontextmanager, AsyncExitStack
+from contextlib import asynccontextmanager, AsyncExitStack, ExitStack
 from typing import (
     AsyncIterator,
     Dict,
@@ -58,7 +59,7 @@ from ..util.entrypoint import entry_point, EntrypointNotFound
 from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
 from ..util.data import ignore_args, traverse_get
-from ..util.asynchelper import context_stacker, aenter_stack
+from ..util.asynchelper import context_stacker, aenter_stack, concurrently
 
 from .log import LOGGER
 
@@ -488,14 +489,19 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                     if not gather[input_name]:
                         return
         # Generate all possible permutations of applicable inputs
-        for permutation in product(*list(gather.values())):
-            # Create the parameter set
-            parameter_set = MemoryParameterSet(
-                MemoryParameterSetConfig(ctx=ctx, parameters=permutation)
+        # Create the parameter set for each
+        products = list(
+            map(
+                lambda permutation: MemoryParameterSet(
+                    MemoryParameterSetConfig(ctx=ctx, parameters=permutation)
+                ),
+                product(*list(gather.values())),
             )
-            # Check if this permutation has been executed before
-            if not await rctx.exists(operation, parameter_set):
-                # If not then return the permutation
+        )
+        # Check if each permutation has been executed before
+        async for parameter_set, exists in rctx.exists(operation, *products):
+            # If not then yield the permutation
+            if not exists:
                 yield parameter_set
 
 
@@ -592,6 +598,15 @@ class MemoryRedundancyCheckerContext(BaseRedundancyCheckerContext):
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self.__stack.aclose()
 
+    @staticmethod
+    def _unique(instance_name: str, handle: str, *uids: str) -> str:
+        """
+        SHA384 hash of the parameter set context handle as a string, the
+        operation.instance_name, and the sorted list of input uuids.
+        """
+        uid_list = [instance_name, handle] + sorted(uids)
+        return hashlib.sha384("".join(uid_list).encode("utf-8")).hexdigest()
+
     async def unique(
         self, operation: Operation, parameter_set: BaseParameterSet
     ) -> str:
@@ -599,28 +614,47 @@ class MemoryRedundancyCheckerContext(BaseRedundancyCheckerContext):
         SHA384 hash of the parameter set context handle as a string, the
         operation.instance_name, and the sorted list of input uuids.
         """
-        uid_list = sorted(
-            map(
-                lambda x: x.uid,
-                [item async for item in parameter_set.inputs()],
-            )
+        uid_list = [
+            operation.instance_name,
+            (await parameter_set.ctx.handle()).as_string(),
+        ] + sorted(
+            [item.origin.uid async for item in parameter_set.parameters()]
         )
-        uid_list.insert(0, (await parameter_set.ctx.handle()).as_string())
-        uid_list.insert(0, operation.instance_name)
-        return hashlib.sha384(", ".join(uid_list).encode("utf-8")).hexdigest()
+        return hashlib.sha384("".join(uid_list).encode("utf-8")).hexdigest()
+
+    async def _exists(self, coro) -> bool:
+        return bool(await self.kvctx.get(await coro) == "\x01")
 
     async def exists(
-        self, operation: Operation, parameter_set: BaseParameterSet
+        self, operation: Operation, *parameter_sets: BaseParameterSet
     ) -> bool:
-        # self.logger.debug('checking parameter_set: %s', list(map(
-        #     lambda p: p.value,
-        #     [p async for p in parameter_set.parameters()])))
-        if (
-            await self.kvctx.get(await self.unique(operation, parameter_set))
-            != "\x01"
-        ):
-            return False
-        return True
+        # TODO(p4) Run tests to choose an optimal threaded vs non-threaded value
+        if len(parameter_sets) < 4:
+            for parameter_set in parameter_sets:
+                yield parameter_set, await self._exists(
+                    self.unique(operation, parameter_set)
+                )
+        else:
+            async for parameter_set, exists in concurrently(
+                {
+                    asyncio.create_task(
+                        self._exists(
+                            self.parent.loop.run_in_executor(
+                                self.parent.pool,
+                                self._unique,
+                                operation.instance_name,
+                                (await parameter_set.ctx.handle()).as_string(),
+                                *[
+                                    item.origin.uid
+                                    async for item in parameter_set.parameters()
+                                ],
+                            )
+                        )
+                    ): parameter_set
+                    for parameter_set in parameter_sets
+                }
+            ):
+                yield parameter_set, exists
 
     async def add(self, operation: Operation, parameter_set: BaseParameterSet):
         # self.logger.debug('adding parameter_set: %s', list(map(
@@ -639,15 +673,28 @@ class MemoryRedundancyChecker(BaseRedundancyChecker, BaseMemoryDataFlowObject):
 
     CONTEXT = MemoryRedundancyCheckerContext
 
+    def __init__(self, config):
+        super().__init__(config)
+        self.loop = None
+        self.pool = None
+        self.__pool = None
+
     async def __aenter__(self) -> "MemoryRedundancyCheckerContext":
         self.__stack = AsyncExitStack()
+        self.__exit_stack = ExitStack()
+        self.__exit_stack.__enter__()
         await self.__stack.__aenter__()
         self.key_value_store = await self.__stack.enter_async_context(
             self.config.key_value_store
         )
+        self.loop = asyncio.get_event_loop()
+        self.pool = self.__exit_stack.enter_context(
+            concurrent.futures.ThreadPoolExecutor()
+        )
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
+        self.__exit_stack.__exit__(exc_type, exc_value, traceback)
         await self.__stack.__aexit__(exc_type, exc_value, traceback)
 
     @classmethod
@@ -831,7 +878,13 @@ class MemoryOperationImplementationNetworkContext(
                 operation.stage.value.upper(),
                 operation.instance_name,
             )
-            self.logger.debug("Inputs: %s", inputs)
+            str_inputs = str(inputs)
+            self.logger.debug(
+                "Inputs: %s",
+                str_inputs
+                if len(str_inputs) < 512
+                else (str_inputs[:512] + "..."),
+            )
             self.logger.debug(
                 "Conditions: %s",
                 dict(
@@ -845,7 +898,13 @@ class MemoryOperationImplementationNetworkContext(
                 ),
             )
             outputs = await opctx.run(inputs)
-            self.logger.debug("Output: %s", outputs)
+            str_outputs = str(outputs)
+            self.logger.debug(
+                "Outputs: %s",
+                str_outputs
+                if len(str_outputs) < 512
+                else (str_outputs[:512] + "..."),
+            )
             self.logger.debug("---")
             return outputs
 
@@ -882,7 +941,9 @@ class MemoryOperationImplementationNetworkContext(
                 expand = operation.expand
             else:
                 expand = []
-            parents = [item async for item in parameter_set.inputs()]
+            parents = [
+                item.origin async for item in parameter_set.parameters()
+            ]
             for key, output in outputs.items():
                 if not key in expand:
                     output = [output]
