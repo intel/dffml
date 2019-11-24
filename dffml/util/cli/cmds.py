@@ -1,53 +1,16 @@
 import os
-import sys
-import ast
-import copy
-import json
-import asyncio
 import inspect
-import logging
-import argparse
-from typing import Optional
 
-from ...repo import Repo
 from ...port import Port
-from ...feature import Feature, Features
 from ...source.source import BaseSource, Sources
 from ...source.json import JSONSource
 from ...source.file import FileSourceConfig
 from ...model import Model
 
-from ...df.types import Operation
-from ...df.base import (
-    Input,
-    BaseInputNetwork,
-    BaseOperationNetwork,
-    BaseLockNetwork,
-    BaseRedundancyChecker,
-    BaseOperationImplementationNetwork,
-    BaseOrchestrator,
-    StringInputSetContext,
-)
-
-from ...df.memory import (
-    MemoryInputNetwork,
-    MemoryOperationNetwork,
-    MemoryLockNetwork,
-    MemoryRedundancyChecker,
-    MemoryOperationImplementationNetwork,
-    MemoryOrchestrator,
-    MemoryInputSet,
-    MemoryInputSetConfig,
-)
 
 from .arg import Arg
 from .cmd import CMD
-from .parser import (
-    list_action,
-    ParseOutputSpecsAction,
-    ParseInputsAction,
-    ParseRemapAction,
-)
+from .parser import list_action
 
 
 class ListEntrypoint(CMD):
@@ -129,58 +92,3 @@ class KeysCMD(CMD):
         nargs="+",
         required=True,
     )
-
-
-class BaseOrchestratorCMD(CMD):
-    """
-    Data Flow commands
-    """
-
-    arg_orchestrator = Arg(
-        "-orchestrator", type=BaseOrchestrator.load, default=MemoryOrchestrator
-    )
-    arg_output_specs = Arg(
-        "-output-specs", nargs="+", action=ParseOutputSpecsAction, default=[]
-    )
-    arg_inputs = Arg(
-        "-inputs",
-        nargs="+",
-        action=ParseInputsAction,
-        default=[],
-        help="Other inputs to add under each ctx (repo's src_url will "
-        + "be used as the context)",
-    )
-    arg_repo_def = Arg(
-        "-repo-def",
-        default=False,
-        type=str,
-        help="Definition to be used for repo.src_url."
-        + "If set, repo.src_url will be added to the set of inputs "
-        + "under each context (which is also the repo's src_url)",
-    )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.orchestrator = self.orchestrator.withconfig(self.extra_config)
-
-    # Load all entrypoints which may possibly be selected. Then have them add
-    # their arguments to the DataFlowFacilitator-tots command.
-    @classmethod
-    def add_bases(cls):
-        # TODO Add args() for each loaded class as argparse arguments
-        return cls
-        cls = copy.deepcopy(cls)
-        for base in [
-            BaseInputNetwork,
-            BaseOperationNetwork,
-            BaseLockNetwork,
-            BaseRedundancyChecker,
-            BaseOperationImplementationNetwork,
-            BaseOrchestrator,
-        ]:
-            for loaded in base.load():
-                loaded.args(cls.EXTRA_CONFIG_ARGS)
-        return cls
-
-
-OrchestratorCMD = BaseOrchestratorCMD.add_bases()

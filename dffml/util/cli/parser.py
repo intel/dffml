@@ -1,22 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
-import os
-import sys
 import ast
-import copy
-import json
-import asyncio
-import inspect
-import logging
 import argparse
-from typing import Optional
-
-from ...repo import Repo
-from ...port import Port
-from ...feature import Feature, Features
-from ...source.source import BaseSource, Sources
-
-from ...df.base import Operation, OperationImplementation
 
 from .cmd import ParseLoggingAction
 
@@ -36,7 +21,7 @@ def list_action(list_class):
     return ParseExpandAction
 
 
-class ParseOutputSpecsAction(argparse.Action):
+class ParseInputsAction(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         if not isinstance(values, list):
             values = [values]
@@ -48,18 +33,3 @@ class ParseOutputSpecsAction(argparse.Action):
             for value in values
         ]
         setattr(namespace, self.dest, ouput_specs)
-
-
-ParseInputsAction = ParseOutputSpecsAction
-
-
-class ParseRemapAction(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        if not isinstance(values, list):
-            values = [values]
-        inputs = []
-        for value in values:
-            output_operation, sub = value.split(".", maxsplit=1)
-            sub, feature = sub.split("=", maxsplit=1)
-            inputs.append((output_operation, sub, feature))
-        setattr(namespace, self.dest, inputs)

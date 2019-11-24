@@ -4,8 +4,10 @@ import hashlib
 import contextlib
 
 from ..base import BaseConfig
+from ..df.base import BaseOrchestrator
 from ..df.types import DataFlow, Stage, Operation, Input
 from ..df.memory import (
+    MemoryOrchestrator,
     MemoryInputSet,
     MemoryInputSetConfig,
     StringInputSetContext,
@@ -17,7 +19,8 @@ from ..util.data import merge
 from ..util.entrypoint import load
 from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
-from ..util.cli.cmds import SourcesCMD, KeysCMD, OrchestratorCMD
+from ..util.cli.cmds import SourcesCMD, KeysCMD
+from ..util.cli.parser import ParseInputsAction
 
 
 class Merge(CMD):
@@ -90,7 +93,7 @@ class Create(CMD):
                 print((await loader.dumpb(exported)).decode())
 
 
-class RunCMD(OrchestratorCMD, SourcesCMD):
+class RunCMD(SourcesCMD):
 
     arg_sources = SourcesCMD.arg_sources.modify(required=False)
     arg_caching = Arg(
@@ -124,6 +127,29 @@ class RunCMD(OrchestratorCMD, SourcesCMD):
         type=BaseConfigLoader.load,
         default=None,
     )
+    arg_orchestrator = Arg(
+        "-orchestrator", type=BaseOrchestrator.load, default=MemoryOrchestrator
+    )
+    arg_inputs = Arg(
+        "-inputs",
+        nargs="+",
+        action=ParseInputsAction,
+        default=[],
+        help="Other inputs to add under each ctx (repo's src_url will "
+        + "be used as the context)",
+    )
+    arg_repo_def = Arg(
+        "-repo-def",
+        default=False,
+        type=str,
+        help="Definition to be used for repo.src_url."
+        + "If set, repo.src_url will be added to the set of inputs "
+        + "under each context (which is also the repo's src_url)",
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.orchestrator = self.orchestrator.withconfig(self.extra_config)
 
 
 class RunAllRepos(RunCMD):
