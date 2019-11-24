@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - DataFlows with multiple possibilities for a source for an input, now correctly
   look through all possible sources instead of just the first one.
+- DataFlow MemoryRedundancyCheckerContext was using all inputs in an input set
+  and all their ancestors to check redundancy (a hold over from pre uid days).
+  It now correctly only uses the inputs in the parameter set. This fixes a major
+  performance issue.
 
 ## [0.3.0] - 2019-10-26
 ### Added

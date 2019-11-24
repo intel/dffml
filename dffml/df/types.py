@@ -417,6 +417,9 @@ class DataFlow:
         # Determine the dataflow if not given
         if self.flow is None:
             self.flow = self.auto_flow()
+        self.update_by_origin()
+
+    def update_by_origin(self):
         # Create by_origin which maps operation instance names to the sources
         self.by_origin = {}
         for instance_name, input_flow in self.flow.items():
