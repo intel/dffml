@@ -628,68 +628,33 @@ class MemoryRedundancyCheckerContext(BaseRedundancyCheckerContext):
     async def exists(
         self, operation: Operation, *parameter_sets: BaseParameterSet
     ) -> bool:
-        # self.logger.debug('checking parameter_set: %s', list(map(
-        #     lambda p: p.value,
-        #     [p async for p in parameter_set.parameters()])))
-        # if len(parameter_sets) < 2:
-        if False:
+        # TODO(p4) Run tests to choose an optimal threaded vs non-threaded value
+        if len(parameter_sets) < 4:
             for parameter_set in parameter_sets:
                 yield parameter_set, await self._exists(
                     self.unique(operation, parameter_set)
                 )
         else:
-            import time
-
-            start_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
-            arg_lists = {
-                parameter_set: [
-                    operation.instance_name,
-                    (await parameter_set.ctx.handle()).as_string(),
-                    *[
-                        item.origin.uid
-                        async for item in parameter_set.parameters()
-                    ],
-                ]
-                for parameter_set in parameter_sets
-            }
-            end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
-            self.logger.debug("Arg lists: %f", end_time - start_time)
-            start_time = end_time
-            """
-            work = {
-                asyncio.create_task(
-                    self._exists(
-                        self.parent.loop.run_in_executor(
-                            self.parent.pool,
-                            self._unique,
-                            operation.instance_name,
-                            (await parameter_set.ctx.handle()).as_string(),
-                            *[item.uid async for item in parameter_set.inputs()],
+            async for parameter_set, exists in concurrently(
+                {
+                    asyncio.create_task(
+                        self._exists(
+                            self.parent.loop.run_in_executor(
+                                self.parent.pool,
+                                self._unique,
+                                operation.instance_name,
+                                (await parameter_set.ctx.handle()).as_string(),
+                                *[
+                                    item.origin.uid
+                                    async for item in parameter_set.parameters()
+                                ],
+                            )
                         )
-                    )
-                ): parameter_set
-                for parameter_set in parameter_sets
-            }
-            """
-            work = {
-                asyncio.create_task(
-                    self._exists(
-                        self.parent.loop.run_in_executor(
-                            self.parent.pool, self._unique, *arg_list
-                        )
-                    )
-                ): parameter_set
-                for parameter_set, arg_list in arg_lists.items()
-            }
-            end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
-            self.logger.debug("Creating work: %f", end_time - start_time)
-            start_time = end_time
-            # async for parameter_set, exists in concurrently(work):
-            os = [o async for o in concurrently(work)]
-            end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
-            self.logger.debug("concurrently took: %f", end_time - start_time)
-            for o in os:
-                yield o
+                    ): parameter_set
+                    for parameter_set in parameter_sets
+                }
+            ):
+                yield parameter_set, exists
 
     async def add(self, operation: Operation, parameter_set: BaseParameterSet):
         # self.logger.debug('adding parameter_set: %s', list(map(
