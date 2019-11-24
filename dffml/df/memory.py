@@ -381,9 +381,6 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         dataflow: DataFlow,
         ctx: Optional[BaseInputSetContext] = None,
     ) -> AsyncIterator[BaseParameterSet]:
-        import time
-
-        start_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
         # Create a mapping of definitions to inputs for that definition
         gather: Dict[str, List[Parameter]] = {}
         async with self.ctxhd_lock:
@@ -491,18 +488,8 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                     # Return if there is no data for an input
                     if not gather[input_name]:
                         return
-        end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
-        self.logger.debug("Gathering took: %f", end_time - start_time)
-        start_time = end_time
-
-        self.logger.debug(
-            "Length of gather values: %s",
-            {key: len(val) for key, val in gather.items()},
-        )
-
         # Generate all possible permutations of applicable inputs
-        # Create the parameter set
-
+        # Create the parameter set for each
         products = list(
             map(
                 lambda permutation: MemoryParameterSet(
@@ -511,23 +498,11 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                 product(*list(gather.values())),
             )
         )
-
-        end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
-        self.logger.debug("Products took: %f", end_time - start_time)
-        start_time = end_time
-
-        # Check if this permutation has been executed before
-        sets = []
+        # Check if each permutation has been executed before
         async for parameter_set, exists in rctx.exists(operation, *products):
             # If not then yield the permutation
             if not exists:
-                sets.append(parameter_set)
-
-        end_time = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
-        self.logger.debug("rctx.exists took: %f", end_time - start_time)
-
-        for parameter_set in sets:
-            yield parameter_set
+                yield parameter_set
 
 
 @entry_point("memory")
