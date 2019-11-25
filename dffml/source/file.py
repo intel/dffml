@@ -1,35 +1,38 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 import os
-import abc
-import asyncio
-import gzip
-import bz2
-import lzma
-import zipfile
 import io
-from typing import NamedTuple, Tuple, Dict
+import abc
+import bz2
+import gzip
+import lzma
+import asyncio
+import zipfile
 from contextlib import contextmanager
+from dataclasses import dataclass, field, fields
+from typing import NamedTuple, Tuple, Dict, List
 
-from ..base import BaseConfig
+from ..base import config
 from .source import BaseSource
 from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
+from ..util.entrypoint import entry_point
 
 
-class FileSourceConfig(BaseConfig, NamedTuple):
+@config
+class FileSourceConfig:
     filename: str
     label: str = "unlabeled"
     readonly: bool = False
 
 
+@entry_point("file")
 class FileSource(BaseSource):
     """
     FileSource reads and write from a file on open / close.
     """
 
-    ENTRY_POINT_ORIG_LABEL = "file"
-    ENTRY_POINT_LABEL = ENTRY_POINT_ORIG_LABEL
+    CONFIG = FileSourceConfig
 
     async def __aenter__(self) -> "BaseSourceContext":
         await self._open()
@@ -108,25 +111,3 @@ class FileSource(BaseSource):
     @abc.abstractmethod
     async def dump_fd(self, fd):
         pass  # pragma: no cover
-
-    @classmethod
-    def args(cls, args, *above) -> Dict[str, Arg]:
-        cls.config_set(args, above, "filename", Arg())
-        cls.config_set(
-            args,
-            above,
-            "readonly",
-            Arg(type=bool, action="store_true", default=False),
-        )
-        cls.config_set(
-            args, above, "label", Arg(type=str, default="unlabeled")
-        )
-        return args
-
-    @classmethod
-    def config(cls, config, *above):
-        return FileSourceConfig(
-            filename=cls.config_get(config, above, "filename"),
-            readonly=cls.config_get(config, above, "readonly"),
-            label=cls.config_get(config, above, "label"),
-        )
