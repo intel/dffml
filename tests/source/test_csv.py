@@ -58,7 +58,7 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
         )
         self.assertEqual(config.filename, "feedface")
         self.assertEqual(config.label, "unlabeled")
-        self.assertEqual(config.label_column, "label")
+        self.assertEqual(config.labelcol, "label")
         self.assertEqual(config.key, "src_url")
         self.assertFalse(config.readonly)
 
@@ -78,7 +78,7 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
         )
         self.assertEqual(config.filename, "feedface")
         self.assertEqual(config.label, "default-label")
-        self.assertEqual(config.label_column, "dffml_label")
+        self.assertEqual(config.labelcol, "dffml_label")
         self.assertEqual(config.key, "SourceURLColumn")
         self.assertTrue(config.readonly)
 

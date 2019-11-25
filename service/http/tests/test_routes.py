@@ -254,7 +254,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                     label="unlabeled",
                     readonly=True,
                     key="src_url",
-                    label_column="label",
+                    labelcol="label",
                 ),
             )
             with self.subTest(context="salaryctx"):
