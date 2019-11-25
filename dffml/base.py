@@ -110,7 +110,11 @@ def config(cls):
     """
     Decorator to create a dataclass
     """
-    return dataclasses.dataclass(eq=True, frozen=True)(cls)
+    datacls = dataclasses.dataclass(eq=True, frozen=True)(cls)
+    datacls._replace = lambda self, *args, **kwargs: dataclasses.replace(
+        self, *args, **kwargs
+    )
+    return datacls
 
 
 class ConfigurableParsingNamespace(object):

@@ -61,7 +61,10 @@ class TestFileSource(AsyncTestCase):
                         "file": {
                             "arg": None,
                             "config": {
-                                "filename": {"arg": Arg(), "config": {}},
+                                "filename": {
+                                    "arg": Arg(type=str),
+                                    "config": {},
+                                },
                                 "readonly": {
                                     "arg": Arg(
                                         type=bool,
