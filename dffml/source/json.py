@@ -8,12 +8,16 @@ from typing import Dict
 
 from ..repo import Repo
 from .memory import MemorySource
-from .file import FileSource
+from .file import FileSource, FileSourceConfig
 from ..util.entrypoint import entry_point
 
 from .log import LOGGER
 
 LOGGER = LOGGER.getChild("json")
+
+
+class JSONSourceConfig(FileSourceConfig):
+    pass  # pragma: no cov
 
 
 @dataclass
@@ -39,6 +43,7 @@ class JSONSource(FileSource, MemorySource):
     stored in memory.
     """
 
+    CONFIG = JSONSourceConfig
     OPEN_JSON_FILES: Dict[str, OpenJSONFile] = {}
     OPEN_JSON_FILES_LOCK: asyncio.Lock = asyncio.Lock()
 
