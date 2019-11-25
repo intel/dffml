@@ -13,6 +13,7 @@ from contextlib import asynccontextmanager
 from ..repo import Repo
 from .memory import MemorySource
 from .file import FileSource, FileSourceConfig
+from ..base import config
 from ..util.cli.arg import Arg
 from ..util.entrypoint import entry_point
 
@@ -42,12 +43,11 @@ CSV_SOURCE_CONFIG_DEFAULT_LABEL = "unlabeled"
 CSV_SOURCE_CONFIG_DEFAULT_LABEL_COLUMN = "label"
 
 
-class CSVSourceConfig(FileSourceConfig, NamedTuple):
-    filename: str
-    readonly: bool = False
+@config
+class CSVSourceConfig(FileSourceConfig):
     key: str = CSV_SOURCE_CONFIG_DEFAULT_KEY
     label: str = CSV_SOURCE_CONFIG_DEFAULT_LABEL
-    label_column: str = CSV_SOURCE_CONFIG_DEFAULT_LABEL_COLUMN
+    labelcol: str = CSV_SOURCE_CONFIG_DEFAULT_LABEL_COLUMN
 
 
 # CSVSource is a bit of a mess
@@ -56,6 +56,8 @@ class CSVSource(FileSource, MemorySource):
     """
     Uses a CSV file as the source of repo feature data
     """
+
+    CONFIG = CSVSourceConfig
 
     # Headers we've added to track data other than feature data for a repo
     CSV_HEADERS = ["prediction", "confidence"]
@@ -83,46 +85,12 @@ class CSVSource(FileSource, MemorySource):
         async with self._open_csv():
             return {}
 
-    @classmethod
-    def args(cls, args, *above) -> Dict[str, Arg]:
-        cls.config_set(args, above, "filename", Arg())
-        cls.config_set(
-            args,
-            above,
-            "readonly",
-            Arg(type=bool, action="store_true", default=False),
-        )
-        cls.config_set(
-            args,
-            above,
-            "label",
-            Arg(type=str, default=CSV_SOURCE_CONFIG_DEFAULT_LABEL),
-        )
-        cls.config_set(
-            args,
-            above,
-            "labelcol",
-            Arg(type=str, default=CSV_SOURCE_CONFIG_DEFAULT_LABEL_COLUMN),
-        )
-        cls.config_set(args, above, "key", Arg(type=str, default="src_url"))
-        return args
-
-    @classmethod
-    def config(cls, config, *above):
-        return CSVSourceConfig(
-            filename=cls.config_get(config, above, "filename"),
-            readonly=cls.config_get(config, above, "readonly"),
-            label=cls.config_get(config, above, "label"),
-            key=cls.config_get(config, above, "key"),
-            label_column=cls.config_get(config, above, "labelcol"),
-        )
-
     async def read_csv(self, fd, open_file):
         dict_reader = csv.DictReader(fd, dialect="strip")
         # Record what headers are present when the file was opened
         if not self.config.key in dict_reader.fieldnames:
             open_file.write_back_key = False
-        if self.config.label_column in dict_reader.fieldnames:
+        if self.config.labelcol in dict_reader.fieldnames:
             open_file.write_back_label = True
         # Store all the repos by their label in write_out
         open_file.write_out = {}
@@ -130,9 +98,9 @@ class CSVSource(FileSource, MemorySource):
         index = {}
         for row in dict_reader:
             # Grab label from row
-            label = row.get(self.config.label_column, self.config.label)
-            if self.config.label_column in row:
-                del row[self.config.label_column]
+            label = row.get(self.config.labelcol, self.config.label)
+            if self.config.labelcol in row:
+                del row[self.config.labelcol]
             index.setdefault(label, 0)
             # Grab src_url from row
             src_url = row.get(self.config.key, index[label])
@@ -200,7 +168,7 @@ class CSVSource(FileSource, MemorySource):
             fieldnames = (
                 [] if not open_file.write_back_key else [self.config.key]
             )
-            fieldnames.append(self.config.label_column)
+            fieldnames.append(self.config.labelcol)
             # Get all the feature names
             feature_fieldnames = set()
             for label, repos in open_file.write_out.items():
@@ -217,7 +185,7 @@ class CSVSource(FileSource, MemorySource):
                     repo_data = repo.dict()
                     row = {name: "" for name in fieldnames}
                     # Always write the label
-                    row[self.config.label_column] = label
+                    row[self.config.labelcol] = label
                     # Write the key if it existed
                     if open_file.write_back_key:
                         row[self.config.key] = repo.src_url
