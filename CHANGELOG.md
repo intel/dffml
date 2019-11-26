@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   performance issue.
 ### Removed
 - CLI command `operations` removed in favor of `dataflow run`
+- Duplicate dataflow diagram code from development service
 
 ## [0.3.0] - 2019-10-26
 ### Added
