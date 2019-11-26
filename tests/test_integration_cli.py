@@ -3,6 +3,8 @@ This file contains integration tests. We use the CLI to exercise functionality o
 various DFFML classes and constructs.
 """
 import io
+import inspect
+import pathlib
 import contextlib
 
 from dffml.cli.cli import CLI
@@ -67,3 +69,28 @@ class TestMerge(IntegrationCLITestCase):
         stdout = self.stdout.getvalue()
         for src_url in src_urls:
             self.assertIn(src_url, stdout)
+
+    async def test_memory_to_csv(self):
+        src_urls = ["A", "B", "C"]
+        filename = self.mktempfile()
+        await CLI.cli(
+            "merge",
+            "dest=csv",
+            "src=memory",
+            "-source-dest-filename",
+            filename,
+            "-source-src-repos",
+            *src_urls,
+        )
+        self.assertEqual(
+            pathlib.Path(filename).read_text(),
+            inspect.cleandoc(
+                """
+                src_url,label,prediction,confidence
+                A,unlabeled,,
+                B,unlabeled,,
+                C,unlabeled,,
+                """
+            )
+            + "\n",
+        )
