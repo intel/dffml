@@ -58,8 +58,16 @@ function run_plugin() {
     "${PYTHON}" -m dffml service dev install
     ./scripts/docs.sh
 
+    # Log skipped tests to file
+    check_skips="$(mktemp)"
+    TEMP_DIRS+=("${check_skips}")
+
     # Run with coverage
-    "${PYTHON}" -m coverage run setup.py test
+    "${PYTHON}" -m coverage run setup.py test 2>&1 | tee "${check_skips}"
+    "${PYTHON}" -m coverage report -m
+
+    # Fail if any tests were skipped
+    grep -v -q -E '(skipped=.*)' "${check_skips}"
   fi
 }
 
