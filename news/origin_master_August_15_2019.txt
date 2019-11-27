@@ -62,7 +62,7 @@ Years,Salary
 EOF
 $ dffml train \
     -model scratchslr \
-    -features def:Years:int:1 \
+    -model-features def:Years:int:1 \
     -model-predict Salary \
     -sources f=csv \
     -source-filename dataset.csv \
@@ -70,7 +70,7 @@ $ dffml train \
     -log debug
 $ dffml accuracy \
     -model scratchslr \
-    -features def:Years:int:1 \
+    -model-features def:Years:int:1 \
     -model-predict Salary \
     -sources f=csv \
     -source-filename dataset.csv \
@@ -80,7 +80,7 @@ $ dffml accuracy \
 $ echo -e 'Years,Salary\n6,0\n' | \
   dffml predict all \
     -model scratchslr \
-    -features def:Years:int:1 \
+    -model-features def:Years:int:1 \
     -model-predict Salary \
     -sources f=csv \
     -source-filename /dev/stdin \

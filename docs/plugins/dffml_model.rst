@@ -386,7 +386,7 @@ Training:
 
     $ dffml train \
         -model SCIKIT_MODEL_ENTRYPOINT \
-        -features FEATURE_DEFINITION \
+        -model-features FEATURE_DEFINITION \
         -model-predict TO_PREDICT \
         -model-SCIKIT_PARAMETER_NAME SCIKIT_PARAMETER_VALUE \
         -sources f=TRAINING_DATA_SOURCE_TYPE \
@@ -400,7 +400,7 @@ Testing and Accuracy:
 
     $ dffml accuracy \
         -model SCIKIT_MODEL_ENTRYPOINT \
-        -features FEATURE_DEFINITION \
+        -model-features FEATURE_DEFINITION \
         -model-predict TO_PREDICT \
         -sources f=TESTING_DATA_SOURCE_TYPE \
         -source-filename TESTING_DATA_FILE_NAME \
@@ -413,7 +413,7 @@ Predicting with trained model:
 
     $ dffml predict all \
         -model SCIKIT_MODEL_ENTRYPOINT \
-        -features FEATURE_DEFINITION \
+        -model-features FEATURE_DEFINITION \
         -model-predict TO_PREDICT \
         -sources f=PREDICT_DATA_SOURCE_TYPE \
         -source-filename PREDICT_DATA_FILE_NAME \
@@ -484,7 +484,7 @@ Let us take a simple example:
     EOF
     $ dffml train \
         -model scikitlr \
-        -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \
+        -model-features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \
         -model-predict Salary \
         -sources f=csv \
         -source-filename train.csv \
@@ -492,7 +492,7 @@ Let us take a simple example:
         -log debug
     $ dffml accuracy \
         -model scikitlr \
-        -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \
+        -model-features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \
         -model-predict Salary \
         -sources f=csv \
         -source-filename test.csv \
@@ -502,7 +502,7 @@ Let us take a simple example:
     $ echo -e 'Years,Expertise,Trust\n6,13,1.4\n' | \
       dffml predict all \
         -model scikitlr \
-        -features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \
+        -model-features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \
         -model-predict Salary \
         -sources f=csv \
         -source-filename /dev/stdin \
