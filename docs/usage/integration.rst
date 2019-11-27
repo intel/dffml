@@ -376,7 +376,7 @@ to train on our dataset.
         -model-classification maintained \
         -model-classifications 0 1 \
         -sources db=demoapp \
-        -features \
+        -model-features \
           def:authors:int:10 \
           def:commits:int:10 \
           def:work:int:10 \
@@ -393,7 +393,7 @@ meaningless unless you threw out the dataset and put in real classifications.
         -model-classification maintained \
         -model-classifications 0 1 \
         -sources db=demoapp \
-        -features \
+        -model-features \
           def:authors:int:10 \
           def:commits:int:10 \
           def:work:int:10 \
@@ -425,7 +425,7 @@ Now that we have the data for the new repo, ask the model for a prediction.
         -model-classification maintained \
         -model-classifications 0 1 \
         -sources db=demoapp \
-        -features \
+        -model-features \
           def:authors:int:10 \
           def:commits:int:10 \
           def:work:int:10 \

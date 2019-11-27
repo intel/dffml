@@ -20,7 +20,7 @@ dffml train \
   -model model_name \
   -sources csv=iris_training.csv \
   -classifications 0 1 2 \
-  -features \
+  -model-features \
     def:SepalLength:float:1 \
     def:SepalWidth:float:1 \
     def:PetalLength:float:1 \
@@ -32,7 +32,7 @@ dffml accuracy \
   -model model_name \
   -sources csv=iris_training.csv \
   -classifications 0 1 2 \
-  -features \
+  -model-features \
     def:SepalLength:float:1 \
     def:SepalWidth:float:1 \
     def:PetalLength:float:1 \
@@ -42,7 +42,7 @@ dffml predict all \
   -model model_name \
   -sources csv=iris_test.csv \
   -classifications 0 1 2 \
-  -features \
+  -model-features \
     def:SepalLength:float:1 \
     def:SepalWidth:float:1 \
     def:PetalLength:float:1 \
