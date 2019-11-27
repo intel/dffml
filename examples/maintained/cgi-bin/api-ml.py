@@ -53,7 +53,7 @@ elif action == 'predict':
         '-model-classification', 'maintained',
         '-model-classifications', '0', '1',
         '-sources', 'db=demoapp',
-        '-features',
+        '-model-features',
         'def:authors:int:10',
         'def:commits:int:10',
         'def:work:int:10',
