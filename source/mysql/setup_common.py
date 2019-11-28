@@ -50,7 +50,7 @@ VERSION = ast.literal_eval(
 
 README = Path(SELF_PATH, "README.md").read_text()
 
-SETUP_KWARGS = dict(
+KWARGS = dict(
     name=NAME,
     version=VERSION,
     description=DESCRIPTION,

@@ -1,11 +1,20 @@
+import os
+import importlib.util
 from setuptools import setup
 
-from dffml_setup_common import SETUP_KWARGS, IMPORT_NAME
+# Boilerplate to load commonalities
+spec = importlib.util.spec_from_file_location(
+    "setup_common", os.path.join(os.path.dirname(__file__), "setup_common.py")
+)
+common = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(common)
 
-SETUP_KWARGS["install_requires"] += ["aiomysql>=0.0.20"]
-SETUP_KWARGS["tests_require"] = ["docker>=4.0.2"]
-SETUP_KWARGS["entry_points"] = {
-    "dffml.source": [f"mysql = {IMPORT_NAME}.source:MySQLSource"]
+common.KWARGS["entry_points"] = {
+    "dffml.source": [f"mysql = {common.IMPORT_NAME}.source:MySQLSource"]
 }
 
-setup(**SETUP_KWARGS)
+common.KWARGS["install_requires"] += ["aiomysql>=0.0.20"]
+
+common.KWARGS["tests_require"] = ["docker>=4.0.2"]
+
+setup(**common.KWARGS)
