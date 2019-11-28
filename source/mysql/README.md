@@ -1,16 +1,14 @@
-# DFFML REPLACE_PACKGE_NAME Service
+# DFFML Source for MySQL Protocol
 
 ## About
 
-Description
+Provides access to MySQL Protocol compatible databases
 
 ## Usage
 
-```console
-# Command line usage here
-```
+See [documentation](https://intel.github.io/dffml/plugins/dffml_source.html#dffml-source-mysql)
 
 ## License
 
-REPLACE_PACKGE_NAME Service is distributed under the terms of the
+DFFML Source for MySQL Protocol is distributed under the terms of the
 [MIT License](LICENSE).

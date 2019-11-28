@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and all their ancestors to check redundancy (a hold over from pre uid days).
   It now correctly only uses the inputs in the parameter set. This fixes a major
   performance issue.
+- MySQL packaging issue.
 ### Removed
 - CLI command `operations` removed in favor of `dataflow run`
 
