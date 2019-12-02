@@ -3,6 +3,7 @@ Base classes for DFFML. All classes in DFFML should inherit from these so that
 they follow a similar API for instantiation and usage.
 """
 import abc
+import copy
 import inspect
 import argparse
 import contextlib
@@ -22,7 +23,7 @@ except ImportError:
 
 
 from .util.cli.arg import Arg
-from .util.data import traverse_config_set, traverse_config_get
+from .util.data import traverse_config_set, traverse_config_get, type_lookup
 
 from .util.entrypoint import Entrypoint
 
@@ -114,6 +115,8 @@ def mkarg(field):
     # HACK For detecting dataclasses._MISSING_TYPE
     if "dataclasses._MISSING_TYPE" not in repr(field.default):
         arg["default"] = field.default
+    if "dataclasses._MISSING_TYPE" not in repr(field.default_factory):
+        arg["default"] = field.default_factory()
     if field.type == bool:
         arg["action"] = "store_true"
     elif inspect.isclass(field.type):
@@ -140,18 +143,20 @@ def convert_value(arg, value):
     if value is None:
         # Return default if not found and available
         if "default" in arg:
-            return arg["default"]
+            return copy.deepcopy(arg["default"])
         raise MissingConfig
 
-    # TODO This is a oversimplification of argparse's nargs
     if not "nargs" in arg:
         value = value[0]
     if "type" in arg:
+        type_cls = arg["type"]
+        if type_cls == Type:
+            type_cls = type_lookup
         # TODO This is a oversimplification of argparse's nargs
         if "nargs" in arg:
-            value = list(map(arg["type"], value))
+            value = list(map(type_cls, value))
         else:
-            value = arg["type"](value)
+            value = type_cls(value)
     if "action" in arg:
         if isinstance(arg["action"], str):
             # HACK This accesses _pop_action_class from ArgumentParser
@@ -205,7 +210,7 @@ def config(cls):
     """
     Decorator to create a dataclass
     """
-    datacls = dataclasses.dataclass(eq=True, init=True, frozen=True)(cls)
+    datacls = dataclasses.dataclass(eq=True, init=True)(cls)
     datacls._fromdict = classmethod(_fromdict)
     datacls._replace = lambda self, *args, **kwargs: dataclasses.replace(
         self, *args, **kwargs
