@@ -103,7 +103,7 @@ class CSVSource(FileSource, MemorySource):
                 del row[self.config.labelcol]
             index.setdefault(label, 0)
             # Grab src_url from row
-            src_url = row.get(self.config.key, index[label])
+            src_url = row.get(self.config.key, str(index[label]))
             if self.config.key in row:
                 del row[self.config.key]
             else:
