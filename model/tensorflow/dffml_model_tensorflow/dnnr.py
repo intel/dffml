@@ -3,7 +3,6 @@ Uses Tensorflow to create a generic DNN which learns on all of the features in a
 repo.
 """
 import os
-from dataclasses import dataclass
 from typing import List, Dict, Any, AsyncIterator
 
 import numpy as np
@@ -14,7 +13,7 @@ from dffml.source.source import Sources
 from dffml.model.model import Model
 from dffml.accuracy import Accuracy
 from dffml.util.entrypoint import entry_point
-from dffml.base import BaseConfig
+from dffml.base import BaseConfig, config, field
 from dffml.util.cli.arg import Arg
 from dffml.feature.feature import Feature, Features
 from dffml.util.cli.parser import list_action
@@ -22,14 +21,24 @@ from dffml.util.cli.parser import list_action
 from dffml_model_tensorflow.dnnc import TensorflowModelContext
 
 
-@dataclass(init=True, eq=True)
+@config
 class DNNRegressionModelConfig:
-    directory: str
-    steps: int
-    epochs: int
-    hidden: List[int]
-    predict: str  # feature_name holding target values
-    features: Features
+    predict: str = field("Feature name holding target values")
+    features: Features = field("Features to train on")
+    steps: int = field("Number of steps to train the model", default=3000)
+    epochs: int = field(
+        "Number of iterations to pass over all repos in a source", default=30
+    )
+    directory: str = field(
+        "Directory where state should be saved",
+        default=os.path.join(
+            os.path.expanduser("~"), ".cache", "dffml", "tensorflow"
+        ),
+    )
+    hidden: List[int] = field(
+        "List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer",
+        default_factory=lambda: [12, 40, 15],
+    )
 
 
 class DNNRegressionModelContext(TensorflowModelContext):
@@ -264,78 +273,4 @@ class DNNRegressionModel(Model):
     """
 
     CONTEXT = DNNRegressionModelContext
-
-    @classmethod
-    def args(cls, args, *above) -> Dict[str, Arg]:
-        cls.config_set(
-            args,
-            above,
-            "directory",
-            Arg(
-                default=os.path.join(
-                    os.path.expanduser("~"), ".cache", "dffml", "tensorflow"
-                ),
-                help="Directory where state should be saved",
-            ),
-        )
-        cls.config_set(
-            args,
-            above,
-            "steps",
-            Arg(
-                type=int,
-                default=3000,
-                help="Number of steps to train the model",
-            ),
-        )
-        cls.config_set(
-            args,
-            above,
-            "epochs",
-            Arg(
-                type=int,
-                default=30,
-                help="Number of iterations to pass over all repos in a source",
-            ),
-        )
-        cls.config_set(
-            args,
-            above,
-            "hidden",
-            Arg(
-                type=int,
-                nargs="+",
-                default=[12, 40, 15],
-                help="List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer",
-            ),
-        )
-        cls.config_set(
-            args,
-            above,
-            "predict",
-            Arg(help="Feature name holding truth value"),
-        )
-        cls.config_set(
-            args,
-            above,
-            "features",
-            Arg(
-                nargs="+",
-                required=True,
-                type=Feature.load,
-                action=list_action(Features),
-                help="Features to train on",
-            ),
-        )
-        return args
-
-    @classmethod
-    def config(cls, config, *above) -> BaseConfig:
-        return DNNRegressionModelConfig(
-            directory=cls.config_get(config, above, "directory"),
-            steps=cls.config_get(config, above, "steps"),
-            epochs=cls.config_get(config, above, "epochs"),
-            hidden=cls.config_get(config, above, "hidden"),
-            predict=cls.config_get(config, above, "predict"),
-            features=cls.config_get(config, above, "features"),
-        )
+    CONFIG = DNNRegressionModelConfig
