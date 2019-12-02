@@ -12,6 +12,7 @@ from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Dict
 import numpy as np
 
 from dffml.repo import Repo
+from dffml.base import config, field
 from dffml.source.source import Sources
 from dffml.feature import Features
 from dffml.accuracy import Accuracy
@@ -22,10 +23,16 @@ from dffml.feature.feature import Feature, Features
 from dffml.util.cli.parser import list_action
 
 
-class SLRConfig(ModelConfig, NamedTuple):
-    predict: str
-    directory: str
-    features: Features
+@config
+class SLRConfig:
+    predict: str = field("Label or the value to be predicted")
+    features: Features = field("Features to train on")
+    directory: str = field(
+        "Directory where state should be saved",
+        default=os.path.join(
+            os.path.expanduser("~"), ".cache", "dffml", "scratch"
+        ),
+    )
 
 
 class SLRContext(ModelContext):
@@ -193,6 +200,7 @@ class SLR(Model):
     """
 
     CONTEXT = SLRContext
+    CONFIG = SLRConfig
 
     def __init__(self, config: SLRConfig) -> None:
         super().__init__(config)
@@ -215,46 +223,3 @@ class SLR(Model):
         filename = self._filename()
         with open(filename, "w") as write:
             json.dump(self.saved, write)
-
-    @classmethod
-    def args(cls, args, *above) -> Dict[str, Arg]:
-        cls.config_set(
-            args,
-            above,
-            "directory",
-            Arg(
-                default=os.path.join(
-                    os.path.expanduser("~"), ".cache", "dffml", "scratch"
-                ),
-                help="Directory where state should be saved",
-            ),
-        )
-
-        cls.config_set(
-            args,
-            above,
-            "predict",
-            Arg(type=str, help="Label or the value to be predicted"),
-        )
-
-        cls.config_set(
-            args,
-            above,
-            "features",
-            Arg(
-                nargs="+",
-                required=True,
-                type=Feature.load,
-                action=list_action(Features),
-                help="Features to train on",
-            ),
-        )
-        return args
-
-    @classmethod
-    def config(cls, config, *above) -> "SLRConfig":
-        return SLRConfig(
-            directory=cls.config_get(config, above, "directory"),
-            predict=cls.config_get(config, above, "predict"),
-            features=cls.config_get(config, above, "features"),
-        )
