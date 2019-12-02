@@ -33,7 +33,7 @@ from dffml.accuracy import Accuracy as AccuracyType
 from dffml.util.entrypoint import entry_point
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.util.cli.cmds import ModelCMD
-
+from dffml.base import config
 from dffml.cli import Merge, Dataflow, Train, Accuracy, Predict, List
 
 from .test_df import OPERATIONS, OPIMPS
@@ -94,6 +94,14 @@ class ReposTestCase(AsyncTestCase):
         return self._stack.enter_context(non_existant_tempfile())
 
 
+@config
+class FakeConfig:
+    features: Features
+    directory: str = os.path.join(
+        os.path.expanduser("~"), ".cache", "dffml", "test_cli", "fake"
+    )
+
+
 class FakeFeature(Feature):
 
     NAME: str = "fake"
@@ -134,6 +142,7 @@ class FakeModelContext(ModelContext):
 class FakeModel(Model):
 
     CONTEXT = FakeModelContext
+    CONFIG = FakeConfig
 
 
 def feature_load(loading=None):
