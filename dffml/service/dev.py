@@ -427,6 +427,10 @@ class Install(CMD):
     Uninstall production packages and install dffml in development mode.
     """
 
+    arg_user = Arg(
+        "-user", "Preform user install", default=True, action="store_false"
+    )
+
     async def run(self):
         main_package = is_develop("dffml")
         if not main_package:
@@ -434,18 +438,28 @@ class Install(CMD):
                 "Currenty you need to have at least the main package already installed in development mode."
             )
         # Packages fail to install if we run pip processes in parallel
-        for package in CORE_PLUGINS:
-            package = Path(*main_package.parts, *package)
-            self.logger.info("Installing %s in development mode", package)
-            proc = await asyncio.create_subprocess_exec(
-                sys.executable,
-                "-m",
-                "pip",
-                "install",
-                "-e",
-                str(package.absolute()),
+        packages = list(
+            map(
+                lambda package: Path(*main_package.parts, *package),
+                CORE_PLUGINS,
             )
-            await proc.wait()
+        )
+        self.logger.info("Installing %r in development mode", packages)
+        cmd = [
+            sys.executable,
+            "-m",
+            "pip",
+            "install",
+        ]
+        if self.user:
+            # --user sometimes fails
+            local_path = Path("~", ".local").expanduser().absolute()
+            cmd.append(f"--prefix={local_path}")
+        for package in packages:
+            cmd += ["-e", str(package.absolute())]
+        self.logger.debug("Running: %s", " ".join(cmd))
+        proc = await asyncio.create_subprocess_exec(*cmd)
+        await proc.wait()
 
 
 class Develop(CMD):

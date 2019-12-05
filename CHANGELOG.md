@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   for each class based off of the CONFIG property of that class. The CONFIG
   property is a class which has been decorated with dffml.base.config to make it
   a dataclass.
+- Speed up development service install of all plugins in development mode
 ### Fixed
 - DataFlows with multiple possibilities for a source for an input, now correctly
   look through all possible sources instead of just the first one.
