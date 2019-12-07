@@ -55,7 +55,7 @@ function run_plugin() {
     # Create the docs
     cd "${SRC_ROOT}"
     "${PYTHON}" -m pip install -U -e "${SRC_ROOT}[dev]"
-    "${PYTHON}" -m dffml service dev install
+    "${PYTHON}" -m dffml service dev install -user
     ./scripts/docs.sh
 
     # Log skipped tests to file

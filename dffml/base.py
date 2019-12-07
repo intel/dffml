@@ -29,6 +29,9 @@ from .util.entrypoint import Entrypoint
 from .log import LOGGER
 
 
+ARGP = ArgumentParser()
+
+
 class ParseExpandAction(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         if not isinstance(values, list):
@@ -106,11 +109,92 @@ class BaseConfig(object):
         return repr(self)
 
 
+def mkarg(field):
+    arg = Arg(type=field.type)
+    # HACK For detecting dataclasses._MISSING_TYPE
+    if "dataclasses._MISSING_TYPE" not in repr(field.default):
+        arg["default"] = field.default
+    if field.type == bool:
+        arg["action"] = "store_true"
+    elif inspect.isclass(field.type):
+        if issubclass(field.type, list):
+            arg["nargs"] = "+"
+            if not hasattr(field.type, "SINGLETON"):
+                raise AttributeError(
+                    f"{field.type.__qualname__} missing attribute SINGLETON"
+                )
+            arg["action"] = list_action(field.type)
+            arg["type"] = field.type.SINGLETON
+        if hasattr(arg["type"], "load"):
+            # TODO (python3.8) Use Protocol
+            arg["type"] = arg["type"].load
+    elif get_origin(field.type) is list:
+        arg["type"] = get_args(field.type)[0]
+        arg["nargs"] = "+"
+    if "help" in field.metadata:
+        arg["help"] = field.metadata["help"]
+    return arg
+
+
+def convert_value(arg, value):
+    if value is None:
+        # Return default if not found and available
+        if "default" in arg:
+            return arg["default"]
+        raise MissingConfig
+
+    # TODO This is a oversimplification of argparse's nargs
+    if not "nargs" in arg:
+        value = value[0]
+    if "type" in arg:
+        # TODO This is a oversimplification of argparse's nargs
+        if "nargs" in arg:
+            value = list(map(arg["type"], value))
+        else:
+            value = arg["type"](value)
+    if "action" in arg:
+        if isinstance(arg["action"], str):
+            # HACK This accesses _pop_action_class from ArgumentParser
+            # which is prefaced with an underscore indicating it not an API
+            # we can rely on
+            arg["action"] = ARGP._pop_action_class(arg)
+        namespace = ConfigurableParsingNamespace()
+        action = arg["action"](dest="dest", option_strings="")
+        action(None, namespace, value)
+        value = namespace.dest
+    return value
+
+
+def is_config_dict(value):
+    return bool(
+        "arg" in value
+        and "config" in value
+        and isinstance(value["config"], dict)
+    )
+
+
+def _fromdict(cls, **kwargs):
+    for field in dataclasses.fields(cls):
+        if field.name in kwargs:
+            value = kwargs[field.name]
+            config = {}
+            if is_config_dict(value):
+                value, config = value["arg"], value["config"]
+            value = convert_value(mkarg(field), value)
+            if inspect.isclass(value) and issubclass(value, BaseConfigurable):
+                value = value.withconfig(
+                    {field.name: {"arg": None, "config": config}}
+                )
+            kwargs[field.name] = value
+    return cls(**kwargs)
+
+
 def config(cls):
     """
     Decorator to create a dataclass
     """
     datacls = dataclasses.dataclass(eq=True, frozen=True)(cls)
+    datacls._fromdict = classmethod(_fromdict)
     datacls._replace = lambda self, *args, **kwargs: dataclasses.replace(
         self, *args, **kwargs
     )
@@ -129,8 +213,6 @@ class BaseConfigurable(abc.ABC):
     instantiate a config (deriving from BaseConfig) which will be used as the
     only parameter to the __init__ of a BaseDataFlowFacilitatorObject.
     """
-
-    __argp = ArgumentParser()
 
     def __init__(self, config: BaseConfig) -> None:
         """
@@ -225,41 +307,20 @@ class BaseConfigurable(abc.ABC):
             with contextlib.suppress(KeyError):
                 value = traverse_config_get(config, *no_label_above)
 
-        if value is None:
-            # Return default if not found and available
-            if "default" in arg:
-                return arg["default"]
-            raise MissingConfig(
-                "%s missing %r from %s"
-                % (
-                    cls.__qualname__,
-                    label_above[-1],
-                    ".".join(label_above[:-1]),
-                )
+        try:
+            return convert_value(arg, value)
+        except MissingConfig as error:
+            error.args = (
+                (
+                    "%s missing %r from %s"
+                    % (
+                        cls.__qualname__,
+                        label_above[-1],
+                        ".".join(label_above[:-1]),
+                    )
+                ),
             )
-
-        if value is None and "default" in arg:
-            return arg["default"]
-        # TODO This is a oversimplification of argparse's nargs
-        if not "nargs" in arg:
-            value = value[0]
-        if "type" in arg:
-            # TODO This is a oversimplification of argparse's nargs
-            if "nargs" in arg:
-                value = list(map(arg["type"], value))
-            else:
-                value = arg["type"](value)
-        if "action" in arg:
-            if isinstance(arg["action"], str):
-                # HACK This accesses _pop_action_class from ArgumentParser
-                # which is prefaced with an underscore indicating it not an API
-                # we can rely on
-                arg["action"] = cls.__argp._pop_action_class(arg)
-            namespace = ConfigurableParsingNamespace()
-            action = arg["action"](dest="dest", option_strings="")
-            action(None, namespace, value)
-            value = namespace.dest
-        return value
+            raise
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
@@ -271,30 +332,7 @@ class BaseConfigurable(abc.ABC):
                 f"{cls.__qualname__} requires CONFIG property or implementation of args() classmethod"
             )
         for field in dataclasses.fields(cls.CONFIG):
-            arg = Arg(type=field.type)
-            # HACK For detecting dataclasses._MISSING_TYPE
-            if "dataclasses._MISSING_TYPE" not in repr(field.default):
-                arg["default"] = field.default
-            if field.type == bool:
-                arg["action"] = "store_true"
-            elif inspect.isclass(field.type):
-                if issubclass(field.type, list):
-                    arg["nargs"] = "+"
-                    if not hasattr(field.type, "SINGLETON"):
-                        raise AttributeError(
-                            f"{field.type.__qualname__} missing attribute SINGLETON"
-                        )
-                    arg["action"] = list_action(field.type)
-                    arg["type"] = field.type.SINGLETON
-                if hasattr(arg["type"], "load"):
-                    # TODO (python3.8) Use Protocol
-                    arg["type"] = arg["type"].load
-            elif get_origin(field.type) is list:
-                arg["type"] = get_args(field.type)[0]
-                arg["nargs"] = "+"
-            if "help" in field.metadata:
-                arg["help"] = field.metadata["help"]
-            cls.config_set(args, above, field.name, arg)
+            cls.config_set(args, above, field.name, mkarg(field))
         return args
 
     @classmethod
