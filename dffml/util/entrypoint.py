@@ -135,6 +135,9 @@ class Entrypoint(object):
         loaded_names = []
         loading_classes = []
         for i in pkg_resources.iter_entry_points(cls.ENTRY_POINT):
+            loaded_names.append(i.name)
+            if loading is not None and i.name != loading:
+                continue
             try:
                 loaded = i.load()
             except Exception as error:
@@ -146,7 +149,6 @@ class Entrypoint(object):
                 raise
             loaded.ENTRY_POINT_LABEL = i.name
             if issubclass(loaded, cls):
-                loaded_names.append(i.name)
                 loading_classes.append(loaded)
                 if loading is not None and i.name == loading:
                     return loaded
