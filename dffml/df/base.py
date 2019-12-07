@@ -51,10 +51,14 @@ class BaseDataFlowObject(BaseDataFlowFacilitatorObject):
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
+        if hasattr(cls, "CONFIG"):
+            return super(BaseDataFlowObject, cls).args(args, *above)
         return args
 
     @classmethod
     def config(cls, config, *above) -> BaseConfig:
+        if hasattr(cls, "CONFIG"):
+            return super(BaseDataFlowObject, cls).config(config, *above)
         return BaseConfig()
 
 
@@ -221,6 +225,9 @@ def op(imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                         config = config_cls(**config)
                 super().__init__(config)
 
+        if config_cls is not None:
+            Implementation.CONFIG = config_cls
+
         if inspect.isclass(func) and issubclass(
             func, OperationImplementationContext
         ):
@@ -247,9 +254,8 @@ def op(imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                     if uses_self:
                         # We can't pass self to functions running in threads
                         # Its not thread safe!
-                        return await (
-                            func.__get__(self, self.__class__)(**inputs)
-                        )
+                        bound = func.__get__(self, self.__class__)
+                        return await bound(**inputs)
                     elif inspect.iscoroutinefunction(func):
                         return await func(**inputs)
                     else:
