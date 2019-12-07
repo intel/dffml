@@ -175,10 +175,10 @@ class Run(CMD):
         # TODO Argparse nargs and Arg and primitives need to be unified
         if "Dict" in definition.primitive:
             # TODO handle Dict / spec completely
-            self.logger.ciritical(
+            self.logger.critical(
                 "Dict / spec'd arguments are not yet completely handled"
             )
-            value = json.loads(value)
+            value = json.loads(value[0])
         else:
             typecast = pydoc.locate(
                 definition.primitive.replace("List[", "").replace("[", "")
