@@ -208,27 +208,24 @@ class Run(CMD):
             except MissingConfig as error:
                 error.args = (f"{opimp.op.inputs}: {error.args[0]}",)
                 raise error
-        # Run the operation in an orchestrator
-        async with MemoryOrchestrator.basic_config(
-            opimp.imp, GetSingle.imp
-        ) as orchestrator:
-            async with orchestrator() as octx:
-                # TODO Assign a sha384 string as the random string context
-                await octx.ictx.sadd(
-                    str(uuid.uuid4()),
-                    Input(
-                        value=[
-                            definition.name
-                            for definition in opimp.op.outputs.values()
-                        ],
-                        definition=GetSingle.op.inputs["spec"],
-                    ),
-                    *inputs,
-                )
-                async for ctx, results in octx.run_operations():
-                    # TODO There is probably an issue if multiple outputs have
-                    # the same data type that only one will be shown
-                    return results[GetSingle.op.name]
+
+        # Run the operation in the memory orchestrator
+        async with MemoryOrchestrator.withconfig({}) as orchestrator:
+            # Orchestrate the running of these operations
+            async with orchestrator(DataFlow.auto(GetSingle, opimp)) as octx:
+                async for ctx, results in octx.run(
+                    [
+                        Input(
+                            value=[
+                                definition.name
+                                for definition in opimp.op.outputs.values()
+                            ],
+                            definition=GetSingle.op.inputs["spec"],
+                        ),
+                        *inputs,
+                    ]
+                ):
+                    return results
 
 
 class ListEntrypoints(CMD):

@@ -51,16 +51,19 @@ class IntegrationCLITestCase(AsyncTestCase):
 
     async def setUp(self):
         super().setUp()
-        if not all(map(is_develop, self.REQUIRED_PLUGINS)):
-            self.skipTest(
-                f"Required plugins: {', '.join(self.REQUIRED_PLUGINS)} must be installed in development mode"
-            )
+        self.required_plugins(*self.REQUIRED_PLUGINS)
         self.stdout = io.StringIO()
         self._stack = contextlib.ExitStack().__enter__()
 
     async def tearDown(self):
         super().tearDown()
         self._stack.__exit__(None, None, None)
+
+    def required_plugins(self, *args):
+        if not all(map(is_develop, args)):
+            self.skipTest(
+                f"Required plugins: {', '.join(args)} must be installed in development mode"
+            )
 
     def mktempfile(self):
         return self._stack.enter_context(non_existant_tempfile())
@@ -136,16 +139,29 @@ class TestMerge(IntegrationCLITestCase):
 
 
 class TestDevelop(IntegrationCLITestCase):
-
-    REQUIRED_PLUGINS = ["shouldi"]
-
     async def test_export(self):
+        self.required_plugins("shouldi")
         stdout = io.StringIO()
         # Use shouldi's dataflow for tests
         with relative_chdir("..", "examples", "shouldi"):
             with unittest.mock.patch("sys.stdout.buffer.write") as write:
                 await Develop.cli("export", "shouldi.cli:DATAFLOW")
             DataFlow._fromdict(**json.loads(write.call_args[0][0]))
+
+    async def test_run(self):
+        self.required_plugins("shouldi", "dffml-model-scratch")
+        results = await Develop.cli(
+            "run",
+            "-log",
+            "debug",
+            "shouldi.bandit:run_bandit",
+            "-pkg",
+            str(relative_path("..", "model", "scratch")),
+        )
+        self.assertIn("bandit_output", results)
+        self.assertIn(
+            "CONFIDENCE.HIGH_AND_SEVERITY.HIGH", results["bandit_output"]
+        )
 
 
 class TestDataFlow(IntegrationCLITestCase):
