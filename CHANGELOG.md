@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   It now correctly only uses the inputs in the parameter set. This fixes a major
   performance issue.
 - MySQL packaging issue.
+- Develop service running one off operations correctly json-loads dict types.
 ### Removed
 - CLI command `operations` removed in favor of `dataflow run`
 - Duplicate dataflow diagram code from development service
