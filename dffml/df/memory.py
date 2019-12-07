@@ -1159,6 +1159,10 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                             operation.name,
                         )
                         opimp_config = BaseConfig()
+                    if isinstance(opimp_config, dict) and hasattr(
+                        getattr(opimp, "CONFIG", False), "_fromdict"
+                    ):
+                        opimp_config = opimp.CONFIG._fromdict(**opimp_config)
                     await self.nctx.instantiate(
                         operation, opimp_config, opimp=opimp
                     )

@@ -209,10 +209,26 @@ class Run(CMD):
                 error.args = (f"{opimp.op.inputs}: {error.args[0]}",)
                 raise error
 
+        config = {}
+        extra_config = self.extra_config
+
+        for i in range(0, 2):
+            if "config" in extra_config and len(extra_config["config"]):
+                extra_config = extra_config["config"]
+
+        # TODO(p0) This only goes one level deep. This won't work for
+        # configs that are multi-leveled
+        if extra_config:
+            config = extra_config
+
+        dataflow = DataFlow.auto(GetSingle, opimp)
+        if config:
+            dataflow.configs[opimp.op.name] = config
+
         # Run the operation in the memory orchestrator
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
             # Orchestrate the running of these operations
-            async with orchestrator(DataFlow.auto(GetSingle, opimp)) as octx:
+            async with orchestrator(dataflow) as octx:
                 async for ctx, results in octx.run(
                     [
                         Input(
@@ -290,7 +306,7 @@ class Install(CMD):
     """
 
     arg_user = Arg(
-        "-user", "Preform user install", default=True, action="store_false"
+        "-user", "Preform user install", default=False, action="store_true"
     )
 
     async def run(self):
@@ -307,12 +323,7 @@ class Install(CMD):
             )
         )
         self.logger.info("Installing %r in development mode", packages)
-        cmd = [
-            sys.executable,
-            "-m",
-            "pip",
-            "install",
-        ]
+        cmd = [sys.executable, "-m", "pip", "install"]
         if self.user:
             # --user sometimes fails
             local_path = Path("~", ".local").expanduser().absolute()
