@@ -86,3 +86,10 @@ class TestDevelop(IntegrationCLITestCase):
             "-config-msg",
             "some message",
         )
+        self.assertIn("model_predictions", results)
+        results = results["model_predictions"]
+        self.assertIn("Salary", results)
+        results = results["Salary"]
+        self.assertIn("value", results)
+        results = results["value"]
+        self.assertEqual(results, 90.0)
