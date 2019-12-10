@@ -32,6 +32,7 @@ class JSONEncoder(json.JSONEncoder):
     """
 
     def default(self, obj):
+        typename_lower = str(type(obj)).lower()
         if isinstance(obj, Repo):
             return obj.dict()
         elif isinstance(obj, Feature):
@@ -40,6 +41,11 @@ class JSONEncoder(json.JSONEncoder):
             return str(obj.value)
         elif isinstance(obj, type):
             return str(obj.__qualname__)
+        elif "numpy." in typename_lower:
+            if ".int" in typename_lower or ".uint" in typename_lower:
+                return int(obj)
+            elif typename_lower.startswith("float"):
+                return float(obj)
         elif str(obj).startswith("typing."):
             return str(obj).split(".")[-1]
         return json.JSONEncoder.default(self, obj)
@@ -169,17 +175,8 @@ class CMD(object):
         return args
 
     @classmethod
-    def main(cls, loop=asyncio.get_event_loop(), argv=sys.argv):
-        """
-        Runs cli commands in asyncio loop and outputs in appropriate format
-        """
-        result = None
-        try:
-            result = loop.run_until_complete(cls.cli(*argv[1:]))
-        except KeyboardInterrupt:  # pragma: no cover
-            pass  # pragma: no cover
-        loop.run_until_complete(loop.shutdown_asyncgens())
-        loop.close()
+    async def _main(cls, *args):
+        result = await cls.cli(*args)
         if not result is None and result is not DisplayHelp:
             json.dump(
                 result,
@@ -190,6 +187,21 @@ class CMD(object):
                 cls=cls.JSONEncoder,
             )
             print()
+
+    @classmethod
+    def main(cls, loop=None, argv=sys.argv):
+        """
+        Runs cli commands in asyncio loop and outputs in appropriate format
+        """
+        if loop is None:
+            loop = asyncio.get_event_loop()
+        result = None
+        try:
+            result = loop.run_until_complete(cls._main(*argv[1:]))
+        except KeyboardInterrupt:  # pragma: no cover
+            pass  # pragma: no cover
+        loop.run_until_complete(loop.shutdown_asyncgens())
+        loop.close()
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Any]:
