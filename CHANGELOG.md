@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - MySQL packaging issue.
 - Develop service running one off operations correctly json-loads dict types.
 - Operations with configs can be run via the development service
+- JSON dumping numpy int\* and float\* caused crash on dump.
 ### Removed
 - CLI command `operations` removed in favor of `dataflow run`
 - Duplicate dataflow diagram code from development service
