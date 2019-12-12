@@ -8,7 +8,7 @@ import argparse
 import contextlib
 import dataclasses
 from argparse import ArgumentParser
-from typing import Dict, Any, Tuple, NamedTuple, Type
+from typing import Dict, Any, Tuple, NamedTuple, Type, Optional
 
 try:
     from typing import get_origin, get_args
@@ -131,8 +131,8 @@ def mkarg(field):
     elif get_origin(field.type) is list:
         arg["type"] = get_args(field.type)[0]
         arg["nargs"] = "+"
-    if "help" in field.metadata:
-        arg["help"] = field.metadata["help"]
+    if "description" in field.metadata:
+        arg["help"] = field.metadata["description"]
     return arg
 
 
@@ -189,11 +189,23 @@ def _fromdict(cls, **kwargs):
     return cls(**kwargs)
 
 
+def field(description: str, *args, metadata: Optional[dict] = None, **kwargs):
+    """
+    Creates an instance of :py:func:`dataclasses.field`. The first argument,
+    ``description`` is the description of the field, and will be set as the
+    ``"description"`` key in the metadata ``dict``.
+    """
+    if not metadata:
+        metadata = {}
+    metadata["description"] = description
+    return dataclasses.field(*args, metadata=metadata, **kwargs)
+
+
 def config(cls):
     """
     Decorator to create a dataclass
     """
-    datacls = dataclasses.dataclass(eq=True, frozen=True)(cls)
+    datacls = dataclasses.dataclass(eq=True, init=True, frozen=True)(cls)
     datacls._fromdict = classmethod(_fromdict)
     datacls._replace = lambda self, *args, **kwargs: dataclasses.replace(
         self, *args, **kwargs
