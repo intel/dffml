@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.df.memory &mdash; DFFML 0.3.0 documentation</title>
+  <title>dffml.df.memory &mdash; DFFML 0.3.1 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.3.1
               </div>
             
           
@@ -165,9 +165,10 @@
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">concurrent.futures</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">product</span><span class="p">,</span> <span class="n">chain</span>
-<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">asynccontextmanager</span><span class="p">,</span> <span class="n">AsyncExitStack</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">asynccontextmanager</span><span class="p">,</span> <span class="n">AsyncExitStack</span><span class="p">,</span> <span class="n">ExitStack</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">AsyncIterator</span><span class="p">,</span>
     <span class="n">Dict</span><span class="p">,</span>
@@ -218,7 +219,7 @@
 <span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="k">import</span> <span class="n">Arg</span>
 <span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="k">import</span> <span class="n">CMD</span>
 <span class="kn">from</span> <span class="nn">..util.data</span> <span class="k">import</span> <span class="n">ignore_args</span><span class="p">,</span> <span class="n">traverse_get</span>
-<span class="kn">from</span> <span class="nn">..util.asynchelper</span> <span class="k">import</span> <span class="n">context_stacker</span><span class="p">,</span> <span class="n">aenter_stack</span>
+<span class="kn">from</span> <span class="nn">..util.asynchelper</span> <span class="k">import</span> <span class="n">context_stacker</span><span class="p">,</span> <span class="n">aenter_stack</span><span class="p">,</span> <span class="n">concurrently</span>
 
 <span class="kn">from</span> <span class="nn">.log</span> <span class="k">import</span> <span class="n">LOGGER</span>
 
@@ -244,13 +245,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<div class="viewcode-block" id="MemoryKeyValueStoreContext.get"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreContext.get">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryKeyValueStoreContext.set"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreContext.set">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div></div>
 
 
 <div class="viewcode-block" id="MemoryKeyValueStore"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStore">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
@@ -272,8 +273,8 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__inputs</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">inputs</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Input</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryInputSet.add"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputSet.add">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Input</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></div>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">definitions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Definition</span><span class="p">]:</span>
         <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__inputs</span><span class="p">))</span>
@@ -395,7 +396,7 @@
         <span class="c1"># TODO Create ctxhd_locks dict to manage a per context lock</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd_lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_set</span><span class="p">:</span> <span class="n">BaseInputSet</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.add"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.add">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_set</span><span class="p">:</span> <span class="n">BaseInputSet</span><span class="p">):</span>
         <span class="c1"># Grab the input set context handle</span>
         <span class="n">handle</span> <span class="o">=</span> <span class="k">await</span> <span class="n">input_set</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">()</span>
         <span class="n">handle_string</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span>
@@ -435,17 +436,17 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="o">.</span><span class="n">origin</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]</span><span class="o">.</span><span class="n">by_origin</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]</span><span class="o">.</span><span class="n">by_origin</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">origin</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="c1"># Add input to by origin set</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]</span><span class="o">.</span><span class="n">by_origin</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">origin</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]</span><span class="o">.</span><span class="n">by_origin</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">origin</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">uadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.uadd"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.uadd">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">uadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shorthand for creating a MemoryInputSet with a StringInputSetContext</span>
 <span class="sd">        containing a random value for the string.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># TODO(security) Allow for tuning nbytes</span>
-        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span><span class="n">secrets</span><span class="o">.</span><span class="n">token_hex</span><span class="p">(),</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span><span class="n">secrets</span><span class="o">.</span><span class="n">token_hex</span><span class="p">(),</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">sadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context_handle_string</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.sadd"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.sadd">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">sadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context_handle_string</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shorthand for creating a MemoryInputSet with a StringInputSetContext.</span>
 
@@ -462,9 +463,9 @@
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
             <span class="n">MemoryInputSet</span><span class="p">(</span><span class="n">MemoryInputSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)))</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">ctx</span>
+        <span class="k">return</span> <span class="n">ctx</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">cadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.cadd"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.cadd">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">cadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shorthand for creating a MemoryInputSet with an existing context.</span>
 
@@ -480,13 +481,13 @@
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
             <span class="n">MemoryInputSet</span><span class="p">(</span><span class="n">MemoryInputSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)))</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">ctx</span>
+        <span class="k">return</span> <span class="n">ctx</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">ctx</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BaseInputSetContext</span><span class="p">]:</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.ctx"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.ctx">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">ctx</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BaseInputSetContext</span><span class="p">]:</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx_notification_set</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
-            <span class="k">return</span> <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">added</span><span class="p">()</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">added</span><span class="p">()</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">added</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.added"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.added">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">added</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">watch_ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BaseInputSet</span><span class="p">]:</span>
         <span class="c1"># Grab the input set context handle</span>
@@ -502,9 +503,9 @@
                 <span class="k">async</span> <span class="k">with</span> <span class="n">ctx</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
                     <span class="n">notification_items</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">notification_items</span>
                     <span class="n">ctx</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">notification_items</span> <span class="o">=</span> <span class="p">[]</span>
-                    <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">notification_items</span>
+                    <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">notification_items</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">definition</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.definition"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.definition">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">definition</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span> <span class="n">definition</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Definition</span><span class="p">:</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd_lock</span><span class="p">:</span>
@@ -526,7 +527,7 @@
                     <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">handle_string</span><span class="p">,</span> <span class="n">definition</span><span class="p">)</span>
                 <span class="p">)</span>
             <span class="c1"># If found then return the definition</span>
-            <span class="k">return</span> <span class="n">found</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">found</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
     <span class="k">def</span> <span class="nf">definitions</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span>
@@ -648,14 +649,19 @@
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">gather</span><span class="p">[</span><span class="n">input_name</span><span class="p">]:</span>
                         <span class="k">return</span>
         <span class="c1"># Generate all possible permutations of applicable inputs</span>
-        <span class="k">for</span> <span class="n">permutation</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">gather</span><span class="o">.</span><span class="n">values</span><span class="p">())):</span>
-            <span class="c1"># Create the parameter set</span>
-            <span class="n">parameter_set</span> <span class="o">=</span> <span class="n">MemoryParameterSet</span><span class="p">(</span>
-                <span class="n">MemoryParameterSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="n">permutation</span><span class="p">)</span>
+        <span class="c1"># Create the parameter set for each</span>
+        <span class="n">products</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="nb">map</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">permutation</span><span class="p">:</span> <span class="n">MemoryParameterSet</span><span class="p">(</span>
+                    <span class="n">MemoryParameterSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="n">permutation</span><span class="p">)</span>
+                <span class="p">),</span>
+                <span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">gather</span><span class="o">.</span><span class="n">values</span><span class="p">())),</span>
             <span class="p">)</span>
-            <span class="c1"># Check if this permutation has been executed before</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="k">await</span> <span class="n">rctx</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">):</span>
-                <span class="c1"># If not then return the permutation</span>
+        <span class="p">)</span>
+        <span class="c1"># Check if each permutation has been executed before</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">exists</span> <span class="ow">in</span> <span class="n">rctx</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="o">*</span><span class="n">products</span><span class="p">):</span>
+            <span class="c1"># If not then yield the permutation</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">parameter_set</span></div></div>
 
 
@@ -681,10 +687,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Operation</span><span class="p">]):</span>
+<div class="viewcode-block" id="MemoryOperationNetworkContext.add"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetworkContext.add">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Operation</span><span class="p">]):</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">operations</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">operation</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">operation</span></div>
 
 <div class="viewcode-block" id="MemoryOperationNetworkContext.operations"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetworkContext.operations">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">operations</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -752,35 +758,63 @@
     <span class="k">async</span> <span class="k">def</span> <span class="nf">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stack</span><span class="o">.</span><span class="n">aclose</span><span class="p">()</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">unique</span><span class="p">(</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_unique</span><span class="p">(</span><span class="n">instance_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">handle</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">uids</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        SHA384 hash of the parameter set context handle as a string, the</span>
+<span class="sd">        operation.instance_name, and the sorted list of input uuids.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">uid_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">instance_name</span><span class="p">,</span> <span class="n">handle</span><span class="p">]</span> <span class="o">+</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">uids</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">uid_list</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MemoryRedundancyCheckerContext.unique"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyCheckerContext.unique">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">unique</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">:</span> <span class="n">BaseParameterSet</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        SHA384 hash of the parameter set context handle as a string, the</span>
 <span class="sd">        operation.instance_name, and the sorted list of input uuids.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">uid_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
-            <span class="nb">map</span><span class="p">(</span>
-                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">uid</span><span class="p">,</span>
-                <span class="p">[</span><span class="n">item</span> <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">inputs</span><span class="p">()],</span>
-            <span class="p">)</span>
+        <span class="n">uid_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">,</span>
+            <span class="p">(</span><span class="k">await</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">())</span><span class="o">.</span><span class="n">as_string</span><span class="p">(),</span>
+        <span class="p">]</span> <span class="o">+</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">uid</span> <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">parameters</span><span class="p">()]</span>
         <span class="p">)</span>
-        <span class="n">uid_list</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="k">await</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">())</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
-        <span class="n">uid_list</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">uid_list</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">uid_list</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span></div>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coro</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">kvctx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="k">await</span> <span class="n">coro</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\x01</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">:</span> <span class="n">BaseParameterSet</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="o">*</span><span class="n">parameter_sets</span><span class="p">:</span> <span class="n">BaseParameterSet</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="c1"># self.logger.debug(&#39;checking parameter_set: %s&#39;, list(map(</span>
-        <span class="c1">#     lambda p: p.value,</span>
-        <span class="c1">#     [p async for p in parameter_set.parameters()])))</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">kvctx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">))</span>
-            <span class="o">!=</span> <span class="s2">&quot;</span><span class="se">\x01</span><span class="s2">&quot;</span>
-        <span class="p">):</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">return</span> <span class="kc">True</span>
+        <span class="c1"># TODO(p4) Run tests to choose an optimal threaded vs non-threaded value</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameter_sets</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="n">parameter_sets</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exists</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">exists</span> <span class="ow">in</span> <span class="n">concurrently</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_exists</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_in_executor</span><span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">pool</span><span class="p">,</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">_unique</span><span class="p">,</span>
+                                <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">,</span>
+                                <span class="p">(</span><span class="k">await</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">())</span><span class="o">.</span><span class="n">as_string</span><span class="p">(),</span>
+                                <span class="o">*</span><span class="p">[</span>
+                                    <span class="n">item</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">uid</span>
+                                    <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span>
+                                <span class="p">],</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                    <span class="p">):</span> <span class="n">parameter_set</span>
+                    <span class="k">for</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="n">parameter_sets</span>
+                <span class="p">}</span>
+            <span class="p">):</span>
+                <span class="k">yield</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">exists</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">:</span> <span class="n">BaseParameterSet</span><span class="p">):</span>
         <span class="c1"># self.logger.debug(&#39;adding parameter_set: %s&#39;, list(map(</span>
@@ -799,15 +833,28 @@
 
     <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">MemoryRedundancyCheckerContext</span>
 
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__pool</span> <span class="o">=</span> <span class="kc">None</span>
+
     <span class="k">async</span> <span class="k">def</span> <span class="nf">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;MemoryRedundancyCheckerContext&quot;</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__stack</span> <span class="o">=</span> <span class="n">AsyncExitStack</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__exit_stack</span> <span class="o">=</span> <span class="n">ExitStack</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__exit_stack</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stack</span><span class="o">.</span><span class="fm">__aenter__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">key_value_store</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">key_value_store</span>
         <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">get_event_loop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__exit_stack</span><span class="o">.</span><span class="n">enter_context</span><span class="p">(</span>
+            <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">()</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__exit_stack</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stack</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MemoryRedundancyChecker.args"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyChecker.args">[docs]</a>    <span class="nd">@classmethod</span>
@@ -909,13 +956,13 @@
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.contains"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.contains">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks if operation in is operations we have loaded in memory</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span>
+        <span class="k">return</span> <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">instantiable</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.instantiable"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.instantiable">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">instantiable</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">opimp</span><span class="p">:</span> <span class="n">OperationImplementation</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -934,9 +981,9 @@
                 <span class="n">error</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">instantiate</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.instantiate"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.instantiate">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">instantiate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
         <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span><span class="p">,</span>
@@ -954,9 +1001,9 @@
                 <span class="k">raise</span> <span class="n">OperationImplementationNotInstantiable</span><span class="p">(</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span>
             <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">opimp</span><span class="p">(</span><span class="n">config</span><span class="p">))</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">opimp</span><span class="p">(</span><span class="n">config</span><span class="p">))</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">ensure_contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.ensure_contains"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.ensure_contains">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">ensure_contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Raise errors if we don&#39;t have and can&#39;t instantiate an operation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -967,9 +1014,9 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">OperationImplementationNotInstantiated</span><span class="p">(</span>
                     <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span>
-                <span class="p">)</span>
+                <span class="p">)</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.run"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.run">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span>
         <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOrchestratorContext</span><span class="p">,</span>
@@ -991,7 +1038,13 @@
                 <span class="n">operation</span><span class="o">.</span><span class="n">stage</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">upper</span><span class="p">(),</span>
                 <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Inputs: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+            <span class="n">str_inputs</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="s2">&quot;Inputs: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">str_inputs</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">str_inputs</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">512</span>
+                <span class="k">else</span> <span class="p">(</span><span class="n">str_inputs</span><span class="p">[:</span><span class="mi">512</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">),</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
                 <span class="s2">&quot;Conditions: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
                 <span class="nb">dict</span><span class="p">(</span>
@@ -1005,15 +1058,21 @@
                 <span class="p">),</span>
             <span class="p">)</span>
             <span class="n">outputs</span> <span class="o">=</span> <span class="k">await</span> <span class="n">opctx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Output: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+            <span class="n">str_outputs</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="s2">&quot;Outputs: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="n">str_outputs</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">str_outputs</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">512</span>
+                <span class="k">else</span> <span class="p">(</span><span class="n">str_outputs</span><span class="p">[:</span><span class="mi">512</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">),</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;---&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">outputs</span>
+            <span class="k">return</span> <span class="n">outputs</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">operation_completed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.operation_completed"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.operation_completed">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">operation_completed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_dispatch</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.run_dispatch"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.run_dispatch">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_dispatch</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOrchestratorContext</span><span class="p">,</span>
         <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
@@ -1042,7 +1101,9 @@
                 <span class="n">expand</span> <span class="o">=</span> <span class="n">operation</span><span class="o">.</span><span class="n">expand</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">expand</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">parents</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">inputs</span><span class="p">()]</span>
+            <span class="n">parents</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">origin</span> <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span>
+            <span class="p">]</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">expand</span><span class="p">:</span>
                     <span class="n">output</span> <span class="o">=</span> <span class="p">[</span><span class="n">output</span><span class="p">]</span>
@@ -1070,9 +1131,9 @@
                 <span class="n">MemoryInputSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">parameter_set</span><span class="o">.</span><span class="n">ctx</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">inputs</span>
+        <span class="k">return</span> <span class="n">inputs</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.dispatch"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.dispatch">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOrchestratorContext</span><span class="p">,</span>
         <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
@@ -1086,7 +1147,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">run_dispatch</span><span class="p">(</span><span class="n">octx</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">task</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">ignore_args</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">set</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">task</span>
+        <span class="k">return</span> <span class="n">task</span></div>
 
 <div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.operations_parameter_set_pairs"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.operations_parameter_set_pairs">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">operations_parameter_set_pairs</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1220,7 +1281,7 @@
     <span class="k">async</span> <span class="k">def</span> <span class="nf">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">aclose</span><span class="p">()</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">initialize_dataflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="MemoryOrchestratorContext.initialize_dataflow"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestratorContext.initialize_dataflow">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">initialize_dataflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a DataFlow by preforming the following steps.</span>
 
@@ -1258,9 +1319,13 @@
                             <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                         <span class="p">)</span>
                         <span class="n">opimp_config</span> <span class="o">=</span> <span class="n">BaseConfig</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">opimp_config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span>
+                        <span class="nb">getattr</span><span class="p">(</span><span class="n">opimp</span><span class="p">,</span> <span class="s2">&quot;CONFIG&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span> <span class="s2">&quot;_fromdict&quot;</span>
+                    <span class="p">):</span>
+                        <span class="n">opimp_config</span> <span class="o">=</span> <span class="n">opimp</span><span class="o">.</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">_fromdict</span><span class="p">(</span><span class="o">**</span><span class="n">opimp_config</span><span class="p">)</span>
                     <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span>
                         <span class="n">operation</span><span class="p">,</span> <span class="n">opimp_config</span><span class="p">,</span> <span class="n">opimp</span><span class="o">=</span><span class="n">opimp</span>
-                    <span class="p">)</span>
+                    <span class="p">)</span></div>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">seed_inputs</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>

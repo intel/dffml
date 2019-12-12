@@ -490,7 +490,7 @@ are connected.
 
 .. code-block:: console
 
-    $ dffml service dev diagram -simple shouldi/deploy/df/shouldi.json
+    $ dffml dataflow diagram -simple shouldi/deploy/df/shouldi.json
     graph TD
     subgraph a759a07029077edc5c37fea0326fa281[Processing Stage]
     style a759a07029077edc5c37fea0326fa281 fill:#afd388b5,stroke:#a4ca7a

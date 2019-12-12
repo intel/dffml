@@ -28,21 +28,21 @@ Uses a CSV file as the source of repo feature data
 
 - filename: String
 
-- readonly: Boolean
-
-  - default: False
-
 - label: String
 
   - default: unlabeled
 
-- labelcol: String
+- readonly: Boolean
 
-  - default: label
+  - default: False
 
 - key: String
 
   - default: src_url
+
+- labelcol: String
+
+  - default: label
 
 json
 ~~~~
@@ -56,13 +56,13 @@ stored in memory.
 
 - filename: String
 
-- readonly: Boolean
-
-  - default: False
-
 - label: String
 
   - default: unlabeled
+
+- readonly: Boolean
+
+  - default: False
 
 memory
 ~~~~~~
@@ -73,9 +73,7 @@ Stores repos in a dict in memory
 
 **Args**
 
-- keys: List of strings
-
-  - default: []
+- repos: List of repos
 
 dffml_source_mysql
 ------------------

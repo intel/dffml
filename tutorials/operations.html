@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>New Operations Tutorial &mdash; DFFML 0.3.0 documentation</title>
+  <title>New Operations Tutorial &mdash; DFFML 0.3.1 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.3.1
               </div>
             
           
@@ -550,8 +550,8 @@ the latest version and use that version.</p>
 <span class="k">class</span> <span class="nc">TestRunBanditOp</span><span class="p">(</span><span class="n">AsyncTestCase</span><span class="p">):</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">test_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">run_bandit</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertLessEqual</span><span class="p">(</span>
-            <span class="nb">int</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;report&quot;</span><span class="p">][</span><span class="s2">&quot;CONFIDENCE.HIGH_AND_SEVERITY.HIGH&quot;</span><span class="p">]),</span> <span class="mf">5.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span>
+            <span class="nb">type</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;report&quot;</span><span class="p">][</span><span class="s2">&quot;CONFIDENCE.HIGH_AND_SEVERITY.HIGH&quot;</span><span class="p">]),</span> <span class="nb">int</span>
         <span class="p">)</span>
 </pre></div>
 </div>
@@ -966,7 +966,7 @@ You can also convert between config file formats with the
 <p>We then create the mermaidjs digarm from the DataFlow. The <code class="docutils literal notranslate"><span class="pre">-simple</span></code> flag says
 to only show connections between operations, don’t show which inputs and outputs
 are connected.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev diagram -simple shouldi/deploy/df/shouldi.json
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow diagram -simple shouldi/deploy/df/shouldi.json
 <span class="go">graph TD</span>
 <span class="go">subgraph a759a07029077edc5c37fea0326fa281[Processing Stage]</span>
 <span class="go">style a759a07029077edc5c37fea0326fa281 fill:#afd388b5,stroke:#a4ca7a</span>

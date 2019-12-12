@@ -199,6 +199,26 @@ The following is an example request body to configure a model. The URL this
             "/home/user/modeldirs/mymodel"
           ],
           "config": {}
+        },
+        "features": {
+          "arg": [
+            {
+              "name": "Years",
+              "dtype": "int",
+              "length": 1
+            },
+            {
+              "name": "Expertise",
+              "dtype": "int",
+              "length": 1
+            },
+            {
+              "name": "Trust",
+              "dtype": "float",
+              "length": 1
+            }
+          ],
+          "config": {}
         }
       }
     }
@@ -244,38 +264,10 @@ this ``GET`` request is sent to is.
 Model
 ~~~~~
 
-To create a model context, the features the context will use for training,
-prediction, and accuracy assessment on must be sent.
-
-The following is an example request body to create a model context. The URL this
-``POST`` request is sent to is.
+The following is an example request body to create a model context. The URL
+this ``GET`` request is sent to is.
 
 - ``/context/model/mymodel/ctx_mymodel``
-
-.. code-block:: json
-
-  {
-    "Years": {
-      "dtype": "int",
-      "length": 1
-    },
-    "Experiance": {
-      "dtype": "int",
-      "length": 1
-    },
-    "Trust": {
-      "dtype": "float",
-      "length": 1
-    }
-  }
-
-If the request JSON object, and object for each feature, doesn't match the
-format in the example above, the server will return a HTTP status code of 400,
-Bad Request.
-
-.. code-block:: json
-
-    {"error": "Incorrect format for features"}
 
 Source
 ------

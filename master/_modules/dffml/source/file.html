@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.source.file &mdash; DFFML 0.3.0 documentation</title>
+  <title>dffml.source.file &mdash; DFFML 0.3.1 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.3.1
               </div>
             
           
@@ -161,35 +161,38 @@
 <span></span><span class="c1"># SPDX-License-Identifier: MIT</span>
 <span class="c1"># Copyright (c) 2019 Intel Corporation</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">abc</span>
-<span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">import</span> <span class="nn">gzip</span>
-<span class="kn">import</span> <span class="nn">bz2</span>
-<span class="kn">import</span> <span class="nn">lzma</span>
-<span class="kn">import</span> <span class="nn">zipfile</span>
 <span class="kn">import</span> <span class="nn">io</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">bz2</span>
+<span class="kn">import</span> <span class="nn">gzip</span>
+<span class="kn">import</span> <span class="nn">lzma</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">zipfile</span>
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="k">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">fields</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">..base</span> <span class="k">import</span> <span class="n">BaseConfig</span>
+<span class="kn">from</span> <span class="nn">..base</span> <span class="k">import</span> <span class="n">config</span>
 <span class="kn">from</span> <span class="nn">.source</span> <span class="k">import</span> <span class="n">BaseSource</span>
 <span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="k">import</span> <span class="n">Arg</span>
 <span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="k">import</span> <span class="n">CMD</span>
+<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="k">import</span> <span class="n">entry_point</span>
 
 
-<div class="viewcode-block" id="FileSourceConfig"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.file.FileSourceConfig">[docs]</a><span class="k">class</span> <span class="nc">FileSourceConfig</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">):</span>
+<div class="viewcode-block" id="FileSourceConfig"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.file.FileSourceConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">FileSourceConfig</span><span class="p">:</span>
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;unlabeled&quot;</span>
     <span class="n">readonly</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 
-<div class="viewcode-block" id="FileSource"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.file.FileSource">[docs]</a><span class="k">class</span> <span class="nc">FileSource</span><span class="p">(</span><span class="n">BaseSource</span><span class="p">):</span>
+<div class="viewcode-block" id="FileSource"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.file.FileSource">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;file&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">FileSource</span><span class="p">(</span><span class="n">BaseSource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    FileSource reads and write from a file on open / close.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">ENTRY_POINT_ORIG_LABEL</span> <span class="o">=</span> <span class="s2">&quot;file&quot;</span>
-    <span class="n">ENTRY_POINT_LABEL</span> <span class="o">=</span> <span class="n">ENTRY_POINT_ORIG_LABEL</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">FileSourceConfig</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseSourceContext&quot;</span><span class="p">:</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">()</span>
@@ -267,29 +270,7 @@
 
     <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">dump_fd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fd</span><span class="p">):</span>
-        <span class="k">pass</span>  <span class="c1"># pragma: no cover</span>
-
-<div class="viewcode-block" id="FileSource.args"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.file.FileSource.args">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Arg</span><span class="p">]:</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">config_set</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;filename&quot;</span><span class="p">,</span> <span class="n">Arg</span><span class="p">())</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">config_set</span><span class="p">(</span>
-            <span class="n">args</span><span class="p">,</span>
-            <span class="n">above</span><span class="p">,</span>
-            <span class="s2">&quot;readonly&quot;</span><span class="p">,</span>
-            <span class="n">Arg</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
-        <span class="p">)</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">config_set</span><span class="p">(</span>
-            <span class="n">args</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">Arg</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;unlabeled&quot;</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">args</span></div>
-
-<div class="viewcode-block" id="FileSource.config"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.file.FileSource.config">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">FileSourceConfig</span><span class="p">(</span>
-            <span class="n">filename</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">config_get</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;filename&quot;</span><span class="p">),</span>
-            <span class="n">readonly</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">config_get</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;readonly&quot;</span><span class="p">),</span>
-            <span class="n">label</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">config_get</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">),</span>
-        <span class="p">)</span></div></div>
+        <span class="k">pass</span>  <span class="c1"># pragma: no cover</span></div>
 </pre></div>
 
            </div>

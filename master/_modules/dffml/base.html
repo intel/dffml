@@ -1,0 +1,652 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dffml.base &mdash; DFFML 0.3.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>dffml.base</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dffml.base</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Base classes for DFFML. All classes in DFFML should inherit from these so that</span>
+<span class="sd">they follow a similar API for instantiation and usage.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="kn">import</span> <span class="nn">dataclasses</span>
+<span class="kn">from</span> <span class="nn">argparse</span> <span class="k">import</span> <span class="n">ArgumentParser</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">get_origin</span><span class="p">,</span> <span class="n">get_args</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="c1"># Added in Python 3.8</span>
+<div class="viewcode-block" id="get_origin"><a class="viewcode-back" href="../../api/base.html#dffml.base.get_origin">[docs]</a>    <span class="k">def</span> <span class="nf">get_origin</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">&quot;__origin__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="get_args"><a class="viewcode-back" href="../../api/base.html#dffml.base.get_args">[docs]</a>    <span class="k">def</span> <span class="nf">get_args</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">&quot;__args__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+
+<span class="kn">from</span> <span class="nn">.util.cli.arg</span> <span class="k">import</span> <span class="n">Arg</span>
+<span class="kn">from</span> <span class="nn">.util.data</span> <span class="k">import</span> <span class="n">traverse_config_set</span><span class="p">,</span> <span class="n">traverse_config_get</span><span class="p">,</span> <span class="n">type_lookup</span>
+
+<span class="kn">from</span> <span class="nn">.util.entrypoint</span> <span class="k">import</span> <span class="n">Entrypoint</span>
+
+<span class="kn">from</span> <span class="nn">.log</span> <span class="k">import</span> <span class="n">LOGGER</span>
+
+
+<span class="n">ARGP</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="ParseExpandAction"><a class="viewcode-back" href="../../api/base.html#dffml.base.ParseExpandAction">[docs]</a><span class="k">class</span> <span class="nc">ParseExpandAction</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">Action</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">option_string</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">values</span><span class="p">]</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">namespace</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">LIST_CLS</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">))</span></div>
+
+
+<span class="c1"># Maps classes to their ParseClassNameAction</span>
+<span class="n">LIST_ACTIONS</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Type</span><span class="p">,</span> <span class="n">Type</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<div class="viewcode-block" id="list_action"><a class="viewcode-back" href="../../api/base.html#dffml.base.list_action">[docs]</a><span class="k">def</span> <span class="nf">list_action</span><span class="p">(</span><span class="n">list_cls</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Action to take a list of values and make them values in the list of type</span>
+<span class="sd">    list_class. Which will be a class descendent from AsyncContextManagerList.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">LIST_ACTIONS</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span>
+        <span class="n">list_cls</span><span class="p">,</span>
+        <span class="nb">type</span><span class="p">(</span>
+            <span class="n">f</span><span class="s2">&quot;Parse</span><span class="si">{list_cls.__qualname__}</span><span class="s2">Action&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">ParseExpandAction</span><span class="p">,),</span>
+            <span class="p">{</span><span class="s2">&quot;LIST_CLS&quot;</span><span class="p">:</span> <span class="n">list_cls</span><span class="p">},</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">LIST_ACTIONS</span><span class="p">[</span><span class="n">list_cls</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="MissingArg"><a class="viewcode-back" href="../../api/base.html#dffml.base.MissingArg">[docs]</a><span class="k">class</span> <span class="nc">MissingArg</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when a BaseConfigurable is missing an argument from the args dict it</span>
+<span class="sd">    created with args(). If this exception is raised then the config() method is</span>
+<span class="sd">    attempting to retrive an argument which was not set in the args() method.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="MissingConfig"><a class="viewcode-back" href="../../api/base.html#dffml.base.MissingConfig">[docs]</a><span class="k">class</span> <span class="nc">MissingConfig</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when a BaseConfigurable is missing an argument from the config dict.</span>
+<span class="sd">    Also raised if there was no default value set and the argument is missing.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="MissingRequiredProperty"><a class="viewcode-back" href="../../api/base.html#dffml.base.MissingRequiredProperty">[docs]</a><span class="k">class</span> <span class="nc">MissingRequiredProperty</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when a BaseDataFlowFacilitatorObject is missing some property which</span>
+<span class="sd">    should have been defined in the class.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="LoggingLogger"><a class="viewcode-back" href="../../api/base.html#dffml.base.LoggingLogger">[docs]</a><span class="k">class</span> <span class="nc">LoggingLogger</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provide the logger property using Python&#39;s builtin logging module.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">prop_name</span> <span class="o">=</span> <span class="s2">&quot;__</span><span class="si">%s</span><span class="s2">_logger&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,)</span>
+        <span class="n">logger</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">logger</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">logger</span> <span class="o">=</span> <span class="n">LOGGER</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">,</span> <span class="n">logger</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">logger</span></div>
+
+
+<div class="viewcode-block" id="BaseConfig"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfig">[docs]</a><span class="k">class</span> <span class="nc">BaseConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    All DFFML Base Objects should take an object (likely a typing.NamedTuple) as</span>
+<span class="sd">    as their config.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;BaseConfig()&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="mkarg"><a class="viewcode-back" href="../../api/base.html#dffml.base.mkarg">[docs]</a><span class="k">def</span> <span class="nf">mkarg</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
+    <span class="n">arg</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">field</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+    <span class="c1"># HACK For detecting dataclasses._MISSING_TYPE</span>
+    <span class="k">if</span> <span class="s2">&quot;dataclasses._MISSING_TYPE&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">repr</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">default</span><span class="p">):</span>
+        <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">default</span>
+    <span class="k">if</span> <span class="s2">&quot;dataclasses._MISSING_TYPE&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">repr</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">default_factory</span><span class="p">):</span>
+        <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">default_factory</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;store_true&quot;</span>
+    <span class="k">elif</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;nargs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;+&quot;</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="s2">&quot;SINGLETON&quot;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                    <span class="n">f</span><span class="s2">&quot;</span><span class="si">{field.type.__qualname__}</span><span class="s2"> missing attribute SINGLETON&quot;</span>
+                <span class="p">)</span>
+            <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">list_action</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+            <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">SINGLETON</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">arg</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">],</span> <span class="s2">&quot;load&quot;</span><span class="p">):</span>
+            <span class="c1"># TODO (python3.8) Use Protocol</span>
+            <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">load</span>
+    <span class="k">elif</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_args</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">type</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;nargs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;+&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;description&quot;</span> <span class="ow">in</span> <span class="n">field</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
+        <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;help&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">arg</span></div>
+
+
+<div class="viewcode-block" id="convert_value"><a class="viewcode-back" href="../../api/base.html#dffml.base.convert_value">[docs]</a><span class="k">def</span> <span class="nf">convert_value</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Return default if not found and available</span>
+        <span class="k">if</span> <span class="s2">&quot;default&quot;</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">arg</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">])</span>
+        <span class="k">raise</span> <span class="n">MissingConfig</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;nargs&quot;</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
+        <span class="n">type_cls</span> <span class="o">=</span> <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">type_cls</span> <span class="o">==</span> <span class="n">Type</span><span class="p">:</span>
+            <span class="n">type_cls</span> <span class="o">=</span> <span class="n">type_lookup</span>
+        <span class="c1"># TODO This is a oversimplification of argparse&#39;s nargs</span>
+        <span class="k">if</span> <span class="s2">&quot;nargs&quot;</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">type_cls</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">type_cls</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;action&quot;</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c1"># HACK This accesses _pop_action_class from ArgumentParser</span>
+            <span class="c1"># which is prefaced with an underscore indicating it not an API</span>
+            <span class="c1"># we can rely on</span>
+            <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ARGP</span><span class="o">.</span><span class="n">_pop_action_class</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+        <span class="n">namespace</span> <span class="o">=</span> <span class="n">ConfigurableParsingNamespace</span><span class="p">()</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">](</span><span class="n">dest</span><span class="o">=</span><span class="s2">&quot;dest&quot;</span><span class="p">,</span> <span class="n">option_strings</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">action</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">namespace</span><span class="o">.</span><span class="n">dest</span>
+    <span class="k">return</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="is_config_dict"><a class="viewcode-back" href="../../api/base.html#dffml.base.is_config_dict">[docs]</a><span class="k">def</span> <span class="nf">is_config_dict</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span>
+        <span class="s2">&quot;arg&quot;</span> <span class="ow">in</span> <span class="n">value</span>
+        <span class="ow">and</span> <span class="s2">&quot;config&quot;</span> <span class="ow">in</span> <span class="n">value</span>
+        <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_fromdict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">fields</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">is_config_dict</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+                <span class="n">value</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;arg&quot;</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">]</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">convert_value</span><span class="p">(</span><span class="n">mkarg</span><span class="p">(</span><span class="n">field</span><span class="p">),</span> <span class="n">value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">BaseConfigurable</span><span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span>
+                    <span class="p">{</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;arg&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">:</span> <span class="n">config</span><span class="p">}}</span>
+                <span class="p">)</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="field"><a class="viewcode-back" href="../../api/base.html#dffml.base.field">[docs]</a><span class="k">def</span> <span class="nf">field</span><span class="p">(</span><span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates an instance of :py:func:`dataclasses.field`. The first argument,</span>
+<span class="sd">    ``description`` is the description of the field, and will be set as the</span>
+<span class="sd">    ``&quot;description&quot;`` key in the metadata ``dict``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">metadata</span><span class="p">:</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">description</span>
+    <span class="k">return</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="config"><a class="viewcode-back" href="../../api/base.html#dffml.base.config">[docs]</a><span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decorator to create a dataclass</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">datacls</span> <span class="o">=</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">(</span><span class="n">eq</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="bp">cls</span><span class="p">)</span>
+    <span class="n">datacls</span><span class="o">.</span><span class="n">_fromdict</span> <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">_fromdict</span><span class="p">)</span>
+    <span class="n">datacls</span><span class="o">.</span><span class="n">_replace</span> <span class="o">=</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">datacls</span></div>
+
+
+<div class="viewcode-block" id="ConfigurableParsingNamespace"><a class="viewcode-back" href="../../api/base.html#dffml.base.ConfigurableParsingNamespace">[docs]</a><span class="k">class</span> <span class="nc">ConfigurableParsingNamespace</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dest</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="BaseConfigurable"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfigurable">[docs]</a><span class="k">class</span> <span class="nc">BaseConfigurable</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class which produces a config for itself by providing Args to a CMD (from</span>
+<span class="sd">    dffml.util.cli.base) and then using a CMD after it contains parsed args to</span>
+<span class="sd">    instantiate a config (deriving from BaseConfig) which will be used as the</span>
+<span class="sd">    only parameter to the __init__ of a BaseDataFlowFacilitatorObject.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        BaseConfigurable takes only one argument to __init__,</span>
+<span class="sd">        its config, which should inherit from BaseConfig. It shall be a object</span>
+<span class="sd">        containing any information needed to configure the class and it&#39;s child</span>
+<span class="sd">        context&#39;s.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="n">str_config</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="n">str_config</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">str_config</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">512</span> <span class="k">else</span> <span class="p">(</span><span class="n">str_config</span><span class="p">[:</span><span class="mi">512</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="BaseConfigurable.add_orig_label"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfigurable.add_orig_label">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">add_orig_label</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">above</span><span class="p">)</span> <span class="o">+</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_POINT_NAME</span> <span class="o">+</span> <span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_POINT_ORIG_LABEL</span><span class="p">]</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseConfigurable.add_label"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfigurable.add_label">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">add_label</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">above</span><span class="p">)</span> <span class="o">+</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_POINT_NAME</span> <span class="o">+</span> <span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_POINT_LABEL</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="BaseConfigurable.config_set"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfigurable.config_set">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">config_set</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="o">*</span><span class="n">path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseConfig</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">traverse_config_set</span><span class="p">(</span>
+            <span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">add_orig_label</span><span class="p">(</span><span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseConfigurable.parser_helper"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfigurable.parser_helper">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">parser_helper</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="s2">&quot;nil&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;on&quot;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;no&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;off&quot;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span></div>
+
+<div class="viewcode-block" id="BaseConfigurable.type_for"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfigurable.type_for">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">type_for</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">param</span><span class="p">:</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Guess the type based off the default value of the parameter, for when a</span>
+<span class="sd">        parameter doesn&#39;t have a type annotation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">annotation</span> <span class="o">!=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">_empty</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">param</span><span class="o">.</span><span class="n">annotation</span>
+        <span class="k">elif</span> <span class="n">param</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parser_helper</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">type_of</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">type_of</span> <span class="ow">is</span> <span class="nb">bool</span><span class="p">:</span>
+                <span class="k">return</span> <span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">parser_helper</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">type_of</span></div>
+
+<div class="viewcode-block" id="BaseConfigurable.config_get"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfigurable.config_get">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">config_get</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="o">*</span><span class="n">path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseConfig</span><span class="p">:</span>
+        <span class="c1"># unittest.mock.patch doesn&#39;t work if we cache args() output.</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">args</span><span class="p">({})</span>
+        <span class="n">args_above</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">add_orig_label</span><span class="p">()</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">label_above</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">add_label</span><span class="p">(</span><span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">no_label_above</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">add_label</span><span class="p">(</span><span class="o">*</span><span class="n">above</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="n">arg</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">arg</span> <span class="o">=</span> <span class="n">traverse_config_get</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">args_above</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="k">if</span> <span class="n">arg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">MissingArg</span><span class="p">(</span>
+                <span class="s2">&quot;Arg </span><span class="si">%r</span><span class="s2"> missing from </span><span class="si">%s%s%s</span><span class="s2">&quot;</span>
+                <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">args_above</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="bp">cls</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,</span>
+                    <span class="s2">&quot;.&quot;</span> <span class="k">if</span> <span class="n">args_above</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args_above</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Try to get the value specific to this label</span>
+        <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">traverse_config_get</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">label_above</span><span class="p">)</span>
+
+        <span class="c1"># Try to get the value specific to this plugin</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">traverse_config_get</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">no_label_above</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">convert_value</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">MissingConfig</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="n">error</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> missing </span><span class="si">%r</span><span class="s2"> from </span><span class="si">%s</span><span class="s2">&quot;</span>
+                    <span class="o">%</span> <span class="p">(</span>
+                        <span class="bp">cls</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,</span>
+                        <span class="n">label_above</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">label_above</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+                    <span class="p">)</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">raise</span></div>
+
+<div class="viewcode-block" id="BaseConfigurable.args"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfigurable.args">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Arg</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a dict containing arguments required for this class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;CONFIG&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                <span class="n">f</span><span class="s2">&quot;</span><span class="si">{cls.__qualname__}</span><span class="s2"> requires CONFIG property or implementation of args() classmethod&quot;</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">fields</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">CONFIG</span><span class="p">):</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">config_set</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">mkarg</span><span class="p">(</span><span class="n">field</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">args</span></div>
+
+<div class="viewcode-block" id="BaseConfigurable.config"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfigurable.config">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create the BaseConfig required to instantiate this class by parsing the</span>
+<span class="sd">        config dict.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;CONFIG&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                <span class="n">f</span><span class="s2">&quot;</span><span class="si">{cls.__qualname__}</span><span class="s2"> requires CONFIG property or implementation of config() classmethod&quot;</span>
+            <span class="p">)</span>
+        <span class="c1"># Build the arguments to the CONFIG class</span>
+        <span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">fields</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">CONFIG</span><span class="p">):</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">got</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">config_get</span><span class="p">(</span>
+                <span class="n">config</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">got</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">got</span><span class="p">,</span> <span class="n">BaseConfigurable</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">kwargs</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">got</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span>
+                        <span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">,</span> <span class="o">*</span><span class="bp">cls</span><span class="o">.</span><span class="n">add_label</span><span class="p">()</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="n">MissingConfig</span><span class="p">:</span>
+                    <span class="n">kwargs</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">got</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span>
+                        <span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">,</span> <span class="o">*</span><span class="bp">cls</span><span class="o">.</span><span class="n">add_label</span><span class="p">()[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">CONFIG</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseConfigurable.withconfig"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfigurable.withconfig">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">withconfig</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="BaseDataFlowFacilitatorObjectContext"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseDataFlowFacilitatorObjectContext">[docs]</a><span class="k">class</span> <span class="nc">BaseDataFlowFacilitatorObjectContext</span><span class="p">(</span><span class="n">LoggingLogger</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for all Data Flow Facilitator object&#39;s contexts. These are</span>
+<span class="sd">    classes which support async context management. Classes ending with</span>
+<span class="sd">    ...Context are the most inner context&#39;s which are used in DFFML.</span>
+
+<span class="sd">    &gt;&gt;&gt; # Calling obj returns an instance which is a subclass of this class,</span>
+<span class="sd">    &gt;&gt;&gt; # BaseDataFlowFacilitatorObjectContext.</span>
+<span class="sd">    &gt;&gt;&gt; async with obj() as ctx:</span>
+<span class="sd">    &gt;&gt;&gt;     await ctx.method()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseDataFlowFacilitatorObjectContext&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="BaseDataFlowFacilitatorObject"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseDataFlowFacilitatorObject">[docs]</a><span class="k">class</span> <span class="nc">BaseDataFlowFacilitatorObject</span><span class="p">(</span>
+    <span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">,</span> <span class="n">BaseConfigurable</span><span class="p">,</span> <span class="n">Entrypoint</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">ABC</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Base class for all Data Flow Facilitator objects conforming to the</span>
+<span class="sd">    instantiate -&gt; enter context -&gt; return context via __call__ -&gt; enter</span>
+<span class="sd">    returned context&#39;s context pattern. Therefore they must contain a CONTEXT</span>
+<span class="sd">    property, set to the BaseDataFlowFacilitatorObjectContext which will be</span>
+<span class="sd">    returned from a __call__ to this class.</span>
+
+<span class="sd">    DFFML is plugin based using Python&#39;s setuptool&#39;s entry_point API. All</span>
+<span class="sd">    classes inheriting from BaseDataFlowFacilitatorObject must have a property</span>
+<span class="sd">    named ENTRY_POINT. In the form of `dffml.load_point` which will be used to</span>
+<span class="sd">    load all classes registered to that entry point.</span>
+
+<span class="sd">    &gt;&gt;&gt; # Create the base object. Then enter it&#39;s context to preform any initial</span>
+<span class="sd">    &gt;&gt;&gt; # setup. Call obj to get an instance of obj.CONTEXT, which is a subclass</span>
+<span class="sd">    &gt;&gt;&gt; # of BaseDataFlowFacilitatorObjectContext. ctx, the inner context, does</span>
+<span class="sd">    &gt;&gt;&gt; # all the heavy lifting.</span>
+<span class="sd">    &gt;&gt;&gt; async with BaseDataFlowObject() as obj:</span>
+<span class="sd">    &gt;&gt;&gt;     async with obj() as ctx:</span>
+<span class="sd">    &gt;&gt;&gt;         await ctx.method()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">BaseConfigurable</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+        <span class="c1"># TODO figure out how to call these in __new__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ensure_property</span><span class="p">(</span><span class="s2">&quot;CONTEXT&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ensure_property</span><span class="p">(</span><span class="s2">&quot;ENTRY_POINT&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseDataFlowFacilitatorObjectContext&quot;</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">__ensure_property</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">property_name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">property_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">MissingRequiredProperty</span><span class="p">(</span>
+                <span class="s2">&quot;BaseDataFlowFacilitatorObjects may not be &quot;</span>
+                <span class="s2">&quot;created without a `</span><span class="si">%s</span><span class="s2">`. Missing </span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&quot;</span>
+                <span class="o">%</span> <span class="p">(</span><span class="n">property_name</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,</span> <span class="n">property_name</span><span class="p">)</span>
+            <span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Intel
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

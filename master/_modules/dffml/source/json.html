@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.source.json &mdash; DFFML 0.3.0 documentation</title>
+  <title>dffml.source.json &mdash; DFFML 0.3.1 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.3.1
               </div>
             
           
@@ -168,12 +168,16 @@
 
 <span class="kn">from</span> <span class="nn">..repo</span> <span class="k">import</span> <span class="n">Repo</span>
 <span class="kn">from</span> <span class="nn">.memory</span> <span class="k">import</span> <span class="n">MemorySource</span>
-<span class="kn">from</span> <span class="nn">.file</span> <span class="k">import</span> <span class="n">FileSource</span>
+<span class="kn">from</span> <span class="nn">.file</span> <span class="k">import</span> <span class="n">FileSource</span><span class="p">,</span> <span class="n">FileSourceConfig</span>
 <span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="k">import</span> <span class="n">entry_point</span>
 
 <span class="kn">from</span> <span class="nn">.log</span> <span class="k">import</span> <span class="n">LOGGER</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">LOGGER</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s2">&quot;json&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="JSONSourceConfig"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.json.JSONSourceConfig">[docs]</a><span class="k">class</span> <span class="nc">JSONSourceConfig</span><span class="p">(</span><span class="n">FileSourceConfig</span><span class="p">):</span>
+    <span class="k">pass</span>  <span class="c1"># pragma: no cov</span></div>
 
 
 <div class="viewcode-block" id="OpenJSONFile"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.json.OpenJSONFile">[docs]</a><span class="nd">@dataclass</span>
@@ -199,6 +203,7 @@
 <span class="sd">    stored in memory.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">JSONSourceConfig</span>
     <span class="n">OPEN_JSON_FILES</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OpenJSONFile</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">OPEN_JSON_FILES_LOCK</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
 
