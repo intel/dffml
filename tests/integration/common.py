@@ -18,7 +18,7 @@ import pathlib
 import asyncio
 import contextlib
 import unittest.mock
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 from dffml.repo import Repo
 from dffml.base import config
@@ -78,5 +78,12 @@ class IntegrationCLITestCase(AsyncTestCase):
                 f"Required plugins: {', '.join(args)} must be installed in development mode"
             )
 
-    def mktempfile(self):
-        return self._stack.enter_context(non_existant_tempfile())
+    def mktempfile(
+        self, suffix: Optional[str] = None, text: Optional[str] = None
+    ):
+        filename = self._stack.enter_context(non_existant_tempfile())
+        if suffix:
+            filename = filename + suffix
+        if text:
+            pathlib.Path(filename).write_text(inspect.cleandoc(text) + "\n")
+        return filename
