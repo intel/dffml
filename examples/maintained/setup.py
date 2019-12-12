@@ -27,7 +27,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "aiomysql>=0.0.20",
-        # 'dffml>=0.2.0',
+        # 'dffml>=0.3.1',
     ],
     entry_points={"dffml.source": ["demoapp = demoapp.source:DemoAppSource"]},
 )
