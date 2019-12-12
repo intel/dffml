@@ -1,9 +1,9 @@
 Welcome to DFFML!
 =================
 
-.. image:: https://travis-ci.org/intel/dffml.svg?branch=master
-    :target: https://travis-ci.org/intel/dffml
-    :alt: Build Status
+.. image:: https://github.com/intel/dffml/workflows/Testing/badge.svg
+    :target: https://github.com/intel/dffml/actions
+    :alt: Test Status
 .. image:: https://codecov.io/gh/intel/dffml/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/intel/dffml
     :alt: codecov
@@ -17,16 +17,13 @@ Welcome to DFFML!
     :target: https://github.com/psf/black
     :alt: Code style: black
 
-Data Flow Facilitator for Machine Learning (DFFML) provides APIs for dataset
-generation, storage, and model definition.
+Data Flow Facilitator for Machine Learning (DFFML) makes it easy to generate
+datasets, train and use machine learning models, and integrate machine learning
+into new or existing applications. It provides APIs for dataset generation,
+storage, and model definition.
 
-DFFML abstracts three parts of the machine learning workflow.
-
-- Models handle implementations of machine learning algorithms.
+- :ref:`plugin_models` handle implementations of machine learning algorithms.
   Likely wrapping code from a popular machine learning framework.
-
-  - To get started using existing machine learning models right away, head over
-    to :ref:`plugin_models`.
 
 - Sources handle the storage of datasets, saving and loading them from files,
   databases, remote APIs, etc.

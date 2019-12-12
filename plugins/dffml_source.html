@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Sources &mdash; DFFML 0.3.0 documentation</title>
+  <title>Sources &mdash; DFFML 0.3.1 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.3.1
               </div>
             
           
@@ -199,24 +199,24 @@ abstract the loading and storage of data / datasets.</p>
 <p><strong>Args</strong></p>
 <ul class="simple">
 <li><p>filename: String</p></li>
-<li><p>readonly: Boolean</p>
-<ul>
-<li><p>default: False</p></li>
-</ul>
-</li>
 <li><p>label: String</p>
 <ul>
 <li><p>default: unlabeled</p></li>
 </ul>
 </li>
-<li><p>labelcol: String</p>
+<li><p>readonly: Boolean</p>
 <ul>
-<li><p>default: label</p></li>
+<li><p>default: False</p></li>
 </ul>
 </li>
 <li><p>key: String</p>
 <ul>
 <li><p>default: src_url</p></li>
+</ul>
+</li>
+<li><p>labelcol: String</p>
+<ul>
+<li><p>default: label</p></li>
 </ul>
 </li>
 </ul>
@@ -229,14 +229,14 @@ stored in memory.</p>
 <p><strong>Args</strong></p>
 <ul class="simple">
 <li><p>filename: String</p></li>
-<li><p>readonly: Boolean</p>
-<ul>
-<li><p>default: False</p></li>
-</ul>
-</li>
 <li><p>label: String</p>
 <ul>
 <li><p>default: unlabeled</p></li>
+</ul>
+</li>
+<li><p>readonly: Boolean</p>
+<ul>
+<li><p>default: False</p></li>
 </ul>
 </li>
 </ul>
@@ -247,11 +247,7 @@ stored in memory.</p>
 <p>Stores repos in a dict in memory</p>
 <p><strong>Args</strong></p>
 <ul class="simple">
-<li><p>keys: List of strings</p>
-<ul>
-<li><p>default: []</p></li>
-</ul>
-</li>
+<li><p>repos: List of repos</p></li>
 </ul>
 </div>
 </div>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.df.types &mdash; DFFML 0.3.0 documentation</title>
+  <title>dffml.df.types &mdash; DFFML 0.3.1 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.3.1
               </div>
             
           
@@ -577,6 +577,9 @@
         <span class="c1"># Determine the dataflow if not given</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flow</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">flow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_flow</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_by_origin</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">update_by_origin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Create by_origin which maps operation instance names to the sources</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">by_origin</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">instance_name</span><span class="p">,</span> <span class="n">input_flow</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>

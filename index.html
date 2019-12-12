@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to DFFML! &mdash; DFFML 0.3.0 documentation</title>
+  <title>Welcome to DFFML! &mdash; DFFML 0.3.1 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.3.0
+                0.3.1
               </div>
             
           
@@ -162,22 +162,18 @@
             
   <div class="section" id="welcome-to-dffml">
 <h1>Welcome to DFFML!<a class="headerlink" href="#welcome-to-dffml" title="Permalink to this headline">¶</a></h1>
-<a class="reference external image-reference" href="https://travis-ci.org/intel/dffml"><img alt="Build Status" src="https://travis-ci.org/intel/dffml.svg?branch=master" /></a>
+<a class="reference external image-reference" href="https://github.com/intel/dffml/actions"><img alt="Test Status" src="https://github.com/intel/dffml/workflows/Testing/badge.svg" /></a>
 <a class="reference external image-reference" href="https://codecov.io/gh/intel/dffml"><img alt="codecov" src="https://codecov.io/gh/intel/dffml/branch/master/graph/badge.svg" /></a>
 <a class="reference external image-reference" href="https://bestpractices.coreinfrastructure.org/projects/2594"><img alt="CII" src="https://bestpractices.coreinfrastructure.org/projects/2594/badge" /></a>
 <a class="reference external image-reference" href="https://gitter.im/dffml/community"><img alt="Gitter chat" src="https://badges.gitter.im/gitterHQ/gitter.svg" /></a>
 <a class="reference external image-reference" href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a>
-<p>Data Flow Facilitator for Machine Learning (DFFML) provides APIs for dataset
-generation, storage, and model definition.</p>
-<p>DFFML abstracts three parts of the machine learning workflow.</p>
+<p>Data Flow Facilitator for Machine Learning (DFFML) makes it easy to generate
+datasets, train and use machine learning models, and integrate machine learning
+into new or existing applications. It provides APIs for dataset generation,
+storage, and model definition.</p>
 <ul class="simple">
-<li><p>Models handle implementations of machine learning algorithms.
-Likely wrapping code from a popular machine learning framework.</p>
-<ul>
-<li><p>To get started using existing machine learning models right away, head over
-to <a class="reference internal" href="plugins/dffml_model.html#plugin-models"><span class="std std-ref">Models</span></a>.</p></li>
-</ul>
-</li>
+<li><p><a class="reference internal" href="plugins/dffml_model.html#plugin-models"><span class="std std-ref">Models</span></a> handle implementations of machine learning algorithms.
+Likely wrapping code from a popular machine learning framework.</p></li>
 <li><p>Sources handle the storage of datasets, saving and loading them from files,
 databases, remote APIs, etc.</p></li>
 <li><p>DataFlows are directed graphs used to generate a dataset, as well as modify
@@ -194,7 +190,7 @@ include some sources, models, and operations as a part of the main package,
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="about.html#machine-learning">Machine Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="about.html#data-flows-directed-graph-execution">Data Flows - Directed Graph Execution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="about.html#consistant-api">Consistant API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#consistent-api">Consistent API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="about.html#plugins">Plugins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="about.html#team">Team</a></li>
 <li class="toctree-l2"><a class="reference internal" href="about.html#users">Users</a></li>
@@ -238,6 +234,7 @@ include some sources, models, and operations as a part of the main package,
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/df/index.html">Data Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/feature.html">Features</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/repo.html">Repo</a></li>
