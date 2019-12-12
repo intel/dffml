@@ -14,7 +14,7 @@ INSTALL_REQUIRES = [
     "joblib>=0.13.2",
     "pandas>=0.25.0",
 ] + (
-    ["dffml>=0.3.0"]
+    ["dffml>=0.3.1"]
     if not any(
         list(
             map(
