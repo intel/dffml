@@ -1,8 +1,12 @@
 import unittest
-from dataclasses import field
 from typing import List
 
-from dffml.base import BaseDataFlowFacilitatorObject, config, list_action
+from dffml.base import (
+    BaseDataFlowFacilitatorObject,
+    config,
+    field,
+    list_action,
+)
 from dffml.feature.feature import DefFeature, Feature, Features
 from dffml.source.source import BaseSource
 from dffml.source.csv import CSVSource
@@ -16,7 +20,7 @@ from dffml.util.cli.cmd import parse_unknown
 class FakeTestingConfig:
     files: List[str]
     features: Features
-    name: str = field(metadata={"help": "Name of FakeTesting"})
+    name: str = field("Name of FakeTesting")
     label: str = "unlabeled"
     readonly: bool = False
     source: BaseSource = JSONSource
