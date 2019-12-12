@@ -123,10 +123,22 @@ Implemented using Tensorflow's DNNClassifier.
 
 **Args**
 
-- directory: String
+- classification: String
 
-  - default: /home/user/.cache/dffml/tensorflow
-  - Directory where state should be saved
+  - Feature name holding classification value
+
+- classifications: List of strings
+
+  - Options for value of classification
+
+- features: List of features
+
+  - Features to train on
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
 
 - steps: Integer
 
@@ -138,27 +150,15 @@ Implemented using Tensorflow's DNNClassifier.
   - default: 30
   - Number of iterations to pass over all repos in a source
 
+- directory: String
+
+  - default: /home/user/.cache/dffml/tensorflow
+  - Directory where state should be saved
+
 - hidden: List of integers
 
   - default: [12, 40, 15]
   - List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer
-
-- classification: String
-
-  - Feature name holding classification value
-
-- classifications: List of strings
-
-  - Options for value of classification
-
-- clstype: locate
-
-  - default: <class 'str'>
-  - Data type of classifications values (default: str)
-
-- features: List of feature.loads
-
-  - Features to train on
 
 tfdnnr
 ~~~~~~
@@ -254,10 +254,13 @@ predict).
 
 **Args**
 
-- directory: String
+- predict: String
 
-  - default: /home/user/.cache/dffml/tensorflow
-  - Directory where state should be saved
+  - Feature name holding target values
+
+- features: List of features
+
+  - Features to train on
 
 - steps: Integer
 
@@ -269,18 +272,15 @@ predict).
   - default: 30
   - Number of iterations to pass over all repos in a source
 
+- directory: String
+
+  - default: /home/user/.cache/dffml/tensorflow
+  - Directory where state should be saved
+
 - hidden: List of integers
 
   - default: [12, 40, 15]
   - List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer
-
-- predict: String
-
-  - Feature name holding truth value
-
-- features: List of feature.loads
-
-  - Features to train on
 
 dffml_model_scratch
 -------------------
@@ -353,18 +353,18 @@ hash of their feature names.
 
 **Args**
 
-- directory: String
-
-  - default: /home/user/.cache/dffml/scratch
-  - Directory where state should be saved
-
 - predict: String
 
   - Label or the value to be predicted
 
-- features: List of feature.loads
+- features: List of features
 
   - Features to train on
+
+- directory: String
+
+  - default: /home/user/.cache/dffml/scratch
+  - Directory where state should be saved
 
 dffml_model_scikit
 ------------------
