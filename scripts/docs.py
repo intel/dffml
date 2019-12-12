@@ -7,7 +7,7 @@ import argparse
 import importlib
 import pkg_resources
 import configparser
-from typing import List
+from typing import List, Type
 
 
 def traverse_get_config(target, *args):
@@ -41,18 +41,28 @@ TEMPLATE = """{name}
 def data_type_string(data_type, nargs=None):
     if nargs is not None:
         return "List of %ss" % (data_type_string(data_type).lower(),)
-    if data_type is str:
+    if hasattr(data_type, "__func__"):
+        return data_type_string(data_type.__func__)
+    elif data_type is str:
         return "String"
     elif data_type is int:
         return "Integer"
     elif data_type is bool:
         return "Boolean"
-    return data_type.__qualname__
+    elif data_type is Type:
+        return "Type"
+    elif hasattr(data_type, "__qualname__"):
+        name = data_type.__qualname__
+        if name[::-1].startswith(".load"[::-1]):
+            return name[: -len(".load")]
+        return name
+    else:
+        return str(data_type)
 
 
 def sanitize_default(default):
     if not isinstance(default, str):
-        return str(default)
+        return sanitize_default(str(default))
     return default.replace(getpass.getuser(), "user")
 
 
