@@ -187,7 +187,8 @@ def op(imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
         sig = inspect.signature(func)
         # Check if the function uses the operation implementation context
         uses_self = bool(
-            imp_enter is not None
+            (sig.parameters and list(sig.parameters.keys())[0] == "self")
+            or imp_enter is not None
             or ctx_enter is not None
             or (
                 [
