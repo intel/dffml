@@ -37,7 +37,8 @@ class TestRunDataFlowOnRepo(IntegrationCLITestCase):
                         )
         
         test_dataflow = DataFlow(
-                operations={"run_on_repos":run_dataflow_on_repo.op},
+                operations={"run_on_repos":run_dataflow_on_repo.op,
+                                "get_single":GetSingle.op },
                 configs={ "run_on_repos":{"dataflow":shouldi_dataflow} },
                 seed=[ 
                         Input(
@@ -58,15 +59,14 @@ class TestRunDataFlowOnRepo(IntegrationCLITestCase):
                     ]
         
         
-
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
             async with orchestrator(test_dataflow) as octx:
                 async for ctx_str, results in octx.run(
                     {
-                            test_in.keys()[0] : [
+                            list(test_in.keys())[0] : [
                                     Input(
                                         value=test_in,
-                                        definition=run_dataflow_on_repo.op.inputs["flow_ins"],
+                                        definition=run_dataflow_on_repo.op.inputs["ins"],
                                         )
                                 ] for test_in in test_ins
                     }
