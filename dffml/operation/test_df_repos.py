@@ -65,7 +65,7 @@ class TestRunDataFlowOnRepo(IntegrationCLITestCase):
                     {
                             test_in.keys()[0] : [
                                     Input(
-                                        value=test_ctx_str,
+                                        value=test_in,
                                         definition=run_dataflow_on_repo.op.inputs["flow_ins"],
                                         )
                                 ] for test_in in test_ins
