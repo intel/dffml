@@ -10,6 +10,7 @@ import abc
 from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Dict
 
 from ..base import (
+    config,
     BaseConfig,
     BaseDataFlowFacilitatorObjectContext,
     BaseDataFlowFacilitatorObject,
@@ -27,7 +28,8 @@ class ModelNotTrained(Exception):
     pass
 
 
-class ModelConfig(BaseConfig, NamedTuple):
+@config
+class ModelConfig:
     directory: str
     features: Features
 
@@ -72,6 +74,8 @@ class Model(BaseDataFlowFacilitatorObject):
     various machine learning frameworks or concepts.
     """
 
+    CONFIG = ModelConfig
+
     def __call__(self) -> ModelContext:
         # If the config object for this model contains the directory property
         # then create it if it does not exist
@@ -79,36 +83,3 @@ class Model(BaseDataFlowFacilitatorObject):
         if directory is not None and not os.path.isdir(directory):
             os.makedirs(directory)
         return self.CONTEXT(self)
-
-    @classmethod
-    def args(cls, args, *above) -> Dict[str, Arg]:
-        cls.config_set(
-            args,
-            above,
-            "directory",
-            Arg(
-                default=os.path.join(
-                    os.path.expanduser("~"), ".cache", "dffml"
-                )
-            ),
-        )
-        cls.config_set(
-            args,
-            above,
-            "features",
-            Arg(
-                nargs="+",
-                required=True,
-                type=Feature.load,
-                action=list_action(Features),
-            ),
-        )
-
-        return args
-
-    @classmethod
-    def config(cls, config, *above) -> BaseConfig:
-        return ModelConfig(
-            directory=cls.config_get(config, above, "directory"),
-            features=cls.config_get(config, above, "features"),
-        )

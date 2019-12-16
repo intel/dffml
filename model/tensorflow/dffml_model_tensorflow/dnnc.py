@@ -7,7 +7,6 @@ import abc
 import pydoc
 import hashlib
 import inspect
-from dataclasses import dataclass
 from typing import List, Dict, Any, AsyncIterator, Tuple, Optional, Type
 
 import numpy as np
@@ -23,6 +22,7 @@ from dffml.base import BaseConfig
 from dffml.util.cli.arg import Arg
 from dffml.feature.feature import Feature, Features
 from dffml.util.cli.parser import list_action
+from dffml.base import config, field
 
 
 class TensorflowModelContext(ModelContext):
@@ -137,16 +137,26 @@ class TensorflowModelContext(ModelContext):
         """
 
 
-@dataclass(init=True, eq=True)
+@config
 class DNNClassifierModelConfig:
-    directory: str
-    steps: int
-    epochs: int
-    hidden: List[int]
-    classification: str
-    classifications: List[str]
-    clstype: Type
-    features: Features
+    classification: str = field("Feature name holding classification value")
+    classifications: List[str] = field("Options for value of classification")
+    features: Features = field("Features to train on")
+    clstype: Type = field("Data type of classifications values", default=str)
+    steps: int = field("Number of steps to train the model", default=3000)
+    epochs: int = field(
+        "Number of iterations to pass over all repos in a source", default=30
+    )
+    directory: str = field(
+        "Directory where state should be saved",
+        default=os.path.join(
+            os.path.expanduser("~"), ".cache", "dffml", "tensorflow"
+        ),
+    )
+    hidden: List[int] = field(
+        "List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer",
+        default_factory=lambda: [12, 40, 15],
+    )
 
     def __post_init__(self):
         self.classifications = list(map(self.clstype, self.classifications))
@@ -421,96 +431,4 @@ class DNNClassifierModel(Model):
     """
 
     CONTEXT = DNNClassifierModelContext
-
-    @classmethod
-    def args(cls, args, *above) -> Dict[str, Arg]:
-        cls.config_set(
-            args,
-            above,
-            "directory",
-            Arg(
-                default=os.path.join(
-                    os.path.expanduser("~"), ".cache", "dffml", "tensorflow"
-                ),
-                help="Directory where state should be saved",
-            ),
-        )
-        cls.config_set(
-            args,
-            above,
-            "steps",
-            Arg(
-                type=int,
-                default=3000,
-                help="Number of steps to train the model",
-            ),
-        )
-        cls.config_set(
-            args,
-            above,
-            "epochs",
-            Arg(
-                type=int,
-                default=30,
-                help="Number of iterations to pass over all repos in a source",
-            ),
-        )
-        cls.config_set(
-            args,
-            above,
-            "hidden",
-            Arg(
-                type=int,
-                nargs="+",
-                default=[12, 40, 15],
-                help="List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer",
-            ),
-        )
-        cls.config_set(
-            args,
-            above,
-            "classification",
-            Arg(help="Feature name holding classification value"),
-        )
-        cls.config_set(
-            args,
-            above,
-            "classifications",
-            Arg(nargs="+", help="Options for value of classification"),
-        )
-        cls.config_set(
-            args,
-            above,
-            "clstype",
-            Arg(
-                type=pydoc.locate,
-                default=str,
-                help="Data type of classifications values (default: str)",
-            ),
-        )
-        cls.config_set(
-            args,
-            above,
-            "features",
-            Arg(
-                nargs="+",
-                required=True,
-                type=Feature.load,
-                action=list_action(Features),
-                help="Features to train on",
-            ),
-        )
-        return args
-
-    @classmethod
-    def config(cls, config, *above) -> BaseConfig:
-        return DNNClassifierModelConfig(
-            directory=cls.config_get(config, above, "directory"),
-            steps=cls.config_get(config, above, "steps"),
-            epochs=cls.config_get(config, above, "epochs"),
-            hidden=cls.config_get(config, above, "hidden"),
-            classification=cls.config_get(config, above, "classification"),
-            classifications=cls.config_get(config, above, "classifications"),
-            clstype=cls.config_get(config, above, "clstype"),
-            features=cls.config_get(config, above, "features"),
-        )
+    CONFIG = DNNClassifierModelConfig
