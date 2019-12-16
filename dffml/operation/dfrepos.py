@@ -1,18 +1,15 @@
 from dffml.repo import Repo
-from dffml.base import config
 from dffml.df.types import Definition
 from dffml.df.base import op
 from dffml.df.types import DataFlow,Input
-from dffml.df.memory import MemoryOrchestrator
+from typing import Dict,Any,NamedTuple
 
 
-
-from typing import Dict,Any
-
-@config
-class RunDataFlowOnRepoConfig:
+class RunDataFlowOnRepoConfig(NamedTuple):
     dataflow : DataFlow
-    
+    @classmethod
+    def _fromdict(cls, **kwargs):
+        return cls(**kwargs)
 
 @op(
     inputs={ 
@@ -34,15 +31,11 @@ async def run_dataflow_on_repo(self,ins : Dict[str,Any]) -> Dict[str,Any] :
                         definition = definitions[ val_def["definition"] ]
                             )
                         for val_def in val_defs   
-                        ]
-
-    
+                        ]    
     async with self.octx.parent(self.config.dataflow) as octx:
-        results = []
-        async for ctx_str,result in octx.run(ins_created):
-            results.append( {ctx_str:result} )
+        results = [ {ctx_str:result} 
+                async for ctx_str,result in octx.run(ins_created) ]
     
-
     return {"results":results}
                 
                 
