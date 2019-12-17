@@ -55,7 +55,7 @@ class Version(CMD):
     async def run(self):
         self.logger.debug("Reporting version")
         devmode = is_develop("dffml")
-        print(f"dffml version {VERSION} (devmode: {str(devmode).lower()})")
+        print(f"dffml version {VERSION} (devmode: {str(devmode)})")
 
 
 class Edit(SourcesCMD, KeysCMD):
