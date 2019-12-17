@@ -1,4 +1,3 @@
-from dffml.repo import Repo
 from dffml.df.types import Definition
 from dffml.df.base import op
 from dffml.df.types import DataFlow, Input

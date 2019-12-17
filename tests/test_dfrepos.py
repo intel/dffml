@@ -12,8 +12,8 @@ from dffml.operation.output import GetSingle
 from tests.integration.common import IntegrationCLITestCase, relative_chdir
 from dffml.service.dev import Develop
 
-from shouldi.safety import safety_check
-from shouldi.bandit import run_bandit
+from examples.shouldi.shouldi.safety import safety_check
+from examples.shouldi.shouldi.bandit import run_bandit
 from dffml.df.base import OperationImplementationContext
 
 
