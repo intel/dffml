@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Correctly identify when functions decorated with `op` use `self` to reference
   the `OperationImplementationContext`.
 - Negative values are correctly parsed when input via the command line.
+- Do not lowercase development mode install location when reporting version.
 
 ## [0.3.1] - 2019-12-12
 ### Added
