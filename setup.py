@@ -75,8 +75,8 @@ setup(
             # Mapping
             "dffml.mapping.extract = dffml.operation.mapping:mapping_extract_value",
             "dffml.mapping.create = dffml.operation.mapping:create_mapping",
-            # OnRepo
-            "run_dataflow_on_repo = dffml.operation.dfrepos:run_dataflow_on_repo",
+            # dataflow
+            "dffml.dataflow.run = dffml.operation.dataflow:run_dataflow",
         ],
         "dffml.kvstore": ["memory = dffml.df.memory:MemoryKeyValueStore"],
         "dffml.input.network": ["memory = dffml.df.memory:MemoryInputNetwork"],

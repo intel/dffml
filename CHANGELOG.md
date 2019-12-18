@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.3.1] - 2019-12-12
 ### Added
 - Integration tests using the command line interface.
+- `Operation` `run_dataflow` to run a dataflow and test for the same.
 ### Changed
 - Features were moved from ModelContext to ModelConfig
 - CI is now run via GitHub Actions
