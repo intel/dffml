@@ -11,7 +11,10 @@ def parse_unknown(*unknown):
     name = []
     add_to_parsed = []
     for arg in unknown:
-        if arg.startswith("-"):
+        if (
+            arg.startswith("-")
+            and not arg.lstrip("-").replace(".", "").isnumeric()
+        ):
             if not name:
                 name = arg.lstrip("-").split("-")
             if not add_to_parsed:

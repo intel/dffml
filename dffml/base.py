@@ -3,6 +3,7 @@ Base classes for DFFML. All classes in DFFML should inherit from these so that
 they follow a similar API for instantiation and usage.
 """
 import abc
+import ast
 import copy
 import inspect
 import argparse

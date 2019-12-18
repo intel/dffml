@@ -18,6 +18,7 @@ from dffml.util.cli.cmd import parse_unknown
 
 @config
 class FakeTestingConfig:
+    num: float
     files: List[str]
     features: Features
     name: str = field("Name of FakeTesting")
@@ -49,6 +50,7 @@ class TestAutoArgsConfig(unittest.TestCase):
                         "fake": {
                             "arg": None,
                             "config": {
+                                "num": {"arg": Arg(type=float), "config": {},},
                                 "files": {
                                     "arg": Arg(type=str, nargs="+"),
                                     "config": {},
@@ -98,6 +100,8 @@ class TestAutoArgsConfig(unittest.TestCase):
             parse_unknown(
                 "--test-fake-name",
                 "feedface",
+                "--test-num",
+                "-4.2",
                 "--test-files",
                 "a",
                 "b",
@@ -109,6 +113,7 @@ class TestAutoArgsConfig(unittest.TestCase):
                 "def:Commits:int:10",
             )
         )
+        self.assertEqual(config.num, -4.2)
         self.assertEqual(config.files, ["a", "b", "c"])
         self.assertEqual(config.name, "feedface")
         self.assertEqual(config.label, "unlabeled")
@@ -127,6 +132,8 @@ class TestAutoArgsConfig(unittest.TestCase):
             parse_unknown(
                 "--test-fake-name",
                 "feedface",
+                "--test-num",
+                "-4.2",
                 "--test-fake-label",
                 "default-label",
                 "--test-fake-readonly",
@@ -143,6 +150,7 @@ class TestAutoArgsConfig(unittest.TestCase):
                 "def:Commits:int:10",
             )
         )
+        self.assertEqual(config.num, -4.2)
         self.assertEqual(config.files, ["a", "b", "c"])
         self.assertEqual(config.name, "feedface")
         self.assertEqual(config.label, "default-label")
