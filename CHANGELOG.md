@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Correctly identify when functions decorated with `op` use `self` to reference
   the `OperationImplementationContext`.
+- Negative values are correctly parsed when input via the command line.
 
 ## [0.3.1] - 2019-12-12
 ### Added
