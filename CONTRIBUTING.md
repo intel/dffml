@@ -1,10 +1,21 @@
 # Contributing
 
 Contributions can come in many forms, we always need help improving the
-documentation. If you find issues with the documentation please open an issue
-to let us know.
+documentation. If you find issues with the documentation, usability, code, or
+even a question, please open an
+[issue](https://github.com/intel/dffml/issues/new/choose) to let us know.
 
-## Community
+- [Contacting the Community](#contacting-the-community)
+- [Getting Set Up To Work On DFFML](#getting-set-up-to-work-on-dffml)
+- [Working On A Branch](#working-on-a-branch)
+- [File Formatting](#file-formatting)
+- [Issue and Pull Request title formatting](#issue-and-pull-request-title-formatting)
+- [Testing](#testing)
+- [Documentation](#documentation)
+- [Notes on Various Subsystems](#notes-on-various-subsystems)
+- [Debugging](#debugging)
+
+## Contacting the Community
 
 You can get involved in DFFML via the following channels.
 
@@ -19,7 +30,7 @@ You can get involved in DFFML via the following channels.
   - Send emails to: [dffml-dev@lists.01.org](mailto:dffml-dev@lists.01.org)
   - Subscribe: https://lists.01.org/postorius/lists/dffml-dev.lists.01.org/
 
-## Communication
+### Communication Style
 
 Logs, screenshots, the command you were running, and any files involved make
 it easier for other developers to replicate whatever happened so they can help
@@ -29,6 +40,8 @@ Even better than a screenshot is an
 [asciicast](https://asciinema.org/docs/installation). It lets you create a
 recording of your terminal that can be shared via a asciinema.org link or sent
 privately as a JSON file.
+
+Creating an issue and uploading any files or screenshots is always encouraged.
 
 ## Getting Set Up To Work On DFFML
 
@@ -46,31 +59,27 @@ $ python3.7 -m pip uninstall dffml
 Once you're sure DFFML is not installed on your system, install it in
 development mode.
 
-> `[dev]` tells pip to install the dependencies you'll need to do development
-> work on DFFML.
+Installing to your home directory is the recommended installation method. To do
+this we use the `--prefix=~/.local` flag.
+
+> `pip` sometimes gets confused about the `--user` flag (and will blow up in
+> your face if you try to pass it). So we use the `--prefix=~/.local` flag,
+> which has the same effect but should always work.
 
 ```console
 $ git clone https://github.com/intel/dffml
 $ cd dffml
-$ python3.7 -m pip install -e .[dev]
+$ python3.7 -m pip install -e --prefix=~/.local .[dev]
 ```
+
+> `[dev]` tells `pip` to install the dependencies you'll need to do development
+> work on DFFML (such as documentation generation utilities).
 
 Verify you can use `dffml` from the command line.
 
 ```console
-$ dffml --help
-usage: dffml [-h] [-log LOG]
-             {import,list,accuracy,applicable,edit,evaluate,export,merge,operations,predict,service,train,version}
-             ...
-
-CLI interface for dffml
-
-positional arguments:
-  {import,list,accuracy,applicable,edit,evaluate,export,merge,operations,predict,service,train,version}
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -log LOG              Logging level (default: 20)
+$ dffml version
+dffml version 0.3.1 (devmode: /wherever/you/cloned/dffml)
 ```
 
 If you see `dffml` in `~/.local/bin` but you can't run it on the command line,
@@ -79,7 +88,7 @@ This might need to be in `~/.bashrc`, `~/.bash_profile`, or `~/.profile`,
 depending on your flavor of UNIX or Linux Distro.
 
 ```console
-$ echo 'export PATH="${HOME}/.local/bin:$PATH"' >> ~/.bashrc
+$ echo 'export PATH="${HOME}/.local/bin:${PATH}"' >> ~/.bashrc
 $ source ~/.bashrc
 ```
 
@@ -89,7 +98,17 @@ repository make sure to install those in development mode as well.
 > For example, to install the TensorFlow models
 
 ```console
-$ python3.7 -m pip install -e model/tensorflow
+$ python3.7 -m pip install --prefix=~/.local -e model/tensorflow
+```
+
+To install all the plugins in development mode use the development service's
+install command.
+
+> To install to your home directory (`~/.local`), use the `-user` flag. Do NOT
+> run install `-user` with `sudo`.
+
+```console
+$ dffml service dev install -user
 ```
 
 ## Working On A Branch
@@ -154,21 +173,29 @@ $ git commit --amend
 
 ## Testing
 
-To get the debug output while testing set the `LOGGING` environment variable.
-
-```console
-export LOGGING=debug
-```
-
 Run the tests with
 
 ```console
 python3.7 setup.py test
 ```
 
-## Test Coverage
+To run a specific test, use the `-s` flag.
 
-- Each pull request is expected to maintain or increase test coverage
+```console
+python3.7 setup.py test -s tests.test_cli.TestPredict.test_repo
+```
+
+### Debug Logging
+
+To get the debug output while testing set the `LOGGING` environment variable.
+
+```console
+export LOGGING=debug
+```
+
+### Test Coverage
+
+Each pull request is expected to maintain or increase test coverage
 
 ```console
 $ python3.7 -m coverage run setup.py test
