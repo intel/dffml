@@ -6,6 +6,7 @@ even a question, please open an
 [issue](https://github.com/intel/dffml/issues/new/choose) to let us know.
 
 - [Contacting the Community](#contacting-the-community)
+- [What To Work On](#what-to-work-on)
 - [Getting Set Up To Work On DFFML](#getting-set-up-to-work-on-dffml)
 - [Working On A Branch](#working-on-a-branch)
 - [File Formatting](#file-formatting)
@@ -29,6 +30,59 @@ You can get involved in DFFML via the following channels.
 - Development of DFFML Discussion Mailing List
   - Send emails to: [dffml-dev@lists.01.org](mailto:dffml-dev@lists.01.org)
   - Subscribe: https://lists.01.org/postorius/lists/dffml-dev.lists.01.org/
+
+## What To Work On
+
+GitHub issue labels will let you know what needs help and help you find a
+project that fits your time budget. Thank you for your help!
+
+- Estimated Time to Complete
+  - tXS, tS, tM, tL, tXL
+  - [XS: Extra Short](https://github.com/intel/dffml/labels/tXS)
+    - Find and replace, fix a spelling mistake, make a change that shouldn't
+      break anything.
+  - [S: Short](https://github.com/intel/dffml/labels/tS)
+    - Changes that are pretty much localized to one package
+  - [M: Medium](https://github.com/intel/dffml/labels/tM)
+    - Changes in one package that require changes in other packages
+  - [L: Long](https://github.com/intel/dffml/labels/tL)
+    - Changes to core architecture or functionality, API breaking changes
+  - [XL: Extra Long](https://github.com/intel/dffml/labels/tXL)
+    - Re-write the codebase(s) in another language
+
+- Priority
+  - [Nice To Have](https://github.com/intel/dffml/labels/p4)
+  - [Average Priority](https://github.com/intel/dffml/labels/p3)
+  - [Medium Priority](https://github.com/intel/dffml/labels/p2)
+  - [High Priority](https://github.com/intel/dffml/labels/p1)
+  - [Critical Priority](https://github.com/intel/dffml/labels/p0)
+  - Scale of 0 to 4 with 0 being most critical and 4 being nice to have
+
+### Who's Working On What
+
+We all overcommit sometimes, here are the rules for how you can tell if you
+should work on something, if someone else is already working on it, or if
+someones work has been abandoned (they might not have time to tell us that they
+don't have time to work on it anymore).
+
+- Don't worry about asking if you can work on something.
+- If you have started work on something but do not yet have a pull request
+  - Comment saying you have started
+  - If you don't open a draft/WIP pull request within 3 days, we will take that
+    to mean you're not working on it anymore.
+- If you see an open a draft/WIP pull request that hasn't had any activity on it
+  for more than 14 days. The community should considered it abandoned.
+  - If you are still working on it, comment on it saying so. It's okay to be in
+    progress for a while, just make sure you let others know that you intend to
+    complete it.
+- If you see an abandoned pull request, you can work on the issue it is
+  partaining to.
+  - You must comment on the pull request to let others know that you intend to
+    pick up the work.
+  - You should consider picking up where the person left off by using the work
+    they've posted.
+    - Add a `Co-authored-by` tag to any of their commits that you change, and
+      leave them as the author for any commits you don't change.
 
 ### Communication Style
 
