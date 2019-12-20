@@ -1,14 +1,14 @@
 import io
-import unittest.mock
 import json
+import unittest.mock
 
 from dffml.df.types import DataFlow, Input
 from dffml.df.memory import MemoryOrchestrator
 from dffml.operation.dataflow import run_dataflow, RunDataFlowConfig
 from dffml.operation.output import GetSingle
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.service.dev import Develop
-from tests.test_df import DATAFLOW, add, mult
+
+from ..test_df import DATAFLOW, add, mult, parse_line
 
 
 class TestRunDataFlowOnRepo(AsyncTestCase):
@@ -18,7 +18,7 @@ class TestRunDataFlowOnRepo(AsyncTestCase):
                 "run_dataflow": run_dataflow.op,
                 "get_single": GetSingle.imp.op,
             },
-            configs={"run_dataflow": RunDataFlowConfig(DATAFLOW)},
+            configs={"run_dataflow": RunDataFlowConfig(dataflow=DATAFLOW)},
             seed=[
                 Input(
                     value=[run_dataflow.op.outputs["results"].name],
@@ -30,17 +30,26 @@ class TestRunDataFlowOnRepo(AsyncTestCase):
         test_inputs = [
             {
                 "add_op": [
-                    {"value": "add 40 and 2", "definition": "calc_string"},
-                    {"value": "[result]", "definition": "get_single_spec"},
+                    {
+                        "value": "add 40 and 2",
+                        "definition": parse_line.op.inputs["line"].name,
+                    },
+                    {
+                        "value": [add.op.outputs["sum"].name],
+                        "definition": GetSingle.op.inputs["spec"].name,
+                    },
                 ]
             },
             {
                 "mult_op": [
                     {
                         "value": "multiply 42 and 10",
-                        "definition": "calc_string",
+                        "definition": parse_line.op.inputs["line"].name,
                     },
-                    {"value": "[result]", "definition": "get_single_spec"},
+                    {
+                        "value": [mult.op.outputs["product"].name],
+                        "definition": GetSingle.op.inputs["spec"].name,
+                    },
                 ]
             },
         ]
