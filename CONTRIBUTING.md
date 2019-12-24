@@ -68,10 +68,10 @@ don't have time to work on it anymore).
 - Don't worry about asking if you can work on something.
 - If you have started work on something but do not yet have a pull request
   - Comment saying you have started
-  - If you don't open a draft/WIP pull request within 3 days, we will take that
+  - If you don't open a draft/WIP pull request within 7 days, we will take that
     to mean you're not working on it anymore.
 - If you see an open a draft/WIP pull request that hasn't had any activity on it
-  for more than 14 days. The community should considered it abandoned.
+  for more than 21 days. The community should considered it abandoned.
   - If you are still working on it, comment on it saying so. It's okay to be in
     progress for a while, just make sure you let others know that you intend to
     complete it.
