@@ -30,9 +30,7 @@ from dffml.service.dev import Develop
 from dffml.util.packaging import is_develop
 from dffml.util.entrypoint import load
 from dffml.config.config import BaseConfigLoader
-from dffml.util.asynctestcase import AsyncTestCase
-
-from ..test_cli import non_existant_tempfile
+from dffml.util.asynctestcase import AsyncExitStackTestCase
 
 
 def relative_path(*args):
@@ -59,31 +57,16 @@ def relative_chdir(*args):
         os.chdir(orig_dir)
 
 
-class IntegrationCLITestCase(AsyncTestCase):
+class IntegrationCLITestCase(AsyncExitStackTestCase):
     REQUIRED_PLUGINS = []
 
     async def setUp(self):
-        super().setUp()
+        await super().setUp()
         self.required_plugins(*self.REQUIRED_PLUGINS)
         self.stdout = io.StringIO()
-        self._stack = contextlib.ExitStack().__enter__()
-
-    async def tearDown(self):
-        super().tearDown()
-        self._stack.__exit__(None, None, None)
 
     def required_plugins(self, *args):
         if not all(map(is_develop, args)):
             self.skipTest(
                 f"Required plugins: {', '.join(args)} must be installed in development mode"
             )
-
-    def mktempfile(
-        self, suffix: Optional[str] = None, text: Optional[str] = None
-    ):
-        filename = self._stack.enter_context(non_existant_tempfile())
-        if suffix:
-            filename = filename + suffix
-        if text:
-            pathlib.Path(filename).write_text(inspect.cleandoc(text) + "\n")
-        return filename
