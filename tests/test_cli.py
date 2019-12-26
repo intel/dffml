@@ -31,7 +31,10 @@ from dffml.df.types import Operation
 from dffml.df.base import OperationImplementation
 from dffml.accuracy import Accuracy as AccuracyType
 from dffml.util.entrypoint import entry_point
-from dffml.util.asynctestcase import AsyncTestCase
+from dffml.util.asynctestcase import (
+    AsyncExitStackTestCase,
+    non_existant_tempfile,
+)
 from dffml.util.cli.cmds import ModelCMD
 from dffml.base import config
 from dffml.cli import Merge, Dataflow, Train, Accuracy, Predict, List
@@ -39,20 +42,10 @@ from dffml.cli import Merge, Dataflow, Train, Accuracy, Predict, List
 from .test_df import OPERATIONS, OPIMPS
 
 
-@contextmanager
-def non_existant_tempfile():
-    """
-    Yield the filename of a non-existant file within a temporary directory
-    """
-    with tempfile.TemporaryDirectory() as testdir:
-        yield os.path.join(testdir, str(random.random()))
-
-
-class ReposTestCase(AsyncTestCase):
+class ReposTestCase(AsyncExitStackTestCase):
     async def setUp(self):
-        super().setUp()
+        await super().setUp()
         self.repos = [Repo(str(random.random())) for _ in range(0, 10)]
-        self._stack = ExitStack().__enter__()
         self.temp_filename = self.mktempfile()
         self.sconfig = FileSourceConfig(filename=self.temp_filename)
         async with JSONSource(self.sconfig) as source:
@@ -85,13 +78,6 @@ class ReposTestCase(AsyncTestCase):
         self._stack.enter_context(
             patch("dffml.df.types.Operation.load", new=op_load)
         )
-
-    def tearDown(self):
-        super().tearDown()
-        self._stack.__exit__(None, None, None)
-
-    def mktempfile(self):
-        return self._stack.enter_context(non_existant_tempfile())
 
 
 @config
