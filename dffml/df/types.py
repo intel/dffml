@@ -269,7 +269,11 @@ class Input(object):
         # instance name this Input is intended for.
         if parents is None:
             parents = []
-        self.value = value
+
+        if isinstance(value, dict) and definition is not None:
+            self.value = getattr(sys.modules[__name__], definition).__init__(value)
+        else:
+            self.value = value
         self.definition = definition
         self.parents = parents
         self.origin = origin
