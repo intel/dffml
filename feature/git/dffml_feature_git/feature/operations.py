@@ -298,7 +298,7 @@ async def git_repo_release(
         "--after",
         "%s" % (end),
         branch,
-        cwd=repo["directory"],
+        cwd=repo.directory,
     )
     while not proc.stdout.at_eof() and not present:
         line = await proc.stdout.readline()
@@ -316,7 +316,7 @@ async def git_repo_release(
 )
 async def lines_of_code_by_language(repo: Dict[str, str]):
     # cloc creates temporary files >:(
-    proc = await create("tokei", repo["directory"], cwd=repo["directory"])
+    proc = await create("tokei", repo.directory, cwd=repo.directory)
     cols = []
     lines_by_language = {}
     while not proc.stdout.at_eof():
