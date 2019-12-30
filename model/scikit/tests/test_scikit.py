@@ -188,9 +188,27 @@ CLASSIFIERS = [
     "AdaBoostClassifier",
     "GaussianNB",
     "QuadraticDiscriminantAnalysis",
+    "LogisticRegression",
+    "GradientBoostingClassifier",
+    "BernoulliNB",
+    "ExtraTreesClassifier",
+    "BaggingClassifier",
+    "LinearDiscriminantAnalysis",
+    "MultinomialNB",
 ]
 
-REGRESSORS = ["LinearRegression"]
+REGRESSORS = [
+    "LinearRegression",
+    "ElasticNet",
+    "BayesianRidge",
+    "Lasso",
+    "ARDRegression",
+    "RANSACRegressor",
+    "DecisionTreeRegressor",
+    "GaussianProcessRegressor",
+    "OrthogonalMatchingPursuit",
+    "Lars",
+]
 
 for clf in CLASSIFIERS:
     test_cls = type(
