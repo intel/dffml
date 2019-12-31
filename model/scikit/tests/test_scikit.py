@@ -208,6 +208,7 @@ REGRESSORS = [
     "GaussianProcessRegressor",
     "OrthogonalMatchingPursuit",
     "Lars",
+    "Ridge",
 ]
 
 for clf in CLASSIFIERS:
