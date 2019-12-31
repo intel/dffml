@@ -270,10 +270,10 @@ class Input(object):
         if parents is None:
             parents = []
 
-        if isinstance(value, dict) and definition is not None:
-            self.value = getattr(sys.modules[__name__], definition).__init__(value)
-        else:
-            self.value = value
+        if isinstance(value, dict) and definition.spec is not None:
+            self.value = definition.spec(**value)
+        
+        self.value = value
         self.definition = definition
         self.parents = parents
         self.origin = origin
