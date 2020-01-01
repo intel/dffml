@@ -217,7 +217,3 @@ class TestScikitRegression(IntegrationCLITestCase):
         self.assertIn("value", results)
         results = results["value"]
         self.assertTrue(results is not None)
-       
-        
-
-

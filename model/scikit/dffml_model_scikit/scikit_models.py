@@ -166,7 +166,7 @@ for entry_point_name, name, cls, applicable_features_function in [
         OrthogonalMatchingPursuit,
         applicable_features,
     ),
-    ("scikitridge","Ridge",Ridge,applicable_features),
+    ("scikitridge", "Ridge", Ridge, applicable_features),
     ("scikitlars", "Lars", Lars, applicable_features),
 ]:
 
