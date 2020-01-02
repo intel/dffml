@@ -69,6 +69,10 @@ function run_plugin() {
     # Fail if any tests were skipped
     grep -v -q -E '(skipped=.*)' "${check_skips}"
   fi
+
+  if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" == "xrefs/heads/master" ]; then
+    dffml service dev release "${PLUGIN}"
+  fi
 }
 
 function run_changelog() {
