@@ -36,6 +36,29 @@ No description
 
 - output: associate_output(type: Dict[str, Any])
 
+dffml.dataflow.run
+~~~~~~~~~~~~~~~~~~
+
+*Core*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- inputs: flow_inputs(type: Dict[str,Any])
+
+**Outputs**
+
+- results: flow_results(type: Dict[str,Any])
+
+**Args**
+
+- dataflow: DataFlow
+
 dffml.mapping.create
 ~~~~~~~~~~~~~~~~~~~~
 
