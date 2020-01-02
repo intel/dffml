@@ -9,9 +9,13 @@ import getpass
 import importlib
 import configparser
 import pkg_resources
+import unittest.mock
+import urllib.request
+import importlib.util
 from pathlib import Path
 
 from ..base import BaseConfig
+from ..util.os import chdir
 from ..util.skel import Skel
 from ..util.cli.cmd import CMD
 from ..version import VERSION
@@ -335,6 +339,74 @@ class Install(CMD):
         await proc.wait()
 
 
+class RepoDirtyError(Exception):
+    """
+    Raised when a release was attempted but there are uncommited changes
+    """
+
+
+class Release(CMD):
+    """
+    Release a package (if not already released)
+    """
+
+    arg_package = Arg(
+        "package", help="Relative path to package to release", type=Path,
+    )
+
+    async def run(self):
+        # Ensure target plugin directory has no unstaged changes
+        cmd = ["git", "status", "--porcelain", str(self.package)]
+        self.logger.debug("Running: %s", " ".join(cmd))
+        proc = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+        stdout, stderr = await proc.communicate()
+        if stderr or proc.returncode != 0:
+            raise RuntimeError(stderr.decode())
+        if stdout:
+            raise RepoDirtyError("Uncommited changes")
+        # cd to directory
+        with chdir(str(self.package)):
+            # Load version
+            spec = importlib.util.spec_from_file_location(
+                "setup", os.path.join(os.getcwd(), "setup.py")
+            )
+            setup_kwargs = {}
+
+            def grab_setup_kwargs(**kwargs):
+                setup_kwargs.update(kwargs)
+
+            with unittest.mock.patch(
+                "setuptools.setup", new=grab_setup_kwargs
+            ):
+                setup = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(setup)
+            name = setup_kwargs["name"]
+            version = setup_kwargs["version"]
+            # Check if version is on PyPi
+            url = f"https://pypi.org/pypi/{name}/json"
+            # TODO(p5) Blocking request in coroutine
+            with urllib.request.urlopen(url) as resp:
+                package_json = json.load(resp)
+                if package_json["info"]["version"] == version:
+                    print(f"Version {version} of {name} already on PyPi")
+                    return
+            # Upload if not present
+            for cmd in [
+                ["git", "clean", "-fdx"],
+                [sys.executable, "setup.py", "sdist"],
+                [sys.executable, "-m", "twine", "upload", "dist/*"],
+            ]:
+                print(f"$ {' '.join(cmd)}")
+                proc = await asyncio.create_subprocess_exec(*cmd)
+                await proc.wait()
+                if proc.returncode != 0:
+                    raise RuntimeError
+
+
 class Develop(CMD):
     """
     Development utilities for hacking on DFFML itself
@@ -346,3 +418,4 @@ class Develop(CMD):
     export = Export
     entrypoints = Entrypoints
     install = Install
+    release = Release
