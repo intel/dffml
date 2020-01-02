@@ -104,6 +104,7 @@ setup(
             f"scikitgpr = {IMPORT_NAME}.scikit_models:GaussianProcessRegressorModel",
             f"scikitomp = {IMPORT_NAME}.scikit_models:OrthogonalMatchingPursuitModel",
             f"scikitlars = {IMPORT_NAME}.scikit_models:LarsModel",
+            f"scikitridge = {IMPORT_NAME}.scikit_models:RidgeModel",
         ]
     },
 )
