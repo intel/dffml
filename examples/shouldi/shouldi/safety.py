@@ -29,9 +29,9 @@ async def safety_check(package: str, version: str) -> Dict[str, Any]:
         "check",
         "--stdin",
         "--json",
-        stdin=asyncio.subprocess.PIPE,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
+        stdin=asyncio.subprocess.Process.communicate,
+        stdout=asyncio.subprocess.Process.communicate,
+        stderr=asyncio.subprocess.Process.communicate,
     )
 
     proc.stdin.write(pinned.encode())
