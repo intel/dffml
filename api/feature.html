@@ -177,7 +177,7 @@
 <p>All features registered to the dffml.feature entry point using setuptools are
 derived from the Feature class. To add a feature, create a module which has a
 setup.py which specifies where to find your Feature subclass within your module.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="p">(</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="p">(</span>
     <span class="n">name</span><span class="o">=</span><span class="s1">&#39;myfeatures&#39;</span><span class="p">,</span>
 <span class="gp">...</span>
     <span class="n">entry_points</span><span class="o">=</span><span class="p">{</span>
@@ -211,17 +211,17 @@ on disk.</p>
 <p>Once the appropriate data is fetched the parse method is responsible for
 storing the parts of that data which will be used to calculate in the
 subclass</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">__example_parsed_value_name</span> <span class="o">=</span> <span class="n">example_value</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">__example_parsed_value_name</span> <span class="o">=</span> <span class="n">example_value</span>
 </pre></div>
 </div>
 <p>The calc method then uses variables set in parse to output an integer value.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__example_parsed_value_name</span>
 </pre></div>
 </div>
 <p>Full example of a feature implementation:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
-<span class="kn">from</span> <span class="nn">dffml.feature</span> <span class="k">import</span> <span class="n">Feature</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">from</span> <span class="nn">dffml.feature</span> <span class="kn">import</span> <span class="n">Feature</span>
 
 <span class="k">class</span> <span class="nc">NumFilesFeature</span><span class="p">(</span><span class="n">Feature</span><span class="p">):</span>
 

@@ -246,7 +246,7 @@ prediction with a 0% confidence.</p>
 <span class="sd">    0% confidence.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="c1"># We aren&#39;t worring about saving and loading our model in this tutorial.</span>
         <span class="c1"># You should implement it when you write your model for real.</span>
@@ -265,11 +265,11 @@ for each repo we are given to train on, and hash it, storing the hash as the key
 in our <code class="docutils literal notranslate"><span class="pre">self.mem</span></code> dict, and the value as the classification. This will let us
 hash the feature data of future repos we are asked to predict on and pull their
 expected classification (for ones we’ve seen before).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Train using repos as the data to learn from.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">async</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">sources</span><span class="o">.</span><span class="n">with_features</span><span class="p">(</span><span class="n">features</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">sources</span><span class="o">.</span><span class="n">with_features</span><span class="p">(</span><span class="n">features</span><span class="p">):</span>
         <span class="c1"># Make sure we are only dealing with classifications we care about</span>
         <span class="k">if</span> <span class="n">repo</span><span class="o">.</span><span class="n">classification</span><span class="p">()</span> <span class="ow">in</span> <span class="n">classifications</span><span class="p">:</span>
             <span class="c1"># Hash the data of the repo and map it to the classification</span>
@@ -284,7 +284,7 @@ expected classification (for ones we’ve seen before).</p>
 <p>You could implement this by passing <code class="docutils literal notranslate"><span class="pre">sources.classified_with_features(features)</span></code>
 to predict and seeing how many it got right. However, we’re going to skip that
 in this tutorial (because we know the accuracy of this demo model will suck).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">async</span> <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Accuracy</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Accuracy</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Evaluates the accuracy of our model after training using the input repos</span>
 <span class="sd">    as test data.</span>
@@ -300,13 +300,13 @@ in this tutorial (because we know the accuracy of this demo model will suck).</p
 make a prediction for. And see if it’s in the existing mapping. If not, then
 we’ll just choose a random classification for it and call that good (with a 0%
 confidence).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repos</span><span class="p">:</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Repo</span><span class="p">])</span> <span class="o">-&gt;</span> \
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repos</span><span class="p">:</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Repo</span><span class="p">])</span> <span class="o">-&gt;</span> \
                 <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Repo</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Uses trained data to make a prediction about the quality of a repo.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="c1"># Pull all repos which have the features we are interested in.</span>
-    <span class="n">async</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">repos</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">repos</span><span class="p">:</span>
         <span class="c1"># Hash the data of the repo and map it to the classification</span>
         <span class="n">as_json</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">features</span><span class="p">()),</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
         <span class="n">hash_json</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span><span class="p">(</span><span class="n">as_json</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>

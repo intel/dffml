@@ -254,7 +254,7 @@ returned from a __call__ to this class.</p>
 classes inheriting from BaseDataFlowFacilitatorObject must have a property
 named ENTRY_POINT. In the form of <cite>dffml.load_point</cite> which will be used to
 load all classes registered to that entry point.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the base object. Then enter it&#39;s context to preform any initial</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the base object. Then enter it&#39;s context to preform any initial</span>
 <span class="c1"># setup. Call obj to get an instance of obj.CONTEXT, which is a subclass</span>
 <span class="c1"># of BaseDataFlowFacilitatorObjectContext. ctx, the inner context, does</span>
 <span class="c1"># all the heavy lifting.</span>
@@ -271,7 +271,7 @@ load all classes registered to that entry point.</p>
 <dd><p>Base class for all Data Flow Facilitator object’s contexts. These are
 classes which support async context management. Classes ending with
 …Context are the most inner context’s which are used in DFFML.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calling obj returns an instance which is a subclass of this class,</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calling obj returns an instance which is a subclass of this class,</span>
 <span class="c1"># BaseDataFlowFacilitatorObjectContext.</span>
 <span class="k">async</span> <span class="k">with</span> <span class="n">obj</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
     <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">method</span><span class="p">()</span>
