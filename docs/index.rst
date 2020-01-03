@@ -13,9 +13,6 @@ Welcome to DFFML!
 .. image:: https://badges.gitter.im/gitterHQ/gitter.svg
     :target: https://gitter.im/dffml/community
     :alt: Gitter chat
-.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-    :target: https://github.com/psf/black
-    :alt: Code style: black
 .. image:: https://img.shields.io/pypi/v/dffml.svg
     :target: https://pypi.org/project/dffml
     :alt: PyPI version
