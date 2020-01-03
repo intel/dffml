@@ -117,7 +117,7 @@ function run_docs() {
   chmod 700 ~/.ssh
   "${PYTHON}" -c "import pathlib, base64, os; keyfile = pathlib.Path('~/.ssh/github_dffml').expanduser(); keyfile.write_bytes(b''); keyfile.chmod(0o600); keyfile.write_bytes(base64.b32decode(os.environ['GITHUB_PAGES_KEY']))"
   ssh-keygen -y -f ~/.ssh/github_dffml > ~/.ssh/github_dffml.pub
-  export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+  export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=~/.ssh/github_dffml'
 
   cd "${SRC_ROOT}"
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
@@ -138,6 +138,8 @@ function run_docs() {
   git checkout $(git describe --abbrev=0 --tags --match '*.*.*')
   git clean -fdx
   git reset --hard HEAD
+  "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
+  "${PYTHON}" -m dffml service dev install -user
   ./scripts/docs.sh
   mv pages "${release_docs}/html"
 
