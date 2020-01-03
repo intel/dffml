@@ -13,12 +13,35 @@ from typing import Dict
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
-from sklearn.gaussian_process import GaussianProcessClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
-from sklearn.linear_model import LinearRegression
+from sklearn.gaussian_process import (
+    GaussianProcessClassifier,
+    GaussianProcessRegressor,
+)
+from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
+from sklearn.ensemble import (
+    RandomForestClassifier,
+    AdaBoostClassifier,
+    GradientBoostingClassifier,
+    ExtraTreesClassifier,
+    BaggingClassifier,
+)
+from sklearn.naive_bayes import GaussianNB, BernoulliNB, MultinomialNB
+from sklearn.discriminant_analysis import (
+    QuadraticDiscriminantAnalysis,
+    LinearDiscriminantAnalysis,
+)
+from sklearn.linear_model import (
+    LinearRegression,
+    LogisticRegression,
+    ElasticNet,
+    BayesianRidge,
+    Lasso,
+    ARDRegression,
+    RANSACRegressor,
+    OrthogonalMatchingPursuit,
+    Lars,
+    Ridge,
+)
 
 from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entry_point
@@ -88,6 +111,63 @@ for entry_point_name, name, cls, applicable_features_function in [
         applicable_features,
     ),
     ("scikitlr", "LinearRegression", LinearRegression, applicable_features),
+    (
+        "scikitlor",
+        "LogisticRegression",
+        LogisticRegression,
+        applicable_features,
+    ),
+    (
+        "scikitgbc",
+        "GradientBoostingClassifier",
+        GradientBoostingClassifier,
+        applicable_features,
+    ),
+    (
+        "scikitetc",
+        "ExtraTreesClassifier",
+        ExtraTreesClassifier,
+        applicable_features,
+    ),
+    (
+        "scikitbgc",
+        "BaggingClassifier",
+        BaggingClassifier,
+        applicable_features,
+    ),
+    ("scikiteln", "ElasticNet", ElasticNet, applicable_features,),
+    ("scikitbyr", "BayesianRidge", BayesianRidge, applicable_features,),
+    ("scikitlas", "Lasso", Lasso, applicable_features,),
+    ("scikitard", "ARDRegression", ARDRegression, applicable_features),
+    ("scikitrsc", "RANSACRegressor", RANSACRegressor, applicable_features),
+    ("scikitbnb", "BernoulliNB", BernoulliNB, applicable_features),
+    ("scikitmnb", "MultinomialNB", MultinomialNB, applicable_features),
+    (
+        "scikitlda",
+        "LinearDiscriminantAnalysis",
+        LinearDiscriminantAnalysis,
+        applicable_features,
+    ),
+    (
+        "scikitdtr",
+        "DecisionTreeRegressor",
+        DecisionTreeRegressor,
+        applicable_features,
+    ),
+    (
+        "scikitgpr",
+        "GaussianProcessRegressor",
+        GaussianProcessRegressor,
+        applicable_features,
+    ),
+    (
+        "scikitomp",
+        "OrthogonalMatchingPursuit",
+        OrthogonalMatchingPursuit,
+        applicable_features,
+    ),
+    ("scikitridge", "Ridge", Ridge, applicable_features),
+    ("scikitlars", "Lars", Lars, applicable_features),
 ]:
 
     parameters = inspect.signature(cls).parameters

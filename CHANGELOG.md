@@ -6,8 +6,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- scikit models
+  - Classifiers
+    - LogisticRegression
+    - GradientBoostingClassifier
+    - BernoulliNB
+    - ExtraTreesClassifier
+    - BaggingClassifier
+    - LinearDiscriminantAnalysis
+    - MultinomialNB
+  - Regressors
+    - ElasticNet
+    - BayesianRidge
+    - Lasso
+    - ARDRegression
+    - RANSACRegressor
+    - DecisionTreeRegressor
+    - GaussianProcessRegressor
+    - OrthogonalMatchingPursuit
+    - Lars
+    - Ridge
 - `AsyncExitStackTestCase` which instantiates and enters async and non-async
   `contextlib` exit stacks. Provides temporary file creation.
+- Automatic releases to PyPi via GitHub Actions
 ### Changed
 - CLI tests and integration tests derive from `AsyncExitStackTestCase`
 ### Fixed
