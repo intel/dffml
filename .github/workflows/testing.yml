@@ -1,10 +1,9 @@
-name: Testing
+name: Tests
 
 on: [push, pull_request]
 
 jobs:
   lint:
-
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -28,7 +27,6 @@ jobs:
         ${{ matrix.check }}=1 GITHUB_PAGES_TOKEN=${{ secrets.GITHUB_PAGES_TOKEN }} ./.ci/run.sh
 
   test:
-
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
