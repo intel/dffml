@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Function to create a config class dynamically, analogous to `make_dataclass`
 ### Changed
 - CLI tests and integration tests derive from `AsyncExitStackTestCase`
+- SciKit models now use the auto args and config methods.
 ### Fixed
 - Correctly identify when functions decorated with `op` use `self` to reference
   the `OperationImplementationContext`.
