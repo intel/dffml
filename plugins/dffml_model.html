@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Models &mdash; DFFML 0.3.1 documentation</title>
+  <title>Models &mdash; DFFML 0.3.2 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.1
+                0.3.2
               </div>
             
           
@@ -608,12 +608,52 @@ their feature names.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Regression</p></td>
+<tr class="row-even"><td rowspan="11"><p>Regression</p></td>
 <td><p>LinearRegression</p></td>
 <td><p>scikitlr</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression/">scikitlr</a></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="8"><p>Classification</p></td>
+<tr class="row-odd"><td><p>ElasticNet</p></td>
+<td><p>scikiteln</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ElasticNet.html#sklearn.linear_model.ElasticNet/">scikiteln</a></p></td>
+</tr>
+<tr class="row-even"><td><p>BayesianRidge</p></td>
+<td><p>scikitbyr</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.BayesianRidge.html#sklearn.linear_model.BayesianRidge/">scikitbyr</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Lasso</p></td>
+<td><p>scikitlas</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso/">scikitlas</a></p></td>
+</tr>
+<tr class="row-even"><td><p>ARDRegression</p></td>
+<td><p>scikitard</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ARDRegression.html#sklearn.linear_model.ARDRegression/">scikitard</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>RANSACRegressor</p></td>
+<td><p>scikitrsc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RANSACRegressor.html#sklearn.linear_model.RANSACRegressor/">scikitrsc</a></p></td>
+</tr>
+<tr class="row-even"><td><p>DecisionTreeRegressor</p></td>
+<td><p>scikitdtr</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor/">scikitdtr</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>GaussianProcessRegressor</p></td>
+<td><p>scikitgpr</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.gaussian_process.GaussianProcessRegressor.html#sklearn.gaussian_process.GaussianProcessRegressor/">scikitgpr</a></p></td>
+</tr>
+<tr class="row-even"><td><p>OrthogonalMatchingPursuit</p></td>
+<td><p>scikitomp</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.OrthogonalMatchingPursuit.html#sklearn.linear_model.OrthogonalMatchingPursuit/">scikitomp</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Lars</p></td>
+<td><p>scikitlars</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lars.html#sklearn.linear_model.Lars/">scikitlars</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Ridge</p></td>
+<td><p>scikitridge</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge/">scikitridge</a></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="16"><p>Classification</p></td>
 <td><p>KNeighborsClassifier</p></td>
 <td><p>scikitknn</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier/">scikitknn</a></p></td>
@@ -645,6 +685,38 @@ their feature names.</p>
 <tr class="row-even"><td><p>GaussianNB</p></td>
 <td><p>scikitgnb</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB/">scikitgnb</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>SVC</p></td>
+<td><p>scikitsvc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC/">scikitsvc</a></p></td>
+</tr>
+<tr class="row-even"><td><p>LogisticRegression</p></td>
+<td><p>scikitlor</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression/">scikitlor</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>GradientBoostingClassifier</p></td>
+<td><p>scikitgbc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier/">scikitgbc</a></p></td>
+</tr>
+<tr class="row-even"><td><p>BernoulliNB</p></td>
+<td><p>scikitbnb</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.BernoulliNB.html#sklearn.naive_bayes.BernoulliNB/">scikitbnb</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>ExtraTreesClassifier</p></td>
+<td><p>scikitetc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html#sklearn.ensemble.ExtraTreesClassifier/">scikitetc</a></p></td>
+</tr>
+<tr class="row-even"><td><p>BaggingClassifier</p></td>
+<td><p>scikitbgc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingClassifier.html#sklearn.ensemble.BaggingClassifier/">scikitbgc</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>LinearDiscriminantAnalysis</p></td>
+<td><p>scikitlda</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html#sklearn.discriminant_analysis.LinearDiscriminantAnalysis/">scikitlda</a></p></td>
+</tr>
+<tr class="row-even"><td><p>MultinomialNB</p></td>
+<td><p>scikitmnb</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.MultinomialNB.html#sklearn.naive_bayes.MultinomialNB/">scikitmnb</a></p></td>
 </tr>
 </tbody>
 </table>

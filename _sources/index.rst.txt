@@ -1,7 +1,7 @@
 Welcome to DFFML!
 =================
 
-.. image:: https://github.com/intel/dffml/workflows/Testing/badge.svg
+.. image:: https://github.com/intel/dffml/workflows/Tests/badge.svg
     :target: https://github.com/intel/dffml/actions
     :alt: Test Status
 .. image:: https://codecov.io/gh/intel/dffml/branch/master/graph/badge.svg
@@ -13,9 +13,9 @@ Welcome to DFFML!
 .. image:: https://badges.gitter.im/gitterHQ/gitter.svg
     :target: https://gitter.im/dffml/community
     :alt: Gitter chat
-.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-    :target: https://github.com/psf/black
-    :alt: Code style: black
+.. image:: https://img.shields.io/pypi/v/dffml.svg
+    :target: https://pypi.org/project/dffml
+    :alt: PyPI version
 
 Data Flow Facilitator for Machine Learning (DFFML) makes it easy to generate
 datasets, train and use machine learning models, and integrate machine learning
