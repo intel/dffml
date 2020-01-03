@@ -183,34 +183,34 @@
 <span id="data-flow-types"></span><h1>Data Flow Types<a class="headerlink" href="#module-dffml.df.types" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="dffml.df.types.DataFlow">
-<em class="property">class </em><code class="descclassname">dffml.df.types.</code><code class="descname">DataFlow</code><span class="sig-paren">(</span><em>operations: Dict[str, Union[dffml.df.types.Operation, Callable]], seed: List[dffml.df.types.Input] = None, configs: Dict[str, dffml.base.BaseConfig] = None, flow: Dict[str, dffml.df.types.InputFlow] = None, by_origin: Dict[dffml.df.types.Stage, Dict[str, dffml.df.types.Operation]] = None, implementations: Dict[str, ForwardRef('OperationImplementation')] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#DataFlow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.DataFlow" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">DataFlow</code><span class="sig-paren">(</span><em class="sig-param">operations: Dict[str, Union[dffml.df.types.Operation, Callable]], seed: List[dffml.df.types.Input] = None, configs: Dict[str, dffml.base.BaseConfig] = None, flow: Dict[str, dffml.df.types.InputFlow] = None, by_origin: Dict[dffml.df.types.Stage, Dict[str, dffml.df.types.Operation]] = None, implementations: Dict[str, ForwardRef('OperationImplementation')] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#DataFlow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.DataFlow" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
 <dt id="dffml.df.types.Definition">
-<em class="property">class </em><code class="descclassname">dffml.df.types.</code><code class="descname">Definition</code><a class="reference internal" href="../../_modules/dffml/df/types.html#Definition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Definition" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Definition</code><a class="reference internal" href="../../_modules/dffml/df/types.html#Definition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Definition" title="Permalink to this definition">¶</a></dt>
 <dd><p>List[type] is how to specify a list</p>
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.df.types.Definition.lock">
-<code class="descname">lock</code><a class="headerlink" href="#dffml.df.types.Definition.lock" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">lock</code><a class="headerlink" href="#dffml.df.types.Definition.lock" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.df.types.Definition.name">
-<code class="descname">name</code><a class="headerlink" href="#dffml.df.types.Definition.name" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#dffml.df.types.Definition.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.df.types.Definition.primitive">
-<code class="descname">primitive</code><a class="headerlink" href="#dffml.df.types.Definition.primitive" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">primitive</code><a class="headerlink" href="#dffml.df.types.Definition.primitive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.df.types.Definition.spec">
-<code class="descname">spec</code><a class="headerlink" href="#dffml.df.types.Definition.spec" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">spec</code><a class="headerlink" href="#dffml.df.types.Definition.spec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 3</p>
 </dd></dl>
 
@@ -218,27 +218,27 @@
 
 <dl class="exception">
 <dt id="dffml.df.types.DefinitionMissing">
-<em class="property">exception </em><code class="descclassname">dffml.df.types.</code><code class="descname">DefinitionMissing</code><a class="reference internal" href="../../_modules/dffml/df/types.html#DefinitionMissing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.DefinitionMissing" title="Permalink to this definition">¶</a></dt>
+<em class="property">exception </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">DefinitionMissing</code><a class="reference internal" href="../../_modules/dffml/df/types.html#DefinitionMissing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.DefinitionMissing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Definition missing from linked DataFlow</p>
 </dd></dl>
 
 <dl class="exception">
 <dt id="dffml.df.types.FailedToLoadOperation">
-<em class="property">exception </em><code class="descclassname">dffml.df.types.</code><code class="descname">FailedToLoadOperation</code><a class="reference internal" href="../../_modules/dffml/df/types.html#FailedToLoadOperation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.FailedToLoadOperation" title="Permalink to this definition">¶</a></dt>
+<em class="property">exception </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">FailedToLoadOperation</code><a class="reference internal" href="../../_modules/dffml/df/types.html#FailedToLoadOperation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.FailedToLoadOperation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised when an Operation wasn’t found to be registered with the
 dffml.operation entrypoint.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="dffml.df.types.Input">
-<em class="property">class </em><code class="descclassname">dffml.df.types.</code><code class="descname">Input</code><span class="sig-paren">(</span><em>value: Any, definition: dffml.df.types.Definition, parents: Optional[List[Input]] = None, origin: Union[str, Tuple[dffml.df.types.Operation, str], None] = 'seed', *, uid: Optional[str] = ''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Input" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Input</code><span class="sig-paren">(</span><em class="sig-param">value: Any, definition: dffml.df.types.Definition, parents: Optional[List[Input]] = None, origin: Union[str, Tuple[dffml.df.types.Operation, str], None] = 'seed', *, uid: Optional[str] = ''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Input" title="Permalink to this definition">¶</a></dt>
 <dd><p>All inputs have a unique id. Without it they can’t be tracked for locking
 purposes.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="dffml.df.types.InputFlow">
-<em class="property">class </em><code class="descclassname">dffml.df.types.</code><code class="descname">InputFlow</code><span class="sig-paren">(</span><em>inputs: Dict[str</em>, <em>List[Dict[str</em>, <em>dffml.df.types.Operation]]] = None</em>, <em>conditions: List[Dict[str</em>, <em>dffml.df.types.Operation]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#InputFlow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.InputFlow" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">InputFlow</code><span class="sig-paren">(</span><em class="sig-param">inputs: Dict[str</em>, <em class="sig-param">List[Dict[str</em>, <em class="sig-param">dffml.df.types.Operation]]] = None</em>, <em class="sig-param">conditions: List[Dict[str</em>, <em class="sig-param">dffml.df.types.Operation]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#InputFlow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.InputFlow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Inputs of an operation by their name as used by the operation implementation
 mapped to a list of locations they can come from. The list contains strings
 in the format of operation_instance_name.key_in_output_mapping or the
@@ -248,53 +248,53 @@ network.</p>
 
 <dl class="class">
 <dt id="dffml.df.types.Operation">
-<em class="property">class </em><code class="descclassname">dffml.df.types.</code><code class="descname">Operation</code><span class="sig-paren">(</span><em>name</em>, <em>inputs</em>, <em>outputs</em>, <em>stage</em>, <em>conditions</em>, <em>expand</em>, <em>instance_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Operation" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Operation</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">inputs</em>, <em class="sig-param">outputs</em>, <em class="sig-param">stage</em>, <em class="sig-param">conditions</em>, <em class="sig-param">expand</em>, <em class="sig-param">instance_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Operation" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
 <dt id="dffml.df.types.Operation.conditions">
-<code class="descname">conditions</code><a class="headerlink" href="#dffml.df.types.Operation.conditions" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">conditions</code><a class="headerlink" href="#dffml.df.types.Operation.conditions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 4</p>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="dffml.df.types.Operation.definitions">
-<em class="property">classmethod </em><code class="descname">definitions</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Operation.definitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Operation.definitions" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">definitions</code><span class="sig-paren">(</span><em class="sig-param">*args: dffml.df.types.Operation</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Operation.definitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Operation.definitions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create key value mapping of definition names to definitions for all
 given operations.</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.df.types.Operation.expand">
-<code class="descname">expand</code><a class="headerlink" href="#dffml.df.types.Operation.expand" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">expand</code><a class="headerlink" href="#dffml.df.types.Operation.expand" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 5</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.df.types.Operation.inputs">
-<code class="descname">inputs</code><a class="headerlink" href="#dffml.df.types.Operation.inputs" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">inputs</code><a class="headerlink" href="#dffml.df.types.Operation.inputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.df.types.Operation.instance_name">
-<code class="descname">instance_name</code><a class="headerlink" href="#dffml.df.types.Operation.instance_name" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">instance_name</code><a class="headerlink" href="#dffml.df.types.Operation.instance_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 6</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.df.types.Operation.name">
-<code class="descname">name</code><a class="headerlink" href="#dffml.df.types.Operation.name" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#dffml.df.types.Operation.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.df.types.Operation.outputs">
-<code class="descname">outputs</code><a class="headerlink" href="#dffml.df.types.Operation.outputs" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">outputs</code><a class="headerlink" href="#dffml.df.types.Operation.outputs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.df.types.Operation.stage">
-<code class="descname">stage</code><a class="headerlink" href="#dffml.df.types.Operation.stage" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">stage</code><a class="headerlink" href="#dffml.df.types.Operation.stage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 3</p>
 </dd></dl>
 
@@ -302,34 +302,34 @@ given operations.</p>
 
 <dl class="class">
 <dt id="dffml.df.types.Output">
-<em class="property">class </em><code class="descclassname">dffml.df.types.</code><code class="descname">Output</code><span class="sig-paren">(</span><em>name</em>, <em>select</em>, <em>fill</em>, <em>single</em>, <em>ismap</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Output" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Output</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">select</em>, <em class="sig-param">fill</em>, <em class="sig-param">single</em>, <em class="sig-param">ismap</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Output" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
 <dt id="dffml.df.types.Output.fill">
-<code class="descname">fill</code><a class="headerlink" href="#dffml.df.types.Output.fill" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">fill</code><a class="headerlink" href="#dffml.df.types.Output.fill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.df.types.Output.ismap">
-<code class="descname">ismap</code><a class="headerlink" href="#dffml.df.types.Output.ismap" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">ismap</code><a class="headerlink" href="#dffml.df.types.Output.ismap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 4</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.df.types.Output.name">
-<code class="descname">name</code><a class="headerlink" href="#dffml.df.types.Output.name" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#dffml.df.types.Output.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.df.types.Output.select">
-<code class="descname">select</code><a class="headerlink" href="#dffml.df.types.Output.select" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">select</code><a class="headerlink" href="#dffml.df.types.Output.select" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.df.types.Output.single">
-<code class="descname">single</code><a class="headerlink" href="#dffml.df.types.Output.single" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">single</code><a class="headerlink" href="#dffml.df.types.Output.single" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 3</p>
 </dd></dl>
 
@@ -337,28 +337,28 @@ given operations.</p>
 
 <dl class="class">
 <dt id="dffml.df.types.Parameter">
-<em class="property">class </em><code class="descclassname">dffml.df.types.</code><code class="descname">Parameter</code><span class="sig-paren">(</span><em>key</em>, <em>value</em>, <em>origin</em>, <em>definition</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Parameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Parameter" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Parameter</code><span class="sig-paren">(</span><em class="sig-param">key</em>, <em class="sig-param">value</em>, <em class="sig-param">origin</em>, <em class="sig-param">definition</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Parameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Parameter" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
 <dt id="dffml.df.types.Parameter.definition">
-<code class="descname">definition</code><a class="headerlink" href="#dffml.df.types.Parameter.definition" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">definition</code><a class="headerlink" href="#dffml.df.types.Parameter.definition" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 3</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.df.types.Parameter.key">
-<code class="descname">key</code><a class="headerlink" href="#dffml.df.types.Parameter.key" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">key</code><a class="headerlink" href="#dffml.df.types.Parameter.key" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.df.types.Parameter.origin">
-<code class="descname">origin</code><a class="headerlink" href="#dffml.df.types.Parameter.origin" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">origin</code><a class="headerlink" href="#dffml.df.types.Parameter.origin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="method">
 <dt id="dffml.df.types.Parameter.value">
-<code class="descname">value</code><a class="headerlink" href="#dffml.df.types.Parameter.value" title="Permalink to this definition">¶</a></dt>
+<em class="property">property </em><code class="sig-name descname">value</code><a class="headerlink" href="#dffml.df.types.Parameter.value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
@@ -366,7 +366,7 @@ given operations.</p>
 
 <dl class="class">
 <dt id="dffml.df.types.Stage">
-<em class="property">class </em><code class="descclassname">dffml.df.types.</code><code class="descname">Stage</code><a class="reference internal" href="../../_modules/dffml/df/types.html#Stage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Stage" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Stage</code><a class="reference internal" href="../../_modules/dffml/df/types.html#Stage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Stage" title="Permalink to this definition">¶</a></dt>
 <dd><p>An enumeration.</p>
 </dd></dl>
 

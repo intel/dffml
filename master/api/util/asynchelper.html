@@ -183,29 +183,18 @@
 running concurrent tasks.</p>
 <dl class="class">
 <dt id="dffml.util.asynchelper.AsyncContextManagerList">
-<em class="property">class </em><code class="descclassname">dffml.util.asynchelper.</code><code class="descname">AsyncContextManagerList</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/asynchelper.html#AsyncContextManagerList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.asynchelper.AsyncContextManagerList" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.util.asynchelper.</code><code class="sig-name descname">AsyncContextManagerList</code><span class="sig-paren">(</span><em class="sig-param">*args</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/asynchelper.html#AsyncContextManagerList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.asynchelper.AsyncContextManagerList" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
 <dt id="dffml.util.asynchelper.AsyncContextManagerListContext">
-<em class="property">class </em><code class="descclassname">dffml.util.asynchelper.</code><code class="descname">AsyncContextManagerListContext</code><span class="sig-paren">(</span><em>parent: dffml.util.asynchelper.AsyncContextManagerList</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/asynchelper.html#AsyncContextManagerListContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.asynchelper.AsyncContextManagerListContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.util.asynchelper.</code><code class="sig-name descname">AsyncContextManagerListContext</code><span class="sig-paren">(</span><em class="sig-param">parent: dffml.util.asynchelper.AsyncContextManagerList</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/asynchelper.html#AsyncContextManagerListContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.asynchelper.AsyncContextManagerListContext" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="dffml.util.asynchelper.aenter_stack">
-<em class="property">coroutine </em><code class="descclassname">dffml.util.asynchelper.</code><code class="descname">aenter_stack</code><span class="sig-paren">(</span><em>obj: Any, context_managers: Dict[str, AbstractAsyncContextManager[T_co]], call: bool = True</em><span class="sig-paren">)</span> &#x2192; contextlib.AsyncExitStack<a class="reference internal" href="../../_modules/dffml/util/asynchelper.html#aenter_stack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.asynchelper.aenter_stack" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a <a class="reference external" href="https://docs.python.org/3/library/contextlib.html#contextlib.AsyncExitStack" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">contextlib.AsyncExitStack</span></code></a> then go through each key,
-value pair in the dict of async context managers. Enter the context of each
-async context manager and call setattr on <code class="docutils literal notranslate"><span class="pre">obj</span></code> to set the attribute by
-the name of <code class="docutils literal notranslate"><span class="pre">key</span></code> to the value yielded by the async context manager.</p>
-<p>If <code class="docutils literal notranslate"><span class="pre">call</span></code> is true then the context entered will be the context returned by
-calling each context manager respectively.</p>
-</dd></dl>
-
-<dl class="function">
 <dt id="dffml.util.asynchelper.context_stacker">
-<code class="descclassname">dffml.util.asynchelper.</code><code class="descname">context_stacker</code><span class="sig-paren">(</span><em>inherit: Type[CT_co], context_managers: Dict[str, AbstractAsyncContextManager[T_co]]</em><span class="sig-paren">)</span> &#x2192; Type[CT_co]<a class="reference internal" href="../../_modules/dffml/util/asynchelper.html#context_stacker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.asynchelper.context_stacker" title="Permalink to this definition">¶</a></dt>
-<dd><p>Using <a class="reference internal" href="#dffml.util.asynchelper.aenter_stack" title="dffml.util.asynchelper.aenter_stack"><code class="xref py py-func docutils literal notranslate"><span class="pre">aenter_stack()</span></code></a></p>
+<code class="sig-prename descclassname">dffml.util.asynchelper.</code><code class="sig-name descname">context_stacker</code><span class="sig-paren">(</span><em class="sig-param">inherit: Type, context_managers: Dict[str, AbstractAsyncContextManager]</em><span class="sig-paren">)</span> &#x2192; Type<a class="reference internal" href="../../_modules/dffml/util/asynchelper.html#context_stacker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.asynchelper.context_stacker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Using <code class="xref py py-func docutils literal notranslate"><span class="pre">aenter_stack()</span></code></p>
 </dd></dl>
 
 </div>
