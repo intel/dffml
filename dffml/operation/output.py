@@ -36,7 +36,7 @@ class GroupBySpec(NamedTuple):
 
 
 group_by_spec = Definition(
-    name="group_by_spec", primitive="Dict[str, Any]", spec=GroupBySpec
+    name="group_by_spec", primitive="Dict[str, Any]"
 )
 
 group_by_output = Definition(
