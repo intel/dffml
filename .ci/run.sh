@@ -16,7 +16,7 @@ function run_plugin() {
   TEMP_DIRS+=("${venv_dir}")
   "${PYTHON}" -m venv "${venv_dir}"
   source "${venv_dir}/bin/activate"
-  "${PYTHON}" -m pip install -U pip
+  "${PYTHON}" -m pip install -U pip twine
 
   "${PYTHON}" -m pip install -U "${SRC_ROOT}"
 
