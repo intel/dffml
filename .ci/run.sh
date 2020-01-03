@@ -16,7 +16,7 @@ function run_plugin() {
   TEMP_DIRS+=("${venv_dir}")
   "${PYTHON}" -m venv "${venv_dir}"
   source "${venv_dir}/bin/activate"
-  "${PYTHON}" -m pip install -U pip
+  "${PYTHON}" -m pip install -U pip twine
 
   "${PYTHON}" -m pip install -U "${SRC_ROOT}"
 
@@ -108,6 +108,62 @@ function run_style() {
   black --check "${SRC_ROOT}"
 }
 
+function run_docs() {
+  if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" != "xrefs/heads/master" ]; then
+    return
+  fi
+
+  mkdir -p ~/.ssh
+  chmod 700 ~/.ssh
+  "${PYTHON}" -c "import pathlib, base64, os; keyfile = pathlib.Path('~/.ssh/github_dffml').expanduser(); keyfile.write_bytes(b''); keyfile.chmod(0o600); keyfile.write_bytes(base64.b32decode(os.environ['GITHUB_PAGES_KEY']))"
+  ssh-keygen -y -f ~/.ssh/github_dffml > ~/.ssh/github_dffml.pub
+  export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=~/.ssh/github_dffml'
+
+  cd "${SRC_ROOT}"
+  "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
+  "${PYTHON}" -m dffml service dev install -user
+
+  # Make master docs
+  master_docs="$(mktemp -d)"
+  TEMP_DIRS+=("${master_docs}")
+  rm -rf pages
+  ./scripts/docs.sh
+  mv pages "${master_docs}/html"
+
+  # Make last release docs
+  release_docs="$(mktemp -d)"
+  TEMP_DIRS+=("${release_docs}")
+  rm -rf pages
+  git clean -fdx
+  git checkout $(git describe --abbrev=0 --tags --match '*.*.*')
+  git clean -fdx
+  git reset --hard HEAD
+  "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
+  "${PYTHON}" -m dffml service dev install -user
+  ./scripts/docs.sh
+  mv pages "${release_docs}/html"
+
+  git clone git@github.com:intel/dffml -b gh-pages \
+    "${release_docs}/old-gh-pages-branch"
+
+  mv "${release_docs}/old-gh-pages-branch/.git" "${release_docs}/html/"
+  mv "${master_docs}/html" "${release_docs}/html/master"
+
+  cd "${release_docs}/html"
+
+  git config user.name 'John Andersen'
+  git config user.email 'johnandersenpdx@gmail.com'
+
+  git add -A
+  git commit -sam "docs: $(date)"
+  git push
+
+  cd -
+
+  git reset --hard HEAD
+  git checkout master
+}
+
 function cleanup_temp_dirs() {
   if [ "x${NO_RM_TEMP}" != "x" ]; then
     return
@@ -128,4 +184,6 @@ elif [ "x${WHITESPACE}" != "x" ]; then
   run_whitespace
 elif [ "x${STYLE}" != "x" ]; then
   run_style
+elif [ "x${DOCS}" != "x" ]; then
+  run_docs
 fi

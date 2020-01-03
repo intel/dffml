@@ -1,6 +1,10 @@
 # Data Flow Facilitator for Machine Learning (dffml)
 
-[![Actions Status](https://github.com/intel/dffml/workflows/Testing/badge.svg)](https://github.com/intel/dffml/actions) [![codecov](https://codecov.io/gh/intel/dffml/branch/master/graph/badge.svg)](https://codecov.io/gh/intel/dffml) [![CII](https://bestpractices.coreinfrastructure.org/projects/2594/badge)](https://bestpractices.coreinfrastructure.org/projects/2594) [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.svg)](https://gitter.im/dffml/community) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Actions Status](https://github.com/intel/dffml/workflows/Tests/badge.svg)](https://github.com/intel/dffml/actions)
+[![codecov](https://codecov.io/gh/intel/dffml/branch/master/graph/badge.svg)](https://codecov.io/gh/intel/dffml)
+[![CII](https://bestpractices.coreinfrastructure.org/projects/2594/badge)](https://bestpractices.coreinfrastructure.org/projects/2594)
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.svg)](https://gitter.im/dffml/community)
+[![PyPI version](https://img.shields.io/pypi/v/dffml.svg)](https://pypi.org/project/dffml)
 
 ## Documentation
 
