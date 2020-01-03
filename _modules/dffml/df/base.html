@@ -161,8 +161,8 @@
 <span></span><span class="kn">import</span> <span class="nn">abc</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
-<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">AsyncExitStack</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">AsyncExitStack</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">AsyncIterator</span><span class="p">,</span>
     <span class="n">Dict</span><span class="p">,</span>
     <span class="n">List</span><span class="p">,</span>
@@ -174,20 +174,20 @@
     <span class="n">Set</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="k">import</span> <span class="n">NotOpImp</span>
-<span class="kn">from</span> <span class="nn">.types</span> <span class="k">import</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">Stage</span><span class="p">,</span> <span class="n">Definition</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">NotOpImp</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">Stage</span><span class="p">,</span> <span class="n">Definition</span>
 
-<span class="kn">from</span> <span class="nn">.log</span> <span class="k">import</span> <span class="n">LOGGER</span>
+<span class="kn">from</span> <span class="nn">.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
 
-<span class="kn">from</span> <span class="nn">..base</span> <span class="k">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">BaseConfig</span><span class="p">,</span>
     <span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">,</span>
     <span class="n">BaseDataFlowFacilitatorObject</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="k">import</span> <span class="n">Arg</span>
-<span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="k">import</span> <span class="n">CMD</span>
-<span class="kn">from</span> <span class="nn">..util.asynchelper</span> <span class="k">import</span> <span class="n">context_stacker</span><span class="p">,</span> <span class="n">aenter_stack</span>
-<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="k">import</span> <span class="n">base_entry_point</span>
+<span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
+<span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="kn">import</span> <span class="n">CMD</span>
+<span class="kn">from</span> <span class="nn">..util.asynchelper</span> <span class="kn">import</span> <span class="n">context_stacker</span><span class="p">,</span> <span class="n">aenter_stack</span>
+<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">base_entry_point</span>
 
 
 <div class="viewcode-block" id="BaseDataFlowObjectContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseDataFlowObjectContext">[docs]</a><span class="k">class</span> <span class="nc">BaseDataFlowObjectContext</span><span class="p">(</span><span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">):</span>
@@ -196,7 +196,7 @@
 <span class="sd">    config, and their parent, a BaseDataFlowObject.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;BaseDataFlowObject&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
@@ -223,7 +223,7 @@
 
 
 <div class="viewcode-block" id="OperationImplementationContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.OperationImplementationContext">[docs]</a><span class="k">class</span> <span class="nc">OperationImplementationContext</span><span class="p">(</span><span class="n">BaseDataFlowObjectContext</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;OperationImplementation&quot;</span><span class="p">,</span>
         <span class="n">ctx</span><span class="p">:</span> <span class="s2">&quot;BaseInputSetContext&quot;</span><span class="p">,</span>
@@ -258,7 +258,7 @@
 
 <div class="viewcode-block" id="OperationImplementation"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.OperationImplementation">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.operation&quot;</span><span class="p">,</span> <span class="s2">&quot;opimp&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">OperationImplementation</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="s2">&quot;BaseConfig&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="s2">&quot;BaseConfig&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;op&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -266,7 +266,7 @@
                 <span class="o">+</span> <span class="s2">&quot;created without an `op`&quot;</span>
             <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="s2">&quot;BaseInputSetContext&quot;</span><span class="p">,</span> <span class="n">octx</span><span class="p">:</span> <span class="s2">&quot;BaseOrchestratorContext&quot;</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OperationImplementationContext</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONTEXT</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">octx</span><span class="p">)</span>
@@ -375,7 +375,7 @@
         <span class="k">class</span> <span class="nc">Implementation</span><span class="p">(</span>
             <span class="n">context_stacker</span><span class="p">(</span><span class="n">OperationImplementation</span><span class="p">,</span> <span class="n">imp_enter</span><span class="p">)</span>
         <span class="p">):</span>
-            <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+            <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">config_cls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                     <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config_cls</span><span class="p">,</span> <span class="s2">&quot;_fromdict&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="c1"># Use _fromdict method if it exists</span>
@@ -392,7 +392,7 @@
             <span class="n">func</span><span class="p">,</span> <span class="n">OperationImplementationContext</span>
         <span class="p">):</span>
             <span class="n">func</span><span class="o">.</span><span class="n">imp</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span>
-                <span class="n">f</span><span class="s2">&quot;</span><span class="si">{cls_name}</span><span class="s2">Implementation&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{cls_name}</span><span class="s2">Implementation&quot;</span><span class="p">,</span>
                 <span class="p">(</span><span class="n">Implementation</span><span class="p">,),</span>
                 <span class="p">{</span><span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="n">func</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="s2">&quot;CONTEXT&quot;</span><span class="p">:</span> <span class="n">func</span><span class="p">},</span>
             <span class="p">)</span>
@@ -423,12 +423,12 @@
                         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
 
             <span class="n">func</span><span class="o">.</span><span class="n">imp</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span>
-                <span class="n">f</span><span class="s2">&quot;</span><span class="si">{cls_name}</span><span class="s2">Implementation&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{cls_name}</span><span class="s2">Implementation&quot;</span><span class="p">,</span>
                 <span class="p">(</span><span class="n">Implementation</span><span class="p">,),</span>
                 <span class="p">{</span>
                     <span class="s2">&quot;op&quot;</span><span class="p">:</span> <span class="n">func</span><span class="o">.</span><span class="n">op</span><span class="p">,</span>
                     <span class="s2">&quot;CONTEXT&quot;</span><span class="p">:</span> <span class="nb">type</span><span class="p">(</span>
-                        <span class="n">f</span><span class="s2">&quot;</span><span class="si">{cls_name}</span><span class="s2">ImplementationContext&quot;</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{cls_name}</span><span class="s2">ImplementationContext&quot;</span><span class="p">,</span>
                         <span class="p">(</span><span class="n">ImplementationContext</span><span class="p">,),</span>
                         <span class="p">{},</span>
                     <span class="p">),</span>
@@ -573,7 +573,7 @@
 
 
 <div class="viewcode-block" id="BaseContextHandle"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseContextHandle">[docs]</a><span class="k">class</span> <span class="nc">BaseContextHandle</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="s2">&quot;BaseInputSetContext&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="s2">&quot;BaseInputSetContext&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span> <span class="o">=</span> <span class="n">ctx</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">LOGGER</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">)</span>
 
@@ -594,16 +594,16 @@
 
 
 <div class="viewcode-block" id="StringInputSetContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.StringInputSetContext">[docs]</a><span class="k">class</span> <span class="nc">StringInputSetContext</span><span class="p">(</span><span class="n">BaseInputSetContext</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">as_string</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">as_string</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">as_string</span> <span class="o">=</span> <span class="n">as_string</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseContextHandle</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">StringContextHandle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_string</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
@@ -612,7 +612,7 @@
 
 
 <div class="viewcode-block" id="BaseInputSet"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseInputSet">[docs]</a><span class="k">class</span> <span class="nc">BaseInputSet</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseInputSetConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseInputSetConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">ctx</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">LOGGER</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">)</span>
@@ -645,7 +645,7 @@
 
 
 <div class="viewcode-block" id="BaseParameterSet"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseParameterSet">[docs]</a><span class="k">class</span> <span class="nc">BaseParameterSet</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseParameterSetConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseParameterSetConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ctx</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">ctx</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">LOGGER</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">)</span>
@@ -669,7 +669,7 @@
 
 
 <div class="viewcode-block" id="BaseDefinitionSetContext"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseDefinitionSetContext">[docs]</a><span class="k">class</span> <span class="nc">BaseDefinitionSetContext</span><span class="p">(</span><span class="n">BaseDataFlowObjectContext</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span><span class="p">,</span>
         <span class="n">parent</span><span class="p">:</span> <span class="s2">&quot;BaseInputNetworkContext&quot;</span><span class="p">,</span>

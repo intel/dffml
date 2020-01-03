@@ -169,11 +169,11 @@
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">dataclasses</span>
-<span class="kn">from</span> <span class="nn">argparse</span> <span class="k">import</span> <span class="n">ArgumentParser</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentParser</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">get_origin</span><span class="p">,</span> <span class="n">get_args</span>
+    <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">get_origin</span><span class="p">,</span> <span class="n">get_args</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="c1"># Added in Python 3.8</span>
 <div class="viewcode-block" id="get_origin"><a class="viewcode-back" href="../../api/base.html#dffml.base.get_origin">[docs]</a>    <span class="k">def</span> <span class="nf">get_origin</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
@@ -183,19 +183,19 @@
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">&quot;__args__&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
 
 
-<span class="kn">from</span> <span class="nn">.util.cli.arg</span> <span class="k">import</span> <span class="n">Arg</span>
-<span class="kn">from</span> <span class="nn">.util.data</span> <span class="k">import</span> <span class="n">traverse_config_set</span><span class="p">,</span> <span class="n">traverse_config_get</span><span class="p">,</span> <span class="n">type_lookup</span>
+<span class="kn">from</span> <span class="nn">.util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
+<span class="kn">from</span> <span class="nn">.util.data</span> <span class="kn">import</span> <span class="n">traverse_config_set</span><span class="p">,</span> <span class="n">traverse_config_get</span><span class="p">,</span> <span class="n">type_lookup</span>
 
-<span class="kn">from</span> <span class="nn">.util.entrypoint</span> <span class="k">import</span> <span class="n">Entrypoint</span>
+<span class="kn">from</span> <span class="nn">.util.entrypoint</span> <span class="kn">import</span> <span class="n">Entrypoint</span>
 
-<span class="kn">from</span> <span class="nn">.log</span> <span class="k">import</span> <span class="n">LOGGER</span>
+<span class="kn">from</span> <span class="nn">.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
 
 
 <span class="n">ARGP</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="ParseExpandAction"><a class="viewcode-back" href="../../api/base.html#dffml.base.ParseExpandAction">[docs]</a><span class="k">class</span> <span class="nc">ParseExpandAction</span><span class="p">(</span><span class="n">argparse</span><span class="o">.</span><span class="n">Action</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">option_string</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">namespace</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">option_string</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">values</span><span class="p">]</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">namespace</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dest</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">LIST_CLS</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">))</span></div>
@@ -213,7 +213,7 @@
     <span class="n">LIST_ACTIONS</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span>
         <span class="n">list_cls</span><span class="p">,</span>
         <span class="nb">type</span><span class="p">(</span>
-            <span class="n">f</span><span class="s2">&quot;Parse</span><span class="si">{list_cls.__qualname__}</span><span class="s2">Action&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;Parse</span><span class="si">{list_cls.__qualname__}</span><span class="s2">Action&quot;</span><span class="p">,</span>
             <span class="p">(</span><span class="n">ParseExpandAction</span><span class="p">,),</span>
             <span class="p">{</span><span class="s2">&quot;LIST_CLS&quot;</span><span class="p">:</span> <span class="n">list_cls</span><span class="p">},</span>
         <span class="p">),</span>
@@ -264,10 +264,10 @@
 <span class="sd">    as their config.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;BaseConfig()&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
@@ -285,7 +285,7 @@
             <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;nargs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;+&quot;</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="s2">&quot;SINGLETON&quot;</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-                    <span class="n">f</span><span class="s2">&quot;</span><span class="si">{field.type.__qualname__}</span><span class="s2"> missing attribute SINGLETON&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{field.type.__qualname__}</span><span class="s2"> missing attribute SINGLETON&quot;</span>
                 <span class="p">)</span>
             <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">list_action</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
             <span class="n">arg</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">SINGLETON</span>
@@ -380,7 +380,7 @@
 
 
 <div class="viewcode-block" id="ConfigurableParsingNamespace"><a class="viewcode-back" href="../../api/base.html#dffml.base.ConfigurableParsingNamespace">[docs]</a><span class="k">class</span> <span class="nc">ConfigurableParsingNamespace</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dest</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
@@ -392,7 +392,7 @@
 <span class="sd">    only parameter to the __init__ of a BaseDataFlowFacilitatorObject.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        BaseConfigurable takes only one argument to __init__,</span>
 <span class="sd">        its config, which should inherit from BaseConfig. It shall be a object</span>
@@ -507,7 +507,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;CONFIG&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-                <span class="n">f</span><span class="s2">&quot;</span><span class="si">{cls.__qualname__}</span><span class="s2"> requires CONFIG property or implementation of args() classmethod&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{cls.__qualname__}</span><span class="s2"> requires CONFIG property or implementation of args() classmethod&quot;</span>
             <span class="p">)</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">fields</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">CONFIG</span><span class="p">):</span>
             <span class="bp">cls</span><span class="o">.</span><span class="n">config_set</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">mkarg</span><span class="p">(</span><span class="n">field</span><span class="p">))</span>
@@ -521,7 +521,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;CONFIG&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-                <span class="n">f</span><span class="s2">&quot;</span><span class="si">{cls.__qualname__}</span><span class="s2"> requires CONFIG property or implementation of config() classmethod&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{cls.__qualname__}</span><span class="s2"> requires CONFIG property or implementation of config() classmethod&quot;</span>
             <span class="p">)</span>
         <span class="c1"># Build the arguments to the CONFIG class</span>
         <span class="n">kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -557,10 +557,10 @@
 <span class="sd">    &gt;&gt;&gt;     await ctx.method()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseDataFlowFacilitatorObjectContext&quot;</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseDataFlowFacilitatorObjectContext&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="k">pass</span></div>
 
 
@@ -588,17 +588,17 @@
 <span class="sd">    &gt;&gt;&gt;         await ctx.method()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">BaseConfigurable</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
         <span class="c1"># TODO figure out how to call these in __new__</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__ensure_property</span><span class="p">(</span><span class="s2">&quot;CONTEXT&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__ensure_property</span><span class="p">(</span><span class="s2">&quot;ENTRY_POINT&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
 
     <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseDataFlowFacilitatorObjectContext&quot;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseDataFlowFacilitatorObjectContext&quot;</span><span class="p">:</span>
         <span class="k">pass</span>
 
     <span class="nd">@classmethod</span>
