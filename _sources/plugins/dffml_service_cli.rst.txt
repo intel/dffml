@@ -14,32 +14,3 @@ Services. It also helps developers hack on DFFML itself.
 
     $ dffml service -h
 
-dffml
------
-
-.. code-block:: console
-
-    pip install dffml
-
-
-dev
-~~~
-
-*Core*
-
-Development utilities for hacking on DFFML itself
-
-dffml_service_http
-------------------
-
-.. code-block:: console
-
-    pip install dffml-service-http
-
-
-http
-~~~~
-
-*Core*
-
-HTTP interface to access DFFML API.
