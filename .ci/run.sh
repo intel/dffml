@@ -135,14 +135,14 @@ function run_docs() {
   ./scripts/docs.sh
   mv pages "${release_docs}/html"
 
-  git clone "${SRC_ROOT}" -b gh-pages "${release_docs}/old-gh-pages-branch"
+  git clone https://github.com/intel/dffml -b gh-pages \
+    "${release_docs}/old-gh-pages-branch"
 
   mv "${release_docs}/old-gh-pages-branch/.git" "${release_docs}/html/"
   mv "${master_docs}/html" "${release_docs}/html/master"
 
   cd "${release_docs}/html"
 
-  git remote set-url origin https://github.com/intel/dffml
   git config user.name 'John Andersen'
   git config user.email 'johnandersenpdx@gmail.com'
   git config credential.helper store
