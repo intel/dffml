@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `contextlib` exit stacks. Provides temporary file creation.
 - Automatic releases to PyPi via GitHub Actions
 - Automatic documentation deployment to GitHub Pages
+- Function to create a config class dynamically, analogous to `make_dataclass`
 ### Changed
 - CLI tests and integration tests derive from `AsyncExitStackTestCase`
 ### Fixed

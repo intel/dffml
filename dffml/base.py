@@ -216,7 +216,49 @@ def config(cls):
     datacls._replace = lambda self, *args, **kwargs: dataclasses.replace(
         self, *args, **kwargs
     )
+    datacls._asdict = lambda self, *args, **kwargs: dataclasses.asdict(
+        self, *args, **kwargs
+    )
     return datacls
+
+
+def make_config(cls_name: str, fields, *args, namespace=None, **kwargs):
+    """
+    Function to create a dataclass
+    """
+    if namespace is None:
+        namespace = {}
+    namespace.setdefault("_fromdict", classmethod(_fromdict))
+    namespace.setdefault(
+        "_replace",
+        lambda self, *args, **kwargs: dataclasses.replace(
+            self, *args, **kwargs
+        ),
+    )
+    namespace.setdefault(
+        "_asdict",
+        lambda self, *args, **kwargs: dataclasses.asdict(
+            self, *args, **kwargs
+        ),
+    )
+    kwargs["eq"] = True
+    kwargs["init"] = True
+    # Ensure non-default arguments always come before default arguments
+    fields_non_default = []
+    fields_default = []
+    for name, cls, field in fields:
+        if (
+            field.default is not dataclasses.MISSING
+            or field.default_factory is not dataclasses.MISSING
+        ):
+            fields_default.append((name, cls, field))
+        else:
+            fields_non_default.append((name, cls, field))
+    fields = fields_non_default + fields_default
+    # Create dataclass
+    return dataclasses.make_dataclass(
+        cls_name, fields, *args, namespace=namespace, **kwargs
+    )
 
 
 class ConfigurableParsingNamespace(object):
