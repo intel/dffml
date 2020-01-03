@@ -77,7 +77,7 @@ jobs:
         if [ "x${PLUGIN}" = "x." ]; then
           export TWINE_PASSWORD=${{ secrets.PYPI_DFFML }}
         else
-          export TWINE_PASSWORD=$(grep "${PLUGIN}" "${PYPI_TOKENS}")
+          export TWINE_PASSWORD=$(grep "${PLUGIN}" "${PYPI_TOKENS}" | sed 's/^[^=]*=//g')
         fi
         rm ${PYPI_TOKENS}
         ./.ci/run.sh
