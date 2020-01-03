@@ -25,8 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - GaussianProcessRegressor
     - OrthogonalMatchingPursuit
     - Lars
+    - Ridge
 - `AsyncExitStackTestCase` which instantiates and enters async and non-async
   `contextlib` exit stacks. Provides temporary file creation.
+- Automatic releases to PyPi via GitHub Actions
 ### Changed
 - CLI tests and integration tests derive from `AsyncExitStackTestCase`
 ### Fixed

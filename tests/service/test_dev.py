@@ -1,10 +1,19 @@
+import io
 import os
+import sys
+import json
 import glob
+import inspect
 import tempfile
 import unittest
+import contextlib
+import dataclasses
+import unittest.mock
 from pathlib import Path
+from typing import Type
 
-from dffml.service.dev import Develop
+from dffml.version import VERSION
+from dffml.service.dev import Develop, RepoDirtyError
 from dffml.util.os import chdir
 from dffml.util.skel import Skel
 from dffml.util.packaging import is_develop
@@ -137,3 +146,84 @@ class TestDevelopSkelLink(AsyncTestCase):
                         check.is_symlink(),
                         f"{check.resolve()} is not a symlink",
                     )
+
+
+@dataclasses.dataclass
+class FakeProcess:
+    returncode: int = 0
+
+    async def communicate(self):
+        return b"", b""
+
+    async def wait(self):
+        return
+
+
+def mkexec(proc_cls: Type[FakeProcess] = FakeProcess):
+    async def fake_create_subprocess_exec(
+        *args, stdin=None, stdout=None, stderr=None
+    ):
+        return proc_cls()
+
+    return fake_create_subprocess_exec
+
+
+class FakeResponse:
+    def read(self, num=0):
+        return json.dumps({"info": {"version": VERSION}}).encode()
+
+
+@contextlib.contextmanager
+def fake_urlopen(url):
+    yield FakeResponse()
+
+
+class TestRelease(AsyncTestCase):
+    async def test_uncommited_changes(self):
+        class FailedFakeProcess(FakeProcess):
+            async def communicate(self):
+                return b"There are changes", b""
+
+        with unittest.mock.patch(
+            "asyncio.create_subprocess_exec", new=mkexec(FailedFakeProcess)
+        ):
+            with self.assertRaises(RepoDirtyError):
+                await Develop.cli("release", ".")
+
+    async def test_already_on_pypi(self):
+        stdout = io.StringIO()
+        with unittest.mock.patch(
+            "asyncio.create_subprocess_exec", new=mkexec()
+        ), unittest.mock.patch(
+            "urllib.request.urlopen", new=fake_urlopen,
+        ), contextlib.redirect_stdout(
+            stdout
+        ):
+            await Develop.cli("release", ".")
+        self.assertEqual(
+            stdout.getvalue().strip(),
+            f"Version {VERSION} of dffml already on PyPi",
+        )
+
+    async def test_okay(self):
+        stdout = io.StringIO()
+        global VERSION
+        VERSION = "0.0.0"
+        with unittest.mock.patch(
+            "asyncio.create_subprocess_exec", new=mkexec()
+        ), unittest.mock.patch(
+            "urllib.request.urlopen", new=fake_urlopen,
+        ), contextlib.redirect_stdout(
+            stdout
+        ):
+            await Develop.cli("release", ".")
+        self.assertEqual(
+            stdout.getvalue().strip(),
+            inspect.cleandoc(
+                f"""
+                $ git clean -fdx
+                $ {sys.executable} setup.py sdist
+                $ {sys.executable} -m twine upload dist/*
+                """
+            ),
+        )
