@@ -34,9 +34,9 @@ async def safety_check(package: str, version: str) -> Dict[str, Any]:
         stderr=asyncio.subprocess.Process.communicate,
     )
 
-    proc.stdin.write(pinned.encode())
-    proc.stdin.write(b"\n")
-    proc.stdin.close()
+    proc.communicate(pinned.encode())
+    proc.communicate(b"\n")
+    proc.communicate()
 
     stdout, _stderr = await proc.communicate()
 
