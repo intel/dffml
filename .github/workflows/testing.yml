@@ -24,7 +24,7 @@ jobs:
         pip install -U -e .[dev]
     - name: Run check
       run: |
-        ${{ matrix.check }}=1 GITHUB_PAGES_TOKEN=${{ secrets.GITHUB_PAGES_TOKEN }} ./.ci/run.sh
+        ${{ matrix.check }}=1 GITHUB_PAGES_KEY=${{ secrets.GITHUB_PAGES_KEY }} ./.ci/run.sh
 
   test:
     runs-on: ubuntu-latest
