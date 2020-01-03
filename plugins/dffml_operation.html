@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Operations &mdash; DFFML 0.3.1 documentation</title>
+  <title>Operations &mdash; DFFML 0.3.2 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.1
+                0.3.2
               </div>
             
           
@@ -98,6 +98,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Operations</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#dffml">dffml</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#associate">associate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dffml-dataflow-run">dffml.dataflow.run</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#dffml-mapping-create">dffml.mapping.create</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#dffml-mapping-extract">dffml.mapping.extract</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#get-single">get_single</a></li>
@@ -225,6 +226,24 @@ the roadmap.</p>
 <p><strong>Outputs</strong></p>
 <ul class="simple">
 <li><p>output: associate_output(type: Dict[str, Any])</p></li>
+</ul>
+</div>
+<div class="section" id="dffml-dataflow-run">
+<h3>dffml.dataflow.run<a class="headerlink" href="#dffml-dataflow-run" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>inputs: flow_inputs(type: Dict[str,Any])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>results: flow_results(type: Dict[str,Any])</p></li>
+</ul>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>dataflow: DataFlow</p></li>
 </ul>
 </div>
 <div class="section" id="dffml-mapping-create">

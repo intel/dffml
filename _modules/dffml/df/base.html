@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.df.base &mdash; DFFML 0.3.1 documentation</title>
+  <title>dffml.df.base &mdash; DFFML 0.3.2 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.1
+                0.3.2
               </div>
             
           
@@ -347,7 +347,8 @@
         <span class="n">sig</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
         <span class="c1"># Check if the function uses the operation implementation context</span>
         <span class="n">uses_self</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span>
-            <span class="n">imp_enter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">parameters</span> <span class="ow">and</span> <span class="nb">list</span><span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;self&quot;</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">imp_enter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="ow">or</span> <span class="n">ctx_enter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
             <span class="ow">or</span> <span class="p">(</span>
                 <span class="p">[</span>
