@@ -113,8 +113,14 @@ function run_docs() {
     return
   fi
 
+  mkdir -p ~/.ssh
+  chmod 700 ~/.ssh
+  "${PYTHON}" -c "import pathlib, base64, os; keyfile = pathlib.Path('~/.ssh/github_dffml').expanduser(); keyfile.write_bytes(b''); keyfile.chmod(0o600); keyfile.write_bytes(base64.b32decode(os.environ['GITHUB_PAGES_KEY']))"
+  ssh-keygen -y -f ~/.ssh/github_dffml > ~/.ssh/github_dffml.pub
+  export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+
   cd "${SRC_ROOT}"
-  "${PYTHON}" -m pip install -U -e "${SRC_ROOT}[dev]"
+  "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
 
   # Make master docs
@@ -135,7 +141,7 @@ function run_docs() {
   ./scripts/docs.sh
   mv pages "${release_docs}/html"
 
-  git clone https://github.com/intel/dffml -b gh-pages \
+  git clone git@github.com:intel/dffml -b gh-pages \
     "${release_docs}/old-gh-pages-branch"
 
   mv "${release_docs}/old-gh-pages-branch/.git" "${release_docs}/html/"
@@ -145,17 +151,15 @@ function run_docs() {
 
   git config user.name 'John Andersen'
   git config user.email 'johnandersenpdx@gmail.com'
-  git config credential.helper store
-  git config credential.origin.username pdxjohnny
-  set +x
-  git config credential.origin.password "${GITHUB_PAGES_TOKEN}"
-  set -x
 
   git add -A
   git commit -sam "docs: $(date)"
   git push
 
   cd -
+
+  git reset --hard HEAD
+  git checkout master
 }
 
 function cleanup_temp_dirs() {
