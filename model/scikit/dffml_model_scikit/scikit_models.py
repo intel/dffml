@@ -43,11 +43,17 @@ from sklearn.linear_model import (
     Lars,
     Ridge,
 )
+from sklearn.cluster import KMeans
 
 from dffml.base import make_config, field
 from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entry_point
-from dffml_model_scikit.scikit_base import Scikit, ScikitContext
+from dffml_model_scikit.scikit_base import (
+    Scikit,
+    ScikitContext,
+    ScikitUnsprvised,
+    ScikitContextUnsprvised,
+)
 
 from dffml.feature.feature import Feature, Features
 from dffml.util.cli.parser import list_action
@@ -148,7 +154,6 @@ def mkscikit_config_cls(
 
     parameters = inspect.signature(cls).parameters
     docstring = inspect.getdoc(cls)
-
     docparams = {}
 
     # Parse parameters and their datatypes from docstring
@@ -181,131 +186,176 @@ def mkscikit_config_cls(
     )
 
 
-for entry_point_name, name, cls, applicable_features_function in [
+# {'clsf':"CLASSIFICATION","reg":"REGRESSION","clstr":"CLUSTERING"}
+for entry_point_name, name, cls, applicable_features_function, algo_type in [
     (
         "scikitknn",
         "KNeighborsClassifier",
         KNeighborsClassifier,
         applicable_features,
+        "clsf",
     ),
     (
         "scikitadaboost",
         "AdaBoostClassifier",
         AdaBoostClassifier,
         applicable_features,
+        "clsf",
     ),
-    ("scikitsvc", "SVC", SVC, applicable_features),
+    ("scikitsvc", "SVC", SVC, applicable_features, "clsf"),
     (
         "scikitgpc",
         "GaussianProcessClassifier",
         GaussianProcessClassifier,
         applicable_features,
+        "clsf",
     ),
     (
         "scikitdtc",
         "DecisionTreeClassifier",
         DecisionTreeClassifier,
         applicable_features,
+        "clsf",
     ),
     (
         "scikitrfc",
         "RandomForestClassifier",
         RandomForestClassifier,
         applicable_features,
+        "clsf",
     ),
-    ("scikitmlp", "MLPClassifier", MLPClassifier, applicable_features),
-    ("scikitgnb", "GaussianNB", GaussianNB, applicable_features),
+    ("scikitmlp", "MLPClassifier", MLPClassifier, applicable_features, "clsf"),
+    ("scikitgnb", "GaussianNB", GaussianNB, applicable_features, "clsf"),
     (
         "scikitqda",
         "QuadraticDiscriminantAnalysis",
         QuadraticDiscriminantAnalysis,
         applicable_features,
+        "clsf",
     ),
-    ("scikitlr", "LinearRegression", LinearRegression, applicable_features),
+    (
+        "scikitlr",
+        "LinearRegression",
+        LinearRegression,
+        applicable_features,
+        "reg",
+    ),
     (
         "scikitlor",
         "LogisticRegression",
         LogisticRegression,
         applicable_features,
+        "reg",
     ),
     (
         "scikitgbc",
         "GradientBoostingClassifier",
         GradientBoostingClassifier,
         applicable_features,
+        "clsf",
     ),
     (
         "scikitetc",
         "ExtraTreesClassifier",
         ExtraTreesClassifier,
         applicable_features,
+        "clsf",
     ),
-    ("scikitbgc", "BaggingClassifier", BaggingClassifier, applicable_features),
-    ("scikiteln", "ElasticNet", ElasticNet, applicable_features),
-    ("scikitbyr", "BayesianRidge", BayesianRidge, applicable_features),
-    ("scikitlas", "Lasso", Lasso, applicable_features),
-    ("scikitard", "ARDRegression", ARDRegression, applicable_features),
-    ("scikitrsc", "RANSACRegressor", RANSACRegressor, applicable_features),
-    ("scikitbnb", "BernoulliNB", BernoulliNB, applicable_features),
-    ("scikitmnb", "MultinomialNB", MultinomialNB, applicable_features),
+    (
+        "scikitbgc",
+        "BaggingClassifier",
+        BaggingClassifier,
+        applicable_features,
+        "clsf",
+    ),
+    ("scikiteln", "ElasticNet", ElasticNet, applicable_features, "clsf"),
+    ("scikitbyr", "BayesianRidge", BayesianRidge, applicable_features, "reg"),
+    ("scikitlas", "Lasso", Lasso, applicable_features, "reg"),
+    ("scikitard", "ARDRegression", ARDRegression, applicable_features, "reg"),
+    (
+        "scikitrsc",
+        "RANSACRegressor",
+        RANSACRegressor,
+        applicable_features,
+        "reg",
+    ),
+    ("scikitbnb", "BernoulliNB", BernoulliNB, applicable_features, "clsf"),
+    ("scikitmnb", "MultinomialNB", MultinomialNB, applicable_features, "clsf"),
     (
         "scikitlda",
         "LinearDiscriminantAnalysis",
         LinearDiscriminantAnalysis,
         applicable_features,
+        "clsf",
     ),
     (
         "scikitdtr",
         "DecisionTreeRegressor",
         DecisionTreeRegressor,
         applicable_features,
+        "reg",
     ),
     (
         "scikitgpr",
         "GaussianProcessRegressor",
         GaussianProcessRegressor,
         applicable_features,
+        "reg",
     ),
     (
         "scikitomp",
         "OrthogonalMatchingPursuit",
         OrthogonalMatchingPursuit,
         applicable_features,
+        "clsf",
     ),
-    ("scikitridge", "Ridge", Ridge, applicable_features),
-    ("scikitlars", "Lars", Lars, applicable_features),
+    ("scikitridge", "Ridge", Ridge, applicable_features, "reg"),
+    ("scikitlars", "Lars", Lars, applicable_features, "reg"),
+    ("scikitkmeans", "KMeans", KMeans, applicable_features, "clstr"),
 ]:
-
+    predict_field = (
+        {"predict": (str, field("Label or the value to be predicted"))}
+        if algo_type not in ["clstr"]
+        else {}
+    )
     dffml_config = mkscikit_config_cls(
         name + "ModelConfig",
         cls,
         properties={
-            "directory": (
-                str,
-                field(
-                    "Directory where state should be saved",
-                    default=os.path.join(
-                        os.path.expanduser("~"),
-                        ".cache",
-                        "dffml",
-                        f"scikit-{entry_point_name}",
+            **{
+                "directory": (
+                    str,
+                    field(
+                        "Directory where state should be saved",
+                        default=os.path.join(
+                            os.path.expanduser("~"),
+                            ".cache",
+                            "dffml",
+                            f"scikit-{entry_point_name}",
+                        ),
                     ),
                 ),
-            ),
-            "predict": (str, field("Label or the value to be predicted")),
-            "features": (Features, field("Features to train on")),
+                "features": (Features, field("Features to train on")),
+            },
+            **predict_field,
         },
     )
 
+    parentContext = (
+        ScikitContext
+        if algo_type not in ["clstr"]
+        else ScikitContextUnsprvised
+    )
     dffml_cls_ctx = type(
         name + "ModelContext",
-        (ScikitContext,),
+        (parentContext,),
         {"applicable_features": applicable_features_function},
     )
 
+    parentModel = Scikit if algo_type not in ["clstr"] else ScikitUnsprvised
     dffml_cls = type(
         name + "Model",
-        (Scikit,),
+        (parentModel,),
         {
             "CONFIG": dffml_config,
             "CONTEXT": dffml_cls_ctx,
