@@ -119,6 +119,66 @@ class ScikitContext(ModelContext):
             yield repo
 
 
+class ScikitContextUnsprvised(ScikitContext):
+    def __init__(self, parent):
+        super().__init__(parent)
+
+    def _feature_predict_hash(self):
+        return hashlib.sha384("".join(self.features).encode()).hexdigest()
+
+    async def __aenter__(self):
+        if os.path.isfile(self._filename()):
+            self.clf = joblib.load(self._filename())
+        else:
+            config = self.parent.config._asdict()
+            del config["directory"]
+            del config["features"]
+            self.clf = self.parent.SCIKIT_MODEL(**config)
+        return self
+
+    async def train(self, sources: Sources):
+        data = []
+        async for repo in sources.with_features(self.features):
+            feature_data = repo.features(self.features)
+            data.append(feature_data)
+        df = pd.DataFrame(data)
+        xdata = np.array(df)
+        self.logger.info("Number of input repos: {}".format(len(xdata)))
+        self.clf.fit(xdata)
+        joblib.dump(self.clf, self._filename())
+
+    async def accuracy(self, sources: Sources) -> Accuracy:
+        if not os.path.isfile(self._filename()):
+            raise ModelNotTrained("Train model before assessing for accuracy.")
+        data = []
+        async for repo in sources.with_features(self.features):
+            feature_data = repo.features(self.features)
+            data.append(feature_data)
+        df = pd.DataFrame(data)
+        xdata = np.array(df)
+        self.logger.debug("Number of input repos: {}".format(len(xdata)))
+        self.confidence = self.clf.score(xdata)
+        self.logger.debug("Model Accuracy: {}".format(self.confidence))
+        return self.confidence
+
+    async def predict(
+        self, repos: AsyncIterator[Repo]
+    ) -> AsyncIterator[Tuple[Repo, Any, float]]:
+        if not os.path.isfile(self._filename()):
+            raise ModelNotTrained("Train model before prediction.")
+        async for repo in repos:
+            feature_data = repo.features(self.features)
+            df = pd.DataFrame(feature_data, index=[0])
+            predict = np.array(df)
+            self.logger.debug(
+                "Predicted cluster for {}: {}".format(
+                    predict, self.clf.predict(predict),
+                )
+            )
+            repo.predicted(self.clf.predict(predict)[0], self.confidence)
+            yield repo
+
+
 class Scikit(Model):
     def __init__(self, config) -> None:
         super().__init__(config)
@@ -139,3 +199,22 @@ class Scikit(Model):
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         Path(self._filename()).write_text(json.dumps(self.saved))
+
+
+class ScikitUnsprvised(Scikit):
+    def __init__(self, config) -> None:
+        super().__init__(config)
+
+    def _filename(self):
+        print("--------------------------------------------")
+        print(self)
+        print("---------------------------------------------")
+        return os.path.join(
+            self.config.directory,
+            hashlib.sha384(
+                (
+                    "".join(sorted(feature.NAME for feature in self.config.features))
+                ).encode()
+            ).hexdigest()
+            + ".json",
+        )

@@ -67,15 +67,38 @@ class TestScikitModel:
                 )
                 for i in range(0, len(A))
             ]
+        elif cls.MODEL_TYPE is "CLUSTERING":
+            cls.features.append(DefFeature("A", float, 1))
+            cls.features.append(DefFeature("B", float, 1))
+            cls.features.append(DefFeature("C", float, 1))
+            cls.features.append(DefFeature("D", float, 1))
+            A, B, C, D = list(zip(*FEATURE_DATA_CLUSTERING))
+            cls.repos = [
+                Repo(
+                    str(i),
+                    data={
+                        "features": {
+                            "A": A[i],
+                            "B": B[i],
+                            "C": C[i],
+                            "D": D[i],
+                        }
+                    },
+                )
+                for i in range(0, len(A))
+            ]
         cls.sources = Sources(
             MemorySource(MemorySourceConfig(repos=cls.repos))
         )
+        properties = {
+            "directory": cls.model_dir.name,
+            "features": cls.features,
+        }
+        predict_field = (
+            {"predict": "X"} if cls.MODEL_TYPE not in ["CLUSTERING"] else {}
+        )
         cls.model = cls.MODEL(
-            cls.MODEL_CONFIG(
-                directory=cls.model_dir.name,
-                predict=DefFeature("X", float, 1),
-                features=cls.features,
-            )
+            cls.MODEL_CONFIG(**{**properties, **predict_field})
         )
 
     @classmethod
@@ -91,7 +114,10 @@ class TestScikitModel:
         async with self.sources as sources, self.model as model:
             async with sources() as sctx, model() as mctx:
                 res = await mctx.accuracy(sctx)
-                self.assertTrue(0.0 <= res <= 1.0)
+                if self.MODEL_TYPE is "CLUSTERING":
+                    self.assertTrue(res is not None)
+                else:
+                    self.assertTrue(0 <= res <= 1)
 
     async def test_02_predict(self):
         async with self.sources as sources, self.model as model:
@@ -106,6 +132,8 @@ class TestScikitModel:
                             prediction, correct - (correct * 0.40)
                         )
                         self.assertLess(prediction, correct + (correct * 0.40))
+                    elif self.MODEL_TYPE is "CLUSTERING":
+                        self.assertIn(prediction, [0, 1, 2, 3, 4, 5, 6, 7])
 
 
 FEATURE_DATA_CLASSIFICATION = [
@@ -178,6 +206,57 @@ FEATURE_DATA_REGRESSION = [
     [21.20000076, 18.60000038, 8.7, 112481.0],
 ]
 
+FEATURE_DATA_CLUSTERING = [
+    [-9.01904123, 6.44409816, 5.95914173, 6.30718146],
+    [8.40245806, -2.91001929, 5.52294823, 0.63406374],
+    [3.28383325, 9.99244756, -6.71171988, -7.35136935],
+    [8.25645943, 5.52158668, -0.83865436, 7.32392625],
+    [0.4666179, 3.86571303, 0.80247216, 1.67515402],
+    [9.07433439, 7.91270334, 0.17900805, 5.69813477],
+    [8.10810537, -1.43034314, 6.3001632, -0.95834529],
+    [-9.21920652, 5.55299612, 5.86137319, 8.72662886],
+    [-1.46038679, 3.22035416, -1.88257787, 7.47271885],
+    [0.71689103, -1.80491159, -3.79870885, 5.801892],
+    [1.20875699, -0.88325705, -2.54565181, 6.82120174],
+    [-8.92333729, 7.05985875, 4.79321894, 7.93949216],
+    [1.2232944, -2.1731803, -5.65333401, 5.0746241],
+    [-11.08688964, 7.09178861, 5.72980851, 8.0352744],
+    [8.34693133, 6.82753426, -1.7706281, 4.06581243],
+    [2.30814319, 8.35692267, -7.96519947, -7.33520733],
+    [-10.29019991, 6.50276237, 5.12798147, 9.24950669],
+    [8.82761202, 5.15673275, -0.86886528, 4.94710524],
+    [-6.77768087, 2.14739483, -8.16717709, 9.57497286],
+    [0.08848433, 2.32299086, 1.70735537, 1.05401263],
+    [10.69900277, 4.90323978, -1.91788141, 5.17276348],
+    [-7.00928003, 1.19636277, -8.23731759, 8.94554342],
+    [1.37139124, 10.29780326, -8.45236674, -7.85542464],
+    [10.41265589, -3.56599544, 6.2368424, -0.1069117],
+    [0.39768362, -2.8748547, -4.1856111, 5.31312746],
+    [-8.43792115, 2.10887065, -7.58846676, 8.9108575],
+    [10.7615074, -0.43528045, 7.01328033, 0.39797356],
+    [0.0677846, -1.94614038, -3.60922816, 6.13993752],
+    [-3.14080186, 2.70514198, -2.14372234, 8.22236251],
+    [1.07709796, -3.32371724, -4.73321388, 4.74664288],
+    [-2.43420238, 2.96982766, -0.51916521, 7.96444293],
+    [-10.26996471, 6.68422747, 4.92728894, 8.07667626],
+    [11.95551162, 6.92765077, -1.68323498, 6.72759981],
+    [-1.34947787, 2.51610133, -2.87845412, 8.29824227],
+    [8.20250259, -1.2767179, 5.43132381, 1.80034347],
+    [-0.07228289, 2.88376939, 0.34899733, 2.84843906],
+    [-7.98850539, 1.42346913, -7.77655265, 6.66997519],
+    [2.50904929, 5.7731461, 2.21021495, 1.27582618],
+    [2.20656076, 5.50616718, 1.6679407, 0.59536091],
+    [0.18776782, 10.45555395, -8.99289782, -9.00486882],
+    [9.48153019, -1.35453059, 6.19086716, 1.28447156],
+    [-6.44648169, 3.11536304, -6.21207543, 9.21210599],
+    [3.24404192, 7.1641737, -9.84976383, -7.2880173],
+    [3.2460247, 2.84942165, 2.10102604, 0.71047981],
+    [-2.19936446, 2.5583291, -2.06140206, 6.10917741],
+    [-8.37407448, 4.34143502, -8.42579116, 9.16042921],
+    [-2.03770915, 1.73725008, -1.276438, 8.26379189],
+    [0.49966554, 10.42199772, -8.84728221, -7.45495761],
+]
+
 CLASSIFIERS = [
     "KNeighborsClassifier",
     "SVC",
@@ -211,6 +290,10 @@ REGRESSORS = [
     "Ridge",
 ]
 
+CLUSTERERS = [
+    "KMeans",
+]
+
 for clf in CLASSIFIERS:
     test_cls = type(
         f"Test{clf}Model",
@@ -235,6 +318,21 @@ for reg in REGRESSORS:
             "MODEL": getattr(dffml_model_scikit.scikit_models, reg + "Model"),
             "MODEL_CONFIG": getattr(
                 dffml_model_scikit.scikit_models, reg + "ModelConfig"
+            ),
+        },
+    )
+
+for clstr in CLUSTERERS:
+    test_cls = type(
+        f"Test{clstr}Model",
+        (TestScikitModel, AsyncTestCase),
+        {
+            "MODEL_TYPE": "CLUSTERING",
+            "MODEL": getattr(
+                dffml_model_scikit.scikit_models, clstr + "Model"
+            ),
+            "MODEL_CONFIG": getattr(
+                dffml_model_scikit.scikit_models, clstr + "ModelConfig"
             ),
         },
     )
