@@ -199,7 +199,6 @@ class ScikitContextUnsprvised(ScikitContext):
     ) -> AsyncIterator[Tuple[Repo, Any, float]]:
         if not os.path.isfile(self._filename()):
             raise ModelNotTrained("Train model before prediction.")
-        target = []
         estimator_type = self.clf._estimator_type
         if estimator_type is "clusterer":
             if hasattr(self.clf, "predict"):

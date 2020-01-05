@@ -57,18 +57,13 @@ from sklearn.cluster import (
 
 from dffml.base import make_config, field
 from dffml.util.cli.arg import Arg
-<<<<<<< HEAD
 from dffml.util.entrypoint import entrypoint
-from dffml_model_scikit.scikit_base import Scikit, ScikitContext
-=======
-from dffml.util.entrypoint import entry_point
 from dffml_model_scikit.scikit_base import (
     Scikit,
     ScikitContext,
     ScikitUnsprvised,
     ScikitContextUnsprvised,
 )
->>>>>>> added clustering model
 
 from dffml.feature.feature import Feature, Features
 from dffml.util.cli.parser import list_action
@@ -209,39 +204,52 @@ for entry_point_name, name, cls, applicable_features_function in [
         "KNeighborsClassifier",
         KNeighborsClassifier,
         applicable_features,
+        "clsf",
     ),
     (
         "scikitadaboost",
         "AdaBoostClassifier",
         AdaBoostClassifier,
         applicable_features,
+        "clsf",
     ),
-    ("scikitsvc", "SVC", SVC, applicable_features),
+    ("scikitsvc", "SVC", SVC, applicable_features, "clsf"),
     (
         "scikitgpc",
         "GaussianProcessClassifier",
         GaussianProcessClassifier,
         applicable_features,
+        "clsf",
     ),
     (
         "scikitdtc",
         "DecisionTreeClassifier",
         DecisionTreeClassifier,
         applicable_features,
+        "clsf",
     ),
     (
         "scikitrfc",
         "RandomForestClassifier",
         RandomForestClassifier,
         applicable_features,
+        "clsf",
     ),
-    ("scikitmlp", "MLPClassifier", MLPClassifier, applicable_features),
-    ("scikitgnb", "GaussianNB", GaussianNB, applicable_features),
+    ("scikitmlp", "MLPClassifier", MLPClassifier, applicable_features, "clsf"),
+    ("scikitgnb", "GaussianNB", GaussianNB, applicable_features, "clsf"),
     (
         "scikitqda",
         "QuadraticDiscriminantAnalysis",
         QuadraticDiscriminantAnalysis,
         applicable_features,
+        "clsf",
+    ),
+    (
+        "scikitlr",
+        "LinearRegression",
+        LinearRegression,
+        applicable_features,
+        "reg",
     ),
     ("scikitlr", "LinearRegression", LinearRegression, applicable_features,),
     (
@@ -249,18 +257,28 @@ for entry_point_name, name, cls, applicable_features_function in [
         "LogisticRegression",
         LogisticRegression,
         applicable_features,
+        "reg",
     ),
     (
         "scikitgbc",
         "GradientBoostingClassifier",
         GradientBoostingClassifier,
         applicable_features,
+        "clsf",
     ),
     (
         "scikitetc",
         "ExtraTreesClassifier",
         ExtraTreesClassifier,
         applicable_features,
+        "clsf",
+    ),
+    (
+        "scikitbgc",
+        "BaggingClassifier",
+        BaggingClassifier,
+        applicable_features,
+        "clsf",
     ),
     (
         "scikitbgc",
@@ -280,24 +298,28 @@ for entry_point_name, name, cls, applicable_features_function in [
         "LinearDiscriminantAnalysis",
         LinearDiscriminantAnalysis,
         applicable_features,
+        "clsf",
     ),
     (
         "scikitdtr",
         "DecisionTreeRegressor",
         DecisionTreeRegressor,
         applicable_features,
+        "reg",
     ),
     (
         "scikitgpr",
         "GaussianProcessRegressor",
         GaussianProcessRegressor,
         applicable_features,
+        "reg",
     ),
     (
         "scikitomp",
         "OrthogonalMatchingPursuit",
         OrthogonalMatchingPursuit,
         applicable_features,
+        "clsf",
     ),
     ("scikitridge", "Ridge", Ridge, applicable_features,),
     ("scikitlars", "Lars", Lars, applicable_features,),
@@ -372,12 +394,18 @@ for entry_point_name, name, cls, applicable_features_function in [
         },
     )
 
+    parentContext = (
+        ScikitContext
+        if algo_type not in ["clstr"]
+        else ScikitContextUnsprvised
+    )
     dffml_cls_ctx = type(
         name + "ModelContext",
         (parentContext,),
         {"applicable_features": applicable_features_function},
     )
 
+    parentModel = Scikit if algo_type not in ["clstr"] else ScikitUnsprvised
     dffml_cls = type(
         name + "Model",
         (parentModel,),

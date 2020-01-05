@@ -222,7 +222,6 @@ class TestScikitRegression(IntegrationCLITestCase):
         results = results["value"]
         self.assertTrue(results is not None)
 
-
 class TestScikitClustering(IntegrationCLITestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-scikit")
