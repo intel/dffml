@@ -266,6 +266,11 @@ python3.7 -m http.server --directory htmlcov/ 8080
 
 You can now view the coverage report at http://127.0.0.1:8080/
 
+### Test Datasets
+
+In order to avoid potential legal issues, all datasets included within the
+codebase of DFFML should be randomly generated.
+
 ## Documentation
 
 To build and view the documentation run the docs script.
