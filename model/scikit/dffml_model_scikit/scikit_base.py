@@ -172,9 +172,7 @@ class ScikitContextUnsprvised(ScikitContext):
         if estimator_type is "clusterer":
             # measures 'quality' of model
             ydata = self.clf.fit_predict(xdata)
-            self.confidence = silhouette_score(
-                xdata, ydata
-            )
+            self.confidence = silhouette_score(xdata, ydata)
         self.logger.debug("Model Accuracy: {}".format(self.confidence))
         return self.confidence
 

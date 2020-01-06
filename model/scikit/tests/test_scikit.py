@@ -74,7 +74,7 @@ class TestScikitModel:
             cls.features.append(DefFeature("C", float, 1))
             cls.features.append(DefFeature("D", float, 1))
             # print(FEATURE_DATA_CLUSTERING)
-            A, B, C, D= list(zip(*FEATURE_DATA_CLUSTERING))
+            A, B, C, D = list(zip(*FEATURE_DATA_CLUSTERING))
             cls.repos = [
                 Repo(
                     str(i),
@@ -302,7 +302,6 @@ CLUSTERERS = [
     "SpectralClustering",
     "AgglomerativeClustering",
     "OPTICS",
-
 ]
 
 for clf in CLASSIFIERS:
