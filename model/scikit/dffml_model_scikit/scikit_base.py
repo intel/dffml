@@ -20,6 +20,8 @@ from dffml.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml.feature.feature import Features
 
+from sklearn.metrics import silhouette_score
+
 
 class ScikitConfig(ModelConfig, NamedTuple):
     directory: str
@@ -124,7 +126,16 @@ class ScikitContextUnsprvised(ScikitContext):
         super().__init__(parent)
 
     def _feature_predict_hash(self):
-        return hashlib.sha384("".join(self.features).encode()).hexdigest()
+        params = "".join(
+            [
+                "{}{}".format(k, v)
+                for k, v in self.parent.config._asdict().items()
+                if k not in ["directory", "features"]
+            ]
+        )
+        return hashlib.sha384(
+            "".join([params] + self.features).encode()
+        ).hexdigest()
 
     async def __aenter__(self):
         if os.path.isfile(self._filename()):
@@ -157,7 +168,13 @@ class ScikitContextUnsprvised(ScikitContext):
         df = pd.DataFrame(data)
         xdata = np.array(df)
         self.logger.debug("Number of input repos: {}".format(len(xdata)))
-        self.confidence = self.clf.score(xdata)
+        estimator_type = getattr(self.clf, "_estimator_type")
+        if estimator_type is "clusterer":
+            # measures 'quality' of model
+            ydata = self.clf.fit_predict(xdata)
+            self.confidence = silhouette_score(
+                xdata, ydata
+            )
         self.logger.debug("Model Accuracy: {}".format(self.confidence))
         return self.confidence
 
@@ -166,16 +183,28 @@ class ScikitContextUnsprvised(ScikitContext):
     ) -> AsyncIterator[Tuple[Repo, Any, float]]:
         if not os.path.isfile(self._filename()):
             raise ModelNotTrained("Train model before prediction.")
+
+        estimator_type = getattr(self.clf, "_estimator_type")
+        if estimator_type is "clusterer":
+            if hasattr(self.clf, "predict"):
+                # inductive clusterer
+                predictor = self.clf.predict
+            else:
+                # transductive clusterer
+                labels = [
+                    (yield label) for label in self.clf.labels_.astype(np.int)
+                ]
+                predictor = lambda predict: [next(labels)]
+
         async for repo in repos:
             feature_data = repo.features(self.features)
             df = pd.DataFrame(feature_data, index=[0])
             predict = np.array(df)
+            prediction = predictor(predict)
             self.logger.debug(
-                "Predicted cluster for {}: {}".format(
-                    predict, self.clf.predict(predict),
-                )
+                "Predicted cluster for {}: {}".format(predict, prediction,)
             )
-            repo.predicted(self.clf.predict(predict)[0], self.confidence)
+            repo.predicted(prediction[0], self.confidence)
             yield repo
 
 
@@ -205,14 +234,17 @@ class ScikitUnsprvised(Scikit):
         super().__init__(config)
 
     def _filename(self):
-        print("--------------------------------------------")
-        print(self)
-        print("---------------------------------------------")
+        model_name = self.SCIKIT_MODEL.__name__
         return os.path.join(
             self.config.directory,
             hashlib.sha384(
                 (
-                    "".join(sorted(feature.NAME for feature in self.config.features))
+                    "".join(
+                        [model_name]
+                        + sorted(
+                            feature.NAME for feature in self.config.features
+                        )
+                    )
                 ).encode()
             ).hexdigest()
             + ".json",
