@@ -8,6 +8,7 @@ from dffml.feature import DefFeature, Features
 from dffml.util.asynctestcase import AsyncTestCase
 
 import dffml_model_scikit.scikit_models
+from sklearn.datasets import make_blobs
 
 
 class TestScikitModel:
@@ -72,7 +73,8 @@ class TestScikitModel:
             cls.features.append(DefFeature("B", float, 1))
             cls.features.append(DefFeature("C", float, 1))
             cls.features.append(DefFeature("D", float, 1))
-            A, B, C, D = list(zip(*FEATURE_DATA_CLUSTERING))
+            # print(FEATURE_DATA_CLUSTERING)
+            A, B, C, D= list(zip(*FEATURE_DATA_CLUSTERING))
             cls.repos = [
                 Repo(
                     str(i),
@@ -133,7 +135,7 @@ class TestScikitModel:
                         )
                         self.assertLess(prediction, correct + (correct * 0.40))
                     elif self.MODEL_TYPE is "CLUSTERING":
-                        self.assertIn(prediction, [0, 1, 2, 3, 4, 5, 6, 7])
+                        self.assertIn(prediction, [-1, 0, 1, 2, 3, 4, 5, 6, 7])
 
 
 FEATURE_DATA_CLASSIFICATION = [
@@ -257,6 +259,7 @@ FEATURE_DATA_CLUSTERING = [
     [0.49966554, 10.42199772, -8.84728221, -7.45495761],
 ]
 
+
 CLASSIFIERS = [
     "KNeighborsClassifier",
     "SVC",
@@ -292,6 +295,14 @@ REGRESSORS = [
 
 CLUSTERERS = [
     "KMeans",
+    "Birch",
+    "MiniBatchKMeans",
+    "AffinityPropagation",
+    "MeanShift",
+    "SpectralClustering",
+    "AgglomerativeClustering",
+    "OPTICS",
+
 ]
 
 for clf in CLASSIFIERS:

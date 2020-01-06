@@ -43,7 +43,17 @@ from sklearn.linear_model import (
     Lars,
     Ridge,
 )
-from sklearn.cluster import KMeans
+from sklearn.cluster import (
+    KMeans,
+    Birch,
+    MiniBatchKMeans,
+    AffinityPropagation,
+    MeanShift,
+    SpectralClustering,
+    AgglomerativeClustering,
+    OPTICS,
+)
+
 
 from dffml.base import make_config, field
 from dffml.util.cli.arg import Arg
@@ -186,136 +196,139 @@ def mkscikit_config_cls(
     )
 
 
-# {'clsf':"CLASSIFICATION","reg":"REGRESSION","clstr":"CLUSTERING"}
-for entry_point_name, name, cls, applicable_features_function, algo_type in [
+supervised_estimators = ["classifier", "regressor"]
+unsupervised_estimators = ["clusterer"]
+for entry_point_name, name, cls, applicable_features_function in [
     (
         "scikitknn",
         "KNeighborsClassifier",
         KNeighborsClassifier,
         applicable_features,
-        "clsf",
     ),
     (
         "scikitadaboost",
         "AdaBoostClassifier",
         AdaBoostClassifier,
         applicable_features,
-        "clsf",
     ),
-    ("scikitsvc", "SVC", SVC, applicable_features, "clsf"),
+    ("scikitsvc", "SVC", SVC, applicable_features),
     (
         "scikitgpc",
         "GaussianProcessClassifier",
         GaussianProcessClassifier,
         applicable_features,
-        "clsf",
     ),
     (
         "scikitdtc",
         "DecisionTreeClassifier",
         DecisionTreeClassifier,
         applicable_features,
-        "clsf",
     ),
     (
         "scikitrfc",
         "RandomForestClassifier",
         RandomForestClassifier,
         applicable_features,
-        "clsf",
     ),
-    ("scikitmlp", "MLPClassifier", MLPClassifier, applicable_features, "clsf"),
-    ("scikitgnb", "GaussianNB", GaussianNB, applicable_features, "clsf"),
+    ("scikitmlp", "MLPClassifier", MLPClassifier, applicable_features),
+    ("scikitgnb", "GaussianNB", GaussianNB, applicable_features),
     (
         "scikitqda",
         "QuadraticDiscriminantAnalysis",
         QuadraticDiscriminantAnalysis,
         applicable_features,
-        "clsf",
     ),
-    (
-        "scikitlr",
-        "LinearRegression",
-        LinearRegression,
-        applicable_features,
-        "reg",
-    ),
+    ("scikitlr", "LinearRegression", LinearRegression, applicable_features,),
     (
         "scikitlor",
         "LogisticRegression",
         LogisticRegression,
         applicable_features,
-        "reg",
     ),
     (
         "scikitgbc",
         "GradientBoostingClassifier",
         GradientBoostingClassifier,
         applicable_features,
-        "clsf",
     ),
     (
         "scikitetc",
         "ExtraTreesClassifier",
         ExtraTreesClassifier,
         applicable_features,
-        "clsf",
     ),
     (
         "scikitbgc",
         "BaggingClassifier",
         BaggingClassifier,
         applicable_features,
-        "clsf",
     ),
-    ("scikiteln", "ElasticNet", ElasticNet, applicable_features, "clsf"),
-    ("scikitbyr", "BayesianRidge", BayesianRidge, applicable_features, "reg"),
-    ("scikitlas", "Lasso", Lasso, applicable_features, "reg"),
-    ("scikitard", "ARDRegression", ARDRegression, applicable_features, "reg"),
-    (
-        "scikitrsc",
-        "RANSACRegressor",
-        RANSACRegressor,
-        applicable_features,
-        "reg",
-    ),
-    ("scikitbnb", "BernoulliNB", BernoulliNB, applicable_features, "clsf"),
-    ("scikitmnb", "MultinomialNB", MultinomialNB, applicable_features, "clsf"),
+    ("scikiteln", "ElasticNet", ElasticNet, applicable_features),
+    ("scikitbyr", "BayesianRidge", BayesianRidge, applicable_features,),
+    ("scikitlas", "Lasso", Lasso, applicable_features,),
+    ("scikitard", "ARDRegression", ARDRegression, applicable_features,),
+    ("scikitrsc", "RANSACRegressor", RANSACRegressor, applicable_features,),
+    ("scikitbnb", "BernoulliNB", BernoulliNB, applicable_features),
+    ("scikitmnb", "MultinomialNB", MultinomialNB, applicable_features),
     (
         "scikitlda",
         "LinearDiscriminantAnalysis",
         LinearDiscriminantAnalysis,
         applicable_features,
-        "clsf",
     ),
     (
         "scikitdtr",
         "DecisionTreeRegressor",
         DecisionTreeRegressor,
         applicable_features,
-        "reg",
     ),
     (
         "scikitgpr",
         "GaussianProcessRegressor",
         GaussianProcessRegressor,
         applicable_features,
-        "reg",
     ),
     (
         "scikitomp",
         "OrthogonalMatchingPursuit",
         OrthogonalMatchingPursuit,
         applicable_features,
-        "clsf",
     ),
-    ("scikitridge", "Ridge", Ridge, applicable_features, "reg"),
-    ("scikitlars", "Lars", Lars, applicable_features, "reg"),
-    ("scikitkmeans", "KMeans", KMeans, applicable_features, "clstr"),
+    ("scikitridge", "Ridge", Ridge, applicable_features,),
+    ("scikitlars", "Lars", Lars, applicable_features,),
+    ("scikitkmeans", "KMeans", KMeans, applicable_features),
+    ("scikitbirch", "Birch", Birch, applicable_features),
+    (
+        "scikitmbkmeans",
+        "MiniBatchKMeans",
+        MiniBatchKMeans,
+        applicable_features,
+    ),
+    (
+        "scikitap",
+        "AffinityPropagation",
+        AffinityPropagation,
+        applicable_features,
+    ),
+    ("scikims", "MeanShift", MeanShift, applicable_features),
+    (
+        "scikitsc",
+        "SpectralClustering",
+        SpectralClustering,
+        applicable_features,
+    ),
+    (
+        "scikitac",
+        "AgglomerativeClustering",
+        AgglomerativeClustering,
+        applicable_features,
+    ),
+    ("scikitoptics", "OPTICS", OPTICS, applicable_features),
 ]:
+    estimator_type = getattr(cls, "_estimator_type")
     predict_field = (
         {"predict": (str, field("Label or the value to be predicted"))}
-        if algo_type not in ["clstr"]
+        if estimator_type in supervised_estimators
         else {}
     )
     dffml_config = mkscikit_config_cls(
@@ -341,18 +354,19 @@ for entry_point_name, name, cls, applicable_features_function, algo_type in [
         },
     )
 
-    parentContext = (
-        ScikitContext
-        if algo_type not in ["clstr"]
-        else ScikitContextUnsprvised
-    )
+    if estimator_type in supervised_estimators:
+        parentContext = ScikitContext
+        parentModel = Scikit
+    elif estimator_type in unsupervised_estimators:
+        parentContext = ScikitContextUnsprvised
+        parentModel = ScikitUnsprvised
+
     dffml_cls_ctx = type(
         name + "ModelContext",
         (parentContext,),
         {"applicable_features": applicable_features_function},
     )
 
-    parentModel = Scikit if algo_type not in ["clstr"] else ScikitUnsprvised
     dffml_cls = type(
         name + "Model",
         (parentModel,),

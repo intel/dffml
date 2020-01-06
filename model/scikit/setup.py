@@ -106,6 +106,14 @@ setup(
             f"scikitlars = {IMPORT_NAME}.scikit_models:LarsModel",
             f"scikitridge = {IMPORT_NAME}.scikit_models:RidgeModel",
             f"scikitkmeans = {IMPORT_NAME}.scikit_models:KMeansModel",
+            f"scikitbirch = {IMPORT_NAME}.scikit_models:BirchModel",
+            f"scikitmbkmeans = {IMPORT_NAME}.scikit_models:MiniBatchKMeansModel",
+            f"scikitap = {IMPORT_NAME}.scikit_models:AffinityPropagationModel",
+            f"scikitms = {IMPORT_NAME}.scikit_models:MeanShiftModel",
+            f"scikitsc = {IMPORT_NAME}.scikit_models:SpectralClusteringModel",
+            f"scikitac = {IMPORT_NAME}.scikit_models:AgglomerativeClusteringModel",
+            f"scikitoptics = {IMPORT_NAME}.scikit_models:OPTICSModel",
+            f"scikitgm = {IMPORT_NAME}.scikit_models:GaussianMixtureModel",
         ]
     },
 )
