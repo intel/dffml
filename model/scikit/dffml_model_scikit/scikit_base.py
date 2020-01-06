@@ -21,6 +21,8 @@ from dffml.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml.feature.feature import Features, Feature
 
+from sklearn.metrics import silhouette_score
+
 
 class ScikitConfig(ModelConfig, NamedTuple):
     directory: str
