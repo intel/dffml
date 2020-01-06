@@ -218,6 +218,7 @@ class TestScikitRegression(IntegrationCLITestCase):
         results = results["value"]
         self.assertTrue(results is not None)
 
+
 class TestScikitClustering(IntegrationCLITestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-scikit")
@@ -251,6 +252,13 @@ class TestScikitClustering(IntegrationCLITestCase):
                 crim,zn,indus,chas,nox,rm,age,dis,rad,tax,ptratio,b,lstat
                 0.02985,0,2.18,0,0.458,6.43,58.7,6.0622,3,222,18.7,394.12,5.21
                 0.08829,12.5,7.87,0,0.524,6.012,66.6,5.5605,5,311,15.2,395.6,12.43
+                0.21124,12.5,7.87,0,0.524,5.631,100,6.0821,5,311,15.2,386.63,29.93
+                0.17004,12.5,7.87,0,0.524,6.004,85.9,6.5921,5,311,15.2,386.71,17.1
+                0.22489,12.5,7.87,0,0.524,6.377,94.3,6.3467,5,311,15.2,392.52,20.45
+                0.11747,12.5,7.87,0,0.524,6.009,82.9,6.2267,5,311,15.2,396.9,13.27
+                0.09378,12.5,7.87,0,0.524,5.889,39,5.4509,5,311,15.2,390.5,15.71
+                0.62976,0,8.14,0,0.538,5.949,61.8,4.7075,4,307,21,396.9,8.26
+                0.63796,0,8.14,0,0.538,6.096,84.5,4.4619,4,307,21,380.02,10.26
                 """
             )
             + "\n"
@@ -297,7 +305,7 @@ class TestScikitClustering(IntegrationCLITestCase):
                 "predict",
                 "all",
                 "-model",
-                "scikitkmeans",
+                "scikitoptics",
                 *features,
                 "-sources",
                 "predict_data=csv",
