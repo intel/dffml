@@ -171,7 +171,10 @@ class ScikitContextUnsprvised(ScikitContext):
         estimator_type = getattr(self.clf, "_estimator_type")
         if estimator_type is "clusterer":
             # measures 'quality' of model
-            ydata = self.clf.fit_predict(xdata)
+            if hasattr(self.clf, 'predict'):
+                ydata = self.clf.predict(xdata)
+            else:
+                ydata = self.clf.labels_.astype(np.int)
             self.confidence = silhouette_score(xdata, ydata)
         self.logger.debug("Model Accuracy: {}".format(self.confidence))
         return self.confidence
