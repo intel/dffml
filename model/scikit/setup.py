@@ -113,7 +113,6 @@ setup(
             f"scikitsc = {IMPORT_NAME}.scikit_models:SpectralClusteringModel",
             f"scikitac = {IMPORT_NAME}.scikit_models:AgglomerativeClusteringModel",
             f"scikitoptics = {IMPORT_NAME}.scikit_models:OPTICSModel",
-            f"scikitgm = {IMPORT_NAME}.scikit_models:GaussianMixtureModel",
         ]
     },
 )
