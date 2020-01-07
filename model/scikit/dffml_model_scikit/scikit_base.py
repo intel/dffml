@@ -20,7 +20,7 @@ from dffml.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml.feature.feature import Features
 
-from sklearn.metrics import silhouette_score
+from sklearn.metrics import silhouette_score, adjusted_mutual_info_score
 
 
 class ScikitConfig(ModelConfig, NamedTuple):
@@ -149,11 +149,18 @@ class ScikitContextUnsprvised(ScikitContext):
 
     async def train(self, sources: Sources):
         data = []
+        target = []
+        estimator_type = getattr(self.clf, "_estimator_type")
+        if estimator_type is "clusterer":
+            if "TRUE_CLUSTER" in set(self.features):
+                target.append("TRUE_CLUSTER")
         async for repo in sources.with_features(self.features):
             feature_data = repo.features(self.features)
             data.append(feature_data)
         df = pd.DataFrame(data)
-        xdata = np.array(df)
+        xdata = np.array(
+            df.drop(target, axis=1)
+        )  # target is ignored if passed in training data
         self.logger.info("Number of input repos: {}".format(len(xdata)))
         self.clf.fit(xdata)
         joblib.dump(self.clf, self._filename())
@@ -162,20 +169,40 @@ class ScikitContextUnsprvised(ScikitContext):
         if not os.path.isfile(self._filename()):
             raise ModelNotTrained("Train model before assessing for accuracy.")
         data = []
+        target = []
+        estimator_type = getattr(self.clf, "_estimator_type")
+        if estimator_type is "clusterer":
+            if "TRUE_CLUSTER" in set(self.features):
+                target = ["TRUE_CLUSTER"]
         async for repo in sources.with_features(self.features):
             feature_data = repo.features(self.features)
             data.append(feature_data)
         df = pd.DataFrame(data)
-        xdata = np.array(df)
+        xdata = np.array(df.drop(target, axis=1))
         self.logger.debug("Number of input repos: {}".format(len(xdata)))
-        estimator_type = getattr(self.clf, "_estimator_type")
-        if estimator_type is "clusterer":
-            # measures 'quality' of model
-            if hasattr(self.clf, 'predict'):
-                ydata = self.clf.predict(xdata)
+        if "TRUE_CLUSTER" in target:
+            ydata = np.array(df["TRUE_CLUSTER"])
+            if hasattr(self.clf, "predict"):
+                # xdata can be training data or unseen data
+                # inductive clusterer with ground truth
+                y_pred = self.clf.predict(xdata)
+                self.confidence = adjusted_mutual_info_score(ydata, y_pred)
             else:
-                ydata = self.clf.labels_.astype(np.int)
-            self.confidence = silhouette_score(xdata, ydata)
+                # requires xdata = training data
+                # transductive clusterer with ground truth
+                self.confidence = adjusted_mutual_info_score(
+                    ydata, self.clf.labels_
+                )
+        else:
+            if hasattr(self.clf, "predict"):
+                # xdata can be training data or unseen data
+                # inductive clusterer without ground truth
+                y_pred = self.clf.predict(xdata)
+                self.confidence = silhouette_score(xdata, y_pred)
+            else:
+                # requires xdata = training data
+                # transductive clusterer without ground truth
+                self.confidence = silhouette_score(xdata, self.clf.labels_)
         self.logger.debug("Model Accuracy: {}".format(self.confidence))
         return self.confidence
 
@@ -184,9 +211,11 @@ class ScikitContextUnsprvised(ScikitContext):
     ) -> AsyncIterator[Tuple[Repo, Any, float]]:
         if not os.path.isfile(self._filename()):
             raise ModelNotTrained("Train model before prediction.")
-
+        target = []
         estimator_type = getattr(self.clf, "_estimator_type")
         if estimator_type is "clusterer":
+            if "TRUE_CLUSTER" in set(self.features):
+                target.append("TRUE_CLUSTER")
             if hasattr(self.clf, "predict"):
                 # inductive clusterer
                 predictor = self.clf.predict
@@ -199,7 +228,7 @@ class ScikitContextUnsprvised(ScikitContext):
 
         async for repo in repos:
             feature_data = repo.features(self.features)
-            df = pd.DataFrame(feature_data, index=[0])
+            df = pd.DataFrame(feature_data, index=[0]).drop(target, axis=1)
             predict = np.array(df)
             prediction = predictor(predict)
             self.logger.debug(
