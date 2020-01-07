@@ -21,7 +21,7 @@ from dffml.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml.feature.feature import Features, Feature
 
-from sklearn.metrics import silhouette_score
+from sklearn.metrics import silhouette_score, adjusted_mutual_info_score
 
 
 class ScikitConfig(ModelConfig, NamedTuple):
@@ -143,11 +143,18 @@ class ScikitContextUnsprvised(ScikitContext):
 
     async def train(self, sources: Sources):
         data = []
+        target = []
+        estimator_type = getattr(self.clf, "_estimator_type")
+        if estimator_type is "clusterer":
+            if "TRUE_CLUSTER" in set(self.features):
+                target.append("TRUE_CLUSTER")
         async for repo in sources.with_features(self.features):
             feature_data = repo.features(self.features)
             data.append(feature_data)
         df = pd.DataFrame(data)
-        xdata = np.array(df)
+        xdata = np.array(
+            df.drop(target, axis=1)
+        )  # target is ignored if passed in training data
         self.logger.info("Number of input repos: {}".format(len(xdata)))
         self.clf.fit(xdata)
         joblib.dump(self.clf, self._filename())
@@ -203,6 +210,8 @@ class ScikitContextUnsprvised(ScikitContext):
             raise ModelNotTrained("Train model before prediction.")
         estimator_type = self.clf._estimator_type
         if estimator_type is "clusterer":
+            if "TRUE_CLUSTER" in set(self.features):
+                target.append("TRUE_CLUSTER")
             if hasattr(self.clf, "predict"):
                 # inductive clusterer
                 predictor = self.clf.predict
@@ -215,7 +224,7 @@ class ScikitContextUnsprvised(ScikitContext):
 
         async for repo in repos:
             feature_data = repo.features(self.features)
-            df = pd.DataFrame(feature_data, index=[0])
+            df = pd.DataFrame(feature_data, index=[0]).drop(target, axis=1)
             predict = np.array(df)
             prediction = predictor(predict)
             self.logger.debug(
