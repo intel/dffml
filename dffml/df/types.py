@@ -271,7 +271,7 @@ class Input(object):
             parents = []
 
         if isinstance(value, dict) and definition.spec is not None:
-            self.value = definition.spec(**value)
+            value = definition.spec(**value)
         
         self.value = value
         self.definition = definition
