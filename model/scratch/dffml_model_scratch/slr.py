@@ -157,7 +157,7 @@ class SLR(Model):
         EOF
         $ dffml train \\
             -model scratchslr \\
-            -model-features def:Years:int:1 \\
+            -model-features Years:int:1 \\
             -model-predict Salary \\
             -sources f=csv \\
             -source-filename dataset.csv \\
@@ -165,7 +165,7 @@ class SLR(Model):
             -log debug
         $ dffml accuracy \\
             -model scratchslr \\
-            -model-features def:Years:int:1 \\
+            -model-features Years:int:1 \\
             -model-predict Salary \\
             -sources f=csv \\
             -source-filename dataset.csv \\
@@ -175,7 +175,7 @@ class SLR(Model):
         $ echo -e 'Years,Salary\\n6,0\\n' | \\
           dffml predict all \\
             -model scratchslr \\
-            -model-features def:Years:int:1 \\
+            -model-features Years:int:1 \\
             -model-predict Salary \\
             -sources f=csv \\
             -source-filename /dev/stdin \\

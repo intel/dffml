@@ -245,8 +245,8 @@ class Feature(abc.ABC, Entrypoint):
                 return cls.load_def(
                     loading["name"], loading["dtype"], loading["length"]
                 )
-            elif loading.startswith("def:"):
-                return cls.load_def(*loading.replace("def:", "").split(":"))
+            elif loading.count(":")==2:
+                return cls.load_def(*loading.split(":"))
         return super().load(loading)
 
     @classmethod

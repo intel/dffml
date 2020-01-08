@@ -358,10 +358,10 @@ class DNNClassifierModel(Model):
             -sources iris=csv \\
             -source-filename iris_training.csv \\
             -model-features \\
-              def:SepalLength:float:1 \\
-              def:SepalWidth:float:1 \\
-              def:PetalLength:float:1 \\
-              def:PetalWidth:float:1 \\
+              SepalLength:float:1 \\
+              SepalWidth:float:1 \\
+              PetalLength:float:1 \\
+              PetalWidth:float:1 \\
             -log debug
         ... lots of output ...
         $ dffml accuracy \\
@@ -372,10 +372,10 @@ class DNNClassifierModel(Model):
             -sources iris=csv \\
             -source-filename iris_test.csv \\
             -model-features \\
-              def:SepalLength:float:1 \\
-              def:SepalWidth:float:1 \\
-              def:PetalLength:float:1 \\
-              def:PetalWidth:float:1 \\
+              SepalLength:float:1 \\
+              SepalWidth:float:1 \\
+              PetalLength:float:1 \\
+              PetalWidth:float:1 \\
             -log critical
         0.99996233782
         $ dffml predict all \\
@@ -386,10 +386,10 @@ class DNNClassifierModel(Model):
             -sources iris=csv \\
             -source-filename iris_test.csv \\
             -model-features \\
-              def:SepalLength:float:1 \\
-              def:SepalWidth:float:1 \\
-              def:PetalLength:float:1 \\
-              def:PetalWidth:float:1 \\
+              SepalLength:float:1 \\
+              SepalWidth:float:1 \\
+              PetalLength:float:1 \\
+              PetalWidth:float:1 \\
             -caching \\
             -log critical \\
           > results.json

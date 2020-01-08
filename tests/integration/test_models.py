@@ -69,7 +69,7 @@ class TestScikitClassification(IntegrationCLITestCase):
             + "\n"
         )
         # Features
-        features = "-model-features def:Clump_Thickness:int:1 def:Uniformity_of_Cell_Size:int:1 def:Uniformity_of_Cell_Shape:int:1 def:Marginal_Adhesion:int:1 def:Single_Epithelial_Cell_Size:int:1 def:Bare_Nuclei:int:1 def:Bland_Chromatin:int:1 def:Normal_Nucleoli:int:1 def:Mitoses:int:1".split()
+        features = "-model-features Clump_Thickness:int:1 Uniformity_of_Cell_Size:int:1 Uniformity_of_Cell_Shape:int:1 Marginal_Adhesion:int:1 Single_Epithelial_Cell_Size:int:1 Bare_Nuclei:int:1 Bland_Chromatin:int:1 Normal_Nucleoli:int:1 Mitoses:int:1".split()
         # Train the model
         await CLI.cli(
             "train",
@@ -165,7 +165,7 @@ class TestScikitRegression(IntegrationCLITestCase):
             + "\n"
         )
         # Features
-        features = "-model-features def:crim:float:1 def:zn:float:1 def:indus:float:1 def:chas:int:1 def:nox:float:1 def:rm:float:1 def:age:int:1 def:dis:float:1 def:rad:int:1 def:tax:float:1 def:ptratio:float:1 def:b:float:1 def:lstat:float:1".split()
+        features = "-model-features crim:float:1 zn:float:1 indus:float:1 chas:int:1 nox:float:1 rm:float:1 age:int:1 dis:float:1 rad:int:1 tax:float:1 ptratio:float:1 b:float:1 lstat:float:1".split()
         # Train the model
         await CLI.cli(
             "train",
