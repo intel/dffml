@@ -46,7 +46,7 @@ from sklearn.linear_model import (
 
 from dffml.base import make_config, field
 from dffml.util.cli.arg import Arg
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 from dffml_model_scikit.scikit_base import Scikit, ScikitContext
 
 from dffml.feature.feature import Feature, Features
@@ -313,7 +313,7 @@ for entry_point_name, name, cls, applicable_features_function in [
         },
     )
     # Add the ENTRY_POINT_ORIG_LABEL
-    dffml_cls = entry_point(entry_point_name)(dffml_cls)
+    dffml_cls = entrypoint(entry_point_name)(dffml_cls)
 
     setattr(sys.modules[__name__], dffml_config.__qualname__, dffml_config)
     setattr(sys.modules[__name__], dffml_cls_ctx.__qualname__, dffml_cls_ctx)

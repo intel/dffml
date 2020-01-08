@@ -4,7 +4,7 @@ from typing import NamedTuple
 
 from dffml.util.data import traverse_config_set
 from dffml.util.cli.arg import Arg, parse_unknown
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 from dffml.df.base import BaseKeyValueStore, BaseRedundancyCheckerConfig
 from dffml.df.memory import MemoryKeyValueStore, MemoryRedundancyChecker
 from dffml.util.asynctestcase import AsyncTestCase
@@ -14,7 +14,7 @@ class KeyValueStoreWithArgumentsConfig(NamedTuple):
     filename: str
 
 
-@entry_point("withargs")
+@entrypoint("withargs")
 class KeyValueStoreWithArguments(BaseKeyValueStore):
 
     CONTEXT = NotImplementedError

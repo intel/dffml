@@ -151,7 +151,7 @@ class Feature(abc.ABC, Entrypoint):
     NAME: str = ""
     # LENGTH: int = 10
     # FREQUENCY: Type[Frequency] = Quarterly
-    ENTRY_POINT = "dffml.feature"
+    ENTRYPOINT = "dffml.feature"
 
     def __eq__(self, other):
         self_tuple = (self.NAME, self.dtype(), self.length())

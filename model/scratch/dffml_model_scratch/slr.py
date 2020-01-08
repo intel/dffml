@@ -17,7 +17,7 @@ from dffml.source.source import Sources
 from dffml.feature import Features
 from dffml.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 from dffml.util.cli.arg import Arg
 from dffml.feature.feature import Feature, Features
 from dffml.util.cli.parser import list_action
@@ -138,7 +138,7 @@ class SLRContext(ModelContext):
             yield repo
 
 
-@entry_point("slr")
+@entrypoint("slr")
 class SLR(Model):
     """
     Simple Linear Regression Model for 2 variables implemented from scratch.

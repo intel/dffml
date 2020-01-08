@@ -135,7 +135,7 @@ class OperationImplementation(BaseDataFlowObject):
     def load(cls, loading=None):
         loading_classes = []
         # Load operations
-        for i in pkg_resources.iter_entry_points(cls.ENTRY_POINT):
+        for i in pkg_resources.iter_entry_points(cls.ENTRYPOINT):
             if loading is not None and i.name == loading:
                 loaded = cls._imp(i.load())
                 if loaded is not None:

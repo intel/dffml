@@ -8,7 +8,7 @@ from aiohttp import web
 
 from dffml.util.cli.arg import Arg
 from dffml.util.cli.cmd import CMD
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 
 from .routes import Routes
 
@@ -236,7 +236,7 @@ class Server(TLSCMD, MultiCommCMD, Routes):
             await self.site.stop()
 
 
-@entry_point("http")
+@entrypoint("http")
 class HTTPService(CMD):
     """
     HTTP interface to access DFFML API.

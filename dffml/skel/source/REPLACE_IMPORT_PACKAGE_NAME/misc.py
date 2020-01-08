@@ -4,7 +4,7 @@ from dffml.base import BaseConfig
 from dffml.repo import Repo
 from dffml.source.source import BaseSourceContext, BaseSource
 from dffml.util.cli.arg import Arg
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 
 
 class MiscSourceConfig(BaseConfig, NamedTuple):
@@ -23,7 +23,7 @@ class MiscSourceContext(BaseSourceContext):
         return self.parent.mem.get(src_url, Repo(src_url))
 
 
-@entry_point("misc")
+@entrypoint("misc")
 class MiscSource(BaseSource):
     """
     Stores repos ... somewhere! (skeleton template is in memory)

@@ -23,7 +23,7 @@ class Loadable(object):
 
 class FakeEntrypoint(Entrypoint):
 
-    ENTRY_POINT = "fake"
+    ENTRYPOINT = "fake"
 
 
 class TestEntrypoint(unittest.TestCase):

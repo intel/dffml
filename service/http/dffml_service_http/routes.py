@@ -29,7 +29,7 @@ from dffml.base import MissingConfig
 from dffml.model import Model
 from dffml.feature import Features
 from dffml.source.source import BaseSource, SourcesContext
-from dffml.util.entrypoint import EntrypointNotFound, entry_point
+from dffml.util.entrypoint import EntrypointNotFound, entrypoint
 from dffml.df.base import OperationImplementationNotInstantiable
 
 
@@ -142,7 +142,7 @@ class HTTPChannelConfig(NamedTuple):
         return cls(**kwargs)
 
 
-@entry_point("http")
+@entrypoint("http")
 class Routes(BaseMultiCommContext):
     PRESENTATION_OPTIONS = ["json", "blob", "text"]
 
