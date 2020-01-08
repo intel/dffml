@@ -109,8 +109,8 @@ class TestAutoArgsConfig(unittest.TestCase):
                 "--test-source-filename",
                 "file.json",
                 "--test-features",
-                "def:Year:int:1",
-                "def:Commits:int:10",
+                "Year:int:1",
+                "Commits:int:10",
             )
         )
         self.assertEqual(config.num, -4.2)
@@ -146,8 +146,8 @@ class TestAutoArgsConfig(unittest.TestCase):
                 "--test-source-filename",
                 "file.csv",
                 "--test-features",
-                "def:Year:int:1",
-                "def:Commits:int:10",
+                "Year:int:1",
+                "Commits:int:10",
             )
         )
         self.assertEqual(config.num, -4.2)

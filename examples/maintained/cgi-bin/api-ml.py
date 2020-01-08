@@ -54,9 +54,9 @@ elif action == 'predict':
         '-model-classifications', '0', '1',
         '-sources', 'db=demoapp',
         '-model-features',
-        'def:authors:int:10',
-        'def:commits:int:10',
-        'def:work:int:10',
+        'authors:int:10',
+        'commits:int:10',
+        'work:int:10',
         '-log', 'critical',
         '-update'])
     result = json.loads(result)
