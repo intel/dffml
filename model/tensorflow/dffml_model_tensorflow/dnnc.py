@@ -17,7 +17,7 @@ from dffml.feature import Feature, Features
 from dffml.source.source import Sources
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml.accuracy import Accuracy
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 from dffml.base import BaseConfig
 from dffml.util.cli.arg import Arg
 from dffml.feature.feature import Feature, Features
@@ -336,7 +336,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
             yield repo
 
 
-@entry_point("tfdnnc")
+@entrypoint("tfdnnc")
 class DNNClassifierModel(Model):
     """
     Implemented using Tensorflow's DNNClassifier.

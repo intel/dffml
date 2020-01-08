@@ -16,7 +16,7 @@ from ..base import config
 from .source import BaseSource
 from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
-from ..util.entrypoint import entry_point
+from ..util.entrypoint import entrypoint
 
 
 @config
@@ -26,7 +26,7 @@ class FileSourceConfig:
     readonly: bool = False
 
 
-@entry_point("file")
+@entrypoint("file")
 class FileSource(BaseSource):
     """
     FileSource reads and write from a file on open / close.

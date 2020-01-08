@@ -13,7 +13,7 @@ analysis tool, ``shouldi``.
         bandit_output: {'CONFIDENCE.HIGH': 0.0, 'CONFIDENCE.LOW': 0.0, 'CONFIDENCE.MEDIUM': 0.0, 'CONFIDENCE.UNDEFINED': 0.0, 'SEVERITY.HIGH': 0.0, 'SEVERITY.LOW': 0.0, 'SEVERITY.MEDIUM': 0.0, 'SEVERITY.UNDEFINED': 0.0, 'loc': 100, 'nosec': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.HIGH': 0}
 
 In the :ref:`tutorials_operations_registering_opreations` section of the
-operations tutorial, we registered our operations with Python's ``entry_point``
+operations tutorial, we registered our operations with Python's ``entrypoint``
 system. This allows other Python packages and DFFML plugins to access them
 without the need to hardcode in ``import`` statements.
 

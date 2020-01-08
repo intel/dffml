@@ -11,7 +11,7 @@ from dffml.source.source import Sources
 from dffml.feature import Features
 from dffml.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 
 
 class MiscModelConfig(ModelConfig, NamedTuple):
@@ -53,7 +53,7 @@ class MiscModelContext(ModelContext):
             ], 1.0
 
 
-@entry_point("misc")
+@entrypoint("misc")
 class MiscModel(Model):
 
     CONTEXT = MiscModelContext

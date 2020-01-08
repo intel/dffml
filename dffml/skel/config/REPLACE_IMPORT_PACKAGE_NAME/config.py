@@ -4,7 +4,7 @@ Description of what this config does
 import ast
 from typing import Dict, Any
 
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 from dffml.util.cli.arg import Arg
 from dffml.base import BaseConfig
 from dffml.config.config import BaseConfigLoaderContext, BaseConfigLoader
@@ -18,7 +18,7 @@ class MiscConfigLoaderContext(BaseConfigLoaderContext):
         return repr(resource).encode()
 
 
-@entry_point("misc")
+@entrypoint("misc")
 class MiscConfigLoader(BaseConfigLoader):
     CONTEXT = MiscConfigLoaderContext
 
