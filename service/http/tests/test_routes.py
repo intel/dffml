@@ -283,8 +283,8 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                 "--model-directory",
                 tempdir,
                 "--model-features",
-                "def:Years:int:1",
-                "def:Experiance:int:1",
+                "Years:int:1",
+                "Experiance:int:1",
             )
             async with self.post(
                 "/configure/model/fake/salary", json=config
