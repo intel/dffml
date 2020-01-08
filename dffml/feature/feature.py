@@ -245,7 +245,7 @@ class Feature(abc.ABC, Entrypoint):
                 return cls.load_def(
                     loading["name"], loading["dtype"], loading["length"]
                 )
-            elif loading.count(":")==2:
+            elif loading.count(":") == 2:
                 return cls.load_def(*loading.split(":"))
         return super().load(loading)
 
