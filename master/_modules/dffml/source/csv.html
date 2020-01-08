@@ -175,7 +175,7 @@
 <span class="kn">from</span> <span class="nn">.file</span> <span class="kn">import</span> <span class="n">FileSource</span><span class="p">,</span> <span class="n">FileSourceConfig</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">config</span>
 <span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
-<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">entry_point</span>
+<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">entrypoint</span>
 
 <span class="n">csv</span><span class="o">.</span><span class="n">register_dialect</span><span class="p">(</span><span class="s2">&quot;strip&quot;</span><span class="p">,</span> <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -211,7 +211,7 @@
 
 
 <span class="c1"># CSVSource is a bit of a mess</span>
-<div class="viewcode-block" id="CSVSource"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.csv.CSVSource">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="CSVSource"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.csv.CSVSource">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">CSVSource</span><span class="p">(</span><span class="n">FileSource</span><span class="p">,</span> <span class="n">MemorySource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Uses a CSV file as the source of repo feature data</span>

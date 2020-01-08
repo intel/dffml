@@ -616,9 +616,9 @@
 <span class="sd">    property, set to the BaseDataFlowFacilitatorObjectContext which will be</span>
 <span class="sd">    returned from a __call__ to this class.</span>
 
-<span class="sd">    DFFML is plugin based using Python&#39;s setuptool&#39;s entry_point API. All</span>
+<span class="sd">    DFFML is plugin based using Python&#39;s setuptool&#39;s entrypoint API. All</span>
 <span class="sd">    classes inheriting from BaseDataFlowFacilitatorObject must have a property</span>
-<span class="sd">    named ENTRY_POINT. In the form of `dffml.load_point` which will be used to</span>
+<span class="sd">    named ENTRYPOINT. In the form of `dffml.load_point` which will be used to</span>
 <span class="sd">    load all classes registered to that entry point.</span>
 
 <span class="sd">    &gt;&gt;&gt; # Create the base object. Then enter it&#39;s context to preform any initial</span>
@@ -634,7 +634,7 @@
         <span class="n">BaseConfigurable</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
         <span class="c1"># TODO figure out how to call these in __new__</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__ensure_property</span><span class="p">(</span><span class="s2">&quot;CONTEXT&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__ensure_property</span><span class="p">(</span><span class="s2">&quot;ENTRY_POINT&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__ensure_property</span><span class="p">(</span><span class="s2">&quot;ENTRYPOINT&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">(</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>

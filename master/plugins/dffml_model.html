@@ -220,10 +220,10 @@ look for a different saved model.</p>
     -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename iris_training.csv <span class="se">\</span>
     -model-features <span class="se">\</span>
-      def:SepalLength:float:1 <span class="se">\</span>
-      def:SepalWidth:float:1 <span class="se">\</span>
-      def:PetalLength:float:1 <span class="se">\</span>
-      def:PetalWidth:float:1 <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
     -log debug
 <span class="go">... lots of output ...</span>
 <span class="gp">$</span> dffml accuracy <span class="se">\</span>
@@ -234,10 +234,10 @@ look for a different saved model.</p>
     -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename iris_test.csv <span class="se">\</span>
     -model-features <span class="se">\</span>
-      def:SepalLength:float:1 <span class="se">\</span>
-      def:SepalWidth:float:1 <span class="se">\</span>
-      def:PetalLength:float:1 <span class="se">\</span>
-      def:PetalWidth:float:1 <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
     -log critical
 <span class="go">0.99996233782</span>
 <span class="gp">$</span> dffml predict all <span class="se">\</span>
@@ -248,10 +248,10 @@ look for a different saved model.</p>
     -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename iris_test.csv <span class="se">\</span>
     -model-features <span class="se">\</span>
-      def:SepalLength:float:1 <span class="se">\</span>
-      def:SepalWidth:float:1 <span class="se">\</span>
-      def:PetalLength:float:1 <span class="se">\</span>
-      def:PetalWidth:float:1 <span class="se">\</span>
+      SepalLength:float:1 <span class="se">\</span>
+      SepalWidth:float:1 <span class="se">\</span>
+      PetalLength:float:1 <span class="se">\</span>
+      PetalWidth:float:1 <span class="se">\</span>
     -caching <span class="se">\</span>
     -log critical <span class="se">\</span>
   &gt; results.json
@@ -379,8 +379,8 @@ from where this command is run as it overwrites any existing files.</p></li>
     -source-readonly <span class="se">\</span>
     -source-filename train.csv <span class="se">\</span>
     -model-features <span class="se">\</span>
-      def:Feature1:float:1 <span class="se">\</span>
-      def:Feature2:float:1 <span class="se">\</span>
+      Feature1:float:1 <span class="se">\</span>
+      Feature2:float:1 <span class="se">\</span>
     -log debug
 <span class="go">Enabling debug log shows tensorflow losses...</span>
 <span class="gp">$</span> dffml accuracy <span class="se">\</span>
@@ -391,8 +391,8 @@ from where this command is run as it overwrites any existing files.</p></li>
     -source-readonly <span class="se">\</span>
     -source-filename test.csv <span class="se">\</span>
     -model-features <span class="se">\</span>
-      def:Feature1:float:1 <span class="se">\</span>
-      def:Feature2:float:1 <span class="se">\</span>
+      Feature1:float:1 <span class="se">\</span>
+      Feature2:float:1 <span class="se">\</span>
     -log critical
 <span class="go">0.9468210011</span>
 <span class="gp">$</span> <span class="nb">echo</span> -e <span class="s1">&#39;Feature1,Feature2,TARGET\n0.21,0.18,0.84\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
@@ -404,8 +404,8 @@ from where this command is run as it overwrites any existing files.</p></li>
     -source-readonly <span class="se">\</span>
     -source-filename /dev/stdin <span class="se">\</span>
     -model-features <span class="se">\</span>
-      def:Feature1:float:1 <span class="se">\</span>
-      def:Feature2:float:1 <span class="se">\</span>
+      Feature1:float:1 <span class="se">\</span>
+      Feature2:float:1 <span class="se">\</span>
     -log critical
 <span class="go">[</span>
 <span class="go">    {</span>
@@ -487,7 +487,7 @@ hash of their feature names.</p>
 <span class="go">EOF</span>
 <span class="gp">$</span> dffml train <span class="se">\</span>
     -model scratchslr <span class="se">\</span>
-    -model-features def:Years:int:1 <span class="se">\</span>
+    -model-features Years:int:1 <span class="se">\</span>
     -model-predict Salary <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename dataset.csv <span class="se">\</span>
@@ -495,7 +495,7 @@ hash of their feature names.</p>
     -log debug
 <span class="gp">$</span> dffml accuracy <span class="se">\</span>
     -model scratchslr <span class="se">\</span>
-    -model-features def:Years:int:1 <span class="se">\</span>
+    -model-features Years:int:1 <span class="se">\</span>
     -model-predict Salary <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename dataset.csv <span class="se">\</span>
@@ -505,7 +505,7 @@ hash of their feature names.</p>
 <span class="gp">$</span> <span class="nb">echo</span> -e <span class="s1">&#39;Years,Salary\n6,0\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
   dffml predict all <span class="se">\</span>
     -model scratchslr <span class="se">\</span>
-    -model-features def:Years:int:1 <span class="se">\</span>
+    -model-features Years:int:1 <span class="se">\</span>
     -model-predict Salary <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename /dev/stdin <span class="se">\</span>
@@ -784,7 +784,7 @@ their feature names.</p>
 <span class="go">EOF</span>
 <span class="gp">$</span> dffml train <span class="se">\</span>
     -model scikitlr <span class="se">\</span>
-    -model-features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 <span class="se">\</span>
+    -model-features Years:int:1 Expertise:int:1 Trust:float:1 <span class="se">\</span>
     -model-predict Salary <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename train.csv <span class="se">\</span>
@@ -792,7 +792,7 @@ their feature names.</p>
     -log debug
 <span class="gp">$</span> dffml accuracy <span class="se">\</span>
     -model scikitlr <span class="se">\</span>
-    -model-features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 <span class="se">\</span>
+    -model-features Years:int:1 Expertise:int:1 Trust:float:1 <span class="se">\</span>
     -model-predict Salary <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename test.csv <span class="se">\</span>
@@ -802,7 +802,7 @@ their feature names.</p>
 <span class="gp">$</span> <span class="nb">echo</span> -e <span class="s1">&#39;Years,Expertise,Trust\n6,13,1.4\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
   dffml predict all <span class="se">\</span>
     -model scikitlr <span class="se">\</span>
-    -model-features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 <span class="se">\</span>
+    -model-features Years:int:1 Expertise:int:1 Trust:float:1 <span class="se">\</span>
     -model-predict Salary <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename /dev/stdin <span class="se">\</span>

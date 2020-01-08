@@ -170,7 +170,7 @@
 <span class="kn">from</span> <span class="nn">..repo</span> <span class="kn">import</span> <span class="n">Repo</span>
 <span class="kn">from</span> <span class="nn">.source</span> <span class="kn">import</span> <span class="n">BaseSourceContext</span><span class="p">,</span> <span class="n">BaseSource</span>
 <span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
-<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">entry_point</span>
+<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">entrypoint</span>
 
 
 <div class="viewcode-block" id="MemorySourceContext"><a class="viewcode-back" href="../../../api/source/memory.html#dffml.source.memory.MemorySourceContext">[docs]</a><span class="k">class</span> <span class="nc">MemorySourceContext</span><span class="p">(</span><span class="n">BaseSourceContext</span><span class="p">):</span>
@@ -190,7 +190,7 @@
     <span class="n">repos</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Repo</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="MemorySource"><a class="viewcode-back" href="../../../api/source/memory.html#dffml.source.memory.MemorySource">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemorySource"><a class="viewcode-back" href="../../../api/source/memory.html#dffml.source.memory.MemorySource">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemorySource</span><span class="p">(</span><span class="n">BaseSource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Stores repos in a dict in memory</span>
