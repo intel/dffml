@@ -12,8 +12,11 @@ class ModelPredictConfig:
     model: Model
 
     def __post_init__(self):
-        if not isinstance(self.model,Model):
-            raise TypeError("model should be an instance of `dffml.model.model.Model`")
+        if not isinstance(self.model, Model):
+            raise TypeError(
+                "model should be an instance of `dffml.model.model.Model`"
+            )
+
 
 @op(
     inputs={

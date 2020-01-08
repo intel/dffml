@@ -50,7 +50,7 @@ class TestAutoArgsConfig(unittest.TestCase):
                         "fake": {
                             "arg": None,
                             "config": {
-                                "num": {"arg": Arg(type=float), "config": {},},
+                                "num": {"arg": Arg(type=float), "config": {}},
                                 "files": {
                                     "arg": Arg(type=str, nargs="+"),
                                     "config": {},

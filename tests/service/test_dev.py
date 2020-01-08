@@ -195,7 +195,7 @@ class TestRelease(AsyncTestCase):
         with unittest.mock.patch(
             "asyncio.create_subprocess_exec", new=mkexec()
         ), unittest.mock.patch(
-            "urllib.request.urlopen", new=fake_urlopen,
+            "urllib.request.urlopen", new=fake_urlopen
         ), contextlib.redirect_stdout(
             stdout
         ):
@@ -212,7 +212,7 @@ class TestRelease(AsyncTestCase):
         with unittest.mock.patch(
             "asyncio.create_subprocess_exec", new=mkexec()
         ), unittest.mock.patch(
-            "urllib.request.urlopen", new=fake_urlopen,
+            "urllib.request.urlopen", new=fake_urlopen
         ), contextlib.redirect_stdout(
             stdout
         ):
