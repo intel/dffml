@@ -215,7 +215,7 @@
     <span class="n">BaseOrchestrator</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">entry_point</span><span class="p">,</span> <span class="n">EntrypointNotFound</span>
+<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">entrypoint</span><span class="p">,</span> <span class="n">EntrypointNotFound</span>
 <span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
 <span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="kn">import</span> <span class="n">CMD</span>
 <span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">ignore_args</span><span class="p">,</span> <span class="n">traverse_get</span>
@@ -254,7 +254,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
 
 
-<div class="viewcode-block" id="MemoryKeyValueStore"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStore">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryKeyValueStore"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStore">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryKeyValueStore</span><span class="p">(</span><span class="n">BaseKeyValueStore</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Key Value store backed by dict</span>
@@ -665,7 +665,7 @@
                 <span class="k">yield</span> <span class="n">parameter_set</span></div></div>
 
 
-<div class="viewcode-block" id="MemoryInputNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetwork">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryInputNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryInputNetwork</span><span class="p">(</span><span class="n">BaseInputNetwork</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Inputs backed by a set</span>
@@ -718,7 +718,7 @@
             <span class="k">yield</span> <span class="n">operation</span></div></div>
 
 
-<div class="viewcode-block" id="MemoryOperationNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetwork">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryOperationNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryOperationNetwork</span><span class="p">(</span><span class="n">BaseOperationNetwork</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Operations backed by a set</span>
@@ -825,7 +825,7 @@
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="MemoryRedundancyChecker"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyChecker">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryRedundancyChecker"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyChecker">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryRedundancyChecker</span><span class="p">(</span><span class="n">BaseRedundancyChecker</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Redundancy Checker backed by Memory Key Value Store</span>
@@ -917,7 +917,7 @@
             <span class="k">yield</span></div></div>
 
 
-<div class="viewcode-block" id="MemoryLockNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryLockNetwork">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryLockNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryLockNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryLockNetwork</span><span class="p">(</span><span class="n">BaseLockNetwork</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
 
     <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">MemoryLockNetworkContext</span></div>
@@ -1177,7 +1177,7 @@
                 <span class="k">yield</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span></div></div>
 
 
-<div class="viewcode-block" id="MemoryOperationImplementationNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetwork">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryOperationImplementationNetwork</span><span class="p">(</span>
     <span class="n">BaseOperationImplementationNetwork</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span>
 <span class="p">):</span>
@@ -1593,7 +1593,7 @@
             <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="MemoryOrchestrator"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestrator">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryOrchestrator"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestrator">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryOrchestrator</span><span class="p">(</span><span class="n">BaseOrchestrator</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
 
     <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">MemoryOrchestratorContext</span>

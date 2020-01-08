@@ -176,7 +176,7 @@
 <span class="kn">from</span> <span class="nn">.source</span> <span class="kn">import</span> <span class="n">BaseSource</span>
 <span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
 <span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="kn">import</span> <span class="n">CMD</span>
-<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">entry_point</span>
+<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">entrypoint</span>
 
 
 <div class="viewcode-block" id="FileSourceConfig"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.file.FileSourceConfig">[docs]</a><span class="nd">@config</span>
@@ -186,7 +186,7 @@
     <span class="n">readonly</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 
-<div class="viewcode-block" id="FileSource"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.file.FileSource">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;file&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="FileSource"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.file.FileSource">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;file&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">FileSource</span><span class="p">(</span><span class="n">BaseSource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    FileSource reads and write from a file on open / close.</span>

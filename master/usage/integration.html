@@ -559,7 +559,7 @@ the MySQL <a class="reference internal" href="../plugins/dffml_source.html"><spa
 <span class="kn">from</span> <span class="nn">dffml.repo</span> <span class="kn">import</span> <span class="n">Repo</span>
 <span class="kn">from</span> <span class="nn">dffml.source.source</span> <span class="kn">import</span> <span class="n">BaseSourceContext</span><span class="p">,</span> <span class="n">BaseSource</span>
 <span class="kn">from</span> <span class="nn">dffml.util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
-<span class="kn">from</span> <span class="nn">dffml.util.entrypoint</span> <span class="kn">import</span> <span class="n">entry_point</span>
+<span class="kn">from</span> <span class="nn">dffml.util.entrypoint</span> <span class="kn">import</span> <span class="n">entrypoint</span>
 
 
 <span class="k">class</span> <span class="nc">DemoAppSourceConfig</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">):</span>
@@ -621,7 +621,7 @@ the MySQL <a class="reference internal" href="../plugins/dffml_source.html"><spa
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
 
-<span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;demoapp&quot;</span><span class="p">)</span>
+<span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;demoapp&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">DemoAppSource</span><span class="p">(</span><span class="n">BaseSource</span><span class="p">):</span>
 
     <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">DemoAppSourceContext</span>
@@ -720,9 +720,9 @@ to train on our dataset.</p>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
     -sources <span class="nv">db</span><span class="o">=</span>demoapp <span class="se">\</span>
     -model-features <span class="se">\</span>
-      def:authors:int:10 <span class="se">\</span>
-      def:commits:int:10 <span class="se">\</span>
-      def:work:int:10 <span class="se">\</span>
+      authors:int:10 <span class="se">\</span>
+      commits:int:10 <span class="se">\</span>
+      work:int:10 <span class="se">\</span>
     -log debug <span class="se">\</span>
     -update
 </pre></div>
@@ -735,9 +735,9 @@ meaningless unless you threw out the dataset and put in real classifications.</p
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
     -sources <span class="nv">db</span><span class="o">=</span>demoapp <span class="se">\</span>
     -model-features <span class="se">\</span>
-      def:authors:int:10 <span class="se">\</span>
-      def:commits:int:10 <span class="se">\</span>
-      def:work:int:10 <span class="se">\</span>
+      authors:int:10 <span class="se">\</span>
+      commits:int:10 <span class="se">\</span>
+      work:int:10 <span class="se">\</span>
     -log critical
 <span class="go">0.4722222089767456</span>
 </pre></div>
@@ -762,9 +762,9 @@ meaningless unless you threw out the dataset and put in real classifications.</p
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
     -sources <span class="nv">db</span><span class="o">=</span>demoapp <span class="se">\</span>
     -model-features <span class="se">\</span>
-      def:authors:int:10 <span class="se">\</span>
-      def:commits:int:10 <span class="se">\</span>
-      def:work:int:10 <span class="se">\</span>
+      authors:int:10 <span class="se">\</span>
+      commits:int:10 <span class="se">\</span>
+      work:int:10 <span class="se">\</span>
     -log critical <span class="se">\</span>
     -update
 <span class="go">[</span>
@@ -883,9 +883,9 @@ database.</p>
         <span class="s1">&#39;-model-classifications&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span>
         <span class="s1">&#39;-sources&#39;</span><span class="p">,</span> <span class="s1">&#39;db=demoapp&#39;</span><span class="p">,</span>
         <span class="s1">&#39;-model-features&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;def:authors:int:10&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;def:commits:int:10&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;def:work:int:10&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;authors:int:10&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;commits:int:10&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;work:int:10&#39;</span><span class="p">,</span>
         <span class="s1">&#39;-log&#39;</span><span class="p">,</span> <span class="s1">&#39;critical&#39;</span><span class="p">,</span>
         <span class="s1">&#39;-update&#39;</span><span class="p">])</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>

@@ -250,9 +250,9 @@ instantiate -&gt; enter context -&gt; return context via __call__ -&gt; enter
 returned context’s context pattern. Therefore they must contain a CONTEXT
 property, set to the BaseDataFlowFacilitatorObjectContext which will be
 returned from a __call__ to this class.</p>
-<p>DFFML is plugin based using Python’s setuptool’s entry_point API. All
+<p>DFFML is plugin based using Python’s setuptool’s entrypoint API. All
 classes inheriting from BaseDataFlowFacilitatorObject must have a property
-named ENTRY_POINT. In the form of <cite>dffml.load_point</cite> which will be used to
+named ENTRYPOINT. In the form of <cite>dffml.load_point</cite> which will be used to
 load all classes registered to that entry point.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the base object. Then enter it&#39;s context to preform any initial</span>
 <span class="c1"># setup. Call obj to get an instance of obj.CONTEXT, which is a subclass</span>
