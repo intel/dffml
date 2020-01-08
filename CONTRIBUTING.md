@@ -123,7 +123,7 @@ this we use the `--prefix=~/.local` flag.
 ```console
 $ git clone https://github.com/intel/dffml
 $ cd dffml
-$ python3.7 -m pip install -e --prefix=~/.local .[dev]
+$ python3.7 -m pip install --prefix=~/.local -e .[dev]
 ```
 
 > `[dev]` tells `pip` to install the dependencies you'll need to do development
