@@ -10,7 +10,6 @@ from ..df.base import op
 @config
 class ModelPredictConfig:
     model: Model
-    msg: str
 
 
 @op(

@@ -83,8 +83,6 @@ class TestDevelop(IntegrationCLITestCase):
             "Years:int:1",
             "-config-model-predict",
             "Salary",
-            "-config-msg",
-            "some message",
         )
         self.assertIn("model_predictions", results)
         results = results["model_predictions"]
