@@ -1,9 +1,9 @@
 from dffml.util.cli.arg import Arg
 from dffml.util.cli.cmd import CMD
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 
 
-@entry_point("misc")
+@entrypoint("misc")
 class MiscService(CMD):
     """
     Description of the DFFML related command

@@ -12,7 +12,7 @@ from dffml.repo import Repo
 from dffml.source.source import Sources
 from dffml.model.model import Model
 from dffml.accuracy import Accuracy
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 from dffml.base import BaseConfig, config, field
 from dffml.util.cli.arg import Arg
 from dffml.feature.feature import Feature, Features
@@ -180,7 +180,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
             yield repo
 
 
-@entry_point("tfdnnr")
+@entrypoint("tfdnnr")
 class DNNRegressionModel(Model):
     """
     Implemented using Tensorflow's DNNEstimator.

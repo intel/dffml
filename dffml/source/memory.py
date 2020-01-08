@@ -10,7 +10,7 @@ from ..base import config
 from ..repo import Repo
 from .source import BaseSourceContext, BaseSource
 from ..util.cli.arg import Arg
-from ..util.entrypoint import entry_point
+from ..util.entrypoint import entrypoint
 
 
 class MemorySourceContext(BaseSourceContext):
@@ -30,7 +30,7 @@ class MemorySourceConfig:
     repos: List[Repo]
 
 
-@entry_point("memory")
+@entrypoint("memory")
 class MemorySource(BaseSource):
     """
     Stores repos in a dict in memory

@@ -4,7 +4,7 @@ Description of what this config does
 import yaml
 from typing import Dict, Any
 
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 from dffml.util.cli.arg import Arg
 from dffml.base import BaseConfig
 from dffml.config.config import BaseConfigLoaderContext, BaseConfigLoader
@@ -18,7 +18,7 @@ class YamlConfigLoaderContext(BaseConfigLoaderContext):
         return yaml.dump(resource, default_flow_style=False).encode()
 
 
-@entry_point("yaml")
+@entrypoint("yaml")
 class YamlConfigLoader(BaseConfigLoader):
     CONTEXT = YamlConfigLoaderContext
 

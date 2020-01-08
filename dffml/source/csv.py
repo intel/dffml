@@ -15,7 +15,7 @@ from .memory import MemorySource
 from .file import FileSource, FileSourceConfig
 from ..base import config
 from ..util.cli.arg import Arg
-from ..util.entrypoint import entry_point
+from ..util.entrypoint import entrypoint
 
 csv.register_dialect("strip", skipinitialspace=True)
 
@@ -51,7 +51,7 @@ class CSVSourceConfig(FileSourceConfig):
 
 
 # CSVSource is a bit of a mess
-@entry_point("csv")
+@entrypoint("csv")
 class CSVSource(FileSource, MemorySource):
     """
     Uses a CSV file as the source of repo feature data

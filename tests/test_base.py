@@ -11,7 +11,7 @@ from dffml.feature.feature import DefFeature, Feature, Features
 from dffml.source.source import BaseSource
 from dffml.source.csv import CSVSource
 from dffml.source.json import JSONSource
-from dffml.util.entrypoint import entry_point, base_entry_point
+from dffml.util.entrypoint import entrypoint, base_entry_point
 from dffml.util.cli.arg import Arg
 from dffml.util.cli.cmd import parse_unknown
 
@@ -32,7 +32,7 @@ class BaseTesting(BaseDataFlowFacilitatorObject):
     pass  # pragma: no cov
 
 
-@entry_point("fake")
+@entrypoint("fake")
 class FakeTesting(BaseTesting):
 
     CONFIG = FakeTestingConfig
