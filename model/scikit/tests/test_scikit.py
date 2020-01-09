@@ -74,7 +74,7 @@ class TestScikitModel:
             cls.features.append(DefFeature("B", float, 1))
             cls.features.append(DefFeature("C", float, 1))
             cls.features.append(DefFeature("D", float, 1))
-            A, B, C, D = list(zip(*FEATURE_DATA_CLUSTERING))
+            A, B, C, D, X = list(zip(*FEATURE_DATA_CLUSTERING))
             cls.repos = [
                 Repo(
                     str(i),
@@ -84,11 +84,13 @@ class TestScikitModel:
                             "B": B[i],
                             "C": C[i],
                             "D": D[i],
+                            "X": X[i],
                         }
                     },
                 )
                 for i in range(0, len(A))
             ]
+
         cls.sources = Sources(
             MemorySource(MemorySourceConfig(repos=cls.repos))
         )
@@ -96,11 +98,15 @@ class TestScikitModel:
             "directory": cls.model_dir.name,
             "features": cls.features,
         }
-        predict_field = (
-            {"predict": "X"} if cls.MODEL_TYPE not in ["CLUSTERING"] else {}
-        )
+        config_fields = dict()
+        estimator_type = cls.MODEL.SCIKIT_MODEL._estimator_type
+        if estimator_type in supervised_estimators:
+            config_fields["predict"] = "X"
+        elif estimator_type in unsupervised_estimators:
+            if true_clstr_present:
+                config_fields["tcluster"] = "X"
         cls.model = cls.MODEL(
-            cls.MODEL_CONFIG(**{**properties, **predict_field})
+            cls.MODEL_CONFIG(**{**properties, **config_fields})
         )
 
     @classmethod
@@ -215,10 +221,10 @@ FEATURE_DATA_CLUSTERING = [
     ... 
     ]
 """
-FEATURE_DATA_CLUSTERING, _ = make_blobs(
+data, labels = make_blobs(
     n_samples=80, centers=8, n_features=4, random_state=2020
 )
-
+FEATURE_DATA_CLUSTERING = np.concatenate((data, labels[:, None]), axis=1)
 CLASSIFIERS = [
     "KNeighborsClassifier",
     "SVC",
@@ -263,6 +269,8 @@ CLUSTERERS = [
     "OPTICS",
 ]
 
+supervised_estimators = ["classifier", "regressor"]
+unsupervised_estimators = ["clusterer"]
 for clf in CLASSIFIERS:
     test_cls = type(
         f"Test{clf}Model",
@@ -275,8 +283,6 @@ for clf in CLASSIFIERS:
             ),
         },
     )
-
-    setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)
 
 for reg in REGRESSORS:
     test_cls = type(
@@ -292,18 +298,19 @@ for reg in REGRESSORS:
     )
 
 for clstr in CLUSTERERS:
-    test_cls = type(
-        f"Test{clstr}Model",
-        (TestScikitModel, AsyncTestCase),
-        {
-            "MODEL_TYPE": "CLUSTERING",
-            "MODEL": getattr(
-                dffml_model_scikit.scikit_models, clstr + "Model"
-            ),
-            "MODEL_CONFIG": getattr(
-                dffml_model_scikit.scikit_models, clstr + "ModelConfig"
-            ),
-        },
-    )
+    for true_clstr_present in [True, False]:
+        test_cls = type(
+            f"Test{clstr}Model",
+            (TestScikitModel, AsyncTestCase),
+            {
+                "MODEL_TYPE": "CLUSTERING",
+                "MODEL": getattr(
+                    dffml_model_scikit.scikit_models, clstr + "Model"
+                ),
+                "MODEL_CONFIG": getattr(
+                    dffml_model_scikit.scikit_models, clstr + "ModelConfig"
+                ),
+            },
+        )
 
     setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)

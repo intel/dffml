@@ -320,12 +320,25 @@ for entry_point_name, name, cls, applicable_features_function in [
     ),
     ("scikitoptics", "OPTICS", OPTICS, applicable_features),
 ]:
-    estimator_type = getattr(cls, "_estimator_type")
-    predict_field = (
-        {"predict": (str, field("Label or the value to be predicted"))}
-        if estimator_type in supervised_estimators
-        else {}
-    )
+    estimator_type = cls._estimator_type
+    config_fields = dict()
+    if estimator_type in supervised_estimators:
+        parentContext = ScikitContext
+        parentModel = Scikit
+        config_fields["predict"] = (
+            str,
+            field("Label or the value to be predicted"),
+        )
+    elif estimator_type in unsupervised_estimators:
+        parentContext = ScikitContextUnsprvised
+        parentModel = ScikitUnsprvised
+        config_fields["tcluster"] = (
+            str,
+            field(
+                "True cluster labelfor evaluating clustering models",
+                default=None,
+            ),
+        )
     dffml_config = mkscikit_config_cls(
         name + "ModelConfig",
         cls,
@@ -345,16 +358,9 @@ for entry_point_name, name, cls, applicable_features_function in [
                 ),
                 "features": (Features, field("Features to train on")),
             },
-            **predict_field,
+            **config_fields,
         },
     )
-
-    if estimator_type in supervised_estimators:
-        parentContext = ScikitContext
-        parentModel = Scikit
-    elif estimator_type in unsupervised_estimators:
-        parentContext = ScikitContextUnsprvised
-        parentModel = ScikitUnsprvised
 
     dffml_cls_ctx = type(
         name + "ModelContext",
