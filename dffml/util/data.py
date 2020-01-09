@@ -1,6 +1,8 @@
 """
 Various helper functions for manipulating python data structures and values
 """
+import os
+import inspect
 import pydoc
 import inspect
 from functools import wraps
@@ -55,6 +57,11 @@ def traverse_get(target, *args):
     for level in args:
         current = current[level]
     return current
+
+def traverse_set(target,*args):
+    """
+    >>> traverse_set({"one": {"two": 3}}, ["one", "two"])
+    """
 
 
 def ignore_args(func):
@@ -123,3 +130,47 @@ def export_dict(**kwargs):
         elif isinstance(kwargs[key], list):
             kwargs[key] = export_list(kwargs[key])
     return kwargs
+
+def explore_directories(path_dict:str):
+    """
+    path_dict :
+        {
+            "hello":"there",
+            "deadbeef" : path_to_deadbeef
+        }
+    """
+    for key,val in path_dict.items():
+        if(os.path.isdir(val)):
+            temp_path_dict = {}
+            for root,dirs,files in os.walk(val):
+                # adding dirs
+                temp_path_dict.update(
+                    {
+                        _dir:os.path.join(root,_dir)
+                            for _dir in dirs
+                    }
+                )
+                #adding files
+                temp_path_dict.update(
+                    {
+                        _file.split('.')[0]:os.path.join(root,_file)
+                            for  _file in files
+                    }
+                )
+                break
+            explore_directories(temp_path_dict)
+            path_dict[key]=temp_path_dict
+    return path_dict
+
+async def nested_apply(target,func):
+    """
+    """
+    for key,val in target.items():
+        if isinstance(val,dict):
+            target[key]=await nested_apply(val,func)
+        else:
+            if(inspect.iscoroutinefunction(func)):
+                target[key]=await func(val)
+            else:
+                target[key]= func(val)
+    return target

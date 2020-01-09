@@ -1,7 +1,9 @@
 import abc
+import os
 import pathlib
+import json
 import contextlib
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional,Union
 
 from ..util.entrypoint import base_entry_point
 from ..util.asynchelper import AsyncContextManagerList
@@ -10,6 +12,7 @@ from ..base import (
     BaseDataFlowFacilitatorObjectContext,
     BaseDataFlowFacilitatorObject,
 )
+from dffml.util.data import explore_directories,nested_apply
 
 
 class BaseConfigLoaderContext(BaseDataFlowFacilitatorObjectContext):
@@ -139,8 +142,28 @@ class ConfigLoaders(AsyncContextManagerList):
         *,
         base_dir: Optional[pathlib.Path] = None,
     ) -> Dict:
+
+        async def _get_config(temp_filepath):
+            if not isinstance(temp_filepath, pathlib.Path):
+                temp_filepath = pathlib.Path(temp_filepath)
+            _,loaded = await BaseConfigLoader.load_file(
+                self.parsers, self.async_exit_stack,temp_filepath, base_dir=base_dir
+                )
+            return loaded
+
         if not isinstance(filepath, pathlib.Path):
             filepath = pathlib.Path(filepath)
-        await BaseConfigLoader.load_file(
-            self.parsers, self.async_exit_stack, filepath, base_dir=base_dir
-        )
+
+        if( len(filepath.suffixes)>=2 and filepath.suffixes[-2]==".dirconf") :
+            dir_name = filepath.parts[-1].split('.')[0]
+            dir_path=os.path.join(*(filepath.parts[:-1]+(dir_name,)))
+
+            temp_conf_dict={dir_name:dir_path}
+            conf_dict = await _get_config(filepath)
+            explored = explore_directories(temp_conf_dict)
+            explored = await nested_apply(explored,_get_config)
+            conf_dict.update(explored[dir_name])
+
+        else:
+            conf_dict =await _get_config(filepath)
+        return conf_dict
