@@ -14,7 +14,7 @@ class Port(abc.ABC, Entrypoint):
     Port repos into the format the porter understands
     """
 
-    ENTRY_POINT = "dffml.port"
+    ENTRYPOINT = "dffml.port"
 
     @abc.abstractmethod
     async def export_fd(self, source: BaseSource, fd):

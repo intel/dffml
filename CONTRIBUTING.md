@@ -123,7 +123,7 @@ this we use the `--prefix=~/.local` flag.
 ```console
 $ git clone https://github.com/intel/dffml
 $ cd dffml
-$ python3.7 -m pip install -e --prefix=~/.local .[dev]
+$ python3.7 -m pip install --prefix=~/.local -e .[dev]
 ```
 
 > `[dev]` tells `pip` to install the dependencies you'll need to do development
@@ -265,6 +265,11 @@ python3.7 -m http.server --directory htmlcov/ 8080
 ```
 
 You can now view the coverage report at http://127.0.0.1:8080/
+
+### Test Datasets
+
+In order to avoid potential legal issues, all datasets included within the
+codebase of DFFML should be randomly generated.
 
 ## Documentation
 

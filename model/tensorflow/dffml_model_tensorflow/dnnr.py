@@ -12,7 +12,7 @@ from dffml.repo import Repo
 from dffml.source.source import Sources
 from dffml.model.model import Model
 from dffml.accuracy import Accuracy
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 from dffml.base import BaseConfig, config, field
 from dffml.util.cli.arg import Arg
 from dffml.feature.feature import Feature, Features
@@ -180,7 +180,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
             yield repo
 
 
-@entry_point("tfdnnr")
+@entrypoint("tfdnnr")
 class DNNRegressionModel(Model):
     """
     Implemented using Tensorflow's DNNEstimator.
@@ -222,8 +222,8 @@ class DNNRegressionModel(Model):
             -source-readonly \\
             -source-filename train.csv \\
             -model-features \\
-              def:Feature1:float:1 \\
-              def:Feature2:float:1 \\
+              Feature1:float:1 \\
+              Feature2:float:1 \\
             -log debug
         Enabling debug log shows tensorflow losses...
         $ dffml accuracy \\
@@ -234,8 +234,8 @@ class DNNRegressionModel(Model):
             -source-readonly \\
             -source-filename test.csv \\
             -model-features \\
-              def:Feature1:float:1 \\
-              def:Feature2:float:1 \\
+              Feature1:float:1 \\
+              Feature2:float:1 \\
             -log critical
         0.9468210011
         $ echo -e 'Feature1,Feature2,TARGET\\n0.21,0.18,0.84\\n' | \\
@@ -247,8 +247,8 @@ class DNNRegressionModel(Model):
             -source-readonly \\
             -source-filename /dev/stdin \\
             -model-features \\
-              def:Feature1:float:1 \\
-              def:Feature2:float:1 \\
+              Feature1:float:1 \\
+              Feature2:float:1 \\
             -log critical
         [
             {

@@ -145,7 +145,7 @@ Let us take a simple example:
     EOF
     $ dffml train \\
         -model scikitlr \\
-        -model-features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \\
+        -model-features Years:int:1 Expertise:int:1 Trust:float:1 \\
         -model-predict Salary \\
         -sources f=csv \\
         -source-filename train.csv \\
@@ -153,7 +153,7 @@ Let us take a simple example:
         -log debug
     $ dffml accuracy \\
         -model scikitlr \\
-        -model-features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \\
+        -model-features Years:int:1 Expertise:int:1 Trust:float:1 \\
         -model-predict Salary \\
         -sources f=csv \\
         -source-filename test.csv \\
@@ -163,7 +163,7 @@ Let us take a simple example:
     $ echo -e 'Years,Expertise,Trust\\n6,13,1.4\\n' | \\
       dffml predict all \\
         -model scikitlr \\
-        -model-features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \\
+        -model-features Years:int:1 Expertise:int:1 Trust:float:1 \\
         -model-predict Salary \\
         -sources f=csv \\
         -source-filename /dev/stdin \\

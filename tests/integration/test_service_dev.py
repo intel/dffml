@@ -61,7 +61,7 @@ class TestDevelop(IntegrationCLITestCase):
             "-model",
             "scratchslr",
             "-model-features",
-            "def:Years:int:1",
+            "Years:int:1",
             "-model-predict",
             "Salary",
             "-sources",
@@ -80,11 +80,9 @@ class TestDevelop(IntegrationCLITestCase):
             "-config-model",
             "scratchslr",
             "-config-model-features",
-            "def:Years:int:1",
+            "Years:int:1",
             "-config-model-predict",
             "Salary",
-            "-config-msg",
-            "some message",
         )
         self.assertIn("model_predictions", results)
         results = results["model_predictions"]
