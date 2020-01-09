@@ -129,13 +129,13 @@ class CreateTLS(TLSCMD):
 
 class MultiCommCMD(CMD):
 
-    mc_config = Arg(
+    arg_mc_config = Arg(
         "-mc-config",
         dest="mc_config",
         default=None,
         help="MultiComm config directory",
     )
-    mc_atomic = Arg(
+    arg_mc_atomic = Arg(
         "-mc-atomic",
         dest="mc_atomic",
         action="store_true",
