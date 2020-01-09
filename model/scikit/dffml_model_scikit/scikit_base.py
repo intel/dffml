@@ -13,14 +13,13 @@ from typing import AsyncIterator, Tuple, Any, NamedTuple
 import joblib
 import numpy as np
 import pandas as pd
+from sklearn.metrics import silhouette_score, adjusted_mutual_info_score
 
 from dffml.repo import Repo
 from dffml.source.source import Sources
 from dffml.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml.feature.feature import Features, Feature
-
-from sklearn.metrics import silhouette_score, adjusted_mutual_info_score
 
 
 class ScikitConfig(ModelConfig, NamedTuple):
@@ -45,8 +44,15 @@ class ScikitContext(ModelContext):
         self.parent.saved[self._features_hash] = confidence
 
     def _feature_predict_hash(self):
+        params = "".join(
+            [
+                "{}{}".format(k, v)
+                for k, v in self.parent.config._asdict().items()
+                if k not in ["directory", "features", "tcluster"]
+            ]
+        )
         return hashlib.sha384(
-            "".join(self.features + [self.parent.config.predict.NAME]).encode()
+            "".join([params] + self.features).encode()
         ).hexdigest()
 
     def _filename(self):
@@ -122,21 +128,6 @@ class ScikitContext(ModelContext):
 
 
 class ScikitContextUnsprvised(ScikitContext):
-    def __init__(self, parent):
-        super().__init__(parent)
-
-    def _feature_predict_hash(self):
-        params = "".join(
-            [
-                "{}{}".format(k, v)
-                for k, v in self.parent.config._asdict().items()
-                if k not in ["directory", "features"]
-            ]
-        )
-        return hashlib.sha384(
-            "".join([params] + self.features).encode()
-        ).hexdigest()
-
     async def __aenter__(self):
         if os.path.isfile(self._filename()):
             self.clf = joblib.load(self._filename())
@@ -144,23 +135,17 @@ class ScikitContextUnsprvised(ScikitContext):
             config = self.parent.config._asdict()
             del config["directory"]
             del config["features"]
+            del config["tcluster"]
             self.clf = self.parent.SCIKIT_MODEL(**config)
         return self
 
     async def train(self, sources: Sources):
         data = []
-        target = []
-        estimator_type = getattr(self.clf, "_estimator_type")
-        if estimator_type is "clusterer":
-            if "TRUE_CLUSTER" in set(self.features):
-                target.append("TRUE_CLUSTER")
         async for repo in sources.with_features(self.features):
             feature_data = repo.features(self.features)
             data.append(feature_data)
         df = pd.DataFrame(data)
-        xdata = np.array(
-            df.drop(target, axis=1)
-        )  # target is ignored if passed in training data
+        xdata = np.array(df)
         self.logger.info("Number of input repos: {}".format(len(xdata)))
         self.clf.fit(xdata)
         joblib.dump(self.clf, self._filename())
@@ -170,18 +155,21 @@ class ScikitContextUnsprvised(ScikitContext):
             raise ModelNotTrained("Train model before assessing for accuracy.")
         data = []
         target = []
-        estimator_type = getattr(self.clf, "_estimator_type")
+        estimator_type = self.clf._estimator_type
         if estimator_type is "clusterer":
-            if "TRUE_CLUSTER" in set(self.features):
-                target = ["TRUE_CLUSTER"]
+            target = (
+                [self.parent.config.tcluster]
+                if self.parent.config.tcluster is not None
+                else []
+            )
         async for repo in sources.with_features(self.features):
-            feature_data = repo.features(self.features)
+            feature_data = repo.features(self.features + target)
             data.append(feature_data)
         df = pd.DataFrame(data)
         xdata = np.array(df.drop(target, axis=1))
         self.logger.debug("Number of input repos: {}".format(len(xdata)))
-        if "TRUE_CLUSTER" in target:
-            ydata = np.array(df["TRUE_CLUSTER"])
+        if target:
+            ydata = np.array(df[target]).flatten()
             if hasattr(self.clf, "predict"):
                 # xdata can be training data or unseen data
                 # inductive clusterer with ground truth
@@ -212,10 +200,8 @@ class ScikitContextUnsprvised(ScikitContext):
         if not os.path.isfile(self._filename()):
             raise ModelNotTrained("Train model before prediction.")
         target = []
-        estimator_type = getattr(self.clf, "_estimator_type")
+        estimator_type = self.clf._estimator_type
         if estimator_type is "clusterer":
-            if "TRUE_CLUSTER" in set(self.features):
-                target.append("TRUE_CLUSTER")
             if hasattr(self.clf, "predict"):
                 # inductive clusterer
                 predictor = self.clf.predict
@@ -228,7 +214,7 @@ class ScikitContextUnsprvised(ScikitContext):
 
         async for repo in repos:
             feature_data = repo.features(self.features)
-            df = pd.DataFrame(feature_data, index=[0]).drop(target, axis=1)
+            df = pd.DataFrame(feature_data, index=[0])
             predict = np.array(df)
             prediction = predictor(predict)
             self.logger.debug(
@@ -261,9 +247,6 @@ class Scikit(Model):
 
 
 class ScikitUnsprvised(Scikit):
-    def __init__(self, config) -> None:
-        super().__init__(config)
-
     def _filename(self):
         model_name = self.SCIKIT_MODEL.__name__
         return os.path.join(
