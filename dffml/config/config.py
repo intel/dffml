@@ -4,6 +4,7 @@ import contextlib
 from typing import Dict, Any, Optional
 
 from ..util.entrypoint import base_entry_point
+from ..util.asynchelper import AsyncContextManagerList
 from ..base import (
     BaseConfig,
     BaseDataFlowFacilitatorObjectContext,
@@ -71,3 +72,75 @@ class BaseConfigLoader(BaseDataFlowFacilitatorObject):
         config_path = tuple(config_path)
         # Load the file
         return config_path, await parsers[filetype].loadb(path.read_bytes())
+        # TODO If `path` has multiple extentions, for example:
+        # the_config_name.dirconf.json
+        # Then use the final exention as we have been above. Check the second to
+        # last extention and see if it is "dirconf" if it is, then look in the
+        # directory named `the_config_name` (for this example). Treat subsequent
+        # directories and filenames as keys in the loaded dict value.
+        # In dffml.util.data there is a `traverse_get` function, you'll need to
+        # create the opisite of that function, `traverse_set` (there is already
+        # a simliar function in that file).
+        # Example:
+        # $ tree
+        # .
+        # ├── the_config_name
+        # │   ├── deadbeef.json
+        # │   └── feed
+        # │       └── face.json
+        # └── the_config_name.dirconf.json
+        # If load_file is passed the_config_name.dirconf.json as `path`.
+        # And it's contents are
+        #
+        # {"hello": "there"}
+        #
+        # And the contents of deadbeef.json are
+        #
+        # {"massive": "hax"}
+        #
+        # And the contents of face.json are
+        #
+        # {"so": "secure"}
+        #
+        # The resulting loaded dict for a `path` of the_config_name.dirconf.json
+        # should be
+        #
+        # {
+        #   "hello": "there",
+        #   "deadbeef": {
+        #     "massive": "hax"
+        #   },
+        #   "feed": {
+        #     "face": {
+        #       "so": "secure"
+        #     }
+        #   }
+        # }
+        #
+        # So don't worry about creating a new configloader, just make a testcase
+        # which writes out that file structre to a tempdir, then calls this
+        # load_file method (which you modify) and make sure that it equals the
+        # example I gave above. Thanks!
+
+
+class ConfigLoaders(AsyncContextManagerList):
+    """
+    A class similar to Sources in that it will hold all the config
+    loaders that get loaded as needed (based on filetype).
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.parsers: Dict[str, "BaseConfigLoader"] = {}
+
+    async def load_file(
+        self,
+        filepath: Union[str, pathlib.Path],
+        *,
+        base_dir: Optional[pathlib.Path] = None,
+    ) -> Dict:
+        if not isinstance(filepath, pathlib.Path):
+            filepath = pathlib.Path(filepath)
+        await BaseConfigLoader.load_file(
+            self.parsers, self.async_exit_stack, filepath, base_dir=base_dir
+        )
