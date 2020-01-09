@@ -262,7 +262,7 @@ class TestScikitClustering(IntegrationCLITestCase):
             writer.writerows(predict_data)
 
         # Features
-        features = "-model-features def:A:float:1 def:B:float:1 def:C:float:1 def:D:float:1".split()
+        features = "-model-features A:float:1 B:float:1 C:float:1 D:float:1".split()
         for algo in [
             "ind_w_labl",
             "ind_wo_labl",
