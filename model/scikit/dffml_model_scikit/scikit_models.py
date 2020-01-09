@@ -58,7 +58,12 @@ from sklearn.cluster import (
 from dffml.base import make_config, field
 from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entrypoint
-from dffml_model_scikit.scikit_base import Scikit, ScikitContext
+from dffml_model_scikit.scikit_base import (
+    Scikit,
+    ScikitContext,
+    ScikitUnsprvised,
+    ScikitContextUnsprvised,
+)
 
 from dffml.feature.feature import Feature, Features
 from dffml.util.cli.parser import list_action
