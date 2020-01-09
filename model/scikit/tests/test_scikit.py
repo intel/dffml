@@ -218,7 +218,7 @@ FEATURE_DATA_REGRESSION = [
 FEATURE_DATA_CLUSTERING = [
     [-9.01904123, 6.44409816, 5.95914173, 6.30718146],
     [ 7.10630876, -2.07342124, -0.72564101,  3.81251745],
-    ... 
+    ...
     ]
 """
 data, labels = make_blobs(
