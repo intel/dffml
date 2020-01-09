@@ -90,6 +90,7 @@ class TestScikitModel:
                 )
                 for i in range(0, len(A))
             ]
+
         cls.sources = Sources(
             MemorySource(MemorySourceConfig(repos=cls.repos))
         )

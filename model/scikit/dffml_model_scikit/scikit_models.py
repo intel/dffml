@@ -367,13 +367,6 @@ for entry_point_name, name, cls, applicable_features_function in [
         },
     )
 
-    if estimator_type in supervised_estimators:
-        parentContext = ScikitContext
-        parentModel = Scikit
-    elif estimator_type in unsupervised_estimators:
-        parentContext = ScikitContextUnsprvised
-        parentModel = ScikitUnsprvised
-
     dffml_cls_ctx = type(
         name + "ModelContext",
         (parentContext,),
