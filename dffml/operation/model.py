@@ -10,7 +10,12 @@ from ..df.base import op
 @config
 class ModelPredictConfig:
     model: Model
-    msg: str
+
+    def __post_init__(self):
+        if not isinstance(self.model, Model):
+            raise TypeError(
+                "model should be an instance of `dffml.model.model.Model`"
+            )
 
 
 @op(

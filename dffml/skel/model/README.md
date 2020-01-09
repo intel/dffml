@@ -21,10 +21,10 @@ dffml train \
   -sources csv=iris_training.csv \
   -classifications 0 1 2 \
   -model-features \
-    def:SepalLength:float:1 \
-    def:SepalWidth:float:1 \
-    def:PetalLength:float:1 \
-    def:PetalWidth:float:1 \
+    SepalLength:float:1 \
+    SepalWidth:float:1 \
+    PetalLength:float:1 \
+    PetalWidth:float:1 \
   -epochs 3000 \
   -steps 20000 \
   -log debug
@@ -33,20 +33,20 @@ dffml accuracy \
   -sources csv=iris_training.csv \
   -classifications 0 1 2 \
   -model-features \
-    def:SepalLength:float:1 \
-    def:SepalWidth:float:1 \
-    def:PetalLength:float:1 \
-    def:PetalWidth:float:1 \
+    SepalLength:float:1 \
+    SepalWidth:float:1 \
+    PetalLength:float:1 \
+    PetalWidth:float:1 \
   -log critical
 dffml predict all \
   -model model_name \
   -sources csv=iris_test.csv \
   -classifications 0 1 2 \
   -model-features \
-    def:SepalLength:float:1 \
-    def:SepalWidth:float:1 \
-    def:PetalLength:float:1 \
-    def:PetalWidth:float:1 \
+    SepalLength:float:1 \
+    SepalWidth:float:1 \
+    PetalLength:float:1 \
+    PetalWidth:float:1 \
   -caching \
   -log critical \
   > results.json

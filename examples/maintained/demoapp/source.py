@@ -8,7 +8,7 @@ from dffml.base import BaseConfig
 from dffml.repo import Repo
 from dffml.source.source import BaseSourceContext, BaseSource
 from dffml.util.cli.arg import Arg
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 
 
 class DemoAppSourceConfig(BaseConfig, NamedTuple):
@@ -70,7 +70,7 @@ class DemoAppSourceContext(BaseSourceContext):
         await self.parent.db.commit()
 
 
-@entry_point("demoapp")
+@entrypoint("demoapp")
 class DemoAppSource(BaseSource):
 
     CONTEXT = DemoAppSourceContext

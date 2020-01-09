@@ -351,7 +351,7 @@ class Release(CMD):
     """
 
     arg_package = Arg(
-        "package", help="Relative path to package to release", type=Path,
+        "package", help="Relative path to package to release", type=Path
     )
 
     async def run(self):

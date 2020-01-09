@@ -61,7 +61,9 @@ class TestCSV(IntegrationCLITestCase):
                 """,
         )
         # Features
-        features = "-model-features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1".split()
+        features = (
+            "-model-features Years:int:1 Expertise:int:1 Trust:float:1".split()
+        )
         # Train the model
         await CLI.cli(
             "train",

@@ -51,10 +51,10 @@ Implemented using Tensorflow's DNNClassifier.
         -sources iris=csv \
         -source-filename iris_training.csv \
         -model-features \
-          def:SepalLength:float:1 \
-          def:SepalWidth:float:1 \
-          def:PetalLength:float:1 \
-          def:PetalWidth:float:1 \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
         -log debug
     ... lots of output ...
     $ dffml accuracy \
@@ -65,10 +65,10 @@ Implemented using Tensorflow's DNNClassifier.
         -sources iris=csv \
         -source-filename iris_test.csv \
         -model-features \
-          def:SepalLength:float:1 \
-          def:SepalWidth:float:1 \
-          def:PetalLength:float:1 \
-          def:PetalWidth:float:1 \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
         -log critical
     0.99996233782
     $ dffml predict all \
@@ -79,10 +79,10 @@ Implemented using Tensorflow's DNNClassifier.
         -sources iris=csv \
         -source-filename iris_test.csv \
         -model-features \
-          def:SepalLength:float:1 \
-          def:SepalWidth:float:1 \
-          def:PetalLength:float:1 \
-          def:PetalWidth:float:1 \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
         -caching \
         -log critical \
       > results.json
@@ -204,8 +204,8 @@ Generating train and test data
         -source-readonly \
         -source-filename train.csv \
         -model-features \
-          def:Feature1:float:1 \
-          def:Feature2:float:1 \
+          Feature1:float:1 \
+          Feature2:float:1 \
         -log debug
     Enabling debug log shows tensorflow losses...
     $ dffml accuracy \
@@ -216,8 +216,8 @@ Generating train and test data
         -source-readonly \
         -source-filename test.csv \
         -model-features \
-          def:Feature1:float:1 \
-          def:Feature2:float:1 \
+          Feature1:float:1 \
+          Feature2:float:1 \
         -log critical
     0.9468210011
     $ echo -e 'Feature1,Feature2,TARGET\n0.21,0.18,0.84\n' | \
@@ -229,8 +229,8 @@ Generating train and test data
         -source-readonly \
         -source-filename /dev/stdin \
         -model-features \
-          def:Feature1:float:1 \
-          def:Feature2:float:1 \
+          Feature1:float:1 \
+          Feature2:float:1 \
         -log critical
     [
         {
@@ -311,7 +311,7 @@ hash of their feature names.
     EOF
     $ dffml train \
         -model scratchslr \
-        -model-features def:Years:int:1 \
+        -model-features Years:int:1 \
         -model-predict Salary \
         -sources f=csv \
         -source-filename dataset.csv \
@@ -319,7 +319,7 @@ hash of their feature names.
         -log debug
     $ dffml accuracy \
         -model scratchslr \
-        -model-features def:Years:int:1 \
+        -model-features Years:int:1 \
         -model-predict Salary \
         -sources f=csv \
         -source-filename dataset.csv \
@@ -329,7 +329,7 @@ hash of their feature names.
     $ echo -e 'Years,Salary\n6,0\n' | \
       dffml predict all \
         -model scratchslr \
-        -model-features def:Years:int:1 \
+        -model-features Years:int:1 \
         -model-predict Salary \
         -sources f=csv \
         -source-filename /dev/stdin \
@@ -537,7 +537,7 @@ Let us take a simple example:
     EOF
     $ dffml train \
         -model scikitlr \
-        -model-features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \
+        -model-features Years:int:1 Expertise:int:1 Trust:float:1 \
         -model-predict Salary \
         -sources f=csv \
         -source-filename train.csv \
@@ -545,7 +545,7 @@ Let us take a simple example:
         -log debug
     $ dffml accuracy \
         -model scikitlr \
-        -model-features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \
+        -model-features Years:int:1 Expertise:int:1 Trust:float:1 \
         -model-predict Salary \
         -sources f=csv \
         -source-filename test.csv \
@@ -555,7 +555,7 @@ Let us take a simple example:
     $ echo -e 'Years,Expertise,Trust\n6,13,1.4\n' | \
       dffml predict all \
         -model scikitlr \
-        -model-features def:Years:int:1 def:Expertise:int:1 def:Trust:float:1 \
+        -model-features Years:int:1 Expertise:int:1 Trust:float:1 \
         -model-predict Salary \
         -sources f=csv \
         -source-filename /dev/stdin \

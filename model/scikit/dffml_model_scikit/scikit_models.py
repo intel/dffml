@@ -64,7 +64,6 @@ from dffml_model_scikit.scikit_base import (
     ScikitUnsprvised,
     ScikitContextUnsprvised,
 )
-
 from dffml.feature.feature import Feature, Features
 from dffml.util.cli.parser import list_action
 
@@ -383,7 +382,7 @@ for entry_point_name, name, cls, applicable_features_function in [
         },
     )
     # Add the ENTRY_POINT_ORIG_LABEL
-    dffml_cls = entry_point(entry_point_name)(dffml_cls)
+    dffml_cls = entrypoint(entry_point_name)(dffml_cls)
 
     setattr(sys.modules[__name__], dffml_config.__qualname__, dffml_config)
     setattr(sys.modules[__name__], dffml_cls_ctx.__qualname__, dffml_cls_ctx)
