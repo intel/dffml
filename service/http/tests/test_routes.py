@@ -30,7 +30,7 @@ from dffml.source.source import Sources
 from dffml.source.csv import CSVSourceConfig
 from dffml.util.data import traverse_get
 from dffml.util.cli.arg import parse_unknown
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 from dffml.util.cli.arg import Arg, parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
@@ -83,7 +83,7 @@ class FakeModelContext(ModelContext):
             yield repo
 
 
-@entry_point("fake")
+@entrypoint("fake")
 class FakeModel(Model):
 
     CONTEXT = FakeModelContext
@@ -283,8 +283,8 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                 "--model-directory",
                 tempdir,
                 "--model-features",
-                "def:Years:int:1",
-                "def:Experiance:int:1",
+                "Years:int:1",
+                "Experiance:int:1",
             )
             async with self.post(
                 "/configure/model/fake/salary", json=config

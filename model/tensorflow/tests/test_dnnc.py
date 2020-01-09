@@ -79,7 +79,7 @@ class TestDNN(AsyncTestCase):
                 "--model-clstype",
                 "int",
                 "--model-features",
-                "def:starts_with_a:int:1",
+                "starts_with_a:int:1",
             )
         )
         self.assertEqual(

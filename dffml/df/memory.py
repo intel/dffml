@@ -55,7 +55,7 @@ from .base import (
     BaseOrchestrator,
 )
 
-from ..util.entrypoint import entry_point, EntrypointNotFound
+from ..util.entrypoint import entrypoint, EntrypointNotFound
 from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
 from ..util.data import ignore_args, traverse_get
@@ -94,7 +94,7 @@ class MemoryKeyValueStoreContext(BaseKeyValueStoreContext):
             self.memory[key] = value
 
 
-@entry_point("memory")
+@entrypoint("memory")
 class MemoryKeyValueStore(BaseKeyValueStore, BaseMemoryDataFlowObject):
     """
     Key Value store backed by dict
@@ -505,7 +505,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                 yield parameter_set
 
 
-@entry_point("memory")
+@entrypoint("memory")
 class MemoryInputNetwork(BaseInputNetwork, BaseMemoryDataFlowObject):
     """
     Inputs backed by a set
@@ -558,7 +558,7 @@ class MemoryOperationNetworkContext(BaseOperationNetworkContext):
             yield operation
 
 
-@entry_point("memory")
+@entrypoint("memory")
 class MemoryOperationNetwork(BaseOperationNetwork, BaseMemoryDataFlowObject):
     """
     Operations backed by a set
@@ -665,7 +665,7 @@ class MemoryRedundancyCheckerContext(BaseRedundancyCheckerContext):
         )
 
 
-@entry_point("memory")
+@entrypoint("memory")
 class MemoryRedundancyChecker(BaseRedundancyChecker, BaseMemoryDataFlowObject):
     """
     Redundancy Checker backed by Memory Key Value Store
@@ -757,7 +757,7 @@ class MemoryLockNetworkContext(BaseLockNetworkContext):
             yield
 
 
-@entry_point("memory")
+@entrypoint("memory")
 class MemoryLockNetwork(BaseLockNetwork, BaseMemoryDataFlowObject):
 
     CONTEXT = MemoryLockNetworkContext
@@ -1017,7 +1017,7 @@ class MemoryOperationImplementationNetworkContext(
                 yield operation, parameter_set
 
 
-@entry_point("memory")
+@entrypoint("memory")
 class MemoryOperationImplementationNetwork(
     BaseOperationImplementationNetwork, BaseMemoryDataFlowObject
 ):
@@ -1433,7 +1433,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
             )
 
 
-@entry_point("memory")
+@entrypoint("memory")
 class MemoryOrchestrator(BaseOrchestrator, BaseMemoryDataFlowObject):
 
     CONTEXT = MemoryOrchestratorContext

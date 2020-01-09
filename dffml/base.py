@@ -456,9 +456,9 @@ class BaseDataFlowFacilitatorObject(
     property, set to the BaseDataFlowFacilitatorObjectContext which will be
     returned from a __call__ to this class.
 
-    DFFML is plugin based using Python's setuptool's entry_point API. All
+    DFFML is plugin based using Python's setuptool's entrypoint API. All
     classes inheriting from BaseDataFlowFacilitatorObject must have a property
-    named ENTRY_POINT. In the form of `dffml.load_point` which will be used to
+    named ENTRYPOINT. In the form of `dffml.load_point` which will be used to
     load all classes registered to that entry point.
 
     >>> # Create the base object. Then enter it's context to preform any initial
@@ -474,7 +474,7 @@ class BaseDataFlowFacilitatorObject(
         BaseConfigurable.__init__(self, config)
         # TODO figure out how to call these in __new__
         self.__ensure_property("CONTEXT")
-        self.__ensure_property("ENTRY_POINT")
+        self.__ensure_property("ENTRYPOINT")
 
     def __repr__(self):
         return "%s(%r)" % (self.__class__.__qualname__, self.config)

@@ -87,9 +87,9 @@ class TestDNN(AsyncTestCase):
                 "--model-predict",
                 "TARGET",
                 "--model-features",
-                "def:feature_1:float:1",
+                "feature_1:float:1",
                 "--model-features",
-                "def:feature_2:float:1",
+                "feature_2:float:1",
             )
         )
         self.assertEqual(

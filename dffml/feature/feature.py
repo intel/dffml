@@ -151,7 +151,7 @@ class Feature(abc.ABC, Entrypoint):
     NAME: str = ""
     # LENGTH: int = 10
     # FREQUENCY: Type[Frequency] = Quarterly
-    ENTRY_POINT = "dffml.feature"
+    ENTRYPOINT = "dffml.feature"
 
     def __eq__(self, other):
         self_tuple = (self.NAME, self.dtype(), self.length())
@@ -245,8 +245,8 @@ class Feature(abc.ABC, Entrypoint):
                 return cls.load_def(
                     loading["name"], loading["dtype"], loading["length"]
                 )
-            elif loading.startswith("def:"):
-                return cls.load_def(*loading.replace("def:", "").split(":"))
+            elif loading.count(":") == 2:
+                return cls.load_def(*loading.split(":"))
         return super().load(loading)
 
     @classmethod
