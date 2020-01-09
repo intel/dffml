@@ -44,19 +44,23 @@ function run_plugin() {
       cd "${plugin_creation_dir}"
     done
 
+    # Install all the plugins so examples can use them
+    "${PYTHON}" -m pip install -U -e "${SRC_ROOT}"
+    "${PYTHON}" -m dffml service dev install
+
     # Run the examples
     cd "${SRC_ROOT}/examples"
     "${PYTHON}" -m pip install -r requirements.txt
     "${PYTHON}" -m unittest discover
+    cd "${SRC_ROOT}"
 
     # Deactivate venv
     deactivate
 
     # Create the docs
-    cd "${SRC_ROOT}"
     "${PYTHON}" -m pip install -U -e "${SRC_ROOT}[dev]"
     "${PYTHON}" -m dffml service dev install -user
-    ./scripts/docs.sh
+    "${SRC_ROOT}/scripts/docs.sh"
 
     # Log skipped tests to file
     check_skips="$(mktemp)"
