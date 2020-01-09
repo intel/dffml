@@ -10,6 +10,7 @@ import json
 import inspect
 import pathlib
 import asyncio
+import numpy as np
 import contextlib
 import unittest.mock
 from typing import Dict, Any
@@ -230,28 +231,30 @@ class TestScikitClustering(IntegrationCLITestCase):
                          [ 8.68078273, -3.79913846,  2.86810681,  7.13800644],
                          ...]"""
         train_filename = self.mktempfile() + ".csv"
-        train_data, _ = make_blobs(
+        train_data, y = make_blobs(
             n_samples=40, centers=4, n_features=4, random_state=2020
         )
+        train_data = np.concatenate((train_data, y[:, None]), axis=1)
         with open(pathlib.Path(train_filename), "w+") as train_file:
             writer = csv.writer(train_file, delimiter=",")
-            writer.writerow(["A", "B", "C", "D"])
+            writer.writerow(["A", "B", "C", "D", "true_label"])
             writer.writerows(train_data)
 
         # Create the test data
         test_filename = self.mktempfile() + ".csv"
-        test_data, _ = make_blobs(
+        test_data, y = make_blobs(
             n_samples=20, centers=4, n_features=4, random_state=2019
         )
+        test_data = np.concatenate((test_data, y[:, None]), axis=1)
         with open(pathlib.Path(test_filename), "w+") as test_file:
             writer = csv.writer(test_file, delimiter=",")
-            writer.writerow(["A", "B", "C", "D"])
+            writer.writerow(["A", "B", "C", "D", "true_label"])
             writer.writerows(test_data)
 
         # Create the prediction data
         predict_filename = self.mktempfile() + ".csv"
-        predict_data, _ = make_blobs(
-            n_samples=15, centers=4, n_features=4, random_state=2021
+        predict_data, y = make_blobs(
+            n_samples=10, centers=4, n_features=4, random_state=2021
         )
         with open(pathlib.Path(predict_filename), "w+") as predict_file:
             writer = csv.writer(predict_file, delimiter=",")
@@ -260,48 +263,97 @@ class TestScikitClustering(IntegrationCLITestCase):
 
         # Features
         features = "-model-features def:A:float:1 def:B:float:1 def:C:float:1 def:D:float:1".split()
-        # Train the model
-        await CLI.cli(
-            "train",
-            "-model",
-            "scikitkmeans",
-            *features,
-            "-sources",
-            "training_data=csv",
-            "-source-filename",
-            train_filename,
-        )
-        # Assess accuracy
-        await CLI.cli(
-            "accuracy",
-            "-model",
-            "scikitkmeans",
-            *features,
-            "-sources",
-            "test_data=csv",
-            "-source-filename",
-            test_filename,
-        )
-        # Ensure JSON output works as expected (#261)
-        with contextlib.redirect_stdout(self.stdout):
-            # Make prediction
-            await CLI._main(
-                "predict",
-                "all",
+        for algo in [
+            "ind_w_labl",
+            "ind_wo_labl",
+            "tran_w_labl",
+            "tran_wo_labl",
+        ]:
+            if algo is "ind_w_labl":
+                model, true_clstr, train_file, test_file, predict_file = (
+                    "scikitkmeans",
+                    "true_label",
+                    train_filename,
+                    test_filename,
+                    predict_filename,
+                )
+            elif algo is "ind_wo_labl":
+                model, true_clstr, train_file, test_file, predict_file = (
+                    "scikitkmeans",
+                    None,
+                    train_filename,
+                    test_filename,
+                    predict_filename,
+                )
+            elif algo is "tran_w_labl":
+                model, true_clstr, train_file, test_file, predict_file = (
+                    "scikitoptics",
+                    "true_label",
+                    train_filename,
+                    train_filename,
+                    train_filename,
+                )
+            elif algo is "tran_wo_labl":
+                model, true_clstr, train_file, test_file, predict_file = (
+                    "scikitoptics",
+                    None,
+                    train_filename,
+                    train_filename,
+                    train_filename,
+                )
+            # Train the model
+            await CLI.cli(
+                "train",
                 "-model",
-                "scikitkmeans",
+                model,
                 *features,
                 "-sources",
-                "predict_data=csv",
+                "training_data=csv",
                 "-source-filename",
-                predict_filename,
+                train_file,
             )
-        results = json.loads(self.stdout.getvalue())
-        self.assertTrue(isinstance(results, list))
-        self.assertTrue(results)
-        results = results[0]
-        self.assertIn("prediction", results)
-        results = results["prediction"]
-        self.assertIn("value", results)
-        results = results["value"]
-        self.assertTrue(results is not None)
+            # Assess accuracy
+            await CLI.cli(
+                *(
+                    [
+                        "accuracy",
+                        "-model",
+                        model,
+                        *features,
+                        "-sources",
+                        "test_data=csv",
+                        "-source-filename",
+                        test_file,
+                    ]
+                    + (
+                        ["-model-tcluster", true_clstr]
+                        if true_clstr is not None
+                        else []
+                    )
+                )
+            )
+            # Ensure JSON output works as expected (#261)
+            with contextlib.redirect_stdout(self.stdout):
+                # Make prediction
+                await CLI._main(
+                    "predict",
+                    "all",
+                    "-model",
+                    model,
+                    *features,
+                    "-sources",
+                    "predict_data=csv",
+                    "-source-filename",
+                    predict_file,
+                )
+            results = json.loads(self.stdout.getvalue())
+            self.stdout.truncate(0)
+            self.stdout.seek(0)
+            self.assertTrue(isinstance(results, list))
+            self.assertTrue(results)
+            results = results[0]
+            self.assertIn("prediction", results)
+            results = results["prediction"]
+            self.assertIn("value", results)
+            results = results["value"]
+            self.assertTrue(results is not None)
