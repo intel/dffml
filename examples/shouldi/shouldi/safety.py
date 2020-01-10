@@ -35,7 +35,6 @@ async def safety_check(package: str, version: str) -> Dict[str, Any]:
     )
 
     
-
     stdout, _stderr = await proc.communicate([pinned.encode(),b"\n"])
     
     
