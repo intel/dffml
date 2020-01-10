@@ -1,6 +1,6 @@
 # Data Flow Facilitator for Machine Learning (dffml)
 
-[![Actions Status](https://github.com/intel/dffml/workflows/Tests/badge.svg)](https://github.com/intel/dffml/actions)
+[![Actions Status](https://github.com/intel/dffml/workflows/Tests/badge.svg?branch=master&event=push)](https://github.com/intel/dffml/actions)
 [![codecov](https://codecov.io/gh/intel/dffml/branch/master/graph/badge.svg)](https://codecov.io/gh/intel/dffml)
 [![CII](https://bestpractices.coreinfrastructure.org/projects/2594/badge)](https://bestpractices.coreinfrastructure.org/projects/2594)
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.svg)](https://gitter.im/dffml/community)
