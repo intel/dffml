@@ -25,8 +25,10 @@ maintained as a part of the core repository, you can append ``[models]``.
 
     $ python3.7 -m pip install -U dffml[models]
 
-There's an online IDE based on VS Code called GitPod that seems pretty nifty you
-can also use to get started working with DFFML right away.
+There's an online IDE based on Theia (similar to VS Code) called GitPod that
+gives you a setup development environment to get started working with/on DFFML
+right away. However, it comes with the master branch installed, you'll need to
+run the above commands to get the lastest released version.
 
 .. image:: https://gitpod.io/button/open-in-gitpod.svg
    :target: https://gitpod.io/#https://github.com/intel/dffml
