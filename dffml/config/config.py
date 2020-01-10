@@ -88,9 +88,13 @@ class BaseConfigLoader(BaseDataFlowFacilitatorObject):
         async def _get_config(temp_filepath):
             if not isinstance(temp_filepath, pathlib.Path):
                 temp_filepath = pathlib.Path(temp_filepath)
-            _, loaded = await BaseConfigLoader.load_single_file(
+            config_path, loaded = await BaseConfigLoader.load_single_file(
                 parsers, exit_stack, temp_filepath, base_dir=base_dir
             )
+            return config_path,loaded
+
+        async def _get_config_aux(temp_filepath):
+            _,loaded =await _get_config(temp_filepath)
             return loaded
 
         if len(path.suffixes) >= 2 and path.suffixes[-2] == ".dirconf":
@@ -98,13 +102,13 @@ class BaseConfigLoader(BaseDataFlowFacilitatorObject):
             dir_path = os.path.join(*(path.parts[:-1] + (dir_name,)))
 
             temp_conf_dict = {dir_name: dir_path}
-            conf_dict = await _get_config(path)
+            config_path,conf_dict = await _get_config(path)
             explored = explore_directories(temp_conf_dict)
-            explored = await nested_apply(explored, _get_config)
+            explored = await nested_apply(explored,_get_config_aux )
             conf_dict.update(explored[dir_name])
         else:
-            conf_dict = await _get_config(path)
-        return conf_dict
+            config_path,conf_dict = await _get_config(path)
+        return config_path,conf_dict
 
 
 class ConfigLoaders(AsyncContextManagerList):
