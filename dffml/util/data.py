@@ -1,11 +1,13 @@
 """
 Various helper functions for manipulating python data structures and values
 """
-import os
+
 import inspect
 import pydoc
 import inspect
 from functools import wraps
+import pathlib
+from typing import Callable
 
 
 def merge(one, two):
@@ -58,7 +60,8 @@ def traverse_get(target, *args):
         current = current[level]
     return current
 
-def traverse_set(target,*args):
+
+def traverse_set(target, *args):
     """
     >>> traverse_set({"one": {"two": 3}}, ["one", "two"])
     """
@@ -131,46 +134,60 @@ def export_dict(**kwargs):
             kwargs[key] = export_list(kwargs[key])
     return kwargs
 
-def explore_directories(path_dict:str):
+
+def explore_directories(path_dict: dict):
     """
-    path_dict :
-        {
-            "hello":"there",
-            "deadbeef" : path_to_deadbeef
-        }
+    Recursively explores any path binded to a key in `path_dict`
+
+    eg:
+        | root
+            |deadbeef
+                |file1.txt
+                |colosseum
+                    | battle.rst
+            |face
+                |file2.jpg
+
+        >>>explore_directories(path_dict ={
+                "hello":"there",
+                "deadbeef" : path_to_deadbeef
+                })
+
+            {
+                "hello":"there",
+                "deadbeef":{
+                    "file1" : path_to_file1.txt
+                    "colosseum":{
+                        "battle":path_to_battle.rst
+                    }
+                }
+                "face":{
+                    "file2":path_to_file2.txt
+                }
+            }
     """
-    for key,val in path_dict.items():
-        if(os.path.isdir(val)):
+    for key, val in path_dict.items():
+        t_path = pathlib.Path(val)
+        if t_path.is_dir():
             temp_path_dict = {}
-            for root,dirs,files in os.walk(val):
-                # adding dirs
-                temp_path_dict.update(
-                    {
-                        _dir:os.path.join(root,_dir)
-                            for _dir in dirs
-                    }
-                )
-                #adding files
-                temp_path_dict.update(
-                    {
-                        _file.split('.')[0]:os.path.join(root,_file)
-                            for  _file in files
-                    }
-                )
-                break
+            for _path in pathlib.Path(val).glob("*"):
+                t_path = pathlib.Path(_path)
+                temp_path_dict[t_path.stem] = _path
             explore_directories(temp_path_dict)
-            path_dict[key]=temp_path_dict
+            path_dict[key] = temp_path_dict
     return path_dict
 
-async def nested_apply(target,func):
+
+async def nested_apply(target: dict, func: Callable):
     """
+    Applies `func` recursively to all non dict types in `target`
     """
-    for key,val in target.items():
-        if isinstance(val,dict):
-            target[key]=await nested_apply(val,func)
+    for key, val in target.items():
+        if isinstance(val, dict):
+            target[key] = await nested_apply(val, func)
         else:
-            if(inspect.iscoroutinefunction(func)):
-                target[key]=await func(val)
+            if inspect.iscoroutinefunction(func):
+                target[key] = await func(val)
             else:
-                target[key]= func(val)
+                target[key] = func(val)
     return target
