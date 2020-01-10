@@ -1,7 +1,7 @@
 Welcome to DFFML!
 =================
 
-.. image:: https://github.com/intel/dffml/workflows/Tests/badge.svg
+.. image:: https://github.com/intel/dffml/workflows/Tests/badge.svg?branch=master&event=push
     :target: https://github.com/intel/dffml/actions
     :alt: Test Status
 .. image:: https://codecov.io/gh/intel/dffml/branch/master/graph/badge.svg
