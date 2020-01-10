@@ -12,9 +12,11 @@ from dffml.feature import Features
 from dffml.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model
 from dffml.util.entrypoint import entrypoint
+from dffml.base import config, field
 
 
-class MiscModelConfig(ModelConfig, NamedTuple):
+@config
+class MiscModelConfig:
     # This model never uses the directory, but chances are if you want to save
     # and load data from disk you will need to
     directory: str
