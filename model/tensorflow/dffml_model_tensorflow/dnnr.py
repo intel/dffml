@@ -13,7 +13,7 @@ import tensorflow as tf
 from dffml.repo import Repo
 from dffml.util.cli.arg import Arg
 from dffml.model.model import Model
-from dffml.accuracy import Accuracy
+from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
 from dffml.util.cli.parser import list_action

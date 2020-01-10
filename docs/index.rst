@@ -17,31 +17,20 @@ Welcome to DFFML!
     :target: https://pypi.org/project/dffml
     :alt: PyPI version
 
-Data Flow Facilitator for Machine Learning (DFFML) makes it easy to generate
-datasets, train and use machine learning models, and integrate machine learning
-into new or existing applications. It provides APIs for dataset generation,
-storage, and model definition.
+Training and using machine learning models as simple as
 
-- Models handle implementations of machine learning algorithms.
-  Likely wrapping code from a popular machine learning framework.
+.. literalinclude:: /../examples/quickstart.py
 
-  - To use models from the command line see :ref:`plugin_models`
+Output:
 
-  - To use models from python see the :doc:`quickstart/model`
+.. code-block::
 
-- Sources handle the storage of datasets, saving and loading them from files,
-  databases, remote APIs, etc.
+    Accuracy: 1.0
+    {'Years': 6, 'Expertise': 13, 'Trust': 0.7, 'Salary': 70.0}
+    {'Years': 7, 'Expertise': 15, 'Trust': 0.8, 'Salary': 80.0}
 
-- DataFlows are directed graphs used to generate a dataset, as well as modify
-  existing datasets. They can also be used to do non-machine learning tasks, you
-  could use them to build a web app for instance.
-
-You'll find the existing implementations of all of these on their respective
-:ref:`plugins` pages. DFFML has a plugin based architecture, which allows us to
-include some sources, models, and operations as a part of the main package,
-``dffml``, and other functionality in more specific packages.
-
-The web UI can be found `here <webui/>`_.
+You can use DFFML from the command line, Python, or the HTTP API, see the
+:doc:`quickstart/model` to get started right away.
 
 This is the documentation for the latest release, documentation for the master
 branch can be found `here <master/index.html>`_.
@@ -49,19 +38,38 @@ branch can be found `here <master/index.html>`_.
 .. toctree::
     :glob:
     :maxdepth: 2
-    :caption: Contents:
+    :caption: Introduction
 
     about
-    quickstart/model
+    model
     installation
+
+.. toctree::
+    :glob:
+    :maxdepth: 2
+    :caption: Examples
+
+    quickstart/model
     tutorials/index
     usage/index
+
+.. toctree::
+    :glob:
+    :maxdepth: 2
+    :caption: Reference
+
     plugins/index
     cli
     plugins/service/http/index
     api/index
+
+.. toctree::
+    :glob:
+    :maxdepth: 2
+    :caption: Community
+
     publications
-    community
+    contact
     contributing/index
     changelog
 
