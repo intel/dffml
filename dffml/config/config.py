@@ -41,7 +41,7 @@ class BaseConfigLoader(BaseDataFlowFacilitatorObject):
         return self.CONTEXT(self)
 
     @classmethod
-    async def load_file(
+    async def load_single_file(
         cls,
         parsers: Dict[str, "BaseConfigLoader"],
         exit_stack: contextlib.AsyncExitStack,
@@ -75,56 +75,37 @@ class BaseConfigLoader(BaseDataFlowFacilitatorObject):
         config_path = tuple(config_path)
         # Load the file
         return config_path, await parsers[filetype].loadb(path.read_bytes())
-        # TODO If `path` has multiple extentions, for example:
-        # the_config_name.dirconf.json
-        # Then use the final exention as we have been above. Check the second to
-        # last extention and see if it is "dirconf" if it is, then look in the
-        # directory named `the_config_name` (for this example). Treat subsequent
-        # directories and filenames as keys in the loaded dict value.
-        # In dffml.util.data there is a `traverse_get` function, you'll need to
-        # create the opisite of that function, `traverse_set` (there is already
-        # a simliar function in that file).
-        # Example:
-        # $ tree
-        # .
-        # ├── the_config_name
-        # │   ├── deadbeef.json
-        # │   └── feed
-        # │       └── face.json
-        # └── the_config_name.dirconf.json
-        # If load_file is passed the_config_name.dirconf.json as `path`.
-        # And it's contents are
-        #
-        # {"hello": "there"}
-        #
-        # And the contents of deadbeef.json are
-        #
-        # {"massive": "hax"}
-        #
-        # And the contents of face.json are
-        #
-        # {"so": "secure"}
-        #
-        # The resulting loaded dict for a `path` of the_config_name.dirconf.json
-        # should be
-        #
-        # {
-        #   "hello": "there",
-        #   "deadbeef": {
-        #     "massive": "hax"
-        #   },
-        #   "feed": {
-        #     "face": {
-        #       "so": "secure"
-        #     }
-        #   }
-        # }
-        #
-        # So don't worry about creating a new configloader, just make a testcase
-        # which writes out that file structre to a tempdir, then calls this
-        # load_file method (which you modify) and make sure that it equals the
-        # example I gave above. Thanks!
 
+    @classmethod
+    async def load_file(cls,
+        parsers: Dict[str, "BaseConfigLoader"],
+        exit_stack: contextlib.AsyncExitStack,
+        path: pathlib.Path,
+        *,
+        base_dir: Optional[pathlib.Path] = None,
+    ) -> Dict:
+
+        async def _get_config(temp_filepath):
+            if not isinstance(temp_filepath, pathlib.Path):
+                temp_filepath = pathlib.Path(temp_filepath)
+            _,loaded = await BaseConfigLoader.load_single_file(
+                parsers, exit_stack,temp_filepath, base_dir=base_dir
+                )
+            return loaded
+
+        if( len(path.suffixes)>=2 and path.suffixes[-2]==".dirconf") :
+            dir_name = path.parts[-1].split('.')[0]
+            dir_path=os.path.join(*(path.parts[:-1]+(dir_name,)))
+
+            temp_conf_dict={dir_name:dir_path}
+            conf_dict = await _get_config(path)
+            explored = explore_directories(temp_conf_dict)
+            explored = await nested_apply(explored,_get_config)
+            conf_dict.update(explored[dir_name])
+
+        else:
+            conf_dict =await _get_config(path)
+        return conf_dict
 
 class ConfigLoaders(AsyncContextManagerList):
     """
@@ -143,27 +124,11 @@ class ConfigLoaders(AsyncContextManagerList):
         base_dir: Optional[pathlib.Path] = None,
     ) -> Dict:
 
-        async def _get_config(temp_filepath):
-            if not isinstance(temp_filepath, pathlib.Path):
-                temp_filepath = pathlib.Path(temp_filepath)
-            _,loaded = await BaseConfigLoader.load_file(
-                self.parsers, self.async_exit_stack,temp_filepath, base_dir=base_dir
-                )
-            return loaded
 
         if not isinstance(filepath, pathlib.Path):
             filepath = pathlib.Path(filepath)
-
-        if( len(filepath.suffixes)>=2 and filepath.suffixes[-2]==".dirconf") :
-            dir_name = filepath.parts[-1].split('.')[0]
-            dir_path=os.path.join(*(filepath.parts[:-1]+(dir_name,)))
-
-            temp_conf_dict={dir_name:dir_path}
-            conf_dict = await _get_config(filepath)
-            explored = explore_directories(temp_conf_dict)
-            explored = await nested_apply(explored,_get_config)
-            conf_dict.update(explored[dir_name])
-
-        else:
-            conf_dict =await _get_config(filepath)
+        conf_dict = await BaseConfigLoader.load_file(
+                self.parsers, self.async_exit_stack,filepath, base_dir=base_dir
+                )
         return conf_dict
+
