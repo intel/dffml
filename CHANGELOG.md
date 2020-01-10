@@ -234,14 +234,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New Model skeleton directory
 - New Feature creation tutorial
 - New Model creation tutorial
-- Added update functionality to the CSV source
-- Added support for Gzip file source
-- Added support for bz2 file source
+- Update functionality to the CSV source
+- Support for Gzip file source
+- Support for bz2 file source
 - Travis checks for additions to CHANGELOG.md
 - Travis checks for trailing whitespace
-- Added support for lzma file source
-- Added support for xz file source
-- Added Data Flow Facilitator
+- Support for lzma file source
+- Support for xz file source
+- Data Flow Facilitator
 ### Changed
 - Restructured documentation to docs folder and moved from rST to markdown
 - Git feature cloc logs if no binaries are in path
