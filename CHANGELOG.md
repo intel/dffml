@@ -5,6 +5,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Quickstart document to show how to use models from Python.
+- The latest release of the documentation now includes a link to the
+  documentation for the master branch (on GitHub pages).
+### Changed
+- Defining features on the command line no longer requires that defined features
+  be prefixed with `def:`
+- The model predict operation will now raise an exception if the model it is
+  passed via it's config is a class rather than an instance.
+- `entry_point` and friends have been renamed to `entrypoint`.
+### Fixed
+- CONTRIBUTING.md has `-e` in the wrong place in the getting setup section.
+- Since moving to auto `args()` and `config()`, BaseConfigurable no longer
+  produces odd typenames in conjunction with docs.py.
+### Removed
+- The model predict operation erroneously had a `msg` parameter in it's config.
 
 ## [0.3.2] - 2020-01-03
 ### Added

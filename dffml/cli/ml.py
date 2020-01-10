@@ -9,6 +9,10 @@ class MLCMD(ModelCMD, SourcesCMD):
     Commands which use models share many similar arguments.
     """
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        SourcesCMD.__init__(self, *args, **kwargs)
+
 
 class Train(MLCMD):
     """Train a model on data from given sources"""

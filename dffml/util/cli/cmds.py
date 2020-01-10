@@ -58,6 +58,11 @@ class SourcesCMD(CMD):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Correct type of sources list if its a list and not Sources
+        if not isinstance(self.sources, Sources) and isinstance(
+            self.sources, list
+        ):
+            self.sources = Sources(*self.sources)
         # Go through the list of sources and instantiate them with a config
         # created from loading their arguments from cmd (self).
         for i in range(0, len(self.sources)):
@@ -76,7 +81,8 @@ class ModelCMD(CMD):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.model = self.model.withconfig(self.extra_config)
+        if inspect.isclass(self.model):
+            self.model = self.model.withconfig(self.extra_config)
 
 
 class PortCMD(CMD):
