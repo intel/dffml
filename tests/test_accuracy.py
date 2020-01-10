@@ -2,7 +2,7 @@
 # Copyright (c) 2019 Intel Corporation
 import unittest
 
-from dffml.accuracy import Accuracy
+from dffml.model.accuracy import Accuracy
 
 
 class TestAccuracry(unittest.TestCase):

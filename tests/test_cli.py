@@ -29,7 +29,7 @@ from dffml.source.csv import CSVSource, CSVSourceConfig
 from dffml.model.model import ModelContext, Model
 from dffml.df.types import Operation
 from dffml.df.base import OperationImplementation
-from dffml.accuracy import Accuracy as AccuracyType
+from dffml.model.accuracy import Accuracy as AccuracyType
 from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import (
     AsyncExitStackTestCase,
