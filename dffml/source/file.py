@@ -112,9 +112,7 @@ class FileSource(BaseSource):
     @contextmanager
     def zip_closer_helper(self):
         with zipfile.ZipFile(
-            self.config.filename,
-            self.WRITEMODE,
-            compression=zipfile.ZIP_BZIP2,
+            self.config.filename, self.WRITEMODE, compression=zipfile.ZIP_BZIP2
         ) as archive:
             with archive.open(
                 self.__class__.__qualname__,

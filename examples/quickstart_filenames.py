@@ -1,4 +1,4 @@
-from dffml import Features, DefFeature
+from dffml import CSVSource, Features, DefFeature
 from dffml.noasync import train, accuracy, predict
 from dffml_model_scikit import LinearRegressionModel
 
@@ -12,23 +12,10 @@ model = LinearRegressionModel(
 )
 
 # Train the model
-train(
-    model,
-    {"Years": 0, "Expertise": 1, "Trust": 0.1, "Salary": 10},
-    {"Years": 1, "Expertise": 3, "Trust": 0.2, "Salary": 20},
-    {"Years": 2, "Expertise": 5, "Trust": 0.3, "Salary": 30},
-    {"Years": 3, "Expertise": 7, "Trust": 0.4, "Salary": 40},
-)
+train(model, "training.csv")
 
-# Assess accuracy
-print(
-    "Accuracy:",
-    accuracy(
-        model,
-        {"Years": 4, "Expertise": 9, "Trust": 0.5, "Salary": 50},
-        {"Years": 5, "Expertise": 11, "Trust": 0.6, "Salary": 60},
-    ),
-)
+# Assess accuracy (alternate way of specifying data source)
+print("Accuracy:", accuracy(model, CSVSource(filename="test.csv")))
 
 # Make prediction
 for i, features, prediction in predict(

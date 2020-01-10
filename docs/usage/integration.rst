@@ -1,8 +1,9 @@
-Integrating Machine Learning
-============================
+Automating Classifciation
+=========================
 
 This example will show you how to automate a manual classification process,
-determining if a Git repo is maintained or abandoned.
+determining if a Git repo is maintained or abandoned. We'll be integrating
+Machine Learning into an existing legacy application.
 
 For this example assume you are a very curious open source software people (if
 you're here you already are). Since you love looking at GitHub repos in your

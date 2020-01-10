@@ -1,5 +1,5 @@
-Usage Examples
-==============
+Use Cases
+=========
 
 The following are some example use cases of DFFML.
 

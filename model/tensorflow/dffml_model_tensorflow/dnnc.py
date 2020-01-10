@@ -17,7 +17,7 @@ import tensorflow as tf
 from dffml.repo import Repo
 from dffml.base import BaseConfig
 from dffml.util.cli.arg import Arg
-from dffml.accuracy import Accuracy
+from dffml.model.accuracy import Accuracy
 from dffml.base import config, field
 from dffml.source.source import Sources
 from dffml.feature import Feature, Features
@@ -216,9 +216,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         )
         return self._model
 
-    async def training_input_fn(
-        self, sources: Sources, **kwargs,
-    ):
+    async def training_input_fn(self, sources: Sources, **kwargs):
         """
         Uses the numpy input function with data from repo features.
         """
@@ -259,9 +257,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         )
         return input_fn
 
-    async def accuracy_input_fn(
-        self, sources: Sources, **kwargs,
-    ):
+    async def accuracy_input_fn(self, sources: Sources, **kwargs):
         """
         Uses the numpy input function with data from repo features.
         """

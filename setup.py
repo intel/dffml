@@ -47,6 +47,14 @@ setup(
             "dffml-model-scikit",
         ],
         "sources": ["dffml-source-mysql"],
+        "all": [
+            "dffml-model-tensorflow",
+            "dffml-model-scratch",
+            "dffml-model-scikit",
+            "dffml-source-mysql",
+            "dffml-config-yaml",
+            "dffml-service-http",
+        ],
         "dev": [
             "coverage",
             "codecov",
