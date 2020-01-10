@@ -23,9 +23,11 @@ from dffml.service.dev import Develop
 from dffml.util.packaging import is_develop
 from dffml.util.entrypoint import load
 from dffml.config.config import BaseConfigLoader
-from dffml.util.asynctestcase import AsyncTestCase
-
-from .common import IntegrationCLITestCase, relative_chdir
+from dffml.util.asynctestcase import (
+    AsyncTestCase,
+    IntegrationCLITestCase,
+    relative_chdir,
+)
 
 
 class TestDevelop(IntegrationCLITestCase):

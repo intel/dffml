@@ -10,6 +10,7 @@ import json
 import inspect
 import pathlib
 import asyncio
+import hashlib
 import numpy as np
 import contextlib
 import unittest.mock
@@ -25,9 +26,8 @@ from dffml.service.dev import Develop
 from dffml.util.packaging import is_develop
 from dffml.util.entrypoint import load
 from dffml.config.config import BaseConfigLoader
-from dffml.util.asynctestcase import AsyncTestCase
+from dffml.util.asynctestcase import AsyncTestCase, IntegrationCLITestCase
 
-from .common import IntegrationCLITestCase
 
 from sklearn.datasets import make_blobs
 
@@ -265,6 +265,10 @@ class TestScikitClustering(IntegrationCLITestCase):
         features = (
             "-model-features A:float:1 B:float:1 C:float:1 D:float:1".split()
         )
+        # ind_w_labl --> inductive model with true cluster label
+        # ind_wo_labl --> inductive model without true cluster label
+        # tran_w_labl --> transductive model with true cluster label
+        # tran_wo_labl --> transductive model without true cluster label
         for algo in [
             "ind_w_labl",
             "ind_wo_labl",
@@ -281,7 +285,7 @@ class TestScikitClustering(IntegrationCLITestCase):
                 )
             elif algo is "ind_wo_labl":
                 model, true_clstr, train_file, test_file, predict_file = (
-                    "scikitkmeans",
+                    "scikitap",
                     None,
                     train_filename,
                     test_filename,
@@ -297,7 +301,7 @@ class TestScikitClustering(IntegrationCLITestCase):
                 )
             elif algo is "tran_wo_labl":
                 model, true_clstr, train_file, test_file, predict_file = (
-                    "scikitoptics",
+                    "scikitac",
                     None,
                     train_filename,
                     train_filename,
@@ -313,6 +317,7 @@ class TestScikitClustering(IntegrationCLITestCase):
                 "training_data=csv",
                 "-source-filename",
                 train_file,
+                "-source-readonly",
             )
             # Assess accuracy
             await CLI.cli(
@@ -324,6 +329,7 @@ class TestScikitClustering(IntegrationCLITestCase):
                         *features,
                         "-sources",
                         "test_data=csv",
+                        "-source-readonly",
                         "-source-filename",
                         test_file,
                     ]
@@ -334,7 +340,6 @@ class TestScikitClustering(IntegrationCLITestCase):
                     )
                 )
             )
-            # Ensure JSON output works as expected (#261)
             with contextlib.redirect_stdout(self.stdout):
                 # Make prediction
                 await CLI._main(
@@ -345,6 +350,7 @@ class TestScikitClustering(IntegrationCLITestCase):
                     *features,
                     "-sources",
                     "predict_data=csv",
+                    "-source-readonly",
                     "-source-filename",
                     predict_file,
                 )
