@@ -44,7 +44,7 @@ class TestConfigLoader(AsyncTestCase):
         }
         temp_path = self.config_folder_path
         async with self.config_loader as cfgl:
-            _,conf_dict = await cfgl.load_file(
+            _, conf_dict = await cfgl.load_file(
                 os.path.join(
                     self.test_dir.name, "the_config_name.dirconf.json"
                 )
@@ -54,7 +54,7 @@ class TestConfigLoader(AsyncTestCase):
         expected = {"massive": "hax"}
         temp_path = self.config_folder_path
         async with self.config_loader as cfgl:
-            _,conf_dict = await cfgl.load_file(
+            _, conf_dict = await cfgl.load_file(
                 os.path.join(temp_path, "deadbeef.json")
             )
             self.assertEqual(expected, conf_dict)

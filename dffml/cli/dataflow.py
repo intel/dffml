@@ -49,7 +49,7 @@ class Merge(CMD):
             # Load config loaders we'll need as we see their file types
             parsers: Dict[str, BaseConfigLoader] = {}
             for path in self.dataflows:
-                _,exported = await BaseConfigLoader.load_file(
+                _, exported = await BaseConfigLoader.load_file(
                     parsers, exit_stack, path
                 )
                 merge(merged, exported)
