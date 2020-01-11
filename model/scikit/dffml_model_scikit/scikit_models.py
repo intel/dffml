@@ -292,7 +292,7 @@ for entry_point_name, name, cls, applicable_features_function in [
                     ),
                 ),
             ),
-            "predict": (str, field("Label or the value to be predicted")),
+            "predict": (Feature, field("Label or the value to be predicted")),
             "features": (Features, field("Features to train on")),
         },
     )

@@ -63,7 +63,7 @@ class TestDevelop(IntegrationCLITestCase):
             "-model-features",
             "Years:int:1",
             "-model-predict",
-            "Salary",
+            "Salary:float:1",
             "-sources",
             "training_data=csv",
             "-source-filename",
@@ -82,7 +82,7 @@ class TestDevelop(IntegrationCLITestCase):
             "-config-model-features",
             "Years:int:1",
             "-config-model-predict",
-            "Salary",
+            "Salary:float:1",
         )
         self.assertIn("model_predictions", results)
         results = results["model_predictions"]

@@ -6,7 +6,7 @@ from typing import Type
 from dffml.repo import Repo, RepoData
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml.feature import Data, Feature, Features
+from dffml.feature import Data, Feature, Features, DefFeature
 from dffml.util.cli.arg import parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
 
@@ -56,7 +56,7 @@ class TestDNN(AsyncTestCase):
                 steps=1000,
                 epochs=30,
                 hidden=[10, 20, 10],
-                classification="string",
+                classification=DefFeature("string", str, 1),
                 classifications=["a", "not a"],
                 clstype=str,
                 features=cls.features,
@@ -71,7 +71,7 @@ class TestDNN(AsyncTestCase):
         config = self.model.__class__.config(
             parse_unknown(
                 "--model-classification",
-                "feature_name",
+                "feature_name:int:1",
                 "--model-classifications",
                 "0",
                 "1",
@@ -91,7 +91,7 @@ class TestDNN(AsyncTestCase):
         self.assertEqual(config.steps, 3000)
         self.assertEqual(config.epochs, 30)
         self.assertEqual(config.hidden, [12, 40, 15])
-        self.assertEqual(config.classification, "feature_name")
+        self.assertEqual(config.classification.NAME, "feature_name")
         self.assertEqual(config.classifications, [0, 1, 2])
         self.assertEqual(config.clstype, int)
 

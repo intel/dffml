@@ -21,7 +21,7 @@ model = DNNRegressionModel(
             DefFeature("Expertise", int, 1),
             DefFeature("Trust", float, 1),
         ),
-        predict="Salary",
+        predict=DefFeature("Salary", float, 1),
     )
 )
 
