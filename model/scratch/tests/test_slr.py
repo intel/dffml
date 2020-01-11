@@ -56,7 +56,7 @@ class TestSLR(AsyncTestCase):
         cls.model = SLR(
             SLRConfig(
                 directory=cls.model_dir.name,
-                predict="Y",
+                predict=DefFeature("Y", float, 1),
                 features=cls.features,
             )
         )

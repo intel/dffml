@@ -18,12 +18,12 @@ from dffml.repo import Repo
 from dffml.source.source import Sources
 from dffml.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
-from dffml.feature.feature import Features
+from dffml.feature.feature import Features, Feature
 
 
 class ScikitConfig(ModelConfig, NamedTuple):
     directory: str
-    predict: str
+    predict: Feature
     features: Features
 
 
@@ -44,7 +44,7 @@ class ScikitContext(ModelContext):
 
     def _feature_predict_hash(self):
         return hashlib.sha384(
-            "".join(self.features + [self.parent.config.predict]).encode()
+            "".join(self.features + [self.parent.config.predict.NAME]).encode()
         ).hexdigest()
 
     def _filename(self):
@@ -69,15 +69,15 @@ class ScikitContext(ModelContext):
     async def train(self, sources: Sources):
         data = []
         async for repo in sources.with_features(
-            self.features + [self.parent.config.predict]
+            self.features + [self.parent.config.predict.NAME]
         ):
             feature_data = repo.features(
-                self.features + [self.parent.config.predict]
+                self.features + [self.parent.config.predict.NAME]
             )
             data.append(feature_data)
         df = pd.DataFrame(data)
-        xdata = np.array(df.drop([self.parent.config.predict], 1))
-        ydata = np.array(df[self.parent.config.predict])
+        xdata = np.array(df.drop([self.parent.config.predict.NAME], 1))
+        ydata = np.array(df[self.parent.config.predict.NAME])
         self.logger.info("Number of input repos: {}".format(len(xdata)))
         self.clf.fit(xdata, ydata)
         joblib.dump(self.clf, self._filename())
@@ -88,12 +88,12 @@ class ScikitContext(ModelContext):
         data = []
         async for repo in sources.with_features(self.features):
             feature_data = repo.features(
-                self.features + [self.parent.config.predict]
+                self.features + [self.parent.config.predict.NAME]
             )
             data.append(feature_data)
         df = pd.DataFrame(data)
-        xdata = np.array(df.drop([self.parent.config.predict], 1))
-        ydata = np.array(df[self.parent.config.predict])
+        xdata = np.array(df.drop([self.parent.config.predict.NAME], 1))
+        ydata = np.array(df[self.parent.config.predict.NAME])
         self.logger.debug("Number of input repos: {}".format(len(xdata)))
         self.confidence = self.clf.score(xdata, ydata)
         self.logger.debug("Model Accuracy: {}".format(self.confidence))
@@ -127,7 +127,8 @@ class Scikit(Model):
     def _filename(self):
         return os.path.join(
             self.config.directory,
-            hashlib.sha384(self.config.predict.encode()).hexdigest() + ".json",
+            hashlib.sha384(self.config.predict.NAME.encode()).hexdigest()
+            + ".json",
         )
 
     async def __aenter__(self) -> "Scikit":
