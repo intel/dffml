@@ -139,7 +139,9 @@ class TensorflowModelContext(ModelContext):
 
 @config
 class DNNClassifierModelConfig:
-    classification: Feature = field("Feature name holding classification value")
+    classification: Feature = field(
+        "Feature name holding classification value"
+    )
     classifications: List[str] = field("Options for value of classification")
     features: Features = field("Features to train on")
     clstype: Type = field("Data type of classifications values", default=str)

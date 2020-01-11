@@ -209,7 +209,8 @@ class SLR(Model):
     def _filename(self):
         return os.path.join(
             self.config.directory,
-            hashlib.sha384(self.config.predict.NAME.encode()).hexdigest() + ".json",
+            hashlib.sha384(self.config.predict.NAME.encode()).hexdigest()
+            + ".json",
         )
 
     async def __aenter__(self) -> SLRContext:
