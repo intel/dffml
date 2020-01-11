@@ -61,12 +61,6 @@ def traverse_get(target, *args):
     return current
 
 
-def traverse_set(target, *args):
-    """
-    >>> traverse_set({"one": {"two": 3}}, ["one", "two"])
-    """
-
-
 def ignore_args(func):
     """
     Decorator to call the decorated function without any arguments passed to it.

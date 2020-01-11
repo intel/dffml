@@ -33,6 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automatic releases to PyPi via GitHub Actions
 - Automatic documentation deployment to GitHub Pages
 - Function to create a config class dynamically, analogous to `make_dataclass`
+- `ConfigLoaders` class which loads config files from a file or directory to a dictionary.
+
 ### Changed
 - CLI tests and integration tests derive from `AsyncExitStackTestCase`
 - SciKit models now use the auto args and config methods.
