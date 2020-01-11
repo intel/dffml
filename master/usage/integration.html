@@ -717,7 +717,7 @@ to train on our dataset.</p>
     -model tfdnnc <span class="se">\</span>
     -model-epochs <span class="m">400</span> <span class="se">\</span>
     -model-steps <span class="m">4000</span> <span class="se">\</span>
-    -model-classification maintained <span class="se">\</span>
+    -model-classification maintained:str:1 <span class="se">\</span>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
     -sources <span class="nv">db</span><span class="o">=</span>demoapp <span class="se">\</span>
     -model-features <span class="se">\</span>
@@ -732,7 +732,7 @@ to train on our dataset.</p>
 meaningless unless you threw out the dataset and put in real classifications.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
     -model tfdnnc <span class="se">\</span>
-    -model-classification maintained <span class="se">\</span>
+    -model-classification maintained:str:1 <span class="se">\</span>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
     -sources <span class="nv">db</span><span class="o">=</span>demoapp <span class="se">\</span>
     -model-features <span class="se">\</span>
@@ -759,7 +759,7 @@ meaningless unless you threw out the dataset and put in real classifications.</p
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict repo <span class="se">\</span>
     -keys https://github.com/intel/dffml.git <span class="se">\</span>
     -model tfdnnc <span class="se">\</span>
-    -model-classification maintained <span class="se">\</span>
+    -model-classification maintained:str:1 <span class="se">\</span>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
     -sources <span class="nv">db</span><span class="o">=</span>demoapp <span class="se">\</span>
     -model-features <span class="se">\</span>

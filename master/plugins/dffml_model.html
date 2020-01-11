@@ -215,7 +215,7 @@ look for a different saved model.</p>
     -model tfdnnc <span class="se">\</span>
     -model-epochs <span class="m">3000</span> <span class="se">\</span>
     -model-steps <span class="m">20000</span> <span class="se">\</span>
-    -model-classification classification <span class="se">\</span>
+    -model-classification classification:int:1 <span class="se">\</span>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="se">\</span>
     -model-clstype int <span class="se">\</span>
     -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
@@ -229,7 +229,7 @@ look for a different saved model.</p>
 <span class="go">... lots of output ...</span>
 <span class="gp">$</span> dffml accuracy <span class="se">\</span>
     -model tfdnnc <span class="se">\</span>
-    -model-classification classification <span class="se">\</span>
+    -model-classification classification:int:1 <span class="se">\</span>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="se">\</span>
     -model-clstype int <span class="se">\</span>
     -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
@@ -243,7 +243,7 @@ look for a different saved model.</p>
 <span class="go">0.99996233782</span>
 <span class="gp">$</span> dffml predict all <span class="se">\</span>
     -model tfdnnc <span class="se">\</span>
-    -model-classification classification <span class="se">\</span>
+    -model-classification classification:int:1 <span class="se">\</span>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="se">\</span>
     -model-clstype int <span class="se">\</span>
     -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
@@ -294,7 +294,7 @@ look for a different saved model.</p>
 </div>
 <p><strong>Args</strong></p>
 <ul class="simple">
-<li><p>classification: String</p>
+<li><p>classification: Feature</p>
 <ul>
 <li><p>Feature name holding classification value</p></li>
 </ul>
@@ -374,7 +374,7 @@ from where this command is run as it overwrites any existing files.</p></li>
     -model tfdnnr <span class="se">\</span>
     -model-epochs <span class="m">300</span> <span class="se">\</span>
     -model-steps <span class="m">2000</span> <span class="se">\</span>
-    -model-predict TARGET <span class="se">\</span>
+    -model-predict TARGET:float:1 <span class="se">\</span>
     -model-hidden <span class="m">8</span> <span class="m">16</span> <span class="m">8</span> <span class="se">\</span>
     -sources <span class="nv">s</span><span class="o">=</span>csv <span class="se">\</span>
     -source-readonly <span class="se">\</span>
@@ -386,7 +386,7 @@ from where this command is run as it overwrites any existing files.</p></li>
 <span class="go">Enabling debug log shows tensorflow losses...</span>
 <span class="gp">$</span> dffml accuracy <span class="se">\</span>
     -model tfdnnr <span class="se">\</span>
-    -model-predict TARGET <span class="se">\</span>
+    -model-predict TARGET:float:1 <span class="se">\</span>
     -model-hidden <span class="m">8</span> <span class="m">16</span> <span class="m">8</span> <span class="se">\</span>
     -sources <span class="nv">s</span><span class="o">=</span>csv <span class="se">\</span>
     -source-readonly <span class="se">\</span>
@@ -399,7 +399,7 @@ from where this command is run as it overwrites any existing files.</p></li>
 <span class="gp">$</span> <span class="nb">echo</span> -e <span class="s1">&#39;Feature1,Feature2,TARGET\n0.21,0.18,0.84\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
   dffml predict all <span class="se">\</span>
     -model tfdnnr <span class="se">\</span>
-    -model-predict TARGET <span class="se">\</span>
+    -model-predict TARGET:float:1 <span class="se">\</span>
     -model-hidden <span class="m">8</span> <span class="m">16</span> <span class="m">8</span> <span class="se">\</span>
     -sources <span class="nv">s</span><span class="o">=</span>csv <span class="se">\</span>
     -source-readonly <span class="se">\</span>
@@ -430,7 +430,7 @@ from where this command is run as it overwrites any existing files.</p></li>
 predict).</p>
 <p><strong>Args</strong></p>
 <ul class="simple">
-<li><p>predict: String</p>
+<li><p>predict: Feature</p>
 <ul>
 <li><p>Feature name holding target values</p></li>
 </ul>
@@ -489,7 +489,7 @@ hash of their feature names.</p>
 <span class="gp">$</span> dffml train <span class="se">\</span>
     -model scratchslr <span class="se">\</span>
     -model-features Years:int:1 <span class="se">\</span>
-    -model-predict Salary <span class="se">\</span>
+    -model-predict Salary:float:1 <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename dataset.csv <span class="se">\</span>
     -source-readonly <span class="se">\</span>
@@ -497,7 +497,7 @@ hash of their feature names.</p>
 <span class="gp">$</span> dffml accuracy <span class="se">\</span>
     -model scratchslr <span class="se">\</span>
     -model-features Years:int:1 <span class="se">\</span>
-    -model-predict Salary <span class="se">\</span>
+    -model-predict Salary:float:1 <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename dataset.csv <span class="se">\</span>
     -source-readonly <span class="se">\</span>
@@ -507,7 +507,7 @@ hash of their feature names.</p>
   dffml predict all <span class="se">\</span>
     -model scratchslr <span class="se">\</span>
     -model-features Years:int:1 <span class="se">\</span>
-    -model-predict Salary <span class="se">\</span>
+    -model-predict Salary:float:1 <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename /dev/stdin <span class="se">\</span>
     -source-readonly <span class="se">\</span>
@@ -531,7 +531,7 @@ hash of their feature names.</p>
 </div>
 <p><strong>Args</strong></p>
 <ul class="simple">
-<li><p>predict: String</p>
+<li><p>predict: Feature</p>
 <ul>
 <li><p>Label or the value to be predicted</p></li>
 </ul>
