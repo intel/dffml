@@ -45,7 +45,7 @@ Implemented using Tensorflow's DNNClassifier.
         -model tfdnnc \
         -model-epochs 3000 \
         -model-steps 20000 \
-        -model-classification classification \
+        -model-classification classification:int:1 \
         -model-classifications 0 1 2 \
         -model-clstype int \
         -sources iris=csv \
@@ -59,7 +59,7 @@ Implemented using Tensorflow's DNNClassifier.
     ... lots of output ...
     $ dffml accuracy \
         -model tfdnnc \
-        -model-classification classification \
+        -model-classification classification:int:1 \
         -model-classifications 0 1 2 \
         -model-clstype int \
         -sources iris=csv \
@@ -73,7 +73,7 @@ Implemented using Tensorflow's DNNClassifier.
     0.99996233782
     $ dffml predict all \
         -model tfdnnc \
-        -model-classification classification \
+        -model-classification classification:int:1 \
         -model-classifications 0 1 2 \
         -model-clstype int \
         -sources iris=csv \
@@ -123,7 +123,7 @@ Implemented using Tensorflow's DNNClassifier.
 
 **Args**
 
-- classification: String
+- classification: Feature
 
   - Feature name holding classification value
 
@@ -198,7 +198,7 @@ Generating train and test data
         -model tfdnnr \
         -model-epochs 300 \
         -model-steps 2000 \
-        -model-predict TARGET \
+        -model-predict TARGET:float:1 \
         -model-hidden 8 16 8 \
         -sources s=csv \
         -source-readonly \
@@ -210,7 +210,7 @@ Generating train and test data
     Enabling debug log shows tensorflow losses...
     $ dffml accuracy \
         -model tfdnnr \
-        -model-predict TARGET \
+        -model-predict TARGET:float:1 \
         -model-hidden 8 16 8 \
         -sources s=csv \
         -source-readonly \
@@ -223,7 +223,7 @@ Generating train and test data
     $ echo -e 'Feature1,Feature2,TARGET\n0.21,0.18,0.84\n' | \
       dffml predict all \
         -model tfdnnr \
-        -model-predict TARGET \
+        -model-predict TARGET:float:1 \
         -model-hidden 8 16 8 \
         -sources s=csv \
         -source-readonly \
@@ -254,7 +254,7 @@ predict).
 
 **Args**
 
-- predict: String
+- predict: Feature
 
   - Feature name holding target values
 
@@ -312,7 +312,7 @@ hash of their feature names.
     $ dffml train \
         -model scratchslr \
         -model-features Years:int:1 \
-        -model-predict Salary \
+        -model-predict Salary:float:1 \
         -sources f=csv \
         -source-filename dataset.csv \
         -source-readonly \
@@ -320,7 +320,7 @@ hash of their feature names.
     $ dffml accuracy \
         -model scratchslr \
         -model-features Years:int:1 \
-        -model-predict Salary \
+        -model-predict Salary:float:1 \
         -sources f=csv \
         -source-filename dataset.csv \
         -source-readonly \
@@ -330,7 +330,7 @@ hash of their feature names.
       dffml predict all \
         -model scratchslr \
         -model-features Years:int:1 \
-        -model-predict Salary \
+        -model-predict Salary:float:1 \
         -sources f=csv \
         -source-filename /dev/stdin \
         -source-readonly \
@@ -353,7 +353,7 @@ hash of their feature names.
 
 **Args**
 
-- predict: String
+- predict: Feature
 
   - Label or the value to be predicted
 

@@ -7,7 +7,7 @@ import numpy as np
 from dffml.repo import Repo, RepoData
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml.feature import Data, Feature, Features
+from dffml.feature import Data, Feature, Features, DefFeature
 from dffml.util.cli.arg import parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
 
@@ -52,7 +52,7 @@ class TestDNN(AsyncTestCase):
                 steps=1000,
                 epochs=30,
                 hidden=[10, 20, 10],
-                predict="TARGET",
+                predict=DefFeature("TARGET",float,1),
                 features=cls.features,
             )
         )
@@ -85,7 +85,7 @@ class TestDNN(AsyncTestCase):
         config = self.model.__class__.config(
             parse_unknown(
                 "--model-predict",
-                "TARGET",
+                "TARGET:float:1",
                 "--model-features",
                 "feature_1:float:1",
                 "--model-features",
@@ -101,7 +101,7 @@ class TestDNN(AsyncTestCase):
         self.assertEqual(config.steps, 3000)
         self.assertEqual(config.epochs, 30)
         self.assertEqual(config.hidden, [12, 40, 15])
-        self.assertEqual(config.predict, "TARGET")
+        self.assertEqual(config.predict.NAME, "TARGET")
 
     async def test_00_train(self):
         async with self.sources as sources, self.model as model:

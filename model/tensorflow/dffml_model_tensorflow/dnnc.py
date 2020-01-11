@@ -139,7 +139,7 @@ class TensorflowModelContext(ModelContext):
 
 @config
 class DNNClassifierModelConfig:
-    classification: str = field("Feature name holding classification value")
+    classification: Feature = field("Feature name holding classification value")
     classifications: List[str] = field("Options for value of classification")
     features: Features = field("Features to train on")
     clstype: Type = field("Data type of classifications values", default=str)
@@ -176,7 +176,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
 
     @property
     def classification(self):
-        return self.parent.config.classification
+        return self.parent.config.classification.NAME
 
     def _mkcids(self, classifications):
         """
@@ -352,7 +352,7 @@ class DNNClassifierModel(Model):
             -model tfdnnc \\
             -model-epochs 3000 \\
             -model-steps 20000 \\
-            -model-classification classification \\
+            -model-classification classification:int:1 \\
             -model-classifications 0 1 2 \\
             -model-clstype int \\
             -sources iris=csv \\
@@ -366,7 +366,7 @@ class DNNClassifierModel(Model):
         ... lots of output ...
         $ dffml accuracy \\
             -model tfdnnc \\
-            -model-classification classification \\
+            -model-classification classification:int:1 \\
             -model-classifications 0 1 2 \\
             -model-clstype int \\
             -sources iris=csv \\
@@ -380,7 +380,7 @@ class DNNClassifierModel(Model):
         0.99996233782
         $ dffml predict all \\
             -model tfdnnc \\
-            -model-classification classification \\
+            -model-classification classification:int:1 \\
             -model-classifications 0 1 2 \\
             -model-clstype int \\
             -sources iris=csv \\

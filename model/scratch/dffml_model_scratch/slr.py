@@ -25,7 +25,7 @@ from dffml.util.cli.parser import list_action
 
 @config
 class SLRConfig:
-    predict: str = field("Label or the value to be predicted")
+    predict: Feature = field("Label or the value to be predicted")
     features: Features = field("Features to train on")
     directory: str = field(
         "Directory where state should be saved",
@@ -75,7 +75,7 @@ class SLRContext(ModelContext):
         prediction = self.regression_line[0] * x + self.regression_line[1]
         self.logger.debug(
             "Predicted Value of {} {}:".format(
-                self.parent.config.predict, prediction
+                self.parent.config.predict.NAME, prediction
             )
         )
         return prediction
@@ -107,14 +107,14 @@ class SLRContext(ModelContext):
 
     async def train(self, sources: Sources):
         async for repo in sources.with_features(
-            self.features + [self.parent.config.predict]
+            self.features + [self.parent.config.predict.NAME]
         ):
             feature_data = repo.features(
-                self.features + [self.parent.config.predict]
+                self.features + [self.parent.config.predict.NAME]
             )
             self.xData = np.append(self.xData, feature_data[self.features[0]])
             self.yData = np.append(
-                self.yData, feature_data[self.parent.config.predict]
+                self.yData, feature_data[self.parent.config.predict.NAME]
             )
         self.regression_line = await self.best_fit_line()
 
@@ -158,7 +158,7 @@ class SLR(Model):
         $ dffml train \\
             -model scratchslr \\
             -model-features Years:int:1 \\
-            -model-predict Salary \\
+            -model-predict Salary:float:1 \\
             -sources f=csv \\
             -source-filename dataset.csv \\
             -source-readonly \\
@@ -166,7 +166,7 @@ class SLR(Model):
         $ dffml accuracy \\
             -model scratchslr \\
             -model-features Years:int:1 \\
-            -model-predict Salary \\
+            -model-predict Salary:float:1 \\
             -sources f=csv \\
             -source-filename dataset.csv \\
             -source-readonly \\
@@ -176,7 +176,7 @@ class SLR(Model):
           dffml predict all \\
             -model scratchslr \\
             -model-features Years:int:1 \\
-            -model-predict Salary \\
+            -model-predict Salary:float:1 \\
             -sources f=csv \\
             -source-filename /dev/stdin \\
             -source-readonly \\
@@ -209,7 +209,7 @@ class SLR(Model):
     def _filename(self):
         return os.path.join(
             self.config.directory,
-            hashlib.sha384(self.config.predict.encode()).hexdigest() + ".json",
+            hashlib.sha384(self.config.predict.NAME.encode()).hexdigest() + ".json",
         )
 
     async def __aenter__(self) -> SLRContext:
