@@ -1,0 +1,4 @@
+image:
+    file: scripts/gitpod.Dockerfile
+tasks:
+  - init: pip install -e .[dev] && dffml service dev install && echo -e '#!/bin/sh\nexec python3.7 -m black --check .' > .git/hooks/pre-commit && chmod 755 .git/hooks/pre-commit

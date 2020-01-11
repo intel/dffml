@@ -102,6 +102,13 @@ Creating an issue and uploading any files or screenshots is always encouraged.
 To start contributing code to DFFML you'll need to download and install it in
 development mode.
 
+> If you don't want to deal with installing Python 3.7 or getting your
+> development environment setup locally on your machine (since that can be a
+> pain sometimes), there's an online IDE called GitPod that seems pretty useful
+> which you can also use to get started working with on DFFML right away.
+>
+> [![GitPod Button](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/intel/dffml)
+
 Before you install DFFML in development mode be sure to uninstall it! Python
 will use the version installed from PyPi rather than you're development version
 unless you uninstall it first!
