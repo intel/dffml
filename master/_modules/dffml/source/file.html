@@ -168,6 +168,7 @@
 <span class="kn">import</span> <span class="nn">bz2</span>
 <span class="kn">import</span> <span class="nn">gzip</span>
 <span class="kn">import</span> <span class="nn">lzma</span>
+<span class="kn">import</span> <span class="nn">errno</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">zipfile</span>
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
@@ -185,7 +186,8 @@
 <span class="k">class</span> <span class="nc">FileSourceConfig</span><span class="p">:</span>
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;unlabeled&quot;</span>
-    <span class="n">readonly</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
+    <span class="n">readwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">allowempty</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 
 <div class="viewcode-block" id="FileSource"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.file.FileSource">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;file&quot;</span><span class="p">)</span>
@@ -210,12 +212,19 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span>
         <span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                <span class="p">(</span><span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> is not a file, &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,))</span>
-                <span class="o">+</span> <span class="s2">&quot;initializing memory to empty dict&quot;</span>
-            <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mem</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_empty_file_init</span><span class="p">()</span>
-            <span class="k">return</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">allowempty</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="p">(</span><span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> is not a file, &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,))</span>
+                    <span class="o">+</span> <span class="s2">&quot;initializing memory to empty dict&quot;</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mem</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_empty_file_init</span><span class="p">()</span>
+                <span class="k">return</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
+                    <span class="n">errno</span><span class="o">.</span><span class="n">ENOENT</span><span class="p">,</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">strerror</span><span class="p">(</span><span class="n">errno</span><span class="o">.</span><span class="n">ENOENT</span><span class="p">),</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span>
+                <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;.gz&quot;</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
             <span class="n">opener</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;.bz2&quot;</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
@@ -232,7 +241,7 @@
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_fd</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">readonly</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">readwrite</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;.gz&quot;</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
                 <span class="n">close</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;wt&quot;</span><span class="p">)</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;.bz2&quot;</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
