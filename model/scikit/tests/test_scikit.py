@@ -103,7 +103,7 @@ class TestScikitModel:
         if estimator_type in supervised_estimators:
             config_fields["predict"] = "X"
         elif estimator_type in unsupervised_estimators:
-            if true_clstr_present:
+            if cls.TRUE_CLSTR_PRESENT:
                 config_fields["tcluster"] = "X"
         cls.model = cls.MODEL(
             cls.MODEL_CONFIG(**{**properties, **config_fields})
@@ -302,8 +302,9 @@ for reg in REGRESSORS:
 
 for clstr in CLUSTERERS:
     for true_clstr_present in [True, False]:
+        labelInfo = f"withLabel" if true_clstr_present else f"withoutLabel"
         test_cls = type(
-            f"Test{clstr}Model",
+            f"Test{clstr}Model" + labelInfo,
             (TestScikitModel, AsyncTestCase),
             {
                 "MODEL_TYPE": "CLUSTERING",
@@ -313,7 +314,7 @@ for clstr in CLUSTERERS:
                 "MODEL_CONFIG": getattr(
                     dffml_model_scikit.scikit_models, clstr + "ModelConfig"
                 ),
+                "TRUE_CLSTR_PRESENT": true_clstr_present,
             },
         )
-
-    setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)
+        setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)

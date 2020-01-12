@@ -178,6 +178,9 @@ class ScikitContextUnsprvised(ScikitContext):
             else:
                 # requires xdata = training data
                 # transductive clusterer with ground truth
+                self.logger.critical(
+                    "Accuracy found transductive clusterer, ensure data being passed is training data"
+                )
                 self.confidence = adjusted_mutual_info_score(
                     ydata, self.clf.labels_
                 )
@@ -190,6 +193,9 @@ class ScikitContextUnsprvised(ScikitContext):
             else:
                 # requires xdata = training data
                 # transductive clusterer without ground truth
+                self.logger.critical(
+                    "Accuracy found transductive clusterer, ensure data being passed is training data"
+                )
                 self.confidence = silhouette_score(xdata, self.clf.labels_)
         self.logger.debug("Model Accuracy: {}".format(self.confidence))
         return self.confidence
@@ -206,6 +212,9 @@ class ScikitContextUnsprvised(ScikitContext):
                 predictor = self.clf.predict
             else:
                 # transductive clusterer
+                self.logger.critical(
+                    "Predict found transductive clusterer, ensure data being passed is training data"
+                )
                 labels = [
                     (yield label) for label in self.clf.labels_.astype(np.int)
                 ]
