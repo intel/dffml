@@ -338,7 +338,7 @@ for entry_point_name, name, cls, applicable_features_function in [
         parentContext = ScikitContextUnsprvised
         parentModel = ScikitUnsprvised
         config_fields["tcluster"] = (
-            str,
+            Feature,
             field(
                 "True cluster labelfor evaluating clustering models",
                 default=None,

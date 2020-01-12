@@ -101,10 +101,10 @@ class TestScikitModel:
         config_fields = dict()
         estimator_type = cls.MODEL.SCIKIT_MODEL._estimator_type
         if estimator_type in supervised_estimators:
-            config_fields["predict"] = "X"
+            config_fields["predict"] = DefFeature("X", float, 1)
         elif estimator_type in unsupervised_estimators:
             if cls.TRUE_CLSTR_PRESENT:
-                config_fields["tcluster"] = "X"
+                config_fields["tcluster"] = DefFeature("X", float, 1)
         cls.model = cls.MODEL(
             cls.MODEL_CONFIG(**{**properties, **config_fields})
         )

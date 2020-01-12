@@ -278,7 +278,7 @@ class TestScikitClustering(IntegrationCLITestCase):
             if algo is "ind_w_labl":
                 model, true_clstr, train_file, test_file, predict_file = (
                     "scikitkmeans",
-                    "true_label",
+                    "true_label:int:1",
                     train_filename,
                     test_filename,
                     predict_filename,
@@ -294,7 +294,7 @@ class TestScikitClustering(IntegrationCLITestCase):
             elif algo is "tran_w_labl":
                 model, true_clstr, train_file, test_file, predict_file = (
                     "scikitoptics",
-                    "true_label",
+                    "true_label:int:1",
                     train_filename,
                     train_filename,
                     train_filename,

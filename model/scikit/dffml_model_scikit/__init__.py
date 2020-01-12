@@ -105,6 +105,22 @@ Predicting with trained model:
 |                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |                | MultinomialNB                 | scikitmnb      | `scikitmnb <https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.MultinomialNB.html#sklearn.naive_bayes.MultinomialNB/>`_                                                    |
 +----------------+-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Clustering     | KMeans                        | scikitkmeans   | `scikitkmeans <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans/>`_                                                                       |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Birch                         | scikitbirch    | `scikitbirch <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.Birch.html#sklearn.cluster.Birch/>`_                                                                          |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | MiniBatchKMeans               | scikitmbkmeans | `scikitmbkmeans <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MiniBatchKMeans.html#sklearn.cluster.MiniBatchKMeans/>`_                                                   |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | AffinityPropagation           | scikitap       | `scikitap <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AffinityPropagation.html#sklearn.cluster.AffinityPropagation/>`_                                                 |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | MeanShift                     | scikitms       | `scikitms <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MeanShift.html#sklearn.cluster.MeanShift/>`_                                                                     |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | SpectralClustering            | scikitsc       | `scikitsc <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.SpectralClustering.html#sklearn.cluster.SpectralClustering/>`_                                                   |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | AgglomerativeClustering       | scikitac       | `scikitac <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering/>`_                                         |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | OPTICS                        | scikitoptics   | `scikitoptics <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.OPTICS.html#sklearn.cluster.OPTICS/>`_                                                                       |
++----------------+-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 
 **Usage Example:**
@@ -146,7 +162,7 @@ Let us take a simple example:
     $ dffml train \\
         -model scikitlr \\
         -model-features Years:int:1 Expertise:int:1 Trust:float:1 \\
-        -model-predict Salary \\
+        -model-predict Salary:float:1 \\
         -sources f=csv \\
         -source-filename train.csv \\
         -source-readonly \\
@@ -154,7 +170,7 @@ Let us take a simple example:
     $ dffml accuracy \\
         -model scikitlr \\
         -model-features Years:int:1 Expertise:int:1 Trust:float:1 \\
-        -model-predict Salary \\
+        -model-predict Salary:float:1 \\
         -sources f=csv \\
         -source-filename test.csv \\
         -source-readonly \\
@@ -164,7 +180,7 @@ Let us take a simple example:
       dffml predict all \\
         -model scikitlr \\
         -model-features Years:int:1 Expertise:int:1 Trust:float:1 \\
-        -model-predict Salary \\
+        -model-predict Salary:float:1 \\
         -sources f=csv \\
         -source-filename /dev/stdin \\
         -source-readonly \\
@@ -185,4 +201,93 @@ Let us take a simple example:
             "src_url": 0
         }
     ]
+
+
+Example below uses KMeans Clustering Model on a small randomly generated dataset.
+
+.. code-block:: console
+
+    $ cat > train.csv << EOF
+   Col1,          Col2,        Col3,         Col4
+   5.05776417,   8.55128116,   6.15193196,  -8.67349666
+   3.48864265,  -7.25952218,  -4.89216256,   4.69308946
+   -8.16207603,  5.16792984,  -2.66971993,   0.2401882
+   6.09809669,   8.36434181,   6.70940915,  -7.91491768
+   -9.39122566,  5.39133807,  -2.29760281,  -1.69672981
+   0.48311336,   8.19998973,   7.78641979,   7.8843821
+   2.22409135,  -7.73598586,  -4.02660224,   2.82101794
+   2.8137247 ,   8.36064298,   7.66196849,   3.12704676
+   EOF
+    $ cat > test.csv << EOF
+   Col1,             Col2,          Col3,         Col4,    cluster
+   -10.16770144,   2.73057215,  -1.49351481,   2.43005691,    6
+   3.59705381,  -4.76520663,  -3.34916068,   5.72391486,     1
+   4.01612313,  -4.641852  ,  -4.77333308,   5.87551683,     0
+   EOF
+    $ dffml train \\
+        -model scikitkmeans \\
+        -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \\
+        -sources f=csv \\
+        -source-filename train.csv \\
+        -source-readonly \\
+        -log debug
+    $ dffml accuracy \\
+        -model scikitkmeans \\
+        -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1\\
+        -model-tcluster cluster:int:1 \\
+        -sources f=csv \\
+        -source-filename test.csv \\
+        -source-readonly \\
+        -log debug
+    0.6365141682948129
+    $ echo -e 'Col1,Col2,Col3,Col4\\n6.09809669,8.36434181,6.70940915,-7.91491768\\n' | \\
+      dffml predict all \\
+        -model scikitkmeans \\
+        -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \\
+        -sources f=csv \\
+        -source-filename /dev/stdin \\
+        -source-readonly \\
+        -log debug
+    [
+    {
+        "extra": {},
+        "features": {
+            "Col1": 6.09809669,
+            "Col2": 8.36434181,
+            "Col3": 6.70940915,
+            "Col4": -7.91491768
+        },
+        "last_updated": "2020-01-12T22:51:15Z",
+        "prediction": {
+            "confidence": 0.6365141682948129,
+            "value": 2
+        },
+        "src_url": "0"
+    }
+    ]
+
+**NOTE**: `Transductive <https://scikit-learn.org/stable/glossary.html#term-transductive/>`_ Clusterers(scikitsc, scikitac, scikitoptics) cannot handle unseen data.
+Ensure that `predict` and `accuracy` for these algorithms uses training data.
+
+**Args**
+
+- predict: Feature
+
+  - Label or the value to be predicted
+  - Only used by classification and regression models
+
+- tcluster: Feature
+
+  - True cluster, only used by clustering models
+  - Passed with `accuracy` to return `mutual_info_score` 
+  - If not passed `accuracy` returns `silhouette_score`
+
+- features: List of features
+
+  - Features to train on
+
+- directory: String
+
+  - default: /home/user/.cache/dffml/scikit-{Entrypoint}
+  - Directory where state should be saved
 """

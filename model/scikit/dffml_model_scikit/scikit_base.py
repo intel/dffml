@@ -13,7 +13,7 @@ from typing import AsyncIterator, Tuple, Any, NamedTuple
 import joblib
 import numpy as np
 import pandas as pd
-from sklearn.metrics import silhouette_score, adjusted_mutual_info_score
+from sklearn.metrics import silhouette_score, mutual_info_score
 
 from dffml.repo import Repo
 from dffml.source.source import Sources
@@ -26,6 +26,7 @@ class ScikitConfig(ModelConfig, NamedTuple):
     directory: str
     predict: Feature
     features: Features
+    tcluster: Feature
 
 
 class ScikitContext(ModelContext):
@@ -48,7 +49,7 @@ class ScikitContext(ModelContext):
             [
                 "{}{}".format(k, v)
                 for k, v in self.parent.config._asdict().items()
-                if k not in ["directory", "features", "tcluster"]
+                if k not in ["directory", "features", "tcluster", "predict"]
             ]
         )
         return hashlib.sha384(
@@ -158,9 +159,9 @@ class ScikitContextUnsprvised(ScikitContext):
         estimator_type = self.clf._estimator_type
         if estimator_type is "clusterer":
             target = (
-                [self.parent.config.tcluster]
-                if self.parent.config.tcluster is not None
-                else []
+                []
+                if self.parent.config.tcluster is None
+                else [self.parent.config.tcluster.NAME]
             )
         async for repo in sources.with_features(self.features):
             feature_data = repo.features(self.features + target)
@@ -174,16 +175,14 @@ class ScikitContextUnsprvised(ScikitContext):
                 # xdata can be training data or unseen data
                 # inductive clusterer with ground truth
                 y_pred = self.clf.predict(xdata)
-                self.confidence = adjusted_mutual_info_score(ydata, y_pred)
+                self.confidence = mutual_info_score(ydata, y_pred)
             else:
                 # requires xdata = training data
                 # transductive clusterer with ground truth
                 self.logger.critical(
                     "Accuracy found transductive clusterer, ensure data being passed is training data"
                 )
-                self.confidence = adjusted_mutual_info_score(
-                    ydata, self.clf.labels_
-                )
+                self.confidence = mutual_info_score(ydata, self.clf.labels_)
         else:
             if hasattr(self.clf, "predict"):
                 # xdata can be training data or unseen data
