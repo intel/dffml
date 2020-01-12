@@ -201,7 +201,6 @@ Generating train and test data
         -model-predict TARGET:float:1 \
         -model-hidden 8 16 8 \
         -sources s=csv \
-        -source-readonly \
         -source-filename train.csv \
         -model-features \
           Feature1:float:1 \
@@ -213,7 +212,6 @@ Generating train and test data
         -model-predict TARGET:float:1 \
         -model-hidden 8 16 8 \
         -sources s=csv \
-        -source-readonly \
         -source-filename test.csv \
         -model-features \
           Feature1:float:1 \
@@ -226,7 +224,6 @@ Generating train and test data
         -model-predict TARGET:float:1 \
         -model-hidden 8 16 8 \
         -sources s=csv \
-        -source-readonly \
         -source-filename /dev/stdin \
         -model-features \
           Feature1:float:1 \
@@ -315,7 +312,6 @@ hash of their feature names.
         -model-predict Salary:float:1 \
         -sources f=csv \
         -source-filename dataset.csv \
-        -source-readonly \
         -log debug
     $ dffml accuracy \
         -model scratchslr \
@@ -323,7 +319,6 @@ hash of their feature names.
         -model-predict Salary:float:1 \
         -sources f=csv \
         -source-filename dataset.csv \
-        -source-readonly \
         -log debug
     1.0
     $ echo -e 'Years,Salary\n6,0\n' | \
@@ -333,7 +328,6 @@ hash of their feature names.
         -model-predict Salary:float:1 \
         -sources f=csv \
         -source-filename /dev/stdin \
-        -source-readonly \
         -log debug
     [
         {
@@ -391,7 +385,6 @@ Training:
         -model-SCIKIT_PARAMETER_NAME SCIKIT_PARAMETER_VALUE \
         -sources f=TRAINING_DATA_SOURCE_TYPE \
         -source-filename TRAINING_DATA_FILE_NAME \
-        -source-readonly \
         -log debug
 
 Testing and Accuracy:
@@ -404,7 +397,6 @@ Testing and Accuracy:
         -model-predict TO_PREDICT \
         -sources f=TESTING_DATA_SOURCE_TYPE \
         -source-filename TESTING_DATA_FILE_NAME \
-        -source-readonly \
         -log debug
 
 Predicting with trained model:
@@ -417,7 +409,6 @@ Predicting with trained model:
         -model-predict TO_PREDICT \
         -sources f=PREDICT_DATA_SOURCE_TYPE \
         -source-filename PREDICT_DATA_FILE_NAME \
-        -source-readonly \
         -log debug
 
 
@@ -540,7 +531,6 @@ Let us take a simple example:
         -model-predict Salary:float:1 \
         -sources f=csv \
         -source-filename train.csv \
-        -source-readonly \
         -log debug
     $ dffml accuracy \
         -model scikitlr \
@@ -548,7 +538,6 @@ Let us take a simple example:
         -model-predict Salary:float:1 \
         -sources f=csv \
         -source-filename test.csv \
-        -source-readonly \
         -log debug
     1.0
     $ echo -e 'Years,Expertise,Trust\n6,13,1.4\n' | \
@@ -558,7 +547,6 @@ Let us take a simple example:
         -model-predict Salary:float:1 \
         -sources f=csv \
         -source-filename /dev/stdin \
-        -source-readonly \
         -log debug
     [
         {

@@ -161,7 +161,6 @@ class SLR(Model):
             -model-predict Salary:float:1 \\
             -sources f=csv \\
             -source-filename dataset.csv \\
-            -source-readonly \\
             -log debug
         $ dffml accuracy \\
             -model scratchslr \\
@@ -169,7 +168,6 @@ class SLR(Model):
             -model-predict Salary:float:1 \\
             -sources f=csv \\
             -source-filename dataset.csv \\
-            -source-readonly \\
             -log debug
         1.0
         $ echo -e 'Years,Salary\\n6,0\\n' | \\
@@ -179,7 +177,6 @@ class SLR(Model):
             -model-predict Salary:float:1 \\
             -sources f=csv \\
             -source-filename /dev/stdin \\
-            -source-readonly \\
             -log debug
         [
             {

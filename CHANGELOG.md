@@ -16,12 +16,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - SpectralClustering
     - AgglomerativeClustering
     - OPTICS
+    
+- `allowempty` added to source config parameters.
 - Quickstart document to show how to use models from Python.
 - The latest release of the documentation now includes a link to the
   documentation for the master branch (on GitHub pages).
 - Virtual environment, GitPod, and Docker development environment setup notes to
   the CONTRIBUTING.md file.
 ### Changed
+- `readonly` parameter in source config is now changed to `readwrite`.
 - `predict` parameter of all model config classes has been changed from `str` to `Feature`.
 - Defining features on the command line no longer requires that defined features
   be prefixed with `def:`
@@ -68,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Correctly identify when functions decorated with `op` use `self` to reference
   the `OperationImplementationContext`.
+- shouldi safety operation uses subprocess communicate method instead of stdin pipe writes.
 - Negative values are correctly parsed when input via the command line.
 - Do not lowercase development mode install location when reporting version.
 
