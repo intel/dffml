@@ -51,7 +51,6 @@ branch can be found `here <master/index.html>`_.
 
     about
     quickstart/model
-    community
     installation
     tutorials/index
     usage/index
@@ -60,6 +59,8 @@ branch can be found `here <master/index.html>`_.
     plugins/service/http/index
     api/index
     publications
+    community
+    contributing/index
 
 Indices and tables
 ==================
