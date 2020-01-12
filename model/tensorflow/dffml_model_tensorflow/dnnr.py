@@ -23,7 +23,7 @@ from dffml_model_tensorflow.dnnc import TensorflowModelContext
 
 @config
 class DNNRegressionModelConfig:
-    predict: str = field("Feature name holding target values")
+    predict: Feature = field("Feature name holding target values")
     features: Features = field("Features to train on")
     steps: int = field("Number of steps to train the model", default=3000)
     epochs: int = field(
@@ -51,7 +51,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
         super().__init__(parent)
         self.model_dir_path = self._model_dir_path()
         self.all_features = self.parent.config.features.names() + [
-            self.parent.config.predict
+            self.parent.config.predict.NAME
         ]
         self.features = self._applicable_features()
 
@@ -93,7 +93,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
             for feature, results in repo.features(self.features).items():
 
                 x_cols[feature].append(np.array(results))
-            y_cols.append(repo.feature(self.parent.config.predict))
+            y_cols.append(repo.feature(self.parent.config.predict.NAME))
 
         y_cols = np.array(y_cols)
         for feature in x_cols:
@@ -129,7 +129,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
         async for repo in sources.with_features(self.all_features):
             for feature, results in repo.features(self.features).items():
                 x_cols[feature].append(np.array(results))
-            y_cols.append(repo.feature(self.parent.config.predict))
+            y_cols.append(repo.feature(self.parent.config.predict.NAME))
 
         y_cols = np.array(y_cols)
         for feature in x_cols:
@@ -216,7 +216,7 @@ class DNNRegressionModel(Model):
             -model tfdnnr \\
             -model-epochs 300 \\
             -model-steps 2000 \\
-            -model-predict TARGET \\
+            -model-predict TARGET:float:1 \\
             -model-hidden 8 16 8 \\
             -sources s=csv \\
             -source-readonly \\
@@ -228,7 +228,7 @@ class DNNRegressionModel(Model):
         Enabling debug log shows tensorflow losses...
         $ dffml accuracy \\
             -model tfdnnr \\
-            -model-predict TARGET \\
+            -model-predict TARGET:float:1 \\
             -model-hidden 8 16 8 \\
             -sources s=csv \\
             -source-readonly \\
@@ -241,7 +241,7 @@ class DNNRegressionModel(Model):
         $ echo -e 'Feature1,Feature2,TARGET\\n0.21,0.18,0.84\\n' | \\
           dffml predict all \\
             -model tfdnnr \\
-            -model-predict TARGET \\
+            -model-predict TARGET:float:1 \\
             -model-hidden 8 16 8 \\
             -sources s=csv \\
             -source-readonly \\

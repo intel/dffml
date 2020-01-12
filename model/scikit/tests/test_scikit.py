@@ -73,7 +73,7 @@ class TestScikitModel:
         cls.model = cls.MODEL(
             cls.MODEL_CONFIG(
                 directory=cls.model_dir.name,
-                predict="X",
+                predict=DefFeature("X", float, 1),
                 features=cls.features,
             )
         )

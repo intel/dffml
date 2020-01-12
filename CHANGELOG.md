@@ -9,7 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Quickstart document to show how to use models from Python.
 - The latest release of the documentation now includes a link to the
   documentation for the master branch (on GitHub pages).
+- Virtual environment, GitPod, and Docker development environment setup notes to
+  the CONTRIBUTING.md file.
 ### Changed
+- `predict` parameter of all model config classes has been changed from `str` to `Feature`.
 - Defining features on the command line no longer requires that defined features
   be prefixed with `def:`
 - The model predict operation will now raise an exception if the model it is
@@ -234,14 +237,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New Model skeleton directory
 - New Feature creation tutorial
 - New Model creation tutorial
-- Added update functionality to the CSV source
-- Added support for Gzip file source
-- Added support for bz2 file source
+- Update functionality to the CSV source
+- Support for Gzip file source
+- Support for bz2 file source
 - Travis checks for additions to CHANGELOG.md
 - Travis checks for trailing whitespace
-- Added support for lzma file source
-- Added support for xz file source
-- Added Data Flow Facilitator
+- Support for lzma file source
+- Support for xz file source
+- Data Flow Facilitator
 ### Changed
 - Restructured documentation to docs folder and moved from rST to markdown
 - Git feature cloc logs if no binaries are in path
