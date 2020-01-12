@@ -201,11 +201,11 @@ model. Other available models can be found on the plugin page.</p>
 <span class="p">)</span>
 
 <span class="n">training_data</span> <span class="o">=</span> <span class="n">CSVSource</span><span class="p">(</span>
-    <span class="n">CSVSourceConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;training.csv&quot;</span><span class="p">,</span> <span class="n">readonly</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">CSVSourceConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;training.csv&quot;</span><span class="p">,</span> <span class="n">readwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="p">)</span>
-<span class="n">test_data</span> <span class="o">=</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">CSVSourceConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">,</span> <span class="n">readonly</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">CSVSourceConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">,</span> <span class="n">readwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 <span class="n">predict_data</span> <span class="o">=</span> <span class="n">CSVSource</span><span class="p">(</span>
-    <span class="n">CSVSourceConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;predict.csv&quot;</span><span class="p">,</span> <span class="n">readonly</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">CSVSourceConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;predict.csv&quot;</span><span class="p">,</span> <span class="n">readwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="p">)</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">DNNRegressionModel</span><span class="p">(</span>
