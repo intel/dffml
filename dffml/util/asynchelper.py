@@ -74,6 +74,10 @@ class AsyncContextManagerList(UserList):
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self.__stack.aclose()
 
+    @property
+    def async_exit_stack(self):
+        return self.__stack
+
 
 async def concurrently(
     work: Dict[asyncio.Task, Any],
