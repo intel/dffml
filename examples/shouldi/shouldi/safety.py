@@ -34,11 +34,7 @@ async def safety_check(package: str, version: str) -> Dict[str, Any]:
         stderr=asyncio.subprocess.PIPE,
     )
 
-    proc.stdin.write(pinned.encode())
-    proc.stdin.write(b"\n")
-    proc.stdin.close()
-
-    stdout, _stderr = await proc.communicate()
+    stdout, _stderr = await proc.communicate(pinned.encode() + b"\n")
 
     issues = json.loads(stdout)
 
