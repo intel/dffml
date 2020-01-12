@@ -43,12 +43,27 @@ from sklearn.linear_model import (
     Lars,
     Ridge,
 )
+from sklearn.cluster import (
+    KMeans,
+    Birch,
+    MiniBatchKMeans,
+    AffinityPropagation,
+    MeanShift,
+    SpectralClustering,
+    AgglomerativeClustering,
+    OPTICS,
+)
+
 
 from dffml.base import make_config, field
 from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entrypoint
-from dffml_model_scikit.scikit_base import Scikit, ScikitContext
-
+from dffml_model_scikit.scikit_base import (
+    Scikit,
+    ScikitContext,
+    ScikitUnsprvised,
+    ScikitContextUnsprvised,
+)
 from dffml.feature.feature import Feature, Features
 from dffml.util.cli.parser import list_action
 
@@ -148,7 +163,6 @@ def mkscikit_config_cls(
 
     parameters = inspect.signature(cls).parameters
     docstring = inspect.getdoc(cls)
-
     docparams = {}
 
     # Parse parameters and their datatypes from docstring
@@ -181,6 +195,8 @@ def mkscikit_config_cls(
     )
 
 
+supervised_estimators = ["classifier", "regressor"]
+unsupervised_estimators = ["clusterer"]
 for entry_point_name, name, cls, applicable_features_function in [
     (
         "scikitknn",
@@ -221,7 +237,7 @@ for entry_point_name, name, cls, applicable_features_function in [
         QuadraticDiscriminantAnalysis,
         applicable_features,
     ),
-    ("scikitlr", "LinearRegression", LinearRegression, applicable_features),
+    ("scikitlr", "LinearRegression", LinearRegression, applicable_features,),
     (
         "scikitlor",
         "LogisticRegression",
@@ -240,12 +256,17 @@ for entry_point_name, name, cls, applicable_features_function in [
         ExtraTreesClassifier,
         applicable_features,
     ),
-    ("scikitbgc", "BaggingClassifier", BaggingClassifier, applicable_features),
+    (
+        "scikitbgc",
+        "BaggingClassifier",
+        BaggingClassifier,
+        applicable_features,
+    ),
     ("scikiteln", "ElasticNet", ElasticNet, applicable_features),
-    ("scikitbyr", "BayesianRidge", BayesianRidge, applicable_features),
-    ("scikitlas", "Lasso", Lasso, applicable_features),
-    ("scikitard", "ARDRegression", ARDRegression, applicable_features),
-    ("scikitrsc", "RANSACRegressor", RANSACRegressor, applicable_features),
+    ("scikitbyr", "BayesianRidge", BayesianRidge, applicable_features,),
+    ("scikitlas", "Lasso", Lasso, applicable_features,),
+    ("scikitard", "ARDRegression", ARDRegression, applicable_features,),
+    ("scikitrsc", "RANSACRegressor", RANSACRegressor, applicable_features,),
     ("scikitbnb", "BernoulliNB", BernoulliNB, applicable_features),
     ("scikitmnb", "MultinomialNB", MultinomialNB, applicable_features),
     (
@@ -272,40 +293,88 @@ for entry_point_name, name, cls, applicable_features_function in [
         OrthogonalMatchingPursuit,
         applicable_features,
     ),
-    ("scikitridge", "Ridge", Ridge, applicable_features),
-    ("scikitlars", "Lars", Lars, applicable_features),
+    ("scikitridge", "Ridge", Ridge, applicable_features,),
+    ("scikitlars", "Lars", Lars, applicable_features,),
+    ("scikitkmeans", "KMeans", KMeans, applicable_features),
+    ("scikitbirch", "Birch", Birch, applicable_features),
+    (
+        "scikitmbkmeans",
+        "MiniBatchKMeans",
+        MiniBatchKMeans,
+        applicable_features,
+    ),
+    (
+        "scikitap",
+        "AffinityPropagation",
+        AffinityPropagation,
+        applicable_features,
+    ),
+    ("scikims", "MeanShift", MeanShift, applicable_features),
+    (
+        "scikitsc",
+        "SpectralClustering",
+        SpectralClustering,
+        applicable_features,
+    ),
+    (
+        "scikitac",
+        "AgglomerativeClustering",
+        AgglomerativeClustering,
+        applicable_features,
+    ),
+    ("scikitoptics", "OPTICS", OPTICS, applicable_features),
 ]:
-
+    estimator_type = cls._estimator_type
+    config_fields = dict()
+    if estimator_type in supervised_estimators:
+        parentContext = ScikitContext
+        parentModel = Scikit
+        config_fields["predict"] = (
+            Feature,
+            field("Label or the value to be predicted"),
+        )
+    elif estimator_type in unsupervised_estimators:
+        parentContext = ScikitContextUnsprvised
+        parentModel = ScikitUnsprvised
+        config_fields["tcluster"] = (
+            Feature,
+            field(
+                "True cluster labelfor evaluating clustering models",
+                default=None,
+            ),
+        )
     dffml_config = mkscikit_config_cls(
         name + "ModelConfig",
         cls,
         properties={
-            "directory": (
-                str,
-                field(
-                    "Directory where state should be saved",
-                    default=os.path.join(
-                        os.path.expanduser("~"),
-                        ".cache",
-                        "dffml",
-                        f"scikit-{entry_point_name}",
+            **{
+                "directory": (
+                    str,
+                    field(
+                        "Directory where state should be saved",
+                        default=os.path.join(
+                            os.path.expanduser("~"),
+                            ".cache",
+                            "dffml",
+                            f"scikit-{entry_point_name}",
+                        ),
                     ),
                 ),
-            ),
-            "predict": (Feature, field("Label or the value to be predicted")),
-            "features": (Features, field("Features to train on")),
+                "features": (Features, field("Features to train on")),
+            },
+            **config_fields,
         },
     )
 
     dffml_cls_ctx = type(
         name + "ModelContext",
-        (ScikitContext,),
+        (parentContext,),
         {"applicable_features": applicable_features_function},
     )
 
     dffml_cls = type(
         name + "Model",
-        (Scikit,),
+        (parentModel,),
         {
             "CONFIG": dffml_config,
             "CONTEXT": dffml_cls_ctx,

@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- scikit models
+  - Clusterers
+    - KMeans
+    - Birch
+    - MiniBatchKMeans
+    - AffinityPropagation
+    - MeanShift
+    - SpectralClustering
+    - AgglomerativeClustering
+    - OPTICS
 - `allowempty` added to source config parameters.
 - Quickstart document to show how to use models from Python.
 - The latest release of the documentation now includes a link to the
