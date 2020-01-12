@@ -64,7 +64,6 @@ from dffml_model_scikit.scikit_base import (
     ScikitUnsprvised,
     ScikitContextUnsprvised,
 )
-
 from dffml.feature.feature import Feature, Features
 from dffml.util.cli.parser import list_action
 
