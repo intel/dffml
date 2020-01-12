@@ -6,17 +6,6 @@ documentation. If you find issues with the documentation, usability, code, or
 even a question, please open an
 `issue <https://github.com/intel/dffml/issues/new/choose>`_ to let us know.
 
-.. toctree::
-    :glob:
-    :maxdepth: 2
-
-    dev_env
-    git
-    testing
-    docs
-    subsystems
-    debugging
-
 Contacting the Community
 ------------------------
 
@@ -142,3 +131,14 @@ recording of your terminal that can be shared via a asciinema.org link or sent
 privately as a JSON file.
 
 Creating an issue and uploading any files or screenshots is always encouraged.
+
+.. toctree::
+    :glob:
+    :maxdepth: 2
+
+    dev_env
+    git
+    testing
+    docs
+    subsystems
+    debugging
