@@ -711,6 +711,39 @@ their feature names.</p>
 <td><p>scikitmnb</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.MultinomialNB.html#sklearn.naive_bayes.MultinomialNB/">scikitmnb</a></p></td>
 </tr>
+<tr class="row-odd"><td rowspan="8"><p>Clustering</p></td>
+<td><p>KMeans</p></td>
+<td><p>scikitkmeans</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans/">scikitkmeans</a></p></td>
+</tr>
+<tr class="row-even"><td><p>Birch</p></td>
+<td><p>scikitbirch</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.Birch.html#sklearn.cluster.Birch/">scikitbirch</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>MiniBatchKMeans</p></td>
+<td><p>scikitmbkmeans</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MiniBatchKMeans.html#sklearn.cluster.MiniBatchKMeans/">scikitmbkmeans</a></p></td>
+</tr>
+<tr class="row-even"><td><p>AffinityPropagation</p></td>
+<td><p>scikitap</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AffinityPropagation.html#sklearn.cluster.AffinityPropagation/">scikitap</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>MeanShift</p></td>
+<td><p>scikitms</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MeanShift.html#sklearn.cluster.MeanShift/">scikitms</a></p></td>
+</tr>
+<tr class="row-even"><td><p>SpectralClustering</p></td>
+<td><p>scikitsc</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.SpectralClustering.html#sklearn.cluster.SpectralClustering/">scikitsc</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>AgglomerativeClustering</p></td>
+<td><p>scikitac</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering/">scikitac</a></p></td>
+</tr>
+<tr class="row-even"><td><p>OPTICS</p></td>
+<td><p>scikitoptics</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.OPTICS.html#sklearn.cluster.OPTICS/">scikitoptics</a></p></td>
+</tr>
 </tbody>
 </table>
 <p><strong>Usage Example:</strong></p>
@@ -778,14 +811,14 @@ their feature names.</p>
 <span class="gp">$</span> dffml train <span class="se">\</span>
     -model scikitlr <span class="se">\</span>
     -model-features Years:int:1 Expertise:int:1 Trust:float:1 <span class="se">\</span>
-    -model-predict Salary <span class="se">\</span>
+    -model-predict Salary:float:1 <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename train.csv <span class="se">\</span>
     -log debug
 <span class="gp">$</span> dffml accuracy <span class="se">\</span>
     -model scikitlr <span class="se">\</span>
     -model-features Years:int:1 Expertise:int:1 Trust:float:1 <span class="se">\</span>
-    -model-predict Salary <span class="se">\</span>
+    -model-predict Salary:float:1 <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename test.csv <span class="se">\</span>
     -log debug
@@ -794,7 +827,7 @@ their feature names.</p>
   dffml predict all <span class="se">\</span>
     -model scikitlr <span class="se">\</span>
     -model-features Years:int:1 Expertise:int:1 Trust:float:1 <span class="se">\</span>
-    -model-predict Salary <span class="se">\</span>
+    -model-predict Salary:float:1 <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename /dev/stdin <span class="se">\</span>
     -log debug
@@ -816,6 +849,96 @@ their feature names.</p>
 <span class="go">]</span>
 </pre></div>
 </div>
+<p>Example below uses KMeans Clustering Model on a small randomly generated dataset.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"> $</span> cat &gt; train.csv &lt;&lt; EOF
+<span class="go">Col1,          Col2,        Col3,         Col4</span>
+<span class="go">5.05776417,   8.55128116,   6.15193196,  -8.67349666</span>
+<span class="go">3.48864265,  -7.25952218,  -4.89216256,   4.69308946</span>
+<span class="go">-8.16207603,  5.16792984,  -2.66971993,   0.2401882</span>
+<span class="go">6.09809669,   8.36434181,   6.70940915,  -7.91491768</span>
+<span class="go">-9.39122566,  5.39133807,  -2.29760281,  -1.69672981</span>
+<span class="go">0.48311336,   8.19998973,   7.78641979,   7.8843821</span>
+<span class="go">2.22409135,  -7.73598586,  -4.02660224,   2.82101794</span>
+<span class="go">2.8137247 ,   8.36064298,   7.66196849,   3.12704676</span>
+<span class="go">EOF</span>
+<span class="gp"> $</span> cat &gt; test.csv &lt;&lt; EOF
+<span class="go">Col1,             Col2,          Col3,         Col4,    cluster</span>
+<span class="go">-10.16770144,   2.73057215,  -1.49351481,   2.43005691,    6</span>
+<span class="go">3.59705381,  -4.76520663,  -3.34916068,   5.72391486,     1</span>
+<span class="go">4.01612313,  -4.641852  ,  -4.77333308,   5.87551683,     0</span>
+<span class="go">EOF</span>
+<span class="gp"> $</span> dffml train <span class="se">\</span>
+     -model scikitkmeans <span class="se">\</span>
+     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 <span class="se">\</span>
+     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+     -source-filename train.csv <span class="se">\</span>
+     -source-readonly <span class="se">\</span>
+     -log debug
+<span class="gp"> $</span> dffml accuracy <span class="se">\</span>
+     -model scikitkmeans <span class="se">\</span>
+     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1<span class="se">\</span>
+     -model-tcluster cluster:int:1 <span class="se">\</span>
+     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+     -source-filename test.csv <span class="se">\</span>
+     -source-readonly <span class="se">\</span>
+     -log debug
+<span class="go"> 0.6365141682948129</span>
+<span class="gp"> $</span> <span class="nb">echo</span> -e <span class="s1">&#39;Col1,Col2,Col3,Col4\n6.09809669,8.36434181,6.70940915,-7.91491768\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
+   dffml predict all <span class="se">\</span>
+     -model scikitkmeans <span class="se">\</span>
+     -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 <span class="se">\</span>
+     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+     -source-filename /dev/stdin <span class="se">\</span>
+     -source-readonly <span class="se">\</span>
+     -log debug
+<span class="go"> [</span>
+<span class="go"> {</span>
+<span class="go">     &quot;extra&quot;: {},</span>
+<span class="go">     &quot;features&quot;: {</span>
+<span class="go">         &quot;Col1&quot;: 6.09809669,</span>
+<span class="go">         &quot;Col2&quot;: 8.36434181,</span>
+<span class="go">         &quot;Col3&quot;: 6.70940915,</span>
+<span class="go">         &quot;Col4&quot;: -7.91491768</span>
+<span class="go">     },</span>
+<span class="go">     &quot;last_updated&quot;: &quot;2020-01-12T22:51:15Z&quot;,</span>
+<span class="go">     &quot;prediction&quot;: {</span>
+<span class="go">         &quot;confidence&quot;: 0.6365141682948129,</span>
+<span class="go">         &quot;value&quot;: 2</span>
+<span class="go">     },</span>
+<span class="go">     &quot;src_url&quot;: &quot;0&quot;</span>
+<span class="go"> }</span>
+<span class="go"> ]</span>
+</pre></div>
+</div>
+<p><strong>NOTE</strong>: <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-transductive/">Transductive</a> Clusterers(scikitsc, scikitac, scikitoptics) cannot handle unseen data.
+Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms uses training data.</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>predict: Feature</p>
+<ul>
+<li><p>Label or the value to be predicted</p></li>
+<li><p>Only used by classification and regression models</p></li>
+</ul>
+</li>
+<li><p>tcluster: Feature</p>
+<ul>
+<li><p>True cluster, only used by clustering models</p></li>
+<li><p>Passed with <cite>accuracy</cite> to return <cite>mutual_info_score</cite></p></li>
+<li><p>If not passed <cite>accuracy</cite> returns <cite>silhouette_score</cite></p></li>
+</ul>
+</li>
+<li><p>features: List of features</p>
+<ul>
+<li><p>Features to train on</p></li>
+</ul>
+</li>
+<li><p>directory: String</p>
+<ul>
+<li><p>default: /home/user/.cache/dffml/scikit-{Entrypoint}</p></li>
+<li><p>Directory where state should be saved</p></li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 
