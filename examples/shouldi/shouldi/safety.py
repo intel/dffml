@@ -6,7 +6,7 @@ from typing import Dict, Any
 from dffml.df.base import op
 from dffml.df.types import Definition
 
-packages = Definition(name="package", primitive="str")
+package = Definition(name="package", primitive="str")
 package_version = Definition(name="package_version", primitive="str")
 safety_check_number_of_issues = Definition(
     name="safety_check_number_of_issues", primitive="int"
@@ -15,7 +15,7 @@ safety_check_number_of_issues = Definition(
 
 @op(
     name="safety_check",
-    inputs={"packages": packages, "version": package_version},
+    inputs={"package": package, "version": package_version},
     outputs={"issues": safety_check_number_of_issues},
     conditions=[],
 )
