@@ -642,7 +642,7 @@ Ensure that `predict` and `accuracy` for these algorithms uses training data.
 - tcluster: Feature
 
   - True cluster, only used by clustering models
-  - Passed with `accuracy` to return `mutual_info_score` 
+  - Passed with `accuracy` to return `mutual_info_score`
   - If not passed `accuracy` returns `silhouette_score`
 
 - features: List of features
