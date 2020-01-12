@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Quickstart document to show how to use models from Python.
 - The latest release of the documentation now includes a link to the
   documentation for the master branch (on GitHub pages).
+- Virtual environment, GitPod, and Docker development environment setup notes to
+  the CONTRIBUTING.md file.
 ### Changed
 - `predict` parameter of all model config classes has been changed from `str` to `Feature`.
 - Defining features on the command line no longer requires that defined features
