@@ -57,6 +57,10 @@ class TestMerge(IntegrationCLITestCase):
             filename,
             "-source-src-repos",
             *src_urls,
+            "-source-src-allowempty",
+            "-source-dest-allowempty",
+            "-source-src-readwrite",
+            "-source-dest-readwrite",
         )
         with contextlib.redirect_stdout(self.stdout):
             await CLI.cli(
@@ -82,6 +86,10 @@ class TestMerge(IntegrationCLITestCase):
             filename,
             "-source-src-repos",
             *src_urls,
+            "-source-src-allowempty",
+            "-source-dest-allowempty",
+            "-source-src-readwrite",
+            "-source-dest-readwrite",
         )
         self.assertEqual(
             pathlib.Path(filename).read_text(),
