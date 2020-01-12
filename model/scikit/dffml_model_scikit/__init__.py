@@ -16,7 +16,6 @@ Training:
         -model-SCIKIT_PARAMETER_NAME SCIKIT_PARAMETER_VALUE \\
         -sources f=TRAINING_DATA_SOURCE_TYPE \\
         -source-filename TRAINING_DATA_FILE_NAME \\
-        -source-readonly \\
         -log debug
 
 Testing and Accuracy:
@@ -29,7 +28,6 @@ Testing and Accuracy:
         -model-predict TO_PREDICT \\
         -sources f=TESTING_DATA_SOURCE_TYPE \\
         -source-filename TESTING_DATA_FILE_NAME \\
-        -source-readonly \\
         -log debug
 
 Predicting with trained model:
@@ -42,7 +40,6 @@ Predicting with trained model:
         -model-predict TO_PREDICT \\
         -sources f=PREDICT_DATA_SOURCE_TYPE \\
         -source-filename PREDICT_DATA_FILE_NAME \\
-        -source-readonly \\
         -log debug
 
 
@@ -149,7 +146,6 @@ Let us take a simple example:
         -model-predict Salary \\
         -sources f=csv \\
         -source-filename train.csv \\
-        -source-readonly \\
         -log debug
     $ dffml accuracy \\
         -model scikitlr \\
@@ -157,7 +153,6 @@ Let us take a simple example:
         -model-predict Salary \\
         -sources f=csv \\
         -source-filename test.csv \\
-        -source-readonly \\
         -log debug
     1.0
     $ echo -e 'Years,Expertise,Trust\\n6,13,1.4\\n' | \\
@@ -167,7 +162,6 @@ Let us take a simple example:
         -model-predict Salary \\
         -sources f=csv \\
         -source-filename /dev/stdin \\
-        -source-readonly \\
         -log debug
     [
         {

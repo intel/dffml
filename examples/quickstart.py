@@ -7,11 +7,11 @@ from dffml_model_tensorflow.dnnr import (
 )
 
 training_data = CSVSource(
-    CSVSourceConfig(filename="training.csv", readonly=True)
+    CSVSourceConfig(filename="training.csv", readwrite=False)
 )
-test_data = CSVSource(CSVSourceConfig(filename="test.csv", readonly=True))
+test_data = CSVSource(CSVSourceConfig(filename="test.csv", readwrite=False))
 predict_data = CSVSource(
-    CSVSourceConfig(filename="predict.csv", readonly=True)
+    CSVSourceConfig(filename="predict.csv", readwrite=False)
 )
 
 model = DNNRegressionModel(

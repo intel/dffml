@@ -65,7 +65,15 @@ class TestFileSource(AsyncTestCase):
                                     "arg": Arg(type=str),
                                     "config": {},
                                 },
-                                "readonly": {
+                                "readwrite": {
+                                    "arg": Arg(
+                                        type=bool,
+                                        action="store_true",
+                                        default=False,
+                                    ),
+                                    "config": {},
+                                },
+                                "allowempty": {
                                     "arg": Arg(
                                         type=bool,
                                         action="store_true",
@@ -90,7 +98,8 @@ class TestFileSource(AsyncTestCase):
         )
         self.assertEqual(config.filename, "feedface")
         self.assertEqual(config.label, "unlabeled")
-        self.assertFalse(config.readonly)
+        self.assertFalse(config.readwrite)
+        self.assertFalse(config.allowempty)
 
     def test_config_readonly_set(self):
         config = FileSource.config(
@@ -99,16 +108,23 @@ class TestFileSource(AsyncTestCase):
                 "feedface",
                 "--source-file-label",
                 "default-label",
-                "--source-file-readonly",
+                "--source-file-readwrite",
+                "--source-file-allowempty",
             )
         )
         self.assertEqual(config.filename, "feedface")
         self.assertEqual(config.label, "default-label")
-        self.assertTrue(config.readonly)
+        self.assertTrue(config.readwrite)
+        self.assertTrue(config.allowempty)
 
-    def config(self, filename, label="unlabeled", readonly=False):
+    def config(
+        self, filename, label="unlabeled", readwrite=True, allowempty=True
+    ):
         return FileSourceConfig(
-            filename=filename, readonly=readonly, label=label
+            filename=filename,
+            readwrite=readwrite,
+            label=label,
+            allowempty=allowempty,
         )
 
     async def test_open(self):
@@ -116,7 +132,9 @@ class TestFileSource(AsyncTestCase):
         with patch("os.path.exists", return_value=True), patch(
             "builtins.open", m_open
         ):
-            async with FakeFileSource(self.config("testfile", readonly=True)):
+            async with FakeFileSource(
+                self.config("testfile", readwrite=False)
+            ):
                 m_open.assert_called_once_with("testfile", "r")
 
     async def test_open_gz(self):
@@ -126,7 +144,7 @@ class TestFileSource(AsyncTestCase):
             "gzip.open", m_open
         ):
             async with FakeFileSource(
-                self.config("testfile.gz", readonly=True)
+                self.config("testfile.gz", readwrite=False)
             ):
                 m_open.assert_called_once_with("testfile.gz", "rt")
 
@@ -136,7 +154,7 @@ class TestFileSource(AsyncTestCase):
             "bz2.open", m_open
         ):
             async with FakeFileSource(
-                self.config("testfile.bz2", readonly=True)
+                self.config("testfile.bz2", readwrite=False)
             ):
                 m_open.assert_called_once_with("testfile.bz2", "rt")
 
@@ -146,7 +164,7 @@ class TestFileSource(AsyncTestCase):
             "lzma.open", m_open
         ):
             async with FakeFileSource(
-                self.config("testfile.lzma", readonly=True)
+                self.config("testfile.lzma", readwrite=False)
             ):
                 m_open.assert_called_once_with("testfile.lzma", "rt")
 
@@ -156,12 +174,12 @@ class TestFileSource(AsyncTestCase):
             "lzma.open", m_open
         ):
             async with FakeFileSource(
-                self.config("testfile.xz", readonly=True)
+                self.config("testfile.xz", readwrite=False)
             ):
                 m_open.assert_called_once_with("testfile.xz", "rt")
 
     async def test_open_zip(self):
-        source = FakeFileSource(self.config("testfile.zip", readonly=True))
+        source = FakeFileSource(self.config("testfile.zip", readwrite=False))
         with patch("os.path.exists", return_value=True), patch.object(
             source, "zip_opener_helper", yield_42
         ):
@@ -173,7 +191,7 @@ class TestFileSource(AsyncTestCase):
             "os.path.isfile", return_value=False
         ):
             async with FakeFileSource(
-                self.config("testfile", readonly=True)
+                self.config("testfile", readwrite=False)
             ) as source:
                 self.assertTrue(isinstance(source.mem, dict))
 
@@ -236,6 +254,8 @@ class TestFileSource(AsyncTestCase):
         with patch("os.path.exists", return_value=False), patch(
             "builtins.open", m_open
         ):
-            async with FakeFileSource(self.config("testfile", readonly=True)):
+            async with FakeFileSource(
+                self.config("testfile", readwrite=False)
+            ):
                 pass
             m_open.assert_not_called()

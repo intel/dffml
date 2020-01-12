@@ -83,7 +83,15 @@ sources.
                   "arg": {},
                   "config": {}
                 },
-                "readonly": {
+                "readwrite": {
+                  "arg": {
+                    "type": "bool",
+                    "action": "store_true",
+                    "default": false
+                  },
+                  "config": {}
+                },
+                "allowempty": {
                   "arg": {
                     "type": "bool",
                     "action": "store_true",
@@ -170,7 +178,7 @@ URL this ``POST`` request is sent to is.
             ],
             "config": {}
           },
-          "readonly": {
+          "readwrite": {
             "arg": [
               true
             ],

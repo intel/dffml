@@ -47,7 +47,9 @@ class ReposTestCase(AsyncExitStackTestCase):
         await super().setUp()
         self.repos = [Repo(str(random.random())) for _ in range(0, 10)]
         self.temp_filename = self.mktempfile()
-        self.sconfig = FileSourceConfig(filename=self.temp_filename)
+        self.sconfig = FileSourceConfig(
+            filename=self.temp_filename, readwrite=True, allowempty=True
+        )
         async with JSONSource(self.sconfig) as source:
             async with source() as sctx:
                 for repo in self.repos:
@@ -164,6 +166,10 @@ class TestMerge(ReposTestCase):
             "somelabel",
             "-source-src-filename",
             self.temp_filename,
+            "-source-src-allowempty",
+            "-source-dest-allowempty",
+            "-source-src-readwrite",
+            "-source-dest-readwrite",
         )
         # Check the unlabeled source
         with self.subTest(labeled=None):
@@ -195,6 +201,10 @@ class TestMerge(ReposTestCase):
                 "src_url",
                 "-source-src-filename",
                 self.temp_filename,
+                "-source-src-allowempty",
+                "-source-dest-allowempty",
+                "-source-src-readwrite",
+                "-source-dest-readwrite",
             )
             contents = Path(csv_tempfile).read_text()
             self.assertEqual(
@@ -218,6 +228,10 @@ class TestMerge(ReposTestCase):
                     csv_tempfile,
                     "-source-src-filename",
                     self.temp_filename,
+                    "-source-src-allowempty",
+                    "-source-dest-allowempty",
+                    "-source-src-readwrite",
+                    "-source-dest-readwrite",
                 )
             # Merge one label to another within the same file
             with self.subTest(merge_same_file=True):
@@ -230,6 +244,10 @@ class TestMerge(ReposTestCase):
                     "somelabel",
                     "-source-src-filename",
                     csv_tempfile,
+                    "-source-src-allowempty",
+                    "-source-dest-allowempty",
+                    "-source-src-readwrite",
+                    "-source-dest-readwrite",
                 )
             contents = Path(csv_tempfile).read_text()
             self.assertIn("unlabeled", contents)
@@ -268,8 +286,8 @@ class TestListRepos(ReposTestCase):
                 "primary=json",
                 "-source-primary-filename",
                 self.temp_filename,
-                "-source-primary-readonly",
-                "false",
+                "-source-primary-readwrite",
+                "true",
             )
         for repo in self.repos:
             self.assertIn(repo.src_url, stdout.getvalue())
