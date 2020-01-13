@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The model predict operation will now raise an exception if the model it is
   passed via it's config is a class rather than an instance.
 - `entry_point` and friends have been renamed to `entrypoint`.
+- Use `FastChildWatcher` when run via the CLI to prevent `BlockingIOError`s.
 ### Fixed
 - CONTRIBUTING.md has `-e` in the wrong place in the getting setup section.
 - Since moving to auto `args()` and `config()`, BaseConfigurable no longer
