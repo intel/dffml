@@ -105,11 +105,19 @@ def mysql(*, sql_setup: Optional[str] = None):
         # Create cert folder
         cert_dir_path = pathlib.Path(tempdir, "certs")
         cert_dir_path.mkdir(mode=0o755)
+        # Volumes to mount
+        volumes = {
+            sql_conf_path.resolve(): {"bind": "/etc/mysql/conf.d/ssl.cnf"},
+            cert_dir_path.resolve(): {"bind": "/conf/certs/"},
+        }
         # Dump out SQL query to file
         if sql_setup is not None:
             sql_setup_path = pathlib.Path(tempdir, "dump.sql")
             sql_setup_path.write_text(sql_setup)
             sql_setup_path.chmod(0o555)
+            volumes[sql_setup_path.resolve()] = {
+                "bind": "/docker-entrypoint-initdb.d/dump.sql"
+            }
         # Tell the docker daemon to start MySQL
         LOGGER.debug("Starting MySQL...")
         container = docker_client.containers.run(
@@ -118,15 +126,7 @@ def mysql(*, sql_setup: Optional[str] = None):
             environment=DOCKER_ENV,
             detach=True,
             auto_remove=True,
-            volumes={
-                sql_conf_path.resolve(): {"bind": "/etc/mysql/conf.d/ssl.cnf"},
-                sql_setup_path.resolve(): {
-                    "bind": "/docker-entrypoint-initdb.d/dump.sql"
-                },
-                cert_dir_path.resolve(): {"bind": "/conf/certs/"},
-            }
-            if sql_setup is not None
-            else None,
+            volumes=volumes,
         )
         # Sometimes very bad things happen, this ensures that the container will
         # be cleaned up on process exit no matter what
