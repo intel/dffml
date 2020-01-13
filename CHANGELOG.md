@@ -6,12 +6,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- scikit models
+  - Clusterers
+    - KMeans
+    - Birch
+    - MiniBatchKMeans
+    - AffinityPropagation
+    - MeanShift
+    - SpectralClustering
+    - AgglomerativeClustering
+    - OPTICS
+- `allowempty` added to source config parameters.
 - Quickstart document to show how to use models from Python.
 - The latest release of the documentation now includes a link to the
   documentation for the master branch (on GitHub pages).
 - Virtual environment, GitPod, and Docker development environment setup notes to
   the CONTRIBUTING.md file.
 ### Changed
+- `readonly` parameter in source config is now changed to `readwrite`.
 - `predict` parameter of all model config classes has been changed from `str` to `Feature`.
 - Defining features on the command line no longer requires that defined features
   be prefixed with `def:`
@@ -52,12 +64,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automatic releases to PyPi via GitHub Actions
 - Automatic documentation deployment to GitHub Pages
 - Function to create a config class dynamically, analogous to `make_dataclass`
+- `ConfigLoaders` class which loads config files from a file or directory to a dictionary.
+
 ### Changed
 - CLI tests and integration tests derive from `AsyncExitStackTestCase`
 - SciKit models now use the auto args and config methods.
 ### Fixed
 - Correctly identify when functions decorated with `op` use `self` to reference
   the `OperationImplementationContext`.
+- shouldi safety operation uses subprocess communicate method instead of stdin pipe writes.
 - Negative values are correctly parsed when input via the command line.
 - Do not lowercase development mode install location when reporting version.
 

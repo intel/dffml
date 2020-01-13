@@ -16,7 +16,11 @@ from dffml.util.cli.arg import parse_unknown
 
 class TestCSVSource(FileSourceTest, AsyncTestCase):
     async def setUpSource(self):
-        return CSVSource(CSVSourceConfig(filename=self.testfile))
+        return CSVSource(
+            CSVSourceConfig(
+                filename=self.testfile, allowempty=True, readwrite=True
+            )
+        )
 
     async def test_label(self):
         with tempfile.TemporaryDirectory() as testdir:
@@ -60,7 +64,8 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
         self.assertEqual(config.label, "unlabeled")
         self.assertEqual(config.labelcol, "label")
         self.assertEqual(config.key, "src_url")
-        self.assertFalse(config.readonly)
+        self.assertFalse(config.readwrite)
+        self.assertFalse(config.allowempty)
 
     def test_config_set(self):
         config = CSVSource.config(
@@ -73,14 +78,16 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
                 "dffml_label",
                 "--source-csv-key",
                 "SourceURLColumn",
-                "--source-csv-readonly",
+                "--source-csv-readwrite",
+                "--source-csv-allowempty",
             )
         )
         self.assertEqual(config.filename, "feedface")
         self.assertEqual(config.label, "default-label")
         self.assertEqual(config.labelcol, "dffml_label")
         self.assertEqual(config.key, "SourceURLColumn")
-        self.assertTrue(config.readonly)
+        self.assertTrue(config.readwrite)
+        self.assertTrue(config.allowempty)
 
     async def test_key(self):
         with tempfile.NamedTemporaryFile() as fileobj:

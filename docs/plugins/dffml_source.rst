@@ -32,7 +32,11 @@ Uses a CSV file as the source of repo feature data
 
   - default: unlabeled
 
-- readonly: Boolean
+- readwrite: Boolean
+
+  - default: False
+
+- allowempty: Boolean
 
   - default: False
 
@@ -60,7 +64,11 @@ stored in memory.
 
   - default: unlabeled
 
-- readonly: Boolean
+- readwrite: Boolean
+
+  - default: False
+
+- allowempty: Boolean
 
   - default: False
 

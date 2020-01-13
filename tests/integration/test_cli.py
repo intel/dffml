@@ -23,9 +23,7 @@ from dffml.service.dev import Develop
 from dffml.util.packaging import is_develop
 from dffml.util.entrypoint import load
 from dffml.config.config import BaseConfigLoader
-from dffml.util.asynctestcase import AsyncTestCase
-
-from .common import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase, IntegrationCLITestCase
 
 
 class TestList(IntegrationCLITestCase):
@@ -57,6 +55,10 @@ class TestMerge(IntegrationCLITestCase):
             filename,
             "-source-src-repos",
             *src_urls,
+            "-source-src-allowempty",
+            "-source-dest-allowempty",
+            "-source-src-readwrite",
+            "-source-dest-readwrite",
         )
         with contextlib.redirect_stdout(self.stdout):
             await CLI.cli(
@@ -82,6 +84,10 @@ class TestMerge(IntegrationCLITestCase):
             filename,
             "-source-src-repos",
             *src_urls,
+            "-source-src-allowempty",
+            "-source-dest-allowempty",
+            "-source-src-readwrite",
+            "-source-dest-readwrite",
         )
         self.assertEqual(
             pathlib.Path(filename).read_text(),

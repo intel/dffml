@@ -219,7 +219,6 @@ class DNNRegressionModel(Model):
             -model-predict TARGET:float:1 \\
             -model-hidden 8 16 8 \\
             -sources s=csv \\
-            -source-readonly \\
             -source-filename train.csv \\
             -model-features \\
               Feature1:float:1 \\
@@ -231,7 +230,6 @@ class DNNRegressionModel(Model):
             -model-predict TARGET:float:1 \\
             -model-hidden 8 16 8 \\
             -sources s=csv \\
-            -source-readonly \\
             -source-filename test.csv \\
             -model-features \\
               Feature1:float:1 \\
@@ -244,7 +242,6 @@ class DNNRegressionModel(Model):
             -model-predict TARGET:float:1 \\
             -model-hidden 8 16 8 \\
             -sources s=csv \\
-            -source-readonly \\
             -source-filename /dev/stdin \\
             -model-features \\
               Feature1:float:1 \\
