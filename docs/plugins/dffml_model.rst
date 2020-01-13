@@ -45,7 +45,7 @@ Implemented using Tensorflow's DNNClassifier.
         -model tfdnnc \
         -model-epochs 3000 \
         -model-steps 20000 \
-        -model-classification classification:int:1 \
+        -model-predict classification:int:1 \
         -model-classifications 0 1 2 \
         -model-clstype int \
         -sources iris=csv \
@@ -59,7 +59,7 @@ Implemented using Tensorflow's DNNClassifier.
     ... lots of output ...
     $ dffml accuracy \
         -model tfdnnc \
-        -model-classification classification:int:1 \
+        -model-predict classification:int:1 \
         -model-classifications 0 1 2 \
         -model-clstype int \
         -sources iris=csv \
@@ -73,7 +73,7 @@ Implemented using Tensorflow's DNNClassifier.
     0.99996233782
     $ dffml predict all \
         -model tfdnnc \
-        -model-classification classification:int:1 \
+        -model-predict classification:int:1 \
         -model-classifications 0 1 2 \
         -model-clstype int \
         -sources iris=csv \
@@ -123,7 +123,7 @@ Implemented using Tensorflow's DNNClassifier.
 
 **Args**
 
-- classification: Feature
+- predict: Feature
 
   - Feature name holding classification value
 
