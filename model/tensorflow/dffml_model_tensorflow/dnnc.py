@@ -176,10 +176,6 @@ class DNNClassifierModelContext(TensorflowModelContext):
         self.classifications = self._classifications(self.cids)
         self.model_dir_path = self._model_dir_path()
 
-    @property
-    def classification(self):
-        return self.parent.config.classification.NAME
-
     def _mkcids(self, classifications):
         """
         Create an index, possible classification mapping and sort the list of
@@ -238,14 +234,14 @@ class DNNClassifierModelContext(TensorflowModelContext):
         for repo in [
             repo
             async for repo in sources.with_features(
-                self.features + [self.classification]
+                self.features + [self.parent.config.predict.NAME]
             )
-            if repo.feature(self.classification) in self.classifications
+            if repo.feature(self.parent.config.predict.NAME) in self.classifications
         ]:
             for feature, results in repo.features(self.features).items():
                 x_cols[feature].append(np.array(results))
             y_cols.append(
-                self.classifications[repo.feature(self.classification)]
+                self.classifications[repo.feature(self.parent.config.predict.NAME)]
             )
         if not y_cols:
             raise ValueError("No repos to train on")
@@ -282,14 +278,14 @@ class DNNClassifierModelContext(TensorflowModelContext):
         for repo in [
             repo
             async for repo in sources.with_features(
-                self.features + [self.classification]
+                self.features + [self.parent.config.predict.NAME]
             )
-            if repo.feature(self.classification) in self.classifications
+            if repo.feature(self.parent.config.predict.NAME) in self.classifications
         ]:
             for feature, results in repo.features(self.features).items():
                 x_cols[feature].append(np.array(results))
             y_cols.append(
-                self.classifications[repo.feature(self.classification)]
+                self.classifications[repo.feature(self.parent.config.predict.NAME)]
             )
         y_cols = np.array(y_cols)
         for feature in x_cols:
