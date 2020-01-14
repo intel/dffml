@@ -61,6 +61,7 @@ branch can be found `here <master/index.html>`_.
     publications
     community
     contributing/index
+    changelog
 
 Indices and tables
 ==================

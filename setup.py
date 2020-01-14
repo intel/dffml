@@ -52,6 +52,7 @@ setup(
             "codecov",
             "sphinx",
             "sphinxcontrib-asyncio",
+            "recommonmark",
             "black",
             "sphinx_rtd_theme",
         ],
