@@ -21,9 +21,9 @@ learning models that preform accurately on their problem.
 All plugins have their base class that they derive from in the main package,
 which is located in the ``dffml`` directory at the root of the git repo.
 
-The plugin packages are located within their respective at the root of the git
-repo. For example, source base classes are in ``dffml/source`` and source plugin
-packages are in ``source/``.
+The plugin packages are located within their respective directories at the root
+of the git repo. For example, source base classes are in ``dffml/source/`` and
+source plugin packages are in ``source/``.
 
 One-Two Punch
 -------------
@@ -34,6 +34,7 @@ that with a database, client HTTP sessions, etc.
 
 .. code-block:: python
 
+    import asyncio
     from dffml.repo import Repo
     from dffml.source.csv import CSVSource, CSVSourceConfig
 
