@@ -140,6 +140,7 @@ Working on DFFML
     :maxdepth: 2
 
     dev_env
+    codebase
     git
     testing
     docs
