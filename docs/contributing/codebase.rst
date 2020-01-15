@@ -45,6 +45,7 @@ For *Core* plugins, the name given to create should be in the form of
 
     $ cd model/
     $ dffml service dev create model dffml-model-someframework
+    $ mv dffml-model-someframework someframework
 
 Now that we've created the plugin, we need to add it to a few lists
 
