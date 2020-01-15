@@ -5,9 +5,11 @@ from dffml.repo import Repo
 from dffml.source.source import BaseSourceContext, BaseSource
 from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entrypoint
+from dffml.base import config, field
 
 
-class MiscSourceConfig(BaseConfig, NamedTuple):
+@config
+class MiscSourceConfig:
     repos: List[Repo]
 
 

@@ -198,6 +198,15 @@ class CMD(object):
         """
         if loop is None:
             loop = asyncio.get_event_loop()
+            # In Python 3.8 ThreadedChildWatcher becomes the default which
+            # should work fine for us. However, in Python 3.7 SafeChildWatcher
+            # is the default and may cause BlockingIOErrors when many
+            # subprocesses are created
+            # https://docs.python.org/3/library/asyncio-policy.html#asyncio.FastChildWatcher
+            if sys.version_info.major == 3 and sys.version_info.minor == 7:
+                watcher = asyncio.FastChildWatcher()
+                asyncio.set_child_watcher(watcher)
+                watcher.attach_loop(loop)
         result = None
         try:
             result = loop.run_until_complete(cls._main(*argv[1:]))
