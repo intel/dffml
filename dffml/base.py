@@ -147,7 +147,7 @@ def convert_value(arg, value):
             return copy.deepcopy(arg["default"])
         raise MissingConfig
 
-    if not "nargs" in arg:
+    if not "nargs" in arg and isinstance(value, list):
         value = value[0]
     if "type" in arg:
         type_cls = arg["type"]
