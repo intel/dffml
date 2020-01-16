@@ -6,7 +6,7 @@ import os
 from typing import List, Dict, Any, AsyncIterator
 
 import numpy as np
-import tensorflow
+import tensorflow as tf
 
 from dffml.repo import Repo
 from dffml.source.source import Sources
@@ -64,9 +64,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
             return self._model
         self.logger.debug("Loading model ")
 
-        _head = tensorflow.contrib.estimator.regression_head()
-        self._model = tensorflow.estimator.DNNEstimator(
-            head=_head,
+        self._model = tf.estimator.DNNRegressor(
             feature_columns=list(self.feature_columns.values()),
             hidden_units=self.parent.config.hidden,
             model_dir=self.model_dir_path,
@@ -102,7 +100,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
-        input_fn = tensorflow.estimator.inputs.numpy_input_fn(
+        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
             batch_size=batch_size,
@@ -138,7 +136,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
-        input_fn = tensorflow.estimator.inputs.numpy_input_fn(
+        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
             batch_size=batch_size,

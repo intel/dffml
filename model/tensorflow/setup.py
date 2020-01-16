@@ -18,7 +18,7 @@ with open(
 with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
-INSTALL_REQUIRES = ["tensorflow>=1.13.1,<2.0.0"] + (
+INSTALL_REQUIRES = ["tensorflow>=2.0.0b"] + (
     ["dffml>=0.3.1"]
     if not any(
         list(
