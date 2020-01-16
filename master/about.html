@@ -88,6 +88,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#architecture">Architecture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#machine-learning">Machine Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#data-flows-directed-graph-execution">Data Flows - Directed Graph Execution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#consistent-api">Consistent API</a></li>
@@ -183,10 +184,13 @@
 </li>
 <li><p>You want to do machine learning on a new problem that you don’t have a dataset
 for, so you need to generate it.</p></li>
-<li><p>You want to harness the power of directed graph execution to write testable,
-maintainable code that runs concurrently or in parallel without the need for
-you to deal with locking.</p></li>
+<li><p>You want to use directed graph execution to write code that runs concurrently
+with managed locking.</p></li>
 </ul>
+<div class="section" id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
+<p>This is a high level overview of how DFFML works.</p>
+<img alt="Architecture Diagram" src="_images/arch.svg" /></div>
 <div class="section" id="machine-learning">
 <h2>Machine Learning<a class="headerlink" href="#machine-learning" title="Permalink to this headline">¶</a></h2>
 <p>Python was chosen because of the machine learning community’s preference towards
