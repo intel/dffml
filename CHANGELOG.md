@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Tensoflow pretrained models for NLP
+  - Transformer (BERT)
+  - Pretrained Embedding (NNLM)
 - scikit models
   - Clusterers
     - KMeans
