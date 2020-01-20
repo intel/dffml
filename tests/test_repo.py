@@ -106,12 +106,12 @@ class TestRepo(unittest.TestCase):
         self.assertFalse(self.full.features(["dead", "beaf"]))
 
     def test_predicted(self):
-        old_prediction = self.full.data.prediction
+        old_prediction = self.full.data.prediction.copy()
         old_last_updated = self.full.data.last_updated
-        self.full.predicted("feed", 1.00)
+        self.full.predicted("target_name","feed", 1.00)
         self.assertNotEqual(old_prediction, self.full.data.prediction)
         self.assertNotEqual(old_last_updated, self.full.data.last_updated)
 
     def test_prediction(self):
-        self.full.predicted("feed", 1.00)
-        self.assertTrue(self.full.prediction())
+        self.full.predicted("target_name","feed", 1.00)
+        self.assertTrue(self.full.prediction("target_name"))
