@@ -321,7 +321,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         accuracy_score = self.model.evaluate(input_fn=input_fn)
         return Accuracy(accuracy_score["accuracy"])
 
-    async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
+    async def predict(self,target:str, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
         """
         Uses trained data to make a prediction about the quality of a repo.
         """
@@ -334,7 +334,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         for repo, pred_dict in zip(predict, predictions):
             class_id = pred_dict["class_ids"][0]
             probability = pred_dict["probabilities"][class_id]
-            repo.predicted(self.cids[class_id], probability)
+            repo.predicted(target,self.cids[class_id], probability)
             yield repo
 
 
