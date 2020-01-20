@@ -134,12 +134,13 @@ class TestDNN(AsyncTestCase):
         async with Sources(
             MemorySource(MemorySourceConfig(repos=[a]))
         ) as sources, self.model as model:
+            target_name = model.config.predict.NAME
             async with sources() as sctx, model() as mctx:
-                res = [repo async for repo in mctx.predict(sctx.repos())]
+                res = [repo async for repo in mctx.predict(target_name,sctx.repos())]
                 self.assertEqual(len(res), 1)
             self.assertEqual(res[0].src_url, a.src_url)
             test_error_norm = abs(
-                (test_target - res[0].prediction().value) / test_target + 1e-6
+                (test_target - res[0].prediction(target_name).value) / test_target + 1e-6
             )
             error_threshold = 0.2
             self.assertLess(test_error_norm, error_threshold)

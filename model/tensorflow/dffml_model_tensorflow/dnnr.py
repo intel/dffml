@@ -161,7 +161,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
         metrics = self.model.evaluate(input_fn=input_fn)
         return Accuracy(1 - metrics["loss"])  # 1 - mse
 
-    async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
+    async def predict(self,target:str, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
         """
         Uses trained data to make a prediction about the quality of a repo.
         """
@@ -175,7 +175,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
 
         for repo, pred_dict in zip(predict_repo, predictions):
             # TODO Instead of float("nan") save accuracy value and use that.
-            repo.predicted(float(pred_dict["predictions"]), float("nan"))
+            repo.predicted(target,float(pred_dict["predictions"]), float("nan"))
 
             yield repo
 
