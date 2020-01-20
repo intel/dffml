@@ -85,6 +85,7 @@ class ReposTestCase(AsyncExitStackTestCase):
 @config
 class FakeConfig:
     features: Features
+    predict : Feature
     directory: str = os.path.join(
         os.path.expanduser("~"), ".cache", "dffml", "test_cli", "fake"
     )
@@ -120,9 +121,9 @@ class FakeModelContext(ModelContext):
     async def accuracy(self, sources: Sources) -> AccuracyType:
         return AccuracyType(0.42)
 
-    async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
+    async def predict(self,target:str, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
         async for repo in repos:
-            repo.predicted(random.random(), float(repo.src_url))
+            repo.predicted(target,random.random(), float(repo.src_url))
             yield repo
 
 
@@ -395,6 +396,8 @@ class TestTrain(ReposTestCase):
             "fake",
             "-model-features",
             "fake",
+            "-model-predict",
+            "fake"
         )
 
 
@@ -409,6 +412,8 @@ class TestAccuracy(ReposTestCase):
             "fake",
             "-model-features",
             "fake",
+            "-model-predict",
+            "fake"
         )
         self.assertEqual(result, 0.42)
 
@@ -425,9 +430,11 @@ class TestPredict(ReposTestCase):
             "fake",
             "-model-features",
             "fake",
+            "-model-predict",
+            "fake"
         )
         results = {
-            repo.src_url: repo.prediction().confidence for repo in results
+            repo.src_url: repo.prediction("fake").confidence for repo in results
         }
         for repo in self.repos:
             self.assertEqual(float(repo.src_url), results[repo.src_url])
@@ -443,6 +450,8 @@ class TestPredict(ReposTestCase):
             self.temp_filename,
             "-model",
             "fake",
+            "-model-predict",
+            "fake",
             "-model-features",
             "fake",
             "-keys",
@@ -450,7 +459,7 @@ class TestPredict(ReposTestCase):
         )
         self.assertEqual(len(results), len(subset))
         results = {
-            repo.src_url: repo.prediction().confidence for repo in results
+            repo.src_url: repo.prediction("fake").confidence for repo in results
         }
         for repo in subset:
             self.assertEqual(float(repo.src_url), results[repo.src_url])
