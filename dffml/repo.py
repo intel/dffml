@@ -60,7 +60,7 @@ class RepoData(object):
         *,
         src_url: Optional[str] = None,
         features: Optional[Dict[str, Any]] = None,
-        prediction: Optional[RepoPrediction] = None,
+        prediction: Optional[Dict[str, Any]] = None,
         last_updated: Optional[datetime] = None,
     ) -> None:
         # If the repo is not evaluated or predicted then don't report out a new
@@ -71,14 +71,14 @@ class RepoData(object):
         if features is None:
             features = {}
         if prediction is None:
-            prediction = RepoPrediction()
+            prediction = {}
         if last_updated is None:
             last_updated = self.last_updated_default
         if isinstance(last_updated, str):
             last_updated = datetime.strptime(last_updated, self.DATE_FORMAT)
         self.src_url = src_url
         self.features = features
-        self.prediction = RepoPrediction(**prediction)
+        self.prediction = prediction
         self.last_updated = last_updated
 
     def dict(self):
@@ -140,6 +140,7 @@ class Repo(object):
     def __repr__(self):
         return str(self.dict())
 
+    # TODO change this to use dict
     def __str__(self):
         if not self.data.prediction:
             confidence, value = (0.0, "Undetermined")
@@ -206,17 +207,17 @@ class Repo(object):
             raise NoSuchFeature(name)
         return self.data.features[name]
 
-    def predicted(self, value: Any, confidence: float):
+    def predicted(self,target:str, value: Any, confidence: float):
         """
         Set the prediction for this repo
         """
-        self.data.prediction = RepoPrediction(
+        self.data.prediction[target] = RepoPrediction(
             value=value, confidence=float(confidence)
         )
         self.data.last_updated = datetime.now()
 
-    def prediction(self) -> RepoPrediction:
+    def prediction(self,target:str) -> RepoPrediction:
         """
         Get the prediction for this repo
         """
-        return self.data.prediction
+        return self.data.prediction[target]
