@@ -5,6 +5,7 @@ Loads repos from a csv file, using columns as features
 """
 import csv
 import ast
+import itertools
 import asyncio
 from typing import NamedTuple, Dict, List
 from dataclasses import dataclass
@@ -111,6 +112,8 @@ class CSVSource(FileSource, MemorySource):
             # Repo data we are going to parse from this row (must include
             # features).
             repo_data = {}
+            # TODO Change this so that anything with prediction_ and confidence_
+            # becomes prediction data.
             # Parse headers we as the CSV source added
             csv_meta = {}
             for header in self.CSV_HEADERS:
@@ -171,11 +174,14 @@ class CSVSource(FileSource, MemorySource):
             fieldnames.append(self.config.labelcol)
             # Get all the feature names
             feature_fieldnames = set()
+            prediction_fieldnames = set()
             for label, repos in open_file.write_out.items():
                 for repo in repos.values():
                     feature_fieldnames |= set(repo.data.features.keys())
+                    prediction_fieldnames |= set(repo.data.prediction.keys())
             fieldnames += list(feature_fieldnames)
-            fieldnames += self.CSV_HEADERS
+            fieldnames += itertools.chain(*list(map(lambda key: ("prediction_"+key, "confidence_"+key), list(prediction_fieldnames))))
+            # fieldnames += self.CSV_HEADERS
             self.logger.debug(f"fieldnames: {fieldnames}")
             # Write out the file
             writer = csv.DictWriter(fd, fieldnames=fieldnames)
@@ -194,10 +200,9 @@ class CSVSource(FileSource, MemorySource):
                         row[key] = value
                     # Write the prediction
                     if "prediction" in repo_data:
-                        row["prediction"] = repo_data["prediction"]["value"]
-                        row["confidence"] = repo_data["prediction"][
-                            "confidence"
-                        ]
+                        for key, value in repo_data["prediction"].items():
+                            row["prediction_" + key] = value["value"]
+                            row["confidence_" + key] = value["confidence"]
                     writer.writerow(row)
             del self.OPEN_CSV_FILES[self.config.filename]
             self.logger.debug(f"{self.config.filename} written")
