@@ -154,8 +154,8 @@ class CSVSource(FileSource, MemorySource):
 
             predictions = {
                 target_name : {
-                    "value" : (csv_meta["prediction_"+target_name]),
-                    "confidence" : (csv_meta["confidence_"+target_name])
+                    "value" : str(csv_meta["prediction_"+target_name]),
+                    "confidence" : float(csv_meta["confidence_"+target_name])
                 }
                 for target_name in target_keys
             }
