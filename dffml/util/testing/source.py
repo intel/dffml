@@ -80,6 +80,7 @@ class SourceTest(abc.ABC):
                     }
                     self.assertIn(full_src_url, repos)
                     self.assertIn(empty_src_url, repos)
+
                     self.assertEqual(
                         repos[full_src_url].features(), full_repo.features()
                     )
