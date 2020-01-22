@@ -93,10 +93,10 @@ class TestMerge(IntegrationCLITestCase):
             pathlib.Path(filename).read_text(),
             inspect.cleandoc(
                 """
-                src_url,label,prediction,confidence
-                A,unlabeled,,
-                B,unlabeled,,
-                C,unlabeled,,
+                src_url,label
+                A,unlabeled
+                B,unlabeled
+                C,unlabeled
                 """
             )
             + "\n",
