@@ -211,9 +211,9 @@ class TestMerge(ReposTestCase):
             contents = Path(csv_tempfile).read_text()
             self.assertEqual(
                 contents,
-                "src_url,label,prediction,confidence\n"
+                "src_url,label\n"
                 + "\n".join(
-                    [f"{repo.src_url},unlabeled,," for repo in self.repos]
+                    [f"{repo.src_url},unlabeled" for repo in self.repos]
                 )
                 + "\n",
                 "Incorrect data in csv file",
