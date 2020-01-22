@@ -75,7 +75,7 @@ class TestSLR(AsyncTestCase):
                 self.assertTrue(0.0 <= res < 1.0)
                 # Test predict
                 target_name = model.config.predict.NAME
-                async for repo in mctx.predict(target_name,sctx.repos()):
+                async for repo in mctx.predict(sctx.repos()):
                     correct = FEATURE_DATA[int(repo.src_url)][1]
                     # Comparison of correct to prediction to make sure prediction is within a reasonable range
                     prediction = repo.prediction(target_name).value
@@ -97,7 +97,7 @@ class TestSLR(AsyncTestCase):
         async with self.sources as sources, self.model as model:
             async with sources() as sctx, model() as mctx:
                 target_name = model.config.predict.NAME
-                async for repo in mctx.predict(target_name,sctx.repos()):
+                async for repo in mctx.predict(sctx.repos()):
                     target_name = model.config.predict.NAME
                     correct = FEATURE_DATA[int(repo.src_url)][1]
                     prediction = repo.prediction(target_name).value

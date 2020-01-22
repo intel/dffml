@@ -125,10 +125,11 @@ class SLRContext(ModelContext):
         return Accuracy(accuracy_value)
 
     async def predict(
-        self, target:str,repos: AsyncIterator[Repo]
+        self, repos: AsyncIterator[Repo]
     ) -> AsyncIterator[Tuple[Repo, Any, float]]:
         if self.regression_line is None:
             raise ModelNotTrained("Train model before prediction.")
+        target = self.parent.config.predict.NAME
         async for repo in repos:
             feature_data = repo.features(self.features)
             repo.predicted(

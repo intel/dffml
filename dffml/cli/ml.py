@@ -47,8 +47,8 @@ class PredictAll(MLCMD):
         action="store_true",
     )
 
-    async def predict(self,target, mctx, sctx, repos):
-        async for repo in mctx.predict(target,repos):
+    async def predict(self, mctx, sctx, repos):
+        async for repo in mctx.predict(repos):
             yield repo
             if self.update:
                 await sctx.update(repo)
@@ -56,11 +56,7 @@ class PredictAll(MLCMD):
     async def run(self):
         async with self.sources as sources, self.model as model:
             async with sources() as sctx, model() as mctx:
-                # TODO this should be okay now as we don't have multiple targets
-                # but will fail with multiple ones.
-                # In case of multiple targets what will config.predict be ?
-                target=model.config.predict.NAME
-                async for repo in self.predict(target,mctx, sctx, sctx.repos()):
+                async for repo in self.predict(mctx, sctx, sctx.repos()):
                     yield repo
 
 
