@@ -258,8 +258,10 @@ class DNNRegressionModel(Model):
                 },
                 "last_updated": "2019-10-24T15:26:41Z",
                 "prediction": {
-                    "confidence": NaN,
-                    "value": 1.1983429193496704
+                    "TARGET" : {
+                        "confidence": NaN,
+                        "value": 1.1983429193496704
+                    }
                 },
                 "src_url": 0
             }

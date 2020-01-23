@@ -189,8 +189,10 @@ class SLR(Model):
                 },
                 "last_updated": "2019-07-19T09:46:45Z",
                 "prediction": {
-                    "confidence": 1.0,
-                    "value": 90.0
+                    "Salary": {
+                        "confidence": 1.0,
+                        "value": 90.0
+                    }
                 },
                 "src_url": "0"
             }
