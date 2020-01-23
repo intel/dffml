@@ -140,28 +140,31 @@ class Repo(object):
     def __repr__(self):
         return str(self.dict())
 
-    # TODO change this to use dict
     def __str__(self):
-        if not self.data.prediction:
-            confidence, value = (0.0, "Undetermined")
-        else:
-            confidence, value = (
-                self.data.prediction.confidence,
-                self.data.prediction.value,
-            )
-        header = "%-11s (%2.1f%% confidence) %s" % (
-            value,
-            100.0 * confidence,
-            self.src_url,
-        )
+        header = self.src_url
         if len(self.extra.keys()):
             header += " " + str(self.extra)
+
         return "\n".join(
             [header]
             + [
                 ("%-30s%s" % (feature, str(results)))
                 for feature, results in self.features().items()
             ]
+            + ["Predictions"]
+            + (
+                [
+                (
+                    "%-30s\n\tvalue:%s, confidence:%s"
+                    % (
+                        pred,
+                        str(conf_val["value"]),
+                        str(conf_val["confidence"]),
+                    )
+                )
+                for pred, conf_val in self.data.prediction.items()
+            ] if self.data.prediction else ["Undetermined"]
+            )
         ).rstrip()
 
     def merge(self, repo: "Repo"):
@@ -207,7 +210,7 @@ class Repo(object):
             raise NoSuchFeature(name)
         return self.data.features[name]
 
-    def predicted(self,target:str, value: Any, confidence: float):
+    def predicted(self, target: str, value: Any, confidence: float):
         """
         Set the prediction for this repo
         """
@@ -216,12 +219,13 @@ class Repo(object):
         )
         self.data.last_updated = datetime.now()
 
-    def prediction(self,target:str) -> RepoPrediction:
+    def prediction(self, target: str) -> RepoPrediction:
         """
         Get the prediction for this repo
         """
         return self.data.prediction[target]
-    def predictions(self,subset: List[str] = []) -> Dict[str, Any]:
+
+    def predictions(self, subset: List[str] = []) -> Dict[str, Any]:
         if not subset:
             return self.data.prediction
         for name in subset:

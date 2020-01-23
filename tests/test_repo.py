@@ -74,7 +74,7 @@ class TestRepo(unittest.TestCase):
     def test_str(self):
         self.full.prediction = RepoPrediction()
         self.assertIn("Undetermined", str(self.full))
-        self.full.data.prediction = RepoPrediction(value="Good")
+        self.full.data.prediction = {"Prediction":RepoPrediction(value="Good")}
         self.assertIn("Good", str(self.full))
         self.full.extra.update(dict(hi=5))
         self.assertIn("5", str(self.full))
@@ -108,10 +108,10 @@ class TestRepo(unittest.TestCase):
     def test_predicted(self):
         old_prediction = self.full.data.prediction.copy()
         old_last_updated = self.full.data.last_updated
-        self.full.predicted("target_name","feed", 1.00)
+        self.full.predicted("target_name", "feed", 1.00)
         self.assertNotEqual(old_prediction, self.full.data.prediction)
         self.assertNotEqual(old_last_updated, self.full.data.last_updated)
 
     def test_prediction(self):
-        self.full.predicted("target_name","feed", 1.00)
+        self.full.predicted("target_name", "feed", 1.00)
         self.assertTrue(self.full.prediction("target_name"))
