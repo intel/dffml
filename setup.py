@@ -92,5 +92,7 @@ setup(
             "memory = dffml.df.memory:MemoryOperationImplementationNetwork"
         ],
         "dffml.orchestrator": ["memory = dffml.df.memory:MemoryOrchestrator"],
+        # Databases
+        "dffml.db": ["sqlite = dffml.db.sqlite:SqliteDatabase"],
     },
 )
