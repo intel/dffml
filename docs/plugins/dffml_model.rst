@@ -125,7 +125,7 @@ Implemented using Tensorflow's DNNClassifier.
 
 - predict: Feature
 
-  - Feature name holding classification value
+  - Feature name holding predict value
 
 - classifications: List of strings
 
