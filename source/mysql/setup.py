@@ -10,7 +10,8 @@ common = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(common)
 
 common.KWARGS["entry_points"] = {
-    "dffml.source": [f"mysql = {common.IMPORT_NAME}.source:MySQLSource"]
+    "dffml.db": [f"mysql = {common.IMPORT_NAME}.db:MySQLDatabase"],
+    "dffml.source": [f"mysql = {common.IMPORT_NAME}.source:MySQLSource"],
 }
 
 common.KWARGS["install_requires"] += ["aiomysql>=0.0.20"]
