@@ -344,13 +344,13 @@ class DNNClassifierModel(Model):
         $ wget http://download.tensorflow.org/data/iris_training.csv
         $ wget http://download.tensorflow.org/data/iris_test.csv
         $ head iris_training.csv
-        $ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,predict/g' *.csv
+        $ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' *.csv
         $ head iris_training.csv
         $ dffml train \\
             -model tfdnnc \\
             -model-epochs 3000 \\
             -model-steps 20000 \\
-            -model-predict predict:int:1 \\
+            -model-predict classification:int:1 \\
             -model-classifications 0 1 2 \\
             -model-clstype int \\
             -sources iris=csv \\
@@ -364,7 +364,7 @@ class DNNClassifierModel(Model):
         ... lots of output ...
         $ dffml accuracy \\
             -model tfdnnc \\
-            -model-predict predict:int:1 \\
+            -model-predict classification:int:1 \\
             -model-classifications 0 1 2 \\
             -model-clstype int \\
             -sources iris=csv \\
@@ -378,7 +378,7 @@ class DNNClassifierModel(Model):
         0.99996233782
         $ dffml predict all \\
             -model tfdnnc \\
-            -model-predict predict:int:1 \\
+            -model-predict classification:int:1 \\
             -model-classifications 0 1 2 \\
             -model-clstype int \\
             -sources iris=csv \\
@@ -400,7 +400,7 @@ class DNNClassifierModel(Model):
                     "PetalWidth": 1.5,
                     "SepalLength": 5.9,
                     "SepalWidth": 3.0,
-                    "predict": 1
+                    "classification": 1
                 },
                 "last_updated": "2019-07-31T02:00:12Z",
                 "prediction": {
@@ -416,7 +416,7 @@ class DNNClassifierModel(Model):
                     "PetalWidth": 2.1,
                     "SepalLength": 6.9,
                     "SepalWidth": 3.1,
-                    "predict": 2
+                    "classification": 2
                 },
                 "last_updated": "2019-07-31T02:00:12Z",
                 "prediction": {
