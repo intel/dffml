@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changelog now included in documenation website.
 - Database abstraction `dffml.db`
   - SQLite connector
+  - MySQL connector
 ### Changed
 - `readonly` parameter in source config is now changed to `readwrite`.
 - `predict` parameter of all model config classes has been changed from `str` to `Feature`.
