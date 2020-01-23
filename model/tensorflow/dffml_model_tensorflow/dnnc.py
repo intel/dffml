@@ -139,10 +139,8 @@ class TensorflowModelContext(ModelContext):
 
 @config
 class DNNClassifierModelConfig:
-    predict: Feature = field(
-        "Feature name holding predict value"
-    )
-    classifications: List[str] = field("Options for value of predict")
+    predict: Feature = field("Feature name holding predict value")
+    classifications: List[str] = field("Options for value of classification")
     features: Features = field("Features to train on")
     clstype: Type = field("Data type of classifications values", default=str)
     steps: int = field("Number of steps to train the model", default=3000)
@@ -178,7 +176,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
 
     def _mkcids(self, classifications):
         """
-        Create an index, possible predict mapping and sort the list of
+        Create an index, possible classification mapping and sort the list of
         classifications first.
         """
         cids = dict(
@@ -236,12 +234,15 @@ class DNNClassifierModelContext(TensorflowModelContext):
             async for repo in sources.with_features(
                 self.features + [self.parent.config.predict.NAME]
             )
-            if repo.feature(self.parent.config.predict.NAME) in self.classifications
+            if repo.feature(self.parent.config.predict.NAME)
+            in self.classifications
         ]:
             for feature, results in repo.features(self.features).items():
                 x_cols[feature].append(np.array(results))
             y_cols.append(
-                self.classifications[repo.feature(self.parent.config.predict.NAME)]
+                self.classifications[
+                    repo.feature(self.parent.config.predict.NAME)
+                ]
             )
         if not y_cols:
             raise ValueError("No repos to train on")
@@ -280,12 +281,15 @@ class DNNClassifierModelContext(TensorflowModelContext):
             async for repo in sources.with_features(
                 self.features + [self.parent.config.predict.NAME]
             )
-            if repo.feature(self.parent.config.predict.NAME) in self.classifications
+            if repo.feature(self.parent.config.predict.NAME)
+            in self.classifications
         ]:
             for feature, results in repo.features(self.features).items():
                 x_cols[feature].append(np.array(results))
             y_cols.append(
-                self.classifications[repo.feature(self.parent.config.predict.NAME)]
+                self.classifications[
+                    repo.feature(self.parent.config.predict.NAME)
+                ]
             )
         y_cols = np.array(y_cols)
         for feature in x_cols:
