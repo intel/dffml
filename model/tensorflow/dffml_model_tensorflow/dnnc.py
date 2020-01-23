@@ -139,9 +139,7 @@ class TensorflowModelContext(ModelContext):
 
 @config
 class DNNClassifierModelConfig:
-    predict: Feature = field(
-        "Feature name holding predict value"
-    )
+    predict: Feature = field("Feature name holding predict value")
     classifications: List[str] = field("Options for value of predict")
     features: Features = field("Features to train on")
     clstype: Type = field("Data type of classifications values", default=str)
@@ -236,12 +234,15 @@ class DNNClassifierModelContext(TensorflowModelContext):
             async for repo in sources.with_features(
                 self.features + [self.parent.config.predict.NAME]
             )
-            if repo.feature(self.parent.config.predict.NAME) in self.classifications
+            if repo.feature(self.parent.config.predict.NAME)
+            in self.classifications
         ]:
             for feature, results in repo.features(self.features).items():
                 x_cols[feature].append(np.array(results))
             y_cols.append(
-                self.classifications[repo.feature(self.parent.config.predict.NAME)]
+                self.classifications[
+                    repo.feature(self.parent.config.predict.NAME)
+                ]
             )
         if not y_cols:
             raise ValueError("No repos to train on")
@@ -280,12 +281,15 @@ class DNNClassifierModelContext(TensorflowModelContext):
             async for repo in sources.with_features(
                 self.features + [self.parent.config.predict.NAME]
             )
-            if repo.feature(self.parent.config.predict.NAME) in self.classifications
+            if repo.feature(self.parent.config.predict.NAME)
+            in self.classifications
         ]:
             for feature, results in repo.features(self.features).items():
                 x_cols[feature].append(np.array(results))
             y_cols.append(
-                self.classifications[repo.feature(self.parent.config.predict.NAME)]
+                self.classifications[
+                    repo.feature(self.parent.config.predict.NAME)
+                ]
             )
         y_cols = np.array(y_cols)
         for feature in x_cols:
@@ -317,7 +321,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         accuracy_score = self.model.evaluate(input_fn=input_fn)
         return Accuracy(accuracy_score["accuracy"])
 
-    async def predict(self,repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
+    async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
         """
         Uses trained data to make a prediction about the quality of a repo.
         """
@@ -331,7 +335,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         for repo, pred_dict in zip(predict, predictions):
             class_id = pred_dict["class_ids"][0]
             probability = pred_dict["probabilities"][class_id]
-            repo.predicted(target,self.cids[class_id], probability)
+            repo.predicted(target, self.cids[class_id], probability)
             yield repo
 
 

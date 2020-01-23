@@ -5,7 +5,7 @@ import abc
 import random
 import tempfile
 
-from ...repo import Repo,RepoPrediction
+from ...repo import Repo, RepoPrediction
 from ..asynctestcase import AsyncTestCase
 
 
@@ -39,10 +39,11 @@ class SourceTest(abc.ABC):
                     "SepalLength": 5.8,
                     "SepalWidth": 2.7,
                 },
-                "prediction": {"target_name" : RepoPrediction(
-                                value="feedface", confidence=0.42
-                                )
-                }
+                "prediction": {
+                    "target_name": RepoPrediction(
+                        value="feedface", confidence=0.42
+                    )
+                },
             },
         )
         empty_repo = Repo(
@@ -68,8 +69,13 @@ class SourceTest(abc.ABC):
             async with testSource() as sourceContext:
                 with self.subTest(src_url=full_src_url):
                     repo = await sourceContext.repo(full_src_url)
-                    self.assertEqual(repo.data.prediction["target_name"]["value"], "feedface")
-                    self.assertEqual(repo.data.prediction["target_name"]["confidence"], 0.42)
+                    self.assertEqual(
+                        repo.data.prediction["target_name"]["value"],
+                        "feedface",
+                    )
+                    self.assertEqual(
+                        repo.data.prediction["target_name"]["confidence"], 0.42
+                    )
                 with self.subTest(src_url=empty_src_url):
                     repo = await sourceContext.repo(empty_src_url)
                     self.assertFalse(repo.data.prediction)

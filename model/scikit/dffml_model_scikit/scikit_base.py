@@ -109,7 +109,7 @@ class ScikitContext(ModelContext):
         return self.confidence
 
     async def predict(
-        self,repos: AsyncIterator[Repo]
+        self, repos: AsyncIterator[Repo]
     ) -> AsyncIterator[Tuple[Repo, Any, float]]:
         if not os.path.isfile(self._filename()):
             raise ModelNotTrained("Train model before prediction.")
@@ -125,7 +125,9 @@ class ScikitContext(ModelContext):
                 )
             )
             target = self.parent.config.predict.NAME
-            repo.predicted(target,self.clf.predict(predict)[0], self.confidence)
+            repo.predicted(
+                target, self.clf.predict(predict)[0], self.confidence
+            )
             yield repo
 
 
@@ -227,10 +229,10 @@ class ScikitContextUnsprvised(ScikitContext):
             predict = np.array(df)
             prediction = predictor(predict)
             self.logger.debug(
-                "Predicted cluster for {}: {}".format(predict, prediction,)
+                "Predicted cluster for {}: {}".format(predict, prediction)
             )
             target = self.parent.config.predict.NAME
-            repo.predicted(target,prediction[0], self.confidence)
+            repo.predicted(target, prediction[0], self.confidence)
             yield repo
 
 

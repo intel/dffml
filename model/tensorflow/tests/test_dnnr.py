@@ -140,7 +140,9 @@ class TestDNN(AsyncTestCase):
                 self.assertEqual(len(res), 1)
             self.assertEqual(res[0].src_url, a.src_url)
             test_error_norm = abs(
-                (test_target - res[0].prediction(target_name).value) / test_target + 1e-6
+                (test_target - res[0].prediction(target_name).value)
+                / test_target
+                + 1e-6
             )
             error_threshold = 0.2
             self.assertLess(test_error_norm, error_threshold)

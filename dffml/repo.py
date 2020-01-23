@@ -154,16 +154,18 @@ class Repo(object):
             + ["Predictions"]
             + (
                 [
-                (
-                    "%-30s\n\tvalue:%s, confidence:%s"
-                    % (
-                        pred,
-                        str(conf_val["value"]),
-                        str(conf_val["confidence"]),
+                    (
+                        "%-30s\n\tvalue:%s, confidence:%s"
+                        % (
+                            pred,
+                            str(conf_val["value"]),
+                            str(conf_val["confidence"]),
+                        )
                     )
-                )
-                for pred, conf_val in self.data.prediction.items()
-            ] if self.data.prediction else ["Undetermined"]
+                    for pred, conf_val in self.data.prediction.items()
+                ]
+                if self.data.prediction
+                else ["Undetermined"]
             )
         ).rstrip()
 

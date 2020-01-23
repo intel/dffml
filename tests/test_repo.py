@@ -74,7 +74,9 @@ class TestRepo(unittest.TestCase):
     def test_str(self):
         self.full.prediction = RepoPrediction()
         self.assertIn("Undetermined", str(self.full))
-        self.full.data.prediction = {"Prediction":RepoPrediction(value="Good")}
+        self.full.data.prediction = {
+            "Prediction": RepoPrediction(value="Good")
+        }
         self.assertIn("Good", str(self.full))
         self.full.extra.update(dict(hi=5))
         self.assertIn("5", str(self.full))

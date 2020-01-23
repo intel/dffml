@@ -114,14 +114,14 @@ class CSVSource(FileSource, MemorySource):
             repo_data = {}
             # Parse headers we as the CSV source added
             csv_meta = {}
-            row_keys=[]
+            row_keys = []
             # getting all keys starting with "prediction","confidence"
             for header in self.CSV_HEADERS:
-                row_keys.extend(list(
-                     filter(
-                    lambda x: x.startswith(header+"_"),
-                    row.keys()
-                    )
+                row_keys.extend(
+                    list(
+                        filter(
+                            lambda x: x.startswith(header + "_"), row.keys()
+                        )
                     )
                 )
             # pop all prediction data from row and save in csv_meta
@@ -144,24 +144,20 @@ class CSVSource(FileSource, MemorySource):
 
             # Getting all prediction target names
             target_keys = filter(
-                    lambda x:x.startswith("prediction_"),
-                    csv_meta.keys()
-                )
+                lambda x: x.startswith("prediction_"), csv_meta.keys()
+            )
             target_keys = map(
-                lambda x:x.replace("prediction_",""),
-                target_keys
+                lambda x: x.replace("prediction_", ""), target_keys
             )
 
             predictions = {
-                target_name : {
-                    "value" : str(csv_meta["prediction_"+target_name]),
-                    "confidence" : float(csv_meta["confidence_"+target_name])
+                target_name: {
+                    "value": str(csv_meta["prediction_" + target_name]),
+                    "confidence": float(csv_meta["confidence_" + target_name]),
                 }
                 for target_name in target_keys
             }
-            repo_data.update(
-                    {"prediction":predictions}
-                )
+            repo_data.update({"prediction": predictions})
             # If there was no data in the row, skip it
             if not repo_data and src_url == str(index[label] - 1):
                 continue
@@ -201,8 +197,14 @@ class CSVSource(FileSource, MemorySource):
                     feature_fieldnames |= set(repo.data.features.keys())
                     prediction_fieldnames |= set(repo.data.prediction.keys())
             fieldnames += list(feature_fieldnames)
-            fieldnames += itertools.chain(*list(map(lambda key: ("prediction_"+key, "confidence_"+key),
-                             list(prediction_fieldnames))))
+            fieldnames += itertools.chain(
+                *list(
+                    map(
+                        lambda key: ("prediction_" + key, "confidence_" + key),
+                        list(prediction_fieldnames),
+                    )
+                )
+            )
             self.logger.debug(f"fieldnames: {fieldnames}")
             # Write out the file
             writer = csv.DictWriter(fd, fieldnames=fieldnames)

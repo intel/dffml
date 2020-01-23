@@ -111,7 +111,7 @@ class TestCSV(IntegrationCLITestCase):
         self.assertIn("src_url", results)
         self.assertEqual("0", results["src_url"])
         self.assertIn("prediction", results)
-        self.assertIn("Salary",results["prediction"])
-        results=results["prediction"]["Salary"]
+        self.assertIn("Salary", results["prediction"])
+        results = results["prediction"]["Salary"]
         self.assertIn("value", results)
         self.assertEqual(70.0, results["value"])
