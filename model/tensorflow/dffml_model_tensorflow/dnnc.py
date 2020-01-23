@@ -140,11 +140,7 @@ class TensorflowModelContext(ModelContext):
 @config
 class DNNClassifierModelConfig:
     predict: Feature = field("Feature name holding predict value")
-<<<<<<< HEAD
-    classifications: List[str] = field("Options for value of predict")
-=======
     classifications: List[str] = field("Options for value of classification")
->>>>>>> c695a9ba6f178a93d58a988489f58bd81dd99d12
     features: Features = field("Features to train on")
     clstype: Type = field("Data type of classifications values", default=str)
     steps: int = field("Number of steps to train the model", default=3000)
@@ -409,12 +405,15 @@ class DNNClassifierModel(Model):
                     "PetalWidth": 1.5,
                     "SepalLength": 5.9,
                     "SepalWidth": 3.0,
-                    "predict": 1
+                    "classification": 1
                 },
                 "last_updated": "2019-07-31T02:00:12Z",
                 "prediction": {
-                    "confidence": 0.9999997615814209,
-                    "value": 1
+                    "classification":
+                        {
+                            "confidence": 0.9999997615814209,
+                            "value": 1
+                        }
                 },
                 "src_url": "0"
             },
@@ -425,12 +424,15 @@ class DNNClassifierModel(Model):
                     "PetalWidth": 2.1,
                     "SepalLength": 6.9,
                     "SepalWidth": 3.1,
-                    "predict": 2
+                    "classification": 2
                 },
                 "last_updated": "2019-07-31T02:00:12Z",
                 "prediction": {
-                    "confidence": 0.9999984502792358,
-                    "value": 2
+                    "classification":
+                    {
+                        "confidence": 0.9999984502792358,
+                        "value": 2
+                    }
                 },
                 "src_url": "1"
             },

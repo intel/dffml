@@ -17,13 +17,13 @@ class SqliteDatabaseConfig:
 
 class SqliteDatabaseContext(SQLDatabaseContext):
     async def create_table(
-        self, table_name: str, cols: Dict[str, str],
+        self, table_name: str, cols: Dict[str, str]
     ) -> None:
         query = self.create_table_query(table_name, cols)
         self.logger.debug(query)
         self.parent.cursor.execute(query)
 
-    async def insert(self, table_name: str, data: Dict[str, Any],) -> None:
+    async def insert(self, table_name: str, data: Dict[str, Any]) -> None:
         query, query_values = self.insert_query(table_name, data)
         async with self.parent.lock:
             with self.parent.db:
