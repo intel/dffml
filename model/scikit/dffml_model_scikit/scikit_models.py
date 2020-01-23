@@ -64,7 +64,7 @@ from dffml_model_scikit.scikit_base import (
     ScikitUnsprvised,
     ScikitContextUnsprvised,
 )
-from dffml.feature.feature import Feature, Features
+from dffml.feature.feature import Feature, Features,DefFeature
 from dffml.util.cli.parser import list_action
 
 
@@ -343,10 +343,8 @@ for entry_point_name, name, cls, applicable_features_function in [
                 default=None,
             ),
         )
-    dffml_config = mkscikit_config_cls(
-        name + "ModelConfig",
-        cls,
-        properties={
+
+    dffml_config_properties={
             **{
                 "directory": (
                     str,
@@ -363,7 +361,24 @@ for entry_point_name, name, cls, applicable_features_function in [
                 "features": (Features, field("Features to train on")),
             },
             **config_fields,
-        },
+        }
+
+    if estimator_type in unsupervised_estimators:
+        dffml_config_properties["predict"] =(
+                    Feature,
+                    field(
+                        "field here for compability with other functions,no need to change",
+                        default=DefFeature(
+                            name="Prediction",dtype="str",length=10
+                            )
+                        )
+                    )
+
+    dffml_config = mkscikit_config_cls(
+        name + "ModelConfig",
+        cls,
+        properties = dffml_config_properties
+,
     )
 
     dffml_cls_ctx = type(

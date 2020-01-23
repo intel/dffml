@@ -366,6 +366,8 @@ class TestScikitClustering(IntegrationCLITestCase):
             results = results[0]
             self.assertIn("prediction", results)
             results = results["prediction"]
+            self.assertIn("Prediction",results)
+            results = results["Prediction"]
             self.assertIn("value", results)
             results = results["value"]
             self.assertTrue(results is not None)

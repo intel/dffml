@@ -138,6 +138,7 @@ class ScikitContextUnsprvised(ScikitContext):
             del config["directory"]
             del config["features"]
             del config["tcluster"]
+            del config["predict"]
             self.clf = self.parent.SCIKIT_MODEL(**config)
         return self
 
