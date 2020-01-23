@@ -101,6 +101,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#dffml-dataflow-run">dffml.dataflow.run</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#dffml-mapping-create">dffml.mapping.create</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#dffml-mapping-extract">dffml.mapping.extract</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dffml-model-predict">dffml.model.predict</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#get-single">get_single</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#group-by">group_by</a></li>
 </ul>
@@ -277,6 +278,24 @@ the roadmap.</p>
 <p><strong>Outputs</strong></p>
 <ul class="simple">
 <li><p>value: value(type: generic)</p></li>
+</ul>
+</div>
+<div class="section" id="dffml-model-predict">
+<h3>dffml.model.predict<a class="headerlink" href="#dffml-model-predict" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>features: repo_features(type: Dict[str, Any])</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>prediction: model_predictions(type: Dict[str, Any])</p></li>
+</ul>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>model: Entrypoint</p></li>
 </ul>
 </div>
 <div class="section" id="get-single">
