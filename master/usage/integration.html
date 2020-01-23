@@ -224,7 +224,14 @@ package manager should have it if not.</p>
     -e <span class="nv">MYSQL_PASSWORD</span><span class="o">=</span>pass <span class="se">\</span>
     -e <span class="nv">MYSQL_DATABASE</span><span class="o">=</span>db <span class="se">\</span>
     -p <span class="m">3306</span>:3306 <span class="se">\</span>
-    mariadb
+    mariadb:10
+</pre></div>
+</div>
+<p>Wait for the database to start. Run the following command until you see <code class="docutils literal notranslate"><span class="pre">ready</span>
+<span class="pre">for</span> <span class="pre">connections</span></code> twice in the output.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> docker logs maintained_db <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> grep <span class="s1">&#39;ready for&#39;</span>
+<span class="go">2020-01-13 21:31:09 0 [Note] mysqld: ready for connections.</span>
+<span class="go">2020-01-13 21:32:16 0 [Note] mysqld: ready for connections.</span>
 </pre></div>
 </div>
 <p>Import the data. The data was pulled from a couple pages of GitHub search
@@ -233,7 +240,7 @@ meaningless.</p>
 <p>If you want results that mean anything, you could discard all of this data and
 use the web app to create a meaningful dataset by manually going through and
 setting the status of repos.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> docker run -i --rm --net<span class="o">=</span>host mariadb mysql <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> docker run -i --rm --net<span class="o">=</span>host mariadb:10 mysql <span class="se">\</span>
     -h127.0.0.1 <span class="se">\</span>
     -uuser <span class="se">\</span>
     -ppass <span class="se">\</span>
@@ -686,7 +693,7 @@ CREATE TABLE IF NOT EXISTS `ml_data` (
 </pre></div>
 </div>
 <p>You can pipe that query in with bash like we did the first time.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> docker run -i --rm --net<span class="o">=</span>host mariadb mysql <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> docker run -i --rm --net<span class="o">=</span>host mariadb:10 mysql <span class="se">\</span>
     -h127.0.0.1 <span class="se">\</span>
     -uuser <span class="se">\</span>
     -ppass <span class="se">\</span>

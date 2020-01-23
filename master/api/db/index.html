@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Base Model &mdash; DFFML 0.3.2 documentation</title>
+  <title>Databases &mdash; DFFML 0.3.2 documentation</title>
   
 
   
@@ -36,8 +36,8 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Sources" href="../source/index.html" />
-    <link rel="prev" title="Models" href="index.html" /> 
+    <link rel="next" title="Base Database" href="base.html" />
+    <link rel="prev" title="File Based Sources" href="../source/file.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -100,12 +100,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../repo.html">Repo</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">Models</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Base Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Databases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="base.html">Base Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sql.html">sql</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sqlite.html">sqlite</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../util/index.html">API Helper Utilities Reference</a></li>
 </ul>
 </li>
@@ -160,15 +162,13 @@
         
           <li><a href="../index.html">API Reference</a> &raquo;</li>
         
-          <li><a href="index.html">Models</a> &raquo;</li>
-        
-      <li>Base Model</li>
+      <li>Databases</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/api/model/base.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/api/db/index.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -181,47 +181,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-dffml.model.model">
-<span id="base-model"></span><h1>Base Model<a class="headerlink" href="#module-dffml.model.model" title="Permalink to this headline">¶</a></h1>
-<p>Model subclasses are responsible for training themselves on repos, making
-predictions about the value of a feature in the repo, and assessing thei
-prediction accuracy.</p>
-<dl class="class">
-<dt id="dffml.model.model.Model">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.model.model.</code><code class="sig-name descname">Model</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#Model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.Model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Abstract base class which should be derived from and implmented using
-various machine learning frameworks or concepts.</p>
-<dl class="attribute">
-<dt id="dffml.model.model.Model.CONFIG">
-<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.model.model.Model.CONFIG" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="#dffml.model.model.ModelConfig" title="dffml.model.model.ModelConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ModelConfig</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="dffml.model.model.ModelConfig">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.model.model.</code><code class="sig-name descname">ModelConfig</code><span class="sig-paren">(</span><em class="sig-param">directory: str</em>, <em class="sig-param">features: dffml.feature.feature.Features</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.ModelConfig" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="class">
-<dt id="dffml.model.model.ModelContext">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.model.model.</code><code class="sig-name descname">ModelContext</code><span class="sig-paren">(</span><em class="sig-param">parent: dffml.model.model.Model</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.ModelContext" title="Permalink to this definition">¶</a></dt>
-<dd><p>Abstract base class which should be derived from and implmented using
-various machine learning frameworks or concepts.</p>
-<dl class="method">
-<dt id="dffml.model.model.ModelContext.predict">
-<em class="property">abstract </em><code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">repos: AsyncIterator[dffml.repo.Repo]</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.ModelContext.predict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Uses trained data to make a prediction about the quality of a repo.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="exception">
-<dt id="dffml.model.model.ModelNotTrained">
-<em class="property">exception </em><code class="sig-prename descclassname">dffml.model.model.</code><code class="sig-name descname">ModelNotTrained</code><a class="reference internal" href="../../_modules/dffml/model/model.html#ModelNotTrained"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.ModelNotTrained" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+  <div class="section" id="databases">
+<h1>Databases<a class="headerlink" href="#databases" title="Permalink to this headline">¶</a></h1>
+<p>Databases are an abstraction around common database operations.</p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="base.html">Base Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sql.html">sql</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sqlite.html">sqlite</a></li>
+</ul>
+</div>
 </div>
 
 
@@ -232,10 +202,10 @@ various machine learning frameworks or concepts.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../source/index.html" class="btn btn-neutral float-right" title="Sources" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="base.html" class="btn btn-neutral float-right" title="Base Database" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../source/file.html" class="btn btn-neutral float-left" title="File Based Sources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
