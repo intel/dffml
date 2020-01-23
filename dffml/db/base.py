@@ -106,7 +106,7 @@ class BaseDatabaseContext(
         self, table_name: str, cols: Dict[str, str]
     ) -> None:
         """
-        creates a table with name `table_name` if it doesn't exist
+        Creates a table with name `table_name` if it doesn't exist
         """
 
     @abc.abstractmethod
