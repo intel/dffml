@@ -382,7 +382,7 @@ to train on our dataset.
         -model tfdnnc \
         -model-epochs 400 \
         -model-steps 4000 \
-        -model-classification maintained:str:1 \
+        -model-predict maintained:str:1 \
         -model-classifications 0 1 \
         -sources db=demoapp \
         -model-features \
@@ -399,7 +399,7 @@ meaningless unless you threw out the dataset and put in real classifications.
 
     $ dffml accuracy \
         -model tfdnnc \
-        -model-classification maintained:str:1 \
+        -model-predict maintained:str:1 \
         -model-classifications 0 1 \
         -sources db=demoapp \
         -model-features \
@@ -431,7 +431,7 @@ Now that we have the data for the new repo, ask the model for a prediction.
     $ dffml predict repo \
         -keys https://github.com/intel/dffml.git \
         -model tfdnnc \
-        -model-classification maintained:str:1 \
+        -model-predict maintained:str:1 \
         -model-classifications 0 1 \
         -sources db=demoapp \
         -model-features \

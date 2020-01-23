@@ -217,7 +217,7 @@ look for a different saved model.</p>
     -model tfdnnc <span class="se">\</span>
     -model-epochs <span class="m">3000</span> <span class="se">\</span>
     -model-steps <span class="m">20000</span> <span class="se">\</span>
-    -model-classification classification:int:1 <span class="se">\</span>
+    -model-predict classification:int:1 <span class="se">\</span>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="se">\</span>
     -model-clstype int <span class="se">\</span>
     -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
@@ -231,7 +231,7 @@ look for a different saved model.</p>
 <span class="go">... lots of output ...</span>
 <span class="gp">$</span> dffml accuracy <span class="se">\</span>
     -model tfdnnc <span class="se">\</span>
-    -model-classification classification:int:1 <span class="se">\</span>
+    -model-predict classification:int:1 <span class="se">\</span>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="se">\</span>
     -model-clstype int <span class="se">\</span>
     -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
@@ -245,7 +245,7 @@ look for a different saved model.</p>
 <span class="go">0.99996233782</span>
 <span class="gp">$</span> dffml predict all <span class="se">\</span>
     -model tfdnnc <span class="se">\</span>
-    -model-classification classification:int:1 <span class="se">\</span>
+    -model-predict classification:int:1 <span class="se">\</span>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="se">\</span>
     -model-clstype int <span class="se">\</span>
     -sources <span class="nv">iris</span><span class="o">=</span>csv <span class="se">\</span>
@@ -296,9 +296,9 @@ look for a different saved model.</p>
 </div>
 <p><strong>Args</strong></p>
 <ul class="simple">
-<li><p>classification: Feature</p>
+<li><p>predict: Feature</p>
 <ul>
-<li><p>Feature name holding classification value</p></li>
+<li><p>Feature name holding predict value</p></li>
 </ul>
 </li>
 <li><p>classifications: List of strings</p>
