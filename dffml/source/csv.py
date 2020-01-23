@@ -116,10 +116,10 @@ class CSVSource(FileSource, MemorySource):
             csv_meta = {}
             row_keys=[]
             # getting all keys starting with "prediction","confidence"
-            for _header in self.CSV_HEADERS:
+            for header in self.CSV_HEADERS:
                 row_keys.extend(list(
                      filter(
-                    lambda x: x.startswith(_header),
+                    lambda x: x.startswith(header+"_"),
                     row.keys()
                     )
                     )

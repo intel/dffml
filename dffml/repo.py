@@ -221,3 +221,13 @@ class Repo(object):
         Get the prediction for this repo
         """
         return self.data.prediction[target]
+    def predictions(self,subset: List[str] = []) -> Dict[str, Any]:
+        if not subset:
+            return self.data.prediction
+        for name in subset:
+            if (
+                not name in self.data.prediction
+                or self.data.prediction[name] is None
+            ):
+                return {}
+        return {name: self.data.prediction[name] for name in subset}

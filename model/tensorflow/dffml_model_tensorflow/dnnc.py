@@ -351,7 +351,7 @@ class DNNClassifierModel(Model):
             -model tfdnnc \\
             -model-epochs 3000 \\
             -model-steps 20000 \\
-            -model-predict predict:int:1 \\
+            -model-predict classification:int:1 \\
             -model-classifications 0 1 2 \\
             -model-clstype int \\
             -sources iris=csv \\
@@ -365,7 +365,7 @@ class DNNClassifierModel(Model):
         ... lots of output ...
         $ dffml accuracy \\
             -model tfdnnc \\
-            -model-predict predict:int:1 \\
+            -model-predict classification:int:1 \\
             -model-classifications 0 1 2 \\
             -model-clstype int \\
             -sources iris=csv \\
@@ -379,7 +379,7 @@ class DNNClassifierModel(Model):
         0.99996233782
         $ dffml predict all \\
             -model tfdnnc \\
-            -model-predict predict:int:1 \\
+            -model-predict classification:int:1 \\
             -model-classifications 0 1 2 \\
             -model-clstype int \\
             -sources iris=csv \\
