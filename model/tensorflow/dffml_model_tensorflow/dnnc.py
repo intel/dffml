@@ -140,7 +140,11 @@ class TensorflowModelContext(ModelContext):
 @config
 class DNNClassifierModelConfig:
     predict: Feature = field("Feature name holding predict value")
+<<<<<<< HEAD
     classifications: List[str] = field("Options for value of predict")
+=======
+    classifications: List[str] = field("Options for value of classification")
+>>>>>>> c695a9ba6f178a93d58a988489f58bd81dd99d12
     features: Features = field("Features to train on")
     clstype: Type = field("Data type of classifications values", default=str)
     steps: int = field("Number of steps to train the model", default=3000)

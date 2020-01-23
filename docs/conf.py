@@ -38,6 +38,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
+    "sphinx.ext.napoleon",
     "sphinxcontrib.asyncio",
     "recommonmark",
 ]
@@ -82,3 +83,5 @@ html_theme_options = {
 html_static_path = ["_static"]
 
 # -- Extension configuration -------------------------------------------------
+
+napoleon_numpy_docstring = True

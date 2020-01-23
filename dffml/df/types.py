@@ -92,6 +92,10 @@ class Definition(NamedTuple):
         return type_lookup(typename)
 
 
+# Some common types
+GENERIC = Definition(name="generic", primitive="generic")
+
+
 class Stage(Enum):
     PROCESSING = "processing"
     CLEANUP = "cleanup"

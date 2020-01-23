@@ -10,10 +10,13 @@ import pathlib
 from typing import Callable
 
 
-def merge(one, two):
+def merge(one, two, list_append: bool = True):
     for key, value in two.items():
-        if key in one and isinstance(value, dict):
-            merge(one[key], two[key])
+        if key in one:
+            if isinstance(value, dict):
+                merge(one[key], two[key], list_append=list_append)
+            elif list_append and isinstance(value, list):
+                one[key] += two[key]
         else:
             one[key] = two[key]
 
