@@ -1,57 +1,17 @@
-# DFFML model_name Models
+# DFFML Tensorflow Hub Models
 
 ## About
 
-model_name models.
+dffml_model_tensorflow_hub supports pretrained NLP models available on ![tensorflow hub](https://tfhub.dev/s)
 
 ## Demo
 
 ![Demo](https://github.com/intel/dffml/raw/master/docs/images/model_demo.gif)
 
-## Usage
+## Documentation
 
-```console
-wget http://download.tensorflow.org/data/iris_training.csv
-wget http://download.tensorflow.org/data/iris_test.csv
-head iris_training.csv
-sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' *.csv
-head iris_training.csv
-dffml train \
-  -model model_name \
-  -sources csv=iris_training.csv \
-  -classifications 0 1 2 \
-  -model-features \
-    SepalLength:float:1 \
-    SepalWidth:float:1 \
-    PetalLength:float:1 \
-    PetalWidth:float:1 \
-  -epochs 3000 \
-  -steps 20000 \
-  -log debug
-dffml accuracy \
-  -model model_name \
-  -sources csv=iris_training.csv \
-  -classifications 0 1 2 \
-  -model-features \
-    SepalLength:float:1 \
-    SepalWidth:float:1 \
-    PetalLength:float:1 \
-    PetalWidth:float:1 \
-  -log critical
-dffml predict all \
-  -model model_name \
-  -sources csv=iris_test.csv \
-  -classifications 0 1 2 \
-  -model-features \
-    SepalLength:float:1 \
-    SepalWidth:float:1 \
-    PetalLength:float:1 \
-    PetalWidth:float:1 \
-  -caching \
-  -log critical \
-  > results.json
-head -n 33 results.json
-```
+Documentation is hosted at https://intel.github.io/dffml/plugins/dffml_model.html#dffml-model-tensorflow-hub
+
 
 ## License
 

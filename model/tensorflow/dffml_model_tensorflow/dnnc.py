@@ -13,16 +13,16 @@ import numpy as np
 import tensorflow as tf
 
 from dffml.repo import Repo
-from dffml.feature import Feature, Features
-from dffml.source.source import Sources
-from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
-from dffml.accuracy import Accuracy
-from dffml.util.entrypoint import entrypoint
 from dffml.base import BaseConfig
 from dffml.util.cli.arg import Arg
-from dffml.feature.feature import Feature, Features
-from dffml.util.cli.parser import list_action
+from dffml.accuracy import Accuracy
 from dffml.base import config, field
+from dffml.source.source import Sources
+from dffml.feature import Feature, Features
+from dffml.util.entrypoint import entrypoint
+from dffml.util.cli.parser import list_action
+from dffml.feature.feature import Feature, Features
+from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 
 
 class TensorflowModelContext(ModelContext):

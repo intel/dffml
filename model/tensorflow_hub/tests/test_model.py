@@ -1,12 +1,13 @@
+import sys
 import random
 import tempfile
 from typing import Type
-import sys
+
 from dffml.repo import Repo, RepoData
 from dffml.source.source import Sources
-from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml.feature import Data, Feature, Features, DefFeature
 from dffml.util.asynctestcase import AsyncTestCase
+from dffml.feature import Data, Feature, Features, DefFeature
+from dffml.source.memory import MemorySource, MemorySourceConfig
 
 from dffml_model_tensorflow_hub.text_classifier import (
     TextClassificationModel,
@@ -63,7 +64,6 @@ class TestTextClassificationModel(AsyncTestCase):
             async with sources() as sctx, model() as mctx:
                 async for repo in mctx.predict(sctx.repos()):
                     prediction = repo.prediction().value
-                    print(prediction)
                     self.assertIn(prediction, ["a", "not a"])
 
 

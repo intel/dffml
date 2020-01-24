@@ -279,6 +279,194 @@ predict).
   - default: [12, 40, 15]
   - List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer
 
+dffml_model_tensorflow_hub
+--------------------------
+
+.. code-block:: console
+
+    pip install dffml-model-tensorflow-hub
+
+
+text_classifier
+~~~~~~~~~~~~~~~
+
+*Core*
+
+Implemented using Tensorflow hub pretrained models.
+
+.. code-block:: console
+
+    $ wget http://download.tensorflow.org/data/iris_training.csv
+    $ wget http://download.tensorflow.org/data/iris_test.csv
+    $ head iris_training.csv
+    $ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' *.csv
+    $ head iris_training.csv
+    $ dffml train \
+        -model tfdnnc \
+        -model-epochs 3000 \
+        -model-steps 20000 \
+        -model-classification classification:int:1 \
+        -model-classifications 0 1 2 \
+        -model-clstype int \
+        -sources iris=csv \
+        -source-filename iris_training.csv \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -log debug
+    ... lots of output ...
+    $ dffml accuracy \
+        -model tfdnnc \
+        -model-classification classification:int:1 \
+        -model-classifications 0 1 2 \
+        -model-clstype int \
+        -sources iris=csv \
+        -source-filename iris_test.csv \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -log critical
+    0.99996233782
+    $ dffml predict all \
+        -model tfdnnc \
+        -model-classification classification:int:1 \
+        -model-classifications 0 1 2 \
+        -model-clstype int \
+        -sources iris=csv \
+        -source-filename iris_test.csv \
+        -model-features \
+          SepalLength:float:1 \
+          SepalWidth:float:1 \
+          PetalLength:float:1 \
+          PetalWidth:float:1 \
+        -caching \
+        -log critical \
+      > results.json
+    $ head -n 33 results.json
+    [
+        {
+            "extra": {},
+            "features": {
+                "PetalLength": 4.2,
+                "PetalWidth": 1.5,
+                "SepalLength": 5.9,
+                "SepalWidth": 3.0,
+                "classification": 1
+            },
+            "last_updated": "2019-07-31T02:00:12Z",
+            "prediction": {
+                "confidence": 0.9999997615814209,
+                "value": 1
+            },
+            "src_url": "0"
+        },
+        {
+            "extra": {},
+            "features": {
+                "PetalLength": 5.4,
+                "PetalWidth": 2.1,
+                "SepalLength": 6.9,
+                "SepalWidth": 3.1,
+                "classification": 2
+            },
+            "last_updated": "2019-07-31T02:00:12Z",
+            "prediction": {
+                "confidence": 0.9999984502792358,
+                "value": 2
+            },
+            "src_url": "1"
+        },
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- classifications: List of strings
+
+  - Options for value of classification
+
+- features: List of features
+
+  - Features to train on
+
+- trainable: String
+
+  - default: True
+
+- preprocess: String
+
+  - default: True
+
+- batch_size: Integer
+
+  - default: 120
+  - Batch size
+
+- max_seq_length: Integer
+
+  - default: 256
+  - length of sentence
+
+- add_layers: Boolean
+
+  - default: False
+  - add layers
+
+- modelArchitecture: String
+
+  - default: bert
+  - Architecture type of pretrained model
+
+- layers: List of strings
+
+  - default: None
+  - Extra layers added on top of pretrained model
+
+- pretrainedModeloutShape: Integer
+
+  - default: 768
+  - Shape of output  of pretrained model
+
+- inputShape: Integer
+
+  - default: None
+
+- model_path: String
+
+  - default: /home/user/Downloads/1 (3) (1)
+  - Pretrained model
+
+- optimizer: String
+
+  - default: adam
+  - Optimizer used by model
+
+- metrics: String
+
+  - default: accuracy
+  - Metric used to evaluate model
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- epochs: Integer
+
+  - default: 1
+  - Number of iterations to pass over all repos in a source
+
+- directory: String
+
+  - default: /home/user/.cache/dffml/tensorflow_hub
+  - Directory where state should be saved
+
 dffml_model_scratch
 -------------------
 

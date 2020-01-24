@@ -1,19 +1,3 @@
-# import os
-# import importlib.util
-# from setuptools import setup
-
-# # Boilerplate to load commonalities
-# spec = importlib.util.spec_from_file_location(
-#     "setup_common", os.path.join(os.path.dirname(__file__), "setup_common.py")
-# )
-# common = importlib.util.module_from_spec(spec)
-# spec.loader.exec_module(common)
-
-# common.KWARGS["entry_points"] = {
-#     "dffml.model": [f"misc = {common.IMPORT_NAME}.misc:MiscModel"]
-# }
-
-# setup(**common.KWARGS)
 import os
 import sys
 import ast
@@ -34,7 +18,7 @@ with open(
 with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
-INSTALL_REQUIRES = ["tensorflow>=2.0.0b", "tensorflow-hub>=0.3"] + (
+INSTALL_REQUIRES = ["tensorflow>=2.0.0", "tensorflow-hub>=0.6.0"] + (
     ["dffml>=0.3.1"]
     if not any(
         list(
@@ -82,7 +66,6 @@ setup(
     entry_points={
         "dffml.model": [
             "text_classifier = dffml_model_tensorflow_hub.text_classifier:TextClassificationModel",
-            # "tfdnnr = dffml_model_tensorflow.dnnr:DNNRegressionModel",
         ]
     },
 )
