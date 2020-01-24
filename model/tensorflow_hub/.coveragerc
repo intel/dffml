@@ -1,6 +1,6 @@
 [run]
 source =
-    tensorflow_hub
+    dffml_model_tensorflow_hub
     tests
 branch = True
 

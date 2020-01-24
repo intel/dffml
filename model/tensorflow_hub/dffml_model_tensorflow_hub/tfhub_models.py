@@ -3,26 +3,27 @@
 """
 Description of what this model does
 """
-
+import os
 import abc
 import inspect
 from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Type
-import os
+
+import numpy as np
+import pandas as pd
+import tensorflow as tf
+import tensorflow_hub as hub
+from tensorflow.keras import backend as K
+
 from dffml.repo import Repo
-from dffml.source.source import Sources
 from dffml.feature import Features
 from dffml.accuracy import Accuracy
-from dffml.model.model import ModelConfig, ModelContext, Model
+from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
 from dffml.base import BaseConfig, config, field
 from dffml.feature.feature import Feature, Features
-from dffml_model_tensorflow.dnnc import TensorflowModelContext
-import tensorflow as tf
-import numpy as np
-import tensorflow_hub as hub
-import pandas as pd
-from tensorflow.keras import backend as K
-from dffml_model_tensorflow_hub.tfhub_utils import FullTokenizer
+from dffml.model.model import ModelConfig, ModelContext, Model
+
+from .tfhub_utils import FullTokenizer
 
 
 def bert_tokenizer(text, max_seq_length, vocab, do_lower_case=False):
@@ -53,89 +54,73 @@ def bert_tokenizer(text, max_seq_length, vocab, do_lower_case=False):
     ]
 
 
-class BertModel(object):
-    def __init__(self, config, **kwargs):
-        # super().__init__(config)
-        self.config = config
-        self.model_path = config.model_path
-        self.trainable = config.trainable
-        self.mainLayer = hub.KerasLayer(
-            self.model_path, trainable=self.trainable, **kwargs
-        )
-        self.vocab_file = (
-            self.mainLayer.resolved_object.vocab_file.asset_path.numpy()
-        )
-        self.do_lower_case = (
-            self.mainLayer.resolved_object.do_lower_case.numpy()
-        )
-
-
-class BertClassifier(BertModel):
+class Embedder:
     def __init__(self, config):
-        super().__init__(config)
         self.config = config
-        # self.bert = BertModel(config)
+        self.mainLayer = self._mainLayer()
+        self.inputs, self.outputs = self._model()
 
-    def load_model(self):
-
-        input_word_ids = tf.keras.layers.Input(
-            shape=(self.config.max_seq_length,),
-            dtype=tf.int32,
-            name="input_word_ids",
+    def _mainLayer(self):
+        mainLayer = hub.KerasLayer(
+            self.config.model_path, trainable=self.config.trainable
         )
-        input_mask = tf.keras.layers.Input(
-            shape=(self.config.max_seq_length,),
-            dtype=tf.int32,
-            name="input_mask",
-        )
-        segment_ids = tf.keras.layers.Input(
-            shape=(self.config.max_seq_length,),
-            dtype=tf.int32,
-            name="segment_ids",
-        )
-
-        bert_inputs = [input_word_ids, input_mask, segment_ids]
-        bert_output, _ = self.mainLayer(bert_inputs)
-
-        # Build classifier
-        dense = tf.keras.layers.Dense(256, activation="relu")(bert_output)
-        pred = tf.keras.layers.Dense(
-            len(self.config.classifications), activation="softmax"
-        )(dense)
-
-        model = tf.keras.models.Model(inputs=bert_inputs, outputs=pred)
-        return model
-
-
-class EmbeddingModel(object):
-    def __init__(self, config, **kwargs):
-        self.config = config
-        self.model_path = config.model_path
-        self.trainable = config.trainable
-        self.mainLayer = hub.KerasLayer(
-            self.model_path,
-            dtype=tf.string,
-            trainable=self.trainable,
-            input_shape=[],
-            **kwargs,
-        )
-
-
-class NnlmClassifier(EmbeddingModel):
-    def __init__(self, config):
-        super().__init__(config)
-        self.config = config
-
-    def load_model(self):
-
-        embed_layer = self.mainLayer
-        # Build classifier
-        model = tf.keras.Sequential()
-        model.add(embed_layer)
-        model.add(tf.keras.layers.Dense(16, activation="relu"))
-        model.add(
-            tf.keras.layers.Dense(
-                len(self.config.classifications), activation="softmax"
+        if self.config.embedType in ["bert"]:
+            self.vocab_file = (
+                mainLayer.resolved_object.vocab_file.asset_path.numpy()
             )
-        )
+            self.do_lower_case = (
+                mainLayer.resolved_object.do_lower_case.numpy()
+            )
+        return mainLayer
+
+    def _model(self):
+        if self.config.embedType in ["bert"]:
+            input_word_ids = tf.keras.layers.Input(
+                shape=(self.config.max_seq_length,),
+                dtype=tf.int32,
+                name="input_word_ids",
+            )
+            input_mask = tf.keras.layers.Input(
+                shape=(self.config.max_seq_length,),
+                dtype=tf.int32,
+                name="input_mask",
+            )
+            segment_ids = tf.keras.layers.Input(
+                shape=(self.config.max_seq_length,),
+                dtype=tf.int32,
+                name="segment_ids",
+            )
+
+            inputs = [input_word_ids, input_mask, segment_ids]
+            outputs, _ = self.mainLayer(inputs)
+        else:
+            inputs = tf.keras.layers.Input(
+                shape=[], name="input_text", dtype=tf.string
+            )
+            outputs = self.mainLayer(inputs)
+        return inputs, outputs
+
+
+class ClassificationModel(Embedder):
+    def __init__(self, config):
+        super().__init__(config)
+
+    def load_model(self):
+        outputs = self.outputs
+        if self.config.add_layers:
+            for layer in self.config.layers:
+                outputs = layer(outputs)
+        else:
+            # default classifier
+            outputs = tf.keras.layers.Dense(256, activation="relu")(outputs)
+            outputs = tf.keras.layers.Dense(
+                len(self.config.classifications), activation="softmax"
+            )(outputs)
+
+        model = tf.keras.models.Model(inputs=self.inputs, outputs=outputs)
+        if self.config.embedType == "bert":
+            model.vocab_file = tf.saved_model.Asset(self.vocab_file)
+            model.do_lower_case = tf.Variable(
+                self.do_lower_case, trainable=False
+            )
         return model

@@ -3,36 +3,32 @@
 """
 Description of what this model does
 """
+# TODO Add docstrings
+import os
 import abc
 import inspect
-from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Type
-import os
 import hashlib
+import importlib
+from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Type
 
+import numpy as np
+import pandas as pd
+
+# should be set before importing tensorflow
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+import tensorflow as tf
+import tensorflow_hub as hub
+
 from dffml.repo import Repo
-from dffml.source.source import Sources
 from dffml.feature import Features
 from dffml.accuracy import Accuracy
-from dffml.model.model import ModelConfig, ModelContext, Model
+from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
+from dffml.model.model import ModelNotTrained
 from dffml.base import BaseConfig, config, field
 from dffml.feature.feature import Feature, Features
-from dffml_model_tensorflow.dnnc import TensorflowModelContext
-import tensorflow as tf
-import tensorflow
-from dffml.model.model import ModelNotTrained
-from tensorflow.keras.callbacks import ModelCheckpoint
-import numpy as np
-import tensorflow_hub as hub
-import pandas as pd
-from dffml_model_tensorflow_hub.tfhub_models import (
-    bert_tokenizer,
-    BertClassifier,
-    NnlmClassifier,
-)
-
-tf.config.optimizer.set_jit(True)
+from dffml.model.model import ModelConfig, ModelContext, Model
+from .tfhub_models import bert_tokenizer, ClassificationModel
 
 
 @config
@@ -40,33 +36,30 @@ class TextClassifierConfig:
     predict: Feature = field("Feature name holding classification value")
     classifications: List[str] = field("Options for value of classification")
     features: Features = field("Features to train on")
-    trainable: str = True
-    preprocess: str = True
+    trainable: str = field(
+        "Tweak pretrained model by training again ", default=True
+    )
     batch_size: int = field("Batch size", default=120)
-    max_seq_length: int = field("length of sentence", default=256)
-    add_layers: bool = field("add layers", default=False)
-    modelArchitecture: str = field(
-        "Architecture type of pretrained model", default="bert"
+    max_seq_length: int = field("Length of sentence", default=256)
+    add_layers: bool = field(
+        "Add layers on the top of pretrianed model/layer", default=False
+    )
+    embedType: str = field(
+        "Type of pretrained embedding model", default="swivel"
     )
     layers: List[str] = field(
-        "Extra layers added on top of pretrained model", default=None
+        "Extra layers to be added on top of pretrained model", default=None
     )
-    pretrainedModeloutShape: int = field(
-        "Shape of output  of pretrained model", default=768
-    )
-    inputShape: int = None
-
     model_path: str = field(
-        "Pretrained model", default="/home/himanshu/Downloads/1 (3) (1)",
+        "Pretrained model path/url",
+        default="https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1",
     )
     optimizer: str = field("Optimizer used by model", default="adam")
     metrics: str = field("Metric used to evaluate model", default="accuracy")
-
     clstype: Type = field("Data type of classifications values", default=str)
     epochs: int = field(
-        "Number of iterations to pass over all repos in a source", default=1
+        "Number of iterations to pass over all repos in a source", default=10
     )
-
     directory: str = field(
         "Directory where state should be saved",
         default=os.path.join(
@@ -78,12 +71,17 @@ class TextClassifierConfig:
         self.classifications = list(map(self.clstype, self.classifications))
         if self.add_layers:
             self.layers = ["tf.keras.layers." + layer for layer in self.layers]
+            # TODO remove eval, this is bad
             self.layers = list(map(eval, self.layers))
 
 
-class TextClassifierContext(TensorflowModelContext):
+class OutputShapeError(Exception):
+    pass
+
+
+class TextClassifierContext(ModelContext):
     """
-    Model wraping model_name API
+    Model wraping tensorflow hub pretrained embeddings
     """
 
     def __init__(self, parent) -> None:
@@ -95,19 +93,12 @@ class TextClassifierContext(TensorflowModelContext):
         self._model = None
 
     async def __aenter__(self):
-
         path = self._model_dir_path()
-
         if os.path.isfile(os.path.join(path, "saved_model.pb")):
             self.logger.info("Using saved model")
             self._model = tf.keras.models.load_model(os.path.join(path))
-
-            if self.parent.config.modelArchitecture == "bert":
-                self.vocab_file = self._model.vocab_file.asset_path.numpy()
-                self.do_lower_case = self._model.do_lower_case.numpy()
         else:
             self._model = self.createModel()
-
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
@@ -126,7 +117,7 @@ class TextClassifierContext(TensorflowModelContext):
         _to_hash = self.features + [
             self.classification,
             str(len(self.cids)),
-            self.parent.config.modelArchitecture,
+            self.parent.config.embedType,
         ]
         model = hashlib.sha384("".join(_to_hash).encode("utf-8")).hexdigest()
         if not os.path.isdir(self.parent.config.directory):
@@ -165,7 +156,7 @@ class TextClassifierContext(TensorflowModelContext):
 
     def createModel(self):
         """
-        Generates or loads a model
+        Generates a model
         """
         if self._model is not None:
             return self._model
@@ -174,57 +165,26 @@ class TextClassifierContext(TensorflowModelContext):
             len(self.classifications),
             self.classifications,
         )
-
-        all_layers = []
-        inputs = []
-
-        if self.parent.config.modelArchitecture == "bert":
-
-            bert = BertClassifier(self.parent.config)
-            default_model = bert.load_model()
-            self.mainLayer, self.vocab_file, self.do_lower_case = (
-                bert.mainLayer,
-                bert.vocab_file,
-                bert.do_lower_case,
-            )
-            all_layers = [self.mainLayer] + (
-                self.parent.config.layers
-                if self.parent.config.add_layers
-                else []
-            )
-
-        elif self.parent.config.modelArchitecture == "nnlm":
-
-            nnlm = NnlmClassifier(self.parent.config)
-            default_model = nnlm.load_model()
-            self.mainLayer = nnlm.mainLayer
-
-            all_layers = [self.mainLayer] + (
-                self.parent.config.layers
-                if self.parent.config.add_layers
-                else []
-            )
-
-        if self.parent.config.add_layers:
-            self._model = tf.keras.Sequential(all_layers)
-        else:
-            self._model = default_model
-
+        self._model = ClassificationModel(self.parent.config).load_model()
         self._model.compile(
             optimizer=self.parent.config.optimizer,
             loss="sparse_categorical_crossentropy",
             metrics=[self.parent.config.metrics],
         )
-        # if not list(self._model.layers[-1].output_shape) == [None, len(self.cids)]:
-        #     raise NameError("Output shape of last layer should be:", (None, len(self.cids)))
+
+        if not list(self._model.layers[-1].output_shape) == [
+            None,
+            len(self.cids),
+        ]:
+            raise OutputShapeError(
+                "Output shape of last layer should be:{}".format(
+                    (None, len(self.cids))
+                )
+            )
         return self._model
 
-    async def train_data_generator(
-        self, sources: Sources, **kwargs,
-    ):
-        """
-        Uses the numpy input function with data from repo features.
-        """
+    async def train_data_generator(self, sources: Sources):
+
         self.logger.debug("Training on features: %r", self.features)
         x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
         y_cols = []
@@ -251,47 +211,52 @@ class TextClassifierContext(TensorflowModelContext):
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
 
-        if self.parent.config.preprocess:
-            if self.parent.config.modelArchitecture == "bert":
-                if (len(self.features)) > 1:
-                    self.logger.critical(
-                        "Bert Found more than one feature to train on. Only first feature will be used"
-                    )
-                x_cols = bert_tokenizer(
-                    x_cols[self.features[0]],
-                    self.parent.config.max_seq_length,
-                    self.vocab_file,
-                    self.do_lower_case,
-                )
-                x_cols = dict(
-                    input_word_ids=x_cols[0],
-                    input_mask=x_cols[1],
-                    segment_ids=x_cols[2],
-                )
-            if self.parent.config.modelArchitecture == "nnlm":
-                x_cols = tf.convert_to_tensor(x_cols[self.features[0]])
-        return x_cols, y_cols
-
-    async def prediction_data_generator(
-        self, x_cols, **kwargs,
-    ):
-
-        if self.parent.config.modelArchitecture == "bert":
-            if (len(self.features)) > 1:
-                self.logger.critical(
-                    "Bert Found more than one feature. Only first feature will be used for prediction"
-                )
+        if (len(self.features)) > 1:
+            self.logger.critical(
+                "Found more than one feature to train on. Only first feature will be used"
+            )
+        # TODO add more embedTypes
+        if self.parent.config.embedType in ["bert"]:
             x_cols = bert_tokenizer(
-                x_cols,
+                x_cols[self.features[0]],
                 self.parent.config.max_seq_length,
-                self.vocab_file,
-                self.do_lower_case,
+                self._model.vocab_file.asset_path.numpy(),
+                self._model.do_lower_case.numpy(),
             )
             x_cols = dict(
                 input_word_ids=x_cols[0],
                 input_mask=x_cols[1],
                 segment_ids=x_cols[2],
             )
+        # TODO keep all these under one name
+        elif self.parent.config.embedType in ["use", "nnlm", "swivel"]:
+            # use-> Universal Sentence Encoder
+            # nnlm-> Neural Network Language Model
+            # No preprocessing needed
+            x_cols = x_cols[self.features[0]]
+        return x_cols, y_cols
+
+    async def prediction_data_generator(
+        self, x_cols,
+    ):
+        if (len(self.features)) > 1:
+            self.logger.critical(
+                "Found more than one feature. Only first feature will be used for prediction"
+            )
+        if self.parent.config.embedType in ["bert"]:
+            x_cols = bert_tokenizer(
+                x_cols,
+                self.parent.config.max_seq_length,
+                self._model.vocab_file.asset_path.numpy(),
+                self._model.do_lower_case.numpy(),
+            )
+            x_cols = dict(
+                input_word_ids=x_cols[0],
+                input_mask=x_cols[1],
+                segment_ids=x_cols[2],
+            )
+        # elif self.parent.config.embedType in ["use","nnlm", "swivel"]:
+        #     x_cols = x_cols
         return x_cols
 
     async def train(self, sources: Sources):
@@ -307,10 +272,6 @@ class TextClassifierContext(TensorflowModelContext):
             batch_size=self.parent.config.batch_size,
             verbose=1,
         )
-        if self.parent.config.modelArchitecture == "bert":
-            self._model.vocab_file = tf.saved_model.Asset(self.vocab_file)
-            self._model.do_lower_case = tf.Variable(self.do_lower_case)
-
         tf.keras.models.save_model(self._model, self._model_dir_path())
 
     async def accuracy(self, sources: Sources) -> Accuracy:
@@ -359,6 +320,59 @@ class TextClassifierContext(TensorflowModelContext):
 
 @entrypoint("text_classifier")
 class TextClassificationModel(Model):
+    """
+    Implemented using Tensorflow hub pretrained models.
+
+    .. code-block:: console
+
+        $ cat > train.csv << EOF
+        sentence,sentiment
+        Life is good,1
+        This book is amazing,1
+        It's a terrible movie,0
+        Global warming is bad,0
+        EOF
+        $ cat > test.csv << EOF
+        sentence,sentiment
+        I am not feeling good,0
+        Our trip was full of adventures,1
+        EOF
+        $ dffml train \\
+            -model text_classifier \\
+            -model-epochs 30 \\
+            -model-predict sentiment:int:1 \\
+            -model-classifications 0 1  \\
+            -model-clstype int \\
+            -sources f=csv \\
+            -source-filename train.csv \\
+            -model-features \\
+              sentence:str:1 \\
+            -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \\
+            -model-embedType swivel \\
+            -model-add_layers \\
+            -model-layers "Dense(16, activation='relu')" "Dense(2, activation='softmax')" \\
+            -log debug 
+        $ dffml accuracy \\
+            -model text_classifier \\
+            -model-predict sentiment:int:1 \\
+            -model-classifications 0 1 \\
+            -model-clstype int \\
+            -sources f=csv \\
+            -source-filename test.csv \\
+            -model-features \\
+              sentence:str:1 \\
+            -log critical
+        $ dffml predict all \\
+            -model text_classifier \\
+            -model-predict sentiment:int:1 \\
+            -model-classifications 0 1 \\
+            -model-clstype int \\
+            -sources f=csv \\
+            -source-filename test.csv \\
+            -model-features \\
+              sentence:str:1 \\
+            -log debug 
+    """
 
     CONTEXT = TextClassifierContext
     CONFIG = TextClassifierConfig

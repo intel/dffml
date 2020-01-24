@@ -1,6 +1,8 @@
 """Tokenization classes implementation.
 This code is forked from:
 https://github.com/google-research/bert/blob/master/tokenization.py.
+
+https://github.com/google-research/bert/blob/master/LICENSE
 """
 
 from __future__ import absolute_import
@@ -314,3 +316,6 @@ def _is_punctuation(char):
     if cat.startswith("P"):
         return True
     return False
+
+
+# def download_model(url_or_path, proxy)
