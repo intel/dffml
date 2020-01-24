@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use `FastChildWatcher` when run via the CLI to prevent `BlockingIOError`s.
 - TensorFlow based neural network classifier had the `classification` parameter
   in it's config changed to `predict`.
+- SciKit models use `make_config_numpy`.
 ### Fixed
 - CONTRIBUTING.md has `-e` in the wrong place in the getting setup section.
 - Since moving to auto `args()` and `config()`, BaseConfigurable no longer
