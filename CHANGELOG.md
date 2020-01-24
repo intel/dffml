@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - MySQL connector
 - Documented style for imports.
 - Documented use of numpy docstrings.
+- Helper utilities to take callables with numpy style docstrings and
+  create config classes out of them using `make_config`.
 ### Changed
 - All instances of `src_url` changed to `key`.
 - Moved from tensorflow 1 to tensorflow 2.
