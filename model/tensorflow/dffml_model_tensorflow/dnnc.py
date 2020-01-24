@@ -10,7 +10,9 @@ import inspect
 from typing import List, Dict, Any, AsyncIterator, Tuple, Optional, Type
 
 import numpy as np
-import tensorflow
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+import tensorflow as tf
 
 from dffml.repo import Repo
 from dffml.feature import Feature, Features
@@ -65,7 +67,7 @@ class TensorflowModelContext(ModelContext):
             or dtype is float
             or issubclass(dtype, float)
         ):
-            return tensorflow.feature_column.numeric_column(
+            return tf.feature_column.numeric_column(
                 feature.NAME, shape=feature.length()
             )
         self.logger.warning(
@@ -112,7 +114,7 @@ class TensorflowModelContext(ModelContext):
         self.logger.info("------ Repo Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("-----------------------")
-        input_fn = tensorflow.estimator.inputs.numpy_input_fn(
+        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols, shuffle=False, num_epochs=1, **kwargs
         )
         return input_fn, ret_repos
@@ -213,7 +215,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
             len(self.classifications),
             self.classifications,
         )
-        self._model = tensorflow.estimator.DNNClassifier(
+        self._model = tf.estimator.DNNClassifier(
             feature_columns=list(self.feature_columns.values()),
             hidden_units=self.parent.config.hidden,
             n_classes=len(self.parent.config.classifications),
@@ -256,7 +258,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
-        input_fn = tensorflow.estimator.inputs.numpy_input_fn(
+        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
             batch_size=batch_size,
@@ -298,7 +300,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
-        input_fn = tensorflow.estimator.inputs.numpy_input_fn(
+        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
             batch_size=batch_size,
