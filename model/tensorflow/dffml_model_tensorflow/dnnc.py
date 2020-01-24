@@ -141,9 +141,7 @@ class TensorflowModelContext(ModelContext):
 
 @config
 class DNNClassifierModelConfig:
-    classification: Feature = field(
-        "Feature name holding classification value"
-    )
+    predict: Feature = field("Feature name holding predict value")
     classifications: List[str] = field("Options for value of classification")
     features: Features = field("Features to train on")
     clstype: Type = field("Data type of classifications values", default=str)
@@ -177,10 +175,6 @@ class DNNClassifierModelContext(TensorflowModelContext):
         self.cids = self._mkcids(self.parent.config.classifications)
         self.classifications = self._classifications(self.cids)
         self.model_dir_path = self._model_dir_path()
-
-    @property
-    def classification(self):
-        return self.parent.config.classification.NAME
 
     def _mkcids(self, classifications):
         """
@@ -240,14 +234,17 @@ class DNNClassifierModelContext(TensorflowModelContext):
         for repo in [
             repo
             async for repo in sources.with_features(
-                self.features + [self.classification]
+                self.features + [self.parent.config.predict.NAME]
             )
-            if repo.feature(self.classification) in self.classifications
+            if repo.feature(self.parent.config.predict.NAME)
+            in self.classifications
         ]:
             for feature, results in repo.features(self.features).items():
                 x_cols[feature].append(np.array(results))
             y_cols.append(
-                self.classifications[repo.feature(self.classification)]
+                self.classifications[
+                    repo.feature(self.parent.config.predict.NAME)
+                ]
             )
         if not y_cols:
             raise ValueError("No repos to train on")
@@ -284,14 +281,17 @@ class DNNClassifierModelContext(TensorflowModelContext):
         for repo in [
             repo
             async for repo in sources.with_features(
-                self.features + [self.classification]
+                self.features + [self.parent.config.predict.NAME]
             )
-            if repo.feature(self.classification) in self.classifications
+            if repo.feature(self.parent.config.predict.NAME)
+            in self.classifications
         ]:
             for feature, results in repo.features(self.features).items():
                 x_cols[feature].append(np.array(results))
             y_cols.append(
-                self.classifications[repo.feature(self.classification)]
+                self.classifications[
+                    repo.feature(self.parent.config.predict.NAME)
+                ]
             )
         y_cols = np.array(y_cols)
         for feature in x_cols:
@@ -356,7 +356,7 @@ class DNNClassifierModel(Model):
             -model tfdnnc \\
             -model-epochs 3000 \\
             -model-steps 20000 \\
-            -model-classification classification:int:1 \\
+            -model-predict classification:int:1 \\
             -model-classifications 0 1 2 \\
             -model-clstype int \\
             -sources iris=csv \\
@@ -370,7 +370,7 @@ class DNNClassifierModel(Model):
         ... lots of output ...
         $ dffml accuracy \\
             -model tfdnnc \\
-            -model-classification classification:int:1 \\
+            -model-predict classification:int:1 \\
             -model-classifications 0 1 2 \\
             -model-clstype int \\
             -sources iris=csv \\
@@ -384,7 +384,7 @@ class DNNClassifierModel(Model):
         0.99996233782
         $ dffml predict all \\
             -model tfdnnc \\
-            -model-classification classification:int:1 \\
+            -model-predict classification:int:1 \\
             -model-classifications 0 1 2 \\
             -model-clstype int \\
             -sources iris=csv \\

@@ -75,6 +75,7 @@ function run_plugin() {
   fi
 
   if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" == "xrefs/heads/master" ]; then
+    git status
     dffml service dev release "${PLUGIN}"
   fi
 }

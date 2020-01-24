@@ -23,6 +23,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Virtual environment, GitPod, and Docker development environment setup notes to
   the CONTRIBUTING.md file.
 - Changelog now included in documenation website.
+- Database abstraction `dffml.db`
+  - SQLite connector
+  - MySQL connector
+- Documented style for imports.
+- Documented use of numpy docstrings.
 ### Changed
 - Moved from tensorflow 1 to tensorflow 2.
 - `readonly` parameter in source config is now changed to `readwrite`.
@@ -33,6 +38,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   passed via it's config is a class rather than an instance.
 - `entry_point` and friends have been renamed to `entrypoint`.
 - Use `FastChildWatcher` when run via the CLI to prevent `BlockingIOError`s.
+- TensorFlow based neural network classifier had the `classification` parameter
+  in it's config changed to `predict`.
 ### Fixed
 - CONTRIBUTING.md has `-e` in the wrong place in the getting setup section.
 - Since moving to auto `args()` and `config()`, BaseConfigurable no longer

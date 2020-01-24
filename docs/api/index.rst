@@ -12,4 +12,5 @@ API Reference
    repo
    model/index
    source/index
+   db/index
    util/index
