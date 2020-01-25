@@ -316,6 +316,3 @@ def _is_punctuation(char):
     if cat.startswith("P"):
         return True
     return False
-
-
-# def download_model(url_or_path, proxy)
