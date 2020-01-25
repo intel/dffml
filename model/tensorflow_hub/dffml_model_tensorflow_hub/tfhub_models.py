@@ -100,12 +100,6 @@ class Embedder:
             outputs = self.mainLayer(inputs)
         return inputs, outputs
 
-            inputs = [input_word_ids, input_mask, segment_ids]
-            outputs, _ = self.mainLayer(inputs)
-        else:
-            inputs =  tf.keras.layers.Input(shape=[],name="input_text",dtype = tf.string)    
-            outputs = self.mainLayer(inputs)
-        return inputs, outputs
 
 class ClassificationModel(Embedder):
     def __init__(self, config):

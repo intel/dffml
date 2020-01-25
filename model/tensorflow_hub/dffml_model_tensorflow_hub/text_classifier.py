@@ -78,6 +78,7 @@ class TextClassifierConfig:
 class OutputShapeError(Exception):
     pass
 
+
 class TextClassifierContext(ModelContext):
     """
     Model wraping tensorflow hub pretrained embeddings
@@ -119,7 +120,7 @@ class TextClassifierContext(ModelContext):
             self.parent.config.embedType,
         ]
         model = hashlib.sha384("".join(_to_hash).encode("utf-8")).hexdigest()
-        #TODO is this needed?
+        # TODO is this needed?
         if not os.path.isdir(self.parent.config.directory):
             raise NotADirectoryError(
                 "%s is not a directory" % (self.parent.config.directory)
@@ -169,7 +170,7 @@ class TextClassifierContext(ModelContext):
         self._model.compile(
             optimizer=self.parent.config.optimizer,
             loss="sparse_categorical_crossentropy",
-            metrics=[self.parent.config.metrics],  
+            metrics=[self.parent.config.metrics],
         )
 
         if not list(self._model.layers[-1].output_shape) == [
@@ -351,7 +352,7 @@ class TextClassificationModel(Model):
             -model-embedType swivel \\
             -model-add_layers \\
             -model-layers "Dense(16, activation='relu')" "Dense(2, activation='softmax')" \\
-            -log debug 
+            -log debug
         $ dffml accuracy \\
             -model text_classifier \\
             -model-predict sentiment:int:1 \\
@@ -371,9 +372,8 @@ class TextClassificationModel(Model):
             -source-filename test.csv \\
             -model-features \\
               sentence:str:1 \\
-            -log debug 
+            -log debug
     """
 
-    """
     CONTEXT = TextClassifierContext
     CONFIG = TextClassifierConfig
