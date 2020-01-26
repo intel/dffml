@@ -27,33 +27,31 @@ class DemoAppSourceContext(BaseSourceContext):
         # tables.
         marshall = json.dumps(repo.dict())
         await db.execute(
-            "INSERT INTO ml_data (src_url, json) VALUES(%s, %s) "
+            "INSERT INTO ml_data (key, json) VALUES(%s, %s) "
             "ON DUPLICATE KEY UPDATE json = %s",
-            (repo.src_url, marshall, marshall),
+            (repo.key, marshall, marshall),
         )
         self.logger.debug("updated: %s", marshall)
-        self.logger.debug("update: %s", await self.repo(repo.src_url))
+        self.logger.debug("update: %s", await self.repo(repo.key))
 
     async def repos(self) -> AsyncIterator[Repo]:
-        await self.conn.execute("SELECT src_url FROM `status`")
-        src_urls = set(map(lambda row: row[0], await self.conn.fetchall()))
-        await self.conn.execute("SELECT src_url FROM `ml_data`")
-        list(map(lambda row: src_urls.add(row[0]), await self.conn.fetchall()))
-        for src_url in src_urls:
-            yield await self.repo(src_url)
+        await self.conn.execute("SELECT key FROM `status`")
+        keys = set(map(lambda row: row[0], await self.conn.fetchall()))
+        await self.conn.execute("SELECT key FROM `ml_data`")
+        list(map(lambda row: keys.add(row[0]), await self.conn.fetchall()))
+        for key in keys:
+            yield await self.repo(key)
 
-    async def repo(self, src_url: str):
-        repo = Repo(src_url)
+    async def repo(self, key: str):
+        repo = Repo(key)
         db = self.conn
         # Get features
-        await db.execute(
-            "SELECT json FROM ml_data WHERE src_url=%s", (src_url,)
-        )
+        await db.execute("SELECT json FROM ml_data WHERE key=%s", (key,))
         dump = await db.fetchone()
         if dump is not None and dump[0] is not None:
-            repo.merge(Repo(src_url, data=json.loads(dump[0])))
+            repo.merge(Repo(key, data=json.loads(dump[0])))
         await db.execute(
-            "SELECT maintained FROM `status` WHERE src_url=%s", (src_url,)
+            "SELECT maintained FROM `status` WHERE key=%s", (key,)
         )
         maintained = await db.fetchone()
         if maintained is not None and maintained[0] is not None:

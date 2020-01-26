@@ -308,14 +308,14 @@ of the repo. Here's an example response for a ``GET`` request.
 .. code-block:: json
 
     {
-      "src_url": "myrepo",
+      "key": "myrepo",
       "features": {
         "myfeature": "somevalue"
       }
     }
 
 Just as with DFFML, you'll still get a repo even if the repo doesn't exist
-within the source. However, it will only contain the ``src_url``.
+within the source. However, it will only contain the ``key``.
 
 Update
 ~~~~~~
@@ -328,7 +328,7 @@ repo.
 .. code-block:: json
 
     {
-      "src_url": "myrepo",
+      "key": "myrepo",
       "features": {
         "myfeature": "somevalue"
       }
@@ -349,7 +349,7 @@ the first iteration. ``chunk_size`` is the number of repos to return in one
 iteration. The response object will have two properties, ``iterkey`` and
 ``repos``.
 
-``repos`` is a key value mapping of repo ``src_url``'s to their JSON serialized
+``repos`` is a key value mapping of repo ``key``'s to their JSON serialized
 repo object.
 
 ``iterkey`` will be ``null`` if there are no more repos in the source. If
@@ -369,7 +369,7 @@ iterate over. We continue making ``GET`` requests until ``iterkey`` is ``null``.
       "iterkey": "1a164836c6d8a27fdf9cd12688440aaa16a852fd1814b170c924a89fba4e084c8ea7522c34f9f5a539803d6237238e90",
       "repos": {
         "myrepo": {
-          "src_url": "myrepo",
+          "key": "myrepo",
           "features": {
             "myfeature": "somevalue"
           }
@@ -385,7 +385,7 @@ Sample response where the end of iteration has been reached.
       "iterkey": null,
       "repos": {
         "anotherrepo": {
-          "src_url": "anotherrepo",
+          "key": "anotherrepo",
           "features": {
             "myfeature": "othervalue"
           }
@@ -465,7 +465,7 @@ Predict
 ~~~~~~~
 
 To use a model for prediction, send a ``POST`` request to the following URL with
-the body being a JSON object mapping ``src_url`` of the repo to the JSON
+the body being a JSON object mapping ``key`` of the repo to the JSON
 representation of :py:class:`dffml.repo.Repo` as received by the source repo
 endpoint.
 
@@ -489,7 +489,7 @@ Sample response.
       "iterkey": null,
       "repos": {
         "42": {
-          "src_url": "42",
+          "key": "42",
           "features": {
             "by_ten": 420
           },
