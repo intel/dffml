@@ -36,17 +36,6 @@ Once you've committed a change on that branch you can push it to your fork.
 Then you can keep committing on this branch and just use ``git push`` to send your
 new commits to GitHub.
 
-File Formatting
----------------
-
-We run the `black <https://github.com/psf/black>`_ formatter on all files. Try
-to run it before every commit. This way, if you push up files for review, they
-are easy to read, even if your pull request isn't yet ready to merge.
-
-.. code-block:: console
-
-    $ black .
-
 Issue and Pull Request title formatting
 ---------------------------------------
 

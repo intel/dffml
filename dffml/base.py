@@ -147,7 +147,7 @@ def convert_value(arg, value):
             return copy.deepcopy(arg["default"])
         raise MissingConfig
 
-    if not "nargs" in arg:
+    if not "nargs" in arg and isinstance(value, list):
         value = value[0]
     if "type" in arg:
         type_cls = arg["type"]
@@ -188,8 +188,20 @@ def _fromdict(cls, **kwargs):
                 value, config = value["arg"], value["config"]
             value = convert_value(mkarg(field), value)
             if inspect.isclass(value) and issubclass(value, BaseConfigurable):
+                # TODO This probably isn't 100% correct. Figure out what we need
+                # to do with nested configs.
                 value = value.withconfig(
-                    {field.name: {"arg": None, "config": config}}
+                    {
+                        value.ENTRY_POINT_NAME[-1]: {
+                            "arg": None,
+                            "config": {
+                                key: value
+                                if is_config_dict(value)
+                                else {"arg": value, "config": {},}
+                                for key, value in config.items()
+                            },
+                        }
+                    }
                 )
             kwargs[field.name] = value
     return cls(**kwargs)

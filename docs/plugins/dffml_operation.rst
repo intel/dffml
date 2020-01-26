@@ -99,6 +99,29 @@ No description
 
 - value: value(type: generic)
 
+dffml.model.predict
+~~~~~~~~~~~~~~~~~~~
+
+*Core*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- features: repo_features(type: Dict[str, Any])
+
+**Outputs**
+
+- prediction: model_predictions(type: Dict[str, Any])
+
+**Args**
+
+- model: Entrypoint
+
 get_single
 ~~~~~~~~~~
 
