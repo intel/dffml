@@ -64,7 +64,7 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
         Uses trained data to make a prediction about the quality of a repo.
         """
         raise NotImplementedError()
-        yield (Repo(""), "", 0.0)
+        yield (Repo(""), "", 0.0) # skipcq: PYL-W0101
 
 
 @base_entry_point("dffml.model", "model")
