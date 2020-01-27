@@ -164,15 +164,9 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Base classes to wrap various SQL based databases in dffml.db abstraction.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">AsyncIterator</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">dffml.db.base</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">BaseDatabaseContext</span><span class="p">,</span>
-    <span class="n">BaseDatabase</span><span class="p">,</span>
-    <span class="n">Condition</span><span class="p">,</span>
-    <span class="n">Conditions</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">dffml.db.base</span> <span class="kn">import</span> <span class="n">BaseDatabaseContext</span><span class="p">,</span> <span class="n">Conditions</span>
 
 
 <div class="viewcode-block" id="SQLDatabaseContext"><a class="viewcode-back" href="../../../api/db/sql.html#dffml.db.sql.SQLDatabaseContext">[docs]</a><span class="k">class</span> <span class="nc">SQLDatabaseContext</span><span class="p">(</span><span class="n">BaseDatabaseContext</span><span class="p">):</span>

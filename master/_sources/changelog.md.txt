@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   produces odd typenames in conjunction with docs.py.
 ### Removed
 - The model predict operation erroneously had a `msg` parameter in it's config.
+- Unused imports identified by deepsource.io
 
 ## [0.3.2] - 2020-01-03
 ### Added
