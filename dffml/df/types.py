@@ -37,6 +37,9 @@ class Definition(NamedTuple):
     lock: bool = False
     # spec is a NamedTuple which could be populated via a dict
     spec: NamedTuple = None
+    # validate property will be a callable (function or lambda) which returns
+    # the sanitized version of the value
+    validate : Callable[["primitive"],"primitive"] = None
 
     def __repr__(self):
         return self.name
@@ -271,6 +274,8 @@ class Input(object):
         # instance name this Input is intended for.
         if parents is None:
             parents = []
+        if definition.validate is not None:
+            value = definition.validate(value)
         self.value = value
         self.definition = definition
         self.parents = parents
