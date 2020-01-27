@@ -225,8 +225,8 @@ the data associated with that key.</p>
 <p>DFFML started as a project centred around Git repos. As such, the unique key
 for a Git repo was the upstream source URL. <code class="docutils literal notranslate"><span class="pre">src_url</span></code> was used as the
 parameter to hold the unique key.</p>
-<p>Issue <a class="reference external" href="https://github.com/intel/dffml/issues/233">#233</a> is tracking the
-need to change all instances of <code class="docutils literal notranslate"><span class="pre">Repo.src_url</span></code> to <code class="docutils literal notranslate"><span class="pre">Repo.key</span></code>.</p>
+<p>Now as DFFML has become more general purpose all instances of <code class="docutils literal notranslate"><span class="pre">Repo.src_url</span></code> have
+been changed to <code class="docutils literal notranslate"><span class="pre">Repo.key</span></code> <a class="reference external" href="https://github.com/intel/dffml/issues/233">#233</a>.</p>
 </div>
 <p>Say for instance you generated a dataset that had to do with cities. Your unique
 key might be the name of the city, the state or province it’s in, and the

@@ -238,9 +238,9 @@
 
     <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">LOGGER</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s2">&quot;Data&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">src_url</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">src_url</span> <span class="o">=</span> <span class="n">src_url</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">_key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">temp</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span> <span class="n">LoggingDict</span> <span class="o">=</span> <span class="n">LoggingDict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -273,7 +273,7 @@
 <span class="sd">    always expected to be called in order. Anything you add to your feature</span>
 <span class="sd">    subclass in fetch or parse is accessible in calc.</span>
 
-<span class="sd">    A feature is provided with the feature URL of the package (in self._src_url)</span>
+<span class="sd">    A feature is provided with the feature URL of the package (in self._key)</span>
 <span class="sd">    and is expected to fetch any data it needs to calculate itself when fetch</span>
 <span class="sd">    is called. All data fetched should be stored in tempdir() if it must reside</span>
 <span class="sd">    on disk.</span>
@@ -298,7 +298,7 @@
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt;     @abc.abstractmethod</span>
 <span class="sd">    &gt;&gt;&gt;     def fetch(self, data):</span>
-<span class="sd">    &gt;&gt;&gt;         self._downloader.vcs(self._src_url, self.tempdir(&#39;src&#39;))</span>
+<span class="sd">    &gt;&gt;&gt;         self._downloader.vcs(self._key, self.tempdir(&#39;src&#39;))</span>
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt;     @abc.abstractmethod</span>
 <span class="sd">    &gt;&gt;&gt;     def parse(self, data):</span>
@@ -513,7 +513,7 @@
         <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">applicable</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">applicable</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Applicable[</span><span class="si">%r</span><span class="s2">]: </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">src_url</span><span class="p">,</span> <span class="n">applicable</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Applicable[</span><span class="si">%r</span><span class="s2">]: </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">applicable</span><span class="p">)</span>
             <span class="k">await</span> <span class="n">applicable</span><span class="o">.</span><span class="n">on_all</span><span class="p">(</span><span class="s2">&quot;setUp&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
             <span class="k">await</span> <span class="n">applicable</span><span class="o">.</span><span class="n">on_all</span><span class="p">(</span><span class="s2">&quot;fetch&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
             <span class="k">await</span> <span class="n">applicable</span><span class="o">.</span><span class="n">on_all</span><span class="p">(</span><span class="s2">&quot;parse&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
@@ -565,7 +565,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
                 <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">(</span><span class="si">%s</span><span class="s2">).</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="n">data</span><span class="o">.</span><span class="n">src_url</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
                 <span class="n">feature</span><span class="o">.</span><span class="n">NAME</span><span class="p">,</span>
                 <span class="n">feature</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,</span>
                 <span class="n">method</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
@@ -577,7 +577,7 @@
             <span class="n">error</span> <span class="o">=</span> <span class="n">err</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                 <span class="s2">&quot;Error evaluating </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="n">data</span><span class="o">.</span><span class="n">src_url</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
                 <span class="n">err</span><span class="p">,</span>
                 <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
             <span class="p">)</span>
@@ -598,11 +598,11 @@
         <span class="k">if</span> <span class="n">caching</span> <span class="ow">and</span> <span class="n">results</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">repo</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">src_url</span><span class="p">)</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">results</span><span class="p">:</span>
                 <span class="n">repo</span><span class="o">.</span><span class="n">evaluated</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">futures</span><span class="o">.</span><span class="n">_base</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Evaluation timed out: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">repo</span><span class="o">.</span><span class="n">src_url</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Evaluation timed out: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">repo</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">repo</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">evaluate_repos</span><span class="p">(</span>

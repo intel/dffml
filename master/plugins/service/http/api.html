@@ -507,7 +507,7 @@ of the repo. Here’s an example response for a <code class="docutils literal no
 <li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/repo/{key}</span></code></p></li>
 </ul>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;src_url&quot;</span><span class="p">:</span> <span class="s2">&quot;myrepo&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;myrepo&quot;</span><span class="p">,</span>
   <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;myfeature&quot;</span><span class="p">:</span> <span class="s2">&quot;somevalue&quot;</span>
   <span class="p">}</span>
@@ -515,7 +515,7 @@ of the repo. Here’s an example response for a <code class="docutils literal no
 </pre></div>
 </div>
 <p>Just as with DFFML, you’ll still get a repo even if the repo doesn’t exist
-within the source. However, it will only contain the <code class="docutils literal notranslate"><span class="pre">src_url</span></code>.</p>
+within the source. However, it will only contain the <code class="docutils literal notranslate"><span class="pre">key</span></code>.</p>
 </div>
 <div class="section" id="update">
 <h3><a class="toc-backref" href="#id22">Update</a><a class="headerlink" href="#update" title="Permalink to this headline">¶</a></h3>
@@ -525,7 +525,7 @@ repo.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/update/{key}</span></code></p></li>
 </ul>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;src_url&quot;</span><span class="p">:</span> <span class="s2">&quot;myrepo&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;myrepo&quot;</span><span class="p">,</span>
   <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;myfeature&quot;</span><span class="p">:</span> <span class="s2">&quot;somevalue&quot;</span>
   <span class="p">}</span>
@@ -544,7 +544,7 @@ response.</p>
 the first iteration. <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> is the number of repos to return in one
 iteration. The response object will have two properties, <code class="docutils literal notranslate"><span class="pre">iterkey</span></code> and
 <code class="docutils literal notranslate"><span class="pre">repos</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">repos</span></code> is a key value mapping of repo <code class="docutils literal notranslate"><span class="pre">src_url</span></code>’s to their JSON serialized
+<p><code class="docutils literal notranslate"><span class="pre">repos</span></code> is a key value mapping of repo <code class="docutils literal notranslate"><span class="pre">key</span></code>’s to their JSON serialized
 repo object.</p>
 <p><code class="docutils literal notranslate"><span class="pre">iterkey</span></code> will be <code class="docutils literal notranslate"><span class="pre">null</span></code> if there are no more repos in the source. If
 <code class="docutils literal notranslate"><span class="pre">iterkey</span></code> is not <code class="docutils literal notranslate"><span class="pre">null</span></code> then there are more repos to iterate over. The API
@@ -560,7 +560,7 @@ iterate over. We continue making <code class="docutils literal notranslate"><spa
   <span class="nt">&quot;iterkey&quot;</span><span class="p">:</span> <span class="s2">&quot;1a164836c6d8a27fdf9cd12688440aaa16a852fd1814b170c924a89fba4e084c8ea7522c34f9f5a539803d6237238e90&quot;</span><span class="p">,</span>
   <span class="nt">&quot;repos&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;myrepo&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;src_url&quot;</span><span class="p">:</span> <span class="s2">&quot;myrepo&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;myrepo&quot;</span><span class="p">,</span>
       <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="nt">&quot;myfeature&quot;</span><span class="p">:</span> <span class="s2">&quot;somevalue&quot;</span>
       <span class="p">}</span>
@@ -574,7 +574,7 @@ iterate over. We continue making <code class="docutils literal notranslate"><spa
   <span class="nt">&quot;iterkey&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
   <span class="nt">&quot;repos&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;anotherrepo&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;src_url&quot;</span><span class="p">:</span> <span class="s2">&quot;anotherrepo&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;anotherrepo&quot;</span><span class="p">,</span>
       <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="nt">&quot;myfeature&quot;</span><span class="p">:</span> <span class="s2">&quot;othervalue&quot;</span>
       <span class="p">}</span>
@@ -643,7 +643,7 @@ response.</p>
 <div class="section" id="predict">
 <h3><a class="toc-backref" href="#id27">Predict</a><a class="headerlink" href="#predict" title="Permalink to this headline">¶</a></h3>
 <p>To use a model for prediction, send a <code class="docutils literal notranslate"><span class="pre">POST</span></code> request to the following URL with
-the body being a JSON object mapping <code class="docutils literal notranslate"><span class="pre">src_url</span></code> of the repo to the JSON
+the body being a JSON object mapping <code class="docutils literal notranslate"><span class="pre">key</span></code> of the repo to the JSON
 representation of <a class="reference internal" href="../../../api/repo.html#dffml.repo.Repo" title="dffml.repo.Repo"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.repo.Repo</span></code></a> as received by the source repo
 endpoint.</p>
 <ul class="simple">
@@ -663,7 +663,7 @@ endpoint.</p>
   <span class="nt">&quot;iterkey&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
   <span class="nt">&quot;repos&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;42&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;src_url&quot;</span><span class="p">:</span> <span class="s2">&quot;42&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;42&quot;</span><span class="p">,</span>
       <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="nt">&quot;by_ten&quot;</span><span class="p">:</span> <span class="mi">420</span>
       <span class="p">},</span>
