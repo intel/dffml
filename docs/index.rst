@@ -22,8 +22,6 @@ datasets, train and use machine learning models, and integrate machine learning
 into new or existing applications. It provides APIs for dataset generation,
 storage, and model definition.
 
-The web UI cant be found `here <webui/>`_.
-
 - Models handle implementations of machine learning algorithms.
   Likely wrapping code from a popular machine learning framework.
 
@@ -42,6 +40,8 @@ You'll find the existing implementations of all of these on their respective
 :ref:`plugins` pages. DFFML has a plugin based architecture, which allows us to
 include some sources, models, and operations as a part of the main package,
 ``dffml``, and other functionality in more specific packages.
+
+The web UI can be found `here <webui/>`_.
 
 This is the documentation for the latest release, documentation for the master
 branch can be found `here <master/index.html>`_.
