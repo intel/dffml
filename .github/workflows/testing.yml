@@ -85,6 +85,7 @@ jobs:
           export TWINE_PASSWORD=$(grep "${PLUGIN}" "${PYPI_TOKENS}" | sed 's/^[^=]*=//g')
         fi
         rm ${PYPI_TOKENS}
+        rm -rf ~/.local/cache
         python -m pip install --upgrade --no-cache pip twine
         ./.ci/run.sh
         if [ "x${PLUGIN}" = "x." ]; then
