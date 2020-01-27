@@ -6,7 +6,6 @@ to their subclasses.
 """
 import os
 import sys
-import copy
 import pathlib
 import importlib
 import traceback

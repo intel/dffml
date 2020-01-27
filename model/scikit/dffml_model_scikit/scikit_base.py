@@ -5,7 +5,6 @@ Base class for Scikit models
 """
 import os
 import json
-import math
 import hashlib
 from pathlib import Path
 from typing import AsyncIterator, Tuple, Any, NamedTuple

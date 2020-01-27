@@ -6,7 +6,6 @@ from urllib.parse import urlparse
 from contextlib import asynccontextmanager, ExitStack
 
 from dffml.df.base import BaseConfig
-from dffml.util.asynctestcase import AsyncTestCase
 
 from aiohttp import web
 from aiohttp import client

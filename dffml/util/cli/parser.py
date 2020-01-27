@@ -3,8 +3,6 @@
 import ast
 import argparse
 
-from .cmd import ParseLoggingAction
-
 
 def list_action(list_class):
     """

@@ -1,16 +1,11 @@
 import ssl
-from typing import Dict, Any, List, Union, Tuple, Optional, AsyncIterator
+from typing import Dict, Any, List, Optional, AsyncIterator
 
 import aiomysql
 
-from dffml.db.base import (
-    BaseDatabase,
-    Condition,
-    Conditions,
-)
+from dffml.db.base import BaseDatabase, Conditions
 from dffml.db.sql import SQLDatabaseContext
 from dffml.base import config
-from dffml.repo import Repo
 from dffml.util.entrypoint import entrypoint
 
 

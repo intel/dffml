@@ -2,7 +2,6 @@ import inspect
 from typing import Dict, Any, Optional, List
 
 from ..base import config
-from ..db.sqlite import SqliteDatabase, SqliteDatabaseContext
 from ..df.base import op
 from ..db.base import Conditions, BaseDatabase
 from ..df.types import Definition

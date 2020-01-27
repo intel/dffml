@@ -9,7 +9,6 @@ import unittest
 import contextlib
 import dataclasses
 import unittest.mock
-from pathlib import Path
 from typing import Type
 
 from dffml.version import VERSION

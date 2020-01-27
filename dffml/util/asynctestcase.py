@@ -14,6 +14,7 @@ $ dffml service dev install
 Add the -user flag to install to ~/.local
 
 """
+import io
 import os
 import random
 import pathlib
@@ -24,21 +25,9 @@ import unittest
 import tempfile
 import contextlib
 
-import re
-import io
-import json
-from typing import Dict, Any, Optional
+from typing import Optional
 
-from dffml.repo import Repo
-from dffml.base import config
-from dffml.df.types import Definition, Operation, DataFlow, Input
-from dffml.df.base import op
-from dffml.cli.cli import CLI
-from dffml.model.model import Model
-from dffml.service.dev import Develop
 from dffml.util.packaging import is_develop
-from dffml.util.entrypoint import load
-from dffml.config.config import BaseConfigLoader
 
 
 class AsyncTestCase(unittest.TestCase):

@@ -1,5 +1,4 @@
 import os
-import sys
 import tempfile
 
 from dffml.db.sqlite import SqliteDatabase, SqliteDatabaseConfig
@@ -10,7 +9,7 @@ from dffml.operation.db import (
     db_query_insert,
     db_query_lookup,
 )
-from dffml.df.types import DataFlow, Input, Operation
+from dffml.df.types import DataFlow, Input
 from dffml.operation.output import GetSingle
 from dffml.df.memory import MemoryOrchestrator
 
