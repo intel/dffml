@@ -114,6 +114,8 @@ function run_style() {
 }
 
 function run_docs() {
+  export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+
   cd "${SRC_ROOT}"
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
@@ -138,6 +140,27 @@ function run_docs() {
   ./scripts/docs.sh
   mv pages "${release_docs}/html"
 
+  git clone https://github.com/intel/dffml -b gh-pages \
+    "${release_docs}/old-gh-pages-branch"
+
+  mv "${release_docs}/old-gh-pages-branch/.git" "${release_docs}/html/"
+  mv "${master_docs}/html" "${release_docs}/html/master"
+
+  # Make webui
+  git clone https://github.com/intel/dffml -b webui "${release_docs}/webui"
+  cd "${release_docs}/webui/service/webui/webui"
+  yarn install
+  yarn build
+  mv build/ "${release_docs}/html/master/webui"
+
+  cd "${release_docs}/html"
+
+  git config user.name 'John Andersen'
+  git config user.email 'johnandersenpdx@gmail.com'
+
+  git add -A
+  git commit -sam "docs: $(date)"
+
   # Don't push docs unless we're running on master
   if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" != "xrefs/heads/master" ]; then
     return
@@ -147,21 +170,9 @@ function run_docs() {
   chmod 700 ~/.ssh
   "${PYTHON}" -c "import pathlib, base64, os; keyfile = pathlib.Path('~/.ssh/github_dffml').expanduser(); keyfile.write_bytes(b''); keyfile.chmod(0o600); keyfile.write_bytes(base64.b32decode(os.environ['GITHUB_PAGES_KEY']))"
   ssh-keygen -y -f ~/.ssh/github_dffml > ~/.ssh/github_dffml.pub
-  export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=~/.ssh/github_dffml'
+  export GIT_SSH_COMMAND="${GIT_SSH_COMMAND} -o IdentityFile=~/.ssh/github_dffml"
 
-  git clone git@github.com:intel/dffml -b gh-pages \
-    "${release_docs}/old-gh-pages-branch"
-
-  mv "${release_docs}/old-gh-pages-branch/.git" "${release_docs}/html/"
-  mv "${master_docs}/html" "${release_docs}/html/master"
-
-  cd "${release_docs}/html"
-
-  git config user.name 'John Andersen'
-  git config user.email 'johnandersenpdx@gmail.com'
-
-  git add -A
-  git commit -sam "docs: $(date)"
+  git remote set-url origin git@github.com:intel/dffml
   git push
 
   cd -
