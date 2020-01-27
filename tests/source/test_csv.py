@@ -44,9 +44,7 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
                     self.assertIn("face", repo.features())
             with open(self.testfile, "r") as fd:
                 dict_reader = csv.DictReader(fd, dialect="strip")
-                rows = {
-                    row["label"]: {row["src_url"]: row} for row in dict_reader
-                }
+                rows = {row["label"]: {row["key"]: row} for row in dict_reader}
                 self.assertIn("unlabeled", rows)
                 self.assertIn("somelabel", rows)
                 self.assertIn("0", rows["unlabeled"])
@@ -63,7 +61,7 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
         self.assertEqual(config.filename, "feedface")
         self.assertEqual(config.label, "unlabeled")
         self.assertEqual(config.labelcol, "label")
-        self.assertEqual(config.key, "src_url")
+        self.assertEqual(config.key, "key")
         self.assertFalse(config.readwrite)
         self.assertFalse(config.allowempty)
 

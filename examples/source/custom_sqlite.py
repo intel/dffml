@@ -20,11 +20,11 @@ class CustomSQLiteSourceContext(BaseSourceContext):
         feature_data = OrderedDict.fromkeys(feature_cols)
         feature_data.update(repo.features(feature_cols))
         await db.execute(
-            "INSERT OR REPLACE INTO features (src_url, "
+            "INSERT OR REPLACE INTO features (key, "
             + ", ".join(feature_cols)
             + ") "
             "VALUES(?, " + ", ".join("?" * len(feature_cols)) + ")",
-            [repo.src_url] + list(feature_data.values()),
+            [repo.key] + list(feature_data.values()),
         )
         # Store prediction
         prediction = repo.prediction()
@@ -33,34 +33,34 @@ class CustomSQLiteSourceContext(BaseSourceContext):
             prediction_data = OrderedDict.fromkeys(prediction_cols)
             prediction_data.update(prediction.dict())
             await db.execute(
-                "INSERT OR REPLACE INTO prediction (src_url, "
+                "INSERT OR REPLACE INTO prediction (key, "
                 + ", ".join(prediction_cols)
                 + ") "
                 "VALUES(?, " + ", ".join("?" * len(prediction_cols)) + ")",
-                [repo.src_url] + list(prediction_data.values()),
+                [repo.key] + list(prediction_data.values()),
             )
 
     async def repos(self) -> AsyncIterator[Repo]:
         # NOTE This logic probably isn't what you want. Only for demo purposes.
-        src_urls = await self.parent.db.execute("SELECT src_url FROM features")
-        for row in await src_urls.fetchall():
-            yield await self.repo(row["src_url"])
+        keys = await self.parent.db.execute("SELECT key FROM features")
+        for row in await keys.fetchall():
+            yield await self.repo(row["key"])
 
-    async def repo(self, src_url: str):
+    async def repo(self, key: str):
         db = self.parent.db
-        repo = Repo(src_url)
+        repo = Repo(key)
         # Get features
         features = await db.execute(
             "SELECT " + ", ".join(self.parent.FEATURE_COLS) + " "
-            "FROM features WHERE src_url=?",
-            (repo.src_url,),
+            "FROM features WHERE key=?",
+            (repo.key,),
         )
         features = await features.fetchone()
         if features is not None:
             repo.evaluated(features)
         # Get prediction
         prediction = await db.execute(
-            "SELECT * FROM prediction WHERE " "src_url=?", (repo.src_url,)
+            "SELECT * FROM prediction WHERE " "key=?", (repo.key,)
         )
         prediction = await prediction.fetchone()
         if prediction is not None:
@@ -84,7 +84,7 @@ class CustomSQLiteSource(BaseSource):
         # Create table for feature data
         await self.db.execute(
             "CREATE TABLE IF NOT EXISTS features ("
-            "src_url TEXT PRIMARY KEY NOT NULL, "
+            "key TEXT PRIMARY KEY NOT NULL, "
             + (" REAL, ".join(self.FEATURE_COLS))
             + " REAL"
             ")"
@@ -92,7 +92,7 @@ class CustomSQLiteSource(BaseSource):
         # Create table for predictions
         await self.db.execute(
             "CREATE TABLE IF NOT EXISTS prediction ("
-            "src_url TEXT PRIMARY KEY, " + "value TEXT, "
+            "key TEXT PRIMARY KEY, " + "value TEXT, "
             "confidence REAL"
             ")"
         )
