@@ -52,7 +52,7 @@ class Merge(CMD):
                 _, exported = await BaseConfigLoader.load_file(
                     parsers, exit_stack, path
                 )
-                merge(merged, exported)
+                merge(merged, exported, list_append=True)
         # Export the dataflow
         dataflow = DataFlow._fromdict(**merged)
         async with self.config(BaseConfig()) as configloader:

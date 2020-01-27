@@ -50,7 +50,7 @@ elif action == 'predict':
         'dffml', 'predict', 'repo',
         '-keys', query['URL'],
         '-model', 'tfdnnc',
-        '-model-classification', 'maintained',
+        '-model-predict', 'maintained',
         '-model-classifications', '0', '1',
         '-sources', 'db=demoapp',
         '-model-features',
