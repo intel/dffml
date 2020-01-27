@@ -140,6 +140,13 @@ function run_docs() {
   ./scripts/docs.sh
   mv pages "${release_docs}/html"
 
+  # Make webui
+  git clone git@github.com:intel/dffml -b webui "${release_docs}/webui"
+  cd "${release_docs}/webui/service/webui/webui"
+  yarn install
+  yarn build
+  mv build/ "${release_docs}/html/master/webui"
+
   # Don't push docs unless we're running on master
   if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" != "xrefs/heads/master" ]; then
     return
