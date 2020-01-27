@@ -4,7 +4,6 @@ import pathlib
 import tempfile
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.config.config import ConfigLoaders
-from dffml.util.data import explore_directories, nested_apply
 
 
 class TestConfigLoader(AsyncTestCase):

@@ -3,9 +3,7 @@
 """
 Create and remove OS temporary directories.
 """
-import queue
 import shutil
-import os.path
 import tempfile
 from typing import List
 

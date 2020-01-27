@@ -2,7 +2,7 @@ import copy
 import collections
 from typing import Dict, Any, NamedTuple, List
 
-from ..df.types import Definition, Operation, Stage, DataFlow
+from ..df.types import Definition, Stage, DataFlow
 from ..df.base import (
     op,
     OperationImplementationContext,
