@@ -114,16 +114,6 @@ function run_style() {
 }
 
 function run_docs() {
-  if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" != "xrefs/heads/master" ]; then
-    return
-  fi
-
-  mkdir -p ~/.ssh
-  chmod 700 ~/.ssh
-  "${PYTHON}" -c "import pathlib, base64, os; keyfile = pathlib.Path('~/.ssh/github_dffml').expanduser(); keyfile.write_bytes(b''); keyfile.chmod(0o600); keyfile.write_bytes(base64.b32decode(os.environ['GITHUB_PAGES_KEY']))"
-  ssh-keygen -y -f ~/.ssh/github_dffml > ~/.ssh/github_dffml.pub
-  export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=~/.ssh/github_dffml'
-
   cd "${SRC_ROOT}"
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
@@ -147,6 +137,17 @@ function run_docs() {
   "${PYTHON}" -m dffml service dev install -user
   ./scripts/docs.sh
   mv pages "${release_docs}/html"
+
+  # Don't push docs unless we're running on master
+  if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" != "xrefs/heads/master" ]; then
+    return
+  fi
+
+  mkdir -p ~/.ssh
+  chmod 700 ~/.ssh
+  "${PYTHON}" -c "import pathlib, base64, os; keyfile = pathlib.Path('~/.ssh/github_dffml').expanduser(); keyfile.write_bytes(b''); keyfile.chmod(0o600); keyfile.write_bytes(base64.b32decode(os.environ['GITHUB_PAGES_KEY']))"
+  ssh-keygen -y -f ~/.ssh/github_dffml > ~/.ssh/github_dffml.pub
+  export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=~/.ssh/github_dffml'
 
   git clone git@github.com:intel/dffml -b gh-pages \
     "${release_docs}/old-gh-pages-branch"
