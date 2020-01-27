@@ -219,7 +219,7 @@ abstract the loading and storage of data / datasets.</p>
 </li>
 <li><p>key: String</p>
 <ul>
-<li><p>default: src_url</p></li>
+<li><p>default: key</p></li>
 </ul>
 </li>
 <li><p>labelcol: String</p>
@@ -290,12 +290,12 @@ stored in memory.</p>
 <li><p>db: String</p></li>
 <li><p>repos-query: String</p>
 <ul>
-<li><p>SELECT <cite>key</cite> as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data</p></li>
+<li><p>SELECT <cite>key</cite> as key, data_1 as feature_1, data_2 as feature_2 FROM repo_data</p></li>
 </ul>
 </li>
 <li><p>repo-query: String</p>
 <ul>
-<li><p>SELECT <cite>key</cite> as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data WHERE <a href="#id1"><span class="problematic" id="id2">`</span></a>key`=%s</p></li>
+<li><p>SELECT <cite>key</cite> as key, data_1 as feature_1, data_2 as feature_2 FROM repo_data WHERE <a href="#id1"><span class="problematic" id="id2">`</span></a>key`=%s</p></li>
 </ul>
 </li>
 <li><p>update-query: String</p>

@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documented style for imports.
 - Documented use of numpy docstrings.
 ### Changed
+- All instances of `src_url` changed to `key`.
 - `readonly` parameter in source config is now changed to `readwrite`.
 - `predict` parameter of all model config classes has been changed from `str` to `Feature`.
 - Defining features on the command line no longer requires that defined features
