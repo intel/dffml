@@ -135,16 +135,16 @@ class RunCMD(SourcesCMD):
         nargs="+",
         action=ParseInputsAction,
         default=[],
-        help="Other inputs to add under each ctx (repo's src_url will "
+        help="Other inputs to add under each ctx (repo's key will "
         + "be used as the context)",
     )
     arg_repo_def = Arg(
         "-repo-def",
         default=False,
         type=str,
-        help="Definition to be used for repo.src_url."
-        + "If set, repo.src_url will be added to the set of inputs "
-        + "under each context (which is also the repo's src_url)",
+        help="Definition to be used for repo.key."
+        + "If set, repo.key will be added to the set of inputs "
+        + "under each context (which is also the repo's key)",
     )
 
     def __init__(self, *args, **kwargs):
@@ -166,7 +166,7 @@ class RunAllRepos(RunCMD):
         # Orchestrate the running of these operations
         async with orchestrator(dataflow) as octx, sources() as sctx:
             # Add our inputs to the input network with the context being the
-            # repo src_url
+            # repo key
             inputs = []
             async for repo in self.repos(sctx):
                 # Skip running DataFlow if repo already has features
@@ -190,7 +190,7 @@ class RunAllRepos(RunCMD):
                 if self.repo_def:
                     repo_inputs.append(
                         Input(
-                            value=repo.src_url,
+                            value=repo.key,
                             definition=dataflow.definitions[self.repo_def],
                         )
                     )
@@ -200,7 +200,7 @@ class RunAllRepos(RunCMD):
                 inputs.append(
                     MemoryInputSet(
                         MemoryInputSetConfig(
-                            ctx=StringInputSetContext(repo.src_url),
+                            ctx=StringInputSetContext(repo.key),
                             inputs=repo_inputs,
                         )
                     )
@@ -243,8 +243,8 @@ class RunRepoSet(RunAllRepos, KeysCMD):
     """Run dataflow for single repo or set of repos"""
 
     async def repos(self, sctx):
-        for src_url in self.keys:
-            yield await sctx.repo(src_url)
+        for key in self.keys:
+            yield await sctx.repo(key)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

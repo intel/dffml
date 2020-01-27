@@ -22,6 +22,8 @@ datasets, train and use machine learning models, and integrate machine learning
 into new or existing applications. It provides APIs for dataset generation,
 storage, and model definition.
 
+The web UI cant be found `here <webui/>`_.
+
 - Models handle implementations of machine learning algorithms.
   Likely wrapping code from a popular machine learning framework.
 

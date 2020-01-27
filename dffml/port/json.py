@@ -16,10 +16,8 @@ class JSON(Port):
     """
 
     async def export_fd(self, sctx: BaseSourceContext, fd):
-        json.dump(
-            {repo.src_url: repo.dict() async for repo in sctx.repos()}, fd
-        )
+        json.dump({repo.key: repo.dict() async for repo in sctx.repos()}, fd)
 
     async def import_fd(self, sctx: BaseSourceContext, fd):
-        for src_url, data in json.load(fd):
-            await sctx.update(Repo(src_url, data=data))
+        for key, data in json.load(fd):
+            await sctx.update(Repo(key, data=data))

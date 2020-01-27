@@ -261,7 +261,7 @@ class DNNRegressionModel(Model):
                     "confidence": NaN,
                     "value": 1.1983429193496704
                 },
-                "src_url": 0
+                "key": 0
             }
         ]
 

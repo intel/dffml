@@ -28,7 +28,7 @@ $ dffml operations repo \
             }
         },
         "last_updated": "2019-05-10T15:58:19Z",
-        "src_url": "feedface"
+        "key": "feedface"
     }
 ]
 ```

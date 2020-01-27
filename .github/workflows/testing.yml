@@ -11,6 +11,7 @@ jobs:
       matrix:
         check: [CHANGELOG, WHITESPACE, STYLE, DOCS]
         python-version: [3.7]
+        node-version: [12.x]
 
     steps:
     - uses: actions/checkout@v1
@@ -18,6 +19,10 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -80,6 +85,8 @@ jobs:
           export TWINE_PASSWORD=$(grep "${PLUGIN}" "${PYPI_TOKENS}" | sed 's/^[^=]*=//g')
         fi
         rm ${PYPI_TOKENS}
+        rm -rf ~/.local/cache
+        python -m pip install --upgrade --no-cache pip twine
         ./.ci/run.sh
         if [ "x${PLUGIN}" = "x." ]; then
           CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }} codecov

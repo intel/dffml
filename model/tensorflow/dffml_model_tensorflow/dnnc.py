@@ -413,7 +413,7 @@ class DNNClassifierModel(Model):
                     "confidence": 0.9999997615814209,
                     "value": 1
                 },
-                "src_url": "0"
+                "key": "0"
             },
             {
                 "extra": {},
@@ -429,7 +429,7 @@ class DNNClassifierModel(Model):
                     "confidence": 0.9999984502792358,
                     "value": 2
                 },
-                "src_url": "1"
+                "key": "1"
             },
 
     """

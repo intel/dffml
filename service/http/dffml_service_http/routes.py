@@ -514,7 +514,7 @@ class Routes(BaseMultiCommContext):
         return web.json_response(
             {
                 "iterkey": iterkey,
-                "repos": {repo.src_url: repo.export() for repo in repos},
+                "repos": {repo.key: repo.export() for repo in repos},
             }
         )
 
@@ -527,7 +527,7 @@ class Routes(BaseMultiCommContext):
         return web.json_response(
             {
                 "iterkey": iterkey,
-                "repos": {repo.src_url: repo.export() for repo in repos},
+                "repos": {repo.key: repo.export() for repo in repos},
             }
         )
 
@@ -578,8 +578,8 @@ class Routes(BaseMultiCommContext):
             )
         # Get the repos
         repos: Dict[str, Repo] = {
-            src_url: Repo(src_url, data=repo_data)
-            for src_url, repo_data in (await request.json()).items()
+            key: Repo(key, data=repo_data)
+            for key, repo_data in (await request.json()).items()
         }
         # Create an async generator to feed repos
         async def repo_gen():
@@ -591,7 +591,7 @@ class Routes(BaseMultiCommContext):
             {
                 "iterkey": None,
                 "repos": {
-                    repo.src_url: repo.export()
+                    repo.key: repo.export()
                     async for repo in mctx.predict(repo_gen())
                 },
             }

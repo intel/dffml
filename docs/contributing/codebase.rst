@@ -98,3 +98,58 @@ that with a database, client HTTP sessions, etc.
 
     asyncio.run(main())
 
+Config
+------
+
+Much of the DFFML codebase is dedicated to transforming configuration structures
+between their incoming form to a ``dict`` which can be used to determine what
+plugin needs to be loaded, and what the arguments for the configuration class of
+that plugin are.
+
+For example:
+
+.. code-block:: yaml
+
+    model:
+      arg: tfdnnc
+      config:
+        epochs: 400
+        steps: 4000
+        classifications:
+        - '0'
+        - '1'
+        predict:
+          dtype: int
+          length: 1
+          name: maintained
+        features:
+        - dtype: int
+          length: 10
+          name: authors
+        - dtype: int
+          length: 10
+          name: commits
+        - dtype: int
+          length: 10
+          name: work
+
+Currently, ``arg`` needs to be renamed to ``plugin``, it signifies the plugin to
+load. ``config`` is the ``...Config`` class as a dict for that plugin.
+
+The command line equivalent for the model is...
+
+.. code-block:: console
+
+    $ dffml ... \
+        -model tfdnnc \
+        -model-epochs 400 \
+        -model-steps 4000 \
+        -model-classifications 0 1 \
+        -model-predict maintained:str:1 \
+        -model-features \
+          authors:int:10 \
+          commits:int:10 \
+          work:int:10 \
+
+The reason it's called ``arg`` right now is because the parsing of the command
+line came first and the argument is stored there when it's not nested.

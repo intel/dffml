@@ -31,11 +31,11 @@ class TestMonitor(AsyncTestCase):
         self.monitor = Monitor()
 
     async def test_00_await_complete(self):
-        await self.monitor.complete((await self.monitor.start(test_task)).key)
+        await self.monitor.complete((await self.monitor.start(test_task))._key)
 
     async def test_01_single_watching_status(self):
         task = await self.monitor.start(test_task)
-        statuses = await recv_statuses(self.monitor.status(task.key), 0.05)
+        statuses = await recv_statuses(self.monitor.status(task._key), 0.05)
         self.assertEqual(len(statuses), 10)
         for i in range(0, 10):
             self.assertEqual(statuses[i], i)
@@ -44,7 +44,7 @@ class TestMonitor(AsyncTestCase):
         task = await self.monitor.start(test_task)
         res = await asyncio.gather(
             *[
-                recv_statuses(self.monitor.status(task.key), i * 0.01)
+                recv_statuses(self.monitor.status(task._key), i * 0.01)
                 for i in range(0, 5)
             ]
         )
@@ -54,22 +54,22 @@ class TestMonitor(AsyncTestCase):
                 self.assertEqual(statuses[i], i)
 
     async def test_03_log(self):
-        await self.monitor.complete((await self.monitor.start(log_task)).key)
+        await self.monitor.complete((await self.monitor.start(log_task))._key)
 
     async def test_04_already_complete(self):
         task = await self.monitor.start(log_task)
-        await self.monitor.complete(task.key)
-        await self.monitor.complete(task.key)
+        await self.monitor.complete(task._key)
+        await self.monitor.complete(task._key)
 
     async def test_05_already_complete_status(self):
         task = await self.monitor.start(log_task)
-        await self.monitor.complete(task.key)
-        self.assertFalse([msg async for msg in self.monitor.status(task.key)])
+        await self.monitor.complete(task._key)
+        self.assertFalse([msg async for msg in self.monitor.status(task._key)])
 
     async def test_06_log_status(self):
         i = 0
         async for msg in self.monitor.log_status(
-            (await self.monitor.start(test_task)).key
+            (await self.monitor.start(test_task))._key
         ):
             self.assertEqual(msg, i)
             i += 1
@@ -77,5 +77,5 @@ class TestMonitor(AsyncTestCase):
 
     async def test_07_already_running(self):
         task = await self.monitor.start(test_task)
-        await self.monitor.start(task, task.key)
-        await self.monitor.complete(task.key)
+        await self.monitor.start(task, task._key)
+        await self.monitor.complete(task._key)
