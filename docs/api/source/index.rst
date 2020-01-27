@@ -5,7 +5,7 @@ Sources are how DFFML abstracts storage of feature data. This allows users to
 swap out their data sources as they progress from testing through integration.
 
 Most DFFML CLI commands work with the :class:`dffml.source.source.Sources` class
-which merges the feature data of Repos with the same ``src_url``. This means
+which merges the feature data of Repos with the same ``key``. This means
 when multiple sources are given to those CLI commands, feature data stored in
 those various sources/databases under the same unique key will automatically
 accessible within one :class:`dffml.repo.Repo`.

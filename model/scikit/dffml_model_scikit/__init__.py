@@ -192,7 +192,7 @@ Let us take a simple example:
                 "confidence": 1.0,
                 "value": 70.00000000000001
             },
-            "src_url": 0
+            "key": 0
         }
     ]
 
@@ -256,7 +256,7 @@ Example below uses KMeans Clustering Model on a small randomly generated dataset
             "confidence": 0.6365141682948129,
             "value": 2
         },
-        "src_url": "0"
+        "key": "0"
     }
     ]
 

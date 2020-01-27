@@ -42,7 +42,7 @@ Uses a CSV file as the source of repo feature data
 
 - key: String
 
-  - default: src_url
+  - default: key
 
 - labelcol: String
 
@@ -116,11 +116,11 @@ No description
 
 - repos-query: String
 
-  - SELECT `key` as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data
+  - SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM repo_data
 
 - repo-query: String
 
-  - SELECT `key` as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data WHERE `key`=%s
+  - SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM repo_data WHERE `key`=%s
 
 - update-query: String
 

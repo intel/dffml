@@ -42,7 +42,7 @@ class BaseSourceContext(BaseDataFlowFacilitatorObjectContext):
         yield Repo("")  # pragma: no cover
 
     @abc.abstractmethod
-    async def repo(self, src_url: str):
+    async def repo(self, key: str):
         """
         Get a repo from the source or add it if it doesn't exist
         """
@@ -64,7 +64,7 @@ class SourcesContext(AsyncContextManagerListContext):
         """
         Updates a repo for a source
         """
-        LOGGER.debug("Updating %r: %r", repo.src_url, repo.dict())
+        LOGGER.debug("Updating %r: %r", repo.key, repo.dict())
         for source in self:
             await source.update(repo)
 
@@ -79,13 +79,13 @@ class SourcesContext(AsyncContextManagerListContext):
                 if validation is None or validation(repo):
                     yield repo
 
-    async def repo(self, src_url: str):
+    async def repo(self, key: str):
         """
         Retrieve and or register repo will all sources
         """
-        repo = Repo(src_url)
+        repo = Repo(key)
         for source in self:
-            repo.merge(await source.repo(src_url))
+            repo.merge(await source.repo(key))
         return repo
 
     async def with_features(self, features: List[str]) -> AsyncIterator[Repo]:
@@ -143,4 +143,4 @@ class SubsetSources(ValidationSources):
         self.keys = keys
 
     def __validation(self, repo: Repo) -> bool:
-        return bool(repo.src_url in self.keys)
+        return bool(repo.key in self.keys)

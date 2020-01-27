@@ -292,7 +292,7 @@ This command runs the dataflow on a set of repos, that set being the URLs in
                 ]
             },
             "last_updated": "2019-10-25T01:44:50Z",
-            "src_url": "https://github.com/AntoineMaillard06/Tetris.git"
+            "key": "https://github.com/AntoineMaillard06/Tetris.git"
         }
     ]
 
@@ -486,7 +486,7 @@ Now that we have the data for the new repo, ask the model for a prediction.
                 "value": "0",
                 "confidence": 1.0
             },
-            "src_url": "https://github.com/intel/dffml.git"
+            "key": "https://github.com/intel/dffml.git"
         }
     ]
 
