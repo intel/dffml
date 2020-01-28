@@ -12,7 +12,6 @@ import importlib
 from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Type
 
 import numpy as np
-import pandas as pd
 
 # should be set before importing tensorflow
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
