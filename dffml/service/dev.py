@@ -182,7 +182,7 @@ class Run(CMD):
             value = json.loads(value[0])
         else:
             typecast = pydoc.locate(
-                definition.primitive.replace("List[", "").replace("[", "")
+                definition.primitive.replace("List[", "").replace("]", "")
             )
             # TODO This is a oversimplification of argparse's nargs
             if definition.primitive.startswith("List["):
