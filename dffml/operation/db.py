@@ -11,7 +11,7 @@ from ..df.types import Definition
 QUERY_TABLE = Definition(name="query_table", primitive="str")
 QUERY_DATA = Definition(name="query_data", primitive="Dict[str, Any]")
 QUERY_CONDITIONS = Definition(name="query_conditions", primitive="Conditions")
-QUERY_COLS = Definition(name="query_cols", primitive="List[str]")
+QUERY_COLS = Definition(name="query_cols", primitive="Dict[str, str]")
 QUERY_LOOKUPS = Definition(name="query_lookups", primitive="Dict[str, Any]")
 
 

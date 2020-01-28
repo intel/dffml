@@ -2,8 +2,11 @@
 This file contains integration tests. We use the CLI to exercise functionality of
 various DFFML classes and constructs.
 """
+import io
+import json
 import inspect
 import pathlib
+import unittest.mock
 
 from dffml.df.types import DataFlow
 from dffml.cli.cli import CLI
