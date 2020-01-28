@@ -33,7 +33,7 @@ class DFFMLHTTPAPISourceContext extends DFFMLHTTPAPIObjectContext {
 
   async update(repo) {
     // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-    var response = await this.api.request("/source/" + this.label + "/update/" + repo.src_url, {
+    var response = await this.api.request("/source/" + this.label + "/update/" + repo.key, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, cors, *same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached

@@ -5,10 +5,8 @@ Description of what this model does
 """
 import os
 import sys
-import ast
 import inspect
 import dataclasses
-from collections import namedtuple
 from typing import Dict, Optional, Tuple, Type, Any
 
 from sklearn.neural_network import MLPClassifier
@@ -56,7 +54,6 @@ from sklearn.cluster import (
 
 
 from dffml.base import make_config, field
-from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entrypoint
 from dffml_model_scikit.scikit_base import (
     Scikit,
@@ -65,7 +62,6 @@ from dffml_model_scikit.scikit_base import (
     ScikitContextUnsprvised,
 )
 from dffml.feature.feature import Feature, Features
-from dffml.util.cli.parser import list_action
 
 
 def applicable_features(self, features):

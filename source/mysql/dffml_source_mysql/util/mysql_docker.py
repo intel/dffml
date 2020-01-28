@@ -1,7 +1,5 @@
 import os
-import ssl
 import time
-import shutil
 import atexit
 import socket
 import pathlib

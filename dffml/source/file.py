@@ -7,16 +7,11 @@ import bz2
 import gzip
 import lzma
 import errno
-import asyncio
 import zipfile
 from contextlib import contextmanager
-from dataclasses import dataclass, field, fields
-from typing import NamedTuple, Tuple, Dict, List
 
 from ..base import config
 from .source import BaseSource
-from ..util.cli.arg import Arg
-from ..util.cli.cmd import CMD
 from ..util.entrypoint import entrypoint
 
 

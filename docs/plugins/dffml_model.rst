@@ -102,7 +102,7 @@ Implemented using Tensorflow's DNNClassifier.
                 "confidence": 0.9999997615814209,
                 "value": 1
             },
-            "src_url": "0"
+            "key": "0"
         },
         {
             "extra": {},
@@ -118,7 +118,7 @@ Implemented using Tensorflow's DNNClassifier.
                 "confidence": 0.9999984502792358,
                 "value": 2
             },
-            "src_url": "1"
+            "key": "1"
         },
 
 **Args**
@@ -242,7 +242,7 @@ Generating train and test data
                 "confidence": NaN,
                 "value": 1.1983429193496704
             },
-            "src_url": 0
+            "key": 0
         }
     ]
 
@@ -480,7 +480,7 @@ hash of their feature names.
                 "confidence": 1.0,
                 "value": 90.0
             },
-            "src_url": "0"
+            "key": "0"
         }
     ]
 
@@ -700,7 +700,7 @@ Let us take a simple example:
                 "confidence": 1.0,
                 "value": 70.00000000000001
             },
-            "src_url": 0
+            "key": 0
         }
     ]
 
@@ -764,7 +764,7 @@ Example below uses KMeans Clustering Model on a small randomly generated dataset
             "confidence": 0.6365141682948129,
             "value": 2
         },
-        "src_url": "0"
+        "key": "0"
     }
     ]
 

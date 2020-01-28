@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 import sys
-import copy
 import json
 import asyncio
 import logging
@@ -9,23 +8,12 @@ import unittest
 from unittest.mock import patch
 
 from dffml.repo import Repo
-from dffml.port import Port
 from dffml.feature import Feature, Features
-from dffml.source.source import BaseSource
-from dffml.model import Model
 
 from dffml.util.cli.arg import Arg, parse_unknown
-
-from dffml.util.cli.cmd import JSONEncoder, CMD, Parser
-
-from dffml.util.cli.parser import (
-    list_action,
-    ParseLoggingAction,
-    ParseInputsAction,
-)
-
-from dffml.util.cli.cmds import ListEntrypoint, ModelCMD
-
+from dffml.util.cli.cmd import JSONEncoder, CMD, Parser, ParseLoggingAction
+from dffml.util.cli.parser import list_action, ParseInputsAction
+from dffml.util.cli.cmds import ListEntrypoint
 from dffml.util.asynctestcase import AsyncTestCase
 
 

@@ -2,7 +2,7 @@ import copy
 import collections
 from typing import Dict, Any, NamedTuple, List
 
-from ..df.types import Definition, Operation, Stage, DataFlow
+from ..df.types import Definition, Stage, DataFlow
 from ..df.base import (
     op,
     OperationImplementationContext,
@@ -35,9 +35,7 @@ class GroupBySpec(NamedTuple):
         return cls(**exported)
 
 
-group_by_spec = Definition(
-    name="group_by_spec", primitive="Dict[str, Any]", spec=GroupBySpec
-)
+group_by_spec = Definition(name="group_by_spec", primitive="Dict[str, Any]")
 
 group_by_output = Definition(
     name="group_by_output", primitive="Dict[str, List[Any]]"

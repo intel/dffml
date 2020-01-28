@@ -1,12 +1,10 @@
 import abc
-import types
 import inspect
 import functools
 import collections
 from typing import (
     Any,
     List,
-    Callable,
     Optional,
     Dict,
     Tuple,

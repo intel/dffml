@@ -51,7 +51,7 @@ class TestDNN(AsyncTestCase):
                 directory=cls.model_dir.name,
                 steps=1000,
                 epochs=30,
-                hidden=[10, 20, 10],
+                hidden=[200, 100, 80, 10],
                 predict=DefFeature("TARGET", float, 1),
                 features=cls.features,
             )
@@ -112,7 +112,7 @@ class TestDNN(AsyncTestCase):
         async with self.sources as sources, self.model as model:
             async with sources() as sctx, model() as mctx:
                 res = await mctx.accuracy(sctx)
-                self.assertGreater(res, 0.9)
+                self.assertGreater(res, 0.8)
 
     async def test_02_predict(self):
         test_feature_val = [
@@ -137,9 +137,9 @@ class TestDNN(AsyncTestCase):
             async with sources() as sctx, model() as mctx:
                 res = [repo async for repo in mctx.predict(sctx.repos())]
                 self.assertEqual(len(res), 1)
-            self.assertEqual(res[0].src_url, a.src_url)
+            self.assertEqual(res[0].key, a.key)
             test_error_norm = abs(
                 (test_target - res[0].prediction().value) / test_target + 1e-6
             )
-            error_threshold = 0.2
+            error_threshold = 0.3
             self.assertLess(test_error_norm, error_threshold)

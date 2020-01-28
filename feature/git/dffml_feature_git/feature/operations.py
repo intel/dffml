@@ -1,37 +1,11 @@
-import io
-import os
 import sys
-import abc
-import glob
-import json
-import uuid
 import shutil
-import inspect
 import asyncio
-import hashlib
 import tempfile
-import unittest
-import itertools
 import subprocess
-import collections
 import asyncio.subprocess
-from itertools import product
 from datetime import datetime
-from contextlib import asynccontextmanager, AsyncExitStack
-from typing import (
-    AsyncIterator,
-    Dict,
-    List,
-    Tuple,
-    Any,
-    NamedTuple,
-    Union,
-    get_type_hints,
-    NewType,
-    Optional,
-    Set,
-    Iterator,
-)
+from typing import Dict, List
 
 from dateutil.relativedelta import relativedelta
 
@@ -40,7 +14,7 @@ from dffml.df.base import op
 
 from .definitions import *
 
-from dffml_feature_git.util.proc import check_output, create, stop, inpath
+from dffml_feature_git.util.proc import check_output, create, stop
 
 from .log import LOGGER
 
@@ -130,7 +104,7 @@ async def clone_git_repo(URL: str):
 )
 async def git_repo_default_branch(repo: Dict[str, str]):
     branches = (
-        await check_output("git", "branch", "-r", cwd=repo["directory"])
+        await check_output("git", "branch", "-r", cwd=repo.directory)
     ).split("\n")
     main = [branch for branch in branches if "->" in branch][0].split()[-1]
     main = main.split("/")[-1]
@@ -142,12 +116,12 @@ async def git_repo_default_branch(repo: Dict[str, str]):
     outputs={"repo": git_repository_checked_out},
 )
 async def git_repo_checkout(repo: Dict[str, str], commit: str):
-    await check_output("git", "checkout", commit, cwd=repo["directory"])
-    # NOTE Don't modify variables which are mearly references! This will create
-    # more permutations than intended.
-    checked_out = repo.copy()
-    checked_out["commit"] = commit
-    return {"repo": checked_out}
+    await check_output("git", "checkout", commit, cwd=repo.directory)
+    return {
+        "repo": GitRepoCheckedOutSpec(
+            URL=repo.URL, directory=repo.directory, commit=commit,
+        )
+    }
 
 
 @op(
@@ -165,7 +139,7 @@ async def git_repo_commit_from_date(
             "1",
             '--before="%s"' % (date,),
             branch,
-            cwd=repo["directory"],
+            cwd=repo.directory,
         )
     ).strip()
     if not sha:
@@ -177,7 +151,7 @@ async def git_repo_commit_from_date(
                     "--reverse",
                     '--after="%s"' % (date,),
                     branch,
-                    cwd=repo["directory"],
+                    cwd=repo.directory,
                 )
             )
             .strip()
@@ -210,7 +184,7 @@ async def git_repo_author_lines_for_dates(
         "--after",
         "%s" % (end),
         branch,
-        cwd=repo["directory"],
+        cwd=repo.directory,
     )
     while not proc.stdout.at_eof():
         line = await proc.stdout.readline()
@@ -298,7 +272,7 @@ async def git_repo_release(
         "--after",
         "%s" % (end),
         branch,
-        cwd=repo["directory"],
+        cwd=repo.directory,
     )
     while not proc.stdout.at_eof() and not present:
         line = await proc.stdout.readline()
@@ -316,7 +290,7 @@ async def git_repo_release(
 )
 async def lines_of_code_by_language(repo: Dict[str, str]):
     # cloc creates temporary files >:(
-    proc = await create("tokei", repo["directory"], cwd=repo["directory"])
+    proc = await create("tokei", repo.directory, cwd=repo.directory)
     cols = []
     lines_by_language = {}
     while not proc.stdout.at_eof():
@@ -384,7 +358,7 @@ async def git_commits(repo: Dict[str, str], branch: str, start_end: List[str]):
         "--after",
         end,
         branch,
-        cwd=repo["directory"],
+        cwd=repo.directory,
     )
     while not proc.stdout.at_eof():
         line = await proc.stdout.readline()
@@ -404,5 +378,5 @@ async def count_authors(author_lines: dict):
 
 @op(inputs={"repo": git_repository}, outputs={}, stage=Stage.CLEANUP)
 async def cleanup_git_repo(repo: Dict[str, str]):
-    shutil.rmtree(repo["directory"])
+    shutil.rmtree(repo.directory)
     return {}

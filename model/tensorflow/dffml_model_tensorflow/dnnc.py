@@ -10,6 +10,8 @@ import inspect
 from typing import List, Dict, Any, AsyncIterator, Tuple, Optional, Type
 
 import numpy as np
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
 
 from dffml.repo import Repo
@@ -411,7 +413,7 @@ class DNNClassifierModel(Model):
                     "confidence": 0.9999997615814209,
                     "value": 1
                 },
-                "src_url": "0"
+                "key": "0"
             },
             {
                 "extra": {},
@@ -427,7 +429,7 @@ class DNNClassifierModel(Model):
                     "confidence": 0.9999984502792358,
                     "value": 2
                 },
-                "src_url": "1"
+                "key": "1"
             },
 
     """

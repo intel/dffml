@@ -1,7 +1,6 @@
 import os
 import tempfile
 
-from dffml.df.base import BaseConfig
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.db.sqlite import SqliteDatabase, SqliteDatabaseConfig
 

@@ -48,11 +48,11 @@ class MySQLSourceContext(BaseSourceContext):
             update_query,
             (list(key_value_pairs.values()) + list(key_value_pairs.values())),
         )
-        self.logger.debug("update: %s", await self.repo(repo.src_url))
+        self.logger.debug("update: %s", await self.repo(repo.key))
 
     def convert_to_repo(self, result):
         modified_repo = {
-            "src_url": "",
+            "key": "",
             "data": {"features": {}, "prediction": {}},
         }
         for key, value in result.items():
@@ -66,7 +66,7 @@ class MySQLSourceContext(BaseSourceContext):
                 ] = value
             else:
                 modified_repo[key] = value
-        return Repo(modified_repo["src_url"], data=modified_repo["data"])
+        return Repo(modified_repo["key"], data=modified_repo["data"])
 
     async def repos(self) -> AsyncIterator[Repo]:
         query = self.parent.config.repos_query
@@ -75,16 +75,16 @@ class MySQLSourceContext(BaseSourceContext):
         for repo in result:
             yield self.convert_to_repo(repo)
 
-    async def repo(self, src_url: str):
+    async def repo(self, key: str):
         query = self.parent.config.repo_query
-        repo = Repo(src_url)
+        repo = Repo(key)
         db = self.conn
-        await db.execute(query, (src_url,))
+        await db.execute(query, (key,))
         row = await db.fetchone()
         if row is not None:
             repo.merge(
                 Repo(
-                    row["src_url"],
+                    row["key"],
                     data={
                         "features": {
                             key.replace("feature_", ""): value
@@ -157,7 +157,7 @@ class MySQLSource(BaseSource):
             "repos-query",
             Arg(
                 type=str,
-                help="SELECT `key` as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data",
+                help="SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM repo_data",
             ),
         )
         cls.config_set(
@@ -166,7 +166,7 @@ class MySQLSource(BaseSource):
             "repo-query",
             Arg(
                 type=str,
-                help="SELECT `key` as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data WHERE `key`=%s",
+                help="SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM repo_data WHERE `key`=%s",
             ),
         )
         cls.config_set(

@@ -21,7 +21,10 @@ function run_plugin() {
   "${PYTHON}" -m pip install -U "${SRC_ROOT}"
 
   cd "${PLUGIN}"
+  PACKAGE_NAME=$("${PYTHON}" "${SRC_ROOT}/scripts/setup_arg.py" setup.py name)
+  "${PYTHON}" -m pip install -e .
   "${PYTHON}" setup.py test
+  "${PYTHON}" -m pip uninstall -y "${PACKAGE_NAME}"
   cd -
 
   if [ "x${PLUGIN}" = "x." ]; then
@@ -114,15 +117,7 @@ function run_style() {
 }
 
 function run_docs() {
-  if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" != "xrefs/heads/master" ]; then
-    return
-  fi
-
-  mkdir -p ~/.ssh
-  chmod 700 ~/.ssh
-  "${PYTHON}" -c "import pathlib, base64, os; keyfile = pathlib.Path('~/.ssh/github_dffml').expanduser(); keyfile.write_bytes(b''); keyfile.chmod(0o600); keyfile.write_bytes(base64.b32decode(os.environ['GITHUB_PAGES_KEY']))"
-  ssh-keygen -y -f ~/.ssh/github_dffml > ~/.ssh/github_dffml.pub
-  export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o IdentityFile=~/.ssh/github_dffml'
+  export GIT_SSH_COMMAND='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
 
   cd "${SRC_ROOT}"
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
@@ -143,16 +138,25 @@ function run_docs() {
   git checkout $(git describe --abbrev=0 --tags --match '*.*.*')
   git clean -fdx
   git reset --hard HEAD
+  # Remove .local to force install of correct dependency versions
+  rm -rf ~/.local
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
   ./scripts/docs.sh
   mv pages "${release_docs}/html"
 
-  git clone git@github.com:intel/dffml -b gh-pages \
+  git clone https://github.com/intel/dffml -b gh-pages \
     "${release_docs}/old-gh-pages-branch"
 
   mv "${release_docs}/old-gh-pages-branch/.git" "${release_docs}/html/"
   mv "${master_docs}/html" "${release_docs}/html/master"
+
+  # Make webui
+  git clone https://github.com/intel/dffml -b webui "${release_docs}/webui"
+  cd "${release_docs}/webui/service/webui/webui"
+  yarn install
+  yarn build
+  mv build/ "${release_docs}/html/master/webui"
 
   cd "${release_docs}/html"
 
@@ -161,6 +165,19 @@ function run_docs() {
 
   git add -A
   git commit -sam "docs: $(date)"
+
+  # Don't push docs unless we're running on master
+  if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" != "xrefs/heads/master" ]; then
+    return
+  fi
+
+  mkdir -p ~/.ssh
+  chmod 700 ~/.ssh
+  "${PYTHON}" -c "import pathlib, base64, os; keyfile = pathlib.Path('~/.ssh/github_dffml').expanduser(); keyfile.write_bytes(b''); keyfile.chmod(0o600); keyfile.write_bytes(base64.b32decode(os.environ['GITHUB_PAGES_KEY']))"
+  ssh-keygen -y -f ~/.ssh/github_dffml > ~/.ssh/github_dffml.pub
+  export GIT_SSH_COMMAND="${GIT_SSH_COMMAND} -o IdentityFile=~/.ssh/github_dffml"
+
+  git remote set-url origin git@github.com:intel/dffml
   git push
 
   cd -

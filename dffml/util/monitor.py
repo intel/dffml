@@ -37,13 +37,13 @@ class Task(object):
 
     LOGGER = LOGGER.getChild("Task")
 
-    def __init__(self, func=None, key: Any = "") -> None:
+    def __init__(self, func=None, _key: Any = "") -> None:
         coro = None
         if not func is None:
             coro = func(task=self)
-            if not key:
-                key = coro
-        self.__key = key
+            if not _key:
+                _key = coro
+        self.__key = _key
         self.__coro = coro
         self.__lock = asyncio.Lock()
         # Previous updates so addded watchdogs get all updates ever
@@ -51,7 +51,7 @@ class Task(object):
         self.__watchdogs: List[Watchdog] = []
 
     @property
-    def key(self):
+    def _key(self):
         return self.__key
 
     @property
@@ -132,60 +132,60 @@ class Monitor(object):
         self.lock = asyncio.Lock()
         self.log_lock = asyncio.Lock()
 
-    async def task(self, key: Any):
+    async def task(self, _key: Any):
         task = None
         async with self.lock:
-            task = self.in_progress.get(key, None)
+            task = self.in_progress.get(_key, None)
             if task is None:
                 return
         return task
 
-    async def complete(self, key: Any):
-        task = await self.task(key)
+    async def complete(self, _key: Any):
+        task = await self.task(_key)
         if task is None:
             return
         await task.complete()
 
-    async def events(self, key: Any):
-        task = await self.task(key)
+    async def events(self, _key: Any):
+        task = await self.task(_key)
         if task is None:
             return
         async for event, msg in task.events():
             yield event, msg
 
-    async def status(self, key: Any):
+    async def status(self, _key: Any):
         task = None
         async with self.lock:
-            task = self.in_progress.get(key, None)
+            task = self.in_progress.get(_key, None)
             if task is None:
                 return
         async for msg in task.status():
             yield msg
 
-    async def statuses(self, key: Any):
-        return [msg async for msg in self.status(key)]
+    async def statuses(self, _key: Any):
+        return [msg async for msg in self.status(_key)]
 
-    async def log_status(self, key: Any):
-        async for msg in self.status(key):
-            self.LOGGER.debug("status [%r]: %r", key, msg)
+    async def log_status(self, _key: Any):
+        async for msg in self.status(_key):
+            self.LOGGER.debug("status [%r]: %r", _key, msg)
             yield msg
-        self.LOGGER.debug("log status [%r] is done", key)
+        self.LOGGER.debug("log status [%r] is done", _key)
 
     async def run_task(self, task: Task):
-        self.LOGGER.debug("Started running %r", task.key)
+        self.LOGGER.debug("Started running %r", task._key)
         result = await task.coro  # type: ignore
-        self.LOGGER.debug("Done running %r", task.key)
+        self.LOGGER.debug("Done running %r", task._key)
         async with self.lock:
             await task.completed(result)
-            del self.in_progress[task.key]
-        self.LOGGER.debug("Removed running %r", task.key)
+            del self.in_progress[task._key]
+        self.LOGGER.debug("Removed running %r", task._key)
 
-    async def start(self, func, key: Any = "", mktask=Task):
+    async def start(self, func, _key: Any = "", mktask=Task):
         async with self.lock:
-            if key in self.in_progress:
-                self.LOGGER.debug("Already running %r", key)
+            if _key in self.in_progress:
+                self.LOGGER.debug("Already running %r", _key)
                 return
-            task = mktask(func, key)
-            self.in_progress[task.key] = task
+            task = mktask(func, _key)
+            self.in_progress[task._key] = task
             asyncio.ensure_future(self.run_task(task))
             return task

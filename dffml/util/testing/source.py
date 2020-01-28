@@ -28,10 +28,10 @@ class SourceTest(abc.ABC):
         pass  # pragma: no cover
 
     async def test_update(self):
-        full_src_url = "0"
-        empty_src_url = "1"
+        full_key = "0"
+        empty_key = "1"
         full_repo = Repo(
-            full_src_url,
+            full_key,
             data={
                 "features": {
                     "PetalLength": 3.9,
@@ -43,7 +43,7 @@ class SourceTest(abc.ABC):
             },
         )
         empty_repo = Repo(
-            empty_src_url,
+            empty_key,
             data={
                 "features": {
                     "PetalLength": 3.9,
@@ -63,26 +63,25 @@ class SourceTest(abc.ABC):
         async with source as testSource:
             # Open and confirm we saved and loaded correctly
             async with testSource() as sourceContext:
-                with self.subTest(src_url=full_src_url):
-                    repo = await sourceContext.repo(full_src_url)
+                with self.subTest(key=full_key):
+                    repo = await sourceContext.repo(full_key)
                     self.assertEqual(repo.data.prediction.value, "feedface")
                     self.assertEqual(repo.data.prediction.confidence, 0.42)
-                with self.subTest(src_url=empty_src_url):
-                    repo = await sourceContext.repo(empty_src_url)
+                with self.subTest(key=empty_key):
+                    repo = await sourceContext.repo(empty_key)
                     self.assertFalse(repo.data.prediction.value)
                     self.assertFalse(repo.data.prediction.confidence)
-                with self.subTest(both=[full_src_url, empty_src_url]):
+                with self.subTest(both=[full_key, empty_key]):
                     repos = {
-                        repo.src_url: repo
-                        async for repo in sourceContext.repos()
+                        repo.key: repo async for repo in sourceContext.repos()
                     }
-                    self.assertIn(full_src_url, repos)
-                    self.assertIn(empty_src_url, repos)
+                    self.assertIn(full_key, repos)
+                    self.assertIn(empty_key, repos)
                     self.assertEqual(
-                        repos[full_src_url].features(), full_repo.features()
+                        repos[full_key].features(), full_repo.features()
                     )
                     self.assertEqual(
-                        repos[empty_src_url].features(), empty_repo.features()
+                        repos[empty_key].features(), empty_repo.features()
                     )
 
 
