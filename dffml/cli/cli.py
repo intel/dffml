@@ -90,9 +90,9 @@ class Merge(CMD):
         ) as src, self.dest.withconfig(self.extra_config) as dest:
             async with src() as sctx, dest() as dctx:
                 async for src in sctx.repos():
-                    repo = Repo(src.src_url)
+                    repo = Repo(src.key)
                     repo.merge(src)
-                    repo.merge(await dctx.repo(repo.src_url))
+                    repo.merge(await dctx.repo(repo.key))
                     await dctx.update(repo)
 
 

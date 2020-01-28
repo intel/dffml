@@ -1,9 +1,9 @@
 DROP TABLE IF EXISTS `status`;
 
 CREATE TABLE `status` (
-  `src_url` varchar(1000) NOT NULL,
+  `key` varchar(1000) NOT NULL,
   maintained TINYINT,
-  PRIMARY KEY (`src_url`)
+  PRIMARY KEY (`key`)
 );
 
 INSERT INTO `status` VALUES ('https://github.com/LoveDaisy/tetris_game.git',1);

@@ -15,14 +15,14 @@ class MiscSourceConfig:
 
 class MiscSourceContext(BaseSourceContext):
     async def update(self, repo):
-        self.parent.mem[repo.src_url] = repo
+        self.parent.mem[repo.key] = repo
 
     async def repos(self) -> AsyncIterator[Repo]:
         for repo in self.parent.mem.values():
             yield repo
 
-    async def repo(self, src_url: str) -> Repo:
-        return self.parent.mem.get(src_url, Repo(src_url))
+    async def repo(self, key: str) -> Repo:
+        return self.parent.mem.get(key, Repo(key))
 
 
 @entrypoint("misc")
@@ -37,7 +37,7 @@ class MiscSource(BaseSource):
         super().__init__(config)
         self.mem: Dict[str, Repo] = {}
         if isinstance(self.config, MiscSourceConfig):
-            self.mem = {repo.src_url: repo for repo in self.config.repos}
+            self.mem = {repo.key: repo for repo in self.config.repos}
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:

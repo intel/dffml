@@ -30,7 +30,7 @@ class FakeFileSourceContext(BaseSourceContext):
     async def repos(self) -> AsyncIterator[Repo]:
         yield Repo("")  # pragma: no cover
 
-    async def repo(self, src_url: str):
+    async def repo(self, key: str):
         pass  # pragma: no cover
 
 

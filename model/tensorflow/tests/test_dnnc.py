@@ -55,7 +55,7 @@ class TestDNN(AsyncTestCase):
                 directory=cls.model_dir.name,
                 steps=1000,
                 epochs=30,
-                hidden=[10, 20, 10],
+                hidden=[300, 200, 80, 10],
                 predict=DefFeature("string", str, 1),
                 classifications=["a", "not a"],
                 clstype=str,
@@ -114,5 +114,5 @@ class TestDNN(AsyncTestCase):
             async with sources() as sctx, model() as mctx:
                 res = [repo async for repo in mctx.predict(sctx.repos())]
                 self.assertEqual(len(res), 1)
-            self.assertEqual(res[0].src_url, a.src_url)
+            self.assertEqual(res[0].key, a.key)
             self.assertTrue(res[0].prediction().value)

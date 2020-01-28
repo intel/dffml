@@ -1,7 +1,5 @@
 import uuid
 import copy
-import pydoc
-import inspect
 import itertools
 import pkg_resources
 from enum import Enum
@@ -273,6 +271,8 @@ class Input(object):
         # instance name this Input is intended for.
         if parents is None:
             parents = []
+        if isinstance(value, dict) and definition.spec is not None:
+            value = definition.spec(**value)
         self.value = value
         self.definition = definition
         self.parents = parents

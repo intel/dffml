@@ -6,19 +6,21 @@ import os
 from typing import List, Dict, Any, AsyncIterator
 
 import numpy as np
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
 
 from dffml.repo import Repo
-from dffml.source.source import Sources
+from dffml.util.cli.arg import Arg
 from dffml.model.model import Model
 from dffml.accuracy import Accuracy
+from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
-from dffml.base import BaseConfig, config, field
-from dffml.util.cli.arg import Arg
-from dffml.feature.feature import Feature, Features
 from dffml.util.cli.parser import list_action
+from dffml.base import BaseConfig, config, field
+from dffml.feature.feature import Feature, Features
 
-from dffml_model_tensorflow.dnnc import TensorflowModelContext
+from .dnnc import TensorflowModelContext
 
 
 @config
@@ -258,7 +260,7 @@ class DNNRegressionModel(Model):
                     "confidence": NaN,
                     "value": 1.1983429193496704
                 },
-                "src_url": 0
+                "key": 0
             }
         ]
 

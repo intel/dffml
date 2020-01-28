@@ -190,7 +190,7 @@ class SLR(Model):
                     "confidence": 1.0,
                     "value": 90.0
                 },
-                "src_url": "0"
+                "key": "0"
             }
         ]
 

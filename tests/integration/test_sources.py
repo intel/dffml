@@ -27,7 +27,7 @@ from dffml.util.asynctestcase import AsyncTestCase, IntegrationCLITestCase
 
 
 class TestCSV(IntegrationCLITestCase):
-    async def test_string_src_urls(self):
+    async def test_string_keys(self):
         # Test for issue #207
         self.required_plugins("dffml-model-scikit")
         # Create the training data
@@ -108,8 +108,8 @@ class TestCSV(IntegrationCLITestCase):
         self.assertTrue(isinstance(results, list))
         self.assertTrue(results)
         results = results[0]
-        self.assertIn("src_url", results)
-        self.assertEqual("0", results["src_url"])
+        self.assertIn("key", results)
+        self.assertEqual("0", results["key"])
         self.assertIn("prediction", results)
         self.assertIn("value", results["prediction"])
         self.assertEqual(70.0, results["prediction"]["value"])

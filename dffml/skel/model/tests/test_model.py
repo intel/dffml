@@ -22,7 +22,7 @@ class StartsWithA(Feature):
         return 1
 
     async def calc(self, data: Data) -> int:
-        return 1 if data.src_url.lower().startswith("a") else 0
+        return 1 if data.key.lower().startswith("a") else 0
 
 
 class TestMisc(AsyncTestCase):
@@ -83,6 +83,6 @@ class TestMisc(AsyncTestCase):
                     sctx.repos()
                 ):
                     with self.subTest(repo=repo):
-                        self.assertEqual(prediction, repo.src_url)
+                        self.assertEqual(prediction, repo.key)
                     num += 1
                 self.assertEqual(num, 2)

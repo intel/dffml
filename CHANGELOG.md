@@ -32,6 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documented style for imports.
 - Documented use of numpy docstrings.
 ### Changed
+- All instances of `src_url` changed to `key`.
+- Moved from tensorflow 1 to tensorflow 2.
 - `readonly` parameter in source config is now changed to `readwrite`.
 - `predict` parameter of all model config classes has been changed from `str` to `Feature`.
 - Defining features on the command line no longer requires that defined features
@@ -46,8 +48,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CONTRIBUTING.md has `-e` in the wrong place in the getting setup section.
 - Since moving to auto `args()` and `config()`, BaseConfigurable no longer
   produces odd typenames in conjunction with docs.py.
+- Autoconvert Definitions with spec into their spec
 ### Removed
 - The model predict operation erroneously had a `msg` parameter in it's config.
+- Unused imports identified by deepsource.io
 
 ## [0.3.2] - 2020-01-03
 ### Added
