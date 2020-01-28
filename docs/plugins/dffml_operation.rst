@@ -156,10 +156,6 @@ No description
 
 - spec: group_by_spec(type: Dict[str, Any])
 
-  - group: Definition
-  - by: Definition
-  - fill: typing.Any
-
 **Outputs**
 
 - output: group_by_output(type: Dict[str, List[Any]])
