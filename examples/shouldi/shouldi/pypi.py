@@ -30,7 +30,7 @@ async def pypi_package_json(self, package: str) -> Dict[str, Any]:
     Download the information on the package in JSON format.
     """
     url = f"https://pypi.org/pypi/{package}/json"
-    async with self.parent.session.get(url) as resp:
+    async with self.parent.session.get(url) as resp:  # skipcq: BAN-B310
         package_json = await resp.json()
         return {"response_json": package_json}
 
