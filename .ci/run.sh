@@ -21,7 +21,10 @@ function run_plugin() {
   "${PYTHON}" -m pip install -U "${SRC_ROOT}"
 
   cd "${PLUGIN}"
+  PACKAGE_NAME=$("${PYTHON}" "${SRC_ROOT}/scripts/setup_arg.py" setup.py name)
+  "${PYTHON}" -m pip install -e .
   "${PYTHON}" setup.py test
+  "${PYTHON}" -m pip uninstall -y "${PACKAGE_NAME}"
   cd -
 
   if [ "x${PLUGIN}" = "x." ]; then
@@ -135,6 +138,8 @@ function run_docs() {
   git checkout $(git describe --abbrev=0 --tags --match '*.*.*')
   git clean -fdx
   git reset --hard HEAD
+  # Remove .local to force install of correct dependency versions
+  rm -rf ~/.local
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
   ./scripts/docs.sh

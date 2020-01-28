@@ -161,7 +161,7 @@ class CMD(object):
         if getattr(args, "cmd", None) is None:
             parser.print_help()
             return DisplayHelp
-        if getattr(args.cmd, "run", None) is None:
+        if not inspect.isfunction(getattr(args.cmd, "run", None)):
             args.parser.print_help()
             return DisplayHelp
         cmd = args.cmd(**cls.sanitize_args(vars(args)))
