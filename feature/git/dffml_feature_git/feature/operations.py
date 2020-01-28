@@ -119,9 +119,7 @@ async def git_repo_checkout(repo: Dict[str, str], commit: str):
     await check_output("git", "checkout", commit, cwd=repo.directory)
     return {
         "repo": GitRepoCheckedOutSpec(
-            URL=repo.URL,
-            directory=repo.directory,
-            commit=commit,
+            URL=repo.URL, directory=repo.directory, commit=commit,
         )
     }
 
