@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CONTRIBUTING.md has `-e` in the wrong place in the getting setup section.
 - Since moving to auto `args()` and `config()`, BaseConfigurable no longer
   produces odd typenames in conjunction with docs.py.
+- Autoconvert Definitions with spec into their spec
 ### Removed
 - The model predict operation erroneously had a `msg` parameter in it's config.
 - Unused imports identified by deepsource.io
