@@ -156,6 +156,10 @@ No description
 
 - spec: group_by_spec(type: Dict[str, Any])
 
+  - group: Definition
+  - by: Definition
+  - fill: typing.Any
+
 **Outputs**
 
 - output: group_by_output(type: Dict[str, List[Any]])
@@ -480,3 +484,30 @@ No description
 **Outputs**
 
 - work: work_spread(type: int)
+
+dffml_feature_auth
+------------------
+
+.. code-block:: console
+
+    pip install dffml-feature-auth
+
+
+scrypt
+~~~~~~
+
+*Core*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- password: UnhashedPassword(type: string)
+
+**Outputs**
+
+- password: ScryptPassword(type: string)
