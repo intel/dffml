@@ -322,7 +322,7 @@ Implemented using Tensorflow hub pretrained models.
         -model-embedType swivel \
         -model-add_layers \
         -model-layers "Dense(16, activation='relu')" "Dense(2, activation='softmax')" \
-        -log debug 
+        -log debug
     $ dffml accuracy \
         -model text_classifier \
         -model-predict sentiment:int:1 \
@@ -342,7 +342,7 @@ Implemented using Tensorflow hub pretrained models.
         -source-filename test.csv \
         -model-features \
           sentence:str:1 \
-        -log debug 
+        -log debug
 
 **Args**
 
