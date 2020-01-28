@@ -9,6 +9,7 @@ import inspect
 from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Type
 
 import numpy as np
+import pandas as pd
 import tensorflow as tf
 import tensorflow_hub as hub
 from tensorflow.keras import backend as K
