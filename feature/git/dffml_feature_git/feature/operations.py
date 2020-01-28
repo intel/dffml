@@ -117,11 +117,13 @@ async def git_repo_default_branch(repo: Dict[str, str]):
 )
 async def git_repo_checkout(repo: Dict[str, str], commit: str):
     await check_output("git", "checkout", commit, cwd=repo.directory)
-    # NOTE Don't modify variables which are mearly references! This will create
-    # more permutations than intended.
-    checked_out = repo.copy()
-    checked_out["commit"] = commit
-    return {"repo": checked_out}
+    return {
+        "repo": GitRepoCheckedOutSpec(
+            URL=repo.URL,
+            directory=repo.directory,
+            commit=commit,
+        )
+    }
 
 
 @op(
