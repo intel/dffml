@@ -259,6 +259,8 @@ the CONTRIBUTING.md file.</p></li>
 </li>
 <li><p>Documented style for imports.</p></li>
 <li><p>Documented use of numpy docstrings.</p></li>
+<li><p>Helper utilities to take callables with numpy style docstrings and
+create config classes out of them using <code class="docutils literal notranslate"><span class="pre">make_config</span></code>.</p></li>
 </ul>
 </div>
 <div class="section" id="changed">
@@ -276,6 +278,7 @@ passed via it’s config is a class rather than an instance.</p></li>
 <li><p>Use <code class="docutils literal notranslate"><span class="pre">FastChildWatcher</span></code> when run via the CLI to prevent <code class="docutils literal notranslate"><span class="pre">BlockingIOError</span></code>s.</p></li>
 <li><p>TensorFlow based neural network classifier had the <code class="docutils literal notranslate"><span class="pre">classification</span></code> parameter
 in it’s config changed to <code class="docutils literal notranslate"><span class="pre">predict</span></code>.</p></li>
+<li><p>SciKit models use <code class="docutils literal notranslate"><span class="pre">make_config_numpy</span></code>.</p></li>
 </ul>
 </div>
 <div class="section" id="fixed">
