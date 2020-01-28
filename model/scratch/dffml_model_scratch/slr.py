@@ -194,7 +194,7 @@ class SLR(Model):
                         "value": 90.0
                     }
                 },
-                "src_url": "0"
+                "key": "0"
             }
         ]
 

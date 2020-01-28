@@ -26,7 +26,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Database abstraction `dffml.db`
   - SQLite connector
   - MySQL connector
+- Documented style for imports.
+- Documented use of numpy docstrings.
 ### Changed
+- All instances of `src_url` changed to `key`.
 - `readonly` parameter in source config is now changed to `readwrite`.
 - `predict` parameter of all model config classes has been changed from `str` to `Feature`.
 - Defining features on the command line no longer requires that defined features
@@ -35,12 +38,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   passed via it's config is a class rather than an instance.
 - `entry_point` and friends have been renamed to `entrypoint`.
 - Use `FastChildWatcher` when run via the CLI to prevent `BlockingIOError`s.
+- TensorFlow based neural network classifier had the `classification` parameter
+  in it's config changed to `predict`.
 ### Fixed
 - CONTRIBUTING.md has `-e` in the wrong place in the getting setup section.
 - Since moving to auto `args()` and `config()`, BaseConfigurable no longer
   produces odd typenames in conjunction with docs.py.
 ### Removed
 - The model predict operation erroneously had a `msg` parameter in it's config.
+- Unused imports identified by deepsource.io
 
 ## [0.3.2] - 2020-01-03
 ### Added

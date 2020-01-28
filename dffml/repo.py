@@ -53,12 +53,12 @@ class RepoPrediction(dict):
 class RepoData(object):
 
     DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
-    EXPORTED = ["src_url", "features", "prediction"]
+    EXPORTED = ["key", "features", "prediction"]
 
     def __init__(
         self,
         *,
-        src_url: Optional[str] = None,
+        key: Optional[str] = None,
         features: Optional[Dict[str, Any]] = None,
         prediction: Optional[Dict[str, Any]] = None,
         last_updated: Optional[datetime] = None,
@@ -66,8 +66,8 @@ class RepoData(object):
         # If the repo is not evaluated or predicted then don't report out a new
         # value for last_updated
         self.last_updated_default = datetime.now()
-        if src_url is None:
-            src_url = ""
+        if key is None:
+            key = ""
         if features is None:
             features = {}
         if prediction is None:
@@ -76,7 +76,7 @@ class RepoData(object):
             last_updated = self.last_updated_default
         if isinstance(last_updated, str):
             last_updated = datetime.strptime(last_updated, self.DATE_FORMAT)
-        self.src_url = src_url
+        self.key = key
         self.features = features
         self.prediction = prediction
         self.last_updated = last_updated
@@ -110,7 +110,7 @@ class Repo(object):
 
     def __init__(
         self,
-        src_url: str,
+        key: str,
         *,
         data: Optional[Dict[str, Any]] = None,
         extra: Optional[Dict[str, Any]] = None,
@@ -119,7 +119,7 @@ class Repo(object):
             data = {}
         if extra is None:
             extra = {}
-        data["src_url"] = src_url
+        data["key"] = key
         if "extra" in data:
             # Prefer extra from init arguments to extra stored in data
             data["extra"].update(extra)
@@ -141,7 +141,7 @@ class Repo(object):
         return str(self.dict())
 
     def __str__(self):
-        header = self.src_url
+        header = self.key
         if len(self.extra.keys()):
             header += " " + str(self.extra)
 
@@ -176,8 +176,8 @@ class Repo(object):
         self.extra.update(repo.extra)  # type: ignore
 
     @property
-    def src_url(self) -> str:
-        return self.data.src_url
+    def key(self) -> str:
+        return self.data.key
 
     def evaluated(self, results: Dict[str, Any], overwrite=False):
         """
@@ -188,7 +188,7 @@ class Repo(object):
         else:
             self.data.features.update(results)
         self.data.last_updated = datetime.now()
-        LOGGER.info("Evaluated %s %r", self.data.src_url, self.data.features)
+        LOGGER.info("Evaluated %s %r", self.data.key, self.data.features)
 
     def features(self, subset: List[str] = []) -> Dict[str, Any]:
         """

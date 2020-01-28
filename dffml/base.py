@@ -10,7 +10,7 @@ import argparse
 import contextlib
 import dataclasses
 from argparse import ArgumentParser
-from typing import Dict, Any, Tuple, NamedTuple, Type, Optional
+from typing import Dict, Any, Type, Optional
 
 try:
     from typing import get_origin, get_args

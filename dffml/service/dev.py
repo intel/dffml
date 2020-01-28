@@ -1,10 +1,8 @@
 import os
 import sys
-import uuid
 import json
 import pydoc
 import asyncio
-import hashlib
 import getpass
 import importlib
 import configparser
@@ -26,8 +24,7 @@ from ..util.entrypoint import load
 from ..base import MissingConfig
 from ..util.packaging import is_develop
 from ..util.data import traverse_config_get
-from ..df.types import Input, DataFlow, Stage
-from ..df.base import Operation
+from ..df.types import Input, DataFlow
 from ..df.memory import MemoryOrchestrator
 from ..config.config import BaseConfigLoader
 from ..config.json import JSONConfigLoader
@@ -185,7 +182,7 @@ class Run(CMD):
             value = json.loads(value[0])
         else:
             typecast = pydoc.locate(
-                definition.primitive.replace("List[", "").replace("[", "")
+                definition.primitive.replace("List[", "").replace("]", "")
             )
             # TODO This is a oversimplification of argparse's nargs
             if definition.primitive.startswith("List["):

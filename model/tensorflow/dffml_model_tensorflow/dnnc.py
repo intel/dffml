@@ -415,7 +415,7 @@ class DNNClassifierModel(Model):
                             "value": 1
                         }
                 },
-                "src_url": "0"
+                "key": "0"
             },
             {
                 "extra": {},
@@ -434,7 +434,7 @@ class DNNClassifierModel(Model):
                         "value": 2
                     }
                 },
-                "src_url": "1"
+                "key": "1"
             },
 
     """

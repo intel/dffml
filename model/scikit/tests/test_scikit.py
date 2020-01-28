@@ -136,7 +136,7 @@ class TestScikitModel:
                     if self.MODEL_TYPE is "CLASSIFICATION":
                         self.assertIn(prediction, [2, 4])
                     elif self.MODEL_TYPE is "REGRESSION":
-                        correct = FEATURE_DATA_REGRESSION[int(repo.src_url)][3]
+                        correct = FEATURE_DATA_REGRESSION[int(repo.key)][3]
                         self.assertGreater(
                             prediction, correct - (correct * 0.40)
                         )

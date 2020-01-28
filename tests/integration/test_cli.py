@@ -28,7 +28,7 @@ from dffml.util.asynctestcase import AsyncTestCase, IntegrationCLITestCase
 
 class TestList(IntegrationCLITestCase):
     async def test_repos(self):
-        src_urls = ["A", "B", "C"]
+        keys = ["A", "B", "C"]
         with contextlib.redirect_stdout(self.stdout):
             await CLI.cli(
                 "list",
@@ -36,16 +36,16 @@ class TestList(IntegrationCLITestCase):
                 "-sources",
                 "feed=memory",
                 "-source-repos",
-                *src_urls,
+                *keys,
             )
         stdout = self.stdout.getvalue()
-        for src_url in src_urls:
-            self.assertIn(src_url, stdout)
+        for key in keys:
+            self.assertIn(key, stdout)
 
 
 class TestMerge(IntegrationCLITestCase):
     async def test_memory_to_json(self):
-        src_urls = ["A", "B", "C"]
+        keys = ["A", "B", "C"]
         filename = self.mktempfile()
         await CLI.cli(
             "merge",
@@ -54,7 +54,7 @@ class TestMerge(IntegrationCLITestCase):
             "-source-dest-filename",
             filename,
             "-source-src-repos",
-            *src_urls,
+            *keys,
             "-source-src-allowempty",
             "-source-dest-allowempty",
             "-source-src-readwrite",
@@ -70,11 +70,11 @@ class TestMerge(IntegrationCLITestCase):
                 filename,
             )
         stdout = self.stdout.getvalue()
-        for src_url in src_urls:
-            self.assertIn(src_url, stdout)
+        for key in keys:
+            self.assertIn(key, stdout)
 
     async def test_memory_to_csv(self):
-        src_urls = ["A", "B", "C"]
+        keys = ["A", "B", "C"]
         filename = self.mktempfile()
         await CLI.cli(
             "merge",
@@ -83,7 +83,7 @@ class TestMerge(IntegrationCLITestCase):
             "-source-dest-filename",
             filename,
             "-source-src-repos",
-            *src_urls,
+            *keys,
             "-source-src-allowempty",
             "-source-dest-allowempty",
             "-source-src-readwrite",
@@ -93,7 +93,7 @@ class TestMerge(IntegrationCLITestCase):
             pathlib.Path(filename).read_text(),
             inspect.cleandoc(
                 """
-                src_url,label
+                key,label
                 A,unlabeled
                 B,unlabeled
                 C,unlabeled

@@ -44,7 +44,7 @@ class TestRepoPrediction(unittest.TestCase):
 class TestRepoData(unittest.TestCase):
     def setUp(self):
         self.full = RepoData(
-            src_url=None, features=None, prediction=None, last_updated=None
+            key=None, features=None, prediction=None, last_updated=None
         )
         self.null = RepoData()
 
@@ -89,8 +89,8 @@ class TestRepo(unittest.TestCase):
         self.assertIn("half", null.extra)
         self.assertTrue(null.extra["half"])
 
-    def test_src_url(self):
-        return self.full.data.src_url
+    def test_key(self):
+        return self.full.data.key
 
     def test_evaluated(self):
         old_last_updated = self.full.data.last_updated

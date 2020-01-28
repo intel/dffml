@@ -45,7 +45,7 @@ $ echo -e 'Years,Salary\n6,0\n' | dffml predict all -model scratchslr -model-fea
             "confidence": 1.0,
             "value": 90.0
         },
-        "src_url": "0"
+        "key": "0"
     }
 ]
 ```

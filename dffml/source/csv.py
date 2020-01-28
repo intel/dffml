@@ -39,7 +39,7 @@ class OpenCSVFile:
             return bool(self.active < 1)
 
 
-CSV_SOURCE_CONFIG_DEFAULT_KEY = "src_url"
+CSV_SOURCE_CONFIG_DEFAULT_KEY = "key"
 CSV_SOURCE_CONFIG_DEFAULT_LABEL = "unlabeled"
 CSV_SOURCE_CONFIG_DEFAULT_LABEL_COLUMN = "label"
 
@@ -95,7 +95,7 @@ class CSVSource(FileSource, MemorySource):
             open_file.write_back_label = True
         # Store all the repos by their label in write_out
         open_file.write_out = {}
-        # If there is no key track row index to be used as src_url by label
+        # If there is no key track row index to be used as key by label
         index = {}
         for row in dict_reader:
             # Grab label from row
@@ -103,8 +103,8 @@ class CSVSource(FileSource, MemorySource):
             if self.config.labelcol in row:
                 del row[self.config.labelcol]
             index.setdefault(label, 0)
-            # Grab src_url from row
-            src_url = row.get(self.config.key, str(index[label]))
+            # Grab key from row
+            key = row.get(self.config.key, str(index[label]))
             if self.config.key in row:
                 del row[self.config.key]
             else:
@@ -133,12 +133,12 @@ class CSVSource(FileSource, MemorySource):
                     del row[header]
             # Set the features
             features = {}
-            for key, value in row.items():
-                if value != "":
+            for _key, _value in row.items():
+                if _value != "":
                     try:
-                        features[key] = ast.literal_eval(value)
+                        features[_key] = ast.literal_eval(_value)
                     except (SyntaxError, ValueError):
-                        features[key] = value
+                        features[_key] = _value
             if features:
                 repo_data["features"] = features
 
@@ -159,11 +159,11 @@ class CSVSource(FileSource, MemorySource):
             }
             repo_data.update({"prediction": predictions})
             # If there was no data in the row, skip it
-            if not repo_data and src_url == str(index[label] - 1):
+            if not repo_data and key == str(index[label] - 1):
                 continue
             # Add the repo to our internal memory representation
             open_file.write_out.setdefault(label, {})
-            open_file.write_out[label][src_url] = Repo(src_url, data=repo_data)
+            open_file.write_out[label][key] = Repo(key, data=repo_data)
 
     async def load_fd(self, fd):
         """
@@ -217,7 +217,7 @@ class CSVSource(FileSource, MemorySource):
                     row[self.config.labelcol] = label
                     # Write the key if it existed
                     if open_file.write_back_key:
-                        row[self.config.key] = repo.src_url
+                        row[self.config.key] = repo.key
                     # Write the features
                     for key, value in repo_data.get("features", {}).items():
                         row[key] = value

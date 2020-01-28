@@ -115,5 +115,5 @@ class TestDNN(AsyncTestCase):
             async with sources() as sctx, model() as mctx:
                 res = [repo async for repo in mctx.predict(sctx.repos())]
                 self.assertEqual(len(res), 1)
-            self.assertEqual(res[0].src_url, a.src_url)
+            self.assertEqual(res[0].key, a.key)
             self.assertTrue(res[0].prediction(target_name).value)
