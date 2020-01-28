@@ -260,7 +260,10 @@ following line.</p>
 <a class="reference external" href="https://numpydoc.readthedocs.io/en/latest/format.html">here</a>.</p>
 <div class="section" id="example-docstring">
 <h3>Example Docstring<a class="headerlink" href="#example-docstring" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">double_ret</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span>
+
+
+<span class="k">def</span> <span class="nf">double_ret</span><span class="p">(</span>
     <span class="n">super_cool_arg</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">other_very_cool_arg</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -270,10 +273,10 @@ following line.</p>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    table_name : str</span>
-<span class="sd">        Name of the table.</span>
-<span class="sd">    data : dict, optional</span>
-<span class="sd">        Columns names are keys, values are data to insert.</span>
+<span class="sd">    super_cool_arg : str</span>
+<span class="sd">        Argument we want the string value of.</span>
+<span class="sd">    other_very_cool_arg : dict, optional</span>
+<span class="sd">        Dictionary we want to turn into a tuple of (keys, values).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -290,6 +293,8 @@ following line.</p>
 <span class="sd">    &gt;&gt;&gt; double_ret(42, other_very_cool_arg={&quot;feed&quot;: 0xFACE})</span>
 <span class="sd">    (&quot;42&quot;, (&quot;feed&quot;], [0xFACE],))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">other_very_cool_arg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">other_very_cool_arg</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">return</span> <span class="p">(</span>
         <span class="nb">str</span><span class="p">(</span><span class="n">super_cool_arg</span><span class="p">),</span>
         <span class="nb">tuple</span><span class="p">(</span><span class="n">other_very_cool_arg</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">other_very_cool_arg</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
