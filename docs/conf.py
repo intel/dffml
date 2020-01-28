@@ -38,7 +38,9 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
+    "sphinx.ext.napoleon",
     "sphinxcontrib.asyncio",
+    "recommonmark",
 ]
 
 intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
@@ -50,6 +52,13 @@ templates_path = ["_templates"]
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
+
+# Enable markdown
+source_suffix = {
+    ".rst": "restructuredtext",
+    ".txt": "markdown",
+    ".md": "markdown",
+}
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -74,3 +83,5 @@ html_theme_options = {
 html_static_path = ["_static"]
 
 # -- Extension configuration -------------------------------------------------
+
+napoleon_numpy_docstring = True

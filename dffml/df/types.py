@@ -1,7 +1,5 @@
 import uuid
 import copy
-import pydoc
-import inspect
 import itertools
 import pkg_resources
 from enum import Enum
@@ -92,6 +90,10 @@ class Definition(NamedTuple):
         return type_lookup(typename)
 
 
+# Some common types
+GENERIC = Definition(name="generic", primitive="generic")
+
+
 class Stage(Enum):
     PROCESSING = "processing"
     CLEANUP = "cleanup"
@@ -161,7 +163,7 @@ class Operation(NamedTuple, Entrypoint):
     def load(cls, loading=None):
         loading_classes = []
         # Load operations
-        for i in pkg_resources.iter_entry_points(cls.ENTRY_POINT):
+        for i in pkg_resources.iter_entry_points(cls.ENTRYPOINT):
             if loading is not None and i.name == loading:
                 loaded = i.load()
                 if isinstance(loaded, cls):
@@ -172,7 +174,7 @@ class Operation(NamedTuple, Entrypoint):
             else:
                 loaded = i.load()
                 loading_classes.append(loaded)
-        for i in pkg_resources.iter_entry_points(cls.ENTRY_POINT):
+        for i in pkg_resources.iter_entry_points(cls.ENTRYPOINT):
             if loading is not None and i.name == loading:
                 return i.load()
             else:
@@ -202,7 +204,7 @@ class Operation(NamedTuple, Entrypoint):
     def load(cls, loading=None):
         loading_classes = []
         # Load operations
-        for i in pkg_resources.iter_entry_points(cls.ENTRY_POINT):
+        for i in pkg_resources.iter_entry_points(cls.ENTRYPOINT):
             if loading is not None and i.name == loading:
                 loaded = cls._op(i.load())
                 if loaded is not None:

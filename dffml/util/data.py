@@ -1,23 +1,44 @@
 """
 Various helper functions for manipulating python data structures and values
+
+Run doctests with
+
+python -m doctest -v dffml/util/data.py
 """
+
+import inspect
 import pydoc
 import inspect
 from functools import wraps
+import pathlib
+from typing import Callable
 
 
-def merge(one, two):
+def merge(one, two, list_append: bool = True):
     for key, value in two.items():
-        if key in one and isinstance(value, dict):
-            merge(one[key], two[key])
+        if key in one:
+            if isinstance(value, dict):
+                merge(one[key], two[key], list_append=list_append)
+            elif list_append and isinstance(value, list):
+                one[key] += two[key]
         else:
             one[key] = two[key]
 
 
 def traverse_config_set(target, *args):
     """
-    >>> traverse_set({'level': {'one': 1}}, 'level', 'one', 42)
-    {'level': {'one': 42}}
+    >>> traverse_config_set({
+    ...     "level": {
+    ...         "arg": None,
+    ...         "config": {
+    ...             "one": {
+    ...                 "arg": 1,
+    ...                 "config": {},
+    ...             },
+    ...         },
+    ...     },
+    ... }, "level", "one", 42)
+    {'level': {'arg': None, 'config': {'one': {'arg': 42, 'config': {}}}}}
     """
     # Seperate the path down from the value to set
     path, value = args[:-1], args[-1]
@@ -34,8 +55,18 @@ def traverse_config_set(target, *args):
 
 def traverse_config_get(target, *args):
     """
-    >>> traverse_set({'level': {'one': 1}}, 'level', 'one', 42)
-    {'level': {'one': 42}}
+    >>> traverse_config_get({
+    ...     "level": {
+    ...         "arg": None,
+    ...         "config": {
+    ...             "one": {
+    ...                 "arg": 1,
+    ...                 "config": {},
+    ...             },
+    ...         },
+    ...     },
+    ... }, "level", "one")
+    1
     """
     current = target
     last = target
@@ -48,7 +79,7 @@ def traverse_config_get(target, *args):
 def traverse_get(target, *args):
     """
     Travel down through a dict
-    >>> traverse_get({"one": {"two": 3}}, ["one", "two"])
+    >>> traverse_get({"one": {"two": 3}}, "one", "two")
     3
     """
     current = target
@@ -123,3 +154,78 @@ def export_dict(**kwargs):
         elif isinstance(kwargs[key], list):
             kwargs[key] = export_list(kwargs[key])
     return kwargs
+
+
+def explore_directories(path_dict: dict):
+    """
+    Recursively explores any path binded to a key in `path_dict`
+
+    >>> import pathlib
+    >>> import tempfile
+
+    >>> with tempfile.TemporaryDirectory() as root:
+    ...     # Setup directories for example
+    ...     STRUCTURE = '''
+    ...     root
+    ...     |
+    ...     +--- deadbeef
+    ...     |    |
+    ...     |    +--- file1.txt
+    ...     |    +--- colosseum
+    ...     |         |
+    ...     |         +--- battle.rst
+    ...     +--- face
+    ...          |
+    ...          +--- file2.jpg
+    ...     '''
+    ...     # The writes will produce the 0's in the output (for doctest)
+    ...     pathlib.Path(root, "deadbeef").mkdir()
+    ...     pathlib.Path(root, "deadbeef", "file1.txt").write_text("")
+    ...     pathlib.Path(root, "deadbeef", "colosseum").mkdir()
+    ...     pathlib.Path(root, "deadbeef", "colosseum", "battle.rst").write_text("")
+    ...     pathlib.Path(root, "face").mkdir()
+    ...     pathlib.Path(root, "face", "file2.jpg").write_text("")
+    ...     # Explore directories
+    ...     root = explore_directories(path_dict={
+    ...         "root": root
+    ...     })["root"]
+    ...     # Check that everything was found
+    ...     bool("deadbeef" in root)
+    ...     bool("colosseum" in root["deadbeef"])
+    ...     bool("battle" in root["deadbeef"]["colosseum"])
+    ...     bool("face" in root)
+    ...     bool("file2" in root["face"])
+    0
+    0
+    0
+    True
+    True
+    True
+    True
+    True
+    """
+    for key, val in path_dict.items():
+        t_path = pathlib.Path(val)
+        if t_path.is_dir():
+            temp_path_dict = {}
+            for _path in pathlib.Path(val).glob("*"):
+                t_path = pathlib.Path(_path)
+                temp_path_dict[t_path.stem] = _path
+            explore_directories(temp_path_dict)
+            path_dict[key] = temp_path_dict
+    return path_dict
+
+
+async def nested_apply(target: dict, func: Callable):
+    """
+    Applies `func` recursively to all non dict types in `target`
+    """
+    for key, val in target.items():
+        if isinstance(val, dict):
+            target[key] = await nested_apply(val, func)
+        else:
+            if inspect.iscoroutinefunction(func):
+                target[key] = await func(val)
+            else:
+                target[key] = func(val)
+    return target

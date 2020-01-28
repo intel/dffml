@@ -30,10 +30,10 @@ cnx = mysql.connector.connect(
 cursor = cnx.cursor()
 
 if action == 'dump':
-    cursor.execute("SELECT src_url, maintained FROM status")
+    cursor.execute("SELECT key, maintained FROM status")
     print json.dumps(dict(cursor))
 elif action == 'set':
-    cursor.execute("REPLACE INTO status (src_url, maintained) VALUES(%s, %s)",
+    cursor.execute("REPLACE INTO status (key, maintained) VALUES(%s, %s)",
                    (query['URL'], query['maintained'],))
     cnx.commit()
     print json.dumps(dict(success=True))
@@ -50,17 +50,17 @@ elif action == 'predict':
         'dffml', 'predict', 'repo',
         '-keys', query['URL'],
         '-model', 'tfdnnc',
-        '-model-classification', 'maintained',
+        '-model-predict', 'maintained',
         '-model-classifications', '0', '1',
         '-sources', 'db=demoapp',
         '-model-features',
-        'def:authors:int:10',
-        'def:commits:int:10',
-        'def:work:int:10',
+        'authors:int:10',
+        'commits:int:10',
+        'work:int:10',
         '-log', 'critical',
         '-update'])
     result = json.loads(result)
-    cursor.execute("REPLACE INTO status (src_url, maintained) VALUES(%s, %s)",
+    cursor.execute("REPLACE INTO status (key, maintained) VALUES(%s, %s)",
                    (query['URL'], result[0]['prediction']['value'],))
     cnx.commit()
     print json.dumps(dict(success=True))

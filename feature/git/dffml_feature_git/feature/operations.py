@@ -1,37 +1,11 @@
-import io
-import os
 import sys
-import abc
-import glob
-import json
-import uuid
 import shutil
-import inspect
 import asyncio
-import hashlib
 import tempfile
-import unittest
-import itertools
 import subprocess
-import collections
 import asyncio.subprocess
-from itertools import product
 from datetime import datetime
-from contextlib import asynccontextmanager, AsyncExitStack
-from typing import (
-    AsyncIterator,
-    Dict,
-    List,
-    Tuple,
-    Any,
-    NamedTuple,
-    Union,
-    get_type_hints,
-    NewType,
-    Optional,
-    Set,
-    Iterator,
-)
+from typing import Dict, List
 
 from dateutil.relativedelta import relativedelta
 
@@ -40,7 +14,7 @@ from dffml.df.base import op
 
 from .definitions import *
 
-from dffml_feature_git.util.proc import check_output, create, stop, inpath
+from dffml_feature_git.util.proc import check_output, create, stop
 
 from .log import LOGGER
 

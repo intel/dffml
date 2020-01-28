@@ -30,7 +30,7 @@ from dffml.source.source import Sources
 from dffml.source.csv import CSVSourceConfig
 from dffml.util.data import traverse_get
 from dffml.util.cli.arg import parse_unknown
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 from dffml.util.cli.arg import Arg, parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
@@ -69,21 +69,21 @@ class FakeModelContext(ModelContext):
 
     async def train(self, sources: Sources):
         async for repo in sources.repos():
-            self.trained_on[repo.src_url] = repo
+            self.trained_on[repo.key] = repo
 
     async def accuracy(self, sources: Sources) -> Accuracy:
         accuracy: int = 0
         async for repo in sources.repos():
-            accuracy += int(repo.src_url)
+            accuracy += int(repo.key)
         return Accuracy(accuracy)
 
     async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
         async for repo in repos:
-            repo.predicted(repo.feature("by_ten") * 10, float(repo.src_url))
+            repo.predicted(repo.feature("by_ten") * 10, float(repo.key))
             yield repo
 
 
-@entry_point("fake")
+@entrypoint("fake")
 class FakeModel(Model):
 
     CONTEXT = FakeModelContext
@@ -242,7 +242,7 @@ class TestRoutesList(TestRoutesRunning, AsyncTestCase):
 class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
     async def test_source(self):
         config = parse_unknown(
-            "--source-filename", "dataset.csv", "--source-readonly"
+            "--source-filename", "dataset.csv", "-source-allowempty"
         )
         async with self.post("/configure/source/csv/salary", json=config) as r:
             self.assertEqual(await r.json(), OK)
@@ -252,9 +252,9 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                 CSVSourceConfig(
                     filename="dataset.csv",
                     label="unlabeled",
-                    readonly=True,
-                    key="src_url",
+                    key="key",
                     labelcol="label",
+                    allowempty=True,
                 ),
             )
             with self.subTest(context="salaryctx"):
@@ -283,8 +283,8 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                 "--model-directory",
                 tempdir,
                 "--model-features",
-                "def:Years:int:1",
-                "def:Experiance:int:1",
+                "Years:int:1",
+                "Experiance:int:1",
             )
             async with self.post(
                 "/configure/model/fake/salary", json=config
@@ -464,10 +464,8 @@ class TestRoutesSource(TestRoutesRunning, AsyncTestCase):
     def _check_iter_response(self, response):
         self.assertIn("iterkey", response)
         self.assertIn("repos", response)
-        for src_url, repo in response["repos"].items():
-            self.assertEqual(
-                repo, self.source.config.repos[int(src_url)].export()
-            )
+        for key, repo in response["repos"].items():
+            self.assertEqual(repo, self.source.config.repos[int(key)].export())
 
     async def test_repos(self):
         chunk_size = self.num_repos
@@ -577,28 +575,26 @@ class TestModel(TestRoutesRunning, AsyncTestCase):
 
     async def test_predict(self):
         repos: Dict[str, Repo] = {
-            repo.src_url: repo.export() async for repo in self.sctx.repos()
+            repo.key: repo.export() async for repo in self.sctx.repos()
         }
         async with self.post(
             f"/model/{self.mlabel}/predict/0", json=repos
         ) as r:
             i: int = 0
             response = await r.json()
-            for src_url, repo_data in response["repos"].items():
-                repo = Repo(src_url, data=repo_data)
-                self.assertEqual(int(repo.src_url), i)
+            for key, repo_data in response["repos"].items():
+                repo = Repo(key, data=repo_data)
+                self.assertEqual(int(repo.key), i)
                 self.assertEqual(
                     repo.feature("by_ten"), repo.prediction().value / 10
                 )
-                self.assertEqual(
-                    float(repo.src_url), repo.prediction().confidence
-                )
+                self.assertEqual(float(repo.key), repo.prediction().confidence)
                 i += 1
             self.assertEqual(i, self.num_repos)
 
     async def test_predict_chunk_size_unsupported(self):
         repos: Dict[str, Repo] = {
-            repo.src_url: repo.export() async for repo in self.sctx.repos()
+            repo.key: repo.export() async for repo in self.sctx.repos()
         }
         with self.assertRaisesRegex(
             ServerException, "Multiple request iteration not yet supported"

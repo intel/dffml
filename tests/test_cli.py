@@ -30,7 +30,7 @@ from dffml.model.model import ModelContext, Model
 from dffml.df.types import Operation
 from dffml.df.base import OperationImplementation
 from dffml.accuracy import Accuracy as AccuracyType
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import (
     AsyncExitStackTestCase,
     non_existant_tempfile,
@@ -47,7 +47,9 @@ class ReposTestCase(AsyncExitStackTestCase):
         await super().setUp()
         self.repos = [Repo(str(random.random())) for _ in range(0, 10)]
         self.temp_filename = self.mktempfile()
-        self.sconfig = FileSourceConfig(filename=self.temp_filename)
+        self.sconfig = FileSourceConfig(
+            filename=self.temp_filename, readwrite=True, allowempty=True
+        )
         async with JSONSource(self.sconfig) as source:
             async with source() as sctx:
                 for repo in self.repos:
@@ -108,7 +110,7 @@ class FakeFeature(Feature):
         pass
 
     async def calc(self, data):
-        return float(data.src_url)
+        return float(data.key)
 
 
 class FakeModelContext(ModelContext):
@@ -120,11 +122,11 @@ class FakeModelContext(ModelContext):
 
     async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
         async for repo in repos:
-            repo.predicted(random.random(), float(repo.src_url))
+            repo.predicted(random.random(), float(repo.key))
             yield repo
 
 
-@entry_point("fake")
+@entrypoint("fake")
 class FakeModel(Model):
 
     CONTEXT = FakeModelContext
@@ -164,6 +166,10 @@ class TestMerge(ReposTestCase):
             "somelabel",
             "-source-src-filename",
             self.temp_filename,
+            "-source-src-allowempty",
+            "-source-dest-allowempty",
+            "-source-src-readwrite",
+            "-source-dest-readwrite",
         )
         # Check the unlabeled source
         with self.subTest(labeled=None):
@@ -192,17 +198,19 @@ class TestMerge(ReposTestCase):
                 "-source-dest-filename",
                 csv_tempfile,
                 "-source-dest-key",
-                "src_url",
+                "key",
                 "-source-src-filename",
                 self.temp_filename,
+                "-source-src-allowempty",
+                "-source-dest-allowempty",
+                "-source-src-readwrite",
+                "-source-dest-readwrite",
             )
             contents = Path(csv_tempfile).read_text()
             self.assertEqual(
                 contents,
-                "src_url,label,prediction,confidence\n"
-                + "\n".join(
-                    [f"{repo.src_url},unlabeled,," for repo in self.repos]
-                )
+                "key,label,prediction,confidence\n"
+                + "\n".join([f"{repo.key},unlabeled,," for repo in self.repos])
                 + "\n",
                 "Incorrect data in csv file",
             )
@@ -218,6 +226,10 @@ class TestMerge(ReposTestCase):
                     csv_tempfile,
                     "-source-src-filename",
                     self.temp_filename,
+                    "-source-src-allowempty",
+                    "-source-dest-allowempty",
+                    "-source-src-readwrite",
+                    "-source-dest-readwrite",
                 )
             # Merge one label to another within the same file
             with self.subTest(merge_same_file=True):
@@ -230,6 +242,10 @@ class TestMerge(ReposTestCase):
                     "somelabel",
                     "-source-src-filename",
                     csv_tempfile,
+                    "-source-src-allowempty",
+                    "-source-dest-allowempty",
+                    "-source-src-readwrite",
+                    "-source-dest-readwrite",
                 )
             contents = Path(csv_tempfile).read_text()
             self.assertIn("unlabeled", contents)
@@ -268,11 +284,11 @@ class TestListRepos(ReposTestCase):
                 "primary=json",
                 "-source-primary-filename",
                 self.temp_filename,
-                "-source-primary-readonly",
-                "false",
+                "-source-primary-readwrite",
+                "true",
             )
         for repo in self.repos:
-            self.assertIn(repo.src_url, stdout.getvalue())
+            self.assertIn(repo.key, stdout.getvalue())
 
 
 class TestDataflowRunAllRepos(ReposTestCase):
@@ -312,13 +328,11 @@ class TestDataflowRunAllRepos(ReposTestCase):
                 '["result"]=get_single_spec',
             )
             results = {
-                result.src_url: result.feature("result") for result in results
+                result.key: result.feature("result") for result in results
             }
             for repo in self.repos:
-                self.assertIn(repo.src_url, results)
-                self.assertEqual(
-                    self.repo_keys[repo.src_url], results[repo.src_url]
-                )
+                self.assertIn(repo.key, results)
+                self.assertEqual(self.repo_keys[repo.key], results[repo.key])
 
 
 class TestDataflowRunRepoSet(ReposTestCase):
@@ -408,15 +422,13 @@ class TestPredict(ReposTestCase):
             "-model-features",
             "fake",
         )
-        results = {
-            repo.src_url: repo.prediction().confidence for repo in results
-        }
+        results = {repo.key: repo.prediction().confidence for repo in results}
         for repo in self.repos:
-            self.assertEqual(float(repo.src_url), results[repo.src_url])
+            self.assertEqual(float(repo.key), results[repo.key])
 
     async def test_repo(self):
         subset = self.repos[: (int(len(self.repos) / 2))]
-        subset_urls = list(map(lambda repo: repo.src_url, subset))
+        subset_urls = list(map(lambda repo: repo.key, subset))
         results = await Predict.cli(
             "repo",
             "-sources",
@@ -431,8 +443,6 @@ class TestPredict(ReposTestCase):
             *subset_urls,
         )
         self.assertEqual(len(results), len(subset))
-        results = {
-            repo.src_url: repo.prediction().confidence for repo in results
-        }
+        results = {repo.key: repo.prediction().confidence for repo in results}
         for repo in subset:
-            self.assertEqual(float(repo.src_url), results[repo.src_url])
+            self.assertEqual(float(repo.key), results[repo.key])

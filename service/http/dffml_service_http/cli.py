@@ -1,4 +1,3 @@
-import os
 import ssl
 import asyncio
 import argparse
@@ -8,7 +7,7 @@ from aiohttp import web
 
 from dffml.util.cli.arg import Arg
 from dffml.util.cli.cmd import CMD
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 
 from .routes import Routes
 
@@ -129,13 +128,13 @@ class CreateTLS(TLSCMD):
 
 class MultiCommCMD(CMD):
 
-    mc_config = Arg(
+    arg_mc_config = Arg(
         "-mc-config",
         dest="mc_config",
         default=None,
         help="MultiComm config directory",
     )
-    mc_atomic = Arg(
+    arg_mc_atomic = Arg(
         "-mc-atomic",
         dest="mc_atomic",
         action="store_true",
@@ -236,7 +235,7 @@ class Server(TLSCMD, MultiCommCMD, Routes):
             await self.site.stop()
 
 
-@entry_point("http")
+@entrypoint("http")
 class HTTPService(CMD):
     """
     HTTP interface to access DFFML API.

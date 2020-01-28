@@ -6,27 +6,24 @@ import abc
 import bz2
 import gzip
 import lzma
-import asyncio
+import errno
 import zipfile
 from contextlib import contextmanager
-from dataclasses import dataclass, field, fields
-from typing import NamedTuple, Tuple, Dict, List
 
 from ..base import config
 from .source import BaseSource
-from ..util.cli.arg import Arg
-from ..util.cli.cmd import CMD
-from ..util.entrypoint import entry_point
+from ..util.entrypoint import entrypoint
 
 
 @config
 class FileSourceConfig:
     filename: str
     label: str = "unlabeled"
-    readonly: bool = False
+    readwrite: bool = False
+    allowempty: bool = False
 
 
-@entry_point("file")
+@entrypoint("file")
 class FileSource(BaseSource):
     """
     FileSource reads and write from a file on open / close.
@@ -48,12 +45,19 @@ class FileSource(BaseSource):
         if not os.path.exists(self.config.filename) or os.path.isdir(
             self.config.filename
         ):
-            self.logger.debug(
-                ("%r is not a file, " % (self.config.filename,))
-                + "initializing memory to empty dict"
-            )
-            self.mem = await self._empty_file_init()
-            return
+            if self.config.allowempty:
+                self.logger.debug(
+                    ("%r is not a file, " % (self.config.filename,))
+                    + "initializing memory to empty dict"
+                )
+                self.mem = await self._empty_file_init()
+                return
+            else:
+                raise FileNotFoundError(
+                    errno.ENOENT,
+                    os.strerror(errno.ENOENT),
+                    self.config.filename,
+                )
         if self.config.filename[::-1].startswith((".gz")[::-1]):
             opener = gzip.open(self.config.filename, "rt")
         elif self.config.filename[::-1].startswith((".bz2")[::-1]):
@@ -70,7 +74,7 @@ class FileSource(BaseSource):
             await self.load_fd(fd)
 
     async def _close(self):
-        if not self.config.readonly:
+        if self.config.readwrite:
             if self.config.filename[::-1].startswith((".gz")[::-1]):
                 close = gzip.open(self.config.filename, "wt")
             elif self.config.filename[::-1].startswith((".bz2")[::-1]):

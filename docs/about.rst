@@ -10,9 +10,55 @@ This project is for your if:
 - You want to do machine learning on a new problem that you don't have a dataset
   for, so you need to generate it.
 
-- You want to harness the power of directed graph execution to write testable,
-  maintainable code that runs concurrently or in parallel without the need for
-  you to deal with locking.
+- You want to use directed graph execution to write code that runs concurrently
+  with managed locking.
+
+Architecture
+------------
+
+This is a high level overview of how DFFML works.
+
+.. TODO Autogenerate image during build
+
+    graph TD
+
+    subgraph DataFlow[Dataset Generation]
+      df[Directed Graph Execution]
+      generate_features[Generate Feature Data]
+      single[Single Record]
+      all[Whole DataSet]
+
+      df --> generate_features
+      generate_features --> single
+      generate_features --> all
+    end
+
+    subgraph ml[Machine Learning]
+      train[Model Training]
+      accuracy[Model Accuracy Assessment]
+      predict[Prediction Using Trained Model]
+    end
+
+    subgraph sources[Dataset Storage]
+      source[Dataset Storage Abstraction]
+      JSON
+      CSV
+      MySQL
+
+      source --> JSON
+      source --> CSV
+      source --> MySQL
+    end
+
+    all --> train
+    all --> accuracy
+    single --> predict
+
+    generate_features --> source
+    predict --> source
+
+.. image:: /images/arch.svg
+    :alt: Architecture Diagram
 
 Machine Learning
 ----------------

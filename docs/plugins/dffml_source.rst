@@ -32,13 +32,17 @@ Uses a CSV file as the source of repo feature data
 
   - default: unlabeled
 
-- readonly: Boolean
+- readwrite: Boolean
+
+  - default: False
+
+- allowempty: Boolean
 
   - default: False
 
 - key: String
 
-  - default: src_url
+  - default: key
 
 - labelcol: String
 
@@ -60,7 +64,11 @@ stored in memory.
 
   - default: unlabeled
 
-- readonly: Boolean
+- readwrite: Boolean
+
+  - default: False
+
+- allowempty: Boolean
 
   - default: False
 
@@ -108,11 +116,11 @@ No description
 
 - repos-query: String
 
-  - SELECT `key` as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data
+  - SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM repo_data
 
 - repo-query: String
 
-  - SELECT `key` as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data WHERE `key`=%s
+  - SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM repo_data WHERE `key`=%s
 
 - update-query: String
 

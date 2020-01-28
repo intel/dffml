@@ -1,7 +1,6 @@
 import abc
 import inspect
 import pkg_resources
-from contextlib import AsyncExitStack
 from typing import (
     AsyncIterator,
     Dict,
@@ -25,8 +24,7 @@ from ..base import (
     BaseDataFlowFacilitatorObject,
 )
 from ..util.cli.arg import Arg
-from ..util.cli.cmd import CMD
-from ..util.asynchelper import context_stacker, aenter_stack
+from ..util.asynchelper import context_stacker
 from ..util.entrypoint import base_entry_point
 
 
@@ -135,7 +133,7 @@ class OperationImplementation(BaseDataFlowObject):
     def load(cls, loading=None):
         loading_classes = []
         # Load operations
-        for i in pkg_resources.iter_entry_points(cls.ENTRY_POINT):
+        for i in pkg_resources.iter_entry_points(cls.ENTRYPOINT):
             if loading is not None and i.name == loading:
                 loaded = cls._imp(i.load())
                 if loaded is not None:

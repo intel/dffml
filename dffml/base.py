@@ -10,7 +10,7 @@ import argparse
 import contextlib
 import dataclasses
 from argparse import ArgumentParser
-from typing import Dict, Any, Tuple, NamedTuple, Type, Optional
+from typing import Dict, Any, Type, Optional
 
 try:
     from typing import get_origin, get_args
@@ -147,7 +147,7 @@ def convert_value(arg, value):
             return copy.deepcopy(arg["default"])
         raise MissingConfig
 
-    if not "nargs" in arg:
+    if not "nargs" in arg and isinstance(value, list):
         value = value[0]
     if "type" in arg:
         type_cls = arg["type"]
@@ -188,8 +188,20 @@ def _fromdict(cls, **kwargs):
                 value, config = value["arg"], value["config"]
             value = convert_value(mkarg(field), value)
             if inspect.isclass(value) and issubclass(value, BaseConfigurable):
+                # TODO This probably isn't 100% correct. Figure out what we need
+                # to do with nested configs.
                 value = value.withconfig(
-                    {field.name: {"arg": None, "config": config}}
+                    {
+                        value.ENTRY_POINT_NAME[-1]: {
+                            "arg": None,
+                            "config": {
+                                key: value
+                                if is_config_dict(value)
+                                else {"arg": value, "config": {},}
+                                for key, value in config.items()
+                            },
+                        }
+                    }
                 )
             kwargs[field.name] = value
     return cls(**kwargs)
@@ -456,9 +468,9 @@ class BaseDataFlowFacilitatorObject(
     property, set to the BaseDataFlowFacilitatorObjectContext which will be
     returned from a __call__ to this class.
 
-    DFFML is plugin based using Python's setuptool's entry_point API. All
+    DFFML is plugin based using Python's setuptool's entrypoint API. All
     classes inheriting from BaseDataFlowFacilitatorObject must have a property
-    named ENTRY_POINT. In the form of `dffml.load_point` which will be used to
+    named ENTRYPOINT. In the form of `dffml.load_point` which will be used to
     load all classes registered to that entry point.
 
     >>> # Create the base object. Then enter it's context to preform any initial
@@ -474,7 +486,7 @@ class BaseDataFlowFacilitatorObject(
         BaseConfigurable.__init__(self, config)
         # TODO figure out how to call these in __new__
         self.__ensure_property("CONTEXT")
-        self.__ensure_property("ENTRY_POINT")
+        self.__ensure_property("ENTRYPOINT")
 
     def __repr__(self):
         return "%s(%r)" % (self.__class__.__qualname__, self.config)

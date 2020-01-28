@@ -5,6 +5,48 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- scikit models
+  - Clusterers
+    - KMeans
+    - Birch
+    - MiniBatchKMeans
+    - AffinityPropagation
+    - MeanShift
+    - SpectralClustering
+    - AgglomerativeClustering
+    - OPTICS
+- `allowempty` added to source config parameters.
+- Quickstart document to show how to use models from Python.
+- The latest release of the documentation now includes a link to the
+  documentation for the master branch (on GitHub pages).
+- Virtual environment, GitPod, and Docker development environment setup notes to
+  the CONTRIBUTING.md file.
+- Changelog now included in documenation website.
+- Database abstraction `dffml.db`
+  - SQLite connector
+  - MySQL connector
+- Documented style for imports.
+- Documented use of numpy docstrings.
+### Changed
+- All instances of `src_url` changed to `key`.
+- `readonly` parameter in source config is now changed to `readwrite`.
+- `predict` parameter of all model config classes has been changed from `str` to `Feature`.
+- Defining features on the command line no longer requires that defined features
+  be prefixed with `def:`
+- The model predict operation will now raise an exception if the model it is
+  passed via it's config is a class rather than an instance.
+- `entry_point` and friends have been renamed to `entrypoint`.
+- Use `FastChildWatcher` when run via the CLI to prevent `BlockingIOError`s.
+- TensorFlow based neural network classifier had the `classification` parameter
+  in it's config changed to `predict`.
+### Fixed
+- CONTRIBUTING.md has `-e` in the wrong place in the getting setup section.
+- Since moving to auto `args()` and `config()`, BaseConfigurable no longer
+  produces odd typenames in conjunction with docs.py.
+### Removed
+- The model predict operation erroneously had a `msg` parameter in it's config.
+- Unused imports identified by deepsource.io
 
 ## [0.3.2] - 2020-01-03
 ### Added
@@ -33,12 +75,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automatic releases to PyPi via GitHub Actions
 - Automatic documentation deployment to GitHub Pages
 - Function to create a config class dynamically, analogous to `make_dataclass`
+- `ConfigLoaders` class which loads config files from a file or directory to a dictionary.
+
 ### Changed
 - CLI tests and integration tests derive from `AsyncExitStackTestCase`
 - SciKit models now use the auto args and config methods.
 ### Fixed
 - Correctly identify when functions decorated with `op` use `self` to reference
   the `OperationImplementationContext`.
+- shouldi safety operation uses subprocess communicate method instead of stdin pipe writes.
 - Negative values are correctly parsed when input via the command line.
 - Do not lowercase development mode install location when reporting version.
 
@@ -152,8 +197,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Labels for CSV sources
 - util.cli CMD's correcly set the description of subparsers instead of their
   help, they also accept the `CLI_FORMATTER_CLASS` property.
-- CSV source now has `entry_point` decoration
-- JSON source now has `entry_point` decoration
+- CSV source now has `entrypoint` decoration
+- JSON source now has `entrypoint` decoration
 - Strict flag in df.memory is now on by default
 - Dynamically created scikit models get config args correctly
 - Renamed `DNNClassifierModelContext` first init arg from `config` to `features`
@@ -182,7 +227,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - MemoryOperationImplementationNetwork instantiates OperationImplementations
   using their `withconfig()` method.
-- MemorySource now decorated with `entry_point`
+- MemorySource now decorated with `entrypoint`
 - MemorySource takes arguments correctly via `config_set` and `config_get`
 - skel modules have `long_description_content_type` set to "text/markdown"
 - Base Orchestrator `__aenter__` and `__aexit__` methods were moved to the
@@ -218,14 +263,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New Model skeleton directory
 - New Feature creation tutorial
 - New Model creation tutorial
-- Added update functionality to the CSV source
-- Added support for Gzip file source
-- Added support for bz2 file source
+- Update functionality to the CSV source
+- Support for Gzip file source
+- Support for bz2 file source
 - Travis checks for additions to CHANGELOG.md
 - Travis checks for trailing whitespace
-- Added support for lzma file source
-- Added support for xz file source
-- Added Data Flow Facilitator
+- Support for lzma file source
+- Support for xz file source
+- Data Flow Facilitator
 ### Changed
 - Restructured documentation to docs folder and moved from rST to markdown
 - Git feature cloc logs if no binaries are in path

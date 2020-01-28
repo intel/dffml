@@ -75,9 +75,9 @@ class Data(Task):
 
     LOGGER = LOGGER.getChild("Data")
 
-    def __init__(self, src_url: str) -> None:
-        super().__init__(key=src_url)
-        self.src_url = src_url
+    def __init__(self, key: str) -> None:
+        super().__init__(_key=key)
+        self.key = key
         self.lock: asyncio.Lock = asyncio.Lock()
         self.temp: Dict[str, Any] = {}
         self.data: LoggingDict = LoggingDict(self)
@@ -110,7 +110,7 @@ class Feature(abc.ABC, Entrypoint):
     always expected to be called in order. Anything you add to your feature
     subclass in fetch or parse is accessible in calc.
 
-    A feature is provided with the feature URL of the package (in self._src_url)
+    A feature is provided with the feature URL of the package (in self._key)
     and is expected to fetch any data it needs to calculate itself when fetch
     is called. All data fetched should be stored in tempdir() if it must reside
     on disk.
@@ -135,7 +135,7 @@ class Feature(abc.ABC, Entrypoint):
     >>>
     >>>     @abc.abstractmethod
     >>>     def fetch(self, data):
-    >>>         self._downloader.vcs(self._src_url, self.tempdir('src'))
+    >>>         self._downloader.vcs(self._key, self.tempdir('src'))
     >>>
     >>>     @abc.abstractmethod
     >>>     def parse(self, data):
@@ -151,7 +151,7 @@ class Feature(abc.ABC, Entrypoint):
     NAME: str = ""
     # LENGTH: int = 10
     # FREQUENCY: Type[Frequency] = Quarterly
-    ENTRY_POINT = "dffml.feature"
+    ENTRYPOINT = "dffml.feature"
 
     def __eq__(self, other):
         self_tuple = (self.NAME, self.dtype(), self.length())
@@ -245,8 +245,8 @@ class Feature(abc.ABC, Entrypoint):
                 return cls.load_def(
                     loading["name"], loading["dtype"], loading["length"]
                 )
-            elif loading.startswith("def:"):
-                return cls.load_def(*loading.replace("def:", "").split(":"))
+            elif loading.count(":") == 2:
+                return cls.load_def(*loading.split(":"))
         return super().load(loading)
 
     @classmethod
@@ -350,7 +350,7 @@ class Features(list):
         results: Dict[str, Any] = {}
         try:
             applicable = await self.applicable(data)
-            self.LOGGER.debug("Applicable[%r]: %r", data.src_url, applicable)
+            self.LOGGER.debug("Applicable[%r]: %r", data.key, applicable)
             await applicable.on_all("setUp", data)
             await applicable.on_all("fetch", data)
             await applicable.on_all("parse", data)
@@ -402,7 +402,7 @@ class Features(list):
         try:
             self.LOGGER.debug(
                 "%s %s(%s).%s",
-                data.src_url,
+                data.key,
                 feature.NAME,
                 feature.__class__.__qualname__,
                 method.__name__,
@@ -414,7 +414,7 @@ class Features(list):
             error = err
             self.LOGGER.error(
                 "Error evaluating %s: %s: %s",
-                data.src_url,
+                data.key,
                 err,
                 traceback.format_exc().strip(),
             )
@@ -435,11 +435,11 @@ class Features(list):
         if caching and results:
             return repo
         try:
-            results = await self.evaluate(repo.src_url)
+            results = await self.evaluate(repo.key)
             if results:
                 repo.evaluated(results)
         except futures._base.TimeoutError:
-            self.LOGGER.warning("Evaluation timed out: %s", repo.src_url)
+            self.LOGGER.warning("Evaluation timed out: %s", repo.key)
         return repo
 
     async def evaluate_repos(

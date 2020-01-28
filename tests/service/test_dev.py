@@ -9,11 +9,11 @@ import unittest
 import contextlib
 import dataclasses
 import unittest.mock
-from pathlib import Path
 from typing import Type
 
 from dffml.version import VERSION
-from dffml.service.dev import Develop, RepoDirtyError
+from dffml.df.types import DataFlow
+from dffml.service.dev import Develop, RepoDirtyError, Export, Run
 from dffml.util.os import chdir
 from dffml.util.skel import Skel
 from dffml.util.packaging import is_develop
@@ -195,7 +195,7 @@ class TestRelease(AsyncTestCase):
         with unittest.mock.patch(
             "asyncio.create_subprocess_exec", new=mkexec()
         ), unittest.mock.patch(
-            "urllib.request.urlopen", new=fake_urlopen,
+            "urllib.request.urlopen", new=fake_urlopen
         ), contextlib.redirect_stdout(
             stdout
         ):
@@ -212,7 +212,7 @@ class TestRelease(AsyncTestCase):
         with unittest.mock.patch(
             "asyncio.create_subprocess_exec", new=mkexec()
         ), unittest.mock.patch(
-            "urllib.request.urlopen", new=fake_urlopen,
+            "urllib.request.urlopen", new=fake_urlopen
         ), contextlib.redirect_stdout(
             stdout
         ):
@@ -227,3 +227,30 @@ class TestRelease(AsyncTestCase):
                 """
             ),
         )
+
+
+class TestExport(AsyncTestCase):
+    async def test_run(self):
+        stdout = io.BytesIO()
+        with unittest.mock.patch("sys.stdout.buffer.write", new=stdout.write):
+            await Export(export="tests.test_df:DATAFLOW").run()
+        exported = json.loads(stdout.getvalue())
+        DataFlow._fromdict(**exported)
+
+
+class TestRun(AsyncTestCase):
+    async def test_run(self):
+        with tempfile.NamedTemporaryFile(suffix=".db") as sqlite_file:
+            await Run.cli(
+                "dffml.operation.db:db_query_create_table",
+                "-table_name",
+                "FEEDFACE",
+                "-cols",
+                json.dumps({"DEADBEEF": "text"}),
+                "-config-database",
+                "sqlite",
+                "-config-database-filename",
+                sqlite_file.name,
+                "-log",
+                "debug",
+            )

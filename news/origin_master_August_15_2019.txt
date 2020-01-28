@@ -19,7 +19,7 @@ versions of datasets within the same CSV file.
 Example:
 
 $ cat > /tmp/dataset.csv << EOF
-src_url,year,safe
+key,year,safe
 Drinking Water,1000AD,0
 Drinking Water,2000AD,1
 Leaches,1000AD,1
@@ -62,7 +62,7 @@ Years,Salary
 EOF
 $ dffml train \
     -model scratchslr \
-    -model-features def:Years:int:1 \
+    -model-features Years:int:1 \
     -model-predict Salary \
     -sources f=csv \
     -source-filename dataset.csv \
@@ -70,7 +70,7 @@ $ dffml train \
     -log debug
 $ dffml accuracy \
     -model scratchslr \
-    -model-features def:Years:int:1 \
+    -model-features Years:int:1 \
     -model-predict Salary \
     -sources f=csv \
     -source-filename dataset.csv \
@@ -80,7 +80,7 @@ $ dffml accuracy \
 $ echo -e 'Years,Salary\n6,0\n' | \
   dffml predict all \
     -model scratchslr \
-    -model-features def:Years:int:1 \
+    -model-features Years:int:1 \
     -model-predict Salary \
     -sources f=csv \
     -source-filename /dev/stdin \
@@ -98,7 +98,7 @@ $ echo -e 'Years,Salary\n6,0\n' | \
             "confidence": 1.0,
             "value": 90.0
         },
-        "src_url": "0"
+        "key": "0"
     }
 ]
 

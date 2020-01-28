@@ -64,7 +64,7 @@ Run the tests
 Register your source
 --------------------
 
-Modify the **setup.py** file and change the ``dffml.source`` ``entry_point``'s
+Modify the **setup.py** file and change the ``dffml.source`` ``entrypoint``'s
 to point to your new source class (not the one ending in ``Context``).
 
 .. code-block:: python

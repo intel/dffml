@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 import asyncio
-import unittest
 from unittest.mock import patch
 
 from dffml.feature import Data, Feature, Features, LoggingDict, DefFeature

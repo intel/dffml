@@ -6,7 +6,6 @@ to their subclasses.
 """
 import os
 import sys
-import copy
 import pathlib
 import importlib
 import traceback
@@ -48,9 +47,9 @@ def load(
             sys.path.pop()
 
 
-def entry_point(label):
+def entrypoint(label):
     """
-    If a class if going to be registered with setuptools as an entry_point it
+    If a class if going to be registered with setuptools as an entrypoint it
     must have the label it will be registered under associated with it via this
     decorator.
 
@@ -67,7 +66,7 @@ def entry_point(label):
     >>>         ]
     >>>     }
     >>> )
-    >>> @entry_point('mylabel')
+    >>> @entrypoint('mylabel')
     >>> class EntrypointSubclassClass(Entrypoint): pass
     """
 
@@ -82,7 +81,7 @@ def entry_point(label):
 def base_entry_point(entrypoint, *args):
     """
     Any class which subclasses from Entrypoint needs this decorator applied to
-    it. The decorator sets the ENTRY_POINT and ENTRY_POINT_NAME proprieties on
+    it. The decorator sets the ENTRYPOINT and ENTRY_POINT_NAME proprieties on
     the class.
 
     This allows the load() classmethod to be called to load subclasses of the
@@ -95,7 +94,7 @@ def base_entry_point(entrypoint, *args):
     argument if it were joined with hyphens.
     >>> dict(
     >>>     entry_points={
-    >>>         'dffml.entrypoint': [ # Same as ENTRY_POINT
+    >>>         'dffml.entrypoint': [ # Same as ENTRYPOINT
     >>>             'mylabel = module.path.to:EntrypointSubclassClass',
     >>>         ]
     >>>     }
@@ -105,7 +104,7 @@ def base_entry_point(entrypoint, *args):
     """
 
     def add_entry_point_and_name(cls):
-        cls.ENTRY_POINT = entrypoint
+        cls.ENTRYPOINT = entrypoint
         cls.ENTRY_POINT_NAME = list(args)
         return cls
 
@@ -114,10 +113,10 @@ def base_entry_point(entrypoint, *args):
 
 class Entrypoint(object):
     """
-    Uses the pkg_resources.iter_entry_points on the ENTRY_POINT of the class
+    Uses the pkg_resources.iter_entry_points on the ENTRYPOINT of the class
     """
 
-    ENTRY_POINT = "util.entrypoint"
+    ENTRYPOINT = "util.entrypoint"
     # Label is for configuration. Sometimes multiple of the same classes will be
     # loaded. They need to determine which config options are meant for which
     # class. Therefore a label is applied to each class after it is loaded. If
@@ -130,11 +129,11 @@ class Entrypoint(object):
     def load(cls, loading=None):
         """
         Loads all installed loading and returns them as a list. Sources to be
-        loaded should be registered to ENTRY_POINT via setuptools.
+        loaded should be registered to ENTRYPOINT via setuptools.
         """
         loaded_names = []
         loading_classes = []
-        for i in pkg_resources.iter_entry_points(cls.ENTRY_POINT):
+        for i in pkg_resources.iter_entry_points(cls.ENTRYPOINT):
             loaded_names.append(i.name)
             if loading is not None and i.name != loading:
                 continue
@@ -142,7 +141,7 @@ class Entrypoint(object):
                 loaded = i.load()
             except Exception as error:
                 print(
-                    f"Error loading {cls.ENTRY_POINT}.{i.name}: {traceback.format_exc().strip()}",
+                    f"Error loading {cls.ENTRYPOINT}.{i.name}: {traceback.format_exc().strip()}",
                     file=sys.stderr,
                     flush=True,
                 )

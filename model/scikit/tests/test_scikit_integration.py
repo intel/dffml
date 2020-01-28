@@ -2,30 +2,19 @@
 This file contains integration tests. We use the CLI to exercise functionality of
 various DFFML classes and constructs.
 """
-import re
-import os
-import io
+import csv
 import json
 import inspect
 import pathlib
-import asyncio
 import contextlib
-import unittest.mock
-from typing import Dict, Any
 
-from dffml.repo import Repo
-from dffml.base import config
-from dffml.df.types import Definition, Operation, DataFlow, Input
-from dffml.df.base import op
+import numpy as np
+
 from dffml.cli.cli import CLI
-from dffml.model.model import Model
-from dffml.service.dev import Develop
-from dffml.util.packaging import is_develop
-from dffml.util.entrypoint import load
-from dffml.config.config import BaseConfigLoader
-from dffml.util.asynctestcase import AsyncTestCase
+from dffml.util.asynctestcase import IntegrationCLITestCase
 
-from .common import IntegrationCLITestCase
+
+from sklearn.datasets import make_blobs
 
 
 class TestScikitClassification(IntegrationCLITestCase):
@@ -69,7 +58,7 @@ class TestScikitClassification(IntegrationCLITestCase):
             + "\n"
         )
         # Features
-        features = "-model-features def:Clump_Thickness:int:1 def:Uniformity_of_Cell_Size:int:1 def:Uniformity_of_Cell_Shape:int:1 def:Marginal_Adhesion:int:1 def:Single_Epithelial_Cell_Size:int:1 def:Bare_Nuclei:int:1 def:Bland_Chromatin:int:1 def:Normal_Nucleoli:int:1 def:Mitoses:int:1".split()
+        features = "-model-features Clump_Thickness:int:1 Uniformity_of_Cell_Size:int:1 Uniformity_of_Cell_Shape:int:1 Marginal_Adhesion:int:1 Single_Epithelial_Cell_Size:int:1 Bare_Nuclei:int:1 Bland_Chromatin:int:1 Normal_Nucleoli:int:1 Mitoses:int:1".split()
         # Train the model
         await CLI.cli(
             "train",
@@ -77,7 +66,7 @@ class TestScikitClassification(IntegrationCLITestCase):
             "scikitsvc",
             *features,
             "-model-predict",
-            "Class",
+            "Class:int:1",
             "-sources",
             "training_data=csv",
             "-source-filename",
@@ -90,7 +79,7 @@ class TestScikitClassification(IntegrationCLITestCase):
             "scikitsvc",
             *features,
             "-model-predict",
-            "Class",
+            "Class:int:1",
             "-sources",
             "test_data=csv",
             "-source-filename",
@@ -106,7 +95,7 @@ class TestScikitClassification(IntegrationCLITestCase):
                 "scikitsvc",
                 *features,
                 "-model-predict",
-                "Class",
+                "Class:int:1",
                 "-sources",
                 "predict_data=csv",
                 "-source-filename",
@@ -165,7 +154,7 @@ class TestScikitRegression(IntegrationCLITestCase):
             + "\n"
         )
         # Features
-        features = "-model-features def:crim:float:1 def:zn:float:1 def:indus:float:1 def:chas:int:1 def:nox:float:1 def:rm:float:1 def:age:int:1 def:dis:float:1 def:rad:int:1 def:tax:float:1 def:ptratio:float:1 def:b:float:1 def:lstat:float:1".split()
+        features = "-model-features crim:float:1 zn:float:1 indus:float:1 chas:int:1 nox:float:1 rm:float:1 age:int:1 dis:float:1 rad:int:1 tax:float:1 ptratio:float:1 b:float:1 lstat:float:1".split()
         # Train the model
         await CLI.cli(
             "train",
@@ -173,7 +162,7 @@ class TestScikitRegression(IntegrationCLITestCase):
             "scikitridge",
             *features,
             "-model-predict",
-            "medv",
+            "medv:float:1",
             "-sources",
             "training_data=csv",
             "-source-filename",
@@ -186,7 +175,7 @@ class TestScikitRegression(IntegrationCLITestCase):
             "scikitridge",
             *features,
             "-model-predict",
-            "medv",
+            "medv:float:1",
             "-sources",
             "test_data=csv",
             "-source-filename",
@@ -202,7 +191,7 @@ class TestScikitRegression(IntegrationCLITestCase):
                 "scikitridge",
                 *features,
                 "-model-predict",
-                "medv",
+                "medv:float:1",
                 "-sources",
                 "predict_data=csv",
                 "-source-filename",
@@ -217,3 +206,147 @@ class TestScikitRegression(IntegrationCLITestCase):
         self.assertIn("value", results)
         results = results["value"]
         self.assertTrue(results is not None)
+
+
+class TestScikitClustering(IntegrationCLITestCase):
+    async def test_run(self):
+        self.required_plugins("dffml-model-scikit")
+        # Create the training data
+        """ train_data = [[ 7.67983358, -3.43833087,  0.70319017, -4.00173485],
+                         [ 8.68078273, -3.79913846,  2.86810681,  7.13800644],
+                         ...]"""
+        train_filename = self.mktempfile() + ".csv"
+        train_data, y = make_blobs(
+            n_samples=40, centers=4, n_features=4, random_state=2020
+        )
+        train_data = np.concatenate((train_data, y[:, None]), axis=1)
+        with open(pathlib.Path(train_filename), "w+") as train_file:
+            writer = csv.writer(train_file, delimiter=",")
+            writer.writerow(["A", "B", "C", "D", "true_label"])
+            writer.writerows(train_data)
+
+        # Create the test data
+        test_filename = self.mktempfile() + ".csv"
+        test_data, y = make_blobs(
+            n_samples=20, centers=4, n_features=4, random_state=2019
+        )
+        test_data = np.concatenate((test_data, y[:, None]), axis=1)
+        with open(pathlib.Path(test_filename), "w+") as test_file:
+            writer = csv.writer(test_file, delimiter=",")
+            writer.writerow(["A", "B", "C", "D", "true_label"])
+            writer.writerows(test_data)
+
+        # Create the prediction data
+        predict_filename = self.mktempfile() + ".csv"
+        predict_data, y = make_blobs(
+            n_samples=10, centers=4, n_features=4, random_state=2021
+        )
+        with open(pathlib.Path(predict_filename), "w+") as predict_file:
+            writer = csv.writer(predict_file, delimiter=",")
+            writer.writerow(["A", "B", "C", "D"])
+            writer.writerows(predict_data)
+
+        # Features
+        features = (
+            "-model-features A:float:1 B:float:1 C:float:1 D:float:1".split()
+        )
+        # ind_w_labl --> inductive model with true cluster label
+        # ind_wo_labl --> inductive model without true cluster label
+        # tran_w_labl --> transductive model with true cluster label
+        # tran_wo_labl --> transductive model without true cluster label
+        for algo in [
+            "ind_w_labl",
+            "ind_wo_labl",
+            "tran_w_labl",
+            "tran_wo_labl",
+        ]:
+            if algo is "ind_w_labl":
+                model, true_clstr, train_file, test_file, predict_file = (
+                    "scikitkmeans",
+                    "true_label:int:1",
+                    train_filename,
+                    test_filename,
+                    predict_filename,
+                )
+            elif algo is "ind_wo_labl":
+                model, true_clstr, train_file, test_file, predict_file = (
+                    "scikitap",
+                    None,
+                    train_filename,
+                    test_filename,
+                    predict_filename,
+                )
+            elif algo is "tran_w_labl":
+                model, true_clstr, train_file, test_file, predict_file = (
+                    "scikitoptics",
+                    "true_label:int:1",
+                    train_filename,
+                    train_filename,
+                    train_filename,
+                )
+            elif algo is "tran_wo_labl":
+                model, true_clstr, train_file, test_file, predict_file = (
+                    "scikitac",
+                    None,
+                    train_filename,
+                    train_filename,
+                    train_filename,
+                )
+            # Train the model
+            await CLI.cli(
+                "train",
+                "-model",
+                model,
+                *features,
+                "-sources",
+                "training_data=csv",
+                "-source-filename",
+                train_file,
+                "-source-readonly",
+            )
+            # Assess accuracy
+            await CLI.cli(
+                *(
+                    [
+                        "accuracy",
+                        "-model",
+                        model,
+                        *features,
+                        "-sources",
+                        "test_data=csv",
+                        "-source-readonly",
+                        "-source-filename",
+                        test_file,
+                    ]
+                    + (
+                        ["-model-tcluster", true_clstr]
+                        if true_clstr is not None
+                        else []
+                    )
+                )
+            )
+            with contextlib.redirect_stdout(self.stdout):
+                # Make prediction
+                await CLI._main(
+                    "predict",
+                    "all",
+                    "-model",
+                    model,
+                    *features,
+                    "-sources",
+                    "predict_data=csv",
+                    "-source-readonly",
+                    "-source-filename",
+                    predict_file,
+                )
+            results = json.loads(self.stdout.getvalue())
+            self.stdout.truncate(0)
+            self.stdout.seek(0)
+            self.assertTrue(isinstance(results, list))
+            self.assertTrue(results)
+            results = results[0]
+            self.assertIn("prediction", results)
+            results = results["prediction"]
+            self.assertIn("value", results)
+            results = results["value"]
+            self.assertTrue(results is not None)

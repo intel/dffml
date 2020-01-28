@@ -3,18 +3,19 @@
 """
 Description of what this model does
 """
-import abc
-from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple
+from typing import AsyncIterator, Tuple, Any, List
 
 from dffml.repo import Repo
 from dffml.source.source import Sources
 from dffml.feature import Features
 from dffml.accuracy import Accuracy
-from dffml.model.model import ModelConfig, ModelContext, Model
-from dffml.util.entrypoint import entry_point
+from dffml.model.model import ModelContext, Model
+from dffml.util.entrypoint import entrypoint
+from dffml.base import config
 
 
-class MiscModelConfig(ModelConfig, NamedTuple):
+@config
+class MiscModelConfig:
     # This model never uses the directory, but chances are if you want to save
     # and load data from disk you will need to
     directory: str
@@ -53,7 +54,7 @@ class MiscModelContext(ModelContext):
             ], 1.0
 
 
-@entry_point("misc")
+@entrypoint("misc")
 class MiscModel(Model):
 
     CONTEXT = MiscModelContext

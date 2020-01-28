@@ -9,7 +9,7 @@ from typing import Dict
 from ..repo import Repo
 from .memory import MemorySource
 from .file import FileSource, FileSourceConfig
-from ..util.entrypoint import entry_point
+from ..util.entrypoint import entrypoint
 
 from .log import LOGGER
 
@@ -36,7 +36,7 @@ class OpenJSONFile:
             return bool(self.active < 1)
 
 
-@entry_point("json")
+@entrypoint("json")
 class JSONSource(FileSource, MemorySource):
     """
     JSONSource reads and write from a JSON file on open / close. Otherwise
@@ -72,8 +72,8 @@ class JSONSource(FileSource, MemorySource):
         async with self._open_json(fd):
             repos = self.OPEN_JSON_FILES[self.config.filename].data
             self.mem = {
-                src_url: Repo(src_url, data=data)
-                for src_url, data in repos.get(self.config.label, {}).items()
+                key: Repo(key, data=data)
+                for key, data in repos.get(self.config.label, {}).items()
             }
         LOGGER.debug("%r loaded %d records", self, len(self.mem))
 
@@ -81,7 +81,7 @@ class JSONSource(FileSource, MemorySource):
         async with self.OPEN_JSON_FILES_LOCK:
             repos = self.OPEN_JSON_FILES[self.config.filename].data
             repos[self.config.label] = {
-                repo.src_url: repo.dict() for repo in self.mem.values()
+                repo.key: repo.dict() for repo in self.mem.values()
             }
             self.logger.debug(f"{self.config.filename} updated")
             if await self.OPEN_JSON_FILES[self.config.filename].dec():

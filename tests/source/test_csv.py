@@ -16,7 +16,11 @@ from dffml.util.cli.arg import parse_unknown
 
 class TestCSVSource(FileSourceTest, AsyncTestCase):
     async def setUpSource(self):
-        return CSVSource(CSVSourceConfig(filename=self.testfile))
+        return CSVSource(
+            CSVSourceConfig(
+                filename=self.testfile, allowempty=True, readwrite=True
+            )
+        )
 
     async def test_label(self):
         with tempfile.TemporaryDirectory() as testdir:
@@ -40,9 +44,7 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
                     self.assertIn("face", repo.features())
             with open(self.testfile, "r") as fd:
                 dict_reader = csv.DictReader(fd, dialect="strip")
-                rows = {
-                    row["label"]: {row["src_url"]: row} for row in dict_reader
-                }
+                rows = {row["label"]: {row["key"]: row} for row in dict_reader}
                 self.assertIn("unlabeled", rows)
                 self.assertIn("somelabel", rows)
                 self.assertIn("0", rows["unlabeled"])
@@ -59,8 +61,9 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
         self.assertEqual(config.filename, "feedface")
         self.assertEqual(config.label, "unlabeled")
         self.assertEqual(config.labelcol, "label")
-        self.assertEqual(config.key, "src_url")
-        self.assertFalse(config.readonly)
+        self.assertEqual(config.key, "key")
+        self.assertFalse(config.readwrite)
+        self.assertFalse(config.allowempty)
 
     def test_config_set(self):
         config = CSVSource.config(
@@ -73,14 +76,16 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
                 "dffml_label",
                 "--source-csv-key",
                 "SourceURLColumn",
-                "--source-csv-readonly",
+                "--source-csv-readwrite",
+                "--source-csv-allowempty",
             )
         )
         self.assertEqual(config.filename, "feedface")
         self.assertEqual(config.label, "default-label")
         self.assertEqual(config.labelcol, "dffml_label")
         self.assertEqual(config.key, "SourceURLColumn")
-        self.assertTrue(config.readonly)
+        self.assertTrue(config.readwrite)
+        self.assertTrue(config.allowempty)
 
     async def test_key(self):
         with tempfile.NamedTemporaryFile() as fileobj:

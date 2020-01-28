@@ -10,10 +10,16 @@ from ..df.base import op
 @config
 class ModelPredictConfig:
     model: Model
-    msg: str
+
+    def __post_init__(self):
+        if not isinstance(self.model, Model):
+            raise TypeError(
+                "model should be an instance of `dffml.model.model.Model`"
+            )
 
 
 @op(
+    name="dffml.model.predict",
     inputs={
         "features": Definition(
             name="repo_features", primitive="Dict[str, Any]"
@@ -34,5 +40,7 @@ async def model_predict(self, features: Dict[str, Any]) -> Dict[str, Any]:
 
     async for repo in self.mctx.predict(repos()):
         return {
-            "prediction": {self.config.model.config.predict: repo.prediction()}
+            "prediction": {
+                self.config.model.config.predict.NAME: repo.prediction()
+            }
         }

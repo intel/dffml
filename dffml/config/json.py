@@ -1,8 +1,7 @@
 import json
-import pathlib
-from typing import Dict, Any
+from typing import Dict
 
-from ..util.entrypoint import entry_point
+from ..util.entrypoint import entrypoint
 from ..util.cli.arg import Arg
 from ..base import BaseConfig
 from .config import BaseConfigLoaderContext, BaseConfigLoader
@@ -16,7 +15,7 @@ class JSONConfigLoaderContext(BaseConfigLoaderContext):
         return json.dumps(resource, sort_keys=True, indent=4).encode()
 
 
-@entry_point("json")
+@entrypoint("json")
 class JSONConfigLoader(BaseConfigLoader):
     CONTEXT = JSONConfigLoaderContext
 

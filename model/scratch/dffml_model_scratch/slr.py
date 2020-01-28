@@ -17,7 +17,7 @@ from dffml.source.source import Sources
 from dffml.feature import Features
 from dffml.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
-from dffml.util.entrypoint import entry_point
+from dffml.util.entrypoint import entrypoint
 from dffml.util.cli.arg import Arg
 from dffml.feature.feature import Feature, Features
 from dffml.util.cli.parser import list_action
@@ -25,7 +25,7 @@ from dffml.util.cli.parser import list_action
 
 @config
 class SLRConfig:
-    predict: str = field("Label or the value to be predicted")
+    predict: Feature = field("Label or the value to be predicted")
     features: Features = field("Features to train on")
     directory: str = field(
         "Directory where state should be saved",
@@ -75,7 +75,7 @@ class SLRContext(ModelContext):
         prediction = self.regression_line[0] * x + self.regression_line[1]
         self.logger.debug(
             "Predicted Value of {} {}:".format(
-                self.parent.config.predict, prediction
+                self.parent.config.predict.NAME, prediction
             )
         )
         return prediction
@@ -107,14 +107,14 @@ class SLRContext(ModelContext):
 
     async def train(self, sources: Sources):
         async for repo in sources.with_features(
-            self.features + [self.parent.config.predict]
+            self.features + [self.parent.config.predict.NAME]
         ):
             feature_data = repo.features(
-                self.features + [self.parent.config.predict]
+                self.features + [self.parent.config.predict.NAME]
             )
             self.xData = np.append(self.xData, feature_data[self.features[0]])
             self.yData = np.append(
-                self.yData, feature_data[self.parent.config.predict]
+                self.yData, feature_data[self.parent.config.predict.NAME]
             )
         self.regression_line = await self.best_fit_line()
 
@@ -138,7 +138,7 @@ class SLRContext(ModelContext):
             yield repo
 
 
-@entry_point("slr")
+@entrypoint("slr")
 class SLR(Model):
     """
     Simple Linear Regression Model for 2 variables implemented from scratch.
@@ -157,29 +157,26 @@ class SLR(Model):
         EOF
         $ dffml train \\
             -model scratchslr \\
-            -model-features def:Years:int:1 \\
-            -model-predict Salary \\
+            -model-features Years:int:1 \\
+            -model-predict Salary:float:1 \\
             -sources f=csv \\
             -source-filename dataset.csv \\
-            -source-readonly \\
             -log debug
         $ dffml accuracy \\
             -model scratchslr \\
-            -model-features def:Years:int:1 \\
-            -model-predict Salary \\
+            -model-features Years:int:1 \\
+            -model-predict Salary:float:1 \\
             -sources f=csv \\
             -source-filename dataset.csv \\
-            -source-readonly \\
             -log debug
         1.0
         $ echo -e 'Years,Salary\\n6,0\\n' | \\
           dffml predict all \\
             -model scratchslr \\
-            -model-features def:Years:int:1 \\
-            -model-predict Salary \\
+            -model-features Years:int:1 \\
+            -model-predict Salary:float:1 \\
             -sources f=csv \\
             -source-filename /dev/stdin \\
-            -source-readonly \\
             -log debug
         [
             {
@@ -193,7 +190,7 @@ class SLR(Model):
                     "confidence": 1.0,
                     "value": 90.0
                 },
-                "src_url": "0"
+                "key": "0"
             }
         ]
 
@@ -209,7 +206,8 @@ class SLR(Model):
     def _filename(self):
         return os.path.join(
             self.config.directory,
-            hashlib.sha384(self.config.predict.encode()).hexdigest() + ".json",
+            hashlib.sha384(self.config.predict.NAME.encode()).hexdigest()
+            + ".json",
         )
 
     async def __aenter__(self) -> SLRContext:

@@ -56,7 +56,7 @@ class TestSLR(AsyncTestCase):
         cls.model = SLR(
             SLRConfig(
                 directory=cls.model_dir.name,
-                predict="Y",
+                predict=DefFeature("Y", float, 1),
                 features=cls.features,
             )
         )
@@ -75,7 +75,7 @@ class TestSLR(AsyncTestCase):
                 self.assertTrue(0.0 <= res < 1.0)
                 # Test predict
                 async for repo in mctx.predict(sctx.repos()):
-                    correct = FEATURE_DATA[int(repo.src_url)][1]
+                    correct = FEATURE_DATA[int(repo.key)][1]
                     # Comparison of correct to prediction to make sure prediction is within a reasonable range
                     prediction = repo.prediction().value
                     self.assertGreater(prediction, correct - (correct * 0.10))
@@ -96,7 +96,7 @@ class TestSLR(AsyncTestCase):
         async with self.sources as sources, self.model as model:
             async with sources() as sctx, model() as mctx:
                 async for repo in mctx.predict(sctx.repos()):
-                    correct = FEATURE_DATA[int(repo.src_url)][1]
+                    correct = FEATURE_DATA[int(repo.key)][1]
                     prediction = repo.prediction().value
                     self.assertGreater(prediction, correct - (correct * 0.10))
                     self.assertLess(prediction, correct + (correct * 0.10))

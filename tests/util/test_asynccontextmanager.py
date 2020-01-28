@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
-import unittest
-
 from dffml.util.asynchelper import AsyncContextManagerList
 from dffml.util.asynctestcase import AsyncTestCase
 

@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
-import ast
 import sys
 import json
 import enum
@@ -8,7 +7,7 @@ import logging
 import inspect
 import asyncio
 import argparse
-from typing import Tuple, Dict, Any
+from typing import Dict, Any
 
 from ...repo import Repo
 from ...feature import Feature
@@ -117,7 +116,7 @@ class CMD(object):
                 name = method.name
             if not name in kwargs and "default" in method:
                 kwargs[name] = method["default"]
-            if name in kwargs:
+            if name in kwargs and not hasattr(self, name):
                 self.logger.debug("Setting %s = %r", name, kwargs[name])
                 setattr(self, name, kwargs[name])
             else:
@@ -142,6 +141,13 @@ class CMD(object):
         parser.add_subs(cls)
         return parser, parser.parse_known_args(args)
 
+    async def do_run(self):
+        async with self:
+            if inspect.isasyncgenfunction(self.run):
+                return [res async for res in self.run()]
+            else:
+                return await self.run()
+
     @classmethod
     async def cli(cls, *args):
         parser, (args, unknown) = await cls.parse_args(*args)
@@ -158,11 +164,7 @@ class CMD(object):
             args.parser.print_help()
             return DisplayHelp
         cmd = args.cmd(**cls.sanitize_args(vars(args)))
-        async with cmd:
-            if inspect.isasyncgenfunction(cmd.run):
-                return [res async for res in cmd.run()]
-            else:
-                return await cmd.run()
+        return await cmd.do_run()
 
     @classmethod
     def sanitize_args(cls, args):
@@ -195,6 +197,15 @@ class CMD(object):
         """
         if loop is None:
             loop = asyncio.get_event_loop()
+            # In Python 3.8 ThreadedChildWatcher becomes the default which
+            # should work fine for us. However, in Python 3.7 SafeChildWatcher
+            # is the default and may cause BlockingIOErrors when many
+            # subprocesses are created
+            # https://docs.python.org/3/library/asyncio-policy.html#asyncio.FastChildWatcher
+            if sys.version_info.major == 3 and sys.version_info.minor == 7:
+                watcher = asyncio.FastChildWatcher()
+                asyncio.set_child_watcher(watcher)
+                watcher.attach_loop(loop)
         result = None
         try:
             result = loop.run_until_complete(cls._main(*argv[1:]))
@@ -202,6 +213,9 @@ class CMD(object):
             pass  # pragma: no cover
         loop.run_until_complete(loop.shutdown_asyncgens())
         loop.close()
+
+    def __call__(self):
+        return asyncio.run(self.do_run())
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Any]:

@@ -2,30 +2,16 @@
 This file contains integration tests. We use the CLI to exercise functionality of
 various DFFML classes and constructs.
 """
-import re
-import os
 import io
 import json
 import inspect
 import pathlib
-import asyncio
-import contextlib
 import unittest.mock
-from typing import Dict, Any
 
-from dffml.repo import Repo
-from dffml.base import config
-from dffml.df.types import Definition, Operation, DataFlow, Input
-from dffml.df.base import op
+from dffml.df.types import DataFlow
 from dffml.cli.cli import CLI
-from dffml.model.model import Model
 from dffml.service.dev import Develop
-from dffml.util.packaging import is_develop
-from dffml.util.entrypoint import load
-from dffml.config.config import BaseConfigLoader
-from dffml.util.asynctestcase import AsyncTestCase
-
-from .common import IntegrationCLITestCase, relative_chdir
+from dffml.util.asynctestcase import IntegrationCLITestCase, relative_chdir
 
 
 class TestDevelop(IntegrationCLITestCase):
@@ -61,9 +47,9 @@ class TestDevelop(IntegrationCLITestCase):
             "-model",
             "scratchslr",
             "-model-features",
-            "def:Years:int:1",
+            "Years:int:1",
             "-model-predict",
-            "Salary",
+            "Salary:float:1",
             "-sources",
             "training_data=csv",
             "-source-filename",
@@ -80,11 +66,9 @@ class TestDevelop(IntegrationCLITestCase):
             "-config-model",
             "scratchslr",
             "-config-model-features",
-            "def:Years:int:1",
+            "Years:int:1",
             "-config-model-predict",
-            "Salary",
-            "-config-msg",
-            "some message",
+            "Salary:float:1",
         )
         self.assertIn("model_predictions", results)
         results = results["model_predictions"]

@@ -64,7 +64,16 @@ Start MariaDB (functionally very similar to MySQL which its a fork of).
         -e MYSQL_PASSWORD=pass \
         -e MYSQL_DATABASE=db \
         -p 3306:3306 \
-        mariadb
+        mariadb:10
+
+Wait for the database to start. Run the following command until you see ``ready
+for connections`` twice in the output.
+
+.. code-block:: console
+
+    $ docker logs maintained_db 2>&1 | grep 'ready for'
+    2020-01-13 21:31:09 0 [Note] mysqld: ready for connections.
+    2020-01-13 21:32:16 0 [Note] mysqld: ready for connections.
 
 Import the data. The data was pulled from a couple pages of GitHub search
 results and randomly assigned a maintenance status. It is completely
@@ -76,7 +85,7 @@ setting the status of repos.
 
 .. code-block:: console
 
-    $ docker run -i --rm --net=host mariadb mysql \
+    $ docker run -i --rm --net=host mariadb:10 mysql \
         -h127.0.0.1 \
         -uuser \
         -ppass \
@@ -283,7 +292,7 @@ This command runs the dataflow on a set of repos, that set being the URLs in
                 ]
             },
             "last_updated": "2019-10-25T01:44:50Z",
-            "src_url": "https://github.com/AntoineMaillard06/Tetris.git"
+            "key": "https://github.com/AntoineMaillard06/Tetris.git"
         }
     ]
 
@@ -332,7 +341,7 @@ You can pipe that query in with bash like we did the first time.
 
 .. code-block:: console
 
-    $ docker run -i --rm --net=host mariadb mysql \
+    $ docker run -i --rm --net=host mariadb:10 mysql \
         -h127.0.0.1 \
         -uuser \
         -ppass \
@@ -373,13 +382,13 @@ to train on our dataset.
         -model tfdnnc \
         -model-epochs 400 \
         -model-steps 4000 \
-        -model-classification maintained \
+        -model-predict maintained:str:1 \
         -model-classifications 0 1 \
         -sources db=demoapp \
         -model-features \
-          def:authors:int:10 \
-          def:commits:int:10 \
-          def:work:int:10 \
+          authors:int:10 \
+          commits:int:10 \
+          work:int:10 \
         -log debug \
         -update
 
@@ -390,13 +399,13 @@ meaningless unless you threw out the dataset and put in real classifications.
 
     $ dffml accuracy \
         -model tfdnnc \
-        -model-classification maintained \
+        -model-predict maintained:str:1 \
         -model-classifications 0 1 \
         -sources db=demoapp \
         -model-features \
-          def:authors:int:10 \
-          def:commits:int:10 \
-          def:work:int:10 \
+          authors:int:10 \
+          commits:int:10 \
+          work:int:10 \
         -log critical
     0.4722222089767456
 
@@ -422,13 +431,13 @@ Now that we have the data for the new repo, ask the model for a prediction.
     $ dffml predict repo \
         -keys https://github.com/intel/dffml.git \
         -model tfdnnc \
-        -model-classification maintained \
+        -model-predict maintained:str:1 \
         -model-classifications 0 1 \
         -sources db=demoapp \
         -model-features \
-          def:authors:int:10 \
-          def:commits:int:10 \
-          def:work:int:10 \
+          authors:int:10 \
+          commits:int:10 \
+          work:int:10 \
         -log critical \
         -update
     [
@@ -477,7 +486,7 @@ Now that we have the data for the new repo, ask the model for a prediction.
                 "value": "0",
                 "confidence": 1.0
             },
-            "src_url": "https://github.com/intel/dffml.git"
+            "key": "https://github.com/intel/dffml.git"
         }
     ]
 

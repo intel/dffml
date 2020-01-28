@@ -7,21 +7,18 @@ prediction accuracy.
 """
 import os
 import abc
-from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Dict
+from typing import AsyncIterator
 
 from ..base import (
     config,
-    BaseConfig,
     BaseDataFlowFacilitatorObjectContext,
     BaseDataFlowFacilitatorObject,
 )
-from ..util.cli.arg import Arg
 from ..repo import Repo
 from ..source.source import Sources
-from ..feature import Feature, Features
+from ..feature import Features
 from ..accuracy import Accuracy
-from ..util.entrypoint import Entrypoint, base_entry_point
-from ..util.cli.parser import list_action
+from ..util.entrypoint import base_entry_point
 
 
 class ModelNotTrained(Exception):
@@ -64,7 +61,7 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
         Uses trained data to make a prediction about the quality of a repo.
         """
         raise NotImplementedError()
-        yield (Repo(""), "", 0.0)
+        yield (Repo(""), "", 0.0)  # skipcq: PYL-W0101
 
 
 @base_entry_point("dffml.model", "model")

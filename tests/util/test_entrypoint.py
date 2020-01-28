@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
-import os
 import unittest
 import pkg_resources
 from unittest.mock import patch
@@ -23,7 +22,7 @@ class Loadable(object):
 
 class FakeEntrypoint(Entrypoint):
 
-    ENTRY_POINT = "fake"
+    ENTRYPOINT = "fake"
 
 
 class TestEntrypoint(unittest.TestCase):
