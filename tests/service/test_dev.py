@@ -12,7 +12,8 @@ import unittest.mock
 from typing import Type
 
 from dffml.version import VERSION
-from dffml.service.dev import Develop, RepoDirtyError
+from dffml.df.types import DataFlow
+from dffml.service.dev import Develop, RepoDirtyError, Export
 from dffml.util.os import chdir
 from dffml.util.skel import Skel
 from dffml.util.packaging import is_develop
@@ -226,3 +227,12 @@ class TestRelease(AsyncTestCase):
                 """
             ),
         )
+
+
+class TestExport(AsyncTestCase):
+    async def test_run(self):
+        stdout = io.BytesIO()
+        with unittest.mock.patch("sys.stdout.buffer.write", new=stdout.write):
+            await Export(export="tests.test_df:DATAFLOW").run()
+        exported = json.loads(stdout.getvalue())
+        DataFlow._fromdict(**exported)
