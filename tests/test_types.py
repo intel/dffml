@@ -4,8 +4,15 @@ from dffml.operation.output import GetSingle
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.df.memory import MemoryOrchestrator
 from dffml.operation.mapping import MAPPING
+from dffml.df.exceptions import InputValidationError
 
-Pie = Definition(name="pie", primitive="float", validate=lambda _: 3.14)
+def pie_validation(x):
+    if x==3.14:
+        return x
+    raise InputValidationError()
+
+Pie = Definition(name="pie", primitive="float",
+                validate=pie_validation)
 Radius = Definition(name="radius", primitive="float")
 Area = Definition(name="area", primitive="float")
 ShapeName = Definition(
@@ -28,8 +35,8 @@ async def get_circle(name: str, radius: float, pie: float):
 
 
 class TestDefintion(AsyncTestCase):
-    async def test_validate(self):
-        dataflow = DataFlow(
+    async def setUp(self):
+        self.dataflow = DataFlow(
             operations={
                 "get_circle": get_circle.op,
                 "get_single": GetSingle.imp.op,
@@ -43,6 +50,24 @@ class TestDefintion(AsyncTestCase):
             implementations={"get_circle": get_circle.imp},
         )
 
+    async def test_validate(self):
+        test_inputs = {
+            "area": [
+                Input(value="unitcircle", definition=ShapeName),
+                Input(value=1, definition=Radius),
+                Input(value=3.14, definition=Pie),
+            ]
+        }
+        async with MemoryOrchestrator.withconfig({}) as orchestrator:
+            async with orchestrator(self.dataflow) as octx:
+                async for ctx_str, results in octx.run(test_inputs):
+                    self.assertIn("mapping", results)
+                    results = results["mapping"]
+                    self.assertEqual(results["name"], "UNITCIRCLE")
+                    self.assertEqual(results["area"], 3.14)
+                    self.assertEqual(results["radius"], 1)
+
+    async def test_validation_error(self):
         test_inputs = {
             "area": [
                 Input(value="unitcircle", definition=ShapeName),
@@ -51,10 +76,12 @@ class TestDefintion(AsyncTestCase):
             ]
         }
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
-            async with orchestrator(dataflow) as octx:
-                async for ctx_str, results in octx.run(test_inputs):
-                    self.assertIn("mapping", results)
-                    results = results["mapping"]
-                    self.assertEqual(results["name"], "UNITCIRCLE")
-                    self.assertEqual(results["area"], 3.14)
-                    self.assertEqual(results["radius"], 1)
+            async with orchestrator(self.dataflow) as octx:
+                # this is not catching the error
+                # with self.assertRaises(InputValidationError):
+                #     await octx.run(test_inputs)
+                try:
+                    await octx.run(test_inputs)
+                    self.assertTrue(False)
+                except InputValidationError:
+                    pass
