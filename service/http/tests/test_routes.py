@@ -2,6 +2,7 @@ import os
 import io
 import json
 import asyncio
+import pathlib
 import tempfile
 import unittest
 from http import HTTPStatus
@@ -222,6 +223,44 @@ class TestRoutesServiceUpload(TestRoutesRunning, AsyncTestCase):
                     data={"nope": io.BytesIO(b"nope")},
                 ) as r:
                     pass  # pramga: no cov
+
+
+class TestRoutesServiceFiles(TestRoutesRunning, AsyncTestCase):
+    FILES = {
+        ("file.csv",): 327,
+        ("there.csv",): 23,
+        ("down1", "other.csv"): 71,
+        ("down1", "down2", "another.csv"): 560,
+        ("down1", "down2", "also.csv"): 464,
+        ("down1", "down3", "here.csv"): 127,
+    }
+
+    async def test_success(self):
+        with tempfile.TemporaryDirectory() as tempdir:
+            self.cli.upload_dir = tempdir
+            # Create files
+            pathlib.Path(tempdir, "down1", "down2").mkdir(parents=True)
+            pathlib.Path(tempdir, "down1", "down3").mkdir(parents=True)
+            for filepath, size in self.FILES.items():
+                pathlib.Path(tempdir, *filepath).write_text("A" * size)
+
+            files = {
+                "/".join(filepath): size
+                for filepath, size in self.FILES.items()
+            }
+
+            async with self.get("/service/files") as r:
+                response = {r["filename"]: r["size"] for r in await r.json()}
+                for filepath, size in files.items():
+                    self.assertIn(filepath, response)
+                    self.assertEqual(size, response[filepath])
+
+    async def test_not_allowed(self):
+        with self.assertRaisesRegex(
+            ServerException, "File listing not allowed"
+        ):
+            async with self.get("/service/files"):
+                pass  # pramga: no cov
 
 
 class TestRoutesList(TestRoutesRunning, AsyncTestCase):
