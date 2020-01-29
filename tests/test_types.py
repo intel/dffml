@@ -68,7 +68,7 @@ class TestDefintion(AsyncTestCase):
                     self.assertEqual(results["area"], 3.14)
                     self.assertEqual(results["radius"], 1)
 
-    async def test_0_validation_error(self):
+    async def test_validation_error(self):
         with self.assertRaises(InputValidationError):
             test_inputs = {
                 "area": [
