@@ -62,7 +62,8 @@ from dffml_model_scikit.scikit_base import (
     ScikitUnsprvised,
     ScikitContextUnsprvised,
 )
-from dffml.feature.feature import Feature, Features
+from dffml.feature.feature import Feature, Features, DefFeature
+from dffml.util.cli.parser import list_action
 
 
 def applicable_features(self, features):
@@ -221,27 +222,36 @@ for entry_point_name, name, cls, applicable_features_function in [
                 default=None,
             ),
         )
-    dffml_config = make_config_numpy(
-        name + "ModelConfig",
-        cls,
-        properties={
-            **{
-                "directory": (
-                    str,
-                    field(
-                        "Directory where state should be saved",
-                        default=os.path.join(
-                            os.path.expanduser("~"),
-                            ".cache",
-                            "dffml",
-                            f"scikit-{entry_point_name}",
-                        ),
+    dffml_config_properties = {
+        **{
+            "directory": (
+                str,
+                field(
+                    "Directory where state should be saved",
+                    default=os.path.join(
+                        os.path.expanduser("~"),
+                        ".cache",
+                        "dffml",
+                        f"scikit-{entry_point_name}",
                     ),
                 ),
-                "features": (Features, field("Features to train on")),
-            },
-            **config_fields,
+            ),
+            "features": (Features, field("Features to train on")),
         },
+        **config_fields,
+    }
+
+    if estimator_type in unsupervised_estimators:
+        dffml_config_properties["predict"] = (
+            Feature,
+            field(
+                "field here for compability with other functions,no need to change",
+                default=DefFeature(name="Prediction", dtype="str", length=10),
+            ),
+        )
+
+    dffml_config = make_config_numpy(
+        name + "ModelConfig", cls, properties=dffml_config_properties
     )
 
     dffml_cls_ctx = type(

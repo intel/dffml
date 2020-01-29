@@ -178,7 +178,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
 
     def _mkcids(self, classifications):
         """
-        Create an index, possible classification mapping and sort the list of
+        Create an index, possible predict mapping and sort the list of
         classifications first.
         """
         cids = dict(
@@ -333,10 +333,11 @@ class DNNClassifierModelContext(TensorflowModelContext):
         input_fn, predict = await self.predict_input_fn(repos)
         # Makes predictions on classifications
         predictions = self.model.predict(input_fn=input_fn)
+        target = self.parent.config.predict.NAME
         for repo, pred_dict in zip(predict, predictions):
             class_id = pred_dict["class_ids"][0]
             probability = pred_dict["probabilities"][class_id]
-            repo.predicted(self.cids[class_id], probability)
+            repo.predicted(target, self.cids[class_id], probability)
             yield repo
 
 
@@ -410,8 +411,11 @@ class DNNClassifierModel(Model):
                 },
                 "last_updated": "2019-07-31T02:00:12Z",
                 "prediction": {
-                    "confidence": 0.9999997615814209,
-                    "value": 1
+                    "classification":
+                        {
+                            "confidence": 0.9999997615814209,
+                            "value": 1
+                        }
                 },
                 "key": "0"
             },
@@ -426,8 +430,11 @@ class DNNClassifierModel(Model):
                 },
                 "last_updated": "2019-07-31T02:00:12Z",
                 "prediction": {
-                    "confidence": 0.9999984502792358,
-                    "value": 2
+                    "classification":
+                    {
+                        "confidence": 0.9999984502792358,
+                        "value": 2
+                    }
                 },
                 "key": "1"
             },

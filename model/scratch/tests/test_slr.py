@@ -74,10 +74,11 @@ class TestSLR(AsyncTestCase):
                 res = await mctx.accuracy(sctx)
                 self.assertTrue(0.0 <= res < 1.0)
                 # Test predict
+                target_name = model.config.predict.NAME
                 async for repo in mctx.predict(sctx.repos()):
                     correct = FEATURE_DATA[int(repo.key)][1]
                     # Comparison of correct to prediction to make sure prediction is within a reasonable range
-                    prediction = repo.prediction().value
+                    prediction = repo.prediction(target_name).value
                     self.assertGreater(prediction, correct - (correct * 0.10))
                     self.assertLess(prediction, correct + (correct * 0.10))
 
@@ -95,8 +96,10 @@ class TestSLR(AsyncTestCase):
     async def test_02_predict(self):
         async with self.sources as sources, self.model as model:
             async with sources() as sctx, model() as mctx:
+                target_name = model.config.predict.NAME
                 async for repo in mctx.predict(sctx.repos()):
+                    target_name = model.config.predict.NAME
                     correct = FEATURE_DATA[int(repo.key)][1]
-                    prediction = repo.prediction().value
+                    prediction = repo.prediction(target_name).value
                     self.assertGreater(prediction, correct - (correct * 0.10))
                     self.assertLess(prediction, correct + (correct * 0.10))

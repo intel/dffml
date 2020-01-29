@@ -5,6 +5,7 @@ Loads repos from a csv file, using columns as features
 """
 import csv
 import ast
+import itertools
 import asyncio
 from typing import NamedTuple, Dict, List
 from dataclasses import dataclass
@@ -113,7 +114,18 @@ class CSVSource(FileSource, MemorySource):
             repo_data = {}
             # Parse headers we as the CSV source added
             csv_meta = {}
+            row_keys = []
+            # getting all keys starting with "prediction","confidence"
             for header in self.CSV_HEADERS:
+                row_keys.extend(
+                    list(
+                        filter(
+                            lambda x: x.startswith(header + "_"), row.keys()
+                        )
+                    )
+                )
+            # pop all prediction data from row and save in csv_meta
+            for header in row_keys:
                 value = row.get(header, None)
                 if value is not None and value != "":
                     csv_meta[header] = row[header]
@@ -129,15 +141,23 @@ class CSVSource(FileSource, MemorySource):
                         features[_key] = _value
             if features:
                 repo_data["features"] = features
-            if "prediction" in csv_meta and "confidence" in csv_meta:
-                repo_data.update(
-                    {
-                        "prediction": {
-                            "value": str(csv_meta["prediction"]),
-                            "confidence": float(csv_meta["confidence"]),
-                        }
-                    }
-                )
+
+            # Getting all prediction target names
+            target_keys = filter(
+                lambda x: x.startswith("prediction_"), csv_meta.keys()
+            )
+            target_keys = map(
+                lambda x: x.replace("prediction_", ""), target_keys
+            )
+
+            predictions = {
+                target_name: {
+                    "value": str(csv_meta["prediction_" + target_name]),
+                    "confidence": float(csv_meta["confidence_" + target_name]),
+                }
+                for target_name in target_keys
+            }
+            repo_data.update({"prediction": predictions})
             # If there was no data in the row, skip it
             if not repo_data and key == str(index[label] - 1):
                 continue
@@ -171,11 +191,20 @@ class CSVSource(FileSource, MemorySource):
             fieldnames.append(self.config.labelcol)
             # Get all the feature names
             feature_fieldnames = set()
+            prediction_fieldnames = set()
             for label, repos in open_file.write_out.items():
                 for repo in repos.values():
                     feature_fieldnames |= set(repo.data.features.keys())
+                    prediction_fieldnames |= set(repo.data.prediction.keys())
             fieldnames += list(feature_fieldnames)
-            fieldnames += self.CSV_HEADERS
+            fieldnames += itertools.chain(
+                *list(
+                    map(
+                        lambda key: ("prediction_" + key, "confidence_" + key),
+                        list(prediction_fieldnames),
+                    )
+                )
+            )
             self.logger.debug(f"fieldnames: {fieldnames}")
             # Write out the file
             writer = csv.DictWriter(fd, fieldnames=fieldnames)
@@ -194,10 +223,9 @@ class CSVSource(FileSource, MemorySource):
                         row[key] = value
                     # Write the prediction
                     if "prediction" in repo_data:
-                        row["prediction"] = repo_data["prediction"]["value"]
-                        row["confidence"] = repo_data["prediction"][
-                            "confidence"
-                        ]
+                        for key, value in repo_data["prediction"].items():
+                            row["prediction_" + key] = value["value"]
+                            row["confidence_" + key] = value["confidence"]
                     writer.writerow(row)
             del self.OPEN_CSV_FILES[self.config.filename]
             self.logger.debug(f"{self.config.filename} written")

@@ -173,11 +173,12 @@ class DNNRegressionModelContext(TensorflowModelContext):
         input_fn, predict_repo = await self.predict_input_fn(repos)
         # Makes predictions on
         predictions = self.model.predict(input_fn=input_fn)
-
+        target = self.parent.config.predict.NAME
         for repo, pred_dict in zip(predict_repo, predictions):
             # TODO Instead of float("nan") save accuracy value and use that.
-            repo.predicted(float(pred_dict["predictions"]), float("nan"))
-
+            repo.predicted(
+                target, float(pred_dict["predictions"]), float("nan")
+            )
             yield repo
 
 
@@ -258,8 +259,10 @@ class DNNRegressionModel(Model):
                 },
                 "last_updated": "2019-10-24T15:26:41Z",
                 "prediction": {
-                    "confidence": NaN,
-                    "value": 1.1983429193496704
+                    "TARGET" : {
+                        "confidence": NaN,
+                        "value": 1.1983429193496704
+                    }
                 },
                 "key": 0
             }
