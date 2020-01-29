@@ -255,8 +255,8 @@ so.</p>
             <span class="p">[</span><span class="n">repo</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">feature_data</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
         <span class="p">)</span>
         <span class="c1"># Store prediction</span>
-        <span class="n">prediction</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">prediction</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">prediction</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">prediction</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">prediction</span><span class="p">(</span><span class="s2">&quot;target_name&quot;</span><span class="p">)</span>
             <span class="n">prediction_cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">PREDICTION_COLS</span>
             <span class="n">prediction_data</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">prediction_cols</span><span class="p">)</span>
             <span class="n">prediction_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">prediction</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
@@ -267,6 +267,8 @@ so.</p>
                 <span class="s2">&quot;VALUES(?, &quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;?&quot;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">prediction_cols</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">,</span>
                 <span class="p">[</span><span class="n">repo</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">prediction_data</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
             <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">repos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Repo</span><span class="p">]:</span>
         <span class="c1"># NOTE This logic probably isn&#39;t what you want. Only for demo purposes.</span>
@@ -292,7 +294,9 @@ so.</p>
         <span class="p">)</span>
         <span class="n">prediction</span> <span class="o">=</span> <span class="k">await</span> <span class="n">prediction</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">prediction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">repo</span><span class="o">.</span><span class="n">predicted</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;confidence&quot;</span><span class="p">])</span>
+            <span class="n">repo</span><span class="o">.</span><span class="n">predicted</span><span class="p">(</span>
+                <span class="s2">&quot;target_name&quot;</span><span class="p">,</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;confidence&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="n">repo</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
