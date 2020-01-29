@@ -11,6 +11,7 @@ from typing import AsyncIterator, Tuple, Dict, Any, List, NamedTuple
 
 import aiohttp
 
+from dffml.base import config
 from dffml.repo import Repo
 from dffml.df.base import (
     op,
@@ -56,10 +57,11 @@ from .dataflow import (
 class ServerException(Exception):
     pass  # pragma: no cov
 
-
-class FakeModelConfig(NamedTuple):
+@config
+class FakeModelConfig:
     directory: str
     features: Features
+    predict : Feature
 
 
 class FakeModelContext(ModelContext):
@@ -79,37 +81,14 @@ class FakeModelContext(ModelContext):
 
     async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
         async for repo in repos:
-            repo.predicted(repo.feature("by_ten") * 10, float(repo.key))
+            repo.predicted("Salary",repo.feature("by_ten") * 10, float(repo.key))
             yield repo
-
 
 @entrypoint("fake")
 class FakeModel(Model):
 
     CONTEXT = FakeModelContext
-
-    @classmethod
-    def args(cls, args, *above) -> Dict[str, Arg]:
-        cls.config_set(args, above, "directory", Arg())
-        cls.config_set(
-            args,
-            above,
-            "features",
-            Arg(
-                nargs="+",
-                required=True,
-                type=Feature.load,
-                action=list_action(Features),
-            ),
-        )
-        return args
-
-    @classmethod
-    def config(cls, config, *above) -> BaseConfig:
-        return FakeModelConfig(
-            directory=cls.config_get(config, above, "directory"),
-            features=cls.config_get(config, above, "features"),
-        )
+    CONFIG = FakeModelConfig
 
 
 def model_load(loading=None):
@@ -285,6 +264,8 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                 "--model-features",
                 "Years:int:1",
                 "Experiance:int:1",
+                "--model-predict",
+                "Salary:float:1"
             )
             async with self.post(
                 "/configure/model/fake/salary", json=config
@@ -299,6 +280,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                             DefFeature("Years", int, 1),
                             DefFeature("Experiance", int, 1),
                         ),
+                        predict=DefFeature("Salary",float,1)
                     ),
                 )
                 with self.subTest(context="salaryctx"):
@@ -586,9 +568,9 @@ class TestModel(TestRoutesRunning, AsyncTestCase):
                 repo = Repo(key, data=repo_data)
                 self.assertEqual(int(repo.key), i)
                 self.assertEqual(
-                    repo.feature("by_ten"), repo.prediction().value / 10
+                    repo.feature("by_ten"), repo.prediction("Salary").value / 10
                 )
-                self.assertEqual(float(repo.key), repo.prediction().confidence)
+                self.assertEqual(float(repo.key), repo.prediction("Salary").confidence)
                 i += 1
             self.assertEqual(i, self.num_repos)
 

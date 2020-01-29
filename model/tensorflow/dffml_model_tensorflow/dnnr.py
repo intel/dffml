@@ -6,19 +6,21 @@ import os
 from typing import List, Dict, Any, AsyncIterator
 
 import numpy as np
-import tensorflow
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+import tensorflow as tf
 
 from dffml.repo import Repo
-from dffml.source.source import Sources
+from dffml.util.cli.arg import Arg
 from dffml.model.model import Model
 from dffml.accuracy import Accuracy
+from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
-from dffml.base import BaseConfig, config, field
-from dffml.util.cli.arg import Arg
-from dffml.feature.feature import Feature, Features
 from dffml.util.cli.parser import list_action
+from dffml.base import BaseConfig, config, field
+from dffml.feature.feature import Feature, Features
 
-from dffml_model_tensorflow.dnnc import TensorflowModelContext
+from .dnnc import TensorflowModelContext
 
 
 @config
@@ -63,9 +65,8 @@ class DNNRegressionModelContext(TensorflowModelContext):
         if self._model is not None:
             return self._model
         self.logger.debug("Loading model ")
-
-        _head = tensorflow.contrib.estimator.regression_head()
-        self._model = tensorflow.estimator.DNNEstimator(
+        _head = tf.estimator.RegressionHead()
+        self._model = tf.estimator.DNNEstimator(
             head=_head,
             feature_columns=list(self.feature_columns.values()),
             hidden_units=self.parent.config.hidden,
@@ -102,7 +103,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
-        input_fn = tensorflow.estimator.inputs.numpy_input_fn(
+        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
             batch_size=batch_size,
@@ -138,7 +139,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
-        input_fn = tensorflow.estimator.inputs.numpy_input_fn(
+        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
             batch_size=batch_size,

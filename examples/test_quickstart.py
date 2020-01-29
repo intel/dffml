@@ -29,8 +29,12 @@ class TestQuickstart(unittest.TestCase):
         self.assertIn("Accuracy ", lines[0])
         self.assertIn(".", lines[0])
         # Check that repos have predictions
-        row0 = list(filter(lambda line: "confidence) 0" in line, lines))[0]
-        row1 = list(filter(lambda line: "confidence) 1" in line, lines))[0]
+        rows = list(filter(lambda line: "value:" in line, lines))
+        rows = list(map(
+                lambda line:line.replace("value:","").replace("\t","").split(",")[0] ,
+                rows)
+                )
+        row0,row1 = rows
         # Ensure predictions are floats
         float(row0.split()[0])
         float(row1.split()[0])
