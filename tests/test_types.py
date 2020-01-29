@@ -79,9 +79,10 @@ class TestDefintion(AsyncTestCase):
             async with orchestrator(self.dataflow) as octx:
                 # this is not catching the error
                 # with self.assertRaises(InputValidationError):
-                #     await octx.run(test_inputs)
+                #     asyn for _ in  octx.run(test_inputs)
                 try:
-                    await octx.run(test_inputs)
+                    async for _ in  octx.run(test_inputs):
+                        pass
                     self.assertTrue(False)
                 except InputValidationError:
                     pass
