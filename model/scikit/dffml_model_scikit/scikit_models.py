@@ -223,22 +223,22 @@ for entry_point_name, name, cls, applicable_features_function in [
             ),
         )
     dffml_config_properties = {
-            **{
-                "directory": (
-                    str,
-                    field(
-                        "Directory where state should be saved",
-                        default=os.path.join(
-                            os.path.expanduser("~"),
-                            ".cache",
-                            "dffml",
-                            f"scikit-{entry_point_name}",
-                        ),
+        **{
+            "directory": (
+                str,
+                field(
+                    "Directory where state should be saved",
+                    default=os.path.join(
+                        os.path.expanduser("~"),
+                        ".cache",
+                        "dffml",
+                        f"scikit-{entry_point_name}",
                     ),
                 ),
+            ),
             "features": (Features, field("Features to train on")),
         },
-            **config_fields
+        **config_fields,
     }
 
     if estimator_type in unsupervised_estimators:
@@ -251,10 +251,8 @@ for entry_point_name, name, cls, applicable_features_function in [
         )
 
     dffml_config = make_config_numpy(
-        name + "ModelConfig",
-        cls,
-        properties=dffml_config_properties
-        )
+        name + "ModelConfig", cls, properties=dffml_config_properties
+    )
 
     dffml_cls_ctx = type(
         name + "ModelContext",

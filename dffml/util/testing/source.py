@@ -79,9 +79,12 @@ class SourceTest(abc.ABC):
                 with self.subTest(key=empty_key):
                     repo = await sourceContext.repo(empty_key)
                     self.assertEqual(
-                            [val["value"] for _,val in repo.data.prediction.items() ]
-                            ,["undetermined"]*(len(repo.data.prediction))
-                        )
+                        [
+                            val["value"]
+                            for _, val in repo.data.prediction.items()
+                        ],
+                        ["undetermined"] * (len(repo.data.prediction)),
+                    )
                 with self.subTest(both=[full_key, empty_key]):
                     repos = {
                         repo.key: repo async for repo in sourceContext.repos()

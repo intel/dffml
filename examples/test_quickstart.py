@@ -30,11 +30,15 @@ class TestQuickstart(unittest.TestCase):
         self.assertIn(".", lines[0])
         # Check that repos have predictions
         rows = list(filter(lambda line: "value:" in line, lines))
-        rows = list(map(
-                lambda line:line.replace("value:","").replace("\t","").split(",")[0] ,
-                rows)
-                )
-        row0,row1 = rows
+        rows = list(
+            map(
+                lambda line: line.replace("value:", "")
+                .replace("\t", "")
+                .split(",")[0],
+                rows,
+            )
+        )
+        row0, row1 = rows
         # Ensure predictions are floats
         float(row0.split()[0])
         float(row1.split()[0])

@@ -57,11 +57,12 @@ from .dataflow import (
 class ServerException(Exception):
     pass  # pragma: no cov
 
+
 @config
 class FakeModelConfig:
     directory: str
     features: Features
-    predict : Feature
+    predict: Feature
 
 
 class FakeModelContext(ModelContext):
@@ -81,8 +82,11 @@ class FakeModelContext(ModelContext):
 
     async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
         async for repo in repos:
-            repo.predicted("Salary",repo.feature("by_ten") * 10, float(repo.key))
+            repo.predicted(
+                "Salary", repo.feature("by_ten") * 10, float(repo.key)
+            )
             yield repo
+
 
 @entrypoint("fake")
 class FakeModel(Model):
@@ -265,7 +269,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                 "Years:int:1",
                 "Experiance:int:1",
                 "--model-predict",
-                "Salary:float:1"
+                "Salary:float:1",
             )
             async with self.post(
                 "/configure/model/fake/salary", json=config
@@ -280,7 +284,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                             DefFeature("Years", int, 1),
                             DefFeature("Experiance", int, 1),
                         ),
-                        predict=DefFeature("Salary",float,1)
+                        predict=DefFeature("Salary", float, 1),
                     ),
                 )
                 with self.subTest(context="salaryctx"):
@@ -568,9 +572,12 @@ class TestModel(TestRoutesRunning, AsyncTestCase):
                 repo = Repo(key, data=repo_data)
                 self.assertEqual(int(repo.key), i)
                 self.assertEqual(
-                    repo.feature("by_ten"), repo.prediction("Salary").value / 10
+                    repo.feature("by_ten"),
+                    repo.prediction("Salary").value / 10,
                 )
-                self.assertEqual(float(repo.key), repo.prediction("Salary").confidence)
+                self.assertEqual(
+                    float(repo.key), repo.prediction("Salary").confidence
+                )
                 i += 1
             self.assertEqual(i, self.num_repos)
 

@@ -37,17 +37,21 @@ class MySQLSourceContext(BaseSourceContext):
                     modified_key
                 ]
             elif "_value" in key:
-                target = key.replace("_value","")
+                target = key.replace("_value", "")
                 if repo.data.prediction:
-                    key_value_pairs[key] = repo.data.prediction[target]["value"]
+                    key_value_pairs[key] = repo.data.prediction[target][
+                        "value"
+                    ]
                 else:
-                    key_value_pairs[key]="undetermined"
+                    key_value_pairs[key] = "undetermined"
             elif "_confidence" in key:
-                target = key.replace("_confidence","")
+                target = key.replace("_confidence", "")
                 if repo.data.prediction:
-                    key_value_pairs[key] = repo.data.prediction[target]["confidence"]
+                    key_value_pairs[key] = repo.data.prediction[target][
+                        "confidence"
+                    ]
                 else:
-                    key_value_pairs[key]=1
+                    key_value_pairs[key] = 1
             else:
                 key_value_pairs[key] = repo.data.__dict__[key]
         db = self.conn
@@ -58,21 +62,17 @@ class MySQLSourceContext(BaseSourceContext):
         self.logger.debug("update: %s", await self.repo(repo.key))
 
     def convert_to_repo(self, result):
-        modified_repo = {
-            "key": "",
-            "data": {"features": {}, "prediction": {}},
-        }
+        modified_repo = {"key": "", "data": {"features": {}, "prediction": {}}}
         for key, value in result.items():
             if key.startswith("feature_"):
                 modified_repo["data"]["features"][
                     key.replace("feature_", "")
                 ] = value
             elif ("_value" in key) or ("_confidence" in key):
-                target = key.replace("_value","").replace("_confidence","")
+                target = key.replace("_value", "").replace("_confidence", "")
                 modified_repo["data"]["prediction"][target] = {
-                    "value" : result[target+"_value"],
-                    "confidence" : result[target+"_confidence"],
-
+                    "value": result[target + "_value"],
+                    "confidence": result[target + "_confidence"],
                 }
             else:
                 modified_repo[key] = value
@@ -97,20 +97,17 @@ class MySQLSourceContext(BaseSourceContext):
             predictions = {}
             for key, value in row.items():
                 if key.startswith("feature_"):
-                    features[key.replace("feature_", "")]=value
+                    features[key.replace("feature_", "")] = value
                 elif "_value" in key:
-                    target = key.replace("_value","")
-                    predictions[target]={
-                        "value":row[target+"_value"],
-                        "confidence":row[target+"_confidence"]
+                    target = key.replace("_value", "")
+                    predictions[target] = {
+                        "value": row[target + "_value"],
+                        "confidence": row[target + "_confidence"],
                     }
             repo.merge(
                 Repo(
                     row["key"],
-                    data={
-                        "features": features,
-                        "prediction": predictions,
-                    },
+                    data={"features": features, "prediction": predictions},
                 )
             )
         return repo

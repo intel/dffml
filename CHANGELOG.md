@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - TensorFlow based neural network classifier had the `classification` parameter
   in it's config changed to `predict`.
 - SciKit models use `make_config_numpy`.
+- Predictions in `repos` are now dictionary.
 ### Fixed
 - CONTRIBUTING.md has `-e` in the wrong place in the getting setup section.
 - Since moving to auto `args()` and `config()`, BaseConfigurable no longer

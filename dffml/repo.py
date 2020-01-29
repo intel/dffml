@@ -76,8 +76,8 @@ class RepoData(object):
             last_updated = self.last_updated_default
         if isinstance(last_updated, str):
             last_updated = datetime.strptime(last_updated, self.DATE_FORMAT)
-        for _key,_val in prediction.items():
-            prediction[_key]=RepoPrediction(**_val)
+        for _key, _val in prediction.items():
+            prediction[_key] = RepoPrediction(**_val)
         self.key = key
         self.features = features
         self.prediction = prediction

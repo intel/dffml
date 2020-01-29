@@ -212,9 +212,7 @@ class TestMerge(ReposTestCase):
             self.assertEqual(
                 contents,
                 "key,label\n"
-                + "\n".join(
-                    [f"{repo.key},unlabeled" for repo in self.repos]
-                )
+                + "\n".join([f"{repo.key},unlabeled" for repo in self.repos])
                 + "\n",
                 "Incorrect data in csv file",
             )
@@ -433,8 +431,7 @@ class TestPredict(ReposTestCase):
             "fake",
         )
         results = {
-            repo.key: repo.prediction("fake").confidence
-            for repo in results
+            repo.key: repo.prediction("fake").confidence for repo in results
         }
         for repo in self.repos:
             self.assertEqual(float(repo.key), results[repo.key])
@@ -459,8 +456,7 @@ class TestPredict(ReposTestCase):
         )
         self.assertEqual(len(results), len(subset))
         results = {
-            repo.key: repo.prediction("fake").confidence
-            for repo in results
+            repo.key: repo.prediction("fake").confidence for repo in results
         }
         for repo in subset:
             self.assertEqual(float(repo.key), results[repo.key])

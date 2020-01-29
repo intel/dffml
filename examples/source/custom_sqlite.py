@@ -41,6 +41,7 @@ class CustomSQLiteSourceContext(BaseSourceContext):
             )
         except KeyError:
             pass
+
     async def repos(self) -> AsyncIterator[Repo]:
         # NOTE This logic probably isn't what you want. Only for demo purposes.
         keys = await self.parent.db.execute("SELECT key FROM features")
@@ -65,7 +66,9 @@ class CustomSQLiteSourceContext(BaseSourceContext):
         )
         prediction = await prediction.fetchone()
         if prediction is not None:
-            repo.predicted("target_name",prediction["value"], prediction["confidence"])
+            repo.predicted(
+                "target_name", prediction["value"], prediction["confidence"]
+            )
         return repo
 
     async def __aexit__(self, exc_type, exc_value, traceback):
