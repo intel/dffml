@@ -123,7 +123,10 @@ class ScikitContext(ModelContext):
                     self.clf.predict(predict),
                 )
             )
-            repo.predicted(self.clf.predict(predict)[0], self.confidence)
+            target = self.parent.config.predict.NAME
+            repo.predicted(
+                target, self.clf.predict(predict)[0], self.confidence
+            )
             yield repo
 
 
@@ -136,6 +139,7 @@ class ScikitContextUnsprvised(ScikitContext):
             del config["directory"]
             del config["features"]
             del config["tcluster"]
+            del config["predict"]
             self.clf = self.parent.SCIKIT_MODEL(**config)
         return self
 
@@ -226,7 +230,8 @@ class ScikitContextUnsprvised(ScikitContext):
             self.logger.debug(
                 "Predicted cluster for {}: {}".format(predict, prediction)
             )
-            repo.predicted(prediction[0], self.confidence)
+            target = self.parent.config.predict.NAME
+            repo.predicted(target, prediction[0], self.confidence)
             yield repo
 
 

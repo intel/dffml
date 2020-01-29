@@ -27,8 +27,8 @@ class CustomSQLiteSourceContext(BaseSourceContext):
             [repo.key] + list(feature_data.values()),
         )
         # Store prediction
-        prediction = repo.prediction()
-        if prediction:
+        try:
+            prediction = repo.prediction("target_name")
             prediction_cols = self.parent.PREDICTION_COLS
             prediction_data = OrderedDict.fromkeys(prediction_cols)
             prediction_data.update(prediction.dict())
@@ -39,6 +39,8 @@ class CustomSQLiteSourceContext(BaseSourceContext):
                 "VALUES(?, " + ", ".join("?" * len(prediction_cols)) + ")",
                 [repo.key] + list(prediction_data.values()),
             )
+        except KeyError:
+            pass
 
     async def repos(self) -> AsyncIterator[Repo]:
         # NOTE This logic probably isn't what you want. Only for demo purposes.
@@ -64,7 +66,9 @@ class CustomSQLiteSourceContext(BaseSourceContext):
         )
         prediction = await prediction.fetchone()
         if prediction is not None:
-            repo.predicted(prediction["value"], prediction["confidence"])
+            repo.predicted(
+                "target_name", prediction["value"], prediction["confidence"]
+            )
         return repo
 
     async def __aexit__(self, exc_type, exc_value, traceback):
