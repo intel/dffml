@@ -23,7 +23,7 @@ class MySQLDatabaseContext(SQLDatabaseContext):
     BIND_DECLARATION: str = "%s"
 
     async def create_table(
-        self, table_name: str, cols: Dict[str, str],
+        self, table_name: str, cols: Dict[str, str]
     ) -> None:
         query = self.create_table_query(table_name, cols)
         self.logger.debug(query)

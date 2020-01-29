@@ -13,5 +13,6 @@ class DefinitionNotInContext(Exception):
 class NotOpImp(Exception):
     pass
 
+
 class InputValidationError(Exception):
     pass

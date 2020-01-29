@@ -224,7 +224,7 @@ class ScikitContextUnsprvised(ScikitContext):
             predict = np.array(df)
             prediction = predictor(predict)
             self.logger.debug(
-                "Predicted cluster for {}: {}".format(predict, prediction,)
+                "Predicted cluster for {}: {}".format(predict, prediction)
             )
             repo.predicted(prediction[0], self.confidence)
             yield repo

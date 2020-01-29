@@ -39,7 +39,7 @@ class Definition(NamedTuple):
     spec: NamedTuple = None
     # validate property will be a callable (function or lambda) which returns
     # the sanitized version of the value
-    validate : Callable[[Any],Any] = None
+    validate: Callable[[Any], Any] = None
 
     def __repr__(self):
         return self.name

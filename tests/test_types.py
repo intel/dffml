@@ -6,13 +6,14 @@ from dffml.df.memory import MemoryOrchestrator
 from dffml.operation.mapping import MAPPING
 from dffml.df.exceptions import InputValidationError
 
+
 def pie_validation(x):
-    if x==3.14:
+    if x == 3.14:
         return x
     raise InputValidationError()
 
-Pie = Definition(name="pie", primitive="float",
-                validate=pie_validation)
+
+Pie = Definition(name="pie", primitive="float", validate=pie_validation)
 Radius = Definition(name="radius", primitive="float")
 Area = Definition(name="area", primitive="float")
 ShapeName = Definition(
@@ -67,22 +68,15 @@ class TestDefintion(AsyncTestCase):
                     self.assertEqual(results["area"], 3.14)
                     self.assertEqual(results["radius"], 1)
 
-    async def test_validation_error(self):
-        test_inputs = {
-            "area": [
-                Input(value="unitcircle", definition=ShapeName),
-                Input(value=1, definition=Radius),
-                Input(value=5, definition=Pie),
-            ]
-        }
-        async with MemoryOrchestrator.withconfig({}) as orchestrator:
-            async with orchestrator(self.dataflow) as octx:
-                # this is not catching the error
-                # with self.assertRaises(InputValidationError):
-                #     asyn for _ in  octx.run(test_inputs)
-                try:
-                    async for _ in  octx.run(test_inputs):
-                        pass
-                    self.assertTrue(False)
-                except InputValidationError:
-                    pass
+    async def test_0_validation_error(self):
+        with self.assertRaises(InputValidationError):
+            test_inputs = {
+                "area": [
+                    Input(value="unitcircle", definition=ShapeName),
+                    Input(value=1, definition=Radius),
+                    Input(
+                        value=4, definition=Pie
+                    ),  # this should raise validation eror
+                ]
+            }
+            pass

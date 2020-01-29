@@ -197,7 +197,7 @@ def _fromdict(cls, **kwargs):
                             "config": {
                                 key: value
                                 if is_config_dict(value)
-                                else {"arg": value, "config": {},}
+                                else {"arg": value, "config": {}}
                                 for key, value in config.items()
                             },
                         }
