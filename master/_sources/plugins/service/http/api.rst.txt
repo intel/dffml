@@ -46,6 +46,42 @@ will get an error. The HTTP status code will be 400, Bad Request.
 
     {"error": "Missing 'file' field"}
 
+Files
+~~~~~
+
+- ``/service/files``
+
+List files in the ``-upload-dir`` specified when starting the server. The file
+listing will include the size of the file in bytes.
+
+.. code-block:: json
+
+    [
+      {
+        "filename": ".gitignore",
+        "size": 199
+      },
+      {
+        "filename": ".dockerignore",
+        "size": 18
+      },
+      {
+        "filename": "setup.py",
+        "size": 2337
+      },
+      {
+        "filename": ".coveragerc",
+        "size": 170
+      }
+    ]
+
+If no ``-upload-dir`` was given on the command line, an error will be returned.
+The HTTP status code will be 501, Not Implemented.
+
+.. code-block:: json
+
+    {"error": "File listing not allowed"}
+
 .. _list:
 
 List

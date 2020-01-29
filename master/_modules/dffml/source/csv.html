@@ -168,6 +168,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">csv</span>
 <span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
@@ -276,7 +277,18 @@
             <span class="n">repo_data</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="c1"># Parse headers we as the CSV source added</span>
             <span class="n">csv_meta</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">row_keys</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="c1"># getting all keys starting with &quot;prediction&quot;,&quot;confidence&quot;</span>
             <span class="k">for</span> <span class="n">header</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">CSV_HEADERS</span><span class="p">:</span>
+                <span class="n">row_keys</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                    <span class="nb">list</span><span class="p">(</span>
+                        <span class="nb">filter</span><span class="p">(</span>
+                            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">header</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span><span class="p">),</span> <span class="n">row</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="c1"># pop all prediction data from row and save in csv_meta</span>
+            <span class="k">for</span> <span class="n">header</span> <span class="ow">in</span> <span class="n">row_keys</span><span class="p">:</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
                     <span class="n">csv_meta</span><span class="p">[</span><span class="n">header</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">header</span><span class="p">]</span>
@@ -292,15 +304,23 @@
                         <span class="n">features</span><span class="p">[</span><span class="n">_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_value</span>
             <span class="k">if</span> <span class="n">features</span><span class="p">:</span>
                 <span class="n">repo_data</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span>
-            <span class="k">if</span> <span class="s2">&quot;prediction&quot;</span> <span class="ow">in</span> <span class="n">csv_meta</span> <span class="ow">and</span> <span class="s2">&quot;confidence&quot;</span> <span class="ow">in</span> <span class="n">csv_meta</span><span class="p">:</span>
-                <span class="n">repo_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
-                            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">csv_meta</span><span class="p">[</span><span class="s2">&quot;prediction&quot;</span><span class="p">]),</span>
-                            <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">csv_meta</span><span class="p">[</span><span class="s2">&quot;confidence&quot;</span><span class="p">]),</span>
-                        <span class="p">}</span>
-                    <span class="p">}</span>
-                <span class="p">)</span>
+
+            <span class="c1"># Getting all prediction target names</span>
+            <span class="n">target_keys</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;prediction_&quot;</span><span class="p">),</span> <span class="n">csv_meta</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="n">target_keys</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;prediction_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">target_keys</span>
+            <span class="p">)</span>
+
+            <span class="n">predictions</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">target_name</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">csv_meta</span><span class="p">[</span><span class="s2">&quot;prediction_&quot;</span> <span class="o">+</span> <span class="n">target_name</span><span class="p">]),</span>
+                    <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">csv_meta</span><span class="p">[</span><span class="s2">&quot;confidence_&quot;</span> <span class="o">+</span> <span class="n">target_name</span><span class="p">]),</span>
+                <span class="p">}</span>
+                <span class="k">for</span> <span class="n">target_name</span> <span class="ow">in</span> <span class="n">target_keys</span>
+            <span class="p">}</span>
+            <span class="n">repo_data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">predictions</span><span class="p">})</span>
             <span class="c1"># If there was no data in the row, skip it</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">repo_data</span> <span class="ow">and</span> <span class="n">key</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="k">continue</span>
@@ -334,11 +354,20 @@
             <span class="n">fieldnames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">labelcol</span><span class="p">)</span>
             <span class="c1"># Get all the feature names</span>
             <span class="n">feature_fieldnames</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="n">prediction_fieldnames</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">repos</span> <span class="ow">in</span> <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">repos</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
                     <span class="n">feature_fieldnames</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                    <span class="n">prediction_fieldnames</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">prediction</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
             <span class="n">fieldnames</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">feature_fieldnames</span><span class="p">)</span>
-            <span class="n">fieldnames</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CSV_HEADERS</span>
+            <span class="n">fieldnames</span> <span class="o">+=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span>
+                <span class="o">*</span><span class="nb">list</span><span class="p">(</span>
+                    <span class="nb">map</span><span class="p">(</span>
+                        <span class="k">lambda</span> <span class="n">key</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;prediction_&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">,</span> <span class="s2">&quot;confidence_&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">),</span>
+                        <span class="nb">list</span><span class="p">(</span><span class="n">prediction_fieldnames</span><span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;fieldnames: </span><span class="si">{fieldnames}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="c1"># Write out the file</span>
             <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictWriter</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">fieldnames</span><span class="o">=</span><span class="n">fieldnames</span><span class="p">)</span>
@@ -357,10 +386,9 @@
                         <span class="n">row</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
                     <span class="c1"># Write the prediction</span>
                     <span class="k">if</span> <span class="s2">&quot;prediction&quot;</span> <span class="ow">in</span> <span class="n">repo_data</span><span class="p">:</span>
-                        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;prediction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">repo_data</span><span class="p">[</span><span class="s2">&quot;prediction&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
-                        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;confidence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">repo_data</span><span class="p">[</span><span class="s2">&quot;prediction&quot;</span><span class="p">][</span>
-                            <span class="s2">&quot;confidence&quot;</span>
-                        <span class="p">]</span>
+                        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">repo_data</span><span class="p">[</span><span class="s2">&quot;prediction&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;prediction_&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+                            <span class="n">row</span><span class="p">[</span><span class="s2">&quot;confidence_&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;confidence&quot;</span><span class="p">]</span>
                     <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPEN_CSV_FILES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.config.filename}</span><span class="s2"> written&quot;</span><span class="p">)</span>
