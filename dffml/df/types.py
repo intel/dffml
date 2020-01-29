@@ -274,6 +274,8 @@ class Input(object):
         # instance name this Input is intended for.
         if parents is None:
             parents = []
+        if isinstance(value, dict) and definition.spec is not None:
+            value = definition.spec(**value)
         if definition.validate is not None:
             value = definition.validate(value)
         self.value = value
