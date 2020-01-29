@@ -222,10 +222,7 @@ for entry_point_name, name, cls, applicable_features_function in [
                 default=None,
             ),
         )
-    dffml_config = make_config_numpy(
-        name + "ModelConfig",
-        cls,
-        properties={
+    dffml_config_properties = {
             **{
                 "directory": (
                     str,
@@ -239,10 +236,9 @@ for entry_point_name, name, cls, applicable_features_function in [
                         ),
                     ),
                 ),
-            ),
             "features": (Features, field("Features to train on")),
         },
-        **config_fields,
+            **config_fields
     }
 
     if estimator_type in unsupervised_estimators:
@@ -254,9 +250,11 @@ for entry_point_name, name, cls, applicable_features_function in [
             ),
         )
 
-    dffml_config = mkscikit_config_cls(
-        name + "ModelConfig", cls, properties=dffml_config_properties
-    )
+    dffml_config = make_config_numpy(
+        name + "ModelConfig",
+        cls,
+        properties=dffml_config_properties
+        )
 
     dffml_cls_ctx = type(
         name + "ModelContext",
