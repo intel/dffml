@@ -51,10 +51,7 @@ class MySQLSourceContext(BaseSourceContext):
         self.logger.debug("update: %s", await self.repo(repo.key))
 
     def convert_to_repo(self, result):
-        modified_repo = {
-            "key": "",
-            "data": {"features": {}, "prediction": {}},
-        }
+        modified_repo = {"key": "", "data": {"features": {}, "prediction": {}}}
         for key, value in result.items():
             if key.startswith("feature_"):
                 modified_repo["data"]["features"][

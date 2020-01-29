@@ -2,7 +2,7 @@ from typing import Optional, Dict, Any, Tuple
 
 
 def double_ret(
-    super_cool_arg, *, other_very_cool_arg: Optional[Dict[str, Any]] = None,
+    super_cool_arg, *, other_very_cool_arg: Optional[Dict[str, Any]] = None
 ) -> Tuple[str, Tuple]:
     """
     This is the short description.
