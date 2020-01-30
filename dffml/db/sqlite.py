@@ -1,10 +1,9 @@
-import abc
 import asyncio
 import sqlite3
-from typing import Dict, Any, List, Union, Tuple, Optional, AsyncIterator
+from typing import Dict, Any, List, Optional, AsyncIterator
 
 
-from .base import BaseDatabase, Condition, Conditions
+from .base import BaseDatabase, Conditions
 from .sql import SQLDatabaseContext
 from ..base import config
 from ..util.entrypoint import entrypoint
@@ -17,13 +16,13 @@ class SqliteDatabaseConfig:
 
 class SqliteDatabaseContext(SQLDatabaseContext):
     async def create_table(
-        self, table_name: str, cols: Dict[str, str],
+        self, table_name: str, cols: Dict[str, str]
     ) -> None:
         query = self.create_table_query(table_name, cols)
         self.logger.debug(query)
         self.parent.cursor.execute(query)
 
-    async def insert(self, table_name: str, data: Dict[str, Any],) -> None:
+    async def insert(self, table_name: str, data: Dict[str, Any]) -> None:
         query, query_values = self.insert_query(table_name, data)
         async with self.parent.lock:
             with self.parent.db:

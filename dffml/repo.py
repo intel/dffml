@@ -53,32 +53,34 @@ class RepoPrediction(dict):
 class RepoData(object):
 
     DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
-    EXPORTED = ["src_url", "features", "prediction"]
+    EXPORTED = ["key", "features", "prediction"]
 
     def __init__(
         self,
         *,
-        src_url: Optional[str] = None,
+        key: Optional[str] = None,
         features: Optional[Dict[str, Any]] = None,
-        prediction: Optional[RepoPrediction] = None,
+        prediction: Optional[Dict[str, Any]] = None,
         last_updated: Optional[datetime] = None,
     ) -> None:
         # If the repo is not evaluated or predicted then don't report out a new
         # value for last_updated
         self.last_updated_default = datetime.now()
-        if src_url is None:
-            src_url = ""
+        if key is None:
+            key = ""
         if features is None:
             features = {}
         if prediction is None:
-            prediction = RepoPrediction()
+            prediction = {}
         if last_updated is None:
             last_updated = self.last_updated_default
         if isinstance(last_updated, str):
             last_updated = datetime.strptime(last_updated, self.DATE_FORMAT)
-        self.src_url = src_url
+        for _key, _val in prediction.items():
+            prediction[_key] = RepoPrediction(**_val)
+        self.key = key
         self.features = features
-        self.prediction = RepoPrediction(**prediction)
+        self.prediction = prediction
         self.last_updated = last_updated
 
     def dict(self):
@@ -110,7 +112,7 @@ class Repo(object):
 
     def __init__(
         self,
-        src_url: str,
+        key: str,
         *,
         data: Optional[Dict[str, Any]] = None,
         extra: Optional[Dict[str, Any]] = None,
@@ -119,7 +121,7 @@ class Repo(object):
             data = {}
         if extra is None:
             extra = {}
-        data["src_url"] = src_url
+        data["key"] = key
         if "extra" in data:
             # Prefer extra from init arguments to extra stored in data
             data["extra"].update(extra)
@@ -141,26 +143,32 @@ class Repo(object):
         return str(self.dict())
 
     def __str__(self):
-        if not self.data.prediction:
-            confidence, value = (0.0, "Undetermined")
-        else:
-            confidence, value = (
-                self.data.prediction.confidence,
-                self.data.prediction.value,
-            )
-        header = "%-11s (%2.1f%% confidence) %s" % (
-            value,
-            100.0 * confidence,
-            self.src_url,
-        )
+        header = self.key
         if len(self.extra.keys()):
             header += " " + str(self.extra)
+
         return "\n".join(
             [header]
             + [
                 ("%-30s%s" % (feature, str(results)))
                 for feature, results in self.features().items()
             ]
+            + ["Predictions"]
+            + (
+                [
+                    (
+                        "%-30s\n\tvalue:%s, confidence:%s"
+                        % (
+                            pred,
+                            str(conf_val["value"]),
+                            str(conf_val["confidence"]),
+                        )
+                    )
+                    for pred, conf_val in self.data.prediction.items()
+                ]
+                if self.data.prediction
+                else ["Undetermined"]
+            )
         ).rstrip()
 
     def merge(self, repo: "Repo"):
@@ -170,8 +178,8 @@ class Repo(object):
         self.extra.update(repo.extra)  # type: ignore
 
     @property
-    def src_url(self) -> str:
-        return self.data.src_url
+    def key(self) -> str:
+        return self.data.key
 
     def evaluated(self, results: Dict[str, Any], overwrite=False):
         """
@@ -182,7 +190,7 @@ class Repo(object):
         else:
             self.data.features.update(results)
         self.data.last_updated = datetime.now()
-        LOGGER.info("Evaluated %s %r", self.data.src_url, self.data.features)
+        LOGGER.info("Evaluated %s %r", self.data.key, self.data.features)
 
     def features(self, subset: List[str] = []) -> Dict[str, Any]:
         """
@@ -206,17 +214,28 @@ class Repo(object):
             raise NoSuchFeature(name)
         return self.data.features[name]
 
-    def predicted(self, value: Any, confidence: float):
+    def predicted(self, target: str, value: Any, confidence: float):
         """
         Set the prediction for this repo
         """
-        self.data.prediction = RepoPrediction(
+        self.data.prediction[target] = RepoPrediction(
             value=value, confidence=float(confidence)
         )
         self.data.last_updated = datetime.now()
 
-    def prediction(self) -> RepoPrediction:
+    def prediction(self, target: str) -> RepoPrediction:
         """
         Get the prediction for this repo
         """
-        return self.data.prediction
+        return self.data.prediction[target]
+
+    def predictions(self, subset: List[str] = []) -> Dict[str, Any]:
+        if not subset:
+            return self.data.prediction
+        for name in subset:
+            if (
+                not name in self.data.prediction
+                or self.data.prediction[name] is None
+            ):
+                return {}
+        return {name: self.data.prediction[name] for name in subset}

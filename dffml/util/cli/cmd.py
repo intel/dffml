@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
-import ast
 import sys
 import json
 import enum
@@ -8,7 +7,7 @@ import logging
 import inspect
 import asyncio
 import argparse
-from typing import Tuple, Dict, Any
+from typing import Dict, Any
 
 from ...repo import Repo
 from ...feature import Feature
@@ -161,7 +160,7 @@ class CMD(object):
         if getattr(args, "cmd", None) is None:
             parser.print_help()
             return DisplayHelp
-        if getattr(args.cmd, "run", None) is None:
+        if not inspect.isfunction(getattr(args.cmd, "run", None)):
             args.parser.print_help()
             return DisplayHelp
         cmd = args.cmd(**cls.sanitize_args(vars(args)))

@@ -10,7 +10,9 @@ import inspect
 from typing import List, Dict, Any, AsyncIterator, Tuple, Optional, Type
 
 import numpy as np
-import tensorflow
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+import tensorflow as tf
 
 from dffml.repo import Repo
 from dffml.feature import Feature, Features
@@ -65,7 +67,7 @@ class TensorflowModelContext(ModelContext):
             or dtype is float
             or issubclass(dtype, float)
         ):
-            return tensorflow.feature_column.numeric_column(
+            return tf.feature_column.numeric_column(
                 feature.NAME, shape=feature.length()
             )
         self.logger.warning(
@@ -112,7 +114,7 @@ class TensorflowModelContext(ModelContext):
         self.logger.info("------ Repo Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("-----------------------")
-        input_fn = tensorflow.estimator.inputs.numpy_input_fn(
+        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols, shuffle=False, num_epochs=1, **kwargs
         )
         return input_fn, ret_repos
@@ -176,7 +178,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
 
     def _mkcids(self, classifications):
         """
-        Create an index, possible classification mapping and sort the list of
+        Create an index, possible predict mapping and sort the list of
         classifications first.
         """
         cids = dict(
@@ -207,7 +209,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
             len(self.classifications),
             self.classifications,
         )
-        self._model = tensorflow.estimator.DNNClassifier(
+        self._model = tf.estimator.DNNClassifier(
             feature_columns=list(self.feature_columns.values()),
             hidden_units=self.parent.config.hidden,
             n_classes=len(self.parent.config.classifications),
@@ -253,7 +255,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
-        input_fn = tensorflow.estimator.inputs.numpy_input_fn(
+        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
             batch_size=batch_size,
@@ -298,7 +300,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
-        input_fn = tensorflow.estimator.inputs.numpy_input_fn(
+        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
             batch_size=batch_size,
@@ -331,10 +333,11 @@ class DNNClassifierModelContext(TensorflowModelContext):
         input_fn, predict = await self.predict_input_fn(repos)
         # Makes predictions on classifications
         predictions = self.model.predict(input_fn=input_fn)
+        target = self.parent.config.predict.NAME
         for repo, pred_dict in zip(predict, predictions):
             class_id = pred_dict["class_ids"][0]
             probability = pred_dict["probabilities"][class_id]
-            repo.predicted(self.cids[class_id], probability)
+            repo.predicted(target, self.cids[class_id], probability)
             yield repo
 
 
@@ -408,10 +411,13 @@ class DNNClassifierModel(Model):
                 },
                 "last_updated": "2019-07-31T02:00:12Z",
                 "prediction": {
-                    "confidence": 0.9999997615814209,
-                    "value": 1
+                    "classification":
+                        {
+                            "confidence": 0.9999997615814209,
+                            "value": 1
+                        }
                 },
-                "src_url": "0"
+                "key": "0"
             },
             {
                 "extra": {},
@@ -424,10 +430,13 @@ class DNNClassifierModel(Model):
                 },
                 "last_updated": "2019-07-31T02:00:12Z",
                 "prediction": {
-                    "confidence": 0.9999984502792358,
-                    "value": 2
+                    "classification":
+                    {
+                        "confidence": 0.9999984502792358,
+                        "value": 2
+                    }
                 },
-                "src_url": "1"
+                "key": "1"
             },
 
     """

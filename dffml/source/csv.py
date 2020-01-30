@@ -5,6 +5,7 @@ Loads repos from a csv file, using columns as features
 """
 import csv
 import ast
+import itertools
 import asyncio
 from typing import NamedTuple, Dict, List
 from dataclasses import dataclass
@@ -38,7 +39,7 @@ class OpenCSVFile:
             return bool(self.active < 1)
 
 
-CSV_SOURCE_CONFIG_DEFAULT_KEY = "src_url"
+CSV_SOURCE_CONFIG_DEFAULT_KEY = "key"
 CSV_SOURCE_CONFIG_DEFAULT_LABEL = "unlabeled"
 CSV_SOURCE_CONFIG_DEFAULT_LABEL_COLUMN = "label"
 
@@ -94,7 +95,7 @@ class CSVSource(FileSource, MemorySource):
             open_file.write_back_label = True
         # Store all the repos by their label in write_out
         open_file.write_out = {}
-        # If there is no key track row index to be used as src_url by label
+        # If there is no key track row index to be used as key by label
         index = {}
         for row in dict_reader:
             # Grab label from row
@@ -102,8 +103,8 @@ class CSVSource(FileSource, MemorySource):
             if self.config.labelcol in row:
                 del row[self.config.labelcol]
             index.setdefault(label, 0)
-            # Grab src_url from row
-            src_url = row.get(self.config.key, str(index[label]))
+            # Grab key from row
+            key = row.get(self.config.key, str(index[label]))
             if self.config.key in row:
                 del row[self.config.key]
             else:
@@ -113,7 +114,18 @@ class CSVSource(FileSource, MemorySource):
             repo_data = {}
             # Parse headers we as the CSV source added
             csv_meta = {}
+            row_keys = []
+            # getting all keys starting with "prediction","confidence"
             for header in self.CSV_HEADERS:
+                row_keys.extend(
+                    list(
+                        filter(
+                            lambda x: x.startswith(header + "_"), row.keys()
+                        )
+                    )
+                )
+            # pop all prediction data from row and save in csv_meta
+            for header in row_keys:
                 value = row.get(header, None)
                 if value is not None and value != "":
                     csv_meta[header] = row[header]
@@ -121,29 +133,37 @@ class CSVSource(FileSource, MemorySource):
                     del row[header]
             # Set the features
             features = {}
-            for key, value in row.items():
-                if value != "":
+            for _key, _value in row.items():
+                if _value != "":
                     try:
-                        features[key] = ast.literal_eval(value)
+                        features[_key] = ast.literal_eval(_value)
                     except (SyntaxError, ValueError):
-                        features[key] = value
+                        features[_key] = _value
             if features:
                 repo_data["features"] = features
-            if "prediction" in csv_meta and "confidence" in csv_meta:
-                repo_data.update(
-                    {
-                        "prediction": {
-                            "value": str(csv_meta["prediction"]),
-                            "confidence": float(csv_meta["confidence"]),
-                        }
-                    }
-                )
+
+            # Getting all prediction target names
+            target_keys = filter(
+                lambda x: x.startswith("prediction_"), csv_meta.keys()
+            )
+            target_keys = map(
+                lambda x: x.replace("prediction_", ""), target_keys
+            )
+
+            predictions = {
+                target_name: {
+                    "value": str(csv_meta["prediction_" + target_name]),
+                    "confidence": float(csv_meta["confidence_" + target_name]),
+                }
+                for target_name in target_keys
+            }
+            repo_data.update({"prediction": predictions})
             # If there was no data in the row, skip it
-            if not repo_data and src_url == str(index[label] - 1):
+            if not repo_data and key == str(index[label] - 1):
                 continue
             # Add the repo to our internal memory representation
             open_file.write_out.setdefault(label, {})
-            open_file.write_out[label][src_url] = Repo(src_url, data=repo_data)
+            open_file.write_out[label][key] = Repo(key, data=repo_data)
 
     async def load_fd(self, fd):
         """
@@ -171,11 +191,20 @@ class CSVSource(FileSource, MemorySource):
             fieldnames.append(self.config.labelcol)
             # Get all the feature names
             feature_fieldnames = set()
+            prediction_fieldnames = set()
             for label, repos in open_file.write_out.items():
                 for repo in repos.values():
                     feature_fieldnames |= set(repo.data.features.keys())
+                    prediction_fieldnames |= set(repo.data.prediction.keys())
             fieldnames += list(feature_fieldnames)
-            fieldnames += self.CSV_HEADERS
+            fieldnames += itertools.chain(
+                *list(
+                    map(
+                        lambda key: ("prediction_" + key, "confidence_" + key),
+                        list(prediction_fieldnames),
+                    )
+                )
+            )
             self.logger.debug(f"fieldnames: {fieldnames}")
             # Write out the file
             writer = csv.DictWriter(fd, fieldnames=fieldnames)
@@ -188,16 +217,15 @@ class CSVSource(FileSource, MemorySource):
                     row[self.config.labelcol] = label
                     # Write the key if it existed
                     if open_file.write_back_key:
-                        row[self.config.key] = repo.src_url
+                        row[self.config.key] = repo.key
                     # Write the features
                     for key, value in repo_data.get("features", {}).items():
                         row[key] = value
                     # Write the prediction
                     if "prediction" in repo_data:
-                        row["prediction"] = repo_data["prediction"]["value"]
-                        row["confidence"] = repo_data["prediction"][
-                            "confidence"
-                        ]
+                        for key, value in repo_data["prediction"].items():
+                            row["prediction_" + key] = value["value"]
+                            row["confidence_" + key] = value["confidence"]
                     writer.writerow(row)
             del self.OPEN_CSV_FILES[self.config.filename]
             self.logger.debug(f"{self.config.filename} written")

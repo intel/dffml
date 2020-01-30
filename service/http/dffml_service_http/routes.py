@@ -301,6 +301,24 @@ class Routes(BaseMultiCommContext):
 
         return web.json_response(OK)
 
+    async def service_files(self, request):
+        if self.upload_dir is None:
+            return web.json_response(
+                {"error": "File listing not allowed"},
+                status=HTTPStatus.NOT_IMPLEMENTED,
+                headers={"Cache-Control": "no-cache"},
+            )
+
+        files: List[Dict[str, Any]] = []
+
+        for filepath in pathlib.Path(self.upload_dir).rglob("**/*.*"):
+            filename = str(filepath).replace(self.upload_dir + "/", "")
+            files.append(
+                {"filename": filename, "size": filepath.stat().st_size}
+            )
+
+        return web.json_response(files)
+
     async def list_sources(self, request):
         return web.json_response(
             {
@@ -514,7 +532,7 @@ class Routes(BaseMultiCommContext):
         return web.json_response(
             {
                 "iterkey": iterkey,
-                "repos": {repo.src_url: repo.export() for repo in repos},
+                "repos": {repo.key: repo.export() for repo in repos},
             }
         )
 
@@ -527,7 +545,7 @@ class Routes(BaseMultiCommContext):
         return web.json_response(
             {
                 "iterkey": iterkey,
-                "repos": {repo.src_url: repo.export() for repo in repos},
+                "repos": {repo.key: repo.export() for repo in repos},
             }
         )
 
@@ -578,8 +596,8 @@ class Routes(BaseMultiCommContext):
             )
         # Get the repos
         repos: Dict[str, Repo] = {
-            src_url: Repo(src_url, data=repo_data)
-            for src_url, repo_data in (await request.json()).items()
+            key: Repo(key, data=repo_data)
+            for key, repo_data in (await request.json()).items()
         }
         # Create an async generator to feed repos
         async def repo_gen():
@@ -591,7 +609,7 @@ class Routes(BaseMultiCommContext):
             {
                 "iterkey": None,
                 "repos": {
-                    repo.src_url: repo.export()
+                    repo.key: repo.export()
                     async for repo in mctx.predict(repo_gen())
                 },
             }
@@ -632,6 +650,7 @@ class Routes(BaseMultiCommContext):
             else [
                 # HTTP Service specific APIs
                 ("POST", "/service/upload/{filepath:.+}", self.service_upload),
+                ("GET", "/service/files", self.service_files),
                 # DFFML APIs
                 ("GET", "/list/sources", self.list_sources),
                 (

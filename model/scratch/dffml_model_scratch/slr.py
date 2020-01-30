@@ -129,9 +129,11 @@ class SLRContext(ModelContext):
     ) -> AsyncIterator[Tuple[Repo, Any, float]]:
         if self.regression_line is None:
             raise ModelNotTrained("Train model before prediction.")
+        target = self.parent.config.predict.NAME
         async for repo in repos:
             feature_data = repo.features(self.features)
             repo.predicted(
+                target,
                 await self.predict_input(feature_data[self.features[0]]),
                 self.regression_line[2],
             )
@@ -187,10 +189,12 @@ class SLR(Model):
                 },
                 "last_updated": "2019-07-19T09:46:45Z",
                 "prediction": {
-                    "confidence": 1.0,
-                    "value": 90.0
+                    "Salary": {
+                        "confidence": 1.0,
+                        "value": 90.0
+                    }
                 },
-                "src_url": "0"
+                "key": "0"
             }
         ]
 

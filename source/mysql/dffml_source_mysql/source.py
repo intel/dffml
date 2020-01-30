@@ -36,11 +36,22 @@ class MySQLSourceContext(BaseSourceContext):
                 key_value_pairs[modified_key] = repo.data.features[
                     modified_key
                 ]
-            elif key.startswith("prediction_"):
-                modified_key = key.replace("prediction_", "")
-                key_value_pairs[modified_key] = repo.data.prediction[
-                    modified_key
-                ]
+            elif "_value" in key:
+                target = key.replace("_value", "")
+                if repo.data.prediction:
+                    key_value_pairs[key] = repo.data.prediction[target][
+                        "value"
+                    ]
+                else:
+                    key_value_pairs[key] = "undetermined"
+            elif "_confidence" in key:
+                target = key.replace("_confidence", "")
+                if repo.data.prediction:
+                    key_value_pairs[key] = repo.data.prediction[target][
+                        "confidence"
+                    ]
+                else:
+                    key_value_pairs[key] = 1
             else:
                 key_value_pairs[key] = repo.data.__dict__[key]
         db = self.conn
@@ -48,25 +59,24 @@ class MySQLSourceContext(BaseSourceContext):
             update_query,
             (list(key_value_pairs.values()) + list(key_value_pairs.values())),
         )
-        self.logger.debug("update: %s", await self.repo(repo.src_url))
+        self.logger.debug("update: %s", await self.repo(repo.key))
 
     def convert_to_repo(self, result):
-        modified_repo = {
-            "src_url": "",
-            "data": {"features": {}, "prediction": {}},
-        }
+        modified_repo = {"key": "", "data": {"features": {}, "prediction": {}}}
         for key, value in result.items():
             if key.startswith("feature_"):
                 modified_repo["data"]["features"][
                     key.replace("feature_", "")
                 ] = value
-            elif key.startswith("prediction_"):
-                modified_repo["data"]["prediction"][
-                    key.replace("prediction_", "")
-                ] = value
+            elif ("_value" in key) or ("_confidence" in key):
+                target = key.replace("_value", "").replace("_confidence", "")
+                modified_repo["data"]["prediction"][target] = {
+                    "value": result[target + "_value"],
+                    "confidence": result[target + "_confidence"],
+                }
             else:
                 modified_repo[key] = value
-        return Repo(modified_repo["src_url"], data=modified_repo["data"])
+        return Repo(modified_repo["key"], data=modified_repo["data"])
 
     async def repos(self) -> AsyncIterator[Repo]:
         query = self.parent.config.repos_query
@@ -75,28 +85,29 @@ class MySQLSourceContext(BaseSourceContext):
         for repo in result:
             yield self.convert_to_repo(repo)
 
-    async def repo(self, src_url: str):
+    async def repo(self, key: str):
         query = self.parent.config.repo_query
-        repo = Repo(src_url)
+        repo = Repo(key)
         db = self.conn
-        await db.execute(query, (src_url,))
+        await db.execute(query, (key,))
         row = await db.fetchone()
+
         if row is not None:
+            features = {}
+            predictions = {}
+            for key, value in row.items():
+                if key.startswith("feature_"):
+                    features[key.replace("feature_", "")] = value
+                elif "_value" in key:
+                    target = key.replace("_value", "")
+                    predictions[target] = {
+                        "value": row[target + "_value"],
+                        "confidence": row[target + "_confidence"],
+                    }
             repo.merge(
                 Repo(
-                    row["src_url"],
-                    data={
-                        "features": {
-                            key.replace("feature_", ""): value
-                            for key, value in row.items()
-                            if key.startswith("feature_")
-                        },
-                        "prediction": {
-                            key.replace("prediction_", ""): value
-                            for key, value in row.items()
-                            if key.startswith("prediction_")
-                        },
-                    },
+                    row["key"],
+                    data={"features": features, "prediction": predictions},
                 )
             )
         return repo
@@ -157,7 +168,7 @@ class MySQLSource(BaseSource):
             "repos-query",
             Arg(
                 type=str,
-                help="SELECT `key` as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data",
+                help="SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM repo_data",
             ),
         )
         cls.config_set(
@@ -166,7 +177,7 @@ class MySQLSource(BaseSource):
             "repo-query",
             Arg(
                 type=str,
-                help="SELECT `key` as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data WHERE `key`=%s",
+                help="SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM repo_data WHERE `key`=%s",
             ),
         )
         cls.config_set(

@@ -7,32 +7,15 @@ when all the testcases in the file are run at once. Not when running only the
 testcase that fails by itself. It's very werid.
 """
 import re
-import os
-import io
 import json
-import inspect
 import pathlib
-import asyncio
 import contextlib
-import unittest.mock
-from typing import Dict, Any
 
-from dffml.repo import Repo
-from dffml.base import config
-from dffml.df.types import Definition, Operation, DataFlow, Input
-from dffml.df.base import op
+from dffml.df.types import Operation, DataFlow, Input
 from dffml.cli.cli import CLI
-from dffml.model.model import Model
-from dffml.service.dev import Develop
-from dffml.util.packaging import is_develop
 from dffml.util.entrypoint import load
 from dffml.config.config import BaseConfigLoader
-from dffml.util.asynctestcase import (
-    AsyncTestCase,
-    IntegrationCLITestCase,
-    relative_path,
-    relative_chdir,
-)
+from dffml.util.asynctestcase import IntegrationCLITestCase, relative_path
 
 
 class TestDataFlow(IntegrationCLITestCase):

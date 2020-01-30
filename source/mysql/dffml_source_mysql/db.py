@@ -1,16 +1,11 @@
 import ssl
-from typing import Dict, Any, List, Union, Tuple, Optional, AsyncIterator
+from typing import Dict, Any, List, Optional, AsyncIterator
 
 import aiomysql
 
-from dffml.db.base import (
-    BaseDatabase,
-    Condition,
-    Conditions,
-)
+from dffml.db.base import BaseDatabase, Condition, Conditions
 from dffml.db.sql import SQLDatabaseContext
 from dffml.base import config
-from dffml.repo import Repo
 from dffml.util.entrypoint import entrypoint
 
 
@@ -28,7 +23,7 @@ class MySQLDatabaseContext(SQLDatabaseContext):
     BIND_DECLARATION: str = "%s"
 
     async def create_table(
-        self, table_name: str, cols: Dict[str, str],
+        self, table_name: str, cols: Dict[str, str]
     ) -> None:
         query = self.create_table_query(table_name, cols)
         self.logger.debug(query)

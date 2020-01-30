@@ -10,7 +10,7 @@ import argparse
 import contextlib
 import dataclasses
 from argparse import ArgumentParser
-from typing import Dict, Any, Tuple, NamedTuple, Type, Optional
+from typing import Dict, Any, Type, Optional
 
 try:
     from typing import get_origin, get_args
@@ -197,7 +197,7 @@ def _fromdict(cls, **kwargs):
                             "config": {
                                 key: value
                                 if is_config_dict(value)
-                                else {"arg": value, "config": {},}
+                                else {"arg": value, "config": {}}
                                 for key, value in config.items()
                             },
                         }

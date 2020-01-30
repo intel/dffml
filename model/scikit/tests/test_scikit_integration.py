@@ -2,31 +2,16 @@
 This file contains integration tests. We use the CLI to exercise functionality of
 various DFFML classes and constructs.
 """
-import re
-import os
-import io
 import csv
 import json
 import inspect
 import pathlib
-import asyncio
-import hashlib
-import numpy as np
 import contextlib
-import unittest.mock
-from typing import Dict, Any
 
-from dffml.repo import Repo
-from dffml.base import config
-from dffml.df.types import Definition, Operation, DataFlow, Input
-from dffml.df.base import op
+import numpy as np
+
 from dffml.cli.cli import CLI
-from dffml.model.model import Model
-from dffml.service.dev import Develop
-from dffml.util.packaging import is_develop
-from dffml.util.entrypoint import load
-from dffml.config.config import BaseConfigLoader
-from dffml.util.asynctestcase import AsyncTestCase, IntegrationCLITestCase
+from dffml.util.asynctestcase import IntegrationCLITestCase
 
 
 from sklearn.datasets import make_blobs
@@ -122,6 +107,8 @@ class TestScikitClassification(IntegrationCLITestCase):
         results = results[0]
         self.assertIn("prediction", results)
         results = results["prediction"]
+        self.assertIn("Class", results)
+        results = results["Class"]
         self.assertIn("value", results)
         results = results["value"]
         self.assertEqual(4, results)
@@ -218,6 +205,8 @@ class TestScikitRegression(IntegrationCLITestCase):
         results = results[0]
         self.assertIn("prediction", results)
         results = results["prediction"]
+        self.assertIn("medv", results)
+        results = results["medv"]
         self.assertIn("value", results)
         results = results["value"]
         self.assertTrue(results is not None)
@@ -362,6 +351,8 @@ class TestScikitClustering(IntegrationCLITestCase):
             results = results[0]
             self.assertIn("prediction", results)
             results = results["prediction"]
+            self.assertIn("Prediction", results)
+            results = results["Prediction"]
             self.assertIn("value", results)
             results = results["value"]
             self.assertTrue(results is not None)

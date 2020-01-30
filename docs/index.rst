@@ -41,6 +41,8 @@ You'll find the existing implementations of all of these on their respective
 include some sources, models, and operations as a part of the main package,
 ``dffml``, and other functionality in more specific packages.
 
+The web UI can be found `here <webui/>`_.
+
 This is the documentation for the latest release, documentation for the master
 branch can be found `here <master/index.html>`_.
 

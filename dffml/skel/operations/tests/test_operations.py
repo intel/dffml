@@ -1,7 +1,7 @@
 import sys
 
 from dffml.df.types import Input, DataFlow
-from dffml.df.base import operation_in, opimp_in, Operation
+from dffml.df.base import opimp_in
 from dffml.df.memory import MemoryOrchestrator
 from dffml.operation.output import GetSingle
 from dffml.util.asynctestcase import AsyncTestCase

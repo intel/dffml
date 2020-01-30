@@ -1,6 +1,5 @@
 import json
-import pathlib
-from typing import Dict, Any
+from typing import Dict
 
 from ..util.entrypoint import entrypoint
 from ..util.cli.arg import Arg

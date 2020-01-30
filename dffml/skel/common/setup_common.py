@@ -1,7 +1,6 @@
 import os
 import sys
 import ast
-from io import open
 from pathlib import Path
 from setuptools import find_packages
 

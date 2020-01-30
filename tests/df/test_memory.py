@@ -1,8 +1,6 @@
-from functools import wraps
 from unittest.mock import patch
 from typing import NamedTuple
 
-from dffml.util.data import traverse_config_set
 from dffml.util.cli.arg import Arg, parse_unknown
 from dffml.util.entrypoint import entrypoint
 from dffml.df.base import BaseKeyValueStore, BaseRedundancyCheckerConfig
