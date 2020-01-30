@@ -32,6 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Helper utilities to take callables with numpy style docstrings and
   create config classes out of them using `make_config`.
 - File listing endpoint to HTTP service.
+- When an operation throws an exception the name of the instance and the
+  parameters it was executed with will be thrown via an `OperationException`.
 ### Changed
 - All instances of `src_url` changed to `key`.
 - Moved from tensorflow 1 to tensorflow 2.
