@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- IDX Sources to read binary data files and train models on MNIST Dataset
 - scikit models
   - Clusterers
     - KMeans
