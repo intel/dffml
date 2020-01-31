@@ -21,7 +21,7 @@ function run_plugin() {
   "${PYTHON}" -m pip install -U "${SRC_ROOT}"
 
   cd "${PLUGIN}"
-  PACKAGE_NAME=$("${PYTHON}" "${SRC_ROOT}/scripts/setup_arg.py" setup.py name)
+  PACKAGE_NAME=$(dffml service dev setuppy kwarg name setup.py)
   "${PYTHON}" -m pip install -e .
   "${PYTHON}" setup.py test
   "${PYTHON}" -m pip uninstall -y "${PACKAGE_NAME}"
