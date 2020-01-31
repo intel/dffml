@@ -123,12 +123,7 @@ class TensorflowModelContext(ModelContext):
         """
         Train on data submitted via classify.
         """
-        input_fn = await self.training_input_fn(
-            sources,
-            batch_size=20,
-            shuffle=True,
-            epochs=self.parent.config.epochs,
-        )
+        input_fn = await self.training_input_fn(sources)
         self.model.train(input_fn=input_fn, steps=self.parent.config.steps)
 
     @property
@@ -145,6 +140,10 @@ class DNNClassifierModelConfig:
     classifications: List[str] = field("Options for value of classification")
     features: Features = field("Features to train on")
     clstype: Type = field("Data type of classifications values", default=str)
+    batchsize: int = field(
+        "Number repos to pass through in an epoch", default=20
+    )
+    shuffle: bool = field("Randomise order of repos in a batch", default=True)
     steps: int = field("Number of steps to train the model", default=3000)
     epochs: int = field(
         "Number of iterations to pass over all repos in a source", default=30
@@ -218,12 +217,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         return self._model
 
     async def training_input_fn(
-        self,
-        sources: Sources,
-        batch_size=20,
-        shuffle=False,
-        epochs=1,
-        **kwargs,
+        self, sources: Sources, **kwargs,
     ):
         """
         Uses the numpy input function with data from repo features.
@@ -258,20 +252,15 @@ class DNNClassifierModelContext(TensorflowModelContext):
         input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
-            batch_size=batch_size,
-            shuffle=shuffle,
-            num_epochs=epochs,
+            batch_size=self.parent.config.batchsize,
+            shuffle=self.parent.config.shuffle,
+            num_epochs=self.parent.config.epochs,
             **kwargs,
         )
         return input_fn
 
     async def accuracy_input_fn(
-        self,
-        sources: Sources,
-        batch_size=20,
-        shuffle=False,
-        epochs=1,
-        **kwargs,
+        self, sources: Sources, **kwargs,
     ):
         """
         Uses the numpy input function with data from repo features.
@@ -303,9 +292,9 @@ class DNNClassifierModelContext(TensorflowModelContext):
         input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
-            batch_size=batch_size,
-            shuffle=shuffle,
-            num_epochs=epochs,
+            batch_size=self.parent.config.batchsize,
+            shuffle=self.parent.config.shuffle,
+            num_epochs=1,
             **kwargs,
         )
         return input_fn
@@ -317,9 +306,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         """
         if not os.path.isdir(self.model_dir_path):
             raise ModelNotTrained("Train model before assessing for accuracy.")
-        input_fn = await self.accuracy_input_fn(
-            sources, batch_size=20, shuffle=False, epochs=1
-        )
+        input_fn = await self.accuracy_input_fn(sources)
         accuracy_score = self.model.evaluate(input_fn=input_fn)
         return Accuracy(accuracy_score["accuracy"])
 
