@@ -76,8 +76,13 @@ class SourcesContext(AsyncContextManagerListContext):
         """
         for source in self:
             async for repo in source.repos():
+                # NOTE In Python 3.7.3 self[1:] works, however in Python >
+                # 3.7.3 only self.data works
+                for other_source in self.data[1:]:
+                    repo.merge(await other_source.repo(repo.key))
                 if validation is None or validation(repo):
                     yield repo
+            break
 
     async def repo(self, key: str):
         """
