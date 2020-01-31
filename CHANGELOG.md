@@ -36,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - When an operation throws an exception the name of the instance and the
   parameters it was executed with will be thrown via an `OperationException`.
 - Network utilities to preformed cached downloads with hash validation.
+- Development service got a new command, which can retrieve an argument passed
+  to setuptools `setup` function within a `setup.py` file.
 ### Changed
 - All instances of `src_url` changed to `key`.
 - Moved from tensorflow 1 to tensorflow 2.
