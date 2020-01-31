@@ -353,52 +353,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> length unimplemented&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="mi">1</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">applicable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">True</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Fetch retrieves any additional information about the software we are</span>
-<span class="sd">        evaluating. Any data fetched should be stored in tempdir().</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parse the data we downloaded in fetch() into a usable form.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculates the score for this feature based on data found by parse().</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Preform setup</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Release any post calculation resources</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Opens any resources needed</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Closes any opened resources</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-
 <div class="viewcode-block" id="Feature.load"><a class="viewcode-back" href="../../../api/feature.html#dffml.feature.feature.Feature.load">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">loading</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="c1"># CLI or dict compatibility</span>
@@ -424,12 +378,11 @@
         <span class="k">return</span> <span class="n">found</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
         <span class="c1"># TODO Context management</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+        <span class="k">pass</span></div>
 
 
 <span class="k">def</span> <span class="nf">DefFeature</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
@@ -488,154 +441,6 @@
                 <span class="n">Feature</span><span class="o">.</span><span class="n">_fromdict</span><span class="p">(</span><span class="o">**</span><span class="n">feature_data</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">feature_data</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
             <span class="p">]</span>
-        <span class="p">)</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Task</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait_for</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="n">task</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span>
-        <span class="p">)</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">_evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Task</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Evaluates all repos passed to it.</span>
-<span class="sd">        Args:</span>
-<span class="sd">            src: src of repo to be evaluated</span>
-<span class="sd">            caching: If `True` sources will NOT be re-evaluated if they have</span>
-<span class="sd">                     features</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            A `dict` containing source URLs and their repos</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">toreDown</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">data</span><span class="p">:</span> <span class="n">Data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">task</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">task</span>  <span class="c1"># type: ignore</span>
-        <span class="n">features</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Feature</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">applicable</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">applicable</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Applicable[</span><span class="si">%r</span><span class="s2">]: </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">applicable</span><span class="p">)</span>
-            <span class="k">await</span> <span class="n">applicable</span><span class="o">.</span><span class="n">on_all</span><span class="p">(</span><span class="s2">&quot;setUp&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-            <span class="k">await</span> <span class="n">applicable</span><span class="o">.</span><span class="n">on_all</span><span class="p">(</span><span class="s2">&quot;fetch&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-            <span class="k">await</span> <span class="n">applicable</span><span class="o">.</span><span class="n">on_all</span><span class="p">(</span><span class="s2">&quot;parse&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-            <span class="k">await</span> <span class="n">applicable</span><span class="o">.</span><span class="n">run_calc</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-            <span class="k">await</span> <span class="n">applicable</span><span class="o">.</span><span class="n">on_all</span><span class="p">(</span><span class="s2">&quot;tearDown&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-            <span class="n">toreDown</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">except</span> <span class="n">futures</span><span class="o">.</span><span class="n">_base</span><span class="o">.</span><span class="n">CancelledError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">toreDown</span><span class="p">:</span>
-                <span class="k">await</span> <span class="n">applicable</span><span class="o">.</span><span class="n">on_all</span><span class="p">(</span><span class="s2">&quot;tearDown&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{}</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">results</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">applicable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Features&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
-            <span class="o">*</span><span class="p">[</span>
-                <span class="n">feature</span>
-                <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="bp">self</span>
-                <span class="k">if</span> <span class="n">feature</span><span class="o">.</span><span class="n">NAME</span> <span class="ow">and</span> <span class="k">await</span> <span class="n">feature</span><span class="o">.</span><span class="n">applicable</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-            <span class="p">]</span>
-        <span class="p">)</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">on_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Data</span><span class="p">):</span>
-        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span>
-            <span class="o">*</span><span class="p">[</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">run_feature_method</span><span class="p">(</span>
-                    <span class="n">feature</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">method_name</span><span class="p">),</span> <span class="n">data</span>
-                <span class="p">)</span>
-                <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="bp">self</span>
-            <span class="p">]</span>
-        <span class="p">)</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">data</span><span class="p">:</span> <span class="n">Data</span><span class="p">):</span>
-        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span>
-            <span class="o">*</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_run_calc</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
-        <span class="p">)</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">_run_calc</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">:</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">data</span><span class="p">:</span> <span class="n">Data</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="n">results</span><span class="p">[</span><span class="n">feature</span><span class="o">.</span><span class="n">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_feature_method</span><span class="p">(</span>
-            <span class="n">feature</span><span class="p">,</span> <span class="n">feature</span><span class="o">.</span><span class="n">calc</span><span class="p">,</span> <span class="n">data</span>
-        <span class="p">)</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_feature_method</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">:</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Data</span><span class="p">],</span> <span class="n">Any</span><span class="p">],</span> <span class="n">data</span><span class="p">:</span> <span class="n">Data</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="n">error</span><span class="p">:</span> <span class="ne">Exception</span> <span class="o">=</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Not an error&quot;</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">(</span><span class="si">%s</span><span class="s2">).</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="n">data</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
-                <span class="n">feature</span><span class="o">.</span><span class="n">NAME</span><span class="p">,</span>
-                <span class="n">feature</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">,</span>
-                <span class="n">method</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="k">return</span> <span class="k">await</span> <span class="n">method</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">futures</span><span class="o">.</span><span class="n">_base</span><span class="o">.</span><span class="n">CancelledError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="k">raise</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="n">error</span> <span class="o">=</span> <span class="n">err</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;Error evaluating </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="n">data</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
-                <span class="n">err</span><span class="p">,</span>
-                <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
-            <span class="p">)</span>
-        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;Not an error&quot;</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">method</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">!=</span> <span class="s2">&quot;tearDown&quot;</span><span class="p">:</span>
-                <span class="k">await</span> <span class="n">feature</span><span class="o">.</span><span class="n">tearDown</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">mktask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-        <span class="n">Task</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">data</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">evaluate_repo</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">repo</span><span class="p">:</span> <span class="n">Repo</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">caching</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="p">):</span>
-        <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">caching</span> <span class="ow">and</span> <span class="n">results</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">repo</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">results</span><span class="p">:</span>
-                <span class="n">repo</span><span class="o">.</span><span class="n">evaluated</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">futures</span><span class="o">.</span><span class="n">_base</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Evaluation timed out: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">repo</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">repo</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">evaluate_repos</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">repos</span><span class="p">:</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Repo</span><span class="p">],</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">features</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">caching</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="n">num_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="k">if</span> <span class="n">features</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">()</span>
-        <span class="n">sem</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Semaphore</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">num_workers</span><span class="p">)</span>
-
-        <span class="k">async</span> <span class="k">def</span> <span class="nf">with_sem</span><span class="p">(</span><span class="n">sem</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-            <span class="k">async</span> <span class="k">with</span> <span class="n">sem</span><span class="p">:</span>
-                <span class="k">return</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-        <span class="n">evaluate_repo</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
-            <span class="n">with_sem</span><span class="p">,</span>
-            <span class="n">sem</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_repo</span><span class="p">,</span>
-            <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span>
-            <span class="n">caching</span><span class="o">=</span><span class="n">caching</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span>
-            <span class="o">*</span><span class="p">[</span><span class="n">evaluate_repo</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span> <span class="k">async</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">repos</span><span class="p">]</span>
-        <span class="p">):</span>
-            <span class="k">yield</span> <span class="n">repo</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">submit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">return</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">(</span>
-            <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">,</span> <span class="n">src</span><span class="p">),</span> <span class="n">src</span><span class="p">,</span> <span class="n">mktask</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mktask</span>
         <span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
