@@ -190,52 +190,6 @@ class Feature(abc.ABC, Entrypoint):
         self.LOGGER.warning("%s length unimplemented", self)
         return 1
 
-    async def applicable(self, data) -> bool:
-        return True
-
-    async def fetch(self, data):
-        """
-        Fetch retrieves any additional information about the software we are
-        evaluating. Any data fetched should be stored in tempdir().
-        """
-        pass
-
-    async def parse(self, data):
-        """
-        Parse the data we downloaded in fetch() into a usable form.
-        """
-        pass
-
-    async def calc(self, data):
-        """
-        Calculates the score for this feature based on data found by parse().
-        """
-        return False
-
-    async def setUp(self, data):
-        """
-        Preform setup
-        """
-        pass
-
-    async def tearDown(self, data, error=False):
-        """
-        Release any post calculation resources
-        """
-        pass
-
-    async def open(self):
-        """
-        Opens any resources needed
-        """
-        pass
-
-    async def close(self):
-        """
-        Closes any opened resources
-        """
-        pass
-
     @classmethod
     def load(cls, loading=None):
         # CLI or dict compatibility
@@ -261,12 +215,11 @@ class Feature(abc.ABC, Entrypoint):
         return found
 
     async def __aenter__(self):
-        await self.open()
         # TODO Context management
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
-        await self.close()
+        pass
 
 
 def DefFeature(name, dtype, length):
@@ -325,154 +278,6 @@ class Features(list):
                 Feature._fromdict(**feature_data)
                 for feature_data in kwargs.values()
             ]
-        )
-
-    async def evaluate(self, src: str, task: Task = None) -> Dict[str, Any]:
-        return await asyncio.wait_for(
-            self._evaluate(src, task=task), self.timeout
-        )
-
-    async def _evaluate(self, src: str, task: Task = None) -> Dict[str, Any]:
-        """
-        Evaluates all repos passed to it.
-        Args:
-            src: src of repo to be evaluated
-            caching: If `True` sources will NOT be re-evaluated if they have
-                     features
-        Returns:
-            A `dict` containing source URLs and their repos
-        """
-        toreDown = False
-        data: Data = Data(src)
-        if not task is None:
-            data = task  # type: ignore
-        features: Dict[str, Feature] = {}
-        results: Dict[str, Any] = {}
-        try:
-            applicable = await self.applicable(data)
-            self.LOGGER.debug("Applicable[%r]: %r", data.key, applicable)
-            await applicable.on_all("setUp", data)
-            await applicable.on_all("fetch", data)
-            await applicable.on_all("parse", data)
-            await applicable.run_calc(results, data)
-            await applicable.on_all("tearDown", data)
-            toreDown = True
-        except futures._base.CancelledError as err:
-            if not toreDown:
-                await applicable.on_all("tearDown", data)
-            return {}
-        data.results.update(results)
-        return results
-
-    async def applicable(self, data: Data) -> "Features":
-        return self.__class__(
-            *[
-                feature
-                for feature in self
-                if feature.NAME and await feature.applicable(data)
-            ]
-        )
-
-    async def on_all(self, method_name: str, data: Data):
-        await asyncio.gather(
-            *[
-                self.run_feature_method(
-                    feature, getattr(feature, method_name), data
-                )
-                for feature in self
-            ]
-        )
-
-    async def run_calc(self, results: Dict[str, Any], data: Data):
-        await asyncio.gather(
-            *[self._run_calc(feature, results, data) for feature in self]
-        )
-
-    async def _run_calc(
-        self, feature: Feature, results: Dict[str, Any], data: Data
-    ) -> Any:
-        results[feature.NAME] = await self.run_feature_method(
-            feature, feature.calc, data
-        )
-
-    async def run_feature_method(
-        self, feature: Feature, method: Callable[[Data], Any], data: Data
-    ) -> Any:
-        error: Exception = Exception("Not an error")
-        try:
-            self.LOGGER.debug(
-                "%s %s(%s).%s",
-                data.key,
-                feature.NAME,
-                feature.__class__.__qualname__,
-                method.__name__,
-            )
-            return await method(data)
-        except futures._base.CancelledError as err:
-            raise
-        except Exception as err:
-            error = err
-            self.LOGGER.error(
-                "Error evaluating %s: %s: %s",
-                data.key,
-                err,
-                traceback.format_exc().strip(),
-            )
-        if str(error) != "Not an error":
-            if method.__name__ != "tearDown":
-                await feature.tearDown(data)
-            self.remove(feature)
-
-    def mktask(self, func, key):
-        data = Data(key)
-        Task.__init__(data, func, key)
-        return data
-
-    async def evaluate_repo(
-        self, repo: Repo, *, features: List[str] = [], caching: bool = False
-    ):
-        results: Dict[str, Any] = repo.features(features)
-        if caching and results:
-            return repo
-        try:
-            results = await self.evaluate(repo.key)
-            if results:
-                repo.evaluated(results)
-        except futures._base.TimeoutError:
-            self.LOGGER.warning("Evaluation timed out: %s", repo.key)
-        return repo
-
-    async def evaluate_repos(
-        self,
-        repos: AsyncIterator[Repo],
-        *,
-        features: Optional[List[str]] = None,
-        caching: bool = False,
-        num_workers: int = 1,
-    ):
-        if features is None:
-            features = self.names()
-        sem = asyncio.Semaphore(value=num_workers)
-
-        async def with_sem(sem, func, *args, **kwargs):
-            async with sem:
-                return await func(*args, **kwargs)
-
-        evaluate_repo = partial(
-            with_sem,
-            sem,
-            self.evaluate_repo,
-            features=features,
-            caching=caching,
-        )
-        for repo in await asyncio.gather(
-            *[evaluate_repo(repo) async for repo in repos]
-        ):
-            yield repo
-
-    async def submit(self, src: str):
-        return await super().start(
-            partial(self.evaluate, src), src, mktask=self.mktask
         )
 
     async def __aenter__(self):

@@ -101,18 +101,6 @@ class FakeFeature(Feature):
     def length(self):
         return 1  # pragma: no cov
 
-    async def applicable(self, data):
-        return True
-
-    async def fetch(self, data):
-        pass
-
-    async def parse(self, data):
-        pass
-
-    async def calc(self, data):
-        return float(data.key)
-
 
 class FakeModelContext(ModelContext):
     async def train(self, sources: Sources):
