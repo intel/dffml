@@ -30,6 +30,10 @@ class FileSource(BaseSource):
     """
 
     CONFIG = FileSourceConfig
+    READMODE: str = "r"
+    WRITEMODE: str = "w"
+    READMODE_COMPRESSED: str = "rt"
+    WRITEMODE_COMPRESSED: str = "wt"
 
     async def __aenter__(self) -> "BaseSourceContext":
         await self._open()
@@ -59,30 +63,36 @@ class FileSource(BaseSource):
                     self.config.filename,
                 )
         if self.config.filename[::-1].startswith((".gz")[::-1]):
-            opener = gzip.open(self.config.filename, "rt")
+            opener = gzip.open(self.config.filename, self.READMODE_COMPRESSED)
         elif self.config.filename[::-1].startswith((".bz2")[::-1]):
-            opener = bz2.open(self.config.filename, "rt")
+            opener = bz2.open(self.config.filename, self.READMODE_COMPRESSED)
         elif self.config.filename[::-1].startswith(
             (".xz")[::-1]
         ) or self.config.filename[::-1].startswith((".lzma")[::-1]):
-            opener = lzma.open(self.config.filename, "rt")
+            opener = lzma.open(self.config.filename, self.READMODE_COMPRESSED)
         elif self.config.filename[::-1].startswith((".zip")[::-1]):
             opener = self.zip_opener_helper()
         else:
-            opener = open(self.config.filename, "r")
+            opener = open(self.config.filename, self.READMODE)
         with opener as fd:
             await self.load_fd(fd)
 
     async def _close(self):
         if self.config.readwrite:
             if self.config.filename[::-1].startswith((".gz")[::-1]):
-                close = gzip.open(self.config.filename, "wt")
+                close = gzip.open(
+                    self.config.filename, self.WRITEMODE_COMPRESSED
+                )
             elif self.config.filename[::-1].startswith((".bz2")[::-1]):
-                close = bz2.open(self.config.filename, "wt")
+                close = bz2.open(
+                    self.config.filename, self.WRITEMODE_COMPRESSED
+                )
             elif self.config.filename[::-1].startswith(
                 (".xz")[::-1]
             ) or self.config.filename[::-1].startswith((".lzma")[::-1]):
-                close = lzma.open(self.config.filename, "wt")
+                close = lzma.open(
+                    self.config.filename, self.WRITEMODE_COMPRESSED
+                )
             elif self.config.filename[::-1].startswith((".zip")[::-1]):
                 close = self.zip_closer_helper()
             else:
@@ -93,17 +103,23 @@ class FileSource(BaseSource):
     @contextmanager
     def zip_opener_helper(self):
         with zipfile.ZipFile(self.config.filename) as archive:
-            with archive.open(self.__class__.__qualname__, mode="r") as zip_fd:
+            with archive.open(
+                self.__class__.__qualname__, mode=self.READMODE
+            ) as zip_fd:
                 with io.TextIOWrapper(zip_fd, write_through=True) as fd:
                     yield fd
 
     @contextmanager
     def zip_closer_helper(self):
         with zipfile.ZipFile(
-            self.config.filename, "w", compression=zipfile.ZIP_BZIP2
+            self.config.filename,
+            self.WRITEMODE,
+            compression=zipfile.ZIP_BZIP2,
         ) as archive:
             with archive.open(
-                self.__class__.__qualname__, mode="w", force_zip64=True
+                self.__class__.__qualname__,
+                mode=self.WRITEMODE,
+                force_zip64=True,
             ) as zip_fd:
                 with io.TextIOWrapper(zip_fd, write_through=True) as fd:
                     yield fd
@@ -115,3 +131,17 @@ class FileSource(BaseSource):
     @abc.abstractmethod
     async def dump_fd(self, fd):
         pass  # pragma: no cover
+
+
+@config
+class BinaryFileSourceConfig(FileSourceConfig):
+    pass
+
+
+@entrypoint("binaryfile")
+class BinaryFileSource(FileSource):
+    CONFIG = BinaryFileSourceConfig
+    READMODE: str = "rb"
+    WRITEMODE: str = "wb"
+    READMODE_COMPRESSED: str = "rb"
+    WRITEMODE_COMPRESSED: str = "wb"
