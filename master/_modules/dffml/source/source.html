@@ -239,8 +239,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="k">async</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">repos</span><span class="p">():</span>
+                <span class="c1"># NOTE In Python 3.7.3 self[1:] works, however in Python &gt;</span>
+                <span class="c1"># 3.7.3 only self.data works</span>
+                <span class="k">for</span> <span class="n">other_source</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+                    <span class="n">repo</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="k">await</span> <span class="n">other_source</span><span class="o">.</span><span class="n">repo</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">key</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">validation</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">validation</span><span class="p">(</span><span class="n">repo</span><span class="p">):</span>
-                    <span class="k">yield</span> <span class="n">repo</span></div>
+                    <span class="k">yield</span> <span class="n">repo</span>
+            <span class="k">break</span></div>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">repo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

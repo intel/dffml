@@ -9,3 +9,4 @@ The following are some example use cases of DFFML.
 
     integration
     dataflows
+    mnist
