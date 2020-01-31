@@ -96,6 +96,8 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Sources</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#dffml">dffml</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#csv">csv</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#idx1">idx1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#idx3">idx3</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#json">json</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#memory">memory</a></li>
 </ul>
@@ -225,6 +227,54 @@ abstract the loading and storage of data / datasets.</p>
 <li><p>labelcol: String</p>
 <ul>
 <li><p>default: label</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="idx1">
+<h3>idx1<a class="headerlink" href="#idx1" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>Source to read files in IDX1 format (such as MNIST digit label dataset).</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>filename: String</p></li>
+<li><p>feature: String</p>
+<ul>
+<li><p>Name of the feature the data will be referenced as</p></li>
+</ul>
+</li>
+<li><p>readwrite: Boolean</p>
+<ul>
+<li><p>default: False</p></li>
+</ul>
+</li>
+<li><p>allowempty: Boolean</p>
+<ul>
+<li><p>default: False</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="idx3">
+<h3>idx3<a class="headerlink" href="#idx3" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>Source to read files in IDX3 format (such as MNIST digit image dataset).</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>filename: String</p></li>
+<li><p>feature: String</p>
+<ul>
+<li><p>Name of the feature the data will be referenced as</p></li>
+</ul>
+</li>
+<li><p>readwrite: Boolean</p>
+<ul>
+<li><p>default: False</p></li>
+</ul>
+</li>
+<li><p>allowempty: Boolean</p>
+<ul>
+<li><p>default: False</p></li>
 </ul>
 </li>
 </ul>
