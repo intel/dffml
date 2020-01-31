@@ -5,6 +5,7 @@ import pydoc
 import asyncio
 import getpass
 import importlib
+import contextlib
 import configparser
 import pkg_resources
 import unittest.mock
@@ -33,7 +34,10 @@ from ..operation.output import GetSingle
 config = configparser.ConfigParser()
 config.read(Path("~", ".gitconfig").expanduser())
 
-USER = getpass.getuser()
+USER = "unknown"
+with contextlib.suppress(KeyError):
+    USER = getpass.getuser()
+
 NAME = config.get("user", "name", fallback="Unknown")
 EMAIL = config.get("user", "email", fallback="unknown@example.com")
 
