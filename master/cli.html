@@ -112,6 +112,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#export">Export</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#cli-service-dev-create">Create</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#entrypoints">Entrypoints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setuppy">setuppy</a></li>
 </ul>
 </li>
 </ul>
@@ -223,6 +224,11 @@ see them all.</p>
 <li><p><a class="reference internal" href="#entrypoints" id="id17">Entrypoints</a></p>
 <ul>
 <li><p><a class="reference internal" href="#list" id="id18">List</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#setuppy" id="id19">setuppy</a></p>
+<ul>
+<li><p><a class="reference internal" href="#kwarg" id="id20">kwarg</a></p></li>
 </ul>
 </li>
 </ul>
@@ -370,6 +376,19 @@ flag to <code class="docutils literal notranslate"><span class="pre">pip</span> 
 <span class="go">is_binary_pie = dffml_operations_binsec.operations:is_binary_pie.op -&gt; dffml-operations-binsec 0.0.1 (/home/user/.pyenv/versions/3.7.2/lib/python3.7/site-packages)</span>
 <span class="go">pypi_package_json = shouldi.pypi:pypi_package_json -&gt; shouldi 0.0.1 (/home/user/Documents/python/dffml/examples/shouldi)</span>
 <span class="go">clone_git_repo = dffml_feature_git.feature.operations:clone_git_repo -&gt; dffml-feature-git 0.2.0 (/home/user/Documents/python/dffml/feature/git)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="setuppy">
+<h4><a class="toc-backref" href="#id19">setuppy</a><a class="headerlink" href="#setuppy" title="Permalink to this headline">¶</a></h4>
+<p>Utilities for working with <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> files.</p>
+<div class="section" id="kwarg">
+<h5><a class="toc-backref" href="#id20">kwarg</a><a class="headerlink" href="#kwarg" title="Permalink to this headline">¶</a></h5>
+<p><code class="docutils literal notranslate"><span class="pre">import</span></code> a <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file return the value of the specified keyword
+argument.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev setuppy kwarg name model/tensorflow/setup.py
+<span class="go">dffml-model-tensorflow</span>
 </pre></div>
 </div>
 </div>
