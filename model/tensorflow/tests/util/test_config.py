@@ -8,6 +8,7 @@ from dffml_model_tensorflow.util.config.tensorflow import tensorflow_docstring_a
 class TestMakeConfig(unittest.TestCase):
     def test_tensorflow_docstring_args(self):
         args = tensorflow_docstring_args(tensorflow.keras.layers.Dense)
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",args)
 
         self.assertIn("super_cool_arg", args)
         dtype, field = args["super_cool_arg"]

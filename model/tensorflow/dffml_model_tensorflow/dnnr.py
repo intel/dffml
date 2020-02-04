@@ -7,7 +7,7 @@ from typing import List, Dict, Any, AsyncIterator
 
 import numpy as np
 
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+# os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
 
 from dffml.repo import Repo
@@ -22,7 +22,7 @@ from dffml.feature.feature import Feature, Features
 
 from .dnnc import TensorflowModelContext
 
-
+# tf.keras.backend.set_floatx('float64')
 @config
 class DNNRegressionModelConfig:
     predict: Feature = field("Feature name holding target values")
@@ -65,12 +65,20 @@ class DNNRegressionModelContext(TensorflowModelContext):
         if self._model is not None:
             return self._model
         self.logger.debug("Loading model ")
-
         self._model = tf.estimator.DNNRegressor(
             feature_columns=list(self.feature_columns.values()),
             hidden_units=self.parent.config.hidden,
             model_dir=self.model_dir_path,
+            loss_reduction = tf.keras.losses.Reduction.SUM
         )
+        # _head = tf.estimator.RegressionHead()
+        # self._model = tf.estimator.DNNEstimator(
+        #     head=_head,
+        #     feature_columns=list(self.feature_columns.values()),
+        #     hidden_units=self.parent.config.hidden,
+        #     model_dir=self.model_dir_path,
+        # )
+
 
         return self._model
 

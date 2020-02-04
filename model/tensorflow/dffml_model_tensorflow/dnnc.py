@@ -11,7 +11,7 @@ from typing import List, Dict, Any, AsyncIterator, Tuple, Optional, Type
 
 import numpy as np
 
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+# os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
 
 from dffml.repo import Repo
@@ -26,6 +26,7 @@ from dffml.util.cli.parser import list_action
 from dffml.feature.feature import Feature, Features
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 
+# tf.keras.backend.set_floatx('float64')
 
 class TensorflowModelContext(ModelContext):
     """

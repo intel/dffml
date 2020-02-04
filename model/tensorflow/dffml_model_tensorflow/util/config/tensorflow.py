@@ -45,7 +45,7 @@ def tensorflow_doc_to_field(type_str, description, param):
     if default is inspect.Parameter.empty:
         default = tensorflow_get_default(type_str)
 
-    type_cls = Any
+    type_cls = str
 
     # Set of choices
     if "{'" in type_str and "'}" in type_str:
@@ -134,3 +134,4 @@ def tensorflow_docstring_args(cls: Callable):
         )
 
     return docparams
+

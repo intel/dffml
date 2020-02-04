@@ -42,16 +42,18 @@ class Feature_2(Feature):
 class TestDNN(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.model_dir = tempfile.TemporaryDirectory()
+        # cls.model_dir = tempfile.TemporaryDirectory()
+        cls.model_dir = '/home/himanshu/.cache/dffml/tensorflow'
         cls.feature1 = Feature_1()
         cls.feature2 = Feature_2()
         cls.features = Features(cls.feature1, cls.feature2)
         cls.model = DNNRegressionModel(
             DNNRegressionModelConfig(
-                directory=cls.model_dir.name,
+                # directory=cls.model_dir.name,
+                directory= '/home/himanshu/.cache/dffml/tensorflow',
                 steps=1000,
                 epochs=30,
-                hidden=[200, 100, 80, 10],
+                hidden=[10, 20, 10],
                 predict=DefFeature("TARGET", float, 1),
                 features=cls.features,
             )
@@ -76,9 +78,9 @@ class TestDNN(AsyncTestCase):
             MemorySource(MemorySourceConfig(repos=cls.repos))
         )
 
-    @classmethod
-    def tearDownClass(cls):
-        cls.model_dir.cleanup()
+    # @classmethod
+    # def tearDownClass(cls):
+    #     cls.model_dir.cleanup()
 
     async def test_config(self):
         # Setting up configuration for model
@@ -112,6 +114,7 @@ class TestDNN(AsyncTestCase):
         async with self.sources as sources, self.model as model:
             async with sources() as sctx, model() as mctx:
                 res = await mctx.accuracy(sctx)
+                print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",res)
                 self.assertGreater(res, 0.8)
 
     async def test_02_predict(self):

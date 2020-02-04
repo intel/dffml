@@ -17,6 +17,7 @@ import pandas as pd
 # should be set before importing tensorflow
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
+from shlex import shlex
 import tensorflow_hub as hub
 
 from dffml.repo import Repo
@@ -28,7 +29,73 @@ from dffml.model.model import ModelNotTrained
 from dffml.base import BaseConfig, config, field
 from dffml.feature.feature import Feature, Features
 from dffml.model.model import ModelConfig, ModelContext, Model
+from dffml_model_tensorflow.util.config.tensorflow import tensorflow_docstring_args
+
 from .tfhub_models import bert_tokenizer, ClassificationModel
+
+
+def parse_kv_pairs(text, item_sep=",", value_sep="="):
+    """Parse key-value pairs from a shell-like text."""
+    # initialize a lexer, in POSIX mode (to properly handle escaping)
+    lexer = shlex(text, posix=True)
+    # set ',' as whitespace for the lexer
+    # (the lexer will use this character to separate words)
+    lexer.whitespace = ","
+    # include '=' as a word character 
+    # (this is done so that the lexer returns a list of key-value pairs)
+    # (if your option key or value contains any unquoted special character, you will need to add it here)
+    lexer.wordchars += "="
+    # then we separate option keys and values to build the resulting dictionary
+    # (maxsplit is required to make sure that '=' in value will not be a problem)
+    return dict(word.split(value_sep, maxsplit=1) for word in lexer)
+def parse_layer(input_layers: list):
+    """
+    Given a tf.keras.layer, update it's default values to reflect 
+    input values.
+    """
+    all_layers = dict(inspect.getmembers(tf.keras.layers, inspect.isclass))
+    live_layers = []
+
+    for layer in input_layers:
+        param_dict = {}
+        layer_params_dict = {}
+        layer_name, layer_params = layer.split('(', maxsplit=1)
+        print(layer_params.rsplit(')',1))
+        layer_params = layer_params.rsplit(')',1)[0]
+        layer_params = "".join(text.strip() for text in list(layer_params))
+
+        lexer = shlex(layer_params, posix=True)
+        lexer.whitespace = ","
+        lexer.wordchars += "="
+        lexer.quotes += ")"
+        lexer.quotes += "("
+        lexer.wordchars += "."
+
+        # layer_params_dict = [word.split("=", maxsplit=1) for word in lexer]
+        layer_params_dict = [word for word in lexer]
+
+
+
+        print(layer_params)
+        print(">>>>>>>>>>>>>>>>>>",layer_params_dict)
+    #     # exit()
+    #     for key, value in layer_params_dict.items():
+    #         # print('>>>>>>>>>>>>>>>>',param)
+    #         # key, value = param.split('=')
+    #         param_dict[key.strip()] = value.replace("'","").replace('"',"").strip()
+    #     parsed_args = tensorflow_docstring_args(all_layers[layer_name])
+    #     for key, value in param_dict.items():
+    #         dtype, _ = parsed_args[key]
+    #         if dtype == Any and '(' in value and ')' in value:
+    #             dtype = int
+    #         else:
+    #             dtype = str
+    #         if not dtype == str:
+    #             param_dict[key] = list(map(dtype, value))
+    #     live_layers.append(all_layers[layer_name](**param_dict))
+    #     del param_dict
+    # return live_layers
+    exit()
 
 
 @config
@@ -70,9 +137,7 @@ class TextClassifierConfig:
     def __post_init__(self):
         self.classifications = list(map(self.clstype, self.classifications))
         if self.add_layers:
-            self.layers = ["tf.keras.layers." + layer for layer in self.layers]
-            # TODO remove eval, this is bad
-            self.layers = list(map(eval, self.layers))
+            self.layers = parse_layer(self.layers)
 
 
 class OutputShapeError(Exception):

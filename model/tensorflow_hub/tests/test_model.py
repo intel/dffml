@@ -36,8 +36,10 @@ class TestTextClassificationModel(AsyncTestCase):
                 predict=DefFeature("X", int, 1),
                 add_layers=True,
                 layers=[
-                    "Dense(16, activation='relu')",
-                    "Dense(2, activation='softmax')",
+                    "Dense(units = 120, activation='relu')",
+                    "Dropout(rate=0.6, noise_shape=(20,1,5))",
+                    "Dense(units = 64, activation='relu')",
+                    "Dense(units = 2, activation='softmax')",
                 ],
                 model_path="https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1",
                 embedType="swivel",
