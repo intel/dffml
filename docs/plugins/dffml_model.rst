@@ -664,3 +664,67 @@ Ensure that `predict` and `accuracy` for these algorithms uses training data.
   - default: /home/user/.cache/dffml/scikit-{Entrypoint}
   - Directory where state should be saved
 
+
+
+dffml_model_vowpalWabbit
+------------------------
+
+.. code-block:: console
+
+    pip install dffml-model-vowpalWabbit
+
+
+vwmodel
+~~~~~~~
+
+*Core*
+
+No description
+
+**Args**
+
+- features: List of features
+
+- predict: Feature
+
+  - Feature to predict
+
+- namespace: List of strings
+
+  - default: []
+  - Dict containing `namespace` for each feature used in conversion of input data to vowpal wabbit input format
+
+- importance: String
+
+  - default: None
+  - Feature containing `importance` of each example, used in conversion of input data to vowpal wabbit input format
+
+- base: String
+
+  - default: None
+  - Feature containing `base` for each example, used for residual regression
+
+- tag: String
+
+  - default: None
+  - Feature to be used as `tag` in conversion of data to vowpal wabbit input format
+
+- convert_to_vw: Boolean
+
+  - default: False
+  - Convert the input to vowpal wabbit standard input format
+
+- passes: Integer
+
+  - default: 1
+  - Number of times to train model on input data
+
+- directory: String
+
+  - default: /home/user/.cache/dffml/vowpalWabbit
+  - Directory where state should be saved
+
+- vwcmd: String
+
+  - default: --l2 0.01
+  - Command Line Arguements as per vowpal wabbit convention

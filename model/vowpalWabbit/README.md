@@ -1,4 +1,4 @@
-# DFFML model_name Models
+# DFFML Vowpal Wabbit Models
 
 ## About
 

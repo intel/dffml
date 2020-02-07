@@ -7,23 +7,82 @@ import os
 import json
 import hashlib
 from pathlib import Path
-from typing import AsyncIterator, Tuple, Any, NamedTuple
+from collections import defaultdict, namedtuple
+from typing import (
+    AsyncIterator,
+    Tuple,
+    Any,
+    NamedTuple,
+    List,
+    Dict,
+    DefaultDict,
+)
 
 import numpy as np
 import pandas as pd
+from vowpalwabbit import pyvw
+from sklearn.utils import shuffle
 from sklearn.metrics import accuracy_score, r2_score
 
 from dffml.repo import Repo
 from dffml.accuracy import Accuracy
 from dffml.source.source import Sources
+from dffml.util.entrypoint import entrypoint
+from dffml.base import BaseConfig, config, field
 from dffml.feature.feature import Features, Feature
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 
+from .util.data import df_to_vw_format
 
-class VWConfig(ModelConfig, NamedTuple):
-    directory: str
-    predict: Feature
+# TODO override input, and output options
+@config
+class VWConfig:
     features: Features
+    predict: Feature = field("Feature to predict")
+    namespace: List[str] = field(
+        "Dict containing `namespace` for each feature used in conversion of input data to vowpal wabbit input format",
+        default_factory=lambda: [],
+    )
+    importance: str = field(
+        "Feature containing `importance` of each example, used in conversion of input data to vowpal wabbit input format",
+        default=None,
+    )
+    base: str = field(
+        "Feature containing `base` for each example, used for residual regression",
+        default=None,
+    )
+    tag: str = field(
+        "Feature to be used as `tag` in conversion of data to vowpal wabbit input format",
+        default=None,
+    )
+    convert_to_vw: bool = field(
+        "Convert the input to vowpal wabbit standard input format",
+        default=False,
+    )
+    passes: int = field(
+        "Number of times to train model on input data", default=1
+    )
+    directory: str = field(
+        "Directory where state should be saved",
+        default=os.path.join(
+            os.path.expanduser("~"), ".cache", "dffml", "vowpalWabbit"
+        ),
+    )
+    # vwcmd: List[str] = field("Command Line Arguements as per vowpal wabbit convention", default_factory = lambda:["--l2", "0.01"])
+    vwcmd: str = field(
+        "Command Line Arguements as per vowpal wabbit convention",
+        default="--l2 0.01",
+    )
+
+    def __post_init__(self):
+        namespace = dict()
+        for nsinfo in self.namespace:
+            ns, cols = nsinfo.split("_", 1)
+            if ns in namespace.keys():
+                namespace[ns].extend(cols.split("_"))
+            else:
+                namespace[ns] = cols.split("_")
+        self.namespace = namespace
 
 
 class VWContext(ModelContext):
@@ -46,35 +105,33 @@ class VWContext(ModelContext):
             [
                 "{}{}".format(k, v)
                 for k, v in self.parent.config._asdict().items()
-                if k not in ["directory", "features", "predict"]
+                if k not in ["directory", "features", "predict", "vwcmd"]
             ]
         )
         return hashlib.sha384(
             "".join([params] + self.features).encode()
         ).hexdigest()
 
+    def applicable_features(self, features):
+        usable = []
+        for feature in features:
+            usable.append(feature.NAME)
+        return sorted(usable)
+
     def _filename(self):
         return os.path.join(
-            self.parent.config.directory, self._features_hash + ".joblib"
+            self.parent.config.directory, self._features_hash + ".model"
         )
 
     async def __aenter__(self):
-        config = self.parent.config._asdict()
-        temp_config = {
-            "directory": config["directory"],
-            "predict": config["predict"],
-            "features": config["features"],
-        }
-        del config["directory"]
-        del config["predict"]
-        del config["features"]
+        # TODO remove `vw` being passed in vwcmd
         if os.path.isfile(self._filename()):
-            self.clf = self.parent.VW_MODEL(**config)
-            self.clf.load(self._filename())
-            config.update(temp_config)
+            self.clf = pyvw.vw(
+                self.parent.config.vwcmd
+                + f" --initial_regressor {self._filename()}"
+            )
         else:
-            del temp_config
-            self.clf = self.parent.VW_MODEL(**config)
+            self.clf = pyvw.vw(self.parent.config.vwcmd)
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
@@ -90,10 +147,22 @@ class VWContext(ModelContext):
             )
             data.append(feature_data)
         df = pd.DataFrame(data)
-        xdata = np.array(df.drop([self.parent.config.predict.NAME], 1))
-        ydata = np.array(df[self.parent.config.predict.NAME])
-        self.logger.info("Number of input repos: {}".format(len(xdata)))
-        self.clf.fit(xdata, ydata)
+        vw_data = df_to_vw_format(
+            df,
+            target=self.parent.config.predict.NAME,
+            namespace=self.parent.config.namespace,
+            importance=self.parent.config.importance,
+            tag=self.parent.config.tag,
+            base=self.parent.config.base,
+        )
+        self.logger.info("Number of input repos: {}".format(len(vw_data)))
+        for n in range(self.parent.config.passes):
+            if n > 1:
+                X = shuffle(vw_data)
+            else:
+                X = vw_data
+            for x in X:
+                self.clf.learn(x)
         self.clf.save(self._filename())
 
     async def accuracy(self, sources: Sources) -> Accuracy:
@@ -106,12 +175,22 @@ class VWContext(ModelContext):
             )
             data.append(feature_data)
         df = pd.DataFrame(data)
-        xdata = np.array(df.drop([self.parent.config.predict.NAME], 1))
-        ydata = np.array(df[self.parent.config.predict.NAME])
+        xdata = df.drop([self.parent.config.predict.NAME], 1)
         self.logger.debug("Number of input repos: {}".format(len(xdata)))
-        y_pred = self.clf.predict(xdata)
-
-        # TODO VW doesn't have scorer, need to build it
+        if self.parent.config.convert_to_vw:
+            xdata = df_to_vw_format(
+                xdata,
+                target=None,
+                namespace=self.parent.config.namespace,
+                importance=self.parent.config.importance,
+                tag=self.parent.config.tag,
+                base=self.parent.config.base,
+            )
+        ydata = np.array(df[self.parent.config.predict.NAME])
+        y_pred = np.empty([len(xdata)])
+        for idx, x in enumerate(xdata):
+            y_pred[idx] = self.clf.predict(x)
+        # TODO VW doesn't have a scorer, need to build it
         self.confidence = r2_score(ydata, y_pred)
         self.logger.debug("Model Accuracy: {}".format(self.confidence))
         return self.confidence
@@ -123,23 +202,33 @@ class VWContext(ModelContext):
             raise ModelNotTrained("Train model before prediction.")
         async for repo in repos:
             feature_data = repo.features(self.features)
-            df = pd.DataFrame(feature_data, index=[0])
-            predict = np.array(df)
+            data = pd.DataFrame(feature_data, index=[0])
+            if self.parent.config.convert_to_vw:
+                data = df_to_vw_format(
+                    data,
+                    target=None,
+                    namespace=self.parent.config.namespace,
+                    importance=self.parent.config.importance,
+                    tag=self.parent.config.tag,
+                    base=self.parent.config.base,
+                )
             self.logger.debug(
                 "Predicted Value of {} for {}: {}".format(
-                    self.parent.config.predict,
-                    predict,
-                    self.clf.predict(predict),
+                    self.parent.config.predict.NAME,
+                    data,
+                    self.clf.predict(data[0]),
                 )
             )
             target = self.parent.config.predict.NAME
-            repo.predicted(
-                target, self.clf.predict(predict)[0], self.confidence
-            )
+            repo.predicted(target, self.clf.predict(data[0]), self.confidence)
             yield repo
 
 
+@entrypoint("vwmodel")
 class VWModel(Model):
+    CONTEXT = VWContext
+    CONFIG = VWConfig
+
     def __init__(self, config) -> None:
         super().__init__(config)
         self.saved = {}
