@@ -146,6 +146,16 @@ Implemented using Tensorflow's DNNClassifier.
   - default: <class 'str'>
   - Data type of classifications values
 
+- batchsize: Integer
+
+  - default: 20
+  - Number repos to pass through in an epoch
+
+- shuffle: Boolean
+
+  - default: True
+  - Randomise order of repos in a batch
+
 - steps: Integer
 
   - default: 3000

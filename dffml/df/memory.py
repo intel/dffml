@@ -23,6 +23,7 @@ from typing import (
 from .exceptions import ContextNotPresent, DefinitionNotInContext
 from .types import Input, Parameter, Definition, Operation, Stage, DataFlow
 from .base import (
+    OperationException,
     OperationImplementation,
     FailedToLoadOperationImplementation,
     BaseDataFlowObject,
@@ -136,7 +137,7 @@ class MemoryParameterSet(BaseParameterSet):
         for parameter in self.__parameters:
             yield parameter
 
-    async def inputs(self) -> AsyncIterator[Input]:
+    async def inputs_and_parents_recursive(self) -> AsyncIterator[Input]:
         for item in itertools.chain(
             *[
                 [parameter.origin] + list(parameter.origin.get_parents())
@@ -735,7 +736,10 @@ class MemoryLockNetworkContext(BaseLockNetworkContext):
         # Acquire the master lock to find and or create needed locks
         async with self.lock:
             # Get all the inputs up the ancestry tree
-            inputs = [item async for item in parameter_set.inputs()]
+            inputs = [
+                item
+                async for item in parameter_set.inputs_and_parents_recursive()
+            ]
             # Only lock the ones which require it
             for item in filter(lambda item: item.definition.lock, inputs):
                 # Create the lock for the input if not present
@@ -1336,7 +1340,18 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                     # Get the tasks exception if any
                     exception = task.exception()
                     if strict and exception is not None:
-                        raise exception
+                        if task is input_set_enters_network:
+                            raise exception
+                        raise OperationException(
+                            "{}({}): {}".format(
+                                task.operation.instance_name,
+                                task.operation.inputs,
+                                {
+                                    parameter.key: parameter.value
+                                    async for parameter in task.parameter_set.parameters()
+                                },
+                            )
+                        ) from exception
                     elif exception is not None:
                         # If there was an exception log it
                         output = io.StringIO()
@@ -1365,6 +1380,10 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                                 # Dispatch the operation and input set for running
                                 dispatch_operation = await self.nctx.dispatch(
                                     self, operation, parameter_set
+                                )
+                                dispatch_operation.operation = operation
+                                dispatch_operation.parameter_set = (
+                                    parameter_set
                                 )
                                 tasks.add(dispatch_operation)
                                 self.logger.debug(
