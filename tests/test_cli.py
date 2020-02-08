@@ -172,9 +172,7 @@ class TestMerge(ReposTestCase):
         # Check the tagged source
         with self.subTest(tagged="sometag"):
             async with JSONSource(
-                FileSourceConfig(
-                    filename=self.temp_filename, tag="sometag"
-                )
+                FileSourceConfig(filename=self.temp_filename, tag="sometag")
             ) as source:
                 async with source() as sctx:
                     repos = [repo async for repo in sctx.repos()]
