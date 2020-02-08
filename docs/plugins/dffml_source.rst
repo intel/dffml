@@ -28,9 +28,9 @@ Uses a CSV file as the source of repo feature data
 
 - filename: String
 
-- label: String
+- tag: String
 
-  - default: unlabeled
+  - default: untagged
 
 - readwrite: Boolean
 
@@ -44,9 +44,9 @@ Uses a CSV file as the source of repo feature data
 
   - default: key
 
-- labelcol: String
+- tagcol: String
 
-  - default: label
+  - default: tag
 
 idx1
 ~~~~
@@ -106,9 +106,9 @@ stored in memory.
 
 - filename: String
 
-- label: String
+- tag: String
 
-  - default: unlabeled
+  - default: untagged
 
 - readwrite: Boolean
 

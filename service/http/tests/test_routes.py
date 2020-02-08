@@ -275,7 +275,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                     filename="dataset.csv",
                     tag="untagged",
                     key="key",
-                    tagcol="label",
+                    tagcol="tag",
                     allowempty=True,
                 ),
             )

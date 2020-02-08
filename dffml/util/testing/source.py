@@ -125,22 +125,22 @@ class FileSourceTest(SourceTest):
                     )
                     await super().test_update()
 
-    async def test_tag(self):
+    async def test_label(self):
         with tempfile.TemporaryDirectory() as testdir:
             self.testfile = os.path.join(testdir, str(random.random()))
-            untagged = await self.setUpSource()
-            tagged = await self.setUpSource()
-            tagged.config = tagged.config._replace(tag="sometag")
-            async with untagged, tagged:
-                async with untagged() as uctx, tagged() as lctx:
+            unlabeled = await self.setUpSource()
+            labeled = await self.setUpSource()
+            labeled.config = labeled.config._replace(label="somelabel")
+            async with unlabeled, labeled:
+                async with unlabeled() as uctx, labeled() as lctx:
                     await uctx.update(
                         Repo("0", data={"features": {"feed": 1}})
                     )
                     await lctx.update(
                         Repo("0", data={"features": {"face": 2}})
                     )
-            async with untagged, tagged:
-                async with untagged() as uctx, tagged() as lctx:
+            async with unlabeled, labeled:
+                async with unlabeled() as uctx, labeled() as lctx:
                     repo = await uctx.repo("0")
                     self.assertIn("feed", repo.features())
                     repo = await lctx.repo("0")
