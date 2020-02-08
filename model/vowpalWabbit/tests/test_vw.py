@@ -60,8 +60,7 @@ class TestVWModel(AsyncTestCase):
                 importance="H",
                 tag="G",
                 convert_to_vw=True,
-                passes=50,
-                vwcmd="--l2 0.05 --loss_function squared --quiet",
+                vwcmd="--l2 0.1 --loss_function squared --passes 10",
             )
         )
 
@@ -112,7 +111,7 @@ for i in range(DATA_LEN):
 tag_col = np.arange(1, DATA_LEN + 1)
 importance_col = np.random.randint(low=1, high=4, size=DATA_LEN)
 X, y = make_friedman1(
-    n_samples=DATA_LEN, n_features=6, random_state=2021, noise=3
+    n_samples=DATA_LEN, n_features=6, random_state=2021, noise=5
 )
 
 DATA = np.concatenate(

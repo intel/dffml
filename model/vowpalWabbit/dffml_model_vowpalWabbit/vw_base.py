@@ -34,6 +34,11 @@ from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 
 from .util.data import df_to_vw_format
 
+
+class InputError(Exception):
+    pass
+
+
 # TODO override input, and output options
 @config
 class VWConfig:
@@ -59,9 +64,6 @@ class VWConfig:
         "Convert the input to vowpal wabbit standard input format",
         default=False,
     )
-    passes: int = field(
-        "Number of times to train model on input data", default=1
-    )
     directory: str = field(
         "Directory where state should be saved",
         default=os.path.join(
@@ -71,10 +73,33 @@ class VWConfig:
     # vwcmd: List[str] = field("Command Line Arguements as per vowpal wabbit convention", default_factory = lambda:["--l2", "0.01"])
     vwcmd: str = field(
         "Command Line Arguements as per vowpal wabbit convention",
-        default="--l2 0.01",
+        default="--loss_function logistic --link logistic --l2 0.04",
     )
 
     def __post_init__(self):
+        self.vwcmd = " ".join(self.vwcmd.split()).split()
+        if "--passes" in self.vwcmd:
+            if "--bgfs" in self.vwcmd:
+                self.passes = 1
+            else:
+                idx = self.vwcmd.index("--passes")
+                self.passes = int(self.vwcmd[idx + 1])
+                del self.vwcmd[idx + 1]
+                del self.vwcmd[idx]
+        else:
+            self.passes = 1
+        for arg in ["-d", "--data", "--daemon"]:
+            if arg in self.vwcmd:
+                raise InputError(
+                    f"Passing data through {arg} option is not supported. Pass the input data using dffml sources."
+                )
+            # if not vwcmd[0].startswith('-'):
+            #     raise InputError(f"Passing filename in vwcmd is not supported. Pass the input data using dffml sources.")
+        # TODO handle --save_resume
+        if "--examples" in self.vwcmd:
+            raise InputError(
+                "Currently dffml sources do not support reading specified number of rows."
+            )
         namespace = dict()
         for nsinfo in self.namespace:
             ns, cols = nsinfo.split("_", 1)
@@ -118,20 +143,72 @@ class VWContext(ModelContext):
             usable.append(feature.NAME)
         return sorted(usable)
 
+    # TODO handle full path
+    def modify_config(self):
+        idx = None
+        vwcmd = self.parent.config.vwcmd
+        direc = self.parent.config.directory
+
+        if "--final_regressor" in vwcmd:
+            idx = vwcmd.index("--final_regressor")
+        elif "-f" in vwcmd:
+            idx = vwcmd.index("-f")
+
+        if idx is not None:
+            vwcmd[idx + 1] = os.path.join(direc, vwcmd[idx + 1])
+            idx = None
+
+        if "--initial_regressor" in vwcmd:
+            idx = vwcmd.index("--initial_regressor")
+        elif "-i" in vwcmd:
+            idx = vwcmd.index("-i")
+
+        if idx is not None:
+            vwcmd[idx + 1] = os.path.join(direc, vwcmd[idx + 1])
+            idx = None
+        return vwcmd
+
     def _filename(self):
         return os.path.join(
-            self.parent.config.directory, self._features_hash + ".model"
+            self.parent.config.directory, self._features_hash + ".vw"
         )
+
+    def _load_model(self):
+        arg_list = self.parent.config.vwcmd
+        arg_str = " ".join(self.parent.config.vwcmd)
+        if "--initial_regressor" in arg_list:
+            self.logger.info(
+                f"Using model weights from {arg_list[arg_list.index('--initial_regressor') + 1]}"
+            )
+        elif "-i" in arg_list:
+            self.logger.info(
+                f"Using model weights from {arg_list[arg_list.index('-i') + 1]}"
+            )
+        elif os.path.isfile(self._filename()):
+            arg_str = arg_str + f" --initial_regressor {self._filename()}"
+            self.logger.info(f"Using model weights from {self._filename()}")
+
+        return pyvw.vw(arg_str)
+
+    def _save_model(self):
+        _vwcmd = self.parent.config.vwcmd
+        if "--final_regressor" in _vwcmd:
+            self.logger.info(
+                f"Saving model weights to {_vwcmd[_vwcmd.index('--final_regressor') + 1]}"
+            )
+        elif "-f" in self.parent.config.vwcmd:
+            self.logger.info(
+                f"Saving model weights to {_vwcmd[_vwcmd.index('-f') + 1]}"
+            )
+        else:
+            self.logger.info(f"Saving model weights to {self._filename()}")
+            self.clf.save(self._filename())
+        return
 
     async def __aenter__(self):
         # TODO remove `vw` being passed in vwcmd
-        if os.path.isfile(self._filename()):
-            self.clf = pyvw.vw(
-                self.parent.config.vwcmd
-                + f" --initial_regressor {self._filename()}"
-            )
-        else:
-            self.clf = pyvw.vw(self.parent.config.vwcmd)
+        self.parent.config.vwcmd = self.modify_config()
+        self.clf = self._load_model()
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
@@ -163,7 +240,7 @@ class VWContext(ModelContext):
                 X = vw_data
             for x in X:
                 self.clf.learn(x)
-        self.clf.save(self._filename())
+        self._save_model()
 
     async def accuracy(self, sources: Sources) -> Accuracy:
         if not os.path.isfile(self._filename()):
@@ -212,15 +289,14 @@ class VWContext(ModelContext):
                     tag=self.parent.config.tag,
                     base=self.parent.config.base,
                 )
+            prediction = self.clf.predict(data[0])
             self.logger.debug(
                 "Predicted Value of {} for {}: {}".format(
-                    self.parent.config.predict.NAME,
-                    data,
-                    self.clf.predict(data[0]),
+                    self.parent.config.predict.NAME, data, prediction,
                 )
             )
             target = self.parent.config.predict.NAME
-            repo.predicted(target, self.clf.predict(data[0]), self.confidence)
+            repo.predicted(target, prediction, self.confidence)
             yield repo
 
 
