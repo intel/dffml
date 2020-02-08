@@ -190,7 +190,7 @@
     <span class="n">active</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">lock</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span>
     <span class="n">write_back_key</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">write_back_label</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">write_back_tag</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">inc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
@@ -203,15 +203,15 @@
 
 
 <span class="n">CSV_SOURCE_CONFIG_DEFAULT_KEY</span> <span class="o">=</span> <span class="s2">&quot;key&quot;</span>
-<span class="n">CSV_SOURCE_CONFIG_DEFAULT_LABEL</span> <span class="o">=</span> <span class="s2">&quot;unlabeled&quot;</span>
-<span class="n">CSV_SOURCE_CONFIG_DEFAULT_LABEL_COLUMN</span> <span class="o">=</span> <span class="s2">&quot;label&quot;</span>
+<span class="n">CSV_SOURCE_CONFIG_DEFAULT_tag</span> <span class="o">=</span> <span class="s2">&quot;untagged&quot;</span>
+<span class="n">CSV_SOURCE_CONFIG_DEFAULT_tag_COLUMN</span> <span class="o">=</span> <span class="s2">&quot;tag&quot;</span>
 
 
 <div class="viewcode-block" id="CSVSourceConfig"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.csv.CSVSourceConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">CSVSourceConfig</span><span class="p">(</span><span class="n">FileSourceConfig</span><span class="p">):</span>
     <span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_KEY</span>
-    <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_LABEL</span>
-    <span class="n">labelcol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_LABEL_COLUMN</span></div>
+    <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_tag</span>
+    <span class="n">tagcol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_tag_COLUMN</span></div>
 
 
 <span class="c1"># CSVSource is a bit of a mess</span>
@@ -254,24 +254,24 @@
         <span class="c1"># Record what headers are present when the file was opened</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">key</span> <span class="ow">in</span> <span class="n">dict_reader</span><span class="o">.</span><span class="n">fieldnames</span><span class="p">:</span>
             <span class="n">open_file</span><span class="o">.</span><span class="n">write_back_key</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">labelcol</span> <span class="ow">in</span> <span class="n">dict_reader</span><span class="o">.</span><span class="n">fieldnames</span><span class="p">:</span>
-            <span class="n">open_file</span><span class="o">.</span><span class="n">write_back_label</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="c1"># Store all the repos by their label in write_out</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tagcol</span> <span class="ow">in</span> <span class="n">dict_reader</span><span class="o">.</span><span class="n">fieldnames</span><span class="p">:</span>
+            <span class="n">open_file</span><span class="o">.</span><span class="n">write_back_tag</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1"># Store all the repos by their tag in write_out</span>
         <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c1"># If there is no key track row index to be used as key by label</span>
+        <span class="c1"># If there is no key track row index to be used as key by tag</span>
         <span class="n">index</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">dict_reader</span><span class="p">:</span>
-            <span class="c1"># Grab label from row</span>
-            <span class="n">label</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">labelcol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">labelcol</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
-                <span class="k">del</span> <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">labelcol</span><span class="p">]</span>
-            <span class="n">index</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="c1"># Grab tag from row</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tagcol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tag</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tagcol</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tagcol</span><span class="p">]</span>
+            <span class="n">index</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
             <span class="c1"># Grab key from row</span>
-            <span class="n">key</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">label</span><span class="p">]))</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">tag</span><span class="p">]))</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">key</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
                 <span class="k">del</span> <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">key</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">index</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">index</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="c1"># Repo data we are going to parse from this row (must include</span>
             <span class="c1"># features).</span>
             <span class="n">repo_data</span> <span class="o">=</span> <span class="p">{}</span>
@@ -322,18 +322,18 @@
             <span class="p">}</span>
             <span class="n">repo_data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">predictions</span><span class="p">})</span>
             <span class="c1"># If there was no data in the row, skip it</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">repo_data</span> <span class="ow">and</span> <span class="n">key</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">repo_data</span> <span class="ow">and</span> <span class="n">key</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="k">continue</span>
             <span class="c1"># Add the repo to our internal memory representation</span>
-            <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="p">{})</span>
-            <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">Repo</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">repo_data</span><span class="p">)</span>
+            <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="p">[</span><span class="n">tag</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">Repo</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">repo_data</span><span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">load_fd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fd</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parses a CSV stream into Repo instances</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_csv</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span> <span class="k">as</span> <span class="n">open_file</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mem</span> <span class="o">=</span> <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mem</span> <span class="o">=</span> <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tag</span><span class="p">,</span> <span class="p">{})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> loaded </span><span class="si">%d</span><span class="s2"> records&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="p">))</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">dump_fd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fd</span><span class="p">):</span>
@@ -342,8 +342,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPEN_CSV_FILES_LOCK</span><span class="p">:</span>
             <span class="n">open_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPEN_CSV_FILES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">]</span>
-            <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="p">{})</span>
-            <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="p">)</span>
+            <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tag</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="p">)</span>
             <span class="c1"># Bail if not last open source for this file</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="k">await</span> <span class="n">open_file</span><span class="o">.</span><span class="n">dec</span><span class="p">()):</span>
                 <span class="k">return</span>
@@ -351,11 +351,11 @@
             <span class="n">fieldnames</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="p">[]</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">open_file</span><span class="o">.</span><span class="n">write_back_key</span> <span class="k">else</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">key</span><span class="p">]</span>
             <span class="p">)</span>
-            <span class="n">fieldnames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">labelcol</span><span class="p">)</span>
+            <span class="n">fieldnames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tagcol</span><span class="p">)</span>
             <span class="c1"># Get all the feature names</span>
             <span class="n">feature_fieldnames</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
             <span class="n">prediction_fieldnames</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">repos</span> <span class="ow">in</span> <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">repos</span> <span class="ow">in</span> <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">repos</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
                     <span class="n">feature_fieldnames</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
                     <span class="n">prediction_fieldnames</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">prediction</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
@@ -372,12 +372,12 @@
             <span class="c1"># Write out the file</span>
             <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictWriter</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">fieldnames</span><span class="o">=</span><span class="n">fieldnames</span><span class="p">)</span>
             <span class="n">writer</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">repos</span> <span class="ow">in</span> <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">repos</span> <span class="ow">in</span> <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">repos</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
                     <span class="n">repo_data</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
                     <span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="s2">&quot;&quot;</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">fieldnames</span><span class="p">}</span>
-                    <span class="c1"># Always write the label</span>
-                    <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">labelcol</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span>
+                    <span class="c1"># Always write the tag</span>
+                    <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tagcol</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag</span>
                     <span class="c1"># Write the key if it existed</span>
                     <span class="k">if</span> <span class="n">open_file</span><span class="o">.</span><span class="n">write_back_key</span><span class="p">:</span>
                         <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">key</span>
