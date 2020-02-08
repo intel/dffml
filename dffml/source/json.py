@@ -73,14 +73,14 @@ class JSONSource(FileSource, MemorySource):
             repos = self.OPEN_JSON_FILES[self.config.filename].data
             self.mem = {
                 key: Repo(key, data=data)
-                for key, data in repos.get(self.config.label, {}).items()
+                for key, data in repos.get(self.config.tag, {}).items()
             }
         LOGGER.debug("%r loaded %d records", self, len(self.mem))
 
     async def dump_fd(self, fd):
         async with self.OPEN_JSON_FILES_LOCK:
             repos = self.OPEN_JSON_FILES[self.config.filename].data
-            repos[self.config.label] = {
+            repos[self.config.tag] = {
                 repo.key: repo.dict() for repo in self.mem.values()
             }
             self.logger.debug(f"{self.config.filename} updated")

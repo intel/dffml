@@ -76,8 +76,8 @@ CREATE TABLE `repo_data` (
     async def setUpSource(self):
         return MySQLSource(self.source_config)
 
-    @unittest.skip("Labels not implemented")
-    async def test_label(self):
+    @unittest.skip("Tags not implemented")
+    async def test_tag(self):
         """
-        Labels not implemented
+        Tags not implemented
         """

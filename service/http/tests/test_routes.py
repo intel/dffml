@@ -273,9 +273,9 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                 self.cli.app["sources"]["salary"].config,
                 CSVSourceConfig(
                     filename="dataset.csv",
-                    label="unlabeled",
+                    tag="untagged",
                     key="key",
-                    labelcol="label",
+                    tagcol="tag",
                     allowempty=True,
                 ),
             )
@@ -360,7 +360,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                     ServerException, f"{check} feed face not found"
                 ):
                     async with self.post(
-                        f"/configure/{check}/feed face/label", json={}
+                        f"/configure/{check}/feed face/tag", json={}
                     ):
                         pass  # pramga: no cov
 

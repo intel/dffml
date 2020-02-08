@@ -81,8 +81,8 @@ class TestFileSource(AsyncTestCase):
                                     ),
                                     "config": {},
                                 },
-                                "label": {
-                                    "arg": Arg(type=str, default="unlabeled"),
+                                "tag": {
+                                    "arg": Arg(type=str, default="untagged"),
                                     "config": {},
                                 },
                             },
@@ -97,7 +97,7 @@ class TestFileSource(AsyncTestCase):
             parse_unknown("--source-file-filename", "feedface")
         )
         self.assertEqual(config.filename, "feedface")
-        self.assertEqual(config.label, "unlabeled")
+        self.assertEqual(config.tag, "untagged")
         self.assertFalse(config.readwrite)
         self.assertFalse(config.allowempty)
 
@@ -106,24 +106,24 @@ class TestFileSource(AsyncTestCase):
             parse_unknown(
                 "--source-file-filename",
                 "feedface",
-                "--source-file-label",
-                "default-label",
+                "--source-file-tag",
+                "default-tag",
                 "--source-file-readwrite",
                 "--source-file-allowempty",
             )
         )
         self.assertEqual(config.filename, "feedface")
-        self.assertEqual(config.label, "default-label")
+        self.assertEqual(config.tag, "default-tag")
         self.assertTrue(config.readwrite)
         self.assertTrue(config.allowempty)
 
     def config(
-        self, filename, label="unlabeled", readwrite=True, allowempty=True
+        self, filename, tag="untagged", readwrite=True, allowempty=True
     ):
         return FileSourceConfig(
             filename=filename,
             readwrite=readwrite,
-            label=label,
+            tag=tag,
             allowempty=allowempty,
         )
 
