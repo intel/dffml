@@ -107,9 +107,6 @@ class TestFeature(AsyncTestCase):
     def test_default_length(self):
         self.assertEqual(self.feature.length(), 1)
 
-    async def test_default_applicable(self):
-        self.assertEqual(await self.feature.applicable(Data("test")), True)
-
     def test_load_def(self):
         feature = Feature.load_def("test", "float", 10)
         self.assertEqual(feature.NAME, "test")
@@ -144,28 +141,3 @@ class TestFeatures(AsyncTestCase):
             names = self.features.names()
             for check in ["one", "two", "three"]:
                 self.assertIn(check, names)
-
-    async def test_applicable(self):
-        async with self.features:
-            applicable = await self.features.applicable("test")
-            self.assertIn(self.one, applicable)
-            self.assertIn(self.two, applicable)
-            self.assertNotIn(self.three, applicable)
-
-    async def test_evaluate(self):
-        async with self.features:
-            results = await self.features.evaluate("test")
-            self.assertIn(self.one.NAME, results)
-            self.assertIn(self.two.NAME, results)
-            self.assertNotIn(self.three.NAME, results)
-            self.assertEqual(results[self.one.NAME], False)
-            self.assertEqual(results[self.two.NAME], True)
-
-    async def test_one_applicable_other_not(self):
-        twob = TwoBFeatureTester()
-        features = Features(self.two, twob)
-        async with features:
-            results = await features.evaluate("test")
-            self.assertIn(self.two.NAME, results)
-            self.assertEqual(len(results), 1)
-            self.assertEqual(results[self.two.NAME], True)

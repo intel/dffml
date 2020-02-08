@@ -5,6 +5,7 @@ import pydoc
 import asyncio
 import getpass
 import importlib
+import contextlib
 import configparser
 import pkg_resources
 import unittest.mock
@@ -33,7 +34,10 @@ from ..operation.output import GetSingle
 config = configparser.ConfigParser()
 config.read(Path("~", ".gitconfig").expanduser())
 
-USER = getpass.getuser()
+USER = "unknown"
+with contextlib.suppress(KeyError):
+    USER = getpass.getuser()
+
 NAME = config.get("user", "name", fallback="Unknown")
 EMAIL = config.get("user", "email", fallback="unknown@example.com")
 
@@ -336,6 +340,43 @@ class Install(CMD):
         await proc.wait()
 
 
+class SetupPyKWArg(CMD):
+    """
+    Get a keyword argument from a call to setup in a setup.py file.
+    """
+
+    arg_kwarg = Arg("kwarg", help="Keyword argument to write to stdout")
+    arg_setup_filepath = Arg("setup_filepath", help="Path to setup.py")
+
+    @staticmethod
+    def get_kwargs(setup_filepath: str):
+        setup_filepath = Path(setup_filepath)
+        setup_kwargs = {}
+
+        def grab_setup_kwargs(**kwargs):
+            setup_kwargs.update(kwargs)
+
+        with chdir(str(setup_filepath.parent)):
+            spec = importlib.util.spec_from_file_location(
+                "setup", str(setup_filepath.parts[-1])
+            )
+            with unittest.mock.patch(
+                "setuptools.setup", new=grab_setup_kwargs
+            ):
+                setup = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(setup)
+
+        return setup_kwargs
+
+    async def run(self):
+        print(self.get_kwargs(self.setup_filepath)[self.kwarg])
+
+
+class SetupPy(CMD):
+
+    kwarg = SetupPyKWArg
+
+
 class RepoDirtyError(Exception):
     """
     Raised when a release was attempted but there are uncommited changes
@@ -368,19 +409,9 @@ class Release(CMD):
         # cd to directory
         with chdir(str(self.package)):
             # Load version
-            spec = importlib.util.spec_from_file_location(
-                "setup", os.path.join(os.getcwd(), "setup.py")
+            setup_kwargs = SetupPyKWArg.get_kwargs(
+                os.path.join(os.getcwd(), "setup.py")
             )
-            setup_kwargs = {}
-
-            def grab_setup_kwargs(**kwargs):
-                setup_kwargs.update(kwargs)
-
-            with unittest.mock.patch(
-                "setuptools.setup", new=grab_setup_kwargs
-            ):
-                setup = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(setup)
             name = setup_kwargs["name"]
             version = setup_kwargs["version"]
             # Check if version is on PyPi
@@ -416,3 +447,4 @@ class Develop(CMD):
     entrypoints = Entrypoints
     install = Install
     release = Release
+    setuppy = SetupPy

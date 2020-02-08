@@ -36,7 +36,7 @@ class AsyncContextManagerListContext(UserList):
         self.clear()
         self.__stack = AsyncExitStack()
         await self.__stack.__aenter__()
-        for item in self.parent:
+        for item in self.parent.data:
             # Equivalent to entering the Object context then calling the object
             # to get the ObjectContext and entering that context. We then
             # return a list of all the inner contexts
@@ -45,7 +45,7 @@ class AsyncContextManagerListContext(UserList):
             # >>>         clist.append(ctx)
             citem = item()
             self.logger.debug("Entering context: %r", citem)
-            self.append(await self.__stack.enter_async_context(citem))
+            self.data.append(await self.__stack.enter_async_context(citem))
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
@@ -66,7 +66,7 @@ class AsyncContextManagerList(UserList):
     async def __aenter__(self):
         self.__stack = AsyncExitStack()
         await self.__stack.__aenter__()
-        for item in self:
+        for item in self.data:
             self.logger.debug("Entering: %r", item)
             await self.__stack.enter_async_context(item)
         return self
