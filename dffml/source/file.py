@@ -18,7 +18,7 @@ from ..util.entrypoint import entrypoint
 @config
 class FileSourceConfig:
     filename: str
-    label: str = "unlabeled"
+    tag: str = "untagged"
     readwrite: bool = False
     allowempty: bool = False
 
