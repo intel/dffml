@@ -41,7 +41,6 @@ branch can be found `here <master/index.html>`_.
     :caption: Introduction
 
     about
-    model
     installation
 
 .. toctree::

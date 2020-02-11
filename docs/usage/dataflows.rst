@@ -189,10 +189,26 @@ We'll be using those operations, so we need to install them
 The ``lines_of_code_to_comments`` operation will give use the ratio of the
 number of lines of comments to the number of lines of code.
 
-.. note::
+You need to install `tokei <https://github.com/XAMPPRocky/tokei>`_ before you
+can use ``lines_of_code_to_comments``.
 
-    You need to install `tokei <https://github.com/XAMPPRocky/tokei>`_ before
-    you can use ``lines_of_code_to_comments``.
+On Linux
+
+.. code-block:: console
+
+    $ curl -sSL 'https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz' \
+      | tar -xvz && \
+      echo '22699e16e71f07ff805805d26ee86ecb9b1052d7879350f7eb9ed87beb0e6b84fbb512963d01b75cec8e80532e4ea29a tokei' | sha384sum -c - && \
+      sudo mv tokei /usr/local/bin/
+
+On OSX
+
+.. code-block:: console
+
+    $ curl -sSL 'https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz' \
+      | tar -xvz && \
+      echo '8c8a1d8d8dd4d8bef93dabf5d2f6e27023777f8553393e269765d7ece85e68837cba4374a2615d83f071dfae22ba40e2 tokei' | sha384sum -c - && \
+      sudo mv tokei /usr/local/bin/
 
 The ``lines_of_code_to_comments`` operation needs the output given by
 ``lines_of_code_by_language``, which needs a Git repos source code.
