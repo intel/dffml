@@ -6,6 +6,7 @@ API Reference
    :maxdepth: 2
    :caption: Contents:
 
+   high_level
    base
    df/index
    feature

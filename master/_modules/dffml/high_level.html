@@ -1,0 +1,357 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dffml.high_level &mdash; DFFML 0.3.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>dffml.high_level</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dffml.high_level</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">High level abstraction interfaces to DFFML. These are probably going to be used</span>
+<span class="sd">in a lot of quick and dirty python files.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="kn">from</span> <span class="nn">.repo</span> <span class="kn">import</span> <span class="n">Repo</span>
+<span class="kn">from</span> <span class="nn">.source.source</span> <span class="kn">import</span> <span class="n">Sources</span><span class="p">,</span> <span class="n">BaseSource</span>
+<span class="kn">from</span> <span class="nn">.source.memory</span> <span class="kn">import</span> <span class="n">MemorySource</span><span class="p">,</span> <span class="n">MemorySourceConfig</span>
+
+
+<span class="k">def</span> <span class="nf">_repos_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a memory source out of any repos passed as a variable length list.</span>
+<span class="sd">    Add all sources found in the variable length list to a list of sources, and</span>
+<span class="sd">    the created source containing repos, and return that list of sources.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># If the first arg is an instance of sources, append the rest to that.</span>
+    <span class="k">if</span> <span class="n">args</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Sources</span><span class="p">):</span>
+        <span class="n">sources</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sources</span> <span class="o">=</span> <span class="n">Sources</span><span class="p">(</span>
+            <span class="o">*</span><span class="p">[</span><span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">BaseSource</span><span class="p">)]</span>
+        <span class="p">)</span>
+    <span class="c1"># Repos to add to memory source</span>
+    <span class="n">repos</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Make args mutable</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="c1"># Convert dicts to repos</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">arg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">arg</span> <span class="o">=</span> <span class="n">Repo</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="n">arg</span><span class="p">})</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">Repo</span><span class="p">):</span>
+            <span class="n">repos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">&quot;.&quot;</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
+            <span class="n">filepath</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">BaseSource</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filepath</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+            <span class="n">sources</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">arg</span><span class="p">))</span>
+    <span class="c1"># Create memory source if there are any repos</span>
+    <span class="k">if</span> <span class="n">repos</span><span class="p">:</span>
+        <span class="n">sources</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MemorySource</span><span class="p">(</span><span class="n">MemorySourceConfig</span><span class="p">(</span><span class="n">repos</span><span class="o">=</span><span class="n">repos</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">sources</span>
+
+
+<div class="viewcode-block" id="train"><a class="viewcode-back" href="../../api/high_level.html#dffml.high_level.train">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BaseSource</span><span class="p">,</span> <span class="n">Repo</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Train a machine learning model.</span>
+
+<span class="sd">    Provide records to the model to train it. The model should be already</span>
+<span class="sd">    instantiated.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model : Model</span>
+<span class="sd">        Machine Learning model to use. See :doc:`/plugins/dffml_model` for</span>
+<span class="sd">        models options.</span>
+<span class="sd">    *args : list</span>
+<span class="sd">        Input data for training. Could be a ``dict``, :py:class:`Repo`,</span>
+<span class="sd">        filename, one of the data :doc:`/plugins/dffml_source`, or a filename</span>
+<span class="sd">        with the extension being one of the data sources.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sources</span> <span class="o">=</span> <span class="n">_repos_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span> <span class="k">as</span> <span class="n">sources</span><span class="p">,</span> <span class="n">model</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">,</span> <span class="n">model</span><span class="p">()</span> <span class="k">as</span> <span class="n">mctx</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="n">mctx</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">sctx</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="accuracy"><a class="viewcode-back" href="../../api/high_level.html#dffml.high_level.accuracy">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BaseSource</span><span class="p">,</span> <span class="n">Repo</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Assess the accuracy of a machine learning model.</span>
+
+<span class="sd">    Provide records to the model to assess the percent accuracy of its</span>
+<span class="sd">    prediction abilities. The model should be already instantiated and trained.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model : Model</span>
+<span class="sd">        Machine Learning model to use. See :doc:`/plugins/dffml_model` for</span>
+<span class="sd">        models options.</span>
+<span class="sd">    *args : list</span>
+<span class="sd">        Input data for training. Could be a ``dict``, :py:class:`Repo`,</span>
+<span class="sd">        filename, one of the data :doc:`/plugins/dffml_source`, or a filename</span>
+<span class="sd">        with the extension being one of the data sources.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        A decimal value representing the percent of the time the model made the</span>
+<span class="sd">        correct prediction. For some models this has another meaning. Please see</span>
+<span class="sd">        the documentation for the model your using for further details.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sources</span> <span class="o">=</span> <span class="n">_repos_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span> <span class="k">as</span> <span class="n">sources</span><span class="p">,</span> <span class="n">model</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">,</span> <span class="n">model</span><span class="p">()</span> <span class="k">as</span> <span class="n">mctx</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="k">await</span> <span class="n">mctx</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">sctx</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="predict"><a class="viewcode-back" href="../../api/high_level.html#dffml.high_level.predict">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BaseSource</span><span class="p">,</span> <span class="n">Repo</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+    <span class="n">update</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">keep_repo</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make a prediction using a machine learning model.</span>
+
+<span class="sd">    The model must be trained before using it to make a prediction.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model : Model</span>
+<span class="sd">        Machine Learning model to use. See :doc:`/plugins/dffml_model` for</span>
+<span class="sd">        models options.</span>
+<span class="sd">    *args : list</span>
+<span class="sd">        Input data for prediction. Could be a ``dict``, :py:class:`Repo`,</span>
+<span class="sd">        filename, or one of the data :doc:`/plugins/dffml_source`.</span>
+<span class="sd">    update : boolean, optional</span>
+<span class="sd">        If ``True`` prediction data within records will be written back to all</span>
+<span class="sd">        sources given. Defaults to ``False``.</span>
+<span class="sd">    keep_repo : boolean, optional</span>
+<span class="sd">        If ``True`` the results will be kept as their ``Repo`` objects instead</span>
+<span class="sd">        of being converted to a ``(repo.key, features, predictions)`` tuple.</span>
+<span class="sd">        Defaults to ``False``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    asynciterator</span>
+<span class="sd">        ``Repo`` objects or ``(repo.key, features, predictions)`` tuple.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sources</span> <span class="o">=</span> <span class="n">_repos_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span> <span class="k">as</span> <span class="n">sources</span><span class="p">,</span> <span class="n">model</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">,</span> <span class="n">model</span><span class="p">()</span> <span class="k">as</span> <span class="n">mctx</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">mctx</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sctx</span><span class="o">.</span><span class="n">repos</span><span class="p">()):</span>
+                <span class="k">yield</span> <span class="n">repo</span> <span class="k">if</span> <span class="n">keep_repo</span> <span class="k">else</span> <span class="p">(</span>
+                    <span class="n">repo</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
+                    <span class="n">repo</span><span class="o">.</span><span class="n">features</span><span class="p">(),</span>
+                    <span class="n">repo</span><span class="o">.</span><span class="n">predictions</span><span class="p">(),</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">update</span><span class="p">:</span>
+                    <span class="k">await</span> <span class="n">sctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Intel
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

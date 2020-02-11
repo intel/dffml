@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>About &mdash; DFFML 0.3.2 documentation</title>
+  <title>About &mdash; DFFML 0.3.3 documentation</title>
   
 
   
@@ -36,7 +36,7 @@
     <link rel="author" title="About these documents" href="#" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Model Quickstart" href="quickstart/model.html" />
+    <link rel="next" title="Installation" href="installation.html" />
     <link rel="prev" title="Welcome to DFFML!" href="index.html" /> 
 </head>
 
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
             
           
@@ -85,9 +85,10 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#why-dffml">Why DFFML</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#architecture">Architecture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#machine-learning">Machine Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#data-flows-directed-graph-execution">Data Flows - Directed Graph Execution</a></li>
@@ -97,16 +98,25 @@
 <li class="toctree-l2"><a class="reference internal" href="#users">Users</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart/model.html">Model Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing/index.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
@@ -175,18 +185,41 @@
             
   <div class="section" id="about">
 <h1>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h1>
-<p>This project is for your if:</p>
+<p>Data Flow Facilitator for Machine Learning (DFFML) makes it easy to generate
+datasets, train and use machine learning models, and integrate machine learning
+into new or existing applications. It provides APIs for dataset generation,
+storage, and model definition.</p>
 <ul class="simple">
-<li><p>You want to apply machine learning by just bringing your data</p>
+<li><p>Models handle implementations of machine learning algorithms.
+Likely wrapping code from a popular machine learning framework.</p></li>
+<li><p>Sources handle the storage of datasets, saving and loading them from files,
+databases, remote APIs, etc.</p></li>
+<li><p>DataFlows are directed graphs used to generate a dataset, as well as modify
+existing datasets. They can also be used to do non-machine learning tasks, you
+could use them to build a web app for instance.</p></li>
+</ul>
+<p>You’ll find the existing implementations of all of these on their respective
+<a class="reference internal" href="plugins/index.html#plugins"><span class="std std-ref">Plugins</span></a> pages. DFFML has a plugin based architecture, which allows us to
+include some sources, models, and operations as a part of the main package,
+<code class="docutils literal notranslate"><span class="pre">dffml</span></code>, and other functionality in more specific packages.</p>
+<div class="section" id="why-dffml">
+<h2>Why DFFML<a class="headerlink" href="#why-dffml" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>You want a “just bring your data” approach to machine learning.</p>
 <ul>
-<li><p>No need to deal with the various specifics of ML libraries</p></li>
+<li><p>No need to write code if you don’t want to, use popular machine learning
+libraries via the command line, high level Python abstraction, or HTTP API.</p></li>
 </ul>
 </li>
 <li><p>You want to do machine learning on a new problem that you don’t have a dataset
-for, so you need to generate it.</p></li>
-<li><p>You want to use directed graph execution to write code that runs concurrently
-with managed locking.</p></li>
+for, so you need to generate it.</p>
+<ul>
+<li><p>Directed Graph Execution lets you write code that runs concurrently with
+managed locking. Making the feature engineering iteration process very fast.</p></li>
 </ul>
+</li>
+</ul>
+</div>
 <div class="section" id="architecture">
 <h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
 <p>This is a high level overview of how DFFML works.</p>
@@ -242,7 +275,7 @@ own plugins.</p>
 <h2>Team<a class="headerlink" href="#team" title="Permalink to this headline">¶</a></h2>
 <p>We have an awesome team working on the project. We hold weekly meetings
 and have a mailing list and chat! If you want to get involved, ask questions, or
-get help getting started, see <a class="reference internal" href="community.html"><span class="doc">Community</span></a>.</p>
+get help getting started, see <a class="reference internal" href="contact.html"><span class="doc">Contact Us</span></a>.</p>
 <p>We participated in Google Summer of Code 2019 under the Python Software
 Foundation. A big thanks to our students, Yash and Sudharsana!</p>
 <ul class="simple">
@@ -253,7 +286,7 @@ Foundation. A big thanks to our students, Yash and Sudharsana!</p>
 <h2>Users<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h2>
 <p>The following is a list of organizations and projects using DFFML. Please let us
 know if you are using DFFML and we’ll add you to the list. If you want help
-using DFFML, see the <a class="reference internal" href="community.html"><span class="doc">Community</span></a> page.</p>
+using DFFML, see the <a class="reference internal" href="contact.html"><span class="doc">Contact Us</span></a> page.</p>
 <ul class="simple">
 <li><p>Intel</p>
 <ul>
@@ -272,7 +305,7 @@ using DFFML, see the <a class="reference internal" href="community.html"><span c
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="quickstart/model.html" class="btn btn-neutral float-right" title="Model Quickstart" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral float-left" title="Welcome to DFFML!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
