@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; DFFML 0.3.2 documentation</title>
+  <title>Index &mdash; DFFML 0.3.3 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
             
           
@@ -84,18 +84,30 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="community.html">Community</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -190,6 +202,8 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/high_level.html#dffml.high_level.accuracy">accuracy() (in module dffml.high_level)</a>
+</li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryLockNetworkContext.acquire">acquire() (dffml.df.memory.MemoryLockNetworkContext method)</a>
 </li>
       <li><a href="api/base.html#dffml.base.BaseConfigurable.add_label">add_label() (dffml.base.BaseConfigurable class method)</a>
@@ -226,7 +240,13 @@
 </li>
       <li><a href="api/base.html#dffml.base.BaseConfigurable">BaseConfigurable (class in dffml.base)</a>
 </li>
+      <li><a href="api/base.html#dffml.base.BaseConfigurableMetaClass">BaseConfigurableMetaClass (class in dffml.base)</a>
+</li>
       <li><a href="api/df/base.html#dffml.df.base.BaseContextHandle">BaseContextHandle (class in dffml.df.base)</a>
+</li>
+      <li><a href="api/db/base.html#dffml.db.base.BaseDatabase">BaseDatabase (class in dffml.db.base)</a>
+</li>
+      <li><a href="api/db/base.html#dffml.db.base.BaseDatabaseContext">BaseDatabaseContext (class in dffml.db.base)</a>
 </li>
       <li><a href="api/base.html#dffml.base.BaseDataFlowFacilitatorObject">BaseDataFlowFacilitatorObject (class in dffml.base)</a>
 </li>
@@ -254,10 +274,10 @@
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseLockNetwork">BaseLockNetwork (class in dffml.df.base)</a>
 </li>
-      <li><a href="api/df/base.html#dffml.df.base.BaseLockNetworkContext">BaseLockNetworkContext (class in dffml.df.base)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/df/base.html#dffml.df.base.BaseLockNetworkContext">BaseLockNetworkContext (class in dffml.df.base)</a>
+</li>
       <li><a href="api/df/memory.html#dffml.df.memory.BaseMemoryDataFlowObject">BaseMemoryDataFlowObject (class in dffml.df.memory)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseOperationImplementationNetwork">BaseOperationImplementationNetwork (class in dffml.df.base)</a>
@@ -290,6 +310,10 @@
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestrator.basic_config">basic_config() (dffml.df.memory.MemoryOrchestrator class method)</a>
 </li>
+      <li><a href="api/source/file.html#dffml.source.file.BinaryFileSource">BinaryFileSource (class in dffml.source.file)</a>
+</li>
+      <li><a href="api/source/file.html#dffml.source.file.BinaryFileSourceConfig">BinaryFileSourceConfig (class in dffml.source.file)</a>
+</li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputNetworkContextEntry.by_origin">by_origin() (dffml.df.memory.MemoryInputNetworkContextEntry property)</a>
 </li>
   </ul></td>
@@ -298,12 +322,18 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/db/base.html#dffml.db.base.Condition">Condition (in module dffml.db.base)</a>
+</li>
       <li><a href="api/df/types.html#dffml.df.types.Operation.conditions">conditions() (dffml.df.types.Operation property)</a>
 </li>
-      <li><a href="api/model/base.html#dffml.model.model.Model.CONFIG">CONFIG (dffml.model.model.Model attribute)</a>
+      <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabase.CONFIG">CONFIG (dffml.db.sqlite.SqliteDatabase attribute)</a>
 
       <ul>
+        <li><a href="api/model/base.html#dffml.model.model.Model.CONFIG">(dffml.model.model.Model attribute)</a>
+</li>
         <li><a href="api/source/file.html#dffml.source.csv.CSVSource.CONFIG">(dffml.source.csv.CSVSource attribute)</a>
+</li>
+        <li><a href="api/source/file.html#dffml.source.file.BinaryFileSource.CONFIG">(dffml.source.file.BinaryFileSource attribute)</a>
 </li>
         <li><a href="api/source/file.html#dffml.source.file.FileSource.CONFIG">(dffml.source.file.FileSource attribute)</a>
 </li>
@@ -336,9 +366,11 @@
 </li>
       <li><a href="api/base.html#dffml.base.ConfigurableParsingNamespace">ConfigurableParsingNamespace (class in dffml.base)</a>
 </li>
-      <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputNetwork.CONTEXT">CONTEXT (dffml.df.memory.MemoryInputNetwork attribute)</a>
+      <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabase.CONTEXT">CONTEXT (dffml.db.sqlite.SqliteDatabase attribute)</a>
 
       <ul>
+        <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputNetwork.CONTEXT">(dffml.df.memory.MemoryInputNetwork attribute)</a>
+</li>
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryKeyValueStore.CONTEXT">(dffml.df.memory.MemoryKeyValueStore attribute)</a>
 </li>
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryLockNetwork.CONTEXT">(dffml.df.memory.MemoryLockNetwork attribute)</a>
@@ -364,6 +396,14 @@
 </li>
       <li><a href="api/base.html#dffml.base.convert_value">convert_value() (in module dffml.base)</a>
 </li>
+      <li><a href="api/db/base.html#dffml.db.base.BaseDatabaseContext.create_table">create_table() (dffml.db.base.BaseDatabaseContext method)</a>
+
+      <ul>
+        <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabaseContext.create_table">(dffml.db.sqlite.SqliteDatabaseContext method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/db/sql.html#dffml.db.sql.SQLDatabaseContext.create_table_query">create_table_query() (dffml.db.sql.SQLDatabaseContext method)</a>
+</li>
       <li><a href="api/source/file.html#dffml.source.csv.CSVSource">CSVSource (class in dffml.source.csv)</a>
 </li>
       <li><a href="api/source/file.html#dffml.source.csv.CSVSourceConfig">CSVSourceConfig (class in dffml.source.csv)</a>
@@ -388,6 +428,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/feature.html#dffml.feature.feature.Data">Data (class in dffml.feature.feature)</a>
 </li>
+      <li><a href="api/db/base.html#dffml.db.base.DatabaseContextConstraint">DatabaseContextConstraint (class in dffml.db.base)</a>
+</li>
       <li><a href="api/df/types.html#dffml.df.types.DataFlow">DataFlow (class in dffml.df.types)</a>
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestratorContextConfig.dataflow">dataflow() (dffml.df.memory.MemoryOrchestratorContextConfig property)</a>
@@ -410,10 +452,16 @@
       </ul></li>
       <li><a href="api/base.html#module-dffml.base">dffml.base (module)</a>
 </li>
-      <li><a href="api/df/base.html#module-dffml.df.base">dffml.df.base (module)</a>
+      <li><a href="api/db/base.html#module-dffml.db.base">dffml.db.base (module)</a>
+</li>
+      <li><a href="api/db/sql.html#module-dffml.db.sql">dffml.db.sql (module)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/db/sqlite.html#module-dffml.db.sqlite">dffml.db.sqlite (module)</a>
+</li>
+      <li><a href="api/df/base.html#module-dffml.df.base">dffml.df.base (module)</a>
+</li>
       <li><a href="api/df/memory.html#module-dffml.df.memory">dffml.df.memory (module)</a>
 </li>
       <li><a href="api/df/types.html#module-dffml.df.types">dffml.df.types (module)</a>
@@ -514,8 +562,16 @@
         <li><a href="api/df/types.html#dffml.df.types.Operation.inputs">(dffml.df.types.Operation property)</a>
 </li>
       </ul></li>
+      <li><a href="api/db/base.html#dffml.db.base.BaseDatabaseContext.insert">insert() (dffml.db.base.BaseDatabaseContext method)</a>
+
+      <ul>
+        <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabaseContext.insert">(dffml.db.sqlite.SqliteDatabaseContext method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/db/sql.html#dffml.db.sql.SQLDatabaseContext.insert_query">insert_query() (dffml.db.sql.SQLDatabaseContext method)</a>
+</li>
       <li><a href="api/df/types.html#dffml.df.types.Operation.instance_name">instance_name() (dffml.df.types.Operation property)</a>
 </li>
       <li><a href="api/base.html#dffml.base.is_config_dict">is_config_dict() (in module dffml.base)</a>
@@ -568,15 +624,23 @@
         <li><a href="api/feature.html#dffml.feature.feature.Feature.load">(dffml.feature.feature.Feature class method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/types.html#dffml.df.types.Definition.lock">lock() (dffml.df.types.Definition property)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/base.html#dffml.df.base.BaseOrchestratorConfig.lock_network">lock_network() (dffml.df.base.BaseOrchestratorConfig property)</a>
 </li>
       <li><a href="api/base.html#dffml.base.LoggingLogger.logger">logger() (dffml.base.LoggingLogger property)</a>
 </li>
       <li><a href="api/base.html#dffml.base.LoggingLogger">LoggingLogger (class in dffml.base)</a>
+</li>
+      <li><a href="api/db/base.html#dffml.db.base.BaseDatabaseContext.lookup">lookup() (dffml.db.base.BaseDatabaseContext method)</a>
+
+      <ul>
+        <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabaseContext.lookup">(dffml.db.sqlite.SqliteDatabaseContext method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/db/sql.html#dffml.db.sql.SQLDatabaseContext.lookup_query">lookup_query() (dffml.db.sql.SQLDatabaseContext method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -584,6 +648,8 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/db/sql.html#dffml.db.sql.SQLDatabaseContext.make_condition_expression">make_condition_expression() (dffml.db.sql.SQLDatabaseContext class method)</a>
+</li>
       <li><a href="api/base.html#dffml.base.make_config">make_config() (in module dffml.base)</a>
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryDataFlowObjectContextConfig">MemoryDataFlowObjectContextConfig (class in dffml.df.memory)</a>
@@ -620,10 +686,10 @@
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryOperationNetworkContext">MemoryOperationNetworkContext (class in dffml.df.memory)</a>
 </li>
-      <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestrator">MemoryOrchestrator (class in dffml.df.memory)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestrator">MemoryOrchestrator (class in dffml.df.memory)</a>
+</li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestratorConfig">MemoryOrchestratorConfig (class in dffml.df.memory)</a>
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestratorContext">MemoryOrchestratorContext (class in dffml.df.memory)</a>
@@ -696,6 +762,8 @@
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseOrchestratorConfig.operation_network">operation_network() (dffml.df.base.BaseOrchestratorConfig property)</a>
 </li>
+      <li><a href="api/df/base.html#dffml.df.base.OperationException">OperationException</a>
+</li>
       <li><a href="api/df/base.html#dffml.df.base.OperationImplementation">OperationImplementation (class in dffml.df.base)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.OperationImplementationContext">OperationImplementationContext (class in dffml.df.base)</a>
@@ -741,7 +809,11 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/model/base.html#dffml.model.model.ModelContext.predict">predict() (dffml.model.model.ModelContext method)</a>
+
+      <ul>
+        <li><a href="api/high_level.html#dffml.high_level.predict">(in module dffml.high_level)</a>
 </li>
+      </ul></li>
       <li><a href="api/repo.html#dffml.repo.Repo.predicted">predicted() (dffml.repo.Repo method)</a>
 </li>
       <li><a href="api/repo.html#dffml.repo.Repo.prediction">prediction() (dffml.repo.Repo method)</a>
@@ -764,8 +836,18 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/base.html#dffml.df.base.BaseOrchestratorConfig.rchecker">rchecker() (dffml.df.base.BaseOrchestratorConfig property)</a>
 </li>
+      <li><a href="api/db/base.html#dffml.db.base.BaseDatabaseContext.remove">remove() (dffml.db.base.BaseDatabaseContext method)</a>
+
+      <ul>
+        <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabaseContext.remove">(dffml.db.sqlite.SqliteDatabaseContext method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/db/sql.html#dffml.db.sql.SQLDatabaseContext.remove_query">remove_query() (dffml.db.sql.SQLDatabaseContext method)</a>
+</li>
       <li><a href="api/repo.html#dffml.repo.Repo">Repo (class in dffml.repo)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/source/memory.html#dffml.source.memory.MemorySourceContext.repos">repos() (dffml.source.memory.MemorySourceContext method)</a>
 
       <ul>
@@ -776,8 +858,6 @@
         <li><a href="api/source/base.html#dffml.source.source.ValidationSourcesContext.repos">(dffml.source.source.ValidationSourcesContext method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestratorContextConfig.reuse">reuse() (dffml.df.memory.MemoryOrchestratorContextConfig property)</a>
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.MemoryOrchestratorContext.run">run() (dffml.df.memory.MemoryOrchestratorContext method)</a>
@@ -798,9 +878,17 @@
 </li>
       <li><a href="api/source/base.html#dffml.source.source.SourcesContext">SourcesContext (class in dffml.source.source)</a>
 </li>
+      <li><a href="api/df/types.html#dffml.df.types.Definition.spec">spec() (dffml.df.types.Definition property)</a>
+</li>
+      <li><a href="api/db/sql.html#dffml.db.sql.SQLDatabaseContext">SQLDatabaseContext (class in dffml.db.sql)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/df/types.html#dffml.df.types.Definition.spec">spec() (dffml.df.types.Definition property)</a>
+      <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabase">SqliteDatabase (class in dffml.db.sqlite)</a>
+</li>
+      <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabaseConfig">SqliteDatabaseConfig (class in dffml.db.sqlite)</a>
+</li>
+      <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabaseContext">SqliteDatabaseContext (class in dffml.db.sqlite)</a>
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Stage">Stage (class in dffml.df.types)</a>
 </li>
@@ -818,6 +906,10 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/high_level.html#dffml.high_level.train">train() (in module dffml.high_level)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/base.html#dffml.base.BaseConfigurable.type_for">type_for() (dffml.base.BaseConfigurable class method)</a>
 </li>
   </ul></td>
@@ -833,11 +925,23 @@
 </li>
       </ul></li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/db/base.html#dffml.db.base.BaseDatabaseContext.update">update() (dffml.db.base.BaseDatabaseContext method)</a>
+
+      <ul>
+        <li><a href="api/db/sqlite.html#dffml.db.sqlite.SqliteDatabaseContext.update">(dffml.db.sqlite.SqliteDatabaseContext method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/db/sql.html#dffml.db.sql.SQLDatabaseContext.update_query">update_query() (dffml.db.sql.SQLDatabaseContext method)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/df/types.html#dffml.df.types.Definition.validate">validate() (dffml.df.types.Definition property)</a>
+</li>
       <li><a href="api/source/base.html#dffml.source.source.ValidationSources">ValidationSources (class in dffml.source.source)</a>
 </li>
   </ul></td>
@@ -857,6 +961,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/base.html#dffml.base.BaseConfigurable.withconfig">withconfig() (dffml.base.BaseConfigurable class method)</a>
+</li>
+      <li><a href="api/base.html#dffml.base.BaseConfigurableMetaClass.wrap">wrap() (dffml.base.BaseConfigurableMetaClass class method)</a>
 </li>
   </ul></td>
 </tr></table>

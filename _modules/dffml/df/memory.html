@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.df.memory &mdash; DFFML 0.3.2 documentation</title>
+  <title>dffml.df.memory &mdash; DFFML 0.3.3 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
             
           
@@ -83,18 +83,30 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../community.html">Community</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -166,7 +178,6 @@
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">traceback</span>
 <span class="kn">import</span> <span class="nn">concurrent.futures</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span><span class="p">,</span> <span class="n">chain</span>
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">asynccontextmanager</span><span class="p">,</span> <span class="n">AsyncExitStack</span><span class="p">,</span> <span class="n">ExitStack</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
@@ -184,6 +195,7 @@
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">ContextNotPresent</span><span class="p">,</span> <span class="n">DefinitionNotInContext</span>
 <span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">Definition</span><span class="p">,</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">Stage</span><span class="p">,</span> <span class="n">DataFlow</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">OperationException</span><span class="p">,</span>
     <span class="n">OperationImplementation</span><span class="p">,</span>
     <span class="n">FailedToLoadOperationImplementation</span><span class="p">,</span>
     <span class="n">BaseDataFlowObject</span><span class="p">,</span>
@@ -215,11 +227,10 @@
     <span class="n">BaseOrchestrator</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">entry_point</span><span class="p">,</span> <span class="n">EntrypointNotFound</span>
+<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">entrypoint</span>
 <span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
-<span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="kn">import</span> <span class="n">CMD</span>
-<span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">ignore_args</span><span class="p">,</span> <span class="n">traverse_get</span>
-<span class="kn">from</span> <span class="nn">..util.asynchelper</span> <span class="kn">import</span> <span class="n">context_stacker</span><span class="p">,</span> <span class="n">aenter_stack</span><span class="p">,</span> <span class="n">concurrently</span>
+<span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">ignore_args</span>
+<span class="kn">from</span> <span class="nn">..util.asynchelper</span> <span class="kn">import</span> <span class="n">aenter_stack</span><span class="p">,</span> <span class="n">concurrently</span>
 
 <span class="kn">from</span> <span class="nn">.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
 
@@ -254,7 +265,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
 
 
-<div class="viewcode-block" id="MemoryKeyValueStore"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStore">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryKeyValueStore"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStore">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryKeyValueStore</span><span class="p">(</span><span class="n">BaseKeyValueStore</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Key Value store backed by dict</span>
@@ -298,7 +309,7 @@
         <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__parameters</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">parameter</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Input</span><span class="p">]:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">inputs_and_parents_recursive</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Input</span><span class="p">]:</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span>
             <span class="o">*</span><span class="p">[</span>
                 <span class="p">[</span><span class="n">parameter</span><span class="o">.</span><span class="n">origin</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">get_parents</span><span class="p">())</span>
@@ -665,7 +676,7 @@
                 <span class="k">yield</span> <span class="n">parameter_set</span></div></div>
 
 
-<div class="viewcode-block" id="MemoryInputNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetwork">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryInputNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryInputNetwork</span><span class="p">(</span><span class="n">BaseInputNetwork</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Inputs backed by a set</span>
@@ -718,7 +729,7 @@
             <span class="k">yield</span> <span class="n">operation</span></div></div>
 
 
-<div class="viewcode-block" id="MemoryOperationNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetwork">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryOperationNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryOperationNetwork</span><span class="p">(</span><span class="n">BaseOperationNetwork</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Operations backed by a set</span>
@@ -825,7 +836,7 @@
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="MemoryRedundancyChecker"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyChecker">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryRedundancyChecker"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyChecker">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryRedundancyChecker</span><span class="p">(</span><span class="n">BaseRedundancyChecker</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Redundancy Checker backed by Memory Key Value Store</span>
@@ -897,7 +908,10 @@
         <span class="c1"># Acquire the master lock to find and or create needed locks</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
             <span class="c1"># Get all the inputs up the ancestry tree</span>
-            <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span> <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">inputs</span><span class="p">()]</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">item</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">inputs_and_parents_recursive</span><span class="p">()</span>
+            <span class="p">]</span>
             <span class="c1"># Only lock the ones which require it</span>
             <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">lock</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
                 <span class="c1"># Create the lock for the input if not present</span>
@@ -917,7 +931,7 @@
             <span class="k">yield</span></div></div>
 
 
-<div class="viewcode-block" id="MemoryLockNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryLockNetwork">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryLockNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryLockNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryLockNetwork</span><span class="p">(</span><span class="n">BaseLockNetwork</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
 
     <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">MemoryLockNetworkContext</span></div>
@@ -1177,7 +1191,7 @@
                 <span class="k">yield</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span></div></div>
 
 
-<div class="viewcode-block" id="MemoryOperationImplementationNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetwork">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryOperationImplementationNetwork</span><span class="p">(</span>
     <span class="n">BaseOperationImplementationNetwork</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span>
 <span class="p">):</span>
@@ -1498,7 +1512,18 @@
                     <span class="c1"># Get the tasks exception if any</span>
                     <span class="n">exception</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">exception</span><span class="p">()</span>
                     <span class="k">if</span> <span class="n">strict</span> <span class="ow">and</span> <span class="n">exception</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="n">exception</span>
+                        <span class="k">if</span> <span class="n">task</span> <span class="ow">is</span> <span class="n">input_set_enters_network</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="n">exception</span>
+                        <span class="k">raise</span> <span class="n">OperationException</span><span class="p">(</span>
+                            <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2">): </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                <span class="n">task</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">,</span>
+                                <span class="n">task</span><span class="o">.</span><span class="n">operation</span><span class="o">.</span><span class="n">inputs</span><span class="p">,</span>
+                                <span class="p">{</span>
+                                    <span class="n">parameter</span><span class="o">.</span><span class="n">key</span><span class="p">:</span> <span class="n">parameter</span><span class="o">.</span><span class="n">value</span>
+                                    <span class="k">async</span> <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">task</span><span class="o">.</span><span class="n">parameter_set</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span>
+                                <span class="p">},</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span> <span class="kn">from</span> <span class="nn">exception</span>
                     <span class="k">elif</span> <span class="n">exception</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="c1"># If there was an exception log it</span>
                         <span class="n">output</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
@@ -1527,6 +1552,10 @@
                                 <span class="c1"># Dispatch the operation and input set for running</span>
                                 <span class="n">dispatch_operation</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span>
                                     <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span>
+                                <span class="p">)</span>
+                                <span class="n">dispatch_operation</span><span class="o">.</span><span class="n">operation</span> <span class="o">=</span> <span class="n">operation</span>
+                                <span class="n">dispatch_operation</span><span class="o">.</span><span class="n">parameter_set</span> <span class="o">=</span> <span class="p">(</span>
+                                    <span class="n">parameter_set</span>
                                 <span class="p">)</span>
                                 <span class="n">tasks</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dispatch_operation</span><span class="p">)</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
@@ -1593,7 +1622,7 @@
             <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="MemoryOrchestrator"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestrator">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryOrchestrator"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestrator">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MemoryOrchestrator</span><span class="p">(</span><span class="n">BaseOrchestrator</span><span class="p">,</span> <span class="n">BaseMemoryDataFlowObject</span><span class="p">):</span>
 
     <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">MemoryOrchestratorContext</span>
