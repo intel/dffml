@@ -16,6 +16,3 @@ setup.py which specifies where to find your Feature subclass within your module.
 >>> )
 """
 from .feature import Data, Feature, Features, LoggingDict, DefFeature
-
-# Declares dffml.feature is a namespace package
-__import__("pkg_resources").declare_namespace(__name__)

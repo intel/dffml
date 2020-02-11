@@ -16,6 +16,3 @@ setup.py which specifies where to find your Model subclass within your module.
 >>> )
 """
 from .model import Model, ModelContext
-
-# Declares dffml.model as a namespace package
-__import__("pkg_resources").declare_namespace(__name__)
