@@ -1,0 +1,643 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Quickstart &mdash; DFFML 0.3.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorials" href="../tutorials/index.html" />
+    <link rel="prev" title="Installation" href="../installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example-dataset">Example Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#command-line">Command Line</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#command-line-flags-explained">Command Line Flags Explained</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#python">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-sources">Data Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#async">Async</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Quickstart</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/quickstart/model.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="quickstart">
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
+<p>In this example we have employee data telling us the employee’s years of
+experience, our level of trust in them, their level of expertise, and their
+salary. Our goal will be to predict what the salary of a new hire should be,
+given their years of experience, our level of trust in them, and their level of
+expertise.</p>
+<p>The model we’ll be using is a part of <code class="docutils literal notranslate"><span class="pre">dffml-model-scikit</span></code>, which is
+another separate Python package from DFFML which we can install via <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install -U dffml-model-scikit
+</pre></div>
+</div>
+<p>We will be using scikit’s linear regression model. Other available models can be
+found on the <a class="reference internal" href="../plugins/dffml_model.html"><span class="doc">Models</span></a> plugin page.</p>
+<div class="section" id="example-dataset">
+<h2>Example Dataset<a class="headerlink" href="#example-dataset" title="Permalink to this headline">¶</a></h2>
+<p>We’ll be using the following simple dataset for this example.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 39%" />
+<col style="width: 21%" />
+<col style="width: 25%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Years of Experience</p></th>
+<th class="head"><p>Expertise</p></th>
+<th class="head"><p>Trust Factor</p></th>
+<th class="head"><p>Salary</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0.1</p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>3</p></td>
+<td><p>0.2</p></td>
+<td><p>20</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>5</p></td>
+<td><p>0.3</p></td>
+<td><p>30</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>7</p></td>
+<td><p>0.4</p></td>
+<td><p>40</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>9</p></td>
+<td><p>0.5</p></td>
+<td><p>50</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>11</p></td>
+<td><p>0.6</p></td>
+<td><p>60</p></td>
+</tr>
+</tbody>
+</table>
+<p>Rows 0-3 will be used as the training data, and 4-5 will be used as the test
+data. We’ll be asking for a prediction of the salary for the following.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 46%" />
+<col style="width: 25%" />
+<col style="width: 29%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Years of Experience</p></th>
+<th class="head"><p>Expertise</p></th>
+<th class="head"><p>Trust Factor</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>13</p></td>
+<td><p>0.7</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>15</p></td>
+<td><p>0.8</p></td>
+</tr>
+</tbody>
+</table>
+<p>Let’s create the <code class="docutils literal notranslate"><span class="pre">training.csv</span></code>, <code class="docutils literal notranslate"><span class="pre">test.csv</span></code>, and <code class="docutils literal notranslate"><span class="pre">predict.csv</span></code> files.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">training</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">Years</span><span class="p">,</span><span class="n">Expertise</span><span class="p">,</span><span class="n">Trust</span><span class="p">,</span><span class="n">Salary</span>
+<span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">10</span>
+<span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mi">20</span>
+<span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="mi">30</span>
+<span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mf">0.4</span><span class="p">,</span><span class="mi">40</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">Years</span><span class="p">,</span><span class="n">Expertise</span><span class="p">,</span><span class="n">Trust</span><span class="p">,</span><span class="n">Salary</span>
+<span class="mi">4</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">50</span>
+<span class="mi">5</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mf">0.6</span><span class="p">,</span><span class="mi">60</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">predict</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">Years</span><span class="p">,</span><span class="n">Expertise</span><span class="p">,</span><span class="n">Trust</span>
+<span class="mi">6</span><span class="p">,</span><span class="mi">13</span><span class="p">,</span><span class="mf">0.7</span>
+<span class="mi">7</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mf">0.8</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="command-line">
+<h2>Command Line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h2>
+<p>For each command, we specify which model we want to use, and what our data
+sources are. A detailed explanation of all the command line flags follows.</p>
+<p>First we train the model. Our data source is the <code class="docutils literal notranslate"><span class="pre">training.csv</span></code> file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">scikitlr</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">training</span><span class="o">.</span><span class="n">csv</span>
+</pre></div>
+</div>
+<p>We then assess the models accuracy using the test data from <code class="docutils literal notranslate"><span class="pre">test.csv</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">scikitlr</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span>
+</pre></div>
+</div>
+<p>The test and training data are very simple, so the model should report 100%
+accuracy.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.0</span>
+</pre></div>
+</div>
+<p>Finally, we ask the model to make a prediction for each row in the
+<code class="docutils literal notranslate"><span class="pre">predict.csv</span></code> file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">scikitlr</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">predict</span><span class="o">.</span><span class="n">csv</span>
+</pre></div>
+</div>
+<p>DFFML outputs in JSON format since it’s very common and makes it easy to use the
+DFFML command line from other scripts or languages.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+            <span class="nt">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">1.4</span><span class="p">,</span>
+            <span class="nt">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">6</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-02-07T14:17:08Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;Salary&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mf">70.13972055888223</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+            <span class="nt">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">1.6</span><span class="p">,</span>
+            <span class="nt">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">7</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-02-07T14:17:08Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;Salary&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mf">80.15968063872255</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">&quot;confidence&quot;</span></code> value is determined by the underlying model implementation.
+The scikit linear regression model just reports whatever the accuracy was on the
+test dataset as the confidence.</p>
+<div class="section" id="command-line-flags-explained">
+<h3>Command Line Flags Explained<a class="headerlink" href="#command-line-flags-explained" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">-model</span> <span class="pre">scikitlr</span></code></p>
+<ul class="simple">
+<li><p>Use the linear regression model from the <code class="docutils literal notranslate"><span class="pre">dffml-model-scikit</span></code> package.
+More options for the model to use can be found on the
+<a class="reference internal" href="../plugins/dffml_model.html"><span class="doc">Models</span></a> plugin page.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-model-features</span> <span class="pre">Years:int:1</span> <span class="pre">Expertise:int:1</span> <span class="pre">Trust:float:1</span></code></p>
+<ul>
+<li><p>The features the model should use to learn from. We specify the following
+attributes about each feature.</p>
+<ul>
+<li><p>Name as it will appear in our data source (the column header in the
+<code class="docutils literal notranslate"><span class="pre">training.csv</span></code> file).</p></li>
+<li><p>Data type. Years and Expertise are whole number (integer values), so we
+say <code class="docutils literal notranslate"><span class="pre">int</span></code>. Trust is a percentage, measured from 0.0 being 0% to 1.0
+being 100%. For numbers with decimal places in them we say <code class="docutils literal notranslate"><span class="pre">float</span></code>.</p></li>
+<li><p>Dimensions of data.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>All our features are a single value, so we say <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p>If we had a feature which was ten values, maybe some kind of time
+series data, we’d say <code class="docutils literal notranslate"><span class="pre">10</span></code>. If we had a feature which was a
+flattened 28 by 28 image we’d say <code class="docutils literal notranslate"><span class="pre">784</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-model-predict</span> <span class="pre">Salary:int:1</span></code></p>
+<ul class="simple">
+<li><p>The feature the model is trying to learn how to predict. We specify the same
+details as we did with the features to learn from.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-sources</span> <span class="pre">f=csv</span></code></p>
+<ul class="simple">
+<li><p>The data sources to use as training data for the model.</p></li>
+<li><p>We can specify multiple sources here in the following fashion.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">-sources</span> <span class="pre">one=csv</span> <span class="pre">two=csv</span> <span class="pre">three=json</span></code></p></li>
+</ul>
+</li>
+<li><p>Sources are <code class="docutils literal notranslate"><span class="pre">tagged</span></code>, which just means that since there can be multiple
+you need to specify a tag to reference the source by when configuring it. On
+the left side of the <code class="docutils literal notranslate"><span class="pre">=</span></code> we put the tag, on the right we put the plugin
+name of the source. We’re using the source that reads <code class="docutils literal notranslate"><span class="pre">.csv</span></code> files, so we
+specify <code class="docutils literal notranslate"><span class="pre">csv</span></code>. The list of sources can be found on the
+<a class="reference internal" href="../plugins/dffml_source.html"><span class="doc">Sources</span></a> plugin page.</p>
+<ul>
+<li><p>We specify <code class="docutils literal notranslate"><span class="pre">f</span></code> as the tag, we could’ve used anything, but <code class="docutils literal notranslate"><span class="pre">f</span></code> will do
+fine (<code class="docutils literal notranslate"><span class="pre">f</span></code> was chosen because it’s a file).</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-source-filename</span> <span class="pre">$stage.csv</span></code></p>
+<ul class="simple">
+<li><p>The filename to be used for the source. On the <a class="reference internal" href="../plugins/dffml_source.html"><span class="doc">Sources</span></a>
+plugin page you can see all of the source plugins and their possible
+arguments.</p></li>
+<li><p>With regards to <code class="docutils literal notranslate"><span class="pre">tagged</span></code> sources, we could have also specified the
+filename using <code class="docutils literal notranslate"><span class="pre">-source-f-filename</span> <span class="pre">$stage.csv</span></code>, since we tagged it as
+<code class="docutils literal notranslate"><span class="pre">f</span></code>. If you have multiple sources you need to specify the arguments to
+each this way.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="python">
+<h2>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h2>
+<p>If we wanted to do everything within Python our file might look like this</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Features</span><span class="p">,</span> <span class="n">DefFeature</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<span class="kn">from</span> <span class="nn">dffml_model_scikit</span> <span class="kn">import</span> <span class="n">LinearRegressionModel</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegressionModel</span><span class="p">(</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
+        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Expertise&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">train</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">40</span><span class="p">},</span>
+<span class="p">)</span>
+
+<span class="c1"># Assess accuracy</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span>
+    <span class="n">accuracy</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+
+<span class="c1"># Make prediction</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">},</span>
+<span class="p">):</span>
+    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The ouput should be as follows</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Accuracy</span><span class="p">:</span> <span class="mf">1.0</span>
+<span class="p">{</span><span class="s1">&#39;Years&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;Expertise&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="s1">&#39;Trust&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="mf">70.0</span><span class="p">}</span>
+<span class="p">{</span><span class="s1">&#39;Years&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;Expertise&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;Trust&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="mf">80.0</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-sources">
+<h2>Data Sources<a class="headerlink" href="#data-sources" title="Permalink to this headline">¶</a></h2>
+<p>DFFML makes it easy to pull data from various sources. All we have to do is
+supply the filenames in place of the data.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">DefFeature</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<span class="kn">from</span> <span class="nn">dffml_model_scikit</span> <span class="kn">import</span> <span class="n">LinearRegressionModel</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegressionModel</span><span class="p">(</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
+        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Expertise&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;training.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+
+<span class="c1"># Make prediction</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">},</span>
+<span class="p">):</span>
+    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="async">
+<h2>Async<a class="headerlink" href="#async" title="Permalink to this headline">¶</a></h2>
+<p>You may have noticed we’re importing from <code class="docutils literal notranslate"><span class="pre">dffml.noasync</span></code>. If you’re using
+<code class="docutils literal notranslate"><span class="pre">asyncio</span></code> then you can just import from <code class="docutils literal notranslate"><span class="pre">dffml</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+
+<span class="kn">from</span> <span class="nn">dffml_model_scikit</span> <span class="kn">import</span> <span class="n">LinearRegressionModel</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">DefFeature</span>
+
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegressionModel</span><span class="p">(</span>
+        <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
+            <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Expertise&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">predict</span><span class="o">=</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Train the model</span>
+    <span class="k">await</span> <span class="n">train</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">40</span><span class="p">},</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Assess accuracy</span>
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span>
+        <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span>
+            <span class="n">model</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
+            <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Make prediction</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>
+        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">},</span>
+    <span class="p">):</span>
+        <span class="n">features</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+
+
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../tutorials/index.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Intel
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
