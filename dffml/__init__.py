@@ -9,6 +9,3 @@ from .source.json import JSONSource
 
 # Models
 from .model import Model, ModelContext
-
-# Used to declare our namespace for resource discovery
-__import__("pkg_resources").declare_namespace(__name__)
