@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Data Flow Base Objects &mdash; DFFML 0.3.2 documentation</title>
+  <title>Data Flow Base Objects &mdash; DFFML 0.3.3 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
             
           
@@ -85,17 +85,24 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Model Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Data Flow</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="types.html">Data Flow Types</a></li>
@@ -111,8 +118,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../util/index.html">API Helper Utilities Reference</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
 </ul>
@@ -410,7 +420,7 @@ the dffml.operation entrypoint.</p>
 
 <dl class="class">
 <dt id="dffml.df.base.OperationImplementation">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">OperationImplementation</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#OperationImplementation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OperationImplementation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">OperationImplementation</code><span class="sig-paren">(</span><em class="sig-param">config: Optional[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#OperationImplementation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OperationImplementation" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="dffml.df.base.OperationImplementation.load">
 <em class="property">classmethod </em><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">loading=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#OperationImplementation.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OperationImplementation.load" title="Permalink to this definition">¶</a></dt>

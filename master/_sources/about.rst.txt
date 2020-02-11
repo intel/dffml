@@ -1,17 +1,39 @@
 About
 =====
 
-This project is for your if:
+Data Flow Facilitator for Machine Learning (DFFML) makes it easy to generate
+datasets, train and use machine learning models, and integrate machine learning
+into new or existing applications. It provides APIs for dataset generation,
+storage, and model definition.
 
-- You want to apply machine learning by just bringing your data
+- Models handle implementations of machine learning algorithms.
+  Likely wrapping code from a popular machine learning framework.
 
-  - No need to deal with the various specifics of ML libraries
+- Sources handle the storage of datasets, saving and loading them from files,
+  databases, remote APIs, etc.
+
+- DataFlows are directed graphs used to generate a dataset, as well as modify
+  existing datasets. They can also be used to do non-machine learning tasks, you
+  could use them to build a web app for instance.
+
+You'll find the existing implementations of all of these on their respective
+:ref:`plugins` pages. DFFML has a plugin based architecture, which allows us to
+include some sources, models, and operations as a part of the main package,
+``dffml``, and other functionality in more specific packages.
+
+Why DFFML
+---------
+
+- You want a "just bring your data" approach to machine learning.
+
+  - No need to write code if you don't want to, use popular machine learning
+    libraries via the command line, high level Python abstraction, or HTTP API.
 
 - You want to do machine learning on a new problem that you don't have a dataset
   for, so you need to generate it.
 
-- You want to use directed graph execution to write code that runs concurrently
-  with managed locking.
+  - Directed Graph Execution lets you write code that runs concurrently with
+    managed locking. Making the feature engineering iteration process very fast.
 
 Architecture
 ------------
@@ -120,7 +142,7 @@ Team
 
 We have an awesome team working on the project. We hold weekly meetings
 and have a mailing list and chat! If you want to get involved, ask questions, or
-get help getting started, see :doc:`community`.
+get help getting started, see :doc:`contact`.
 
 We participated in Google Summer of Code 2019 under the Python Software
 Foundation. A big thanks to our students, Yash and Sudharsana!
@@ -132,7 +154,7 @@ Users
 
 The following is a list of organizations and projects using DFFML. Please let us
 know if you are using DFFML and we'll add you to the list. If you want help
-using DFFML, see the :doc:`community` page.
+using DFFML, see the :doc:`contact` page.
 
 - Intel
 

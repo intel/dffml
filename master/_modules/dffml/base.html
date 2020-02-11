@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.base &mdash; DFFML 0.3.2 documentation</title>
+  <title>dffml.base &mdash; DFFML 0.3.3 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
             
           
@@ -83,19 +83,28 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Model Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
 </ul>
@@ -170,6 +179,7 @@
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">dataclasses</span>
 <span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentParser</span>
@@ -441,7 +451,45 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dest</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
-<div class="viewcode-block" id="BaseConfigurable"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfigurable">[docs]</a><span class="k">class</span> <span class="nc">BaseConfigurable</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseConfigurableMetaClass"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfigurableMetaClass">[docs]</a><span class="k">class</span> <span class="nc">BaseConfigurableMetaClass</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">props</span><span class="p">,</span> <span class="n">module</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Create the class</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">BaseConfigurableMetaClass</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">props</span>
+        <span class="p">)</span>
+        <span class="c1"># Wrap __init__</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="fm">__init__</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">cls</span>
+
+<div class="viewcode-block" id="BaseConfigurableMetaClass.wrap"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfigurableMetaClass.wrap">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If a subclass of BaseConfigurable is passed keyword arguments, convert</span>
+<span class="sd">        them into the instance of the CONFIG class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;CONFIG&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONFIG</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                    <span class="n">error</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">error</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                            <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.CONFIG.__qualname__}</span><span class="s2">&quot;</span>
+                        <span class="p">),</span>
+                    <span class="p">)</span>
+                    <span class="k">raise</span>
+            <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="s2">&quot;__init__() missing 1 required positional argument: &#39;config&#39;&quot;</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">wrapper</span></div></div>
+
+
+<div class="viewcode-block" id="BaseConfigurable"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfigurable">[docs]</a><span class="k">class</span> <span class="nc">BaseConfigurable</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">BaseConfigurableMetaClass</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class which produces a config for itself by providing Args to a CMD (from</span>
 <span class="sd">    dffml.util.cli.base) and then using a CMD after it contains parsed args to</span>
@@ -622,7 +670,7 @@
 
 
 <div class="viewcode-block" id="BaseDataFlowFacilitatorObject"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseDataFlowFacilitatorObject">[docs]</a><span class="k">class</span> <span class="nc">BaseDataFlowFacilitatorObject</span><span class="p">(</span>
-    <span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">,</span> <span class="n">BaseConfigurable</span><span class="p">,</span> <span class="n">Entrypoint</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">ABC</span>
+    <span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">,</span> <span class="n">BaseConfigurable</span><span class="p">,</span> <span class="n">Entrypoint</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Base class for all Data Flow Facilitator objects conforming to the</span>

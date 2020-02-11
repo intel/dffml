@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Base &mdash; DFFML 0.3.2 documentation</title>
+  <title>Base &mdash; DFFML 0.3.3 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Data Flow" href="df/index.html" />
-    <link rel="prev" title="API Reference" href="index.html" /> 
+    <link rel="prev" title="High Level" href="high_level.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
             
           
@@ -85,17 +85,24 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Model Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="high_level.html">High Level</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="df/index.html">Data Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="feature.html">Features</a></li>
@@ -106,8 +113,11 @@
 <li class="toctree-l2"><a class="reference internal" href="util/index.html">API Helper Utilities Reference</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
@@ -243,6 +253,18 @@ parameter doesn’t have a type annotation.</p>
 <dt id="dffml.base.BaseConfigurable.withconfig">
 <em class="property">classmethod </em><code class="sig-name descname">withconfig</code><span class="sig-paren">(</span><em class="sig-param">config</em>, <em class="sig-param">*above</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/base.html#BaseConfigurable.withconfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.base.BaseConfigurable.withconfig" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dffml.base.BaseConfigurableMetaClass">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.base.</code><code class="sig-name descname">BaseConfigurableMetaClass</code><a class="reference internal" href="../_modules/dffml/base.html#BaseConfigurableMetaClass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.base.BaseConfigurableMetaClass" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="dffml.base.BaseConfigurableMetaClass.wrap">
+<em class="property">classmethod </em><code class="sig-name descname">wrap</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/base.html#BaseConfigurableMetaClass.wrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.base.BaseConfigurableMetaClass.wrap" title="Permalink to this definition">¶</a></dt>
+<dd><p>If a subclass of BaseConfigurable is passed keyword arguments, convert
+them into the instance of the CONFIG class.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -391,7 +413,7 @@ list_class. Which will be a class descendent from AsyncContextManagerList.</p>
         <a href="df/index.html" class="btn btn-neutral float-right" title="Data Flow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="high_level.html" class="btn btn-neutral float-left" title="High Level" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

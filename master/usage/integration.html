@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Integrating Machine Learning &mdash; DFFML 0.3.2 documentation</title>
+  <title>Automating Classifciation &mdash; DFFML 0.3.3 documentation</title>
   
 
   
@@ -36,8 +36,8 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="DataFlow Deployment" href="dataflows.html" />
-    <link rel="prev" title="Usage Examples" href="index.html" /> 
+    <link rel="next" title="DataFlow HTTP Deployment" href="dataflows.html" />
+    <link rel="prev" title="Use Cases" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
             
           
@@ -85,14 +85,17 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Model Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage Examples</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Integrating Machine Learning</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Use Cases</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Automating Classifciation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#demo-app-setup">Demo App Setup</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#gathering-data">Gathering Data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pulling-from-the-database">Pulling from the Database</a></li>
@@ -101,16 +104,22 @@
 <li class="toctree-l3"><a class="reference internal" href="#modifying-the-legacy-app">Modifying the Legacy App</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="dataflows.html">DataFlow Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataflows.html">DataFlow HTTP Deployment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mnist.html">MNIST Handwriten Digits</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
@@ -158,9 +167,9 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="index.html">Usage Examples</a> &raquo;</li>
+          <li><a href="index.html">Use Cases</a> &raquo;</li>
         
-      <li>Integrating Machine Learning</li>
+      <li>Automating Classifciation</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -179,10 +188,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="integrating-machine-learning">
-<h1>Integrating Machine Learning<a class="headerlink" href="#integrating-machine-learning" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="automating-classifciation">
+<h1>Automating Classifciation<a class="headerlink" href="#automating-classifciation" title="Permalink to this headline">¶</a></h1>
 <p>This example will show you how to automate a manual classification process,
-determining if a Git repo is maintained or abandoned.</p>
+determining if a Git repo is maintained or abandoned. We’ll be integrating
+Machine Learning into an existing legacy application.</p>
 <p>For this example assume you are a very curious open source software people (if
 you’re here you already are). Since you love looking at GitHub repos in your
 free time, you long ago built a Python 2 based CGI web application where, every
@@ -291,42 +301,66 @@ since that creates more user friendly configs than <code class="docutils literal
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install -U dffml-feature-git dffml-config-yaml
 </pre></div>
 </div>
+<p>The git operations / features rely on <code class="docutils literal notranslate"><span class="pre">tokei</span></code>. We need to download and install
+it first.</p>
+<p>On Linux</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
+  <span class="p">|</span> tar -xvz <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  <span class="nb">echo</span> <span class="s1">&#39;22699e16e71f07ff805805d26ee86ecb9b1052d7879350f7eb9ed87beb0e6b84fbb512963d01b75cec8e80532e4ea29a tokei&#39;</span> <span class="p">|</span> sha384sum -c - <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  sudo mv tokei /usr/local/bin/
+</pre></div>
+</div>
+<p>On OSX</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
+  <span class="p">|</span> tar -xvz <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  <span class="nb">echo</span> <span class="s1">&#39;8c8a1d8d8dd4d8bef93dabf5d2f6e27023777f8553393e269765d7ece85e68837cba4374a2615d83f071dfae22ba40e2 tokei&#39;</span> <span class="p">|</span> sha384sum -c - <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  sudo mv tokei /usr/local/bin/
+</pre></div>
+</div>
 <p>Operations are just Python functions, or classes. They define a routine which
 will be run concurrently with other operations. Here’s an example of the
 <code class="docutils literal notranslate"><span class="pre">git_commits</span></code> operation, which will find the number of commits within a date
 range.</p>
 <p><strong>feature/git/dffml_feature_git/feature/operations.py</strong></p>
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>367
-368
-369
-370
-371
-372
-373
-374
-375
-376
-377
-378
-379
-380
-381
-382</pre></div></td><td class="code"><div class="highlight"><pre><span></span>    <span class="k">await</span> <span class="n">stop</span><span class="p">(</span><span class="n">proc</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;commits&quot;</span><span class="p">:</span> <span class="n">commit_count</span><span class="p">}</span>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368</pre></div></td><td class="code"><div class="highlight"><pre><span></span>    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;langs&quot;</span><span class="p">:</span> <span class="n">lines_by_language_count</span><span class="p">},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;code_to_comment_ratio&quot;</span><span class="p">:</span> <span class="n">language_to_comment_ratio</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">lines_of_code_to_comments</span><span class="p">(</span><span class="n">langs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">code_to_comment_ratio</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+            <span class="mi">100</span>
+            <span class="o">*</span> <span class="n">langs</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">][</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span>
+            <span class="o">/</span> <span class="p">(</span><span class="n">langs</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">][</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">langs</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">][</span><span class="s2">&quot;code&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+        <span class="n">code_to_comment_ratio</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;code_to_comment_ratio&quot;</span><span class="p">:</span> <span class="n">code_to_comment_ratio</span><span class="p">}</span>
 
 
 <span class="nd">@op</span><span class="p">(</span>
-    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;author_lines&quot;</span><span class="p">:</span> <span class="n">author_line_count</span><span class="p">},</span>
-    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;authors&quot;</span><span class="p">:</span> <span class="n">author_count</span><span class="p">},</span>
-<span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">count_authors</span><span class="p">(</span><span class="n">author_lines</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;authors&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">author_lines</span><span class="o">.</span><span class="n">keys</span><span class="p">())}</span>
-
-
-<span class="nd">@op</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;repo&quot;</span><span class="p">:</span> <span class="n">git_repository</span><span class="p">},</span> <span class="n">outputs</span><span class="o">=</span><span class="p">{},</span> <span class="n">stage</span><span class="o">=</span><span class="n">Stage</span><span class="o">.</span><span class="n">CLEANUP</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">cleanup_git_repo</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
-    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{}</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;repo&quot;</span><span class="p">:</span> <span class="n">git_repository</span><span class="p">,</span>
+        <span class="s2">&quot;branch&quot;</span><span class="p">:</span> <span class="n">git_branch</span><span class="p">,</span>
+        <span class="s2">&quot;start_end&quot;</span><span class="p">:</span> <span class="n">date_pair</span><span class="p">,</span>
 </pre></div>
 </td></tr></table></div>
 <p>Since operations are run concurrently with each other, DFFML manages locking of
@@ -932,10 +966,10 @@ process, and integrated machine learning into a legacy application.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="dataflows.html" class="btn btn-neutral float-right" title="DataFlow Deployment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="dataflows.html" class="btn btn-neutral float-right" title="DataFlow HTTP Deployment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="Usage Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Use Cases" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

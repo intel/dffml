@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>New Operations Tutorial &mdash; DFFML 0.3.2 documentation</title>
+  <title>New Operations Tutorial &mdash; DFFML 0.3.3 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
             
           
@@ -85,11 +85,14 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Model Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="intro.html">Introduction to DFFML</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">New Operations Tutorial</a><ul>
@@ -110,13 +113,19 @@
 <li class="toctree-l2"><a class="reference internal" href="source.html">New Source Tutorial</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
@@ -1053,7 +1062,7 @@ your own operations as coming from <code class="docutils literal notranslate"><s
 <span class="go">safety_check = shouldi.safety:safety_check -&gt; shouldi 0.0.1 (/home/user/shouldi)</span>
 </pre></div>
 </div>
-<p>The <a class="reference internal" href="../usage/dataflows.html"><span class="doc">DataFlow Deployment</span></a> usage example will show you how to expose your new
+<p>The <a class="reference internal" href="../usage/dataflows.html"><span class="doc">DataFlow HTTP Deployment</span></a> usage example will show you how to expose your new
 meta static analysis tool over an HTTP interface.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -s <span class="se">\</span>
   --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
