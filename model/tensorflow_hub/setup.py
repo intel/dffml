@@ -22,6 +22,7 @@ INSTALL_REQUIRES = [
     "tensorflow>=2.0.0",
     "tensorflow-hub>=0.6.0",
     "pandas>=0.25.0",
+    "dffml-model-tensorflow",
 ] + (
     ["dffml>=0.3.2"]
     if not any(
