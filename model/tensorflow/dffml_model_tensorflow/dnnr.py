@@ -7,13 +7,13 @@ from typing import List, Dict, Any, AsyncIterator
 
 import numpy as np
 
-# os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
 
 from dffml.repo import Repo
 from dffml.util.cli.arg import Arg
 from dffml.model.model import Model
-from dffml.accuracy import Accuracy
+from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
 from dffml.util.cli.parser import list_action
@@ -22,7 +22,7 @@ from dffml.feature.feature import Feature, Features
 
 from .dnnc import TensorflowModelContext
 
-# tf.keras.backend.set_floatx('float64')
+
 @config
 class DNNRegressionModelConfig:
     predict: Feature = field("Feature name holding target values")
@@ -65,20 +65,12 @@ class DNNRegressionModelContext(TensorflowModelContext):
         if self._model is not None:
             return self._model
         self.logger.debug("Loading model ")
-        self._model = tf.estimator.DNNRegressor(
+
+        self._model = tf.compat.v1.estimator.DNNRegressor(
             feature_columns=list(self.feature_columns.values()),
             hidden_units=self.parent.config.hidden,
             model_dir=self.model_dir_path,
-            loss_reduction = tf.keras.losses.Reduction.SUM
         )
-        # _head = tf.estimator.RegressionHead()
-        # self._model = tf.estimator.DNNEstimator(
-        #     head=_head,
-        #     feature_columns=list(self.feature_columns.values()),
-        #     hidden_units=self.parent.config.hidden,
-        #     model_dir=self.model_dir_path,
-        # )
-
 
         return self._model
 
@@ -180,11 +172,12 @@ class DNNRegressionModelContext(TensorflowModelContext):
         input_fn, predict_repo = await self.predict_input_fn(repos)
         # Makes predictions on
         predictions = self.model.predict(input_fn=input_fn)
-
+        target = self.parent.config.predict.NAME
         for repo, pred_dict in zip(predict_repo, predictions):
             # TODO Instead of float("nan") save accuracy value and use that.
-            repo.predicted(float(pred_dict["predictions"]), float("nan"))
-
+            repo.predicted(
+                target, float(pred_dict["predictions"]), float("nan")
+            )
             yield repo
 
 
@@ -192,19 +185,13 @@ class DNNRegressionModelContext(TensorflowModelContext):
 class DNNRegressionModel(Model):
     """
     Implemented using Tensorflow's DNNEstimator.
-
     Usage:
-
     * predict: Name of the feature we are trying to predict or using for training.
-
     Generating train and test data
-
     * This creates files `train.csv` and `test.csv`,
       make sure to take a BACKUP of files with same name in the directory
       from where this command is run as it overwrites any existing files.
-
     .. code-block:: console
-
         $ cat > train.csv << EOF
         Feature1,Feature2,TARGET
         0.93,0.68,3.89
@@ -265,16 +252,16 @@ class DNNRegressionModel(Model):
                 },
                 "last_updated": "2019-10-24T15:26:41Z",
                 "prediction": {
-                    "confidence": NaN,
-                    "value": 1.1983429193496704
+                    "TARGET" : {
+                        "confidence": NaN,
+                        "value": 1.1983429193496704
+                    }
                 },
                 "key": 0
             }
         ]
-
     The ``NaN`` in ``confidence`` is the expected behaviour. (See TODO in
     predict).
-
     """
 
     CONTEXT = DNNRegressionModelContext

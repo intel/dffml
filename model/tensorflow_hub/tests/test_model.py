@@ -37,12 +37,10 @@ class TestTextClassificationModel(AsyncTestCase):
                 add_layers=True,
                 layers=[
                     "Dense(units = 120, activation='relu')",
-                    "Dropout(rate=0.6, noise_shape=(20,1,5))",
-                    "Dense(units = 64, activation='relu')",
+                    "Dense(units = 64, activation=relu)",
                     "Dense(units = 2, activation='softmax')",
                 ],
                 model_path="https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1",
-                embedType="swivel",
                 epochs=30,
             )
         )
@@ -68,6 +66,7 @@ class TestTextClassificationModel(AsyncTestCase):
                 async for repo in mctx.predict(sctx.repos()):
                     prediction = repo.prediction().value
                     self.assertIn(prediction, ["0", "1"])
+
 
 # Randomly generate sample data
 POSITIVE_WORDS = [
@@ -99,7 +98,11 @@ DATA = []
 for example in SENTENCES:
     sentement_words = random.choice(WORDS)
     sentement_classification = WORDS.index(sentement_words)
-    DATA.append([
-        example.format(*random.sample(sentement_words, example.count("{}"))),
-        str(sentement_classification),
-    ])
+    DATA.append(
+        [
+            example.format(
+                *random.sample(sentement_words, example.count("{}"))
+            ),
+            str(sentement_classification),
+        ]
+    )

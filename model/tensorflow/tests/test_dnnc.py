@@ -54,7 +54,7 @@ class TestDNN(AsyncTestCase):
             DNNClassifierModelConfig(
                 directory=cls.model_dir.name,
                 steps=1000,
-                epochs=30,
+                epochs=40,
                 hidden=[10, 20, 10],
                 predict=DefFeature("string", str, 1),
                 classifications=["a", "not a"],
@@ -105,15 +105,15 @@ class TestDNN(AsyncTestCase):
             async with sources() as sctx, model() as mctx:
                 res = await mctx.accuracy(sctx)
                 self.assertGreater(res, 0.9)
-                print(">>>>>>>>>>>>>>>>>",res)
 
     async def test_02_predict(self):
         a = Repo("a", data={"features": {self.feature.NAME: 1}})
         async with Sources(
             MemorySource(MemorySourceConfig(repos=[a]))
         ) as sources, self.model as model:
+            target_name = model.config.predict.NAME
             async with sources() as sctx, model() as mctx:
                 res = [repo async for repo in mctx.predict(sctx.repos())]
                 self.assertEqual(len(res), 1)
             self.assertEqual(res[0].key, a.key)
-            self.assertTrue(res[0].prediction().value)
+            self.assertTrue(res[0].prediction(target_name).value)

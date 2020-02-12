@@ -27,7 +27,9 @@ from .tfhub_utils import FullTokenizer
 
 
 def bert_tokenizer(text, max_seq_length, vocab, do_lower_case=False):
-
+    """
+    Convert input text to bert format.
+    """
     tokenizer = FullTokenizer(vocab, do_lower_case)
     input_ids = []
     input_masks = []
@@ -119,6 +121,7 @@ class ClassificationModel(Embedder):
 
         model = tf.keras.models.Model(inputs=self.inputs, outputs=outputs)
         if self.config.embedType == "bert":
+            # save vocab_file and `do_lower_case` variable
             model.vocab_file = tf.saved_model.Asset(self.vocab_file)
             model.do_lower_case = tf.Variable(
                 self.do_lower_case, trainable=False

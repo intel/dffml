@@ -4,6 +4,13 @@ class NoDefaultValue:
     pass
 
 
+class OutputShapeError(Exception):
+    """
+    Raised when number of nodes in last layer of tensorflow hub text_classifier 
+    are not equal to the number of classification categories.
+    """
+
+
 class ParameterNotInDocString(Exception):
     """
     Raised when a numpy class has a parameter in its ``__init__`` which was not

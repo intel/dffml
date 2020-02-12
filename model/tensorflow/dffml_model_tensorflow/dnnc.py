@@ -11,13 +11,13 @@ from typing import List, Dict, Any, AsyncIterator, Tuple, Optional, Type
 
 import numpy as np
 
-# os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
 
 from dffml.repo import Repo
 from dffml.base import BaseConfig
 from dffml.util.cli.arg import Arg
-from dffml.accuracy import Accuracy
+from dffml.model.accuracy import Accuracy
 from dffml.base import config, field
 from dffml.source.source import Sources
 from dffml.feature import Feature, Features
@@ -26,7 +26,6 @@ from dffml.util.cli.parser import list_action
 from dffml.feature.feature import Feature, Features
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 
-# tf.keras.backend.set_floatx('float64')
 
 class TensorflowModelContext(ModelContext):
     """
@@ -124,12 +123,7 @@ class TensorflowModelContext(ModelContext):
         """
         Train on data submitted via classify.
         """
-        input_fn = await self.training_input_fn(
-            sources,
-            batch_size=20,
-            shuffle=True,
-            epochs=self.parent.config.epochs,
-        )
+        input_fn = await self.training_input_fn(sources)
         self.model.train(input_fn=input_fn, steps=self.parent.config.steps)
 
     @property
@@ -146,6 +140,10 @@ class DNNClassifierModelConfig:
     classifications: List[str] = field("Options for value of classification")
     features: Features = field("Features to train on")
     clstype: Type = field("Data type of classifications values", default=str)
+    batchsize: int = field(
+        "Number repos to pass through in an epoch", default=20
+    )
+    shuffle: bool = field("Randomise order of repos in a batch", default=True)
     steps: int = field("Number of steps to train the model", default=3000)
     epochs: int = field(
         "Number of iterations to pass over all repos in a source", default=30
@@ -179,7 +177,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
 
     def _mkcids(self, classifications):
         """
-        Create an index, possible classification mapping and sort the list of
+        Create an index, possible predict mapping and sort the list of
         classifications first.
         """
         cids = dict(
@@ -210,7 +208,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
             len(self.classifications),
             self.classifications,
         )
-        self._model = tf.estimator.DNNClassifier(
+        self._model = tf.compat.v1.estimator.DNNClassifier(
             feature_columns=list(self.feature_columns.values()),
             hidden_units=self.parent.config.hidden,
             n_classes=len(self.parent.config.classifications),
@@ -218,14 +216,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         )
         return self._model
 
-    async def training_input_fn(
-        self,
-        sources: Sources,
-        batch_size=20,
-        shuffle=False,
-        epochs=1,
-        **kwargs,
-    ):
+    async def training_input_fn(self, sources: Sources, **kwargs):
         """
         Uses the numpy input function with data from repo features.
         """
@@ -259,21 +250,14 @@ class DNNClassifierModelContext(TensorflowModelContext):
         input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
-            batch_size=batch_size,
-            shuffle=shuffle,
-            num_epochs=epochs,
+            batch_size=self.parent.config.batchsize,
+            shuffle=self.parent.config.shuffle,
+            num_epochs=self.parent.config.epochs,
             **kwargs,
         )
         return input_fn
 
-    async def accuracy_input_fn(
-        self,
-        sources: Sources,
-        batch_size=20,
-        shuffle=False,
-        epochs=1,
-        **kwargs,
-    ):
+    async def accuracy_input_fn(self, sources: Sources, **kwargs):
         """
         Uses the numpy input function with data from repo features.
         """
@@ -304,9 +288,9 @@ class DNNClassifierModelContext(TensorflowModelContext):
         input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
-            batch_size=batch_size,
-            shuffle=shuffle,
-            num_epochs=epochs,
+            batch_size=self.parent.config.batchsize,
+            shuffle=self.parent.config.shuffle,
+            num_epochs=1,
             **kwargs,
         )
         return input_fn
@@ -318,9 +302,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         """
         if not os.path.isdir(self.model_dir_path):
             raise ModelNotTrained("Train model before assessing for accuracy.")
-        input_fn = await self.accuracy_input_fn(
-            sources, batch_size=20, shuffle=False, epochs=1
-        )
+        input_fn = await self.accuracy_input_fn(sources)
         accuracy_score = self.model.evaluate(input_fn=input_fn)
         return Accuracy(accuracy_score["accuracy"])
 
@@ -334,10 +316,11 @@ class DNNClassifierModelContext(TensorflowModelContext):
         input_fn, predict = await self.predict_input_fn(repos)
         # Makes predictions on classifications
         predictions = self.model.predict(input_fn=input_fn)
+        target = self.parent.config.predict.NAME
         for repo, pred_dict in zip(predict, predictions):
             class_id = pred_dict["class_ids"][0]
             probability = pred_dict["probabilities"][class_id]
-            repo.predicted(self.cids[class_id], probability)
+            repo.predicted(target, self.cids[class_id], probability)
             yield repo
 
 
@@ -345,9 +328,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
 class DNNClassifierModel(Model):
     """
     Implemented using Tensorflow's DNNClassifier.
-
     .. code-block:: console
-
         $ wget http://download.tensorflow.org/data/iris_training.csv
         $ wget http://download.tensorflow.org/data/iris_test.csv
         $ head iris_training.csv
@@ -411,8 +392,11 @@ class DNNClassifierModel(Model):
                 },
                 "last_updated": "2019-07-31T02:00:12Z",
                 "prediction": {
-                    "confidence": 0.9999997615814209,
-                    "value": 1
+                    "classification":
+                        {
+                            "confidence": 0.9999997615814209,
+                            "value": 1
+                        }
                 },
                 "key": "0"
             },
@@ -427,12 +411,14 @@ class DNNClassifierModel(Model):
                 },
                 "last_updated": "2019-07-31T02:00:12Z",
                 "prediction": {
-                    "confidence": 0.9999984502792358,
-                    "value": 2
+                    "classification":
+                    {
+                        "confidence": 0.9999984502792358,
+                        "value": 2
+                    }
                 },
                 "key": "1"
             },
-
     """
 
     CONTEXT = DNNClassifierModelContext

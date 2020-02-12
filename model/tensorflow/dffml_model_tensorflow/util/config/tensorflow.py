@@ -6,11 +6,17 @@ representing the arguments to that callable.
 """
 import inspect
 import dataclasses
-from typing import Dict, Optional, Tuple, Type, Any, Union, Callable
+from typing import Dict, Optional, Tuple, Type, Any, Union, Callable, List
+
+import ast
+from shlex import shlex
+import tensorflow as tf
 
 from dffml.base import make_config, field
-
-from dffml.util.config.exceptions import NoDefaultValue, ParameterNotInDocString
+from dffml.util.config.exceptions import (
+    NoDefaultValue,
+    ParameterNotInDocString,
+)
 
 
 # Things people name their types mapped their real python types.
@@ -45,7 +51,7 @@ def tensorflow_doc_to_field(type_str, description, param):
     if default is inspect.Parameter.empty:
         default = tensorflow_get_default(type_str)
 
-    type_cls = str
+    type_cls = Any
 
     # Set of choices
     if "{'" in type_str and "'}" in type_str:
@@ -58,7 +64,10 @@ def tensorflow_doc_to_field(type_str, description, param):
         type_split = list(
             map(lambda x: x.lower(), type_str.replace(",", "").split())
         )
-        for tensorflow_type_name, python_type in TENSORFLOW_DOCS_TYPE_MAP.items():
+        for (
+            tensorflow_type_name,
+            python_type,
+        ) in TENSORFLOW_DOCS_TYPE_MAP.items():
             if tensorflow_type_name in type_split:
                 type_cls = python_type
 
@@ -68,7 +77,9 @@ def tensorflow_doc_to_field(type_str, description, param):
     return type_cls, field(description, default=default)
 
 
-def tensorflow_cleanup_description(dtypes, description_lines, last: bool = False):
+def tensorflow_cleanup_description(
+    dtypes, description_lines, last: bool = False
+):
     if description_lines:
         # Remove the section header if we're on the last argument (since we will
         # have the title of it in the body of the last arguments description
@@ -101,20 +112,20 @@ def tensorflow_docstring_args(cls: Callable):
     for line in docstring.split("\n"):
         if not ":" in line:
             if last_param_name:
-                if line.startswith("--"):
-                    docparams[last_param_name][1] = tensorflow_cleanup_description(
-                        dtypes, docparams[last_param_name][1], last=True
-                    )
-                    break
-                # Append description lines
                 docparams[last_param_name][1].append(line.strip())
             continue
         param_name, dtypes = line.split(":", maxsplit=1)
         param_name = param_name.strip()
         dtypes = dtypes.strip()
+        if last_param_name:
+            if not dtypes:
+                docparams[last_param_name][1] = tensorflow_cleanup_description(
+                    dtypes, docparams[last_param_name][1], last=True
+                )
+                break
         if not param_name in parameters or param_name in docparams:
             continue
-        docparams[param_name] = [dtypes, []]
+        docparams[param_name] = [dtypes, [dtypes]]
         if last_param_name:
             docparams[last_param_name][1] = tensorflow_cleanup_description(
                 dtypes, docparams[last_param_name][1]
@@ -135,3 +146,55 @@ def tensorflow_docstring_args(cls: Callable):
 
     return docparams
 
+
+def parse_layers(input_layers: List[str]):
+    """
+    Given a list of tf.keras.layers as strings, instantiate them with input parameters.
+    """
+    all_layers = dict(inspect.getmembers(tf.keras.layers, inspect.isclass))
+    live_layers = []
+
+    for layer in input_layers:
+        param_dict = {}
+        layer_params_dict = {}
+
+        layer_name, layer_params = layer.split("(", maxsplit=1)
+        layer_params = layer_params.rsplit(")", 1)[0]
+        if layer_params.strip():
+            layer_params = "".join(text.strip() for text in list(layer_params))
+            layer_params = (
+                layer_params.replace(")", ")/")
+                .replace("(", "/(")
+                .replace("[", "/[")
+                .replace("]", "]/")
+            )
+
+            lexer = shlex(layer_params, posix=True)
+            lexer.whitespace = ","
+            lexer.quotes = "/"
+            for wordchar in ["=", "'", '"', ".", "-"]:
+                lexer.wordchars += wordchar
+
+            for word in lexer:
+                key, value = word.split("=")
+                layer_params_dict[key.strip()] = (
+                    value.replace("'", "").replace('"', "").strip()
+                )
+
+            parsed_args = tensorflow_docstring_args(all_layers[layer_name])
+            for key, value in layer_params_dict.items():
+                dtype, _ = parsed_args[key]
+                try:
+                    if value in ["True", "False", "None"]:
+                        value = ast.literal_eval(value)
+                    else:
+                        value = dtype(value)
+                except (TypeError, ValueError):
+                    # handles tuple, list
+                    try:
+                        value = ast.literal_eval(value)
+                    except:
+                        value = str(value)
+                param_dict[key] = value
+        live_layers.append(all_layers[layer_name](**param_dict))
+    return live_layers

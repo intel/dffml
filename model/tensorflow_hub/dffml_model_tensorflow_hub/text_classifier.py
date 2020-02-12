@@ -6,11 +6,13 @@ Description of what this model does
 # TODO Add docstrings
 import os
 import abc
+import csv
 import inspect
 import hashlib
 import importlib
 from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Type
 
+import ast
 import numpy as np
 import pandas as pd
 
@@ -25,77 +27,13 @@ from dffml.feature import Features
 from dffml.accuracy import Accuracy
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
-from dffml.model.model import ModelNotTrained
 from dffml.base import BaseConfig, config, field
+from dffml.util.config.exceptions import OutputShapeError
 from dffml.feature.feature import Feature, Features
-from dffml.model.model import ModelConfig, ModelContext, Model
-from dffml_model_tensorflow.util.config.tensorflow import tensorflow_docstring_args
+from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
+from dffml_model_tensorflow.util.config.tensorflow import parse_layers
 
 from .tfhub_models import bert_tokenizer, ClassificationModel
-
-
-def parse_kv_pairs(text, item_sep=",", value_sep="="):
-    """Parse key-value pairs from a shell-like text."""
-    # initialize a lexer, in POSIX mode (to properly handle escaping)
-    lexer = shlex(text, posix=True)
-    # set ',' as whitespace for the lexer
-    # (the lexer will use this character to separate words)
-    lexer.whitespace = ","
-    # include '=' as a word character 
-    # (this is done so that the lexer returns a list of key-value pairs)
-    # (if your option key or value contains any unquoted special character, you will need to add it here)
-    lexer.wordchars += "="
-    # then we separate option keys and values to build the resulting dictionary
-    # (maxsplit is required to make sure that '=' in value will not be a problem)
-    return dict(word.split(value_sep, maxsplit=1) for word in lexer)
-def parse_layer(input_layers: list):
-    """
-    Given a tf.keras.layer, update it's default values to reflect 
-    input values.
-    """
-    all_layers = dict(inspect.getmembers(tf.keras.layers, inspect.isclass))
-    live_layers = []
-
-    for layer in input_layers:
-        param_dict = {}
-        layer_params_dict = {}
-        layer_name, layer_params = layer.split('(', maxsplit=1)
-        print(layer_params.rsplit(')',1))
-        layer_params = layer_params.rsplit(')',1)[0]
-        layer_params = "".join(text.strip() for text in list(layer_params))
-
-        lexer = shlex(layer_params, posix=True)
-        lexer.whitespace = ","
-        lexer.wordchars += "="
-        lexer.quotes += ")"
-        lexer.quotes += "("
-        lexer.wordchars += "."
-
-        # layer_params_dict = [word.split("=", maxsplit=1) for word in lexer]
-        layer_params_dict = [word for word in lexer]
-
-
-
-        print(layer_params)
-        print(">>>>>>>>>>>>>>>>>>",layer_params_dict)
-    #     # exit()
-    #     for key, value in layer_params_dict.items():
-    #         # print('>>>>>>>>>>>>>>>>',param)
-    #         # key, value = param.split('=')
-    #         param_dict[key.strip()] = value.replace("'","").replace('"',"").strip()
-    #     parsed_args = tensorflow_docstring_args(all_layers[layer_name])
-    #     for key, value in param_dict.items():
-    #         dtype, _ = parsed_args[key]
-    #         if dtype == Any and '(' in value and ')' in value:
-    #             dtype = int
-    #         else:
-    #             dtype = str
-    #         if not dtype == str:
-    #             param_dict[key] = list(map(dtype, value))
-    #     live_layers.append(all_layers[layer_name](**param_dict))
-    #     del param_dict
-    # return live_layers
-    exit()
 
 
 @config
@@ -104,16 +42,14 @@ class TextClassifierConfig:
     classifications: List[str] = field("Options for value of classification")
     features: Features = field("Features to train on")
     trainable: str = field(
-        "Tweak pretrained model by training again ", default=True
+        "Tweak pretrained model by training again", default=True
     )
     batch_size: int = field("Batch size", default=120)
     max_seq_length: int = field("Length of sentence", default=256)
     add_layers: bool = field(
         "Add layers on the top of pretrianed model/layer", default=False
     )
-    embedType: str = field(
-        "Type of pretrained embedding model", default="swivel"
-    )
+    embedType: str = field("Type of pretrained embedding model", default=None)
     layers: List[str] = field(
         "Extra layers to be added on top of pretrained model", default=None
     )
@@ -137,11 +73,7 @@ class TextClassifierConfig:
     def __post_init__(self):
         self.classifications = list(map(self.clstype, self.classifications))
         if self.add_layers:
-            self.layers = parse_layer(self.layers)
-
-
-class OutputShapeError(Exception):
-    pass
+            self.layers = parse_layers(self.layers)
 
 
 class TextClassifierContext(ModelContext):
@@ -182,10 +114,10 @@ class TextClassifierContext(ModelContext):
         _to_hash = self.features + [
             self.classification,
             str(len(self.cids)),
-            self.parent.config.embedType,
+            self.parent.config.model_path,
         ]
         model = hashlib.sha384("".join(_to_hash).encode("utf-8")).hexdigest()
-        # TODO is this needed?
+        # Needed to save updated model
         if not os.path.isdir(self.parent.config.directory):
             raise NotADirectoryError(
                 "%s is not a directory" % (self.parent.config.directory)
@@ -282,6 +214,7 @@ class TextClassifierContext(ModelContext):
                 "Found more than one feature to train on. Only first feature will be used"
             )
         # TODO add more embedTypes
+        # so far only model available on tensorflow hub which requires special input preprocessing is `bert`
         if self.parent.config.embedType in ["bert"]:
             x_cols = bert_tokenizer(
                 x_cols[self.features[0]],
@@ -294,10 +227,8 @@ class TextClassifierContext(ModelContext):
                 input_mask=x_cols[1],
                 segment_ids=x_cols[2],
             )
-        # TODO keep all these under one name
-        elif self.parent.config.embedType in ["use", "nnlm", "swivel"]:
-            # use-> Universal Sentence Encoder
-            # nnlm-> Neural Network Language Model
+        else:
+            # Universal Sentence Encoder, Neural Network Language Model, Swivel Embeddings
             # No preprocessing needed
             x_cols = x_cols[self.features[0]]
         return x_cols, y_cols
@@ -321,8 +252,6 @@ class TextClassifierContext(ModelContext):
                 input_mask=x_cols[1],
                 segment_ids=x_cols[2],
             )
-        # elif self.parent.config.embedType in ["use","nnlm", "swivel"]:
-        #     x_cols = x_cols
         return x_cols
 
     async def train(self, sources: Sources):

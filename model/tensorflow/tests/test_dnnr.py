@@ -42,24 +42,22 @@ class Feature_2(Feature):
 class TestDNN(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
-        # cls.model_dir = tempfile.TemporaryDirectory()
-        cls.model_dir = '/home/himanshu/.cache/dffml/tensorflow'
+        cls.model_dir = tempfile.TemporaryDirectory()
         cls.feature1 = Feature_1()
         cls.feature2 = Feature_2()
         cls.features = Features(cls.feature1, cls.feature2)
         cls.model = DNNRegressionModel(
             DNNRegressionModelConfig(
-                # directory=cls.model_dir.name,
-                directory= '/home/himanshu/.cache/dffml/tensorflow',
+                directory=cls.model_dir.name,
                 steps=1000,
-                epochs=30,
+                epochs=40,
                 hidden=[10, 20, 10],
                 predict=DefFeature("TARGET", float, 1),
                 features=cls.features,
             )
         )
         # Generating data f(x1,x2) = 2*x1 + 3*x2
-        _n_data = 1000
+        _n_data = 2000
         _temp_data = np.random.rand(2, _n_data)
         cls.repos = [
             Repo(
@@ -78,9 +76,9 @@ class TestDNN(AsyncTestCase):
             MemorySource(MemorySourceConfig(repos=cls.repos))
         )
 
-    # @classmethod
-    # def tearDownClass(cls):
-    #     cls.model_dir.cleanup()
+    @classmethod
+    def tearDownClass(cls):
+        cls.model_dir.cleanup()
 
     async def test_config(self):
         # Setting up configuration for model
@@ -114,7 +112,6 @@ class TestDNN(AsyncTestCase):
         async with self.sources as sources, self.model as model:
             async with sources() as sctx, model() as mctx:
                 res = await mctx.accuracy(sctx)
-                print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",res)
                 self.assertGreater(res, 0.8)
 
     async def test_02_predict(self):
@@ -137,12 +134,15 @@ class TestDNN(AsyncTestCase):
         async with Sources(
             MemorySource(MemorySourceConfig(repos=[a]))
         ) as sources, self.model as model:
+            target_name = model.config.predict.NAME
             async with sources() as sctx, model() as mctx:
                 res = [repo async for repo in mctx.predict(sctx.repos())]
                 self.assertEqual(len(res), 1)
             self.assertEqual(res[0].key, a.key)
             test_error_norm = abs(
-                (test_target - res[0].prediction().value) / test_target + 1e-6
+                (test_target - res[0].prediction(target_name).value)
+                / test_target
+                + 1e-6
             )
             error_threshold = 0.3
             self.assertLess(test_error_norm, error_threshold)
