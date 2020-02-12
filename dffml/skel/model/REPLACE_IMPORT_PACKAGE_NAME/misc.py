@@ -8,7 +8,7 @@ from typing import AsyncIterator, Tuple, Any, List
 from dffml.repo import Repo
 from dffml.source.source import Sources
 from dffml.feature import Features
-from dffml.accuracy import Accuracy
+from dffml.model.accuracy import Accuracy
 from dffml.model.model import ModelContext, Model
 from dffml.util.entrypoint import entrypoint
 from dffml.base import config

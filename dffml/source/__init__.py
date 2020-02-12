@@ -15,5 +15,3 @@ setup.py which specifies where to find your Source subclass within your module.
 >>>     },
 >>> )
 """
-# Declares dffml.source as a namespace package
-__import__("pkg_resources").declare_namespace(__name__)

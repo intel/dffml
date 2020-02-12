@@ -31,7 +31,7 @@ class TestIDXSources(AsyncTestCase):
     async def test_idx1(self, filename):
         feature_name = "label"
         async with IDX1Source(
-            IDX1SourceConfig(filename=filename, feature=feature_name,)
+            IDX1SourceConfig(filename=filename, feature=feature_name)
         ) as source:
             async with source() as sctx:
                 repos = [repo async for repo in sctx.repos()]
@@ -43,7 +43,7 @@ class TestIDXSources(AsyncTestCase):
     async def test_idx3(self, filename):
         feature_name = "image"
         async with IDX3Source(
-            IDX3SourceConfig(filename=filename, feature=feature_name,)
+            IDX3SourceConfig(filename=filename, feature=feature_name)
         ) as source:
             async with source() as sctx:
                 repos = [repo async for repo in sctx.repos()]

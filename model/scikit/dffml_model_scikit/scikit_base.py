@@ -16,7 +16,7 @@ from sklearn.metrics import silhouette_score, mutual_info_score
 
 from dffml.repo import Repo
 from dffml.source.source import Sources
-from dffml.accuracy import Accuracy
+from dffml.model.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml.feature.feature import Features, Feature
 
