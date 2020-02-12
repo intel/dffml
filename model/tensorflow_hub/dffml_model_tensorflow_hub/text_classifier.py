@@ -28,12 +28,18 @@ from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
 from dffml.base import BaseConfig, config, field
-from dffml.util.config.exceptions import OutputShapeError
 from dffml.feature.feature import Feature, Features
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml_model_tensorflow.util.config.tensorflow import parse_layers
 
 from .tfhub_models import bert_tokenizer, ClassificationModel
+
+
+class OutputShapeError(Exception):
+    """
+    Raised when number of nodes in last layer of tensorflow hub text_classifier
+    are not equal to the number of classification categories.
+    """
 
 
 @config

@@ -48,6 +48,52 @@ Uses a CSV file as the source of repo feature data
 
   - default: tag
 
+idx1
+~~~~
+
+*Core*
+
+Source to read files in IDX1 format (such as MNIST digit label dataset).
+
+**Args**
+
+- filename: String
+
+- feature: String
+
+  - Name of the feature the data will be referenced as
+
+- readwrite: Boolean
+
+  - default: False
+
+- allowempty: Boolean
+
+  - default: False
+
+idx3
+~~~~
+
+*Core*
+
+Source to read files in IDX3 format (such as MNIST digit image dataset).
+
+**Args**
+
+- filename: String
+
+- feature: String
+
+  - Name of the feature the data will be referenced as
+
+- readwrite: Boolean
+
+  - default: False
+
+- allowempty: Boolean
+
+  - default: False
+
 json
 ~~~~
 
