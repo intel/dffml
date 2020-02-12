@@ -6,7 +6,7 @@ class NoDefaultValue:
 
 class OutputShapeError(Exception):
     """
-    Raised when number of nodes in last layer of tensorflow hub text_classifier 
+    Raised when number of nodes in last layer of tensorflow hub text_classifier
     are not equal to the number of classification categories.
     """
 

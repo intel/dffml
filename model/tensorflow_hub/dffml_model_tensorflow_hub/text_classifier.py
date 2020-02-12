@@ -24,7 +24,7 @@ import tensorflow_hub as hub
 
 from dffml.repo import Repo
 from dffml.feature import Features
-from dffml.accuracy import Accuracy
+from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
 from dffml.base import BaseConfig, config, field
@@ -299,6 +299,7 @@ class TextClassifierContext(ModelContext):
             predict = await self.prediction_data_generator(np.array(df)[0])
             all_prob = self._model.predict(predict)
             max_prob_idx = all_prob.argmax(axis=-1)
+            target = self.parent.config.predict.NAME
             self.logger.debug(
                 "Predicted probability of {} for {}: {}".format(
                     self.parent.config.predict.NAME,
@@ -308,7 +309,9 @@ class TextClassifierContext(ModelContext):
             )
 
             repo.predicted(
-                self.cids[max_prob_idx[0]], all_prob[0][max_prob_idx[0]]
+                target,
+                self.cids[max_prob_idx[0]],
+                all_prob[0][max_prob_idx[0]],
             )
             yield repo
 

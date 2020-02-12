@@ -33,9 +33,7 @@ tfdnnc
 *Core*
 
 Implemented using Tensorflow's DNNClassifier.
-
 .. code-block:: console
-
     $ wget http://download.tensorflow.org/data/iris_training.csv
     $ wget http://download.tensorflow.org/data/iris_test.csv
     $ head iris_training.csv
@@ -182,19 +180,13 @@ tfdnnr
 *Core*
 
 Implemented using Tensorflow's DNNEstimator.
-
 Usage:
-
 * predict: Name of the feature we are trying to predict or using for training.
-
 Generating train and test data
-
 * This creates files `train.csv` and `test.csv`,
   make sure to take a BACKUP of files with same name in the directory
   from where this command is run as it overwrites any existing files.
-
 .. code-block:: console
-
     $ cat > train.csv << EOF
     Feature1,Feature2,TARGET
     0.93,0.68,3.89
@@ -263,7 +255,6 @@ Generating train and test data
             "key": 0
         }
     ]
-
 The ``NaN`` in ``confidence`` is the expected behaviour. (See TODO in
 predict).
 
@@ -398,7 +389,7 @@ Implemented using Tensorflow hub pretrained models.
 
 - embedType: String
 
-  - default: swivel
+  - default: None
   - Type of pretrained embedding model
 
 - layers: List of strings

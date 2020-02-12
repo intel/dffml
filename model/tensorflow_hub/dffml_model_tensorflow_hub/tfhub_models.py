@@ -16,7 +16,7 @@ from tensorflow.keras import backend as K
 
 from dffml.repo import Repo
 from dffml.feature import Features
-from dffml.accuracy import Accuracy
+from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
 from dffml.base import BaseConfig, config, field
