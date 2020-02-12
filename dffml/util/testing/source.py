@@ -5,7 +5,7 @@ import abc
 import random
 import tempfile
 
-from ...repo import Repo
+from ...repo import Repo, RepoPrediction
 from ..asynctestcase import AsyncTestCase
 
 
@@ -39,7 +39,11 @@ class SourceTest(abc.ABC):
                     "SepalLength": 5.8,
                     "SepalWidth": 2.7,
                 },
-                "prediction": {"value": "feedface", "confidence": 0.42},
+                "prediction": {
+                    "target_name": RepoPrediction(
+                        value="feedface", confidence=0.42
+                    )
+                },
             },
         )
         empty_repo = Repo(
@@ -65,18 +69,29 @@ class SourceTest(abc.ABC):
             async with testSource() as sourceContext:
                 with self.subTest(key=full_key):
                     repo = await sourceContext.repo(full_key)
-                    self.assertEqual(repo.data.prediction.value, "feedface")
-                    self.assertEqual(repo.data.prediction.confidence, 0.42)
+                    self.assertEqual(
+                        repo.data.prediction["target_name"]["value"],
+                        "feedface",
+                    )
+                    self.assertEqual(
+                        repo.data.prediction["target_name"]["confidence"], 0.42
+                    )
                 with self.subTest(key=empty_key):
                     repo = await sourceContext.repo(empty_key)
-                    self.assertFalse(repo.data.prediction.value)
-                    self.assertFalse(repo.data.prediction.confidence)
+                    self.assertEqual(
+                        [
+                            val["value"]
+                            for _, val in repo.data.prediction.items()
+                        ],
+                        ["undetermined"] * (len(repo.data.prediction)),
+                    )
                 with self.subTest(both=[full_key, empty_key]):
                     repos = {
                         repo.key: repo async for repo in sourceContext.repos()
                     }
                     self.assertIn(full_key, repos)
                     self.assertIn(empty_key, repos)
+
                     self.assertEqual(
                         repos[full_key].features(), full_repo.features()
                     )
@@ -110,22 +125,22 @@ class FileSourceTest(SourceTest):
                     )
                     await super().test_update()
 
-    async def test_label(self):
+    async def test_tag(self):
         with tempfile.TemporaryDirectory() as testdir:
             self.testfile = os.path.join(testdir, str(random.random()))
-            unlabeled = await self.setUpSource()
-            labeled = await self.setUpSource()
-            labeled.config = labeled.config._replace(label="somelabel")
-            async with unlabeled, labeled:
-                async with unlabeled() as uctx, labeled() as lctx:
+            untagged = await self.setUpSource()
+            tagged = await self.setUpSource()
+            tagged.config = tagged.config._replace(tag="sometag")
+            async with untagged, tagged:
+                async with untagged() as uctx, tagged() as lctx:
                     await uctx.update(
                         Repo("0", data={"features": {"feed": 1}})
                     )
                     await lctx.update(
                         Repo("0", data={"features": {"face": 2}})
                     )
-            async with unlabeled, labeled:
-                async with unlabeled() as uctx, labeled() as lctx:
+            async with untagged, tagged:
+                async with untagged() as uctx, tagged() as lctx:
                     repo = await uctx.repo("0")
                     self.assertIn("feed", repo.features())
                     repo = await lctx.repo("0")

@@ -93,10 +93,10 @@ class TestMerge(IntegrationCLITestCase):
             pathlib.Path(filename).read_text(),
             inspect.cleandoc(
                 """
-                key,label,prediction,confidence
-                A,unlabeled,,
-                B,unlabeled,,
-                C,unlabeled,,
+                key,tag
+                A,untagged
+                B,untagged
+                C,untagged
                 """
             )
             + "\n",

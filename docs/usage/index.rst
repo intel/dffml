@@ -1,5 +1,5 @@
-Usage Examples
-==============
+Use Cases
+=========
 
 The following are some example use cases of DFFML.
 
@@ -9,3 +9,4 @@ The following are some example use cases of DFFML.
 
     integration
     dataflows
+    mnist

@@ -16,7 +16,7 @@ from sklearn.metrics import silhouette_score, mutual_info_score
 
 from dffml.repo import Repo
 from dffml.source.source import Sources
-from dffml.accuracy import Accuracy
+from dffml.model.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml.feature.feature import Features, Feature
 
@@ -123,7 +123,10 @@ class ScikitContext(ModelContext):
                     self.clf.predict(predict),
                 )
             )
-            repo.predicted(self.clf.predict(predict)[0], self.confidence)
+            target = self.parent.config.predict.NAME
+            repo.predicted(
+                target, self.clf.predict(predict)[0], self.confidence
+            )
             yield repo
 
 
@@ -136,6 +139,7 @@ class ScikitContextUnsprvised(ScikitContext):
             del config["directory"]
             del config["features"]
             del config["tcluster"]
+            del config["predict"]
             self.clf = self.parent.SCIKIT_MODEL(**config)
         return self
 
@@ -224,9 +228,10 @@ class ScikitContextUnsprvised(ScikitContext):
             predict = np.array(df)
             prediction = predictor(predict)
             self.logger.debug(
-                "Predicted cluster for {}: {}".format(predict, prediction,)
+                "Predicted cluster for {}: {}".format(predict, prediction)
             )
-            repo.predicted(prediction[0], self.confidence)
+            target = self.parent.config.predict.NAME
+            repo.predicted(target, prediction[0], self.confidence)
             yield repo
 
 

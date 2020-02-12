@@ -494,7 +494,7 @@ class BaseParameterSet(abc.ABC):
         pass
 
     @abc.abstractmethod
-    async def inputs(self) -> AsyncIterator[Input]:
+    async def inputs_and_parents_recursive(self) -> AsyncIterator[Input]:
         pass
 
     async def _asdict(self) -> Dict[str, Any]:
@@ -760,6 +760,12 @@ class BaseOperationImplementationNetworkContext(BaseDataFlowObjectContext):
 class BaseOperationImplementationNetwork(BaseDataFlowObject):
     """
     Knows where operations are or if they can be made
+    """
+
+
+class OperationException(Exception):
+    """
+    Raised by the orchestrator when an operation throws an exception.
     """
 
 

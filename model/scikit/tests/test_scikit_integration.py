@@ -107,6 +107,8 @@ class TestScikitClassification(IntegrationCLITestCase):
         results = results[0]
         self.assertIn("prediction", results)
         results = results["prediction"]
+        self.assertIn("Class", results)
+        results = results["Class"]
         self.assertIn("value", results)
         results = results["value"]
         self.assertEqual(4, results)
@@ -203,6 +205,8 @@ class TestScikitRegression(IntegrationCLITestCase):
         results = results[0]
         self.assertIn("prediction", results)
         results = results["prediction"]
+        self.assertIn("medv", results)
+        results = results["medv"]
         self.assertIn("value", results)
         results = results["value"]
         self.assertTrue(results is not None)
@@ -347,6 +351,8 @@ class TestScikitClustering(IntegrationCLITestCase):
             results = results[0]
             self.assertIn("prediction", results)
             results = results["prediction"]
+            self.assertIn("Prediction", results)
+            results = results["Prediction"]
             self.assertIn("value", results)
             results = results["value"]
             self.assertTrue(results is not None)

@@ -113,6 +113,9 @@ class AsyncExitStackTestCase(AsyncTestCase):
             pathlib.Path(filename).write_text(inspect.cleandoc(text) + "\n")
         return filename
 
+    def mktempdir(self):
+        return self._stack.enter_context(tempfile.TemporaryDirectory())
+
 
 def relative_path(*args):
     """

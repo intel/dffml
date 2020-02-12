@@ -2,6 +2,7 @@ import os
 import io
 import json
 import asyncio
+import pathlib
 import tempfile
 import unittest
 from http import HTTPStatus
@@ -11,6 +12,7 @@ from typing import AsyncIterator, Tuple, Dict, Any, List, NamedTuple
 
 import aiohttp
 
+from dffml.base import config
 from dffml.repo import Repo
 from dffml.df.base import (
     op,
@@ -23,7 +25,7 @@ from dffml.df.types import Definition, Input, DataFlow, Stage
 from dffml.operation.output import GetSingle
 from dffml.util.entrypoint import EntrypointNotFound
 from dffml.model.model import ModelContext, Model
-from dffml.accuracy import Accuracy
+from dffml.model.accuracy import Accuracy
 from dffml.feature import Features, DefFeature
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.source.source import Sources
@@ -57,9 +59,11 @@ class ServerException(Exception):
     pass  # pragma: no cov
 
 
-class FakeModelConfig(NamedTuple):
+@config
+class FakeModelConfig:
     directory: str
     features: Features
+    predict: Feature
 
 
 class FakeModelContext(ModelContext):
@@ -79,7 +83,9 @@ class FakeModelContext(ModelContext):
 
     async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
         async for repo in repos:
-            repo.predicted(repo.feature("by_ten") * 10, float(repo.key))
+            repo.predicted(
+                "Salary", repo.feature("by_ten") * 10, float(repo.key)
+            )
             yield repo
 
 
@@ -87,29 +93,7 @@ class FakeModelContext(ModelContext):
 class FakeModel(Model):
 
     CONTEXT = FakeModelContext
-
-    @classmethod
-    def args(cls, args, *above) -> Dict[str, Arg]:
-        cls.config_set(args, above, "directory", Arg())
-        cls.config_set(
-            args,
-            above,
-            "features",
-            Arg(
-                nargs="+",
-                required=True,
-                type=Feature.load,
-                action=list_action(Features),
-            ),
-        )
-        return args
-
-    @classmethod
-    def config(cls, config, *above) -> BaseConfig:
-        return FakeModelConfig(
-            directory=cls.config_get(config, above, "directory"),
-            features=cls.config_get(config, above, "features"),
-        )
+    CONFIG = FakeModelConfig
 
 
 def model_load(loading=None):
@@ -224,6 +208,44 @@ class TestRoutesServiceUpload(TestRoutesRunning, AsyncTestCase):
                     pass  # pramga: no cov
 
 
+class TestRoutesServiceFiles(TestRoutesRunning, AsyncTestCase):
+    FILES = {
+        ("file.csv",): 327,
+        ("there.csv",): 23,
+        ("down1", "other.csv"): 71,
+        ("down1", "down2", "another.csv"): 560,
+        ("down1", "down2", "also.csv"): 464,
+        ("down1", "down3", "here.csv"): 127,
+    }
+
+    async def test_success(self):
+        with tempfile.TemporaryDirectory() as tempdir:
+            self.cli.upload_dir = tempdir
+            # Create files
+            pathlib.Path(tempdir, "down1", "down2").mkdir(parents=True)
+            pathlib.Path(tempdir, "down1", "down3").mkdir(parents=True)
+            for filepath, size in self.FILES.items():
+                pathlib.Path(tempdir, *filepath).write_text("A" * size)
+
+            files = {
+                "/".join(filepath): size
+                for filepath, size in self.FILES.items()
+            }
+
+            async with self.get("/service/files") as r:
+                response = {r["filename"]: r["size"] for r in await r.json()}
+                for filepath, size in files.items():
+                    self.assertIn(filepath, response)
+                    self.assertEqual(size, response[filepath])
+
+    async def test_not_allowed(self):
+        with self.assertRaisesRegex(
+            ServerException, "File listing not allowed"
+        ):
+            async with self.get("/service/files"):
+                pass  # pramga: no cov
+
+
 class TestRoutesList(TestRoutesRunning, AsyncTestCase):
     async def test_sources(self):
         async with self.get("/list/sources") as r:
@@ -251,9 +273,9 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                 self.cli.app["sources"]["salary"].config,
                 CSVSourceConfig(
                     filename="dataset.csv",
-                    label="unlabeled",
+                    tag="untagged",
                     key="key",
-                    labelcol="label",
+                    tagcol="tag",
                     allowempty=True,
                 ),
             )
@@ -285,6 +307,8 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                 "--model-features",
                 "Years:int:1",
                 "Experiance:int:1",
+                "--model-predict",
+                "Salary:float:1",
             )
             async with self.post(
                 "/configure/model/fake/salary", json=config
@@ -299,6 +323,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                             DefFeature("Years", int, 1),
                             DefFeature("Experiance", int, 1),
                         ),
+                        predict=DefFeature("Salary", float, 1),
                     ),
                 )
                 with self.subTest(context="salaryctx"):
@@ -335,7 +360,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                     ServerException, f"{check} feed face not found"
                 ):
                     async with self.post(
-                        f"/configure/{check}/feed face/label", json={}
+                        f"/configure/{check}/feed face/tag", json={}
                     ):
                         pass  # pramga: no cov
 
@@ -586,9 +611,12 @@ class TestModel(TestRoutesRunning, AsyncTestCase):
                 repo = Repo(key, data=repo_data)
                 self.assertEqual(int(repo.key), i)
                 self.assertEqual(
-                    repo.feature("by_ten"), repo.prediction().value / 10
+                    repo.feature("by_ten"),
+                    repo.prediction("Salary").value / 10,
                 )
-                self.assertEqual(float(repo.key), repo.prediction().confidence)
+                self.assertEqual(
+                    float(repo.key), repo.prediction("Salary").confidence
+                )
                 i += 1
             self.assertEqual(i, self.num_repos)
 

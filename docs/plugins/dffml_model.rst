@@ -99,8 +99,11 @@ Implemented using Tensorflow's DNNClassifier.
             },
             "last_updated": "2019-07-31T02:00:12Z",
             "prediction": {
-                "confidence": 0.9999997615814209,
-                "value": 1
+                "classification":
+                    {
+                        "confidence": 0.9999997615814209,
+                        "value": 1
+                    }
             },
             "key": "0"
         },
@@ -115,8 +118,11 @@ Implemented using Tensorflow's DNNClassifier.
             },
             "last_updated": "2019-07-31T02:00:12Z",
             "prediction": {
-                "confidence": 0.9999984502792358,
-                "value": 2
+                "classification":
+                {
+                    "confidence": 0.9999984502792358,
+                    "value": 2
+                }
             },
             "key": "1"
         },
@@ -139,6 +145,16 @@ Implemented using Tensorflow's DNNClassifier.
 
   - default: <class 'str'>
   - Data type of classifications values
+
+- batchsize: Integer
+
+  - default: 20
+  - Number repos to pass through in an epoch
+
+- shuffle: Boolean
+
+  - default: True
+  - Randomise order of repos in a batch
 
 - steps: Integer
 
@@ -239,8 +255,10 @@ Generating train and test data
             },
             "last_updated": "2019-10-24T15:26:41Z",
             "prediction": {
-                "confidence": NaN,
-                "value": 1.1983429193496704
+                "TARGET" : {
+                    "confidence": NaN,
+                    "value": 1.1983429193496704
+                }
             },
             "key": 0
         }
@@ -477,8 +495,10 @@ hash of their feature names.
             },
             "last_updated": "2019-07-19T09:46:45Z",
             "prediction": {
-                "confidence": 1.0,
-                "value": 90.0
+                "Salary": {
+                    "confidence": 1.0,
+                    "value": 90.0
+                }
             },
             "key": "0"
         }

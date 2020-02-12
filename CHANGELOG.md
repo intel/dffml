@@ -5,10 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.3.3] - 2020-02-10
 ### Added
-- Tensoflow pretrained models for NLP
-  - Transformer (BERT)
-  - Pretrained Embedding (NNLM)
+- Moved from TensorFlow 1 to TensorFlow 2.
+- IDX Sources to read binary data files and train models on MNIST Dataset
 - scikit models
   - Clusterers
     - KMeans
@@ -31,11 +32,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - MySQL connector
 - Documented style for imports.
 - Documented use of numpy docstrings.
+- `Inputs` can now be sanitized using function passed in `validate` parameter
 - Helper utilities to take callables with numpy style docstrings and
   create config classes out of them using `make_config`.
+- File listing endpoint to HTTP service.
+- When an operation throws an exception the name of the instance and the
+  parameters it was executed with will be thrown via an `OperationException`.
+- Network utilities to preformed cached downloads with hash validation.
+- Development service got a new command, which can retrieve an argument passed
+  to setuptools `setup` function within a `setup.py` file.
 ### Changed
 - All instances of `src_url` changed to `key`.
-- Moved from tensorflow 1 to tensorflow 2.
 - `readonly` parameter in source config is now changed to `readwrite`.
 - `predict` parameter of all model config classes has been changed from `str` to `Feature`.
 - Defining features on the command line no longer requires that defined features
@@ -47,6 +54,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - TensorFlow based neural network classifier had the `classification` parameter
   in it's config changed to `predict`.
 - SciKit models use `make_config_numpy`.
+- Predictions in `repos` are now dictionary.
+- All instances of `label` changed to `tag`
+- Subclasses of `BaseConfigurable` will now auto instantiate their respective
+  config classes using `kwargs` if the config argument isn't given and keyword
+  arguments are.
+- The quickstart documentation was improved as well as the structure of docs.
 ### Fixed
 - CONTRIBUTING.md has `-e` in the wrong place in the getting setup section.
 - Since moving to auto `args()` and `config()`, BaseConfigurable no longer
@@ -55,6 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - The model predict operation erroneously had a `msg` parameter in it's config.
 - Unused imports identified by deepsource.io
+- Evaluation code from feature.py file as well as tests for those evaluations.
 
 ## [0.3.2] - 2020-01-03
 ### Added
@@ -84,7 +98,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automatic documentation deployment to GitHub Pages
 - Function to create a config class dynamically, analogous to `make_dataclass`
 - `ConfigLoaders` class which loads config files from a file or directory to a dictionary.
-
 ### Changed
 - CLI tests and integration tests derive from `AsyncExitStackTestCase`
 - SciKit models now use the auto args and config methods.

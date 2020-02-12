@@ -62,7 +62,8 @@ from dffml_model_scikit.scikit_base import (
     ScikitUnsprvised,
     ScikitContextUnsprvised,
 )
-from dffml.feature.feature import Feature, Features
+from dffml.feature.feature import Feature, Features, DefFeature
+from dffml.util.cli.parser import list_action
 
 
 def applicable_features(self, features):
@@ -120,7 +121,7 @@ for entry_point_name, name, cls, applicable_features_function in [
         QuadraticDiscriminantAnalysis,
         applicable_features,
     ),
-    ("scikitlr", "LinearRegression", LinearRegression, applicable_features,),
+    ("scikitlr", "LinearRegression", LinearRegression, applicable_features),
     (
         "scikitlor",
         "LogisticRegression",
@@ -139,17 +140,12 @@ for entry_point_name, name, cls, applicable_features_function in [
         ExtraTreesClassifier,
         applicable_features,
     ),
-    (
-        "scikitbgc",
-        "BaggingClassifier",
-        BaggingClassifier,
-        applicable_features,
-    ),
+    ("scikitbgc", "BaggingClassifier", BaggingClassifier, applicable_features),
     ("scikiteln", "ElasticNet", ElasticNet, applicable_features),
-    ("scikitbyr", "BayesianRidge", BayesianRidge, applicable_features,),
-    ("scikitlas", "Lasso", Lasso, applicable_features,),
-    ("scikitard", "ARDRegression", ARDRegression, applicable_features,),
-    ("scikitrsc", "RANSACRegressor", RANSACRegressor, applicable_features,),
+    ("scikitbyr", "BayesianRidge", BayesianRidge, applicable_features),
+    ("scikitlas", "Lasso", Lasso, applicable_features),
+    ("scikitard", "ARDRegression", ARDRegression, applicable_features),
+    ("scikitrsc", "RANSACRegressor", RANSACRegressor, applicable_features),
     ("scikitbnb", "BernoulliNB", BernoulliNB, applicable_features),
     ("scikitmnb", "MultinomialNB", MultinomialNB, applicable_features),
     (
@@ -176,8 +172,8 @@ for entry_point_name, name, cls, applicable_features_function in [
         OrthogonalMatchingPursuit,
         applicable_features,
     ),
-    ("scikitridge", "Ridge", Ridge, applicable_features,),
-    ("scikitlars", "Lars", Lars, applicable_features,),
+    ("scikitridge", "Ridge", Ridge, applicable_features),
+    ("scikitlars", "Lars", Lars, applicable_features),
     ("scikitkmeans", "KMeans", KMeans, applicable_features),
     ("scikitbirch", "Birch", Birch, applicable_features),
     (
@@ -226,27 +222,36 @@ for entry_point_name, name, cls, applicable_features_function in [
                 default=None,
             ),
         )
-    dffml_config = make_config_numpy(
-        name + "ModelConfig",
-        cls,
-        properties={
-            **{
-                "directory": (
-                    str,
-                    field(
-                        "Directory where state should be saved",
-                        default=os.path.join(
-                            os.path.expanduser("~"),
-                            ".cache",
-                            "dffml",
-                            f"scikit-{entry_point_name}",
-                        ),
+    dffml_config_properties = {
+        **{
+            "directory": (
+                str,
+                field(
+                    "Directory where state should be saved",
+                    default=os.path.join(
+                        os.path.expanduser("~"),
+                        ".cache",
+                        "dffml",
+                        f"scikit-{entry_point_name}",
                     ),
                 ),
-                "features": (Features, field("Features to train on")),
-            },
-            **config_fields,
+            ),
+            "features": (Features, field("Features to train on")),
         },
+        **config_fields,
+    }
+
+    if estimator_type in unsupervised_estimators:
+        dffml_config_properties["predict"] = (
+            Feature,
+            field(
+                "field here for compability with other functions,no need to change",
+                default=DefFeature(name="Prediction", dtype="str", length=10),
+            ),
+        )
+
+    dffml_config = make_config_numpy(
+        name + "ModelConfig", cls, properties=dffml_config_properties
     )
 
     dffml_cls_ctx = type(

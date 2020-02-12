@@ -47,6 +47,14 @@ setup(
             "dffml-model-scikit",
         ],
         "sources": ["dffml-source-mysql"],
+        "all": [
+            "dffml-model-tensorflow",
+            "dffml-model-scratch",
+            "dffml-model-scikit",
+            "dffml-source-mysql",
+            "dffml-config-yaml",
+            "dffml-service-http",
+        ],
         "dev": [
             "coverage",
             "codecov",
@@ -63,6 +71,8 @@ setup(
             "csv = dffml.source.csv:CSVSource",
             "json = dffml.source.json:JSONSource",
             "memory = dffml.source.memory:MemorySource",
+            "idx1 = dffml.source.idx1:IDX1Source",
+            "idx3 = dffml.source.idx3:IDX3Source",
         ],
         "dffml.port": ["json = dffml.port.json:JSON"],
         "dffml.service.cli": ["dev = dffml.service.dev:Develop"],

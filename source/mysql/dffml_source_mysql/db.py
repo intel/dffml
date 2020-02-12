@@ -3,7 +3,7 @@ from typing import Dict, Any, List, Optional, AsyncIterator
 
 import aiomysql
 
-from dffml.db.base import BaseDatabase, Conditions
+from dffml.db.base import BaseDatabase, Condition, Conditions
 from dffml.db.sql import SQLDatabaseContext
 from dffml.base import config
 from dffml.util.entrypoint import entrypoint
@@ -23,7 +23,7 @@ class MySQLDatabaseContext(SQLDatabaseContext):
     BIND_DECLARATION: str = "%s"
 
     async def create_table(
-        self, table_name: str, cols: Dict[str, str],
+        self, table_name: str, cols: Dict[str, str]
     ) -> None:
         query = self.create_table_query(table_name, cols)
         self.logger.debug(query)

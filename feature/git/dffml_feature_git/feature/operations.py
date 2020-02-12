@@ -119,7 +119,7 @@ async def git_repo_checkout(repo: Dict[str, str], commit: str):
     await check_output("git", "checkout", commit, cwd=repo.directory)
     return {
         "repo": GitRepoCheckedOutSpec(
-            URL=repo.URL, directory=repo.directory, commit=commit,
+            URL=repo.URL, directory=repo.directory, commit=commit
         )
     }
 
@@ -289,6 +289,29 @@ async def git_repo_release(
     outputs={"lines_by_language": lines_by_language_count},
 )
 async def lines_of_code_by_language(repo: Dict[str, str]):
+    """
+    This operation relys on ``tokei``. Here's how to install version 10.1.1,
+    check it's releases page to make sure you're installing the latest version.
+
+    On Linux
+
+    .. code-block:: console
+
+        $ curl -sSL 'https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz' \\
+          | tar -xvz && \\
+          echo '22699e16e71f07ff805805d26ee86ecb9b1052d7879350f7eb9ed87beb0e6b84fbb512963d01b75cec8e80532e4ea29a tokei' | sha384sum -c - && \\
+          sudo mv tokei /usr/local/bin/
+
+    On OSX
+
+    .. code-block:: console
+
+        $ curl -sSL 'https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz' \\
+          | tar -xvz && \\
+          echo '8c8a1d8d8dd4d8bef93dabf5d2f6e27023777f8553393e269765d7ece85e68837cba4374a2615d83f071dfae22ba40e2 tokei' | sha384sum -c - && \\
+          sudo mv tokei /usr/local/bin/
+
+    """
     # cloc creates temporary files >:(
     proc = await create("tokei", repo.directory, cwd=repo.directory)
     cols = []

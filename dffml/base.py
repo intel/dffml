@@ -7,6 +7,7 @@ import ast
 import copy
 import inspect
 import argparse
+import functools
 import contextlib
 import dataclasses
 from argparse import ArgumentParser
@@ -197,7 +198,7 @@ def _fromdict(cls, **kwargs):
                             "config": {
                                 key: value
                                 if is_config_dict(value)
-                                else {"arg": value, "config": {},}
+                                else {"arg": value, "config": {}}
                                 for key, value in config.items()
                             },
                         }
@@ -278,7 +279,45 @@ class ConfigurableParsingNamespace(object):
         self.dest = None
 
 
-class BaseConfigurable(abc.ABC):
+class BaseConfigurableMetaClass(type, abc.ABC):
+    def __new__(cls, name, bases, props, module=None):
+        # Create the class
+        cls = super(BaseConfigurableMetaClass, cls).__new__(
+            cls, name, bases, props
+        )
+        # Wrap __init__
+        setattr(cls, "__init__", cls.wrap(cls.__init__))
+        return cls
+
+    @classmethod
+    def wrap(cls, func):
+        """
+        If a subclass of BaseConfigurable is passed keyword arguments, convert
+        them into the instance of the CONFIG class.
+        """
+
+        @functools.wraps(func)
+        def wrapper(self, config: Optional[BaseConfig] = None, **kwargs):
+            if config is None and hasattr(self, "CONFIG") and kwargs:
+                try:
+                    config = self.CONFIG(**kwargs)
+                except TypeError as error:
+                    error.args = (
+                        error.args[0].replace(
+                            "__init__", f"{self.CONFIG.__qualname__}"
+                        ),
+                    )
+                    raise
+            if config is None:
+                raise TypeError(
+                    "__init__() missing 1 required positional argument: 'config'"
+                )
+            return func(self, config)
+
+        return wrapper
+
+
+class BaseConfigurable(metaclass=BaseConfigurableMetaClass):
     """
     Class which produces a config for itself by providing Args to a CMD (from
     dffml.util.cli.base) and then using a CMD after it contains parsed args to
@@ -459,7 +498,7 @@ class BaseDataFlowFacilitatorObjectContext(LoggingLogger):
 
 
 class BaseDataFlowFacilitatorObject(
-    BaseDataFlowFacilitatorObjectContext, BaseConfigurable, Entrypoint, abc.ABC
+    BaseDataFlowFacilitatorObjectContext, BaseConfigurable, Entrypoint
 ):
     """
     Base class for all Data Flow Facilitator objects conforming to the
