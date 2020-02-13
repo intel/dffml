@@ -13,7 +13,7 @@ You can get in touch with the DFFML community via the following channels.
 
 - `Gitter Chat <https://gitter.im/dffml/community>`_
 
-- `Weekly Meetings <https://intel.github.io/dffml/community.html>`_
+- :doc:`Weekly Meetings </contact>`
 
   - Recordings: https://www.youtube.com/channel/UCorEDRWGikwBH3dsJdDK1qA
 
