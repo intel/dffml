@@ -24,7 +24,7 @@ INSTALL_REQUIRES = [
     "pandas>=0.25.0",
     "dffml-model-tensorflow>=0.2.2",
 ] + (
-    ["dffml>=0.3.2"]
+    ["dffml>=0.3.3"]
     if not any(
         list(
             map(
