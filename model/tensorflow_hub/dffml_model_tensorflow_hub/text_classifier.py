@@ -30,7 +30,10 @@ from dffml.util.entrypoint import entrypoint
 from dffml.base import BaseConfig, config, field
 from dffml.feature.feature import Feature, Features
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
-from dffml_model_tensorflow.util.config.tensorflow import parse_layers
+from dffml_model_tensorflow.util.config.tensorflow import (
+    parse_layers,
+    make_config_tensorflow,
+)
 
 from .tfhub_models import bert_tokenizer, ClassificationModel
 
@@ -79,6 +82,15 @@ class TextClassifierConfig:
     def __post_init__(self):
         self.classifications = list(map(self.clstype, self.classifications))
         if self.add_layers:
+            # live_layers = []
+            # all_layers = dict(inspect.getmembers(tf.keras.layers, inspect.isclass))
+            # for layer in self.layers:
+            #     layer_name = layer.split('(', maxsplit = 1)[0]
+            #     conf = make_config_tensorflow(layer_name, all_layers[layer_name])
+            #     live_layers.append(tf.keras.layers.deserialize({'class_name': layer_name, 'config': conf}))
+            # self.layers = live_layers
+
+            # Temperory solution
             self.layers = parse_layers(self.layers)
 
 

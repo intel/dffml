@@ -22,7 +22,7 @@ class TestMakeConfig(unittest.TestCase):
 
         self.assertIn("activation", args)
         dtype, field = args["activation"]
-        self.assertEqual(dtype, Any)
+        self.assertEqual(dtype, str)
         self.assertEqual(
             field.metadata["description"],
             "Activation function to use. If you don't specify anything, no activation is applied",

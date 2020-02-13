@@ -18,29 +18,46 @@ with open(
 with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
-INSTALL_REQUIRES = [
-    "tensorflow>=2.0.0",
-    "tensorflow-hub>=0.6.0",
-    "pandas>=0.25.0",
-    "dffml-model-tensorflow>=0.2.2",
-] + (
-    ["dffml>=0.3.3"]
-    if not any(
-        list(
-            map(
-                os.path.isfile,
-                list(
-                    map(
-                        lambda syspath: os.path.join(
-                            syspath, "dffml.egg-link"
-                        ),
-                        sys.path,
-                    )
-                ),
+INSTALL_REQUIRES = (
+    ["tensorflow>=2.0.0", "tensorflow-hub>=0.6.0", "pandas>=0.25.0",]
+    + (
+        ["dffml>=0.3.3"]
+        if not any(
+            list(
+                map(
+                    os.path.isfile,
+                    list(
+                        map(
+                            lambda syspath: os.path.join(
+                                syspath, "dffml.egg-link"
+                            ),
+                            sys.path,
+                        )
+                    ),
+                )
             )
         )
+        else []
     )
-    else []
+    + (
+        ["dffml-model-tensorflow>=0.2.2"]
+        if not any(
+            list(
+                map(
+                    os.path.isfile,
+                    list(
+                        map(
+                            lambda syspath: os.path.join(
+                                syspath, "dffml-model-tensorflow.egg-link"
+                            ),
+                            sys.path,
+                        )
+                    ),
+                )
+            )
+        )
+        else []
+    )
 )
 
 setup(

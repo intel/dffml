@@ -22,12 +22,24 @@ from dffml.util.config.exceptions import (
 # Things people name their types mapped their real python types.
 TENSORFLOW_DOCS_TYPE_MAP = {
     "int": int,
+    "Integer": int,
     "integer": int,
     "str": str,
     "string": str,
+    "String": str,
     "float": float,
+    "Float": float,
     "dict": dict,
+    "Dict": dict,
+    # "list": list,
+    # "List": list,
+    # "tuple": tuple,
+    # "Tuple": tuple,
     "bool": bool,
+    "Bool": bool,
+    "Boolean": bool,
+    "boolean": bool,
+    "function": str,
 }
 
 
@@ -147,6 +159,7 @@ def tensorflow_docstring_args(cls: Callable):
     return docparams
 
 
+# TODO Just for now, remove once config is done
 def parse_layers(input_layers: List[str]):
     """
     Given a list of tf.keras.layers as strings, instantiate them with input parameters.
@@ -182,6 +195,7 @@ def parse_layers(input_layers: List[str]):
                 )
 
             parsed_args = tensorflow_docstring_args(all_layers[layer_name])
+
             for key, value in layer_params_dict.items():
                 dtype, _ = parsed_args[key]
                 try:
@@ -198,3 +212,23 @@ def parse_layers(input_layers: List[str]):
                 param_dict[key] = value
         live_layers.append(all_layers[layer_name](**param_dict))
     return live_layers
+
+
+def make_config_tensorflow(
+    name: str,
+    cls: Type,
+    properties: Optional[Dict[str, Tuple[Type, field]]] = None,
+):
+    """
+    Given a tensorflow class, read its docstring and ``__init__`` parameters to
+    generate a config class with properties containing the correct types,
+    and default values.
+    """
+    if properties is None:
+        properties = {}
+    doc_params = tensorflow_docstring_args(cls)
+    properties.update(doc_params)
+
+    return make_config(
+        name, [tuple([key] + list(value)) for key, value in properties.items()]
+    )
