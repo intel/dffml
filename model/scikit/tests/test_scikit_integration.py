@@ -9,12 +9,10 @@ import pathlib
 import contextlib
 
 import numpy as np
+from sklearn.datasets import make_blobs
 
 from dffml.cli.cli import CLI
 from dffml.util.asynctestcase import IntegrationCLITestCase
-
-
-from sklearn.datasets import make_blobs
 
 
 class TestScikitClassification(IntegrationCLITestCase):
@@ -306,7 +304,6 @@ class TestScikitClustering(IntegrationCLITestCase):
                 "training_data=csv",
                 "-source-filename",
                 train_file,
-                "-source-readonly",
             )
             # Assess accuracy
             await CLI.cli(
@@ -318,7 +315,6 @@ class TestScikitClustering(IntegrationCLITestCase):
                         *features,
                         "-sources",
                         "test_data=csv",
-                        "-source-readonly",
                         "-source-filename",
                         test_file,
                     ]
@@ -339,7 +335,6 @@ class TestScikitClustering(IntegrationCLITestCase):
                     *features,
                     "-sources",
                     "predict_data=csv",
-                    "-source-readonly",
                     "-source-filename",
                     predict_file,
                 )

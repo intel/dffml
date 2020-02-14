@@ -82,14 +82,6 @@ class TextClassifierConfig:
     def __post_init__(self):
         self.classifications = list(map(self.clstype, self.classifications))
         if self.add_layers:
-            # live_layers = []
-            # all_layers = dict(inspect.getmembers(tf.keras.layers, inspect.isclass))
-            # for layer in self.layers:
-            #     layer_name = layer.split('(', maxsplit = 1)[0]
-            #     conf = make_config_tensorflow(layer_name, all_layers[layer_name])
-            #     live_layers.append(tf.keras.layers.deserialize({'class_name': layer_name, 'config': conf}))
-            # self.layers = live_layers
-
             # Temperory solution
             self.layers = parse_layers(self.layers)
 
@@ -366,7 +358,7 @@ class TextClassificationModel(Model):
             -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \\
             -model-embedType swivel \\
             -model-add_layers \\
-            -model-layers "Dense(16, activation='relu')" "Dense(2, activation='softmax')" \\
+            -model-layers "Dense(units=512, activation='relu')" "Dense(units=2, activation='softmax')" \\
             -log debug
         $ dffml accuracy \\
             -model text_classifier \\
@@ -378,6 +370,7 @@ class TextClassificationModel(Model):
             -model-features \\
               sentence:str:1 \\
             -log critical
+            1.0
         $ dffml predict all \\
             -model text_classifier \\
             -model-predict sentiment:int:1 \\
@@ -388,6 +381,39 @@ class TextClassificationModel(Model):
             -model-features \\
               sentence:str:1 \\
             -log debug
+        [
+        {
+            "extra": {},
+            "features": {
+                "sentence": "I am not feeling good",
+                "sentiment": 0
+            },
+            "key": "0",
+            "last_updated": "2020-02-15T02:54:02Z",
+            "prediction": {
+                "sentiment": {
+                    "confidence": 0.7630850076675415,
+                    "value": 0
+                }
+            }
+        },
+        {
+            "extra": {},
+            "features": {
+                "sentence": "Our trip was full of adventures",
+                "sentiment": 1
+            },
+            "key": "1",
+            "last_updated": "2020-02-15T02:54:02Z",
+            "prediction": {
+                "sentiment": {
+                    "confidence": 0.6673157811164856,
+                    "value": 1
+                }
+            }
+        }
+    ]
+
     """
 
     CONTEXT = TextClassifierContext

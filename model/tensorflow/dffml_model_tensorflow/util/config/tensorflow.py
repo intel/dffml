@@ -31,10 +31,6 @@ TENSORFLOW_DOCS_TYPE_MAP = {
     "Float": float,
     "dict": dict,
     "Dict": dict,
-    # "list": list,
-    # "List": list,
-    # "tuple": tuple,
-    # "Tuple": tuple,
     "bool": bool,
     "Bool": bool,
     "Boolean": bool,
@@ -210,7 +206,11 @@ def parse_layers(input_layers: List[str]):
                     except:
                         value = str(value)
                 param_dict[key] = value
-        live_layers.append(all_layers[layer_name](**param_dict))
+        live_layers.append(
+            tf.keras.layers.deserialize(
+                {"class_name": layer_name, "config": param_dict}
+            )
+        )
     return live_layers
 
 

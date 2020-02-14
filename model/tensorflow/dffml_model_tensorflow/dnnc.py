@@ -328,7 +328,9 @@ class DNNClassifierModelContext(TensorflowModelContext):
 class DNNClassifierModel(Model):
     """
     Implemented using Tensorflow's DNNClassifier.
+
     .. code-block:: console
+
         $ wget http://download.tensorflow.org/data/iris_training.csv
         $ wget http://download.tensorflow.org/data/iris_test.csv
         $ head iris_training.csv
@@ -419,6 +421,7 @@ class DNNClassifierModel(Model):
                 },
                 "key": "1"
             },
+
     """
 
     CONTEXT = DNNClassifierModelContext

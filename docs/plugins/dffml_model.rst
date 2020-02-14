@@ -33,7 +33,9 @@ tfdnnc
 *Core*
 
 Implemented using Tensorflow's DNNClassifier.
+
 .. code-block:: console
+
     $ wget http://download.tensorflow.org/data/iris_training.csv
     $ wget http://download.tensorflow.org/data/iris_test.csv
     $ head iris_training.csv
@@ -180,13 +182,19 @@ tfdnnr
 *Core*
 
 Implemented using Tensorflow's DNNEstimator.
+
 Usage:
+
 * predict: Name of the feature we are trying to predict or using for training.
+
 Generating train and test data
+
 * This creates files `train.csv` and `test.csv`,
   make sure to take a BACKUP of files with same name in the directory
   from where this command is run as it overwrites any existing files.
+
 .. code-block:: console
+
     $ cat > train.csv << EOF
     Feature1,Feature2,TARGET
     0.93,0.68,3.89
@@ -255,6 +263,7 @@ Generating train and test data
             "key": 0
         }
     ]
+
 The ``NaN`` in ``confidence`` is the expected behaviour. (See TODO in
 predict).
 
@@ -330,7 +339,7 @@ Implemented using Tensorflow hub pretrained models.
         -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \
         -model-embedType swivel \
         -model-add_layers \
-        -model-layers "Dense(16, activation='relu')" "Dense(2, activation='softmax')" \
+        -model-layers "Dense(units=512, activation='relu')" "Dense(units=2, activation='softmax')" \
         -log debug
     $ dffml accuracy \
         -model text_classifier \
@@ -342,6 +351,7 @@ Implemented using Tensorflow hub pretrained models.
         -model-features \
           sentence:str:1 \
         -log critical
+        1.0
     $ dffml predict all \
         -model text_classifier \
         -model-predict sentiment:int:1 \
@@ -352,6 +362,38 @@ Implemented using Tensorflow hub pretrained models.
         -model-features \
           sentence:str:1 \
         -log debug
+    [
+    {
+        "extra": {},
+        "features": {
+            "sentence": "I am not feeling good",
+            "sentiment": 0
+        },
+        "key": "0",
+        "last_updated": "2020-02-15T02:54:02Z",
+        "prediction": {
+            "sentiment": {
+                "confidence": 0.7630850076675415,
+                "value": 0
+            }
+        }
+    },
+    {
+        "extra": {},
+        "features": {
+            "sentence": "Our trip was full of adventures",
+            "sentiment": 1
+        },
+        "key": "1",
+        "last_updated": "2020-02-15T02:54:02Z",
+        "prediction": {
+            "sentiment": {
+                "confidence": 0.6673157811164856,
+                "value": 1
+            }
+        }
+    }
+]
 
 **Args**
 
