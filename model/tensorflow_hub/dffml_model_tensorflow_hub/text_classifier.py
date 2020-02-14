@@ -82,14 +82,6 @@ class TextClassifierConfig:
     def __post_init__(self):
         self.classifications = list(map(self.clstype, self.classifications))
         if self.add_layers:
-            # live_layers = []
-            # all_layers = dict(inspect.getmembers(tf.keras.layers, inspect.isclass))
-            # for layer in self.layers:
-            #     layer_name = layer.split('(', maxsplit = 1)[0]
-            #     conf = make_config_tensorflow(layer_name, all_layers[layer_name])
-            #     live_layers.append(tf.keras.layers.deserialize({'class_name': layer_name, 'config': conf}))
-            # self.layers = live_layers
-
             # Temperory solution
             self.layers = parse_layers(self.layers)
 
