@@ -144,11 +144,12 @@ class RidgeContext(ModelContext):
         await self._set_intercept(X_offset, y_offset, X_scale)
         self.accuracy_value = await self.coeff_of_deter(y, \
             np.dot(np.asarray(X, dtype=float), self.coef_.T)  + self.intercept_)
-        with open("weights.txt", 'w') as f:
+        file_addr = self.parent.config.directory +"\\"+ self._features_hash_
+        with open(file_addr + "weights.txt", 'w') as f:
             f.write(",".join(map(str, self.coef_)))
-        with open("intercept.txt", 'w') as f:
+        with open(file_addr + "intercept.txt", 'w') as f:
             f.write(str(self.intercept_))
-        with open("acc.txt", 'w') as f:
+        with open(file_addr + "acc.txt", 'w') as f:
             f.write(str(self.accuracy_value))
         return self
     
@@ -178,8 +179,9 @@ class RidgeContext(ModelContext):
         await self.best_fit_line()
 
     async def accuracy(self, sources: Sources) -> Accuracy:
+        file_addr = self.parent.config.directory +"\\"+ self._features_hash_
         try:
-            with open("acc.txt", "r") as f:
+            with open(file_addr + "acc.txt", "r") as f:
                 self.accuracy_value = float(f.read())
         except:
             raise ModelNotTrained("Train model before assessing for accuracy.")
@@ -189,11 +191,12 @@ class RidgeContext(ModelContext):
         self, repos: AsyncIterator[Repo]
     ) -> AsyncIterator[Tuple[Repo, Any, float]]:
         try:
-            with open("weights.txt", 'r') as f:
+            file_addr = self.parent.config.directory +"\\"+ self._features_hash_
+            with open(file_addr + "weights.txt", 'r') as f:
                 self.coef_ = np.asarray(list(map(float, f.read().split(","))), dtype=float)
-            with open("intercept.txt", 'r') as f:
+            with open(file_addr + "intercept.txt", 'r') as f:
                 self.intercept_ = float(f.read())
-            with open("acc.txt", 'r') as f:
+            with open(file_addr + "acc.txt", 'r') as f:
                 self.accuracy_value = float(f.read())
         except:
             raise ModelNotTrained("Train model before prediction.")
