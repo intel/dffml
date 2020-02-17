@@ -29,7 +29,6 @@ class TestRunDataFlowOnRepo(AsyncTestCase):
                 definition=GetSingle.op.inputs["spec"],
             )
         )
-
         test_dataflow = DataFlow(
             operations={
                 "run_dataflow": run_dataflow.op,
@@ -90,6 +89,7 @@ class TestRunDataFlowOnRepo(AsyncTestCase):
                     }
                 ):
                     ctx_str = (await _ctx.handle()).as_string()
+                    print(f"DEbug flow_results : {results}")
                     self.assertIn("flow_results", results)
 
                     results = results["flow_results"]

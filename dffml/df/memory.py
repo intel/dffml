@@ -972,7 +972,7 @@ class MemoryOperationImplementationNetworkContext(
         # Add the input set made from the outputs to the input set network
         print(f"Debug in opimpnetwortkctx")
         print(f"Debug Im {operation}")
-        print(f"Debug ,my octx is {octx.subflows}")
+        print(f"Debug ,my octx is {octx}")
         print(f"Debug next inputs {inputs}")
         memory_input_set = MemoryInputSet(
                 MemoryInputSetConfig(ctx=parameter_set.ctx, inputs=inputs)
@@ -995,7 +995,7 @@ class MemoryOperationImplementationNetworkContext(
                 await octx.subflows[instance_name].ictx.add(MemoryInputSet(
                 MemoryInputSetConfig(ctx=parameter_set.ctx, inputs=inputs)
             ))
-                print(f"Debuf forwrded {inputs} to {instance_name}")
+                print(f"Debug forwrded {inputs} to {instance_name}")
     
 
 

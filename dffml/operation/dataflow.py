@@ -22,6 +22,21 @@ class RunDataFlowConfig:
     expand=["results"],
 )
 async def run_dataflow(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
+    """
+        params:
+            inputs: Dict -> {
+                "ctx_str" : [
+                    {
+                        "value":val1,
+                        "defintion":defintion1
+                    },
+                    {
+                        "value":val2,
+                        "defintion":defintion2
+                    }
+                ]
+            }
+    """
     inputs_created = {}
     definitions = self.config.dataflow.definitions
 

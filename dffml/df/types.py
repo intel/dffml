@@ -359,9 +359,9 @@ class Forward:
             self.book = {}
         self._internal_book = []
 
-    def add(self, instance_name, ldefs):
-        self.book[instance_name] = ldefs
-        self._internal_book.extend(ldefs)
+    def add(self, instance_name, definition_list):
+        self.book[instance_name] = definition_list
+        self._internal_book.extend(definition_list)
 
     def get_instances_to_forward(self, definition):
         if not definition in self._internal_book:
