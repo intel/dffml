@@ -54,11 +54,17 @@ class TextClassifierConfig:
         "Tweak pretrained model by training again", default=True
     )
     batch_size: int = field("Batch size", default=120)
-    max_seq_length: int = field("Length of sentence", default=256)
+    max_seq_length: int = field(
+        "Length of sentence, used in preprocessing of input for bert embedding",
+        default=256,
+    )
     add_layers: bool = field(
         "Add layers on the top of pretrianed model/layer", default=False
     )
-    embedType: str = field("Type of pretrained embedding model", default=None)
+    embedType: str = field(
+        "Type of pretrained embedding model, required to be set to `bert` to use bert pretrained embedding",
+        default=None,
+    )
     layers: List[str] = field(
         "Extra layers to be added on top of pretrained model", default=None
     )
@@ -102,7 +108,7 @@ class TextClassifierContext(ModelContext):
     async def __aenter__(self):
         path = self._model_dir_path()
         if os.path.isfile(os.path.join(path, "saved_model.pb")):
-            self.logger.info("Using saved model")
+            self.logger.info(f"Using saved model from {path}")
             self._model = tf.keras.models.load_model(os.path.join(path))
         else:
             self._model = self.createModel()
@@ -356,7 +362,6 @@ class TextClassificationModel(Model):
             -model-features \\
               sentence:str:1 \\
             -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \\
-            -model-embedType swivel \\
             -model-add_layers \\
             -model-layers "Dense(units=512, activation='relu')" "Dense(units=2, activation='softmax')" \\
             -log debug
@@ -364,6 +369,7 @@ class TextClassificationModel(Model):
             -model text_classifier \\
             -model-predict sentiment:int:1 \\
             -model-classifications 0 1 \\
+            -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \\
             -model-clstype int \\
             -sources f=csv \\
             -source-filename test.csv \\
@@ -375,6 +381,7 @@ class TextClassificationModel(Model):
             -model text_classifier \\
             -model-predict sentiment:int:1 \\
             -model-classifications 0 1 \\
+            -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \\
             -model-clstype int \\
             -sources f=csv \\
             -source-filename test.csv \\
@@ -382,37 +389,37 @@ class TextClassificationModel(Model):
               sentence:str:1 \\
             -log debug
         [
-        {
-            "extra": {},
-            "features": {
-                "sentence": "I am not feeling good",
-                "sentiment": 0
+            {
+                "extra": {},
+                "features": {
+                    "sentence": "I am not feeling good",
+                    "sentiment": 0
+                },
+                "key": "0",
+                "last_updated": "2020-02-15T02:54:02Z",
+                "prediction": {
+                    "sentiment": {
+                        "confidence": 0.7630850076675415,
+                        "value": 0
+                    }
+                }
             },
-            "key": "0",
-            "last_updated": "2020-02-15T02:54:02Z",
-            "prediction": {
-                "sentiment": {
-                    "confidence": 0.7630850076675415,
-                    "value": 0
+            {
+                "extra": {},
+                "features": {
+                    "sentence": "Our trip was full of adventures",
+                    "sentiment": 1
+                },
+                "key": "1",
+                "last_updated": "2020-02-15T02:54:02Z",
+                "prediction": {
+                    "sentiment": {
+                        "confidence": 0.6673157811164856,
+                        "value": 1
+                    }
                 }
             }
-        },
-        {
-            "extra": {},
-            "features": {
-                "sentence": "Our trip was full of adventures",
-                "sentiment": 1
-            },
-            "key": "1",
-            "last_updated": "2020-02-15T02:54:02Z",
-            "prediction": {
-                "sentiment": {
-                    "confidence": 0.6673157811164856,
-                    "value": 1
-                }
-            }
-        }
-    ]
+        ]
 
     """
 

@@ -2,7 +2,7 @@
 This code is forked from:
 https://github.com/google-research/bert/blob/master/tokenization.py.
 
-https://github.com/google-research/bert/blob/master/LICENSE
+https://github.com/google-research/bert/blob/master/LICENSE (Apache License 2.0)
 """
 
 from __future__ import absolute_import

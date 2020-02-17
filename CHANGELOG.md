@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Tensorflow hub NLP models.
 - Notes on development dependencies in `setup.py` files to codebase notes.
+
 ## [0.3.3] - 2020-02-10
 ### Added
 - Moved from TensorFlow 1 to TensorFlow 2.

@@ -337,7 +337,6 @@ Implemented using Tensorflow hub pretrained models.
         -model-features \
           sentence:str:1 \
         -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \
-        -model-embedType swivel \
         -model-add_layers \
         -model-layers "Dense(units=512, activation='relu')" "Dense(units=2, activation='softmax')" \
         -log debug
@@ -345,6 +344,7 @@ Implemented using Tensorflow hub pretrained models.
         -model text_classifier \
         -model-predict sentiment:int:1 \
         -model-classifications 0 1 \
+        -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \
         -model-clstype int \
         -sources f=csv \
         -source-filename test.csv \
@@ -356,6 +356,7 @@ Implemented using Tensorflow hub pretrained models.
         -model text_classifier \
         -model-predict sentiment:int:1 \
         -model-classifications 0 1 \
+        -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \
         -model-clstype int \
         -sources f=csv \
         -source-filename test.csv \
@@ -363,37 +364,37 @@ Implemented using Tensorflow hub pretrained models.
           sentence:str:1 \
         -log debug
     [
-    {
-        "extra": {},
-        "features": {
-            "sentence": "I am not feeling good",
-            "sentiment": 0
+        {
+            "extra": {},
+            "features": {
+                "sentence": "I am not feeling good",
+                "sentiment": 0
+            },
+            "key": "0",
+            "last_updated": "2020-02-15T02:54:02Z",
+            "prediction": {
+                "sentiment": {
+                    "confidence": 0.7630850076675415,
+                    "value": 0
+                }
+            }
         },
-        "key": "0",
-        "last_updated": "2020-02-15T02:54:02Z",
-        "prediction": {
-            "sentiment": {
-                "confidence": 0.7630850076675415,
-                "value": 0
+        {
+            "extra": {},
+            "features": {
+                "sentence": "Our trip was full of adventures",
+                "sentiment": 1
+            },
+            "key": "1",
+            "last_updated": "2020-02-15T02:54:02Z",
+            "prediction": {
+                "sentiment": {
+                    "confidence": 0.6673157811164856,
+                    "value": 1
+                }
             }
         }
-    },
-    {
-        "extra": {},
-        "features": {
-            "sentence": "Our trip was full of adventures",
-            "sentiment": 1
-        },
-        "key": "1",
-        "last_updated": "2020-02-15T02:54:02Z",
-        "prediction": {
-            "sentiment": {
-                "confidence": 0.6673157811164856,
-                "value": 1
-            }
-        }
-    }
-]
+    ]
 
 **Args**
 
@@ -422,7 +423,7 @@ Implemented using Tensorflow hub pretrained models.
 - max_seq_length: Integer
 
   - default: 256
-  - Length of sentence
+  - Length of sentence, used in preprocessing of input for bert embedding
 
 - add_layers: Boolean
 
@@ -432,7 +433,7 @@ Implemented using Tensorflow hub pretrained models.
 - embedType: String
 
   - default: None
-  - Type of pretrained embedding model
+  - Type of pretrained embedding model, required to be set to `bert` to use bert pretrained embedding
 
 - layers: List of strings
 
