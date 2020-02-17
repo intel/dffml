@@ -33,7 +33,6 @@ async def run_dataflow(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
             )
             for val_def in val_defs
         ]
-
     async with self.octx.parent(self.config.dataflow) as octx:
         results = [
             {(await ctx.handle()).as_string(): result}

@@ -54,7 +54,6 @@ class TestRunDataFlowOnRepo(AsyncTestCase):
             },
         ]
         test_outputs = {"add_op": 42, "mult_op": 420}
-
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
             async with orchestrator(test_dataflow) as octx:
                 async for _ctx, results in octx.run(

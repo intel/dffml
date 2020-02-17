@@ -841,6 +841,7 @@ class MemoryOperationImplementationNetworkContext(
                 opimp = OperationImplementation.load(operation.name)
             else:
                 raise OperationImplementationNotInstantiable(operation.name)
+        opimp.op = opimp.op._replace(instance_name=operation.instance_name)
         self.operations[
             operation.instance_name
         ] = await self._stack.enter_async_context(opimp(config))
