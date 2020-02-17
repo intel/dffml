@@ -927,6 +927,7 @@ class MemoryOperationImplementationNetworkContext(
         """
         # Ensure that we can run the operation
         # Lock all inputs which cannot be used simultaneously
+        # print(f"Debug(Is it here?) {operation}")
         async with octx.lctx.acquire(parameter_set):
             # Run the operation
             outputs = await self.run(
@@ -969,11 +970,40 @@ class MemoryOperationImplementationNetworkContext(
                 )
             ) from error
         # Add the input set made from the outputs to the input set network
-        await octx.ictx.add(
-            MemoryInputSet(
+        print(f"Debug in opimpnetwortkctx")
+        print(f"Debug Im {operation}")
+        print(f"Debug ,my octx is {octx.subflows}")
+        print(f"Debug next inputs {inputs}")
+        memory_input_set = MemoryInputSet(
                 MemoryInputSetConfig(ctx=parameter_set.ctx, inputs=inputs)
             )
+
+        for sub_instance_name,sub_octx in octx.subflows.items():
+            print(f"Debug sub instance_name: {sub_instance_name}")
+        inputs_to_forward = {}
+        forward = octx.config.dataflow.forward
+        for ip in inputs:
+            instance_list = forward.get_instances_to_forward(ip.definition)
+            print(f"Debug instances to forward to : {instance_list}")
+
+            for instance_name in instance_list:
+                inputs_to_forward.setdefault(instance_name,[]).append(ip)
+
+        print(f"Debug Inputs to forward to subflows{octx.subflows}:{inputs_to_forward}")
+        for instance_name,inputs in inputs_to_forward.items():
+            if instance_name in octx.subflows:
+                await octx.subflows[instance_name].ictx.add(MemoryInputSet(
+                MemoryInputSetConfig(ctx=parameter_set.ctx, inputs=inputs)
+            ))
+                print(f"Debuf forwrded {inputs} to {instance_name}")
+    
+
+
+        print()
+        await octx.ictx.add(
+            memory_input_set
         )
+
         return inputs
 
     async def dispatch(
@@ -1084,7 +1114,9 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
     ) -> None:
         super().__init__(config, parent)
         self._stack = None
-
+        self.subflows={}
+    def register_subflow(self,instance_name,dataflow):
+        self.subflows[instance_name]=dataflow
     async def __aenter__(self) -> "BaseOrchestratorContext":
         # TODO(subflows) In all of these contexts we are about to enter, they
         # all reach into their parents and store things in the parents memory

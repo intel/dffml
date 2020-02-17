@@ -34,6 +34,7 @@ async def run_dataflow(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
             for val_def in val_defs
         ]
     async with self.octx.parent(self.config.dataflow) as octx:
+        self.octx.register_subflow(self.parent.op.instance_name, octx)
         results = [
             {(await ctx.handle()).as_string(): result}
             async for ctx, result in octx.run(inputs_created)

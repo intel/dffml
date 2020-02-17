@@ -351,6 +351,29 @@ class InputFlow:
 
 
 @dataclass
+class Forward:
+    book: "Dict[str, List[Definitions]]" = None
+
+    def __post_init__(self):
+        if self.book is None:
+            self.book = {}
+        self._internal_book = []
+
+    def add(self, instance_name, ldefs):
+        self.book[instance_name] = ldefs
+        self._internal_book.extend(ldefs)
+
+    def get_instances_to_forward(self, definition):
+        if not definition in self._internal_book:
+            return []
+        return [
+            instance_name
+            for instance_name, definitions in self.book.items()
+            if definition in definitions
+        ]
+
+
+@dataclass
 class DataFlow:
     operations: Dict[str, Union[Operation, Callable]]
     seed: List[Input] = field(default=None)
@@ -361,6 +384,7 @@ class DataFlow:
     # Implementations can be provided in case they haven't been registered via
     # the entrypoint system.
     implementations: Dict[str, "OperationImplementation"] = field(default=None)
+    forward: Forward = field(default_factory=lambda: Forward())
 
     def __post_init__(self):
         # Prevent usage of a global dict (if we set default to {} then all the
