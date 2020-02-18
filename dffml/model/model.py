@@ -17,7 +17,7 @@ from ..base import (
 from ..repo import Repo
 from ..source.source import Sources
 from ..feature import Features
-from ..accuracy import Accuracy
+from .accuracy import Accuracy
 from ..util.entrypoint import base_entry_point
 
 

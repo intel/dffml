@@ -1,5 +1,5 @@
-Community
-=========
+Contact Us
+==========
 
 Questions can be asked via
 

@@ -22,45 +22,45 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
             )
         )
 
-    async def test_label(self):
+    async def test_tag(self):
         with tempfile.TemporaryDirectory() as testdir:
             self.testfile = os.path.join(testdir, str(random.random()))
-            unlabeled = await self.setUpSource()
-            labeled = await self.setUpSource()
-            labeled.config = labeled.config._replace(label="somelabel")
-            async with unlabeled, labeled:
-                async with unlabeled() as uctx, labeled() as lctx:
+            untagged = await self.setUpSource()
+            tagged = await self.setUpSource()
+            tagged.config = tagged.config._replace(tag="sometag")
+            async with untagged, tagged:
+                async with untagged() as uctx, tagged() as lctx:
                     await uctx.update(
                         Repo("0", data={"features": {"feed": 1}})
                     )
                     await lctx.update(
                         Repo("0", data={"features": {"face": 2}})
                     )
-                # async with unlabeled, labeled:
-                async with unlabeled() as uctx, labeled() as lctx:
+                # async with untagged, tagged:
+                async with untagged() as uctx, tagged() as lctx:
                     repo = await uctx.repo("0")
                     self.assertIn("feed", repo.features())
                     repo = await lctx.repo("0")
                     self.assertIn("face", repo.features())
             with open(self.testfile, "r") as fd:
                 dict_reader = csv.DictReader(fd, dialect="strip")
-                rows = {row["label"]: {row["key"]: row} for row in dict_reader}
-                self.assertIn("unlabeled", rows)
-                self.assertIn("somelabel", rows)
-                self.assertIn("0", rows["unlabeled"])
-                self.assertIn("0", rows["somelabel"])
-                self.assertIn("feed", rows["unlabeled"]["0"])
-                self.assertIn("face", rows["somelabel"]["0"])
-                self.assertEqual("1", rows["unlabeled"]["0"]["feed"])
-                self.assertEqual("2", rows["somelabel"]["0"]["face"])
+                rows = {row["tag"]: {row["key"]: row} for row in dict_reader}
+                self.assertIn("untagged", rows)
+                self.assertIn("sometag", rows)
+                self.assertIn("0", rows["untagged"])
+                self.assertIn("0", rows["sometag"])
+                self.assertIn("feed", rows["untagged"]["0"])
+                self.assertIn("face", rows["sometag"]["0"])
+                self.assertEqual("1", rows["untagged"]["0"]["feed"])
+                self.assertEqual("2", rows["sometag"]["0"]["face"])
 
     def test_config_default(self):
         config = CSVSource.config(
             parse_unknown("--source-csv-filename", "feedface")
         )
         self.assertEqual(config.filename, "feedface")
-        self.assertEqual(config.label, "unlabeled")
-        self.assertEqual(config.labelcol, "label")
+        self.assertEqual(config.tag, "untagged")
+        self.assertEqual(config.tagcol, "tag")
         self.assertEqual(config.key, "key")
         self.assertFalse(config.readwrite)
         self.assertFalse(config.allowempty)
@@ -70,10 +70,10 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
             parse_unknown(
                 "--source-csv-filename",
                 "feedface",
-                "--source-csv-label",
-                "default-label",
-                "--source-csv-labelcol",
-                "dffml_label",
+                "--source-csv-tag",
+                "default-tag",
+                "--source-csv-tagcol",
+                "dffml_tag",
                 "--source-csv-key",
                 "SourceURLColumn",
                 "--source-csv-readwrite",
@@ -81,8 +81,8 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
             )
         )
         self.assertEqual(config.filename, "feedface")
-        self.assertEqual(config.label, "default-label")
-        self.assertEqual(config.labelcol, "dffml_label")
+        self.assertEqual(config.tag, "default-tag")
+        self.assertEqual(config.tagcol, "dffml_tag")
         self.assertEqual(config.key, "SourceURLColumn")
         self.assertTrue(config.readwrite)
         self.assertTrue(config.allowempty)

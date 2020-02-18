@@ -16,6 +16,3 @@ setup.py which specifies where to find your Port subclass within your module.
 >>> )
 """
 from .port import Port
-
-# Declares dffml.port as a namespace package
-__import__("pkg_resources").declare_namespace(__name__)

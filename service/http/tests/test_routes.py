@@ -25,7 +25,7 @@ from dffml.df.types import Definition, Input, DataFlow, Stage
 from dffml.operation.output import GetSingle
 from dffml.util.entrypoint import EntrypointNotFound
 from dffml.model.model import ModelContext, Model
-from dffml.accuracy import Accuracy
+from dffml.model.accuracy import Accuracy
 from dffml.feature import Features, DefFeature
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.source.source import Sources
@@ -273,9 +273,9 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                 self.cli.app["sources"]["salary"].config,
                 CSVSourceConfig(
                     filename="dataset.csv",
-                    label="unlabeled",
+                    tag="untagged",
                     key="key",
-                    labelcol="label",
+                    tagcol="tag",
                     allowempty=True,
                 ),
             )
@@ -360,7 +360,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                     ServerException, f"{check} feed face not found"
                 ):
                     async with self.post(
-                        f"/configure/{check}/feed face/label", json={}
+                        f"/configure/{check}/feed face/tag", json={}
                     ):
                         pass  # pramga: no cov
 

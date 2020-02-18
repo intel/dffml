@@ -50,14 +50,14 @@ class TestDNN(AsyncTestCase):
             DNNRegressionModelConfig(
                 directory=cls.model_dir.name,
                 steps=1000,
-                epochs=30,
-                hidden=[200, 100, 80, 10],
+                epochs=40,
+                hidden=[10, 20, 10],
                 predict=DefFeature("TARGET", float, 1),
                 features=cls.features,
             )
         )
         # Generating data f(x1,x2) = 2*x1 + 3*x2
-        _n_data = 1000
+        _n_data = 2000
         _temp_data = np.random.rand(2, _n_data)
         cls.repos = [
             Repo(

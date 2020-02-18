@@ -29,7 +29,7 @@ from dffml.source.csv import CSVSource, CSVSourceConfig
 from dffml.model.model import ModelContext, Model
 from dffml.df.types import Operation
 from dffml.df.base import OperationImplementation
-from dffml.accuracy import Accuracy as AccuracyType
+from dffml.model.accuracy import Accuracy as AccuracyType
 from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import (
     AsyncExitStackTestCase,
@@ -57,7 +57,7 @@ class ReposTestCase(AsyncExitStackTestCase):
         contents = json.loads(Path(self.sconfig.filename).read_text())
         # Ensure there are repos in the file
         self.assertEqual(
-            len(contents.get(self.sconfig.label)),
+            len(contents.get(self.sconfig.tag)),
             len(self.repos),
             "ReposTestCase JSON file erroneously initialized as empty",
         )
@@ -100,18 +100,6 @@ class FakeFeature(Feature):
 
     def length(self):
         return 1  # pragma: no cov
-
-    async def applicable(self, data):
-        return True
-
-    async def fetch(self, data):
-        pass
-
-    async def parse(self, data):
-        pass
-
-    async def calc(self, data):
-        return float(data.key)
 
 
 class FakeModelContext(ModelContext):
@@ -158,14 +146,14 @@ def opimp_load(loading=None):
 
 
 class TestMerge(ReposTestCase):
-    async def test_json_label(self):
+    async def test_json_tag(self):
         await Merge.cli(
             "dest=json",
             "src=json",
             "-source-dest-filename",
             self.temp_filename,
-            "-source-dest-label",
-            "somelabel",
+            "-source-dest-tag",
+            "sometag",
             "-source-src-filename",
             self.temp_filename,
             "-source-src-allowempty",
@@ -173,20 +161,18 @@ class TestMerge(ReposTestCase):
             "-source-src-readwrite",
             "-source-dest-readwrite",
         )
-        # Check the unlabeled source
-        with self.subTest(labeled=None):
+        # Check the untagged source
+        with self.subTest(tagged=None):
             async with JSONSource(
                 FileSourceConfig(filename=self.temp_filename)
             ) as source:
                 async with source() as sctx:
                     repos = [repo async for repo in sctx.repos()]
                     self.assertEqual(len(repos), len(self.repos))
-        # Check the labeled source
-        with self.subTest(labeled="somelabel"):
+        # Check the tagged source
+        with self.subTest(tagged="sometag"):
             async with JSONSource(
-                FileSourceConfig(
-                    filename=self.temp_filename, label="somelabel"
-                )
+                FileSourceConfig(filename=self.temp_filename, tag="sometag")
             ) as source:
                 async with source() as sctx:
                     repos = [repo async for repo in sctx.repos()]
@@ -211,13 +197,13 @@ class TestMerge(ReposTestCase):
             contents = Path(csv_tempfile).read_text()
             self.assertEqual(
                 contents,
-                "key,label\n"
-                + "\n".join([f"{repo.key},unlabeled" for repo in self.repos])
+                "key,tag\n"
+                + "\n".join([f"{repo.key},untagged" for repo in self.repos])
                 + "\n",
                 "Incorrect data in csv file",
             )
 
-    async def test_csv_label(self):
+    async def test_csv_tag(self):
         with non_existant_tempfile() as csv_tempfile:
             # Move the pre-populated json data to a csv source
             with self.subTest(json_to_csv=True):
@@ -233,15 +219,15 @@ class TestMerge(ReposTestCase):
                     "-source-src-readwrite",
                     "-source-dest-readwrite",
                 )
-            # Merge one label to another within the same file
+            # Merge one tag to another within the same file
             with self.subTest(merge_same_file=True):
                 await Merge.cli(
                     "dest=csv",
                     "src=csv",
                     "-source-dest-filename",
                     csv_tempfile,
-                    "-source-dest-label",
-                    "somelabel",
+                    "-source-dest-tag",
+                    "sometag",
                     "-source-src-filename",
                     csv_tempfile,
                     "-source-src-allowempty",
@@ -250,10 +236,10 @@ class TestMerge(ReposTestCase):
                     "-source-dest-readwrite",
                 )
             contents = Path(csv_tempfile).read_text()
-            self.assertIn("unlabeled", contents)
-            self.assertIn("somelabel", contents)
-            # Check the unlabeled source
-            with self.subTest(labeled=None):
+            self.assertIn("untagged", contents)
+            self.assertIn("sometag", contents)
+            # Check the untagged source
+            with self.subTest(tagged=None):
                 async with CSVSource(
                     CSVSourceConfig(filename=csv_tempfile)
                 ) as source:
@@ -261,19 +247,19 @@ class TestMerge(ReposTestCase):
                         repos = [repo async for repo in sctx.repos()]
                         self.assertEqual(len(repos), len(self.repos))
             contents = Path(csv_tempfile).read_text()
-            self.assertIn("somelabel", contents)
-            self.assertIn("unlabeled", contents)
-            # Check the labeled source
-            with self.subTest(labeled="somelabel"):
+            self.assertIn("sometag", contents)
+            self.assertIn("untagged", contents)
+            # Check the tagged source
+            with self.subTest(tagged="sometag"):
                 async with CSVSource(
-                    CSVSourceConfig(filename=csv_tempfile, label="somelabel")
+                    CSVSourceConfig(filename=csv_tempfile, tag="sometag")
                 ) as source:
                     async with source() as sctx:
                         repos = [repo async for repo in sctx.repos()]
                         self.assertEqual(len(repos), len(self.repos))
             contents = Path(csv_tempfile).read_text()
-            self.assertIn("somelabel", contents)
-            self.assertIn("unlabeled", contents)
+            self.assertIn("sometag", contents)
+            self.assertIn("untagged", contents)
 
 
 class TestListRepos(ReposTestCase):

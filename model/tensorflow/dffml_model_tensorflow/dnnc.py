@@ -15,16 +15,16 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
 
 from dffml.repo import Repo
-from dffml.feature import Feature, Features
-from dffml.source.source import Sources
-from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
-from dffml.accuracy import Accuracy
-from dffml.util.entrypoint import entrypoint
 from dffml.base import BaseConfig
 from dffml.util.cli.arg import Arg
-from dffml.feature.feature import Feature, Features
-from dffml.util.cli.parser import list_action
+from dffml.model.accuracy import Accuracy
 from dffml.base import config, field
+from dffml.source.source import Sources
+from dffml.feature import Feature, Features
+from dffml.util.entrypoint import entrypoint
+from dffml.util.cli.parser import list_action
+from dffml.feature.feature import Feature, Features
+from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 
 
 class TensorflowModelContext(ModelContext):
@@ -208,7 +208,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
             len(self.classifications),
             self.classifications,
         )
-        self._model = tf.estimator.DNNClassifier(
+        self._model = tf.compat.v1.estimator.DNNClassifier(
             feature_columns=list(self.feature_columns.values()),
             hidden_units=self.parent.config.hidden,
             n_classes=len(self.parent.config.classifications),
@@ -216,9 +216,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         )
         return self._model
 
-    async def training_input_fn(
-        self, sources: Sources, **kwargs,
-    ):
+    async def training_input_fn(self, sources: Sources, **kwargs):
         """
         Uses the numpy input function with data from repo features.
         """
@@ -259,9 +257,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         )
         return input_fn
 
-    async def accuracy_input_fn(
-        self, sources: Sources, **kwargs,
-    ):
+    async def accuracy_input_fn(self, sources: Sources, **kwargs):
         """
         Uses the numpy input function with data from repo features.
         """

@@ -12,8 +12,8 @@ class TestCustomSQliteSource(FileSourceTest, AsyncTestCase):
             CustomSQLiteSourceConfig(filename=self.testfile)
         )
 
-    @unittest.skip("Labels not implemented")
-    async def test_label(self):
+    @unittest.skip("tags not implemented")
+    async def test_tag(self):
         """
-        Labels not implemented
+        tags not implemented
         """
