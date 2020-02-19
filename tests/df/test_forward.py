@@ -41,7 +41,7 @@ def collect_data(input_vector, matrix):
     return {"data": {"input_vector": input_vector, "matrix": matrix}}
 
 
-class TestRunDataFlowOnRepo(AsyncTestCase):
+class TestInputForwarding(AsyncTestCase):
     async def test_run(self):
         norm_shape_flow = DataFlow(
             operations={
