@@ -70,6 +70,7 @@ jobs:
         cat > ${PYPI_TOKENS} <<EOF
         examples/shouldi=${{ secrets.PYPI_SHOULDI }}
         model/tensorflow=${{ secrets.PYPI_MODEL_TENSORFLOW }}
+        model/tensorflow_hub=${{ secrets.PYPI_MODEL_TENSORFLOW_HUB }}
         model/scratch=${{ secrets.PYPI_MODEL_SCRATCH }}
         model/scikit=${{ secrets.PYPI_MODEL_SCIKIT }}
         source/mysql=${{ secrets.PYPI_SOURCE_MYSQL }}
