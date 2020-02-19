@@ -49,8 +49,9 @@ async def run_dataflow(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
             for val_def in val_defs
         ]
     async with self.octx.parent(self.config.dataflow) as octx:
+        # Register the subflow with parent,so that parent flow can
+        # forward inputs of specifed defintions(in DataFlow.forward)
         self.octx.register_subflow(self.parent.op.instance_name, octx)
-        print(f"Debug \n \n <{self.octx}> starting subflow <{octx}>")
         results = [
             {(await ctx.handle()).as_string(): result}
             async for ctx, result in octx.run(inputs_created)
