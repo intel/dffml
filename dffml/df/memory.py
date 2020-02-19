@@ -237,7 +237,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         # Inputs forwarded from parent subflows
         self.received_from_parent_flow = []
 
-    async def receive_from_parent_flow(self, inputs:List[Input]):
+    async def receive_from_parent_flow(self, inputs: List[Input]):
         """
         Takes input from parent dataflow and adds it to every context
         """
@@ -1246,14 +1246,18 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         for item in inputs:
             instance_list = forward.get_instances_to_forward(item.definition)
             for instance_name in instance_list:
-                self.inputs_to_forward.setdefault(instance_name, []).append(item)
+                self.inputs_to_forward.setdefault(instance_name, []).append(
+                    item
+                )
         for instance_name, inputs in self.inputs_to_forward.items():
             if instance_name in self.subflows:
                 await self.subflows[
                     instance_name
                 ].ictx.receive_from_parent_flow(inputs)
 
-    async def register_subflow(self, instance_name:str, octx:BaseOrchestratorContext):
+    async def register_subflow(
+        self, instance_name: str, octx: BaseOrchestratorContext
+    ):
         """
         Register subflows with instance_name.Flows need to be registered for parent flow
         to be able to forward inputs.
