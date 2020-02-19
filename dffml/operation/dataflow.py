@@ -23,19 +23,25 @@ class RunDataFlowConfig:
 )
 async def run_dataflow(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
     """
-        params:
-            inputs: Dict -> {
-                "ctx_str" : [
-                    {
-                        "value":val1,
-                        "defintion":defintion1
-                    },
-                    {
-                        "value":val2,
-                        "defintion":defintion2
-                    }
-                ]
-            }
+        Starts a subflow `self.config.dataflow` and runs `inputs` in it.
+
+        Parameters:
+            inputs: Dict[str,Any] ->
+                eg: {
+                    "ctx_str" : [
+                        {
+                            "value":val1,
+                            "defintion":defintion1
+                        },
+                        {
+                            "value":val2,
+                            "defintion":defintion2
+                        }
+                    ]
+                }
+        Returns:
+            Dict[str,Any] -> maps context strings in inputs to output after running
+                            through dataflow
     """
     inputs_created = {}
     definitions = self.config.dataflow.definitions
