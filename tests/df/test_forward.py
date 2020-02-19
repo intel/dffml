@@ -48,7 +48,7 @@ def collect_data(input_vector, matrix):
 
 
 # TODO
-# CAN ONLY FORWARD OUTPUT OF OPERATIONS NOW FIX THIS
+# CAN ONLY FORWARD OUTPUT OF OPERATIONS NOW ,FIX THIS
 # Run dataflow needs to be the first operation in the list for
 # subflow to be registered
 
@@ -63,10 +63,6 @@ class TestRunDataFlowOnRepo(AsyncTestCase):
                 "get_single": GetSingle.imp.op,
             },
             seed=[
-                # Input(
-                #     value=[VECTOR.name],
-                #     definition=GetSingle.op.inputs["spec"],
-                # ),
                 Input(value=[2, 3], definition=SHAPE),
                 Input(
                     value=[collect_data.op.outputs["data"].name],
@@ -95,30 +91,21 @@ class TestRunDataFlowOnRepo(AsyncTestCase):
                     value=[run_dataflow.op.outputs["results"].name],
                     definition=GetSingle.op.inputs["spec"],
                 ),
-                Input(value=[1, 2, 3, 1, 2, 3], definition=INPUT_VECTOR),
             ],
             implementations={echo_vector.op.name: echo_vector.imp,},
         )
         master_flow.forward.add("run_normalizing_flow", [VECTOR])
 
-        test_inputs = [
-            {
-                "feature1": []
-                # Input(value=[1, 2, 3, 1, 2, 3], definition=INPUT_VECTOR),
-                # Input(value={}, definition=run_dataflow.op.inputs["inputs"]),
-            }
-        ]
+        test_inputs = {
+            "Test": [
+                Input(
+                    value={"Subflow": []},
+                    definition=run_dataflow.op.inputs["inputs"],
+                ),
+                Input(value=[1, 2, 3, 1, 2, 3], definition=INPUT_VECTOR),
+            ]
+        }
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
             async with orchestrator(master_flow) as octx:
-                async for ctx_str, results in octx.run(
-                    {
-                        list(test_input.keys())[0]: [
-                            Input(
-                                value=test_input,
-                                definition=run_dataflow.op.inputs["inputs"],
-                            )
-                        ]
-                        for test_input in test_inputs
-                    }
-                ):
+                async for ctx_str, results in octx.run(test_inputs):
                     print(f"Debug ctx_str:{ctx_str},results:{results}")
