@@ -235,13 +235,12 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         # TODO Create ctxhd_locks dict to manage a per context lock
         self.ctxhd_lock = asyncio.Lock()
         self.received_from_parent_flow=[]
+
     async def receive_from_parent_flow(self,inputs):
         self.received_from_parent_flow.extend(inputs)
         async with self.ctxhd_lock:
             ctx_keys = list(self.ctxhd.keys())
-        print(f"\n\n\n\nRECEVING FROM PARNT {inputs} to {ctx_keys}")
         for ctx in ctx_keys:
-            print(f"Adding inputs {inputs} to context {ctx}")
             await self.sadd(ctx,*inputs)
 
     async def add(self, input_set: BaseInputSet):
@@ -448,7 +447,6 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                 # Gather all inputs with matching definitions and contexts
                 for input_name, input_sources in input_flow.inputs.items():
                     # Create parameters for all the inputs
-                    print(f"Input name: {input_name},input_sources:{input_sources}")
                     gather[input_name] = []
                     for input_source in input_sources:
                         # Create a list of places this input originates from
@@ -494,7 +492,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                                         ],
                                     )
                                 )
-                    ## see if `input_name` is to be received from parent flow
+                    # see if `input_name` is to be received from parent flow
                     input_name_definition = operation.inputs[input_name]
                     for item in self.received_from_parent_flow:
                         if item.definition == input_name_definition:
@@ -503,11 +501,8 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                                 definition=item.definition,
                                 origin=item)
                                 )
-                            print(f"\n\n\n in REdcived from parent flow {item.origin}\n\n\n ")
-
                     # Return if there is no data for an input
                     if not gather[input_name]:
-                        print(f"No data for input_name {input_name}")
                         return
         # Generate all possible permutations of applicable inputs
         # Create the parameter set for each
@@ -991,14 +986,11 @@ class MemoryOperationImplementationNetworkContext(
                 )
             ) from error
         # Add the input set made from the outputs to the input set network
-        memory_input_set = MemoryInputSet(
+        await octx.ictx.add(
+            MemoryInputSet(
                 MemoryInputSetConfig(ctx=parameter_set.ctx, inputs=inputs)
             )
-        print(f"\n Debug memipset ctx = {parameter_set.ctx} \n")
-        await octx.ictx.add(
-            memory_input_set
         )
-
         return inputs
 
     async def dispatch(
@@ -1042,7 +1034,6 @@ class MemoryOperationImplementationNetworkContext(
             async for parameter_set in ictx.gather_inputs(
                 rctx, operation, dataflow, ctx=ctx
             ):
-                print(f"Unrun input combinations : parameter_set {[ x async for x in parameter_set.parameters() ]}")
                 yield operation, parameter_set
 
 
@@ -1112,9 +1103,10 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         self._stack = None
         self.subflows={}
         self.received_inputs=[] # List of inputs which are from parent flow
-        self.dataflow_ctxs=None
+
     def register_subflow(self,instance_name,dataflow):
         self.subflows[instance_name]=dataflow
+
     async def __aenter__(self) -> "BaseOrchestratorContext":
         # TODO(subflows) In all of these contexts we are about to enter, they
         # all reach into their parents and store things in the parents memory
@@ -1255,12 +1247,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         """
         # Lists of contexts we care about for this dataflow
         ctxs: List[BaseInputSetContext] = []
-        # update seed inputs with received inputs
-
-
-        print(f"\n <{self}>: received to add  {self.received_inputs}")
-        print(f"\n\n <{self}>: input_sets are {input_sets}\n\n")
-        
         self.logger.debug("Running %s: %s", self.config.dataflow, input_sets)
         if not input_sets:
             # If there are no input sets, add only seed inputs
@@ -1355,8 +1341,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         ctx_str = (await ctx.handle()).as_string()
         # Create initial events to wait on
         # TODO(dfass) Make ictx.added(ctx) specific to dataflow
-
-        
         input_set_enters_network = asyncio.create_task(self.ictx.added(ctx))
         tasks.add(input_set_enters_network)
         try:
@@ -1372,7 +1356,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 done, _pending = await asyncio.wait(
                     tasks, return_when=asyncio.FIRST_COMPLETED
                 )
-
                 for task in done:
                     # Remove the task from the set of tasks we are waiting for
                     tasks.remove(task)
@@ -1403,32 +1386,25 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                             new_input_sets,
                         ) = input_set_enters_network.result()
 
-
+                        # Go through input set,find instance_names of registered subflows which
+                        # have definition of the current input listed in `forward`.
+                        # If found,add `input` to list of inputs to forward for that instance_name
                         inputs_to_forward = {}
                         forward = self.config.dataflow.forward
-                        # go through inputs,find instance_names of registered subflows
-                        # which have the definition of the current input listed in `forward`
-                        # add `input` to list of inputs to forward for that instance_name
                         for new_input_set in new_input_sets:
                             async for ip in new_input_set.inputs():
                                 instance_list = forward.get_instances_to_forward(ip.definition)
                                 for instance_name in instance_list:
                                     inputs_to_forward.setdefault(instance_name,[]).append(ip)
 
-                        print(f"Debug <{self}> In octx subflows:{self.subflows}")
-                        print(f"<{self}> Inputs to forward {inputs_to_forward}")
-                        
                         for instance_name,inputs in inputs_to_forward.items():
                             if instance_name in self.subflows:
                                 await self.subflows[instance_name].ictx.receive_from_parent_flow(inputs)
-                                print(f" <{self}>: {inputs}  added to subflow {self.subflows[instance_name]}")
-                                print(f"<{self}>: Debug forwrded {inputs} to {instance_name}")
 
 
                         for new_input_set in new_input_sets:
                             # Identify which operations have complete contextually
                             # appropriate input sets which haven't been run yet
-
                             async for operation, parameter_set in self.nctx.operations_parameter_set_pairs(
                                 self.ictx,
                                 self.octx,
