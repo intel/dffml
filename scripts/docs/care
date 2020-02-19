@@ -1,4 +1,4 @@
 dffml.operation dffml dffml_feature_git dffml_operations_binsec dffml_feature_auth
-dffml.model dffml dffml_model_tensorflow dffml_model_scratch dffml_model_scikit dffml_model_vowpalWabbit
+dffml.model dffml dffml_model_tensorflow dffml_model_tensorflow_hub dffml_model_scratch dffml_model_scikit dffml_model_vowpalWabbit
 dffml.source dffml dffml_source_mysql
 dffml.service.cli dffml dffml_service_http

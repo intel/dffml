@@ -55,7 +55,7 @@ class TestDNN(AsyncTestCase):
                 directory=cls.model_dir.name,
                 steps=1000,
                 epochs=40,
-                hidden=[10, 20, 10],
+                hidden=[50, 20, 10],
                 predict=DefFeature("string", str, 1),
                 classifications=["a", "not a"],
                 clstype=str,
