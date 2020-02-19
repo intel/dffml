@@ -62,6 +62,7 @@ setup(
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
     install_requires=INSTALL_REQUIRES,
+    tests_require=["scikit-learn>=0.21.2"],
     packages=find_packages(),
     entry_points={
         "dffml.model": [
