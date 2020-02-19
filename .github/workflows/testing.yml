@@ -61,6 +61,9 @@ jobs:
           sudo apt-get update && sudo apt-get install -y docker-ce docker-ce-cli containerd.io
           docker pull mariadb:10
         fi
+        if [ "${{ matrix.plugin }}" == "model/vowpalWabbit" ]; then
+          sudo apt update && sudo apt install libboost-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev libboost-math-dev libboost-test-dev libboost-python-dev zlib1g-dev cmake python3 python3-pip
+        fi
     - name: Test
       run: |
         export PLUGIN=${{ matrix.plugin }}

@@ -9,55 +9,33 @@ import pathlib
 import contextlib
 
 import numpy as np
+from sklearn.datasets import make_classification
 
 from dffml.cli.cli import CLI
 from dffml.util.asynctestcase import IntegrationCLITestCase
 
-# TODO generate data on fly
+
 class TestVWModel(IntegrationCLITestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-vowpalWabbit")
         # Create the training data
-        train_filename = self.mktempfile() + ".csv"
-        pathlib.Path(train_filename).write_text(
-            inspect.cleandoc(
-                """
-                Clump_Thickness,Uniformity_of_Cell_Size,Uniformity_of_Cell_Shape,Marginal_Adhesion,Single_Epithelial_Cell_Size,Bare_Nuclei,Bland_Chromatin,Normal_Nucleoli,Mitoses,Class
-                3,4,5,2,6,8,4,1,1,-1
-                1,1,1,1,3,2,2,1,1,1
-                3,1,1,3,8,1,5,8,1,1
-                8,8,7,4,10,10,7,8,7,-1
-                """
-            )
-            + "\n"
+        data_filename = self.mktempfile() + ".csv"
+        X, y = make_classification(
+            n_samples=10,
+            n_features=5,
+            n_classes=2,
+            n_informative=3,
+            shuffle=True,
+            random_state=2020,
         )
-        # Create the test data
-        test_filename = self.mktempfile() + ".csv"
-        pathlib.Path(test_filename).write_text(
-            inspect.cleandoc(
-                """
-                Clump_Thickness,Uniformity_of_Cell_Size,Uniformity_of_Cell_Shape,Marginal_Adhesion,Single_Epithelial_Cell_Size,Bare_Nuclei,Bland_Chromatin,Normal_Nucleoli,Mitoses,Class
-                1,1,1,1,1,1,3,1,1,1
-                7,2,4,1,6,10,5,4,3,-1
-                """
-            )
-            + "\n"
-        )
-        # Create the prediction data
-        predict_filename = self.mktempfile() + ".csv"
-        pathlib.Path(predict_filename).write_text(
-            inspect.cleandoc(
-                """
-                Clump_Thickness,Uniformity_of_Cell_Size,Uniformity_of_Cell_Shape,Marginal_Adhesion,Single_Epithelial_Cell_Size,Bare_Nuclei,Bland_Chromatin,Normal_Nucleoli,Mitoses,Class
-                5,3,3,3,6,10,3,1,1
-                7,2,4,1,6,10,5,4,3
-                3,1,1,3,8,1,5,8,1,1
-                """
-            )
-            + "\n"
-        )
+        train_data = np.concatenate((X, y[:, None]), axis=1)
+        with open(pathlib.Path(data_filename), "w+") as data_file:
+            writer = csv.writer(data_file, delimiter=",")
+            writer.writerow(["A", "B", "C", "D", "E", "true_class"])
+            writer.writerows(train_data)
         # Features
-        features = "-model-features Clump_Thickness:int:1 Uniformity_of_Cell_Size:int:1 Uniformity_of_Cell_Shape:int:1 Marginal_Adhesion:int:1 Single_Epithelial_Cell_Size:int:1 Bare_Nuclei:int:1 Bland_Chromatin:int:1 Normal_Nucleoli:int:1 Mitoses:int:1".split()
+        features = "-model-features A:float:1 B:float:1 C:float:1 D:float:1 E:float:1".split()
+
         # Train the model
         await CLI.cli(
             "train",
@@ -65,14 +43,18 @@ class TestVWModel(IntegrationCLITestCase):
             "vwmodel",
             *features,
             "-model-predict",
-            "Class:int:1",
+            "true_class:int:1",
             "-sources",
             "training_data=csv",
             "-source-filename",
-            train_filename,
+            data_filename,
             "-model-vwcmd",
-            "vw --loss_function logistic --binary --l2 0.04",  # TODO Fix parsing issue to remove redundant `vw`
+            "loss_function",
+            "logistic",
+            "l2",
+            "0.04",
             "-model-convert_to_vw",
+            "-model-use_binary_label",
         )
         # Assess accuracy
         await CLI.cli(
@@ -81,13 +63,15 @@ class TestVWModel(IntegrationCLITestCase):
             "vwmodel",
             *features,
             "-model-predict",
-            "Class:int:1",
+            "true_class:int:1",
             "-sources",
             "test_data=csv",
             "-source-filename",
-            test_filename,
+            data_filename,
             "-model-vwcmd",
-            "vw --loss_function logistic --link logistic --l2 0.04",
+            "binary",
+            "True",
+            "-model-use_binary_label",
             "-model-convert_to_vw",
         )
         # Ensure JSON output works as expected (#261)
@@ -100,14 +84,16 @@ class TestVWModel(IntegrationCLITestCase):
                 "vwmodel",
                 *features,
                 "-model-predict",
-                "Class:int:1",
+                "true_class:int:1",
                 "-sources",
                 "predict_data=csv",
                 "-source-filename",
-                predict_filename,
+                data_filename,
                 "-model-vwcmd",
-                "vw --loss_function logistic --link logistic --l2 0.04",
+                "binary",
+                "True",
                 "-model-convert_to_vw",
+                "-model-use_binary_label",
             )
         results = json.loads(self.stdout.getvalue())
         self.assertTrue(isinstance(results, list))
@@ -115,8 +101,8 @@ class TestVWModel(IntegrationCLITestCase):
         results = results[0]
         self.assertIn("prediction", results)
         results = results["prediction"]
-        self.assertIn("Class", results)
-        results = results["Class"]
+        self.assertIn("true_class", results)
+        results = results["true_class"]
         self.assertIn("value", results)
         results = results["value"]
         self.assertIn(results, [1, -1])

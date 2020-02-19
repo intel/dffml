@@ -1,10 +1,37 @@
 import math
 
 
+def create_input_pair(key, val):
+    if val in ["false", "False"]:
+        pair = ""
+    else:
+        prefix = "-" if len(key) == 1 else "--"
+        value = "" if val in ["true", "True"] else f" {val}"
+        pair = f"{prefix}{key}{value}"
+    return pair
+
+
+# TODO this is dirty! break it into small functions and add numpy style docstring.
 def df_to_vw_format(
-    df, target=None, tag=None, namespace=None, base=None, importance=None
+    df,
+    vwcmd,
+    target=None,
+    tag=None,
+    namespace=None,
+    base=None,
+    importance=None,
+    task=None,
+    use_binary_label=False,
+    class_cost=None,
 ):
-    # [Label] [Importance] [Base] [Tag]|Namespace Features |Namespace Features...
+    """
+    Convert pandas dataframe to a list of strings of format:
+    [Label] [Importance] [Base] [Tag]|Namespace1 Features |Namespace2 Features ...
+
+    For Cost Sensitive One Against All (csoaa) muliclass problem, the output format is
+    as per https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Cost-Sensitive-One-Against-All-(csoaa)-multi-class-example#difference-from-other-vw-formats
+
+    """
     all_cols = df.columns.tolist()
     formatted_data = []
     cols_with_ns = []
@@ -12,6 +39,43 @@ def df_to_vw_format(
 
     reverse_namespace = dict()
     ns_names = []
+    class_map = {}
+    multiclass_map = {}
+    target_label = ""
+    if target:
+        unique_targets = sorted(df[target].unique())
+        if use_binary_label:
+            if not len(unique_targets) == 2:
+                raise InputError(
+                    f"use_binary_label is set to True, but number of unique targets {unique_targets} are more than two"
+                )
+            else:
+                class_map[unique_targets[0]] = -1
+                class_map[unique_targets[1]] = 1
+        else:
+            for idx, value in enumerate(unique_targets):
+                class_map[value] = idx + 1
+
+    if "csoaa" in vwcmd:
+        multiclass = int(vwcmd["csoaa"])
+    else:
+        multiclass = None
+    if multiclass:
+        col_list = []
+        if target:
+            for col in class_cost:
+                if col.split("_")[0] in ["Cost"]:
+                    col_list.append(col.split("_")[1])
+            col_list = sorted(col_list)
+            for idx, value in enumerate(col_list):
+                multiclass_map[value] = idx + 1
+            for idx in range(multiclass):
+                target_label += f"{idx+1}:" + "{} "
+        else:
+            # TODO add support to have only specified target values for each example
+            for idx in range(multiclass):
+                target_label += f"{idx+1} "
+
     if namespace:
         ns_names = namespace.keys()
         for key, value in namespace.items():
@@ -24,7 +88,12 @@ def df_to_vw_format(
                 else:
                     reverse_namespace[col] = [key]
     cols_without_ns = list(
-        set(all_cols) - set([target, tag, base, importance] + cols_with_ns)
+        set(all_cols)
+        - set(
+            [target, tag, base, importance]
+            + cols_with_ns
+            + ([class_cost] if class_cost is None else class_cost)
+        )
     )
 
     for _, row in df.iterrows():
@@ -34,11 +103,23 @@ def df_to_vw_format(
         incomplete_row = ""
         extra_part = f""
         if target:
-            extra_part += f"{row[target]} "
-        if importance:
-            extra_part += f"{row[importance]} "
-        if base:
-            extra_part += f"{row[base]} "
+            if multiclass:
+                label_values = []
+                for col_name, value in multiclass_map.items():
+                    label_values.insert(value, row["Cost_" + col_name])
+                target_label = target_label.format(*label_values)
+            else:
+                target_label = class_map[row[target]]
+            extra_part += f"{target_label} "
+        else:
+            if multiclass:
+                extra_part += f"{target_label} "
+
+        if not multiclass:
+            if importance:
+                extra_part += f"{row[importance]} "
+            if base:
+                extra_part += f"{row[base]} "
         if tag:
             extra_part += f"'{row[tag]} "
         for ns in ns_names:

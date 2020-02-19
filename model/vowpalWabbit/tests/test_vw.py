@@ -56,11 +56,21 @@ class TestVWModel(AsyncTestCase):
                 directory=cls.model_dir.name,
                 features=cls.features,
                 predict=DefFeature("X", float, 1),
+                # A and B will be namespace n1
+                # A and C will be in namespace n2
                 namespace=["n1_A_B", "n2_A_C"],
-                importance="H",
-                tag="G",
+                importance=DefFeature("H", int, 1),
+                tag=DefFeature("G", int, 1),
+                task="regression",
                 convert_to_vw=True,
-                vwcmd="--l2 0.1 --loss_function squared --passes 10",
+                vwcmd=[
+                    "l2",
+                    "0.1",
+                    "loss_function",
+                    "squared",
+                    "passes",
+                    "10",
+                ],
             )
         )
 
@@ -77,7 +87,6 @@ class TestVWModel(AsyncTestCase):
         async with self.sources as sources, self.model as model:
             async with sources() as sctx, model() as mctx:
                 res = await mctx.accuracy(sctx)
-                # TODO tune model and set accuracy
                 self.assertTrue(isinstance(res, float))
 
     async def test_02_predict(self):
@@ -86,28 +95,10 @@ class TestVWModel(AsyncTestCase):
             async with sources() as sctx, model() as mctx:
                 async for repo in mctx.predict(sctx.repos()):
                     prediction = repo.prediction(target).value
-                    # TODO tune model and set error tolerance
                     self.assertTrue(isinstance(prediction, float))
 
 
-DATA_LEN = 200
-# TODO use text as feature
-nouns = ("dog", "cat", "rabbit", "zombie", "monkey")
-verbs = ("plays", "eats", "drinks", "runs", "barfs")
-adv = ("fancy", "gently", "lively", "merrily.", "occasionally.")
-adj = ("adorable", "cool", "silly", "stupid", "smart")
-sentences = []
-for i in range(DATA_LEN):
-    sentences.append(
-        random.choice(adj)
-        + " "
-        + random.choice(nouns)
-        + " "
-        + random.choice(verbs)
-        + " "
-        + random.choice(adv)
-    )
-
+DATA_LEN = 500
 tag_col = np.arange(1, DATA_LEN + 1)
 importance_col = np.random.randint(low=1, high=4, size=DATA_LEN)
 X, y = make_friedman1(

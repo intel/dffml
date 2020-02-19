@@ -16,6 +16,7 @@ from typing import (
     List,
     Dict,
     DefaultDict,
+    Type,
 )
 
 import numpy as np
@@ -25,14 +26,14 @@ from sklearn.utils import shuffle
 from sklearn.metrics import accuracy_score, r2_score
 
 from dffml.repo import Repo
-from dffml.accuracy import Accuracy
+from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
 from dffml.base import BaseConfig, config, field
 from dffml.feature.feature import Features, Feature
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 
-from .util.data import df_to_vw_format
+from .util.data import df_to_vw_format, create_input_pair
 
 
 class InputError(Exception):
@@ -43,27 +44,44 @@ class InputError(Exception):
 @config
 class VWConfig:
     features: Features
-
-    def applicable_features(self, features):
-        usable = []
-        for feature in features:
-            usable.append(feature.NAME)
-        return sorted(usable)
-
     predict: Feature = field("Feature to predict")
+    class_cost: Features = field(
+        "Features with name `Cost_{class}` contaning cost of `class` for each input example, used when `csoaa` is used",
+        default=None,
+    )
+    task: str = field(
+        "Task to perform, possible values are `classification`, `regression`",
+        default="regression",
+    )
+    use_binary_label: bool = field(
+        "Convert target labels to -1 and 1 for binary classification",
+        default=False,
+    )
+    vwcmd: List[str] = field(
+        "Command Line Arguements as per vowpal wabbit convention",
+        default_factory=lambda: [
+            "loss_function",
+            "logistic",
+            "link",
+            "logistic",
+            "l2",
+            "0.04",
+        ],
+    )
+
     namespace: List[str] = field(
-        "Dict containing `namespace` for each feature used in conversion of input data to vowpal wabbit input format",
+        "Namespace for input features. Should be in format {namespace}_{feature name}",
         default_factory=lambda: [],
     )
-    importance: str = field(
+    importance: Feature = field(
         "Feature containing `importance` of each example, used in conversion of input data to vowpal wabbit input format",
         default=None,
     )
-    base: str = field(
+    base: Feature = field(
         "Feature containing `base` for each example, used for residual regression",
         default=None,
     )
-    tag: str = field(
+    tag: Feature = field(
         "Feature to be used as `tag` in conversion of data to vowpal wabbit input format",
         default=None,
     )
@@ -77,37 +95,25 @@ class VWConfig:
             os.path.expanduser("~"), ".cache", "dffml", "vowpalWabbit"
         ),
     )
-    # vwcmd: List[str] = field("Command Line Arguements as per vowpal wabbit convention", default_factory = lambda:["--l2", "0.01"])
-    vwcmd: str = field(
-        "Command Line Arguements as per vowpal wabbit convention",
-        default="--loss_function logistic --link logistic --l2 0.04",
-    )
 
     def __post_init__(self):
-        self.vwcmd = " ".join(self.vwcmd.split()).split()
-        if "--passes" in self.vwcmd:
-            if "--bgfs" in self.vwcmd:
-                self.passes = 1
-            else:
-                idx = self.vwcmd.index("--passes")
-                self.passes = int(self.vwcmd[idx + 1])
-                del self.vwcmd[idx + 1]
-                del self.vwcmd[idx]
-        else:
-            self.passes = 1
-        for arg in ["-d", "--data", "--daemon"]:
+        self.extra_cols = []
+        namespace = dict()
+        itr = iter(self.vwcmd)
+        self.vwcmd = dict(zip(itr, itr))
+        self.passes = int(self.vwcmd.pop("passes", 1))
+        if "bgfs" in self.vwcmd:
+            raise NotImplementedError("Using bgfs optimizer is not supported")
+        for arg in ["d", "data"]:
             if arg in self.vwcmd:
                 raise InputError(
                     f"Passing data through {arg} option is not supported. Pass the input data using dffml sources."
                 )
-            # if not vwcmd[0].startswith('-'):
-            #     raise InputError(f"Passing filename in vwcmd is not supported. Pass the input data using dffml sources.")
         # TODO handle --save_resume
-        if "--examples" in self.vwcmd:
+        if "examples" in self.vwcmd:
             raise InputError(
                 "Currently dffml sources do not support reading specified number of rows."
             )
-        namespace = dict()
         for nsinfo in self.namespace:
             ns, cols = nsinfo.split("_", 1)
             if ns in namespace.keys():
@@ -115,6 +121,12 @@ class VWConfig:
             else:
                 namespace[ns] = cols.split("_")
         self.namespace = namespace
+
+        if self.class_cost:
+            self.extra_cols += [feature.NAME for feature in self.class_cost]
+        for col in [self.importance, self.base, self.tag]:
+            if col is not None:
+                self.extra_cols.append(col.NAME)
 
 
 class VWContext(ModelContext):
@@ -132,14 +144,26 @@ class VWContext(ModelContext):
     def confidence(self, confidence):
         self.parent.saved[self._features_hash] = confidence
 
+    # TODO decide what to hash
     def _feature_predict_hash(self):
-        params = "".join(
+        params = sorted(
             [
                 "{}{}".format(k, v)
                 for k, v in self.parent.config._asdict().items()
-                if k not in ["directory", "features", "predict", "vwcmd"]
+                if k
+                not in [
+                    "directory",
+                    "features",
+                    "predict",
+                    "vwcmd",
+                    "class_cost",
+                    "importance",
+                    "tag",
+                    "base",
+                ]
             ]
         )
+        params = "".join(params)
         return hashlib.sha384(
             "".join([params] + self.features).encode()
         ).hexdigest()
@@ -151,30 +175,29 @@ class VWContext(ModelContext):
         return sorted(usable)
 
     def modify_config(self):
-        idx = None
         vwcmd = self.parent.config.vwcmd
         direc = self.parent.config.directory
         # direct all output files to a single folder
         # unless full path for respective outputs is provided
         for arg in [
-            "--final_regressor",
-            "-f",
-            "--raw_predictions",
-            "-r",
-            "--predictions",
-            "-p",
-            "--readable_model",
-            "--invert_hash",
-            "--audit_regressor",
-            "--output_feature_regularizer_binary",
-            "--output_feature_regularizer_text",
+            "final_regressor",
+            "f",
+            "raw_predictions",
+            "r",
+            "predictions",
+            "p",
+            "readable_model",
+            "invert_hash",
+            "audit_regressor",
+            "output_feature_regularizer_binary",
+            "output_feature_regularizer_text",
         ]:
             if arg in vwcmd:
-                idx = vwcmd.index(arg)
-                file_path = vwcmd[idx + 1]
+                file_path = vwcmd[arg]
                 head, tail = os.path.split(file_path)
+                # Let pyvw.vw() throw error if `head` is not a valid directory
                 if not head.strip():
-                    vwcmd[idx + 1] = os.path.join(direc, tail)
+                    vwcmd[arg] = os.path.join(direc, tail)
         return vwcmd
 
     def _filename(self):
@@ -183,37 +206,36 @@ class VWContext(ModelContext):
         )
 
     def _load_model(self):
-        arg_list = self.parent.config.vwcmd
-        arg_str = " ".join(self.parent.config.vwcmd)
-        for arg in ["--initial_regressor", "-i"]:
-            if arg in arg_list:
-                self.logger.info(
-                f"Using model weights from {arg_list[arg_list.index(arg) + 1]}"
+        formatted_args = ""
+        for key, value in self.parent.config.vwcmd.items():
+            formatted_args = (
+                formatted_args + " " + create_input_pair(key, value)
             )
-            return pyvw.vw(arg_str)
-
+        for arg in ["initial_regressor", "i"]:
+            if arg in self.parent.config.vwcmd:
+                self.logger.info(
+                    f"Using model weights from {self.parent.config.vwcmd[arg]}"
+                )
+                return pyvw.vw(formatted_args)
         if os.path.isfile(self._filename()):
-            arg_str = arg_str + f" --initial_regressor {self._filename()}"
+            self.parent.config.vwcmd["initial_regressor"] = self._filename()
+            formatted_args += f" --initial_regressor {self._filename()}"
             self.logger.info(f"Using model weights from {self._filename()}")
-        return pyvw.vw(arg_str)
+        return pyvw.vw(formatted_args)
 
     def _save_model(self):
-        _vwcmd = self.parent.config.vwcmd
-        if "--final_regressor" in _vwcmd:
-            self.logger.info(
-                f"Saving model weights to {_vwcmd[_vwcmd.index('--final_regressor') + 1]}"
-            )
-        elif "-f" in self.parent.config.vwcmd:
-            self.logger.info(
-                f"Saving model weights to {_vwcmd[_vwcmd.index('-f') + 1]}"
-            )
+        for arg in ["final_regressor", "f"]:
+            if arg in self.parent.config.vwcmd:
+                self.logger.info(
+                    f"Saving model weights to {self.parent.config.vwcmd[arg]}"
+                )
+                return
         else:
             self.logger.info(f"Saving model weights to {self._filename()}")
             self.clf.save(self._filename())
         return
 
     async def __aenter__(self):
-        # TODO remove `vw` being passed in vwcmd
         self.parent.config.vwcmd = self.modify_config()
         self.clf = self._load_model()
         return self
@@ -223,22 +245,44 @@ class VWContext(ModelContext):
 
     async def train(self, sources: Sources):
         data = []
+        importance, tag, base, class_cost = None, None, None, None
+        if self.parent.config.importance:
+            importance = self.parent.config.importance.NAME
+
+        if self.parent.config.tag:
+            tag = self.parent.config.tag.NAME
+
+        if self.parent.config.base:
+            base = self.parent.config.base.NAME
+        if self.parent.config.class_cost:
+            class_cost = [
+                feature.NAME for feature in self.parent.config.class_cost
+            ]
         async for repo in sources.with_features(
-            self.features + [self.parent.config.predict.NAME]
+            self.features
+            + [self.parent.config.predict.NAME]
+            + self.parent.config.extra_cols
         ):
             feature_data = repo.features(
-                self.features + [self.parent.config.predict.NAME]
+                self.features
+                + [self.parent.config.predict.NAME]
+                + self.parent.config.extra_cols
             )
             data.append(feature_data)
-        df = pd.DataFrame(data)
-        vw_data = df_to_vw_format(
-            df,
-            target=self.parent.config.predict.NAME,
-            namespace=self.parent.config.namespace,
-            importance=self.parent.config.importance,
-            tag=self.parent.config.tag,
-            base=self.parent.config.base,
-        )
+        vw_data = pd.DataFrame(data)
+        if self.parent.config.convert_to_vw:
+            vw_data = df_to_vw_format(
+                vw_data,
+                vwcmd=self.parent.config.vwcmd,
+                target=self.parent.config.predict.NAME,
+                namespace=self.parent.config.namespace,
+                importance=importance,
+                tag=tag,
+                base=base,
+                task=self.parent.config.task,
+                use_binary_label=self.parent.config.use_binary_label,
+                class_cost=class_cost,
+            )
         self.logger.info("Number of input repos: {}".format(len(vw_data)))
         for n in range(self.parent.config.passes):
             if n > 1:
@@ -253,6 +297,15 @@ class VWContext(ModelContext):
         if not os.path.isfile(self._filename()):
             raise ModelNotTrained("Train model before assessing for accuracy.")
         data = []
+        importance, tag, base, class_cost = None, None, None, None
+        if self.parent.config.importance:
+            importance = self.parent.config.importance.NAME
+
+        if self.parent.config.tag:
+            tag = self.parent.config.tag.NAME
+
+        if self.parent.config.base:
+            base = self.parent.config.base.NAME
         async for repo in sources.with_features(self.features):
             feature_data = repo.features(
                 self.features + [self.parent.config.predict.NAME]
@@ -264,22 +317,28 @@ class VWContext(ModelContext):
         if self.parent.config.convert_to_vw:
             xdata = df_to_vw_format(
                 xdata,
+                vwcmd=self.parent.config.vwcmd,
                 target=None,
                 namespace=self.parent.config.namespace,
-                importance=self.parent.config.importance,
-                tag=self.parent.config.tag,
-                base=self.parent.config.base,
+                importance=importance,
+                tag=tag,
+                base=base,
+                task=self.parent.config.task,
+                use_binary_label=self.parent.config.use_binary_label,
             )
         ydata = np.array(df[self.parent.config.predict.NAME])
-        # shape = [num_samples]
-        # if 'oaa' in self.params and 'probabilities' in self.params:
-        #     shape.append(self.params['oaa'])
-        # y = np.empty(shape)
-        y_pred = np.empty([len(xdata)])
+        shape = [len(xdata)]
+        # TODO support probabilites
+        # if 'oaa' in self.parent.config.vwcmd and 'probabilities' in self.parent.config.vwcmd:
+        #     shape.append(self.parent.config.vwcmd['oaa'])
+        y_pred = np.empty(shape)
         for idx, x in enumerate(xdata):
             y_pred[idx] = self.clf.predict(x)
-        # TODO VW doesn't have a scorer, need to build it
-        self.confidence = r2_score(ydata, y_pred)
+
+        if self.parent.config.task in ["regression"]:
+            self.confidence = r2_score(ydata, y_pred)
+        elif self.parent.config.task in ["classification"]:
+            self.confidence = accuracy_score(ydata, y_pred)
         self.logger.debug("Model Accuracy: {}".format(self.confidence))
         return self.confidence
 
@@ -288,17 +347,29 @@ class VWContext(ModelContext):
     ) -> AsyncIterator[Tuple[Repo, Any, float]]:
         if not os.path.isfile(self._filename()):
             raise ModelNotTrained("Train model before prediction.")
+        importance, tag, base, class_cost = None, None, None, None
+        if self.parent.config.importance:
+            importance = self.parent.config.importance.NAME
+
+        if self.parent.config.tag:
+            tag = self.parent.config.tag.NAME
+
+        if self.parent.config.base:
+            base = self.parent.config.base.NAME
         async for repo in repos:
             feature_data = repo.features(self.features)
             data = pd.DataFrame(feature_data, index=[0])
             if self.parent.config.convert_to_vw:
                 data = df_to_vw_format(
                     data,
+                    vwcmd=self.parent.config.vwcmd,
                     target=None,
                     namespace=self.parent.config.namespace,
-                    importance=self.parent.config.importance,
-                    tag=self.parent.config.tag,
-                    base=self.parent.config.base,
+                    importance=importance,
+                    tag=tag,
+                    base=base,
+                    task=self.parent.config.task,
+                    use_binary_label=self.parent.config.use_binary_label,
                 )
             prediction = self.clf.predict(data[0])
             self.logger.debug(
