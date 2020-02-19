@@ -63,15 +63,15 @@ class TestRunDataFlowOnRepo(AsyncTestCase):
                 "get_single": GetSingle.imp.op,
             },
             seed=[
-                Input(
-                    value=[VECTOR.name],
-                    definition=GetSingle.op.inputs["spec"],
-                ),
-                # Input(value=[2, 3], definition=SHAPE),
                 # Input(
-                #     value=[collect_data.op.outputs["data"].name],
+                #     value=[VECTOR.name],
                 #     definition=GetSingle.op.inputs["spec"],
                 # ),
+                Input(value=[2, 3], definition=SHAPE),
+                Input(
+                    value=[collect_data.op.outputs["data"].name],
+                    definition=GetSingle.op.inputs["spec"],
+                ),
             ],
             implementations={
                 normalize.op.name: normalize.imp,
