@@ -1102,10 +1102,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         super().__init__(config, parent)
         self._stack = None
         self.subflows={}
-        self.received_inputs=[] # List of inputs which are from parent flow
-
-    def register_subflow(self,instance_name,dataflow):
-        self.subflows[instance_name]=dataflow
+        self.inputs_to_forward={} # List of inputs which are from parent flow
 
     async def __aenter__(self) -> "BaseOrchestratorContext":
         # TODO(subflows) In all of these contexts we are about to enter, they
@@ -1230,6 +1227,23 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
             ctx = input_set.ctx
         return ctx
 
+
+    async def forward_inputs_to_subflow(self,inputs:List):
+        # Go through input set,find instance_names of registered subflows which
+        # have definition of the current input listed in `forward`.
+        # If found,add `input` to list of inputs to forward for that instance_name
+        forward = self.config.dataflow.forward
+        for ip in inputs:
+            instance_list = forward.get_instances_to_forward(ip.definition)
+            for instance_name in instance_list:
+                self.inputs_to_forward.setdefault(instance_name,[]).append(ip)
+        for instance_name,inputs in self.inputs_to_forward.items():
+            if instance_name in self.subflows:
+                await self.subflows[instance_name].ictx.receive_from_parent_flow(inputs)
+
+    async def register_subflow(self,instance_name,dataflow):
+        self.subflows[instance_name]=dataflow
+        await self.forward_inputs_to_subflow([])
     # TODO(dfass) Get rid of run_operations, make it run_dataflow. Pass down the
     # dataflow to everything. Make inputs a list of InputSets or an
     # asyncgenerator of InputSets. Add a parameter which tells us if we should
@@ -1246,10 +1260,12 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         Run a DataFlow.
         """
         # Lists of contexts we care about for this dataflow
+
         ctxs: List[BaseInputSetContext] = []
         self.logger.debug("Running %s: %s", self.config.dataflow, input_sets)
         if not input_sets:
             # If there are no input sets, add only seed inputs
+            await self.forward_inputs_to_subflow(self.config.dataflow.seed)
             ctxs.append(await self.seed_inputs(ctx=ctx))
         if len(input_sets) == 1 and inspect.isasyncgen(input_sets[0]):
             # Check if inputs is an asyncgenerator
@@ -1261,6 +1277,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         elif len(input_sets) == 1 and isinstance(input_sets[0], dict):
             # Helper to quickly add inputs under string context
             for ctx_string, input_set in input_sets[0].items():
+                await self.forward_inputs_to_subflow(input_set)
                 ctxs.append(
                     await self.seed_inputs(
                         ctx=StringInputSetContext(ctx_string),
@@ -1330,6 +1347,8 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 else:
                     task.exception()
 
+
+
     async def run_operations_for_ctx(
         self, ctx: BaseContextHandle, *, strict: bool = True
     ) -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
@@ -1386,23 +1405,9 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                             new_input_sets,
                         ) = input_set_enters_network.result()
 
-                        # Go through input set,find instance_names of registered subflows which
-                        # have definition of the current input listed in `forward`.
-                        # If found,add `input` to list of inputs to forward for that instance_name
-                        inputs_to_forward = {}
-                        forward = self.config.dataflow.forward
                         for new_input_set in new_input_sets:
-                            async for ip in new_input_set.inputs():
-                                instance_list = forward.get_instances_to_forward(ip.definition)
-                                for instance_name in instance_list:
-                                    inputs_to_forward.setdefault(instance_name,[]).append(ip)
-
-                        for instance_name,inputs in inputs_to_forward.items():
-                            if instance_name in self.subflows:
-                                await self.subflows[instance_name].ictx.receive_from_parent_flow(inputs)
-
-
-                        for new_input_set in new_input_sets:
+                            # forward inputs to subflow
+                            await self.forward_inputs_to_subflow( [x async for x in new_input_set.inputs()])
                             # Identify which operations have complete contextually
                             # appropriate input sets which haven't been run yet
                             async for operation, parameter_set in self.nctx.operations_parameter_set_pairs(

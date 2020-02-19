@@ -6,18 +6,12 @@ from dffml.util.asynctestcase import AsyncTestCase
 from dffml.operation.mapping import MAPPING
 from dffml.df.memory import MemoryOrchestrator
 
-INPUT_VECTOR = Definition(name="input_vector", primitive="List[float]")
 VECTOR = Definition(name="vector", primitive="List[float]")
 MATRIX = Definition(name="matrix", primitive="List[List[float]]")
 NORMALIZED_VECTOR = Definition(
     name="normalized_vector", primitive="List[float]"
 )
 SHAPE = Definition(name="shape", primitive="List[int]")
-
-
-@op(inputs={"input_vector": INPUT_VECTOR}, outputs={"vector": VECTOR})
-def echo_vector(input_vector):
-    return {"vector": input_vector}
 
 
 @op(
@@ -47,12 +41,6 @@ def collect_data(input_vector, matrix):
     return {"data": {"input_vector": input_vector, "matrix": matrix,}}
 
 
-# TODO
-# CAN ONLY FORWARD OUTPUT OF OPERATIONS NOW ,FIX THIS
-# Run dataflow needs to be the first operation in the list for
-# subflow to be registered
-
-
 class TestRunDataFlowOnRepo(AsyncTestCase):
     async def test_run(self):
         norm_shape_flow = DataFlow(
@@ -77,9 +65,8 @@ class TestRunDataFlowOnRepo(AsyncTestCase):
         )
         master_flow = DataFlow(
             operations={
-                "run_normalizing_flow": run_dataflow.op,
                 "get_single": GetSingle.imp.op,
-                "echo_vector": echo_vector.op,
+                "run_normalizing_flow": run_dataflow.op,
             },
             configs={
                 "run_normalizing_flow": RunDataFlowConfig(
@@ -91,19 +78,15 @@ class TestRunDataFlowOnRepo(AsyncTestCase):
                     value=[run_dataflow.op.outputs["results"].name],
                     definition=GetSingle.op.inputs["spec"],
                 ),
-            ],
-            implementations={echo_vector.op.name: echo_vector.imp,},
-        )
-        master_flow.forward.add("run_normalizing_flow", [VECTOR])
-
-        test_inputs = {
-            "Test": [
                 Input(
                     value={"Subflow": []},
                     definition=run_dataflow.op.inputs["inputs"],
                 ),
-                Input(value=[1, 2, 3, 1, 2, 3], definition=INPUT_VECTOR),
-            ]
+            ],
+        )
+        master_flow.forward.add("run_normalizing_flow", [VECTOR])
+        test_inputs = {
+            "Test": [Input(value=[1, 2, 3, 1, 2, 3], definition=VECTOR),]
         }
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
             async with orchestrator(master_flow) as octx:
