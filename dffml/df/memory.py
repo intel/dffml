@@ -1105,9 +1105,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         super().__init__(config, parent)
         self._stack = None
         self.subflows = {}
-        self.inputs_to_forward = (
-            {}
-        )  # List of inputs which are from parent flow
+        self.inputs_to_forward = {}
 
     async def __aenter__(self) -> "BaseOrchestratorContext":
         # TODO(subflows) In all of these contexts we are about to enter, they
@@ -1267,13 +1265,12 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         Run a DataFlow.
         """
         # Lists of contexts we care about for this dataflow
-
         ctxs: List[BaseInputSetContext] = []
         self.logger.debug("Running %s: %s", self.config.dataflow, input_sets)
         if not input_sets:
             # If there are no input sets, add only seed inputs
-            await self.forward_inputs_to_subflow(self.config.dataflow.seed)
             ctxs.append(await self.seed_inputs(ctx=ctx))
+            await self.forward_inputs_to_subflow(self.config.dataflow.seed)
         if len(input_sets) == 1 and inspect.isasyncgen(input_sets[0]):
             # Check if inputs is an asyncgenerator
             # If it is, start a coroutine to wait for new inputs or input sets
@@ -1409,7 +1406,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                             more,
                             new_input_sets,
                         ) = input_set_enters_network.result()
-
                         for new_input_set in new_input_sets:
                             # forward inputs to subflow
                             await self.forward_inputs_to_subflow(
