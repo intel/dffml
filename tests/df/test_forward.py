@@ -38,7 +38,7 @@ def reshape(input_vector, shape):
     outputs={"data": MAPPING},
 )
 def collect_data(input_vector, matrix):
-    return {"data": {"input_vector": input_vector, "matrix": matrix,}}
+    return {"data": {"input_vector": input_vector, "matrix": matrix}}
 
 
 class TestRunDataFlowOnRepo(AsyncTestCase):
@@ -86,7 +86,7 @@ class TestRunDataFlowOnRepo(AsyncTestCase):
         )
         master_flow.forward.add("run_normalizing_flow", [VECTOR])
         test_inputs = {
-            "Test": [Input(value=[1, 2, 3, 1, 2, 3], definition=VECTOR),]
+            "Test": [Input(value=[1, 2, 3, 1, 2, 3], definition=VECTOR)]
         }
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
             async with orchestrator(master_flow) as octx:

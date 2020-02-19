@@ -234,14 +234,14 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         self.ctxhd: Dict[str, Dict[Definition, Any]] = {}
         # TODO Create ctxhd_locks dict to manage a per context lock
         self.ctxhd_lock = asyncio.Lock()
-        self.received_from_parent_flow=[]
+        self.received_from_parent_flow = []
 
-    async def receive_from_parent_flow(self,inputs):
+    async def receive_from_parent_flow(self, inputs):
         self.received_from_parent_flow.extend(inputs)
         async with self.ctxhd_lock:
             ctx_keys = list(self.ctxhd.keys())
         for ctx in ctx_keys:
-            await self.sadd(ctx,*inputs)
+            await self.sadd(ctx, *inputs)
 
     async def add(self, input_set: BaseInputSet):
         # Grab the input set context handle
@@ -496,11 +496,14 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                     input_name_definition = operation.inputs[input_name]
                     for item in self.received_from_parent_flow:
                         if item.definition == input_name_definition:
-                            gather[input_name].append(Parameter(key=input_name,
-                                value=item.value,
-                                definition=item.definition,
-                                origin=item)
+                            gather[input_name].append(
+                                Parameter(
+                                    key=input_name,
+                                    value=item.value,
+                                    definition=item.definition,
+                                    origin=item,
                                 )
+                            )
                     # Return if there is no data for an input
                     if not gather[input_name]:
                         return
@@ -1101,8 +1104,10 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
     ) -> None:
         super().__init__(config, parent)
         self._stack = None
-        self.subflows={}
-        self.inputs_to_forward={} # List of inputs which are from parent flow
+        self.subflows = {}
+        self.inputs_to_forward = (
+            {}
+        )  # List of inputs which are from parent flow
 
     async def __aenter__(self) -> "BaseOrchestratorContext":
         # TODO(subflows) In all of these contexts we are about to enter, they
@@ -1227,8 +1232,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
             ctx = input_set.ctx
         return ctx
 
-
-    async def forward_inputs_to_subflow(self,inputs:List):
+    async def forward_inputs_to_subflow(self, inputs: List):
         # Go through input set,find instance_names of registered subflows which
         # have definition of the current input listed in `forward`.
         # If found,add `input` to list of inputs to forward for that instance_name
@@ -1236,14 +1240,17 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         for ip in inputs:
             instance_list = forward.get_instances_to_forward(ip.definition)
             for instance_name in instance_list:
-                self.inputs_to_forward.setdefault(instance_name,[]).append(ip)
-        for instance_name,inputs in self.inputs_to_forward.items():
+                self.inputs_to_forward.setdefault(instance_name, []).append(ip)
+        for instance_name, inputs in self.inputs_to_forward.items():
             if instance_name in self.subflows:
-                await self.subflows[instance_name].ictx.receive_from_parent_flow(inputs)
+                await self.subflows[
+                    instance_name
+                ].ictx.receive_from_parent_flow(inputs)
 
-    async def register_subflow(self,instance_name,dataflow):
-        self.subflows[instance_name]=dataflow
+    async def register_subflow(self, instance_name, dataflow):
+        self.subflows[instance_name] = dataflow
         await self.forward_inputs_to_subflow([])
+
     # TODO(dfass) Get rid of run_operations, make it run_dataflow. Pass down the
     # dataflow to everything. Make inputs a list of InputSets or an
     # asyncgenerator of InputSets. Add a parameter which tells us if we should
@@ -1347,8 +1354,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 else:
                     task.exception()
 
-
-
     async def run_operations_for_ctx(
         self, ctx: BaseContextHandle, *, strict: bool = True
     ) -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
@@ -1407,7 +1412,9 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
 
                         for new_input_set in new_input_sets:
                             # forward inputs to subflow
-                            await self.forward_inputs_to_subflow( [x async for x in new_input_set.inputs()])
+                            await self.forward_inputs_to_subflow(
+                                [x async for x in new_input_set.inputs()]
+                            )
                             # Identify which operations have complete contextually
                             # appropriate input sets which haven't been run yet
                             async for operation, parameter_set in self.nctx.operations_parameter_set_pairs(
