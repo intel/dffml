@@ -14,7 +14,6 @@ from sklearn.datasets import make_classification
 from dffml.cli.cli import CLI
 from dffml.util.asynctestcase import IntegrationCLITestCase
 
-
 class TestVWModel(IntegrationCLITestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-vowpalWabbit")
