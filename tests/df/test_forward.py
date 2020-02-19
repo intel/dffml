@@ -86,9 +86,22 @@ class TestInputForwarding(AsyncTestCase):
         )
         master_flow.forward.add("run_normalizing_flow", [VECTOR])
         test_inputs = {
-            "Test": [Input(value=[1, 2, 3, 1, 2, 3], definition=VECTOR)]
+            "Test": [Input(value=[6, 2, 1, 1, -1, 1], definition=VECTOR)]
         }
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
             async with orchestrator(master_flow) as octx:
                 async for ctx_str, results in octx.run(test_inputs):
-                    print(f"Debug ctx_str:{ctx_str},results:{results}")
+                    self.assertIn("flow_results", results)
+                    results = results["flow_results"]
+                    self.assertIn("Subflow", results)
+                    results = results["Subflow"]
+                    self.assertIn("mapping", results)
+                    results = results["mapping"]
+                    self.assertIn("input_vector", results)
+                    self.assertIn("matrix", results)
+                    self.assertEqual(
+                        results["input_vector"], [6, 2, 1, 1, -1, 1]
+                    )
+                    self.assertEqual(
+                        results["matrix"], [[0.6, 0.2, 0.1], [0.1, -0.1, 0.1]]
+                    )
