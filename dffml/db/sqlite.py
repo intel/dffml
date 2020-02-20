@@ -2,7 +2,6 @@ import asyncio
 import sqlite3
 from typing import Dict, Any, List, Optional, AsyncIterator
 
-
 from .base import BaseDatabase, Conditions
 from .sql import SQLDatabaseContext
 from ..base import config

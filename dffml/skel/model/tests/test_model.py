@@ -2,13 +2,13 @@ import random
 import tempfile
 from typing import Type
 
-from dffml.repo import Repo, RepoData
+from REPLACE_IMPORT_PACKAGE_NAME.misc import MiscModel, MiscModelConfig
+
+from dffml.repo import Repo
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml.feature import Data, Feature, Features
 from dffml.util.asynctestcase import AsyncTestCase
-
-from REPLACE_IMPORT_PACKAGE_NAME.misc import MiscModel, MiscModelConfig
+from dffml.feature import Data, Feature, Features
 
 
 class StartsWithA(Feature):

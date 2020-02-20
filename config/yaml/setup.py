@@ -1,5 +1,6 @@
 import os
 import importlib.util
+
 from setuptools import setup
 
 # Boilerplate to load commonalities

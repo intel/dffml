@@ -1,6 +1,7 @@
-import aiosqlite
 from collections import OrderedDict
 from typing import AsyncIterator, NamedTuple, Dict
+
+import aiosqlite
 
 from dffml.base import BaseConfig
 from dffml.repo import Repo

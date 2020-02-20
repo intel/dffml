@@ -4,7 +4,6 @@ from pathlib import Path
 from dffml.util.skel import Skel
 from dffml.util.asynctestcase import AsyncTestCase
 
-
 # These are the files that we're expecting to be in skel/common, update this
 # list anytime the files in skel/common change
 COMMON_FILES = list(

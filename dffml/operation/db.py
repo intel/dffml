@@ -6,7 +6,6 @@ from ..df.base import op
 from ..db.base import Conditions, BaseDatabase
 from ..df.types import Definition
 
-
 # definitions
 QUERY_TABLE = Definition(name="query_table", primitive="str")
 QUERY_DATA = Definition(name="query_data", primitive="Dict[str, Any]")

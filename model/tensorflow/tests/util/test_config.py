@@ -1,8 +1,6 @@
 import unittest
-from typing import Any
 
 import tensorflow.keras.layers
-
 from dffml_model_tensorflow.util.config.tensorflow import (
     tensorflow_docstring_args,
     parse_layers,

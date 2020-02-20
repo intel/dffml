@@ -4,10 +4,8 @@ import hashlib
 
 from dffml.util.net import cached_download
 from dffml.util.asynctestcase import AsyncTestCase
-
 from dffml.source.idx1 import IDX1SourceConfig, IDX1Source
 from dffml.source.idx3 import IDX3SourceConfig, IDX3Source
-
 
 IDX1_FILE = (
     "http://yann.lecun.com/exdb/mnist/train-labels-idx1-ubyte.gz",

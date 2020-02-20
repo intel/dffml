@@ -1,11 +1,10 @@
 #!/usr/bin/env python2
 import os
-import cgi
 import sys
 import json
+
 import urlparse
 import mysql.connector
-
 from conf import MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE, MYSQL_PORT
 
 print 'Content-Type: application/json'

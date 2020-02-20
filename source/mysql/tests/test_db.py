@@ -2,10 +2,10 @@ import socket
 import contextlib
 from unittest.mock import patch
 
-from dffml.util.asynctestcase import AsyncTestCase
-
 from dffml_source_mysql.db import MySQLDatabaseConfig, MySQLDatabase
 from dffml_source_mysql.util.mysql_docker import mysql, DOCKER_ENV
+
+from dffml.util.asynctestcase import AsyncTestCase
 
 
 class TestMySQLDatabase(AsyncTestCase):

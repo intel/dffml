@@ -2,7 +2,6 @@ import unittest
 
 from dffml.util.testing.source import FileSourceTest
 from dffml.util.asynctestcase import AsyncTestCase
-
 from .custom_sqlite import CustomSQLiteSourceConfig, CustomSQLiteSource
 
 

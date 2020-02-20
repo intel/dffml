@@ -1,6 +1,6 @@
-from dffml.util.asynctestcase import AsyncTestCase
-
 from REPLACE_IMPORT_PACKAGE_NAME.config import MiscConfigLoader
+
+from dffml.util.asynctestcase import AsyncTestCase
 
 
 class TestConfig(AsyncTestCase):

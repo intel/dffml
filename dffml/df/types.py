@@ -1,7 +1,6 @@
 import uuid
 import copy
 import itertools
-import pkg_resources
 from enum import Enum
 from dataclasses import dataclass, field, asdict
 from typing import (
@@ -15,6 +14,8 @@ from typing import (
     Callable,
     Tuple,
 )
+
+import pkg_resources
 
 from ..base import BaseConfig
 from ..util.data import export_dict, type_lookup

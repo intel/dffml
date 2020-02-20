@@ -1,16 +1,12 @@
-import random
 import tempfile
-from typing import Type
-
-from dffml.repo import Repo, RepoData
-from dffml.model.model import ModelConfig
-from dffml.source.source import Sources
-from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml.feature import Data, DefFeature, Features
-from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml_model_scratch.slr import SLR, SLRConfig
 
+from dffml.repo import Repo
+from dffml.source.source import Sources
+from dffml.source.memory import MemorySource, MemorySourceConfig
+from dffml.util.asynctestcase import AsyncTestCase
+from dffml.feature import DefFeature, Features
 
 FEATURE_DATA = [
     [12.39999962, 11.19999981],

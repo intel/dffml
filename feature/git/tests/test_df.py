@@ -3,13 +3,12 @@ import sys
 import glob
 from datetime import datetime
 
+from dffml_feature_git.feature.operations import *
+
 from dffml.df.types import Input, DataFlow
-from dffml.operation.output import GroupBy  # skipcq: PYL-W0611
 from dffml.df.memory import MemoryOrchestrator
 from dffml.df.base import operation_in, opimp_in
 from dffml.util.asynctestcase import AsyncTestCase
-
-from dffml_feature_git.feature.operations import *
 
 OPERATIONS = operation_in(sys.modules[__name__])
 OPIMPS = opimp_in(sys.modules[__name__])

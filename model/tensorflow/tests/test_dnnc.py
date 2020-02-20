@@ -3,17 +3,17 @@ import random
 import tempfile
 from typing import Type
 
-from dffml.repo import Repo, RepoData
-from dffml.source.source import Sources
-from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml.feature import Data, Feature, Features, DefFeature
-from dffml.util.cli.arg import parse_unknown
-from dffml.util.asynctestcase import AsyncTestCase
-
 from dffml_model_tensorflow.dnnc import (
     DNNClassifierModel,
     DNNClassifierModelConfig,
 )
+
+from dffml.repo import Repo
+from dffml.source.source import Sources
+from dffml.source.memory import MemorySource, MemorySourceConfig
+from dffml.util.cli.arg import parse_unknown
+from dffml.util.asynctestcase import AsyncTestCase
+from dffml.feature import Feature, Features, DefFeature
 
 
 class StartsWithA(Feature):

@@ -10,7 +10,6 @@ from dffml.df.base import (
     OperationImplementationContext,
     OperationImplementation,
 )
-
 # pylint: disable=no-name-in-module
 from .definitions import UnhashedPassword, ScryptPassword
 

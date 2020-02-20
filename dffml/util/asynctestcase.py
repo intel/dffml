@@ -24,7 +24,6 @@ import logging
 import unittest
 import tempfile
 import contextlib
-
 from typing import Optional
 
 from dffml.util.packaging import is_develop

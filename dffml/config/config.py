@@ -4,6 +4,7 @@ import pathlib
 import contextlib
 from typing import Dict, Optional, Union
 
+from dffml.util.data import explore_directories, nested_apply
 from ..util.entrypoint import base_entry_point
 from ..util.asynchelper import AsyncContextManagerList
 from ..base import (
@@ -11,7 +12,6 @@ from ..base import (
     BaseDataFlowFacilitatorObjectContext,
     BaseDataFlowFacilitatorObject,
 )
-from dffml.util.data import explore_directories, nested_apply
 
 
 class BaseConfigLoaderContext(BaseDataFlowFacilitatorObjectContext):

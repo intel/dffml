@@ -4,23 +4,19 @@
 Description of what this model does
 """
 import os
-import abc
 import json
 import hashlib
-from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Dict
+from typing import AsyncIterator, Tuple, Any
 
 import numpy as np
 
 from dffml.repo import Repo
 from dffml.base import config, field
 from dffml.source.source import Sources
-from dffml.feature import Features
 from dffml.model.accuracy import Accuracy
-from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
+from dffml.model.model import ModelContext, Model, ModelNotTrained
 from dffml.util.entrypoint import entrypoint
-from dffml.util.cli.arg import Arg
 from dffml.feature.feature import Feature, Features
-from dffml.util.cli.parser import list_action
 
 
 @config

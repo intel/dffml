@@ -11,7 +11,6 @@ from typing import Dict, Any
 
 from ...repo import Repo
 from ...feature import Feature
-
 from .arg import Arg, parse_unknown
 
 DisplayHelp = "Display help message"

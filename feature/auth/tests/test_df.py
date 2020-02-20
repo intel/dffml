@@ -1,11 +1,11 @@
 import random
 
+from dffml_feature_auth.feature.operations import Scrypt
+
 from dffml.df.types import Operation, Input, DataFlow
 from dffml.df.memory import MemoryOrchestrator
 from dffml.operation.output import GetSingle
 from dffml.util.asynctestcase import AsyncTestCase
-
-from dffml_feature_auth.feature.operations import Scrypt
 
 OPIMPS = [Scrypt, GetSingle.imp]
 OPERATIONS = [Scrypt.op, GetSingle.imp.op]

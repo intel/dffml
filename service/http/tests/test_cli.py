@@ -7,11 +7,9 @@ from http import HTTPStatus
 from unittest.mock import patch
 
 import aiohttp
-
-from dffml.util.asynctestcase import AsyncTestCase
-
 from dffml_service_http.cli import HTTPService
 
+from dffml.util.asynctestcase import AsyncTestCase
 from .common import ServerRunner
 from .dataflow import formatter, HELLO_BLANK_DATAFLOW, HELLO_WORLD_DATAFLOW
 from .test_routes import ServerException, TestRoutesMultiComm

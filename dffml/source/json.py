@@ -10,7 +10,6 @@ from ..repo import Repo
 from .memory import MemorySource
 from .file import FileSource, FileSourceConfig
 from ..util.entrypoint import entrypoint
-
 from .log import LOGGER
 
 LOGGER = LOGGER.getChild("json")

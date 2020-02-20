@@ -5,9 +5,10 @@ import getpass
 import inspect
 import argparse
 import importlib
-import pkg_resources
 import configparser
 from typing import List, Type
+
+import pkg_resources
 
 
 def traverse_get_config(target, *args):

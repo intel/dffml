@@ -3,7 +3,7 @@ from typing import Dict, Any, List, Optional, AsyncIterator
 
 import aiomysql
 
-from dffml.db.base import BaseDatabase, Condition, Conditions
+from dffml.db.base import BaseDatabase, Conditions
 from dffml.db.sql import SQLDatabaseContext
 from dffml.base import config
 from dffml.util.entrypoint import entrypoint

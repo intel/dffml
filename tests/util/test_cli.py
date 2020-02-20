@@ -8,13 +8,12 @@ import unittest
 from unittest.mock import patch
 
 from dffml.repo import Repo
-from dffml.feature import Feature, Features
-
 from dffml.util.cli.arg import Arg, parse_unknown
 from dffml.util.cli.cmd import JSONEncoder, CMD, Parser, ParseLoggingAction
 from dffml.util.cli.parser import list_action, ParseInputsAction
 from dffml.util.cli.cmds import ListEntrypoint
 from dffml.util.asynctestcase import AsyncTestCase
+from dffml.feature import Feature, Features
 
 
 def Namespace(**kwargs):

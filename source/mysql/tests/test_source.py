@@ -1,18 +1,13 @@
-import os
-import json
-import random
 import socket
 import unittest
-import subprocess
 import contextlib
 from unittest.mock import patch
 
+from dffml_source_mysql.source import MySQLSourceConfig, MySQLSource
+from dffml_source_mysql.util.mysql_docker import mysql, DOCKER_ENV
+
 from dffml.util.testing.source import SourceTest
 from dffml.util.asynctestcase import AsyncTestCase
-
-from dffml_source_mysql.source import MySQLSourceConfig, MySQLSource
-
-from dffml_source_mysql.util.mysql_docker import mysql, DOCKER_ENV
 
 
 class TestMySQLSource(AsyncTestCase, SourceTest):

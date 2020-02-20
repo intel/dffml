@@ -1,4 +1,5 @@
 import sys
+
 from dffml.df.types import Definition
 
 definitions = [

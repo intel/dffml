@@ -1,8 +1,8 @@
 import os
 
-from dffml.util.asynctestcase import AsyncTestCase
-
 from shouldi.bandit import run_bandit
+
+from dffml.util.asynctestcase import AsyncTestCase
 
 
 class TestRunBanditOp(AsyncTestCase):

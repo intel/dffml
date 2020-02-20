@@ -1,8 +1,9 @@
 """
 Description of what this config does
 """
-import yaml
 from typing import Dict
+
+import yaml
 
 from dffml.util.entrypoint import entrypoint
 from dffml.util.cli.arg import Arg

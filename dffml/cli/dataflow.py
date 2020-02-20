@@ -1,4 +1,4 @@
-import sys
+import pathlib
 import pathlib
 import hashlib
 import contextlib
