@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   be prefixed with `def:`
 - The model predict operation will now raise an exception if the model it is
   passed via it's config is a class rather than an instance.
+- added golangci_lint tool in shouldi.
 - `entry_point` and friends have been renamed to `entrypoint`.
 - Use `FastChildWatcher` when run via the CLI to prevent `BlockingIOError`s.
 - TensorFlow based neural network classifier had the `classification` parameter
