@@ -235,6 +235,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         # TODO Create ctxhd_locks dict to manage a per context lock
         self.ctxhd_lock = asyncio.Lock()
         # Inputs forwarded from parent subflows
+        # Maps defintion names to List[Input]
         self.received_from_parent_flow = {}
 
     async def receive_from_parent_flow(self, inputs: List[Input]):
@@ -242,8 +243,9 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         Takes input from parent dataflow and adds it to every context
         """
         for item in inputs:
-            self.received_from_parent_flow.setdefault(item.definition.name,[]).append(item)
-
+            self.received_from_parent_flow.setdefault(
+                item.definition.name, []
+            ).append(item)
 
     async def add(self, input_set: BaseInputSet):
         # Grab the input set context handle
@@ -498,7 +500,8 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                     # by parent flows
                     input_name_definition = operation.inputs[input_name]
                     for item in self.received_from_parent_flow.get(
-                            operation.inputs[input_name].name,[]):
+                        operation.inputs[input_name].name, []
+                    ):
                         gather[input_name].append(
                             Parameter(
                                 key=input_name,
