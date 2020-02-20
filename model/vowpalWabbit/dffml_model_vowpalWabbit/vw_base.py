@@ -7,16 +7,11 @@ import os
 import json
 import hashlib
 from pathlib import Path
-from collections import defaultdict, namedtuple
 from typing import (
     AsyncIterator,
     Tuple,
     Any,
-    NamedTuple,
     List,
-    Dict,
-    DefaultDict,
-    Type,
 )
 
 import numpy as np
@@ -29,9 +24,9 @@ from dffml.repo import Repo
 from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
-from dffml.base import BaseConfig, config, field
+from dffml.base import config, field
 from dffml.feature.feature import Features, Feature
-from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
+from dffml.model.model import ModelContext, Model, ModelNotTrained
 
 from .util.data import df_to_vw_format, create_input_pair
 
@@ -230,9 +225,8 @@ class VWContext(ModelContext):
                     f"Saving model weights to {self.parent.config.vwcmd[arg]}"
                 )
                 return
-        else:
-            self.logger.info(f"Saving model weights to {self._filename()}")
-            self.clf.save(self._filename())
+        self.logger.info(f"Saving model weights to {self._filename()}")
+        self.clf.save(self._filename())
         return
 
     async def __aenter__(self):
