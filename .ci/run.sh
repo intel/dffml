@@ -23,7 +23,6 @@ function run_plugin() {
   PACKAGE_NAME=$(dffml service dev setuppy kwarg name setup.py)
   "${PYTHON}" -m pip install -e .
   "${PYTHON}" setup.py test
-  "${PYTHON}" -m pip uninstall -y "${PACKAGE_NAME}"
   cd -
 
   if [ "x${PLUGIN}" = "x." ]; then
