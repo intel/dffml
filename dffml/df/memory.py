@@ -235,17 +235,15 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         # TODO Create ctxhd_locks dict to manage a per context lock
         self.ctxhd_lock = asyncio.Lock()
         # Inputs forwarded from parent subflows
-        self.received_from_parent_flow = []
+        self.received_from_parent_flow = {}
 
     async def receive_from_parent_flow(self, inputs: List[Input]):
         """
         Takes input from parent dataflow and adds it to every context
         """
-        self.received_from_parent_flow.extend(inputs)
-        async with self.ctxhd_lock:
-            ctx_keys = list(self.ctxhd.keys())
-        for ctx in ctx_keys:
-            await self.sadd(ctx, *inputs)
+        for item in inputs:
+            self.received_from_parent_flow.setdefault(item.definition.name,[]).append(item)
+
 
     async def add(self, input_set: BaseInputSet):
         # Grab the input set context handle
@@ -499,16 +497,16 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                     # see if any inputs with the same definition have been forwarded
                     # by parent flows
                     input_name_definition = operation.inputs[input_name]
-                    for item in self.received_from_parent_flow:
-                        if item.definition == input_name_definition:
-                            gather[input_name].append(
-                                Parameter(
-                                    key=input_name,
-                                    value=item.value,
-                                    definition=item.definition,
-                                    origin=item,
-                                )
+                    for item in self.received_from_parent_flow.get(
+                            operation.inputs[input_name].name,[]):
+                        gather[input_name].append(
+                            Parameter(
+                                key=input_name,
+                                value=item.value,
+                                definition=item.definition,
+                                origin=item,
                             )
+                        )
                     # Return if there is no data for an input
                     if not gather[input_name]:
                         return
