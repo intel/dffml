@@ -62,7 +62,7 @@ jobs:
           docker pull mariadb:10
         fi
         if [ "${{ matrix.plugin }}" == "model/vowpalWabbit" ]; then
-          sudo apt update && sudo apt install libboost-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev libboost-math-dev libboost-test-dev libboost-python-dev zlib1g-dev cmake python3-dev python3-pip
+          sudo apt update && sudo apt install libboost-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev libboost-math-dev libboost-test-dev libboost-python-dev zlib1g-dev cmake python3-dev python3-pip libboost-all-dev
         fi
     - name: Test
       run: |
