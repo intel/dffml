@@ -14,7 +14,7 @@ INSTALL_REQUIRES = [
     "scikit-learn>=0.21.2",
     "pandas>=0.25.0",
 ] + (
-    ["dffml>=0.3.2"]
+    ["dffml>=0.3.3"]
     if not any(
         list(
             map(

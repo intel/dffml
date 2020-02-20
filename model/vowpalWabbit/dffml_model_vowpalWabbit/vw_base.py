@@ -40,10 +40,6 @@ class InputError(Exception):
     pass
 
 
-class InputError(Exception):
-    pass
-
-
 # TODO override input, and output options
 @config
 class VWConfig:
