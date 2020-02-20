@@ -101,7 +101,7 @@ def df_to_vw_format(
         feature_part = ""
         all_features_part = ""
         incomplete_row = ""
-        extra_part = f""
+        extra_part = ""
         if target:
             if multiclass:
                 label_values = []

@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Added Vowel Wabbit models
+- Vowel Wabbit models
 - Tensorflow hub NLP models.
 - Notes on development dependencies in `setup.py` files to codebase notes.
 ### Changed
