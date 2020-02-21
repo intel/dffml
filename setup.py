@@ -68,7 +68,10 @@ setup(
         ],
         "dffml.port": ["json = dffml.port.json:JSON"],
         "dffml.service.cli": ["dev = dffml.service.dev:Develop"],
-        "dffml.config": ["json = dffml.config.json:JSONConfigLoader"],
+        "dffml.config": [
+            "json = dffml.config.json:JSONConfigLoader",
+            "png = config.png.dffml_config_png.config:PNGConfigLoader",
+        ],
         # Data Flow
         "dffml.operation": [
             # Output
