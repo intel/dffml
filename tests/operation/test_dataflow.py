@@ -7,7 +7,7 @@ from dffml.util.asynctestcase import AsyncTestCase
 from ..test_df import DATAFLOW, add, mult, parse_line
 
 
-class TestRunDataFlowOnRepo(AsyncTestCase):
+class TestRunDataFlowOnRecord(AsyncTestCase):
     async def test_run(self):
         test_dataflow = DataFlow(
             operations={

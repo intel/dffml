@@ -149,12 +149,12 @@ Implemented using Tensorflow's DNNClassifier.
 - batchsize: Integer
 
   - default: 20
-  - Number repos to pass through in an epoch
+  - Number records to pass through in an epoch
 
 - shuffle: Boolean
 
   - default: True
-  - Randomise order of repos in a batch
+  - Randomise order of records in a batch
 
 - steps: Integer
 
@@ -164,7 +164,7 @@ Implemented using Tensorflow's DNNClassifier.
 - epochs: Integer
 
   - default: 30
-  - Number of iterations to pass over all repos in a source
+  - Number of iterations to pass over all records in a source
 
 - directory: String
 
@@ -285,7 +285,7 @@ predict).
 - epochs: Integer
 
   - default: 30
-  - Number of iterations to pass over all repos in a source
+  - Number of iterations to pass over all records in a source
 
 - directory: String
 
@@ -463,7 +463,7 @@ Implemented using Tensorflow hub pretrained models.
 - epochs: Integer
 
   - default: 10
-  - Number of iterations to pass over all repos in a source
+  - Number of iterations to pass over all records in a source
 
 - directory: String
 

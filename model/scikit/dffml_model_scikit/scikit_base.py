@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import silhouette_score, mutual_info_score
 
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.model.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
@@ -76,17 +76,17 @@ class ScikitContext(ModelContext):
 
     async def train(self, sources: Sources):
         data = []
-        async for repo in sources.with_features(
+        async for record in sources.with_features(
             self.features + [self.parent.config.predict.NAME]
         ):
-            feature_data = repo.features(
+            feature_data = record.features(
                 self.features + [self.parent.config.predict.NAME]
             )
             data.append(feature_data)
         df = pd.DataFrame(data)
         xdata = np.array(df.drop([self.parent.config.predict.NAME], 1))
         ydata = np.array(df[self.parent.config.predict.NAME])
-        self.logger.info("Number of input repos: {}".format(len(xdata)))
+        self.logger.info("Number of input records: {}".format(len(xdata)))
         self.clf.fit(xdata, ydata)
         joblib.dump(self.clf, self._filename())
 
@@ -94,26 +94,26 @@ class ScikitContext(ModelContext):
         if not os.path.isfile(self._filename()):
             raise ModelNotTrained("Train model before assessing for accuracy.")
         data = []
-        async for repo in sources.with_features(self.features):
-            feature_data = repo.features(
+        async for record in sources.with_features(self.features):
+            feature_data = record.features(
                 self.features + [self.parent.config.predict.NAME]
             )
             data.append(feature_data)
         df = pd.DataFrame(data)
         xdata = np.array(df.drop([self.parent.config.predict.NAME], 1))
         ydata = np.array(df[self.parent.config.predict.NAME])
-        self.logger.debug("Number of input repos: {}".format(len(xdata)))
+        self.logger.debug("Number of input records: {}".format(len(xdata)))
         self.confidence = self.clf.score(xdata, ydata)
         self.logger.debug("Model Accuracy: {}".format(self.confidence))
         return self.confidence
 
     async def predict(
-        self, repos: AsyncIterator[Repo]
-    ) -> AsyncIterator[Tuple[Repo, Any, float]]:
+        self, records: AsyncIterator[Record]
+    ) -> AsyncIterator[Tuple[Record, Any, float]]:
         if not os.path.isfile(self._filename()):
             raise ModelNotTrained("Train model before prediction.")
-        async for repo in repos:
-            feature_data = repo.features(self.features)
+        async for record in records:
+            feature_data = record.features(self.features)
             df = pd.DataFrame(feature_data, index=[0])
             predict = np.array(df)
             self.logger.debug(
@@ -124,10 +124,10 @@ class ScikitContext(ModelContext):
                 )
             )
             target = self.parent.config.predict.NAME
-            repo.predicted(
+            record.predicted(
                 target, self.clf.predict(predict)[0], self.confidence
             )
-            yield repo
+            yield record
 
 
 class ScikitContextUnsprvised(ScikitContext):
@@ -145,12 +145,12 @@ class ScikitContextUnsprvised(ScikitContext):
 
     async def train(self, sources: Sources):
         data = []
-        async for repo in sources.with_features(self.features):
-            feature_data = repo.features(self.features)
+        async for record in sources.with_features(self.features):
+            feature_data = record.features(self.features)
             data.append(feature_data)
         df = pd.DataFrame(data)
         xdata = np.array(df)
-        self.logger.info("Number of input repos: {}".format(len(xdata)))
+        self.logger.info("Number of input records: {}".format(len(xdata)))
         self.clf.fit(xdata)
         joblib.dump(self.clf, self._filename())
 
@@ -166,12 +166,12 @@ class ScikitContextUnsprvised(ScikitContext):
                 if self.parent.config.tcluster is None
                 else [self.parent.config.tcluster.NAME]
             )
-        async for repo in sources.with_features(self.features):
-            feature_data = repo.features(self.features + target)
+        async for record in sources.with_features(self.features):
+            feature_data = record.features(self.features + target)
             data.append(feature_data)
         df = pd.DataFrame(data)
         xdata = np.array(df.drop(target, axis=1))
-        self.logger.debug("Number of input repos: {}".format(len(xdata)))
+        self.logger.debug("Number of input records: {}".format(len(xdata)))
         if target:
             ydata = np.array(df[target]).flatten()
             if hasattr(self.clf, "predict"):
@@ -203,8 +203,8 @@ class ScikitContextUnsprvised(ScikitContext):
         return self.confidence
 
     async def predict(
-        self, repos: AsyncIterator[Repo]
-    ) -> AsyncIterator[Tuple[Repo, Any, float]]:
+        self, records: AsyncIterator[Record]
+    ) -> AsyncIterator[Tuple[Record, Any, float]]:
         if not os.path.isfile(self._filename()):
             raise ModelNotTrained("Train model before prediction.")
         estimator_type = self.clf._estimator_type
@@ -222,8 +222,8 @@ class ScikitContextUnsprvised(ScikitContext):
                 ]
                 predictor = lambda predict: [next(labels)]
 
-        async for repo in repos:
-            feature_data = repo.features(self.features)
+        async for record in records:
+            feature_data = record.features(self.features)
             df = pd.DataFrame(feature_data, index=[0])
             predict = np.array(df)
             prediction = predictor(predict)
@@ -231,8 +231,8 @@ class ScikitContextUnsprvised(ScikitContext):
                 "Predicted cluster for {}: {}".format(predict, prediction)
             )
             target = self.parent.config.predict.NAME
-            repo.predicted(target, prediction[0], self.confidence)
-            yield repo
+            record.predicted(target, prediction[0], self.confidence)
+            yield record
 
 
 class Scikit(Model):

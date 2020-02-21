@@ -34,10 +34,10 @@ class TestIDXSources(AsyncTestCase):
             IDX1SourceConfig(filename=filename, feature=feature_name)
         ) as source:
             async with source() as sctx:
-                repos = [repo async for repo in sctx.repos()]
-                self.assertEqual(len(repos), 60000)
-                self.assertIn(feature_name, repos[0].features())
-                self.assertEqual(repos[0].feature(feature_name), 5)
+                records = [record async for record in sctx.records()]
+                self.assertEqual(len(records), 60000)
+                self.assertIn(feature_name, records[0].features())
+                self.assertEqual(records[0].feature(feature_name), 5)
 
     @cached_download(*IDX3_FILE, protocol_allowlist=["http://"])
     async def test_idx3(self, filename):
@@ -46,12 +46,14 @@ class TestIDXSources(AsyncTestCase):
             IDX3SourceConfig(filename=filename, feature=feature_name)
         ) as source:
             async with source() as sctx:
-                repos = [repo async for repo in sctx.repos()]
-                self.assertEqual(len(repos), 60000)
-                self.assertIn(feature_name, repos[0].features())
+                records = [record async for record in sctx.records()]
+                self.assertEqual(len(records), 60000)
+                self.assertIn(feature_name, records[0].features())
                 for i in range(-1, 1):
                     with self.subTest(index=i):
                         is_hash = hashlib.sha384(
-                            json.dumps(repos[i].feature(feature_name)).encode()
+                            json.dumps(
+                                records[i].feature(feature_name)
+                            ).encode()
                         ).hexdigest()
                         self.assertEqual(is_hash, IDX3_FIRST_LAST[i])

@@ -2,7 +2,7 @@ import random
 import tempfile
 from typing import Type
 
-from dffml.repo import Repo, RepoData
+from dffml.record import Record, RecordData
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Data, Feature, Features
@@ -38,22 +38,22 @@ class TestMisc(AsyncTestCase):
                 features=cls.features,
             )
         )
-        cls.repos = [
-            Repo(
+        cls.records = [
+            Record(
                 "a" + str(random.random()),
                 data={"features": {cls.feature.NAME: 1, "string": "a"}},
             )
             for _ in range(0, 1000)
         ]
-        cls.repos += [
-            Repo(
+        cls.records += [
+            Record(
                 "b" + str(random.random()),
                 data={"features": {cls.feature.NAME: 0, "string": "not a"}},
             )
             for _ in range(0, 1000)
         ]
         cls.sources = Sources(
-            MemorySource(MemorySourceConfig(repos=cls.repos))
+            MemorySource(MemorySourceConfig(records=cls.records))
         )
 
     @classmethod
@@ -72,17 +72,17 @@ class TestMisc(AsyncTestCase):
                 self.assertGreater(res, 0.9)
 
     async def test_02_predict(self):
-        a = Repo("a", data={"features": {self.feature.NAME: 1}})
-        b = Repo("not a", data={"features": {self.feature.NAME: 0}})
+        a = Record("a", data={"features": {self.feature.NAME: 1}})
+        b = Record("not a", data={"features": {self.feature.NAME: 0}})
         async with Sources(
-            MemorySource(MemorySourceConfig(repos=[a, b]))
+            MemorySource(MemorySourceConfig(records=[a, b]))
         ) as sources, self.model as model:
             async with sources() as sctx, model() as mctx:
                 num = 0
-                async for repo, prediction, confidence in mctx.predict(
-                    sctx.repos()
+                async for record, prediction, confidence in mctx.predict(
+                    sctx.records()
                 ):
-                    with self.subTest(repo=repo):
-                        self.assertEqual(prediction, repo.key)
+                    with self.subTest(record=record):
+                        self.assertEqual(prediction, record.key)
                     num += 1
                 self.assertEqual(num, 2)

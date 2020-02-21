@@ -8,7 +8,7 @@ import random
 from dffml.source.csv import CSVSource, CSVSourceConfig
 from dffml.util.testing.source import FileSourceTest
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml.util.cli.arg import parse_unknown
 
 
@@ -29,17 +29,17 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
             async with untagged, tagged:
                 async with untagged() as uctx, tagged() as lctx:
                     await uctx.update(
-                        Repo("0", data={"features": {"feed": 1}})
+                        Record("0", data={"features": {"feed": 1}})
                     )
                     await lctx.update(
-                        Repo("0", data={"features": {"face": 2}})
+                        Record("0", data={"features": {"face": 2}})
                     )
                 # async with untagged, tagged:
                 async with untagged() as uctx, tagged() as lctx:
-                    repo = await uctx.repo("0")
-                    self.assertIn("feed", repo.features())
-                    repo = await lctx.repo("0")
-                    self.assertIn("face", repo.features())
+                    record = await uctx.record("0")
+                    self.assertIn("feed", record.features())
+                    record = await lctx.record("0")
+                    self.assertIn("face", record.features())
             with open(self.testfile, "r") as fd:
                 dict_reader = csv.DictReader(fd, dialect="strip")
                 rows = {row["tag"]: {row["key"]: row} for row in dict_reader}
@@ -95,7 +95,7 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
                 CSVSourceConfig(filename=fileobj.name, key="KeyHeader")
             ) as source:
                 async with source() as sctx:
-                    repo_a = await sctx.repo("a")
-                    repo_b = await sctx.repo("b")
-                    self.assertEqual(repo_a.feature("ValueColumn"), 42)
-                    self.assertEqual(repo_b.feature("ValueColumn"), 420)
+                    record_a = await sctx.record("a")
+                    record_b = await sctx.record("b")
+                    self.assertEqual(record_a.feature("ValueColumn"), 42)
+                    self.assertEqual(record_b.feature("ValueColumn"), 420)

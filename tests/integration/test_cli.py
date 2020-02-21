@@ -11,15 +11,15 @@ from dffml.util.asynctestcase import IntegrationCLITestCase
 
 
 class TestList(IntegrationCLITestCase):
-    async def test_repos(self):
+    async def test_records(self):
         keys = ["A", "B", "C"]
         with contextlib.redirect_stdout(self.stdout):
             await CLI.cli(
                 "list",
-                "repos",
+                "records",
                 "-sources",
                 "feed=memory",
-                "-source-repos",
+                "-source-records",
                 *keys,
             )
         stdout = self.stdout.getvalue()
@@ -37,7 +37,7 @@ class TestMerge(IntegrationCLITestCase):
             "src=memory",
             "-source-dest-filename",
             filename,
-            "-source-src-repos",
+            "-source-src-records",
             *keys,
             "-source-src-allowempty",
             "-source-dest-allowempty",
@@ -47,7 +47,7 @@ class TestMerge(IntegrationCLITestCase):
         with contextlib.redirect_stdout(self.stdout):
             await CLI.cli(
                 "list",
-                "repos",
+                "records",
                 "-sources",
                 "tmp=json",
                 "-source-tmp-filename",
@@ -66,7 +66,7 @@ class TestMerge(IntegrationCLITestCase):
             "src=memory",
             "-source-dest-filename",
             filename,
-            "-source-src-repos",
+            "-source-src-records",
             *keys,
             "-source-src-allowempty",
             "-source-dest-allowempty",
