@@ -7,7 +7,7 @@ import csv
 import ast
 import itertools
 import asyncio
-from typing import NamedTuple, Dict, List
+from typing import Dict
 from dataclasses import dataclass
 from contextlib import asynccontextmanager
 
@@ -15,7 +15,6 @@ from ..repo import Repo
 from .memory import MemorySource
 from .file import FileSource, FileSourceConfig
 from ..base import config
-from ..util.cli.arg import Arg
 from ..util.entrypoint import entrypoint
 
 csv.register_dialect("strip", skipinitialspace=True)

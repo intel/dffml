@@ -11,13 +11,11 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
 
 from dffml.repo import Repo
-from dffml.util.cli.arg import Arg
 from dffml.model.model import Model
 from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
-from dffml.util.cli.parser import list_action
-from dffml.base import BaseConfig, config, field
+from dffml.base import config, field
 from dffml.feature.feature import Feature, Features
 
 from .dnnc import TensorflowModelContext

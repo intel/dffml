@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 import asyncio
-from typing import List, Set, Any, Optional
+from typing import List, Any
 
 from .log import LOGGER
 

@@ -3,13 +3,11 @@
 """
 Fake data sources used for testing
 """
-import asyncio
-from typing import Any, Dict, List, NamedTuple, AsyncIterator
+from typing import Dict, List, AsyncIterator
 
 from ..base import config
 from ..repo import Repo
 from .source import BaseSourceContext, BaseSource
-from ..util.cli.arg import Arg
 from ..util.entrypoint import entrypoint
 
 

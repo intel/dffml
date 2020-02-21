@@ -6,7 +6,6 @@ Run doctests with
 python -m doctest -v dffml/util/data.py
 """
 
-import inspect
 import pydoc
 import inspect
 from functools import wraps

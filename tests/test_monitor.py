@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 import asyncio
-import unittest
 
 from dffml.util.monitor import Monitor, Task
 from dffml.util.asynctestcase import AsyncTestCase

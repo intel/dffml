@@ -6,11 +6,11 @@ representing the arguments to that callable.
 """
 import inspect
 import dataclasses
-from typing import Dict, Optional, Tuple, Type, Any, Union, Callable
+from typing import Dict, Optional, Tuple, Type, Any, Callable
 
 from dffml.base import make_config, field
 
-from .exceptions import NoDefaultValue, ParameterNotInDocString
+from .exceptions import ParameterNotInDocString
 
 
 # Things people name their types mapped their real python types.

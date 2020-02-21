@@ -1,20 +1,8 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
-import os
-import io
-import atexit
-import shutil
-import random
-import inspect
-import asyncio
-import logging
-import tempfile
-import unittest
-import collections
-from unittest.mock import patch, mock_open, Mock
-from functools import wraps
+from unittest.mock import patch, mock_open
 from contextlib import contextmanager
-from typing import List, Dict, Any, Optional, Tuple, AsyncIterator
+from typing import AsyncIterator
 
 from dffml.repo import Repo
 from dffml.source.source import BaseSourceContext
