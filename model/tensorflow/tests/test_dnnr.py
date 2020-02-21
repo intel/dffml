@@ -4,10 +4,6 @@ import tempfile
 from typing import Type
 
 import numpy as np
-from dffml_model_tensorflow.dnnr import (
-    DNNRegressionModel,
-    DNNRegressionModelConfig,
-)
 
 from dffml.repo import Repo
 from dffml.source.source import Sources
@@ -16,6 +12,10 @@ from dffml.util.cli.arg import parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature import Feature, Features, DefFeature
 
+from dffml_model_tensorflow.dnnr import (
+    DNNRegressionModel,
+    DNNRegressionModelConfig,
+)
 
 # Creating feature classes
 class Feature_1(Feature):

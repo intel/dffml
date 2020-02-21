@@ -1,12 +1,13 @@
 import tempfile
 
-from dffml_model_scratch.slr import SLR, SLRConfig
 
 from dffml.repo import Repo
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature import DefFeature, Features
+
+from dffml_model_scratch.slr import SLR, SLRConfig
 
 FEATURE_DATA = [
     [12.39999962, 11.19999981],
