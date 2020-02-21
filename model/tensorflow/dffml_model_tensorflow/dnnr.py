@@ -13,7 +13,7 @@ import tensorflow as tf
 from dffml.repo import Repo
 from dffml.util.cli.arg import Arg
 from dffml.model.model import Model
-from dffml.accuracy import Accuracy
+from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
 from dffml.util.cli.parser import list_action
@@ -65,9 +65,8 @@ class DNNRegressionModelContext(TensorflowModelContext):
         if self._model is not None:
             return self._model
         self.logger.debug("Loading model ")
-        _head = tf.estimator.RegressionHead()
-        self._model = tf.estimator.DNNEstimator(
-            head=_head,
+
+        self._model = tf.compat.v1.estimator.DNNRegressor(
             feature_columns=list(self.feature_columns.values()),
             hidden_units=self.parent.config.hidden,
             model_dir=self.model_dir_path,

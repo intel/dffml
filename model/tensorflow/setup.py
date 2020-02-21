@@ -18,8 +18,8 @@ with open(
 with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
-INSTALL_REQUIRES = ["tensorflow>=2.1.0rc2"] + (
-    ["dffml>=0.3.1"]
+INSTALL_REQUIRES = ["tensorflow>=2.0.0"] + (
+    ["dffml>=0.3.3"]
     if not any(
         list(
             map(
@@ -62,6 +62,7 @@ setup(
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
     install_requires=INSTALL_REQUIRES,
+    tests_require=["scikit-learn>=0.21.2"],
     packages=find_packages(),
     entry_points={
         "dffml.model": [

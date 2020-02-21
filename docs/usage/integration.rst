@@ -1,8 +1,9 @@
-Integrating Machine Learning
-============================
+Automating Classifciation
+=========================
 
 This example will show you how to automate a manual classification process,
-determining if a Git repo is maintained or abandoned.
+determining if a Git repo is maintained or abandoned. We'll be integrating
+Machine Learning into an existing legacy application.
 
 For this example assume you are a very curious open source software people (if
 you're here you already are). Since you love looking at GitHub repos in your
@@ -143,6 +144,27 @@ since that creates more user friendly configs than ``json``.
 
     $ pip install -U dffml-feature-git dffml-config-yaml
 
+The git operations / features rely on ``tokei``. We need to download and install
+it first.
+
+On Linux
+
+.. code-block:: console
+
+    $ curl -sSL 'https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz' \
+      | tar -xvz && \
+      echo '22699e16e71f07ff805805d26ee86ecb9b1052d7879350f7eb9ed87beb0e6b84fbb512963d01b75cec8e80532e4ea29a tokei' | sha384sum -c - && \
+      sudo mv tokei /usr/local/bin/
+
+On OSX
+
+.. code-block:: console
+
+    $ curl -sSL 'https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz' \
+      | tar -xvz && \
+      echo '8c8a1d8d8dd4d8bef93dabf5d2f6e27023777f8553393e269765d7ece85e68837cba4374a2615d83f071dfae22ba40e2 tokei' | sha384sum -c - && \
+      sudo mv tokei /usr/local/bin/
+
 Operations are just Python functions, or classes. They define a routine which
 will be run concurrently with other operations. Here's an example of the
 ``git_commits`` operation, which will find the number of commits within a date
@@ -152,8 +174,8 @@ range.
 
 .. literalinclude:: /../feature/git/dffml_feature_git/feature/operations.py
     :linenos:
-    :lineno-start: 367
-    :lines: 367-394
+    :lineno-start: 349
+    :lines: 349-368
 
 Since operations are run concurrently with each other, DFFML manages locking of
 input data, such as git repositories. This is done via ``Definitions`` which are

@@ -27,7 +27,7 @@ class OpenCSVFile:
     active: int
     lock: asyncio.Lock
     write_back_key: bool = True
-    write_back_label: bool = False
+    write_back_tag: bool = False
 
     async def inc(self):
         async with self.lock:
@@ -40,15 +40,15 @@ class OpenCSVFile:
 
 
 CSV_SOURCE_CONFIG_DEFAULT_KEY = "key"
-CSV_SOURCE_CONFIG_DEFAULT_LABEL = "unlabeled"
-CSV_SOURCE_CONFIG_DEFAULT_LABEL_COLUMN = "label"
+CSV_SOURCE_CONFIG_DEFAULT_tag = "untagged"
+CSV_SOURCE_CONFIG_DEFAULT_tag_COLUMN = "tag"
 
 
 @config
 class CSVSourceConfig(FileSourceConfig):
     key: str = CSV_SOURCE_CONFIG_DEFAULT_KEY
-    label: str = CSV_SOURCE_CONFIG_DEFAULT_LABEL
-    labelcol: str = CSV_SOURCE_CONFIG_DEFAULT_LABEL_COLUMN
+    tag: str = CSV_SOURCE_CONFIG_DEFAULT_tag
+    tagcol: str = CSV_SOURCE_CONFIG_DEFAULT_tag_COLUMN
 
 
 # CSVSource is a bit of a mess
@@ -91,24 +91,24 @@ class CSVSource(FileSource, MemorySource):
         # Record what headers are present when the file was opened
         if not self.config.key in dict_reader.fieldnames:
             open_file.write_back_key = False
-        if self.config.labelcol in dict_reader.fieldnames:
-            open_file.write_back_label = True
-        # Store all the repos by their label in write_out
+        if self.config.tagcol in dict_reader.fieldnames:
+            open_file.write_back_tag = True
+        # Store all the repos by their tag in write_out
         open_file.write_out = {}
-        # If there is no key track row index to be used as key by label
+        # If there is no key track row index to be used as key by tag
         index = {}
         for row in dict_reader:
-            # Grab label from row
-            label = row.get(self.config.labelcol, self.config.label)
-            if self.config.labelcol in row:
-                del row[self.config.labelcol]
-            index.setdefault(label, 0)
+            # Grab tag from row
+            tag = row.get(self.config.tagcol, self.config.tag)
+            if self.config.tagcol in row:
+                del row[self.config.tagcol]
+            index.setdefault(tag, 0)
             # Grab key from row
-            key = row.get(self.config.key, str(index[label]))
+            key = row.get(self.config.key, str(index[tag]))
             if self.config.key in row:
                 del row[self.config.key]
             else:
-                index[label] += 1
+                index[tag] += 1
             # Repo data we are going to parse from this row (must include
             # features).
             repo_data = {}
@@ -159,18 +159,18 @@ class CSVSource(FileSource, MemorySource):
             }
             repo_data.update({"prediction": predictions})
             # If there was no data in the row, skip it
-            if not repo_data and key == str(index[label] - 1):
+            if not repo_data and key == str(index[tag] - 1):
                 continue
             # Add the repo to our internal memory representation
-            open_file.write_out.setdefault(label, {})
-            open_file.write_out[label][key] = Repo(key, data=repo_data)
+            open_file.write_out.setdefault(tag, {})
+            open_file.write_out[tag][key] = Repo(key, data=repo_data)
 
     async def load_fd(self, fd):
         """
         Parses a CSV stream into Repo instances
         """
         async with self._open_csv(fd) as open_file:
-            self.mem = open_file.write_out.get(self.config.label, {})
+            self.mem = open_file.write_out.get(self.config.tag, {})
         self.logger.debug("%r loaded %d records", self, len(self.mem))
 
     async def dump_fd(self, fd):
@@ -179,8 +179,8 @@ class CSVSource(FileSource, MemorySource):
         """
         async with self.OPEN_CSV_FILES_LOCK:
             open_file = self.OPEN_CSV_FILES[self.config.filename]
-            open_file.write_out.setdefault(self.config.label, {})
-            open_file.write_out[self.config.label].update(self.mem)
+            open_file.write_out.setdefault(self.config.tag, {})
+            open_file.write_out[self.config.tag].update(self.mem)
             # Bail if not last open source for this file
             if not (await open_file.dec()):
                 return
@@ -188,11 +188,11 @@ class CSVSource(FileSource, MemorySource):
             fieldnames = (
                 [] if not open_file.write_back_key else [self.config.key]
             )
-            fieldnames.append(self.config.labelcol)
+            fieldnames.append(self.config.tagcol)
             # Get all the feature names
             feature_fieldnames = set()
             prediction_fieldnames = set()
-            for label, repos in open_file.write_out.items():
+            for tag, repos in open_file.write_out.items():
                 for repo in repos.values():
                     feature_fieldnames |= set(repo.data.features.keys())
                     prediction_fieldnames |= set(repo.data.prediction.keys())
@@ -209,12 +209,12 @@ class CSVSource(FileSource, MemorySource):
             # Write out the file
             writer = csv.DictWriter(fd, fieldnames=fieldnames)
             writer.writeheader()
-            for label, repos in open_file.write_out.items():
+            for tag, repos in open_file.write_out.items():
                 for repo in repos.values():
                     repo_data = repo.dict()
                     row = {name: "" for name in fieldnames}
-                    # Always write the label
-                    row[self.config.labelcol] = label
+                    # Always write the tag
+                    row[self.config.tagcol] = tag
                     # Write the key if it existed
                     if open_file.write_back_key:
                         row[self.config.key] = repo.key

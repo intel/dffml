@@ -15,7 +15,7 @@ from dffml.repo import Repo
 from dffml.base import config, field
 from dffml.source.source import Sources
 from dffml.feature import Features
-from dffml.accuracy import Accuracy
+from dffml.model.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml.util.entrypoint import entrypoint
 from dffml.util.cli.arg import Arg

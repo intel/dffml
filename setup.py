@@ -47,6 +47,14 @@ setup(
             "dffml-model-scikit",
         ],
         "sources": ["dffml-source-mysql"],
+        "all": [
+            "dffml-model-tensorflow",
+            "dffml-model-scratch",
+            "dffml-model-scikit",
+            "dffml-source-mysql",
+            "dffml-config-yaml",
+            "dffml-service-http",
+        ],
         "dev": [
             "coverage",
             "codecov",
@@ -57,6 +65,7 @@ setup(
             "sphinx_rtd_theme",
         ],
     },
+    tests_require=["httptest>=0.0.15",],
     entry_points={
         "console_scripts": ["dffml = dffml.cli.cli:CLI.main"],
         "dffml.source": [

@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Tensorflow hub NLP models.
+- Notes on development dependencies in `setup.py` files to codebase notes.
+- Test for `cached_download`
+### Changed
+- Definitions with a `spec` can use the `subspec` parameter to declare that they
+  are a list or a dict where the values are of the `spec` type. Rather than the
+  list or dict itself being of the `spec` type.
+
+## [0.3.3] - 2020-02-10
+### Added
+- Moved from TensorFlow 1 to TensorFlow 2.
 - IDX Sources to read binary data files and train models on MNIST Dataset
 - scikit models
   - Clusterers
@@ -40,7 +51,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   to setuptools `setup` function within a `setup.py` file.
 ### Changed
 - All instances of `src_url` changed to `key`.
-- Moved from tensorflow 1 to tensorflow 2.
 - `readonly` parameter in source config is now changed to `readwrite`.
 - `predict` parameter of all model config classes has been changed from `str` to `Feature`.
 - Defining features on the command line no longer requires that defined features
@@ -54,6 +64,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   in it's config changed to `predict`.
 - SciKit models use `make_config_numpy`.
 - Predictions in `repos` are now dictionary.
+- All instances of `label` changed to `tag`
+- Subclasses of `BaseConfigurable` will now auto instantiate their respective
+  config classes using `kwargs` if the config argument isn't given and keyword
+  arguments are.
+- The quickstart documentation was improved as well as the structure of docs.
 ### Fixed
 - CONTRIBUTING.md has `-e` in the wrong place in the getting setup section.
 - Since moving to auto `args()` and `config()`, BaseConfigurable no longer
@@ -92,7 +107,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automatic documentation deployment to GitHub Pages
 - Function to create a config class dynamically, analogous to `make_dataclass`
 - `ConfigLoaders` class which loads config files from a file or directory to a dictionary.
-
 ### Changed
 - CLI tests and integration tests derive from `AsyncExitStackTestCase`
 - SciKit models now use the auto args and config methods.

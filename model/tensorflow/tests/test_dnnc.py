@@ -54,8 +54,8 @@ class TestDNN(AsyncTestCase):
             DNNClassifierModelConfig(
                 directory=cls.model_dir.name,
                 steps=1000,
-                epochs=30,
-                hidden=[300, 200, 80, 10],
+                epochs=40,
+                hidden=[50, 20, 10],
                 predict=DefFeature("string", str, 1),
                 classifications=["a", "not a"],
                 clstype=str,

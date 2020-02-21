@@ -285,3 +285,4 @@ Ensure that `predict` and `accuracy` for these algorithms uses training data.
   - default: /home/user/.cache/dffml/scikit-{Entrypoint}
   - Directory where state should be saved
 """
+from .scikit_models import *

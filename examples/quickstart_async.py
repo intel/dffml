@@ -1,0 +1,46 @@
+import asyncio
+
+from dffml_model_scikit import LinearRegressionModel
+from dffml import train, accuracy, predict, Features, DefFeature
+
+
+async def main():
+    model = LinearRegressionModel(
+        features=Features(
+            DefFeature("Years", int, 1),
+            DefFeature("Expertise", int, 1),
+            DefFeature("Trust", float, 1),
+        ),
+        predict=DefFeature("Salary", int, 1),
+    )
+
+    # Train the model
+    await train(
+        model,
+        {"Years": 0, "Expertise": 1, "Trust": 0.1, "Salary": 10},
+        {"Years": 1, "Expertise": 3, "Trust": 0.2, "Salary": 20},
+        {"Years": 2, "Expertise": 5, "Trust": 0.3, "Salary": 30},
+        {"Years": 3, "Expertise": 7, "Trust": 0.4, "Salary": 40},
+    )
+
+    # Assess accuracy
+    print(
+        "Accuracy:",
+        await accuracy(
+            model,
+            {"Years": 4, "Expertise": 9, "Trust": 0.5, "Salary": 50},
+            {"Years": 5, "Expertise": 11, "Trust": 0.6, "Salary": 60},
+        ),
+    )
+
+    # Make prediction
+    async for i, features, prediction in predict(
+        model,
+        {"Years": 6, "Expertise": 13, "Trust": 0.7},
+        {"Years": 7, "Expertise": 15, "Trust": 0.8},
+    ):
+        features["Salary"] = prediction["Salary"]["value"]
+        print(features)
+
+
+asyncio.run(main())
