@@ -92,7 +92,9 @@ class SLRContext(ModelContext):
         return 1 - (squared_error_regression / squared_error_mean)
 
     async def best_fit_line(self):
-        self.logger.debug("Number of input records: {}".format(len(self.xData)))
+        self.logger.debug(
+            "Number of input records: {}".format(len(self.xData))
+        )
         x = self.xData
         y = self.yData
         mean_x = np.mean(self.xData)

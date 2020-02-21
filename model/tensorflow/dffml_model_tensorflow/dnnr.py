@@ -161,7 +161,9 @@ class DNNRegressionModelContext(TensorflowModelContext):
         metrics = self.model.evaluate(input_fn=input_fn)
         return Accuracy(1 - metrics["loss"])  # 1 - mse
 
-    async def predict(self, records: AsyncIterator[Record]) -> AsyncIterator[Record]:
+    async def predict(
+        self, records: AsyncIterator[Record]
+    ) -> AsyncIterator[Record]:
         """
         Uses trained data to make a prediction about the quality of a record.
         """

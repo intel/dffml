@@ -62,7 +62,10 @@ class MySQLSourceContext(BaseSourceContext):
         self.logger.debug("update: %s", await self.record(record.key))
 
     def convert_to_record(self, result):
-        modified_record = {"key": "", "data": {"features": {}, "prediction": {}}}
+        modified_record = {
+            "key": "",
+            "data": {"features": {}, "prediction": {}},
+        }
         for key, value in result.items():
             if key.startswith("feature_"):
                 modified_record["data"]["features"][

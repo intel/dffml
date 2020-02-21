@@ -56,7 +56,9 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    async def predict(self, records: AsyncIterator[Record]) -> AsyncIterator[Record]:
+    async def predict(
+        self, records: AsyncIterator[Record]
+    ) -> AsyncIterator[Record]:
         """
         Uses trained data to make a prediction about the quality of a record.
         """

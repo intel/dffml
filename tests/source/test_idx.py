@@ -52,6 +52,8 @@ class TestIDXSources(AsyncTestCase):
                 for i in range(-1, 1):
                     with self.subTest(index=i):
                         is_hash = hashlib.sha384(
-                            json.dumps(records[i].feature(feature_name)).encode()
+                            json.dumps(
+                                records[i].feature(feature_name)
+                            ).encode()
                         ).hexdigest()
                         self.assertEqual(is_hash, IDX3_FIRST_LAST[i])

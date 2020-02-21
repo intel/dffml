@@ -369,7 +369,9 @@ async def lines_of_code_to_comments(langs: Dict[str, Dict[str, int]]):
     },
     outputs={"commits": commit_count},
 )
-async def git_commits(record: Dict[str, str], branch: str, start_end: List[str]):
+async def git_commits(
+    record: Dict[str, str], branch: str, start_end: List[str]
+):
     start, end = start_end
     commit_count = 0
     proc = await create(

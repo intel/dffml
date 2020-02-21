@@ -74,7 +74,8 @@ class SourceTest(abc.ABC):
                         "feedface",
                     )
                     self.assertEqual(
-                        record.data.prediction["target_name"]["confidence"], 0.42
+                        record.data.prediction["target_name"]["confidence"],
+                        0.42,
                     )
                 with self.subTest(key=empty_key):
                     record = await sourceContext.record(empty_key)
@@ -87,7 +88,8 @@ class SourceTest(abc.ABC):
                     )
                 with self.subTest(both=[full_key, empty_key]):
                     records = {
-                        record.key: record async for record in sourceContext.records()
+                        record.key: record
+                        async for record in sourceContext.records()
                     }
                     self.assertIn(full_key, records)
                     self.assertIn(empty_key, records)

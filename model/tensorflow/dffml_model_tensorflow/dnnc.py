@@ -143,7 +143,9 @@ class DNNClassifierModelConfig:
     batchsize: int = field(
         "Number records to pass through in an epoch", default=20
     )
-    shuffle: bool = field("Randomise order of records in a batch", default=True)
+    shuffle: bool = field(
+        "Randomise order of records in a batch", default=True
+    )
     steps: int = field("Number of steps to train the model", default=3000)
     epochs: int = field(
         "Number of iterations to pass over all records in a source", default=30
@@ -306,7 +308,9 @@ class DNNClassifierModelContext(TensorflowModelContext):
         accuracy_score = self.model.evaluate(input_fn=input_fn)
         return Accuracy(accuracy_score["accuracy"])
 
-    async def predict(self, records: AsyncIterator[Record]) -> AsyncIterator[Record]:
+    async def predict(
+        self, records: AsyncIterator[Record]
+    ) -> AsyncIterator[Record]:
         """
         Uses trained data to make a prediction about the quality of a record.
         """

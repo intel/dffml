@@ -81,7 +81,9 @@ class Merge(CMD):
         "dest", help="Sources merge records into", type=BaseSource.load_labeled
     )
     arg_src = Arg(
-        "src", help="Sources to pull records from", type=BaseSource.load_labeled
+        "src",
+        help="Sources to pull records from",
+        type=BaseSource.load_labeled,
     )
 
     async def run(self):

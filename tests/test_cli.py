@@ -109,7 +109,9 @@ class FakeModelContext(ModelContext):
     async def accuracy(self, sources: Sources) -> AccuracyType:
         return AccuracyType(0.42)
 
-    async def predict(self, records: AsyncIterator[Record]) -> AsyncIterator[Record]:
+    async def predict(
+        self, records: AsyncIterator[Record]
+    ) -> AsyncIterator[Record]:
         target = self.parent.config.predict.NAME
         async for record in records:
             record.predicted(target, random.random(), float(record.key))
@@ -198,7 +200,9 @@ class TestMerge(RecordsTestCase):
             self.assertEqual(
                 contents,
                 "key,tag\n"
-                + "\n".join([f"{record.key},untagged" for record in self.records])
+                + "\n".join(
+                    [f"{record.key},untagged" for record in self.records]
+                )
                 + "\n",
                 "Incorrect data in csv file",
             )
@@ -320,7 +324,9 @@ class TestDataflowRunAllRecords(RecordsTestCase):
             }
             for record in self.records:
                 self.assertIn(record.key, results)
-                self.assertEqual(self.record_keys[record.key], results[record.key])
+                self.assertEqual(
+                    self.record_keys[record.key], results[record.key]
+                )
 
 
 class TestDataflowRunRecordSet(RecordsTestCase):
@@ -417,7 +423,8 @@ class TestPredict(RecordsTestCase):
             "fake",
         )
         results = {
-            record.key: record.prediction("fake").confidence for record in results
+            record.key: record.prediction("fake").confidence
+            for record in results
         }
         for record in self.records:
             self.assertEqual(float(record.key), results[record.key])
@@ -442,7 +449,8 @@ class TestPredict(RecordsTestCase):
         )
         self.assertEqual(len(results), len(subset))
         results = {
-            record.key: record.prediction("fake").confidence for record in results
+            record.key: record.prediction("fake").confidence
+            for record in results
         }
         for record in subset:
             self.assertEqual(float(record.key), results[record.key])

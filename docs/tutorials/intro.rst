@@ -31,28 +31,19 @@ By providing a generic abstraction around where data is being saved and stored,
 model implementations can access the data via the same API no matter where it
 is.
 
-Repos
+Records
 ~~~~~
 
-A common construct within DFFML is the ``Repo``. A ``Repo`` object is a
-repository of information associated with a unique key. The ``Repo`` holds all
+A common construct within DFFML is the ``Record``. A ``Record`` object is a
+repository of information associated with a unique key. The ``Record`` holds all
 the data associated with that key.
-
-.. note::
-
-    DFFML started as a project centred around Git repos. As such, the unique key
-    for a Git repo was the upstream source URL. ``src_url`` was used as the
-    parameter to hold the unique key.
-
-    Now as DFFML has become more general purpose all instances of ``Repo.src_url`` have 
-    been changed to ``Repo.key`` `#233 <https://github.com/intel/dffml/issues/233>`_.
 
 Say for instance you generated a dataset that had to do with cities. Your unique
 key might be the name of the city, the state or province it's in, and the
 country it's in. For example: ``Portland, OR, USA``.
 
-The data associated with a ``Repo`` is called the feature data. Its stored
-within a key value mapping within the ``Repo`` accessible via the
+The data associated with a ``Record`` is called the feature data. Its stored
+within a key value mapping within the ``Record`` accessible via the
 ``features()`` method. Our city example might have the following feature data.
 
 .. code-block:: json

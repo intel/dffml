@@ -93,7 +93,9 @@ class SourcesContext(AsyncContextManagerListContext):
             record.merge(await source.record(key))
         return record
 
-    async def with_features(self, features: List[str]) -> AsyncIterator[Record]:
+    async def with_features(
+        self, features: List[str]
+    ) -> AsyncIterator[Record]:
         """
         Returns all records which have the requested features
         """

@@ -81,7 +81,9 @@ class FakeModelContext(ModelContext):
             accuracy += int(record.key)
         return Accuracy(accuracy)
 
-    async def predict(self, records: AsyncIterator[Record]) -> AsyncIterator[Record]:
+    async def predict(
+        self, records: AsyncIterator[Record]
+    ) -> AsyncIterator[Record]:
         async for record in records:
             record.predicted(
                 "Salary", record.feature("by_ten") * 10, float(record.key)
@@ -490,11 +492,15 @@ class TestRoutesSource(TestRoutesRunning, AsyncTestCase):
         self.assertIn("iterkey", response)
         self.assertIn("records", response)
         for key, record in response["records"].items():
-            self.assertEqual(record, self.source.config.records[int(key)].export())
+            self.assertEqual(
+                record, self.source.config.records[int(key)].export()
+            )
 
     async def test_records(self):
         chunk_size = self.num_records
-        async with self.get(f"/source/{self.slabel}/records/{chunk_size}") as r:
+        async with self.get(
+            f"/source/{self.slabel}/records/{chunk_size}"
+        ) as r:
             response = await r.json()
             self._check_iter_response(response)
             self.assertEqual(response["iterkey"], None)
@@ -508,7 +514,9 @@ class TestRoutesSource(TestRoutesRunning, AsyncTestCase):
     async def test_records_iterkey(self):
         chunk_size = 7
         got_records = {}
-        async with self.get(f"/source/{self.slabel}/records/{chunk_size}") as r:
+        async with self.get(
+            f"/source/{self.slabel}/records/{chunk_size}"
+        ) as r:
             response = await r.json()
             self._check_iter_response(response)
             iterkey = response["iterkey"]

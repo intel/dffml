@@ -43,7 +43,9 @@ class TestML(IntegrationCLITestCase):
         self.predict_data = [[6, 13, 1.4], [7, 15, 1.6]]
         for use in ["train", "test", "predict"]:
             records = [
-                Record(i, data={"features": dict(zip(FEATURE_NAMES, features))})
+                Record(
+                    i, data={"features": dict(zip(FEATURE_NAMES, features))}
+                )
                 for i, features in enumerate(getattr(self, f"{use}_data"))
             ]
             setattr(self, f"{use}_records", records)

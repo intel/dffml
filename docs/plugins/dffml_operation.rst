@@ -112,7 +112,7 @@ No description
 
 **Inputs**
 
-- features: repo_features(type: Dict[str, Any])
+- features: record_features(type: Dict[str, Any])
 
 **Outputs**
 
@@ -200,7 +200,7 @@ No description
 
 **Inputs**
 
-- repo: git_repository(type: Dict[str, str])
+- record: git_repository(type: Dict[str, str])
 
   - URL: str
   - directory: str
@@ -222,7 +222,7 @@ No description
 
 **Outputs**
 
-- repo: git_repository(type: Dict[str, str])
+- record: git_repository(type: Dict[str, str])
 
   - URL: str
   - directory: str
@@ -263,7 +263,7 @@ No description
 
 **Inputs**
 
-- repo: git_repository(type: Dict[str, str])
+- record: git_repository(type: Dict[str, str])
 
   - URL: str
   - directory: str
@@ -287,7 +287,7 @@ No description
 
 **Inputs**
 
-- repo: git_repository(type: Dict[str, str])
+- record: git_repository(type: Dict[str, str])
 
   - URL: str
   - directory: str
@@ -311,7 +311,7 @@ No description
 
 **Inputs**
 
-- repo: git_repository(type: Dict[str, str])
+- record: git_repository(type: Dict[str, str])
 
   - URL: str
   - directory: str
@@ -319,7 +319,7 @@ No description
 
 **Outputs**
 
-- repo: git_repository_checked_out(type: Dict[str, str])
+- record: git_repository_checked_out(type: Dict[str, str])
 
   - URL: str
   - directory: str
@@ -338,7 +338,7 @@ No description
 
 **Inputs**
 
-- repo: git_repository(type: Dict[str, str])
+- record: git_repository(type: Dict[str, str])
 
   - URL: str
   - directory: str
@@ -362,7 +362,7 @@ No description
 
 **Inputs**
 
-- repo: git_repository(type: Dict[str, str])
+- record: git_repository(type: Dict[str, str])
 
   - URL: str
   - directory: str
@@ -388,7 +388,7 @@ Was there a release within this date range
 
 **Inputs**
 
-- repo: git_repository(type: Dict[str, str])
+- record: git_repository(type: Dict[str, str])
 
   - URL: str
   - directory: str
@@ -431,7 +431,7 @@ On OSX
 
 **Inputs**
 
-- repo: git_repository_checked_out(type: Dict[str, str])
+- record: git_repository_checked_out(type: Dict[str, str])
 
   - URL: str
   - directory: str
