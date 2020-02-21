@@ -3,10 +3,8 @@
 """
 Information on the software to evaluate is stored in a Repo instance.
 """
-import os
-import warnings
 from datetime import datetime
-from typing import Optional, List, Dict, Any, AsyncIterator
+from typing import Optional, List, Dict, Any
 
 from .util.data import merge
 from .log import LOGGER

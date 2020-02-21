@@ -1,14 +1,11 @@
 import os
-import io
 import ast
 import sys
 import json
 import tempfile
-import unittest
 import contextlib
 import subprocess
 import unittest.mock
-import importlib.util
 
 from dffml.util.os import chdir
 

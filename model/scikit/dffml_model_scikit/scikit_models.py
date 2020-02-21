@@ -5,9 +5,6 @@ Description of what this model does
 """
 import os
 import sys
-import inspect
-import dataclasses
-from typing import Dict, Optional, Tuple, Type, Any
 
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier
@@ -63,7 +60,6 @@ from dffml_model_scikit.scikit_base import (
     ScikitContextUnsprvised,
 )
 from dffml.feature.feature import Feature, Features, DefFeature
-from dffml.util.cli.parser import list_action
 
 
 def applicable_features(self, features):

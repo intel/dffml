@@ -1,42 +1,29 @@
 import os
 import io
-import json
-import asyncio
 import pathlib
 import tempfile
-import unittest
 from http import HTTPStatus
 from unittest.mock import patch
 from contextlib import asynccontextmanager, ExitStack, AsyncExitStack
-from typing import AsyncIterator, Tuple, Dict, Any, List, NamedTuple
+from typing import AsyncIterator, Dict
 
 import aiohttp
 
 from dffml.base import config
 from dffml.repo import Repo
-from dffml.df.base import (
-    op,
-    BaseConfig,
-    BaseInputSetContext,
-    BaseOrchestratorContext,
-    OperationImplementationContext,
-)
-from dffml.df.types import Definition, Input, DataFlow, Stage
+from dffml.df.base import BaseConfig
 from dffml.operation.output import GetSingle
 from dffml.util.entrypoint import EntrypointNotFound
 from dffml.model.model import ModelContext, Model
 from dffml.model.accuracy import Accuracy
-from dffml.feature import Features, DefFeature
+from dffml.feature import DefFeature
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.source.source import Sources
 from dffml.source.csv import CSVSourceConfig
-from dffml.util.data import traverse_get
 from dffml.util.cli.arg import parse_unknown
 from dffml.util.entrypoint import entrypoint
-from dffml.util.cli.arg import Arg, parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
-from dffml.util.cli.parser import list_action
 
 from dffml_service_http.cli import Server
 from dffml_service_http.routes import (
