@@ -83,8 +83,8 @@ flow:
       - seed
   cleanup_git_repo:
     inputs:
-      repo:
-      - clone_git_repo: repo
+      record:
+      - clone_git_repo: record
   clone_git_repo:
     conditions:
     - check_if_valid_git_repository_URL: valid
@@ -99,44 +99,44 @@ flow:
     inputs:
       branch:
       - git_repo_default_branch: branch
-      repo:
-      - clone_git_repo: repo
+      record:
+      - clone_git_repo: record
       start_end:
       - quarters_back_to_date: start_end
   git_repo_author_lines_for_dates:
     inputs:
       branch:
       - git_repo_default_branch: branch
-      repo:
-      - clone_git_repo: repo
+      record:
+      - clone_git_repo: record
       start_end:
       - quarters_back_to_date: start_end
   git_repo_checkout:
     inputs:
       commit:
       - git_repo_commit_from_date: commit
-      repo:
-      - clone_git_repo: repo
+      record:
+      - clone_git_repo: record
   git_repo_commit_from_date:
     inputs:
       branch:
       - git_repo_default_branch: branch
       date:
       - quarters_back_to_date: date
-      repo:
-      - clone_git_repo: repo
+      record:
+      - clone_git_repo: record
   git_repo_default_branch:
     conditions:
     - seed
     inputs:
-      repo:
-      - clone_git_repo: repo
+      record:
+      - clone_git_repo: record
   git_repo_release:
     inputs:
       branch:
       - git_repo_default_branch: branch
-      repo:
-      - clone_git_repo: repo
+      record:
+      - clone_git_repo: record
       start_end:
       - quarters_back_to_date: start_end
   group_by:
@@ -164,7 +164,7 @@ operations:
     stage: processing
   cleanup_git_repo:
     inputs:
-      repo: git_repository
+      record: git_repository
     name: cleanup_git_repo
     outputs: {}
     stage: cleanup
@@ -175,7 +175,7 @@ operations:
       URL: URL
     name: clone_git_repo
     outputs:
-      repo: git_repository
+      record: git_repository
     stage: processing
   count_authors:
     inputs:
@@ -187,7 +187,7 @@ operations:
   git_commits:
     inputs:
       branch: git_branch
-      repo: git_repository
+      record: git_repository
       start_end: date_pair
     name: git_commits
     outputs:
@@ -196,7 +196,7 @@ operations:
   git_repo_author_lines_for_dates:
     inputs:
       branch: git_branch
-      repo: git_repository
+      record: git_repository
       start_end: date_pair
     name: git_repo_author_lines_for_dates
     outputs:
@@ -205,16 +205,16 @@ operations:
   git_repo_checkout:
     inputs:
       commit: git_commit
-      repo: git_repository
+      record: git_repository
     name: git_repo_checkout
     outputs:
-      repo: git_repository_checked_out
+      record: git_repository_checked_out
     stage: processing
   git_repo_commit_from_date:
     inputs:
       branch: git_branch
       date: date
-      repo: git_repository
+      record: git_repository
     name: git_repo_commit_from_date
     outputs:
       commit: git_commit
@@ -223,7 +223,7 @@ operations:
     conditions:
     - no_git_branch_given
     inputs:
-      repo: git_repository
+      record: git_repository
     name: git_repo_default_branch
     outputs:
       branch: git_branch
@@ -231,7 +231,7 @@ operations:
   git_repo_release:
     inputs:
       branch: git_branch
-      repo: git_repository
+      record: git_repository
       start_end: date_pair
     name: git_repo_release
     outputs:

@@ -11,7 +11,7 @@ from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Dict
 
 import numpy as np
 
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml.base import config, field
 from dffml.source.source import Sources
 from dffml.feature import Features
@@ -92,7 +92,7 @@ class SLRContext(ModelContext):
         return 1 - (squared_error_regression / squared_error_mean)
 
     async def best_fit_line(self):
-        self.logger.debug("Number of input repos: {}".format(len(self.xData)))
+        self.logger.debug("Number of input records: {}".format(len(self.xData)))
         x = self.xData
         y = self.yData
         mean_x = np.mean(self.xData)
@@ -106,10 +106,10 @@ class SLRContext(ModelContext):
         return (m, b, accuracy)
 
     async def train(self, sources: Sources):
-        async for repo in sources.with_features(
+        async for record in sources.with_features(
             self.features + [self.parent.config.predict.NAME]
         ):
-            feature_data = repo.features(
+            feature_data = record.features(
                 self.features + [self.parent.config.predict.NAME]
             )
             self.xData = np.append(self.xData, feature_data[self.features[0]])
@@ -125,19 +125,19 @@ class SLRContext(ModelContext):
         return Accuracy(accuracy_value)
 
     async def predict(
-        self, repos: AsyncIterator[Repo]
-    ) -> AsyncIterator[Tuple[Repo, Any, float]]:
+        self, records: AsyncIterator[Record]
+    ) -> AsyncIterator[Tuple[Record, Any, float]]:
         if self.regression_line is None:
             raise ModelNotTrained("Train model before prediction.")
         target = self.parent.config.predict.NAME
-        async for repo in repos:
-            feature_data = repo.features(self.features)
-            repo.predicted(
+        async for record in records:
+            feature_data = record.features(self.features)
+            record.predicted(
                 target,
                 await self.predict_input(feature_data[self.features[0]]),
                 self.regression_line[2],
             )
-            yield repo
+            yield record
 
 
 @entrypoint("slr")

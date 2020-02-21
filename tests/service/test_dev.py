@@ -13,7 +13,7 @@ from typing import Type
 
 from dffml.version import VERSION
 from dffml.df.types import DataFlow
-from dffml.service.dev import Develop, RepoDirtyError, Export, Run
+from dffml.service.dev import Develop, RecordDirtyError, Export, Run
 from dffml.util.os import chdir
 from dffml.util.skel import Skel
 from dffml.util.packaging import is_develop
@@ -187,7 +187,7 @@ class TestRelease(AsyncTestCase):
         with unittest.mock.patch(
             "asyncio.create_subprocess_exec", new=mkexec(FailedFakeProcess)
         ):
-            with self.assertRaises(RepoDirtyError):
+            with self.assertRaises(RecordDirtyError):
                 await Develop.cli("release", ".")
 
     async def test_already_on_pypi(self):

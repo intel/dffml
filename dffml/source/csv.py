@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 """
-Loads repos from a csv file, using columns as features
+Loads records from a csv file, using columns as features
 """
 import csv
 import ast
@@ -11,7 +11,7 @@ from typing import NamedTuple, Dict, List
 from dataclasses import dataclass
 from contextlib import asynccontextmanager
 
-from ..repo import Repo
+from ..record import Record
 from .memory import MemorySource
 from .file import FileSource, FileSourceConfig
 from ..base import config
@@ -55,12 +55,12 @@ class CSVSourceConfig(FileSourceConfig):
 @entrypoint("csv")
 class CSVSource(FileSource, MemorySource):
     """
-    Uses a CSV file as the source of repo feature data
+    Uses a CSV file as the source of record feature data
     """
 
     CONFIG = CSVSourceConfig
 
-    # Headers we've added to track data other than feature data for a repo
+    # Headers we've added to track data other than feature data for a record
     CSV_HEADERS = ["prediction", "confidence"]
 
     OPEN_CSV_FILES: Dict[str, OpenCSVFile] = {}
@@ -93,7 +93,7 @@ class CSVSource(FileSource, MemorySource):
             open_file.write_back_key = False
         if self.config.tagcol in dict_reader.fieldnames:
             open_file.write_back_tag = True
-        # Store all the repos by their tag in write_out
+        # Store all the records by their tag in write_out
         open_file.write_out = {}
         # If there is no key track row index to be used as key by tag
         index = {}
@@ -109,9 +109,9 @@ class CSVSource(FileSource, MemorySource):
                 del row[self.config.key]
             else:
                 index[tag] += 1
-            # Repo data we are going to parse from this row (must include
+            # Record data we are going to parse from this row (must include
             # features).
-            repo_data = {}
+            record_data = {}
             # Parse headers we as the CSV source added
             csv_meta = {}
             row_keys = []
@@ -140,7 +140,7 @@ class CSVSource(FileSource, MemorySource):
                     except (SyntaxError, ValueError):
                         features[_key] = _value
             if features:
-                repo_data["features"] = features
+                record_data["features"] = features
 
             # Getting all prediction target names
             target_keys = filter(
@@ -157,17 +157,17 @@ class CSVSource(FileSource, MemorySource):
                 }
                 for target_name in target_keys
             }
-            repo_data.update({"prediction": predictions})
+            record_data.update({"prediction": predictions})
             # If there was no data in the row, skip it
-            if not repo_data and key == str(index[tag] - 1):
+            if not record_data and key == str(index[tag] - 1):
                 continue
-            # Add the repo to our internal memory representation
+            # Add the record to our internal memory representation
             open_file.write_out.setdefault(tag, {})
-            open_file.write_out[tag][key] = Repo(key, data=repo_data)
+            open_file.write_out[tag][key] = Record(key, data=record_data)
 
     async def load_fd(self, fd):
         """
-        Parses a CSV stream into Repo instances
+        Parses a CSV stream into Record instances
         """
         async with self._open_csv(fd) as open_file:
             self.mem = open_file.write_out.get(self.config.tag, {})
@@ -192,10 +192,10 @@ class CSVSource(FileSource, MemorySource):
             # Get all the feature names
             feature_fieldnames = set()
             prediction_fieldnames = set()
-            for tag, repos in open_file.write_out.items():
-                for repo in repos.values():
-                    feature_fieldnames |= set(repo.data.features.keys())
-                    prediction_fieldnames |= set(repo.data.prediction.keys())
+            for tag, records in open_file.write_out.items():
+                for record in records.values():
+                    feature_fieldnames |= set(record.data.features.keys())
+                    prediction_fieldnames |= set(record.data.prediction.keys())
             fieldnames += list(feature_fieldnames)
             fieldnames += itertools.chain(
                 *list(
@@ -209,21 +209,21 @@ class CSVSource(FileSource, MemorySource):
             # Write out the file
             writer = csv.DictWriter(fd, fieldnames=fieldnames)
             writer.writeheader()
-            for tag, repos in open_file.write_out.items():
-                for repo in repos.values():
-                    repo_data = repo.dict()
+            for tag, records in open_file.write_out.items():
+                for record in records.values():
+                    record_data = record.dict()
                     row = {name: "" for name in fieldnames}
                     # Always write the tag
                     row[self.config.tagcol] = tag
                     # Write the key if it existed
                     if open_file.write_back_key:
-                        row[self.config.key] = repo.key
+                        row[self.config.key] = record.key
                     # Write the features
-                    for key, value in repo_data.get("features", {}).items():
+                    for key, value in record_data.get("features", {}).items():
                         row[key] = value
                     # Write the prediction
-                    if "prediction" in repo_data:
-                        for key, value in repo_data["prediction"].items():
+                    if "prediction" in record_data:
+                        for key, value in record_data["prediction"].items():
                             row["prediction_" + key] = value["value"]
                             row["confidence_" + key] = value["confidence"]
                     writer.writerow(row)

@@ -14,7 +14,6 @@ import tensorflow as tf
 import tensorflow_hub as hub
 from tensorflow.keras import backend as K
 
-from dffml.repo import Repo
 from dffml.feature import Features
 from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources

@@ -2,17 +2,17 @@
 # Copyright (c) 2019 Intel Corporation
 import unittest
 
-from dffml.repo import RepoPrediction, RepoData, Repo
+from dffml.record import RecordPrediction, RecordData, Record
 
 
-class TestRepoPrediction(unittest.TestCase):
+class TestRecordPrediction(unittest.TestCase):
     def setUp(self):
         self.value = "good"
         self.confidence = 0.42
-        self.full = RepoPrediction(
+        self.full = RecordPrediction(
             confidence=self.confidence, value=self.value
         )
-        self.null = RepoPrediction()
+        self.null = RecordPrediction()
 
     def test_full_property_confidence(self):
         self.assertEqual(self.confidence, self.full["confidence"])
@@ -41,21 +41,21 @@ class TestRepoPrediction(unittest.TestCase):
         self.assertFalse(self.null)
 
 
-class TestRepoData(unittest.TestCase):
+class TestRecordData(unittest.TestCase):
     def setUp(self):
-        self.full = RepoData(
+        self.full = RecordData(
             key=None, features=None, prediction=None, last_updated=None
         )
-        self.null = RepoData()
+        self.null = RecordData()
 
     def test_null_dict_no_prediction(self):
         self.assertNotIn("prediction", self.null.dict())
 
 
-class TestRepo(unittest.TestCase):
+class TestRecord(unittest.TestCase):
     def setUp(self):
-        self.null = Repo("null")
-        self.full = Repo(
+        self.null = Record("null")
+        self.full = Record(
             "full",
             data=dict(
                 features=dict(dead="beef"),
@@ -72,10 +72,10 @@ class TestRepo(unittest.TestCase):
         repr(self.full)
 
     def test_str(self):
-        self.full.prediction = RepoPrediction()
+        self.full.prediction = RecordPrediction()
         self.assertIn("Undetermined", str(self.full))
         self.full.data.prediction = {
-            "Prediction": RepoPrediction(value="Good")
+            "Prediction": RecordPrediction(value="Good")
         }
         self.assertIn("Good", str(self.full))
         self.full.extra.update(dict(hi=5))
@@ -84,7 +84,7 @@ class TestRepo(unittest.TestCase):
         self.assertNotIn("5", str(self.full))
 
     def test_merge(self):
-        null = Repo("null")
+        null = Record("null")
         null.merge(self.full)
         self.assertIn("half", null.extra)
         self.assertTrue(null.extra["half"])
