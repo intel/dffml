@@ -378,7 +378,7 @@ class SetupPy(CMD):
     kwarg = SetupPyKWArg
 
 
-class RepoDirtyError(Exception):
+class RecordDirtyError(Exception):
     """
     Raised when a release was attempted but there are uncommited changes
     """
@@ -406,7 +406,7 @@ class Release(CMD):
         if stderr or proc.returncode != 0:
             raise RuntimeError(stderr.decode())
         if stdout:
-            raise RepoDirtyError("Uncommited changes")
+            raise RecordDirtyError("Uncommited changes")
         # cd to directory
         with chdir(str(self.package)):
             # Load version

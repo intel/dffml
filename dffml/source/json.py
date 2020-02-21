@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from contextlib import asynccontextmanager
 from typing import Dict
 
-from ..repo import Repo
+from ..record import Record
 from .memory import MemorySource
 from .file import FileSource, FileSourceConfig
 from ..util.entrypoint import entrypoint
@@ -70,22 +70,22 @@ class JSONSource(FileSource, MemorySource):
 
     async def load_fd(self, fd):
         async with self._open_json(fd):
-            repos = self.OPEN_JSON_FILES[self.config.filename].data
+            records = self.OPEN_JSON_FILES[self.config.filename].data
             self.mem = {
-                key: Repo(key, data=data)
-                for key, data in repos.get(self.config.tag, {}).items()
+                key: Record(key, data=data)
+                for key, data in records.get(self.config.tag, {}).items()
             }
         LOGGER.debug("%r loaded %d records", self, len(self.mem))
 
     async def dump_fd(self, fd):
         async with self.OPEN_JSON_FILES_LOCK:
-            repos = self.OPEN_JSON_FILES[self.config.filename].data
-            repos[self.config.tag] = {
-                repo.key: repo.dict() for repo in self.mem.values()
+            records = self.OPEN_JSON_FILES[self.config.filename].data
+            records[self.config.tag] = {
+                record.key: record.dict() for record in self.mem.values()
             }
             self.logger.debug(f"{self.config.filename} updated")
             if await self.OPEN_JSON_FILES[self.config.filename].dec():
                 del self.OPEN_JSON_FILES[self.config.filename]
-                json.dump(repos, fd)
+                json.dump(records, fd)
                 self.logger.debug(f"{self.config.filename} written")
         LOGGER.debug("%r saved %d records", self, len(self.mem))

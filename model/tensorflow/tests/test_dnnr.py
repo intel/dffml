@@ -4,7 +4,7 @@ import tempfile
 from typing import Type
 
 import numpy as np
-from dffml.repo import Repo, RepoData
+from dffml.record import Record, RecordData
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Data, Feature, Features, DefFeature
@@ -59,8 +59,8 @@ class TestDNN(AsyncTestCase):
         # Generating data f(x1,x2) = 2*x1 + 3*x2
         _n_data = 2000
         _temp_data = np.random.rand(2, _n_data)
-        cls.repos = [
-            Repo(
+        cls.records = [
+            Record(
                 "x" + str(random.random()),
                 data={
                     "features": {
@@ -73,7 +73,7 @@ class TestDNN(AsyncTestCase):
             for i in range(0, _n_data)
         ]
         cls.sources = Sources(
-            MemorySource(MemorySourceConfig(repos=cls.repos))
+            MemorySource(MemorySourceConfig(records=cls.records))
         )
 
     @classmethod
@@ -122,7 +122,7 @@ class TestDNN(AsyncTestCase):
         ]  # inserting zero so that its 1-indexable
         test_target = 2 * test_feature_val[1] + 3 * test_feature_val[2]
         # should be same function used in TestDNN.setupclass
-        a = Repo(
+        a = Record(
             "a",
             data={
                 "features": {
@@ -132,11 +132,11 @@ class TestDNN(AsyncTestCase):
             },
         )
         async with Sources(
-            MemorySource(MemorySourceConfig(repos=[a]))
+            MemorySource(MemorySourceConfig(records=[a]))
         ) as sources, self.model as model:
             target_name = model.config.predict.NAME
             async with sources() as sctx, model() as mctx:
-                res = [repo async for repo in mctx.predict(sctx.repos())]
+                res = [record async for record in mctx.predict(sctx.records())]
                 self.assertEqual(len(res), 1)
             self.assertEqual(res[0].key, a.key)
             test_error_norm = abs(

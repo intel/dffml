@@ -22,18 +22,18 @@ class DFFMLHTTPAPIObjectContext {
 }
 
 class DFFMLHTTPAPISourceContext extends DFFMLHTTPAPIObjectContext {
-  async repos(chunk_size) {
+  async records(chunk_size) {
     // TODO https://www.codementor.io/tiagolopesferreira/asynchronous-iterators-in-javascript-jl1yg8la1
-    var response = await this.api.request("/source/" + this.label + "/repos/" + chunk_size);
+    var response = await this.api.request("/source/" + this.label + "/records/" + chunk_size);
 
     response = await response.json();
 
-    return response.repos;
+    return response.records;
   }
 
-  async update(repo) {
+  async update(record) {
     // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-    var response = await this.api.request("/source/" + this.label + "/update/" + repo.key, {
+    var response = await this.api.request("/source/" + this.label + "/update/" + record.key, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
       mode: 'cors', // no-cors, cors, *same-origin
       cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -43,7 +43,7 @@ class DFFMLHTTPAPISourceContext extends DFFMLHTTPAPIObjectContext {
       },
       redirect: 'follow', // manual, *follow, error
       referrer: 'no-referrer', // no-referrer, *client
-      body: JSON.stringify(repo), // body data type must match "Content-Type" header
+      body: JSON.stringify(record), // body data type must match "Content-Type" header
     });
 
     await response.json();
@@ -72,7 +72,7 @@ class DFFMLHTTPAPIModelContext extends DFFMLHTTPAPIObjectContext {
 
     response = await response.json();
 
-    return response.repos;
+    return response.records;
   }
 
   async accuracy(sources) {
@@ -96,10 +96,10 @@ class DFFMLHTTPAPIModelContext extends DFFMLHTTPAPIObjectContext {
 
     response = await response.json();
 
-    return response.repos;
+    return response.records;
   }
 
-  async predict(repos) {
+  async predict(records) {
     var response = await this.api.request("/model/" + this.label + "/predict/0", {
       method: 'POST',
       mode: 'cors',
@@ -110,12 +110,12 @@ class DFFMLHTTPAPIModelContext extends DFFMLHTTPAPIObjectContext {
       },
       redirect: 'follow',
       referrer: 'no-referrer',
-      body: JSON.stringify(repos),
+      body: JSON.stringify(records),
     });
 
     response = await response.json();
 
-    return response.repos;
+    return response.records;
   }
 }
 
@@ -298,15 +298,15 @@ var runit = async function() {
   var test_sctx = await test_source.context("my_test_dataset_context");
   console.log("Created test_sctx", test_sctx);
 
-  // Create an array of all the repos for fun
-  var repos = await training_sctx.repos(100);
-  console.log("Training repos", repos);
+  // Create an array of all the records for fun
+  var records = await training_sctx.records(100);
+  console.log("Training records", records);
 
-  var repos_array = [];
-  for (var key of Object.keys(repos)) {
-    repos_array.push(repos[key]);
+  var records_array = [];
+  for (var key of Object.keys(records)) {
+    records_array.push(records[key]);
   }
-  console.log("Array of training repos", repos_array);
+  console.log("Array of training records", records_array);
 
   // Create a model
   var model = api.model();

@@ -40,14 +40,14 @@ elif action == 'set':
 elif action == 'predict':
     today = datetime.now().strftime('%Y-%m-%d %H:%M')
     subprocess.check_call([
-        "dffml", "dataflow", "run", "repos", "set",
+        "dffml", "dataflow", "run", "records", "set",
         "-keys", query['URL'],
-        "-repo-def", "URL",
+        "-record-def", "URL",
         "-dataflow", os.path.join(os.path.dirname(__file__), "dataflow.yaml"),
         "-sources", "db=demoapp",
         ])
     result = subprocess.check_output([
-        'dffml', 'predict', 'repo',
+        'dffml', 'predict', 'record',
         '-keys', query['URL'],
         '-model', 'tfdnnc',
         '-model-predict', 'maintained',

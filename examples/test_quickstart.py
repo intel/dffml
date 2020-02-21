@@ -61,11 +61,11 @@ class TestQuickstart(unittest.TestCase):
             self.assertEqual(stdout.decode().strip(), "1.0")
             # Make the prediction
             stdout = subprocess.check_output(["sh", sh_filepath("predict.sh")])
-            repos = json.loads(stdout.decode())
+            records = json.loads(stdout.decode())
             # Check the salary
             self.assertEqual(
-                int(repos[0]["prediction"]["Salary"]["value"]), 70
+                int(records[0]["prediction"]["Salary"]["value"]), 70
             )
             self.assertEqual(
-                int(repos[1]["prediction"]["Salary"]["value"]), 80
+                int(records[1]["prediction"]["Salary"]["value"]), 80
             )

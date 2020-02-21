@@ -6,7 +6,7 @@ from typing import AsyncIterator, NamedTuple, Dict, List
 import aiomysql
 
 from dffml.base import BaseConfig
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml.source.source import BaseSourceContext, BaseSource
 from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entrypoint
@@ -19,75 +19,75 @@ class MySQLSourceConfig(BaseConfig, NamedTuple):
     password: str
     db: str
     update_query: str
-    repos_query: str
-    repo_query: str
+    records_query: str
+    record_query: str
     model_columns: List[str]
     ca: str = None
 
 
 class MySQLSourceContext(BaseSourceContext):
-    async def update(self, repo: Repo):
+    async def update(self, record: Record):
         update_query = self.parent.config.update_query
         model_columns = self.parent.config.model_columns.split()
         key_value_pairs = collections.OrderedDict()
         for key in model_columns:
             if key.startswith("feature_"):
                 modified_key = key.replace("feature_", "")
-                key_value_pairs[modified_key] = repo.data.features[
+                key_value_pairs[modified_key] = record.data.features[
                     modified_key
                 ]
             elif "_value" in key:
                 target = key.replace("_value", "")
-                if repo.data.prediction:
-                    key_value_pairs[key] = repo.data.prediction[target][
+                if record.data.prediction:
+                    key_value_pairs[key] = record.data.prediction[target][
                         "value"
                     ]
                 else:
                     key_value_pairs[key] = "undetermined"
             elif "_confidence" in key:
                 target = key.replace("_confidence", "")
-                if repo.data.prediction:
-                    key_value_pairs[key] = repo.data.prediction[target][
+                if record.data.prediction:
+                    key_value_pairs[key] = record.data.prediction[target][
                         "confidence"
                     ]
                 else:
                     key_value_pairs[key] = 1
             else:
-                key_value_pairs[key] = repo.data.__dict__[key]
+                key_value_pairs[key] = record.data.__dict__[key]
         db = self.conn
         await db.execute(
             update_query,
             (list(key_value_pairs.values()) + list(key_value_pairs.values())),
         )
-        self.logger.debug("update: %s", await self.repo(repo.key))
+        self.logger.debug("update: %s", await self.record(record.key))
 
-    def convert_to_repo(self, result):
-        modified_repo = {"key": "", "data": {"features": {}, "prediction": {}}}
+    def convert_to_record(self, result):
+        modified_record = {"key": "", "data": {"features": {}, "prediction": {}}}
         for key, value in result.items():
             if key.startswith("feature_"):
-                modified_repo["data"]["features"][
+                modified_record["data"]["features"][
                     key.replace("feature_", "")
                 ] = value
             elif ("_value" in key) or ("_confidence" in key):
                 target = key.replace("_value", "").replace("_confidence", "")
-                modified_repo["data"]["prediction"][target] = {
+                modified_record["data"]["prediction"][target] = {
                     "value": result[target + "_value"],
                     "confidence": result[target + "_confidence"],
                 }
             else:
-                modified_repo[key] = value
-        return Repo(modified_repo["key"], data=modified_repo["data"])
+                modified_record[key] = value
+        return Record(modified_record["key"], data=modified_record["data"])
 
-    async def repos(self) -> AsyncIterator[Repo]:
-        query = self.parent.config.repos_query
+    async def records(self) -> AsyncIterator[Record]:
+        query = self.parent.config.records_query
         await self.conn.execute(query)
         result = await self.conn.fetchall()
-        for repo in result:
-            yield self.convert_to_repo(repo)
+        for record in result:
+            yield self.convert_to_record(record)
 
-    async def repo(self, key: str):
-        query = self.parent.config.repo_query
-        repo = Repo(key)
+    async def record(self, key: str):
+        query = self.parent.config.record_query
+        record = Record(key)
         db = self.conn
         await db.execute(query, (key,))
         row = await db.fetchone()
@@ -104,13 +104,13 @@ class MySQLSourceContext(BaseSourceContext):
                         "value": row[target + "_value"],
                         "confidence": row[target + "_confidence"],
                     }
-            repo.merge(
-                Repo(
+            record.merge(
+                Record(
                     row["key"],
                     data={"features": features, "prediction": predictions},
                 )
             )
-        return repo
+        return record
 
     async def __aenter__(self) -> "MySQLSourceContext":
         self.__conn = self.parent.db.cursor(aiomysql.DictCursor)
@@ -165,19 +165,19 @@ class MySQLSource(BaseSource):
         cls.config_set(
             args,
             above,
-            "repos-query",
+            "records-query",
             Arg(
                 type=str,
-                help="SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM repo_data",
+                help="SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM record_data",
             ),
         )
         cls.config_set(
             args,
             above,
-            "repo-query",
+            "record-query",
             Arg(
                 type=str,
-                help="SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM repo_data WHERE `key`=%s",
+                help="SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM record_data WHERE `key`=%s",
             ),
         )
         cls.config_set(
@@ -186,7 +186,7 @@ class MySQLSource(BaseSource):
             "update-query",
             Arg(
                 type=str,
-                help="INSERT INTO repo_data (`key`, data_1, data_2) VALUES(%s, %s, %s) ON DUPLICATE KEY UPDATE data_1 = %s, data_2=%s",
+                help="INSERT INTO record_data (`key`, data_1, data_2) VALUES(%s, %s, %s) ON DUPLICATE KEY UPDATE data_1 = %s, data_2=%s",
             ),
         )
         cls.config_set(
@@ -211,8 +211,8 @@ class MySQLSource(BaseSource):
             user=cls.config_get(config, above, "user"),
             password=cls.config_get(config, above, "password"),
             db=cls.config_get(config, above, "db"),
-            repos_query=cls.config_get(config, above, "repos-query"),
-            repo_query=cls.config_get(config, above, "repo-query"),
+            records_query=cls.config_get(config, above, "records-query"),
+            record_query=cls.config_get(config, above, "record-query"),
             update_query=cls.config_get(config, above, "update-query"),
             model_columns=cls.config_get(config, above, "model-columns"),
             ca=cls.config_get(config, above, "ca"),

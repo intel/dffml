@@ -15,7 +15,7 @@ from functools import singledispatch, partial
 from typing import Optional, List, Dict, Type, AsyncIterator, Any, Callable
 
 from .log import LOGGER
-from ..repo import Repo
+from ..record import Record
 from ..util.monitor import Monitor, Task
 from ..util.entrypoint import Entrypoint
 from ..util.asynchelper import AsyncContextManagerList
@@ -69,7 +69,7 @@ class LoggingDict(object):
 
 class Data(Task):
     """
-    Passed to each feature during evaluation. Shared between all features a repo
+    Passed to each feature during evaluation. Shared between all features a record
     is being evaluated with
     """
 

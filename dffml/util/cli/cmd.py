@@ -9,7 +9,7 @@ import asyncio
 import argparse
 from typing import Dict, Any
 
-from ...repo import Repo
+from ...record import Record
 from ...feature import Feature
 
 from .arg import Arg, parse_unknown
@@ -32,7 +32,7 @@ class JSONEncoder(json.JSONEncoder):
 
     def default(self, obj):
         typename_lower = str(type(obj)).lower()
-        if isinstance(obj, Repo):
+        if isinstance(obj, Record):
             return obj.dict()
         elif isinstance(obj, Feature):
             return obj.NAME

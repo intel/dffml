@@ -13,7 +13,7 @@ import contextlib
 import unittest.mock
 from typing import Dict, Any
 
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml.base import config
 from dffml.df.types import Definition, Operation, DataFlow, Input
 from dffml.df.base import op

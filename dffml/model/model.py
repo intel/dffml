@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 """
-Model subclasses are responsible for training themselves on repos, making
-predictions about the value of a feature in the repo, and assessing thei
+Model subclasses are responsible for training themselves on records, making
+predictions about the value of a feature in the record, and assessing thei
 prediction accuracy.
 """
 import os
@@ -14,7 +14,7 @@ from ..base import (
     BaseDataFlowFacilitatorObjectContext,
     BaseDataFlowFacilitatorObject,
 )
-from ..repo import Repo
+from ..record import Record
 from ..source.source import Sources
 from ..feature import Features
 from .accuracy import Accuracy
@@ -43,25 +43,25 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
     @abc.abstractmethod
     async def train(self, sources: Sources):
         """
-        Train using repos as the data to learn from.
+        Train using records as the data to learn from.
         """
         raise NotImplementedError()
 
     @abc.abstractmethod
     async def accuracy(self, sources: Sources) -> Accuracy:
         """
-        Evaluates the accuracy of our model after training using the input repos
+        Evaluates the accuracy of our model after training using the input records
         as test data.
         """
         raise NotImplementedError()
 
     @abc.abstractmethod
-    async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
+    async def predict(self, records: AsyncIterator[Record]) -> AsyncIterator[Record]:
         """
-        Uses trained data to make a prediction about the quality of a repo.
+        Uses trained data to make a prediction about the quality of a record.
         """
         raise NotImplementedError()
-        yield (Repo(""), "", 0.0)  # skipcq: PYL-W0101
+        yield (Record(""), "", 0.0)  # skipcq: PYL-W0101
 
 
 @base_entry_point("dffml.model", "model")
