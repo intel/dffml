@@ -178,7 +178,7 @@ permutations of inputs exist for every operation.
 Lock Network
 ~~~~~~~~~~~~
 
-Manges locking of input data so that operations can run concurrently without
+Manages locking of input data so that operations can run concurrently without
 managing their own resource locking.
 
 Orchestrator
