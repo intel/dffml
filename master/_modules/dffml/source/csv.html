@@ -173,7 +173,7 @@
 <span></span><span class="c1"># SPDX-License-Identifier: MIT</span>
 <span class="c1"># Copyright (c) 2019 Intel Corporation</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Loads repos from a csv file, using columns as features</span>
+<span class="sd">Loads records from a csv file, using columns as features</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">csv</span>
 <span class="kn">import</span> <span class="nn">ast</span>
@@ -183,7 +183,7 @@
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">asynccontextmanager</span>
 
-<span class="kn">from</span> <span class="nn">..repo</span> <span class="kn">import</span> <span class="n">Repo</span>
+<span class="kn">from</span> <span class="nn">..record</span> <span class="kn">import</span> <span class="n">Record</span>
 <span class="kn">from</span> <span class="nn">.memory</span> <span class="kn">import</span> <span class="n">MemorySource</span>
 <span class="kn">from</span> <span class="nn">.file</span> <span class="kn">import</span> <span class="n">FileSource</span><span class="p">,</span> <span class="n">FileSourceConfig</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">config</span>
@@ -226,12 +226,12 @@
 <div class="viewcode-block" id="CSVSource"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.csv.CSVSource">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">CSVSource</span><span class="p">(</span><span class="n">FileSource</span><span class="p">,</span> <span class="n">MemorySource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Uses a CSV file as the source of repo feature data</span>
+<span class="sd">    Uses a CSV file as the source of record feature data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">CSVSourceConfig</span>
 
-    <span class="c1"># Headers we&#39;ve added to track data other than feature data for a repo</span>
+    <span class="c1"># Headers we&#39;ve added to track data other than feature data for a record</span>
     <span class="n">CSV_HEADERS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;prediction&quot;</span><span class="p">,</span> <span class="s2">&quot;confidence&quot;</span><span class="p">]</span>
 
     <span class="n">OPEN_CSV_FILES</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">OpenCSVFile</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -264,7 +264,7 @@
             <span class="n">open_file</span><span class="o">.</span><span class="n">write_back_key</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tagcol</span> <span class="ow">in</span> <span class="n">dict_reader</span><span class="o">.</span><span class="n">fieldnames</span><span class="p">:</span>
             <span class="n">open_file</span><span class="o">.</span><span class="n">write_back_tag</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="c1"># Store all the repos by their tag in write_out</span>
+        <span class="c1"># Store all the records by their tag in write_out</span>
         <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="c1"># If there is no key track row index to be used as key by tag</span>
         <span class="n">index</span> <span class="o">=</span> <span class="p">{}</span>
@@ -280,9 +280,9 @@
                 <span class="k">del</span> <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">key</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">index</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="c1"># Repo data we are going to parse from this row (must include</span>
+            <span class="c1"># Record data we are going to parse from this row (must include</span>
             <span class="c1"># features).</span>
-            <span class="n">repo_data</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">record_data</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="c1"># Parse headers we as the CSV source added</span>
             <span class="n">csv_meta</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="n">row_keys</span> <span class="o">=</span> <span class="p">[]</span>
@@ -311,7 +311,7 @@
                     <span class="k">except</span> <span class="p">(</span><span class="ne">SyntaxError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
                         <span class="n">features</span><span class="p">[</span><span class="n">_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_value</span>
             <span class="k">if</span> <span class="n">features</span><span class="p">:</span>
-                <span class="n">repo_data</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span>
+                <span class="n">record_data</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">features</span>
 
             <span class="c1"># Getting all prediction target names</span>
             <span class="n">target_keys</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
@@ -328,17 +328,17 @@
                 <span class="p">}</span>
                 <span class="k">for</span> <span class="n">target_name</span> <span class="ow">in</span> <span class="n">target_keys</span>
             <span class="p">}</span>
-            <span class="n">repo_data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">predictions</span><span class="p">})</span>
+            <span class="n">record_data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">predictions</span><span class="p">})</span>
             <span class="c1"># If there was no data in the row, skip it</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">repo_data</span> <span class="ow">and</span> <span class="n">key</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">record_data</span> <span class="ow">and</span> <span class="n">key</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
                 <span class="k">continue</span>
-            <span class="c1"># Add the repo to our internal memory representation</span>
+            <span class="c1"># Add the record to our internal memory representation</span>
             <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="p">{})</span>
-            <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="p">[</span><span class="n">tag</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">Repo</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">repo_data</span><span class="p">)</span>
+            <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="p">[</span><span class="n">tag</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">Record</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">record_data</span><span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">load_fd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fd</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parses a CSV stream into Repo instances</span>
+<span class="sd">        Parses a CSV stream into Record instances</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_csv</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span> <span class="k">as</span> <span class="n">open_file</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mem</span> <span class="o">=</span> <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tag</span><span class="p">,</span> <span class="p">{})</span>
@@ -363,10 +363,10 @@
             <span class="c1"># Get all the feature names</span>
             <span class="n">feature_fieldnames</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
             <span class="n">prediction_fieldnames</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">repos</span> <span class="ow">in</span> <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">repos</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                    <span class="n">feature_fieldnames</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-                    <span class="n">prediction_fieldnames</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">prediction</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">records</span> <span class="ow">in</span> <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">feature_fieldnames</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                    <span class="n">prediction_fieldnames</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">prediction</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
             <span class="n">fieldnames</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">feature_fieldnames</span><span class="p">)</span>
             <span class="n">fieldnames</span> <span class="o">+=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span>
                 <span class="o">*</span><span class="nb">list</span><span class="p">(</span>
@@ -380,21 +380,21 @@
             <span class="c1"># Write out the file</span>
             <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictWriter</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">fieldnames</span><span class="o">=</span><span class="n">fieldnames</span><span class="p">)</span>
             <span class="n">writer</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">repos</span> <span class="ow">in</span> <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">repos</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                    <span class="n">repo_data</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">records</span> <span class="ow">in</span> <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">record_data</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
                     <span class="n">row</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="s2">&quot;&quot;</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">fieldnames</span><span class="p">}</span>
                     <span class="c1"># Always write the tag</span>
                     <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tagcol</span><span class="p">]</span> <span class="o">=</span> <span class="n">tag</span>
                     <span class="c1"># Write the key if it existed</span>
                     <span class="k">if</span> <span class="n">open_file</span><span class="o">.</span><span class="n">write_back_key</span><span class="p">:</span>
-                        <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">key</span>
+                        <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">key</span>
                     <span class="c1"># Write the features</span>
-                    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;features&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">record_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;features&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                         <span class="n">row</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
                     <span class="c1"># Write the prediction</span>
-                    <span class="k">if</span> <span class="s2">&quot;prediction&quot;</span> <span class="ow">in</span> <span class="n">repo_data</span><span class="p">:</span>
-                        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">repo_data</span><span class="p">[</span><span class="s2">&quot;prediction&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="s2">&quot;prediction&quot;</span> <span class="ow">in</span> <span class="n">record_data</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">record_data</span><span class="p">[</span><span class="s2">&quot;prediction&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                             <span class="n">row</span><span class="p">[</span><span class="s2">&quot;prediction_&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
                             <span class="n">row</span><span class="p">[</span><span class="s2">&quot;confidence_&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;confidence&quot;</span><span class="p">]</span>
                     <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>

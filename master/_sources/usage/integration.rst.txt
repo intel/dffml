@@ -174,8 +174,8 @@ range.
 
 .. literalinclude:: /../feature/git/dffml_feature_git/feature/operations.py
     :linenos:
-    :lineno-start: 349
-    :lines: 349-368
+    :lineno-start: 363
+    :lines: 363-394
 
 Since operations are run concurrently with each other, DFFML manages locking of
 input data, such as git repositories. This is done via ``Definitions`` which are
@@ -264,9 +264,9 @@ This command runs the dataflow on a set of repos, that set being the URLs in
 
 .. code-block:: console
 
-    $ dffml dataflow run repos set \
+    $ dffml dataflow run records set \
         -keys $(cat /tmp/urls) \
-        -repo-def URL \
+        -record-def URL \
         -dataflow cgi-bin/dataflow.yaml \
         -sources gathered=json \
         -source-filename /tmp/data.json \
@@ -382,7 +382,7 @@ up as expected.
 
 .. code-block:: console
 
-    $ dffml list repos -sources db=demoapp
+    $ dffml list records -sources db=demoapp
 
 Training our Model
 ------------------
@@ -440,9 +440,9 @@ Run the operations on the new repo: ``https://github.com/intel/dffml.git``
 
 .. code-block:: console
 
-    $ dffml dataflow run repos set \
+    $ dffml dataflow run records set \
         -keys https://github.com/intel/dffml.git \
-        -repo-def URL \
+        -record-def URL \
         -dataflow cgi-bin/dataflow.yaml \
         -sources db=demoapp
 
@@ -450,7 +450,7 @@ Now that we have the data for the new repo, ask the model for a prediction.
 
 .. code-block:: console
 
-    $ dffml predict repo \
+    $ dffml predict record \
         -keys https://github.com/intel/dffml.git \
         -model tfdnnc \
         -model-predict maintained:str:1 \

@@ -52,9 +52,9 @@ scraping tasks.
 
 .. code-block:: console
 
-    $ dffml dataflow run repos set \
+    $ dffml dataflow run records set \
         -keys https://github.com/intel/dffml \
-        -repo-def URL \
+        -record-def URL \
         -dataflow df.yaml \
         -sources gathered=json \
         -source-filename /tmp/data.json \

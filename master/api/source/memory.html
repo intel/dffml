@@ -106,7 +106,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../repo.html">Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Sources</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="base.html">Base Source</a></li>
@@ -195,12 +195,12 @@
             
   <div class="section" id="memory-source">
 <h1>Memory Source<a class="headerlink" href="#memory-source" title="Permalink to this headline">¶</a></h1>
-<p>Source to store repos in a dictionary.</p>
+<p>Source to store records in a dictionary.</p>
 <span class="target" id="module-dffml.source.memory"></span><p>Fake data sources used for testing</p>
 <dl class="class">
 <dt id="dffml.source.memory.MemorySource">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.source.memory.</code><code class="sig-name descname">MemorySource</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.source.memory.MemorySourceConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.memory.MemorySource" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stores repos in a dict in memory</p>
+<dd><p>Stores records in a dict in memory</p>
 <dl class="attribute">
 <dt id="dffml.source.memory.MemorySource.CONFIG">
 <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.source.memory.MemorySource.CONFIG" title="Permalink to this definition">¶</a></dt>
@@ -217,16 +217,16 @@
 
 <dl class="class">
 <dt id="dffml.source.memory.MemorySourceConfig">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.memory.</code><code class="sig-name descname">MemorySourceConfig</code><span class="sig-paren">(</span><em class="sig-param">repos: List[dffml.repo.Repo]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.memory.MemorySourceConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.memory.</code><code class="sig-name descname">MemorySourceConfig</code><span class="sig-paren">(</span><em class="sig-param">records: List[dffml.record.Record]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.memory.MemorySourceConfig" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
 <dt id="dffml.source.memory.MemorySourceContext">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.source.memory.</code><code class="sig-name descname">MemorySourceContext</code><span class="sig-paren">(</span><em class="sig-param">parent: dffml.source.source.BaseSource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySourceContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.memory.MemorySourceContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
-<dt id="dffml.source.memory.MemorySourceContext.repos">
-<code class="sig-name descname">repos</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySourceContext.repos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.memory.MemorySourceContext.repos" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a list of repos retrieved from self.src</p>
+<dt id="dffml.source.memory.MemorySourceContext.records">
+<code class="sig-name descname">records</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.record.Record]<a class="reference internal" href="../../_modules/dffml/source/memory.html#MemorySourceContext.records"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.memory.MemorySourceContext.records" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of records retrieved from self.src</p>
 </dd></dl>
 
 </dd></dl>

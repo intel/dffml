@@ -119,9 +119,9 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#id6">Source</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#repo">Repo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#record">Record</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#update">Update</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#repos">Repos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#records">Records</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#id8">Model</a><ul>
@@ -239,9 +239,9 @@
 </li>
 <li><p><a class="reference internal" href="#id6" id="id21">Source</a></p>
 <ul>
-<li><p><a class="reference internal" href="#repo" id="id22">Repo</a></p></li>
+<li><p><a class="reference internal" href="#record" id="id22">Record</a></p></li>
 <li><p><a class="reference internal" href="#update" id="id23">Update</a></p></li>
-<li><p><a class="reference internal" href="#repos" id="id24">Repos</a></p></li>
+<li><p><a class="reference internal" href="#records" id="id24">Records</a></p></li>
 </ul>
 </li>
 <li><p><a class="reference internal" href="#id8" id="id25">Model</a></p>
@@ -543,33 +543,33 @@ return a 404, Not Found response.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Source not loaded&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
-<div class="section" id="repo">
-<span id="id7"></span><h3><a class="toc-backref" href="#id22">Repo</a><a class="headerlink" href="#repo" title="Permalink to this headline">¶</a></h3>
-<p>Access a repo by it’s unique key. The response will be the JSON representation
-of the repo. Here’s an example response for a <code class="docutils literal notranslate"><span class="pre">GET</span></code> request.</p>
+<div class="section" id="record">
+<span id="id7"></span><h3><a class="toc-backref" href="#id22">Record</a><a class="headerlink" href="#record" title="Permalink to this headline">¶</a></h3>
+<p>Access a record by it’s unique key. The response will be the JSON representation
+of the record. Here’s an example response for a <code class="docutils literal notranslate"><span class="pre">GET</span></code> request.</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/repo/{key}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/record/{key}</span></code></p></li>
 </ul>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;myrepo&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;myrecord&quot;</span><span class="p">,</span>
   <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;myfeature&quot;</span><span class="p">:</span> <span class="s2">&quot;somevalue&quot;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Just as with DFFML, you’ll still get a repo even if the repo doesn’t exist
+<p>Just as with DFFML, you’ll still get a record even if the record doesn’t exist
 within the source. However, it will only contain the <code class="docutils literal notranslate"><span class="pre">key</span></code>.</p>
 </div>
 <div class="section" id="update">
 <h3><a class="toc-backref" href="#id23">Update</a><a class="headerlink" href="#update" title="Permalink to this headline">¶</a></h3>
-<p>Update a repo by it’s unique key. <code class="docutils literal notranslate"><span class="pre">POST</span></code> data in the same format received from
-repo.</p>
+<p>Update a record by it’s unique key. <code class="docutils literal notranslate"><span class="pre">POST</span></code> data in the same format received from
+record.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/update/{key}</span></code></p></li>
 </ul>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;myrepo&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;myrecord&quot;</span><span class="p">,</span>
   <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;myfeature&quot;</span><span class="p">:</span> <span class="s2">&quot;somevalue&quot;</span>
   <span class="p">}</span>
@@ -582,29 +582,29 @@ response.</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="repos">
-<h3><a class="toc-backref" href="#id24">Repos</a><a class="headerlink" href="#repos" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="records">
+<h3><a class="toc-backref" href="#id24">Records</a><a class="headerlink" href="#records" title="Permalink to this headline">¶</a></h3>
 <p>Initially, client makes a <code class="docutils literal notranslate"><span class="pre">GET</span></code> request to the API with the <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> for
-the first iteration. <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> is the number of repos to return in one
+the first iteration. <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> is the number of records to return in one
 iteration. The response object will have two properties, <code class="docutils literal notranslate"><span class="pre">iterkey</span></code> and
-<code class="docutils literal notranslate"><span class="pre">repos</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">repos</span></code> is a key value mapping of repo <code class="docutils literal notranslate"><span class="pre">key</span></code>’s to their JSON serialized
-repo object.</p>
-<p><code class="docutils literal notranslate"><span class="pre">iterkey</span></code> will be <code class="docutils literal notranslate"><span class="pre">null</span></code> if there are no more repos in the source. If
-<code class="docutils literal notranslate"><span class="pre">iterkey</span></code> is not <code class="docutils literal notranslate"><span class="pre">null</span></code> then there are more repos to iterate over. The API
+<code class="docutils literal notranslate"><span class="pre">records</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">records</span></code> is a key value mapping of record <code class="docutils literal notranslate"><span class="pre">key</span></code>’s to their JSON serialized
+record object.</p>
+<p><code class="docutils literal notranslate"><span class="pre">iterkey</span></code> will be <code class="docutils literal notranslate"><span class="pre">null</span></code> if there are no more records in the source. If
+<code class="docutils literal notranslate"><span class="pre">iterkey</span></code> is not <code class="docutils literal notranslate"><span class="pre">null</span></code> then there are more records to iterate over. The API
 should be called using the response’s <code class="docutils literal notranslate"><span class="pre">iterkey</span></code> value until the response
 contains an <code class="docutils literal notranslate"><span class="pre">iterkey</span></code> value of <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p>
-<p>Sample response where <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> is <code class="docutils literal notranslate"><span class="pre">1</span></code> and there are more repos to
+<p>Sample response where <code class="docutils literal notranslate"><span class="pre">chunk_size</span></code> is <code class="docutils literal notranslate"><span class="pre">1</span></code> and there are more records to
 iterate over. We continue making <code class="docutils literal notranslate"><span class="pre">GET</span></code> requests until <code class="docutils literal notranslate"><span class="pre">iterkey</span></code> is <code class="docutils literal notranslate"><span class="pre">null</span></code>.</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/repos/{chunk_size}</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/repos/{iterkey}/{chunk_size}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/records/{chunk_size}</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/source/{ctx_label}/records/{iterkey}/{chunk_size}</span></code></p></li>
 </ul>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;iterkey&quot;</span><span class="p">:</span> <span class="s2">&quot;1a164836c6d8a27fdf9cd12688440aaa16a852fd1814b170c924a89fba4e084c8ea7522c34f9f5a539803d6237238e90&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;repos&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;myrepo&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;myrepo&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;records&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;myrecord&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;myrecord&quot;</span><span class="p">,</span>
       <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="nt">&quot;myfeature&quot;</span><span class="p">:</span> <span class="s2">&quot;somevalue&quot;</span>
       <span class="p">}</span>
@@ -616,9 +616,9 @@ iterate over. We continue making <code class="docutils literal notranslate"><spa
 <p>Sample response where the end of iteration has been reached.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;iterkey&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nt">&quot;repos&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;anotherrepo&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;anotherrepo&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;records&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;anotherrecord&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;anotherrecord&quot;</span><span class="p">,</span>
       <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
         <span class="nt">&quot;myfeature&quot;</span><span class="p">:</span> <span class="s2">&quot;othervalue&quot;</span>
       <span class="p">}</span>
@@ -687,8 +687,8 @@ response.</p>
 <div class="section" id="predict">
 <h3><a class="toc-backref" href="#id28">Predict</a><a class="headerlink" href="#predict" title="Permalink to this headline">¶</a></h3>
 <p>To use a model for prediction, send a <code class="docutils literal notranslate"><span class="pre">POST</span></code> request to the following URL with
-the body being a JSON object mapping <code class="docutils literal notranslate"><span class="pre">key</span></code> of the repo to the JSON
-representation of <a class="reference internal" href="../../../api/repo.html#dffml.repo.Repo" title="dffml.repo.Repo"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.repo.Repo</span></code></a> as received by the source repo
+the body being a JSON object mapping <code class="docutils literal notranslate"><span class="pre">key</span></code> of the record to the JSON
+representation of <a class="reference internal" href="../../../api/record.html#dffml.record.Record" title="dffml.record.Record"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.record.Record</span></code></a> as received by the source record
 endpoint.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">/model/{ctx_label}/predict/0</span></code></p></li>
@@ -705,7 +705,7 @@ endpoint.</p>
 <p>Sample response.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;iterkey&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nt">&quot;repos&quot;</span><span class="p">:</span> <span class="p">{</span>
+  <span class="nt">&quot;records&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;42&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;42&quot;</span><span class="p">,</span>
       <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
