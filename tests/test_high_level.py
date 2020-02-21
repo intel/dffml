@@ -1,21 +1,11 @@
 """
 This file contains integration tests for the high level (very abstract) APIs.
 """
-import re
-import os
-import io
-import json
-import inspect
-import pathlib
-import asyncio
 import importlib
-import contextlib
-import unittest.mock
-from typing import Dict, Any
 
 from dffml.repo import Repo
 from dffml import train, accuracy, predict
-from dffml.source.csv import CSVSource, CSVSourceConfig
+from dffml.source.csv import CSVSource
 from dffml.feature.feature import Features, DefFeature
 from dffml.util.asynctestcase import IntegrationCLITestCase
 

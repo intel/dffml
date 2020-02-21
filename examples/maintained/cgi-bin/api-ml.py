@@ -1,6 +1,5 @@
 #!/usr/bin/env python2
 import os
-import cgi
 import sys
 import json
 import urlparse

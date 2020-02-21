@@ -4,10 +4,9 @@ repo.
 """
 import os
 import abc
-import pydoc
 import hashlib
 import inspect
-from typing import List, Dict, Any, AsyncIterator, Tuple, Optional, Type
+from typing import List, Dict, Any, AsyncIterator, Type
 
 import numpy as np
 
@@ -15,16 +14,12 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
 
 from dffml.repo import Repo
-from dffml.base import BaseConfig
-from dffml.util.cli.arg import Arg
 from dffml.model.accuracy import Accuracy
 from dffml.base import config, field
 from dffml.source.source import Sources
-from dffml.feature import Feature, Features
 from dffml.util.entrypoint import entrypoint
-from dffml.util.cli.parser import list_action
 from dffml.feature.feature import Feature, Features
-from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
+from dffml.model.model import ModelContext, Model, ModelNotTrained
 
 
 class TensorflowModelContext(ModelContext):
