@@ -152,10 +152,7 @@ class NotificationSetContext(object):
         self.parent = parent
         self.logger = LOGGER.getChild(self.__class__.__qualname__)
 
-    async def add(self, notification_item: Any, set_items: List[Any]):
-        """
-        Add set_items to set and notification_item to the notification queue
-        """
+    async def add(self, notification_item: Any):
         async with self.parent.lock:
             self.parent.notification_items.append(notification_item)
             self.parent.event_added.set()
@@ -246,12 +243,10 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         if not handle_string in self.input_notification_set:
             self.input_notification_set[handle_string] = NotificationSet()
             async with self.ctx_notification_set() as ctx:
-                await ctx.add(input_set.ctx, [])
+                await ctx.add(input_set.ctx)
         # Add the input set to the incoming inputs
         async with self.input_notification_set[handle_string]() as ctx:
-            await ctx.add(
-                input_set, [item async for item in input_set.inputs()]
-            )
+            await ctx.add(input_set)
         # Associate inputs with their context handle grouped by definition
         async with self.ctxhd_lock:
             # Create dict for handle_string if not present
