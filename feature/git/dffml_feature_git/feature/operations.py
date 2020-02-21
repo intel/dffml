@@ -83,27 +83,27 @@ async def check_if_valid_git_repository_URL(URL: str):
 
 @op(
     inputs={"URL": URL},
-    outputs={"record": git_repository},
+    outputs={"repo": git_repository},
     conditions=[valid_git_repository_URL],
 )
 async def clone_git_repo(URL: str):
     directory = tempfile.mkdtemp(prefix="dffml-feature-git-")
     exit_code = await exec_with_logging("git", "clone", URL, directory)
     if exit_code != 0:
-        shutil.rmtree(record["directory"])
-        raise RuntimeError("Failed to clone git record %r" % (URL,))
+        shutil.rmtree(repo["directory"])
+        raise RuntimeError("Failed to clone git repo %r" % (URL,))
 
-    return {"record": {"URL": URL, "directory": directory}}
+    return {"repo": {"URL": URL, "directory": directory}}
 
 
 @op(
-    inputs={"record": git_repository},
+    inputs={"repo": git_repository},
     outputs={"branch": git_branch},
     conditions=[no_git_branch_given],
 )
-async def git_repo_default_branch(record: Dict[str, str]):
+async def git_repo_default_branch(repo: Dict[str, str]):
     branches = (
-        await check_output("git", "branch", "-r", cwd=record.directory)
+        await check_output("git", "branch", "-r", cwd=repo.directory)
     ).split("\n")
     main = [branch for branch in branches if "->" in branch][0].split()[-1]
     main = main.split("/")[-1]
@@ -111,24 +111,24 @@ async def git_repo_default_branch(record: Dict[str, str]):
 
 
 @op(
-    inputs={"record": git_repository, "commit": git_commit},
-    outputs={"record": git_repository_checked_out},
+    inputs={"repo": git_repository, "commit": git_commit},
+    outputs={"repo": git_repository_checked_out},
 )
-async def git_repo_checkout(record: Dict[str, str], commit: str):
-    await check_output("git", "checkout", commit, cwd=record.directory)
+async def git_repo_checkout(repo: Dict[str, str], commit: str):
+    await check_output("git", "checkout", commit, cwd=repo.directory)
     return {
-        "record": GitRepoCheckedOutSpec(
-            URL=record.URL, directory=record.directory, commit=commit
+        "repo": GitRepoCheckedOutSpec(
+            URL=repo.URL, directory=repo.directory, commit=commit
         )
     }
 
 
 @op(
-    inputs={"record": git_repository, "branch": git_branch, "date": date},
+    inputs={"repo": git_repository, "branch": git_branch, "date": date},
     outputs={"commit": git_commit},
 )
 async def git_repo_commit_from_date(
-    record: Dict[str, str], branch: str, date: str
+    repo: Dict[str, str], branch: str, date: str
 ):
     sha = (
         await check_output(
@@ -138,7 +138,7 @@ async def git_repo_commit_from_date(
             "1",
             '--before="%s"' % (date,),
             branch,
-            cwd=record.directory,
+            cwd=repo.directory,
         )
     ).strip()
     if not sha:
@@ -150,7 +150,7 @@ async def git_repo_commit_from_date(
                     "--reverse",
                     '--after="%s"' % (date,),
                     branch,
-                    cwd=record.directory,
+                    cwd=repo.directory,
                 )
             )
             .strip()
@@ -161,14 +161,14 @@ async def git_repo_commit_from_date(
 
 @op(
     inputs={
-        "record": git_repository,
+        "repo": git_repository,
         "branch": git_branch,
         "start_end": date_pair,
     },
     outputs={"author_lines": author_line_count},
 )
 async def git_repo_author_lines_for_dates(
-    record: Dict[str, str], branch: str, start_end: List[str]
+    repo: Dict[str, str], branch: str, start_end: List[str]
 ):
     start, end = start_end
     author = ""
@@ -183,7 +183,7 @@ async def git_repo_author_lines_for_dates(
         "--after",
         "%s" % (end),
         branch,
-        cwd=record.directory,
+        cwd=repo.directory,
     )
     while not proc.stdout.at_eof():
         line = await proc.stdout.readline()
@@ -245,14 +245,14 @@ def git_repo_release_valid_version(tag):
 
 @op(
     inputs={
-        "record": git_repository,
+        "repo": git_repository,
         "branch": git_branch,
         "start_end": date_pair,
     },
     outputs={"present": release_within_period},
 )
 async def git_repo_release(
-    record: Dict[str, str], branch: str, start_end: List[str]
+    repo: Dict[str, str], branch: str, start_end: List[str]
 ):
     """
     Was there a release within this date range
@@ -271,7 +271,7 @@ async def git_repo_release(
         "--after",
         "%s" % (end),
         branch,
-        cwd=record.directory,
+        cwd=repo.directory,
     )
     while not proc.stdout.at_eof() and not present:
         line = await proc.stdout.readline()
@@ -284,10 +284,10 @@ async def git_repo_release(
 
 
 @op(
-    inputs={"record": git_repository_checked_out},
+    inputs={"repo": git_repository_checked_out},
     outputs={"lines_by_language": lines_by_language_count},
 )
-async def lines_of_code_by_language(record: Dict[str, str]):
+async def lines_of_code_by_language(repo: Dict[str, str]):
     """
     This operation relys on ``tokei``. Here's how to install version 10.1.1,
     check it's releases page to make sure you're installing the latest version.
@@ -312,7 +312,7 @@ async def lines_of_code_by_language(record: Dict[str, str]):
 
     """
     # cloc creates temporary files >:(
-    proc = await create("tokei", record.directory, cwd=record.directory)
+    proc = await create("tokei", repo.directory, cwd=repo.directory)
     cols = []
     lines_by_language = {}
     while not proc.stdout.at_eof():
@@ -362,15 +362,13 @@ async def lines_of_code_to_comments(langs: Dict[str, Dict[str, int]]):
 
 @op(
     inputs={
-        "record": git_repository,
+        "repo": git_repository,
         "branch": git_branch,
         "start_end": date_pair,
     },
     outputs={"commits": commit_count},
 )
-async def git_commits(
-    record: Dict[str, str], branch: str, start_end: List[str]
-):
+async def git_commits(repo: Dict[str, str], branch: str, start_end: List[str]):
     start, end = start_end
     commit_count = 0
     proc = await create(
@@ -382,7 +380,7 @@ async def git_commits(
         "--after",
         end,
         branch,
-        cwd=record.directory,
+        cwd=repo.directory,
     )
     while not proc.stdout.at_eof():
         line = await proc.stdout.readline()
@@ -400,7 +398,7 @@ async def count_authors(author_lines: dict):
     return {"authors": len(author_lines.keys())}
 
 
-@op(inputs={"record": git_repository}, outputs={}, stage=Stage.CLEANUP)
-async def cleanup_git_repo(record: Dict[str, str]):
-    shutil.rmtree(record.directory)
+@op(inputs={"repo": git_repository}, outputs={}, stage=Stage.CLEANUP)
+async def cleanup_git_repo(repo: Dict[str, str]):
+    shutil.rmtree(repo.directory)
     return {}

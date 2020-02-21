@@ -29,7 +29,7 @@ definitions:
 flow:
   lines_of_code_by_language:
     inputs:
-      record:
+      repo:
       - transform_to_repo: mapping
   lines_of_code_to_comments:
     inputs:
@@ -45,7 +45,7 @@ linked: true
 operations:
   lines_of_code_by_language:
     inputs:
-      record: git_repository_checked_out
+      repo: git_repository_checked_out
     name: lines_of_code_by_language
     outputs:
       lines_by_language: lines_by_language_count
