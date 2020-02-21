@@ -1,5 +1,4 @@
 import unittest
-from typing import Any
 
 import tensorflow.keras.layers
 

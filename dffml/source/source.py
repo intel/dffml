@@ -5,21 +5,19 @@ Source subclasses are responsible for generating an integer value given an open
 source project's source URL.
 """
 import abc
-import asyncio
-from typing import AsyncIterator, Dict, List, Optional, Callable, Tuple, Any
+from typing import AsyncIterator, List, Optional, Callable
 
 from ..base import (
-    BaseConfig,
     BaseDataFlowFacilitatorObjectContext,
     BaseDataFlowFacilitatorObject,
 )
-from ..repo import Repo, RepoData
+from ..repo import Repo
 from ..util.asynchelper import (
     AsyncContextManagerListContext,
     AsyncContextManagerList,
 )
-from ..util.entrypoint import Entrypoint, base_entry_point
 
+from ..util.entrypoint import base_entry_point
 from .log import LOGGER
 
 

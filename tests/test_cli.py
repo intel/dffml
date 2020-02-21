@@ -3,32 +3,20 @@
 import os
 import io
 import json
-import atexit
-import shutil
 import random
-import inspect
-import asyncio
-import logging
 import tempfile
-import unittest
 import contextlib
-import collections
 from pathlib import Path
 from unittest.mock import patch
-from functools import wraps
-from contextlib import contextmanager, ExitStack
-from typing import List, Dict, Any, Optional, Tuple, AsyncIterator
+from typing import List, AsyncIterator
 
 from dffml.repo import Repo
-from dffml.feature import Feature, Features, DefFeature
+from dffml.feature import Feature, Features
 from dffml.source.source import Sources
-from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.source.file import FileSourceConfig
 from dffml.source.json import JSONSource
 from dffml.source.csv import CSVSource, CSVSourceConfig
 from dffml.model.model import ModelContext, Model
-from dffml.df.types import Operation
-from dffml.df.base import OperationImplementation
 from dffml.model.accuracy import Accuracy as AccuracyType
 from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import (

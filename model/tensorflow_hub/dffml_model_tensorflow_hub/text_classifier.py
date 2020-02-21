@@ -5,35 +5,24 @@ Description of what this model does
 """
 # TODO Add docstrings
 import os
-import abc
-import csv
-import inspect
 import hashlib
-import importlib
-from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Type
+from typing import AsyncIterator, Tuple, Any, List, Type
 
-import ast
 import numpy as np
 import pandas as pd
 
 # should be set before importing tensorflow
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
-from shlex import shlex
-import tensorflow_hub as hub
 
 from dffml.repo import Repo
-from dffml.feature import Features
 from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
-from dffml.base import BaseConfig, config, field
+from dffml.base import config, field
 from dffml.feature.feature import Feature, Features
-from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
-from dffml_model_tensorflow.util.config.tensorflow import (
-    parse_layers,
-    make_config_tensorflow,
-)
+from dffml.model.model import ModelContext, Model, ModelNotTrained
+from dffml_model_tensorflow.util.config.tensorflow import parse_layers
 
 from .tfhub_models import bert_tokenizer, ClassificationModel
 

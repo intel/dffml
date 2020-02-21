@@ -13,6 +13,7 @@ from aiohttp.test_utils import AioHTTPTestCase, unittest_run_loop
 import aiohttp.client_exceptions
 import aiohttp
 
+from dffml.df.base import BaseConfig
 from dffml.log import LOGGER
 
 import logging

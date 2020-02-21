@@ -1,4 +1,3 @@
-import os
 import ssl
 import collections
 from typing import AsyncIterator, NamedTuple, Dict, List

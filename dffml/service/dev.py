@@ -15,8 +15,6 @@ from pathlib import Path
 
 from ..base import BaseConfig
 from ..util.os import chdir
-from ..util.skel import Skel
-from ..util.cli.cmd import CMD
 from ..version import VERSION
 from ..util.skel import Skel, SkelTemplateConfig
 from ..util.cli.arg import Arg

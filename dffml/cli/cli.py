@@ -3,42 +3,19 @@
 """
 Command line interface evaluates packages given their source URLs
 """
-import os
-import sys
 import pdb
-import json
-import pathlib
-import asyncio
-import logging
-import inspect
-import argparse
-import contextlib
 import pkg_resources
-from typing import List
 
 from ..version import VERSION
-from ..base import BaseConfig
 from ..repo import Repo
-from ..port import Port
-from ..feature import Feature, Features, Data
-from ..source.source import BaseSource, Sources, SubsetSources
-from ..model import Model
-from ..config.config import BaseConfigLoader
-from ..config.json import JSONConfigLoader
-from ..df.types import Input, Operation, DataFlow
-from ..df.base import StringInputSetContext
-from ..df.memory import MemoryInputSet, MemoryInputSetConfig
-from ..util.entrypoint import load
+from ..source.source import BaseSource
 from ..util.packaging import is_develop
-from ..util.data import merge
 from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
 from ..util.cli.cmds import (
     SourcesCMD,
-    ModelCMD,
     PortCMD,
     KeysCMD,
-    ListEntrypoint,
 )
 
 from .dataflow import Dataflow
