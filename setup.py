@@ -2,7 +2,6 @@
 # Copyright (c) 2019 Intel Corporation
 import ast
 from io import open
-
 from setuptools import find_packages, setup
 
 with open("dffml/version.py", "r") as f:

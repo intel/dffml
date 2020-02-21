@@ -7,12 +7,11 @@ import getpass
 import importlib
 import contextlib
 import configparser
+import pkg_resources
 import unittest.mock
 import urllib.request
 import importlib.util
 from pathlib import Path
-
-import pkg_resources
 
 from ..base import BaseConfig
 from ..util.os import chdir

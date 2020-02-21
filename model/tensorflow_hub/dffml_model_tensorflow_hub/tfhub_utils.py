@@ -8,10 +8,8 @@ https://github.com/google-research/bert/blob/master/LICENSE (Apache License 2.0)
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-
 import collections
 import unicodedata
-
 import six
 import tensorflow as tf
 

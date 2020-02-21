@@ -1,7 +1,6 @@
-from dffml_model_scikit import LinearRegressionModel
-
-from dffml.noasync import train, accuracy, predict
 from dffml import CSVSource, Features, DefFeature
+from dffml.noasync import train, accuracy, predict
+from dffml_model_scikit import LinearRegressionModel
 
 model = LinearRegressionModel(
     features=Features(

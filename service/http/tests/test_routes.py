@@ -8,19 +8,10 @@ from contextlib import asynccontextmanager, ExitStack, AsyncExitStack
 from typing import AsyncIterator, Dict
 
 import aiohttp
-from dffml_service_http.cli import Server
-from dffml_service_http.routes import (
-    OK,
-    SOURCE_NOT_LOADED,
-    MODEL_NOT_LOADED,
-    MODEL_NO_SOURCES,
-)
 
 from dffml.base import config
 from dffml.repo import Repo
-from dffml.df.base import (
-    BaseConfig,
-)
+from dffml.df.base import BaseConfig
 from dffml.operation.output import GetSingle
 from dffml.util.entrypoint import EntrypointNotFound
 from dffml.model.model import ModelContext, Model
@@ -29,10 +20,19 @@ from dffml.feature import DefFeature
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.source.source import Sources
 from dffml.source.csv import CSVSourceConfig
-from dffml.util.entrypoint import entrypoint
 from dffml.util.cli.arg import parse_unknown
+from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
+
+from dffml_service_http.cli import Server
+from dffml_service_http.routes import (
+    OK,
+    SOURCE_NOT_LOADED,
+    MODEL_NOT_LOADED,
+    MODEL_NO_SOURCES,
+)
+
 from .common import ServerRunner
 from .dataflow import (
     HELLO_BLANK_DATAFLOW,

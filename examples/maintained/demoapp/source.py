@@ -1,7 +1,6 @@
 import json
-from typing import AsyncIterator, NamedTuple, Dict
-
 import aiomysql
+from typing import AsyncIterator, NamedTuple, Dict
 
 from dffml.base import BaseConfig
 from dffml.repo import Repo

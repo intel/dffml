@@ -1,9 +1,9 @@
 import io
 import contextlib
 
-from REPLACE_IMPORT_PACKAGE_NAME.misc import MiscService
-
 from dffml.util.asynctestcase import AsyncTestCase
+
+from REPLACE_IMPORT_PACKAGE_NAME.misc import MiscService
 
 
 class TestMiscService(AsyncTestCase):

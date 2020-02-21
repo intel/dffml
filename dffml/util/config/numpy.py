@@ -9,7 +9,9 @@ import dataclasses
 from typing import Dict, Optional, Tuple, Type, Any, Callable
 
 from dffml.base import make_config, field
+
 from .exceptions import ParameterNotInDocString
+
 
 # Things people name their types mapped their real python types.
 NUMPY_DOCS_TYPE_MAP = {

@@ -28,6 +28,7 @@ from dffml.df.memory import (
     MemoryInputSet,
     MemoryInputSetConfig,
 )
+
 from dffml.operation.output import GetSingle
 from dffml.util.asynctestcase import AsyncTestCase
 

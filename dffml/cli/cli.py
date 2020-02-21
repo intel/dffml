@@ -4,7 +4,6 @@
 Command line interface evaluates packages given their source URLs
 """
 import pdb
-
 import pkg_resources
 
 from ..version import VERSION
@@ -18,6 +17,7 @@ from ..util.cli.cmds import (
     PortCMD,
     KeysCMD,
 )
+
 from .dataflow import Dataflow
 from .config import Config
 from .ml import Train, Accuracy, Predict

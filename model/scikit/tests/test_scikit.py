@@ -1,15 +1,15 @@
 import sys
 import tempfile
-
 import numpy as np
-import dffml_model_scikit.scikit_models
-from sklearn.datasets import make_blobs
 
 from dffml.repo import Repo
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature import DefFeature, Features
+from dffml.util.asynctestcase import AsyncTestCase
+
+import dffml_model_scikit.scikit_models
+from sklearn.datasets import make_blobs
 
 
 class TestScikitModel:

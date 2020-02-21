@@ -1,7 +1,6 @@
 import asyncio
 
 from dffml_model_scikit import LinearRegressionModel
-
 from dffml import train, accuracy, predict, Features, DefFeature
 
 

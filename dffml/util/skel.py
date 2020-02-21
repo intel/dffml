@@ -1,8 +1,7 @@
+import pkg_resources
 from pathlib import Path
 import distutils.dir_util
 from typing import NamedTuple
-
-import pkg_resources
 
 from .os import chdir
 

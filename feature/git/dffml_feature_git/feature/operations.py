@@ -7,11 +7,14 @@ from datetime import datetime
 from typing import Dict, List
 
 from dateutil.relativedelta import relativedelta
-from dffml_feature_git.util.proc import check_output, create, stop
 
 from dffml.df.types import Stage
 from dffml.df.base import op
+
 from .definitions import *
+
+from dffml_feature_git.util.proc import check_output, create, stop
+
 from .log import LOGGER
 
 if sys.platform == "win32":  # pragma: no cov

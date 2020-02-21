@@ -2,13 +2,13 @@ import os
 import shutil
 import tempfile
 
+from dffml.util.asynctestcase import AsyncTestCase
+
 from shouldi.pypi import pypi_package_json
 from shouldi.pypi import pypi_latest_package_version
 from shouldi.pypi import pypi_package_url
 from shouldi.pypi import pypi_package_contents
 from shouldi.pypi import cleanup_pypi_package
-
-from dffml.util.asynctestcase import AsyncTestCase
 
 
 class TestPyPiOperations(AsyncTestCase):

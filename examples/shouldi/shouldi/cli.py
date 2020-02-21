@@ -1,4 +1,15 @@
 # Command line interface helpers
+from dffml.util.cli.cmd import CMD
+from dffml.util.cli.arg import Arg
+
+# DataFlow specific classes
+from dffml.df.types import DataFlow, Input
+from dffml.df.memory import MemoryOrchestrator
+
+# The GetSingle operation will grab the data we want from the ouputs of our
+# operations and present it as the result
+from dffml.operation.output import GetSingle
+
 # Import all the operations we wrote
 from shouldi.bandit import run_bandit
 from shouldi.pypi import pypi_latest_package_version
@@ -7,15 +18,6 @@ from shouldi.pypi import pypi_package_url
 from shouldi.pypi import pypi_package_contents
 from shouldi.pypi import cleanup_pypi_package
 from shouldi.safety import safety_check
-
-from dffml.util.cli.cmd import CMD
-from dffml.util.cli.arg import Arg
-# DataFlow specific classes
-from dffml.df.types import DataFlow, Input
-from dffml.df.memory import MemoryOrchestrator
-# The GetSingle operation will grab the data we want from the ouputs of our
-# operations and present it as the result
-from dffml.operation.output import GetSingle
 
 # Link inputs and outputs together according to their definitions
 DATAFLOW = DataFlow.auto(

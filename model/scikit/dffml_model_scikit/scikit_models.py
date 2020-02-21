@@ -48,16 +48,17 @@ from sklearn.cluster import (
     AgglomerativeClustering,
     OPTICS,
 )
+
+
+from dffml.base import make_config, field
+from dffml.util.config.numpy import make_config_numpy
+from dffml.util.entrypoint import entrypoint
 from dffml_model_scikit.scikit_base import (
     Scikit,
     ScikitContext,
     ScikitUnsprvised,
     ScikitContextUnsprvised,
 )
-
-from dffml.base import field
-from dffml.util.config.numpy import make_config_numpy
-from dffml.util.entrypoint import entrypoint
 from dffml.feature.feature import Feature, Features, DefFeature
 
 

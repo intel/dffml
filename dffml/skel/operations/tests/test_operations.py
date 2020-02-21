@@ -1,12 +1,12 @@
 import sys
 
-from REPLACE_IMPORT_PACKAGE_NAME.operations import *
-
 from dffml.df.types import Input, DataFlow
 from dffml.df.base import opimp_in
 from dffml.df.memory import MemoryOrchestrator
 from dffml.operation.output import GetSingle
 from dffml.util.asynctestcase import AsyncTestCase
+
+from REPLACE_IMPORT_PACKAGE_NAME.operations import *
 
 OPIMPS = opimp_in(sys.modules[__name__])
 

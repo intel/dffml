@@ -1,10 +1,9 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 import unittest
+import pkg_resources
 from unittest.mock import patch
 from typing import Type
-
-import pkg_resources
 
 from dffml.util.entrypoint import Entrypoint, EntrypointNotFound
 

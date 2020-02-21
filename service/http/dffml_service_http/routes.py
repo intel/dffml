@@ -27,6 +27,7 @@ from dffml.model import Model
 from dffml.source.source import BaseSource, SourcesContext
 from dffml.util.entrypoint import EntrypointNotFound, entrypoint
 
+
 # TODO Add test for this
 # Bits of randomness in secret tokens
 SECRETS_TOKEN_BITS = 384

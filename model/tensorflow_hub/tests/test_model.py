@@ -1,17 +1,15 @@
 import random
-import random
 import tempfile
-
-from dffml_model_tensorflow_hub.text_classifier import (
-    TextClassificationModel,
-    TextClassifierConfig,
-)
 
 from dffml.repo import Repo
 from dffml.source.source import Sources
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Features, DefFeature
+from dffml.source.memory import MemorySource, MemorySourceConfig
+from dffml_model_tensorflow_hub.text_classifier import (
+    TextClassificationModel,
+    TextClassifierConfig,
+)
 
 
 class TestTextClassificationModel(AsyncTestCase):

@@ -1,9 +1,9 @@
 import io
 from unittest.mock import patch
 
-from shouldi.cli import ShouldI
-
 from dffml.util.asynctestcase import AsyncTestCase
+
+from shouldi.cli import ShouldI
 
 
 class TestCLI(AsyncTestCase):

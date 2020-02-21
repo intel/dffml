@@ -9,9 +9,8 @@ import sys
 import pathlib
 import importlib
 import traceback
-from typing import List, Dict, Union, Optional, Iterator, Any
-
 import pkg_resources
+from typing import List, Dict, Union, Optional, Iterator, Any
 
 
 class EntrypointNotFound(Exception):

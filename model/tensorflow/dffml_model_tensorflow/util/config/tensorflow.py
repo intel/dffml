@@ -6,16 +6,15 @@ representing the arguments to that callable.
 """
 import inspect
 import dataclasses
+
 from typing import Dict, Optional, Tuple, Type, Any, Callable, List
 import ast
 from shlex import shlex
-
 import tensorflow as tf
 
 from dffml.base import make_config, field
-from dffml.util.config.exceptions import (
-    ParameterNotInDocString,
-)
+from dffml.util.config.exceptions import ParameterNotInDocString
+
 
 # Things people name their types mapped their real python types.
 TENSORFLOW_DOCS_TYPE_MAP = {

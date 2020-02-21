@@ -8,6 +8,7 @@ import random
 import pathlib
 import contextlib
 
+
 from dffml.cli.cli import CLI
 from dffml.util.asynctestcase import IntegrationCLITestCase
 

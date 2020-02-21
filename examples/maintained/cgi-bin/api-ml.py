@@ -2,11 +2,10 @@
 import os
 import sys
 import json
-import subprocess
-from datetime import datetime
-
 import urlparse
 import mysql.connector
+from datetime import datetime
+
 from conf import MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE, MYSQL_PORT
 
 print 'Content-Type: application/json'

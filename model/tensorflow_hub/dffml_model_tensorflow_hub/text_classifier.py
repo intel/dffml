@@ -22,9 +22,7 @@ from dffml.util.entrypoint import entrypoint
 from dffml.base import config, field
 from dffml.feature.feature import Feature, Features
 from dffml.model.model import ModelContext, Model, ModelNotTrained
-from dffml_model_tensorflow.util.config.tensorflow import (
-    parse_layers,
-)
+from dffml_model_tensorflow.util.config.tensorflow import parse_layers
 
 from .tfhub_models import bert_tokenizer, ClassificationModel
 

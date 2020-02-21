@@ -4,7 +4,8 @@ from unittest.mock import patch
 from http import HTTPStatus
 from urllib.parse import urlparse
 from contextlib import asynccontextmanager, ExitStack
-import logging
+
+from dffml.df.base import BaseConfig
 
 from aiohttp import web
 from aiohttp import client
@@ -14,6 +15,8 @@ import aiohttp
 
 from dffml.df.base import BaseConfig
 from dffml.log import LOGGER
+
+import logging
 
 logging.basicConfig(level=logging.DEBUG)
 

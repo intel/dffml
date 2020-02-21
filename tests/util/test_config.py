@@ -1,6 +1,7 @@
 import unittest
 
 from dffml.util.config.numpy import numpy_docstring_args
+
 from .double_ret import double_ret as numpy_double_ret
 
 

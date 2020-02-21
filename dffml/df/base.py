@@ -1,5 +1,6 @@
 import abc
 import inspect
+import pkg_resources
 from typing import (
     AsyncIterator,
     Dict,
@@ -12,11 +13,11 @@ from typing import (
     Set,
 )
 
-import pkg_resources
-
 from .exceptions import NotOpImp
 from .types import Operation, Input, Parameter, Stage, Definition
+
 from .log import LOGGER
+
 from ..base import (
     BaseConfig,
     BaseDataFlowFacilitatorObjectContext,

@@ -26,6 +26,7 @@ from dffml.util.asynctestcase import (
 from dffml.util.cli.cmds import ModelCMD
 from dffml.base import config
 from dffml.cli import Merge, Dataflow, Train, Accuracy, Predict, List
+
 from .test_df import OPERATIONS, OPIMPS
 
 

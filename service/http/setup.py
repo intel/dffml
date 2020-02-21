@@ -2,7 +2,6 @@ import os
 import sys
 import ast
 from io import open
-
 from setuptools import find_packages, setup
 
 ORG = "intel"

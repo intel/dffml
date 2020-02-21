@@ -4,10 +4,10 @@ This file contains integration tests for the high level (very abstract) APIs.
 import importlib
 
 from dffml.repo import Repo
+from dffml import train, accuracy, predict
 from dffml.source.csv import CSVSource
 from dffml.feature.feature import Features, DefFeature
 from dffml.util.asynctestcase import IntegrationCLITestCase
-from dffml import train, accuracy, predict
 
 FEATURE_NAMES = ["Years", "Expertise", "Trust", "Salary"]
 

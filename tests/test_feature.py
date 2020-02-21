@@ -3,8 +3,8 @@
 import asyncio
 from unittest.mock import patch
 
-from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature import Data, Feature, Features, LoggingDict, DefFeature
+from dffml.util.asynctestcase import AsyncTestCase
 
 
 class SingleFeature(Feature):
