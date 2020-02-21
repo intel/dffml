@@ -1,7 +1,5 @@
 import json
-import asyncio
 import aiomysql
-from collections import OrderedDict
 from typing import AsyncIterator, NamedTuple, Dict
 
 from dffml.base import BaseConfig

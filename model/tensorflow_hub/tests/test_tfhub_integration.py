@@ -5,11 +5,9 @@ various DFFML classes and constructs.
 import csv
 import json
 import random
-import inspect
 import pathlib
 import contextlib
 
-import numpy as np
 
 from dffml.cli.cli import CLI
 from dffml.util.asynctestcase import IntegrationCLITestCase

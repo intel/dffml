@@ -1,12 +1,10 @@
-import sys
 import random
 import tempfile
-from typing import Type
 
-from dffml.record import Record, RecordData
+from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.feature import Data, Feature, Features, DefFeature
+from dffml.feature import Features, DefFeature
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml_model_tensorflow_hub.text_classifier import (
     TextClassificationModel,

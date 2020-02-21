@@ -1,11 +1,9 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
-import unittest
 import tempfile
 import os
 import csv
 import random
-import pathlib
 
 from dffml.source.csv import CSVSource, CSVSourceConfig
 from dffml.util.testing.source import FileSourceTest
