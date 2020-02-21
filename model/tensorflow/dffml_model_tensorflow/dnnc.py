@@ -1,6 +1,6 @@
 """
 Uses Tensorflow to create a generic DNN which learns on all of the features in a
-repo.
+record.
 """
 import os
 import abc
@@ -13,7 +13,7 @@ import numpy as np
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
 
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml.model.accuracy import Accuracy
 from dffml.base import config, field
 from dffml.source.source import Sources
@@ -37,7 +37,7 @@ class TensorflowModelContext(ModelContext):
 
     def _feature_columns(self):
         """
-        Converts repos into training data
+        Converts records into training data
         """
         cols: Dict[str, Any] = {}
         for feature in self.parent.config.features:
@@ -92,27 +92,27 @@ class TensorflowModelContext(ModelContext):
             )
         return os.path.join(self.parent.config.directory, model)
 
-    async def predict_input_fn(self, repos: AsyncIterator[Repo], **kwargs):
+    async def predict_input_fn(self, records: AsyncIterator[Record], **kwargs):
         """
-        Uses the numpy input function with data from repo features.
+        Uses the numpy input function with data from record features.
         """
         x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
-        ret_repos = []
-        async for repo in repos:
-            if not repo.features(self.features):
+        ret_records = []
+        async for record in records:
+            if not record.features(self.features):
                 continue
-            ret_repos.append(repo)
-            for feature, results in repo.features(self.features).items():
+            ret_records.append(record)
+            for feature, results in record.features(self.features).items():
                 x_cols[feature].append(np.array(results))
         for feature in x_cols:
             x_cols[feature] = np.array(x_cols[feature])
-        self.logger.info("------ Repo Data ------")
+        self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("-----------------------")
         input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols, shuffle=False, num_epochs=1, **kwargs
         )
-        return input_fn, ret_repos
+        return input_fn, ret_records
 
     async def train(self, sources: Sources):
         """
@@ -136,12 +136,14 @@ class DNNClassifierModelConfig:
     features: Features = field("Features to train on")
     clstype: Type = field("Data type of classifications values", default=str)
     batchsize: int = field(
-        "Number repos to pass through in an epoch", default=20
+        "Number records to pass through in an epoch", default=20
     )
-    shuffle: bool = field("Randomise order of repos in a batch", default=True)
+    shuffle: bool = field(
+        "Randomise order of records in a batch", default=True
+    )
     steps: int = field("Number of steps to train the model", default=3000)
     epochs: int = field(
-        "Number of iterations to pass over all repos in a source", default=30
+        "Number of iterations to pass over all records in a source", default=30
     )
     directory: str = field(
         "Directory where state should be saved",
@@ -213,32 +215,32 @@ class DNNClassifierModelContext(TensorflowModelContext):
 
     async def training_input_fn(self, sources: Sources, **kwargs):
         """
-        Uses the numpy input function with data from repo features.
+        Uses the numpy input function with data from record features.
         """
         self.logger.debug("Training on features: %r", self.features)
         x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
         y_cols = []
-        for repo in [
-            repo
-            async for repo in sources.with_features(
+        for record in [
+            record
+            async for record in sources.with_features(
                 self.features + [self.parent.config.predict.NAME]
             )
-            if repo.feature(self.parent.config.predict.NAME)
+            if record.feature(self.parent.config.predict.NAME)
             in self.classifications
         ]:
-            for feature, results in repo.features(self.features).items():
+            for feature, results in record.features(self.features).items():
                 x_cols[feature].append(np.array(results))
             y_cols.append(
                 self.classifications[
-                    repo.feature(self.parent.config.predict.NAME)
+                    record.feature(self.parent.config.predict.NAME)
                 ]
             )
         if not y_cols:
-            raise ValueError("No repos to train on")
+            raise ValueError("No records to train on")
         y_cols = np.array(y_cols)
         for feature in x_cols:
             x_cols[feature] = np.array(x_cols[feature])
-        self.logger.info("------ Repo Data ------")
+        self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
@@ -254,29 +256,29 @@ class DNNClassifierModelContext(TensorflowModelContext):
 
     async def accuracy_input_fn(self, sources: Sources, **kwargs):
         """
-        Uses the numpy input function with data from repo features.
+        Uses the numpy input function with data from record features.
         """
         x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
         y_cols = []
-        for repo in [
-            repo
-            async for repo in sources.with_features(
+        for record in [
+            record
+            async for record in sources.with_features(
                 self.features + [self.parent.config.predict.NAME]
             )
-            if repo.feature(self.parent.config.predict.NAME)
+            if record.feature(self.parent.config.predict.NAME)
             in self.classifications
         ]:
-            for feature, results in repo.features(self.features).items():
+            for feature, results in record.features(self.features).items():
                 x_cols[feature].append(np.array(results))
             y_cols.append(
                 self.classifications[
-                    repo.feature(self.parent.config.predict.NAME)
+                    record.feature(self.parent.config.predict.NAME)
                 ]
             )
         y_cols = np.array(y_cols)
         for feature in x_cols:
             x_cols[feature] = np.array(x_cols[feature])
-        self.logger.info("------ Repo Data ------")
+        self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
@@ -292,7 +294,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
 
     async def accuracy(self, sources: Sources) -> Accuracy:
         """
-        Evaluates the accuracy of our model after training using the input repos
+        Evaluates the accuracy of our model after training using the input records
         as test data.
         """
         if not os.path.isdir(self.model_dir_path):
@@ -301,22 +303,24 @@ class DNNClassifierModelContext(TensorflowModelContext):
         accuracy_score = self.model.evaluate(input_fn=input_fn)
         return Accuracy(accuracy_score["accuracy"])
 
-    async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
+    async def predict(
+        self, records: AsyncIterator[Record]
+    ) -> AsyncIterator[Record]:
         """
-        Uses trained data to make a prediction about the quality of a repo.
+        Uses trained data to make a prediction about the quality of a record.
         """
         if not os.path.isdir(self.model_dir_path):
             raise ModelNotTrained("Train model before prediction.")
         # Create the input function
-        input_fn, predict = await self.predict_input_fn(repos)
+        input_fn, predict = await self.predict_input_fn(records)
         # Makes predictions on classifications
         predictions = self.model.predict(input_fn=input_fn)
         target = self.parent.config.predict.NAME
-        for repo, pred_dict in zip(predict, predictions):
+        for record, pred_dict in zip(predict, predictions):
             class_id = pred_dict["class_ids"][0]
             probability = pred_dict["probabilities"][class_id]
-            repo.predicted(target, self.cids[class_id], probability)
-            yield repo
+            record.predicted(target, self.cids[class_id], probability)
+            yield record
 
 
 @entrypoint("tfdnnc")

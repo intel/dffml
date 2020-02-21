@@ -63,7 +63,7 @@ class LoggingDict(object):
 
 class Data(Task):
     """
-    Passed to each feature during evaluation. Shared between all features a repo
+    Passed to each feature during evaluation. Shared between all features a record
     is being evaluated with
     """
 

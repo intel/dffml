@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 """
-Loads repos from an IDX3 file
+Loads records from an IDX3 file
 """
 import struct
 
-from ..repo import Repo
+from ..record import Record
 from ..util.entrypoint import entrypoint
 from .idx1 import IDX1Source, IDXSourceConfig
 
@@ -30,7 +30,7 @@ class IDX3Source(IDX1Source):
         self.mem = {}
         inner_array_size = nrows * ncols
         for i in range(0, size):
-            self.mem[str(i)] = Repo(
+            self.mem[str(i)] = Record(
                 str(i),
                 data={
                     "features": {

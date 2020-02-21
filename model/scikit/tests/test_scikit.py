@@ -2,7 +2,7 @@ import sys
 import tempfile
 import numpy as np
 
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import DefFeature, Features
@@ -30,8 +30,8 @@ class TestScikitModel:
             A, B, C, D, E, F, G, H, I, X = list(
                 zip(*FEATURE_DATA_CLASSIFICATION)
             )
-            cls.repos = [
-                Repo(
+            cls.records = [
+                Record(
                     str(i),
                     data={
                         "features": {
@@ -55,8 +55,8 @@ class TestScikitModel:
             cls.features.append(DefFeature("B", float, 1))
             cls.features.append(DefFeature("C", float, 1))
             A, B, C, X = list(zip(*FEATURE_DATA_REGRESSION))
-            cls.repos = [
-                Repo(
+            cls.records = [
+                Record(
                     str(i),
                     data={
                         "features": {
@@ -75,8 +75,8 @@ class TestScikitModel:
             cls.features.append(DefFeature("C", float, 1))
             cls.features.append(DefFeature("D", float, 1))
             A, B, C, D, X = list(zip(*FEATURE_DATA_CLUSTERING))
-            cls.repos = [
-                Repo(
+            cls.records = [
+                Record(
                     str(i),
                     data={
                         "features": {
@@ -92,7 +92,7 @@ class TestScikitModel:
             ]
 
         cls.sources = Sources(
-            MemorySource(MemorySourceConfig(repos=cls.repos))
+            MemorySource(MemorySourceConfig(records=cls.records))
         )
         properties = {
             "directory": cls.model_dir.name,
@@ -131,12 +131,12 @@ class TestScikitModel:
         async with self.sources as sources, self.model as model:
             target = model.config.predict.NAME
             async with sources() as sctx, model() as mctx:
-                async for repo in mctx.predict(sctx.repos()):
-                    prediction = repo.prediction(target).value
+                async for record in mctx.predict(sctx.records()):
+                    prediction = record.prediction(target).value
                     if self.MODEL_TYPE is "CLASSIFICATION":
                         self.assertIn(prediction, [2, 4])
                     elif self.MODEL_TYPE is "REGRESSION":
-                        correct = FEATURE_DATA_REGRESSION[int(repo.key)][3]
+                        correct = FEATURE_DATA_REGRESSION[int(record.key)][3]
                         self.assertGreater(
                             prediction, correct - (correct * 0.40)
                         )

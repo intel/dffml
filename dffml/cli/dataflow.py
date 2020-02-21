@@ -97,14 +97,14 @@ class RunCMD(SourcesCMD):
     arg_sources = SourcesCMD.arg_sources.modify(required=False)
     arg_caching = Arg(
         "-caching",
-        help="Skip running DataFlow if a repo already contains these features",
+        help="Skip running DataFlow if a record already contains these features",
         nargs="+",
         required=False,
         default=[],
     )
     arg_no_update = Arg(
         "-no-update",
-        help="Update repo with sources",
+        help="Update record with sources",
         required=False,
         default=False,
         action="store_true",
@@ -134,16 +134,16 @@ class RunCMD(SourcesCMD):
         nargs="+",
         action=ParseInputsAction,
         default=[],
-        help="Other inputs to add under each ctx (repo's key will "
+        help="Other inputs to add under each ctx (record's key will "
         + "be used as the context)",
     )
-    arg_repo_def = Arg(
-        "-repo-def",
+    arg_record_def = Arg(
+        "-record-def",
         default=False,
         type=str,
-        help="Definition to be used for repo.key."
-        + "If set, repo.key will be added to the set of inputs "
-        + "under each context (which is also the repo's key)",
+        help="Definition to be used for record.key."
+        + "If set, record.key will be added to the set of inputs "
+        + "under each context (which is also the record's key)",
     )
 
     def __init__(self, *args, **kwargs):
@@ -151,25 +151,25 @@ class RunCMD(SourcesCMD):
         self.orchestrator = self.orchestrator.withconfig(self.extra_config)
 
 
-class RunAllRepos(RunCMD):
-    """Run dataflow for all repos in sources"""
+class RunAllRecords(RunCMD):
+    """Run dataflow for all records in sources"""
 
-    async def repos(self, sctx):
+    async def records(self, sctx):
         """
-        This method exists so that it can be overriden by RunRepoSet
+        This method exists so that it can be overriden by RunRecordSet
         """
-        async for repo in sctx.repos():
-            yield repo
+        async for record in sctx.records():
+            yield record
 
     async def run_dataflow(self, orchestrator, sources, dataflow):
         # Orchestrate the running of these operations
         async with orchestrator(dataflow) as octx, sources() as sctx:
             # Add our inputs to the input network with the context being the
-            # repo key
+            # record key
             inputs = []
-            async for repo in self.repos(sctx):
-                # Skip running DataFlow if repo already has features
-                existing_features = repo.features()
+            async for record in self.records(sctx):
+                # Skip running DataFlow if record already has features
+                existing_features = record.features()
                 if self.caching and all(
                     map(
                         lambda cached: cached in existing_features,
@@ -178,19 +178,19 @@ class RunAllRepos(RunCMD):
                 ):
                     continue
 
-                repo_inputs = []
+                record_inputs = []
                 for value, def_name in self.inputs:
-                    repo_inputs.append(
+                    record_inputs.append(
                         Input(
                             value=value,
                             definition=dataflow.definitions[def_name],
                         )
                     )
-                if self.repo_def:
-                    repo_inputs.append(
+                if self.record_def:
+                    record_inputs.append(
                         Input(
-                            value=repo.key,
-                            definition=dataflow.definitions[self.repo_def],
+                            value=record.key,
+                            definition=dataflow.definitions[self.record_def],
                         )
                     )
 
@@ -199,8 +199,8 @@ class RunAllRepos(RunCMD):
                 inputs.append(
                     MemoryInputSet(
                         MemoryInputSetConfig(
-                            ctx=StringInputSetContext(repo.key),
-                            inputs=repo_inputs,
+                            ctx=StringInputSetContext(record.key),
+                            inputs=record_inputs,
                         )
                     )
                 )
@@ -212,14 +212,14 @@ class RunAllRepos(RunCMD):
                 *inputs, strict=not self.no_strict
             ):
                 ctx_str = (await ctx.handle()).as_string()
-                # TODO(p4) Make a RepoInputSetContext which would let us
-                # store the repo instead of recalling it by the URL
-                repo = await sctx.repo(ctx_str)
+                # TODO(p4) Make a RecordInputSetContext which would let us
+                # store the record instead of recalling it by the URL
+                record = await sctx.record(ctx_str)
                 # Store the results
-                repo.evaluated(results)
-                yield repo
+                record.evaluated(results)
+                yield record
                 if not self.no_update:
-                    await sctx.update(repo)
+                    await sctx.update(record)
 
     async def run(self):
         dataflow_path = pathlib.Path(self.dataflow)
@@ -232,35 +232,35 @@ class RunAllRepos(RunCMD):
                 exported = await loader.loadb(dataflow_path.read_bytes())
                 dataflow = DataFlow._fromdict(**exported)
         async with self.orchestrator as orchestrator, self.sources as sources:
-            async for repo in self.run_dataflow(
+            async for record in self.run_dataflow(
                 orchestrator, sources, dataflow
             ):
-                yield repo
+                yield record
 
 
-class RunRepoSet(RunAllRepos, KeysCMD):
-    """Run dataflow for single repo or set of repos"""
+class RunRecordSet(RunAllRecords, KeysCMD):
+    """Run dataflow for single record or set of records"""
 
-    async def repos(self, sctx):
+    async def records(self, sctx):
         for key in self.keys:
-            yield await sctx.repo(key)
+            yield await sctx.record(key)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.sources = SubsetSources(*self.sources, keys=self.keys)
 
 
-class RunRepos(CMD):
-    """Run DataFlow and assign output to a repo"""
+class RunRecords(CMD):
+    """Run DataFlow and assign output to a record"""
 
-    _set = RunRepoSet
-    _all = RunAllRepos
+    _set = RunRecordSet
+    _all = RunAllRecords
 
 
 class Run(CMD):
     """Run dataflow"""
 
-    repos = RunRepos
+    records = RunRecords
 
 
 class Diagram(CMD):

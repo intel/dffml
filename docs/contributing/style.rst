@@ -30,7 +30,7 @@ Here's an example of how we style our imports.
 
     import sklearn.datasets
 
-    from dffml.repo import Repo
+    from dffml.record import Record
     from dffml.config.config import BaseConfigLoader
     from dffml.util.asynctestcase import AsyncTestCase, IntegrationCLITestCase
 

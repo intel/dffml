@@ -4,7 +4,7 @@ from unittest.mock import patch, mock_open
 from contextlib import contextmanager
 from typing import AsyncIterator
 
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml.source.source import BaseSourceContext
 from dffml.source.file import FileSource, FileSourceConfig
 from dffml.util.cli.arg import Arg, parse_unknown
@@ -12,13 +12,13 @@ from dffml.util.asynctestcase import AsyncTestCase
 
 
 class FakeFileSourceContext(BaseSourceContext):
-    async def update(self, repo: Repo):
+    async def update(self, record: Record):
         pass  # pragma: no cover
 
-    async def repos(self) -> AsyncIterator[Repo]:
-        yield Repo("")  # pragma: no cover
+    async def records(self) -> AsyncIterator[Record]:
+        yield Record("")  # pragma: no cover
 
-    async def repo(self, key: str):
+    async def record(self, key: str):
         pass  # pragma: no cover
 
 

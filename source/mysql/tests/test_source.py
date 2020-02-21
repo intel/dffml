@@ -14,8 +14,8 @@ from dffml_source_mysql.util.mysql_docker import mysql, DOCKER_ENV
 class TestMySQLSource(AsyncTestCase, SourceTest):
 
     SQL_SETUP = """
-DROP TABLE IF EXISTS `repo_data`;
-CREATE TABLE `repo_data` (
+DROP TABLE IF EXISTS `record_data`;
+CREATE TABLE `record_data` (
   `key` varchar(100) NOT NULL,
   `feature_PetalLength` float DEFAULT NULL,
   `feature_PetalWidth` float DEFAULT NULL,
@@ -41,9 +41,9 @@ CREATE TABLE `repo_data` (
             user=DOCKER_ENV["MYSQL_USER"],
             password=DOCKER_ENV["MYSQL_PASSWORD"],
             db=DOCKER_ENV["MYSQL_DATABASE"],
-            repo_query="select * from repo_data where `key`=%s",
-            update_query="""insert into repo_data (`key`,`feature_PetalLength`,`feature_PetalWidth`, `feature_SepalLength`, `feature_SepalWidth`, `target_name_confidence`, `target_name_value`) values (%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE `key`=%s,  `feature_PetalLength`=%s, `feature_PetalWidth`=%s, `feature_SepalLength`=%s, `feature_SepalWidth`=%s, `target_name_confidence`=%s, `target_name_value`=%s""",
-            repos_query="select * from repo_data",
+            record_query="select * from record_data where `key`=%s",
+            update_query="""insert into record_data (`key`,`feature_PetalLength`,`feature_PetalWidth`, `feature_SepalLength`, `feature_SepalWidth`, `target_name_confidence`, `target_name_value`) values (%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE `key`=%s,  `feature_PetalLength`=%s, `feature_PetalWidth`=%s, `feature_SepalLength`=%s, `feature_SepalWidth`=%s, `target_name_confidence`=%s, `target_name_value`=%s""",
+            records_query="select * from record_data",
             model_columns="key feature_PetalLength feature_PetalWidth feature_SepalLength feature_SepalWidth target_name_confidence target_name_value",
             ca=cls.ca,
         )

@@ -13,7 +13,7 @@ from typing import List, Union, AsyncIterator, Type, NamedTuple, Dict
 from aiohttp import web
 import aiohttp_cors
 
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml.df.types import DataFlow, Input
 from dffml.df.multicomm import MultiCommInAtomicMode, BaseMultiCommContext
 from dffml.df.memory import (
@@ -54,15 +54,15 @@ class JSONEncoder(json.JSONEncoder):
 @dataclass
 class IterkeyEntry:
     """
-    iterkeys will hold the first repo within the next iteration and ths
-    iterator. The first time around the first repo is None, since we haven't
+    iterkeys will hold the first record within the next iteration and ths
+    iterator. The first time around the first record is None, since we haven't
     iterated yet. We do this because if the chunk_size is the same as the number
     of iterations then we'll need to iterate one time more than chunk_size in
     order to hit the StopAsyncIteration exception.
     """
 
-    first: Union[Repo, None]
-    repos: AsyncIterator[Repo]
+    first: Union[Record, None]
+    records: AsyncIterator[Record]
 
 
 def mcctx_route(handler):
@@ -469,78 +469,78 @@ class Routes(BaseMultiCommContext):
         return web.json_response(OK)
 
     @sctx_route
-    async def source_repo(self, request, sctx):
+    async def source_record(self, request, sctx):
         return web.json_response(
-            (await sctx.repo(request.match_info["key"])).export()
+            (await sctx.record(request.match_info["key"])).export()
         )
 
     @sctx_route
     async def source_update(self, request, sctx):
         await sctx.update(
-            Repo(request.match_info["key"], data=await request.json())
+            Record(request.match_info["key"], data=await request.json())
         )
         return web.json_response(OK)
 
-    async def _iter_repos(self, iterkey, chunk_size) -> List[Repo]:
+    async def _iter_records(self, iterkey, chunk_size) -> List[Record]:
         """
-        Iterates over a repos async generator and returns a list with chunk_size
-        or less repos in it (if iteration completed). It also returns the
+        Iterates over a records async generator and returns a list with chunk_size
+        or less records in it (if iteration completed). It also returns the
         iterkey, which will be None if iteration completed.
         """
-        if not iterkey in self.app["source_repos_iterkeys"]:
+        if not iterkey in self.app["source_records_iterkeys"]:
             raise web.HTTPNotFound(reason="iterkey not found")
-        entry = self.app["source_repos_iterkeys"][iterkey]
-        # Make repo_list start with the last repo that was retrieved from
-        # iteration the last time _iter_repos was called. If this is the first
-        # time then repo_list is an empty list
-        repo_list = [entry.first] if entry.first is not None else []
+        entry = self.app["source_records_iterkeys"][iterkey]
+        # Make record_list start with the last record that was retrieved from
+        # iteration the last time _iter_records was called. If this is the first
+        # time then record_list is an empty list
+        record_list = [entry.first] if entry.first is not None else []
         # We need to iterate one more time than chunk_size the first time
-        # _iter_repos is called so that we return the chunk_size and set
+        # _iter_records is called so that we return the chunk_size and set
         # entry.first for the subsequent iterations
-        iter_until = chunk_size + 1 if not repo_list else chunk_size
+        iter_until = chunk_size + 1 if not record_list else chunk_size
         for i in range(0, iter_until):
             try:
-                # On last iteration make the repo the first repo in the next
+                # On last iteration make the record the first record in the next
                 # iteration
                 if i == (iter_until - 1):
-                    entry.first = await entry.repos.__anext__()
+                    entry.first = await entry.records.__anext__()
                 else:
-                    repo_list.append(await entry.repos.__anext__())
+                    record_list.append(await entry.records.__anext__())
             except StopAsyncIteration:
-                # If we're done iterating over repos and can remove the
+                # If we're done iterating over records and can remove the
                 # reference to the iterator from iterkeys
-                del self.app["source_repos_iterkeys"][iterkey]
+                del self.app["source_records_iterkeys"][iterkey]
                 iterkey = None
                 break
-        return iterkey, repo_list
+        return iterkey, record_list
 
     @sctx_route
-    async def source_repos(self, request, sctx):
+    async def source_records(self, request, sctx):
         iterkey = secrets.token_hex(nbytes=SECRETS_TOKEN_BYTES)
         # TODO Add test that iterkey is removed on last iteration
-        self.app["source_repos_iterkeys"][iterkey] = IterkeyEntry(
-            first=None, repos=sctx.repos()
+        self.app["source_records_iterkeys"][iterkey] = IterkeyEntry(
+            first=None, records=sctx.records()
         )
-        iterkey, repos = await self._iter_repos(
+        iterkey, records = await self._iter_records(
             iterkey, int(request.match_info["chunk_size"])
         )
         return web.json_response(
             {
                 "iterkey": iterkey,
-                "repos": {repo.key: repo.export() for repo in repos},
+                "records": {record.key: record.export() for record in records},
             }
         )
 
     @sctx_route
-    async def source_repos_iter(self, request, sctx):
-        iterkey, repos = await self._iter_repos(
+    async def source_records_iter(self, request, sctx):
+        iterkey, records = await self._iter_records(
             request.match_info["iterkey"],
             int(request.match_info["chunk_size"]),
         )
         return web.json_response(
             {
                 "iterkey": iterkey,
-                "repos": {repo.key: repo.export() for repo in repos},
+                "records": {record.key: record.export() for record in records},
             }
         )
 
@@ -589,23 +589,23 @@ class Routes(BaseMultiCommContext):
                 {"error": "Multiple request iteration not yet supported"},
                 status=HTTPStatus.BAD_REQUEST,
             )
-        # Get the repos
-        repos: Dict[str, Repo] = {
-            key: Repo(key, data=repo_data)
-            for key, repo_data in (await request.json()).items()
+        # Get the records
+        records: Dict[str, Record] = {
+            key: Record(key, data=record_data)
+            for key, record_data in (await request.json()).items()
         }
-        # Create an async generator to feed repos
-        async def repo_gen():
-            for repo in repos.values():
-                yield repo
+        # Create an async generator to feed records
+        async def record_gen():
+            for record in records.values():
+                yield record
 
         # Feed them through prediction
         return web.json_response(
             {
                 "iterkey": None,
-                "repos": {
-                    repo.key: repo.export()
-                    async for repo in mctx.predict(repo_gen())
+                "records": {
+                    record.key: record.export()
+                    async for record in mctx.predict(record_gen())
                 },
             }
         )
@@ -634,7 +634,7 @@ class Routes(BaseMultiCommContext):
         self.app["multicomm_routes"] = {}
         self.app["sources"] = {}
         self.app["source_contexts"] = {}
-        self.app["source_repos_iterkeys"] = {}
+        self.app["source_records_iterkeys"] = {}
         self.app["models"] = {}
         self.app["model_contexts"] = {}
         self.app.update(kwargs)
@@ -676,17 +676,17 @@ class Routes(BaseMultiCommContext):
                     self.multicomm_register,
                 ),
                 # Source APIs
-                ("GET", "/source/{label}/repo/{key}", self.source_repo),
+                ("GET", "/source/{label}/record/{key}", self.source_record),
                 ("POST", "/source/{label}/update/{key}", self.source_update),
                 (
                     "GET",
-                    "/source/{label}/repos/{chunk_size}",
-                    self.source_repos,
+                    "/source/{label}/records/{chunk_size}",
+                    self.source_records,
                 ),
                 (
                     "GET",
-                    "/source/{label}/repos/{iterkey}/{chunk_size}",
-                    self.source_repos_iter,
+                    "/source/{label}/records/{iterkey}/{chunk_size}",
+                    self.source_records_iter,
                 ),
                 # TODO route to delete iterkey before iteration has completed
                 # Model APIs

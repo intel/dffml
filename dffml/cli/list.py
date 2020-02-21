@@ -6,16 +6,16 @@ from ..util.cli.cmd import CMD
 from ..util.cli.cmds import SourcesCMD, ListEntrypoint
 
 
-class ListRepos(SourcesCMD):
+class ListRecords(SourcesCMD):
     """
-    List repos stored in sources
+    List records stored in sources
     """
 
     async def run(self):
         async with self.sources as sources:
             async with sources() as sctx:
-                async for repo in sctx.repos():
-                    print(repo)
+                async for record in sctx.records():
+                    print(record)
 
 
 class ListServices(ListEntrypoint):
@@ -48,10 +48,10 @@ class ListModels(ListEntrypoint):
 
 class List(CMD):
     """
-    List repos and installed interfaces
+    List records and installed interfaces
     """
 
-    repos = ListRepos
+    records = ListRecords
     sources = ListSources
     models = ListModels
     services = ListServices
