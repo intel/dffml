@@ -174,8 +174,8 @@ range.
 
 .. literalinclude:: /../feature/git/dffml_feature_git/feature/operations.py
     :linenos:
-    :lineno-start: 349
-    :lines: 349-368
+    :lineno-start: 363
+    :lines: 363-394
 
 Since operations are run concurrently with each other, DFFML manages locking of
 input data, such as git repositories. This is done via ``Definitions`` which are
