@@ -148,7 +148,7 @@ class RidgeContext(ModelContext):
         await self._set_intercept(X_offset, y_offset, X_scale)
         self.accuracy_value = await self.coeff_of_deter(y, \
             np.dot(np.asarray(X, dtype=float), self.coef_.T)  + self.intercept_)
-        file_addr = self.parent.config.directory +"\\"+ self._features_hash_
+        file_addr = str(os.path.join(self.parent.config.directory, self._features_hash_))
         with open(file_addr + "weights.txt", 'w') as f:
             f.write(",".join(map(str, self.coef_)))
         with open(file_addr + "intercept.txt", 'w') as f:
@@ -183,7 +183,7 @@ class RidgeContext(ModelContext):
         await self.best_fit_line()
 
     async def accuracy(self, sources: Sources) -> Accuracy:
-        file_addr = self.parent.config.directory +"\\"+ self._features_hash_
+        file_addr = str(os.path.join(self.parent.config.directory, self._features_hash_))
         try:
             with open(file_addr + "acc.txt", "r") as f:
                 self.accuracy_value = float(f.read())
@@ -195,7 +195,7 @@ class RidgeContext(ModelContext):
         self, repos: AsyncIterator[Repo]
     ) -> AsyncIterator[Tuple[Repo, Any, float]]:
         try:
-            file_addr = self.parent.config.directory +"\\"+ self._features_hash_
+            file_addr = str(os.path.join(self.parent.config.directory, self._features_hash_))
             with open(file_addr + "weights.txt", 'r') as f:
                 self.coef_ = np.asarray(list(map(float, f.read().split(","))), dtype=float)
             with open(file_addr + "intercept.txt", 'r') as f:
