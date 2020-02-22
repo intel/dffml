@@ -112,7 +112,7 @@ No description
 
 **Inputs**
 
-- features: repo_features(type: Dict[str, Any])
+- features: record_features(type: Dict[str, Any])
 
 **Outputs**
 

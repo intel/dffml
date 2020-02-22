@@ -20,6 +20,10 @@ function run_plugin() {
 
   "${PYTHON}" -m pip install -U "${SRC_ROOT}"
 
+  if [ "x${PLUGIN}" = "xmodel/tensorflow_hub" ]; then
+    "${PYTHON}" -m pip install -U "${SRC_ROOT}/model/tensorflow"
+  fi
+
   cd "${PLUGIN}"
   PACKAGE_NAME=$(dffml service dev setuppy kwarg name setup.py)
   "${PYTHON}" -m pip install -e .

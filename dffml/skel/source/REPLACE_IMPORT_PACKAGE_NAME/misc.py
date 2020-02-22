@@ -1,43 +1,43 @@
-from typing import AsyncIterator, Dict, List, NamedTuple
+from typing import AsyncIterator, Dict, List
 
 from dffml.base import BaseConfig
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml.source.source import BaseSourceContext, BaseSource
 from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entrypoint
-from dffml.base import config, field
+from dffml.base import config
 
 
 @config
 class MiscSourceConfig:
-    repos: List[Repo]
+    records: List[Record]
 
 
 class MiscSourceContext(BaseSourceContext):
-    async def update(self, repo):
-        self.parent.mem[repo.key] = repo
+    async def update(self, record):
+        self.parent.mem[record.key] = record
 
-    async def repos(self) -> AsyncIterator[Repo]:
-        for repo in self.parent.mem.values():
-            yield repo
+    async def records(self) -> AsyncIterator[Record]:
+        for record in self.parent.mem.values():
+            yield record
 
-    async def repo(self, key: str) -> Repo:
-        return self.parent.mem.get(key, Repo(key))
+    async def record(self, key: str) -> Record:
+        return self.parent.mem.get(key, Record(key))
 
 
 @entrypoint("misc")
 class MiscSource(BaseSource):
     """
-    Stores repos ... somewhere! (skeleton template is in memory)
+    Stores records ... somewhere! (skeleton template is in memory)
     """
 
     CONTEXT = MiscSourceContext
 
     def __init__(self, config: BaseConfig) -> None:
         super().__init__(config)
-        self.mem: Dict[str, Repo] = {}
+        self.mem: Dict[str, Record] = {}
         if isinstance(self.config, MiscSourceConfig):
-            self.mem = {repo.key: repo for repo in self.config.repos}
+            self.mem = {record.key: record for record in self.config.records}
 
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
@@ -49,5 +49,5 @@ class MiscSource(BaseSource):
     @classmethod
     def config(cls, config, *above):
         return MiscSourceConfig(
-            repos=list(map(Repo, cls.config_get(config, above, "keys")))
+            records=list(map(Record, cls.config_get(config, above, "keys")))
         )

@@ -1,16 +1,12 @@
-import random
 import tempfile
-from typing import Type
 
-from dffml.repo import Repo, RepoData
-from dffml.model.model import ModelConfig
+from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml.feature import Data, DefFeature, Features
 from dffml.util.asynctestcase import AsyncTestCase
+from dffml.feature import DefFeature, Features
 
 from dffml_model_scratch.slr import SLR, SLRConfig
-
 
 FEATURE_DATA = [
     [12.39999962, 11.19999981],
@@ -46,12 +42,12 @@ class TestSLR(AsyncTestCase):
         cls.feature = DefFeature("X", float, 1)
         cls.features = Features(cls.feature)
         X, Y = list(zip(*FEATURE_DATA))
-        cls.repos = [
-            Repo(str(i), data={"features": {"X": X[i], "Y": Y[i]}})
+        cls.records = [
+            Record(str(i), data={"features": {"X": X[i], "Y": Y[i]}})
             for i in range(0, len(Y))
         ]
         cls.sources = Sources(
-            MemorySource(MemorySourceConfig(repos=cls.repos))
+            MemorySource(MemorySourceConfig(records=cls.records))
         )
         cls.model = SLR(
             SLRConfig(
@@ -75,10 +71,10 @@ class TestSLR(AsyncTestCase):
                 self.assertTrue(0.0 <= res < 1.0)
                 # Test predict
                 target_name = model.config.predict.NAME
-                async for repo in mctx.predict(sctx.repos()):
-                    correct = FEATURE_DATA[int(repo.key)][1]
+                async for record in mctx.predict(sctx.records()):
+                    correct = FEATURE_DATA[int(record.key)][1]
                     # Comparison of correct to prediction to make sure prediction is within a reasonable range
-                    prediction = repo.prediction(target_name).value
+                    prediction = record.prediction(target_name).value
                     self.assertGreater(prediction, correct - (correct * 0.10))
                     self.assertLess(prediction, correct + (correct * 0.10))
 
@@ -97,9 +93,9 @@ class TestSLR(AsyncTestCase):
         async with self.sources as sources, self.model as model:
             async with sources() as sctx, model() as mctx:
                 target_name = model.config.predict.NAME
-                async for repo in mctx.predict(sctx.repos()):
+                async for record in mctx.predict(sctx.records()):
                     target_name = model.config.predict.NAME
-                    correct = FEATURE_DATA[int(repo.key)][1]
-                    prediction = repo.prediction(target_name).value
+                    correct = FEATURE_DATA[int(record.key)][1]
+                    prediction = record.prediction(target_name).value
                     self.assertGreater(prediction, correct - (correct * 0.10))
                     self.assertLess(prediction, correct + (correct * 0.10))

@@ -1,6 +1,6 @@
 """
 Uses Tensorflow to create a generic DNN which learns on all of the features in a
-repo.
+record.
 """
 import os
 from typing import List, Dict, Any, AsyncIterator
@@ -10,14 +10,12 @@ import numpy as np
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
 
-from dffml.repo import Repo
-from dffml.util.cli.arg import Arg
+from dffml.record import Record
 from dffml.model.model import Model
 from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
-from dffml.util.cli.parser import list_action
-from dffml.base import BaseConfig, config, field
+from dffml.base import config, field
 from dffml.feature.feature import Feature, Features
 
 from .dnnc import TensorflowModelContext
@@ -29,7 +27,7 @@ class DNNRegressionModelConfig:
     features: Features = field("Features to train on")
     steps: int = field("Number of steps to train the model", default=3000)
     epochs: int = field(
-        "Number of iterations to pass over all repos in a source", default=30
+        "Number of iterations to pass over all records in a source", default=30
     )
     directory: str = field(
         "Directory where state should be saved",
@@ -83,22 +81,22 @@ class DNNRegressionModelContext(TensorflowModelContext):
         **kwargs,
     ):
         """
-        Uses the numpy input function with data from repo features.
+        Uses the numpy input function with data from record features.
         """
         self.logger.debug("Training on features: %r", self.features)
         x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
         y_cols = []
 
-        async for repo in sources.with_features(self.all_features):
-            for feature, results in repo.features(self.features).items():
+        async for record in sources.with_features(self.all_features):
+            for feature, results in record.features(self.features).items():
 
                 x_cols[feature].append(np.array(results))
-            y_cols.append(repo.feature(self.parent.config.predict.NAME))
+            y_cols.append(record.feature(self.parent.config.predict.NAME))
 
         y_cols = np.array(y_cols)
         for feature in x_cols:
             x_cols[feature] = np.array(x_cols[feature])
-        self.logger.info("------ Repo Data ------")
+        self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
@@ -121,20 +119,20 @@ class DNNRegressionModelContext(TensorflowModelContext):
         **kwargs,
     ):
         """
-        Uses the numpy input function with data from repo features.
+        Uses the numpy input function with data from record features.
         """
         x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
         y_cols = []
 
-        async for repo in sources.with_features(self.all_features):
-            for feature, results in repo.features(self.features).items():
+        async for record in sources.with_features(self.all_features):
+            for feature, results in record.features(self.features).items():
                 x_cols[feature].append(np.array(results))
-            y_cols.append(repo.feature(self.parent.config.predict.NAME))
+            y_cols.append(record.feature(self.parent.config.predict.NAME))
 
         y_cols = np.array(y_cols)
         for feature in x_cols:
             x_cols[feature] = np.array(x_cols[feature])
-        self.logger.info("------ Repo Data ------")
+        self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
@@ -150,7 +148,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
 
     async def accuracy(self, sources: Sources) -> Accuracy:
         """
-        Evaluates the accuracy of our model after training using the input repos
+        Evaluates the accuracy of our model after training using the input records
         as test data.
         """
         if not os.path.isdir(self.model_dir_path):
@@ -161,24 +159,26 @@ class DNNRegressionModelContext(TensorflowModelContext):
         metrics = self.model.evaluate(input_fn=input_fn)
         return Accuracy(1 - metrics["loss"])  # 1 - mse
 
-    async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
+    async def predict(
+        self, records: AsyncIterator[Record]
+    ) -> AsyncIterator[Record]:
         """
-        Uses trained data to make a prediction about the quality of a repo.
+        Uses trained data to make a prediction about the quality of a record.
         """
 
         if not os.path.isdir(self.model_dir_path):
             raise NotADirectoryError("Model not trained")
         # Create the input function
-        input_fn, predict_repo = await self.predict_input_fn(repos)
+        input_fn, predict_record = await self.predict_input_fn(records)
         # Makes predictions on
         predictions = self.model.predict(input_fn=input_fn)
         target = self.parent.config.predict.NAME
-        for repo, pred_dict in zip(predict_repo, predictions):
+        for record, pred_dict in zip(predict_record, predictions):
             # TODO Instead of float("nan") save accuracy value and use that.
-            repo.predicted(
+            record.predicted(
                 target, float(pred_dict["predictions"]), float("nan")
             )
-            yield repo
+            yield record
 
 
 @entrypoint("tfdnnr")

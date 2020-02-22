@@ -37,6 +37,9 @@ class Definition(NamedTuple):
     lock: bool = False
     # spec is a NamedTuple which could be populated via a dict
     spec: NamedTuple = None
+    # subspec is when your input is a list or dict of values which conform to
+    # the spec
+    subspec: bool = False
     # validate property will be a callable (function or lambda) which returns
     # the sanitized version of the value
     validate: Callable[[Any], Any] = None
@@ -274,8 +277,16 @@ class Input(object):
         # instance name this Input is intended for.
         if parents is None:
             parents = []
-        if isinstance(value, dict) and definition.spec is not None:
-            value = definition.spec(**value)
+        if definition.spec is not None:
+            if definition.subspec:
+                if isinstance(value, list):
+                    for i, subvalue in enumerate(value):
+                        value[i] = definition.spec(**subvalue)
+                elif isinstance(value, dict):
+                    for key, subvalue in value.items():
+                        value[key] = definition.spec(**subvalue)
+            elif isinstance(value, dict):
+                value = definition.spec(**value)
         if definition.validate is not None:
             value = definition.validate(value)
         self.value = value

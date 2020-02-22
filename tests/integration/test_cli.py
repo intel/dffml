@@ -2,40 +2,24 @@
 This file contains integration tests. We use the CLI to exercise functionality of
 various DFFML classes and constructs.
 """
-import re
-import os
-import io
-import json
 import inspect
 import pathlib
-import asyncio
 import contextlib
-import unittest.mock
-from typing import Dict, Any
 
-from dffml.repo import Repo
-from dffml.base import config
-from dffml.df.types import Definition, Operation, DataFlow, Input
-from dffml.df.base import op
 from dffml.cli.cli import CLI
-from dffml.model.model import Model
-from dffml.service.dev import Develop
-from dffml.util.packaging import is_develop
-from dffml.util.entrypoint import load
-from dffml.config.config import BaseConfigLoader
-from dffml.util.asynctestcase import AsyncTestCase, IntegrationCLITestCase
+from dffml.util.asynctestcase import IntegrationCLITestCase
 
 
 class TestList(IntegrationCLITestCase):
-    async def test_repos(self):
+    async def test_records(self):
         keys = ["A", "B", "C"]
         with contextlib.redirect_stdout(self.stdout):
             await CLI.cli(
                 "list",
-                "repos",
+                "records",
                 "-sources",
                 "feed=memory",
-                "-source-repos",
+                "-source-records",
                 *keys,
             )
         stdout = self.stdout.getvalue()
@@ -53,7 +37,7 @@ class TestMerge(IntegrationCLITestCase):
             "src=memory",
             "-source-dest-filename",
             filename,
-            "-source-src-repos",
+            "-source-src-records",
             *keys,
             "-source-src-allowempty",
             "-source-dest-allowempty",
@@ -63,7 +47,7 @@ class TestMerge(IntegrationCLITestCase):
         with contextlib.redirect_stdout(self.stdout):
             await CLI.cli(
                 "list",
-                "repos",
+                "records",
                 "-sources",
                 "tmp=json",
                 "-source-tmp-filename",
@@ -82,7 +66,7 @@ class TestMerge(IntegrationCLITestCase):
             "src=memory",
             "-source-dest-filename",
             filename,
-            "-source-src-repos",
+            "-source-src-records",
             *keys,
             "-source-src-allowempty",
             "-source-dest-allowempty",

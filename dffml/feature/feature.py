@@ -7,18 +7,12 @@ feature project's feature URL.
 import abc
 import pydoc
 import asyncio
-import traceback
-import concurrent.futures as futures
-import pkg_resources
 from contextlib import AsyncExitStack
-from functools import singledispatch, partial
-from typing import Optional, List, Dict, Type, AsyncIterator, Any, Callable
+from typing import List, Dict, Type, Any
 
 from .log import LOGGER
-from ..repo import Repo
-from ..util.monitor import Monitor, Task
+from ..util.monitor import Task
 from ..util.entrypoint import Entrypoint
-from ..util.asynchelper import AsyncContextManagerList
 
 
 class Frequency(object):
@@ -69,7 +63,7 @@ class LoggingDict(object):
 
 class Data(Task):
     """
-    Passed to each feature during evaluation. Shared between all features a repo
+    Passed to each feature during evaluation. Shared between all features a record
     is being evaluated with
     """
 
