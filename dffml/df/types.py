@@ -270,11 +270,13 @@ class Input(object):
         definition: Definition,
         parents: Optional[List["Input"]] = None,
         origin: Optional[Union[str, Tuple[Operation, str]]] = "seed",
+        validated: bool = True,
         *,
         uid: Optional[str] = "",
     ):
         # TODO Add optional parameter Input.target which specifies the operation
         # instance name this Input is intended for.
+        self.validated = validated
         if parents is None:
             parents = []
         if definition.spec is not None:
@@ -288,7 +290,10 @@ class Input(object):
             elif isinstance(value, dict):
                 value = definition.spec(**value)
         if definition.validate is not None:
-            value = definition.validate(value)
+            if callable(definition.validate):
+                value = definition.validate(value)
+            elif isinstance(definition.validate, str):
+                self.validated = False
         self.value = value
         self.definition = definition
         self.parents = parents
