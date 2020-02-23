@@ -10,7 +10,7 @@ API Reference
    base
    df/index
    feature
-   repo
+   record
    model/index
    source/index
    db/index

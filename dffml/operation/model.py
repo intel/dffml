@@ -1,6 +1,6 @@
 from typing import Dict, Any
 
-from ..repo import Repo
+from ..record import Record
 from ..base import config
 from ..model import Model
 from ..df.types import Definition
@@ -22,7 +22,7 @@ class ModelPredictConfig:
     name="dffml.model.predict",
     inputs={
         "features": Definition(
-            name="repo_features", primitive="Dict[str, Any]"
+            name="record_features", primitive="Dict[str, Any]"
         )
     },
     outputs={
@@ -35,8 +35,8 @@ class ModelPredictConfig:
     ctx_enter={"mctx": (lambda self: self.parent.model())},
 )
 async def model_predict(self, features: Dict[str, Any]) -> Dict[str, Any]:
-    async def repos():
-        yield Repo("", data={"features": features})
+    async def records():
+        yield Record("", data={"features": features})
 
-    async for repo in self.mctx.predict(repos()):
-        return {"prediction": repo.predictions()}
+    async for record in self.mctx.predict(records()):
+        return {"prediction": record.predictions()}

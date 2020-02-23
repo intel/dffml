@@ -1,11 +1,9 @@
 import json
-import asyncio
 import aiomysql
-from collections import OrderedDict
 from typing import AsyncIterator, NamedTuple, Dict
 
 from dffml.base import BaseConfig
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml.source.source import BaseSourceContext, BaseSource
 from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entrypoint
@@ -20,43 +18,43 @@ class DemoAppSourceConfig(BaseConfig, NamedTuple):
 
 
 class DemoAppSourceContext(BaseSourceContext):
-    async def update(self, repo: Repo):
+    async def update(self, record: Record):
         db = self.conn
         # Just dump it (if you want a setup the queries easily, then you need to
         # massage the columns in this table to your liking, and perhaps add more
         # tables.
-        marshall = json.dumps(repo.dict())
+        marshall = json.dumps(record.dict())
         await db.execute(
             "INSERT INTO ml_data (key, json) VALUES(%s, %s) "
             "ON DUPLICATE KEY UPDATE json = %s",
-            (repo.key, marshall, marshall),
+            (record.key, marshall, marshall),
         )
         self.logger.debug("updated: %s", marshall)
-        self.logger.debug("update: %s", await self.repo(repo.key))
+        self.logger.debug("update: %s", await self.record(record.key))
 
-    async def repos(self) -> AsyncIterator[Repo]:
+    async def records(self) -> AsyncIterator[Record]:
         await self.conn.execute("SELECT key FROM `status`")
         keys = set(map(lambda row: row[0], await self.conn.fetchall()))
         await self.conn.execute("SELECT key FROM `ml_data`")
         list(map(lambda row: keys.add(row[0]), await self.conn.fetchall()))
         for key in keys:
-            yield await self.repo(key)
+            yield await self.record(key)
 
-    async def repo(self, key: str):
-        repo = Repo(key)
+    async def record(self, key: str):
+        record = Record(key)
         db = self.conn
         # Get features
         await db.execute("SELECT json FROM ml_data WHERE key=%s", (key,))
         dump = await db.fetchone()
         if dump is not None and dump[0] is not None:
-            repo.merge(Repo(key, data=json.loads(dump[0])))
+            record.merge(Record(key, data=json.loads(dump[0])))
         await db.execute(
             "SELECT maintained FROM `status` WHERE key=%s", (key,)
         )
         maintained = await db.fetchone()
         if maintained is not None and maintained[0] is not None:
-            repo.evaluated({"maintained": str(maintained[0])})
-        return repo
+            record.evaluated({"maintained": str(maintained[0])})
+        return record
 
     async def __aenter__(self) -> "DemoAppSourceContext":
         self.__conn = self.parent.db.cursor()

@@ -1,21 +1,11 @@
 """
 This file contains integration tests for the high level (very abstract) APIs.
 """
-import re
-import os
-import io
-import json
-import inspect
-import pathlib
-import asyncio
 import importlib
-import contextlib
-import unittest.mock
-from typing import Dict, Any
 
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml import train, accuracy, predict
-from dffml.source.csv import CSVSource, CSVSourceConfig
+from dffml.source.csv import CSVSource
 from dffml.feature.feature import Features, DefFeature
 from dffml.util.asynctestcase import IntegrationCLITestCase
 
@@ -23,13 +13,13 @@ FEATURE_NAMES = ["Years", "Expertise", "Trust", "Salary"]
 
 
 class TestML(IntegrationCLITestCase):
-    async def populate_source(self, source_cls, *repos, **kwargs):
+    async def populate_source(self, source_cls, *records, **kwargs):
         kwargs.setdefault("allowempty", True)
         kwargs.setdefault("readwrite", True)
         async with source_cls(**kwargs) as source:
             async with source() as sctx:
-                for repo in repos:
-                    await sctx.update(repo)
+                for record in records:
+                    await sctx.update(record)
 
     async def setUp(self):
         await super().setUp()
@@ -42,14 +32,16 @@ class TestML(IntegrationCLITestCase):
         self.test_data = [[4, 9, 1.0, 50], [5, 11, 1.2, 60]]
         self.predict_data = [[6, 13, 1.4], [7, 15, 1.6]]
         for use in ["train", "test", "predict"]:
-            repos = [
-                Repo(i, data={"features": dict(zip(FEATURE_NAMES, features))})
+            records = [
+                Record(
+                    i, data={"features": dict(zip(FEATURE_NAMES, features))}
+                )
                 for i, features in enumerate(getattr(self, f"{use}_data"))
             ]
-            setattr(self, f"{use}_repos", repos)
+            setattr(self, f"{use}_records", records)
             filename = self.mktempfile() + ".csv"
             setattr(self, f"{use}_filename", filename)
-            await self.populate_source(CSVSource, *repos, filename=filename)
+            await self.populate_source(CSVSource, *records, filename=filename)
 
     async def test_predict(self):
         self.required_plugins("dffml-model-scikit")

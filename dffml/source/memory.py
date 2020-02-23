@@ -3,37 +3,35 @@
 """
 Fake data sources used for testing
 """
-import asyncio
-from typing import Any, Dict, List, NamedTuple, AsyncIterator
+from typing import Dict, List, AsyncIterator
 
 from ..base import config
-from ..repo import Repo
+from ..record import Record
 from .source import BaseSourceContext, BaseSource
-from ..util.cli.arg import Arg
 from ..util.entrypoint import entrypoint
 
 
 class MemorySourceContext(BaseSourceContext):
-    async def update(self, repo):
-        self.parent.mem[repo.key] = repo
+    async def update(self, record):
+        self.parent.mem[record.key] = record
 
-    async def repos(self) -> AsyncIterator[Repo]:
-        for repo in self.parent.mem.values():
-            yield repo
+    async def records(self) -> AsyncIterator[Record]:
+        for record in self.parent.mem.values():
+            yield record
 
-    async def repo(self, key: str) -> Repo:
-        return self.parent.mem.get(key, Repo(key))
+    async def record(self, key: str) -> Record:
+        return self.parent.mem.get(key, Record(key))
 
 
 @config
 class MemorySourceConfig:
-    repos: List[Repo]
+    records: List[Record]
 
 
 @entrypoint("memory")
 class MemorySource(BaseSource):
     """
-    Stores repos in a dict in memory
+    Stores records in a dict in memory
     """
 
     CONFIG = MemorySourceConfig
@@ -41,6 +39,6 @@ class MemorySource(BaseSource):
 
     def __init__(self, config: MemorySourceConfig) -> None:
         super().__init__(config)
-        self.mem: Dict[str, Repo] = {}
+        self.mem: Dict[str, Record] = {}
         if isinstance(self.config, MemorySourceConfig):
-            self.mem = {repo.key: repo for repo in self.config.repos}
+            self.mem = {record.key: record for record in self.config.records}

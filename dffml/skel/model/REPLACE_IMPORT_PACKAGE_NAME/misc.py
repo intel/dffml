@@ -5,7 +5,7 @@ Description of what this model does
 """
 from typing import AsyncIterator, Tuple, Any, List
 
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.feature import Features
 from dffml.model.accuracy import Accuracy
@@ -30,27 +30,27 @@ class MiscModelContext(ModelContext):
 
     async def train(self, sources: Sources):
         """
-        Train using repos as the data to learn from.
+        Train using records as the data to learn from.
         """
         pass
 
     async def accuracy(self, sources: Sources) -> Accuracy:
         """
-        Evaluates the accuracy of our model after training using the input repos
+        Evaluates the accuracy of our model after training using the input records
         as test data.
         """
         # Lies
         return 1.0
 
     async def predict(
-        self, repos: AsyncIterator[Repo]
-    ) -> AsyncIterator[Tuple[Repo, Any, float]]:
+        self, records: AsyncIterator[Record]
+    ) -> AsyncIterator[Tuple[Record, Any, float]]:
         """
-        Uses trained data to make a prediction about the quality of a repo.
+        Uses trained data to make a prediction about the quality of a record.
         """
-        async for repo in repos:
-            yield repo, self.parent.config.classifications[
-                repo.feature(self.parent.config.features.names()[0])
+        async for record in records:
+            yield record, self.parent.config.classifications[
+                record.feature(self.parent.config.features.names()[0])
             ], 1.0
 
 

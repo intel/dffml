@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 """
-Loads repos from an IDX1 file
+Loads records from an IDX1 file
 """
 import struct
 
-from ..repo import Repo
+from ..record import Record
 from ..base import config, field
 from .memory import MemorySource
 from .file import BinaryFileSource
@@ -39,7 +39,7 @@ class IDX1Source(BinaryFileSource, MemorySource):
         # Reading the rest of binary datafile one byte at a time
         self.mem = {}
         for i in range(size):
-            self.mem[str(i)] = Repo(
+            self.mem[str(i)] = Record(
                 str(i),
                 data={
                     "features": {

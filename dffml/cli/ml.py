@@ -38,21 +38,21 @@ class PredictAll(MLCMD):
 
     arg_update = Arg(
         "-update",
-        help="Update repo with sources",
+        help="Update record with sources",
         required=False,
         default=False,
         action="store_true",
     )
 
     async def run(self):
-        async for repo in predict(
-            self.model, self.sources, update=self.update, keep_repo=True
+        async for record in predict(
+            self.model, self.sources, update=self.update, keep_record=True
         ):
-            yield repo
+            yield record
 
 
-class PredictRepo(PredictAll, KeysCMD):
-    """Predictions for individual repos"""
+class PredictRecord(PredictAll, KeysCMD):
+    """Predictions for individual records"""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -60,7 +60,7 @@ class PredictRepo(PredictAll, KeysCMD):
 
 
 class Predict(CMD):
-    """Evaluate features against repos and produce a prediction"""
+    """Evaluate features against records and produce a prediction"""
 
-    repo = PredictRepo
+    record = PredictRecord
     _all = PredictAll

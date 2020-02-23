@@ -10,9 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Notes on development dependencies in `setup.py` files to codebase notes.
 - Test for `cached_download`
 ### Changed
+- `repo`/`Repo` to `record`/`Record`
 - Definitions with a `spec` can use the `subspec` parameter to declare that they
   are a list or a dict where the values are of the `spec` type. Rather than the
   list or dict itself being of the `spec` type.
+### Removed
+- Unused imports
 
 ## [0.3.3] - 2020-02-10
 ### Added

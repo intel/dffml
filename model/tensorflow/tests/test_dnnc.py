@@ -3,7 +3,7 @@ import random
 import tempfile
 from typing import Type
 
-from dffml.repo import Repo, RepoData
+from dffml.record import Record, RecordData
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Data, Feature, Features, DefFeature
@@ -33,22 +33,22 @@ class TestDNN(AsyncTestCase):
         cls.model_dir = tempfile.TemporaryDirectory()
         cls.feature = StartsWithA()
         cls.features = Features(cls.feature)
-        cls.repos = [
-            Repo(
+        cls.records = [
+            Record(
                 "a" + str(random.random()),
                 data={"features": {cls.feature.NAME: 1, "string": "a"}},
             )
             for _ in range(0, 1000)
         ]
-        cls.repos += [
-            Repo(
+        cls.records += [
+            Record(
                 "b" + str(random.random()),
                 data={"features": {cls.feature.NAME: 0, "string": "not a"}},
             )
             for _ in range(0, 1000)
         ]
         cls.sources = Sources(
-            MemorySource(MemorySourceConfig(repos=cls.repos))
+            MemorySource(MemorySourceConfig(records=cls.records))
         )
         cls.model = DNNClassifierModel(
             DNNClassifierModelConfig(
@@ -107,13 +107,13 @@ class TestDNN(AsyncTestCase):
                 self.assertGreater(res, 0.9)
 
     async def test_02_predict(self):
-        a = Repo("a", data={"features": {self.feature.NAME: 1}})
+        a = Record("a", data={"features": {self.feature.NAME: 1}})
         async with Sources(
-            MemorySource(MemorySourceConfig(repos=[a]))
+            MemorySource(MemorySourceConfig(records=[a]))
         ) as sources, self.model as model:
             target_name = model.config.predict.NAME
             async with sources() as sctx, model() as mctx:
-                res = [repo async for repo in mctx.predict(sctx.repos())]
+                res = [record async for record in mctx.predict(sctx.records())]
                 self.assertEqual(len(res), 1)
             self.assertEqual(res[0].key, a.key)
             self.assertTrue(res[0].prediction(target_name).value)
