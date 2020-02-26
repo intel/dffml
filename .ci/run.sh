@@ -118,6 +118,11 @@ function run_whitespace() {
 
 function run_style() {
   black --check "${SRC_ROOT}"
+
+  for filename in $(git ls-files \*.js); do
+    echo "Checking JavaScript file \'${filename}\'"
+    diff <(js-beautify -n -s 2 "${filename}") "${filename}"
+  done
 }
 
 function run_docs() {
