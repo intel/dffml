@@ -484,10 +484,7 @@ class BaseDataFlowFacilitatorObjectContext(LoggingLogger):
     classes which support async context management. Classes ending with
     ...Context are the most inner context's which are used in DFFML.
 
-    >>> # Calling obj returns an instance which is a subclass of this class,
-    >>> # BaseDataFlowFacilitatorObjectContext.
-    >>> async with obj() as ctx:
-    >>>     await ctx.method()
+    See the :class:BaseDataFlowFacilitatorObject for example usage.
     """
 
     async def __aenter__(self) -> "BaseDataFlowFacilitatorObjectContext":
@@ -516,9 +513,18 @@ class BaseDataFlowFacilitatorObject(
     >>> # setup. Call obj to get an instance of obj.CONTEXT, which is a subclass
     >>> # of BaseDataFlowFacilitatorObjectContext. ctx, the inner context, does
     >>> # all the heavy lifting.
-    >>> async with BaseDataFlowObject() as obj:
-    >>>     async with obj() as ctx:
-    >>>         await ctx.method()
+    >>> class Context(BaseDataFlowFacilitatorObjectContext):
+    ...     async def method(self):
+    ...         return
+    >>> class Object(BaseDataFlowFacilitatorObject):
+    ...     CONTEXT = Context
+    ...     def __call__(self):
+    ...         return Context()
+    >>> async def main():
+    ...     async with Object(BaseConfig()) as obj:
+    ...         async with obj() as ctx:
+    ...             await ctx.method()
+    >>> asyncio.run(main())
     """
 
     def __init__(self, config: BaseConfig) -> None:
