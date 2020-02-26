@@ -284,32 +284,6 @@
 <span class="sd">    Once the appropriate data is fetched the parse method is responsible for</span>
 <span class="sd">    storing the parts of that data which will be used to calculate in the</span>
 <span class="sd">    subclass</span>
-
-<span class="sd">    &gt;&gt;&gt; self.__example_parsed_value_name = example_value</span>
-
-<span class="sd">    The calc method then uses variables set in parse to output an integer value.</span>
-
-<span class="sd">    &gt;&gt;&gt;     def calc(self):</span>
-<span class="sd">    &gt;&gt;&gt;         return self.__example_parsed_value_name</span>
-
-<span class="sd">    Full example of a feature implementation:</span>
-
-<span class="sd">    &gt;&gt;&gt; import glob</span>
-<span class="sd">    &gt;&gt;&gt; from dffml.feature import Feature</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; class NumFilesFeature(Feature):</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt;     @abc.abstractmethod</span>
-<span class="sd">    &gt;&gt;&gt;     def fetch(self, data):</span>
-<span class="sd">    &gt;&gt;&gt;         self._downloader.vcs(self._key, self.tempdir(&#39;src&#39;))</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt;     @abc.abstractmethod</span>
-<span class="sd">    &gt;&gt;&gt;     def parse(self, data):</span>
-<span class="sd">    &gt;&gt;&gt;         self.__num_files = glob.glob(self.tempdir(), recursive=True)</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt;     @abc.abstractmethod</span>
-<span class="sd">    &gt;&gt;&gt;     def calc(self, data):</span>
-<span class="sd">    &gt;&gt;&gt;         return self.__num_files</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">LOGGER</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s2">&quot;Feature&quot;</span><span class="p">)</span>

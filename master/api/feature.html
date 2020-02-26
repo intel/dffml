@@ -188,20 +188,6 @@
             
   <div class="section" id="module-dffml.feature">
 <span id="features"></span><h1>Features<a class="headerlink" href="#module-dffml.feature" title="Permalink to this headline">¶</a></h1>
-<p>All features registered to the dffml.feature entry point using setuptools are
-derived from the Feature class. To add a feature, create a module which has a
-setup.py which specifies where to find your Feature subclass within your module.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;myfeatures&#39;</span><span class="p">,</span>
-<span class="gp">...</span>
-    <span class="n">entry_points</span><span class="o">=</span><span class="p">{</span>
-        <span class="s1">&#39;dffml.feature&#39;</span><span class="p">:</span> <span class="p">[</span>
-            <span class="s1">&#39;numfiles = myfeatures:NumFilesFeature&#39;</span><span class="p">,</span>
-        <span class="p">],</span>
-    <span class="p">},</span>
-<span class="p">)</span>
-</pre></div>
-</div>
 <span class="target" id="module-dffml.feature.feature"></span><p>Feature subclasses are responsible for generating an integer value given an open
 feature project’s feature URL.</p>
 <dl class="class">
@@ -225,33 +211,6 @@ on disk.</p>
 <p>Once the appropriate data is fetched the parse method is responsible for
 storing the parts of that data which will be used to calculate in the
 subclass</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">__example_parsed_value_name</span> <span class="o">=</span> <span class="n">example_value</span>
-</pre></div>
-</div>
-<p>The calc method then uses variables set in parse to output an integer value.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__example_parsed_value_name</span>
-</pre></div>
-</div>
-<p>Full example of a feature implementation:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
-<span class="kn">from</span> <span class="nn">dffml.feature</span> <span class="kn">import</span> <span class="n">Feature</span>
-
-<span class="k">class</span> <span class="nc">NumFilesFeature</span><span class="p">(</span><span class="n">Feature</span><span class="p">):</span>
-
-    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_downloader</span><span class="o">.</span><span class="n">vcs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tempdir</span><span class="p">(</span><span class="s1">&#39;src&#39;</span><span class="p">))</span>
-
-    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__num_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tempdir</span><span class="p">(),</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__num_files</span>
-</pre></div>
-</div>
 <dl class="method">
 <dt id="dffml.feature.feature.Feature.dtype">
 <code class="sig-name descname">dtype</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Type<a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.dtype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.dtype" title="Permalink to this definition">¶</a></dt>
