@@ -230,7 +230,7 @@ Model
 The following is an example request body to configure a model. The URL this
 ``POST`` request is sent to is.
 
-- ``/configure/source/fake/mymodel``
+- ``/configure/model/fake/mymodel``
 
 .. code-block:: json
 
