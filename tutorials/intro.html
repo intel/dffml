@@ -96,7 +96,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction to DFFML</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#sources">Sources</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#repos">Repos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#records">Records</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#models">Models</a></li>
@@ -224,24 +224,16 @@ creating a public Git repo.</p>
 <p>By providing a generic abstraction around where data is being saved and stored,
 model implementations can access the data via the same API no matter where it
 is.</p>
-<div class="section" id="repos">
-<h3>Repos<a class="headerlink" href="#repos" title="Permalink to this headline">¶</a></h3>
-<p>A common construct within DFFML is the <code class="docutils literal notranslate"><span class="pre">Repo</span></code>. A <code class="docutils literal notranslate"><span class="pre">Repo</span></code> object is a
-repository of information associated with a unique key. The <code class="docutils literal notranslate"><span class="pre">Repo</span></code> holds all
+<div class="section" id="records">
+<h3>Records<a class="headerlink" href="#records" title="Permalink to this headline">¶</a></h3>
+<p>A common construct within DFFML is the <code class="docutils literal notranslate"><span class="pre">Record</span></code>. A <code class="docutils literal notranslate"><span class="pre">Record</span></code> object is a
+repository of information associated with a unique key. The <code class="docutils literal notranslate"><span class="pre">Record</span></code> holds all
 the data associated with that key.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>DFFML started as a project centred around Git repos. As such, the unique key
-for a Git repo was the upstream source URL. <code class="docutils literal notranslate"><span class="pre">src_url</span></code> was used as the
-parameter to hold the unique key.</p>
-<p>Now as DFFML has become more general purpose all instances of <code class="docutils literal notranslate"><span class="pre">Repo.src_url</span></code> have
-been changed to <code class="docutils literal notranslate"><span class="pre">Repo.key</span></code> <a class="reference external" href="https://github.com/intel/dffml/issues/233">#233</a>.</p>
-</div>
 <p>Say for instance you generated a dataset that had to do with cities. Your unique
 key might be the name of the city, the state or province it’s in, and the
 country it’s in. For example: <code class="docutils literal notranslate"><span class="pre">Portland,</span> <span class="pre">OR,</span> <span class="pre">USA</span></code>.</p>
-<p>The data associated with a <code class="docutils literal notranslate"><span class="pre">Repo</span></code> is called the feature data. Its stored
-within a key value mapping within the <code class="docutils literal notranslate"><span class="pre">Repo</span></code> accessible via the
+<p>The data associated with a <code class="docutils literal notranslate"><span class="pre">Record</span></code> is called the feature data. Its stored
+within a key value mapping within the <code class="docutils literal notranslate"><span class="pre">Record</span></code> accessible via the
 <code class="docutils literal notranslate"><span class="pre">features()</span></code> method. Our city example might have the following feature data.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;climate&quot;</span><span class="p">:</span> <span class="s2">&quot;rainy&quot;</span><span class="p">,</span>
@@ -348,7 +340,7 @@ permutations of inputs exist for every operation.</p>
 </div>
 <div class="section" id="lock-network">
 <h3>Lock Network<a class="headerlink" href="#lock-network" title="Permalink to this headline">¶</a></h3>
-<p>Manges locking of input data so that operations can run concurrently without
+<p>Manages locking of input data so that operations can run concurrently without
 managing their own resource locking.</p>
 </div>
 <div class="section" id="orchestrator">

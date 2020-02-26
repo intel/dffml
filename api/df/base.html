@@ -111,7 +111,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../repo.html">Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
@@ -471,12 +471,6 @@ been.</p>
 <code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">isoperation</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#isoperation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.isoperation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Similar to inspect.isclass and that family of functions. Returns true if
 item is an instance of Operation.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get all operations imported in a file</span>
-<span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-         <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span>
-                            <span class="n">predicate</span><span class="o">=</span><span class="n">isoperation</span><span class="p">)))</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="function">
@@ -484,12 +478,6 @@ item is an instance of Operation.</p>
 <code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">isopimp</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#isopimp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.isopimp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Similar to inspect.isclass and that family of functions. Returns true if
 item is a subclass of OperationImpelmentation.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get all operation implementations imported in a file</span>
-<span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-         <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span>
-                            <span class="n">predicate</span><span class="o">=</span><span class="n">isopimp</span><span class="p">)))</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="function">
@@ -497,12 +485,6 @@ item is a subclass of OperationImpelmentation.</p>
 <code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">isopwraped</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#isopwraped"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.isopwraped" title="Permalink to this definition">¶</a></dt>
 <dd><p>Similar to inspect.isclass and that family of functions. Returns true if a
 function has been wrapped with <cite>op</cite>.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get all functions imported in a file that have been wrapped with `op`</span>
-<span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-         <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span>
-                            <span class="n">predicate</span><span class="o">=</span><span class="n">isopwraped</span><span class="p">)))</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="function">

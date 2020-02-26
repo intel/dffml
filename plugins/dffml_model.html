@@ -106,6 +106,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#tfdnnr">tfdnnr</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-tensorflow-hub">dffml_model_tensorflow_hub</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#text-classifier">text_classifier</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-scratch">dffml_model_scratch</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#scratchslr">scratchslr</a></li>
 </ul>
@@ -335,13 +339,13 @@ look for a different saved model.</p>
 <li><p>batchsize: Integer</p>
 <ul>
 <li><p>default: 20</p></li>
-<li><p>Number repos to pass through in an epoch</p></li>
+<li><p>Number records to pass through in an epoch</p></li>
 </ul>
 </li>
 <li><p>shuffle: Boolean</p>
 <ul>
 <li><p>default: True</p></li>
-<li><p>Randomise order of repos in a batch</p></li>
+<li><p>Randomise order of records in a batch</p></li>
 </ul>
 </li>
 <li><p>steps: Integer</p>
@@ -353,7 +357,7 @@ look for a different saved model.</p>
 <li><p>epochs: Integer</p>
 <ul>
 <li><p>default: 30</p></li>
-<li><p>Number of iterations to pass over all repos in a source</p></li>
+<li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
 <li><p>directory: String</p>
@@ -477,7 +481,7 @@ predict).</p>
 <li><p>epochs: Integer</p>
 <ul>
 <li><p>default: 30</p></li>
-<li><p>Number of iterations to pass over all repos in a source</p></li>
+<li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
 <li><p>directory: String</p>
@@ -490,6 +494,190 @@ predict).</p>
 <ul>
 <li><p>default: [12, 40, 15]</p></li>
 <li><p>List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="dffml-model-tensorflow-hub">
+<h2>dffml_model_tensorflow_hub<a class="headerlink" href="#dffml-model-tensorflow-hub" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-tensorflow-hub</span>
+</pre></div>
+</div>
+<div class="section" id="text-classifier">
+<h3>text_classifier<a class="headerlink" href="#text-classifier" title="Permalink to this headline">¶</a></h3>
+<p><em>Core</em></p>
+<p>Implemented using Tensorflow hub pretrained models.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; train.csv &lt;&lt; EOF
+<span class="go">sentence,sentiment</span>
+<span class="go">Life is good,1</span>
+<span class="go">This book is amazing,1</span>
+<span class="go">It&#39;s a terrible movie,0</span>
+<span class="go">Global warming is bad,0</span>
+<span class="go">EOF</span>
+<span class="gp">$</span> cat &gt; test.csv &lt;&lt; EOF
+<span class="go">sentence,sentiment</span>
+<span class="go">I am not feeling good,0</span>
+<span class="go">Our trip was full of adventures,1</span>
+<span class="go">EOF</span>
+<span class="gp">$</span> dffml train <span class="se">\</span>
+    -model text_classifier <span class="se">\</span>
+    -model-epochs <span class="m">30</span> <span class="se">\</span>
+    -model-predict sentiment:int:1 <span class="se">\</span>
+    -model-classifications <span class="m">0</span> <span class="m">1</span>  <span class="se">\</span>
+    -model-clstype int <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename train.csv <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      sentence:str:1 <span class="se">\</span>
+    -model-model_path <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> <span class="se">\</span>
+    -model-add_layers <span class="se">\</span>
+    -model-layers <span class="s2">&quot;Dense(units=512, activation=&#39;relu&#39;)&quot;</span> <span class="s2">&quot;Dense(units=2, activation=&#39;softmax&#39;)&quot;</span> <span class="se">\</span>
+    -log debug
+<span class="gp">$</span> dffml accuracy <span class="se">\</span>
+    -model text_classifier <span class="se">\</span>
+    -model-predict sentiment:int:1 <span class="se">\</span>
+    -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
+    -model-model_path <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> <span class="se">\</span>
+    -model-clstype int <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename test.csv <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      sentence:str:1 <span class="se">\</span>
+    -log critical
+<span class="go">    1.0</span>
+<span class="gp">$</span> dffml predict all <span class="se">\</span>
+    -model text_classifier <span class="se">\</span>
+    -model-predict sentiment:int:1 <span class="se">\</span>
+    -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
+    -model-model_path <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> <span class="se">\</span>
+    -model-clstype int <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename test.csv <span class="se">\</span>
+    -model-features <span class="se">\</span>
+      sentence:str:1 <span class="se">\</span>
+    -log debug
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;sentence&quot;: &quot;I am not feeling good&quot;,</span>
+<span class="go">            &quot;sentiment&quot;: 0</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;0&quot;,</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2020-02-15T02:54:02Z&quot;,</span>
+<span class="go">        &quot;prediction&quot;: {</span>
+<span class="go">            &quot;sentiment&quot;: {</span>
+<span class="go">                &quot;confidence&quot;: 0.7630850076675415,</span>
+<span class="go">                &quot;value&quot;: 0</span>
+<span class="go">            }</span>
+<span class="go">        }</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;sentence&quot;: &quot;Our trip was full of adventures&quot;,</span>
+<span class="go">            &quot;sentiment&quot;: 1</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;1&quot;,</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2020-02-15T02:54:02Z&quot;,</span>
+<span class="go">        &quot;prediction&quot;: {</span>
+<span class="go">            &quot;sentiment&quot;: {</span>
+<span class="go">                &quot;confidence&quot;: 0.6673157811164856,</span>
+<span class="go">                &quot;value&quot;: 1</span>
+<span class="go">            }</span>
+<span class="go">        }</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>predict: Feature</p>
+<ul>
+<li><p>Feature name holding classification value</p></li>
+</ul>
+</li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
+<li><p>features: List of features</p>
+<ul>
+<li><p>Features to train on</p></li>
+</ul>
+</li>
+<li><p>trainable: String</p>
+<ul>
+<li><p>default: True</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>batch_size: Integer</p>
+<ul>
+<li><p>default: 120</p></li>
+<li><p>Batch size</p></li>
+</ul>
+</li>
+<li><p>max_seq_length: Integer</p>
+<ul>
+<li><p>default: 256</p></li>
+<li><p>Length of sentence, used in preprocessing of input for bert embedding</p></li>
+</ul>
+</li>
+<li><p>add_layers: Boolean</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on the top of pretrianed model/layer</p></li>
+</ul>
+</li>
+<li><p>embedType: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Type of pretrained embedding model, required to be set to <cite>bert</cite> to use bert pretrained embedding</p></li>
+</ul>
+</li>
+<li><p>layers: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>model_path: String</p>
+<ul>
+<li><p>default: <a class="reference external" href="https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1">https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1</a></p></li>
+<li><p>Pretrained model path/url</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: adam</p></li>
+<li><p>Optimizer used by model</p></li>
+</ul>
+</li>
+<li><p>metrics: String</p>
+<ul>
+<li><p>default: accuracy</p></li>
+<li><p>Metric used to evaluate model</p></li>
+</ul>
+</li>
+<li><p>clstype: Type</p>
+<ul>
+<li><p>default: &lt;class ‘str’&gt;</p></li>
+<li><p>Data type of classifications values</p></li>
+</ul>
+</li>
+<li><p>epochs: Integer</p>
+<ul>
+<li><p>default: 10</p></li>
+<li><p>Number of iterations to pass over all records in a source</p></li>
+</ul>
+</li>
+<li><p>directory: String</p>
+<ul>
+<li><p>default: /home/user/.cache/dffml/tensorflow_hub</p></li>
+<li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
 </ul>

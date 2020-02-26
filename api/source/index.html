@@ -106,7 +106,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../repo.html">Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Sources</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="base.html">Base Source</a></li>
@@ -196,10 +196,10 @@
 <p>Sources are how DFFML abstracts storage of feature data. This allows users to
 swap out their data sources as they progress from testing through integration.</p>
 <p>Most DFFML CLI commands work with the <a class="reference internal" href="base.html#dffml.source.source.Sources" title="dffml.source.source.Sources"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.source.source.Sources</span></code></a> class
-which merges the feature data of Repos with the same <code class="docutils literal notranslate"><span class="pre">key</span></code>. This means
+which merges the feature data of Records with the same <code class="docutils literal notranslate"><span class="pre">key</span></code>. This means
 when multiple sources are given to those CLI commands, feature data stored in
 those various sources/databases under the same unique key will automatically
-accessible within one <a class="reference internal" href="../repo.html#dffml.repo.Repo" title="dffml.repo.Repo"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.repo.Repo</span></code></a>.</p>
+accessible within one <a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.record.Record</span></code></a>.</p>
 <p>DFFML has several built in sources which can be used programmatically or via the
 CLI and other services.</p>
 <div class="toctree-wrapper compound">
