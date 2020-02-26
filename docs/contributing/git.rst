@@ -113,7 +113,7 @@ If the lgtm bot comments and tells you that you're adding unused imports or
 doing something it doesn't like, either fix it, or tell us why what you're doing
 is okay.
 
-+------------------------------------------------------------------------------+
++--------------+---------------------------------------------------------------+
 | CI Test      | What's Probably Wrong                                         |
 +--------------+---------------------------------------------------------------+
 | CHANGELOG    | You need to say what your change is doing in CHANGELOG.md     |
