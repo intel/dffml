@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tensorflow hub NLP models.
 - Notes on development dependencies in `setup.py` files to codebase notes.
 - Test for `cached_download`
+- Directions on how to read the CI under the Git and GitHub page of the
+  contributing documentation.
 ### Changed
 - `repo`/`Repo` to `record`/`Record`
 - Definitions with a `spec` can use the `subspec` parameter to declare that they
