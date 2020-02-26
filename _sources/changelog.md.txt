@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- Tensorflow hub NLP models.
+- Notes on development dependencies in `setup.py` files to codebase notes.
+- Test for `cached_download`
+- Directions on how to read the CI under the Git and GitHub page of the
+  contributing documentation.
+### Changed
+- `repo`/`Repo` to `record`/`Record`
+- Definitions with a `spec` can use the `subspec` parameter to declare that they
+  are a list or a dict where the values are of the `spec` type. Rather than the
+  list or dict itself being of the `spec` type.
+- Fixed the URL mentioned in example to configure a model.
+- Sphinx doctests are now run in the CI in the DOCS task.
+### Removed
+- Unused imports
+
 ## [0.3.3] - 2020-02-10
 ### Added
 - Moved from TensorFlow 1 to TensorFlow 2.

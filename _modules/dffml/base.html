@@ -656,10 +656,7 @@
 <span class="sd">    classes which support async context management. Classes ending with</span>
 <span class="sd">    ...Context are the most inner context&#39;s which are used in DFFML.</span>
 
-<span class="sd">    &gt;&gt;&gt; # Calling obj returns an instance which is a subclass of this class,</span>
-<span class="sd">    &gt;&gt;&gt; # BaseDataFlowFacilitatorObjectContext.</span>
-<span class="sd">    &gt;&gt;&gt; async with obj() as ctx:</span>
-<span class="sd">    &gt;&gt;&gt;     await ctx.method()</span>
+<span class="sd">    See the :class:BaseDataFlowFacilitatorObject for example usage.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseDataFlowFacilitatorObjectContext&quot;</span><span class="p">:</span>
@@ -688,9 +685,18 @@
 <span class="sd">    &gt;&gt;&gt; # setup. Call obj to get an instance of obj.CONTEXT, which is a subclass</span>
 <span class="sd">    &gt;&gt;&gt; # of BaseDataFlowFacilitatorObjectContext. ctx, the inner context, does</span>
 <span class="sd">    &gt;&gt;&gt; # all the heavy lifting.</span>
-<span class="sd">    &gt;&gt;&gt; async with BaseDataFlowObject() as obj:</span>
-<span class="sd">    &gt;&gt;&gt;     async with obj() as ctx:</span>
-<span class="sd">    &gt;&gt;&gt;         await ctx.method()</span>
+<span class="sd">    &gt;&gt;&gt; class Context(BaseDataFlowFacilitatorObjectContext):</span>
+<span class="sd">    ...     async def method(self):</span>
+<span class="sd">    ...         return</span>
+<span class="sd">    &gt;&gt;&gt; class Object(BaseDataFlowFacilitatorObject):</span>
+<span class="sd">    ...     CONTEXT = Context</span>
+<span class="sd">    ...     def __call__(self):</span>
+<span class="sd">    ...         return Context()</span>
+<span class="sd">    &gt;&gt;&gt; async def main():</span>
+<span class="sd">    ...     async with Object(BaseConfig()) as obj:</span>
+<span class="sd">    ...         async with obj() as ctx:</span>
+<span class="sd">    ...             await ctx.method()</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>

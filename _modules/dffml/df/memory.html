@@ -324,10 +324,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">LOGGER</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span><span class="p">)</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">notification_item</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">set_items</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add set_items to set and notification_item to the notification queue</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">notification_item</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">notification_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">notification_item</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">event_added</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
@@ -418,12 +415,10 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">handle_string</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_notification_set</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">input_notification_set</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]</span> <span class="o">=</span> <span class="n">NotificationSet</span><span class="p">()</span>
             <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx_notification_set</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
-                <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">input_set</span><span class="o">.</span><span class="n">ctx</span><span class="p">,</span> <span class="p">[])</span>
+                <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">input_set</span><span class="o">.</span><span class="n">ctx</span><span class="p">)</span>
         <span class="c1"># Add the input set to the incoming inputs</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_notification_set</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
-            <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-                <span class="n">input_set</span><span class="p">,</span> <span class="p">[</span><span class="n">item</span> <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">input_set</span><span class="o">.</span><span class="n">inputs</span><span class="p">()]</span>
-            <span class="p">)</span>
+            <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">input_set</span><span class="p">)</span>
         <span class="c1"># Associate inputs with their context handle grouped by definition</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd_lock</span><span class="p">:</span>
             <span class="c1"># Create dict for handle_string if not present</span>
