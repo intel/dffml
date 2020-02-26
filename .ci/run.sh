@@ -185,7 +185,7 @@ function run_docs() {
   export GIT_SSH_COMMAND="${GIT_SSH_COMMAND} -o IdentityFile=~/.ssh/github_dffml"
 
   git remote set-url origin git@github.com:intel/dffml
-  git push
+  git push -f
 
   cd -
 
