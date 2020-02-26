@@ -63,3 +63,73 @@ commit.
 
     $ git commit --amend
 
+Submitting A Pull Request
+-------------------------
+
+We try to keep changes in pull requests concise. This means you should title
+your pull request so we know what it does and in the description tell us
+anything else we need to know. Try to make bite sized changes. Generally, pull
+requests should be under 1000 lines. If you find your pull request going over
+that, it is probably time to clean up what you have and make sure it passes all
+the CI and review so we can merge it, and you can start working on the rest of
+your changes in a new pull request. This helps others working on the project and
+users get access to your changes faster.
+
+Once you have some work done on an issue or some feature you may be
+implementing, you should submit a draft pull request, or prefix the title with
+``WIP:`` to indicate that it's a Work In Progress.
+
+Try to get as far as you can by running the tests locally, or looking at the
+results of the CI. If you need help, ask in the Gitter channel if someone can
+review your work or help you figure out what might be going wrong or how you
+could solve an issue your stuck on.
+
+Before you are get help, a review, or a final review, make sure to fetch the
+latest changes from the master branch and ``merge`` or ``rebase`` them into your
+branch.
+
+When you are ready for final review, remove the ``WIP:`` prefix or draft status.
+At this point, all the CI tests should be passing. It should be okay for a
+maintainer to merge your pull request at this point. Pull requests with the
+``WIP:`` prefix or draft status will not be merged.
+
+How to Read the CI
+------------------
+
+We have continuous integration setup which can tell you a lot about if your pull
+request is ready for review or not.
+
+.. image:: /images/how-to-read-ci-tests.png
+    :alt: Screenshot of CI with some tests passing and some failing
+
+Look through all of the tests and identify which ones are failing. Click on the
+test to view the logs, there is a drop down in the top right which will let you
+view the "raw logs", which might be helpful.
+
+All of the CI tests must pass for your pull request to be merged! Keep working
+on it or ask for help if your not sure what's wrong.
+
+If the lgtm bot comments and tells you that you're adding unused imports or
+doing something it doesn't like, either fix it, or tell us why what you're doing
+is okay.
+
++------------------------------------------------------------------------------+
+| CI Test      | What's Probably Wrong                                         |
++--------------+---------------------------------------------------------------+
+| CHANGELOG    | You need to say what your change is doing in CHANGELOG.md     |
++--------------+---------------------------------------------------------------+
+| WHITESPACE   | https://softwareengineering.stackexchange.com/q/121555        |
++--------------+---------------------------------------------------------------+
+| STYLE        | You need to run the ``black`` formater                        |
++--------------+---------------------------------------------------------------+
+| DOCS         | You changed a docstring for something and didn't run          |
+|              | ./scripts/docs.sh before commiting and pushing                |
++--------------+---------------------------------------------------------------+
+
+For the tests in the various plugins:
+
+- You need to grab the latests changes from the master branch. Maybe you need to
+  adapt to them, for example if something got renamed, check the changelog.
+
+- You need to add any dependencies (``pip install ...``)  you need to the
+  ``setup.py`` file of the plugin your working on.
