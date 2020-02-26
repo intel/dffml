@@ -112,32 +112,6 @@ class Feature(abc.ABC, Entrypoint):
     Once the appropriate data is fetched the parse method is responsible for
     storing the parts of that data which will be used to calculate in the
     subclass
-
-    >>> self.__example_parsed_value_name = example_value
-
-    The calc method then uses variables set in parse to output an integer value.
-
-    >>>     def calc(self):
-    >>>         return self.__example_parsed_value_name
-
-    Full example of a feature implementation:
-
-    >>> import glob
-    >>> from dffml.feature import Feature
-    >>>
-    >>> class NumFilesFeature(Feature):
-    >>>
-    >>>     @abc.abstractmethod
-    >>>     def fetch(self, data):
-    >>>         self._downloader.vcs(self._key, self.tempdir('src'))
-    >>>
-    >>>     @abc.abstractmethod
-    >>>     def parse(self, data):
-    >>>         self.__num_files = glob.glob(self.tempdir(), recursive=True)
-    >>>
-    >>>     @abc.abstractmethod
-    >>>     def calc(self, data):
-    >>>         return self.__num_files
     """
 
     LOGGER = LOGGER.getChild("Feature")
