@@ -72,6 +72,8 @@ setup(
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
     install_requires=INSTALL_REQUIRES,
+    include_package_data=True,
+    zip_safe=False,
     packages=find_packages(),
     entry_points={
         "dffml.service.cli": [f"http = {IMPORT_NAME}.cli:HTTPService"]

@@ -3,6 +3,7 @@ import json
 import secrets
 import pathlib
 import traceback
+import pkg_resources
 from functools import wraps
 from http import HTTPStatus
 from functools import partial
@@ -27,6 +28,10 @@ from dffml.model import Model
 from dffml.source.source import BaseSource, SourcesContext
 from dffml.util.entrypoint import EntrypointNotFound, entrypoint
 
+# Serve the javascript API
+API_JS_BYTES = pathlib.Path(
+    pkg_resources.resource_filename("dffml_service_http", "api.js")
+).read_bytes()
 
 # TODO Add test for this
 # Bits of randomness in secret tokens
@@ -610,6 +615,12 @@ class Routes(BaseMultiCommContext):
             }
         )
 
+    async def api_js(self, request):
+        return web.Response(
+            body=API_JS_BYTES,
+            headers={"Content-Type": "application/javascript"},
+        )
+
     async def on_shutdown(self, app):
         self.logger.debug("Shutting down service and exiting all contexts")
         await app["exit_stack"].__aexit__(None, None, None)
@@ -700,10 +711,17 @@ class Routes(BaseMultiCommContext):
                 ),
             ]
         )
+        # Serve api.js
+        if self.js:
+            self.routes.append(("GET", "/api.js", self.api_js,))
+        # Add all the routes and make them cors if needed
         for route in self.routes:
             route = self.app.router.add_route(*route)
             # Add cors to all routes
             if self.cors_domains:
                 self.cors.add(route)
+        # Serve static content
+        if self.static:
+            self.app.router.add_static("/", self.static)
         self.runner = web.AppRunner(self.app)
         await self.runner.setup()
