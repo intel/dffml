@@ -127,6 +127,9 @@ function run_docs() {
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
 
+  # Doctests
+  ./scripts/doctest.sh
+
   # Make master docs
   master_docs="$(mktemp -d)"
   TEMP_DIRS+=("${master_docs}")
