@@ -39,6 +39,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
+    "sphinx.ext.doctest",
     "sphinxcontrib.asyncio",
     "recommonmark",
 ]
@@ -85,3 +86,12 @@ html_static_path = ["_static"]
 # -- Extension configuration -------------------------------------------------
 
 napoleon_numpy_docstring = True
+
+doctest_global_setup = """
+import sys
+import inspect
+import asyncio
+
+from dffml.base import *
+from dffml.df.base import *
+"""
