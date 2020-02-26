@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   are a list or a dict where the values are of the `spec` type. Rather than the
   list or dict itself being of the `spec` type.
 - Fixed the URL mentioned in example to configure a model.
+- Sphinx doctests are now run in the CI in the DOCS task.
 ### Removed
 - Unused imports
 
