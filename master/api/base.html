@@ -284,9 +284,18 @@ load all classes registered to that entry point.</p>
 <span class="c1"># setup. Call obj to get an instance of obj.CONTEXT, which is a subclass</span>
 <span class="c1"># of BaseDataFlowFacilitatorObjectContext. ctx, the inner context, does</span>
 <span class="c1"># all the heavy lifting.</span>
-<span class="k">async</span> <span class="k">with</span> <span class="n">BaseDataFlowObject</span><span class="p">()</span> <span class="k">as</span> <span class="n">obj</span><span class="p">:</span>
-    <span class="k">async</span> <span class="k">with</span> <span class="n">obj</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
-        <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">method</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">Context</span><span class="p">(</span><span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span>
+<span class="k">class</span> <span class="nc">Object</span><span class="p">(</span><span class="n">BaseDataFlowFacilitatorObject</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">Context</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">Context</span><span class="p">()</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">Object</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">())</span> <span class="k">as</span> <span class="n">obj</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">obj</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">method</span><span class="p">()</span>
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -297,12 +306,7 @@ load all classes registered to that entry point.</p>
 <dd><p>Base class for all Data Flow Facilitator object’s contexts. These are
 classes which support async context management. Classes ending with
 …Context are the most inner context’s which are used in DFFML.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calling obj returns an instance which is a subclass of this class,</span>
-<span class="c1"># BaseDataFlowFacilitatorObjectContext.</span>
-<span class="k">async</span> <span class="k">with</span> <span class="n">obj</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
-    <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">method</span><span class="p">()</span>
-</pre></div>
-</div>
+<p>See the :class:BaseDataFlowFacilitatorObject for example usage.</p>
 </dd></dl>
 
 <dl class="class">
