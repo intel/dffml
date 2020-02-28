@@ -33,7 +33,7 @@ Create the Package
 To create a new model we first create a new python package. DFFML has a script
 to create it for you.
 
-We're going to create a model that matches a new record exactly to anything it's
+We're going to create a model that matches a new repo exactly to anything it's
 seen before. If it has seen it before it will be 100% confident. If it hasn't
 seen it before it'll pick a random classification and assign that as it's
 prediction with a 0% confidence.
@@ -70,7 +70,7 @@ Let's once again rename ``Misc`` to ``Hindsight``, this time the class in the fi
 
     class Hindsight(Model):
         '''
-        A model which matches a new record exactly to anything it's seen before. If it
+        A model which matches a new repo exactly to anything it's seen before. If it
         has seen it before it will be 100% confident. If it hasn't seen it before
         it'll pick a random classification and assign that as it's prediction with a
         0% confidence.
@@ -81,7 +81,7 @@ Let's once again rename ``Misc`` to ``Hindsight``, this time the class in the fi
             # We aren't worring about saving and loading our model in this tutorial.
             # You should implement it when you write your model for real.
             self.model_dir = model_dir
-            # Let's add a dict where we'll store what we know about previous records.
+            # Let's add a dict where we'll store what we know about previous repos.
             self.mem = {}
 
 Train
@@ -91,24 +91,24 @@ This model predicts completely based on what features has seen as they map to a
 classification.
 
 As such, we're going to take the JSON representation of each set of feature data
-for each record we are given to train on, and hash it, storing the hash as the key
+for each repo we are given to train on, and hash it, storing the hash as the key
 in our ``self.mem`` dict, and the value as the classification. This will let us
-hash the feature data of future records we are asked to predict on and pull their
+hash the feature data of future repos we are asked to predict on and pull their
 expected classification (for ones we've seen before).
 
 .. code-block:: python
 
     async def train(self, sources: Sources):
         '''
-        Train using records as the data to learn from.
+        Train using repos as the data to learn from.
         '''
-        async for record in sources.with_features(features):
+        async for repo in sources.with_features(features):
             # Make sure we are only dealing with classifications we care about
-            if record.classification() in classifications:
-                # Hash the data of the record and map it to the classification
-                as_json = bytes(json.dumps(record.data.features))
+            if repo.classification() in classifications:
+                # Hash the data of the repo and map it to the classification
+                as_json = bytes(json.dumps(repo.data.features))
                 hash_json = hashlib.sha384(as_json).hexdigest()
-                self.mem[hash_json] = record.classification()
+                self.mem[hash_json] = repo.classification()
 
 Accuracy
 ~~~~~~~~
@@ -121,7 +121,7 @@ in this tutorial (because we know the accuracy of this demo model will suck).
 
     async def accuracy(self, sources: Sources) -> Accuracy:
         '''
-        Evaluates the accuracy of our model after training using the input records
+        Evaluates the accuracy of our model after training using the input repos
         as test data.
         '''
         # Lies
@@ -130,31 +130,31 @@ in this tutorial (because we know the accuracy of this demo model will suck).
 Predict
 ~~~~~~~
 
-The prediction, we'll just need to hash the features of each record we're asked to
+The prediction, we'll just need to hash the features of each repo we're asked to
 make a prediction for. And see if it's in the existing mapping. If not, then
 we'll just choose a random classification for it and call that good (with a 0%
 confidence).
 
 .. code-block:: python
 
-    async def predict(self, records: AsyncIterator[Record]) -> \
-                    AsyncIterator[Tuple[Record, Any, float]]:
+    async def predict(self, repos: AsyncIterator[Repo]) -> \
+                    AsyncIterator[Tuple[Repo, Any, float]]:
         '''
-        Uses trained data to make a prediction about the quality of a record.
+        Uses trained data to make a prediction about the quality of a repo.
         '''
-        # Pull all records which have the features we are interested in.
-        async for record in records:
-            # Hash the data of the record and map it to the classification
-            as_json = bytes(json.dumps(record.data.features()), 'utf-8')
+        # Pull all repos which have the features we are interested in.
+        async for repo in repos:
+            # Hash the data of the repo and map it to the classification
+            as_json = bytes(json.dumps(repo.data.features()), 'utf-8')
             hash_json = hashlib.sha384(as_json).hexdigest()
             # If the mapping exists then that's what we'll predict
             if hash_json in self.mem:
                 # Send it back with 100% (1.0) confidence
-                yield record, self.mem[hash_json], 1.0
+                yield repo, self.mem[hash_json], 1.0
             else:
                 # The feature hash doesn't exist in our mapping.
                 # Pick a random classification and yield it with 0 confidence
-                yield record, random.choice(self.parent.config.classifications), 0.0
+                yield repo, random.choice(self.parent.config.classifications), 0.0
 
 Correct the plugin load path
 ----------------------------

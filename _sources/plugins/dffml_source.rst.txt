@@ -22,77 +22,27 @@ csv
 
 *Core*
 
-Uses a CSV file as the source of record feature data
+Uses a CSV file as the source of repo feature data
 
 **Args**
 
 - filename: String
 
-- tag: String
+- label: String
 
-  - default: untagged
+  - default: unlabeled
 
-- readwrite: Boolean
-
-  - default: False
-
-- allowempty: Boolean
+- readonly: Boolean
 
   - default: False
 
 - key: String
 
-  - default: key
+  - default: src_url
 
-- tagcol: String
+- labelcol: String
 
-  - default: tag
-
-idx1
-~~~~
-
-*Core*
-
-Source to read files in IDX1 format (such as MNIST digit label dataset).
-
-**Args**
-
-- filename: String
-
-- feature: String
-
-  - Name of the feature the data will be referenced as
-
-- readwrite: Boolean
-
-  - default: False
-
-- allowempty: Boolean
-
-  - default: False
-
-idx3
-~~~~
-
-*Core*
-
-Source to read files in IDX3 format (such as MNIST digit image dataset).
-
-**Args**
-
-- filename: String
-
-- feature: String
-
-  - Name of the feature the data will be referenced as
-
-- readwrite: Boolean
-
-  - default: False
-
-- allowempty: Boolean
-
-  - default: False
+  - default: label
 
 json
 ~~~~
@@ -106,15 +56,11 @@ stored in memory.
 
 - filename: String
 
-- tag: String
+- label: String
 
-  - default: untagged
+  - default: unlabeled
 
-- readwrite: Boolean
-
-  - default: False
-
-- allowempty: Boolean
+- readonly: Boolean
 
   - default: False
 
@@ -123,11 +69,11 @@ memory
 
 *Core*
 
-Stores records in a dict in memory
+Stores repos in a dict in memory
 
 **Args**
 
-- records: List of records
+- repos: List of repos
 
 dffml_source_mysql
 ------------------
@@ -160,17 +106,17 @@ No description
 
 - db: String
 
-- records-query: String
+- repos-query: String
 
-  - SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM record_data
+  - SELECT `key` as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data
 
-- record-query: String
+- repo-query: String
 
-  - SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM record_data WHERE `key`=%s
+  - SELECT `key` as src_url, data_1 as feature_1, data_2 as feature_2 FROM repo_data WHERE `key`=%s
 
 - update-query: String
 
-  - INSERT INTO record_data (`key`, data_1, data_2) VALUES(%s, %s, %s) ON DUPLICATE KEY UPDATE data_1 = %s, data_2=%s
+  - INSERT INTO repo_data (`key`, data_1, data_2) VALUES(%s, %s, %s) ON DUPLICATE KEY UPDATE data_1 = %s, data_2=%s
 
 - model-columns: List of strings
 

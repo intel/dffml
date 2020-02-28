@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.model.model &mdash; DFFML 0.3.3 documentation</title>
+  <title>dffml.model.model &mdash; DFFML 0.3.2 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.3
+                0.3.2
               </div>
             
           
@@ -83,30 +83,18 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../community.html">Community</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Use Cases</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
-<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Usage Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Community</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contributing/index.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -173,24 +161,27 @@
 <span></span><span class="c1"># SPDX-License-Identifier: MIT</span>
 <span class="c1"># Copyright (c) 2019 Intel Corporation</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Model subclasses are responsible for training themselves on records, making</span>
-<span class="sd">predictions about the value of a feature in the record, and assessing thei</span>
+<span class="sd">Model subclasses are responsible for training themselves on repos, making</span>
+<span class="sd">predictions about the value of a feature in the repo, and assessing thei</span>
 <span class="sd">prediction accuracy.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">abc</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AsyncIterator</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AsyncIterator</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Dict</span>
 
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">config</span><span class="p">,</span>
+    <span class="n">BaseConfig</span><span class="p">,</span>
     <span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">,</span>
     <span class="n">BaseDataFlowFacilitatorObject</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..record</span> <span class="kn">import</span> <span class="n">Record</span>
+<span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
+<span class="kn">from</span> <span class="nn">..repo</span> <span class="kn">import</span> <span class="n">Repo</span>
 <span class="kn">from</span> <span class="nn">..source.source</span> <span class="kn">import</span> <span class="n">Sources</span>
-<span class="kn">from</span> <span class="nn">..feature</span> <span class="kn">import</span> <span class="n">Features</span>
-<span class="kn">from</span> <span class="nn">.accuracy</span> <span class="kn">import</span> <span class="n">Accuracy</span>
-<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">base_entry_point</span>
+<span class="kn">from</span> <span class="nn">..feature</span> <span class="kn">import</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Features</span>
+<span class="kn">from</span> <span class="nn">..accuracy</span> <span class="kn">import</span> <span class="n">Accuracy</span>
+<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">Entrypoint</span><span class="p">,</span> <span class="n">base_entry_point</span>
+<span class="kn">from</span> <span class="nn">..util.cli.parser</span> <span class="kn">import</span> <span class="n">list_action</span>
 
 
 <div class="viewcode-block" id="ModelNotTrained"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.ModelNotTrained">[docs]</a><span class="k">class</span> <span class="nc">ModelNotTrained</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -215,27 +206,25 @@
     <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Train using records as the data to learn from.</span>
+<span class="sd">        Train using repos as the data to learn from.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
     <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Accuracy</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Evaluates the accuracy of our model after training using the input records</span>
+<span class="sd">        Evaluates the accuracy of our model after training using the input repos</span>
 <span class="sd">        as test data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
 <div class="viewcode-block" id="ModelContext.predict"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.ModelContext.predict">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">records</span><span class="p">:</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repos</span><span class="p">:</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Repo</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Repo</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Uses trained data to make a prediction about the quality of a record.</span>
+<span class="sd">        Uses trained data to make a prediction about the quality of a repo.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
-        <span class="k">yield</span> <span class="p">(</span><span class="n">Record</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>  <span class="c1"># skipcq: PYL-W0101</span></div></div>
+        <span class="k">yield</span> <span class="p">(</span><span class="n">Repo</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Model"><a class="viewcode-back" href="../../../api/model/base.html#dffml.model.model.Model">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.model&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">)</span>

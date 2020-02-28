@@ -20,7 +20,7 @@ to create it for you.
     $ dffml service dev create source my-source
     $ cd my-source
 
-This creates a Python package for you with a source that stores ``Record`` objects
+This creates a Python package for you with a source that stores ``Repo`` objects
 in memory, called ``MiscSource``, and some tests.
 
 Edit the Source
@@ -64,7 +64,7 @@ Run the tests
 Register your source
 --------------------
 
-Modify the **setup.py** file and change the ``dffml.source`` ``entrypoint``'s
+Modify the **setup.py** file and change the ``dffml.source`` ``entry_point``'s
 to point to your new source class (not the one ending in ``Context``).
 
 .. code-block:: python

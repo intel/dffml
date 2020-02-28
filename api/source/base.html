@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Base Source &mdash; DFFML 0.3.3 documentation</title>
+  <title>Base Source &mdash; DFFML 0.3.2 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.3
+                0.3.2
               </div>
             
           
@@ -85,28 +85,21 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Use Cases</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../repo.html">Repo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Sources</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Base Source</a></li>
@@ -114,17 +107,10 @@
 <li class="toctree-l3"><a class="reference internal" href="file.html">File Based Sources</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">API Helper Utilities Reference</a></li>
 </ul>
 </li>
-</ul>
-<p class="caption"><span class="caption-text">Community</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -201,16 +187,16 @@ source project’s source URL.</p>
 <dt id="dffml.source.source.BaseSource">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">BaseSource</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract base class for all sources. New sources must be derived from this
-class and implement the records method.</p>
+class and implement the repos method.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="dffml.source.source.BaseSourceContext">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">BaseSourceContext</code><span class="sig-paren">(</span><em class="sig-param">parent: dffml.source.source.BaseSource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSourceContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSourceContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
-<dt id="dffml.source.source.BaseSourceContext.records">
-<em class="property">abstract </em><code class="sig-name descname">records</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.record.Record]<a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSourceContext.records"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSourceContext.records" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a list of records retrieved from self.src</p>
+<dt id="dffml.source.source.BaseSourceContext.repos">
+<em class="property">abstract </em><code class="sig-name descname">repos</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSourceContext.repos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSourceContext.repos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of repos retrieved from self.src</p>
 </dd></dl>
 
 </dd></dl>
@@ -230,15 +216,15 @@ class and implement the records method.</p>
 <dt id="dffml.source.source.SourcesContext">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">SourcesContext</code><span class="sig-paren">(</span><em class="sig-param">parent: dffml.util.asynchelper.AsyncContextManagerList</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#SourcesContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SourcesContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
-<dt id="dffml.source.source.SourcesContext.records">
-<code class="sig-name descname">records</code><span class="sig-paren">(</span><em class="sig-param">validation: Optional[Callable[[dffml.record.Record], bool]] = None</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.record.Record]<a class="reference internal" href="../../_modules/dffml/source/source.html#SourcesContext.records"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SourcesContext.records" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves records from all sources</p>
+<dt id="dffml.source.source.SourcesContext.repos">
+<code class="sig-name descname">repos</code><span class="sig-paren">(</span><em class="sig-param">validation: Optional[Callable[[dffml.repo.Repo], bool]] = None</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../../_modules/dffml/source/source.html#SourcesContext.repos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SourcesContext.repos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves repos from all sources</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="dffml.source.source.SourcesContext.with_features">
-<code class="sig-name descname">with_features</code><span class="sig-paren">(</span><em class="sig-param">features: List[str]</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.record.Record]<a class="reference internal" href="../../_modules/dffml/source/source.html#SourcesContext.with_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SourcesContext.with_features" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns all records which have the requested features</p>
+<code class="sig-name descname">with_features</code><span class="sig-paren">(</span><em class="sig-param">features: List[str]</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../../_modules/dffml/source/source.html#SourcesContext.with_features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SourcesContext.with_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all repos which have the requested features</p>
 </dd></dl>
 
 </dd></dl>
@@ -246,13 +232,13 @@ class and implement the records method.</p>
 <dl class="class">
 <dt id="dffml.source.source.SubsetSources">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">SubsetSources</code><span class="sig-paren">(</span><em class="sig-param">*args: dffml.source.source.BaseSource</em>, <em class="sig-param">keys: Optional[List[str]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#SubsetSources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SubsetSources" title="Permalink to this definition">¶</a></dt>
-<dd><p>Restricts access to a subset of records during iteration based on their keys.</p>
+<dd><p>Restricts access to a subset of repos during iteration based on their keys.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="dffml.source.source.ValidationSources">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">ValidationSources</code><span class="sig-paren">(</span><em class="sig-param">validation: Callable[[dffml.record.Record], bool], *args: dffml.source.source.BaseSource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#ValidationSources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.ValidationSources" title="Permalink to this definition">¶</a></dt>
-<dd><p>Restricts access to a subset of records during iteration based on a validation
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">ValidationSources</code><span class="sig-paren">(</span><em class="sig-param">validation: Callable[[dffml.repo.Repo], bool], *args: dffml.source.source.BaseSource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#ValidationSources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.ValidationSources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restricts access to a subset of repos during iteration based on a validation
 function.</p>
 <dl class="attribute">
 <dt id="dffml.source.source.ValidationSources.CONTEXT">
@@ -266,9 +252,9 @@ function.</p>
 <dt id="dffml.source.source.ValidationSourcesContext">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">ValidationSourcesContext</code><span class="sig-paren">(</span><em class="sig-param">parent: dffml.util.asynchelper.AsyncContextManagerList</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#ValidationSourcesContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.ValidationSourcesContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
-<dt id="dffml.source.source.ValidationSourcesContext.records">
-<code class="sig-name descname">records</code><span class="sig-paren">(</span><em class="sig-param">validation: Optional[Callable[[dffml.record.Record], bool]] = None</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.record.Record]<a class="reference internal" href="../../_modules/dffml/source/source.html#ValidationSourcesContext.records"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.ValidationSourcesContext.records" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieves records from all sources</p>
+<dt id="dffml.source.source.ValidationSourcesContext.repos">
+<code class="sig-name descname">repos</code><span class="sig-paren">(</span><em class="sig-param">validation: Optional[Callable[[dffml.repo.Repo], bool]] = None</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../../_modules/dffml/source/source.html#ValidationSourcesContext.repos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.ValidationSourcesContext.repos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves repos from all sources</p>
 </dd></dl>
 
 </dd></dl>

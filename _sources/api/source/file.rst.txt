@@ -15,9 +15,9 @@ Supported Compressions:
 
 DFFML supports data sources in `CSV` and `JSON` formats with respective methods defined in the following classes:
 
-1. `CSVSource`: (Inherits FileSource and MemorySource) Uses a CSV file as the source of the record feature data. Abstract functions `load_fd` and `dump_fd` are defined.
+1. `CSVSource`: (Inherits FileSource and MemorySource) Uses a CSV file as the source of the repo feature data. Abstract functions `load_fd` and `dump_fd` are defined.
 
-2. `JSONSource`: (Inherits FileSource and MemorySource) Uses a JSON file as the source of the record feature data. Abstract functions `load_fd` and `dump_fd` are defined.
+2. `JSONSource`: (Inherits FileSource and MemorySource) Uses a JSON file as the source of the repo feature data. Abstract functions `load_fd` and `dump_fd` are defined.
 
 JSON
 ----

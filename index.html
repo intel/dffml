@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to DFFML! &mdash; DFFML 0.3.3 documentation</title>
+  <title>Welcome to DFFML! &mdash; DFFML 0.3.2 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                0.3.3
+                0.3.2
               </div>
             
           
@@ -84,30 +84,18 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="community.html">Community</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Use Cases</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
-<ul>
+<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Usage Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Community</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact Us</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing/index.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -174,71 +162,32 @@
             
   <div class="section" id="welcome-to-dffml">
 <h1>Welcome to DFFML!<a class="headerlink" href="#welcome-to-dffml" title="Permalink to this headline">¶</a></h1>
-<a class="reference external image-reference" href="https://github.com/intel/dffml/actions"><img alt="Test Status" src="https://github.com/intel/dffml/workflows/Tests/badge.svg?branch=master&amp;event=push" /></a>
+<a class="reference external image-reference" href="https://github.com/intel/dffml/actions"><img alt="Test Status" src="https://github.com/intel/dffml/workflows/Tests/badge.svg" /></a>
 <a class="reference external image-reference" href="https://codecov.io/gh/intel/dffml"><img alt="codecov" src="https://codecov.io/gh/intel/dffml/branch/master/graph/badge.svg" /></a>
 <a class="reference external image-reference" href="https://bestpractices.coreinfrastructure.org/projects/2594"><img alt="CII" src="https://bestpractices.coreinfrastructure.org/projects/2594/badge" /></a>
 <a class="reference external image-reference" href="https://gitter.im/dffml/community"><img alt="Gitter chat" src="https://badges.gitter.im/gitterHQ/gitter.svg" /></a>
 <a class="reference external image-reference" href="https://pypi.org/project/dffml"><img alt="PyPI version" src="https://img.shields.io/pypi/v/dffml.svg" /></a>
-<p>Training and using machine learning models as simple as</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Features</span><span class="p">,</span> <span class="n">DefFeature</span>
-<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
-<span class="kn">from</span> <span class="nn">dffml_model_scikit</span> <span class="kn">import</span> <span class="n">LinearRegressionModel</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegressionModel</span><span class="p">(</span>
-    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
-        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Expertise&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="p">),</span>
-    <span class="n">predict</span><span class="o">=</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-<span class="p">)</span>
-
-<span class="c1"># Train the model</span>
-<span class="n">train</span><span class="p">(</span>
-    <span class="n">model</span><span class="p">,</span>
-    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">40</span><span class="p">},</span>
-<span class="p">)</span>
-
-<span class="c1"># Assess accuracy</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span>
-    <span class="n">accuracy</span><span class="p">(</span>
-        <span class="n">model</span><span class="p">,</span>
-        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">},</span>
-    <span class="p">),</span>
-<span class="p">)</span>
-
-<span class="c1"># Make prediction</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
-    <span class="n">model</span><span class="p">,</span>
-    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">},</span>
-<span class="p">):</span>
-    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Accuracy</span><span class="p">:</span> <span class="mf">1.0</span>
-<span class="p">{</span><span class="s1">&#39;Years&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;Expertise&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="s1">&#39;Trust&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="mf">70.0</span><span class="p">}</span>
-<span class="p">{</span><span class="s1">&#39;Years&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;Expertise&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;Trust&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="mf">80.0</span><span class="p">}</span>
-</pre></div>
-</div>
-<p>You can use DFFML from the command line, Python, or the HTTP API, see the
-<a class="reference internal" href="quickstart/model.html"><span class="doc">Quickstart</span></a> to get started right away.</p>
-<p>The web UI (under heavy development) can be found <a class="reference external" href="webui/">here</a>.</p>
-<p>This is the documentation for the latest release, documentation for the master
-branch can be found <a class="reference external" href="master/index.html">here</a>.</p>
+<p>Data Flow Facilitator for Machine Learning (DFFML) makes it easy to generate
+datasets, train and use machine learning models, and integrate machine learning
+into new or existing applications. It provides APIs for dataset generation,
+storage, and model definition.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="plugins/dffml_model.html#plugin-models"><span class="std std-ref">Models</span></a> handle implementations of machine learning algorithms.
+Likely wrapping code from a popular machine learning framework.</p></li>
+<li><p>Sources handle the storage of datasets, saving and loading them from files,
+databases, remote APIs, etc.</p></li>
+<li><p>DataFlows are directed graphs used to generate a dataset, as well as modify
+existing datasets. They can also be used to do non-machine learning tasks, you
+could use them to build a web app for instance.</p></li>
+</ul>
+<p>You’ll find the existing implementations of all of these on their respective
+<a class="reference internal" href="plugins/index.html#plugins"><span class="std std-ref">Plugins</span></a> pages. DFFML has a plugin based architecture, which allows us to
+include some sources, models, and operations as a part of the main package,
+<code class="docutils literal notranslate"><span class="pre">dffml</span></code>, and other functionality in more specific packages.</p>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Introduction</span></p>
+<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="about.html#why-dffml">Why DFFML</a></li>
-<li class="toctree-l2"><a class="reference internal" href="about.html#architecture">Architecture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="about.html#machine-learning">Machine Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="about.html#data-flows-directed-graph-execution">Data Flows - Directed Graph Execution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="about.html#consistent-api">Consistent API</a></li>
@@ -247,22 +196,10 @@ branch can be found <a class="reference external" href="master/index.html">here<
 <li class="toctree-l2"><a class="reference internal" href="about.html#users">Users</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="community.html">Community</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#ubuntu">Ubuntu</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#docker">Docker</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Examples</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="quickstart/model.html">Quickstart</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="quickstart/model.html#example-dataset">Example Dataset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart/model.html#command-line">Command Line</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart/model.html#python">Python</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart/model.html#data-sources">Data Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart/model.html#async">Async</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a><ul>
@@ -272,17 +209,11 @@ branch can be found <a class="reference external" href="master/index.html">here<
 <li class="toctree-l2"><a class="reference internal" href="tutorials/source.html">New Source Tutorial</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Use Cases</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="usage/integration.html">Automating Classification</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage/dataflows.html">DataFlow HTTP Deployment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage/mnist.html">MNIST Handwriten Digits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/index.html">Usage Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage/integration.html">Integrating Machine Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage/dataflows.html">DataFlow Deployment</a></li>
 </ul>
 </li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Reference</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="plugins/index.html">Plugins</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="plugins/dffml_source.html">Sources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plugins/dffml_model.html">Models</a></li>
@@ -300,52 +231,22 @@ branch can be found <a class="reference external" href="master/index.html">here<
 <li class="toctree-l1"><a class="reference internal" href="plugins/service/http/index.html">HTTP API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="plugins/service/http/api.html">API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plugins/service/http/security.html">Security</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plugins/service/http/javascript.html">JavaScript</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/high_level.html">High Level</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/df/index.html">Data Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/feature.html">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/record.html">Record</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/repo.html">Repo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/model/index.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/source/index.html">Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/db/index.html">Databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/util/index.html">API Helper Utilities Reference</a></li>
 </ul>
 </li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Community</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="publications.html#talks">Talks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="publications.html#poster-presentations">Poster Presentations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="publications.html#papers">Papers</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact Us</a></li>
-<li class="toctree-l1"><a class="reference internal" href="contributing/index.html">Contributing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="contributing/index.html#contacting-the-community">Contacting the Community</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing/index.html#what-to-work-on">What To Work On</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing/index.html#who-s-working-on-what">Who’s Working On What</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing/index.html#communication-style">Communication Style</a></li>
-<li class="toctree-l2"><a class="reference internal" href="contributing/index.html#working-on-dffml">Working on DFFML</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#unreleased">[Unreleased]</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id1">[0.3.3] - 2020-02-10</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id6">[0.3.2] - 2020-01-03</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id10">[0.3.1] - 2019-12-12</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id15">[0.3.0] - 2019-10-26</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id20">[0.2.1] - 2019-06-07</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id24">[0.2.0] - 2019-05-23</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id28">[0.1.2] - 2019-03-29</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id32">[0.1.1] - 2019-03-08</a></li>
-<li class="toctree-l2"><a class="reference internal" href="changelog.html#id34">[0.1.0] - 2019-03-07</a></li>
 </ul>
 </li>
 </ul>

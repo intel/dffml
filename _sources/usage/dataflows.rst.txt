@@ -1,5 +1,5 @@
-DataFlow HTTP Deployment
-========================
+DataFlow Deployment
+===================
 
 In the :doc:`/tutorials/operations` we created a command line meta static
 analysis tool, ``shouldi``.
@@ -13,7 +13,7 @@ analysis tool, ``shouldi``.
         bandit_output: {'CONFIDENCE.HIGH': 0.0, 'CONFIDENCE.LOW': 0.0, 'CONFIDENCE.MEDIUM': 0.0, 'CONFIDENCE.UNDEFINED': 0.0, 'SEVERITY.HIGH': 0.0, 'SEVERITY.LOW': 0.0, 'SEVERITY.MEDIUM': 0.0, 'SEVERITY.UNDEFINED': 0.0, 'loc': 100, 'nosec': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.HIGH': 0}
 
 In the :ref:`tutorials_operations_registering_opreations` section of the
-operations tutorial, we registered our operations with Python's ``entrypoint``
+operations tutorial, we registered our operations with Python's ``entry_point``
 system. This allows other Python packages and DFFML plugins to access them
 without the need to hardcode in ``import`` statements.
 
@@ -189,26 +189,10 @@ We'll be using those operations, so we need to install them
 The ``lines_of_code_to_comments`` operation will give use the ratio of the
 number of lines of comments to the number of lines of code.
 
-You need to install `tokei <https://github.com/XAMPPRocky/tokei>`_ before you
-can use ``lines_of_code_to_comments``.
+.. note::
 
-On Linux
-
-.. code-block:: console
-
-    $ curl -sSL 'https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz' \
-      | tar -xvz && \
-      echo '22699e16e71f07ff805805d26ee86ecb9b1052d7879350f7eb9ed87beb0e6b84fbb512963d01b75cec8e80532e4ea29a tokei' | sha384sum -c - && \
-      sudo mv tokei /usr/local/bin/
-
-On OSX
-
-.. code-block:: console
-
-    $ curl -sSL 'https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz' \
-      | tar -xvz && \
-      echo '8c8a1d8d8dd4d8bef93dabf5d2f6e27023777f8553393e269765d7ece85e68837cba4374a2615d83f071dfae22ba40e2 tokei' | sha384sum -c - && \
-      sudo mv tokei /usr/local/bin/
+    You need to install `tokei <https://github.com/XAMPPRocky/tokei>`_ before
+    you can use ``lines_of_code_to_comments``.
 
 The ``lines_of_code_to_comments`` operation needs the output given by
 ``lines_of_code_by_language``, which needs a Git repos source code.
@@ -218,7 +202,7 @@ The ``lines_of_code_to_comments`` operation needs the output given by
 
 A ``git_repository_checked_out`` is defined as:
 
- - record: git_repository_checked_out(type: Dict[str, str])
+ - repo: git_repository_checked_out(type: Dict[str, str])
 
   - URL: str
   - directory: str

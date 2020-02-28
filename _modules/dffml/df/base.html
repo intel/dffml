@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.df.base &mdash; DFFML 0.3.3 documentation</title>
+  <title>dffml.df.base &mdash; DFFML 0.3.2 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.3
+                0.3.2
               </div>
             
           
@@ -83,30 +83,18 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../community.html">Community</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Use Cases</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
-<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Usage Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Community</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contributing/index.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -173,6 +161,7 @@
 <span></span><span class="kn">import</span> <span class="nn">abc</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">AsyncExitStack</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">AsyncIterator</span><span class="p">,</span>
     <span class="n">Dict</span><span class="p">,</span>
@@ -196,7 +185,8 @@
     <span class="n">BaseDataFlowFacilitatorObject</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
-<span class="kn">from</span> <span class="nn">..util.asynchelper</span> <span class="kn">import</span> <span class="n">context_stacker</span>
+<span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="kn">import</span> <span class="n">CMD</span>
+<span class="kn">from</span> <span class="nn">..util.asynchelper</span> <span class="kn">import</span> <span class="n">context_stacker</span><span class="p">,</span> <span class="n">aenter_stack</span>
 <span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">base_entry_point</span>
 
 
@@ -305,7 +295,7 @@
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">loading</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">loading_classes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="c1"># Load operations</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">iter_entry_points</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENTRYPOINT</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">iter_entry_points</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">ENTRY_POINT</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">loading</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">loading</span><span class="p">:</span>
                 <span class="n">loaded</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_imp</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">load</span><span class="p">())</span>
                 <span class="k">if</span> <span class="n">loaded</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -470,6 +460,11 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Similar to inspect.isclass and that family of functions. Returns true if</span>
 <span class="sd">    item is a subclass of OperationImpelmentation.</span>
+
+<span class="sd">    &gt;&gt;&gt; # Get all operation implementations imported in a file</span>
+<span class="sd">    &gt;&gt;&gt; list(map(lambda item: item[1],</span>
+<span class="sd">    &gt;&gt;&gt;          inspect.getmembers(sys.modules[__name__],</span>
+<span class="sd">    &gt;&gt;&gt;                             predicate=isopimp)))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span>
         <span class="p">(</span>
@@ -489,6 +484,11 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Similar to inspect.isclass and that family of functions. Returns true if</span>
 <span class="sd">    item is an instance of Operation.</span>
+
+<span class="sd">    &gt;&gt;&gt; # Get all operations imported in a file</span>
+<span class="sd">    &gt;&gt;&gt; list(map(lambda item: item[1],</span>
+<span class="sd">    &gt;&gt;&gt;          inspect.getmembers(sys.modules[__name__],</span>
+<span class="sd">    &gt;&gt;&gt;                             predicate=isoperation)))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Operation</span><span class="p">)</span> <span class="ow">and</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">Operation</span><span class="p">)</span></div>
 
@@ -497,6 +497,11 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Similar to inspect.isclass and that family of functions. Returns true if a</span>
 <span class="sd">    function has been wrapped with `op`.</span>
+
+<span class="sd">    &gt;&gt;&gt; # Get all functions imported in a file that have been wrapped with `op`</span>
+<span class="sd">    &gt;&gt;&gt; list(map(lambda item: item[1],</span>
+<span class="sd">    &gt;&gt;&gt;          inspect.getmembers(sys.modules[__name__],</span>
+<span class="sd">    &gt;&gt;&gt;                             predicate=isopwraped)))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span>
         <span class="nb">getattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;op&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
@@ -651,7 +656,7 @@
         <span class="k">pass</span>
 
     <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">inputs_and_parents_recursive</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Input</span><span class="p">]:</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Input</span><span class="p">]:</span>
         <span class="k">pass</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
@@ -917,12 +922,6 @@
 <span class="k">class</span> <span class="nc">BaseOperationImplementationNetwork</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Knows where operations are or if they can be made</span>
-<span class="sd">    &quot;&quot;&quot;</span></div>
-
-
-<div class="viewcode-block" id="OperationException"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.OperationException">[docs]</a><span class="k">class</span> <span class="nc">OperationException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Raised by the orchestrator when an operation throws an exception.</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
