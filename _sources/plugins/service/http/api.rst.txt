@@ -1,8 +1,8 @@
 API
 ===
 
-An example of using the API from JavaScript can be found in
-`examples/web/api.js <https://github.com/intel/dffml/blob/master/service/http/examples/web/api.js>`_.
+An example of using the API from JavaScript can be found
+:doc:`here <javascript>`.
 
 .. contents:: REST-like HTTP API
 
