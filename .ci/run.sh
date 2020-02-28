@@ -150,7 +150,9 @@ function run_docs() {
   rm -rf pages
   git clean -fdx
   git reset --hard HEAD
-  git checkout $(git tag --sort=committerdate | tail -n 1)
+  last_release=$(dffml service dev setuppy kwarg version setup.py)
+  echo "Checking out last release ${last_release}"
+  git checkout "${last_release}"
   git clean -fdx
   git reset --hard HEAD
   # Uninstall dffml
