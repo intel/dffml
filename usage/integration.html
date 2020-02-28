@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Integrating Machine Learning &mdash; DFFML 0.3.2 documentation</title>
+  <title>Automating Classifciation &mdash; DFFML 0.3.3 documentation</title>
   
 
   
@@ -36,8 +36,8 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="DataFlow Deployment" href="dataflows.html" />
-    <link rel="prev" title="Usage Examples" href="index.html" /> 
+    <link rel="next" title="DataFlow HTTP Deployment" href="dataflows.html" />
+    <link rel="prev" title="Use Cases" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
             
           
@@ -85,14 +85,17 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage Examples</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Integrating Machine Learning</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Use Cases</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Automating Classifciation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#demo-app-setup">Demo App Setup</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#gathering-data">Gathering Data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pulling-from-the-database">Pulling from the Database</a></li>
@@ -101,14 +104,24 @@
 <li class="toctree-l3"><a class="reference internal" href="#modifying-the-legacy-app">Modifying the Legacy App</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="dataflows.html">DataFlow Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dataflows.html">DataFlow HTTP Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mnist.html">MNIST Handwriten Digits</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -154,9 +167,9 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="index.html">Usage Examples</a> &raquo;</li>
+          <li><a href="index.html">Use Cases</a> &raquo;</li>
         
-      <li>Integrating Machine Learning</li>
+      <li>Automating Classifciation</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -175,10 +188,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="integrating-machine-learning">
-<h1>Integrating Machine Learning<a class="headerlink" href="#integrating-machine-learning" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="automating-classifciation">
+<h1>Automating Classifciation<a class="headerlink" href="#automating-classifciation" title="Permalink to this headline">¶</a></h1>
 <p>This example will show you how to automate a manual classification process,
-determining if a Git repo is maintained or abandoned.</p>
+determining if a Git repo is maintained or abandoned. We’ll be integrating
+Machine Learning into an existing legacy application.</p>
 <p>For this example assume you are a very curious open source software people (if
 you’re here you already are). Since you love looking at GitHub repos in your
 free time, you long ago built a Python 2 based CGI web application where, every
@@ -221,7 +235,14 @@ package manager should have it if not.</p>
     -e <span class="nv">MYSQL_PASSWORD</span><span class="o">=</span>pass <span class="se">\</span>
     -e <span class="nv">MYSQL_DATABASE</span><span class="o">=</span>db <span class="se">\</span>
     -p <span class="m">3306</span>:3306 <span class="se">\</span>
-    mariadb
+    mariadb:10
+</pre></div>
+</div>
+<p>Wait for the database to start. Run the following command until you see <code class="docutils literal notranslate"><span class="pre">ready</span>
+<span class="pre">for</span> <span class="pre">connections</span></code> twice in the output.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> docker logs maintained_db <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> grep <span class="s1">&#39;ready for&#39;</span>
+<span class="go">2020-01-13 21:31:09 0 [Note] mysqld: ready for connections.</span>
+<span class="go">2020-01-13 21:32:16 0 [Note] mysqld: ready for connections.</span>
 </pre></div>
 </div>
 <p>Import the data. The data was pulled from a couple pages of GitHub search
@@ -230,7 +251,7 @@ meaningless.</p>
 <p>If you want results that mean anything, you could discard all of this data and
 use the web app to create a meaningful dataset by manually going through and
 setting the status of repos.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> docker run -i --rm --net<span class="o">=</span>host mariadb mysql <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> docker run -i --rm --net<span class="o">=</span>host mariadb:10 mysql <span class="se">\</span>
     -h127.0.0.1 <span class="se">\</span>
     -uuser <span class="se">\</span>
     -ppass <span class="se">\</span>
@@ -280,66 +301,66 @@ since that creates more user friendly configs than <code class="docutils literal
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install -U dffml-feature-git dffml-config-yaml
 </pre></div>
 </div>
+<p>The git operations / features rely on <code class="docutils literal notranslate"><span class="pre">tokei</span></code>. We need to download and install
+it first.</p>
+<p>On Linux</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
+  <span class="p">|</span> tar -xvz <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  <span class="nb">echo</span> <span class="s1">&#39;22699e16e71f07ff805805d26ee86ecb9b1052d7879350f7eb9ed87beb0e6b84fbb512963d01b75cec8e80532e4ea29a tokei&#39;</span> <span class="p">|</span> sha384sum -c - <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  sudo mv tokei /usr/local/bin/
+</pre></div>
+</div>
+<p>On OSX</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
+  <span class="p">|</span> tar -xvz <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  <span class="nb">echo</span> <span class="s1">&#39;8c8a1d8d8dd4d8bef93dabf5d2f6e27023777f8553393e269765d7ece85e68837cba4374a2615d83f071dfae22ba40e2 tokei&#39;</span> <span class="p">|</span> sha384sum -c - <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  sudo mv tokei /usr/local/bin/
+</pre></div>
+</div>
 <p>Operations are just Python functions, or classes. They define a routine which
 will be run concurrently with other operations. Here’s an example of the
 <code class="docutils literal notranslate"><span class="pre">git_commits</span></code> operation, which will find the number of commits within a date
 range.</p>
 <p><strong>feature/git/dffml_feature_git/feature/operations.py</strong></p>
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>367
-368
-369
-370
-371
-372
-373
-374
-375
-376
-377
-378
-379
-380
-381
-382
-383
-384
-385
-386
-387
-388
-389
-390
-391
-392
-393
-394</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368</pre></div></td><td class="code"><div class="highlight"><pre><span></span>    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;langs&quot;</span><span class="p">:</span> <span class="n">lines_by_language_count</span><span class="p">},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;code_to_comment_ratio&quot;</span><span class="p">:</span> <span class="n">language_to_comment_ratio</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">lines_of_code_to_comments</span><span class="p">(</span><span class="n">langs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">code_to_comment_ratio</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+            <span class="mi">100</span>
+            <span class="o">*</span> <span class="n">langs</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">][</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span>
+            <span class="o">/</span> <span class="p">(</span><span class="n">langs</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">][</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">langs</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">][</span><span class="s2">&quot;code&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+        <span class="n">code_to_comment_ratio</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;code_to_comment_ratio&quot;</span><span class="p">:</span> <span class="n">code_to_comment_ratio</span><span class="p">}</span>
+
+
+<span class="nd">@op</span><span class="p">(</span>
     <span class="n">inputs</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">&quot;repo&quot;</span><span class="p">:</span> <span class="n">git_repository</span><span class="p">,</span>
         <span class="s2">&quot;branch&quot;</span><span class="p">:</span> <span class="n">git_branch</span><span class="p">,</span>
         <span class="s2">&quot;start_end&quot;</span><span class="p">:</span> <span class="n">date_pair</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;commits&quot;</span><span class="p">:</span> <span class="n">commit_count</span><span class="p">},</span>
-<span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">git_commits</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">branch</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start_end</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
-    <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">start_end</span>
-    <span class="n">commit_count</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">create</span><span class="p">(</span>
-        <span class="s2">&quot;git&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;log&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;--oneline&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;--before&quot;</span><span class="p">,</span>
-        <span class="n">start</span><span class="p">,</span>
-        <span class="s2">&quot;--after&quot;</span><span class="p">,</span>
-        <span class="n">end</span><span class="p">,</span>
-        <span class="n">branch</span><span class="p">,</span>
-        <span class="n">cwd</span><span class="o">=</span><span class="n">repo</span><span class="p">[</span><span class="s2">&quot;directory&quot;</span><span class="p">],</span>
-    <span class="p">)</span>
-    <span class="k">while</span> <span class="ow">not</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">at_eof</span><span class="p">():</span>
-        <span class="n">line</span> <span class="o">=</span> <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">line</span> <span class="o">!=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">:</span>
-            <span class="n">commit_count</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">await</span> <span class="n">stop</span><span class="p">(</span><span class="n">proc</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;commits&quot;</span><span class="p">:</span> <span class="n">commit_count</span><span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
 <p>Since operations are run concurrently with each other, DFFML manages locking of
@@ -528,7 +549,7 @@ automatically.</p>
 <span class="go">            ]</span>
 <span class="go">        },</span>
 <span class="go">        &quot;last_updated&quot;: &quot;2019-10-25T01:44:50Z&quot;,</span>
-<span class="go">        &quot;src_url&quot;: &quot;https://github.com/AntoineMaillard06/Tetris.git&quot;</span>
+<span class="go">        &quot;key&quot;: &quot;https://github.com/AntoineMaillard06/Tetris.git&quot;</span>
 <span class="go">    }</span>
 <span class="go">]</span>
 </pre></div>
@@ -559,7 +580,7 @@ the MySQL <a class="reference internal" href="../plugins/dffml_source.html"><spa
 <span class="kn">from</span> <span class="nn">dffml.repo</span> <span class="kn">import</span> <span class="n">Repo</span>
 <span class="kn">from</span> <span class="nn">dffml.source.source</span> <span class="kn">import</span> <span class="n">BaseSourceContext</span><span class="p">,</span> <span class="n">BaseSource</span>
 <span class="kn">from</span> <span class="nn">dffml.util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
-<span class="kn">from</span> <span class="nn">dffml.util.entrypoint</span> <span class="kn">import</span> <span class="n">entry_point</span>
+<span class="kn">from</span> <span class="nn">dffml.util.entrypoint</span> <span class="kn">import</span> <span class="n">entrypoint</span>
 
 
 <span class="k">class</span> <span class="nc">DemoAppSourceConfig</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">):</span>
@@ -578,33 +599,31 @@ the MySQL <a class="reference internal" href="../plugins/dffml_source.html"><spa
         <span class="c1"># tables.</span>
         <span class="n">marshall</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
         <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-            <span class="s2">&quot;INSERT INTO ml_data (src_url, json) VALUES(</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">) &quot;</span>
+            <span class="s2">&quot;INSERT INTO ml_data (key, json) VALUES(</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">) &quot;</span>
             <span class="s2">&quot;ON DUPLICATE KEY UPDATE json = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">src_url</span><span class="p">,</span> <span class="n">marshall</span><span class="p">,</span> <span class="n">marshall</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">marshall</span><span class="p">,</span> <span class="n">marshall</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;updated: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">marshall</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;update: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">src_url</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;update: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">key</span><span class="p">))</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">repos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Repo</span><span class="p">]:</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT src_url FROM `status`&quot;</span><span class="p">)</span>
-        <span class="n">src_urls</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()))</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT src_url FROM `ml_data`&quot;</span><span class="p">)</span>
-        <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">src_urls</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()))</span>
-        <span class="k">for</span> <span class="n">src_url</span> <span class="ow">in</span> <span class="n">src_urls</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">(</span><span class="n">src_url</span><span class="p">)</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT key FROM `status`&quot;</span><span class="p">)</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()))</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT key FROM `ml_data`&quot;</span><span class="p">)</span>
+        <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">keys</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()))</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">repo</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">repo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">repo</span> <span class="o">=</span> <span class="n">Repo</span><span class="p">(</span><span class="n">src_url</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">repo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">repo</span> <span class="o">=</span> <span class="n">Repo</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="n">db</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conn</span>
         <span class="c1"># Get features</span>
-        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-            <span class="s2">&quot;SELECT json FROM ml_data WHERE src_url=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">src_url</span><span class="p">,)</span>
-        <span class="p">)</span>
+        <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT json FROM ml_data WHERE key=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,))</span>
         <span class="n">dump</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">dump</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">dump</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">repo</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">Repo</span><span class="p">(</span><span class="n">src_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">dump</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+            <span class="n">repo</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">Repo</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">dump</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
         <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-            <span class="s2">&quot;SELECT maintained FROM `status` WHERE src_url=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">src_url</span><span class="p">,)</span>
+            <span class="s2">&quot;SELECT maintained FROM `status` WHERE key=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,)</span>
         <span class="p">)</span>
         <span class="n">maintained</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">maintained</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">maintained</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -621,7 +640,7 @@ the MySQL <a class="reference internal" href="../plugins/dffml_source.html"><spa
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
 
-<span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;demoapp&quot;</span><span class="p">)</span>
+<span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;demoapp&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">DemoAppSource</span><span class="p">(</span><span class="n">BaseSource</span><span class="p">):</span>
 
     <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">DemoAppSourceContext</span>
@@ -677,13 +696,13 @@ to make it accessable to the command line interface.</p>
 <p><strong>db_ml.sql</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DROP TABLE IF EXISTS `ml_data`;
 CREATE TABLE IF NOT EXISTS `ml_data` (
-  `src_url` VARCHAR(1000) PRIMARY KEY NOT NULL,
+  `key` VARCHAR(1000) PRIMARY KEY NOT NULL,
   `json` text
 );
 </pre></div>
 </div>
 <p>You can pipe that query in with bash like we did the first time.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> docker run -i --rm --net<span class="o">=</span>host mariadb mysql <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> docker run -i --rm --net<span class="o">=</span>host mariadb:10 mysql <span class="se">\</span>
     -h127.0.0.1 <span class="se">\</span>
     -uuser <span class="se">\</span>
     -ppass <span class="se">\</span>
@@ -716,13 +735,13 @@ to train on our dataset.</p>
     -model tfdnnc <span class="se">\</span>
     -model-epochs <span class="m">400</span> <span class="se">\</span>
     -model-steps <span class="m">4000</span> <span class="se">\</span>
-    -model-classification maintained <span class="se">\</span>
+    -model-predict maintained:str:1 <span class="se">\</span>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
     -sources <span class="nv">db</span><span class="o">=</span>demoapp <span class="se">\</span>
     -model-features <span class="se">\</span>
-      def:authors:int:10 <span class="se">\</span>
-      def:commits:int:10 <span class="se">\</span>
-      def:work:int:10 <span class="se">\</span>
+      authors:int:10 <span class="se">\</span>
+      commits:int:10 <span class="se">\</span>
+      work:int:10 <span class="se">\</span>
     -log debug <span class="se">\</span>
     -update
 </pre></div>
@@ -731,13 +750,13 @@ to train on our dataset.</p>
 meaningless unless you threw out the dataset and put in real classifications.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
     -model tfdnnc <span class="se">\</span>
-    -model-classification maintained <span class="se">\</span>
+    -model-predict maintained:str:1 <span class="se">\</span>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
     -sources <span class="nv">db</span><span class="o">=</span>demoapp <span class="se">\</span>
     -model-features <span class="se">\</span>
-      def:authors:int:10 <span class="se">\</span>
-      def:commits:int:10 <span class="se">\</span>
-      def:work:int:10 <span class="se">\</span>
+      authors:int:10 <span class="se">\</span>
+      commits:int:10 <span class="se">\</span>
+      work:int:10 <span class="se">\</span>
     -log critical
 <span class="go">0.4722222089767456</span>
 </pre></div>
@@ -758,13 +777,13 @@ meaningless unless you threw out the dataset and put in real classifications.</p
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml predict repo <span class="se">\</span>
     -keys https://github.com/intel/dffml.git <span class="se">\</span>
     -model tfdnnc <span class="se">\</span>
-    -model-classification maintained <span class="se">\</span>
+    -model-predict maintained:str:1 <span class="se">\</span>
     -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
     -sources <span class="nv">db</span><span class="o">=</span>demoapp <span class="se">\</span>
     -model-features <span class="se">\</span>
-      def:authors:int:10 <span class="se">\</span>
-      def:commits:int:10 <span class="se">\</span>
-      def:work:int:10 <span class="se">\</span>
+      authors:int:10 <span class="se">\</span>
+      commits:int:10 <span class="se">\</span>
+      work:int:10 <span class="se">\</span>
     -log critical <span class="se">\</span>
     -update
 <span class="go">[</span>
@@ -813,7 +832,7 @@ meaningless unless you threw out the dataset and put in real classifications.</p
 <span class="go">            &quot;value&quot;: &quot;0&quot;,</span>
 <span class="go">            &quot;confidence&quot;: 1.0</span>
 <span class="go">        },</span>
-<span class="go">        &quot;src_url&quot;: &quot;https://github.com/intel/dffml.git&quot;</span>
+<span class="go">        &quot;key&quot;: &quot;https://github.com/intel/dffml.git&quot;</span>
 <span class="go">    }</span>
 <span class="go">]</span>
 </pre></div>
@@ -879,17 +898,17 @@ database.</p>
         <span class="s1">&#39;dffml&#39;</span><span class="p">,</span> <span class="s1">&#39;predict&#39;</span><span class="p">,</span> <span class="s1">&#39;repo&#39;</span><span class="p">,</span>
         <span class="s1">&#39;-keys&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">[</span><span class="s1">&#39;URL&#39;</span><span class="p">],</span>
         <span class="s1">&#39;-model&#39;</span><span class="p">,</span> <span class="s1">&#39;tfdnnc&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;-model-classification&#39;</span><span class="p">,</span> <span class="s1">&#39;maintained&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;-model-predict&#39;</span><span class="p">,</span> <span class="s1">&#39;maintained&#39;</span><span class="p">,</span>
         <span class="s1">&#39;-model-classifications&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span>
         <span class="s1">&#39;-sources&#39;</span><span class="p">,</span> <span class="s1">&#39;db=demoapp&#39;</span><span class="p">,</span>
         <span class="s1">&#39;-model-features&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;def:authors:int:10&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;def:commits:int:10&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;def:work:int:10&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;authors:int:10&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;commits:int:10&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;work:int:10&#39;</span><span class="p">,</span>
         <span class="s1">&#39;-log&#39;</span><span class="p">,</span> <span class="s1">&#39;critical&#39;</span><span class="p">,</span>
         <span class="s1">&#39;-update&#39;</span><span class="p">])</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;REPLACE INTO status (src_url, maintained) VALUES(</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
+    <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;REPLACE INTO status (key, maintained) VALUES(</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span>
                    <span class="p">(</span><span class="n">query</span><span class="p">[</span><span class="s1">&#39;URL&#39;</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;prediction&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">],))</span>
     <span class="n">cnx</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
     <span class="nb">print</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">success</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
@@ -947,10 +966,10 @@ process, and integrated machine learning into a legacy application.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="dataflows.html" class="btn btn-neutral float-right" title="DataFlow Deployment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="dataflows.html" class="btn btn-neutral float-right" title="DataFlow HTTP Deployment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="Usage Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Use Cases" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
