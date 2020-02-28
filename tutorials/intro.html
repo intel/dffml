@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Introduction to DFFML &mdash; DFFML 0.3.2 documentation</title>
+  <title>Introduction to DFFML &mdash; DFFML 0.3.3 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
             
           
@@ -85,11 +85,14 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction to DFFML</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#sources">Sources</a><ul>
@@ -117,12 +120,21 @@
 <li class="toctree-l2"><a class="reference internal" href="source.html">New Source Tutorial</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -222,8 +234,8 @@ the data associated with that key.</p>
 <p>DFFML started as a project centred around Git repos. As such, the unique key
 for a Git repo was the upstream source URL. <code class="docutils literal notranslate"><span class="pre">src_url</span></code> was used as the
 parameter to hold the unique key.</p>
-<p>Issue <a class="reference external" href="https://github.com/intel/dffml/issues/233">#233</a> is tracking the
-need to change all instances of <code class="docutils literal notranslate"><span class="pre">Repo.src_url</span></code> to <code class="docutils literal notranslate"><span class="pre">Repo.key</span></code>.</p>
+<p>Now as DFFML has become more general purpose all instances of <code class="docutils literal notranslate"><span class="pre">Repo.src_url</span></code> have
+been changed to <code class="docutils literal notranslate"><span class="pre">Repo.key</span></code> <a class="reference external" href="https://github.com/intel/dffml/issues/233">#233</a>.</p>
 </div>
 <p>Say for instance you generated a dataset that had to do with cities. Your unique
 key might be the name of the city, the state or province it’s in, and the

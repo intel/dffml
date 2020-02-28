@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Git and GitHub &mdash; DFFML 0.3.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Testing" href="testing.html" />
+    <link rel="prev" title="Codebase Layout And Notes" href="codebase.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Contributing</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#contacting-the-community">Contacting the Community</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#what-to-work-on">What To Work On</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#who-s-working-on-what">Who’s Working On What</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#communication-style">Communication Style</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#working-on-dffml">Working on DFFML</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dev_env.html">Getting Set Up To Work On DFFML</a></li>
+<li class="toctree-l3"><a class="reference internal" href="style.html">Style</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codebase.html">Codebase Layout And Notes</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Git and GitHub</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#working-on-a-branch">Working On A Branch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#issue-and-pull-request-title-formatting">Issue and Pull Request title formatting</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs.html">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="subsystems.html">Notes on Various Subsystems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="debugging.html">Debugging</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Contributing</a> &raquo;</li>
+        
+      <li>Git and GitHub</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/contributing/git.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="git-and-github">
+<h1>Git and GitHub<a class="headerlink" href="#git-and-github" title="Permalink to this headline">¶</a></h1>
+<p>We encourage people to commit code and push it up to GitHub often. That way, if
+you’re having trouble with something you can send others a link to your code
+where they can easily get an idea of what might be going wrong. Don’t worry if
+it’s nowhere near complete! Asking each other for help just gets us to working
+code faster!</p>
+<div class="section" id="working-on-a-branch">
+<h2>Working On A Branch<a class="headerlink" href="#working-on-a-branch" title="Permalink to this headline">¶</a></h2>
+<p>Be sure to checkout a new branch to do your work on.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git fetch origin
+<span class="gp">$</span> git checkout -b my_new_thing origin/master
+</pre></div>
+</div>
+<p>You’ll need to fork the repo on GitHub too. Then add that as a remote.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">$USER</span></code> in this case would be your GitHub username</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git remote add <span class="nv">$USER</span> git@github.com:<span class="nv">$USER</span>/dffml
+</pre></div>
+</div>
+<p>Once you’ve committed a change on that branch you can push it to your fork.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git push -u <span class="nv">$USER</span> my_new_thing
+</pre></div>
+</div>
+<p>Then you can keep committing on this branch and just use <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span></code> to send your
+new commits to GitHub.</p>
+</div>
+<div class="section" id="issue-and-pull-request-title-formatting">
+<h2>Issue and Pull Request title formatting<a class="headerlink" href="#issue-and-pull-request-title-formatting" title="Permalink to this headline">¶</a></h2>
+<p>Please create issues and Pull Requests with titles in the format of</p>
+<p><code class="docutils literal notranslate"><span class="pre">sub_module:</span> <span class="pre">file:</span> <span class="pre">Short</span> <span class="pre">description</span></code></p>
+<p>Since DFFML is organized mostly in a two level fashion, this will help us track
+where changes are needed or being made at a glance.</p>
+<p>Where the filename is the same as the directory name, this is the case with
+Abstract Base classes, then omit the filename.</p>
+<p>Here are some examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">source:</span> <span class="pre">csv:</span> <span class="pre">Parse</span> <span class="pre">error</span> <span class="pre">due</span> <span class="pre">to</span> <span class="pre">seperator</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">feature:</span> <span class="pre">Add</span> <span class="pre">abstract</span> <span class="pre">method</span> <span class="pre">new_method</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">util:</span> <span class="pre">entrypoint:</span> <span class="pre">Change</span> <span class="pre">load_multiple</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model:</span> <span class="pre">tensorflow:</span> <span class="pre">Add</span> <span class="pre">XYZ</span> <span class="pre">classifier</span></code></p></li>
+</ul>
+<p>If you’ve already made the commit, you can change the message by amending the
+commit.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git commit --amend
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="testing.html" class="btn btn-neutral float-right" title="Testing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="codebase.html" class="btn btn-neutral float-left" title="Codebase Layout And Notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Intel
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

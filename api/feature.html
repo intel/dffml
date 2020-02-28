@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Features &mdash; DFFML 0.3.2 documentation</title>
+  <title>Features &mdash; DFFML 0.3.3 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
             
           
@@ -85,27 +85,41 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="high_level.html">High Level</a></li>
 <li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="df/index.html">Data Flow</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Features</a></li>
 <li class="toctree-l2"><a class="reference internal" href="repo.html">Repo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="model/index.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="db/index.html">Databases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="util/index.html">API Helper Utilities Reference</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -192,7 +206,7 @@ setup.py which specifies where to find your Feature subclass within your module.
 feature project’s feature URL.</p>
 <dl class="class">
 <dt id="dffml.feature.feature.Data">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Data</code><span class="sig-paren">(</span><em class="sig-param">src_url: str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Data" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Data</code><span class="sig-paren">(</span><em class="sig-param">key: str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Passed to each feature during evaluation. Shared between all features a repo
 is being evaluated with</p>
 </dd></dl>
@@ -204,7 +218,7 @@ is being evaluated with</p>
 class and implement the fetch, parse, and calc methods. These methods are
 always expected to be called in order. Anything you add to your feature
 subclass in fetch or parse is accessible in calc.</p>
-<p>A feature is provided with the feature URL of the package (in self._src_url)
+<p>A feature is provided with the feature URL of the package (in self._key)
 and is expected to fetch any data it needs to calculate itself when fetch
 is called. All data fetched should be stored in tempdir() if it must reside
 on disk.</p>
@@ -227,7 +241,7 @@ subclass</p>
 
     <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_downloader</span><span class="o">.</span><span class="n">vcs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_src_url</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tempdir</span><span class="p">(</span><span class="s1">&#39;src&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_downloader</span><span class="o">.</span><span class="n">vcs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tempdir</span><span class="p">(</span><span class="s1">&#39;src&#39;</span><span class="p">))</span>
 
     <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
@@ -255,7 +269,7 @@ that is the length of the array calc returns.</p>
 <dt id="dffml.feature.feature.Feature.load">
 <em class="property">classmethod </em><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">loading=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads all installed loading and returns them as a list. Sources to be
-loaded should be registered to ENTRY_POINT via setuptools.</p>
+loaded should be registered to ENTRYPOINT via setuptools.</p>
 </dd></dl>
 
 </dd></dl>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>DataFlow Deployment &mdash; DFFML 0.3.2 documentation</title>
+  <title>DataFlow HTTP Deployment &mdash; DFFML 0.3.3 documentation</title>
   
 
   
@@ -36,8 +36,8 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Plugins" href="../plugins/index.html" />
-    <link rel="prev" title="Integrating Machine Learning" href="integration.html" /> 
+    <link rel="next" title="MNIST Handwriten Digits" href="mnist.html" />
+    <link rel="prev" title="Automating Classifciation" href="integration.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
             
           
@@ -85,15 +85,18 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Usage Examples</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="integration.html">Integrating Machine Learning</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">DataFlow Deployment</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Use Cases</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="integration.html">Automating Classifciation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">DataFlow HTTP Deployment</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#config-files">Config Files</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#multicomms">MultiComms</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#http-channel-config">HTTP Channel Config</a></li>
@@ -102,13 +105,23 @@
 <li class="toctree-l3"><a class="reference internal" href="#redeploying">Redeploying</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="mnist.html">MNIST Handwriten Digits</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -154,9 +167,9 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="index.html">Usage Examples</a> &raquo;</li>
+          <li><a href="index.html">Use Cases</a> &raquo;</li>
         
-      <li>DataFlow Deployment</li>
+      <li>DataFlow HTTP Deployment</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -175,8 +188,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="dataflow-deployment">
-<h1>DataFlow Deployment<a class="headerlink" href="#dataflow-deployment" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="dataflow-http-deployment">
+<h1>DataFlow HTTP Deployment<a class="headerlink" href="#dataflow-http-deployment" title="Permalink to this headline">¶</a></h1>
 <p>In the <a class="reference internal" href="../tutorials/operations.html"><span class="doc">New Operations Tutorial</span></a> we created a command line meta static
 analysis tool, <code class="docutils literal notranslate"><span class="pre">shouldi</span></code>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> shouldi install dffml insecure-package
@@ -187,7 +200,7 @@ analysis tool, <code class="docutils literal notranslate"><span class="pre">shou
 </pre></div>
 </div>
 <p>In the <a class="reference internal" href="../tutorials/operations.html#tutorials-operations-registering-opreations"><span class="std std-ref">Registering Operations</span></a> section of the
-operations tutorial, we registered our operations with Python’s <code class="docutils literal notranslate"><span class="pre">entry_point</span></code>
+operations tutorial, we registered our operations with Python’s <code class="docutils literal notranslate"><span class="pre">entrypoint</span></code>
 system. This allows other Python packages and DFFML plugins to access them
 without the need to hardcode in <code class="docutils literal notranslate"><span class="pre">import</span></code> statements.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -s <span class="se">\</span>
@@ -325,7 +338,7 @@ items that you want evaluated.</p>
 </div>
 <div class="section" id="combining-operations">
 <h2>Combining Operations<a class="headerlink" href="#combining-operations" title="Permalink to this headline">¶</a></h2>
-<p>If you’ve gone through the <a class="reference internal" href="integration.html"><span class="doc">Integrating Machine Learning</span></a> example, you’ve seen the
+<p>If you’ve gone through the <a class="reference internal" href="integration.html"><span class="doc">Automating Classifciation</span></a> example, you’ve seen the
 Git and source code analysis related operations (a list of all available
 operations can be found on the <a class="reference internal" href="../plugins/dffml_operation.html"><span class="doc">Operations</span></a> plugins page).</p>
 <p>We’ll be using those operations, so we need to install them</p>
@@ -334,10 +347,21 @@ operations can be found on the <a class="reference internal" href="../plugins/df
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">lines_of_code_to_comments</span></code> operation will give use the ratio of the
 number of lines of comments to the number of lines of code.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>You need to install <a class="reference external" href="https://github.com/XAMPPRocky/tokei">tokei</a> before
-you can use <code class="docutils literal notranslate"><span class="pre">lines_of_code_to_comments</span></code>.</p>
+<p>You need to install <a class="reference external" href="https://github.com/XAMPPRocky/tokei">tokei</a> before you
+can use <code class="docutils literal notranslate"><span class="pre">lines_of_code_to_comments</span></code>.</p>
+<p>On Linux</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
+  <span class="p">|</span> tar -xvz <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  <span class="nb">echo</span> <span class="s1">&#39;22699e16e71f07ff805805d26ee86ecb9b1052d7879350f7eb9ed87beb0e6b84fbb512963d01b75cec8e80532e4ea29a tokei&#39;</span> <span class="p">|</span> sha384sum -c - <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  sudo mv tokei /usr/local/bin/
+</pre></div>
+</div>
+<p>On OSX</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
+  <span class="p">|</span> tar -xvz <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  <span class="nb">echo</span> <span class="s1">&#39;8c8a1d8d8dd4d8bef93dabf5d2f6e27023777f8553393e269765d7ece85e68837cba4374a2615d83f071dfae22ba40e2 tokei&#39;</span> <span class="p">|</span> sha384sum -c - <span class="o">&amp;&amp;</span> <span class="se">\</span>
+  sudo mv tokei /usr/local/bin/
+</pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">lines_of_code_to_comments</span></code> operation needs the output given by
 <code class="docutils literal notranslate"><span class="pre">lines_of_code_by_language</span></code>, which needs a Git repos source code.</p>
@@ -554,10 +578,10 @@ configs.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../plugins/index.html" class="btn btn-neutral float-right" title="Plugins" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="mnist.html" class="btn btn-neutral float-right" title="MNIST Handwriten Digits" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="integration.html" class="btn btn-neutral float-left" title="Integrating Machine Learning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="integration.html" class="btn btn-neutral float-left" title="Automating Classifciation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

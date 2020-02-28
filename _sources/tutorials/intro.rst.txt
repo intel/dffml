@@ -44,8 +44,8 @@ the data associated with that key.
     for a Git repo was the upstream source URL. ``src_url`` was used as the
     parameter to hold the unique key.
 
-    Issue `#233 <https://github.com/intel/dffml/issues/233>`_ is tracking the
-    need to change all instances of ``Repo.src_url`` to ``Repo.key``.
+    Now as DFFML has become more general purpose all instances of ``Repo.src_url`` have 
+    been changed to ``Repo.key`` `#233 <https://github.com/intel/dffml/issues/233>`_.
 
 Say for instance you generated a dataset that had to do with cities. Your unique
 key might be the name of the city, the state or province it's in, and the
