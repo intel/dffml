@@ -132,10 +132,10 @@ function run_docs() {
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
 
+  last_release=$("${PYTHON}" -m dffml service dev setuppy kwarg version setup.py)
+
   # Doctests
   ./scripts/doctest.sh
-  git clean -fdx
-  git reset --hard HEAD
 
   # Make master docs
   master_docs="$(mktemp -d)"
@@ -145,14 +145,12 @@ function run_docs() {
   mv pages "${master_docs}/html"
 
   # Make last release docs
-  last_release=$(dffml service dev setuppy kwarg version setup.py)
-  echo "Checking out last release ${last_release}"
-
   release_docs="$(mktemp -d)"
   TEMP_DIRS+=("${release_docs}")
   rm -rf pages
   git clean -fdx
   git reset --hard HEAD
+  echo "Checking out last release ${last_release}"
   git checkout "${last_release}"
   git clean -fdx
   git reset --hard HEAD
