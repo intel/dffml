@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dffml.util.net &mdash; DFFML 0.3.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dffml.util.net</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dffml.util.net</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">.os</span> <span class="kn">import</span> <span class="n">chdir</span>
+
+
+<div class="viewcode-block" id="HashValidationError"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.HashValidationError">[docs]</a><span class="k">class</span> <span class="nc">HashValidationError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when hash of file is not what was expected</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expected</span> <span class="o">=</span> <span class="n">expected</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.path}</span><span class="s2"> hash was </span><span class="si">{self.value}</span><span class="s2">, should be </span><span class="si">{self.expected}</span><span class="s2">&quot;</span></div>
+
+
+<div class="viewcode-block" id="ProtocolNotAllowedError"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.ProtocolNotAllowedError">[docs]</a><span class="k">class</span> <span class="nc">ProtocolNotAllowedError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when a URL&#39;s protocol is not in allowed list of protocols.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">allowlist</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allowlist</span> <span class="o">=</span> <span class="n">allowlist</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Protocol of URL </span><span class="si">{self.url!r}</span><span class="s2"> is not in allowlist: </span><span class="si">{self.allowlist!r}</span><span class="s2">&quot;</span></div>
+
+
+<span class="c1"># Default list of URL protocols allowed</span>
+<span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;https://&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="sync_urlopen"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.sync_urlopen">[docs]</a><span class="k">def</span> <span class="nf">sync_urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check that ``url`` has a protocol defined in ``protocol_allowlist``, then</span>
+<span class="sd">    return the result of calling :py:func:`urllib.request.urlopen` passing it</span>
+<span class="sd">    ``url``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">allowed_protocol</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">protocol</span> <span class="ow">in</span> <span class="n">protocol_allowlist</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">protocol</span><span class="p">):</span>
+            <span class="n">allowed_protocol</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">allowed_protocol</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ProtocolNotAllowedError</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">protocol_allowlist</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cached_download"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.cached_download">[docs]</a><span class="k">def</span> <span class="nf">cached_download</span><span class="p">(</span>
+    <span class="n">url</span><span class="p">,</span>
+    <span class="n">target_path</span><span class="p">,</span>
+    <span class="n">expected_hash</span><span class="p">,</span>
+    <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Download a file and verify the hash of the downloaded file. If the file</span>
+<span class="sd">    already exists and the hash matches, do not re-download the file.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; @cached_download(</span>
+<span class="sd">    ...     &quot;https://github.com/intel/dffml/raw/152c2b92535fac6beec419236f8639b0d75d707d/MANIFEST.in&quot;,</span>
+<span class="sd">    ...     &quot;MANIFEST.in&quot;,</span>
+<span class="sd">    ...     &quot;f7aadf5cdcf39f161a779b4fa77ec56a49630cf7680e21fb3dc6c36ce2d8c6fae0d03d5d3094a6aec4fea1561393c14c&quot;,</span>
+<span class="sd">    ... )</span>
+<span class="sd">    ... async def first_line_in_manifest_152c2b(manifest):</span>
+<span class="sd">    ...     return manifest.read_text().split()[:2]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(first_line_in_manifest_152c2b())</span>
+<span class="sd">    [&#39;include&#39;, &#39;README.md&#39;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">target_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">target_path</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">validate_hash</span><span class="p">(</span><span class="n">error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="n">filehash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span><span class="p">(</span><span class="n">target_path</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">filehash</span> <span class="o">!=</span> <span class="n">expected_hash</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">error</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">HashValidationError</span><span class="p">(</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">target_path</span><span class="p">),</span> <span class="n">filehash</span><span class="p">,</span> <span class="n">expected_hash</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">mkwrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">async</span> <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">target_path</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">target_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">validate_hash</span><span class="p">(</span><span class="n">error</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                <span class="c1"># TODO(p5) Blocking request in coroutine</span>
+                <span class="k">with</span> <span class="n">sync_urlopen</span><span class="p">(</span>
+                    <span class="n">url</span><span class="p">,</span> <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span>
+                <span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+                    <span class="n">target_path</span><span class="o">.</span><span class="n">write_bytes</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="n">validate_hash</span><span class="p">()</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">wrapper</span>
+
+    <span class="k">return</span> <span class="n">mkwrapper</span></div>
+
+
+<div class="viewcode-block" id="cached_download_unpack_archive"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.cached_download_unpack_archive">[docs]</a><span class="k">def</span> <span class="nf">cached_download_unpack_archive</span><span class="p">(</span>
+    <span class="n">url</span><span class="p">,</span>
+    <span class="n">file_path</span><span class="p">,</span>
+    <span class="n">directory_path</span><span class="p">,</span>
+    <span class="n">expected_hash</span><span class="p">,</span>
+    <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">DEFAULT_PROTOCOL_ALLOWLIST</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Download an archive and extract it to a directory on disk.</span>
+
+<span class="sd">    Verify the hash of the downloaded file. If the hash matches the file is not</span>
+<span class="sd">    re-downloaded.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        This function does not verify the integrity of the unpacked archive on</span>
+<span class="sd">        disk. Only the downloaded file.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; @cached_download_unpack_archive(</span>
+<span class="sd">    ...     &quot;https://github.com/intel/dffml/archive/152c2b92535fac6beec419236f8639b0d75d707d.tar.gz&quot;,</span>
+<span class="sd">    ...     &quot;dffml.tar.gz&quot;,</span>
+<span class="sd">    ...     &quot;dffml&quot;,</span>
+<span class="sd">    ...     &quot;32ba082cd8056ff4ddcb68691a590c3cb8fea2ff75c0265b8d844c5edc7eaef54136160c6090750e562059b957355b15&quot;,</span>
+<span class="sd">    ... )</span>
+<span class="sd">    ... async def files_in_dffml_commit_152c2b(dffml_dir):</span>
+<span class="sd">    ...     return len(list(dffml_dir.rglob(&quot;**/*&quot;)))</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(files_in_dffml_commit_152c2b())</span>
+<span class="sd">    594</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">directory_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">extractor</span><span class="p">(</span><span class="n">download_path</span><span class="p">):</span>
+        <span class="n">download_path</span> <span class="o">=</span> <span class="n">download_path</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+        <span class="k">with</span> <span class="n">chdir</span><span class="p">(</span><span class="n">directory_path</span><span class="p">):</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">unpack_archive</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">download_path</span><span class="p">),</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
+
+    <span class="n">extract</span> <span class="o">=</span> <span class="n">cached_download</span><span class="p">(</span>
+        <span class="n">url</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">expected_hash</span><span class="p">,</span> <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span><span class="p">,</span>
+    <span class="p">)(</span><span class="n">extractor</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">mkwrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">async</span> <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">directory_path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+                <span class="n">directory_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">await</span> <span class="n">extract</span><span class="p">()</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">directory_path</span><span class="p">]),</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">wrapper</span>
+
+    <span class="k">return</span> <span class="n">mkwrapper</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Intel
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
