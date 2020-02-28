@@ -110,7 +110,7 @@
 <li class="toctree-l2"><a class="reference internal" href="model/index.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/index.html">Sources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="db/index.html">Databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="util/index.html">API Helper Utilities Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="util/index.html">Utilities</a></li>
 </ul>
 </li>
 </ul>
@@ -280,22 +280,22 @@ returned from a __call__ to this class.</p>
 classes inheriting from BaseDataFlowFacilitatorObject must have a property
 named ENTRYPOINT. In the form of <cite>dffml.load_point</cite> which will be used to
 load all classes registered to that entry point.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the base object. Then enter it&#39;s context to preform any initial</span>
-<span class="c1"># setup. Call obj to get an instance of obj.CONTEXT, which is a subclass</span>
-<span class="c1"># of BaseDataFlowFacilitatorObjectContext. ctx, the inner context, does</span>
-<span class="c1"># all the heavy lifting.</span>
-<span class="k">class</span> <span class="nc">Context</span><span class="p">(</span><span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">):</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create the base object. Then enter it&#39;s context to preform any initial</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># setup. Call obj to get an instance of obj.CONTEXT, which is a subclass</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># of BaseDataFlowFacilitatorObjectContext. ctx, the inner context, does</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># all the heavy lifting.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Context</span><span class="p">(</span><span class="n">BaseDataFlowFacilitatorObjectContext</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="k">return</span>
-<span class="k">class</span> <span class="nc">Object</span><span class="p">(</span><span class="n">BaseDataFlowFacilitatorObject</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Object</span><span class="p">(</span><span class="n">BaseDataFlowFacilitatorObject</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">Context</span>
 <span class="gp">... </span>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="k">return</span> <span class="n">Context</span><span class="p">()</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">Object</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">())</span> <span class="k">as</span> <span class="n">obj</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">obj</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">method</span><span class="p">()</span>
-<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </pre></div>
 </div>
 </dd></dl>

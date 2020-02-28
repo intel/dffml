@@ -1,0 +1,315 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Networking Helpers &mdash; DFFML 0.3.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Publications" href="../../publications.html" />
+    <link rel="prev" title="Asyncio Helpers" href="asynchelper.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Utilities</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="asynchelper.html">Asyncio Helpers</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Networking Helpers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Utilities</a> &raquo;</li>
+        
+      <li>Networking Helpers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api/util/net.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-dffml.util.net">
+<span id="networking-helpers"></span><h1>Networking Helpers<a class="headerlink" href="#module-dffml.util.net" title="Permalink to this headline">¶</a></h1>
+<dl class="exception">
+<dt id="dffml.util.net.HashValidationError">
+<em class="property">exception </em><code class="sig-prename descclassname">dffml.util.net.</code><code class="sig-name descname">HashValidationError</code><span class="sig-paren">(</span><em class="sig-param">path</em>, <em class="sig-param">value</em>, <em class="sig-param">expected</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/net.html#HashValidationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.net.HashValidationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when hash of file is not what was expected</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="dffml.util.net.ProtocolNotAllowedError">
+<em class="property">exception </em><code class="sig-prename descclassname">dffml.util.net.</code><code class="sig-name descname">ProtocolNotAllowedError</code><span class="sig-paren">(</span><em class="sig-param">url</em>, <em class="sig-param">allowlist</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/net.html#ProtocolNotAllowedError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.net.ProtocolNotAllowedError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when a URL’s protocol is not in allowed list of protocols.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="dffml.util.net.cached_download">
+<code class="sig-prename descclassname">dffml.util.net.</code><code class="sig-name descname">cached_download</code><span class="sig-paren">(</span><em class="sig-param">url, target_path, expected_hash, protocol_allowlist=['https://']</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/net.html#cached_download"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.net.cached_download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download a file and verify the hash of the downloaded file. If the file
+already exists and the hash matches, do not re-download the file.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@cached_download</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s2">&quot;https://github.com/intel/dffml/raw/152c2b92535fac6beec419236f8639b0d75d707d/MANIFEST.in&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;MANIFEST.in&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;f7aadf5cdcf39f161a779b4fa77ec56a49630cf7680e21fb3dc6c36ce2d8c6fae0d03d5d3094a6aec4fea1561393c14c&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">... </span><span class="k">async</span> <span class="k">def</span> <span class="nf">first_line_in_manifest_152c2b</span><span class="p">(</span><span class="n">manifest</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">manifest</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()[:</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">first_line_in_manifest_152c2b</span><span class="p">())</span>
+<span class="go">[&#39;include&#39;, &#39;README.md&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dffml.util.net.cached_download_unpack_archive">
+<code class="sig-prename descclassname">dffml.util.net.</code><code class="sig-name descname">cached_download_unpack_archive</code><span class="sig-paren">(</span><em class="sig-param">url, file_path, directory_path, expected_hash, protocol_allowlist=['https://']</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/net.html#cached_download_unpack_archive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.net.cached_download_unpack_archive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Download an archive and extract it to a directory on disk.</p>
+<p>Verify the hash of the downloaded file. If the hash matches the file is not
+re-downloaded.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function does not verify the integrity of the unpacked archive on
+disk. Only the downloaded file.</p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@cached_download_unpack_archive</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s2">&quot;https://github.com/intel/dffml/archive/152c2b92535fac6beec419236f8639b0d75d707d.tar.gz&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;dffml.tar.gz&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;dffml&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s2">&quot;32ba082cd8056ff4ddcb68691a590c3cb8fea2ff75c0265b8d844c5edc7eaef54136160c6090750e562059b957355b15&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">... </span><span class="k">async</span> <span class="k">def</span> <span class="nf">files_in_dffml_commit_152c2b</span><span class="p">(</span><span class="n">dffml_dir</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">dffml_dir</span><span class="o">.</span><span class="n">rglob</span><span class="p">(</span><span class="s2">&quot;**/*&quot;</span><span class="p">)))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">files_in_dffml_commit_152c2b</span><span class="p">())</span>
+<span class="go">594</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dffml.util.net.sync_urlopen">
+<code class="sig-prename descclassname">dffml.util.net.</code><code class="sig-name descname">sync_urlopen</code><span class="sig-paren">(</span><em class="sig-param">url, protocol_allowlist=['https://']</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/net.html#sync_urlopen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.net.sync_urlopen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that <code class="docutils literal notranslate"><span class="pre">url</span></code> has a protocol defined in <code class="docutils literal notranslate"><span class="pre">protocol_allowlist</span></code>, then
+return the result of calling <a class="reference external" href="https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">urllib.request.urlopen()</span></code></a> passing it
+<code class="docutils literal notranslate"><span class="pre">url</span></code>.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../publications.html" class="btn btn-neutral float-right" title="Publications" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="asynchelper.html" class="btn btn-neutral float-left" title="Asyncio Helpers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Intel
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
