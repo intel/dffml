@@ -11,6 +11,12 @@ golangci_lint_output = Definition(
 )
 
 
+class GoLangCILintError(Exception):
+    """
+    Raised when golangci-lint fails
+    """
+
+
 @op(inputs={"pkg": package_src_dir}, outputs={"report": golangci_lint_output})
 async def run_golangci_lint(pkg: str) -> Dict[str, Any]:
     """
@@ -21,13 +27,14 @@ async def run_golangci_lint(pkg: str) -> Dict[str, Any]:
         "run",
         "--out-format",
         "json",
-        pkg,
+        "./...",
+        cwd=pkg,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
     )
-    stdout, _stderr = await proc.communicate()
+    stdout, stderr = await proc.communicate()
     if len(stdout) == 0:
-        raise Exception(_stderr)
+        raise GoLangCILintError(stderr)
 
     golangci_lint_op = stdout.decode()
     issues = json.loads(golangci_lint_op)
