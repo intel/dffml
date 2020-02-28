@@ -115,7 +115,8 @@
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#working-on-dffml">Working on DFFML</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="dev_env.html">Getting Set Up To Work On DFFML</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Style</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#file-formatting">File Formatting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python-file-formatting">Python File Formatting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#javascript-file-formatting">JavaScript File Formatting</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#imports">Imports</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#docstrings">Docstrings</a></li>
 </ul>
@@ -200,12 +201,21 @@
 <h1>Style<a class="headerlink" href="#style" title="Permalink to this headline">¶</a></h1>
 <p>This document talks about code formatting, conventions, documentation, and any
 stylistic choices that we adhere to.</p>
-<div class="section" id="file-formatting">
-<h2>File Formatting<a class="headerlink" href="#file-formatting" title="Permalink to this headline">¶</a></h2>
-<p>We run the <a class="reference external" href="https://github.com/psf/black">black</a> formatter on all files. Try
-to run it before every commit. This way, if you push up files for review, they
-are easy to read, even if your pull request isn’t yet ready to merge.</p>
+<p>Try to run the formatters before every commit. This way, if you push up files
+for review, they are easy to read, even if your pull request isn’t yet ready to
+merge.</p>
+<div class="section" id="python-file-formatting">
+<h2>Python File Formatting<a class="headerlink" href="#python-file-formatting" title="Permalink to this headline">¶</a></h2>
+<p>Run the <a class="reference external" href="https://github.com/psf/black">black</a> formatter on all Python files.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> black .
+</pre></div>
+</div>
+</div>
+<div class="section" id="javascript-file-formatting">
+<h2>JavaScript File Formatting<a class="headerlink" href="#javascript-file-formatting" title="Permalink to this headline">¶</a></h2>
+<p>Run the <a class="reference external" href="https://github.com/beautify-web/js-beautify">js-beautify</a> formatter
+on all JavaScript files. Use the following options.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> js-beautify -r -n -s <span class="m">2</span> file_to_format.js
 </pre></div>
 </div>
 </div>
