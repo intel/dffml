@@ -88,10 +88,23 @@ html_static_path = ["_static"]
 napoleon_numpy_docstring = True
 
 doctest_global_setup = """
+import os
 import sys
+import shutil
+import atexit
 import inspect
 import asyncio
+import tempfile
+import functools
+
+# Create a temporary directory for test to run in
+DOCTEST_TEMPDIR = tempfile.mkdtemp()
+# Remove it when the test exits
+atexit.register(functools.partial(shutil.rmtree, DOCTEST_TEMPDIR))
+# Change the current working directory to the temporary directory
+os.chdir(DOCTEST_TEMPDIR)
 
 from dffml.base import *
 from dffml.df.base import *
+from dffml.util.net import *
 """

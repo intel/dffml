@@ -1,5 +1,5 @@
-API Helper Utilities Reference
-==============================
+Utilities
+=========
 
 :py:mod:`asyncio` testing, command line, and configuration helpers live here.
 
@@ -9,3 +9,4 @@ API Helper Utilities Reference
     :caption: Contents:
 
     asynchelper
+    net
