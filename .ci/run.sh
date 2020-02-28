@@ -134,6 +134,8 @@ function run_docs() {
 
   # Doctests
   ./scripts/doctest.sh
+  git clean -fdx
+  git reset --hard HEAD
 
   # Make master docs
   master_docs="$(mktemp -d)"
@@ -147,9 +149,12 @@ function run_docs() {
   TEMP_DIRS+=("${release_docs}")
   rm -rf pages
   git clean -fdx
-  git checkout $(git describe --abbrev=0 --tags --match '*.*.*')
+  git reset --hard HEAD
+  git checkout $(git tag --sort=committerdate | tail -n 1)
   git clean -fdx
   git reset --hard HEAD
+  # Uninstall dffml
+  "${PYTHON}" -m pip uninstall -y dffml
   # Remove .local to force install of correct dependency versions
   rm -rf ~/.local
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
