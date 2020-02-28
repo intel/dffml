@@ -52,9 +52,9 @@ scraping tasks.
 
 .. code-block:: console
 
-    $ dffml dataflow run records set \
+    $ dffml dataflow run repos set \
         -keys https://github.com/intel/dffml \
-        -record-def URL \
+        -repo-def URL \
         -dataflow df.yaml \
         -sources gathered=json \
         -source-filename /tmp/data.json \
@@ -185,19 +185,3 @@ flag to ``pip install``).
     is_binary_pie = dffml_operations_binsec.operations:is_binary_pie.op -> dffml-operations-binsec 0.0.1 (/home/user/.pyenv/versions/3.7.2/lib/python3.7/site-packages)
     pypi_package_json = shouldi.pypi:pypi_package_json -> shouldi 0.0.1 (/home/user/Documents/python/dffml/examples/shouldi)
     clone_git_repo = dffml_feature_git.feature.operations:clone_git_repo -> dffml-feature-git 0.2.0 (/home/user/Documents/python/dffml/feature/git)
-
-setuppy
-+++++++
-
-Utilities for working with ``setup.py`` files.
-
-kwarg
-_____
-
-``import`` a ``setup.py`` file return the value of the specified keyword
-argument.
-
-.. code-block:: console
-
-    $ dffml service dev setuppy kwarg name model/tensorflow/setup.py
-    dffml-model-tensorflow

@@ -1,9 +1,8 @@
-Automating Classification
-=========================
+Integrating Machine Learning
+============================
 
 This example will show you how to automate a manual classification process,
-determining if a Git repo is maintained or abandoned. We'll be integrating
-Machine Learning into an existing legacy application.
+determining if a Git repo is maintained or abandoned.
 
 For this example assume you are a very curious open source software people (if
 you're here you already are). Since you love looking at GitHub repos in your
@@ -65,16 +64,7 @@ Start MariaDB (functionally very similar to MySQL which its a fork of).
         -e MYSQL_PASSWORD=pass \
         -e MYSQL_DATABASE=db \
         -p 3306:3306 \
-        mariadb:10
-
-Wait for the database to start. Run the following command until you see ``ready
-for connections`` twice in the output.
-
-.. code-block:: console
-
-    $ docker logs maintained_db 2>&1 | grep 'ready for'
-    2020-01-13 21:31:09 0 [Note] mysqld: ready for connections.
-    2020-01-13 21:32:16 0 [Note] mysqld: ready for connections.
+        mariadb
 
 Import the data. The data was pulled from a couple pages of GitHub search
 results and randomly assigned a maintenance status. It is completely
@@ -86,7 +76,7 @@ setting the status of repos.
 
 .. code-block:: console
 
-    $ docker run -i --rm --net=host mariadb:10 mysql \
+    $ docker run -i --rm --net=host mariadb mysql \
         -h127.0.0.1 \
         -uuser \
         -ppass \
@@ -144,27 +134,6 @@ since that creates more user friendly configs than ``json``.
 
     $ pip install -U dffml-feature-git dffml-config-yaml
 
-The git operations / features rely on ``tokei``. We need to download and install
-it first.
-
-On Linux
-
-.. code-block:: console
-
-    $ curl -sSL 'https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz' \
-      | tar -xvz && \
-      echo '22699e16e71f07ff805805d26ee86ecb9b1052d7879350f7eb9ed87beb0e6b84fbb512963d01b75cec8e80532e4ea29a tokei' | sha384sum -c - && \
-      sudo mv tokei /usr/local/bin/
-
-On OSX
-
-.. code-block:: console
-
-    $ curl -sSL 'https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz' \
-      | tar -xvz && \
-      echo '8c8a1d8d8dd4d8bef93dabf5d2f6e27023777f8553393e269765d7ece85e68837cba4374a2615d83f071dfae22ba40e2 tokei' | sha384sum -c - && \
-      sudo mv tokei /usr/local/bin/
-
 Operations are just Python functions, or classes. They define a routine which
 will be run concurrently with other operations. Here's an example of the
 ``git_commits`` operation, which will find the number of commits within a date
@@ -174,8 +143,8 @@ range.
 
 .. literalinclude:: /../feature/git/dffml_feature_git/feature/operations.py
     :linenos:
-    :lineno-start: 363
-    :lines: 363-394
+    :lineno-start: 367
+    :lines: 367-394
 
 Since operations are run concurrently with each other, DFFML manages locking of
 input data, such as git repositories. This is done via ``Definitions`` which are
@@ -264,9 +233,9 @@ This command runs the dataflow on a set of repos, that set being the URLs in
 
 .. code-block:: console
 
-    $ dffml dataflow run records set \
+    $ dffml dataflow run repos set \
         -keys $(cat /tmp/urls) \
-        -record-def URL \
+        -repo-def URL \
         -dataflow cgi-bin/dataflow.yaml \
         -sources gathered=json \
         -source-filename /tmp/data.json \
@@ -314,7 +283,7 @@ This command runs the dataflow on a set of repos, that set being the URLs in
                 ]
             },
             "last_updated": "2019-10-25T01:44:50Z",
-            "key": "https://github.com/AntoineMaillard06/Tetris.git"
+            "src_url": "https://github.com/AntoineMaillard06/Tetris.git"
         }
     ]
 
@@ -363,7 +332,7 @@ You can pipe that query in with bash like we did the first time.
 
 .. code-block:: console
 
-    $ docker run -i --rm --net=host mariadb:10 mysql \
+    $ docker run -i --rm --net=host mariadb mysql \
         -h127.0.0.1 \
         -uuser \
         -ppass \
@@ -382,7 +351,7 @@ up as expected.
 
 .. code-block:: console
 
-    $ dffml list records -sources db=demoapp
+    $ dffml list repos -sources db=demoapp
 
 Training our Model
 ------------------
@@ -404,13 +373,13 @@ to train on our dataset.
         -model tfdnnc \
         -model-epochs 400 \
         -model-steps 4000 \
-        -model-predict maintained:str:1 \
+        -model-classification maintained \
         -model-classifications 0 1 \
         -sources db=demoapp \
         -model-features \
-          authors:int:10 \
-          commits:int:10 \
-          work:int:10 \
+          def:authors:int:10 \
+          def:commits:int:10 \
+          def:work:int:10 \
         -log debug \
         -update
 
@@ -421,13 +390,13 @@ meaningless unless you threw out the dataset and put in real classifications.
 
     $ dffml accuracy \
         -model tfdnnc \
-        -model-predict maintained:str:1 \
+        -model-classification maintained \
         -model-classifications 0 1 \
         -sources db=demoapp \
         -model-features \
-          authors:int:10 \
-          commits:int:10 \
-          work:int:10 \
+          def:authors:int:10 \
+          def:commits:int:10 \
+          def:work:int:10 \
         -log critical
     0.4722222089767456
 
@@ -440,9 +409,9 @@ Run the operations on the new repo: ``https://github.com/intel/dffml.git``
 
 .. code-block:: console
 
-    $ dffml dataflow run records set \
+    $ dffml dataflow run repos set \
         -keys https://github.com/intel/dffml.git \
-        -record-def URL \
+        -repo-def URL \
         -dataflow cgi-bin/dataflow.yaml \
         -sources db=demoapp
 
@@ -450,16 +419,16 @@ Now that we have the data for the new repo, ask the model for a prediction.
 
 .. code-block:: console
 
-    $ dffml predict record \
+    $ dffml predict repo \
         -keys https://github.com/intel/dffml.git \
         -model tfdnnc \
-        -model-predict maintained:str:1 \
+        -model-classification maintained \
         -model-classifications 0 1 \
         -sources db=demoapp \
         -model-features \
-          authors:int:10 \
-          commits:int:10 \
-          work:int:10 \
+          def:authors:int:10 \
+          def:commits:int:10 \
+          def:work:int:10 \
         -log critical \
         -update
     [
@@ -508,7 +477,7 @@ Now that we have the data for the new repo, ask the model for a prediction.
                 "value": "0",
                 "confidence": 1.0
             },
-            "key": "https://github.com/intel/dffml.git"
+            "src_url": "https://github.com/intel/dffml.git"
         }
     ]
 

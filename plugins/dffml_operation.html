@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Operations &mdash; DFFML 0.3.3 documentation</title>
+  <title>Operations &mdash; DFFML 0.3.2 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.3
+                0.3.2
               </div>
             
           
@@ -85,19 +85,13 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Use Cases</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="dffml_source.html">Sources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dffml_model.html">Models</a></li>
@@ -107,7 +101,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#dffml-dataflow-run">dffml.dataflow.run</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#dffml-mapping-create">dffml.mapping.create</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#dffml-mapping-extract">dffml.mapping.extract</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#dffml-model-predict">dffml.model.predict</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#get-single">get_single</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#group-by">group_by</a></li>
 </ul>
@@ -141,13 +134,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Community</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -289,24 +276,6 @@ the roadmap.</p>
 <li><p>value: value(type: generic)</p></li>
 </ul>
 </div>
-<div class="section" id="dffml-model-predict">
-<h3>dffml.model.predict<a class="headerlink" href="#dffml-model-predict" title="Permalink to this headline">¶</a></h3>
-<p><em>Core</em></p>
-<p>No description</p>
-<p><strong>Stage: processing</strong></p>
-<p><strong>Inputs</strong></p>
-<ul class="simple">
-<li><p>features: record_features(type: Dict[str, Any])</p></li>
-</ul>
-<p><strong>Outputs</strong></p>
-<ul class="simple">
-<li><p>prediction: model_predictions(type: Dict[str, Any])</p></li>
-</ul>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>model: Entrypoint</p></li>
-</ul>
-</div>
 <div class="section" id="get-single">
 <h3>get_single<a class="headerlink" href="#get-single" title="Permalink to this headline">¶</a></h3>
 <p><em>Core</em></p>
@@ -328,7 +297,13 @@ the roadmap.</p>
 <p><strong>Stage: output</strong></p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
-<li><p>spec: group_by_spec(type: Dict[str, Any])</p></li>
+<li><p>spec: group_by_spec(type: Dict[str, Any])</p>
+<ul>
+<li><p>group: Definition</p></li>
+<li><p>by: Definition</p></li>
+<li><p>fill: typing.Any</p></li>
+</ul>
+</li>
 </ul>
 <p><strong>Outputs</strong></p>
 <ul class="simple">
@@ -543,22 +518,7 @@ the roadmap.</p>
 <div class="section" id="lines-of-code-by-language">
 <h3>lines_of_code_by_language<a class="headerlink" href="#lines-of-code-by-language" title="Permalink to this headline">¶</a></h3>
 <p><em>Core</em></p>
-<p>This operation relys on <code class="docutils literal notranslate"><span class="pre">tokei</span></code>. Here’s how to install version 10.1.1,
-check it’s releases page to make sure you’re installing the latest version.</p>
-<p>On Linux</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
-  <span class="p">|</span> tar -xvz <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  <span class="nb">echo</span> <span class="s1">&#39;22699e16e71f07ff805805d26ee86ecb9b1052d7879350f7eb9ed87beb0e6b84fbb512963d01b75cec8e80532e4ea29a tokei&#39;</span> <span class="p">|</span> sha384sum -c - <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  sudo mv tokei /usr/local/bin/
-</pre></div>
-</div>
-<p>On OSX</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
-  <span class="p">|</span> tar -xvz <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  <span class="nb">echo</span> <span class="s1">&#39;8c8a1d8d8dd4d8bef93dabf5d2f6e27023777f8553393e269765d7ece85e68837cba4374a2615d83f071dfae22ba40e2 tokei&#39;</span> <span class="p">|</span> sha384sum -c - <span class="o">&amp;&amp;</span> <span class="se">\</span>
-  sudo mv tokei /usr/local/bin/
-</pre></div>
-</div>
+<p>No description</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">

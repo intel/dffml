@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Features &mdash; DFFML 0.3.3 documentation</title>
+  <title>Features &mdash; DFFML 0.3.2 documentation</title>
   
 
   
@@ -36,7 +36,7 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Record" href="record.html" />
+    <link rel="next" title="Repo" href="repo.html" />
     <link rel="prev" title="Data Flow Memory Objects" href="df/memory.html" /> 
 </head>
 
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.3
+                0.3.2
               </div>
             
           
@@ -85,41 +85,27 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Use Cases</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="high_level.html">High Level</a></li>
 <li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="df/index.html">Data Flow</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="record.html">Record</a></li>
+<li class="toctree-l2"><a class="reference internal" href="repo.html">Repo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="model/index.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/index.html">Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="db/index.html">Databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="util/index.html">API Helper Utilities Reference</a></li>
 </ul>
 </li>
-</ul>
-<p class="caption"><span class="caption-text">Community</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -188,12 +174,26 @@
             
   <div class="section" id="module-dffml.feature">
 <span id="features"></span><h1>Features<a class="headerlink" href="#module-dffml.feature" title="Permalink to this headline">¶</a></h1>
+<p>All features registered to the dffml.feature entry point using setuptools are
+derived from the Feature class. To add a feature, create a module which has a
+setup.py which specifies where to find your Feature subclass within your module.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;myfeatures&#39;</span><span class="p">,</span>
+<span class="gp">...</span>
+    <span class="n">entry_points</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;dffml.feature&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s1">&#39;numfiles = myfeatures:NumFilesFeature&#39;</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 <span class="target" id="module-dffml.feature.feature"></span><p>Feature subclasses are responsible for generating an integer value given an open
 feature project’s feature URL.</p>
 <dl class="class">
 <dt id="dffml.feature.feature.Data">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Data</code><span class="sig-paren">(</span><em class="sig-param">key: str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Passed to each feature during evaluation. Shared between all features a record
+<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Data</code><span class="sig-paren">(</span><em class="sig-param">src_url: str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Passed to each feature during evaluation. Shared between all features a repo
 is being evaluated with</p>
 </dd></dl>
 
@@ -204,13 +204,40 @@ is being evaluated with</p>
 class and implement the fetch, parse, and calc methods. These methods are
 always expected to be called in order. Anything you add to your feature
 subclass in fetch or parse is accessible in calc.</p>
-<p>A feature is provided with the feature URL of the package (in self._key)
+<p>A feature is provided with the feature URL of the package (in self._src_url)
 and is expected to fetch any data it needs to calculate itself when fetch
 is called. All data fetched should be stored in tempdir() if it must reside
 on disk.</p>
 <p>Once the appropriate data is fetched the parse method is responsible for
 storing the parts of that data which will be used to calculate in the
 subclass</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">__example_parsed_value_name</span> <span class="o">=</span> <span class="n">example_value</span>
+</pre></div>
+</div>
+<p>The calc method then uses variables set in parse to output an integer value.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__example_parsed_value_name</span>
+</pre></div>
+</div>
+<p>Full example of a feature implementation:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">from</span> <span class="nn">dffml.feature</span> <span class="kn">import</span> <span class="n">Feature</span>
+
+<span class="k">class</span> <span class="nc">NumFilesFeature</span><span class="p">(</span><span class="n">Feature</span><span class="p">):</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_downloader</span><span class="o">.</span><span class="n">vcs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_src_url</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tempdir</span><span class="p">(</span><span class="s1">&#39;src&#39;</span><span class="p">))</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__num_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tempdir</span><span class="p">(),</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__num_files</span>
+</pre></div>
+</div>
 <dl class="method">
 <dt id="dffml.feature.feature.Feature.dtype">
 <code class="sig-name descname">dtype</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Type<a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.dtype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.dtype" title="Permalink to this definition">¶</a></dt>
@@ -228,7 +255,7 @@ that is the length of the array calc returns.</p>
 <dt id="dffml.feature.feature.Feature.load">
 <em class="property">classmethod </em><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">loading=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads all installed loading and returns them as a list. Sources to be
-loaded should be registered to ENTRYPOINT via setuptools.</p>
+loaded should be registered to ENTRY_POINT via setuptools.</p>
 </dd></dl>
 
 </dd></dl>
@@ -272,7 +299,7 @@ loaded should be registered to ENTRYPOINT via setuptools.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="record.html" class="btn btn-neutral float-right" title="Record" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="repo.html" class="btn btn-neutral float-right" title="Repo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="df/memory.html" class="btn btn-neutral float-left" title="Data Flow Memory Objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

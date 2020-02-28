@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Utilities &mdash; DFFML 0.3.3 documentation</title>
+  <title>API Helper Utilities Reference &mdash; DFFML 0.3.2 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Asyncio Helpers" href="asynchelper.html" />
-    <link rel="prev" title="sqlite" href="../db/sqlite.html" /> 
+    <link rel="prev" title="File Based Sources" href="../source/file.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.3
+                0.3.2
               </div>
             
           
@@ -85,45 +85,30 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Use Cases</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../repo.html">Repo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Utilities</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">API Helper Utilities Reference</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="asynchelper.html">Asyncio Helpers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="net.html">Networking Helpers</a></li>
 </ul>
 </li>
 </ul>
 </li>
-</ul>
-<p class="caption"><span class="caption-text">Community</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -171,7 +156,7 @@
         
           <li><a href="../index.html">API Reference</a> &raquo;</li>
         
-      <li>Utilities</li>
+      <li>API Helper Utilities Reference</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -190,14 +175,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="utilities">
-<h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="api-helper-utilities-reference">
+<h1>API Helper Utilities Reference<a class="headerlink" href="#api-helper-utilities-reference" title="Permalink to this headline">¶</a></h1>
 <p><a class="reference external" href="https://docs.python.org/3/library/asyncio.html#module-asyncio" title="(in Python v3.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">asyncio</span></code></a> testing, command line, and configuration helpers live here.</p>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="asynchelper.html">Asyncio Helpers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="net.html">Networking Helpers</a></li>
 </ul>
 </div>
 </div>
@@ -213,7 +197,7 @@
         <a href="asynchelper.html" class="btn btn-neutral float-right" title="Asyncio Helpers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../db/sqlite.html" class="btn btn-neutral float-left" title="sqlite" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../source/file.html" class="btn btn-neutral float-left" title="File Based Sources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

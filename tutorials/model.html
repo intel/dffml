@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>New Model Tutorial &mdash; DFFML 0.3.3 documentation</title>
+  <title>New Model Tutorial &mdash; DFFML 0.3.2 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.3
+                0.3.2
               </div>
             
           
@@ -85,14 +85,11 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="intro.html">Introduction to DFFML</a></li>
 <li class="toctree-l2"><a class="reference internal" href="operations.html">New Operations Tutorial</a></li>
@@ -118,21 +115,12 @@
 <li class="toctree-l2"><a class="reference internal" href="source.html">New Source Tutorial</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Use Cases</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
-<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Usage Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Community</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -225,7 +213,7 @@ code for the <a class="reference external" href="https://github.com/intel/dffml/
 <h2>Create the Package<a class="headerlink" href="#create-the-package" title="Permalink to this headline">¶</a></h2>
 <p>To create a new model we first create a new python package. DFFML has a script
 to create it for you.</p>
-<p>We’re going to create a model that matches a new record exactly to anything it’s
+<p>We’re going to create a model that matches a new repo exactly to anything it’s
 seen before. If it has seen it before it will be 100% confident. If it hasn’t
 seen it before it’ll pick a random classification and assign that as it’s
 prediction with a 0% confidence.</p>
@@ -252,7 +240,7 @@ prediction with a 0% confidence.</p>
 <p>Let’s once again rename <code class="docutils literal notranslate"><span class="pre">Misc</span></code> to <code class="docutils literal notranslate"><span class="pre">Hindsight</span></code>, this time the class in the file.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Hindsight</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    A model which matches a new record exactly to anything it&#39;s seen before. If it</span>
+<span class="sd">    A model which matches a new repo exactly to anything it&#39;s seen before. If it</span>
 <span class="sd">    has seen it before it will be 100% confident. If it hasn&#39;t seen it before</span>
 <span class="sd">    it&#39;ll pick a random classification and assign that as it&#39;s prediction with a</span>
 <span class="sd">    0% confidence.</span>
@@ -263,7 +251,7 @@ prediction with a 0% confidence.</p>
         <span class="c1"># We aren&#39;t worring about saving and loading our model in this tutorial.</span>
         <span class="c1"># You should implement it when you write your model for real.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model_dir</span> <span class="o">=</span> <span class="n">model_dir</span>
-        <span class="c1"># Let&#39;s add a dict where we&#39;ll store what we know about previous records.</span>
+        <span class="c1"># Let&#39;s add a dict where we&#39;ll store what we know about previous repos.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mem</span> <span class="o">=</span> <span class="p">{}</span>
 </pre></div>
 </div>
@@ -273,21 +261,21 @@ prediction with a 0% confidence.</p>
 <p>This model predicts completely based on what features has seen as they map to a
 classification.</p>
 <p>As such, we’re going to take the JSON representation of each set of feature data
-for each record we are given to train on, and hash it, storing the hash as the key
+for each repo we are given to train on, and hash it, storing the hash as the key
 in our <code class="docutils literal notranslate"><span class="pre">self.mem</span></code> dict, and the value as the classification. This will let us
-hash the feature data of future records we are asked to predict on and pull their
+hash the feature data of future repos we are asked to predict on and pull their
 expected classification (for ones we’ve seen before).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Train using records as the data to learn from.</span>
+<span class="sd">    Train using repos as the data to learn from.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">sources</span><span class="o">.</span><span class="n">with_features</span><span class="p">(</span><span class="n">features</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">sources</span><span class="o">.</span><span class="n">with_features</span><span class="p">(</span><span class="n">features</span><span class="p">):</span>
         <span class="c1"># Make sure we are only dealing with classifications we care about</span>
-        <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">classification</span><span class="p">()</span> <span class="ow">in</span> <span class="n">classifications</span><span class="p">:</span>
-            <span class="c1"># Hash the data of the record and map it to the classification</span>
-            <span class="n">as_json</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">features</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">repo</span><span class="o">.</span><span class="n">classification</span><span class="p">()</span> <span class="ow">in</span> <span class="n">classifications</span><span class="p">:</span>
+            <span class="c1"># Hash the data of the repo and map it to the classification</span>
+            <span class="n">as_json</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">features</span><span class="p">))</span>
             <span class="n">hash_json</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span><span class="p">(</span><span class="n">as_json</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="p">[</span><span class="n">hash_json</span><span class="p">]</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">classification</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="p">[</span><span class="n">hash_json</span><span class="p">]</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">classification</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -298,7 +286,7 @@ to predict and seeing how many it got right. However, we’re going to skip that
 in this tutorial (because we know the accuracy of this demo model will suck).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Accuracy</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Evaluates the accuracy of our model after training using the input records</span>
+<span class="sd">    Evaluates the accuracy of our model after training using the input repos</span>
 <span class="sd">    as test data.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="c1"># Lies</span>
@@ -308,28 +296,28 @@ in this tutorial (because we know the accuracy of this demo model will suck).</p
 </div>
 <div class="section" id="predict">
 <h3>Predict<a class="headerlink" href="#predict" title="Permalink to this headline">¶</a></h3>
-<p>The prediction, we’ll just need to hash the features of each record we’re asked to
+<p>The prediction, we’ll just need to hash the features of each repo we’re asked to
 make a prediction for. And see if it’s in the existing mapping. If not, then
 we’ll just choose a random classification for it and call that good (with a 0%
 confidence).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">records</span><span class="p">:</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">])</span> <span class="o">-&gt;</span> \
-                <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Record</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repos</span><span class="p">:</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Repo</span><span class="p">])</span> <span class="o">-&gt;</span> \
+                <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Repo</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
     <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Uses trained data to make a prediction about the quality of a record.</span>
+<span class="sd">    Uses trained data to make a prediction about the quality of a repo.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="c1"># Pull all records which have the features we are interested in.</span>
-    <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
-        <span class="c1"># Hash the data of the record and map it to the classification</span>
-        <span class="n">as_json</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">features</span><span class="p">()),</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="c1"># Pull all repos which have the features we are interested in.</span>
+    <span class="k">async</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="n">repos</span><span class="p">:</span>
+        <span class="c1"># Hash the data of the repo and map it to the classification</span>
+        <span class="n">as_json</span> <span class="o">=</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">features</span><span class="p">()),</span> <span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
         <span class="n">hash_json</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span><span class="p">(</span><span class="n">as_json</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
         <span class="c1"># If the mapping exists then that&#39;s what we&#39;ll predict</span>
         <span class="k">if</span> <span class="n">hash_json</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="p">:</span>
             <span class="c1"># Send it back with 100% (1.0) confidence</span>
-            <span class="k">yield</span> <span class="n">record</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="p">[</span><span class="n">hash_json</span><span class="p">],</span> <span class="mf">1.0</span>
+            <span class="k">yield</span> <span class="n">repo</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="p">[</span><span class="n">hash_json</span><span class="p">],</span> <span class="mf">1.0</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># The feature hash doesn&#39;t exist in our mapping.</span>
             <span class="c1"># Pick a random classification and yield it with 0 confidence</span>
-            <span class="k">yield</span> <span class="n">record</span><span class="p">,</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">classifications</span><span class="p">),</span> <span class="mf">0.0</span>
+            <span class="k">yield</span> <span class="n">repo</span><span class="p">,</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">classifications</span><span class="p">),</span> <span class="mf">0.0</span>
 </pre></div>
 </div>
 </div>

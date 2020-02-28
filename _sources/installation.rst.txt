@@ -10,10 +10,7 @@ DFFML is available via pip.
 
 .. code-block:: console
 
-    $ python3.7 -m pip install -U dffml[all]
-
-The ``[all]`` suffix tells ``pip`` to install all of the core plugins. This
-includes the ``sklearn`` and ``tensorflow`` models, ``MySQL`` source, etc.
+    $ python3.7 -m pip install -U dffml
 
 If you want to stay on the bleeding edge of bug fixes, etc. Install via git.
 
@@ -28,10 +25,8 @@ maintained as a part of the core repository, you can append ``[models]``.
 
     $ python3.7 -m pip install -U dffml[models]
 
-There's an online IDE based on Theia (similar to VS Code) called GitPod that
-gives you a setup development environment to get started working with/on DFFML
-right away. However, it comes with the master branch installed, you'll need to
-run the above commands to get the lastest released version.
+There's an online IDE based on VS Code called GitPod that seems pretty nifty you
+can also use to get started working with DFFML right away.
 
 .. image:: https://gitpod.io/button/open-in-gitpod.svg
    :target: https://gitpod.io/#https://github.com/intel/dffml

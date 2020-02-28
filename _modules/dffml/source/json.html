@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.source.json &mdash; DFFML 0.3.3 documentation</title>
+  <title>dffml.source.json &mdash; DFFML 0.3.2 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.3
+                0.3.2
               </div>
             
           
@@ -83,30 +83,18 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../community.html">Community</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Use Cases</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
-<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/index.html">Usage Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Community</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../contributing/index.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -178,10 +166,10 @@
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">asynccontextmanager</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
 
-<span class="kn">from</span> <span class="nn">..record</span> <span class="kn">import</span> <span class="n">Record</span>
+<span class="kn">from</span> <span class="nn">..repo</span> <span class="kn">import</span> <span class="n">Repo</span>
 <span class="kn">from</span> <span class="nn">.memory</span> <span class="kn">import</span> <span class="n">MemorySource</span>
 <span class="kn">from</span> <span class="nn">.file</span> <span class="kn">import</span> <span class="n">FileSource</span><span class="p">,</span> <span class="n">FileSourceConfig</span>
-<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">entrypoint</span>
+<span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">entry_point</span>
 
 <span class="kn">from</span> <span class="nn">.log</span> <span class="kn">import</span> <span class="n">LOGGER</span>
 
@@ -208,7 +196,7 @@
             <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="JSONSource"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.json.JSONSource">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;json&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="JSONSource"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.json.JSONSource">[docs]</a><span class="nd">@entry_point</span><span class="p">(</span><span class="s2">&quot;json&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">JSONSource</span><span class="p">(</span><span class="n">FileSource</span><span class="p">,</span> <span class="n">MemorySource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    JSONSource reads and write from a JSON file on open / close. Otherwise</span>
@@ -242,23 +230,23 @@
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">load_fd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fd</span><span class="p">):</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_open_json</span><span class="p">(</span><span class="n">fd</span><span class="p">):</span>
-            <span class="n">records</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPEN_JSON_FILES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">repos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPEN_JSON_FILES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mem</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="n">key</span><span class="p">:</span> <span class="n">Record</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">records</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tag</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="n">src_url</span><span class="p">:</span> <span class="n">Repo</span><span class="p">(</span><span class="n">src_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">src_url</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">repos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
             <span class="p">}</span>
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> loaded </span><span class="si">%d</span><span class="s2"> records&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="p">))</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">dump_fd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fd</span><span class="p">):</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPEN_JSON_FILES_LOCK</span><span class="p">:</span>
-            <span class="n">records</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPEN_JSON_FILES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
-            <span class="n">records</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="n">record</span><span class="o">.</span><span class="n">key</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="n">repos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPEN_JSON_FILES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">repos</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">repo</span><span class="o">.</span><span class="n">src_url</span><span class="p">:</span> <span class="n">repo</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span> <span class="k">for</span> <span class="n">repo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
             <span class="p">}</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.config.filename}</span><span class="s2"> updated&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPEN_JSON_FILES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">]</span><span class="o">.</span><span class="n">dec</span><span class="p">():</span>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPEN_JSON_FILES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">]</span>
-                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">fd</span><span class="p">)</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">repos</span><span class="p">,</span> <span class="n">fd</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.config.filename}</span><span class="s2"> written&quot;</span><span class="p">)</span>
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> saved </span><span class="si">%d</span><span class="s2"> records&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="p">))</span></div>
 </pre></div>

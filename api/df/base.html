@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Data Flow Base Objects &mdash; DFFML 0.3.3 documentation</title>
+  <title>Data Flow Base Objects &mdash; DFFML 0.3.2 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.3
+                0.3.2
               </div>
             
           
@@ -85,24 +85,17 @@
               
             
             
-              <p class="caption"><span class="caption-text">Introduction</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Use Cases</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+              <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../community.html">Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Usage Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Data Flow</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="types.html">Data Flow Types</a></li>
@@ -111,20 +104,13 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../repo.html">Repo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">API Helper Utilities Reference</a></li>
 </ul>
 </li>
-</ul>
-<p class="caption"><span class="caption-text">Community</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
 </ul>
 
             
@@ -412,20 +398,14 @@ run with a give permutation of inputs once.</p>
 the dffml.operation entrypoint.</p>
 </dd></dl>
 
-<dl class="exception">
-<dt id="dffml.df.base.OperationException">
-<em class="property">exception </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">OperationException</code><a class="reference internal" href="../../_modules/dffml/df/base.html#OperationException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OperationException" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raised by the orchestrator when an operation throws an exception.</p>
-</dd></dl>
-
 <dl class="class">
 <dt id="dffml.df.base.OperationImplementation">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">OperationImplementation</code><span class="sig-paren">(</span><em class="sig-param">config: Optional[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#OperationImplementation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OperationImplementation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">OperationImplementation</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#OperationImplementation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OperationImplementation" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="dffml.df.base.OperationImplementation.load">
 <em class="property">classmethod </em><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param">loading=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#OperationImplementation.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OperationImplementation.load" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads all installed loading and returns them as a list. Sources to be
-loaded should be registered to ENTRYPOINT via setuptools.</p>
+loaded should be registered to ENTRY_POINT via setuptools.</p>
 </dd></dl>
 
 </dd></dl>
@@ -471,6 +451,12 @@ been.</p>
 <code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">isoperation</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#isoperation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.isoperation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Similar to inspect.isclass and that family of functions. Returns true if
 item is an instance of Operation.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get all operations imported in a file</span>
+<span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+         <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span>
+                            <span class="n">predicate</span><span class="o">=</span><span class="n">isoperation</span><span class="p">)))</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -478,6 +464,12 @@ item is an instance of Operation.</p>
 <code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">isopimp</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#isopimp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.isopimp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Similar to inspect.isclass and that family of functions. Returns true if
 item is a subclass of OperationImpelmentation.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get all operation implementations imported in a file</span>
+<span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+         <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span>
+                            <span class="n">predicate</span><span class="o">=</span><span class="n">isopimp</span><span class="p">)))</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
@@ -485,6 +477,12 @@ item is a subclass of OperationImpelmentation.</p>
 <code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">isopwraped</code><span class="sig-paren">(</span><em class="sig-param">item</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#isopwraped"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.isopwraped" title="Permalink to this definition">¶</a></dt>
 <dd><p>Similar to inspect.isclass and that family of functions. Returns true if a
 function has been wrapped with <cite>op</cite>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get all functions imported in a file that have been wrapped with `op`</span>
+<span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+         <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">],</span>
+                            <span class="n">predicate</span><span class="o">=</span><span class="n">isopwraped</span><span class="p">)))</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
