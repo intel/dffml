@@ -15,6 +15,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Fetch rest of repo
+      run: |
+        git fetch --all
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
@@ -42,6 +45,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Fetch rest of repo
+      run: |
+        git fetch --all
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
