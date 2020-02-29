@@ -40,7 +40,6 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
     "sphinx.ext.doctest",
-    "sphinxcontrib.asyncio",
     "recommonmark",
 ]
 
