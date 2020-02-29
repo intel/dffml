@@ -196,6 +196,37 @@ Let us take a simple example:
         }
     ]
 
+Example usage of Linear Regression Model using python API:
+
+.. code-block:: python
+
+  from dffml import CSVSource, Features, DefFeature
+  from dffml.noasync import train, accuracy, predict
+  from dffml_model_scikit import LinearRegressionModel
+
+  model = LinearRegressionModel(
+      features=Features(
+          DefFeature("Years", int, 1),
+          DefFeature("Expertise", int, 1),
+          DefFeature("Trust", float, 1),
+      ),
+      predict=DefFeature("Salary", int, 1),
+  )
+
+  # Train the model
+  train(model, "training.csv")
+
+  # Assess accuracy (alternate way of specifying data source)
+  print("Accuracy:", accuracy(model, CSVSource(filename="test.csv")))
+
+  # Make prediction
+  for i, features, prediction in predict(
+      model,
+      {"Years": 6, "Expertise": 13, "Trust": 0.7},
+      {"Years": 7, "Expertise": 15, "Trust": 0.8},
+  ):
+      features["Salary"] = prediction["Salary"]["value"]
+      print(features)
 
 Example below uses KMeans Clustering Model on a small randomly generated dataset.
 
@@ -260,6 +291,38 @@ Example below uses KMeans Clustering Model on a small randomly generated dataset
     }
     ]
 
+Example usage of KMeans Clustering Model using python API:
+
+.. code-block:: python
+
+  from dffml import CSVSource, Features, DefFeature
+  from dffml.noasync import train, accuracy, predict
+  from dffml_model_scikit import KMeansModel
+
+  model = KMeansModel(
+      features=Features(
+          DefFeature("Col1", float, 1),
+          DefFeature("Col2", float, 1),
+          DefFeature("Col3", float, 1),
+          DefFeature("Col4", float, 1),
+      ),
+      tcluster=DefFeature("cluster", int, 1)
+  )
+
+  # Train the model
+  train(model, "training.csv")
+
+  # Assess accuracy (alternate way of specifying data source)
+  print("Accuracy:", accuracy(model, CSVSource(filename="test.csv")))
+
+  # Make prediction
+  for i, features, prediction in predict(
+      model,
+      {"Col1": 6.09809669, "Col2": 8.36434181, "Col3": 6.70940915, "Col4": -7.91491768},
+  ):
+      features["cluster"] = prediction["cluster"]["value"]
+      print(features)
+
 **NOTE**: `Transductive <https://scikit-learn.org/stable/glossary.html#term-transductive/>`_ Clusterers(scikitsc, scikitac, scikitoptics) cannot handle unseen data.
 Ensure that `predict` and `accuracy` for these algorithms uses training data.
 
@@ -284,5 +347,6 @@ Ensure that `predict` and `accuracy` for these algorithms uses training data.
 
   - default: /home/user/.cache/dffml/scikit-{Entrypoint}
   - Directory where state should be saved
+
 """
 from .scikit_models import *
