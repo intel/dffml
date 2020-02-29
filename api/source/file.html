@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>File Based Sources &mdash; DFFML 0.3.3 documentation</title>
+  <title>File Based Sources &mdash; DFFML 0.3.4 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.3
+                0.3.4
               </div>
             
           
@@ -106,7 +106,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../repo.html">Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Sources</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="base.html">Base Source</a></li>
@@ -120,7 +120,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../util/index.html">API Helper Utilities Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
 </ul>
 </li>
 </ul>
@@ -212,8 +212,8 @@
 <p># Data Sources</p>
 <p>DFFML supports data sources in <cite>CSV</cite> and <cite>JSON</cite> formats with respective methods defined in the following classes:</p>
 <ol class="arabic simple">
-<li><p><cite>CSVSource</cite>: (Inherits FileSource and MemorySource) Uses a CSV file as the source of the repo feature data. Abstract functions <cite>load_fd</cite> and <cite>dump_fd</cite> are defined.</p></li>
-<li><p><cite>JSONSource</cite>: (Inherits FileSource and MemorySource) Uses a JSON file as the source of the repo feature data. Abstract functions <cite>load_fd</cite> and <cite>dump_fd</cite> are defined.</p></li>
+<li><p><cite>CSVSource</cite>: (Inherits FileSource and MemorySource) Uses a CSV file as the source of the record feature data. Abstract functions <cite>load_fd</cite> and <cite>dump_fd</cite> are defined.</p></li>
+<li><p><cite>JSONSource</cite>: (Inherits FileSource and MemorySource) Uses a JSON file as the source of the record feature data. Abstract functions <cite>load_fd</cite> and <cite>dump_fd</cite> are defined.</p></li>
 </ol>
 <div class="section" id="module-dffml.source.json">
 <span id="json"></span><h2>JSON<a class="headerlink" href="#module-dffml.source.json" title="Permalink to this headline">¶</a></h2>
@@ -243,11 +243,11 @@ stored in memory.</p>
 </div>
 <div class="section" id="module-dffml.source.csv">
 <span id="csv"></span><h2>CSV<a class="headerlink" href="#module-dffml.source.csv" title="Permalink to this headline">¶</a></h2>
-<p>Loads repos from a csv file, using columns as features</p>
+<p>Loads records from a csv file, using columns as features</p>
 <dl class="class">
 <dt id="dffml.source.csv.CSVSource">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.source.csv.</code><code class="sig-name descname">CSVSource</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource" title="Permalink to this definition">¶</a></dt>
-<dd><p>Uses a CSV file as the source of repo feature data</p>
+<dd><p>Uses a CSV file as the source of record feature data</p>
 <dl class="attribute">
 <dt id="dffml.source.csv.CSVSource.CONFIG">
 <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.source.csv.CSVSource.CONFIG" title="Permalink to this definition">¶</a></dt>

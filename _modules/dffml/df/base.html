@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.df.base &mdash; DFFML 0.3.3 documentation</title>
+  <title>dffml.df.base &mdash; DFFML 0.3.4 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.3
+                0.3.4
               </div>
             
           
@@ -470,11 +470,6 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Similar to inspect.isclass and that family of functions. Returns true if</span>
 <span class="sd">    item is a subclass of OperationImpelmentation.</span>
-
-<span class="sd">    &gt;&gt;&gt; # Get all operation implementations imported in a file</span>
-<span class="sd">    &gt;&gt;&gt; list(map(lambda item: item[1],</span>
-<span class="sd">    &gt;&gt;&gt;          inspect.getmembers(sys.modules[__name__],</span>
-<span class="sd">    &gt;&gt;&gt;                             predicate=isopimp)))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span>
         <span class="p">(</span>
@@ -494,11 +489,6 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Similar to inspect.isclass and that family of functions. Returns true if</span>
 <span class="sd">    item is an instance of Operation.</span>
-
-<span class="sd">    &gt;&gt;&gt; # Get all operations imported in a file</span>
-<span class="sd">    &gt;&gt;&gt; list(map(lambda item: item[1],</span>
-<span class="sd">    &gt;&gt;&gt;          inspect.getmembers(sys.modules[__name__],</span>
-<span class="sd">    &gt;&gt;&gt;                             predicate=isoperation)))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Operation</span><span class="p">)</span> <span class="ow">and</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">Operation</span><span class="p">)</span></div>
 
@@ -507,11 +497,6 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Similar to inspect.isclass and that family of functions. Returns true if a</span>
 <span class="sd">    function has been wrapped with `op`.</span>
-
-<span class="sd">    &gt;&gt;&gt; # Get all functions imported in a file that have been wrapped with `op`</span>
-<span class="sd">    &gt;&gt;&gt; list(map(lambda item: item[1],</span>
-<span class="sd">    &gt;&gt;&gt;          inspect.getmembers(sys.modules[__name__],</span>
-<span class="sd">    &gt;&gt;&gt;                             predicate=isopwraped)))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span>
         <span class="nb">getattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;op&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>

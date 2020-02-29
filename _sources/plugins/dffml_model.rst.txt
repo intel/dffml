@@ -149,12 +149,12 @@ Implemented using Tensorflow's DNNClassifier.
 - batchsize: Integer
 
   - default: 20
-  - Number repos to pass through in an epoch
+  - Number records to pass through in an epoch
 
 - shuffle: Boolean
 
   - default: True
-  - Randomise order of repos in a batch
+  - Randomise order of records in a batch
 
 - steps: Integer
 
@@ -164,7 +164,7 @@ Implemented using Tensorflow's DNNClassifier.
 - epochs: Integer
 
   - default: 30
-  - Number of iterations to pass over all repos in a source
+  - Number of iterations to pass over all records in a source
 
 - directory: String
 
@@ -285,7 +285,7 @@ predict).
 - epochs: Integer
 
   - default: 30
-  - Number of iterations to pass over all repos in a source
+  - Number of iterations to pass over all records in a source
 
 - directory: String
 
@@ -296,6 +296,179 @@ predict).
 
   - default: [12, 40, 15]
   - List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer
+
+dffml_model_tensorflow_hub
+--------------------------
+
+.. code-block:: console
+
+    pip install dffml-model-tensorflow-hub
+
+
+text_classifier
+~~~~~~~~~~~~~~~
+
+*Core*
+
+Implemented using Tensorflow hub pretrained models.
+
+.. code-block:: console
+
+    $ cat > train.csv << EOF
+    sentence,sentiment
+    Life is good,1
+    This book is amazing,1
+    It's a terrible movie,0
+    Global warming is bad,0
+    EOF
+    $ cat > test.csv << EOF
+    sentence,sentiment
+    I am not feeling good,0
+    Our trip was full of adventures,1
+    EOF
+    $ dffml train \
+        -model text_classifier \
+        -model-epochs 30 \
+        -model-predict sentiment:int:1 \
+        -model-classifications 0 1  \
+        -model-clstype int \
+        -sources f=csv \
+        -source-filename train.csv \
+        -model-features \
+          sentence:str:1 \
+        -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \
+        -model-add_layers \
+        -model-layers "Dense(units=512, activation='relu')" "Dense(units=2, activation='softmax')" \
+        -log debug
+    $ dffml accuracy \
+        -model text_classifier \
+        -model-predict sentiment:int:1 \
+        -model-classifications 0 1 \
+        -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \
+        -model-clstype int \
+        -sources f=csv \
+        -source-filename test.csv \
+        -model-features \
+          sentence:str:1 \
+        -log critical
+        1.0
+    $ dffml predict all \
+        -model text_classifier \
+        -model-predict sentiment:int:1 \
+        -model-classifications 0 1 \
+        -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \
+        -model-clstype int \
+        -sources f=csv \
+        -source-filename test.csv \
+        -model-features \
+          sentence:str:1 \
+        -log debug
+    [
+        {
+            "extra": {},
+            "features": {
+                "sentence": "I am not feeling good",
+                "sentiment": 0
+            },
+            "key": "0",
+            "last_updated": "2020-02-15T02:54:02Z",
+            "prediction": {
+                "sentiment": {
+                    "confidence": 0.7630850076675415,
+                    "value": 0
+                }
+            }
+        },
+        {
+            "extra": {},
+            "features": {
+                "sentence": "Our trip was full of adventures",
+                "sentiment": 1
+            },
+            "key": "1",
+            "last_updated": "2020-02-15T02:54:02Z",
+            "prediction": {
+                "sentiment": {
+                    "confidence": 0.6673157811164856,
+                    "value": 1
+                }
+            }
+        }
+    ]
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- classifications: List of strings
+
+  - Options for value of classification
+
+- features: List of features
+
+  - Features to train on
+
+- trainable: String
+
+  - default: True
+  - Tweak pretrained model by training again
+
+- batch_size: Integer
+
+  - default: 120
+  - Batch size
+
+- max_seq_length: Integer
+
+  - default: 256
+  - Length of sentence, used in preprocessing of input for bert embedding
+
+- add_layers: Boolean
+
+  - default: False
+  - Add layers on the top of pretrianed model/layer
+
+- embedType: String
+
+  - default: None
+  - Type of pretrained embedding model, required to be set to `bert` to use bert pretrained embedding
+
+- layers: List of strings
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
+
+- model_path: String
+
+  - default: https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1
+  - Pretrained model path/url
+
+- optimizer: String
+
+  - default: adam
+  - Optimizer used by model
+
+- metrics: String
+
+  - default: accuracy
+  - Metric used to evaluate model
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- epochs: Integer
+
+  - default: 10
+  - Number of iterations to pass over all records in a source
+
+- directory: String
+
+  - default: /home/user/.cache/dffml/tensorflow_hub
+  - Directory where state should be saved
 
 dffml_model_scratch
 -------------------

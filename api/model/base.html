@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Base Model &mdash; DFFML 0.3.3 documentation</title>
+  <title>Base Model &mdash; DFFML 0.3.4 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.3
+                0.3.4
               </div>
             
           
@@ -106,14 +106,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../feature.html">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../repo.html">Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Models</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Base Model</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../util/index.html">API Helper Utilities Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
 </ul>
 </li>
 </ul>
@@ -193,8 +193,8 @@
             
   <div class="section" id="module-dffml.model.model">
 <span id="base-model"></span><h1>Base Model<a class="headerlink" href="#module-dffml.model.model" title="Permalink to this headline">¶</a></h1>
-<p>Model subclasses are responsible for training themselves on repos, making
-predictions about the value of a feature in the repo, and assessing thei
+<p>Model subclasses are responsible for training themselves on records, making
+predictions about the value of a feature in the record, and assessing thei
 prediction accuracy.</p>
 <dl class="class">
 <dt id="dffml.model.model.Model">
@@ -221,8 +221,8 @@ various machine learning frameworks or concepts.</p>
 various machine learning frameworks or concepts.</p>
 <dl class="method">
 <dt id="dffml.model.model.ModelContext.predict">
-<em class="property">abstract </em><code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">repos: AsyncIterator[dffml.repo.Repo]</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.repo.Repo]<a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.ModelContext.predict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Uses trained data to make a prediction about the quality of a repo.</p>
+<em class="property">abstract </em><code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">records: AsyncIterator[dffml.record.Record]</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.record.Record]<a class="reference internal" href="../../_modules/dffml/model/model.html#ModelContext.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.ModelContext.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses trained data to make a prediction about the quality of a record.</p>
 </dd></dl>
 
 </dd></dl>
