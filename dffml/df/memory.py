@@ -239,6 +239,10 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         """
         async with self.ctxhd_lock:
             ctx_keys = list(self.ctxhd.keys())
+        print(f"Receiving {inputs} from parent flow")
+        print(f"Forwarding inputs to contexts {ctx_keys}")
+        self.logger.debug(f"Receiving {inputs} from parent flow")
+        self.logger.debug(f"Forwarding inputs to contexts {ctx_keys}")
         for ctx in ctx_keys:
             await self.sadd(ctx, *inputs)
 
