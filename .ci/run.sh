@@ -142,6 +142,10 @@ function run_docs() {
   TEMP_DIRS+=("${master_docs}")
   rm -rf pages
   ./scripts/docs.sh
+
+  # Fail if running the docs generation script caused any changes to the repo
+  git status --porcelain | grep -q .\*
+
   mv pages "${master_docs}/html"
 
   # Make last release docs
