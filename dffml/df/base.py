@@ -97,9 +97,7 @@ class OperationImplementationContext(BaseDataFlowObjectContext):
             octx.run(test_inputs)
         """
         async with self.octx.parent(dataflow) as octx:
-            await self.octx.register_subflow(
-                self.parent.op.instance_name, octx
-            )
+            self.octx.subflows[self.parent.op.instance_name] = octx
             yield octx
 
 

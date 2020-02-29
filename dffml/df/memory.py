@@ -232,20 +232,16 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         # TODO Create ctxhd_locks dict to manage a per context lock
         self.ctxhd_lock = asyncio.Lock()
 
-
     async def receive_from_parent_flow(self, inputs: List[Input]):
         """
         Takes input from parent dataflow and adds it to every active context
         """
         async with self.ctxhd_lock:
             ctx_keys = list(self.ctxhd.keys())
-        print(f"Receiving {inputs} from parent flow")
-        print(f"Forwarding inputs to contexts {ctx_keys}")
         self.logger.debug(f"Receiving {inputs} from parent flow")
         self.logger.debug(f"Forwarding inputs to contexts {ctx_keys}")
         for ctx in ctx_keys:
             await self.sadd(ctx, *inputs)
-
 
     async def add(self, input_set: BaseInputSet):
         # Grab the input set context handle
@@ -791,7 +787,6 @@ class MemoryOperationImplementationNetworkContext(
         self.opimps = self.parent.config.operations
         self.operations = {}
         self.completed_event = asyncio.Event()
-        self.subflows = {}
 
     async def __aenter__(
         self,
@@ -1116,7 +1111,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # operation which desires to execute a subflow. If the output operation
         # created new contexts, then there would be no inputs in them, so that
         # would be pointless.
-        print("Entering context\n\n")
         enter = {
             "rctx": self.parent.rchecker,
             "ictx": self.parent.input_network,
@@ -1187,7 +1181,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                         operation, opimp_config, opimp=opimp
                     )
 
-
     async def seed_inputs(
         self,
         *,
@@ -1237,24 +1230,14 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 self.inputs_to_forward.setdefault(instance_name, []).append(
                     item
                 )
-        print(f"Forwarding inputs from {self.inputs_to_forward} to {self.subflows}")
-        
-        self.logger.debug(f"Forwarding inputs from {self.inputs_to_forward} to {self.subflows}")
+        self.logger.debug(
+            f"Forwarding inputs from {self.inputs_to_forward} to {self.subflows}"
+        )
         for instance_name, inputs in self.inputs_to_forward.items():
             if instance_name in self.subflows:
                 await self.subflows[
                     instance_name
                 ].ictx.receive_from_parent_flow(inputs)
-
-    async def register_subflow(
-        self, instance_name: str, octx: BaseOrchestratorContext
-    ):
-        """
-        Register subflows with instance_name.Flows need to be registered for parent flow
-        to be able to forward inputs.
-        """
-        self.subflows[instance_name] = octx
-        await self.forward_inputs_to_subflow([])
 
     # TODO(dfass) Get rid of run_operations, make it run_dataflow. Pass down the
     # dataflow to everything. Make inputs a list of InputSets or an
