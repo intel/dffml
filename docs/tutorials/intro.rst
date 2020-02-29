@@ -32,7 +32,7 @@ model implementations can access the data via the same API no matter where it
 is.
 
 Records
-~~~~~
+~~~~~~~
 
 A common construct within DFFML is the ``Record``. A ``Record`` object is a
 repository of information associated with a unique key. The ``Record`` holds all

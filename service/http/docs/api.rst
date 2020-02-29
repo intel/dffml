@@ -334,7 +334,7 @@ return a 404, Not Found response.
 .. _record:
 
 Record
-~~~~
+~~~~~~
 
 Access a record by it's unique key. The response will be the JSON representation
 of the record. Here's an example response for a ``GET`` request.
@@ -378,7 +378,7 @@ response.
     {"error": null}
 
 Records
-~~~~~
+~~~~~~~
 
 Initially, client makes a ``GET`` request to the API with the ``chunk_size`` for
 the first iteration. ``chunk_size`` is the number of records to return in one
