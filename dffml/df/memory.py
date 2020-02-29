@@ -231,18 +231,17 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         self.ctxhd: Dict[str, Dict[Definition, Any]] = {}
         # TODO Create ctxhd_locks dict to manage a per context lock
         self.ctxhd_lock = asyncio.Lock()
-        # Inputs forwarded from parent subflows
-        # Maps defintion names to List[Input]
-        self.received_from_parent_flow = {}
+
 
     async def receive_from_parent_flow(self, inputs: List[Input]):
         """
-        Takes input from parent dataflow and adds it to every context
+        Takes input from parent dataflow and adds it to every active context
         """
-        for item in inputs:
-            self.received_from_parent_flow.setdefault(
-                item.definition.name, []
-            ).append(item)
+        async with self.ctxhd_lock:
+            ctx_keys = list(self.ctxhd.keys())
+        for ctx in ctx_keys:
+            await self.sadd(ctx, *inputs)
+
 
     async def add(self, input_set: BaseInputSet):
         # Grab the input set context handle
@@ -491,20 +490,6 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                                         ],
                                     )
                                 )
-                    # see if any inputs with the same definition have been forwarded
-                    # by parent flows
-                    input_name_definition = operation.inputs[input_name]
-                    for item in self.received_from_parent_flow.get(
-                        operation.inputs[input_name].name, []
-                    ):
-                        gather[input_name].append(
-                            Parameter(
-                                key=input_name,
-                                value=item.value,
-                                definition=item.definition,
-                                origin=item,
-                            )
-                        )
                     # Return if there is no data for an input
                     if not gather[input_name]:
                         return
@@ -802,6 +787,7 @@ class MemoryOperationImplementationNetworkContext(
         self.opimps = self.parent.config.operations
         self.operations = {}
         self.completed_event = asyncio.Event()
+        self.subflows = {}
 
     async def __aenter__(
         self,
@@ -1196,6 +1182,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                         operation, opimp_config, opimp=opimp
                     )
 
+
     async def seed_inputs(
         self,
         *,
@@ -1245,6 +1232,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 self.inputs_to_forward.setdefault(instance_name, []).append(
                     item
                 )
+        self.logger.debug(f"Forwarding inputs from {self.inputs_to_forward} to {self.subflows}")
         for instance_name, inputs in self.inputs_to_forward.items():
             if instance_name in self.subflows:
                 await self.subflows[

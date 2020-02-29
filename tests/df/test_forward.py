@@ -75,12 +75,12 @@ class TestInputForwarding(AsyncTestCase):
             },
             seed=[
                 Input(
-                    value=[run_dataflow.op.outputs["results"].name],
-                    definition=GetSingle.op.inputs["spec"],
+                    value={"SubflowContext": []},
+                    definition=run_dataflow.op.inputs["inputs"],
                 ),
                 Input(
-                    value={"Subflow": []},
-                    definition=run_dataflow.op.inputs["inputs"],
+                    value=[run_dataflow.op.outputs["results"].name],
+                    definition=GetSingle.op.inputs["spec"],
                 ),
             ],
         )
@@ -91,6 +91,7 @@ class TestInputForwarding(AsyncTestCase):
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
             async with orchestrator(master_flow) as octx:
                 async for ctx_str, results in octx.run(test_inputs):
+                    print(f"Results:{results}")
                     self.assertIn("flow_results", results)
                     results = results["flow_results"]
                     self.assertIn("Subflow", results)
