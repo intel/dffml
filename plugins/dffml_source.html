@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Sources &mdash; DFFML 0.3.3 documentation</title>
+  <title>Sources &mdash; DFFML 0.3.4 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.3
+                0.3.4
               </div>
             
           
@@ -209,7 +209,7 @@ abstract the loading and storage of data / datasets.</p>
 <div class="section" id="csv">
 <h3>csv<a class="headerlink" href="#csv" title="Permalink to this headline">¶</a></h3>
 <p><em>Core</em></p>
-<p>Uses a CSV file as the source of repo feature data</p>
+<p>Uses a CSV file as the source of record feature data</p>
 <p><strong>Args</strong></p>
 <ul class="simple">
 <li><p>filename: String</p></li>
@@ -316,10 +316,10 @@ stored in memory.</p>
 <div class="section" id="memory">
 <h3>memory<a class="headerlink" href="#memory" title="Permalink to this headline">¶</a></h3>
 <p><em>Core</em></p>
-<p>Stores repos in a dict in memory</p>
+<p>Stores records in a dict in memory</p>
 <p><strong>Args</strong></p>
 <ul class="simple">
-<li><p>repos: List of repos</p></li>
+<li><p>records: List of records</p></li>
 </ul>
 </div>
 </div>
@@ -347,19 +347,19 @@ stored in memory.</p>
 <li><p>user: String</p></li>
 <li><p>password: String</p></li>
 <li><p>db: String</p></li>
-<li><p>repos-query: String</p>
+<li><p>records-query: String</p>
 <ul>
-<li><p>SELECT <cite>key</cite> as key, data_1 as feature_1, data_2 as feature_2 FROM repo_data</p></li>
+<li><p>SELECT <cite>key</cite> as key, data_1 as feature_1, data_2 as feature_2 FROM record_data</p></li>
 </ul>
 </li>
-<li><p>repo-query: String</p>
+<li><p>record-query: String</p>
 <ul>
-<li><p>SELECT <cite>key</cite> as key, data_1 as feature_1, data_2 as feature_2 FROM repo_data WHERE <a href="#id1"><span class="problematic" id="id2">`</span></a>key`=%s</p></li>
+<li><p>SELECT <cite>key</cite> as key, data_1 as feature_1, data_2 as feature_2 FROM record_data WHERE <a href="#id1"><span class="problematic" id="id2">`</span></a>key`=%s</p></li>
 </ul>
 </li>
 <li><p>update-query: String</p>
 <ul>
-<li><p>INSERT INTO repo_data (<cite>key</cite>, data_1, data_2) VALUES(%s, %s, %s) ON DUPLICATE KEY UPDATE data_1 = %s, data_2=%s</p></li>
+<li><p>INSERT INTO record_data (<cite>key</cite>, data_1, data_2) VALUES(%s, %s, %s) ON DUPLICATE KEY UPDATE data_1 = %s, data_2=%s</p></li>
 </ul>
 </li>
 <li><p>model-columns: List of strings</p>

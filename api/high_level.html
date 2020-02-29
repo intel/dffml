@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>High Level &mdash; DFFML 0.3.3 documentation</title>
+  <title>High Level &mdash; DFFML 0.3.4 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.3
+                0.3.4
               </div>
             
           
@@ -106,11 +106,11 @@
 <li class="toctree-l2"><a class="reference internal" href="base.html">Base</a></li>
 <li class="toctree-l2"><a class="reference internal" href="df/index.html">Data Flow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="feature.html">Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="repo.html">Repo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="model/index.html">Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/index.html">Sources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="db/index.html">Databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="util/index.html">API Helper Utilities Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="util/index.html">Utilities</a></li>
 </ul>
 </li>
 </ul>
@@ -191,7 +191,7 @@
 <p>Example usage can be found in the <a class="reference internal" href="../quickstart/model.html"><span class="doc">Quickstart</span></a>.</p>
 <dl class="function">
 <dt id="dffml.high_level.train">
-<em class="property">async </em><code class="sig-prename descclassname">dffml.high_level.</code><code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param">model, *args: Union[dffml.source.source.BaseSource, dffml.repo.Repo, Dict[str, Any]]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/high_level.html#train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.high_level.train" title="Permalink to this definition">¶</a></dt>
+<em class="property">async </em><code class="sig-prename descclassname">dffml.high_level.</code><code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param">model, *args: Union[dffml.source.source.BaseSource, dffml.record.Record, Dict[str, Any]]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/high_level.html#train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.high_level.train" title="Permalink to this definition">¶</a></dt>
 <dd><p>Train a machine learning model.</p>
 <p>Provide records to the model to train it. The model should be already
 instantiated.</p>
@@ -200,7 +200,7 @@ instantiated.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model</strong> (<a class="reference internal" href="model/base.html#dffml.model.model.Model" title="dffml.model.model.Model"><em>Model</em></a>) – Machine Learning model to use. See <a class="reference internal" href="../plugins/dffml_model.html"><span class="doc">Models</span></a> for
 models options.</p></li>
-<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – Input data for training. Could be a <code class="docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Repo</span></code>,
+<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – Input data for training. Could be a <code class="docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code>,
 filename, one of the data <a class="reference internal" href="../plugins/dffml_source.html"><span class="doc">Sources</span></a>, or a filename
 with the extension being one of the data sources.</p></li>
 </ul>
@@ -210,7 +210,7 @@ with the extension being one of the data sources.</p></li>
 
 <dl class="function">
 <dt id="dffml.high_level.accuracy">
-<em class="property">async </em><code class="sig-prename descclassname">dffml.high_level.</code><code class="sig-name descname">accuracy</code><span class="sig-paren">(</span><em class="sig-param">model, *args: Union[dffml.source.source.BaseSource, dffml.repo.Repo, Dict[str, Any]]</em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../_modules/dffml/high_level.html#accuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.high_level.accuracy" title="Permalink to this definition">¶</a></dt>
+<em class="property">async </em><code class="sig-prename descclassname">dffml.high_level.</code><code class="sig-name descname">accuracy</code><span class="sig-paren">(</span><em class="sig-param">model, *args: Union[dffml.source.source.BaseSource, dffml.record.Record, Dict[str, Any]]</em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../_modules/dffml/high_level.html#accuracy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.high_level.accuracy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assess the accuracy of a machine learning model.</p>
 <p>Provide records to the model to assess the percent accuracy of its
 prediction abilities. The model should be already instantiated and trained.</p>
@@ -219,7 +219,7 @@ prediction abilities. The model should be already instantiated and trained.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model</strong> (<a class="reference internal" href="model/base.html#dffml.model.model.Model" title="dffml.model.model.Model"><em>Model</em></a>) – Machine Learning model to use. See <a class="reference internal" href="../plugins/dffml_model.html"><span class="doc">Models</span></a> for
 models options.</p></li>
-<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – Input data for training. Could be a <code class="docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Repo</span></code>,
+<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – Input data for training. Could be a <code class="docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code>,
 filename, one of the data <a class="reference internal" href="../plugins/dffml_source.html"><span class="doc">Sources</span></a>, or a filename
 with the extension being one of the data sources.</p></li>
 </ul>
@@ -237,7 +237,7 @@ the documentation for the model your using for further details.</p>
 
 <dl class="function">
 <dt id="dffml.high_level.predict">
-<code class="sig-prename descclassname">dffml.high_level.</code><code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">model, *args: Union[dffml.source.source.BaseSource, dffml.repo.Repo, Dict[str, Any]], update: bool = False, keep_repo: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/high_level.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.high_level.predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">dffml.high_level.</code><code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">model, *args: Union[dffml.source.source.BaseSource, dffml.record.Record, Dict[str, Any]], update: bool = False, keep_record: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/high_level.html#predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.high_level.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a prediction using a machine learning model.</p>
 <p>The model must be trained before using it to make a prediction.</p>
 <dl class="field-list simple">
@@ -245,17 +245,17 @@ the documentation for the model your using for further details.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model</strong> (<a class="reference internal" href="model/base.html#dffml.model.model.Model" title="dffml.model.model.Model"><em>Model</em></a>) – Machine Learning model to use. See <a class="reference internal" href="../plugins/dffml_model.html"><span class="doc">Models</span></a> for
 models options.</p></li>
-<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – Input data for prediction. Could be a <code class="docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Repo</span></code>,
+<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – Input data for prediction. Could be a <code class="docutils literal notranslate"><span class="pre">dict</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code>,
 filename, or one of the data <a class="reference internal" href="../plugins/dffml_source.html"><span class="doc">Sources</span></a>.</p></li>
 <li><p><strong>update</strong> (<em>boolean</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> prediction data within records will be written back to all
 sources given. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>keep_repo</strong> (<em>boolean</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> the results will be kept as their <code class="docutils literal notranslate"><span class="pre">Repo</span></code> objects instead
-of being converted to a <code class="docutils literal notranslate"><span class="pre">(repo.key,</span> <span class="pre">features,</span> <span class="pre">predictions)</span></code> tuple.
+<li><p><strong>keep_record</strong> (<em>boolean</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> the results will be kept as their <code class="docutils literal notranslate"><span class="pre">Record</span></code> objects instead
+of being converted to a <code class="docutils literal notranslate"><span class="pre">(record.key,</span> <span class="pre">features,</span> <span class="pre">predictions)</span></code> tuple.
 Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">Repo</span></code> objects or <code class="docutils literal notranslate"><span class="pre">(repo.key,</span> <span class="pre">features,</span> <span class="pre">predictions)</span></code> tuple.</p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">Record</span></code> objects or <code class="docutils literal notranslate"><span class="pre">(record.key,</span> <span class="pre">features,</span> <span class="pre">predictions)</span></code> tuple.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>asynciterator</p>

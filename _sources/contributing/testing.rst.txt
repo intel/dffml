@@ -15,7 +15,7 @@ To run a specific test, use the ``-s`` flag.
 
 .. code-block:: console
 
-    $ python3.7 setup.py test -s tests.test_cli.TestPredict.test_repo
+    $ python3.7 setup.py test -s tests.test_cli.TestPredict.test_record
 
 Debug Logging
 -------------

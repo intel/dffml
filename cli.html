@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Command Line &mdash; DFFML 0.3.3 documentation</title>
+  <title>Command Line &mdash; DFFML 0.3.4 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.3
+                0.3.4
               </div>
             
           
@@ -279,9 +279,9 @@ format.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">-no-strict</span></code> flag tell DFFML not to exit if one key fails, continue
 running the dataflow until everything is complete, useful for error prone
 scraping tasks.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow run repos <span class="nb">set</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow run records <span class="nb">set</span> <span class="se">\</span>
     -keys https://github.com/intel/dffml <span class="se">\</span>
-    -repo-def URL <span class="se">\</span>
+    -record-def URL <span class="se">\</span>
     -dataflow df.yaml <span class="se">\</span>
     -sources <span class="nv">gathered</span><span class="o">=</span>json <span class="se">\</span>
     -source-filename /tmp/data.json <span class="se">\</span>

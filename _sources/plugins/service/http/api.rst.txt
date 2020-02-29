@@ -1,8 +1,8 @@
 API
 ===
 
-An example of using the API from JavaScript can be found in
-`examples/web/api.js <https://github.com/intel/dffml/blob/master/service/http/examples/web/api.js>`_.
+An example of using the API from JavaScript can be found
+:doc:`here <javascript>`.
 
 .. contents:: REST-like HTTP API
 
@@ -230,7 +230,7 @@ Model
 The following is an example request body to configure a model. The URL this
 ``POST`` request is sent to is.
 
-- ``/configure/source/fake/mymodel``
+- ``/configure/model/fake/mymodel``
 
 .. code-block:: json
 
@@ -331,40 +331,40 @@ return a 404, Not Found response.
 
     {"error": "Source not loaded"}
 
-.. _repo:
+.. _record:
 
-Repo
+Record
 ~~~~
 
-Access a repo by it's unique key. The response will be the JSON representation
-of the repo. Here's an example response for a ``GET`` request.
+Access a record by it's unique key. The response will be the JSON representation
+of the record. Here's an example response for a ``GET`` request.
 
-- ``/source/{ctx_label}/repo/{key}``
+- ``/source/{ctx_label}/record/{key}``
 
 .. code-block:: json
 
     {
-      "key": "myrepo",
+      "key": "myrecord",
       "features": {
         "myfeature": "somevalue"
       }
     }
 
-Just as with DFFML, you'll still get a repo even if the repo doesn't exist
+Just as with DFFML, you'll still get a record even if the record doesn't exist
 within the source. However, it will only contain the ``key``.
 
 Update
 ~~~~~~
 
-Update a repo by it's unique key. ``POST`` data in the same format received from
-repo.
+Update a record by it's unique key. ``POST`` data in the same format received from
+record.
 
 - ``/source/{ctx_label}/update/{key}``
 
 .. code-block:: json
 
     {
-      "key": "myrepo",
+      "key": "myrecord",
       "features": {
         "myfeature": "somevalue"
       }
@@ -377,35 +377,35 @@ response.
 
     {"error": null}
 
-Repos
+Records
 ~~~~~
 
 Initially, client makes a ``GET`` request to the API with the ``chunk_size`` for
-the first iteration. ``chunk_size`` is the number of repos to return in one
+the first iteration. ``chunk_size`` is the number of records to return in one
 iteration. The response object will have two properties, ``iterkey`` and
-``repos``.
+``records``.
 
-``repos`` is a key value mapping of repo ``key``'s to their JSON serialized
-repo object.
+``records`` is a key value mapping of record ``key``'s to their JSON serialized
+record object.
 
-``iterkey`` will be ``null`` if there are no more repos in the source. If
-``iterkey`` is not ``null`` then there are more repos to iterate over. The API
+``iterkey`` will be ``null`` if there are no more records in the source. If
+``iterkey`` is not ``null`` then there are more records to iterate over. The API
 should be called using the response's ``iterkey`` value until the response
 contains an ``iterkey`` value of ``null``.
 
-Sample response where ``chunk_size`` is ``1`` and there are more repos to
+Sample response where ``chunk_size`` is ``1`` and there are more records to
 iterate over. We continue making ``GET`` requests until ``iterkey`` is ``null``.
 
-- ``/source/{ctx_label}/repos/{chunk_size}``
-- ``/source/{ctx_label}/repos/{iterkey}/{chunk_size}``
+- ``/source/{ctx_label}/records/{chunk_size}``
+- ``/source/{ctx_label}/records/{iterkey}/{chunk_size}``
 
 .. code-block:: json
 
     {
       "iterkey": "1a164836c6d8a27fdf9cd12688440aaa16a852fd1814b170c924a89fba4e084c8ea7522c34f9f5a539803d6237238e90",
-      "repos": {
-        "myrepo": {
-          "key": "myrepo",
+      "records": {
+        "myrecord": {
+          "key": "myrecord",
           "features": {
             "myfeature": "somevalue"
           }
@@ -419,9 +419,9 @@ Sample response where the end of iteration has been reached.
 
     {
       "iterkey": null,
-      "repos": {
-        "anotherrepo": {
-          "key": "anotherrepo",
+      "records": {
+        "anotherrecord": {
+          "key": "anotherrecord",
           "features": {
             "myfeature": "othervalue"
           }
@@ -501,8 +501,8 @@ Predict
 ~~~~~~~
 
 To use a model for prediction, send a ``POST`` request to the following URL with
-the body being a JSON object mapping ``key`` of the repo to the JSON
-representation of :py:class:`dffml.repo.Repo` as received by the source repo
+the body being a JSON object mapping ``key`` of the record to the JSON
+representation of :py:class:`dffml.record.Record` as received by the source record
 endpoint.
 
 - ``/model/{ctx_label}/predict/0``
@@ -523,7 +523,7 @@ Sample response.
 
     {
       "iterkey": null,
-      "repos": {
+      "records": {
         "42": {
           "key": "42",
           "features": {

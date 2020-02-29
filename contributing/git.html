@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Git and GitHub &mdash; DFFML 0.3.3 documentation</title>
+  <title>Git and GitHub &mdash; DFFML 0.3.4 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.3
+                0.3.4
               </div>
             
           
@@ -119,11 +119,12 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Git and GitHub</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#working-on-a-branch">Working On A Branch</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#issue-and-pull-request-title-formatting">Issue and Pull Request title formatting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#submitting-a-pull-request">Submitting A Pull Request</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-read-the-ci">How to Read the CI</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="testing.html">Testing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="docs.html">Documentation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="subsystems.html">Notes on Various Subsystems</a></li>
 <li class="toctree-l3"><a class="reference internal" href="debugging.html">Debugging</a></li>
 </ul>
 </li>
@@ -245,6 +246,76 @@ commit.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git commit --amend
 </pre></div>
 </div>
+</div>
+<div class="section" id="submitting-a-pull-request">
+<h2>Submitting A Pull Request<a class="headerlink" href="#submitting-a-pull-request" title="Permalink to this headline">¶</a></h2>
+<p>We try to keep changes in pull requests concise. This means you should title
+your pull request so we know what it does and in the description tell us
+anything else we need to know. Try to make bite sized changes. Generally, pull
+requests should be under 1000 lines. If you find your pull request going over
+that, it is probably time to clean up what you have and make sure it passes all
+the CI and review so we can merge it, and you can start working on the rest of
+your changes in a new pull request. This helps others working on the project and
+users get access to your changes faster.</p>
+<p>Once you have some work done on an issue or some feature you may be
+implementing, you should submit a draft pull request, or prefix the title with
+<code class="docutils literal notranslate"><span class="pre">WIP:</span></code> to indicate that it’s a Work In Progress.</p>
+<p>Try to get as far as you can by running the tests locally, or looking at the
+results of the CI. If you need help, ask in the Gitter channel if someone can
+review your work or help you figure out what might be going wrong or how you
+could solve an issue your stuck on.</p>
+<p>Before you are get help, a review, or a final review, make sure to fetch the
+latest changes from the master branch and <code class="docutils literal notranslate"><span class="pre">merge</span></code> or <code class="docutils literal notranslate"><span class="pre">rebase</span></code> them into your
+branch.</p>
+<p>When you are ready for final review, remove the <code class="docutils literal notranslate"><span class="pre">WIP:</span></code> prefix or draft status.
+At this point, all the CI tests should be passing. It should be okay for a
+maintainer to merge your pull request at this point. Pull requests with the
+<code class="docutils literal notranslate"><span class="pre">WIP:</span></code> prefix or draft status will not be merged.</p>
+</div>
+<div class="section" id="how-to-read-the-ci">
+<h2>How to Read the CI<a class="headerlink" href="#how-to-read-the-ci" title="Permalink to this headline">¶</a></h2>
+<p>We have continuous integration setup which can tell you a lot about if your pull
+request is ready for review or not.</p>
+<img alt="Screenshot of CI with some tests passing and some failing" src="../_images/how-to-read-ci-tests.png" />
+<p>Look through all of the tests and identify which ones are failing. Click on the
+test to view the logs, there is a drop down in the top right which will let you
+view the “raw logs”, which might be helpful.</p>
+<p>All of the CI tests must pass for your pull request to be merged! Keep working
+on it or ask for help if your not sure what’s wrong.</p>
+<p>If the lgtm bot comments and tells you that you’re adding unused imports or
+doing something it doesn’t like, either fix it, or tell us why what you’re doing
+is okay.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 82%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>CI Test</p></td>
+<td><p>What’s Probably Wrong</p></td>
+</tr>
+<tr class="row-even"><td><p>CHANGELOG</p></td>
+<td><p>You need to say what your change is doing in CHANGELOG.md</p></td>
+</tr>
+<tr class="row-odd"><td><p>WHITESPACE</p></td>
+<td><p><a class="reference external" href="https://softwareengineering.stackexchange.com/q/121555">https://softwareengineering.stackexchange.com/q/121555</a></p></td>
+</tr>
+<tr class="row-even"><td><p>STYLE</p></td>
+<td><p>You need to run the <code class="docutils literal notranslate"><span class="pre">black</span></code> formater</p></td>
+</tr>
+<tr class="row-odd"><td><p>DOCS</p></td>
+<td><p>You changed a docstring for something and didn’t run
+./scripts/docs.sh before commiting and pushing</p></td>
+</tr>
+</tbody>
+</table>
+<p>For the tests in the various plugins:</p>
+<ul class="simple">
+<li><p>You need to grab the latests changes from the master branch. Maybe you need to
+adapt to them, for example if something got renamed, check the changelog.</p></li>
+<li><p>You need to add any dependencies (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">...</span></code>)  you need to the
+<code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file of the plugin your working on.</p></li>
+</ul>
 </div>
 </div>
 
