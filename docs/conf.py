@@ -106,5 +106,7 @@ os.chdir(DOCTEST_TEMPDIR)
 
 from dffml.base import *
 from dffml.df.base import *
+from dffml.df.types import *
+from dffml.df.memory import *
 from dffml.util.net import *
 """
