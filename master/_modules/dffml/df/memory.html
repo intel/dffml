@@ -456,14 +456,11 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shorthand for creating a MemoryInputSet with a StringInputSetContext.</span>
 
-<span class="sd">        &gt;&gt;&gt; await octx.ictx.add(</span>
-<span class="sd">        ...     MemoryInputSet(</span>
-<span class="sd">        ...         MemoryInputSetConfig(</span>
-<span class="sd">        ...             ctx=StringInputSetContext(context_handle_string),</span>
-<span class="sd">        ...             inputs=list(args),</span>
-<span class="sd">        ...         )</span>
-<span class="sd">        ...     )</span>
-<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; async def main():</span>
+<span class="sd">        ...     async with MemoryOrchestrator.withconfig({}) as orchestrator:</span>
+<span class="sd">        ...         async with orchestrator(DataFlow.auto()) as octx:</span>
+<span class="sd">        ...             await octx.ictx.sadd(&quot;Hi&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; asyncio.run(main())</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ctx</span> <span class="o">=</span> <span class="n">StringInputSetContext</span><span class="p">(</span><span class="n">context_handle_string</span><span class="p">)</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
@@ -475,14 +472,11 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shorthand for creating a MemoryInputSet with an existing context.</span>
 
-<span class="sd">        &gt;&gt;&gt; await octx.ictx.add(</span>
-<span class="sd">        ...     MemoryInputSet(</span>
-<span class="sd">        ...         MemoryInputSetConfig(</span>
-<span class="sd">        ...             ctx=ctx,</span>
-<span class="sd">        ...             inputs=list(args),</span>
-<span class="sd">        ...         )</span>
-<span class="sd">        ...     )</span>
-<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; async def main():</span>
+<span class="sd">        ...     async with MemoryOrchestrator.withconfig({}) as orchestrator:</span>
+<span class="sd">        ...         async with orchestrator(DataFlow.auto()) as octx:</span>
+<span class="sd">        ...             await octx.ictx.sadd(StringInputSetContext(&quot;Hi&quot;))</span>
+<span class="sd">        &gt;&gt;&gt; asyncio.run(main())</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
             <span class="n">MemoryInputSet</span><span class="p">(</span><span class="n">MemoryInputSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)))</span>

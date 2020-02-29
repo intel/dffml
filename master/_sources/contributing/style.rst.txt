@@ -11,6 +11,19 @@ merge.
 Python File Formatting
 ----------------------
 
+To install black in the environment
+
+.. code-block:: console
+
+    $ pip install black
+
+In VSCode open command pallete by Ctrl+Shift+p, open Settings(JSON) and add the properties.
+
+.. code-block:: config
+
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "black",
+
 Run the `black <https://github.com/psf/black>`_ formatter on all Python files.
 
 .. code-block:: console
