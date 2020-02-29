@@ -1,8 +1,9 @@
 API
 ===
 
-An example of using the API from JavaScript can be found
-:doc:`here <javascript>`.
+Here's an example of using the :doc:`API from JavaScript <javascript>`.
+
+Here's an example of using the :doc:`API from Python <python>` (with requests).
 
 .. contents:: REST-like HTTP API
 
