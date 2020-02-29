@@ -1,5 +1,4 @@
 # Changelog
-
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
@@ -8,9 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ## [0.3.4] - 2020-02-28
-
 ### Added
-
 - Tensorflow hub NLP models.
 - Notes on development dependencies in `setup.py` files to codebase notes.
 - Test for `cached_download`
@@ -25,13 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Docs page for JavaScript example
 - shouldi got an operation to run golangci-lint on Golang code
 - Note about using black via VSCode
-
 ### Fixed
-
 - Port assignment for the HTTP API via the `-port` flag
-
 ### Changed
-
 - `repo`/`Repo` to `record`/`Record`
 - Definitions with a `spec` can use the `subspec` parameter to declare that they
   are a list or a dict where the values are of the `spec` type. Rather than the
@@ -39,15 +32,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed the URL mentioned in example to configure a model.
 - Sphinx doctests are now run in the CI in the DOCS task.
 - Lint JavaScript files with js-beautify and enforce with CI
-
 ### Removed
-
 - Unused imports
 
 ## [0.3.3] - 2020-02-10
-
 ### Added
-
 - Moved from TensorFlow 1 to TensorFlow 2.
 - IDX Sources to read binary data files and train models on MNIST Dataset
 - scikit models
@@ -81,9 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Network utilities to preformed cached downloads with hash validation.
 - Development service got a new command, which can retrieve an argument passed
   to setuptools `setup` function within a `setup.py` file.
-
 ### Changed
-
 - All instances of `src_url` changed to `key`.
 - `readonly` parameter in source config is now changed to `readwrite`.
 - `predict` parameter of all model config classes has been changed from `str` to `Feature`.
@@ -102,24 +89,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   config classes using `kwargs` if the config argument isn't given and keyword
   arguments are.
 - The quickstart documentation was improved as well as the structure of docs.
-
 ### Fixed
-
 - CONTRIBUTING.md has `-e` in the wrong place in the getting setup section.
 - Since moving to auto `args()` and `config()`, BaseConfigurable no longer
   produces odd typenames in conjunction with docs.py.
 - Autoconvert Definitions with spec into their spec
-
 ### Removed
-
 - The model predict operation erroneously had a `msg` parameter in it's config.
 - Unused imports identified by deepsource.io
 - Evaluation code from feature.py file as well as tests for those evaluations.
 
 ## [0.3.2] - 2020-01-03
-
 ### Added
-
 - scikit models
   - Classifiers
     - LogisticRegression
@@ -146,14 +127,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automatic documentation deployment to GitHub Pages
 - Function to create a config class dynamically, analogous to `make_dataclass`
 - `ConfigLoaders` class which loads config files from a file or directory to a dictionary.
-
 ### Changed
-
 - CLI tests and integration tests derive from `AsyncExitStackTestCase`
 - SciKit models now use the auto args and config methods.
-
 ### Fixed
-
 - Correctly identify when functions decorated with `op` use `self` to reference
   the `OperationImplementationContext`.
 - shouldi safety operation uses subprocess communicate method instead of stdin pipe writes.
@@ -161,14 +138,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Do not lowercase development mode install location when reporting version.
 
 ## [0.3.1] - 2019-12-12
-
 ### Added
-
 - Integration tests using the command line interface.
 - `Operation` `run_dataflow` to run a dataflow and test for the same.
-
 ### Changed
-
 - Features were moved from ModelContext to ModelConfig
 - CI is now run via GitHub Actions
 - CI testing script is now verbose
@@ -179,9 +152,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   a dataclass.
 - Speed up development service install of all plugins in development mode
 - Speed up named plugin load times
-
 ### Fixed
-
 - DataFlows with multiple possibilities for a source for an input, now correctly
   look through all possible sources instead of just the first one.
 - DataFlow MemoryRedundancyCheckerContext was using all inputs in an input set
@@ -193,16 +164,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Operations with configs can be run via the development service
 - JSON dumping numpy int\* and float\* caused crash on dump.
 - CSV source always loads `src_urls` as strings.
-
 ### Removed
-
 - CLI command `operations` removed in favor of `dataflow run`
 - Duplicate dataflow diagram code from development service
 
 ## [0.3.0] - 2019-10-26
-
 ### Added
-
 - Real DataFlows, see operations tutorial and usage examples
 - Async helper concurrently nocancel optional keyword argument which, if set is
   a set of tasks not to cancel when the concurrently execution loop completes.
@@ -236,9 +203,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - dev service got the ability to run a single operation in a standalone fashion.
 - About page to docs.
 - Tensorflow DNNEstimator based regression model.
-
 ### Changed
-
 - feature/codesec became it's own branch, binsec
 - BaseOrchestratorContext `run_operations` strict is default to true. With
   strict as true errors will be raised and not just logged.
@@ -270,9 +235,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   method on the repo. This will ease the process of making predict feature
   specific.
 - Updated Tensorflow model README.md to include usage of regression model
-
 ### Fixed
-
 - Docs get version from dffml.version.VERSION.
 - FileSource zipfiles are wrapped with TextIOWrapper because CSVSource expects
   the underlying file object to return str instances rather than bytes.
@@ -290,16 +253,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dynamically created scikit models get config args correctly
 - Renamed `DNNClassifierModelContext` first init arg from `config` to `features`
 - BaseSource now has `base_entry_point` decoration
-
 ### Removed
-
 - Repo objects are no longer classification specific. Their `classify`,
   `classified`, and `classification` methods were removed.
 
 ## [0.2.1] - 2019-06-07
-
 ### Added
-
 - Definition spec field to specify a class representative of key value pairs for
   definitions with primitives which are dictionaries
 - Auto generation of documentation for operation implementations, models, and
@@ -310,16 +269,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Example of how to use Data Flow Facilitator / Orchestrator / Operations by
   writing a Python meta static analysis tool,
   [shouldi](https://pypi.org/project/shouldi/)
-
 ### Changed
-
 - OperationImplementation `add_label` and `add_orig_label` methods now use
   op.name instead of `ENTRY_POINT_ORIG_LABEL` and `ENTRY_POINT_NAME`.
 - Make output specs and remap arguments optional for Operations CLI commands.
 - Feature skeleton project is now operations skeleton project
-
 ### Fixed
-
 - MemoryOperationImplementationNetwork instantiates OperationImplementations
   using their `withconfig()` method.
 - MemorySource now decorated with `entrypoint`
@@ -330,9 +285,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Async helper `aenter_stack` uses `inspect.isfunction` so it will bind lambdas
 
 ## [0.2.0] - 2019-05-23
-
 ### Added
-
 - Support for zip file source
 - Async helper for running tasks concurrently
 - Gitter badge to README
@@ -340,24 +293,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - codesec plugin containing operations which gather security related metrics on
   code and binaries.
 - auth plugin containing an scrypt operation as an example of thread pool usage.
-
 ### Changed
-
 - Standardized the API for most classes in DFFML via inheritance from dffml.base
 - Configuration of classes is now done via the args() and config() methods
 - Documentation is now generated using Sphinx
-
 ### Fixed
-
 - Corrected maxsplit in util.cli.parser
 - Check that dtype is a class in Tensorlfow DNN
 - CI script no longer always exits 0 for plugin tests
 - Corrected render type in setup.py to markdown
 
 ## [0.1.2] - 2019-03-29
-
 ### Added
-
 - Contribution guidelines
 - Logging documentation
 - Example usage of Git features
@@ -374,26 +321,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for lzma file source
 - Support for xz file source
 - Data Flow Facilitator
-
 ### Changed
-
 - Restructured documentation to docs folder and moved from rST to markdown
 - Git feature cloc logs if no binaries are in path
-
 ### Fixed
-
 - Enable source.file to read from /dev/fd/XX
 
 ## [0.1.1] - 2019-03-08
-
 ### Changed
-
 - Corrected formatting in README for PyPi
 
 ## [0.1.0] - 2019-03-07
-
 ### Added
-
 - Feature class to collect a feature in a dataset
 - Git features to collect feature data from Git repos
 - Model class to wrap implementations of machine learning models
