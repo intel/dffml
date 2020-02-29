@@ -1084,7 +1084,7 @@ their feature names.</p>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
-<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;training.csv&quot;</span><span class="p">)</span>
+<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
@@ -1142,21 +1142,21 @@ their feature names.</p>
      -source-readonly <span class="se">\</span>
      -log debug
 <span class="go"> [</span>
-<span class="go"> {</span>
-<span class="go">     &quot;extra&quot;: {},</span>
-<span class="go">     &quot;features&quot;: {</span>
-<span class="go">         &quot;Col1&quot;: 6.09809669,</span>
-<span class="go">         &quot;Col2&quot;: 8.36434181,</span>
-<span class="go">         &quot;Col3&quot;: 6.70940915,</span>
-<span class="go">         &quot;Col4&quot;: -7.91491768</span>
-<span class="go">     },</span>
-<span class="go">     &quot;last_updated&quot;: &quot;2020-01-12T22:51:15Z&quot;,</span>
-<span class="go">     &quot;prediction&quot;: {</span>
-<span class="go">         &quot;confidence&quot;: 0.6365141682948129,</span>
-<span class="go">         &quot;value&quot;: 2</span>
-<span class="go">     },</span>
-<span class="go">     &quot;key&quot;: &quot;0&quot;</span>
-<span class="go"> }</span>
+<span class="go">     {</span>
+<span class="go">         &quot;extra&quot;: {},</span>
+<span class="go">         &quot;features&quot;: {</span>
+<span class="go">             &quot;Col1&quot;: 6.09809669,</span>
+<span class="go">             &quot;Col2&quot;: 8.36434181,</span>
+<span class="go">             &quot;Col3&quot;: 6.70940915,</span>
+<span class="go">             &quot;Col4&quot;: -7.91491768</span>
+<span class="go">         },</span>
+<span class="go">         &quot;last_updated&quot;: &quot;2020-01-12T22:51:15Z&quot;,</span>
+<span class="go">         &quot;prediction&quot;: {</span>
+<span class="go">             &quot;confidence&quot;: 0.6365141682948129,</span>
+<span class="go">             &quot;value&quot;: 2</span>
+<span class="go">         },</span>
+<span class="go">         &quot;key&quot;: &quot;0&quot;</span>
+<span class="go">     }</span>
 <span class="go"> ]</span>
 </pre></div>
 </div>
@@ -1176,7 +1176,7 @@ their feature names.</p>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
-<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;training.csv&quot;</span><span class="p">)</span>
+<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
 
 <span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
@@ -1186,7 +1186,7 @@ their feature names.</p>
     <span class="n">model</span><span class="p">,</span>
     <span class="p">{</span><span class="s2">&quot;Col1&quot;</span><span class="p">:</span> <span class="mf">6.09809669</span><span class="p">,</span> <span class="s2">&quot;Col2&quot;</span><span class="p">:</span> <span class="mf">8.36434181</span><span class="p">,</span> <span class="s2">&quot;Col3&quot;</span><span class="p">:</span> <span class="mf">6.70940915</span><span class="p">,</span> <span class="s2">&quot;Col4&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.91491768</span><span class="p">},</span>
 <span class="p">):</span>
-    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;cluster&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;cluster&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;cluster&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;Prediction&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 </pre></div>
 </div>
