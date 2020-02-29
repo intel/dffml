@@ -22,7 +22,7 @@ csv
 
 *Core*
 
-Uses a CSV file as the source of repo feature data
+Uses a CSV file as the source of record feature data
 
 **Args**
 
@@ -123,11 +123,11 @@ memory
 
 *Core*
 
-Stores repos in a dict in memory
+Stores records in a dict in memory
 
 **Args**
 
-- repos: List of repos
+- records: List of records
 
 dffml_source_mysql
 ------------------
@@ -160,17 +160,17 @@ No description
 
 - db: String
 
-- repos-query: String
+- records-query: String
 
-  - SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM repo_data
+  - SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM record_data
 
-- repo-query: String
+- record-query: String
 
-  - SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM repo_data WHERE `key`=%s
+  - SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM record_data WHERE `key`=%s
 
 - update-query: String
 
-  - INSERT INTO repo_data (`key`, data_1, data_2) VALUES(%s, %s, %s) ON DUPLICATE KEY UPDATE data_1 = %s, data_2=%s
+  - INSERT INTO record_data (`key`, data_1, data_2) VALUES(%s, %s, %s) ON DUPLICATE KEY UPDATE data_1 = %s, data_2=%s
 
 - model-columns: List of strings
 

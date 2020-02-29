@@ -1,24 +1,22 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 """
-Information on the software to evaluate is stored in a Repo instance.
+Information on the software to evaluate is stored in a Record instance.
 """
-import os
-import warnings
 from datetime import datetime
-from typing import Optional, List, Dict, Any, AsyncIterator
+from typing import Optional, List, Dict, Any
 
 from .util.data import merge
 from .log import LOGGER
 
-LOGGER = LOGGER.getChild("repo")
+LOGGER = LOGGER.getChild("record")
 
 
 class NoSuchFeature(KeyError):
     pass  # pragma: no cov
 
 
-class RepoPrediction(dict):
+class RecordPrediction(dict):
 
     EXPORTED = ["value", "confidence"]
 
@@ -50,7 +48,7 @@ class RepoPrediction(dict):
     __nonzero__ = __bool__
 
 
-class RepoData(object):
+class RecordData(object):
 
     DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
     EXPORTED = ["key", "features", "prediction"]
@@ -63,7 +61,7 @@ class RepoData(object):
         prediction: Optional[Dict[str, Any]] = None,
         last_updated: Optional[datetime] = None,
     ) -> None:
-        # If the repo is not evaluated or predicted then don't report out a new
+        # If the record is not evaluated or predicted then don't report out a new
         # value for last_updated
         self.last_updated_default = datetime.now()
         if key is None:
@@ -77,7 +75,7 @@ class RepoData(object):
         if isinstance(last_updated, str):
             last_updated = datetime.strptime(last_updated, self.DATE_FORMAT)
         for _key, _val in prediction.items():
-            prediction[_key] = RepoPrediction(**_val)
+            prediction[_key] = RecordPrediction(**_val)
         self.key = key
         self.features = features
         self.prediction = prediction
@@ -103,12 +101,12 @@ class RepoData(object):
         return str(self.dict())
 
 
-class Repo(object):
+class Record(object):
     """
-    Manages feature independent information and actions for a repo.
+    Manages feature independent information and actions for a record.
     """
 
-    REPO_DATA = RepoData
+    RECORD_DATA = RecordData
 
     def __init__(
         self,
@@ -127,7 +125,7 @@ class Repo(object):
             data["extra"].update(extra)
             extra = data["extra"]
             del data["extra"]
-        self.data = self.REPO_DATA(**data)
+        self.data = self.RECORD_DATA(**data)
         self.extra = extra
 
     def dict(self):
@@ -171,11 +169,11 @@ class Repo(object):
             )
         ).rstrip()
 
-    def merge(self, repo: "Repo"):
+    def merge(self, record: "Record"):
         data = self.data.dict()
-        merge(data, repo.data.dict())
-        self.data = self.REPO_DATA(**data)
-        self.extra.update(repo.extra)  # type: ignore
+        merge(data, record.data.dict())
+        self.data = self.RECORD_DATA(**data)
+        self.extra.update(record.extra)  # type: ignore
 
     @property
     def key(self) -> str:
@@ -194,7 +192,7 @@ class Repo(object):
 
     def features(self, subset: List[str] = []) -> Dict[str, Any]:
         """
-        Returns all features for the repo or the subset specified.
+        Returns all features for the record or the subset specified.
         """
         if not subset:
             return self.data.features
@@ -208,7 +206,7 @@ class Repo(object):
 
     def feature(self, name: str) -> Any:
         """
-        Returns a feature of the repo.
+        Returns a feature of the record.
         """
         if name not in self.data.features:
             raise NoSuchFeature(name)
@@ -216,16 +214,16 @@ class Repo(object):
 
     def predicted(self, target: str, value: Any, confidence: float):
         """
-        Set the prediction for this repo
+        Set the prediction for this record
         """
-        self.data.prediction[target] = RepoPrediction(
+        self.data.prediction[target] = RecordPrediction(
             value=value, confidence=float(confidence)
         )
         self.data.last_updated = datetime.now()
 
-    def prediction(self, target: str) -> RepoPrediction:
+    def prediction(self, target: str) -> RecordPrediction:
         """
-        Get the prediction for this repo
+        Get the prediction for this record
         """
         return self.data.prediction[target]
 

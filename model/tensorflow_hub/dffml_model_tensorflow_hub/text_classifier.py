@@ -5,35 +5,24 @@ Description of what this model does
 """
 # TODO Add docstrings
 import os
-import abc
-import csv
-import inspect
 import hashlib
-import importlib
-from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Type
+from typing import AsyncIterator, Tuple, Any, List, Type
 
-import ast
 import numpy as np
 import pandas as pd
 
 # should be set before importing tensorflow
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
-from shlex import shlex
-import tensorflow_hub as hub
 
-from dffml.repo import Repo
-from dffml.feature import Features
+from dffml.record import Record
 from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
-from dffml.base import BaseConfig, config, field
+from dffml.base import config, field
 from dffml.feature.feature import Feature, Features
-from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
-from dffml_model_tensorflow.util.config.tensorflow import (
-    parse_layers,
-    make_config_tensorflow,
-)
+from dffml.model.model import ModelContext, Model, ModelNotTrained
+from dffml_model_tensorflow.util.config.tensorflow import parse_layers
 
 from .tfhub_models import bert_tokenizer, ClassificationModel
 
@@ -76,7 +65,7 @@ class TextClassifierConfig:
     metrics: str = field("Metric used to evaluate model", default="accuracy")
     clstype: Type = field("Data type of classifications values", default=str)
     epochs: int = field(
-        "Number of iterations to pass over all repos in a source", default=10
+        "Number of iterations to pass over all records in a source", default=10
     )
     directory: str = field(
         "Directory where state should be saved",
@@ -202,25 +191,25 @@ class TextClassifierContext(ModelContext):
         self.logger.debug("Training on features: %r", self.features)
         x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
         y_cols = []
-        all_repos = []
+        all_records = []
         all_sources = sources.with_features(
             self.features + [self.classification]
         )
-        async for repo in all_sources:
-            if repo.feature(self.classification) in self.classifications:
-                all_repos.append(repo)
-        for repo in all_repos:
-            for feature, results in repo.features(self.features).items():
+        async for record in all_sources:
+            if record.feature(self.classification) in self.classifications:
+                all_records.append(record)
+        for record in all_records:
+            for feature, results in record.features(self.features).items():
                 x_cols[feature].append(np.array(results))
             y_cols.append(
-                self.classifications[repo.feature(self.classification)]
+                self.classifications[record.feature(self.classification)]
             )
         if not y_cols:
-            raise ValueError("No repos to train on")
+            raise ValueError("No records to train on")
         y_cols = np.array(y_cols)
         for feature in x_cols:
             x_cols[feature] = np.array(x_cols[feature])
-        self.logger.info("------ Repo Data ------")
+        self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
@@ -272,7 +261,7 @@ class TextClassifierContext(ModelContext):
 
     async def train(self, sources: Sources):
         """
-        Train using repos as the data to learn from.
+        Train using records as the data to learn from.
         """
         x, y = await self.train_data_generator(sources)
         self._model.summary()
@@ -287,7 +276,7 @@ class TextClassifierContext(ModelContext):
 
     async def accuracy(self, sources: Sources) -> Accuracy:
         """
-        Evaluates the accuracy of our model after training using the input repos
+        Evaluates the accuracy of our model after training using the input records
         as test data.
         """
         if not os.path.isfile(
@@ -299,18 +288,18 @@ class TextClassifierContext(ModelContext):
         return Accuracy(accuracy_score[1])
 
     async def predict(
-        self, repos: AsyncIterator[Repo]
-    ) -> AsyncIterator[Tuple[Repo, Any, float]]:
+        self, records: AsyncIterator[Record]
+    ) -> AsyncIterator[Tuple[Record, Any, float]]:
         """
-        Uses trained data to make a prediction about the quality of a repo.
+        Uses trained data to make a prediction about the quality of a record.
         """
         if not os.path.isfile(
             os.path.join(self.model_dir_path, "saved_model.pb")
         ):
             raise ModelNotTrained("Train model before assessing for accuracy.")
 
-        async for repo in repos:
-            feature_data = repo.features(self.features)
+        async for record in records:
+            feature_data = record.features(self.features)
             df = pd.DataFrame(feature_data, index=[0])
             predict = await self.prediction_data_generator(np.array(df)[0])
             all_prob = self._model.predict(predict)
@@ -324,12 +313,12 @@ class TextClassifierContext(ModelContext):
                 )
             )
 
-            repo.predicted(
+            record.predicted(
                 target,
                 self.cids[max_prob_idx[0]],
                 all_prob[0][max_prob_idx[0]],
             )
-            yield repo
+            yield record
 
 
 @entrypoint("text_classifier")

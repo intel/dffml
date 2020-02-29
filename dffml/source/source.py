@@ -5,21 +5,19 @@ Source subclasses are responsible for generating an integer value given an open
 source project's source URL.
 """
 import abc
-import asyncio
-from typing import AsyncIterator, Dict, List, Optional, Callable, Tuple, Any
+from typing import AsyncIterator, List, Optional, Callable
 
 from ..base import (
-    BaseConfig,
     BaseDataFlowFacilitatorObjectContext,
     BaseDataFlowFacilitatorObject,
 )
-from ..repo import Repo, RepoData
+from ..record import Record
 from ..util.asynchelper import (
     AsyncContextManagerListContext,
     AsyncContextManagerList,
 )
-from ..util.entrypoint import Entrypoint, base_entry_point
 
+from ..util.entrypoint import base_entry_point
 from .log import LOGGER
 
 
@@ -28,23 +26,23 @@ class BaseSourceContext(BaseDataFlowFacilitatorObjectContext):
         self.parent = parent
 
     @abc.abstractmethod
-    async def update(self, repo: Repo):
+    async def update(self, record: Record):
         """
-        Updates a repo for a source
+        Updates a record for a source
         """
 
     @abc.abstractmethod
-    async def repos(self) -> AsyncIterator[Repo]:
+    async def records(self) -> AsyncIterator[Record]:
         """
-        Returns a list of repos retrieved from self.src
+        Returns a list of records retrieved from self.src
         """
-        # mypy ignores AsyncIterator[Repo], therefore this is needed
-        yield Repo("")  # pragma: no cover
+        # mypy ignores AsyncIterator[Record], therefore this is needed
+        yield Record("")  # pragma: no cover
 
     @abc.abstractmethod
-    async def repo(self, key: str):
+    async def record(self, key: str):
         """
-        Get a repo from the source or add it if it doesn't exist
+        Get a record from the source or add it if it doesn't exist
         """
 
 
@@ -52,7 +50,7 @@ class BaseSourceContext(BaseDataFlowFacilitatorObjectContext):
 class BaseSource(BaseDataFlowFacilitatorObject):
     """
     Abstract base class for all sources. New sources must be derived from this
-    class and implement the repos method.
+    class and implement the records method.
     """
 
     def __call__(self) -> BaseSourceContext:
@@ -60,47 +58,49 @@ class BaseSource(BaseDataFlowFacilitatorObject):
 
 
 class SourcesContext(AsyncContextManagerListContext):
-    async def update(self, repo: Repo):
+    async def update(self, record: Record):
         """
-        Updates a repo for a source
+        Updates a record for a source
         """
-        LOGGER.debug("Updating %r: %r", repo.key, repo.dict())
+        LOGGER.debug("Updating %r: %r", record.key, record.dict())
         for source in self:
-            await source.update(repo)
+            await source.update(record)
 
-    async def repos(
-        self, validation: Optional[Callable[[Repo], bool]] = None
-    ) -> AsyncIterator[Repo]:
+    async def records(
+        self, validation: Optional[Callable[[Record], bool]] = None
+    ) -> AsyncIterator[Record]:
         """
-        Retrieves repos from all sources
+        Retrieves records from all sources
         """
         for source in self:
-            async for repo in source.repos():
+            async for record in source.records():
                 # NOTE In Python 3.7.3 self[1:] works, however in Python >
                 # 3.7.3 only self.data works
                 for other_source in self.data[1:]:
-                    repo.merge(await other_source.repo(repo.key))
-                if validation is None or validation(repo):
-                    yield repo
+                    record.merge(await other_source.record(record.key))
+                if validation is None or validation(record):
+                    yield record
             break
 
-    async def repo(self, key: str):
+    async def record(self, key: str):
         """
-        Retrieve and or register repo will all sources
+        Retrieve and or register record will all sources
         """
-        repo = Repo(key)
+        record = Record(key)
         for source in self:
-            repo.merge(await source.repo(key))
-        return repo
+            record.merge(await source.record(key))
+        return record
 
-    async def with_features(self, features: List[str]) -> AsyncIterator[Repo]:
+    async def with_features(
+        self, features: List[str]
+    ) -> AsyncIterator[Record]:
         """
-        Returns all repos which have the requested features
+        Returns all records which have the requested features
         """
-        async for repo in self.repos(
-            lambda repo: bool(repo.features(features))
+        async for record in self.records(
+            lambda record: bool(record.features(features))
         ):
-            yield repo
+            yield record
 
 
 class Sources(AsyncContextManagerList):
@@ -109,26 +109,26 @@ class Sources(AsyncContextManagerList):
 
 
 class ValidationSourcesContext(SourcesContext):
-    async def repos(
-        self, validation: Optional[Callable[[Repo], bool]] = None
-    ) -> AsyncIterator[Repo]:
-        async for repo in super().repos():
-            if self.parent.validation(repo) and (
-                validation is None or validation(repo)
+    async def records(
+        self, validation: Optional[Callable[[Record], bool]] = None
+    ) -> AsyncIterator[Record]:
+        async for record in super().records():
+            if self.parent.validation(record) and (
+                validation is None or validation(record)
             ):
-                yield repo
+                yield record
 
 
 class ValidationSources(Sources):
     """
-    Restricts access to a subset of repos during iteration based on a validation
+    Restricts access to a subset of records during iteration based on a validation
     function.
     """
 
     CONTEXT = ValidationSourcesContext
 
     def __init__(
-        self, validation: Callable[[Repo], bool], *args: BaseSource
+        self, validation: Callable[[Record], bool], *args: BaseSource
     ) -> None:
         super().__init__(*args)
         self.validation = validation
@@ -136,7 +136,7 @@ class ValidationSources(Sources):
 
 class SubsetSources(ValidationSources):
     """
-    Restricts access to a subset of repos during iteration based on their keys.
+    Restricts access to a subset of records during iteration based on their keys.
     """
 
     def __init__(
@@ -147,5 +147,5 @@ class SubsetSources(ValidationSources):
             keys = []
         self.keys = keys
 
-    def __validation(self, repo: Repo) -> bool:
-        return bool(repo.key in self.keys)
+    def __validation(self, record: Record) -> bool:
+        return bool(record.key in self.keys)

@@ -1,7 +1,3 @@
-import io
-import json
-import unittest.mock
-
 from dffml.df.types import DataFlow, Input
 from dffml.df.memory import MemoryOrchestrator
 from dffml.operation.dataflow import run_dataflow, RunDataFlowConfig
@@ -11,7 +7,7 @@ from dffml.util.asynctestcase import AsyncTestCase
 from ..test_df import DATAFLOW, add, mult, parse_line
 
 
-class TestRunDataFlowOnRepo(AsyncTestCase):
+class TestRunDataFlowOnRecord(AsyncTestCase):
     async def test_run(self):
         test_dataflow = DataFlow(
             operations={

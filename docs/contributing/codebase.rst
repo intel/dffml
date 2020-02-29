@@ -74,7 +74,7 @@ that with a database, client HTTP sessions, etc.
 .. code-block:: python
 
     import asyncio
-    from dffml.repo import Repo
+    from dffml.record import Record
     from dffml.source.csv import CSVSource, CSVSourceConfig
 
     async def main():
@@ -89,7 +89,7 @@ that with a database, client HTTP sessions, etc.
             # Two
             async with source() as sctx:
                 # Punch
-                await sctx.update(Repo("0", data={
+                await sctx.update(Record("0", data={
                     "features": {
                         "first_column": 42,
                         "second_column": 1776,
@@ -169,7 +169,7 @@ You might have asked yourself, what is this thing?
 .. code-block:: python
 
     INSTALL_REQUIRES = [] + (
-        ["dffml>=0.3.3"]
+        ["dffml>=0.3.4"]
         if not any(
             list(
                 map(

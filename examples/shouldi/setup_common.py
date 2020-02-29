@@ -1,7 +1,6 @@
 import os
 import sys
 import ast
-from io import open
 from pathlib import Path
 from setuptools import find_packages
 
@@ -12,7 +11,7 @@ AUTHOR_NAME = "John Andersen"
 AUTHOR_EMAIL = "john.s.andersen@intel.com"
 # Install dffml if it is not installed in development mode
 INSTALL_REQUIRES = [] + (
-    ["dffml>=0.3.3"]
+    ["dffml>=0.3.4"]
     if not any(
         list(
             map(

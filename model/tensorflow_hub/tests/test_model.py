@@ -1,12 +1,10 @@
-import sys
 import random
 import tempfile
-from typing import Type
 
-from dffml.repo import Repo, RepoData
+from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.feature import Data, Feature, Features, DefFeature
+from dffml.feature import Features, DefFeature
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml_model_tensorflow_hub.text_classifier import (
     TextClassificationModel,
@@ -20,12 +18,12 @@ class TestTextClassificationModel(AsyncTestCase):
         cls.features = Features()
         cls.features.append(DefFeature("A", str, 1))
         A, X = list(zip(*DATA))
-        cls.repos = [
-            Repo(str(i), data={"features": {"A": A[i], "X": X[i],}},)
+        cls.records = [
+            Record(str(i), data={"features": {"A": A[i], "X": X[i],}},)
             for i in range(0, len(X))
         ]
         cls.sources = Sources(
-            MemorySource(MemorySourceConfig(repos=cls.repos))
+            MemorySource(MemorySourceConfig(records=cls.records))
         )
         cls.model_dir = tempfile.TemporaryDirectory()
         cls.model = TextClassificationModel(
@@ -64,8 +62,8 @@ class TestTextClassificationModel(AsyncTestCase):
         async with self.sources as sources, self.model as model:
             target_name = model.config.predict.NAME
             async with sources() as sctx, model() as mctx:
-                async for repo in mctx.predict(sctx.repos()):
-                    prediction = repo.prediction(target_name).value
+                async for record in mctx.predict(sctx.records()):
+                    prediction = record.prediction(target_name).value
                     self.assertIn(prediction, ["0", "1"])
 
 
