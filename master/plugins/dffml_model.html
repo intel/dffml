@@ -1069,6 +1069,36 @@ their feature names.</p>
 <span class="go">]</span>
 </pre></div>
 </div>
+<p>Example usage of Linear Regression Model using python API:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">DefFeature</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<span class="kn">from</span> <span class="nn">dffml_model_scikit</span> <span class="kn">import</span> <span class="n">LinearRegressionModel</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegressionModel</span><span class="p">(</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
+        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Expertise&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;training.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+
+<span class="c1"># Make prediction</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">},</span>
+<span class="p">):</span>
+    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;Salary&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>Example below uses KMeans Clustering Model on a small randomly generated dataset.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"> $</span> cat &gt; train.csv &lt;&lt; EOF
 <span class="go">Col1,          Col2,        Col3,         Col4</span>
@@ -1128,6 +1158,36 @@ their feature names.</p>
 <span class="go">     &quot;key&quot;: &quot;0&quot;</span>
 <span class="go"> }</span>
 <span class="go"> ]</span>
+</pre></div>
+</div>
+<p>Example usage of KMeans Clustering Model using python API:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">DefFeature</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<span class="kn">from</span> <span class="nn">dffml_model_scikit</span> <span class="kn">import</span> <span class="n">KMeansModel</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">KMeansModel</span><span class="p">(</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
+        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Col1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Col2&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Col3&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Col4&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">tcluster</span><span class="o">=</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;cluster&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;training.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+
+<span class="c1"># Make prediction</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="p">{</span><span class="s2">&quot;Col1&quot;</span><span class="p">:</span> <span class="mf">6.09809669</span><span class="p">,</span> <span class="s2">&quot;Col2&quot;</span><span class="p">:</span> <span class="mf">8.36434181</span><span class="p">,</span> <span class="s2">&quot;Col3&quot;</span><span class="p">:</span> <span class="mf">6.70940915</span><span class="p">,</span> <span class="s2">&quot;Col4&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.91491768</span><span class="p">},</span>
+<span class="p">):</span>
+    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;cluster&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;cluster&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>NOTE</strong>: <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-transductive/">Transductive</a> Clusterers(scikitsc, scikitac, scikitoptics) cannot handle unseen data.
