@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Static file serving from a dirctory with `-static`
   - `api.js` file serving with the `-js` flag
   - Docs page for JavaScript example
+- shouldi got an operation to run golangci-lint on Golang code
 ### Fixed
 - Port assignment for the HTTP API via the `-port` flag
 ### Changed
