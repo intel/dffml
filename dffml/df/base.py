@@ -312,11 +312,6 @@ def isopimp(item):
     """
     Similar to inspect.isclass and that family of functions. Returns true if
     item is a subclass of OperationImpelmentation.
-
-    >>> # Get all operation implementations imported in a file
-    >>> list(map(lambda item: item[1],
-    >>>          inspect.getmembers(sys.modules[__name__],
-    >>>                             predicate=isopimp)))
     """
     return bool(
         (
@@ -336,11 +331,6 @@ def isoperation(item):
     """
     Similar to inspect.isclass and that family of functions. Returns true if
     item is an instance of Operation.
-
-    >>> # Get all operations imported in a file
-    >>> list(map(lambda item: item[1],
-    >>>          inspect.getmembers(sys.modules[__name__],
-    >>>                             predicate=isoperation)))
     """
     return bool(isinstance(item, Operation) and item is not Operation)
 
@@ -349,11 +339,6 @@ def isopwraped(item):
     """
     Similar to inspect.isclass and that family of functions. Returns true if a
     function has been wrapped with `op`.
-
-    >>> # Get all functions imported in a file that have been wrapped with `op`
-    >>> list(map(lambda item: item[1],
-    >>>          inspect.getmembers(sys.modules[__name__],
-    >>>                             predicate=isopwraped)))
     """
     return bool(
         getattr(item, "op", False)

@@ -1,4 +1,4 @@
-function populate_table(tableDOM, URLs) {
+function populate_table (tableDOM, URLs) {
   var row;
   var col;
   // Clear the table
@@ -35,23 +35,23 @@ function populate_table(tableDOM, URLs) {
   }
 }
 
-function refreshTable(tableDOM) {
+function refreshTable (tableDOM) {
   return fetch('cgi-bin/api.py?action=dump')
-  .then(function(response) {
-    return response.json()
-  })
-  .then(function(URLs) {
-    populate_table(tableDOM, URLs);
-  });
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(URLs) {
+      populate_table(tableDOM, URLs);
+    });
 }
 
-function setMaintenance(URL, maintained) {
+function setMaintenance (URL, maintained) {
   return fetch('cgi-bin/api.py?action=set' +
-    '&maintained=' + Number(maintained) +
-    '&URL=' + URL)
-  .then(function(response) {
-    return response.json()
-  }.bind(this));
+      '&maintained=' + Number(maintained) +
+      '&URL=' + URL)
+    .then(function(response) {
+      return response.json()
+    }.bind(this));
 }
 
 window.addEventListener('DOMContentLoaded', function(event) {
@@ -62,16 +62,16 @@ window.addEventListener('DOMContentLoaded', function(event) {
 
   maintainedDOM.addEventListener('click', function(event) {
     setMaintenance(URLDOM.value, true)
-    .then(function() {
-      refreshTable(tableDOM);
-    });
+      .then(function() {
+        refreshTable(tableDOM);
+      });
   });
 
   unmaintainedDOM.addEventListener('click', function(event) {
     setMaintenance(URLDOM.value, false)
-    .then(function() {
-      refreshTable(tableDOM);
-    });
+      .then(function() {
+        refreshTable(tableDOM);
+      });
   });
 
   refreshTable(tableDOM);

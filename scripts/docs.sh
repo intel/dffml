@@ -10,9 +10,5 @@ ln -s "${PWD}/service/http/docs/" docs/plugins/service/http
 python3.7 scripts/docs.py
 python3.7 -c 'import os, pkg_resources; [e.load() for e in pkg_resources.iter_entry_points("console_scripts") if e.name.startswith("sphinx-build")][0]()' -b html docs pages \
   || (echo "[ERROR] Failed run sphinx, is it installed (pip install -U .[dev])?" 1>&2 ; exit 1)
-find pages/ -name \*.html -exec \
-  sed -i 's/<span class="gp">\&gt;\&gt;\&gt; <\/span>//g' {} \;
-find pages/ -name \*.html -exec \
-  sed -i 's/<span class="go">\&gt;\&gt;\&gt;<\/span>//g' {} \;
 cp -r docs/images pages/
 touch pages/.nojekyll

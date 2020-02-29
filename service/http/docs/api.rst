@@ -1,8 +1,8 @@
 API
 ===
 
-An example of using the API from JavaScript can be found in
-`examples/web/api.js <https://github.com/intel/dffml/blob/master/service/http/examples/web/api.js>`_.
+An example of using the API from JavaScript can be found
+:doc:`here <javascript>`.
 
 .. contents:: REST-like HTTP API
 
@@ -230,7 +230,7 @@ Model
 The following is an example request body to configure a model. The URL this
 ``POST`` request is sent to is.
 
-- ``/configure/source/fake/mymodel``
+- ``/configure/model/fake/mymodel``
 
 .. code-block:: json
 

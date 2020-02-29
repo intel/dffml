@@ -5,15 +5,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.3.4] - 2020-02-28
 ### Added
 - Tensorflow hub NLP models.
 - Notes on development dependencies in `setup.py` files to codebase notes.
 - Test for `cached_download`
+- `dffml.util.net.cached_download_unpack_archive` to run a cached download and
+  unpack the archive, very useful for testing. Documented on the Networking
+  Helpers API docs page.
+- Directions on how to read the CI under the Git and GitHub page of the
+  contributing documentation.
+- HTTP API
+  - Static file serving from a dirctory with `-static`
+  - `api.js` file serving with the `-js` flag
+  - Docs page for JavaScript example
+- shouldi got an operation to run golangci-lint on Golang code
+### Fixed
+- Port assignment for the HTTP API via the `-port` flag
 ### Changed
 - `repo`/`Repo` to `record`/`Record`
 - Definitions with a `spec` can use the `subspec` parameter to declare that they
   are a list or a dict where the values are of the `spec` type. Rather than the
   list or dict itself being of the `spec` type.
+- Fixed the URL mentioned in example to configure a model.
+- Sphinx doctests are now run in the CI in the DOCS task.
+- Lint JavaScript files with js-beautify and enforce with CI
 ### Removed
 - Unused imports
 

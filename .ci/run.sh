@@ -118,6 +118,11 @@ function run_whitespace() {
 
 function run_style() {
   black --check "${SRC_ROOT}"
+
+  for filename in $(git ls-files \*.js); do
+    echo "Checking JavaScript file \'${filename}\'"
+    diff <(js-beautify -n -s 2 "${filename}") "${filename}"
+  done
 }
 
 function run_docs() {
@@ -126,6 +131,11 @@ function run_docs() {
   cd "${SRC_ROOT}"
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
+
+  last_release=$("${PYTHON}" -m dffml service dev setuppy kwarg version setup.py)
+
+  # Doctests
+  ./scripts/doctest.sh
 
   # Make master docs
   master_docs="$(mktemp -d)"
@@ -139,9 +149,13 @@ function run_docs() {
   TEMP_DIRS+=("${release_docs}")
   rm -rf pages
   git clean -fdx
-  git checkout $(git describe --abbrev=0 --tags --match '*.*.*')
+  git reset --hard HEAD
+  echo "Checking out last release ${last_release}"
+  git checkout "${last_release}"
   git clean -fdx
   git reset --hard HEAD
+  # Uninstall dffml
+  "${PYTHON}" -m pip uninstall -y dffml
   # Remove .local to force install of correct dependency versions
   rm -rf ~/.local
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
@@ -182,7 +196,7 @@ function run_docs() {
   export GIT_SSH_COMMAND="${GIT_SSH_COMMAND} -o IdentityFile=~/.ssh/github_dffml"
 
   git remote set-url origin git@github.com:intel/dffml
-  git push
+  git push -f
 
   cd -
 

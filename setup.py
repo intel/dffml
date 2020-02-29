@@ -62,6 +62,7 @@ setup(
             "sphinxcontrib-asyncio",
             "recommonmark",
             "black",
+            "jsbeautifier",
             "sphinx_rtd_theme",
         ],
     },
