@@ -27,6 +27,8 @@ from ..util.cli.arg import Arg
 from ..util.asynchelper import context_stacker
 from ..util.entrypoint import base_entry_point
 
+from contextlib import asynccontextmanager
+
 
 class BaseDataFlowObjectContext(BaseDataFlowFacilitatorObjectContext):
     """
@@ -85,6 +87,20 @@ class OperationImplementationContext(BaseDataFlowObjectContext):
         with keys matching the input and output parameters of the Operation
         object associated with this operation implementation context.
         """
+
+    @asynccontextmanager
+    async def subflow(self, dataflow):
+        """
+        Registers subflow `dataflow` with parent flow and returns an instance of `BaseOrchestratorContext`
+
+        >>> async with self.subflow(self.config.dataflow) as octx:
+            octx.run(test_inputs)
+        """
+        async with self.octx.parent(dataflow) as octx:
+            await self.octx.register_subflow(
+                self.parent.op.instance_name, octx
+            )
+            yield octx
 
 
 class FailedToLoadOperationImplementation(Exception):

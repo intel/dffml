@@ -1112,6 +1112,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # operation which desires to execute a subflow. If the output operation
         # created new contexts, then there would be no inputs in them, so that
         # would be pointless.
+        print("Entering context\n\n")
         enter = {
             "rctx": self.parent.rchecker,
             "ictx": self.parent.input_network,
@@ -1232,6 +1233,8 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 self.inputs_to_forward.setdefault(instance_name, []).append(
                     item
                 )
+        print(f"Forwarding inputs from {self.inputs_to_forward} to {self.subflows}")
+        
         self.logger.debug(f"Forwarding inputs from {self.inputs_to_forward} to {self.subflows}")
         for instance_name, inputs in self.inputs_to_forward.items():
             if instance_name in self.subflows:
