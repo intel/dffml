@@ -161,7 +161,7 @@ class Server(TLSCMD, MultiCommCMD, Routes):
         default=None,
     )
     arg_static = Arg(
-        "-static", help="Directory to serve static content from", default=None,
+        "-static", help="Directory to serve static content from", default=None
     )
     arg_js = Arg(
         "-js",

@@ -713,7 +713,7 @@ class Routes(BaseMultiCommContext):
         )
         # Serve api.js
         if self.js:
-            self.routes.append(("GET", "/api.js", self.api_js,))
+            self.routes.append(("GET", "/api.js", self.api_js))
         # Add all the routes and make them cors if needed
         for route in self.routes:
             route = self.app.router.add_route(*route)

@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Parent flows can now forward inputs to active contexts of subflows.
+  - `forward` parameter in `DataFlow`
+  - `subflow` in `OperationImplementationContext`
 
 ## [0.3.4] - 2020-02-28
 ### Added
@@ -69,9 +73,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Network utilities to preformed cached downloads with hash validation.
 - Development service got a new command, which can retrieve an argument passed
   to setuptools `setup` function within a `setup.py` file.
-- Subflows can now get inputs forwarded from parent flows.
-  - `forward` parameter in `DataFlow`
-  - `register_subflow` in `MemoryOrchestratorContext`
 ### Changed
 - All instances of `src_url` changed to `key`.
 - `readonly` parameter in source config is now changed to `readwrite`.
