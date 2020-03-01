@@ -67,6 +67,30 @@ def cached_download(
     Download a file and verify the hash of the downloaded file. If the file
     already exists and the hash matches, do not re-download the file.
 
+    The path to the downloaded file is prepended to the argument list of the
+    wrapped function.
+
+    You can use tools like ``curl`` to download the file, and then ``sha384sum``
+    to calculate the hash value used for the ``expected_hash`` argument.
+
+    .. code-block:: console
+
+        $ curl -sSL 'https://github.com/intel/dffml/raw/152c2b92535fac6beec419236f8639b0d75d707d/MANIFEST.in' | sha384sum
+        f7aadf5cdcf39f161a779b4fa77ec56a49630cf7680e21fb3dc6c36ce2d8c6fae0d03d5d3094a6aec4fea1561393c14c  -
+
+    Parameters
+    ----------
+    url : str
+        The URL to download
+    target_path : str, pathlib.Path
+        Path on disk to store download
+    expected_hash : str
+        SHA384 hash of the contents
+    protocol_allowlist : list, optional
+        List of strings, one of which the URL must start with. If you want to be
+        able to download ``http://`` (rather than ``https://``) links, you'll
+        need to override this.
+
     Examples
     --------
 
@@ -124,10 +148,31 @@ def cached_download_unpack_archive(
     Verify the hash of the downloaded file. If the hash matches the file is not
     re-downloaded.
 
+    The path to the extracted directory is prepended to the argument list of the
+    wrapped function.
+
+    See :py:func:`cached_download <dffml.util.net.cached_download>` for
+    instructions on how to calculate ``expected_hash``.
+
     .. warning::
 
         This function does not verify the integrity of the unpacked archive on
         disk. Only the downloaded file.
+
+    Parameters
+    ----------
+    url : str
+        The URL to download
+    file_path : str, pathlib.Path
+        Path on disk to store download
+    directory_path : str, pathlib.Path
+        Path on disk to store extracted contents of downloaded archive
+    expected_hash : str
+        SHA384 hash of the contents
+    protocol_allowlist : list, optional
+        List of strings, one of which the URL must start with. If you want to be
+        able to download ``http://`` (rather than ``https://``) links, you'll
+        need to override this.
 
     Examples
     --------
