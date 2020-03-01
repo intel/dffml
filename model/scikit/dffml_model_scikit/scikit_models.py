@@ -241,8 +241,8 @@ for entry_point_name, name, cls, applicable_features_function in [
         dffml_config_properties["predict"] = (
             Feature,
             field(
-                "field here for compability with other functions,no need to change",
-                default=DefFeature(name="Prediction", dtype="str", length=10),
+                "Name used as meaning of prediction",
+                default=DefFeature(name="cluster", dtype="str", length=10),
             ),
         )
 
