@@ -108,20 +108,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Contributing</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="index.html#contacting-the-community">Contacting the Community</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#what-to-work-on">What To Work On</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#who-s-working-on-what">Who’s Working On What</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#communication-style">Communication Style</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html#working-on-dffml">Working on DFFML</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="dev_env.html">Getting Set Up To Work On DFFML</a></li>
-<li class="toctree-l3"><a class="reference internal" href="style.html">Style</a></li>
-<li class="toctree-l3"><a class="reference internal" href="codebase.html">Codebase Layout And Notes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="git.html">Git and GitHub</a></li>
-<li class="toctree-l3"><a class="reference internal" href="testing.html">Testing</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Documentation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="debugging.html">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_community.html">What To Work On</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_env.html">Getting Set Up To Work On DFFML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style.html">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codebase.html">Codebase Layout And Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="git.html">Git and GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup-for-example-code">Setup for Example Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#doctests">Doctests</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html">Debugging</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
@@ -193,11 +192,108 @@
             
   <div class="section" id="documentation">
 <h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
-<p>To build and view the documentation run the docs script.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> rm -rf pages/
-<span class="gp">$</span> ./scripts/docs.sh
-<span class="gp">$</span> python3.7 -m http.server --directory pages/ <span class="m">7000</span>
+<p>To build, run the docs script.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./scripts/docs.sh
 </pre></div>
+</div>
+<p>Python’s built in HTTP server is useful for viewing the documentation.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m http.server --directory pages/ <span class="m">7000</span>
+</pre></div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Most of the codebase uses the <code class="docutils literal notranslate"><span class="pre">async</span></code> and <code class="docutils literal notranslate"><span class="pre">await</span></code> keywords. As such, almost
+every example block will need to define code that use those keywords within a
+main coroutine (function defined with <code class="docutils literal notranslate"><span class="pre">async</span> <span class="pre">def</span></code>). We’ll then run that
+coroutine with the <a class="reference external" href="https://docs.python.org/3/library/asyncio-task.html#asyncio.run" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">asyncio.run()</span></code></a> function.</p>
+<p>Example documentation is expected to follow the <code class="docutils literal notranslate"><span class="pre">black</span></code> formatters code style.
+<code class="docutils literal notranslate"><span class="pre">black</span></code> does not yet auto-format example code, so you may want to write the
+code in a separate file and format it there before copying it into the example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">sadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context_handle_string</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shorthand for creating a MemoryInputSet with a StringInputSetContext.</span>
+
+<span class="sd">    &gt;&gt;&gt; async def main():</span>
+<span class="sd">    ...     async with MemoryOrchestrator.withconfig({}) as orchestrator:</span>
+<span class="sd">    ...         async with orchestrator(DataFlow.auto()) as octx:</span>
+<span class="sd">    ...             await octx.ictx.sadd(&quot;Hi&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setup-for-example-code">
+<h2>Setup for Example Code<a class="headerlink" href="#setup-for-example-code" title="Permalink to this headline">¶</a></h2>
+<p>Everything the example code needs must be setup by the
+<code class="docutils literal notranslate"><span class="pre">docs/doctest_header.py</span></code> file. It contains the <code class="docutils literal notranslate"><span class="pre">import</span></code> statements and
+creates a temporary directory for the tests to run in.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">testsetup::</span></code> directive seemed to be crashing Sphinx, so be aware if
+you attempt to use it.</p>
+</div>
+</div>
+<div class="section" id="doctests">
+<h2>Doctests<a class="headerlink" href="#doctests" title="Permalink to this headline">¶</a></h2>
+<p>All the examples are tested by the Sphinx doctest extension. To test all of the
+examples, run the doctest script.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./scripts/doctest.sh
+<span class="go">Running Sphinx v2.4.3</span>
+<span class="go">making output directory... done</span>
+<span class="go">loading intersphinx inventory from https://docs.python.org/3/objects.inv...</span>
+<span class="go">building [mo]: targets for 0 po files that are out of date</span>
+<span class="go">building [doctest]: targets for 58 source files that are out of date</span>
+<span class="go">updating environment: [new config] 58 added, 0 changed, 0 removed</span>
+<span class="go">reading sources... [100%] usage/mnist</span>
+
+<span class="go">looking for now-outdated files... none found</span>
+<span class="go">pickling environment... done</span>
+<span class="go">checking consistency... done</span>
+<span class="go">running tests...</span>
+
+<span class="go">Document: api/high_level</span>
+<span class="go">------------------------</span>
+<span class="go">1 items passed all tests:</span>
+<span class="go">   3 tests in default</span>
+<span class="go">3 tests in 1 items.</span>
+<span class="go">3 passed and 0 failed.</span>
+<span class="go">Test passed.</span>
+
+<span class="go">Document: api/base</span>
+<span class="go">------------------</span>
+<span class="go">1 items passed all tests:</span>
+<span class="go">   4 tests in default</span>
+<span class="go">4 tests in 1 items.</span>
+<span class="go">4 passed and 0 failed.</span>
+<span class="go">Test passed.</span>
+
+<span class="go">Document: api/df/memory</span>
+<span class="go">-----------------------</span>
+<span class="go">1 items passed all tests:</span>
+<span class="go">   4 tests in default</span>
+<span class="go">4 tests in 1 items.</span>
+<span class="go">4 passed and 0 failed.</span>
+<span class="go">Test passed.</span>
+
+<span class="go">Document: api/util/net</span>
+<span class="go">----------------------</span>
+<span class="go">1 items passed all tests:</span>
+<span class="go">   4 tests in default</span>
+<span class="go">4 tests in 1 items.</span>
+<span class="go">4 passed and 0 failed.</span>
+<span class="go">Test passed.</span>
+
+<span class="go">Doctest summary</span>
+<span class="go">===============</span>
+<span class="go">   15 tests</span>
+<span class="go">    0 failures in tests</span>
+<span class="go">    0 failures in setup code</span>
+<span class="go">    0 failures in cleanup code</span>
+<span class="go">build succeeded, 4 warnings.</span>
+
+<span class="go">Testing of doctests in the sources finished, look at the results in ../../home/user/Documents/python/dffml/doctest/output.txt.</span>
+</pre></div>
+</div>
 </div>
 </div>
 

@@ -301,6 +301,31 @@
 <span class="sd">    -------</span>
 <span class="sd">    asynciterator</span>
 <span class="sd">        ``Record`` objects or ``(record.key, features, predictions)`` tuple.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; model = LinearRegressionModel(</span>
+<span class="sd">    ...     features=Features(</span>
+<span class="sd">    ...         DefFeature(&quot;Years&quot;, int, 1),</span>
+<span class="sd">    ...         DefFeature(&quot;Expertise&quot;, int, 1),</span>
+<span class="sd">    ...         DefFeature(&quot;Trust&quot;, float, 1),</span>
+<span class="sd">    ...     ),</span>
+<span class="sd">    ...     predict=DefFeature(&quot;Salary&quot;, int, 1),</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; async def main():</span>
+<span class="sd">    ...     async for i, features, prediction in predict(</span>
+<span class="sd">    ...         model,</span>
+<span class="sd">    ...         {&quot;Years&quot;: 6, &quot;Expertise&quot;: 13, &quot;Trust&quot;: 0.7},</span>
+<span class="sd">    ...         {&quot;Years&quot;: 7, &quot;Expertise&quot;: 15, &quot;Trust&quot;: 0.8},</span>
+<span class="sd">    ...     ):</span>
+<span class="sd">    ...         features[&quot;Salary&quot;] = round(prediction[&quot;Salary&quot;][&quot;value&quot;])</span>
+<span class="sd">    ...         print(features)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+<span class="sd">    {&#39;Years&#39;: 6, &#39;Expertise&#39;: 13, &#39;Trust&#39;: 0.7, &#39;Salary&#39;: 70.0}</span>
+<span class="sd">    {&#39;Years&#39;: 7, &#39;Expertise&#39;: 15, &#39;Trust&#39;: 0.8, &#39;Salary&#39;: 80.0}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sources</span> <span class="o">=</span> <span class="n">_records_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
     <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span> <span class="k">as</span> <span class="n">sources</span><span class="p">,</span> <span class="n">model</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
