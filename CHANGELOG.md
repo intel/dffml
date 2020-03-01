@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation on writing examples and running doctests
 ### Changed
 - Restructured contributing documentation
+- Added npm_audit.py and test_npm_audit.py
 
 ## [0.3.4] - 2020-02-28
 ### Added
