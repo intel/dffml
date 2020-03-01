@@ -59,6 +59,29 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
         Input data for training. Could be a ``dict``, :py:class:`Record`,
         filename, one of the data :doc:`/plugins/dffml_source`, or a filename
         with the extension being one of the data sources.
+
+    Examples
+    --------
+
+    >>> model = LinearRegressionModel(
+    ...     features=Features(
+    ...         DefFeature("Years", int, 1),
+    ...         DefFeature("Expertise", int, 1),
+    ...         DefFeature("Trust", float, 1),
+    ...     ),
+    ...     predict=DefFeature("Salary", int, 1),
+    ... )
+    >>>
+    >>> async def main():
+    ...     await train(
+    ...         model,
+    ...         {"Years": 0, "Expertise": 1, "Trust": 0.1, "Salary": 10},
+    ...         {"Years": 1, "Expertise": 3, "Trust": 0.2, "Salary": 20},
+    ...         {"Years": 2, "Expertise": 5, "Trust": 0.3, "Salary": 30},
+    ...         {"Years": 3, "Expertise": 7, "Trust": 0.4, "Salary": 40},
+    ...     )
+    >>>
+    >>> asyncio.run(main())
     """
     sources = _records_to_sources(*args)
     async with sources as sources, model as model:
@@ -91,6 +114,31 @@ async def accuracy(
         A decimal value representing the percent of the time the model made the
         correct prediction. For some models this has another meaning. Please see
         the documentation for the model your using for further details.
+
+    Examples
+    --------
+
+    >>> model = LinearRegressionModel(
+    ...     features=Features(
+    ...         DefFeature("Years", int, 1),
+    ...         DefFeature("Expertise", int, 1),
+    ...         DefFeature("Trust", float, 1),
+    ...     ),
+    ...     predict=DefFeature("Salary", int, 1),
+    ... )
+    >>>
+    >>> async def main():
+    ...     print(
+    ...         "Accuracy:",
+    ...         await accuracy(
+    ...             model,
+    ...             {"Years": 4, "Expertise": 9, "Trust": 0.5, "Salary": 50},
+    ...             {"Years": 5, "Expertise": 11, "Trust": 0.6, "Salary": 60},
+    ...         ),
+    ...     )
+    >>>
+    >>> asyncio.run(main())
+    Accuracy: 1.0
     """
     sources = _records_to_sources(*args)
     async with sources as sources, model as model:
