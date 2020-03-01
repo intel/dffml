@@ -103,6 +103,9 @@ atexit.register(functools.partial(shutil.rmtree, DOCTEST_TEMPDIR))
 # Change the current working directory to the temporary directory
 os.chdir(DOCTEST_TEMPDIR)
 
+from dffml_model_scikit import *
+
+from dffml import *
 from dffml.base import *
 from dffml.df.base import *
 from dffml.df.types import *
