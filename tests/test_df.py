@@ -250,12 +250,10 @@ class TestOperation(MockIterEntryPoints):
         self.assertIn(add.op, loaded)
         self.assertIn(mult.op, loaded)
         try:
-            self.assertIn(
-                parse_line.op, loaded,
-            )
+            self.assertIn(parse_line.op, loaded)
         except:
             self.assertIn(
-                parse_line.op._replace(instance_name="parse_line"), loaded,
+                parse_line.op._replace(instance_name="parse_line"), loaded
             )
 
     async def test_load_name_given(self):
