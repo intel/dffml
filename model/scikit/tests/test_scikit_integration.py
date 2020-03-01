@@ -20,43 +20,40 @@ class TestScikitClassification(IntegrationCLITestCase):
         self.required_plugins("dffml-model-scikit")
         # Create the training data
         train_filename = self.mktempfile() + ".csv"
-        pathlib.Path(train_filename).write_text(
-            inspect.cleandoc(
-                """
-                Clump_Thickness,Uniformity_of_Cell_Size,Uniformity_of_Cell_Shape,Marginal_Adhesion,Single_Epithelial_Cell_Size,Bare_Nuclei,Bland_Chromatin,Normal_Nucleoli,Mitoses,Class
-                3,4,5,2,6,8,4,1,1,4
-                1,1,1,1,3,2,2,1,1,2
-                3,1,1,3,8,1,5,8,1,2
-                8,8,7,4,10,10,7,8,7,4
-                """
-            )
-            + "\n"
+        train_data, y = make_blobs(
+            n_samples=40, centers=2, n_features=4, random_state=200
         )
+        train_data = np.concatenate((train_data, y[:, None]), axis=1)
+        with open(pathlib.Path(train_filename), "w+") as train_file:
+            writer = csv.writer(train_file, delimiter=",")
+            writer.writerow(["A", "B", "C", "D", "true_label"])
+            writer.writerows(train_data)
+
         # Create the test data
         test_filename = self.mktempfile() + ".csv"
-        pathlib.Path(test_filename).write_text(
-            inspect.cleandoc(
-                """
-                Clump_Thickness,Uniformity_of_Cell_Size,Uniformity_of_Cell_Shape,Marginal_Adhesion,Single_Epithelial_Cell_Size,Bare_Nuclei,Bland_Chromatin,Normal_Nucleoli,Mitoses,Class
-                1,1,1,1,1,1,3,1,1,2
-                7,2,4,1,6,10,5,4,3,4
-                """
-            )
-            + "\n"
+        test_data, y = make_blobs(
+            n_samples=20, centers=2, n_features=4, random_state=200
         )
+        test_data = np.concatenate((test_data, y[:, None]), axis=1)
+        with open(pathlib.Path(test_filename), "w+") as test_file:
+            writer = csv.writer(test_file, delimiter=",")
+            writer.writerow(["A", "B", "C", "D", "true_label"])
+            writer.writerows(test_data)
+
         # Create the prediction data
         predict_filename = self.mktempfile() + ".csv"
-        pathlib.Path(predict_filename).write_text(
-            inspect.cleandoc(
-                """
-                Clump_Thickness,Uniformity_of_Cell_Size,Uniformity_of_Cell_Shape,Marginal_Adhesion,Single_Epithelial_Cell_Size,Bare_Nuclei,Bland_Chromatin,Normal_Nucleoli,Mitoses,Class
-                5,3,3,3,6,10,3,1,1
-                """
-            )
-            + "\n"
+        predict_data, y = make_blobs(
+            n_samples=1, centers=2, n_features=4, random_state=200
         )
+        with open(pathlib.Path(predict_filename), "w+") as predict_file:
+            writer = csv.writer(predict_file, delimiter=",")
+            writer.writerow(["A", "B", "C", "D"])
+            writer.writerows(predict_data)
+
         # Features
-        features = "-model-features Clump_Thickness:int:1 Uniformity_of_Cell_Size:int:1 Uniformity_of_Cell_Shape:int:1 Marginal_Adhesion:int:1 Single_Epithelial_Cell_Size:int:1 Bare_Nuclei:int:1 Bland_Chromatin:int:1 Normal_Nucleoli:int:1 Mitoses:int:1".split()
+        features = (
+            "-model-features A:float:1 B:float:1 C:float:1 D:float:1".split()
+        )
         # Train the model
         await CLI.cli(
             "train",
@@ -64,7 +61,7 @@ class TestScikitClassification(IntegrationCLITestCase):
             "scikitsvc",
             *features,
             "-model-predict",
-            "Class:int:1",
+            "true_label:int:1",
             "-sources",
             "training_data=csv",
             "-source-filename",
@@ -77,7 +74,7 @@ class TestScikitClassification(IntegrationCLITestCase):
             "scikitsvc",
             *features,
             "-model-predict",
-            "Class:int:1",
+            "true_label:int:1",
             "-sources",
             "test_data=csv",
             "-source-filename",
@@ -93,7 +90,7 @@ class TestScikitClassification(IntegrationCLITestCase):
                 "scikitsvc",
                 *features,
                 "-model-predict",
-                "Class:int:1",
+                "true_label:int:1",
                 "-sources",
                 "predict_data=csv",
                 "-source-filename",
@@ -105,11 +102,11 @@ class TestScikitClassification(IntegrationCLITestCase):
         results = results[0]
         self.assertIn("prediction", results)
         results = results["prediction"]
-        self.assertIn("Class", results)
-        results = results["Class"]
+        self.assertIn("true_label", results)
+        results = results["true_label"]
         self.assertIn("value", results)
         results = results["value"]
-        self.assertEqual(4, results)
+        self.assertEqual(y.item(), results)
 
 
 class TestScikitRegression(IntegrationCLITestCase):

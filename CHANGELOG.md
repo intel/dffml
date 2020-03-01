@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Documentation on writing examples and running doctests
+### Changed
+- Restructured contributing documentation
 
 ## [0.3.4] - 2020-02-28
 ### Added
@@ -21,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `api.js` file serving with the `-js` flag
   - Docs page for JavaScript example
 - shouldi got an operation to run golangci-lint on Golang code
+- Note about using black via VSCode
 ### Fixed
 - Port assignment for the HTTP API via the `-port` flag
 ### Changed

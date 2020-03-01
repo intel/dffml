@@ -284,14 +284,11 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         """
         Shorthand for creating a MemoryInputSet with a StringInputSetContext.
 
-        >>> await octx.ictx.add(
-        ...     MemoryInputSet(
-        ...         MemoryInputSetConfig(
-        ...             ctx=StringInputSetContext(context_handle_string),
-        ...             inputs=list(args),
-        ...         )
-        ...     )
-        ... )
+        >>> async def main():
+        ...     async with MemoryOrchestrator.withconfig({}) as orchestrator:
+        ...         async with orchestrator(DataFlow.auto()) as octx:
+        ...             await octx.ictx.sadd("Hi")
+        >>> asyncio.run(main())
         """
         ctx = StringInputSetContext(context_handle_string)
         await self.add(
@@ -303,14 +300,11 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         """
         Shorthand for creating a MemoryInputSet with an existing context.
 
-        >>> await octx.ictx.add(
-        ...     MemoryInputSet(
-        ...         MemoryInputSetConfig(
-        ...             ctx=ctx,
-        ...             inputs=list(args),
-        ...         )
-        ...     )
-        ... )
+        >>> async def main():
+        ...     async with MemoryOrchestrator.withconfig({}) as orchestrator:
+        ...         async with orchestrator(DataFlow.auto()) as octx:
+        ...             await octx.ictx.sadd(StringInputSetContext("Hi"))
+        >>> asyncio.run(main())
         """
         await self.add(
             MemoryInputSet(MemoryInputSetConfig(ctx=ctx, inputs=list(args)))

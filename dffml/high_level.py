@@ -129,6 +129,31 @@ async def predict(
     -------
     asynciterator
         ``Record`` objects or ``(record.key, features, predictions)`` tuple.
+
+    Examples
+    --------
+
+    >>> model = LinearRegressionModel(
+    ...     features=Features(
+    ...         DefFeature("Years", int, 1),
+    ...         DefFeature("Expertise", int, 1),
+    ...         DefFeature("Trust", float, 1),
+    ...     ),
+    ...     predict=DefFeature("Salary", int, 1),
+    ... )
+    >>>
+    >>> async def main():
+    ...     async for i, features, prediction in predict(
+    ...         model,
+    ...         {"Years": 6, "Expertise": 13, "Trust": 0.7},
+    ...         {"Years": 7, "Expertise": 15, "Trust": 0.8},
+    ...     ):
+    ...         features["Salary"] = round(prediction["Salary"]["value"])
+    ...         print(features)
+    >>>
+    >>> asyncio.run(main())
+    {'Years': 6, 'Expertise': 13, 'Trust': 0.7, 'Salary': 70.0}
+    {'Years': 7, 'Expertise': 15, 'Trust': 0.8, 'Salary': 80.0}
     """
     sources = _records_to_sources(*args)
     async with sources as sources, model as model:
