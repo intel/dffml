@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Doctestable Examples to high-level API.
 ### Changed
 - Restructured contributing documentation
+- Add randomly generated data for scikit tests
 
 ## [0.3.4] - 2020-02-28
 ### Added
