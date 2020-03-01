@@ -20,7 +20,6 @@ class RunDataFlowConfig:
     },
     config_cls=RunDataFlowConfig,
     expand=["results"],
-    register_with_parent_flow=True,
 )
 async def run_dataflow(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
     """

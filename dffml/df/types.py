@@ -122,7 +122,6 @@ class Operation(NamedTuple, Entrypoint):
     conditions: Optional[List[Definition]] = []
     expand: Optional[List[str]] = []
     instance_name: Optional[str] = None
-    register_with_parent_flow: bool = False
 
     def export(self):
         exported = {

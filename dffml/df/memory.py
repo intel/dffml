@@ -1094,7 +1094,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # Maps instance_name to OrchestratorContext
         self.subflows = {}
         # Maps instance_name to List[Input]
-        self.inputs_to_forward = {}
 
     async def __aenter__(self) -> "BaseOrchestratorContext":
         # TODO(subflows) In all of these contexts we are about to enter, they
@@ -1224,16 +1223,17 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # have definition of the current input listed in `forward`.
         # If found,add `input` to list of inputs to forward for that instance_name
         forward = self.config.dataflow.forward
+        inputs_to_forward = {}
         for item in inputs:
             instance_list = forward.get_instances_to_forward(item.definition)
             for instance_name in instance_list:
-                self.inputs_to_forward.setdefault(instance_name, []).append(
+                inputs_to_forward.setdefault(instance_name, []).append(
                     item
                 )
         self.logger.debug(
-            f"Forwarding inputs from {self.inputs_to_forward} to {self.subflows}"
+            f"Forwarding inputs from {inputs_to_forward} to {self.subflows}"
         )
-        for instance_name, inputs in self.inputs_to_forward.items():
+        for instance_name, inputs in inputs_to_forward.items():
             if instance_name in self.subflows:
                 await self.subflows[
                     instance_name

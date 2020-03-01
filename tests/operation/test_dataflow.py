@@ -3,7 +3,6 @@ from dffml.df.memory import MemoryOrchestrator
 from dffml.operation.dataflow import run_dataflow, RunDataFlowConfig
 from dffml.operation.output import GetSingle
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.df.base import op
 
 from ..test_df import DATAFLOW, add, mult, parse_line
 
@@ -51,6 +50,7 @@ class TestRunDataFlowOnRecord(AsyncTestCase):
             },
         ]
         test_outputs = {"add_op": 42, "mult_op": 420}
+
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
             async with orchestrator(test_dataflow) as octx:
                 async for _ctx, results in octx.run(
