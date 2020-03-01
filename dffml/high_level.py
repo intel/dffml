@@ -114,7 +114,7 @@ async def accuracy(
         A decimal value representing the percent of the time the model made the
         correct prediction. For some models this has another meaning. Please see
         the documentation for the model your using for further details.
-    
+
     Examples
     --------
 
