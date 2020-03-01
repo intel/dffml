@@ -231,6 +231,29 @@
 <span class="sd">        Input data for training. Could be a ``dict``, :py:class:`Record`,</span>
 <span class="sd">        filename, one of the data :doc:`/plugins/dffml_source`, or a filename</span>
 <span class="sd">        with the extension being one of the data sources.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; model = LinearRegressionModel(</span>
+<span class="sd">    ...     features=Features(</span>
+<span class="sd">    ...         DefFeature(&quot;Years&quot;, int, 1),</span>
+<span class="sd">    ...         DefFeature(&quot;Expertise&quot;, int, 1),</span>
+<span class="sd">    ...         DefFeature(&quot;Trust&quot;, float, 1),</span>
+<span class="sd">    ...     ),</span>
+<span class="sd">    ...     predict=DefFeature(&quot;Salary&quot;, int, 1),</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; async def main():</span>
+<span class="sd">    ...     await train(</span>
+<span class="sd">    ...         model,</span>
+<span class="sd">    ...         {&quot;Years&quot;: 0, &quot;Expertise&quot;: 1, &quot;Trust&quot;: 0.1, &quot;Salary&quot;: 10},</span>
+<span class="sd">    ...         {&quot;Years&quot;: 1, &quot;Expertise&quot;: 3, &quot;Trust&quot;: 0.2, &quot;Salary&quot;: 20},</span>
+<span class="sd">    ...         {&quot;Years&quot;: 2, &quot;Expertise&quot;: 5, &quot;Trust&quot;: 0.3, &quot;Salary&quot;: 30},</span>
+<span class="sd">    ...         {&quot;Years&quot;: 3, &quot;Expertise&quot;: 7, &quot;Trust&quot;: 0.4, &quot;Salary&quot;: 40},</span>
+<span class="sd">    ...     )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sources</span> <span class="o">=</span> <span class="n">_records_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
     <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span> <span class="k">as</span> <span class="n">sources</span><span class="p">,</span> <span class="n">model</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>
@@ -263,6 +286,31 @@
 <span class="sd">        A decimal value representing the percent of the time the model made the</span>
 <span class="sd">        correct prediction. For some models this has another meaning. Please see</span>
 <span class="sd">        the documentation for the model your using for further details.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; model = LinearRegressionModel(</span>
+<span class="sd">    ...     features=Features(</span>
+<span class="sd">    ...         DefFeature(&quot;Years&quot;, int, 1),</span>
+<span class="sd">    ...         DefFeature(&quot;Expertise&quot;, int, 1),</span>
+<span class="sd">    ...         DefFeature(&quot;Trust&quot;, float, 1),</span>
+<span class="sd">    ...     ),</span>
+<span class="sd">    ...     predict=DefFeature(&quot;Salary&quot;, int, 1),</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; async def main():</span>
+<span class="sd">    ...     print(</span>
+<span class="sd">    ...         &quot;Accuracy:&quot;,</span>
+<span class="sd">    ...         await accuracy(</span>
+<span class="sd">    ...             model,</span>
+<span class="sd">    ...             {&quot;Years&quot;: 4, &quot;Expertise&quot;: 9, &quot;Trust&quot;: 0.5, &quot;Salary&quot;: 50},</span>
+<span class="sd">    ...             {&quot;Years&quot;: 5, &quot;Expertise&quot;: 11, &quot;Trust&quot;: 0.6, &quot;Salary&quot;: 60},</span>
+<span class="sd">    ...         ),</span>
+<span class="sd">    ...     )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+<span class="sd">    Accuracy: 1.0</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sources</span> <span class="o">=</span> <span class="n">_records_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
     <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span> <span class="k">as</span> <span class="n">sources</span><span class="p">,</span> <span class="n">model</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>

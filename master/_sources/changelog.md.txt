@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Documentation on writing examples and running doctests
+- Doctestable Examples to high-level API.
 ### Changed
 - Restructured contributing documentation
 
