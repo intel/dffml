@@ -214,7 +214,7 @@ for entry_point_name, name, cls, applicable_features_function in [
         config_fields["tcluster"] = (
             Feature,
             field(
-                "True cluster labelfor evaluating clustering models",
+                "True cluster label for evaluating clustering models",
                 default=None,
             ),
         )
