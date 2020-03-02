@@ -197,7 +197,7 @@
 <span id="data-flow-types"></span><h1>Data Flow Types<a class="headerlink" href="#module-dffml.df.types" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="dffml.df.types.DataFlow">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">DataFlow</code><span class="sig-paren">(</span><em class="sig-param">operations: Dict[str, Union[dffml.df.types.Operation, Callable]], seed: List[dffml.df.types.Input] = None, configs: Dict[str, dffml.base.BaseConfig] = None, flow: Dict[str, dffml.df.types.InputFlow] = None, by_origin: Dict[dffml.df.types.Stage, Dict[str, dffml.df.types.Operation]] = None, implementations: Dict[str, ForwardRef('OperationImplementation')] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#DataFlow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.DataFlow" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">DataFlow</code><span class="sig-paren">(</span><em class="sig-param">operations: Dict[str, Union[dffml.df.types.Operation, Callable]], seed: List[dffml.df.types.Input] = None, configs: Dict[str, dffml.base.BaseConfig] = None, flow: Dict[str, dffml.df.types.InputFlow] = None, by_origin: Dict[dffml.df.types.Stage, Dict[str, dffml.df.types.Operation]] = None, implementations: Dict[str, ForwardRef('OperationImplementation')] = None, forward: dffml.df.types.Forward = &lt;factory&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#DataFlow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.DataFlow" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
@@ -253,6 +253,20 @@
 <em class="property">exception </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">FailedToLoadOperation</code><a class="reference internal" href="../../_modules/dffml/df/types.html#FailedToLoadOperation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.FailedToLoadOperation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised when an Operation wasn’t found to be registered with the
 dffml.operation entrypoint.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="dffml.df.types.Forward">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Forward</code><span class="sig-paren">(</span><em class="sig-param">book: Dict[str</em>, <em class="sig-param">List[Definitions]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Keeps a map of operation instance_names to list of definitions
+of inputs which should be forwarded to the subflow running in that operation.</p>
+<dl class="method">
+<dt id="dffml.df.types.Forward.get_instances_to_forward">
+<code class="sig-name descname">get_instances_to_forward</code><span class="sig-paren">(</span><em class="sig-param">definition: dffml.df.types.Definition</em><span class="sig-paren">)</span> &#x2192; List[str]<a class="reference internal" href="../../_modules/dffml/df/types.html#Forward.get_instances_to_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Forward.get_instances_to_forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all instances of operation to which <cite>definition</cite> should
+be forwarded to.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">

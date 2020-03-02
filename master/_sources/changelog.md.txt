@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Parent flows can now forward inputs to active contexts of subflows.
+  - `forward` parameter in `DataFlow`
+  - `subflow` in `OperationImplementationContext`
 - Documentation on writing examples and running doctests
 - Doctestable Examples to high-level API.
 ### Changed

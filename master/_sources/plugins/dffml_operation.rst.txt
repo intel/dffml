@@ -41,7 +41,25 @@ dffml.dataflow.run
 
 *Official*
 
-No description
+Starts a subflow `self.config.dataflow` and runs `inputs` in it.
+
+Parameters:
+    inputs: Dict[str,Any] ->
+        eg: {
+            "ctx_str" : [
+                {
+                    "value":val1,
+                    "defintion":defintion1
+                },
+                {
+                    "value":val2,
+                    "defintion":defintion2
+                }
+            ]
+        }
+Returns:
+    Dict[str,Any] -> maps context strings in inputs to output after running
+                    through dataflow
 
 **Stage: processing**
 

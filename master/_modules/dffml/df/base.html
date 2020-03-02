@@ -184,6 +184,7 @@
     <span class="n">Optional</span><span class="p">,</span>
     <span class="n">Set</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">asynccontextmanager</span>
 
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">NotOpImp</span>
 <span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">Stage</span><span class="p">,</span> <span class="n">Definition</span>
@@ -256,7 +257,20 @@
 <span class="sd">        Implementation of the operation goes here. Should take and return a dict</span>
 <span class="sd">        with keys matching the input and output parameters of the Operation</span>
 <span class="sd">        object associated with this operation implementation context.</span>
-<span class="sd">        &quot;&quot;&quot;</span></div></div>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="OperationImplementationContext.subflow"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.OperationImplementationContext.subflow">[docs]</a>    <span class="nd">@asynccontextmanager</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">subflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Registers subflow `dataflow` with parent flow and yields an instance of `BaseOrchestratorContext`</span>
+
+<span class="sd">        &gt;&gt;&gt; async def my_operation(arg):</span>
+<span class="sd">        ...     async with self.subflow(self.config.dataflow) as octx:</span>
+<span class="sd">        ...         return octx.run({&quot;ctx_str&quot;: []})</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">parent</span><span class="p">(</span><span class="n">dataflow</span><span class="p">)</span> <span class="k">as</span> <span class="n">octx</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">subflows</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">instance_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">octx</span>
+            <span class="k">yield</span> <span class="n">octx</span></div></div>
 
 
 <div class="viewcode-block" id="FailedToLoadOperationImplementation"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.FailedToLoadOperationImplementation">[docs]</a><span class="k">class</span> <span class="nc">FailedToLoadOperationImplementation</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
