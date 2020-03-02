@@ -1,5 +1,3 @@
-import os
-import copy
 import pathlib
 
 from dffml.util.os import prepend_to_path
@@ -10,7 +8,6 @@ from shouldi.npm_audit import run_npm_audit
 
 
 class TestRunNPM_AuditOp(AsyncTestCase):
-    
     @cached_download_unpack_archive(
         "https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.gz",
         pathlib.Path(__file__).parent / "npm.tar.gz",
