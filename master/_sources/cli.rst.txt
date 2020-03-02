@@ -201,3 +201,27 @@ argument.
 
     $ dffml service dev setuppy kwarg name model/tensorflow/setup.py
     dffml-model-tensorflow
+
+bump
+++++
+
+Utilities for bumping version numbers.
+
+main
+____
+
+Update the version of DFFML used by all of the plugins.
+
+.. code-block:: console
+
+    dffml service dev bump main
+
+packages
+________
+
+Update the version number of a package or all packages. Increments the version
+of each packages by the version string given.
+
+.. code-block:: console
+
+    dffml service dev bump packages -log debug -skip dffml -- 0.0.1
