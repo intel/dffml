@@ -1087,7 +1087,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         self._stack = None
         # Maps instance_name to OrchestratorContext
         self.subflows = {}
-        # Maps instance_name to List[Input]
 
     async def __aenter__(self) -> "BaseOrchestratorContext":
         # TODO(subflows) In all of these contexts we are about to enter, they
