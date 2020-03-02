@@ -30,7 +30,7 @@ Here is what each one does (in rST, leave the \`\`\` so it can be copy pasted)
 
 `*Community*` means that you are a member of the DFFML community that is
 contributing a plugin. If there is a plugin maintained within the DFFML git repo
-that needs to be added to the documentation it will be `*Core*`.
+that needs to be added to the documentation it will be an `*Official*` plugin.
 
 ```
 CSV
