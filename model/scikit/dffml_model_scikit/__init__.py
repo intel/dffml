@@ -122,7 +122,7 @@ Predicting with trained model:
 
 **Usage Example:**
 
-Example below uses LinearRegression Model on a small dataset.
+Example below uses LinearRegression Model using the command line.
 
 Let us take a simple example:
 
@@ -142,91 +142,57 @@ Let us take a simple example:
 |          5           |     11     |      1.2     |   60   |
 +----------------------+------------+--------------+--------+
 
-.. code-block:: console
+First we create the files
 
-    $ cat > train.csv << EOF
-    Years,Expertise,Trust,Salary
-    0,1,0.2,10
-    1,3,0.4,20
-    2,5,0.6,30
-    3,7,0.8,40
-    EOF
-    $ cat > test.csv << EOF
-    Years,Expertise,Trust,Salary
-    4,9,1.0,50
-    5,11,1.2,60
-    EOF
-    $ dffml train \\
-        -model scikitlr \\
-        -model-features Years:int:1 Expertise:int:1 Trust:float:1 \\
-        -model-predict Salary:float:1 \\
-        -sources f=csv \\
-        -source-filename train.csv \\
-        -log debug
-    $ dffml accuracy \\
-        -model scikitlr \\
-        -model-features Years:int:1 Expertise:int:1 Trust:float:1 \\
-        -model-predict Salary:float:1 \\
-        -sources f=csv \\
-        -source-filename test.csv \\
-        -log debug
+.. literalinclude:: /../model/scikit/examples/lr/train_data.sh
+
+.. literalinclude:: /../model/scikit/examples/lr/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/scikit/examples/lr/train.sh
+
+Assess accuracy
+
+.. literalinclude:: /../model/scikit/examples/lr/accuracy.sh
+
+Output:
+
+.. code-block::
+
     1.0
-    $ echo -e 'Years,Expertise,Trust\\n6,13,1.4\\n' | \\
-      dffml predict all \\
-        -model scikitlr \\
-        -model-features Years:int:1 Expertise:int:1 Trust:float:1 \\
-        -model-predict Salary:float:1 \\
-        -sources f=csv \\
-        -source-filename /dev/stdin \\
-        -log debug
+
+Make a prediction
+
+.. literalinclude:: /../model/scikit/examples/lr/predict.sh
+
+Output:
+
+.. code-block:: json
+
     [
         {
             "extra": {},
             "features": {
                 "Expertise": 13,
-                "Trust": 1.4,
+                "Trust": 0.7,
                 "Years": 6
             },
-            "last_updated": "2019-09-18T19:04:18Z",
+            "key": "0",
+            "last_updated": "2020-03-01T22:26:46Z",
             "prediction": {
-                "confidence": 1.0,
-                "value": 70.00000000000001
-            },
-            "key": 0
+                "Salary": {
+                    "confidence": 1.0,
+                    "value": 70.0
+                }
+            }
         }
     ]
 
+
 Example usage of Linear Regression Model using python API:
 
-.. code-block:: python
-
-    from dffml import CSVSource, Features, DefFeature
-    from dffml.noasync import train, accuracy, predict
-    from dffml_model_scikit import LinearRegressionModel
-
-    model = LinearRegressionModel(
-        features=Features(
-            DefFeature("Years", int, 1),
-            DefFeature("Expertise", int, 1),
-            DefFeature("Trust", float, 1),
-        ),
-        predict=DefFeature("Salary", int, 1),
-    )
-
-    # Train the model
-    train(model, "train.csv")
-
-    # Assess accuracy (alternate way of specifying data source)
-    print("Accuracy:", accuracy(model, CSVSource(filename="test.csv")))
-
-    # Make prediction
-    for i, features, prediction in predict(
-        model,
-        {"Years": 6, "Expertise": 13, "Trust": 0.7},
-        {"Years": 7, "Expertise": 15, "Trust": 0.8},
-    ):
-        features["Salary"] = prediction["Salary"]["value"]
-        print(features)
+.. literalinclude:: /../model/scikit/examples/lr/lr.py
 
 Example below uses KMeans Clustering Model on a small randomly generated dataset.
 
