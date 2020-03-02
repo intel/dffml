@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use randomly generated data for scikit tests
 - Change Core to Official to clarify who maintains each plugin
 - Name of output of unsupervised model from "Prediction" to "cluster"
+- Test scikit LR documentation examples in CI
 
 ## [0.3.4] - 2020-02-28
 ### Added
