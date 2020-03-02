@@ -238,9 +238,7 @@ class TextClassifierContext(ModelContext):
             x_cols = x_cols[self.features[0]]
         return x_cols, y_cols
 
-    async def prediction_data_generator(
-        self, x_cols,
-    ):
+    async def prediction_data_generator(self, x_cols):
         if (len(self.features)) > 1:
             self.logger.critical(
                 "Found more than one feature. Only first feature will be used for prediction"

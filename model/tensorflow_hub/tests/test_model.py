@@ -19,7 +19,7 @@ class TestTextClassificationModel(AsyncTestCase):
         cls.features.append(DefFeature("A", str, 1))
         A, X = list(zip(*DATA))
         cls.records = [
-            Record(str(i), data={"features": {"A": A[i], "X": X[i],}},)
+            Record(str(i), data={"features": {"A": A[i], "X": X[i]}})
             for i in range(0, len(X))
         ]
         cls.sources = Sources(
@@ -68,20 +68,8 @@ class TestTextClassificationModel(AsyncTestCase):
 
 
 # Randomly generate sample data
-POSITIVE_WORDS = [
-    "fun",
-    "great",
-    "cool",
-    "awesome",
-    "rad",
-]
-NEGATIVE_WORDS = [
-    "lame",
-    "dumb",
-    "silly",
-    "stupid",
-    "boring",
-]
+POSITIVE_WORDS = ["fun", "great", "cool", "awesome", "rad"]
+NEGATIVE_WORDS = ["lame", "dumb", "silly", "stupid", "boring"]
 WORDS = [NEGATIVE_WORDS, POSITIVE_WORDS]
 
 SENTENCES = [

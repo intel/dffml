@@ -197,7 +197,7 @@ def cached_download_unpack_archive(
             shutil.unpack_archive(str(download_path), ".")
 
     extract = cached_download(
-        url, file_path, expected_hash, protocol_allowlist=protocol_allowlist,
+        url, file_path, expected_hash, protocol_allowlist=protocol_allowlist
     )(extractor)
 
     def mkwrapper(func):

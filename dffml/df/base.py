@@ -12,6 +12,7 @@ from typing import (
     Optional,
     Set,
 )
+from contextlib import asynccontextmanager
 
 from .exceptions import NotOpImp
 from .types import Operation, Input, Parameter, Stage, Definition
@@ -85,6 +86,19 @@ class OperationImplementationContext(BaseDataFlowObjectContext):
         with keys matching the input and output parameters of the Operation
         object associated with this operation implementation context.
         """
+
+    @asynccontextmanager
+    async def subflow(self, dataflow):
+        """
+        Registers subflow `dataflow` with parent flow and yields an instance of `BaseOrchestratorContext`
+
+        >>> async def my_operation(arg):
+        ...     async with self.subflow(self.config.dataflow) as octx:
+        ...         return octx.run({"ctx_str": []})
+        """
+        async with self.octx.parent(dataflow) as octx:
+            self.octx.subflows[self.parent.op.instance_name] = octx
+            yield octx
 
 
 class FailedToLoadOperationImplementation(Exception):
