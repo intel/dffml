@@ -45,7 +45,7 @@ INSTALL_REQUIRES = (
         else []
     )
     + (
-        ["dffml-model-tensorflow>=0.2.2"]
+        ["dffml-model-tensorflow>=0.2.4"]
         if not any(
             list(
                 map(
