@@ -960,7 +960,16 @@
 
 <div class="viewcode-block" id="BaseOrchestrator"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseOrchestrator">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.orchestrator&quot;</span><span class="p">,</span> <span class="s2">&quot;orchestrator&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">BaseOrchestrator</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">):</span>
-    <span class="k">pass</span>  <span class="c1"># pragma: no cov</span></div>
+    <span class="nd">@classmethod</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">withconfig</span><span class="p">({})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span> <span class="k">as</span> <span class="n">orchestrator</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="n">orchestrator</span><span class="p">(</span><span class="n">dataflow</span><span class="p">)</span> <span class="k">as</span> <span class="n">octx</span><span class="p">:</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">octx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+                    <span class="k">yield</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span></div>
 </pre></div>
 
            </div>
