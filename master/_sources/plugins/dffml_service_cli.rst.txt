@@ -25,7 +25,7 @@ dffml
 dev
 ~~~
 
-*Core*
+*Official*
 
 Development utilities for hacking on DFFML itself
 
@@ -40,6 +40,6 @@ dffml_service_http
 http
 ~~~~
 
-*Core*
+*Official*
 
 HTTP interface to access DFFML API.
