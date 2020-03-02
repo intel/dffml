@@ -17,7 +17,7 @@ atexit.register(functools.partial(shutil.rmtree, DOCTEST_TEMPDIR))
 os.chdir(DOCTEST_TEMPDIR)
 
 from dffml_model_scikit import *
-
+from dffml.record import RecordPrediction, RecordData, Record
 from dffml import *
 from dffml.base import *
 from dffml.df.base import *
