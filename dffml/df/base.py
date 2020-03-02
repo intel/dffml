@@ -93,7 +93,7 @@ class OperationImplementationContext(BaseDataFlowObjectContext):
         Registers subflow `dataflow` with parent flow and yields an instance of `BaseOrchestratorContext`
 
         >>> async def my_operation(arg):
-                async with self.subflow(self.config.dataflow) as octx:
+        ...     async with self.subflow(self.config.dataflow) as octx:
                     return octx.run({"ctx_str": []})
         """
         async with self.octx.parent(dataflow) as octx:
