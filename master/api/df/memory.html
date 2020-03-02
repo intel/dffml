@@ -284,6 +284,12 @@ that, according to the redundancy checker, haven’t been run yet.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="dffml.df.memory.MemoryInputNetworkContext.receive_from_parent_flow">
+<em class="property">async </em><code class="sig-name descname">receive_from_parent_flow</code><span class="sig-paren">(</span><em class="sig-param">inputs: List[dffml.df.types.Input]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetworkContext.receive_from_parent_flow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContext.receive_from_parent_flow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes input from parent dataflow and adds it to every active context</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="dffml.df.memory.MemoryInputNetworkContext.sadd">
 <em class="property">async </em><code class="sig-name descname">sadd</code><span class="sig-paren">(</span><em class="sig-param">context_handle_string</em>, <em class="sig-param">*args: dffml.df.types.Input</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetworkContext.sadd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContext.sadd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shorthand for creating a MemoryInputSet with a StringInputSetContext.</p>

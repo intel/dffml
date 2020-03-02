@@ -533,6 +533,45 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="Forward"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Forward">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Forward</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Keeps a map of operation instance_names to list of definitions</span>
+<span class="sd">    of inputs which should be forwarded to the subflow running in that operation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">book</span><span class="p">:</span> <span class="s2">&quot;Dict[str, List[Definitions]]&quot;</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">book</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">book</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_internal_book</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">definition_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Definition</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">book</span><span class="p">[</span><span class="n">instance_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">definition_list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_internal_book</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">definition_list</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Forward.get_instances_to_forward"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Forward.get_instances_to_forward">[docs]</a>    <span class="k">def</span> <span class="nf">get_instances_to_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">definition</span><span class="p">:</span> <span class="n">Definition</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of all instances of operation to which `definition` should</span>
+<span class="sd">        be forwarded to.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">definition</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_internal_book</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">instance_name</span>
+            <span class="k">for</span> <span class="n">instance_name</span><span class="p">,</span> <span class="n">definitions</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">book</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">definitions</span>
+        <span class="p">]</span></div>
+
+    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">export_dict</span><span class="p">(</span><span class="o">**</span><span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_fromdict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="DataFlow"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.DataFlow">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">DataFlow</span><span class="p">:</span>
     <span class="n">operations</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Operation</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span>
@@ -544,6 +583,7 @@
     <span class="c1"># Implementations can be provided in case they haven&#39;t been registered via</span>
     <span class="c1"># the entrypoint system.</span>
     <span class="n">implementations</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;OperationImplementation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">forward</span><span class="p">:</span> <span class="n">Forward</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Forward</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Prevent usage of a global dict (if we set default to {} then all the</span>
@@ -659,6 +699,7 @@
             <span class="s2">&quot;seed&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
             <span class="s2">&quot;configs&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">configs</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
             <span class="s2">&quot;flow&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="s2">&quot;forward&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="o">.</span><span class="n">export</span><span class="p">(),</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="n">linked</span><span class="p">:</span>
             <span class="n">exported</span><span class="p">[</span><span class="s2">&quot;linked&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
@@ -687,6 +728,8 @@
             <span class="n">instance_name</span><span class="p">:</span> <span class="n">InputFlow</span><span class="o">.</span><span class="n">_fromdict</span><span class="p">(</span><span class="o">**</span><span class="n">input_flow</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">instance_name</span><span class="p">,</span> <span class="n">input_flow</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;flow&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
         <span class="p">}</span>
+        <span class="c1"># Import forward</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;forward&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Forward</span><span class="o">.</span><span class="n">_fromdict</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;forward&quot;</span><span class="p">])</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>

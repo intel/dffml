@@ -404,6 +404,17 @@
         <span class="c1"># TODO Create ctxhd_locks dict to manage a per context lock</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd_lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
 
+<div class="viewcode-block" id="MemoryInputNetworkContext.receive_from_parent_flow"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.receive_from_parent_flow">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">receive_from_parent_flow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes input from parent dataflow and adds it to every active context</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd_lock</span><span class="p">:</span>
+            <span class="n">ctx_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Receiving </span><span class="si">{inputs}</span><span class="s2"> from parent flow&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Forwarding inputs to contexts </span><span class="si">{ctx_keys}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ctx</span> <span class="ow">in</span> <span class="n">ctx_keys</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="o">*</span><span class="n">inputs</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="MemoryInputNetworkContext.add"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.add">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_set</span><span class="p">:</span> <span class="n">BaseInputSet</span><span class="p">):</span>
         <span class="c1"># Grab the input set context handle</span>
         <span class="n">handle</span> <span class="o">=</span> <span class="k">await</span> <span class="n">input_set</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">()</span>
@@ -1002,6 +1013,8 @@
                 <span class="n">opimp</span> <span class="o">=</span> <span class="n">OperationImplementation</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">OperationImplementationNotInstantiable</span><span class="p">(</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="c1"># Set the correct instance_name</span>
+        <span class="n">opimp</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">opimp</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">instance_name</span><span class="o">=</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span>
             <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span>
         <span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">opimp</span><span class="p">(</span><span class="n">config</span><span class="p">))</span></div>
@@ -1244,6 +1257,8 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Maps instance_name to OrchestratorContext</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subflows</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseOrchestratorContext&quot;</span><span class="p">:</span>
         <span class="c1"># TODO(subflows) In all of these contexts we are about to enter, they</span>
@@ -1368,6 +1383,25 @@
             <span class="n">ctx</span> <span class="o">=</span> <span class="n">input_set</span><span class="o">.</span><span class="n">ctx</span>
         <span class="k">return</span> <span class="n">ctx</span>
 
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">forward_inputs_to_subflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">]):</span>
+        <span class="c1"># Go through input set,find instance_names of registered subflows which</span>
+        <span class="c1"># have definition of the current input listed in `forward`.</span>
+        <span class="c1"># If found,add `input` to list of inputs to forward for that instance_name</span>
+        <span class="n">forward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="o">.</span><span class="n">forward</span>
+        <span class="n">inputs_to_forward</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="n">instance_list</span> <span class="o">=</span> <span class="n">forward</span><span class="o">.</span><span class="n">get_instances_to_forward</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">instance_name</span> <span class="ow">in</span> <span class="n">instance_list</span><span class="p">:</span>
+                <span class="n">inputs_to_forward</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">instance_name</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Forwarding inputs from </span><span class="si">{inputs_to_forward}</span><span class="s2"> to </span><span class="si">{self.subflows}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">instance_name</span><span class="p">,</span> <span class="n">inputs</span> <span class="ow">in</span> <span class="n">inputs_to_forward</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">instance_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subflows</span><span class="p">:</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">subflows</span><span class="p">[</span>
+                    <span class="n">instance_name</span>
+                <span class="p">]</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">receive_from_parent_flow</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+
     <span class="c1"># TODO(dfass) Get rid of run_operations, make it run_dataflow. Pass down the</span>
     <span class="c1"># dataflow to everything. Make inputs a list of InputSets or an</span>
     <span class="c1"># asyncgenerator of InputSets. Add a parameter which tells us if we should</span>
@@ -1389,6 +1423,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">input_sets</span><span class="p">:</span>
             <span class="c1"># If there are no input sets, add only seed inputs</span>
             <span class="n">ctxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed_inputs</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">))</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_inputs_to_subflow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_sets</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isasyncgen</span><span class="p">(</span><span class="n">input_sets</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="c1"># Check if inputs is an asyncgenerator</span>
             <span class="c1"># If it is, start a coroutine to wait for new inputs or input sets</span>
@@ -1399,6 +1434,7 @@
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_sets</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_sets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="c1"># Helper to quickly add inputs under string context</span>
             <span class="k">for</span> <span class="n">ctx_string</span><span class="p">,</span> <span class="n">input_set</span> <span class="ow">in</span> <span class="n">input_sets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_inputs_to_subflow</span><span class="p">(</span><span class="n">input_set</span><span class="p">)</span>
                 <span class="n">ctxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed_inputs</span><span class="p">(</span>
                         <span class="n">ctx</span><span class="o">=</span><span class="n">StringInputSetContext</span><span class="p">(</span><span class="n">ctx_string</span><span class="p">),</span>
@@ -1494,7 +1530,6 @@
                 <span class="n">done</span><span class="p">,</span> <span class="n">_pending</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span>
                     <span class="n">tasks</span><span class="p">,</span> <span class="n">return_when</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">FIRST_COMPLETED</span>
                 <span class="p">)</span>
-
                 <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">done</span><span class="p">:</span>
                     <span class="c1"># Remove the task from the set of tasks we are waiting for</span>
                     <span class="n">tasks</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
@@ -1525,6 +1560,10 @@
                             <span class="n">new_input_sets</span><span class="p">,</span>
                         <span class="p">)</span> <span class="o">=</span> <span class="n">input_set_enters_network</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
                         <span class="k">for</span> <span class="n">new_input_set</span> <span class="ow">in</span> <span class="n">new_input_sets</span><span class="p">:</span>
+                            <span class="c1"># forward inputs to subflow</span>
+                            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_inputs_to_subflow</span><span class="p">(</span>
+                                <span class="p">[</span><span class="n">x</span> <span class="k">async</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">new_input_set</span><span class="o">.</span><span class="n">inputs</span><span class="p">()]</span>
+                            <span class="p">)</span>
                             <span class="c1"># Identify which operations have complete contextually</span>
                             <span class="c1"># appropriate input sets which haven&#39;t been run yet</span>
                             <span class="k">async</span> <span class="k">for</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">operations_parameter_set_pairs</span><span class="p">(</span>

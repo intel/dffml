@@ -244,7 +244,38 @@ the roadmap.</p>
 <div class="section" id="dffml-dataflow-run">
 <h3>dffml.dataflow.run<a class="headerlink" href="#dffml-dataflow-run" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
-<p>No description</p>
+<p>Starts a subflow <cite>self.config.dataflow</cite> and runs <cite>inputs</cite> in it.</p>
+<dl>
+<dt>Parameters:</dt><dd><dl>
+<dt>inputs: Dict[str,Any] -&gt;</dt><dd><dl>
+<dt>eg: {</dt><dd><dl>
+<dt>“ctx_str”<span class="classifier">[</span></dt><dd><dl class="simple">
+<dt>{</dt><dd><p>“value”:val1,
+“defintion”:defintion1</p>
+</dd>
+</dl>
+<p>},
+{</p>
+<blockquote>
+<div><p>“value”:val2,
+“defintion”:defintion2</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+<p>]</p>
+</dd>
+</dl>
+<p>}</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>Dict[str,Any] -&gt; maps context strings in inputs to output after running</dt><dd><p>through dataflow</p>
+</dd>
+</dl>
+</dd>
+</dl>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
