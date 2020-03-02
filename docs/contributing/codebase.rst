@@ -11,10 +11,10 @@ package ``dffml``, is separate from the source code for many of the things you
 might want to use in conjunction with it. For example, if you wanted to use the
 machine learning models based on scikit, you'd install ``dffml-model-scikit``.
 If you wanted to use machine learning models based on TensorFlow, you'd install
-``dffml-model-tensorflow``. The source code for all *Core* plugins is within the
-same Git repo (https://github.com/intel/dffml).
+``dffml-model-tensorflow``. The source code for all *Official* plugins is within
+the same Git repo (https://github.com/intel/dffml).
 
-A *Core* plugin is any plugin maintained within the main Git repo.
+A *Official* plugin is any plugin maintained within the main Git repo.
 
 This means users only have to install what they need. TensorFlow is several
 hundred megabytes, not everyone wants that, or needs that to get machine
@@ -30,15 +30,16 @@ source plugin packages are in ``source/``.
 Adding A New Plugin
 +++++++++++++++++++
 
-To add a new *Core* plugin to DFFML. You need to first create the plugin in the
-appropriate directory. Then add it to the lists of core plugins.
+To add a new *Official* plugin to DFFML. You need to first create the plugin in
+the appropriate directory. Then add it to the lists of core plugins.
 
 .. warning::
 
     The release process is automated. You should **NOT** upload the package to
-    PyPi! Someone from Intel has to be the one to do that for *Core* plugins.
+    PyPi! Someone from Intel has to be the one to do that for *Official*
+    plugins.
 
-For *Core* plugins, the name given to create should be in the form of
+For *Official* plugins, the name given to create should be in the form of
 ``dffml-{PLUGIN_TYPE}-{NAME}``.
 
 .. code-block:: console

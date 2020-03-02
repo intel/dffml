@@ -146,7 +146,7 @@ def format_op(op):
     return "\n\n".join(build)
 
 
-def gen_docs(entrypoint: str, modules: List[str], maintenance: str = "Core"):
+def gen_docs(entrypoint: str, modules: List[str], maintenance: str = "Official"):
     per_module = {name: [None, []] for name in modules}
     packagesconfig = configparser.ConfigParser()
     packagesconfig.read("scripts/packagesconfig.ini")
@@ -211,7 +211,7 @@ def main():
     parser.add_argument("--modules", help="Modules to care about", nargs="+")
     parser.add_argument(
         "--maintenance",
-        default="Core",
+        default="Official",
         help="Maintained as a part of DFFML or community managed",
     )
 

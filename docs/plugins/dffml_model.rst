@@ -30,7 +30,7 @@ dffml_model_tensorflow
 tfdnnc
 ~~~~~~
 
-*Core*
+*Official*
 
 Implemented using Tensorflow's DNNClassifier.
 
@@ -179,7 +179,7 @@ Implemented using Tensorflow's DNNClassifier.
 tfdnnr
 ~~~~~~
 
-*Core*
+*Official*
 
 Implemented using Tensorflow's DNNEstimator.
 
@@ -308,7 +308,7 @@ dffml_model_tensorflow_hub
 text_classifier
 ~~~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 Implemented using Tensorflow hub pretrained models.
 
@@ -481,7 +481,7 @@ dffml_model_scratch
 scratchslr
 ~~~~~~~~~~
 
-*Core*
+*Official*
 
 Simple Linear Regression Model for 2 variables implemented from scratch.
 Models are saved under the ``directory`` in subdirectories named after the

@@ -89,7 +89,7 @@ Here's the generic format.
 
 - Imports of other files from the package we're currently in (if we're this far
   nested, likely this might only happen in an example package like ``shouldi``
-  or in the tests for a *Core* plugin).
+  or in the tests for an *Official* plugin).
 
 In every block of imports (a block is a group of lines between empty lines), you
 should be following reverse `reverse christmas tree
