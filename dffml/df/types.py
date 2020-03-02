@@ -367,6 +367,7 @@ class Forward:
     Keeps a map of operation instance_names to list of definitions
     of inputs which should be forwarded to the subflow running in that operation.
     """
+
     book: "Dict[str, List[Definitions]]" = None
 
     def __post_init__(self):
@@ -374,11 +375,11 @@ class Forward:
             self.book = {}
         self._internal_book = []
 
-    def add(self, instance_name:str, definition_list:List[Definition]):
+    def add(self, instance_name: str, definition_list: List[Definition]):
         self.book[instance_name] = definition_list
         self._internal_book.extend(definition_list)
 
-    def get_instances_to_forward(self, definition:Definition)->List[str]:
+    def get_instances_to_forward(self, definition: Definition) -> List[str]:
         """
         Returns a list of all instances of operation to which `definition` should
         be forwarded to.
@@ -395,7 +396,7 @@ class Forward:
         return export_dict(**asdict(self))
 
     @classmethod
-    def _fromdict(cls,**kwargs):
+    def _fromdict(cls, **kwargs):
         return cls(**kwargs)
 
 
@@ -526,7 +527,7 @@ class DataFlow:
             "seed": self.seed.copy(),
             "configs": self.configs.copy(),
             "flow": self.flow.copy(),
-            "forward":self.forward.export(),
+            "forward": self.forward.export(),
         }
         if linked:
             exported["linked"] = True
