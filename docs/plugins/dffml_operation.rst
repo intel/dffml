@@ -41,7 +41,63 @@ dffml.dataflow.run
 
 *Official*
 
-No description
+Starts a subflow ``self.config.dataflow`` and adds ``inputs`` in it.
+
+Parameters
+----------
+inputs : dict
+    The inputs to add to the subflow. These should be a key value mapping of
+    the context string to the inputs which should be seeded for that context
+    string.
+
+Returns
+-------
+dict
+    Maps context strings in inputs to output after running through dataflow.
+
+Examples
+--------
+
+>>> URL = Definition(name="URL", primitive="string")
+>>>
+>>> subflow = DataFlow.auto(GetSingle)
+>>> subflow.definitions[URL.name] = URL
+>>> subflow.seed.append(
+...     Input(
+...         value=[URL.name],
+...         definition=GetSingle.op.inputs["spec"]
+...     )
+... )
+>>>
+>>> dataflow = DataFlow.auto(run_dataflow, GetSingle)
+>>> dataflow.configs[run_dataflow.imp.op.name] = RunDataFlowConfig(subflow)
+>>> dataflow.seed.append(
+...     Input(
+...         value=[run_dataflow.imp.op.outputs["results"].name],
+...         definition=GetSingle.op.inputs["spec"]
+...     )
+... )
+>>>
+>>> async def main():
+...     async for ctx, results in MemoryOrchestrator.run(dataflow, {
+...         "run_subflow": [
+...             Input(
+...                 value={
+...                     "dffml": [
+...                         {
+...                             "value": "https://github.com/intel/dffml",
+...                             "definition": URL.name
+...                         }
+...                     ]
+...                 },
+...                 definition=run_dataflow.imp.op.inputs["inputs"]
+...             )
+...         ]
+...     }):
+...         print(results)
+>>>
+>>> asyncio.run(main())
+{'flow_results': {'dffml': {'URL': 'https://github.com/intel/dffml'}}}
 
 **Stage: processing**
 

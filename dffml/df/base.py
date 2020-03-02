@@ -788,4 +788,13 @@ class BaseOrchestratorContext(BaseDataFlowObjectContext):
 
 @base_entry_point("dffml.orchestrator", "orchestrator")
 class BaseOrchestrator(BaseDataFlowObject):
-    pass  # pragma: no cov
+    @classmethod
+    async def run(cls, dataflow, inputs, *, config=None, **kwargs):
+        if config is None:
+            self = cls.withconfig({})
+        else:
+            self = cls(config=config, **kwargs)
+        async with self as orchestrator:
+            async with orchestrator(dataflow) as octx:
+                async for ctx, results in octx.run(inputs):
+                    yield ctx, results

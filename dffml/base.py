@@ -279,6 +279,12 @@ class ConfigurableParsingNamespace(object):
         self.dest = None
 
 
+class ConfigAndKWArgsMutuallyExclusive(Exception):
+    """
+    Raised when both kwargs and config are specified.
+    """
+
+
 class BaseConfigurableMetaClass(type, abc.ABC):
     def __new__(cls, name, bases, props, module=None):
         # Create the class
@@ -298,7 +304,9 @@ class BaseConfigurableMetaClass(type, abc.ABC):
 
         @functools.wraps(func)
         def wrapper(self, config: Optional[BaseConfig] = None, **kwargs):
-            if config is None and hasattr(self, "CONFIG") and kwargs:
+            if config is not None and len(kwargs):
+                raise ConfigAndKWArgsMutuallyExclusive
+            elif config is None and hasattr(self, "CONFIG") and kwargs:
                 try:
                     config = self.CONFIG(**kwargs)
                 except TypeError as error:
