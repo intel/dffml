@@ -94,7 +94,7 @@ class OperationImplementationContext(BaseDataFlowObjectContext):
 
         >>> async def my_operation(arg):
         ...     async with self.subflow(self.config.dataflow) as octx:
-                    return octx.run({"ctx_str": []})
+        ...         return octx.run({"ctx_str": []})
         """
         async with self.octx.parent(dataflow) as octx:
             self.octx.subflows[self.parent.op.instance_name] = octx
