@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `subflow` in `OperationImplementationContext`
 - Documentation on writing examples and running doctests
 - Doctestable Examples to high-level API.
+- Shouldi got an operation to run npm-audit on JavaScript code
 ### Changed
 - Restructured contributing documentation
 - Use randomly generated data for scikit tests
