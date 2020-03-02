@@ -13,7 +13,13 @@ from typing import Type
 
 from dffml.version import VERSION
 from dffml.df.types import DataFlow
-from dffml.service.dev import Develop, RepoDirtyError, Export, Run
+from dffml.service.dev import (
+    Develop,
+    RepoDirtyError,
+    Export,
+    Run,
+    BumpPackages,
+)
 from dffml.util.os import chdir
 from dffml.util.skel import Skel
 from dffml.util.packaging import is_develop
@@ -227,6 +233,11 @@ class TestRelease(AsyncTestCase):
                 """
             ),
         )
+
+
+class TestBumpPackages(AsyncTestCase):
+    async def test_bump_version(self):
+        self.assertEqual(BumpPackages.bump_version("1.2.3", "5.6.7"), "6.8.10")
 
 
 class TestExport(AsyncTestCase):
