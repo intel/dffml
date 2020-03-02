@@ -19,5 +19,6 @@ wheelhouse/
 *.db
 htmlcov/
 tests/golangci-lint-download/
+tests/javascript_algo-download/
 tests/golang-download/
 tests/cri-resource-manager-download/
