@@ -20,7 +20,7 @@ dffml
 associate
 ~~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -39,7 +39,7 @@ No description
 dffml.dataflow.run
 ~~~~~~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -62,7 +62,7 @@ No description
 dffml.mapping.create
 ~~~~~~~~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -82,7 +82,7 @@ No description
 dffml.mapping.extract
 ~~~~~~~~~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -102,7 +102,7 @@ No description
 dffml.model.predict
 ~~~~~~~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -125,7 +125,7 @@ No description
 get_single
 ~~~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -144,7 +144,7 @@ No description
 group_by
 ~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -171,7 +171,7 @@ dffml_feature_git
 check_if_valid_git_repository_URL
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -190,7 +190,7 @@ No description
 cleanup_git_repo
 ~~~~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -208,7 +208,7 @@ No description
 clone_git_repo
 ~~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -234,7 +234,7 @@ No description
 count_authors
 ~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -253,7 +253,7 @@ No description
 git_commits
 ~~~~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -277,7 +277,7 @@ No description
 git_repo_author_lines_for_dates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -301,7 +301,7 @@ No description
 git_repo_checkout
 ~~~~~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -328,7 +328,7 @@ No description
 git_repo_commit_from_date
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -352,7 +352,7 @@ No description
 git_repo_default_branch
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -378,7 +378,7 @@ No description
 git_repo_release
 ~~~~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 Was there a release within this date range
 
@@ -402,7 +402,7 @@ Was there a release within this date range
 lines_of_code_by_language
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 This operation relys on ``tokei``. Here's how to install version 10.1.1,
 check it's releases page to make sure you're installing the latest version.
@@ -444,7 +444,7 @@ On OSX
 lines_of_code_to_comments
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -463,7 +463,7 @@ No description
 quarters_back_to_date
 ~~~~~~~~~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -484,7 +484,7 @@ No description
 work
 ~~~~
 
-*Core*
+*Official*
 
 No description
 
@@ -511,7 +511,7 @@ dffml_feature_auth
 scrypt
 ~~~~~~
 
-*Core*
+*Official*
 
 No description
 

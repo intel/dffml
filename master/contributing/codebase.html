@@ -236,9 +236,9 @@ package <code class="docutils literal notranslate"><span class="pre">dffml</span
 might want to use in conjunction with it. For example, if you wanted to use the
 machine learning models based on scikit, you’d install <code class="docutils literal notranslate"><span class="pre">dffml-model-scikit</span></code>.
 If you wanted to use machine learning models based on TensorFlow, you’d install
-<code class="docutils literal notranslate"><span class="pre">dffml-model-tensorflow</span></code>. The source code for all <em>Core</em> plugins is within the
-same Git repo (<a class="reference external" href="https://github.com/intel/dffml">https://github.com/intel/dffml</a>).</p>
-<p>A <em>Core</em> plugin is any plugin maintained within the main Git repo.</p>
+<code class="docutils literal notranslate"><span class="pre">dffml-model-tensorflow</span></code>. The source code for all <em>Official</em> plugins is within
+the same Git repo (<a class="reference external" href="https://github.com/intel/dffml">https://github.com/intel/dffml</a>).</p>
+<p>A <em>Official</em> plugin is any plugin maintained within the main Git repo.</p>
 <p>This means users only have to install what they need. TensorFlow is several
 hundred megabytes, not everyone wants that, or needs that to get machine
 learning models that preform accurately on their problem.</p>
@@ -249,14 +249,15 @@ of the git repo. For example, source base classes are in <code class="docutils l
 source plugin packages are in <code class="docutils literal notranslate"><span class="pre">source/</span></code>.</p>
 <div class="section" id="adding-a-new-plugin">
 <h3><a class="toc-backref" href="#id3">Adding A New Plugin</a><a class="headerlink" href="#adding-a-new-plugin" title="Permalink to this headline">¶</a></h3>
-<p>To add a new <em>Core</em> plugin to DFFML. You need to first create the plugin in the
-appropriate directory. Then add it to the lists of core plugins.</p>
+<p>To add a new <em>Official</em> plugin to DFFML. You need to first create the plugin in
+the appropriate directory. Then add it to the lists of core plugins.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>The release process is automated. You should <strong>NOT</strong> upload the package to
-PyPi! Someone from Intel has to be the one to do that for <em>Core</em> plugins.</p>
+PyPi! Someone from Intel has to be the one to do that for <em>Official</em>
+plugins.</p>
 </div>
-<p>For <em>Core</em> plugins, the name given to create should be in the form of
+<p>For <em>Official</em> plugins, the name given to create should be in the form of
 <code class="docutils literal notranslate"><span class="pre">dffml-{PLUGIN_TYPE}-{NAME}</span></code>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> model/
 <span class="gp">$</span> dffml service dev create model dffml-model-someframework
