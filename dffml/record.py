@@ -182,6 +182,27 @@ class Record(object):
     def evaluated(self, results: Dict[str, Any], overwrite=False):
         """
         Updates features with the result dict
+
+        Parameters
+        ----------
+        results : dict
+            The results that will be added to the features.
+        overwrite : boolean
+            If 'True', the function overwrites the current features with the results provided.
+            If 'Fasle', the function updates the current features with the results provided.
+
+        Examples
+        --------
+        >>> example = Record("example", data=dict(features=dict(dead="beef")))
+        >>> print(example.features())
+        {'dead': 'beef'}
+        >>> results = {"new": "feature"}
+        >>> example.evaluated({"feed": "face"})
+        >>> print(example.features())
+        {'dead': 'beef', 'feed': 'face'}
+        >>> example.evaluated(results, overwrite=True)
+        >>> print(example.features())
+        {'new': 'feature'}
         """
         if overwrite:
             self.data.features = results
@@ -193,6 +214,23 @@ class Record(object):
     def features(self, subset: List[str] = []) -> Dict[str, Any]:
         """
         Returns all features for the record or the subset specified.
+
+        Parameters
+        ----------
+        subset : list
+            The subset of features that will be returned.
+
+        Returns
+        -------
+        dict
+            features.
+
+        Examples
+        --------
+        >>> example = Record("example", data=dict(features=dict(dead="beef")))
+        >>>
+        >>> print(example.features(["dead"]))
+        {'dead': 'beef'}
         """
         if not subset:
             return self.data.features
