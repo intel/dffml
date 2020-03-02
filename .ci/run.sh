@@ -10,6 +10,21 @@ PYTHON=${PYTHON:-"python3.7"}
 
 TEMP_DIRS=()
 
+function run_plugin_examples() {
+  cd "${SRC_ROOT}/${PLUGIN}/examples"
+  if [ -f "requirements.txt" ]; then
+    "${PYTHON}" -m pip install -r requirements.txt
+  fi
+  # Run example tests in top level examples directory
+  for dir in $(find . -type d); do
+    # Run example tests in examples subdirectories
+    cd "${SRC_ROOT}/${PLUGIN}/examples"
+    cd "${dir}"
+    "${PYTHON}" -m unittest discover -v
+  done
+  cd "${SRC_ROOT}/${PLUGIN}"
+}
+
 function run_plugin() {
   # Create a virtualenv
   venv_dir="$(mktemp -d)"
@@ -18,20 +33,28 @@ function run_plugin() {
   source "${venv_dir}/bin/activate"
   "${PYTHON}" -m pip install -U pip twine
 
-  "${PYTHON}" -m pip install -U "${SRC_ROOT}"
+  "${PYTHON}" -m pip install -U -e "${SRC_ROOT}"
 
   if [ "x${PLUGIN}" = "xmodel/tensorflow_hub" ]; then
-    "${PYTHON}" -m pip install -U "${SRC_ROOT}/model/tensorflow"
+    "${PYTHON}" -m pip install -U -e "${SRC_ROOT}/model/tensorflow"
   fi
 
   cd "${PLUGIN}"
   PACKAGE_NAME=$(dffml service dev setuppy kwarg name setup.py)
+  # Install
   "${PYTHON}" -m pip install -e .
+  # Run the tests
   "${PYTHON}" setup.py test
+  # Run examples if they exist and we aren't at the root
+  if [ -d "examples" ] && [ "x${PLUGIN}" != "x." ]; then
+    run_plugin_examples
+  fi
+  # Uninstall
   "${PYTHON}" -m pip uninstall -y "${PACKAGE_NAME}"
-  cd -
+  cd "${SRC_ROOT}"
 
   if [ "x${PLUGIN}" = "x." ]; then
+    exit 0
     # Try running create command
     plugin_creation_dir="$(mktemp -d)"
     TEMP_DIRS+=("${plugin_creation_dir}")
@@ -56,10 +79,7 @@ function run_plugin() {
     "${PYTHON}" -m dffml service dev install
 
     # Run the examples
-    cd "${SRC_ROOT}/examples"
-    "${PYTHON}" -m pip install -r requirements.txt
-    "${PYTHON}" -m unittest discover
-    cd "${SRC_ROOT}"
+    run_plugin_examples
 
     # Deactivate venv
     deactivate
