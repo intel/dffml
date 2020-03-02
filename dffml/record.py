@@ -185,7 +185,7 @@ class Record(object):
 
         Parameters
         ----------
-        results : Dict
+        results : dict
             The results that will be added to the features.
         overwrite : boolean
             If 'True', the function overwrites the current features with the results provided.
@@ -193,17 +193,16 @@ class Record(object):
 
         Examples
         --------
-        >>> example = Record(
-        ...     "example",
-        ...     data=dict(
-        ...         features=dict(dead="beef"), extra=dict(extra="read all about it"),
-        ...     ),
-        ...     extra=dict(half=True),
-        ... )
-        >>>
+        >>> example = Record("example", data=dict(features=dict(dead="beef")))
+        >>> print(example.features())
+        {'dead': 'beef'}
         >>> results = {"new": "feature"}
         >>> example.evaluated({"feed": "face"})
+        >>> print(example.features())
+        {'dead': 'beef', 'feed': 'face'}
         >>> example.evaluated(results, overwrite=True)
+        >>> print(example.features())
+        {'new': 'feature'}
         """
         if overwrite:
             self.data.features = results
@@ -223,19 +222,12 @@ class Record(object):
 
         Returns
         -------
-        Dict
+        dict
             features.
 
         Examples
         --------
-        >>> example = Record(
-        ...     "example",
-        ...     data=dict(
-        ...         features=dict(dead="beef"),
-        ...         extra=dict(extra="read all about it"),
-        ...     ),
-        ...     extra=dict(half=True),
-        ... )
+        >>> example = Record("example", data=dict(features=dict(dead="beef")))
         >>>
         >>> print(example.features(["dead"]))
         {'dead': 'beef'}
