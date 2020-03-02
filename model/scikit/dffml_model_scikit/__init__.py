@@ -320,7 +320,7 @@ Example usage of KMeans Clustering Model using python API:
         model,
         {"Col1": 6.09809669, "Col2": 8.36434181, "Col3": 6.70940915, "Col4": -7.91491768},
     ):
-        features["cluster"] = prediction["Prediction"]["value"]
+        features["cluster"] = prediction["cluster"]["value"]
         print(features)
 
 **NOTE**: `Transductive <https://scikit-learn.org/stable/glossary.html#term-transductive/>`_ Clusterers(scikitsc, scikitac, scikitoptics) cannot handle unseen data.
