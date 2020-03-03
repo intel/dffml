@@ -102,8 +102,18 @@ function run_plugin() {
     "${PYTHON}" -m coverage run setup.py test 2>&1 | tee "${check_skips}"
     "${PYTHON}" -m coverage report -m
 
-    # Fail if any tests were skipped
-    grep -v -q -E '(skipped=.*)' "${check_skips}"
+    # Fail if any tests were skipped or errored
+    skipped=$(grep -E '(skipped=.*)' "${check_skips}" | wc -l)
+    if [ "$skipped" -ne 0 ]; then
+      echo "Tests were skipped" >&2
+      exit 1
+    fi
+
+    errors=$(grep -E '(errors=.*)' "${check_skips}" | wc -l)
+    if [ "$errors" -ne 0 ]; then
+      echo "Tests errored" >&2
+      exit 1
+    fi
   fi
 
   if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" == "xrefs/heads/master" ]; then
