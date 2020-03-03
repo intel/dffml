@@ -737,19 +737,20 @@ Output:
             "extra": {},
             "features": {
                 "Expertise": 13,
-                "Trust": 1.4,
+                "Trust": 0.7,
                 "Years": 6
             },
             "key": "0",
-            "last_updated": "2020-02-07T14:17:08Z",
+            "last_updated": "2020-03-01T22:26:46Z",
             "prediction": {
                 "Salary": {
                     "confidence": 1.0,
-                    "value": 70.13972055888223
+                    "value": 70.0
                 }
             }
         }
     ]
+
 
 Example usage of Linear Regression Model using python API:
 
