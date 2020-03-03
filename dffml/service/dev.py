@@ -3,9 +3,11 @@ import sys
 import ast
 import json
 import pydoc
+import shutil
 import asyncio
 import pathlib
 import getpass
+import tempfile
 import importlib
 import contextlib
 import configparser
@@ -423,17 +425,36 @@ class Release(CMD):
                 if package_json["info"]["version"] == version:
                     print(f"Version {version} of {name} already on PyPi")
                     return
-            # Upload if not present
-            for cmd in [
-                ["git", "clean", "-fdx"],
-                [sys.executable, "setup.py", "sdist"],
-                [sys.executable, "-m", "twine", "upload", "dist/*"],
-            ]:
-                print(f"$ {' '.join(cmd)}")
-                proc = await asyncio.create_subprocess_exec(*cmd)
-                await proc.wait()
-                if proc.returncode != 0:
-                    raise RuntimeError
+            # Create a fresh copy of the codebase to upload
+            with tempfile.TemporaryDirectory() as tempdir:
+                # The directory where the fresh copy will live
+                clean_dir = pathlib.Path(tempdir, "clean")
+                clean_dir.mkdir()
+                archive_file = pathlib.Path(tempdir, "archive.tar")
+                # Create the archive
+                with open(archive_file, "wb") as archive:
+                    cmd = ["git", "archive", "--format=tar", "HEAD"]
+                    print(f"$ {' '.join(cmd)}")
+                    proc = await asyncio.create_subprocess_exec(
+                        *cmd, stdout=archive
+                    )
+                    await proc.wait()
+                    if proc.returncode != 0:
+                        raise RuntimeError
+                # Change directory into the clean copy
+                with chdir(clean_dir):
+                    # Extract the archive
+                    shutil.unpack_archive(archive_file)
+                    # Upload if not present
+                    for cmd in [
+                        [sys.executable, "setup.py", "sdist"],
+                        [sys.executable, "-m", "twine", "upload", "dist/*"],
+                    ]:
+                        print(f"$ {' '.join(cmd)}")
+                        proc = await asyncio.create_subprocess_exec(*cmd)
+                        await proc.wait()
+                        if proc.returncode != 0:
+                            raise RuntimeError
 
 
 class BumpMain(CMD):
