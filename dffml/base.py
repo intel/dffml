@@ -9,6 +9,7 @@ import inspect
 import argparse
 import functools
 import contextlib
+import collections
 import dataclasses
 from argparse import ArgumentParser
 from typing import Dict, Any, Type, Optional
@@ -122,7 +123,7 @@ def mkarg(field):
     if field.type == bool:
         arg["action"] = "store_true"
     elif inspect.isclass(field.type):
-        if issubclass(field.type, list):
+        if issubclass(field.type, (list, collections.UserList)):
             arg["nargs"] = "+"
             if not hasattr(field.type, "SINGLETON"):
                 raise AttributeError(

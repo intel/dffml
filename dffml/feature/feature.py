@@ -7,6 +7,7 @@ feature project's feature URL.
 import abc
 import pydoc
 import asyncio
+import collections
 from contextlib import AsyncExitStack
 from typing import List, Dict, Type, Any
 
@@ -219,7 +220,7 @@ def DefFeature(name, dtype, length):
     return DefinedFeature(name=name, dtype=dtype, length=length)
 
 
-class Features(list):
+class Features(collections.UserList):
 
     TIMEOUT: int = 60 * 2
     SINGLETON = Feature
@@ -232,10 +233,10 @@ class Features(list):
         self.timeout = timeout if not timeout is None else self.TIMEOUT
 
     def names(self) -> List[str]:
-        return list(({feature.NAME: True for feature in self}).keys())
+        return list(({feature.NAME: True for feature in self.data}).keys())
 
     def export(self):
-        return {feature.NAME: feature.export() for feature in self}
+        return {feature.NAME: feature.export() for feature in self.data}
 
     @classmethod
     def _fromdict(cls, **kwargs):
@@ -251,7 +252,7 @@ class Features(list):
     async def __aenter__(self):
         self._stack = AsyncExitStack()
         await self._stack.__aenter__()
-        for item in self:
+        for item in self.data:
             await self._stack.enter_async_context(item)
         return self
 
