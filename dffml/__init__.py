@@ -10,6 +10,11 @@ from .source.json import JSONSource
 
 # Models
 from .model import Model, ModelContext, SimpleModel, ModelNotTrained
+from .model.accuracy import Accuracy
+
+# Base Types and Classes
+from .base import config, field
 
 # Utilities
 from .util.asynctestcase import AsyncTestCase
+from .util.entrypoint import entrypoint
