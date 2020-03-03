@@ -224,6 +224,10 @@ function run_docs() {
   git checkout master
 }
 
+function run_lines() {
+  "${PYTHON}" ./scripts/check_literalincludes.py
+}
+
 function cleanup_temp_dirs() {
   if [ "x${NO_RM_TEMP}" != "x" ]; then
     return
@@ -246,4 +250,6 @@ elif [ "x${STYLE}" != "x" ]; then
   run_style
 elif [ "x${DOCS}" != "x" ]; then
   run_docs
+elif [ "x${LINES}" != "x" ]; then
+  run_lines
 fi
