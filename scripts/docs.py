@@ -41,6 +41,8 @@ TEMPLATE = """{name}
 def data_type_string(data_type, nargs=None):
     if nargs is not None:
         return "List of %ss" % (data_type_string(data_type).lower(),)
+    elif hasattr(data_type, "SINGLETON"):
+        return "List of %ss" % (data_type_string(data_type.SINGLETON).lower(),)
     if hasattr(data_type, "__func__"):
         return data_type_string(data_type.__func__)
     elif data_type is str:
