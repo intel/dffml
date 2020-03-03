@@ -548,9 +548,9 @@ hash of their feature names.
 
   - Features to train on
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/scratch
+  - default: ~/.cache/dffml/scratch
   - Directory where state should be saved
 
 dffml_model_scikit
