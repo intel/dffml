@@ -17,6 +17,13 @@ function run_plugin_examples() {
   fi
   # Run example tests in top level examples directory
   for dir in $(find . -type d); do
+    # Skip shouldi if we're in the root package
+    set +e
+    within_shouldi=$(echo "${dir}" | grep "shouldi")
+    set -e
+    if [ "x${PLUGIN}" != "x." ] && [ "x${within_shouldi}" != "x" ]; then
+      continue
+    fi
     # Run example tests in examples subdirectories
     cd "${SRC_ROOT}/${PLUGIN}/examples"
     cd "${dir}"
