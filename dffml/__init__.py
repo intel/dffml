@@ -9,7 +9,7 @@ from .source.csv import CSVSource
 from .source.json import JSONSource
 
 # Models
-from .model import Model, ModelContext
+from .model import Model, ModelContext, SimpleModel, ModelNotTrained
 
 # Utilities
 from .util.asynctestcase import AsyncTestCase
