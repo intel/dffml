@@ -49,7 +49,6 @@ function run_plugin() {
   cd "${SRC_ROOT}"
 
   if [ "x${PLUGIN}" = "x." ]; then
-    exit 0
     # Try running create command
     plugin_creation_dir="$(mktemp -d)"
     TEMP_DIRS+=("${plugin_creation_dir}")
