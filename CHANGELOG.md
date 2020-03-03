@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Test scikit LR documentation examples in CI
 - Create a fresh archive of the git repo for release instead of cleaning
   existing repo with `git clean` for development service release command.
+- Simplified SLR tests for scratch model
 
 ## [0.3.4] - 2020-02-28
 ### Added
