@@ -26,7 +26,12 @@ except ImportError:
 
 
 from .util.cli.arg import Arg
-from .util.data import traverse_config_set, traverse_config_get, type_lookup
+from .util.data import (
+    traverse_config_set,
+    traverse_config_get,
+    type_lookup,
+    export_dict,
+)
 
 from .util.entrypoint import Entrypoint
 
@@ -221,6 +226,10 @@ def field(description: str, *args, metadata: Optional[dict] = None, **kwargs):
     return dataclasses.field(*args, metadata=metadata, **kwargs)
 
 
+def config_asdict(self, *args, **kwargs):
+    return export_dict(**dataclasses.asdict(self, *args, **kwargs))
+
+
 def config(cls):
     """
     Decorator to create a dataclass
@@ -230,9 +239,7 @@ def config(cls):
     datacls._replace = lambda self, *args, **kwargs: dataclasses.replace(
         self, *args, **kwargs
     )
-    datacls._asdict = lambda self, *args, **kwargs: dataclasses.asdict(
-        self, *args, **kwargs
-    )
+    datacls._asdict = config_asdict
     return datacls
 
 
@@ -249,12 +256,7 @@ def make_config(cls_name: str, fields, *args, namespace=None, **kwargs):
             self, *args, **kwargs
         ),
     )
-    namespace.setdefault(
-        "_asdict",
-        lambda self, *args, **kwargs: dataclasses.asdict(
-            self, *args, **kwargs
-        ),
-    )
+    namespace.setdefault("_asdict", config_asdict)
     kwargs["eq"] = True
     kwargs["init"] = True
     # Ensure non-default arguments always come before default arguments
