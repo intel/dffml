@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change Core to Official to clarify who maintains each plugin
 - Name of output of unsupervised model from "Prediction" to "cluster"
 - Test scikit LR documentation examples in CI
+- Create a fresh archive of the git repo for release instead of cleaning
+  existing repo with `git clean` for development service release command.
 
 ## [0.3.4] - 2020-02-28
 ### Added
