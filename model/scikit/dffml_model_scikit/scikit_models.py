@@ -242,7 +242,7 @@ for entry_point_name, name, cls, applicable_features_function in [
             Feature,
             field(
                 "Name used as meaning of prediction",
-                default=DefFeature(name="cluster", dtype="str", length=10),
+                default=DefFeature(name="cluster", dtype=str, length=1),
             ),
         )
 
