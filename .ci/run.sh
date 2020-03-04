@@ -11,24 +11,14 @@ PYTHON=${PYTHON:-"python3.7"}
 TEMP_DIRS=()
 
 function run_plugin_examples() {
+  if [ ! -d "${SRC_ROOT}/${PLUGIN}/examples" ]; then
+    return
+  fi
   cd "${SRC_ROOT}/${PLUGIN}/examples"
   if [ -f "requirements.txt" ]; then
     "${PYTHON}" -m pip install -r requirements.txt
   fi
-  # Run example tests in top level examples directory
-  for dir in $(find . -type d); do
-    # Skip shouldi if we're in the root package
-    set +e
-    within_shouldi=$(echo "${dir}" | grep "shouldi")
-    set -e
-    if [ "x${PLUGIN}" != "x." ] && [ "x${within_shouldi}" != "x" ]; then
-      continue
-    fi
-    # Run example tests in examples subdirectories
-    cd "${SRC_ROOT}/${PLUGIN}/examples"
-    cd "${dir}"
-    "${PYTHON}" -m unittest discover -v
-  done
+  "${PYTHON}" -m unittest discover -v
   cd "${SRC_ROOT}/${PLUGIN}"
 }
 
@@ -53,7 +43,7 @@ function run_plugin() {
   # Run the tests
   "${PYTHON}" setup.py test
   # Run examples if they exist and we aren't at the root
-  if [ -d "examples" ] && [ "x${PLUGIN}" != "x." ]; then
+  if [ "x${PLUGIN}" != "x." ]; then
     run_plugin_examples
   fi
   cd "${SRC_ROOT}"
