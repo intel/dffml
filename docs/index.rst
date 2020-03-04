@@ -46,6 +46,7 @@ DFFML's source code can be found on `GitHub <https://github.com/intel/dffml>`_.
 
     about
     installation
+    concepts/index
 
 .. toctree::
     :glob:
