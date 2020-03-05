@@ -9,12 +9,16 @@ jobs:
       fail-fast: false
       max-parallel: 40
       matrix:
-        check: [CHANGELOG, WHITESPACE, STYLE, DOCS]
+        check: [CHANGELOG, WHITESPACE, STYLE, DOCS, LINES]
         python-version: [3.7]
         node-version: [12.x]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+    - name: Checkout full upstream repo
+      run: |
+        git remote set-url origin https://github.com/intel/dffml
+        git fetch --prune --unshallow
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
@@ -41,7 +45,11 @@ jobs:
         python-version: [3.7]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+    - name: Checkout full upstream repo
+      run: |
+        git remote set-url origin https://github.com/intel/dffml
+        git fetch --prune --unshallow
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
@@ -83,7 +91,7 @@ jobs:
         if [ "x${PLUGIN}" = "x." ]; then
           export TWINE_PASSWORD=${{ secrets.PYPI_DFFML }}
         else
-          export TWINE_PASSWORD=$(grep "${PLUGIN}" "${PYPI_TOKENS}" | sed 's/^[^=]*=//g')
+          export TWINE_PASSWORD=$(grep "${PLUGIN}=" "${PYPI_TOKENS}" | sed 's/^[^=]*=//g')
         fi
         rm ${PYPI_TOKENS}
         ./.ci/run.sh

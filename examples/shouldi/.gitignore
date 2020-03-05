@@ -18,3 +18,8 @@ wheelhouse/
 *.modeldir
 *.db
 htmlcov/
+tests/golangci-lint-download/
+tests/javascript_algo-download/
+tests/npm-audit-download/
+tests/golang-download/
+tests/cri-resource-manager-download/

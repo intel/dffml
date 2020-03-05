@@ -4,16 +4,43 @@ Style
 This document talks about code formatting, conventions, documentation, and any
 stylistic choices that we adhere to.
 
-File Formatting
----------------
+Try to run the formatters before every commit. This way, if you push up files
+for review, they are easy to read, even if your pull request isn't yet ready to
+merge.
 
-We run the `black <https://github.com/psf/black>`_ formatter on all files. Try
-to run it before every commit. This way, if you push up files for review, they
-are easy to read, even if your pull request isn't yet ready to merge.
+Python File Formatting
+----------------------
+
+To install black in the environment
+
+.. code-block:: console
+
+    $ pip install black
+
+Run the `black <https://github.com/psf/black>`_ formatter on all Python files.
 
 .. code-block:: console
 
     $ black .
+
+In VSCode open command pallete by Ctrl+Shift+p, open Settings(JSON) and add the properties.
+
+.. code-block:: json
+
+    {
+        "editor.formatOnSave": true,
+        "python.formatting.provider": "black",
+    }
+
+JavaScript File Formatting
+--------------------------
+
+Run the `js-beautify <https://github.com/beautify-web/js-beautify>`_ formatter
+on all JavaScript files. Use the following options.
+
+.. code-block:: console
+
+    $ js-beautify -r -n -s 2 file_to_format.js
 
 Imports
 -------
@@ -62,7 +89,7 @@ Here's the generic format.
 
 - Imports of other files from the package we're currently in (if we're this far
   nested, likely this might only happen in an example package like ``shouldi``
-  or in the tests for a *Core* plugin).
+  or in the tests for an *Official* plugin).
 
 In every block of imports (a block is a group of lines between empty lines), you
 should be following reverse `reverse christmas tree

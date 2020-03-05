@@ -15,4 +15,4 @@ setup.py which specifies where to find your Model subclass within your module.
 >>>     },
 >>> )
 """
-from .model import Model, ModelContext
+from .model import Model, ModelContext, SimpleModel, ModelNotTrained

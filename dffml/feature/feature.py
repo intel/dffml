@@ -7,6 +7,7 @@ feature project's feature URL.
 import abc
 import pydoc
 import asyncio
+import collections
 from contextlib import AsyncExitStack
 from typing import List, Dict, Type, Any
 
@@ -112,32 +113,6 @@ class Feature(abc.ABC, Entrypoint):
     Once the appropriate data is fetched the parse method is responsible for
     storing the parts of that data which will be used to calculate in the
     subclass
-
-    >>> self.__example_parsed_value_name = example_value
-
-    The calc method then uses variables set in parse to output an integer value.
-
-    >>>     def calc(self):
-    >>>         return self.__example_parsed_value_name
-
-    Full example of a feature implementation:
-
-    >>> import glob
-    >>> from dffml.feature import Feature
-    >>>
-    >>> class NumFilesFeature(Feature):
-    >>>
-    >>>     @abc.abstractmethod
-    >>>     def fetch(self, data):
-    >>>         self._downloader.vcs(self._key, self.tempdir('src'))
-    >>>
-    >>>     @abc.abstractmethod
-    >>>     def parse(self, data):
-    >>>         self.__num_files = glob.glob(self.tempdir(), recursive=True)
-    >>>
-    >>>     @abc.abstractmethod
-    >>>     def calc(self, data):
-    >>>         return self.__num_files
     """
 
     LOGGER = LOGGER.getChild("Feature")
@@ -245,7 +220,7 @@ def DefFeature(name, dtype, length):
     return DefinedFeature(name=name, dtype=dtype, length=length)
 
 
-class Features(list):
+class Features(collections.UserList):
 
     TIMEOUT: int = 60 * 2
     SINGLETON = Feature
@@ -258,10 +233,10 @@ class Features(list):
         self.timeout = timeout if not timeout is None else self.TIMEOUT
 
     def names(self) -> List[str]:
-        return list(({feature.NAME: True for feature in self}).keys())
+        return list(({feature.NAME: True for feature in self.data}).keys())
 
     def export(self):
-        return {feature.NAME: feature.export() for feature in self}
+        return {feature.NAME: feature.export() for feature in self.data}
 
     @classmethod
     def _fromdict(cls, **kwargs):
@@ -277,7 +252,7 @@ class Features(list):
     async def __aenter__(self):
         self._stack = AsyncExitStack()
         await self._stack.__aenter__()
-        for item in self:
+        for item in self.data:
             await self._stack.enter_async_context(item)
         return self
 

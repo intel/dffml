@@ -4,16 +4,23 @@ import sys
 import json
 import glob
 import inspect
+import tarfile
 import tempfile
 import unittest
 import contextlib
 import dataclasses
 import unittest.mock
-from typing import Type
+from typing import Type, List, BinaryIO
 
 from dffml.version import VERSION
 from dffml.df.types import DataFlow
-from dffml.service.dev import Develop, RepoDirtyError, Export, Run
+from dffml.service.dev import (
+    Develop,
+    RepoDirtyError,
+    Export,
+    Run,
+    BumpPackages,
+)
 from dffml.util.os import chdir
 from dffml.util.skel import Skel
 from dffml.util.packaging import is_develop
@@ -150,20 +157,39 @@ class TestDevelopSkelLink(AsyncTestCase):
 
 @dataclasses.dataclass
 class FakeProcess:
+    cmd: List[str] = None
     returncode: int = 0
+    stdout: BinaryIO = None
+
+    def __post_init__(self):
+        if self.cmd is None:
+            self.cmd = []
 
     async def communicate(self):
         return b"", b""
 
     async def wait(self):
-        return
+        if not "archive" in self.cmd:
+            return
+        with contextlib.ExitStack() as stack:
+            # Create the bytes objects to build the tarfile in memory
+            tar_fileobj = stack.enter_context(io.BytesIO())
+            hello_txt_fileobj = stack.enter_context(io.BytesIO(b"world"))
+            # Create the TarInfo objects
+            hello_txt_tarinfo = tarfile.TarInfo(name="somedir/hello.txt")
+            hello_txt_tarinfo.size = len(hello_txt_fileobj.getvalue())
+            # Create the archive using the bytes objects
+            with tarfile.open(mode="w|", fileobj=tar_fileobj) as archive:
+                archive.addfile(hello_txt_tarinfo, fileobj=hello_txt_fileobj)
+            # Write out the contents of the tar to the client
+            self.stdout.write(tar_fileobj.getvalue())
 
 
 def mkexec(proc_cls: Type[FakeProcess] = FakeProcess):
     async def fake_create_subprocess_exec(
         *args, stdin=None, stdout=None, stderr=None
     ):
-        return proc_cls()
+        return proc_cls(cmd=args, stdout=stdout)
 
     return fake_create_subprocess_exec
 
@@ -221,12 +247,17 @@ class TestRelease(AsyncTestCase):
             stdout.getvalue().strip(),
             inspect.cleandoc(
                 f"""
-                $ git clean -fdx
+                $ git archive --format=tar HEAD
                 $ {sys.executable} setup.py sdist
                 $ {sys.executable} -m twine upload dist/*
                 """
             ),
         )
+
+
+class TestBumpPackages(AsyncTestCase):
+    async def test_bump_version(self):
+        self.assertEqual(BumpPackages.bump_version("1.2.3", "5.6.7"), "6.8.10")
 
 
 class TestExport(AsyncTestCase):

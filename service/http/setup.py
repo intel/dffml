@@ -11,7 +11,7 @@ AUTHOR_NAME = "John Andersen"
 AUTHOR_EMAIL = "john.s.andersen@intel.com"
 # Install dffml if it is not installed in development mode
 INSTALL_REQUIRES = ["aiohttp>=3.5.4", "aiohttp_cors>=0.7.0"] + (
-    ["dffml>=0.3.3"]
+    ["dffml>=0.3.4"]
     if not any(
         list(
             map(
@@ -72,6 +72,8 @@ setup(
         "Programming Language :: Python :: Implementation :: PyPy",
     ],
     install_requires=INSTALL_REQUIRES,
+    include_package_data=True,
+    zip_safe=False,
     packages=find_packages(),
     entry_points={
         "dffml.service.cli": [f"http = {IMPORT_NAME}.cli:HTTPService"]

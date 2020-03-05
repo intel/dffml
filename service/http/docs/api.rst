@@ -1,8 +1,9 @@
 API
 ===
 
-An example of using the API from JavaScript can be found in
-`examples/web/api.js <https://github.com/intel/dffml/blob/master/service/http/examples/web/api.js>`_.
+Here's an example of using the :doc:`API from JavaScript <javascript>`.
+
+Here's an example of using the :doc:`API from Python <python>` (with requests).
 
 .. contents:: REST-like HTTP API
 
@@ -230,7 +231,7 @@ Model
 The following is an example request body to configure a model. The URL this
 ``POST`` request is sent to is.
 
-- ``/configure/source/fake/mymodel``
+- ``/configure/model/fake/mymodel``
 
 .. code-block:: json
 
@@ -334,7 +335,7 @@ return a 404, Not Found response.
 .. _record:
 
 Record
-~~~~
+~~~~~~
 
 Access a record by it's unique key. The response will be the JSON representation
 of the record. Here's an example response for a ``GET`` request.
@@ -378,7 +379,7 @@ response.
     {"error": null}
 
 Records
-~~~~~
+~~~~~~~
 
 Initially, client makes a ``GET`` request to the API with the ``chunk_size`` for
 the first iteration. ``chunk_size`` is the number of records to return in one

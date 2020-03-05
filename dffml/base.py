@@ -9,6 +9,7 @@ import inspect
 import argparse
 import functools
 import contextlib
+import collections
 import dataclasses
 from argparse import ArgumentParser
 from typing import Dict, Any, Type, Optional
@@ -25,7 +26,12 @@ except ImportError:
 
 
 from .util.cli.arg import Arg
-from .util.data import traverse_config_set, traverse_config_get, type_lookup
+from .util.data import (
+    traverse_config_set,
+    traverse_config_get,
+    type_lookup,
+    export_dict,
+)
 
 from .util.entrypoint import Entrypoint
 
@@ -122,7 +128,7 @@ def mkarg(field):
     if field.type == bool:
         arg["action"] = "store_true"
     elif inspect.isclass(field.type):
-        if issubclass(field.type, list):
+        if issubclass(field.type, (list, collections.UserList)):
             arg["nargs"] = "+"
             if not hasattr(field.type, "SINGLETON"):
                 raise AttributeError(
@@ -220,6 +226,10 @@ def field(description: str, *args, metadata: Optional[dict] = None, **kwargs):
     return dataclasses.field(*args, metadata=metadata, **kwargs)
 
 
+def config_asdict(self, *args, **kwargs):
+    return export_dict(**dataclasses.asdict(self, *args, **kwargs))
+
+
 def config(cls):
     """
     Decorator to create a dataclass
@@ -229,9 +239,7 @@ def config(cls):
     datacls._replace = lambda self, *args, **kwargs: dataclasses.replace(
         self, *args, **kwargs
     )
-    datacls._asdict = lambda self, *args, **kwargs: dataclasses.asdict(
-        self, *args, **kwargs
-    )
+    datacls._asdict = config_asdict
     return datacls
 
 
@@ -248,12 +256,7 @@ def make_config(cls_name: str, fields, *args, namespace=None, **kwargs):
             self, *args, **kwargs
         ),
     )
-    namespace.setdefault(
-        "_asdict",
-        lambda self, *args, **kwargs: dataclasses.asdict(
-            self, *args, **kwargs
-        ),
-    )
+    namespace.setdefault("_asdict", config_asdict)
     kwargs["eq"] = True
     kwargs["init"] = True
     # Ensure non-default arguments always come before default arguments
@@ -279,6 +282,12 @@ class ConfigurableParsingNamespace(object):
         self.dest = None
 
 
+class ConfigAndKWArgsMutuallyExclusive(Exception):
+    """
+    Raised when both kwargs and config are specified.
+    """
+
+
 class BaseConfigurableMetaClass(type, abc.ABC):
     def __new__(cls, name, bases, props, module=None):
         # Create the class
@@ -298,7 +307,9 @@ class BaseConfigurableMetaClass(type, abc.ABC):
 
         @functools.wraps(func)
         def wrapper(self, config: Optional[BaseConfig] = None, **kwargs):
-            if config is None and hasattr(self, "CONFIG") and kwargs:
+            if config is not None and len(kwargs):
+                raise ConfigAndKWArgsMutuallyExclusive
+            elif config is None and hasattr(self, "CONFIG") and kwargs:
                 try:
                     config = self.CONFIG(**kwargs)
                 except TypeError as error:
@@ -484,10 +495,7 @@ class BaseDataFlowFacilitatorObjectContext(LoggingLogger):
     classes which support async context management. Classes ending with
     ...Context are the most inner context's which are used in DFFML.
 
-    >>> # Calling obj returns an instance which is a subclass of this class,
-    >>> # BaseDataFlowFacilitatorObjectContext.
-    >>> async with obj() as ctx:
-    >>>     await ctx.method()
+    See the :class:BaseDataFlowFacilitatorObject for example usage.
     """
 
     async def __aenter__(self) -> "BaseDataFlowFacilitatorObjectContext":
@@ -516,9 +524,18 @@ class BaseDataFlowFacilitatorObject(
     >>> # setup. Call obj to get an instance of obj.CONTEXT, which is a subclass
     >>> # of BaseDataFlowFacilitatorObjectContext. ctx, the inner context, does
     >>> # all the heavy lifting.
-    >>> async with BaseDataFlowObject() as obj:
-    >>>     async with obj() as ctx:
-    >>>         await ctx.method()
+    >>> class Context(BaseDataFlowFacilitatorObjectContext):
+    ...     async def method(self):
+    ...         return
+    >>> class Object(BaseDataFlowFacilitatorObject):
+    ...     CONTEXT = Context
+    ...     def __call__(self):
+    ...         return Context()
+    >>> async def main():
+    ...     async with Object(BaseConfig()) as obj:
+    ...         async with obj() as ctx:
+    ...             await ctx.method()
+    >>> asyncio.run(main())
     """
 
     def __init__(self, config: BaseConfig) -> None:

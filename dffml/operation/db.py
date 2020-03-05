@@ -108,7 +108,6 @@ async def db_query_insert(self, *, table_name: str, data: Dict[str, Any]):
 async def db_query_update(
     self, *, table_name: str, data: Dict[str, Any], conditions: Conditions = []
 ):
-    print(f"\n\n In upadte conditions:{conditions},data :{data}\n\n")
     await self.dbctx.update(
         table_name=table_name, data=data, conditions=conditions
     )
