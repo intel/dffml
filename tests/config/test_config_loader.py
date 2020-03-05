@@ -3,7 +3,7 @@ import json
 import pathlib
 import tempfile
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.config.config import ConfigLoaders
+from dffml.configloader.configloader import ConfigLoaders
 
 
 class TestConfigLoader(AsyncTestCase):

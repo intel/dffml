@@ -4,7 +4,7 @@ from typing import Dict
 from ..util.entrypoint import entrypoint
 from ..util.cli.arg import Arg
 from ..base import BaseConfig
-from .config import BaseConfigLoaderContext, BaseConfigLoader
+from .configloader import BaseConfigLoaderContext, BaseConfigLoader
 
 
 class JSONConfigLoaderContext(BaseConfigLoaderContext):
