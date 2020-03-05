@@ -1,0 +1,442 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>DataFlows &mdash; DFFML 0.3.4 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Quickstart" href="../quickstart/model.html" />
+    <link rel="prev" title="Concepts" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Concepts</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">DataFlows</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#terminology">Terminology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-happens-when-a-dataflow-runs">What Happens When A DataFlow Runs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#benifits-of-dataflows">Benifits of DataFlows</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Concepts</a> &raquo;</li>
+        
+      <li>DataFlows</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/concepts/dataflow.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dataflows">
+<h1>DataFlows<a class="headerlink" href="#dataflows" title="Permalink to this headline">¶</a></h1>
+<p>A running DataFlow is an event loop. First we’ll look at terminology associated
+with DataFlows. Then we’ll go through the sequence of events that constitute the
+running of a DataFlow. Lastly we’ll go over the benefits of using DataFlows.</p>
+<div class="section" id="terminology">
+<h2>Terminology<a class="headerlink" href="#terminology" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="../api/df/types.html#dffml.df.types.Operation" title="dffml.df.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<ul>
+<li><p>Things that will happen when the DataFlow is running. They define inputs and
+outputs. Inputs are the data they require to run, and outputs are the data
+they produce as a result.</p></li>
+<li><p>Similar to a function prototype in C, an
+<a class="reference internal" href="../api/df/types.html#dffml.df.types.Operation" title="dffml.df.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> only contains metadata.</p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="../api/df/base.html#dffml.df.base.OperationImplementation" title="dffml.df.base.OperationImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">OperationImplementation</span></code></a></p>
+<ul>
+<li><p>The implementation of an <a class="reference internal" href="../api/df/types.html#dffml.df.types.Operation" title="dffml.df.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a>.
+This is the code that gets run when we talk about “running an operation”.</p></li>
+<li><p>A Python function can be an
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.OperationImplementation" title="dffml.df.base.OperationImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">OperationImplementation</span></code></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="../api/df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Input</span></code></a></p>
+<ul>
+<li><p>Data that will be given to an
+<a class="reference internal" href="../api/df/types.html#dffml.df.types.Operation" title="dffml.df.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> when it runs.</p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="../api/df/types.html#dffml.df.types.DataFlow" title="dffml.df.types.DataFlow"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFlow</span></code></a></p>
+<ul>
+<li><p>Description of how <a class="reference internal" href="../api/df/types.html#dffml.df.types.Operation" title="dffml.df.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operations</span></code></a> are
+connected.</p></li>
+<li><p>Defines where <a class="reference internal" href="../api/df/types.html#dffml.df.types.Operation" title="dffml.df.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operations</span></code></a> should get
+their inputs from.</p></li>
+<li><p>Inputs can be received from the outputs of other operations, predefined
+<code class="docutils literal notranslate"><span class="pre">seed</span></code> values, or anywhere else.</p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseOrchestrator" title="dffml.df.base.BaseOrchestrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Orchestrator</span></code></a></p>
+<ul>
+<li><p>The runner of the DataFlow. Facilitates running of operations and manages
+input data.</p></li>
+<li><p>The <a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseOrchestrator" title="dffml.df.base.BaseOrchestrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Orchestrator</span></code></a> makes use of
+four different “Networks” and a
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseRedundancyChecker" title="dffml.df.base.BaseRedundancyChecker"><code class="xref py py-class docutils literal notranslate"><span class="pre">RedundancyChecker</span></code></a>.</p>
+<ul>
+<li><p>The <a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseInputNetwork" title="dffml.df.base.BaseInputNetwork"><code class="xref py py-class docutils literal notranslate"><span class="pre">InputNetwork</span></code></a> stores all
+the (<a class="reference internal" href="../api/df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Input</span></code></a>) data. It accepts incoming
+data and notifies the
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseOrchestrator" title="dffml.df.base.BaseOrchestrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Orchestrator</span></code></a> when there is
+new data.</p></li>
+<li><p>The <a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseOperationNetwork" title="dffml.df.base.BaseOperationNetwork"><code class="xref py py-class docutils literal notranslate"><span class="pre">OperationNetwork</span></code></a>
+stores all <a class="reference internal" href="../api/df/types.html#dffml.df.types.Operation" title="dffml.df.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operations</span></code></a> the
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseOrchestrator" title="dffml.df.base.BaseOrchestrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Orchestrator</span></code></a> knows about.</p></li>
+<li><p>The <a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseOperationImplementationNetwork" title="dffml.df.base.BaseOperationImplementationNetwork"><code class="xref py py-class docutils literal notranslate"><span class="pre">OperationImplementationNetwork</span></code></a>
+is responsible for running an
+<a class="reference internal" href="../api/df/types.html#dffml.df.types.Operation" title="dffml.df.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> with a set of
+<a class="reference internal" href="../api/df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Inputs</span></code></a>. A unique set of
+<a class="reference internal" href="../api/df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Inputs</span></code></a> for an
+<a class="reference internal" href="../api/df/types.html#dffml.df.types.Operation" title="dffml.df.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> is known as a
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseParameterSet" title="dffml.df.base.BaseParameterSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSet</span></code></a>.</p></li>
+<li><p>The <a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseLockNetwork" title="dffml.df.base.BaseLockNetwork"><code class="xref py py-class docutils literal notranslate"><span class="pre">LockNetwork</span></code></a>
+manages locking of <a class="reference internal" href="../api/df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Inputs</span></code></a>. This is used
+when the <a class="reference internal" href="../api/df/types.html#dffml.df.types.Definition" title="dffml.df.types.Definition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Definition</span></code></a> of the data
+type of an <a class="reference internal" href="../api/df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Input</span></code></a> declares that it may
+only be used when locked.</p></li>
+<li><p>The <a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseRedundancyChecker" title="dffml.df.base.BaseRedundancyChecker"><code class="xref py py-class docutils literal notranslate"><span class="pre">RedundancyChecker</span></code></a>
+ensures that <a class="reference internal" href="../api/df/types.html#dffml.df.types.Operation" title="dffml.df.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operations</span></code></a> don’t get
+run with the same
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseParameterSet" title="dffml.df.base.BaseParameterSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSet</span></code></a> more than once.</p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="../api/df/types.html#dffml.df.types.Operation" title="dffml.df.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operations</span></code></a> get their inputs from
+the outputs of other <a class="reference internal" href="../api/df/types.html#dffml.df.types.Operation" title="dffml.df.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operations</span></code></a>
+within the same
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseInputSetContext" title="dffml.df.base.BaseInputSetContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">InputSetContext</span></code></a>.
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseInputSetContext" title="dffml.df.base.BaseInputSetContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">InputSetContexts</span></code></a> create
+barriers which prevent
+<a class="reference internal" href="../api/df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Inputs</span></code></a> within one context from being
+combined with <a class="reference internal" href="../api/df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Inputs</span></code></a> within another
+context.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="what-happens-when-a-dataflow-runs">
+<h2>What Happens When A DataFlow Runs<a class="headerlink" href="#what-happens-when-a-dataflow-runs" title="Permalink to this headline">¶</a></h2>
+<p>When the <a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseOrchestrator" title="dffml.df.base.BaseOrchestrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Orchestrator</span></code></a> starts
+running a DataFlow. The following sequence of events take place.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseOperationImplementationNetwork" title="dffml.df.base.BaseOperationImplementationNetwork"><code class="xref py py-class docutils literal notranslate"><span class="pre">OperationImplementationNetwork</span></code></a>
+instantiates all of the
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.OperationImplementation" title="dffml.df.base.OperationImplementation"><code class="xref py py-class docutils literal notranslate"><span class="pre">OperationImplementations</span></code></a>
+that are needed by the DataFlow.</p></li>
+<li><p>Our first stage is the <code class="docutils literal notranslate"><span class="pre">Processing</span> <span class="pre">Stage</span></code>,  where data will be generated.</p></li>
+<li><p>The <a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseOrchestrator" title="dffml.df.base.BaseOrchestrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Orchestrator</span></code></a> kicks off any
+contexts that were given to the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">run</span></code> method along with
+the inputs for each context.</p>
+<ul>
+<li><p>All <code class="docutils literal notranslate"><span class="pre">seed</span></code> <a class="reference internal" href="../api/df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Inputs</span></code></a> are added to each
+context.</p></li>
+<li><p>All inputs for each context are added to the
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseInputNetwork" title="dffml.df.base.BaseInputNetwork"><code class="xref py py-class docutils literal notranslate"><span class="pre">InputNetwork</span></code></a>. This is the <code class="docutils literal notranslate"><span class="pre">New</span>
+<span class="pre">Inputs</span></code> step in the flow chart below.</p></li>
+</ul>
+</li>
+<li><p>The <a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseOperationNetwork" title="dffml.df.base.BaseOperationNetwork"><code class="xref py py-class docutils literal notranslate"><span class="pre">OperationNetwork</span></code></a> looks at
+what inputs just arrived. It <code class="docutils literal notranslate"><span class="pre">determines</span> <span class="pre">which</span> <span class="pre">Operations</span> <span class="pre">may</span> <span class="pre">have</span> <span class="pre">new</span>
+<span class="pre">parameter</span> <span class="pre">sets</span></code>. If an <a class="reference internal" href="../api/df/types.html#dffml.df.types.Operation" title="dffml.df.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a>
+has inputs whose possible origins include the origin of one of the inputs
+which just arrived, then it may have a new
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseParameterSet" title="dffml.df.base.BaseParameterSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSet</span></code></a>.</p></li>
+<li><p>We <code class="docutils literal notranslate"><span class="pre">generate</span> <span class="pre">Operation</span> <span class="pre">parameter</span> <span class="pre">set</span> <span class="pre">pairs</span></code> by checking if there are any new
+permutations of <a class="reference internal" href="../api/df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Inputs</span></code></a> for an
+<a class="reference internal" href="../api/df/types.html#dffml.df.types.Operation" title="dffml.df.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a>. If the
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseRedundancyChecker" title="dffml.df.base.BaseRedundancyChecker"><code class="xref py py-class docutils literal notranslate"><span class="pre">RedundancyChecker</span></code></a>
+has no record of that permutation being run we create a new
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseParameterSet" title="dffml.df.base.BaseParameterSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSet</span></code></a> composed of
+those <a class="reference internal" href="../api/df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Inputs</span></code></a>.</p></li>
+<li><p>We <code class="docutils literal notranslate"><span class="pre">dispatch</span> <span class="pre">operations</span> <span class="pre">for</span> <span class="pre">running</span></code> which have new
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseParameterSet" title="dffml.df.base.BaseParameterSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSets</span></code></a>.</p></li>
+<li><p>The <a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseLockNetwork" title="dffml.df.base.BaseLockNetwork"><code class="xref py py-class docutils literal notranslate"><span class="pre">LockNetwork</span></code></a> locks any
+of <a class="reference internal" href="../api/df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Inputs</span></code></a> which can’t have multiple
+operations use them at the same time.</p></li>
+<li><p>The <a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseOperationImplementationNetwork" title="dffml.df.base.BaseOperationImplementationNetwork"><code class="xref py py-class docutils literal notranslate"><span class="pre">OperationImplementationNetwork</span></code></a>
+<code class="docutils literal notranslate"><span class="pre">runs</span> <span class="pre">each</span> <span class="pre">operation</span> <span class="pre">using</span> <span class="pre">given</span> <span class="pre">parameter</span> <span class="pre">set</span> <span class="pre">as</span> <span class="pre">inputs</span></code>.</p></li>
+<li><p>The outputs of the
+<a class="reference internal" href="../api/df/types.html#dffml.df.types.Operation" title="dffml.df.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a> are added to the
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseInputNetwork" title="dffml.df.base.BaseInputNetwork"><code class="xref py py-class docutils literal notranslate"><span class="pre">InputNetwork</span></code></a> and the loop
+repeats.</p></li>
+<li><p>Once there are no more
+<a class="reference internal" href="../api/df/types.html#dffml.df.types.Operation" title="dffml.df.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a>
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseParameterSet" title="dffml.df.base.BaseParameterSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterSet</span></code></a> pairs
+which the
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseRedundancyChecker" title="dffml.df.base.BaseRedundancyChecker"><code class="xref py py-class docutils literal notranslate"><span class="pre">RedundancyChecker</span></code></a> knows to
+be unique, the <code class="docutils literal notranslate"><span class="pre">Cleanup</span> <span class="pre">Stage</span></code> begins.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">Cleanup</span> <span class="pre">Stage</span></code> contains operations which will release any underlying
+resources allocated for <a class="reference internal" href="../api/df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Inputs</span></code></a> generated
+during the <code class="docutils literal notranslate"><span class="pre">Processing</span> <span class="pre">Stage</span></code>.</p></li>
+<li><p>Finally the <code class="docutils literal notranslate"><span class="pre">Output</span> <span class="pre">Stage</span></code> runs.
+<a class="reference internal" href="../api/df/types.html#dffml.df.types.Operation" title="dffml.df.types.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operations</span></code></a> running in this stage query
+the <a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseInputNetwork" title="dffml.df.base.BaseInputNetwork"><code class="xref py py-class docutils literal notranslate"><span class="pre">InputNetwork</span></code></a> to organize the
+data within it into the users desired output format.</p></li>
+</ul>
+<img alt="Flow chart showing how DataFlow Orchestrator works" src="../_images/dataflow_diagram.svg" /></div>
+<div class="section" id="benifits-of-dataflows">
+<h2>Benifits of DataFlows<a class="headerlink" href="#benifits-of-dataflows" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Modularity</p>
+<ul>
+<li><p>Adding a layer of abstraction to separate the operations from their
+implementations means we focus on the logic of the application rather than
+how it’s implemented.</p></li>
+<li><p>Implementations are easily unit testable. They can be swapped out for
+another implementation with similar functionality. For example if you had a
+“send email” operation you could swap the implementation from sending via
+your email server to sending via a third party service.</p></li>
+</ul>
+</li>
+<li><p>Visibility</p>
+<ul>
+<li><p>Inputs are tracked to understand where they came from and or what sequence
+of operations generated them.</p></li>
+<li><p>DataFlows can be visualized to understand where inputs can come from. What
+you see is what you get. Diagrams showing how your application works in your
+documentation will never get out of sync.</p></li>
+</ul>
+</li>
+<li><p>Ease of use</p>
+<ul>
+<li><p>Execute code concurrently with managed locking of
+<a class="reference internal" href="../api/df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Inputs</span></code></a> which require locks to be used
+safely in a concurrent environment.</p>
+<ul>
+<li><p>If a resource can only be used by one operation at a time, the writer of
+the operation doesn’t need concern themselves of how to prevent against
+unknown user defined operations clobbering it. The
+<a class="reference internal" href="../api/df/base.html#dffml.df.base.BaseOrchestrator" title="dffml.df.base.BaseOrchestrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Orchestrator</span></code></a> manages locking.</p></li>
+<li><p>As DFFML is plugin based, this enables developers to easily write and
+publish operations without users having to worry about how various
+operations will interact with each other.</p></li>
+</ul>
+</li>
+<li><p>DataFlows can be used in many environments. They are a generic way to
+describe application logic and not tied to any particular programming
+language (currently we only have an implementation for Python, we provide
+multiple deployment options).</p></li>
+</ul>
+</li>
+<li><p>Security</p>
+<ul>
+<li><p>Clear trust boundaries via <a class="reference internal" href="../api/df/types.html#dffml.df.types.Input" title="dffml.df.types.Input"><code class="xref py py-class docutils literal notranslate"><span class="pre">Input</span></code></a> origins
+and built in input validation enable developers to ensure that untrusted
+inputs are properly validated.</p></li>
+<li><p>DataFlows are a serializeable programming language agnostic concept which
+can be validated according to any set of custom rules.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../quickstart/model.html" class="btn btn-neutral float-right" title="Quickstart" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Concepts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Intel
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
