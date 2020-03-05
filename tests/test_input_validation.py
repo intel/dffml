@@ -19,6 +19,10 @@ Area = Definition(name="area", primitive="float")
 ShapeName = Definition(
     name="shape_name", primitive="str", validate=lambda x: x.upper()
 )
+SHOUTIN = Definition(
+    name="shout_in", primitive="str", validate="validate_shout_instance"
+)
+SHOUTOUT = Definition(name="shout_out", primitive="str")
 
 
 @op(
@@ -33,12 +37,6 @@ async def get_circle(name: str, radius: float, pie: float):
             "area": pie * radius * radius,
         }
     }
-
-
-SHOUTIN = Definition(
-    name="shout_in", primitive="str", validate="validate_shout_instance"
-)
-SHOUTOUT = Definition(name="shout_out", primitive="str")
 
 
 @op(

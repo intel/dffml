@@ -174,7 +174,6 @@ class NotificationSetContext(object):
         self.logger = LOGGER.getChild(self.__class__.__qualname__)
 
     async def add(self, notification_item: Any):
-        # unvalidated_items,validated_items = notification_items
         async with self.parent.lock:
             self.parent.notification_items.append(notification_item)
             self.parent.event_added.set()
@@ -287,12 +286,9 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         if not handle_string in self.input_notification_set:
             self.input_notification_set[handle_string] = NotificationSet()
             async with self.ctx_notification_set() as ctx:
-                await ctx.add(
-                    (None, input_set.ctx)
-                )  # whats the logic behind this?
+                await ctx.add((None, input_set.ctx))
         # Add the input set to the incoming inputs
         async with self.input_notification_set[handle_string]() as ctx:
-            # Debug this might coz problems
             await ctx.add((unvalidated_input_set, input_set))
         # Associate inputs with their context handle grouped by definition
         async with self.ctxhd_lock:
@@ -338,7 +334,6 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         >>> asyncio.run(main())
         """
         ctx = StringInputSetContext(context_handle_string)
-        # Debug copy from here
         await self.add(
             MemoryInputSet(MemoryInputSetConfig(ctx=ctx, inputs=list(args)))
         )
@@ -1059,7 +1054,12 @@ class MemoryOperationImplementationNetworkContext(
                 yield operation, parameter_set
 
     async def validator_target_set_pairs(
-        self, octx, rctx, ctx, dataflow: DataFlow, unvalidated_input_set
+        self,
+        octx: BaseOperationNetworkContext,
+        rctx: BaseRedundancyCheckerContext,
+        ctx: BaseInputSetContext,
+        dataflow: DataFlow,
+        unvalidated_input_set: BaseInputSet,
     ):
         async for unvalidated_input in unvalidated_input_set.inputs():
             validator_instance_name = unvalidated_input.definition.validate
@@ -1498,7 +1498,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                                 # Validation operations shouldn't be run here
                                 if operation.validator:
                                     continue
-
                                 # Add inputs and operation to redundancy checker before
                                 # dispatch
                                 await self.rctx.add(operation, parameter_set)
