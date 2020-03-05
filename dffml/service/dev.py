@@ -29,8 +29,8 @@ from ..util.packaging import is_develop
 from ..util.data import traverse_config_get
 from ..df.types import Input, DataFlow
 from ..df.memory import MemoryOrchestrator
-from ..config.config import BaseConfigLoader
-from ..config.json import JSONConfigLoader
+from ..configloader.configloader import BaseConfigLoader
+from ..configloader.json import JSONConfigLoader
 from ..operation.output import GetSingle
 
 config = configparser.ConfigParser()
@@ -44,7 +44,7 @@ NAME = config.get("user", "name", fallback="Unknown")
 EMAIL = config.get("user", "email", fallback="unknown@example.com")
 
 CORE_PLUGINS = [
-    ("config", "yaml"),
+    ("configloader", "yaml"),
     ("model", "tensorflow"),
     ("model", "scratch"),
     ("model", "scikit"),
