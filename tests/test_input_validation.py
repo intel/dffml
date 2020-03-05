@@ -42,15 +42,15 @@ SHOUTOUT = Definition(name="shout_out", primitive="str")
 
 
 @op(
-    inputs={"shout_in": SHOUTIN}, outputs={"shout_in_validated": SHOUTIN},
+    inputs={"shout_in": SHOUTIN},
+    outputs={"shout_in_validated": SHOUTIN},
+    validator=True,
 )
 def validate_shouts(shout_in):
     return {"shout_in_validated": shout_in + "_validated"}
 
 
-@op(
-    inputs={"shout_in": SHOUTIN}, outputs={"shout_out": SHOUTOUT},
-)
+@op(inputs={"shout_in": SHOUTIN}, outputs={"shout_out": SHOUTOUT})
 def echo_shout(shout_in):
     return {"shout_out": shout_in}
 
@@ -71,7 +71,7 @@ class TestDefintion(AsyncTestCase):
             implementations={"get_circle": get_circle.imp},
         )
 
-    async def _test_validate(self):
+    async def test_validate(self):
         test_inputs = {
             "area": [
                 Input(value="unitcircle", definition=ShapeName),
@@ -88,7 +88,7 @@ class TestDefintion(AsyncTestCase):
                     self.assertEqual(results["area"], 3.14)
                     self.assertEqual(results["radius"], 1)
 
-    async def _test_validation_error(self):
+    async def test_validation_error(self):
         with self.assertRaises(InputValidationError):
             test_inputs = {
                 "area": [
@@ -121,10 +121,13 @@ class TestDefintion(AsyncTestCase):
         )
         test_inputs = {
             "TestShoutOut": [
-                Input(value="is_this_validated?", definition=SHOUTIN)
+                Input(value="validation_status:", definition=SHOUTIN)
             ]
         }
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
             async with orchestrator(test_dataflow) as octx:
                 async for ctx_str, results in octx.run(test_inputs):
-                    print(f"results : {results}")
+                    self.assertIn("shout_out", results)
+                    self.assertEqual(
+                        results["shout_out"], "validation_status:_validated"
+                    )

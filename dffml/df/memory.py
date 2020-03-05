@@ -20,7 +20,11 @@ from typing import (
     Set,
 )
 
-from .exceptions import ContextNotPresent, DefinitionNotInContext
+from .exceptions import (
+    ContextNotPresent,
+    DefinitionNotInContext,
+    ValidatorMissing,
+)
 from .types import Input, Parameter, Definition, Operation, Stage, DataFlow
 from .base import (
     OperationException,
@@ -121,18 +125,24 @@ class MemoryInputSet(BaseInputSet):
     async def inputs(self) -> AsyncIterator[Input]:
         for item in self.__inputs:
             yield item
-    def remove_input(self,item:Input):
+
+    def remove_input(self, item: Input):
         for x in self.__inputs[:]:
             if x.uid == item.uid:
                 self.__inputs.remove(x)
                 break
-    def remove_unvalidated_inputs(self):
+
+    def remove_unvalidated_inputs(self) -> List[Input]:
+        """
+        Removes `unvalidated` inputs from internal list and returns the same.
+        """
         unvalidated_inputs = []
         for x in self.__inputs[:]:
             if not x.validated:
                 unvalidated_inputs.append(x)
                 self.__inputs.remove(x)
         return unvalidated_inputs
+
 
 class MemoryParameterSetConfig(NamedTuple):
     ctx: BaseInputSetContext
@@ -166,7 +176,6 @@ class NotificationSetContext(object):
     async def add(self, notification_item: Any):
         # unvalidated_items,validated_items = notification_items
         async with self.parent.lock:
-            # print(f"Debug adding notif item {validated_items}")
             self.parent.notification_items.append(notification_item)
             self.parent.event_added.set()
 
@@ -254,8 +263,12 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
 
         # remove unvalidated inputs
         unvalidated_inputs = input_set.remove_unvalidated_inputs()
-        if not unvalidated_inputs:
-            unvalidated_input_set = MemoryInputSet(MemoryInputSetConfig(ctx=input_set.ctx, inputs=unvalidated_inputs))
+        if unvalidated_inputs:
+            unvalidated_input_set = MemoryInputSet(
+                MemoryInputSetConfig(
+                    ctx=input_set.ctx, inputs=unvalidated_inputs
+                )
+            )
         else:
             unvalidated_input_set = None
         # If the context for this input set does not exist create a
@@ -263,11 +276,13 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         if not handle_string in self.input_notification_set:
             self.input_notification_set[handle_string] = NotificationSet()
             async with self.ctx_notification_set() as ctx:
-                await ctx.add((None,input_set.ctx)) #whats the logic behind this?
+                await ctx.add(
+                    (None, input_set.ctx)
+                )  # whats the logic behind this?
         # Add the input set to the incoming inputs
         async with self.input_notification_set[handle_string]() as ctx:
             # Debug this might coz problems
-            await ctx.add((unvalidated_input_set,input_set))
+            await ctx.add((unvalidated_input_set, input_set))
         # Associate inputs with their context handle grouped by definition
         async with self.ctxhd_lock:
             # Create dict for handle_string if not present
@@ -277,7 +292,6 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                 )
             # Go through each item in the input set
             async for item in input_set.inputs():
-                print(f"Item is {item}")
                 # Create set for item definition if not present
                 if (
                     not item.definition
@@ -937,7 +951,7 @@ class MemoryOperationImplementationNetworkContext(
         octx: BaseOrchestratorContext,
         operation: Operation,
         parameter_set: BaseParameterSet,
-        set_valid:bool=True
+        set_valid: bool = True,
     ):
         """
         Run an operation in the background and add its outputs to the input
@@ -969,13 +983,13 @@ class MemoryOperationImplementationNetworkContext(
                 if not key in expand:
                     output = [output]
                 for value in output:
-                    new_Input =Input(
-                            value=value,
-                            definition=operation.outputs[key],
-                            parents=parents,
-                            origin=(operation.instance_name, key),
-                        )
-                    new_Input.validated=set_valid
+                    new_Input = Input(
+                        value=value,
+                        definition=operation.outputs[key],
+                        parents=parents,
+                        origin=(operation.instance_name, key),
+                    )
+                    new_Input.validated = set_valid
                     inputs.append(new_Input)
         except KeyError as error:
             raise KeyError(
@@ -1036,6 +1050,33 @@ class MemoryOperationImplementationNetworkContext(
                 rctx, operation, dataflow, ctx=ctx
             ):
                 yield operation, parameter_set
+
+    async def validator_target_set_pairs(
+        self, octx, rctx, ctx, dataflow: DataFlow, unvalidated_input_set
+    ):
+        async for unvalidated_input in unvalidated_input_set.inputs():
+            validator_instance_name = unvalidated_input.definition.validate
+            validator = dataflow.validators.get(validator_instance_name, None)
+            if validator is None:
+                raise ValidatorMissing(
+                    "Validator with instance_name {validator_instance_name} not found"
+                )
+            # There is only one `input` in `validators`
+            input_name, input_definition = list(validator.inputs.items())[0]
+            parameter = Parameter(
+                key=input_name,
+                value=unvalidated_input.value,
+                origin=unvalidated_input,
+                definition=input_definition,
+            )
+            parameter_set = MemoryParameterSet(
+                MemoryParameterSetConfig(ctx=ctx, parameters=[parameter])
+            )
+            async for parameter_set, exists in rctx.exists(
+                validator, parameter_set
+            ):
+                if not exists:
+                    yield validator, parameter_set
 
 
 @entrypoint("memory")
@@ -1377,12 +1418,40 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                         task.print_stack(file=output)
                         self.logger.error("%s", output.getvalue().rstrip())
                         output.close()
+
                     elif task is input_set_enters_network:
                         (
                             more,
                             new_input_sets,
                         ) = input_set_enters_network.result()
-                        for unvalidated_input_set,new_input_set in new_input_sets:
+                        for (
+                            unvalidated_input_set,
+                            new_input_set,
+                        ) in new_input_sets:
+                            if unvalidated_input_set is not None:
+                                async for operation, parameter_set in self.nctx.validator_target_set_pairs(
+                                    self.octx,
+                                    self.rctx,
+                                    ctx,
+                                    self.config.dataflow,
+                                    unvalidated_input_set,
+                                ):
+                                    await self.rctx.add(
+                                        operation, parameter_set
+                                    )  # is this required here?
+                                    dispatch_operation = await self.nctx.dispatch(
+                                        self, operation, parameter_set
+                                    )
+                                    dispatch_operation.operation = operation
+                                    dispatch_operation.parameter_set = (
+                                        parameter_set
+                                    )
+                                    tasks.add(dispatch_operation)
+                                    self.logger.debug(
+                                        "[%s]: dispatch operation: %s",
+                                        ctx_str,
+                                        operation.instance_name,
+                                    )
                             # Identify which operations have completed contextually
                             # appropriate input sets which haven't been run yet
                             async for operation, parameter_set in self.nctx.operations_parameter_set_pairs(
@@ -1393,10 +1462,13 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                                 self.config.dataflow,
                                 new_input_set=new_input_set,
                             ):
+                                # Validation operations shouldn't be run here
+                                if operation.validator:
+                                    continue
+
                                 # Add inputs and operation to redundancy checker before
                                 # dispatch
                                 await self.rctx.add(operation, parameter_set)
-                                print(f"Adding paramset : {parameter_set} and op {operation} to rchecker")
                                 # Dispatch the operation and input set for running
                                 dispatch_operation = await self.nctx.dispatch(
                                     self, operation, parameter_set

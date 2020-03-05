@@ -92,7 +92,7 @@ setup(
     packages=find_packages(),
     entry_points={
         "dffml.model": [
-            "text_classifier = dffml_model_tensorflow_hub.text_classifier:TextClassificationModel",
+            "text_classifier = dffml_model_tensorflow_hub.text_classifier:TextClassificationModel"
         ]
     },
 )

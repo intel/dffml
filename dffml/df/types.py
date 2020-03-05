@@ -122,6 +122,7 @@ class Operation(NamedTuple, Entrypoint):
     conditions: Optional[List[Definition]] = []
     expand: Optional[List[str]] = []
     instance_name: Optional[str] = None
+    validator: bool = False
 
     def export(self):
         exported = {
@@ -292,6 +293,7 @@ class Input(object):
         if definition.validate is not None:
             if callable(definition.validate):
                 value = definition.validate(value)
+            # if validate is a string (operation.instance_name) set `not validated`
             elif isinstance(definition.validate, str):
                 self.validated = False
         self.value = value
@@ -389,6 +391,8 @@ class DataFlow:
             self.by_origin = {}
         if self.implementations is None:
             self.implementations = {}
+        self.validators = {}  # Maps `validator` ops instance_name to op
+
         # Allow callers to pass in functions decorated with op. Iterate over the
         # given operations and replace any which have been decorated with their
         # operation. Add the implementation to our dict of implementations.
@@ -416,9 +420,10 @@ class DataFlow:
                 self.operations[instance_name] = operation
                 value = operation
             # Make sure every operation has the correct instance name
-            self.operations[instance_name] = value._replace(
-                instance_name=instance_name
-            )
+            value = value._replace(instance_name=instance_name)
+            self.operations[instance_name] = value
+            if value.validator:
+                self.validators[instance_name] = value
         # Grab all definitions from operations
         operations = list(self.operations.values())
         definitions = list(
