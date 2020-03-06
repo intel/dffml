@@ -23,32 +23,28 @@ function run_plugin_examples() {
 }
 
 function run_plugin() {
-  # Create a virtualenv
-  venv_dir="$(mktemp -d)"
-  TEMP_DIRS+=("${venv_dir}")
-  "${PYTHON}" -m venv "${venv_dir}"
-  source "${venv_dir}/bin/activate"
   "${PYTHON}" -m pip install -U pip twine
 
-  "${PYTHON}" -m pip install -U -e "${SRC_ROOT}"
+  # Install main package
+  "${PYTHON}" -m pip install -U -e "${SRC_ROOT}[dev]"
 
   if [ "x${PLUGIN}" = "xmodel/tensorflow_hub" ]; then
     "${PYTHON}" -m pip install -U -e "${SRC_ROOT}/model/tensorflow"
   fi
 
-  cd "${PLUGIN}"
-  PACKAGE_NAME=$(dffml service dev setuppy kwarg name setup.py)
-  # Install
-  "${PYTHON}" -m pip install -e .
+  cd "${SRC_ROOT}/${PLUGIN}"
+
+  # Install plugin
+  "${PYTHON}" -m pip install -U -e .
   # Run the tests
   "${PYTHON}" setup.py test
-  # Run examples if they exist and we aren't at the root
-  if [ "x${PLUGIN}" != "x." ]; then
-    run_plugin_examples
-  fi
-  cd "${SRC_ROOT}"
 
-  if [ "x${PLUGIN}" = "x." ]; then
+  if [ "x${PLUGIN}" != "x." ]; then
+    # Run examples if they exist and we aren't at the root
+    run_plugin_examples
+  else
+    # If we are at the root. Install plugsin and run various integration tests
+
     # Try running create command
     plugin_creation_dir="$(mktemp -d)"
     TEMP_DIRS+=("${plugin_creation_dir}")
@@ -69,19 +65,10 @@ function run_plugin() {
     done
 
     # Install all the plugins so examples can use them
-    "${PYTHON}" -m pip install -U -e "${SRC_ROOT}"
     "${PYTHON}" -m dffml service dev install
 
     # Run the examples
     run_plugin_examples
-
-    # Deactivate venv
-    deactivate
-
-    # Create the docs
-    "${PYTHON}" -m pip install -U -e "${SRC_ROOT}[dev]"
-    "${PYTHON}" -m dffml service dev install -user
-    "${SRC_ROOT}/scripts/docs.sh"
 
     # Log skipped tests to file
     check_skips="$(mktemp)"
@@ -104,6 +91,8 @@ function run_plugin() {
       exit 1
     fi
   fi
+
+  cd "${SRC_ROOT}"
 
   if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" == "xrefs/heads/master" ]; then
     git status
