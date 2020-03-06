@@ -1,6 +1,6 @@
 import numbers
 import numpy as np
-from sagaopt import row_norms, sag_solver
+from .sagaopt import row_norms, sag_solver
 
 async def _handle_zeros_in_scale(scale, copy=True):
     ''' Makes sure that whenever scale is zero, we handle it correctly.
