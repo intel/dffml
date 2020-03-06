@@ -6,6 +6,7 @@ Description of what this model does
 # TODO Add docstrings
 import os
 import hashlib
+import pathlib
 from typing import AsyncIterator, Tuple, Any, List, Type
 
 import numpy as np
@@ -67,11 +68,9 @@ class TextClassifierConfig:
     epochs: int = field(
         "Number of iterations to pass over all records in a source", default=10
     )
-    directory: str = field(
+    directory: pathlib.Path = field(
         "Directory where state should be saved",
-        default=os.path.join(
-            os.path.expanduser("~"), ".cache", "dffml", "tensorflow_hub"
-        ),
+        default=pathlib.Path("~", ".cache", "dffml", "tensorflow_hub"),
     )
 
     def __post_init__(self):

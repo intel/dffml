@@ -5,6 +5,7 @@ Description of what this model does
 """
 import os
 import sys
+import pathlib
 
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier
@@ -221,14 +222,11 @@ for entry_point_name, name, cls, applicable_features_function in [
     dffml_config_properties = {
         **{
             "directory": (
-                str,
+                pathlib.Path,
                 field(
                     "Directory where state should be saved",
-                    default=os.path.join(
-                        os.path.expanduser("~"),
-                        ".cache",
-                        "dffml",
-                        f"scikit-{entry_point_name}",
+                    default=pathlib.Path(
+                        "~", ".cache", "dffml", f"scikit-{entry_point_name}",
                     ),
                 ),
             ),

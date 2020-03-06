@@ -309,9 +309,9 @@ Ensure that `predict` and `accuracy` for these algorithms uses training data.
 
   - Features to train on
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/scikit-{Entrypoint}
+  - default: ~/.cache/dffml/scikit-{entrypoint}
   - Directory where state should be saved
 
 """
