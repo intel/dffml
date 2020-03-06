@@ -58,7 +58,7 @@ Here's an example of how we style our imports.
     import sklearn.datasets
 
     from dffml.record import Record
-    from dffml.config.config import BaseConfigLoader
+    from dffml.configloader.configloader import BaseConfigLoader
     from dffml.util.asynctestcase import AsyncTestCase, IntegrationCLITestCase
 
     import dffml_model_scikit
