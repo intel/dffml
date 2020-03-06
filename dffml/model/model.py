@@ -22,6 +22,7 @@ from ..source.source import Sources
 from ..feature import Features
 from .accuracy import Accuracy
 from ..util.entrypoint import base_entry_point
+from ..util.os import MODE_BITS_SECURE
 
 
 class ModelNotTrained(Exception):
@@ -79,12 +80,19 @@ class Model(BaseDataFlowFacilitatorObject):
     CONFIG = ModelConfig
 
     def __call__(self) -> ModelContext:
-        # If the config object for this model contains the directory property
-        # then create it if it does not exist
-        directory = getattr(self.config, "directory", None)
-        if directory is not None and not os.path.isdir(directory):
-            os.makedirs(directory)
+        self._make_config_directory()
         return self.CONTEXT(self)
+
+    def _make_config_directory(self):
+        """
+        If the config object for this model contains the directory property
+        then create it if it does not exist.
+        """
+        directory = getattr(self.config, "directory", None)
+        if directory is not None:
+            directory = pathlib.Path(directory)
+            if not directory.is_dir():
+                directory.mkdir(mode=MODE_BITS_SECURE, parents=True)
 
 
 class SimpleModelNoContext:
@@ -113,6 +121,7 @@ class SimpleModel(Model):
         # If we've already entered the model's context once, don't reload
         if self._in_context > 1:
             return self
+        self._make_config_directory()
         self.open()
         return self
 
