@@ -6,6 +6,7 @@ Base class for Scikit models
 import os
 import json
 import hashlib
+import pathlib
 from pathlib import Path
 from typing import AsyncIterator, Tuple, Any, NamedTuple
 
@@ -22,7 +23,7 @@ from dffml.feature.feature import Features, Feature
 
 
 class ScikitConfig(ModelConfig, NamedTuple):
-    directory: str
+    directory: pathlib.Path
     predict: Feature
     features: Features
     tcluster: Feature
@@ -55,14 +56,13 @@ class ScikitContext(ModelContext):
             "".join([params] + self.features).encode()
         ).hexdigest()
 
-    def _filename(self):
-        return os.path.join(
-            self.parent.config.directory, self._features_hash + ".joblib"
-        )
+    @property
+    def _filepath(self):
+        return self.parent.config.directory / (self._features_hash + ".joblib")
 
     async def __aenter__(self):
-        if os.path.isfile(self._filename()):
-            self.clf = joblib.load(self._filename())
+        if self._filepath.is_file():
+            self.clf = joblib.load(str(self._filepath))
         else:
             config = self.parent.config._asdict()
             del config["directory"]
@@ -88,10 +88,10 @@ class ScikitContext(ModelContext):
         ydata = np.array(df[self.parent.config.predict.NAME])
         self.logger.info("Number of input records: {}".format(len(xdata)))
         self.clf.fit(xdata, ydata)
-        joblib.dump(self.clf, self._filename())
+        joblib.dump(self.clf, str(self._filepath))
 
     async def accuracy(self, sources: Sources) -> Accuracy:
-        if not os.path.isfile(self._filename()):
+        if not self._filepath.is_file():
             raise ModelNotTrained("Train model before assessing for accuracy.")
         data = []
         async for record in sources.with_features(self.features):
@@ -110,7 +110,7 @@ class ScikitContext(ModelContext):
     async def predict(
         self, records: AsyncIterator[Record]
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
-        if not os.path.isfile(self._filename()):
+        if not self._filepath.is_file():
             raise ModelNotTrained("Train model before prediction.")
         async for record in records:
             feature_data = record.features(self.features)
@@ -132,8 +132,8 @@ class ScikitContext(ModelContext):
 
 class ScikitContextUnsprvised(ScikitContext):
     async def __aenter__(self):
-        if os.path.isfile(self._filename()):
-            self.clf = joblib.load(self._filename())
+        if self._filepath.is_file():
+            self.clf = joblib.load(str(self._filepath))
         else:
             config = self.parent.config._asdict()
             del config["directory"]
@@ -152,10 +152,10 @@ class ScikitContextUnsprvised(ScikitContext):
         xdata = np.array(df)
         self.logger.info("Number of input records: {}".format(len(xdata)))
         self.clf.fit(xdata)
-        joblib.dump(self.clf, self._filename())
+        joblib.dump(self.clf, str(self._filepath))
 
     async def accuracy(self, sources: Sources) -> Accuracy:
-        if not os.path.isfile(self._filename()):
+        if not self._filepath.is_file():
             raise ModelNotTrained("Train model before assessing for accuracy.")
         data = []
         target = []
@@ -205,7 +205,7 @@ class ScikitContextUnsprvised(ScikitContext):
     async def predict(
         self, records: AsyncIterator[Record]
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
-        if not os.path.isfile(self._filename()):
+        if not self._filepath.is_file():
             raise ModelNotTrained("Train model before prediction.")
         estimator_type = self.clf._estimator_type
         if estimator_type is "clusterer":
@@ -240,28 +240,27 @@ class Scikit(Model):
         super().__init__(config)
         self.saved = {}
 
-    def _filename(self):
-        return os.path.join(
-            self.config.directory,
+    @property
+    def _filepath(self):
+        return self.config.directory / (
             hashlib.sha384(self.config.predict.NAME.encode()).hexdigest()
-            + ".json",
+            + ".json"
         )
 
     async def __aenter__(self) -> "Scikit":
-        path = Path(self._filename())
-        if path.is_file():
-            self.saved = json.loads(path.read_text())
+        if self._filepath.is_file():
+            self.saved = json.loads(self._filepath.read_text())
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
-        Path(self._filename()).write_text(json.dumps(self.saved))
+        self._filepath.write_text(json.dumps(self.saved))
 
 
 class ScikitUnsprvised(Scikit):
-    def _filename(self):
+    @property
+    def _filepath(self):
         model_name = self.SCIKIT_MODEL.__name__
-        return os.path.join(
-            self.config.directory,
+        return self.config.directory / (
             hashlib.sha384(
                 (
                     "".join(
@@ -272,5 +271,5 @@ class ScikitUnsprvised(Scikit):
                     )
                 ).encode()
             ).hexdigest()
-            + ".json",
+            + ".json"
         )

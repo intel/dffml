@@ -3,6 +3,7 @@ Uses Tensorflow to create a generic DNN which learns on all of the features in a
 record.
 """
 import os
+import pathlib
 from typing import List, Dict, Any, AsyncIterator
 
 import numpy as np
@@ -29,11 +30,9 @@ class DNNRegressionModelConfig:
     epochs: int = field(
         "Number of iterations to pass over all records in a source", default=30
     )
-    directory: str = field(
+    directory: pathlib.Path = field(
         "Directory where state should be saved",
-        default=os.path.join(
-            os.path.expanduser("~"), ".cache", "dffml", "tensorflow"
-        ),
+        default=pathlib.Path("~", ".cache", "dffml", "tensorflow"),
     )
     hidden: List[int] = field(
         "List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer",

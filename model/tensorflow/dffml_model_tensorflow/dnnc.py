@@ -6,6 +6,7 @@ import os
 import abc
 import hashlib
 import inspect
+import pathlib
 from typing import List, Dict, Any, AsyncIterator, Type
 
 import numpy as np
@@ -145,11 +146,9 @@ class DNNClassifierModelConfig:
     epochs: int = field(
         "Number of iterations to pass over all records in a source", default=30
     )
-    directory: str = field(
+    directory: pathlib.Path = field(
         "Directory where state should be saved",
-        default=os.path.join(
-            os.path.expanduser("~"), ".cache", "dffml", "tensorflow"
-        ),
+        default=pathlib.Path("~", ".cache", "dffml", "tensorflow"),
     )
     hidden: List[int] = field(
         "List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer",

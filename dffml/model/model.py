@@ -79,6 +79,14 @@ class Model(BaseDataFlowFacilitatorObject):
 
     CONFIG = ModelConfig
 
+    def __init__(self, config):
+        super().__init__(config)
+        # TODO Just in case its a string. We should make it so that on
+        # instantiation of an @config we convert properties to their correct
+        # types.
+        if isinstance(getattr(self.config, "directory", None), str):
+            self.config.directory = pathlib.Path(self.config.directory)
+
     def __call__(self) -> ModelContext:
         self._make_config_directory()
         return self.CONTEXT(self)
