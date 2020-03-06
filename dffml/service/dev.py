@@ -18,7 +18,7 @@ import importlib.util
 from pathlib import Path
 
 from ..base import BaseConfig
-from ..util.os import chdir
+from ..util.os import chdir, MODE_BITS_SECURE
 from ..version import VERSION
 from ..util.skel import Skel, SkelTemplateConfig
 from ..util.cli.arg import Arg
@@ -429,7 +429,7 @@ class Release(CMD):
             with tempfile.TemporaryDirectory() as tempdir:
                 # The directory where the fresh copy will live
                 clean_dir = pathlib.Path(tempdir, "clean")
-                clean_dir.mkdir()
+                clean_dir.mkdir(mode=MODE_BITS_SECURE)
                 archive_file = pathlib.Path(tempdir, "archive.tar")
                 # Create the archive
                 with open(archive_file, "wb") as archive:
