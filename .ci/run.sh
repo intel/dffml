@@ -150,6 +150,14 @@ function run_docs() {
   # Doctests
   ./scripts/doctest.sh
 
+  # Fail if there are any changes to the Git repo
+  changes=$(git status --porcelain | wc -l)
+  if [ "$changes" -ne 0 ]; then
+    echo "Running docs.py resulted in changes to the Git repo" >&2
+    echo "Need to run ./scripts/docs.sh and commit changes" >&2
+    exit 1
+  fi
+
   # Make master docs
   master_docs="$(mktemp -d)"
   TEMP_DIRS+=("${master_docs}")
