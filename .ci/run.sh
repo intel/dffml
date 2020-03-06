@@ -49,8 +49,6 @@ function run_plugin() {
   if [ -d "examples" ] && [ "x${PLUGIN}" != "x." ]; then
     run_plugin_examples
   fi
-  # Uninstall
-  "${PYTHON}" -m pip uninstall -y "${PACKAGE_NAME}"
   cd "${SRC_ROOT}"
 
   if [ "x${PLUGIN}" = "x." ]; then
