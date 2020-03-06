@@ -13,7 +13,7 @@ from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Dict
 from .rgrsupport import f_normalize, _ridge_regression
 import numpy as np
 
-from dffml.repo import Repo
+from dffml.record import Record as Repo
 from dffml.base import config, field
 from dffml.source.source import Sources
 from dffml.feature import Features
