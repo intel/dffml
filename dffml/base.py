@@ -325,7 +325,7 @@ class BaseConfigurable(metaclass=BaseConfigurableMetaClass):
     only parameter to the __init__ of a BaseDataFlowFacilitatorObject.
     """
 
-    def __init__(self, config: BaseConfig) -> None:
+    def __init__(self, config: Type[BaseConfig]) -> None:
         """
         BaseConfigurable takes only one argument to __init__,
         its config, which should inherit from BaseConfig. It shall be a object
@@ -521,7 +521,7 @@ class BaseDataFlowFacilitatorObject(
     >>>         await ctx.method()
     """
 
-    def __init__(self, config: BaseConfig) -> None:
+    def __init__(self, config: Type[BaseConfig]) -> None:
         BaseConfigurable.__init__(self, config)
         # TODO figure out how to call these in __new__
         self.__ensure_property("CONTEXT")
