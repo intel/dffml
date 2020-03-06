@@ -2,6 +2,11 @@ import os
 import contextlib
 
 
+# When creating files or directories we should always default to only allowing
+# the user to access or edit the files or directories.
+MODE_BITS_SECURE = 0o700
+
+
 @contextlib.contextmanager
 def chdir(new_path):
     """
