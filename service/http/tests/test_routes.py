@@ -307,7 +307,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                 self.assertEqual(
                     self.cli.app["models"]["salary"].config,
                     FakeModelConfig(
-                        directory=tempdir,
+                        directory=pathlib.Path(tempdir),
                         features=Features(
                             DefFeature("Years", int, 1),
                             DefFeature("Experiance", int, 1),

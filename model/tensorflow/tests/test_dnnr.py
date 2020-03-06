@@ -1,5 +1,6 @@
 import os
 import random
+import pathlib
 import tempfile
 from typing import Type
 
@@ -95,9 +96,7 @@ class TestDNN(AsyncTestCase):
         )
         self.assertEqual(
             config.directory,
-            os.path.join(
-                os.path.expanduser("~"), ".cache", "dffml", "tensorflow"
-            ),
+            pathlib.Path("~", ".cache", "dffml", "tensorflow"),
         )
         self.assertEqual(config.steps, 3000)
         self.assertEqual(config.epochs, 30)
