@@ -10,7 +10,7 @@ import hashlib
 import numbers
 import numpy as np
 from typing import AsyncIterator, Tuple, Any, List, Optional, NamedTuple, Dict
-from rgrsupport import f_normalize, _ridge_regression
+from .rgrsupport import f_normalize, _ridge_regression
 import numpy as np
 
 from dffml.repo import Repo
