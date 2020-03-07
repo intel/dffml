@@ -30,51 +30,46 @@ with ``pip``.
 
 Train the model.
 
+.. literalinclude:: /../examples/MNIST/train.sh
+
 .. code-block:: console
 
-    $ dffml train \
-        -model tfdnnc \
-        -model-batchsize 1000 \
-        -model-hidden 30 50 25 \
-        -model-clstype int \
-        -model-predict label:int:1 \
-        -model-classifications $(seq 0 9) \
-        -model-features image:int:$((28 * 28)) \
-        -sources images=idx3 label=idx1 \
-        -source-images-filename train-images-idx3-ubyte.gz \
-        -source-images-feature image \
-        -source-label-filename train-labels-idx1-ubyte.gz \
-        -source-label-feature label \
-        -log debug
     ... log output ...
 
 Assess the model's accuracy.
 
+.. literalinclude:: /../examples/MNIST/accuracy.sh
+
 .. code-block:: console
 
-    $ dffml accuracy \
-        -model tfdnnc \
-        -model-batchsize 1000 \
-        -model-hidden 30 50 25 \
-        -model-clstype int \
-        -model-predict label:int:1 \
-        -model-classifications $(seq 0 9) \
-        -model-features image:int:$((28 * 28)) \
-        -sources images=idx3 label=idx1 \
-        -source-images-filename t10k-images-idx3-ubyte.gz \
-        -source-images-feature image \
-        -source-label-filename t10k-labels-idx1-ubyte.gz \
-        -source-label-feature label \
-        -log debug
     ... log output followed by accuracy as float ...
     0.8269000053405762
 
 The accuracy likely won't be very good right now because we need to normalize
 the data first.
 
-.. note::
+Create an ``image.csv`` file which contains the names of the images to predict on.
 
-    Prediction and rest of this tutorial comming soon! We're currently working
-    on getting the data normailzation working and reading image files from
-    formats other than IDX.
+.. literalinclude:: /../examples/MNIST/image_file.sh
 
+In this example, the ``image.csv`` file contains the names of the following images :-
+
+.. image:: /../examples/MNIST/image1.png
+    :width: 140px
+    :height: 140px
+
+.. image:: /../examples/MNIST/image2.png
+    :width: 140px
+    :height: 140px
+
+.. image:: /../examples/MNIST/image3.png
+    :width: 140px
+    :height: 140px
+
+.. image:: /../examples/MNIST/image4.png
+    :width: 140px
+    :height: 140px
+
+Predicting with the trained model :-
+
+.. literalinclude:: /../examples/MNIST/predict.sh
