@@ -62,6 +62,7 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
         self.assertEqual(config.key, "key")
         self.assertFalse(config.readwrite)
         self.assertFalse(config.allowempty)
+        self.assertIsNone(config.loadfiles)
 
     def test_config_set(self):
         config = CSVSource.config(
@@ -76,6 +77,7 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
                 "SourceURLColumn",
                 "--source-csv-readwrite",
                 "--source-csv-allowempty",
+                "--source-csv-loadfiles",
             )
         )
         self.assertEqual(config.filename, "feedface")
@@ -84,6 +86,7 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
         self.assertEqual(config.key, "SourceURLColumn")
         self.assertTrue(config.readwrite)
         self.assertTrue(config.allowempty)
+        self.assertTrue(config.loadfiles)
 
     async def test_key(self):
         with tempfile.NamedTemporaryFile() as fileobj:
