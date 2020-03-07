@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Test tensorflow DNNClassifier documentation exaples in CI
 - config directories and files associated with ConfigLoaders have been renamed
   to configloader.
+- Model config directory parameters are now `pathlib.Path` objects
 
 ## [0.3.4] - 2020-02-28
 ### Added

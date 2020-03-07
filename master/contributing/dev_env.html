@@ -351,7 +351,7 @@ all the packages in development mode.</p>
 <span class="gp">$</span> mkdir -p .venv
 <span class="gp">$</span> <span class="nb">export</span> <span class="nv">HOME</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span><span class="s2">/.venv&quot;</span>
 <span class="gp">$</span> <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span><span class="s2">/.local/bin:</span><span class="si">${</span><span class="nv">PATH</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="gp">$</span> pip install --user -U setuptools
+<span class="gp">$</span> pip install --user -U pip setuptools
 <span class="gp">$</span> pip install --prefix<span class="o">=</span>~/.local -e .<span class="o">[</span>dev<span class="o">]</span>
 <span class="gp">$</span> dffml service dev install -user
 </pre></div>

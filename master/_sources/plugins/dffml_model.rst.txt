@@ -127,9 +127,9 @@ Example usage of Tensorflow DNNClassifier model using python API
   - default: 30
   - Number of iterations to pass over all records in a source
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/tensorflow
+  - default: ~/.cache/dffml/tensorflow
   - Directory where state should be saved
 
 - hidden: List of integers
@@ -248,9 +248,9 @@ predict).
   - default: 30
   - Number of iterations to pass over all records in a source
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/tensorflow
+  - default: ~/.cache/dffml/tensorflow
   - Directory where state should be saved
 
 - hidden: List of integers
@@ -426,9 +426,9 @@ Implemented using Tensorflow hub pretrained models.
   - default: 10
   - Number of iterations to pass over all records in a source
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/tensorflow_hub
+  - default: ~/.cache/dffml/tensorflow_hub
   - Directory where state should be saved
 
 dffml_model_scratch
@@ -832,8 +832,8 @@ Ensure that `predict` and `accuracy` for these algorithms uses training data.
 
   - Features to train on
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/scikit-{Entrypoint}
+  - default: ~/.cache/dffml/scikit-{entrypoint}
   - Directory where state should be saved
 
