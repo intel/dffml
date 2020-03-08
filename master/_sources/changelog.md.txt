@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Docstrings and doctestable examples for `record.py` (features and evaluated)
 - Simplified model API with SimpleModel
 - Documentation on how DataFlows work conceptually.
+- Style guide now contains information on class, variable, and function naming.
 ### Changed
 - Restructured contributing documentation
 - Use randomly generated data for scikit tests
