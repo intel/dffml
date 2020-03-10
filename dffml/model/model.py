@@ -205,16 +205,20 @@ class SimpleModel(Model):
 
     def check_applicable_feature(self, feature):
         # Check the data datatype is in the list of supported data types
-        if feature.dtype() not in self.DTYPES:
+        self.check_feature_dtype(feature.dtype())
+        # Check that length (dimensions) of feature is supported
+        self.check_feature_length(feature.length())
+        return True
+
+    def check_feature_dtype(self, dtype):
+        if dtype not in self.DTYPES:
             msg = f"{self.__class__.__qualname__} only supports features "
             msg += f"with these data types: {self.DTYPES}"
             raise ValueError(msg)
+
+    def check_feature_length(self, length):
         # If SUPPORTED_LENGTHS is None then all lengths are supported
-        if self.SUPPORTED_LENGTHS is None:
-            return True
-        # Check that length (dimensions) of feature is supported
-        if feature.length() not in self.SUPPORTED_LENGTHS:
+        if self.SUPPORTED_LENGTHS and length not in self.SUPPORTED_LENGTHS:
             msg = f"{self.__class__.__qualname__} only supports "
             msg += f"{self.SUPPORTED_LENGTHS} dimensional values"
             raise ValueError(msg)
-        return True
