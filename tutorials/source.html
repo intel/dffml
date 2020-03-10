@@ -370,7 +370,7 @@ to point to your new source class (not the one ending in <code class="docutils l
 <span class="kn">from</span> <span class="nn">dffml_setup_common</span> <span class="kn">import</span> <span class="n">SETUP_KWARGS</span><span class="p">,</span> <span class="n">IMPORT_NAME</span>
 
 <span class="n">SETUP_KWARGS</span><span class="p">[</span><span class="s2">&quot;entry_points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;dffml.source&quot;</span><span class="p">:</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;customsqlite = </span><span class="si">{IMPORT_NAME}</span><span class="s2">.custom_sqlite:CustomSQLiteSource&quot;</span><span class="p">]</span>
+    <span class="s2">&quot;dffml.source&quot;</span><span class="p">:</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;customsqlite = </span><span class="si">{</span><span class="n">IMPORT_NAME</span><span class="si">}</span><span class="s2">.custom_sqlite:CustomSQLiteSource&quot;</span><span class="p">]</span>
 <span class="p">}</span>
 
 <span class="n">setup</span><span class="p">(</span><span class="o">**</span><span class="n">SETUP_KWARGS</span><span class="p">)</span>

@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - config directories and files associated with ConfigLoaders have been renamed
   to configloader.
 - Model config directory parameters are now `pathlib.Path` objects
+- New model tutorial and `skel/model` use simplifeid model API.
 
 ## [0.3.4] - 2020-02-28
 ### Added

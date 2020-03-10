@@ -402,7 +402,7 @@ the latest version and use that version.</p>
     <span class="n">conditions</span><span class="o">=</span><span class="p">[],</span>
 <span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">safety_check</span><span class="p">(</span><span class="n">package</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-    <span class="n">pinned</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{package}</span><span class="s2">==</span><span class="si">{version}</span><span class="s2">&quot;</span>
+    <span class="n">pinned</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">package</span><span class="si">}</span><span class="s2">==</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span>
@@ -670,7 +670,7 @@ we care about.</p></li>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Download the information on the package in JSON format.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://pypi.org/pypi/</span><span class="si">{package}</span><span class="s2">/json&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;https://pypi.org/pypi/</span><span class="si">{</span><span class="n">package</span><span class="si">}</span><span class="s2">/json&quot;</span>
     <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>  <span class="c1"># skipcq: BAN-B310</span>
         <span class="n">package_json</span> <span class="o">=</span> <span class="k">await</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
         <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;response_json&quot;</span><span class="p">:</span> <span class="n">package_json</span><span class="p">}</span>
@@ -894,11 +894,11 @@ based on <a class="reference external" href="https://docs.python.org/3/library/a
                         <span class="ow">or</span> <span class="n">bandit_report</span><span class="p">[</span><span class="s2">&quot;CONFIDENCE.HIGH_AND_SEVERITY.HIGH&quot;</span><span class="p">]</span>
                         <span class="o">&gt;</span> <span class="mi">5</span>
                     <span class="p">):</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Do not install </span><span class="si">{package_name}</span><span class="s2">!&quot;</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Do not install </span><span class="si">{</span><span class="n">package_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
                         <span class="k">for</span> <span class="n">definition_name</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{definition_name}</span><span class="s2">: </span><span class="si">{result}</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">definition_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{package_name}</span><span class="s2"> is okay to install&quot;</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">package_name</span><span class="si">}</span><span class="s2"> is okay to install&quot;</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">ShouldI</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>

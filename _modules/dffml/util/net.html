@@ -192,7 +192,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">expected</span> <span class="o">=</span> <span class="n">expected</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{self.path}</span><span class="s2"> hash was </span><span class="si">{self.value}</span><span class="s2">, should be </span><span class="si">{self.expected}</span><span class="s2">&quot;</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2"> hash was </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">, should be </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">expected</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
 <div class="viewcode-block" id="ProtocolNotAllowedError"><a class="viewcode-back" href="../../../api/util/net.html#dffml.util.net.ProtocolNotAllowedError">[docs]</a><span class="k">class</span> <span class="nc">ProtocolNotAllowedError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -206,7 +206,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">allowlist</span> <span class="o">=</span> <span class="n">allowlist</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Protocol of URL </span><span class="si">{self.url!r}</span><span class="s2"> is not in allowlist: </span><span class="si">{self.allowlist!r}</span><span class="s2">&quot;</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Protocol of URL </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="si">!r}</span><span class="s2"> is not in allowlist: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">allowlist</span><span class="si">!r}</span><span class="s2">&quot;</span></div>
 
 
 <span class="c1"># Default list of URL protocols allowed</span>
