@@ -216,7 +216,7 @@
         <span class="k">if</span> <span class="n">val</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isalnum</span><span class="p">():</span>
             <span class="k">return</span> <span class="n">val</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{val}</span><span class="s2">` : Only alphanumeric [a-zA-Z0-9] characters are allowed as table,column names&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">` : Only alphanumeric [a-zA-Z0-9] characters are allowed as table,column names&quot;</span>
         <span class="p">)</span>
 
     <span class="nd">@classmethod</span>

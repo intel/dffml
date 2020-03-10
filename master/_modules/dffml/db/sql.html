@@ -211,7 +211,7 @@
 
                 <span class="k">for</span> <span class="n">cnd</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
                     <span class="n">exp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;(`</span><span class="si">{cnd.column}</span><span class="s2">` </span><span class="si">{cnd.operation}</span><span class="s2"> </span><span class="si">{cls.BIND_DECLARATION}</span><span class="s2"> )&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;(`</span><span class="si">{</span><span class="n">cnd</span><span class="o">.</span><span class="n">column</span><span class="si">}</span><span class="s2">` </span><span class="si">{</span><span class="n">cnd</span><span class="o">.</span><span class="n">operation</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">BIND_DECLARATION</span><span class="si">}</span><span class="s2"> )&quot;</span>
                     <span class="p">)</span>
                     <span class="n">val_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cnd</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
@@ -225,7 +225,7 @@
             <span class="n">result_vals</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
                 <span class="n">temp_exp</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;expression&quot;</span><span class="p">]</span>
-                <span class="n">temp_exp</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{temp_exp}</span><span class="s2">)&quot;</span>
+                <span class="n">temp_exp</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">temp_exp</span><span class="si">}</span><span class="s2">)&quot;</span>
                 <span class="n">result_exps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp_exp</span><span class="p">)</span>
                 <span class="n">result_vals</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">])</span>
 
@@ -260,8 +260,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;CREATE TABLE IF NOT EXISTS </span><span class="si">{table_name}</span><span class="s2"> (&quot;</span>
-            <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{k}</span><span class="s2">` </span><span class="si">{v}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cols</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+            <span class="sa">f</span><span class="s2">&quot;CREATE TABLE IF NOT EXISTS </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2"> (&quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">` </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cols</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
             <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
         <span class="p">)</span>
 
@@ -288,11 +288,11 @@
 <span class="sd">        parameters : tuple</span>
 <span class="sd">            Variables to bind</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">col_exp</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{col}</span><span class="s2">`&quot;</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
+        <span class="n">col_exp</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">`&quot;</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
         <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;INSERT INTO </span><span class="si">{table_name}</span><span class="s2"> &quot;</span>
-            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;( </span><span class="si">{col_exp}</span><span class="s2"> )&quot;</span>
-            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; VALUES( {&#39;, &#39;.join([self.BIND_DECLARATION] * len(data))} ) &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;INSERT INTO </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;( </span><span class="si">{</span><span class="n">col_exp</span><span class="si">}</span><span class="s2"> )&quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; VALUES( </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">BIND_DECLARATION</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span><span class="si">}</span><span class="s2"> ) &quot;</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">query</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></div>
 
@@ -332,9 +332,9 @@
             <span class="n">condition_exp</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="n">query</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;UPDATE </span><span class="si">{table_name}</span><span class="s2"> SET &quot;</span>
-            <span class="o">+</span> <span class="s2">&quot; ,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{col}</span><span class="s2">` = </span><span class="si">{self.BIND_DECLARATION}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
-            <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot; WHERE </span><span class="si">{condition_exp}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">condition_exp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="sa">f</span><span class="s2">&quot;UPDATE </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2"> SET &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot; ,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">` = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">BIND_DECLARATION</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
+            <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot; WHERE </span><span class="si">{</span><span class="n">condition_exp</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">condition_exp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">query</span><span class="p">,</span> <span class="n">query_values</span></div>
@@ -376,10 +376,10 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">cols</span><span class="p">:</span>
             <span class="n">col_exp</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">col_exp</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{col}</span><span class="s2">`&quot;</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">])</span>
+            <span class="n">col_exp</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">`&quot;</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">])</span>
 
-        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{col_exp}</span><span class="s2"> FROM </span><span class="si">{table_name}</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot; WHERE </span><span class="si">{condition_exp}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">condition_exp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;SELECT </span><span class="si">{</span><span class="n">col_exp</span><span class="si">}</span><span class="s2"> FROM </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot; WHERE </span><span class="si">{</span><span class="n">condition_exp</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">condition_exp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">query</span><span class="p">,</span> <span class="n">query_values</span></div>
@@ -413,8 +413,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">condition_exp</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;DELETE FROM </span><span class="si">{table_name}</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot; WHERE </span><span class="si">{condition_exp}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">condition_exp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;DELETE FROM </span><span class="si">{</span><span class="n">table_name</span><span class="si">}</span><span class="s2"> &quot;</span> <span class="o">+</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot; WHERE </span><span class="si">{</span><span class="n">condition_exp</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">condition_exp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">query</span><span class="p">,</span> <span class="n">query_values</span></div></div>
