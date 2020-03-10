@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.df.memory &mdash; DFFML 0.3.4 documentation</title>
+  <title>dffml.df.memory &mdash; DFFML 0.3.5 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.4
+                0.3.5
               </div>
             
           
@@ -87,6 +87,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
@@ -256,13 +257,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<div class="viewcode-block" id="MemoryKeyValueStoreContext.get"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreContext.get">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryKeyValueStoreContext.set"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreContext.set">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div></div>
 
 
 <div class="viewcode-block" id="MemoryKeyValueStore"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStore">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
@@ -284,8 +285,8 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__inputs</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">inputs</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Input</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<div class="viewcode-block" id="MemoryInputSet.add"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputSet.add">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Input</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></div>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">definitions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Definition</span><span class="p">]:</span>
         <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__inputs</span><span class="p">))</span>
@@ -404,7 +405,18 @@
         <span class="c1"># TODO Create ctxhd_locks dict to manage a per context lock</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd_lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_set</span><span class="p">:</span> <span class="n">BaseInputSet</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.receive_from_parent_flow"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.receive_from_parent_flow">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">receive_from_parent_flow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes input from parent dataflow and adds it to every active context</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd_lock</span><span class="p">:</span>
+            <span class="n">ctx_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Receiving </span><span class="si">{</span><span class="n">inputs</span><span class="si">}</span><span class="s2"> from parent flow&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Forwarding inputs to contexts </span><span class="si">{</span><span class="n">ctx_keys</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ctx</span> <span class="ow">in</span> <span class="n">ctx_keys</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="o">*</span><span class="n">inputs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MemoryInputNetworkContext.add"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.add">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_set</span><span class="p">:</span> <span class="n">BaseInputSet</span><span class="p">):</span>
         <span class="c1"># Grab the input set context handle</span>
         <span class="n">handle</span> <span class="o">=</span> <span class="k">await</span> <span class="n">input_set</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">()</span>
         <span class="n">handle_string</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span>
@@ -442,58 +454,52 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span><span class="o">.</span><span class="n">origin</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]</span><span class="o">.</span><span class="n">by_origin</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]</span><span class="o">.</span><span class="n">by_origin</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">origin</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="c1"># Add input to by origin set</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]</span><span class="o">.</span><span class="n">by_origin</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">origin</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]</span><span class="o">.</span><span class="n">by_origin</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">origin</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">uadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.uadd"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.uadd">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">uadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shorthand for creating a MemoryInputSet with a StringInputSetContext</span>
 <span class="sd">        containing a random value for the string.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># TODO(security) Allow for tuning nbytes</span>
-        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span><span class="n">secrets</span><span class="o">.</span><span class="n">token_hex</span><span class="p">(),</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span><span class="n">secrets</span><span class="o">.</span><span class="n">token_hex</span><span class="p">(),</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">sadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context_handle_string</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.sadd"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.sadd">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">sadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context_handle_string</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shorthand for creating a MemoryInputSet with a StringInputSetContext.</span>
 
-<span class="sd">        &gt;&gt;&gt; await octx.ictx.add(</span>
-<span class="sd">        ...     MemoryInputSet(</span>
-<span class="sd">        ...         MemoryInputSetConfig(</span>
-<span class="sd">        ...             ctx=StringInputSetContext(context_handle_string),</span>
-<span class="sd">        ...             inputs=list(args),</span>
-<span class="sd">        ...         )</span>
-<span class="sd">        ...     )</span>
-<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; async def main():</span>
+<span class="sd">        ...     async with MemoryOrchestrator.withconfig({}) as orchestrator:</span>
+<span class="sd">        ...         async with orchestrator(DataFlow.auto()) as octx:</span>
+<span class="sd">        ...             await octx.ictx.sadd(&quot;Hi&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; asyncio.run(main())</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ctx</span> <span class="o">=</span> <span class="n">StringInputSetContext</span><span class="p">(</span><span class="n">context_handle_string</span><span class="p">)</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
             <span class="n">MemoryInputSet</span><span class="p">(</span><span class="n">MemoryInputSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)))</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">ctx</span>
+        <span class="k">return</span> <span class="n">ctx</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">cadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.cadd"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.cadd">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">cadd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shorthand for creating a MemoryInputSet with an existing context.</span>
 
-<span class="sd">        &gt;&gt;&gt; await octx.ictx.add(</span>
-<span class="sd">        ...     MemoryInputSet(</span>
-<span class="sd">        ...         MemoryInputSetConfig(</span>
-<span class="sd">        ...             ctx=ctx,</span>
-<span class="sd">        ...             inputs=list(args),</span>
-<span class="sd">        ...         )</span>
-<span class="sd">        ...     )</span>
-<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; async def main():</span>
+<span class="sd">        ...     async with MemoryOrchestrator.withconfig({}) as orchestrator:</span>
+<span class="sd">        ...         async with orchestrator(DataFlow.auto()) as octx:</span>
+<span class="sd">        ...             await octx.ictx.sadd(StringInputSetContext(&quot;Hi&quot;))</span>
+<span class="sd">        &gt;&gt;&gt; asyncio.run(main())</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
             <span class="n">MemoryInputSet</span><span class="p">(</span><span class="n">MemoryInputSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)))</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">ctx</span>
+        <span class="k">return</span> <span class="n">ctx</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">ctx</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BaseInputSetContext</span><span class="p">]:</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.ctx"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.ctx">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">ctx</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BaseInputSetContext</span><span class="p">]:</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctx_notification_set</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
-            <span class="k">return</span> <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">added</span><span class="p">()</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">added</span><span class="p">()</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">added</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.added"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.added">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">added</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">watch_ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">BaseInputSet</span><span class="p">]:</span>
         <span class="c1"># Grab the input set context handle</span>
@@ -509,9 +515,9 @@
                 <span class="k">async</span> <span class="k">with</span> <span class="n">ctx</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
                     <span class="n">notification_items</span> <span class="o">=</span> <span class="n">ctx</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">notification_items</span>
                     <span class="n">ctx</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">notification_items</span> <span class="o">=</span> <span class="p">[]</span>
-                    <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">notification_items</span>
+                    <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="n">notification_items</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">definition</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryInputNetworkContext.definition"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputNetworkContext.definition">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">definition</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span> <span class="n">definition</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Definition</span><span class="p">:</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd_lock</span><span class="p">:</span>
@@ -533,7 +539,7 @@
                     <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">handle_string</span><span class="p">,</span> <span class="n">definition</span><span class="p">)</span>
                 <span class="p">)</span>
             <span class="c1"># If found then return the definition</span>
-            <span class="k">return</span> <span class="n">found</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">found</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
     <span class="k">def</span> <span class="nf">definitions</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span>
@@ -693,10 +699,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Operation</span><span class="p">]):</span>
+<div class="viewcode-block" id="MemoryOperationNetworkContext.add"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetworkContext.add">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Operation</span><span class="p">]):</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">operations</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">operation</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">operation</span></div>
 
 <div class="viewcode-block" id="MemoryOperationNetworkContext.operations"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetworkContext.operations">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">operations</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -773,7 +779,7 @@
         <span class="n">uid_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">instance_name</span><span class="p">,</span> <span class="n">handle</span><span class="p">]</span> <span class="o">+</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">uids</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">uid_list</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">unique</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryRedundancyCheckerContext.unique"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyCheckerContext.unique">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">unique</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">:</span> <span class="n">BaseParameterSet</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -786,7 +792,7 @@
         <span class="p">]</span> <span class="o">+</span> <span class="nb">sorted</span><span class="p">(</span>
             <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">uid</span> <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">parameters</span><span class="p">()]</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">uid_list</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">uid_list</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span></div>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coro</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">kvctx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="k">await</span> <span class="n">coro</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\x01</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -965,13 +971,13 @@
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.contains"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.contains">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks if operation in is operations we have loaded in memory</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span>
+        <span class="k">return</span> <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">instantiable</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.instantiable"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.instantiable">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">instantiable</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">opimp</span><span class="p">:</span> <span class="n">OperationImplementation</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -990,9 +996,9 @@
                 <span class="n">error</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">instantiate</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.instantiate"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.instantiate">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">instantiate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
         <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfig</span><span class="p">,</span>
@@ -1008,11 +1014,13 @@
                 <span class="n">opimp</span> <span class="o">=</span> <span class="n">OperationImplementation</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">OperationImplementationNotInstantiable</span><span class="p">(</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="c1"># Set the correct instance_name</span>
+        <span class="n">opimp</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">opimp</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">instance_name</span><span class="o">=</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span>
             <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">opimp</span><span class="p">(</span><span class="n">config</span><span class="p">))</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">opimp</span><span class="p">(</span><span class="n">config</span><span class="p">))</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">ensure_contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.ensure_contains"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.ensure_contains">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">ensure_contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Raise errors if we don&#39;t have and can&#39;t instantiate an operation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1023,9 +1031,9 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">OperationImplementationNotInstantiated</span><span class="p">(</span>
                     <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span>
-                <span class="p">)</span>
+                <span class="p">)</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.run"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.run">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span>
         <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOrchestratorContext</span><span class="p">,</span>
@@ -1075,13 +1083,13 @@
                 <span class="k">else</span> <span class="p">(</span><span class="n">str_outputs</span><span class="p">[:</span><span class="mi">512</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">),</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;---&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">outputs</span>
+            <span class="k">return</span> <span class="n">outputs</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">operation_completed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.operation_completed"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.operation_completed">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">operation_completed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_dispatch</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.run_dispatch"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.run_dispatch">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run_dispatch</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOrchestratorContext</span><span class="p">,</span>
         <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
@@ -1140,9 +1148,9 @@
                 <span class="n">MemoryInputSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">parameter_set</span><span class="o">.</span><span class="n">ctx</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">inputs</span>
+        <span class="k">return</span> <span class="n">inputs</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span>
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.dispatch"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.dispatch">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOrchestratorContext</span><span class="p">,</span>
         <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
@@ -1156,7 +1164,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">run_dispatch</span><span class="p">(</span><span class="n">octx</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">task</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">ignore_args</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">set</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">task</span>
+        <span class="k">return</span> <span class="n">task</span></div>
 
 <div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.operations_parameter_set_pairs"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.operations_parameter_set_pairs">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">operations_parameter_set_pairs</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1250,6 +1258,8 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Maps instance_name to OrchestratorContext</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subflows</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BaseOrchestratorContext&quot;</span><span class="p">:</span>
         <span class="c1"># TODO(subflows) In all of these contexts we are about to enter, they</span>
@@ -1290,7 +1300,7 @@
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">aclose</span><span class="p">()</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">initialize_dataflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="MemoryOrchestratorContext.initialize_dataflow"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestratorContext.initialize_dataflow">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">initialize_dataflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a DataFlow by preforming the following steps.</span>
 
@@ -1334,7 +1344,7 @@
                         <span class="n">opimp_config</span> <span class="o">=</span> <span class="n">opimp</span><span class="o">.</span><span class="n">CONFIG</span><span class="o">.</span><span class="n">_fromdict</span><span class="p">(</span><span class="o">**</span><span class="n">opimp_config</span><span class="p">)</span>
                     <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">instantiate</span><span class="p">(</span>
                         <span class="n">operation</span><span class="p">,</span> <span class="n">opimp_config</span><span class="p">,</span> <span class="n">opimp</span><span class="o">=</span><span class="n">opimp</span>
-                    <span class="p">)</span>
+                    <span class="p">)</span></div>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">seed_inputs</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1374,6 +1384,25 @@
             <span class="n">ctx</span> <span class="o">=</span> <span class="n">input_set</span><span class="o">.</span><span class="n">ctx</span>
         <span class="k">return</span> <span class="n">ctx</span>
 
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">forward_inputs_to_subflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">]):</span>
+        <span class="c1"># Go through input set,find instance_names of registered subflows which</span>
+        <span class="c1"># have definition of the current input listed in `forward`.</span>
+        <span class="c1"># If found,add `input` to list of inputs to forward for that instance_name</span>
+        <span class="n">forward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="o">.</span><span class="n">forward</span>
+        <span class="n">inputs_to_forward</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="n">instance_list</span> <span class="o">=</span> <span class="n">forward</span><span class="o">.</span><span class="n">get_instances_to_forward</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">instance_name</span> <span class="ow">in</span> <span class="n">instance_list</span><span class="p">:</span>
+                <span class="n">inputs_to_forward</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">instance_name</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Forwarding inputs from </span><span class="si">{</span><span class="n">inputs_to_forward</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">subflows</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">instance_name</span><span class="p">,</span> <span class="n">inputs</span> <span class="ow">in</span> <span class="n">inputs_to_forward</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">instance_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subflows</span><span class="p">:</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">subflows</span><span class="p">[</span>
+                    <span class="n">instance_name</span>
+                <span class="p">]</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">receive_from_parent_flow</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+
     <span class="c1"># TODO(dfass) Get rid of run_operations, make it run_dataflow. Pass down the</span>
     <span class="c1"># dataflow to everything. Make inputs a list of InputSets or an</span>
     <span class="c1"># asyncgenerator of InputSets. Add a parameter which tells us if we should</span>
@@ -1395,6 +1424,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">input_sets</span><span class="p">:</span>
             <span class="c1"># If there are no input sets, add only seed inputs</span>
             <span class="n">ctxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed_inputs</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">))</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_inputs_to_subflow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_sets</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isasyncgen</span><span class="p">(</span><span class="n">input_sets</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="c1"># Check if inputs is an asyncgenerator</span>
             <span class="c1"># If it is, start a coroutine to wait for new inputs or input sets</span>
@@ -1405,6 +1435,7 @@
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_sets</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_sets</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="c1"># Helper to quickly add inputs under string context</span>
             <span class="k">for</span> <span class="n">ctx_string</span><span class="p">,</span> <span class="n">input_set</span> <span class="ow">in</span> <span class="n">input_sets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_inputs_to_subflow</span><span class="p">(</span><span class="n">input_set</span><span class="p">)</span>
                 <span class="n">ctxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed_inputs</span><span class="p">(</span>
                         <span class="n">ctx</span><span class="o">=</span><span class="n">StringInputSetContext</span><span class="p">(</span><span class="n">ctx_string</span><span class="p">),</span>
@@ -1500,7 +1531,6 @@
                 <span class="n">done</span><span class="p">,</span> <span class="n">_pending</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span>
                     <span class="n">tasks</span><span class="p">,</span> <span class="n">return_when</span><span class="o">=</span><span class="n">asyncio</span><span class="o">.</span><span class="n">FIRST_COMPLETED</span>
                 <span class="p">)</span>
-
                 <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">done</span><span class="p">:</span>
                     <span class="c1"># Remove the task from the set of tasks we are waiting for</span>
                     <span class="n">tasks</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
@@ -1531,6 +1561,10 @@
                             <span class="n">new_input_sets</span><span class="p">,</span>
                         <span class="p">)</span> <span class="o">=</span> <span class="n">input_set_enters_network</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
                         <span class="k">for</span> <span class="n">new_input_set</span> <span class="ow">in</span> <span class="n">new_input_sets</span><span class="p">:</span>
+                            <span class="c1"># forward inputs to subflow</span>
+                            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_inputs_to_subflow</span><span class="p">(</span>
+                                <span class="p">[</span><span class="n">x</span> <span class="k">async</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">new_input_set</span><span class="o">.</span><span class="n">inputs</span><span class="p">()]</span>
+                            <span class="p">)</span>
                             <span class="c1"># Identify which operations have complete contextually</span>
                             <span class="c1"># appropriate input sets which haven&#39;t been run yet</span>
                             <span class="k">async</span> <span class="k">for</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">operations_parameter_set_pairs</span><span class="p">(</span>

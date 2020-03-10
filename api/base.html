@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Base &mdash; DFFML 0.3.4 documentation</title>
+  <title>Base &mdash; DFFML 0.3.5 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.4
+                0.3.5
               </div>
             
           
@@ -89,6 +89,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
@@ -309,6 +310,12 @@ classes which support async context management. Classes ending with
 <p>See the :class:BaseDataFlowFacilitatorObject for example usage.</p>
 </dd></dl>
 
+<dl class="exception">
+<dt id="dffml.base.ConfigAndKWArgsMutuallyExclusive">
+<em class="property">exception </em><code class="sig-prename descclassname">dffml.base.</code><code class="sig-name descname">ConfigAndKWArgsMutuallyExclusive</code><a class="reference internal" href="../_modules/dffml/base.html#ConfigAndKWArgsMutuallyExclusive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.base.ConfigAndKWArgsMutuallyExclusive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when both kwargs and config are specified.</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="dffml.base.ConfigurableParsingNamespace">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.base.</code><code class="sig-name descname">ConfigurableParsingNamespace</code><a class="reference internal" href="../_modules/dffml/base.html#ConfigurableParsingNamespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.base.ConfigurableParsingNamespace" title="Permalink to this definition">¶</a></dt>
@@ -357,6 +364,11 @@ should have been defined in the class.</p>
 <code class="sig-prename descclassname">dffml.base.</code><code class="sig-name descname">config</code><span class="sig-paren">(</span><em class="sig-param">cls</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/base.html#config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.base.config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator to create a dataclass</p>
 </dd></dl>
+
+<dl class="function">
+<dt id="dffml.base.config_asdict">
+<code class="sig-prename descclassname">dffml.base.</code><code class="sig-name descname">config_asdict</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/base.html#config_asdict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.base.config_asdict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="dffml.base.convert_value">

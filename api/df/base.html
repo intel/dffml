@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Data Flow Base Objects &mdash; DFFML 0.3.4 documentation</title>
+  <title>Data Flow Base Objects &mdash; DFFML 0.3.5 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.4
+                0.3.5
               </div>
             
           
@@ -89,6 +89,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
@@ -230,7 +231,14 @@ config, and their parent, a BaseDataFlowObject.</p>
 <dl class="class">
 <dt id="dffml.df.base.BaseDefinitionSetContext">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseDefinitionSetContext</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em>, <em class="sig-param">parent: dffml.df.base.BaseInputNetworkContext</em>, <em class="sig-param">ctx: dffml.df.base.BaseInputSetContext</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseDefinitionSetContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseDefinitionSetContext" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="method">
+<dt id="dffml.df.base.BaseDefinitionSetContext.inputs">
+<em class="property">abstract async </em><code class="sig-name descname">inputs</code><span class="sig-paren">(</span><em class="sig-param">Definition: dffml.df.types.Definition</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.df.types.Input]<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseDefinitionSetContext.inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseDefinitionSetContext.inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Asynchronous iterator of all inputs within a context, which are of a
+definition.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseInputNetwork">
@@ -244,10 +252,35 @@ which in turn becomes input data to other operations.</p>
 <em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseInputNetworkContext</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em>, <em class="sig-param">parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseInputNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseInputNetworkContext" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract Base Class for context managing input_set</p>
 <dl class="method">
+<dt id="dffml.df.base.BaseInputNetworkContext.add">
+<em class="property">abstract async </em><code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param">input_set: dffml.df.base.BaseInputSet</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseInputNetworkContext.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseInputNetworkContext.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds new input set to the network</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.base.BaseInputNetworkContext.added">
+<em class="property">abstract async </em><code class="sig-name descname">added</code><span class="sig-paren">(</span><em class="sig-param">ctx: dffml.df.base.BaseInputSetContext</em><span class="sig-paren">)</span> &#x2192; dffml.df.base.BaseInputSet<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseInputNetworkContext.added"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseInputNetworkContext.added" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns when a new input set has entered the network within a context</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.base.BaseInputNetworkContext.ctx">
+<em class="property">abstract async </em><code class="sig-name descname">ctx</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dffml.df.base.BaseInputSetContext<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseInputNetworkContext.ctx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseInputNetworkContext.ctx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns when a new input set context has entered the network</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="dffml.df.base.BaseInputNetworkContext.definition">
 <em class="property">abstract </em><code class="sig-name descname">definition</code><span class="sig-paren">(</span><em class="sig-param">ctx: dffml.df.base.BaseInputSetContext</em><span class="sig-paren">)</span> &#x2192; dffml.df.base.BaseDefinitionSetContext<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseInputNetworkContext.definition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseInputNetworkContext.definition" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a DefinitionSet context that can be used to access the inputs
 within the given context, by definition.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.base.BaseInputNetworkContext.gather_inputs">
+<em class="property">abstract async </em><code class="sig-name descname">gather_inputs</code><span class="sig-paren">(</span><em class="sig-param">rctx: dffml.df.base.BaseRedundancyCheckerContext</em>, <em class="sig-param">operation: dffml.df.types.Operation</em>, <em class="sig-param">ctx: Optional[dffml.df.base.BaseInputSetContext] = None</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.df.base.BaseParameterSet]<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseInputNetworkContext.gather_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseInputNetworkContext.gather_inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate all possible permutations of applicable inputs for an operation
+that, according to the redundancy checker, haven’t been run yet.</p>
 </dd></dl>
 
 </dd></dl>
@@ -255,7 +288,13 @@ within the given context, by definition.</p>
 <dl class="class">
 <dt id="dffml.df.base.BaseInputSet">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseInputSet</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.df.base.BaseInputSetConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseInputSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseInputSet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="method">
+<dt id="dffml.df.base.BaseInputSet.add">
+<em class="property">abstract async </em><code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param">item: dffml.df.types.Input</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseInputSet.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseInputSet.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an input to the input set.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseInputSetConfig">
@@ -283,6 +322,18 @@ within the given context, by definition.</p>
 <dt id="dffml.df.base.BaseKeyValueStoreContext">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseKeyValueStoreContext</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em>, <em class="sig-param">parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseKeyValueStoreContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseKeyValueStoreContext" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract Base Class for key value storage context</p>
+<dl class="method">
+<dt id="dffml.df.base.BaseKeyValueStoreContext.get">
+<em class="property">abstract async </em><code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">key: str</em><span class="sig-paren">)</span> &#x2192; Optional[bytes]<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseKeyValueStoreContext.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseKeyValueStoreContext.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a value from the key value store</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.base.BaseKeyValueStoreContext.set">
+<em class="property">abstract async </em><code class="sig-name descname">set</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">value: bytes</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseKeyValueStoreContext.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseKeyValueStoreContext.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a value in the key value store</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -294,7 +345,14 @@ within the given context, by definition.</p>
 <dl class="class">
 <dt id="dffml.df.base.BaseLockNetworkContext">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseLockNetworkContext</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em>, <em class="sig-param">parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseLockNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseLockNetworkContext" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="method">
+<dt id="dffml.df.base.BaseLockNetworkContext.acquire">
+<em class="property">abstract async </em><code class="sig-name descname">acquire</code><span class="sig-paren">(</span><em class="sig-param">parameter_set: dffml.df.base.BaseParameterSet</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseLockNetworkContext.acquire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseLockNetworkContext.acquire" title="Permalink to this definition">¶</a></dt>
+<dd><p>An async context manager which will acquire locks of all inputs within
+the parameter set.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseOperationImplementationNetwork">
@@ -305,7 +363,56 @@ within the given context, by definition.</p>
 <dl class="class">
 <dt id="dffml.df.base.BaseOperationImplementationNetworkContext">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseOperationImplementationNetworkContext</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em>, <em class="sig-param">parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationImplementationNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationImplementationNetworkContext" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="method">
+<dt id="dffml.df.base.BaseOperationImplementationNetworkContext.contains">
+<em class="property">abstract async </em><code class="sig-name descname">contains</code><span class="sig-paren">(</span><em class="sig-param">operation: dffml.df.types.Operation</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationImplementationNetworkContext.contains"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationImplementationNetworkContext.contains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the network contains / has the ability to run a given
+operation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.base.BaseOperationImplementationNetworkContext.dispatch">
+<em class="property">abstract async </em><code class="sig-name descname">dispatch</code><span class="sig-paren">(</span><em class="sig-param">ictx: dffml.df.base.BaseInputNetworkContext</em>, <em class="sig-param">lctx: dffml.df.base.BaseLockNetworkContext</em>, <em class="sig-param">operation: dffml.df.types.Operation</em>, <em class="sig-param">parameter_set: dffml.df.base.BaseParameterSet</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationImplementationNetworkContext.dispatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationImplementationNetworkContext.dispatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Schedule the running of an operation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.base.BaseOperationImplementationNetworkContext.instantiable">
+<em class="property">abstract async </em><code class="sig-name descname">instantiable</code><span class="sig-paren">(</span><em class="sig-param">operation: dffml.df.types.Operation</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationImplementationNetworkContext.instantiable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationImplementationNetworkContext.instantiable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prior to figuring out which operation implementation networks contain
+an operation, if none do, they will need to instantiate it on the fly.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.base.BaseOperationImplementationNetworkContext.instantiate">
+<em class="property">abstract async </em><code class="sig-name descname">instantiate</code><span class="sig-paren">(</span><em class="sig-param">operation: dffml.df.types.Operation</em>, <em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationImplementationNetworkContext.instantiate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationImplementationNetworkContext.instantiate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiate a given operation so that it can be run within this network.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.base.BaseOperationImplementationNetworkContext.operation_completed">
+<em class="property">abstract async </em><code class="sig-name descname">operation_completed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationImplementationNetworkContext.operation_completed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationImplementationNetworkContext.operation_completed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns when an operation finishes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.base.BaseOperationImplementationNetworkContext.operations_parameter_set_pairs">
+<em class="property">abstract async </em><code class="sig-name descname">operations_parameter_set_pairs</code><span class="sig-paren">(</span><em class="sig-param">ictx: dffml.df.base.BaseInputNetworkContext</em>, <em class="sig-param">octx: dffml.df.base.BaseOperationNetworkContext</em>, <em class="sig-param">rctx: dffml.df.base.BaseRedundancyCheckerContext</em>, <em class="sig-param">ctx: dffml.df.base.BaseInputSetContext</em>, <em class="sig-param">*</em>, <em class="sig-param">new_input_set: dffml.df.base.BaseInputSet = None</em>, <em class="sig-param">stage: dffml.df.types.Stage = &lt;Stage.PROCESSING: 'processing'&gt;</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[Tuple[dffml.df.types.Operation, dffml.df.base.BaseParameterSet]]<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationImplementationNetworkContext.operations_parameter_set_pairs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationImplementationNetworkContext.operations_parameter_set_pairs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use new_input_set to determine which operations in the network might be
+up for running. Cross check using existing inputs to generate per
+input set context novel input pairings. Yield novel input pairings
+along with their operations as they are generated.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.base.BaseOperationImplementationNetworkContext.run">
+<em class="property">abstract async </em><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">operation: dffml.df.types.Operation, inputs: Dict[str, Any]</em><span class="sig-paren">)</span> &#x2192; Union[bool, Dict[str, Any]]<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationImplementationNetworkContext.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationImplementationNetworkContext.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the operation implementation for the given operation and create an
+operation implementation context, call the run method of the context and
+return the results.</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseOperationNetwork">
@@ -318,6 +425,19 @@ inputs, outputs, and conditions.</p>
 <dt id="dffml.df.base.BaseOperationNetworkContext">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseOperationNetworkContext</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em>, <em class="sig-param">parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationNetworkContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationNetworkContext" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract Base Class for context managing operations</p>
+<dl class="method">
+<dt id="dffml.df.base.BaseOperationNetworkContext.add">
+<em class="property">abstract async </em><code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param">operations: List[dffml.df.types.Operation]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationNetworkContext.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationNetworkContext.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add operations to the network</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.base.BaseOperationNetworkContext.operations">
+<em class="property">abstract async </em><code class="sig-name descname">operations</code><span class="sig-paren">(</span><em class="sig-param">input_set: dffml.df.base.BaseInputSet = None</em>, <em class="sig-param">stage: dffml.df.types.Stage = &lt;Stage.PROCESSING: 'processing'&gt;</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.df.types.Operation]<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationNetworkContext.operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationNetworkContext.operations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve all operations in the network of a given stage filtering by
+operations who have inputs with definitions in the input set.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -363,7 +483,13 @@ inputs, outputs, and conditions.</p>
 <dl class="class">
 <dt id="dffml.df.base.BaseOrchestratorContext">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseOrchestratorContext</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em>, <em class="sig-param">parent: dffml.df.base.BaseDataFlowObject</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOrchestratorContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOrchestratorContext" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><dl class="method">
+<dt id="dffml.df.base.BaseOrchestratorContext.run_operations">
+<em class="property">abstract async </em><code class="sig-name descname">run_operations</code><span class="sig-paren">(</span><em class="sig-param">strict: bool = True</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[Tuple[dffml.df.base.BaseContextHandle, Dict[str, Any]]]<a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOrchestratorContext.run_operations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOrchestratorContext.run_operations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run all the operations then run cleanup and output operations</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseParameterSet">
@@ -437,6 +563,25 @@ loaded should be registered to ENTRYPOINT via setuptools.</p>
 <dt id="dffml.df.base.OperationImplementationContext.config">
 <em class="property">property </em><code class="sig-name descname">config</code><a class="headerlink" href="#dffml.df.base.OperationImplementationContext.config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for self.parent.config</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.base.OperationImplementationContext.run">
+<em class="property">abstract async </em><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">inputs: Dict[str, Any]</em><span class="sig-paren">)</span> &#x2192; Union[bool, Dict[str, Any]]<a class="reference internal" href="../../_modules/dffml/df/base.html#OperationImplementationContext.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OperationImplementationContext.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implementation of the operation goes here. Should take and return a dict
+with keys matching the input and output parameters of the Operation
+object associated with this operation implementation context.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.base.OperationImplementationContext.subflow">
+<code class="sig-name descname">subflow</code><span class="sig-paren">(</span><em class="sig-param">dataflow</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#OperationImplementationContext.subflow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OperationImplementationContext.subflow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers subflow <cite>dataflow</cite> with parent flow and yields an instance of <cite>BaseOrchestratorContext</cite></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">my_operation</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">subflow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">)</span> <span class="k">as</span> <span class="n">octx</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">octx</span><span class="o">.</span><span class="n">run</span><span class="p">({</span><span class="s2">&quot;ctx_str&quot;</span><span class="p">:</span> <span class="p">[]})</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.util.net &mdash; DFFML 0.3.4 documentation</title>
+  <title>dffml.util.net &mdash; DFFML 0.3.5 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.4
+                0.3.5
               </div>
             
           
@@ -87,6 +87,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
@@ -239,6 +240,30 @@
 <span class="sd">    Download a file and verify the hash of the downloaded file. If the file</span>
 <span class="sd">    already exists and the hash matches, do not re-download the file.</span>
 
+<span class="sd">    The path to the downloaded file is prepended to the argument list of the</span>
+<span class="sd">    wrapped function.</span>
+
+<span class="sd">    You can use tools like ``curl`` to download the file, and then ``sha384sum``</span>
+<span class="sd">    to calculate the hash value used for the ``expected_hash`` argument.</span>
+
+<span class="sd">    .. code-block:: console</span>
+
+<span class="sd">        $ curl -sSL &#39;https://github.com/intel/dffml/raw/152c2b92535fac6beec419236f8639b0d75d707d/MANIFEST.in&#39; | sha384sum</span>
+<span class="sd">        f7aadf5cdcf39f161a779b4fa77ec56a49630cf7680e21fb3dc6c36ce2d8c6fae0d03d5d3094a6aec4fea1561393c14c  -</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    url : str</span>
+<span class="sd">        The URL to download</span>
+<span class="sd">    target_path : str, pathlib.Path</span>
+<span class="sd">        Path on disk to store download</span>
+<span class="sd">    expected_hash : str</span>
+<span class="sd">        SHA384 hash of the contents</span>
+<span class="sd">    protocol_allowlist : list, optional</span>
+<span class="sd">        List of strings, one of which the URL must start with. If you want to be</span>
+<span class="sd">        able to download ``http://`` (rather than ``https://``) links, you&#39;ll</span>
+<span class="sd">        need to override this.</span>
+
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
@@ -296,10 +321,31 @@
 <span class="sd">    Verify the hash of the downloaded file. If the hash matches the file is not</span>
 <span class="sd">    re-downloaded.</span>
 
+<span class="sd">    The path to the extracted directory is prepended to the argument list of the</span>
+<span class="sd">    wrapped function.</span>
+
+<span class="sd">    See :py:func:`cached_download &lt;dffml.util.net.cached_download&gt;` for</span>
+<span class="sd">    instructions on how to calculate ``expected_hash``.</span>
+
 <span class="sd">    .. warning::</span>
 
 <span class="sd">        This function does not verify the integrity of the unpacked archive on</span>
 <span class="sd">        disk. Only the downloaded file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    url : str</span>
+<span class="sd">        The URL to download</span>
+<span class="sd">    file_path : str, pathlib.Path</span>
+<span class="sd">        Path on disk to store download</span>
+<span class="sd">    directory_path : str, pathlib.Path</span>
+<span class="sd">        Path on disk to store extracted contents of downloaded archive</span>
+<span class="sd">    expected_hash : str</span>
+<span class="sd">        SHA384 hash of the contents</span>
+<span class="sd">    protocol_allowlist : list, optional</span>
+<span class="sd">        List of strings, one of which the URL must start with. If you want to be</span>
+<span class="sd">        able to download ``http://`` (rather than ``https://``) links, you&#39;ll</span>
+<span class="sd">        need to override this.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -324,7 +370,7 @@
             <span class="n">shutil</span><span class="o">.</span><span class="n">unpack_archive</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">download_path</span><span class="p">),</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
 
     <span class="n">extract</span> <span class="o">=</span> <span class="n">cached_download</span><span class="p">(</span>
-        <span class="n">url</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">expected_hash</span><span class="p">,</span> <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span><span class="p">,</span>
+        <span class="n">url</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">expected_hash</span><span class="p">,</span> <span class="n">protocol_allowlist</span><span class="o">=</span><span class="n">protocol_allowlist</span>
     <span class="p">)(</span><span class="n">extractor</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">mkwrapper</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>

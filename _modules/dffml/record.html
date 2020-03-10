@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.record &mdash; DFFML 0.3.4 documentation</title>
+  <title>dffml.record &mdash; DFFML 0.3.5 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.4
+                0.3.5
               </div>
             
           
@@ -87,6 +87,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
@@ -354,6 +355,27 @@
 <div class="viewcode-block" id="Record.evaluated"><a class="viewcode-back" href="../../api/record.html#dffml.record.Record.evaluated">[docs]</a>    <span class="k">def</span> <span class="nf">evaluated</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates features with the result dict</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        results : dict</span>
+<span class="sd">            The results that will be added to the features.</span>
+<span class="sd">        overwrite : boolean</span>
+<span class="sd">            If &#39;True&#39;, the function overwrites the current features with the results provided.</span>
+<span class="sd">            If &#39;Fasle&#39;, the function updates the current features with the results provided.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; example = Record(&quot;example&quot;, data=dict(features=dict(dead=&quot;beef&quot;)))</span>
+<span class="sd">        &gt;&gt;&gt; print(example.features())</span>
+<span class="sd">        {&#39;dead&#39;: &#39;beef&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; results = {&quot;new&quot;: &quot;feature&quot;}</span>
+<span class="sd">        &gt;&gt;&gt; example.evaluated({&quot;feed&quot;: &quot;face&quot;})</span>
+<span class="sd">        &gt;&gt;&gt; print(example.features())</span>
+<span class="sd">        {&#39;dead&#39;: &#39;beef&#39;, &#39;feed&#39;: &#39;face&#39;}</span>
+<span class="sd">        &gt;&gt;&gt; example.evaluated(results, overwrite=True)</span>
+<span class="sd">        &gt;&gt;&gt; print(example.features())</span>
+<span class="sd">        {&#39;new&#39;: &#39;feature&#39;}</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">overwrite</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">results</span>
@@ -365,6 +387,23 @@
 <div class="viewcode-block" id="Record.features"><a class="viewcode-back" href="../../api/record.html#dffml.record.Record.features">[docs]</a>    <span class="k">def</span> <span class="nf">features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subset</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns all features for the record or the subset specified.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        subset : list</span>
+<span class="sd">            The subset of features that will be returned.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            features.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; example = Record(&quot;example&quot;, data=dict(features=dict(dead=&quot;beef&quot;)))</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; print(example.features([&quot;dead&quot;]))</span>
+<span class="sd">        {&#39;dead&#39;: &#39;beef&#39;}</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">subset</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">features</span>
