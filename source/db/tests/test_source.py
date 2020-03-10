@@ -17,8 +17,6 @@ class TestDbSource(AsyncTestCase, SourceTest):
     @classmethod
     def setUpClass(cls):
         # SQL table info
-        # TODO: This implies that the database is SQL and potentially excludes some SQL variants
-        # TODO: We need a more abstract way to handle the testing database/table setup/creation
         cls.table_name = "testTable"
         cls.cols = {
             "key": "varchar(100) NOT NULL PRIMARY KEY",
@@ -39,7 +37,7 @@ class TestDbSource(AsyncTestCase, SourceTest):
         os.close(file)
 
         # Sqlite config
-        cls.db_config = SqliteDatabaseConfig("sqlite_config")
+        cls.db_config = SqliteDatabaseConfig(cls.database_name)
 
         # DbSource config
         cls.source_config = DbSourceConfig(
@@ -54,9 +52,12 @@ class TestDbSource(AsyncTestCase, SourceTest):
         os.remove(cls.database_name)
 
     async def setUpSource(self):
-        return DbSource(self.source_config)
+        db_src = DbSource(self.source_config)
 
-    async def setUp(self):
-        self.sdb = SqliteDatabase(
-            SqliteDatabaseConfig(filename=self.database_name)
-        )
+        # Create table
+        await db_src.__aenter__()
+        async with db_src.db_impl() as db_ctx:
+            await db_ctx.create_table(self.table_name, self.cols)
+        await db_src.__aexit__(None, None, None)
+
+        return db_src

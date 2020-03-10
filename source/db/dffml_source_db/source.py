@@ -2,7 +2,7 @@ import collections
 from typing import Type, AsyncIterator, List
 
 from dffml.base import config, BaseConfig
-from dffml.db.base import BaseDatabase
+from dffml.db.base import BaseDatabase, Condition
 from dffml.db.sqlite import SqliteDatabase
 from dffml.record import Record, RecordPrediction
 from dffml.source.source import BaseSource, BaseSourceContext
@@ -32,9 +32,7 @@ class DbSourceContext(BaseSourceContext):
         for key in model_columns:
             if key.startswith("feature_"):
                 modified_key = key.replace("feature_", "")
-                key_value_pairs[modified_key] = record.data.features[
-                    modified_key
-                ]
+                key_value_pairs[key] = record.data.features[modified_key]
             elif "_value" in key:
                 target = key.replace("_value", "")
                 if record.data.prediction:
@@ -54,12 +52,17 @@ class DbSourceContext(BaseSourceContext):
             else:
                 key_value_pairs[key] = record.data.__dict__[key]
         async with self.parent.db_impl() as db_ctx:
-            await db_ctx.update(self.parent.config.table_name, key_value_pairs)
+            # Insert AND update since some tests don't insert before updating
+            # TODO: Maybe change the sqlite update query to use INSERT INTO ... ON DUPLICATE KEY UPDATE
+            # Note that this would impose all other db implementations to use "update or create if not exists" functionality
+            await db_ctx.insert(self.parent.config.table_name, key_value_pairs)
+            await db_ctx.update(self.parent.config.table_name, key_value_pairs, [[Condition("key", "=", record.key)]])
+            results = [row async for row in db_ctx.lookup(self.parent.config.table_name)]
         self.logger.debug("update: %s", await self.record(record.key))
 
     async def records(self) -> AsyncIterator[Record]:
-        with self.parent.db_impl() as db_ctx:
-            for result in db_ctx.lookup(self.parent.config.table_name):
+        async with self.parent.db_impl() as db_ctx:
+            async for result in db_ctx.lookup(self.parent.config.table_name):
                 yield self.convert_to_record(result)
 
     def convert_to_record(self, result):
@@ -84,11 +87,16 @@ class DbSourceContext(BaseSourceContext):
 
     async def record(self, key: str):
         record = Record(key)
-        with self.parent.db_impl() as db_ctx:
-            row = await db_ctx.lookup(
-                self.parent.config.table_name,
-                ["*"],  # TODO: An example of Conditions would be helpful
-            ).__anext__()  # TODO: Need to try this out once the Conditions parameter is figured out
+        async with self.parent.db_impl() as db_ctx:
+            try:
+                row = await db_ctx.lookup(
+                    self.parent.config.table_name,
+                    cols=None,  # None turns into *. We want all rows
+                    conditions=[[Condition("key", "=", key)]],
+                ).__anext__()
+            except StopAsyncIteration:
+                # This would happen if there is no matching row, so the async generator reached the end
+                return record
 
         if row is not None:
             features = {}
