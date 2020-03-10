@@ -33,9 +33,7 @@ class TestExample(unittest.TestCase):
         # Check the Accuracy
         self.assertRegex(lines[0], r"Accuracy:  [-+]?\d*\.?\d+|\d+")
         # Check the TARGET
-        self.assertAlmostEqual(
-            round(ast.literal_eval(lines[1])["TARGET"]), 1, places=0,
-        )
+        self.assertIsInstance(round(ast.literal_eval(lines[1])["TARGET"]), int)
 
     def test_python_filenames(self):
         with directory_with_csv_files() as tempdir:
@@ -56,8 +54,6 @@ class TestExample(unittest.TestCase):
             )
             records = json.loads(stdout.decode())
             # Check the TARGET
-            self.assertAlmostEqual(
-                round(records[0]["prediction"]["TARGET"]["value"]),
-                1,
-                places=0,
+            self.assertIsInstance(
+                round(records[0]["prediction"]["TARGET"]["value"]), int
             )
