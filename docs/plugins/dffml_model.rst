@@ -199,6 +199,10 @@ Output
       }
     ]
 
+Example usage of Tensorflow DNNClassifier model using python API
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/tfdnnr.py
+
 The ``NaN`` in ``confidence`` is the expected behaviour. (See TODO in
 predict).
 
