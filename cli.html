@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Command Line &mdash; DFFML 0.3.4 documentation</title>
+  <title>Command Line &mdash; DFFML 0.3.5 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.4
+                0.3.5
               </div>
             
           
@@ -89,6 +89,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="concepts/index.html">Concepts</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
@@ -119,6 +120,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#cli-service-dev-create">Create</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#entrypoints">Entrypoints</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#setuppy">setuppy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bump">bump</a></li>
 </ul>
 </li>
 </ul>
@@ -238,6 +240,12 @@ see them all.</p>
 <li><p><a class="reference internal" href="#setuppy" id="id19">setuppy</a></p>
 <ul>
 <li><p><a class="reference internal" href="#kwarg" id="id20">kwarg</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#bump" id="id21">bump</a></p>
+<ul>
+<li><p><a class="reference internal" href="#main" id="id22">main</a></p></li>
+<li><p><a class="reference internal" href="#packages" id="id23">packages</a></p></li>
 </ul>
 </li>
 </ul>
@@ -398,6 +406,25 @@ flag to <code class="docutils literal notranslate"><span class="pre">pip</span> 
 argument.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev setuppy kwarg name model/tensorflow/setup.py
 <span class="go">dffml-model-tensorflow</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="bump">
+<h4><a class="toc-backref" href="#id21">bump</a><a class="headerlink" href="#bump" title="Permalink to this headline">¶</a></h4>
+<p>Utilities for bumping version numbers.</p>
+<div class="section" id="main">
+<h5><a class="toc-backref" href="#id22">main</a><a class="headerlink" href="#main" title="Permalink to this headline">¶</a></h5>
+<p>Update the version of DFFML used by all of the plugins.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dffml service dev bump main</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="packages">
+<h5><a class="toc-backref" href="#id23">packages</a><a class="headerlink" href="#packages" title="Permalink to this headline">¶</a></h5>
+<p>Update the version number of a package or all packages. Increments the version
+of each packages by the version string given.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dffml service dev bump packages -log debug -skip dffml -- 0.0.1</span>
 </pre></div>
 </div>
 </div>

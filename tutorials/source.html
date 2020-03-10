@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>New Source Tutorial &mdash; DFFML 0.3.4 documentation</title>
+  <title>New Source Tutorial &mdash; DFFML 0.3.5 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Use Cases" href="../usage/index.html" />
-    <link rel="prev" title="New Model Tutorial" href="model.html" /> 
+    <link rel="prev" title="New Operations Tutorial" href="operations.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.4
+                0.3.5
               </div>
             
           
@@ -89,14 +89,15 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="intro.html">Introduction to DFFML</a></li>
-<li class="toctree-l2"><a class="reference internal" href="operations.html">New Operations Tutorial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="model.html">New Model Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html">New Operations Tutorial</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">New Source Tutorial</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#create-the-package">Create the Package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#edit-the-source">Edit the Source</a></li>
@@ -218,8 +219,20 @@ connection establishment in the <a class="reference internal" href="../api/sourc
 <em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">BaseSourceContext</code><span class="sig-paren">(</span><em class="sig-param">parent: dffml.source.source.BaseSource</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/source/source.html#BaseSourceContext"><span class="viewcode-link">[source]</span></a></dt>
 <dd><dl class="method">
 <dt>
+<em class="property">abstract async </em><code class="sig-name descname">record</code><span class="sig-paren">(</span><em class="sig-param">key: str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/source/source.html#BaseSourceContext.record"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Get a record from the source or add it if it doesn’t exist</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
 <em class="property">abstract </em><code class="sig-name descname">records</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.record.Record]<a class="reference internal" href="../_modules/dffml/source/source.html#BaseSourceContext.records"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Returns a list of records retrieved from self.src</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">abstract async </em><code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">record: dffml.record.Record</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/source/source.html#BaseSourceContext.update"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Updates a record for a source</p>
 </dd></dl>
 
 </dd></dl>
@@ -399,7 +412,7 @@ it).</p>
         <a href="../usage/index.html" class="btn btn-neutral float-right" title="Use Cases" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="model.html" class="btn btn-neutral float-left" title="New Model Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="operations.html" class="btn btn-neutral float-left" title="New Operations Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

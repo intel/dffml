@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Record &mdash; DFFML 0.3.4 documentation</title>
+  <title>Record &mdash; DFFML 0.3.5 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.4
+                0.3.5
               </div>
             
           
@@ -89,6 +89,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
@@ -197,6 +198,28 @@
 <dt id="dffml.record.Record.evaluated">
 <code class="sig-name descname">evaluated</code><span class="sig-paren">(</span><em class="sig-param">results: Dict[str, Any], overwrite=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/record.html#Record.evaluated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.record.Record.evaluated" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates features with the result dict</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>results</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – The results that will be added to the features.</p></li>
+<li><p><strong>overwrite</strong> (<em>boolean</em>) – If ‘True’, the function overwrites the current features with the results provided.
+If ‘Fasle’, the function updates the current features with the results provided.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">example</span> <span class="o">=</span> <span class="n">Record</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dead</span><span class="o">=</span><span class="s2">&quot;beef&quot;</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">features</span><span class="p">())</span>
+<span class="go">{&#39;dead&#39;: &#39;beef&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;new&quot;</span><span class="p">:</span> <span class="s2">&quot;feature&quot;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span><span class="o">.</span><span class="n">evaluated</span><span class="p">({</span><span class="s2">&quot;feed&quot;</span><span class="p">:</span> <span class="s2">&quot;face&quot;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">features</span><span class="p">())</span>
+<span class="go">{&#39;dead&#39;: &#39;beef&#39;, &#39;feed&#39;: &#39;face&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span><span class="o">.</span><span class="n">evaluated</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">features</span><span class="p">())</span>
+<span class="go">{&#39;new&#39;: &#39;feature&#39;}</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -209,6 +232,24 @@
 <dt id="dffml.record.Record.features">
 <code class="sig-name descname">features</code><span class="sig-paren">(</span><em class="sig-param">subset: List[str] = []</em><span class="sig-paren">)</span> &#x2192; Dict[str, Any]<a class="reference internal" href="../_modules/dffml/record.html#Record.features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.record.Record.features" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns all features for the record or the subset specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>subset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – The subset of features that will be returned.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>features.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">example</span> <span class="o">=</span> <span class="n">Record</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dead</span><span class="o">=</span><span class="s2">&quot;beef&quot;</span><span class="p">)))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">features</span><span class="p">([</span><span class="s2">&quot;dead&quot;</span><span class="p">]))</span>
+<span class="go">{&#39;dead&#39;: &#39;beef&#39;}</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">

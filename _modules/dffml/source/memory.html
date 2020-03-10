@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.source.memory &mdash; DFFML 0.3.4 documentation</title>
+  <title>dffml.source.memory &mdash; DFFML 0.3.5 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.4
+                0.3.5
               </div>
             
           
@@ -87,6 +87,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../concepts/index.html">Concepts</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
@@ -184,15 +185,15 @@
 
 
 <div class="viewcode-block" id="MemorySourceContext"><a class="viewcode-back" href="../../../api/source/memory.html#dffml.source.memory.MemorySourceContext">[docs]</a><span class="k">class</span> <span class="nc">MemorySourceContext</span><span class="p">(</span><span class="n">BaseSourceContext</span><span class="p">):</span>
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mem</span><span class="p">[</span><span class="n">record</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">record</span>
+<div class="viewcode-block" id="MemorySourceContext.update"><a class="viewcode-back" href="../../../api/source/memory.html#dffml.source.memory.MemorySourceContext.update">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mem</span><span class="p">[</span><span class="n">record</span><span class="o">.</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">record</span></div>
 
 <div class="viewcode-block" id="MemorySourceContext.records"><a class="viewcode-back" href="../../../api/source/memory.html#dffml.source.memory.MemorySourceContext.records">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">records</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
         <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">yield</span> <span class="n">record</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Record</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">Record</span><span class="p">(</span><span class="n">key</span><span class="p">))</span></div>
+<div class="viewcode-block" id="MemorySourceContext.record"><a class="viewcode-back" href="../../../api/source/memory.html#dffml.source.memory.MemorySourceContext.record">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Record</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">Record</span><span class="p">(</span><span class="n">key</span><span class="p">))</span></div></div>
 
 
 <div class="viewcode-block" id="MemorySourceConfig"><a class="viewcode-back" href="../../../api/source/memory.html#dffml.source.memory.MemorySourceConfig">[docs]</a><span class="nd">@config</span>

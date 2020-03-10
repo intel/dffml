@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Style &mdash; DFFML 0.3.4 documentation</title>
+  <title>Style &mdash; DFFML 0.3.5 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.4
+                0.3.5
               </div>
             
           
@@ -89,6 +89,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
@@ -108,26 +109,24 @@
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Contributing</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="index.html#contacting-the-community">Contacting the Community</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#what-to-work-on">What To Work On</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#who-s-working-on-what">Who’s Working On What</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#communication-style">Communication Style</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html#working-on-dffml">Working on DFFML</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="dev_env.html">Getting Set Up To Work On DFFML</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Style</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#python-file-formatting">Python File Formatting</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#javascript-file-formatting">JavaScript File Formatting</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#imports">Imports</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#docstrings">Docstrings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_community.html">What To Work On</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev_env.html">Getting Set Up To Work On DFFML</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Style</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#python-file-formatting">Python File Formatting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#javascript-file-formatting">JavaScript File Formatting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#naming-conventions">Naming Conventions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imports">Imports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docstrings">Docstrings</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#example-docstring">Example Docstring</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="codebase.html">Codebase Layout And Notes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="git.html">Git and GitHub</a></li>
-<li class="toctree-l3"><a class="reference internal" href="testing.html">Testing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="docs.html">Documentation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="debugging.html">Debugging</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="codebase.html">Codebase Layout And Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="git.html">Git and GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging.html">Debugging</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
@@ -206,8 +205,19 @@ for review, they are easy to read, even if your pull request isn’t yet ready t
 merge.</p>
 <div class="section" id="python-file-formatting">
 <h2>Python File Formatting<a class="headerlink" href="#python-file-formatting" title="Permalink to this headline">¶</a></h2>
+<p>To install black in the environment</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install black
+</pre></div>
+</div>
 <p>Run the <a class="reference external" href="https://github.com/psf/black">black</a> formatter on all Python files.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> black .
+</pre></div>
+</div>
+<p>In VSCode open command pallete by Ctrl+Shift+p, open Settings(JSON) and add the properties.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;editor.formatOnSave&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;python.formatting.provider&quot;</span><span class="p">:</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -218,6 +228,13 @@ on all JavaScript files. Use the following options.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> js-beautify -r -n -s <span class="m">2</span> file_to_format.js
 </pre></div>
 </div>
+</div>
+<div class="section" id="naming-conventions">
+<h2>Naming Conventions<a class="headerlink" href="#naming-conventions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Variables should always use underscores, as well as functions and methods.</p></li>
+<li><p>Classes should use CamelCase.</p></li>
+</ul>
 </div>
 <div class="section" id="imports">
 <h2>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">¶</a></h2>
@@ -231,7 +248,7 @@ on all JavaScript files. Use the following options.</p>
 <span class="kn">import</span> <span class="nn">sklearn.datasets</span>
 
 <span class="kn">from</span> <span class="nn">dffml.record</span> <span class="kn">import</span> <span class="n">Record</span>
-<span class="kn">from</span> <span class="nn">dffml.config.config</span> <span class="kn">import</span> <span class="n">BaseConfigLoader</span>
+<span class="kn">from</span> <span class="nn">dffml.configloader.configloader</span> <span class="kn">import</span> <span class="n">BaseConfigLoader</span>
 <span class="kn">from</span> <span class="nn">dffml.util.asynctestcase</span> <span class="kn">import</span> <span class="n">AsyncTestCase</span><span class="p">,</span> <span class="n">IntegrationCLITestCase</span>
 
 <span class="kn">import</span> <span class="nn">dffml_model_scikit</span>
@@ -261,7 +278,7 @@ on all JavaScript files. Use the following options.</p>
 <li><p><cite>Empty line</cite></p></li>
 <li><p>Imports of other files from the package we’re currently in (if we’re this far
 nested, likely this might only happen in an example package like <code class="docutils literal notranslate"><span class="pre">shouldi</span></code>
-or in the tests for a <em>Core</em> plugin).</p></li>
+or in the tests for an <em>Official</em> plugin).</p></li>
 </ul>
 <p>In every block of imports (a block is a group of lines between empty lines), you
 should be following reverse <a class="reference external" href="https://lwn.net/Articles/758915/">reverse christmas tree</a> style. This means that lines with the least

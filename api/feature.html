@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Features &mdash; DFFML 0.3.4 documentation</title>
+  <title>Features &mdash; DFFML 0.3.5 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.4
+                0.3.5
               </div>
             
           
@@ -89,6 +89,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
@@ -195,6 +196,13 @@ feature project’s feature URL.</p>
 <em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Data</code><span class="sig-paren">(</span><em class="sig-param">key: str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/feature/feature.html#Data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Passed to each feature during evaluation. Shared between all features a record
 is being evaluated with</p>
+<dl class="method">
+<dt id="dffml.feature.feature.Data.mklock">
+<em class="property">async </em><code class="sig-name descname">mklock</code><span class="sig-paren">(</span><em class="sig-param">name: str</em><span class="sig-paren">)</span> &#x2192; asyncio.locks.Lock<a class="reference internal" href="../_modules/dffml/feature/feature.html#Data.mklock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Data.mklock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a lock stored in data under the key <cite>name</cite>. Create the lock if it
+does not exist.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">

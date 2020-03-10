@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Base Source &mdash; DFFML 0.3.4 documentation</title>
+  <title>Base Source &mdash; DFFML 0.3.5 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.4
+                0.3.5
               </div>
             
           
@@ -89,6 +89,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Examples</span></p>
 <ul>
@@ -208,9 +209,21 @@ class and implement the records method.</p>
 <dt id="dffml.source.source.BaseSourceContext">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">BaseSourceContext</code><span class="sig-paren">(</span><em class="sig-param">parent: dffml.source.source.BaseSource</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSourceContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSourceContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
+<dt id="dffml.source.source.BaseSourceContext.record">
+<em class="property">abstract async </em><code class="sig-name descname">record</code><span class="sig-paren">(</span><em class="sig-param">key: str</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSourceContext.record"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSourceContext.record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a record from the source or add it if it doesn’t exist</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="dffml.source.source.BaseSourceContext.records">
 <em class="property">abstract </em><code class="sig-name descname">records</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.record.Record]<a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSourceContext.records"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSourceContext.records" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of records retrieved from self.src</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.source.source.BaseSourceContext.update">
+<em class="property">abstract async </em><code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">record: dffml.record.Record</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSourceContext.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSourceContext.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates a record for a source</p>
 </dd></dl>
 
 </dd></dl>
@@ -230,9 +243,21 @@ class and implement the records method.</p>
 <dt id="dffml.source.source.SourcesContext">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">SourcesContext</code><span class="sig-paren">(</span><em class="sig-param">parent: dffml.util.asynchelper.AsyncContextManagerList</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#SourcesContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SourcesContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
+<dt id="dffml.source.source.SourcesContext.record">
+<em class="property">async </em><code class="sig-name descname">record</code><span class="sig-paren">(</span><em class="sig-param">key: str</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#SourcesContext.record"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SourcesContext.record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve and or register record will all sources</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="dffml.source.source.SourcesContext.records">
 <code class="sig-name descname">records</code><span class="sig-paren">(</span><em class="sig-param">validation: Optional[Callable[[dffml.record.Record], bool]] = None</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.record.Record]<a class="reference internal" href="../../_modules/dffml/source/source.html#SourcesContext.records"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SourcesContext.records" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieves records from all sources</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.source.source.SourcesContext.update">
+<em class="property">async </em><code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">record: dffml.record.Record</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#SourcesContext.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SourcesContext.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates a record for a source</p>
 </dd></dl>
 
 <dl class="method">
