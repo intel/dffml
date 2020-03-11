@@ -54,6 +54,13 @@ so.
 
 .. literalinclude:: /../examples/source/custom_sqlite.py
 
+Write the tests
+---------------
+
+**examples/source/test_custom_sqlite.py**
+
+.. literalinclude:: /../examples/source/test_custom_sqlite.py
+
 Run the tests
 -------------
 
