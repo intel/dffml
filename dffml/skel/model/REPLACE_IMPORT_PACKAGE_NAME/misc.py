@@ -57,11 +57,11 @@ class MiscModelConfig:
     features: Features = field("Features to train on. For SLR only 1 allowed")
     directory: pathlib.Path = field(
         "Directory where state should be saved",
-        default=pathlib.Path("~", ".cache", "dffml", "miscmodel"),
+        default=pathlib.Path("~", ".cache", "dffml", "misc"),
     )
 
 
-@entrypoint("miscmodel")
+@entrypoint("misc")
 class MiscModel(SimpleModel):
     # The configuration class needs to be set as the CONFIG property
     CONFIG: Type[MiscModelConfig] = MiscModelConfig
