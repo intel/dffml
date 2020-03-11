@@ -1,10 +1,10 @@
-function predict(URL) {
+function predict (URL) {
   return fetch('cgi-bin/api-ml.py?action=predict' +
-    '&maintained=' + Number(maintained) +
-    '&URL=' + URL)
-  .then(function(response) {
-    return response.json()
-  }.bind(this));
+      '&maintained=' + Number(maintained) +
+      '&URL=' + URL)
+    .then(function(response) {
+      return response.json()
+    }.bind(this));
 }
 
 window.addEventListener('DOMContentLoaded', function(event) {
@@ -14,8 +14,8 @@ window.addEventListener('DOMContentLoaded', function(event) {
 
   predictDOM.addEventListener('click', function(event) {
     predict(URLDOM.value)
-    .then(function() {
-      refreshTable(tableDOM);
-    });
+      .then(function() {
+        refreshTable(tableDOM);
+      });
   });
 });

@@ -1,9 +1,13 @@
 import os
 import sys
+import ast
 import json
 import pydoc
+import shutil
 import asyncio
+import pathlib
 import getpass
+import tempfile
 import importlib
 import contextlib
 import configparser
@@ -14,7 +18,7 @@ import importlib.util
 from pathlib import Path
 
 from ..base import BaseConfig
-from ..util.os import chdir
+from ..util.os import chdir, MODE_BITS_SECURE
 from ..version import VERSION
 from ..util.skel import Skel, SkelTemplateConfig
 from ..util.cli.arg import Arg
@@ -25,8 +29,8 @@ from ..util.packaging import is_develop
 from ..util.data import traverse_config_get
 from ..df.types import Input, DataFlow
 from ..df.memory import MemoryOrchestrator
-from ..config.config import BaseConfigLoader
-from ..config.json import JSONConfigLoader
+from ..configloader.configloader import BaseConfigLoader
+from ..configloader.json import JSONConfigLoader
 from ..operation.output import GetSingle
 
 config = configparser.ConfigParser()
@@ -40,7 +44,7 @@ NAME = config.get("user", "name", fallback="Unknown")
 EMAIL = config.get("user", "email", fallback="unknown@example.com")
 
 CORE_PLUGINS = [
-    ("config", "yaml"),
+    ("configloader", "yaml"),
     ("model", "tensorflow"),
     ("model", "scratch"),
     ("model", "scikit"),
@@ -421,17 +425,157 @@ class Release(CMD):
                 if package_json["info"]["version"] == version:
                     print(f"Version {version} of {name} already on PyPi")
                     return
-            # Upload if not present
-            for cmd in [
-                ["git", "clean", "-fdx"],
-                [sys.executable, "setup.py", "sdist"],
-                [sys.executable, "-m", "twine", "upload", "dist/*"],
-            ]:
-                print(f"$ {' '.join(cmd)}")
-                proc = await asyncio.create_subprocess_exec(*cmd)
-                await proc.wait()
-                if proc.returncode != 0:
-                    raise RuntimeError
+            # Create a fresh copy of the codebase to upload
+            with tempfile.TemporaryDirectory() as tempdir:
+                # The directory where the fresh copy will live
+                clean_dir = pathlib.Path(tempdir, "clean")
+                clean_dir.mkdir(mode=MODE_BITS_SECURE)
+                archive_file = pathlib.Path(tempdir, "archive.tar")
+                # Create the archive
+                with open(archive_file, "wb") as archive:
+                    cmd = ["git", "archive", "--format=tar", "HEAD"]
+                    print(f"$ {' '.join(cmd)}")
+                    proc = await asyncio.create_subprocess_exec(
+                        *cmd, stdout=archive
+                    )
+                    await proc.wait()
+                    if proc.returncode != 0:
+                        raise RuntimeError
+                # Change directory into the clean copy
+                with chdir(clean_dir):
+                    # Extract the archive
+                    shutil.unpack_archive(archive_file)
+                    # Upload if not present
+                    for cmd in [
+                        [sys.executable, "setup.py", "sdist"],
+                        [sys.executable, "-m", "twine", "upload", "dist/*"],
+                    ]:
+                        print(f"$ {' '.join(cmd)}")
+                        proc = await asyncio.create_subprocess_exec(*cmd)
+                        await proc.wait()
+                        if proc.returncode != 0:
+                            raise RuntimeError
+
+
+class BumpMain(CMD):
+    """
+    Bump the version number of the main package within the dependency list of
+    each plugin.
+    """
+
+    async def run(self):
+        main_package = is_develop("dffml")
+        if not main_package:
+            raise NotImplementedError(
+                "Need to reinstall the main package in development mode."
+            )
+        # TODO Implement this in Python
+        proc = await asyncio.create_subprocess_exec(
+            "bash", str(pathlib.Path(main_package, "scripts", "bump_deps.sh"))
+        )
+        await proc.wait()
+        if proc.returncode != 0:
+            raise RuntimeError
+
+
+class BumpPackages(CMD):
+    """
+    Bump all the versions of all the packages and increment the version number
+    given.
+    """
+
+    arg_skip = Arg(
+        "-skip",
+        help="Do not increment versions in these packages",
+        nargs="+",
+        default=[],
+        required=False,
+    )
+    arg_only = Arg(
+        "-only",
+        help="Only increment versions in these packages",
+        nargs="+",
+        default=[],
+        required=False,
+    )
+    arg_version = Arg("version", help="Version to increment by")
+
+    @staticmethod
+    def bump_version(original, increment):
+        # Split on .
+        # map: int: Convert to an int
+        # zip: Create three instances of (original[i], increment[i])
+        # map: sum: Add each pair together
+        # map: str: Convert back to strings
+        return ".".join(
+            map(
+                str,
+                map(
+                    sum,
+                    zip(
+                        map(int, original.split(".")),
+                        map(int, increment.split(".")),
+                    ),
+                ),
+            )
+        )
+
+    async def run(self):
+        main_package = is_develop("dffml")
+        if not main_package:
+            raise NotImplementedError(
+                "Need to reinstall the main package in development mode."
+            )
+        main_package = pathlib.Path(main_package)
+        skel = main_package / "dffml" / "skel"
+        # Update all the version files
+        for version_file in main_package.rglob("**/version.py"):
+            # Ignore skel
+            if skel in version_file.parents:
+                self.logger.debug(
+                    "Skipping skel verison file %s", version_file
+                )
+                continue
+            # If we're only supposed to increment versions of some packages,
+            # check we're in the right package, skip if not.
+            setup_filepath = version_file.parent.parent / "setup.py"
+            with chdir(setup_filepath.parent):
+                name = SetupPyKWArg.get_kwargs(setup_filepath)["name"]
+                if self.only and name not in self.only:
+                    self.logger.debug(
+                        "Verison file not in only %s", version_file
+                    )
+                    continue
+                elif name in self.skip:
+                    self.logger.debug("Skipping verison file %s", version_file)
+                    continue
+            # Read the file
+            filetext = version_file.read_text()
+            # Find the version as a string
+            modified_lines = []
+            for line in filetext.split("\n"):
+                # Look for the line containing the version string
+                if line.startswith("VERSION"):
+                    # Parse the version string
+                    version = ast.literal_eval(line.split("=")[-1].strip())
+                    # Increment the version string
+                    version = self.bump_version(version, self.version)
+                    # Modify the line to use the new version string
+                    line = f'VERSION = "{version}"'
+                # Append line to list of lines to write back
+                modified_lines.append(line)
+            # Write back the file using the modified lines
+            filetext = version_file.write_text("\n".join(modified_lines))
+            self.logger.debug("Updated verison file %s", version_file)
+
+
+class Bump(CMD):
+    """
+    Bump the the main package in the versions plugins, or any or all libraries.
+    """
+
+    main = BumpMain
+    packages = BumpPackages
 
 
 class Develop(CMD):
@@ -447,3 +591,4 @@ class Develop(CMD):
     install = Install
     release = Release
     setuppy = SetupPy
+    bump = Bump

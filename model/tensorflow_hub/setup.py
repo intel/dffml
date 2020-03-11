@@ -26,7 +26,7 @@ INSTALL_REQUIRES = (
         "numpy>=1.16.4",
     ]
     + (
-        ["dffml>=0.3.3"]
+        ["dffml>=0.3.5"]
         if not any(
             list(
                 map(
@@ -45,7 +45,7 @@ INSTALL_REQUIRES = (
         else []
     )
     + (
-        ["dffml-model-tensorflow>=0.2.2"]
+        ["dffml-model-tensorflow>=0.2.4"]
         if not any(
             list(
                 map(
@@ -92,7 +92,7 @@ setup(
     packages=find_packages(),
     entry_points={
         "dffml.model": [
-            "text_classifier = dffml_model_tensorflow_hub.text_classifier:TextClassificationModel",
+            "text_classifier = dffml_model_tensorflow_hub.text_classifier:TextClassificationModel"
         ]
     },
 )

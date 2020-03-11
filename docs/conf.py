@@ -12,6 +12,7 @@
 #
 import os
 import sys
+import pathlib
 
 sys.path.insert(0, os.path.abspath("."))
 from dffml.version import VERSION
@@ -39,7 +40,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
-    "sphinxcontrib.asyncio",
+    "sphinx.ext.doctest",
     "recommonmark",
 ]
 
@@ -85,3 +86,7 @@ html_static_path = ["_static"]
 # -- Extension configuration -------------------------------------------------
 
 napoleon_numpy_docstring = True
+
+doctest_global_setup = (
+    pathlib.Path(__file__).parent / "doctest_header.py"
+).read_text()

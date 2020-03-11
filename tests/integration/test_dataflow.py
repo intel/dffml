@@ -14,7 +14,7 @@ import contextlib
 from dffml.df.types import Operation, DataFlow, Input
 from dffml.cli.cli import CLI
 from dffml.util.entrypoint import load
-from dffml.config.config import BaseConfigLoader
+from dffml.configloader.configloader import BaseConfigLoader
 from dffml.util.asynctestcase import IntegrationCLITestCase, relative_path
 
 

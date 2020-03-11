@@ -11,8 +11,8 @@ from ..df.memory import (
     MemoryInputSetConfig,
     StringInputSetContext,
 )
-from ..config.config import BaseConfigLoader
-from ..config.json import JSONConfigLoader
+from ..configloader.configloader import BaseConfigLoader
+from ..configloader.json import JSONConfigLoader
 from ..source.source import SubsetSources
 from ..util.data import merge
 from ..util.entrypoint import load

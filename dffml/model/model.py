@@ -7,7 +7,10 @@ prediction accuracy.
 """
 import os
 import abc
-from typing import AsyncIterator
+import json
+import hashlib
+import pathlib
+from typing import AsyncIterator, Optional
 
 from ..base import (
     config,
@@ -19,6 +22,7 @@ from ..source.source import Sources
 from ..feature import Features
 from .accuracy import Accuracy
 from ..util.entrypoint import base_entry_point
+from ..util.os import MODE_BITS_SECURE
 
 
 class ModelNotTrained(Exception):
@@ -75,10 +79,146 @@ class Model(BaseDataFlowFacilitatorObject):
 
     CONFIG = ModelConfig
 
+    def __init__(self, config):
+        super().__init__(config)
+        # TODO Just in case its a string. We should make it so that on
+        # instantiation of an @config we convert properties to their correct
+        # types.
+        if isinstance(getattr(self.config, "directory", None), str):
+            self.config.directory = pathlib.Path(self.config.directory)
+
     def __call__(self) -> ModelContext:
-        # If the config object for this model contains the directory property
-        # then create it if it does not exist
-        directory = getattr(self.config, "directory", None)
-        if directory is not None and not os.path.isdir(directory):
-            os.makedirs(directory)
+        self._make_config_directory()
         return self.CONTEXT(self)
+
+    def _make_config_directory(self):
+        """
+        If the config object for this model contains the directory property
+        then create it if it does not exist.
+        """
+        directory = getattr(self.config, "directory", None)
+        if directory is not None:
+            directory = pathlib.Path(directory)
+            if not directory.is_dir():
+                directory.mkdir(mode=MODE_BITS_SECURE, parents=True)
+
+
+class SimpleModelNoContext:
+    """
+    No need for CONTEXT since we implement __call__
+    """
+
+
+class SimpleModel(Model):
+    DTYPES = [int, float]
+    NUM_SUPPORTED_FEATURES = -1
+    SUPPORTED_LENGTHS = None
+    CONTEXT = SimpleModelNoContext
+
+    def __init__(self, config: "BaseConfig") -> None:
+        super().__init__(config)
+        self.storage = {}
+        self.features = self.applicable_features(config.features)
+        self._in_context = 0
+
+    def __call__(self):
+        return self
+
+    async def __aenter__(self) -> Model:
+        self._in_context += 1
+        # If we've already entered the model's context once, don't reload
+        if self._in_context > 1:
+            return self
+        self._make_config_directory()
+        self.open()
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        self._in_context -= 1
+        if not self._in_context:
+            self.close()
+
+    def open(self):
+        """
+        Load saved model from disk if it exists.
+        """
+        # Load saved data if this is the first time we've entred the model
+        filepath = self.disk_path(extention=".json")
+        if filepath.is_file():
+            self.storage = json.loads(filepath.read_text())
+            self.logger.debug("Loaded model from %s", filepath)
+        else:
+            self.logger.debug("No saved model in %s", filepath)
+
+    def close(self):
+        """
+        Save model to disk.
+        """
+        filepath = self.disk_path(extention=".json")
+        filepath.write_text(json.dumps(self.storage))
+        self.logger.debug("Saved model to %s", filepath)
+
+    def disk_path(self, extention: Optional[str] = None):
+        """
+        We do this for convenience of the user so they can usually just use the
+        default directory and if they train models with different parameters
+        this method transparently to the user creates a filename unique the that
+        configuration of the model where data is saved and loaded.
+        """
+        # Export the config to a dictionary
+        exported = self.config._asdict()
+        # Remove the directory from the exported dict
+        if "directory" in exported:
+            del exported["directory"]
+        # Replace features with the sorted list of features
+        if "features" in exported:
+            exported["features"] = dict(sorted(exported["features"].items()))
+        # Hash the exported config
+        return pathlib.Path(
+            self.config.directory,
+            hashlib.sha384(json.dumps(exported).encode()).hexdigest()
+            + (extention if extention else ""),
+        )
+
+    def applicable_features(self, features):
+        usable = []
+        # Check that we aren't trying to use more features than the model
+        # supports
+        if (
+            self.NUM_SUPPORTED_FEATURES != -1
+            and len(features) != self.NUM_SUPPORTED_FEATURES
+        ):
+            msg = f"{self.__class__.__qualname__} doesn't support more than "
+            if self.NUM_SUPPORTED_FEATURES == 1:
+                msg += f"{self.NUM_SUPPORTED_FEATURES} feature"
+            else:
+                msg += f"{self.NUM_SUPPORTED_FEATURES} features"
+            raise ValueError(msg)
+        # Check data type and length for each feature
+        for feature in features:
+            if self.check_applicable_feature(feature):
+                usable.append(feature.NAME)
+        # Return a sorted list of feature names for consistency. In case users
+        # provide the same list of features to applicable_features in a
+        # different order.
+        return sorted(usable)
+
+    def check_applicable_feature(self, feature):
+        # Check the data datatype is in the list of supported data types
+        self.check_feature_dtype(feature.dtype())
+        # Check that length (dimensions) of feature is supported
+        self.check_feature_length(feature.length())
+        return True
+
+    def check_feature_dtype(self, dtype):
+        if dtype not in self.DTYPES:
+            msg = f"{self.__class__.__qualname__} only supports features "
+            msg += f"with these data types: {self.DTYPES}"
+            raise ValueError(msg)
+
+    def check_feature_length(self, length):
+        # If SUPPORTED_LENGTHS is None then all lengths are supported
+        if self.SUPPORTED_LENGTHS and length not in self.SUPPORTED_LENGTHS:
+            msg = f"{self.__class__.__qualname__} only supports "
+            msg += f"{self.SUPPORTED_LENGTHS} dimensional values"
+            raise ValueError(msg)

@@ -20,7 +20,7 @@ dffml
 csv
 ~~~
 
-*Core*
+*Official*
 
 Uses a CSV file as the source of record feature data
 
@@ -55,7 +55,7 @@ Uses a CSV file as the source of record feature data
 idx1
 ~~~~
 
-*Core*
+*Official*
 
 Source to read files in IDX1 format (such as MNIST digit label dataset).
 
@@ -78,7 +78,7 @@ Source to read files in IDX1 format (such as MNIST digit label dataset).
 idx3
 ~~~~
 
-*Core*
+*Official*
 
 Source to read files in IDX3 format (such as MNIST digit image dataset).
 
@@ -101,7 +101,7 @@ Source to read files in IDX3 format (such as MNIST digit image dataset).
 json
 ~~~~
 
-*Core*
+*Official*
 
 JSONSource reads and write from a JSON file on open / close. Otherwise
 stored in memory.
@@ -125,7 +125,7 @@ stored in memory.
 memory
 ~~~~~~
 
-*Core*
+*Official*
 
 Stores records in a dict in memory
 
@@ -144,7 +144,7 @@ dffml_source_mysql
 mysql
 ~~~~~
 
-*Core*
+*Official*
 
 No description
 

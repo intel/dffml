@@ -46,3 +46,5 @@ You should instead see the :doc:`security` docs!
 
     api
     security
+    javascript
+    python

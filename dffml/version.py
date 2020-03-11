@@ -7,4 +7,4 @@ SPDX-License-Identifier: MIT
 
 Version of DFFML
 """
-VERSION = "0.3.3"
+VERSION = "0.3.5"

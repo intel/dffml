@@ -12,11 +12,7 @@ from ..source.source import BaseSource
 from ..util.packaging import is_develop
 from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
-from ..util.cli.cmds import (
-    SourcesCMD,
-    PortCMD,
-    KeysCMD,
-)
+from ..util.cli.cmds import SourcesCMD, PortCMD, KeysCMD
 
 from .dataflow import Dataflow
 from .config import Config
