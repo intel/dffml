@@ -39,6 +39,8 @@ If you're planing on importing any third party packages, anything on
 `PyPi <https://pypi.org>`_, you'll want to add it to the ``setup.py`` file
 first.
 
+**setup.py**
+
 .. code-block:: python
 
     common.KWARGS["install_requires"] += ["scikit-learn>=0.21.2"]
@@ -75,10 +77,14 @@ We're going to need a few modules from the standard library, let's import them.
 - ``typing`` is for Python's static type hinting. It lets use give hints to our
   editor or IDE so they can help us check our code before we run it.
 
+**dffml_model_myslr/misc.py**
+
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/misc.py
     :lines: 1-3
 
 We'll also need a few things from DFFML.
+
+**dffml_model_myslr/misc.py**
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/misc.py
     :lines: 5-16
@@ -99,6 +105,8 @@ Config
 
 Anything that a user might want to tweak about a models behavior should go in
 the ``Config`` class for the model.
+
+**dffml_model_myslr/misc.py**
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/misc.py
     :lines: 54-61
@@ -129,11 +137,15 @@ model from the DFFML command line and other interfaces.
 
 - We must set the ``CONFIG`` attribute to the respective ``Config`` class.
 
+**dffml_model_myslr/misc.py**
+
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/misc.py
     :lines: 64-67
 
 - We must make sure ``setup.py``'s ``"entry_points"`` field correctly references
   the location of our model.
+
+**setup.py**
 
 .. literalinclude:: /../dffml/skel/model/setup.py
     :lines: 12-14
@@ -156,6 +168,8 @@ Models should save their state to disk after training. Classes derived from
 ``SimpleModel`` can put anything they want saved into ``self.storage``, which
 is saved and loaded from a JSON on disk.
 
+**dffml_model_myslr/misc.py**
+
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/misc.py
     :lines: 76-91
 
@@ -164,6 +178,8 @@ Accuracy
 
 We saved the accuracy as the 2nd index into the ``"regression_line"`` key in the
 ``self.storage`` dictionary. When we assess the accuracy we reload from there.
+
+**dffml_model_myslr/misc.py**
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/misc.py
     :lines: 93-101
@@ -179,6 +195,8 @@ We call :py:meth:`record.predicted <dffml.record.Record.predicted>`
 passing it the name of the feature we predicted, the predicted value, and the
 confidence in our prediction.
 
+**dffml_model_myslr/misc.py**
+
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/misc.py
     :lines: 103-122
 
@@ -193,7 +211,10 @@ Rename the imports
 We need to make sure our model is imported via it's new name, ``MySRL`` instead
 of ``Misc``.
 
+**tests/test_model.py**
+
 .. code-block:: python
+
     from dffml_model_myslr.misc import MySLRModel, MySLRModelConfig
 
 Test data
@@ -201,6 +222,8 @@ Test data
 
 We usually try to randomly generate training and test data, but for this example
 we're just going to hard code in some data.
+
+**tests/test_model.py**
 
 .. literalinclude:: /../dffml/skel/model/tests/test_model.py
     :lines: 7-34
@@ -211,7 +234,12 @@ Rename the test class
 Change the test class's name, and make sure ``cls.model`` is instantiating a
 ``MySLR`` model instead of the ``Misc`` model.
 
-We create a temporary directory for our tests to use 
+We create a temporary directory for our tests to use, and clean it up when
+they're done. The tests are prefixed with numbers to indicate what order they
+should be run in, ensuring that accuracy and predict test always have a trained
+model to work with.
+
+**tests/test_model.py**
 
 .. literalinclude:: /../dffml/skel/model/tests/test_model.py
     :lines: 37-60
@@ -219,17 +247,36 @@ We create a temporary directory for our tests to use
 Testing Train
 ~~~~~~~~~~~~~
 
+Similarly to the quickstart, all we need to to is pass the model and training
+data to the :py:func:`train <dffml.train>` function.
+
+**tests/test_model.py**
+
 .. literalinclude:: /../dffml/skel/model/tests/test_model.py
     :lines: 62-64
 
 Testing Accuracy
 ~~~~~~~~~~~~~~~~
 
+Once again, all we need to to is pass the model and test data to the
+:py:func:`accuracy <dffml.accuracy>` function. Then we check if it's in an
+acceptable range. This test is helpful to make sure you never make any horribly
+wrong changes to your model, since it will check that the accuracy is within an
+acceptable range.
+
+**tests/test_model.py**
+
 .. literalinclude:: /../dffml/skel/model/tests/test_model.py
     :lines: 66-70
 
 Testing Prediction
 ~~~~~~~~~~~~~~~~~~
+
+Finally, we use the test data and model with the
+:py:func:`predict <dffml.predict>` function. Then we check if each predicted Y
+value is within 10% of what it should be.
+
+**tests/test_model.py**
 
 .. literalinclude:: /../dffml/skel/model/tests/test_model.py
     :lines: 72-83
