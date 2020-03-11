@@ -9,7 +9,10 @@ import numpy as np
 from dffml.util.entrypoint import entrypoint
 from dffml.util.cli.arg import Arg
 from dffml.base import BaseConfig
-from dffml.config.config import BaseConfigLoaderContext, BaseConfigLoader
+from dffml.configloader.configloader import (
+    BaseConfigLoaderContext,
+    BaseConfigLoader,
+)
 
 
 class PNGConfigLoaderContext(BaseConfigLoaderContext):

@@ -1,6 +1,6 @@
 from dffml.util.asynctestcase import AsyncTestCase
 
-from png.config import PNGConfigLoader
+from dffml_config_png.configloader import PNGConfigLoader
 
 
 class TestConfig(AsyncTestCase):

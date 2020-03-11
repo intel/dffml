@@ -10,7 +10,9 @@ common = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(common)
 
 common.KWARGS["entry_points"] = {
-    "dffml.config": [f"png = {common.IMPORT_NAME}.config:PNGConfigLoader"]
+    "dffml.configloader": [
+        f"png = {common.IMPORT_NAME}.configloader:PNGConfigLoader"
+    ]
 }
 
 setup(**common.KWARGS)

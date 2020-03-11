@@ -5,8 +5,8 @@ from pathlib import Path
 from setuptools import find_packages
 
 ORG = "tron"
-NAME = "png"
-DESCRIPTION = "DFFML config png"
+NAME = "dffml-config-png"
+DESCRIPTION = "DFFML config dffml-config-png"
 AUTHOR_NAME = "sakshamarora1"
 AUTHOR_EMAIL = "sakshamarora1001@gmail.com"
 # Install dffml if it is not installed in development mode

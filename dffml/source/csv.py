@@ -16,7 +16,7 @@ from .memory import MemorySource
 from .file import FileSource, FileSourceConfig
 from ..base import config
 from ..util.entrypoint import entrypoint
-from ..config.config import ConfigLoaders
+from ..configloader.configloader import ConfigLoaders
 
 csv.register_dialect("strip", skipinitialspace=True)
 
@@ -143,7 +143,6 @@ class CSVSource(FileSource, MemorySource):
             # Set the features
             features = {}
             for _key, _value in row.items():
-                # TODO maybe add a new column 'data' iinstead of using filename
                 if self.config.loadfiles:
                     _value = cfgl_data
                 if _value != "":
