@@ -102,6 +102,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#create-the-package">Create the Package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#edit-the-source">Edit the Source</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#interact-with-the-database">Interact with the Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#write-the-tests">Write the tests</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#run-the-tests">Run the tests</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#register-your-source">Register your source</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#install-your-package">Install your package</a></li>
@@ -365,6 +366,31 @@ so.</p>
         <span class="k">return</span> <span class="n">CustomSQLiteSourceConfig</span><span class="p">(</span>
             <span class="n">filename</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">config_get</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;filename&quot;</span><span class="p">)</span>
         <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="write-the-tests">
+<h2>Write the tests<a class="headerlink" href="#write-the-tests" title="Permalink to this headline">¶</a></h2>
+<p><strong>examples/source/test_custom_sqlite.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="kn">from</span> <span class="nn">dffml.util.testing.source</span> <span class="kn">import</span> <span class="n">FileSourceTest</span>
+<span class="kn">from</span> <span class="nn">dffml.util.asynctestcase</span> <span class="kn">import</span> <span class="n">AsyncTestCase</span>
+
+<span class="kn">from</span> <span class="nn">.custom_sqlite</span> <span class="kn">import</span> <span class="n">CustomSQLiteSourceConfig</span><span class="p">,</span> <span class="n">CustomSQLiteSource</span>
+
+
+<span class="k">class</span> <span class="nc">TestCustomSQliteSource</span><span class="p">(</span><span class="n">FileSourceTest</span><span class="p">,</span> <span class="n">AsyncTestCase</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">setUpSource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">CustomSQLiteSource</span><span class="p">(</span>
+            <span class="n">CustomSQLiteSourceConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">testfile</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="nd">@unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="s2">&quot;tags not implemented&quot;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        tags not implemented</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 </pre></div>
 </div>
 </div>
