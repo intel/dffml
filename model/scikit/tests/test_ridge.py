@@ -12,17 +12,17 @@ from dffml.util.asynctestcase import AsyncTestCase, IntegrationCLITestCase
 from dffml_model_scratch.ridge import RidgeRegression, RidgeConfig
 
 Features_data = [
-    {"Years": 8, "Salary": 160, "Expertise": 5, "Trust": 0.3},
-    {"Years": 11, "Salary": 215, "Expertise": 7, "Trust": 0.4}, 
-    {"Years": 3, "Salary": 79, "Expertise": 3, "Trust": 0.2}, 
-    {"Years": 4, "Salary": 89, "Expertise": 3, "Trust": 0.2}, 
-    {"Years": 2, "Salary": 40, "Expertise": 1, "Trust": 0.1}, 
+    {"Years": 8, "Salary": 173, "Expertise": 5, "Trust": 0.3},
+    {"Years": 11, "Salary": 209, "Expertise": 7, "Trust": 0.4}, 
+    {"Years": 3, "Salary": 87, "Expertise": 3, "Trust": 0.2}, 
+    {"Years": 4, "Salary": 109, "Expertise": 3, "Trust": 0.2}, 
+    {"Years": 2, "Salary": 35, "Expertise": 1, "Trust": 0.1}, 
     {"Years": 7, "Salary": 150, "Expertise": 5, "Trust": 0.3}, 
     {"Years": 0, "Salary": 21,  "Expertise": 1, "Trust": 0.1}, 
     {"Years": 1, "Salary": 31, "Expertise": 1, "Trust": 0.1}, 
-    {"Years": 5, "Salary": 102, "Expertise": 3, "Trust": 0.2}, 
-    {"Years": 9, "Salary": 209, "Expertise": 7, "Trust": 0.4}, 
-    {"Years": 10, "Salary": 210, "Expertise": 7, "Trust": 0.4}, 
+    {"Years": 5, "Salary": 93, "Expertise": 3, "Trust": 0.2}, 
+    {"Years": 9, "Salary": 199, "Expertise": 7, "Trust": 0.4}, 
+    {"Years": 10, "Salary": 223, "Expertise": 7, "Trust": 0.4}, 
     {"Years": 6, "Salary": 145, "Expertise": 5, "Trust": 0.3}, 
 ]
 
