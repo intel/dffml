@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Shouldi got an operation to run npm-audit on JavaScript code
 - Docstrings and doctestable examples for `record.py` (features and evaluated)
 - Simplified model API with SimpleModel
+- Shouldi got an operation to run cargo-aduit on RUST code.
 - Documentation on how DataFlows work conceptually.
 - Style guide now contains information on class, variable, and function naming.
 ### Changed
