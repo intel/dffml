@@ -431,6 +431,168 @@ Implemented using Tensorflow hub pretrained models.
   - default: /home/user/.cache/dffml/tensorflow_hub
   - Directory where state should be saved
 
+dffml_model_transformers
+------------------------
+
+.. code-block:: console
+
+    pip install dffml-model-transformers
+
+
+ner_tagger
+~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- sentence_id: Feature
+
+  - Unique Id to identify words of each sentence
+
+- words: Feature
+
+  - Tokens to train NER model
+
+- predict: Feature
+
+  - NER Tags (B-MISC, I-PER, O etc.) for tokens
+
+- model_architecture_type: String
+
+  - Model architecture selected in the : bert, distilbert, roberta
+
+- model_name_or_path: String
+
+  - Path to pre-trained model or shortcut name selected in the list: bert-base-uncased, bert-large-uncased, bert-base-cased, bert-large-cased, bert-base-multilingual-uncased, bert-base-multilingual-cased, bert-base-chinese, bert-base-german-cased, bert-large-uncased-whole-word-masking, bert-large-cased-whole-word-masking, bert-large-uncased-whole-word-masking-finetuned-squad, bert-large-cased-whole-word-masking-finetuned-squad, bert-base-cased-finetuned-mrpc, bert-base-german-dbmdz-cased, bert-base-german-dbmdz-uncased, bert-base-japanese, bert-base-japanese-whole-word-masking, bert-base-japanese-char, bert-base-japanese-char-whole-word-masking, bert-base-finnish-cased-v1, bert-base-finnish-uncased-v1, bert-base-dutch-cased, roberta-base, roberta-large, roberta-large-mnli, distilroberta-base, roberta-base-openai-detector, roberta-large-openai-detector, distilbert-base-uncased, distilbert-base-uncased-distilled-squad, distilbert-base-cased, distilbert-base-cased-distilled-squad, distilbert-base-german-cased, distilbert-base-multilingual-cased, distilbert-base-uncased-finetuned-sst-2-english
+
+- output_dir: String
+
+  - default: /home/user/.cache/dffml/transformers/checkpoints
+  - The output directory where the model checkpoints will be written
+
+- config_name: String
+
+  - default: None
+  - Pretrained config name or path if not the same as model_name
+
+- tokenizer_name: String
+
+  - default: None
+  - Pretrained tokenizer name or path if not the same as model_name
+
+- cache_dir: String
+
+  - default: /home/user/.cache/dffml/transformers
+  - Directory to store the pre-trained models downloaded from s3
+
+- max_seq_length: Integer
+
+  - default: 128
+  - The maximum total input sentence length after tokenization.Sequences longer than this will be truncated, sequences shorter will be padded
+
+- max_steps: Integer
+
+  - default: 0
+  - If greater than zero then sets total number of training steps to perform. Overrides `epochs`
+
+- use_fp16: Boolean
+
+  - default: False
+  - Whether to use 16-bit (mixed) precision instead of 32-bit
+
+- ner_tags: List of strings
+
+  - default: ['O', 'B-MISC', 'I-MISC', 'B-PER', 'I-PER', 'B-ORG', 'I-ORG', 'B-LOC', 'I-LOC']
+  - List of all distinct NER Tags
+
+- do_lower_case: Boolean
+
+  - default: False
+  - Set this flag if using uncased model.
+
+- gradient_accumulation_steps: Integer
+
+  - default: 1
+  - Number of updates steps to accumulate before performing a backward pass.
+
+- learning_rate: float
+
+  - default: 5e-05
+  - The initial learning rate for Adam
+
+- weight_decay: float
+
+  - default: 0.0
+  - Weight decay
+
+- adam_epsilon: float
+
+  - default: 1e-08
+  - Epsilon for Adam optimizer
+
+- max_grad_norm: float
+
+  - default: 1.0
+  - Max gradient norm.
+
+- epochs: Integer
+
+  - default: 2
+  - Total number of training epochs to perform.
+
+- warmup_steps: Integer
+
+  - default: 0
+  - Linear warmup over warmup_steps.
+
+- save_steps: Integer
+
+  - default: 10
+  - Save checkpoint every X update steps.
+
+- seed: Integer
+
+  - default: 2020
+  - Random seed for initialization
+
+- gpus: String
+
+  - default: 0
+  - List of gpu devices. If only one, switch to single gpu strategy, if None takes all availabel gpus
+
+- tpu: String
+
+  - default: None
+  - The Cloud TPU to use for training. This should be either the name used when creating the Cloud TPU, or a grpc://ip.address.of.tpu:8470 url
+
+- num_tpu_cores: Integer
+
+  - default: 8
+  - Total number of TPU cores to use.
+
+- per_device_train_batch_size: Integer
+
+  - default: 8
+  - Batch size per GPU/CPU/TPU for training
+
+- per_device_eval_batch_size: Integer
+
+  - default: 8
+  - Batch size per GPU/CPU/TPU for assessing accuracy
+
+- no_cuda: Boolean
+
+  - default: False
+  - Avoid using CUDA when available
+
+- eval_all_checkpoints: Boolean
+
+  - default: False
+  - Evaluate all checkpoints starting with the same prefix as model_name ending and ending with step number
+
 dffml_model_scratch
 -------------------
 

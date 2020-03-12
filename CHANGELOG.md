@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Hugging Face Transformers tensorflow based NER models.
 - Parent flows can now forward inputs to active contexts of subflows.
   - `forward` parameter in `DataFlow`
   - `subflow` in `OperationImplementationContext`

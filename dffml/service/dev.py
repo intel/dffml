@@ -49,6 +49,7 @@ CORE_PLUGINS = [
     ("model", "scratch"),
     ("model", "scikit"),
     ("model", "tensorflow_hub"),
+    ("model", "transformers"),
     ("examples", "shouldi"),
     ("feature", "git"),
     ("feature", "auth"),
