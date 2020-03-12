@@ -11,7 +11,7 @@ AUTHOR_NAME = "John Andersen"
 AUTHOR_EMAIL = "john.s.andersen@intel.com"
 # Install dffml if it is not installed in development mode
 INSTALL_REQUIRES = [] + (
-    ["dffml>=0.3.4"]
+    ["dffml>=0.3.5"]
     if not any(
         list(
             map(

@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- New model tutorial mentions file paths that should be edited.
+
+## [0.3.5] - 2020-03-10
 ### Added
 - Parent flows can now forward inputs to active contexts of subflows.
   - `forward` parameter in `DataFlow`
@@ -29,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - config directories and files associated with ConfigLoaders have been renamed
   to configloader.
 - Model config directory parameters are now `pathlib.Path` objects
+- New model tutorial and `skel/model` use simplifeid model API.
 
 ## [0.3.4] - 2020-02-28
 ### Added
