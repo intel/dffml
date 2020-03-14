@@ -199,7 +199,7 @@ Output
         }
     ]
 
-Example usage of Tensorflow DNNClassifier model using python API
+Example usage of Tensorflow DNNEstimator model using python API
 
 .. literalinclude:: /../model/tensorflow/examples/tfdnnr/tfdnnr.py
 
