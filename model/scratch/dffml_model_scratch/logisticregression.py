@@ -62,8 +62,7 @@ class LogisticRegression(SimpleModel):
         line to make a prediction by returning ``m * x + b``.
         """
         prediction = self.separating_line[0] * x + self.separating_line[1]
-        prediciton = prediction > 0.5
-        if prediction:
+        if prediction > 0.5:
             prediction = 1
         else:
             prediction = 0
