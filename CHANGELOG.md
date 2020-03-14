@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Notes on development dependencies in `setup.py` files to codebase notes.
+- Ridge from scratch using sklearn's optimizer SAGA
 
 ## [0.3.3] - 2020-02-10
 ### Added
