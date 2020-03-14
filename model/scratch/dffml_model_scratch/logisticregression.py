@@ -29,8 +29,7 @@ class LogisticRegressionConfig:
 
 @entrypoint("scratchlgr")
 class LogisticRegression(SimpleModel):
-    
-    
+
     # The configuration class needs to be set as the CONFIG property
     CONFIG = LogisticRegressionConfig
     # Logistic Regression only supports training on a single feature
@@ -59,9 +58,11 @@ class LogisticRegression(SimpleModel):
 
     def predict_input(self, x):
         """
-        Use the regression line to make a prediction by returning ``m * x + b``.
+        Use the regression line to
+        make a prediction by returning ``m * x + b``.
         """
-        prediction = self.separating_line[0] * x + self.separating_line[1] > 0.5
+        prediction = self.separating_line[0] * x + self.separating_line[1]
+        prediction = prediction > 0.5
         if prediction:
             prediction = 1
         else:
@@ -73,7 +74,6 @@ class LogisticRegression(SimpleModel):
         )
         return prediction
 
-    
     def best_fit_line(self):
         self.logger.debug(
             "Number of input records: {}".format(len(self.xData))
@@ -83,15 +83,14 @@ class LogisticRegression(SimpleModel):
         learning_rate = 0.01
         w = 0.01
         b = 0.0
-        for _ in range(1,1500):
-            
+        for _ in range(1, 1500):
             z = w*x + b
-            val = -np.multiply(y,z)
-            num = -np.multiply(y,np.exp(val))
+            val = -np.multiply(y, z)
+            num = -np.multiply(y, np.exp(val))
             den = 1+np.exp(val)
             f = num/den
             gradJ = np.sum(x*f)
-            w = w - learning_rate*gradJ/len(x)   
+            w = w - learning_rate*gradJ/len(x)
         error = 0
         for _id in range(len(x)):
             yhat = x[_id] * w + b > 0.5
