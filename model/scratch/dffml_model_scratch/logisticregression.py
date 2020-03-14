@@ -67,12 +67,16 @@ class LogisticRegression(SimpleModel):
         else:
             prediction = 0
         self.logger.debug(
-            "Predicted Value of {} {}:".format(self.config.predict.NAME, prediction)
+            "Predicted Value of {} {}:".format(
+                self.config.predict.NAME, prediction
+            )
         )
         return prediction
 
     def best_fit_line(self):
-        self.logger.debug("Number of input records: {}".format(len(self.xData)))
+        self.logger.debug(
+            "Number of input records: {}".format(len(self.xData))
+        )
         x = self.xData
         y = self.yData
         learning_rate = 0.01
@@ -102,9 +106,13 @@ class LogisticRegression(SimpleModel):
         async for record in sources.with_features(
             self.features + [self.config.predict.NAME]
         ):
-            feature_data = record.features(self.features + [self.config.predict.NAME])
+            feature_data = record.features(
+                self.features + [self.config.predict.NAME]
+            )
             self.xData = np.append(self.xData, feature_data[self.features[0]])
-            self.yData = np.append(self.yData, feature_data[self.config.predict.NAME])
+            self.yData = np.append(
+                self.yData, feature_data[self.config.predict.NAME]
+            )
         self.separating_line = self.best_fit_line()
 
     async def accuracy(self, sources: Sources) -> Accuracy:
