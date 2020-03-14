@@ -58,11 +58,11 @@ class LogisticRegression(SimpleModel):
 
     def predict_input(self, x):
         """
-        Use the regression line to
-        make a prediction by returning ``m * x + b``.
+        Use the regression
+        line to make a prediction by returning ``m * x + b``.
         """
         prediction = self.separating_line[0] * x + self.separating_line[1]
-        prediction = prediction > 0.5
+        prediciton = prediction > 0.5
         if prediction:
             prediction = 1
         else:
