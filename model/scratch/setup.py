@@ -7,9 +7,7 @@ from setuptools import find_packages, setup
 
 self_path = os.path.dirname(os.path.realpath(__file__))
 
-with open(
-    os.path.join(self_path, "dffml_model_scratch", "version.py"), "r"
-) as f:
+with open(os.path.join(self_path, "dffml_model_scratch", "version.py"), "r") as f:
     for line in f:
         if line.startswith("VERSION"):
             version = ast.literal_eval(line.strip().split("=")[-1].strip())
@@ -26,9 +24,7 @@ INSTALL_REQUIRES = ["numpy>=1.16.4"] + (
                 os.path.isfile,
                 list(
                     map(
-                        lambda syspath: os.path.join(
-                            syspath, "dffml.egg-link"
-                        ),
+                        lambda syspath: os.path.join(syspath, "dffml.egg-link"),
                         sys.path,
                     )
                 ),
@@ -65,5 +61,10 @@ setup(
     ],
     install_requires=INSTALL_REQUIRES,
     packages=find_packages(),
-    entry_points={"dffml.model": ["scratchslr = dffml_model_scratch.slr:SLR"]},
+    entry_points={
+        "dffml.model": [
+            "scratchslr = dffml_model_scratch.slr:SLR",
+            "scratchlgr = dffml_model_scratch.logisticregression:LogisticRegression",
+        ]
+    },
 )

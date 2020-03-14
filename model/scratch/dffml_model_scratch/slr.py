@@ -119,9 +119,7 @@ class SLR(SimpleModel):
         """
         prediction = self.regression_line[0] * x + self.regression_line[1]
         self.logger.debug(
-            "Predicted Value of {} {}:".format(
-                self.config.predict.NAME, prediction
-            )
+            "Predicted Value of {} {}:".format(self.config.predict.NAME, prediction)
         )
         return prediction
 
@@ -135,16 +133,12 @@ class SLR(SimpleModel):
         return 1 - (squared_error_regression / squared_error_mean)
 
     def best_fit_line(self):
-        self.logger.debug(
-            "Number of input records: {}".format(len(self.xData))
-        )
+        self.logger.debug("Number of input records: {}".format(len(self.xData)))
         x = self.xData
         y = self.yData
         mean_x = np.mean(self.xData)
         mean_y = np.mean(self.yData)
-        m = (mean_x * mean_y - np.mean(x * y)) / (
-            (mean_x ** 2) - np.mean(x * x)
-        )
+        m = (mean_x * mean_y - np.mean(x * y)) / ((mean_x ** 2) - np.mean(x * x))
         b = mean_y - (m * mean_x)
         regression_line = [m * x + b for x in x]
         accuracy = self.coeff_of_deter(y, regression_line)
@@ -154,13 +148,9 @@ class SLR(SimpleModel):
         async for record in sources.with_features(
             self.features + [self.config.predict.NAME]
         ):
-            feature_data = record.features(
-                self.features + [self.config.predict.NAME]
-            )
+            feature_data = record.features(self.features + [self.config.predict.NAME])
             self.xData = np.append(self.xData, feature_data[self.features[0]])
-            self.yData = np.append(
-                self.yData, feature_data[self.config.predict.NAME]
-            )
+            self.yData = np.append(self.yData, feature_data[self.config.predict.NAME])
         self.regression_line = self.best_fit_line()
 
     async def accuracy(self, sources: Sources) -> Accuracy:
