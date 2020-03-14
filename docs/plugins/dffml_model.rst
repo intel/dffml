@@ -181,22 +181,22 @@ Output
 .. code-block:: json
     
     [
-      {
-        "extra": {},
-        "features": {
-            "Feature1": 0.21,
-            "Feature2": 0.18,
-            "TARGET": 0.84
-        },
-        "last_updated": "2019-10-24T15:26:41Z",
-        "prediction": {
-            "TARGET" : {
-                "confidence": NaN,
-                "value": 1.1983429193496704
-            }
-        },
-        "key": 0
-      }
+        {
+            "extra": {},
+            "features": {
+                "Feature1": 0.21,
+                "Feature2": 0.18,
+                "TARGET": 0.84
+            },
+            "last_updated": "2019-10-24T15:26:41Z",
+            "prediction": {
+                "TARGET" : {
+                    "confidence": NaN,
+                    "value": 1.1983429193496704
+                }
+            },
+            "key": 0
+        }
     ]
 
 Example usage of Tensorflow DNNClassifier model using python API
