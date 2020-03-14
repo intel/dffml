@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Docstrings and doctestable examples to `record.py`.
+- Logistic Regression with SAGA optimizer from scratch
 ### Fixed
 - New model tutorial mentions file paths that should be edited.
 
