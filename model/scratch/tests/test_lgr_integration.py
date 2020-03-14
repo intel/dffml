@@ -63,7 +63,7 @@ class TestLogisticRegression(IntegrationCLITestCase):
             )
             results = json.loads(self.stdout.getvalue())
             self.assertTrue(isinstance(results, list))
-            self.assertEqual(len(results), 6)
+            self.assertEqual(len(results), 10)
             for i, result in enumerate(results):
                 self.assertIn("prediction", result)
                 result = result["prediction"]
