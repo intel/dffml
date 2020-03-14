@@ -27,7 +27,7 @@ class PNGConfigLoaderContext(BaseConfigLoaderContext):
         return repr(resource).encode()
 
 
-@entrypoint("png")
+@entrypoint("mnistpng")
 class PNGConfigLoader(BaseConfigLoader):
     CONTEXT = PNGConfigLoaderContext
 
