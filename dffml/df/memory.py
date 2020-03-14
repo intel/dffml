@@ -132,7 +132,7 @@ class MemoryInputSet(BaseInputSet):
                 self.__inputs.remove(x)
                 break
 
-    def remove_unvalidated_inputs(self) -> List[Input]:
+    def remove_unvalidated_inputs(self) -> "MemoryInputSet":
         """
         Removes `unvalidated` inputs from internal list and returns the same.
         """
@@ -141,7 +141,12 @@ class MemoryInputSet(BaseInputSet):
             if not x.validated:
                 unvalidated_inputs.append(x)
                 self.__inputs.remove(x)
-        return unvalidated_inputs
+        unvalidated_input_set = MemoryInputSet(
+                MemoryInputSetConfig(
+                    ctx=self.ctx, inputs=unvalidated_inputs
+                )
+            )
+        return unvalidated_input_set
 
 
 class MemoryParameterSetConfig(NamedTuple):
@@ -272,15 +277,8 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         # self.ctxhd
 
         # remove unvalidated inputs
-        unvalidated_inputs = input_set.remove_unvalidated_inputs()
-        if unvalidated_inputs:
-            unvalidated_input_set = MemoryInputSet(
-                MemoryInputSetConfig(
-                    ctx=input_set.ctx, inputs=unvalidated_inputs
-                )
-            )
-        else:
-            unvalidated_input_set = None
+        unvalidated_input_set = input_set.remove_unvalidated_inputs()
+
         # If the context for this input set does not exist create a
         # NotificationSet for it to notify the orchestrator
         if not handle_string in self.input_notification_set:
@@ -985,14 +983,14 @@ class MemoryOperationImplementationNetworkContext(
                 if not key in expand:
                     output = [output]
                 for value in output:
-                    new_Input = Input(
+                    new_input = Input(
                         value=value,
                         definition=operation.outputs[key],
                         parents=parents,
                         origin=(operation.instance_name, key),
                     )
-                    new_Input.validated = set_valid
-                    inputs.append(new_Input)
+                    new_input.validated = set_valid
+                    inputs.append(new_input)
         except KeyError as error:
             raise KeyError(
                 "Value %s missing from output:definition mapping %s(%s)"
@@ -1457,30 +1455,29 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                             unvalidated_input_set,
                             new_input_set,
                         ) in new_input_sets:
-                            if unvalidated_input_set is not None:
-                                async for operation, parameter_set in self.nctx.validator_target_set_pairs(
-                                    self.octx,
-                                    self.rctx,
-                                    ctx,
-                                    self.config.dataflow,
-                                    unvalidated_input_set,
-                                ):
-                                    await self.rctx.add(
-                                        operation, parameter_set
-                                    )  # is this required here?
-                                    dispatch_operation = await self.nctx.dispatch(
-                                        self, operation, parameter_set
-                                    )
-                                    dispatch_operation.operation = operation
-                                    dispatch_operation.parameter_set = (
-                                        parameter_set
-                                    )
-                                    tasks.add(dispatch_operation)
-                                    self.logger.debug(
-                                        "[%s]: dispatch operation: %s",
-                                        ctx_str,
-                                        operation.instance_name,
-                                    )
+                            async for operation, parameter_set in self.nctx.validator_target_set_pairs(
+                                self.octx,
+                                self.rctx,
+                                ctx,
+                                self.config.dataflow,
+                                unvalidated_input_set,
+                            ):
+                                await self.rctx.add(
+                                    operation, parameter_set
+                                )  # is this required here?
+                                dispatch_operation = await self.nctx.dispatch(
+                                    self, operation, parameter_set
+                                )
+                                dispatch_operation.operation = operation
+                                dispatch_operation.parameter_set = (
+                                    parameter_set
+                                )
+                                tasks.add(dispatch_operation)
+                                self.logger.debug(
+                                    "[%s]: dispatch operation: %s",
+                                    ctx_str,
+                                    operation.instance_name,
+                                )
                             # forward inputs to subflow
                             await self.forward_inputs_to_subflow(
                                 [x async for x in new_input_set.inputs()]
