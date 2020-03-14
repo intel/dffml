@@ -514,6 +514,81 @@ hash of their feature names.
   - default: ~/.cache/dffml/scratch
   - Directory where state should be saved
 
+scratchlgr
+~~~~~~~~~~
+
+*Official*
+
+Logistic Regression Model for one variables with SAG(stochastic average gradient descent) optimizer implemented from scratch.
+Models are saved under the ``directory`` in subdirectories named after the
+hash of their feature names.
+
+.. code-block:: console
+
+    $ cat > dataset.csv << EOF
+    f1,ans
+    0.1,0
+    0.3,0
+    0.4,0
+    0.6,1
+    0.8,1
+    EOF
+    $ dffml train \
+        -model scratchlgr \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -sources f=csv \
+        -source-filename dataset.csv \
+        -log debug
+    $ dffml accuracy \
+        -model scratchlgr \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -sources f=csv \
+        -source-filename dataset.csv \
+        -log debug
+    1.0
+    $ echo -e 'f1,ans\n6,0\n' | \
+      dffml predict all \
+        -model scratchlgr \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -sources f=csv \
+        -source-filename /dev/stdin \
+        -log debug
+    [
+        {
+            "extra": {},
+            "features": {
+                "f1": 0.37,
+                "ans": 0
+            },
+            "last_updated": "2019-07-19T09:46:45Z",
+            "prediction": {
+                "ans": {
+                    "confidence": 1.0,
+                    "value": 0
+                }
+            },
+            "key": "0"
+        }
+    ]
+
+**Args**
+
+- predict: Feature
+
+  - Binary value to be predicted (0 or 1)
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - default: ~/.cache/dffml/scratch
+  - Directory where state should be saved
+
 dffml_model_scikit
 ------------------
 
