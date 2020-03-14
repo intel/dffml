@@ -82,3 +82,4 @@ class TestLogisticRegression(AsyncTestCase):
             correct = self.test_data[i]["Y"]
             # Grab the predicted value
             prediction = prediction["Y"]["value"]
+
