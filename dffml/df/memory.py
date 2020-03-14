@@ -142,10 +142,8 @@ class MemoryInputSet(BaseInputSet):
                 unvalidated_inputs.append(x)
                 self.__inputs.remove(x)
         unvalidated_input_set = MemoryInputSet(
-                MemoryInputSetConfig(
-                    ctx=self.ctx, inputs=unvalidated_inputs
-                )
-            )
+            MemoryInputSetConfig(ctx=self.ctx, inputs=unvalidated_inputs)
+        )
         return unvalidated_input_set
 
 

@@ -18,7 +18,7 @@ import importlib.util
 from pathlib import Path
 
 from ..base import BaseConfig
-from ..util.os import chdir
+from ..util.os import chdir, MODE_BITS_SECURE
 from ..version import VERSION
 from ..util.skel import Skel, SkelTemplateConfig
 from ..util.cli.arg import Arg
@@ -29,8 +29,8 @@ from ..util.packaging import is_develop
 from ..util.data import traverse_config_get
 from ..df.types import Input, DataFlow
 from ..df.memory import MemoryOrchestrator
-from ..config.config import BaseConfigLoader
-from ..config.json import JSONConfigLoader
+from ..configloader.configloader import BaseConfigLoader
+from ..configloader.json import JSONConfigLoader
 from ..operation.output import GetSingle
 
 config = configparser.ConfigParser()
@@ -44,7 +44,7 @@ NAME = config.get("user", "name", fallback="Unknown")
 EMAIL = config.get("user", "email", fallback="unknown@example.com")
 
 CORE_PLUGINS = [
-    ("config", "yaml"),
+    ("configloader", "yaml"),
     ("model", "tensorflow"),
     ("model", "scratch"),
     ("model", "scikit"),
@@ -429,7 +429,7 @@ class Release(CMD):
             with tempfile.TemporaryDirectory() as tempdir:
                 # The directory where the fresh copy will live
                 clean_dir = pathlib.Path(tempdir, "clean")
-                clean_dir.mkdir()
+                clean_dir.mkdir(mode=MODE_BITS_SECURE)
                 archive_file = pathlib.Path(tempdir, "archive.tar")
                 # Create the archive
                 with open(archive_file, "wb") as archive:

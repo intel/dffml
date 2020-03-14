@@ -22,6 +22,7 @@ from ..source.source import Sources
 from ..feature import Features
 from .accuracy import Accuracy
 from ..util.entrypoint import base_entry_point
+from ..util.os import MODE_BITS_SECURE
 
 
 class ModelNotTrained(Exception):
@@ -78,13 +79,28 @@ class Model(BaseDataFlowFacilitatorObject):
 
     CONFIG = ModelConfig
 
+    def __init__(self, config):
+        super().__init__(config)
+        # TODO Just in case its a string. We should make it so that on
+        # instantiation of an @config we convert properties to their correct
+        # types.
+        if isinstance(getattr(self.config, "directory", None), str):
+            self.config.directory = pathlib.Path(self.config.directory)
+
     def __call__(self) -> ModelContext:
-        # If the config object for this model contains the directory property
-        # then create it if it does not exist
-        directory = getattr(self.config, "directory", None)
-        if directory is not None and not os.path.isdir(directory):
-            os.makedirs(directory)
+        self._make_config_directory()
         return self.CONTEXT(self)
+
+    def _make_config_directory(self):
+        """
+        If the config object for this model contains the directory property
+        then create it if it does not exist.
+        """
+        directory = getattr(self.config, "directory", None)
+        if directory is not None:
+            directory = pathlib.Path(directory)
+            if not directory.is_dir():
+                directory.mkdir(mode=MODE_BITS_SECURE, parents=True)
 
 
 class SimpleModelNoContext:
@@ -113,6 +129,7 @@ class SimpleModel(Model):
         # If we've already entered the model's context once, don't reload
         if self._in_context > 1:
             return self
+        self._make_config_directory()
         self.open()
         return self
 
@@ -188,16 +205,20 @@ class SimpleModel(Model):
 
     def check_applicable_feature(self, feature):
         # Check the data datatype is in the list of supported data types
-        if feature.dtype() not in self.DTYPES:
+        self.check_feature_dtype(feature.dtype())
+        # Check that length (dimensions) of feature is supported
+        self.check_feature_length(feature.length())
+        return True
+
+    def check_feature_dtype(self, dtype):
+        if dtype not in self.DTYPES:
             msg = f"{self.__class__.__qualname__} only supports features "
             msg += f"with these data types: {self.DTYPES}"
             raise ValueError(msg)
+
+    def check_feature_length(self, length):
         # If SUPPORTED_LENGTHS is None then all lengths are supported
-        if self.SUPPORTED_LENGTHS is None:
-            return True
-        # Check that length (dimensions) of feature is supported
-        if feature.length() not in self.SUPPORTED_LENGTHS:
+        if self.SUPPORTED_LENGTHS and length not in self.SUPPORTED_LENGTHS:
             msg = f"{self.__class__.__qualname__} only supports "
             msg += f"{self.SUPPORTED_LENGTHS} dimensional values"
             raise ValueError(msg)
-        return True

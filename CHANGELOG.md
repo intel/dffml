@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Docstrings and doctestable examples to `record.py`.
+### Fixed
+- New model tutorial mentions file paths that should be edited.
+
+## [0.3.5] - 2020-03-10
+### Added
 - Parent flows can now forward inputs to active contexts of subflows.
   - `forward` parameter in `DataFlow`
   - `subflow` in `OperationImplementationContext`
@@ -16,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Simplified model API with SimpleModel
 - Inputs can be validated using operations
   - `validate` parameter in `Input` takes `operation_instance_name`
+- Documentation on how DataFlows work conceptually.
+- Style guide now contains information on class, variable, and function naming.
 ### Changed
 - Restructured contributing documentation
 - Use randomly generated data for scikit tests
@@ -25,6 +33,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Create a fresh archive of the git repo for release instead of cleaning
   existing repo with `git clean` for development service release command.
 - Simplified SLR tests for scratch model
+- Test tensorflow DNNClassifier documentation exaples in CI
+- config directories and files associated with ConfigLoaders have been renamed
+  to configloader.
+- Model config directory parameters are now `pathlib.Path` objects
+- New model tutorial and `skel/model` use simplifeid model API.
 
 ## [0.3.4] - 2020-02-28
 ### Added

@@ -11,50 +11,40 @@ PYTHON=${PYTHON:-"python3.7"}
 TEMP_DIRS=()
 
 function run_plugin_examples() {
+  if [ ! -d "${SRC_ROOT}/${PLUGIN}/examples" ]; then
+    return
+  fi
   cd "${SRC_ROOT}/${PLUGIN}/examples"
   if [ -f "requirements.txt" ]; then
     "${PYTHON}" -m pip install -r requirements.txt
   fi
-  # Run example tests in top level examples directory
-  for dir in $(find . -type d); do
-    # Run example tests in examples subdirectories
-    cd "${SRC_ROOT}/${PLUGIN}/examples"
-    cd "${dir}"
-    "${PYTHON}" -m unittest discover -v
-  done
+  "${PYTHON}" -m unittest discover -v
   cd "${SRC_ROOT}/${PLUGIN}"
 }
 
 function run_plugin() {
-  # Create a virtualenv
-  venv_dir="$(mktemp -d)"
-  TEMP_DIRS+=("${venv_dir}")
-  "${PYTHON}" -m venv "${venv_dir}"
-  source "${venv_dir}/bin/activate"
   "${PYTHON}" -m pip install -U pip twine
 
-  "${PYTHON}" -m pip install -U -e "${SRC_ROOT}"
+  # Install main package
+  "${PYTHON}" -m pip install -U -e "${SRC_ROOT}[dev]"
 
   if [ "x${PLUGIN}" = "xmodel/tensorflow_hub" ]; then
     "${PYTHON}" -m pip install -U -e "${SRC_ROOT}/model/tensorflow"
   fi
 
-  cd "${PLUGIN}"
-  PACKAGE_NAME=$(dffml service dev setuppy kwarg name setup.py)
-  # Install
-  "${PYTHON}" -m pip install -e .
+  cd "${SRC_ROOT}/${PLUGIN}"
+
+  # Install plugin
+  "${PYTHON}" -m pip install -U -e .
   # Run the tests
   "${PYTHON}" setup.py test
-  # Run examples if they exist and we aren't at the root
-  if [ -d "examples" ] && [ "x${PLUGIN}" != "x." ]; then
-    run_plugin_examples
-  fi
-  # Uninstall
-  "${PYTHON}" -m pip uninstall -y "${PACKAGE_NAME}"
-  cd "${SRC_ROOT}"
 
-  if [ "x${PLUGIN}" = "x." ]; then
-    exit 0
+  if [ "x${PLUGIN}" != "x." ]; then
+    # Run examples if they exist and we aren't at the root
+    run_plugin_examples
+  else
+    # If we are at the root. Install plugsin and run various integration tests
+
     # Try running create command
     plugin_creation_dir="$(mktemp -d)"
     TEMP_DIRS+=("${plugin_creation_dir}")
@@ -75,19 +65,10 @@ function run_plugin() {
     done
 
     # Install all the plugins so examples can use them
-    "${PYTHON}" -m pip install -U -e "${SRC_ROOT}"
     "${PYTHON}" -m dffml service dev install
 
     # Run the examples
     run_plugin_examples
-
-    # Deactivate venv
-    deactivate
-
-    # Create the docs
-    "${PYTHON}" -m pip install -U -e "${SRC_ROOT}[dev]"
-    "${PYTHON}" -m dffml service dev install -user
-    "${SRC_ROOT}/scripts/docs.sh"
 
     # Log skipped tests to file
     check_skips="$(mktemp)"
@@ -97,9 +78,21 @@ function run_plugin() {
     "${PYTHON}" -m coverage run setup.py test 2>&1 | tee "${check_skips}"
     "${PYTHON}" -m coverage report -m
 
-    # Fail if any tests were skipped
-    grep -v -q -E '(skipped=.*)' "${check_skips}"
+    # Fail if any tests were skipped or errored
+    skipped=$(grep -E '(skipped=.*)' "${check_skips}" | wc -l)
+    if [ "$skipped" -ne 0 ]; then
+      echo "Tests were skipped" >&2
+      exit 1
+    fi
+
+    errors=$(grep -E '(errors=.*)' "${check_skips}" | wc -l)
+    if [ "$errors" -ne 0 ]; then
+      echo "Tests errored" >&2
+      exit 1
+    fi
   fi
+
+  cd "${SRC_ROOT}"
 
   if [ "x${GITHUB_ACTIONS}" == "xtrue" ] && [ "x${GITHUB_REF}" == "xrefs/heads/master" ]; then
     git status
@@ -156,6 +149,14 @@ function run_docs() {
 
   # Doctests
   ./scripts/doctest.sh
+
+  # Fail if there are any changes to the Git repo
+  changes=$(git status --porcelain | wc -l)
+  if [ "$changes" -ne 0 ]; then
+    echo "Running docs.py resulted in changes to the Git repo" >&2
+    echo "Need to run ./scripts/docs.sh and commit changes" >&2
+    exit 1
+  fi
 
   # Make master docs
   master_docs="$(mktemp -d)"

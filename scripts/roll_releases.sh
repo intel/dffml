@@ -5,7 +5,7 @@ SRC_ROOT=${SRC_ROOT:-"${PWD}"}
 PYTHON=${PYTHON:-"python3.7"}
 
 PLUGINS=("${SRC_ROOT}/" \
-	"${SRC_ROOT}/config/yaml" \
+	"${SRC_ROOT}/configloader/yaml" \
 	"${SRC_ROOT}/model/tensorflow" \
 	"${SRC_ROOT}/model/scratch" \
 	"${SRC_ROOT}/model/scikit" \

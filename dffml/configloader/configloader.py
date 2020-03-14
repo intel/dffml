@@ -34,7 +34,7 @@ class BaseConfigLoaderContext(BaseDataFlowFacilitatorObjectContext):
         """
 
 
-@base_entry_point("dffml.config", "config")
+@base_entry_point("dffml.configloader", "config")
 class BaseConfigLoader(BaseDataFlowFacilitatorObject):
     def __call__(self) -> BaseConfigLoaderContext:
         return self.CONTEXT(self)

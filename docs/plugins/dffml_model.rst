@@ -34,59 +34,34 @@ tfdnnc
 
 Implemented using Tensorflow's DNNClassifier.
 
-.. code-block:: console
+First we create the training and testing datasets
 
-    $ wget http://download.tensorflow.org/data/iris_training.csv
-    $ wget http://download.tensorflow.org/data/iris_test.csv
-    $ head iris_training.csv
-    $ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' *.csv
-    $ head iris_training.csv
-    $ dffml train \
-        -model tfdnnc \
-        -model-epochs 3000 \
-        -model-steps 20000 \
-        -model-predict classification:int:1 \
-        -model-classifications 0 1 2 \
-        -model-clstype int \
-        -sources iris=csv \
-        -source-filename iris_training.csv \
-        -model-features \
-          SepalLength:float:1 \
-          SepalWidth:float:1 \
-          PetalLength:float:1 \
-          PetalWidth:float:1 \
-        -log debug
-    ... lots of output ...
-    $ dffml accuracy \
-        -model tfdnnc \
-        -model-predict classification:int:1 \
-        -model-classifications 0 1 2 \
-        -model-clstype int \
-        -sources iris=csv \
-        -source-filename iris_test.csv \
-        -model-features \
-          SepalLength:float:1 \
-          SepalWidth:float:1 \
-          PetalLength:float:1 \
-          PetalWidth:float:1 \
-        -log critical
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/train_data.sh
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/accuracy.sh
+
+Output
+
+.. code-block::
+
     0.99996233782
-    $ dffml predict all \
-        -model tfdnnc \
-        -model-predict classification:int:1 \
-        -model-classifications 0 1 2 \
-        -model-clstype int \
-        -sources iris=csv \
-        -source-filename iris_test.csv \
-        -model-features \
-          SepalLength:float:1 \
-          SepalWidth:float:1 \
-          PetalLength:float:1 \
-          PetalWidth:float:1 \
-        -caching \
-        -log critical \
-      > results.json
-    $ head -n 33 results.json
+
+Make a prediction
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/predict.sh
+
+Output
+
+.. code-block:: json
+
     [
         {
             "extra": {},
@@ -107,25 +82,11 @@ Implemented using Tensorflow's DNNClassifier.
             },
             "key": "0"
         },
-        {
-            "extra": {},
-            "features": {
-                "PetalLength": 5.4,
-                "PetalWidth": 2.1,
-                "SepalLength": 6.9,
-                "SepalWidth": 3.1,
-                "classification": 2
-            },
-            "last_updated": "2019-07-31T02:00:12Z",
-            "prediction": {
-                "classification":
-                {
-                    "confidence": 0.9999984502792358,
-                    "value": 2
-                }
-            },
-            "key": "1"
-        },
+    ]
+
+Example usage of Tensorflow DNNClassifier model using python API
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/tfdnnc.py
 
 **Args**
 
@@ -166,9 +127,9 @@ Implemented using Tensorflow's DNNClassifier.
   - default: 30
   - Number of iterations to pass over all records in a source
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/tensorflow
+  - default: ~/.cache/dffml/tensorflow
   - Directory where state should be saved
 
 - hidden: List of integers
@@ -287,9 +248,9 @@ predict).
   - default: 30
   - Number of iterations to pass over all records in a source
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/tensorflow
+  - default: ~/.cache/dffml/tensorflow
   - Directory where state should be saved
 
 - hidden: List of integers
@@ -465,9 +426,9 @@ Implemented using Tensorflow hub pretrained models.
   - default: 10
   - Number of iterations to pass over all records in a source
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/tensorflow_hub
+  - default: ~/.cache/dffml/tensorflow_hub
   - Directory where state should be saved
 
 dffml_model_scratch
@@ -871,8 +832,8 @@ Ensure that `predict` and `accuracy` for these algorithms uses training data.
 
   - Features to train on
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/scikit-{Entrypoint}
+  - default: ~/.cache/dffml/scikit-{entrypoint}
   - Directory where state should be saved
 

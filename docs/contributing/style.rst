@@ -42,6 +42,12 @@ on all JavaScript files. Use the following options.
 
     $ js-beautify -r -n -s 2 file_to_format.js
 
+Naming Conventions
+------------------
+
+- Variables should always use underscores, as well as functions and methods.
+- Classes should use CamelCase.
+
 Imports
 -------
 
@@ -58,7 +64,7 @@ Here's an example of how we style our imports.
     import sklearn.datasets
 
     from dffml.record import Record
-    from dffml.config.config import BaseConfigLoader
+    from dffml.configloader.configloader import BaseConfigLoader
     from dffml.util.asynctestcase import AsyncTestCase, IntegrationCLITestCase
 
     import dffml_model_scikit
