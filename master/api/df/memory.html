@@ -344,6 +344,12 @@ containing a random value for the string.</p>
 <dd><p>Add an input to the input set.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="dffml.df.memory.MemoryInputSet.remove_unvalidated_inputs">
+<code class="sig-name descname">remove_unvalidated_inputs</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dffml.df.memory.MemoryInputSet<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputSet.remove_unvalidated_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputSet.remove_unvalidated_inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes <cite>unvalidated</cite> inputs from internal list and returns the same.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -507,7 +513,7 @@ along with their operations as they are generated.</p>
 
 <dl class="method">
 <dt id="dffml.df.memory.MemoryOperationImplementationNetworkContext.run_dispatch">
-<em class="property">async </em><code class="sig-name descname">run_dispatch</code><span class="sig-paren">(</span><em class="sig-param">octx: dffml.df.base.BaseOrchestratorContext</em>, <em class="sig-param">operation: dffml.df.types.Operation</em>, <em class="sig-param">parameter_set: dffml.df.base.BaseParameterSet</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.run_dispatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.run_dispatch" title="Permalink to this definition">¶</a></dt>
+<em class="property">async </em><code class="sig-name descname">run_dispatch</code><span class="sig-paren">(</span><em class="sig-param">octx: dffml.df.base.BaseOrchestratorContext</em>, <em class="sig-param">operation: dffml.df.types.Operation</em>, <em class="sig-param">parameter_set: dffml.df.base.BaseParameterSet</em>, <em class="sig-param">set_valid: bool = True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.run_dispatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.run_dispatch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run an operation in the background and add its outputs to the input
 network when complete</p>
 </dd></dl>
