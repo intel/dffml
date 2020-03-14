@@ -213,6 +213,7 @@ No description
 - spec: group_by_spec(type: Dict[str, Any])
 
 **Outputs**
+
 - output: group_by_output(type: Dict[str, List[Any]])
 
 dffml_feature_git
