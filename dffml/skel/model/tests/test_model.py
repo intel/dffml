@@ -1,88 +1,83 @@
-import random
 import tempfile
-from typing import Type
 
-from dffml.record import Record, RecordData
-from dffml.source.source import Sources
-from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml.feature import Data, Feature, Features
-from dffml.util.asynctestcase import AsyncTestCase
+from dffml import train, accuracy, predict, DefFeature, Features, AsyncTestCase
 
 from REPLACE_IMPORT_PACKAGE_NAME.misc import MiscModel, MiscModelConfig
 
+TRAIN_DATA = [
+    [12.4, 11.2],
+    [14.3, 12.5],
+    [14.5, 12.7],
+    [14.9, 13.1],
+    [16.1, 14.1],
+    [16.9, 14.8],
+    [16.5, 14.4],
+    [15.4, 13.4],
+    [17.0, 14.9],
+    [17.9, 15.6],
+    [18.8, 16.4],
+    [20.3, 17.7],
+    [22.4, 19.6],
+    [19.4, 16.9],
+    [15.5, 14.0],
+    [16.7, 14.6],
+]
 
-class StartsWithA(Feature):
-
-    NAME: str = "starts_with_a"
-
-    def dtype(self) -> Type:
-        return int
-
-    def length(self) -> int:
-        return 1
-
-    async def calc(self, data: Data) -> int:
-        return 1 if data.key.lower().startswith("a") else 0
+TEST_DATA = [
+    [17.3, 15.1],
+    [18.4, 16.1],
+    [19.2, 16.8],
+    [17.4, 15.2],
+    [19.5, 17.0],
+    [19.7, 17.2],
+    [21.2, 18.6],
+]
 
 
-class TestMisc(AsyncTestCase):
+class TestMiscModel(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.feature = StartsWithA()
-        cls.features = Features(cls.feature)
+        # Create a temporary directory to store the trained model
         cls.model_dir = tempfile.TemporaryDirectory()
+        # Create the training data
+        cls.train_data = []
+        for x, y in TRAIN_DATA:
+            cls.train_data.append({"X": x, "Y": y})
+        # Create the test data
+        cls.test_data = []
+        for x, y in TEST_DATA:
+            cls.test_data.append({"X": x, "Y": y})
+        # Create an instance of the model
         cls.model = MiscModel(
-            MiscModelConfig(
-                directory=cls.model_dir.name,
-                classifications=["not a", "a"],
-                features=cls.features,
-            )
-        )
-        cls.records = [
-            Record(
-                "a" + str(random.random()),
-                data={"features": {cls.feature.NAME: 1, "string": "a"}},
-            )
-            for _ in range(0, 1000)
-        ]
-        cls.records += [
-            Record(
-                "b" + str(random.random()),
-                data={"features": {cls.feature.NAME: 0, "string": "not a"}},
-            )
-            for _ in range(0, 1000)
-        ]
-        cls.sources = Sources(
-            MemorySource(MemorySourceConfig(records=cls.records))
+            directory=cls.model_dir.name,
+            predict=DefFeature("Y", float, 1),
+            features=Features(DefFeature("X", float, 1)),
         )
 
     @classmethod
     def tearDownClass(cls):
+        # Remove the temporary directory where the trained model was stored
         cls.model_dir.cleanup()
 
     async def test_00_train(self):
-        async with self.sources as sources, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                await mctx.train(sctx)
+        # Train the model on the training data
+        await train(self.model, *self.train_data)
 
     async def test_01_accuracy(self):
-        async with self.sources as sources, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                res = await mctx.accuracy(sctx)
-                self.assertGreater(res, 0.9)
+        # Use the test data to assess the model's accuracy
+        res = await accuracy(self.model, *self.test_data)
+        # Ensure the accuracy is above 80%
+        self.assertTrue(0.8 <= res < 1.0)
 
     async def test_02_predict(self):
-        a = Record("a", data={"features": {self.feature.NAME: 1}})
-        b = Record("not a", data={"features": {self.feature.NAME: 0}})
-        async with Sources(
-            MemorySource(MemorySourceConfig(records=[a, b]))
-        ) as sources, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                num = 0
-                async for record, prediction, confidence in mctx.predict(
-                    sctx.records()
-                ):
-                    with self.subTest(record=record):
-                        self.assertEqual(prediction, record.key)
-                    num += 1
-                self.assertEqual(num, 2)
+        # Get the prediction for each piece of test data
+        async for i, features, prediction in predict(
+            self.model, *self.test_data
+        ):
+            # Grab the correct value
+            correct = self.test_data[i]["Y"]
+            # Grab the predicted value
+            prediction = prediction["Y"]["value"]
+            # Check that the percent error is less than 10%
+            self.assertLess(prediction, correct * 1.1)
+            self.assertGreater(prediction, correct * (1.0 - 0.1))

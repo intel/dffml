@@ -170,7 +170,7 @@ You might have asked yourself, what is this thing?
 .. code-block:: python
 
     INSTALL_REQUIRES = [] + (
-        ["dffml>=0.3.4"]
+        ["dffml>=0.3.5"]
         if not any(
             list(
                 map(
