@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Docstrings and doctestable examples to `record.py`.
+- Inputs can be validated using operations
+  - `validate` parameter in `Input` takes `Operation.instance_name`
 ### Fixed
 - New model tutorial mentions file paths that should be edited.
 
@@ -20,8 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Shouldi got an operation to run npm-audit on JavaScript code
 - Docstrings and doctestable examples for `record.py` (features and evaluated)
 - Simplified model API with SimpleModel
-- Inputs can be validated using operations
-  - `validate` parameter in `Input` takes `operation_instance_name`
 - Documentation on how DataFlows work conceptually.
 - Style guide now contains information on class, variable, and function naming.
 ### Changed
