@@ -444,7 +444,7 @@ scratchlgr
 
 *Official*
 
-Logistic Regression from scratch using SAG(Stochastic average dradient descent) optimizer
+No description
 
 **Args**
 

@@ -582,4 +582,3 @@ No description
 **Outputs**
 
 - password: ScryptPassword(type: string)
-- output: group_by_output(type: Dict[str, List[Any]])
