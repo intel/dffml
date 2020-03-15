@@ -220,7 +220,7 @@ class DNNRegressionModel(Model):
     Output
 
     .. code-block:: json
-        
+
         [
             {
                 "extra": {},
