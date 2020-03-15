@@ -179,7 +179,7 @@ Make a prediction
 Output
 
 .. code-block:: json
-    
+
     [
         {
             "extra": {},
