@@ -21,7 +21,7 @@ class TestRunNPM_AuditOp(AsyncTestCase):
         "36b3ce51780ee6ea8dcec266c9d09e3a00198868ba1b041569950b82cf45884da0c47ec354dd8514022169849dfe8b7c",
     )
     async def test_run(self, npm_audit, javascript_algo):
-        with prepend_to_path(npm_audit / "bin",):
+        with prepend_to_path(npm_audit / "bin"):
             results = await run_npm_audit(
                 str(
                     javascript_algo
