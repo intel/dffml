@@ -16,3 +16,7 @@ class NotOpImp(Exception):
 
 class InputValidationError(Exception):
     pass
+
+
+class ValidatorMissing(Exception):
+    pass

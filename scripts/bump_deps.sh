@@ -3,6 +3,6 @@
 
 VERSION="$(dffml service dev setuppy kwarg version setup.py)"
 
-for file in $(git grep "dffml>=.*\\." | sed 's/:.*//g'); do
+for file in $(git grep "dffml>=.*\\." | sed 's/:.*//g' | grep -v scripts/bump_deps.sh); do
   sed -i "s/dffml>=.*\"/dffml>=${VERSION}\"/g" "${file}";
 done

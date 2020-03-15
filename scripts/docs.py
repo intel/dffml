@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 import os
-import getpass
+import pwd
 import inspect
 import argparse
 import importlib
-import pkg_resources
 import configparser
+import pkg_resources
+import unittest.mock
 from typing import List, Type
 
 
@@ -41,6 +42,8 @@ TEMPLATE = """{name}
 def data_type_string(data_type, nargs=None):
     if nargs is not None:
         return "List of %ss" % (data_type_string(data_type).lower(),)
+    elif hasattr(data_type, "SINGLETON"):
+        return "List of %ss" % (data_type_string(data_type.SINGLETON).lower(),)
     if hasattr(data_type, "__func__"):
         return data_type_string(data_type.__func__)
     elif data_type is str:
@@ -63,7 +66,7 @@ def data_type_string(data_type, nargs=None):
 def sanitize_default(default):
     if not isinstance(default, str):
         return sanitize_default(str(default))
-    return default.replace(getpass.getuser(), "user")
+    return default
 
 
 def build_args(config):
@@ -146,7 +149,9 @@ def format_op(op):
     return "\n\n".join(build)
 
 
-def gen_docs(entrypoint: str, modules: List[str], maintenance: str = "Core"):
+def gen_docs(
+    entrypoint: str, modules: List[str], maintenance: str = "Official"
+):
     per_module = {name: [None, []] for name in modules}
     packagesconfig = configparser.ConfigParser()
     packagesconfig.read("scripts/packagesconfig.ini")
@@ -205,13 +210,19 @@ def gen_docs(entrypoint: str, modules: List[str], maintenance: str = "Core"):
     )
 
 
+def fake_getpwuid(uid):
+    return pwd.struct_passwd(
+        ("user", "x", uid, uid, "", "/home/user", "/bin/bash")
+    )
+
+
 def main():
     parser = argparse.ArgumentParser(description="Generate plugin docs")
     parser.add_argument("--entrypoint", help="Entrypoint to document")
     parser.add_argument("--modules", help="Modules to care about", nargs="+")
     parser.add_argument(
         "--maintenance",
-        default="Core",
+        default="Official",
         help="Maintained as a part of DFFML or community managed",
     )
 
@@ -222,26 +233,32 @@ def main():
     )
     args = parser.parse_args()
 
-    if getattr(args, "entrypoint", False) and getattr(args, "modules", False):
-        print(gen_docs(args.entrypoint, args.modules, args.maintenance))
-        return
+    with unittest.mock.patch("pwd.getpwuid", new=fake_getpwuid):
 
-    with open(args.care, "rb") as genspec:
-        for line in genspec:
-            entrypoint, modules = line.decode("utf-8").split(maxsplit=1)
-            modules = modules.split()
-            template = entrypoint.replace(".", "_") + ".rst"
-            output = os.path.join("docs", "plugins", template)
-            template = os.path.join("scripts", "docs", "templates", template)
-            with open(template, "rb") as template_fd, open(
-                output, "wb"
-            ) as output_fd:
-                output_fd.write(
-                    (
-                        template_fd.read().decode("utf-8")
-                        + gen_docs(entrypoint, modules)
-                    ).encode("utf-8")
+        if getattr(args, "entrypoint", False) and getattr(
+            args, "modules", False
+        ):
+            print(gen_docs(args.entrypoint, args.modules, args.maintenance))
+            return
+
+        with open(args.care, "rb") as genspec:
+            for line in genspec:
+                entrypoint, modules = line.decode("utf-8").split(maxsplit=1)
+                modules = modules.split()
+                template = entrypoint.replace(".", "_") + ".rst"
+                output = os.path.join("docs", "plugins", template)
+                template = os.path.join(
+                    "scripts", "docs", "templates", template
                 )
+                with open(template, "rb") as template_fd, open(
+                    output, "wb"
+                ) as output_fd:
+                    output_fd.write(
+                        (
+                            template_fd.read().decode("utf-8")
+                            + gen_docs(entrypoint, modules)
+                        ).encode("utf-8")
+                    )
 
 
 if __name__ == "__main__":

@@ -9,12 +9,16 @@ jobs:
       fail-fast: false
       max-parallel: 40
       matrix:
-        check: [CHANGELOG, WHITESPACE, STYLE, DOCS]
+        check: [CHANGELOG, WHITESPACE, STYLE, DOCS, LINES]
         python-version: [3.7]
         node-version: [12.x]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+    - name: Checkout full upstream repo
+      run: |
+        git remote set-url origin https://github.com/intel/dffml
+        git fetch --prune --unshallow
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
@@ -37,11 +41,15 @@ jobs:
       fail-fast: false
       max-parallel: 40
       matrix:
-        plugin: [., examples/shouldi, model/tensorflow, model/tensorflow_hub, model/scratch, model/scikit, source/mysql, source/db, feature/git, feature/auth, service/http, config/yaml]
+        plugin: [., examples/shouldi, model/tensorflow, model/tensorflow_hub, model/scratch, model/scikit, source/mysql, source/db, feature/git, feature/auth, service/http, configloader/yaml]
         python-version: [3.7]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+    - name: Checkout full upstream repo
+      run: |
+        git remote set-url origin https://github.com/intel/dffml
+        git fetch --prune --unshallow
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
@@ -77,13 +85,13 @@ jobs:
         feature/git=${{ secrets.PYPI_FEATURE_GIT }}
         feature/auth=${{ secrets.PYPI_FEATURE_AUTH }}
         service/http=${{ secrets.PYPI_SERVICE_HTTP }}
-        config/yaml=${{ secrets.PYPI_CONFIG_YAML }}
+        configloader/yaml=${{ secrets.PYPI_CONFIG_YAML }}
         EOF
         export TWINE_USERNAME=__token__
         if [ "x${PLUGIN}" = "x." ]; then
           export TWINE_PASSWORD=${{ secrets.PYPI_DFFML }}
         else
-          export TWINE_PASSWORD=$(grep "${PLUGIN}" "${PYPI_TOKENS}" | sed 's/^[^=]*=//g')
+          export TWINE_PASSWORD=$(grep "${PLUGIN}=" "${PYPI_TOKENS}" | sed 's/^[^=]*=//g')
         fi
         rm ${PYPI_TOKENS}
         ./.ci/run.sh

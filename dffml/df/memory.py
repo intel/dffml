@@ -20,7 +20,11 @@ from typing import (
     Set,
 )
 
-from .exceptions import ContextNotPresent, DefinitionNotInContext
+from .exceptions import (
+    ContextNotPresent,
+    DefinitionNotInContext,
+    ValidatorMissing,
+)
 from .types import Input, Parameter, Definition, Operation, Stage, DataFlow
 from .base import (
     OperationException,
@@ -121,6 +125,26 @@ class MemoryInputSet(BaseInputSet):
     async def inputs(self) -> AsyncIterator[Input]:
         for item in self.__inputs:
             yield item
+
+    def remove_input(self, item: Input):
+        for x in self.__inputs[:]:
+            if x.uid == item.uid:
+                self.__inputs.remove(x)
+                break
+
+    def remove_unvalidated_inputs(self) -> "MemoryInputSet":
+        """
+        Removes `unvalidated` inputs from internal list and returns the same.
+        """
+        unvalidated_inputs = []
+        for x in self.__inputs[:]:
+            if not x.validated:
+                unvalidated_inputs.append(x)
+                self.__inputs.remove(x)
+        unvalidated_input_set = MemoryInputSet(
+            MemoryInputSetConfig(ctx=self.ctx, inputs=unvalidated_inputs)
+        )
+        return unvalidated_input_set
 
 
 class MemoryParameterSetConfig(NamedTuple):
@@ -232,21 +256,36 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         # TODO Create ctxhd_locks dict to manage a per context lock
         self.ctxhd_lock = asyncio.Lock()
 
+    async def receive_from_parent_flow(self, inputs: List[Input]):
+        """
+        Takes input from parent dataflow and adds it to every active context
+        """
+        async with self.ctxhd_lock:
+            ctx_keys = list(self.ctxhd.keys())
+        self.logger.debug(f"Receiving {inputs} from parent flow")
+        self.logger.debug(f"Forwarding inputs to contexts {ctx_keys}")
+        for ctx in ctx_keys:
+            await self.sadd(ctx, *inputs)
+
     async def add(self, input_set: BaseInputSet):
         # Grab the input set context handle
         handle = await input_set.ctx.handle()
         handle_string = handle.as_string()
         # TODO These ctx.add calls should probably happen after inputs are in
         # self.ctxhd
+
+        # remove unvalidated inputs
+        unvalidated_input_set = input_set.remove_unvalidated_inputs()
+
         # If the context for this input set does not exist create a
         # NotificationSet for it to notify the orchestrator
         if not handle_string in self.input_notification_set:
             self.input_notification_set[handle_string] = NotificationSet()
             async with self.ctx_notification_set() as ctx:
-                await ctx.add(input_set.ctx)
+                await ctx.add((None, input_set.ctx))
         # Add the input set to the incoming inputs
         async with self.input_notification_set[handle_string]() as ctx:
-            await ctx.add(input_set)
+            await ctx.add((unvalidated_input_set, input_set))
         # Associate inputs with their context handle grouped by definition
         async with self.ctxhd_lock:
             # Create dict for handle_string if not present
@@ -284,14 +323,11 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         """
         Shorthand for creating a MemoryInputSet with a StringInputSetContext.
 
-        >>> await octx.ictx.add(
-        ...     MemoryInputSet(
-        ...         MemoryInputSetConfig(
-        ...             ctx=StringInputSetContext(context_handle_string),
-        ...             inputs=list(args),
-        ...         )
-        ...     )
-        ... )
+        >>> async def main():
+        ...     async with MemoryOrchestrator.withconfig({}) as orchestrator:
+        ...         async with orchestrator(DataFlow.auto()) as octx:
+        ...             await octx.ictx.sadd("Hi")
+        >>> asyncio.run(main())
         """
         ctx = StringInputSetContext(context_handle_string)
         await self.add(
@@ -303,14 +339,11 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         """
         Shorthand for creating a MemoryInputSet with an existing context.
 
-        >>> await octx.ictx.add(
-        ...     MemoryInputSet(
-        ...         MemoryInputSetConfig(
-        ...             ctx=ctx,
-        ...             inputs=list(args),
-        ...         )
-        ...     )
-        ... )
+        >>> async def main():
+        ...     async with MemoryOrchestrator.withconfig({}) as orchestrator:
+        ...         async with orchestrator(DataFlow.auto()) as octx:
+        ...             await octx.ictx.sadd(StringInputSetContext("Hi"))
+        >>> asyncio.run(main())
         """
         await self.add(
             MemoryInputSet(MemoryInputSetConfig(ctx=ctx, inputs=list(args)))
@@ -836,6 +869,8 @@ class MemoryOperationImplementationNetworkContext(
                 opimp = OperationImplementation.load(operation.name)
             else:
                 raise OperationImplementationNotInstantiable(operation.name)
+        # Set the correct instance_name
+        opimp.op = opimp.op._replace(instance_name=operation.instance_name)
         self.operations[
             operation.instance_name
         ] = await self._stack.enter_async_context(opimp(config))
@@ -914,6 +949,7 @@ class MemoryOperationImplementationNetworkContext(
         octx: BaseOrchestratorContext,
         operation: Operation,
         parameter_set: BaseParameterSet,
+        set_valid: bool = True,
     ):
         """
         Run an operation in the background and add its outputs to the input
@@ -945,14 +981,14 @@ class MemoryOperationImplementationNetworkContext(
                 if not key in expand:
                     output = [output]
                 for value in output:
-                    inputs.append(
-                        Input(
-                            value=value,
-                            definition=operation.outputs[key],
-                            parents=parents,
-                            origin=(operation.instance_name, key),
-                        )
+                    new_input = Input(
+                        value=value,
+                        definition=operation.outputs[key],
+                        parents=parents,
+                        origin=(operation.instance_name, key),
                     )
+                    new_input.validated = set_valid
+                    inputs.append(new_input)
         except KeyError as error:
             raise KeyError(
                 "Value %s missing from output:definition mapping %s(%s)"
@@ -1012,6 +1048,38 @@ class MemoryOperationImplementationNetworkContext(
                 rctx, operation, dataflow, ctx=ctx
             ):
                 yield operation, parameter_set
+
+    async def validator_target_set_pairs(
+        self,
+        octx: BaseOperationNetworkContext,
+        rctx: BaseRedundancyCheckerContext,
+        ctx: BaseInputSetContext,
+        dataflow: DataFlow,
+        unvalidated_input_set: BaseInputSet,
+    ):
+        async for unvalidated_input in unvalidated_input_set.inputs():
+            validator_instance_name = unvalidated_input.definition.validate
+            validator = dataflow.validators.get(validator_instance_name, None)
+            if validator is None:
+                raise ValidatorMissing(
+                    "Validator with instance_name {validator_instance_name} not found"
+                )
+            # There is only one `input` in `validators`
+            input_name, input_definition = list(validator.inputs.items())[0]
+            parameter = Parameter(
+                key=input_name,
+                value=unvalidated_input.value,
+                origin=unvalidated_input,
+                definition=input_definition,
+            )
+            parameter_set = MemoryParameterSet(
+                MemoryParameterSetConfig(ctx=ctx, parameters=[parameter])
+            )
+            async for parameter_set, exists in rctx.exists(
+                validator, parameter_set
+            ):
+                if not exists:
+                    yield validator, parameter_set
 
 
 @entrypoint("memory")
@@ -1078,6 +1146,8 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
     ) -> None:
         super().__init__(config, parent)
         self._stack = None
+        # Maps instance_name to OrchestratorContext
+        self.subflows = {}
 
     async def __aenter__(self) -> "BaseOrchestratorContext":
         # TODO(subflows) In all of these contexts we are about to enter, they
@@ -1202,6 +1272,25 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
             ctx = input_set.ctx
         return ctx
 
+    async def forward_inputs_to_subflow(self, inputs: List[Input]):
+        # Go through input set,find instance_names of registered subflows which
+        # have definition of the current input listed in `forward`.
+        # If found,add `input` to list of inputs to forward for that instance_name
+        forward = self.config.dataflow.forward
+        inputs_to_forward = {}
+        for item in inputs:
+            instance_list = forward.get_instances_to_forward(item.definition)
+            for instance_name in instance_list:
+                inputs_to_forward.setdefault(instance_name, []).append(item)
+        self.logger.debug(
+            f"Forwarding inputs from {inputs_to_forward} to {self.subflows}"
+        )
+        for instance_name, inputs in inputs_to_forward.items():
+            if instance_name in self.subflows:
+                await self.subflows[
+                    instance_name
+                ].ictx.receive_from_parent_flow(inputs)
+
     # TODO(dfass) Get rid of run_operations, make it run_dataflow. Pass down the
     # dataflow to everything. Make inputs a list of InputSets or an
     # asyncgenerator of InputSets. Add a parameter which tells us if we should
@@ -1223,6 +1312,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         if not input_sets:
             # If there are no input sets, add only seed inputs
             ctxs.append(await self.seed_inputs(ctx=ctx))
+            await self.forward_inputs_to_subflow(self.config.dataflow.seed)
         if len(input_sets) == 1 and inspect.isasyncgen(input_sets[0]):
             # Check if inputs is an asyncgenerator
             # If it is, start a coroutine to wait for new inputs or input sets
@@ -1233,6 +1323,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         elif len(input_sets) == 1 and isinstance(input_sets[0], dict):
             # Helper to quickly add inputs under string context
             for ctx_string, input_set in input_sets[0].items():
+                await self.forward_inputs_to_subflow(input_set)
                 ctxs.append(
                     await self.seed_inputs(
                         ctx=StringInputSetContext(ctx_string),
@@ -1328,7 +1419,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 done, _pending = await asyncio.wait(
                     tasks, return_when=asyncio.FIRST_COMPLETED
                 )
-
                 for task in done:
                     # Remove the task from the set of tasks we are waiting for
                     tasks.remove(task)
@@ -1353,13 +1443,44 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                         task.print_stack(file=output)
                         self.logger.error("%s", output.getvalue().rstrip())
                         output.close()
+
                     elif task is input_set_enters_network:
                         (
                             more,
                             new_input_sets,
                         ) = input_set_enters_network.result()
-                        for new_input_set in new_input_sets:
-                            # Identify which operations have complete contextually
+                        for (
+                            unvalidated_input_set,
+                            new_input_set,
+                        ) in new_input_sets:
+                            async for operation, parameter_set in self.nctx.validator_target_set_pairs(
+                                self.octx,
+                                self.rctx,
+                                ctx,
+                                self.config.dataflow,
+                                unvalidated_input_set,
+                            ):
+                                await self.rctx.add(
+                                    operation, parameter_set
+                                )  # is this required here?
+                                dispatch_operation = await self.nctx.dispatch(
+                                    self, operation, parameter_set
+                                )
+                                dispatch_operation.operation = operation
+                                dispatch_operation.parameter_set = (
+                                    parameter_set
+                                )
+                                tasks.add(dispatch_operation)
+                                self.logger.debug(
+                                    "[%s]: dispatch operation: %s",
+                                    ctx_str,
+                                    operation.instance_name,
+                                )
+                            # forward inputs to subflow
+                            await self.forward_inputs_to_subflow(
+                                [x async for x in new_input_set.inputs()]
+                            )
+                            # Identify which operations have completed contextually
                             # appropriate input sets which haven't been run yet
                             async for operation, parameter_set in self.nctx.operations_parameter_set_pairs(
                                 self.ictx,
@@ -1369,6 +1490,9 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                                 self.config.dataflow,
                                 new_input_set=new_input_set,
                             ):
+                                # Validation operations shouldn't be run here
+                                if operation.validator:
+                                    continue
                                 # Add inputs and operation to redundancy checker before
                                 # dispatch
                                 await self.rctx.add(operation, parameter_set)

@@ -5,7 +5,7 @@ from typing import Union, Tuple, Dict
 
 from ..util.data import merge
 from ..util.entrypoint import base_entry_point
-from ..config.config import BaseConfigLoader
+from ..configloader.configloader import BaseConfigLoader
 from .base import BaseDataFlowObjectContext, BaseDataFlowObject
 from .types import DataFlow
 

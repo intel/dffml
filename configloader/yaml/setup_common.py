@@ -11,7 +11,7 @@ AUTHOR_NAME = "John Andersen"
 AUTHOR_EMAIL = "john.s.andersen@intel.com"
 # Install dffml if it is not installed in development mode
 INSTALL_REQUIRES = [] + (
-    ["dffml>=0.3.3"]
+    ["dffml>=0.3.5"]
     if not any(
         list(
             map(
@@ -59,7 +59,7 @@ KWARGS = dict(
     author_email=AUTHOR_EMAIL,
     maintainer=AUTHOR_NAME,
     maintainer_email=AUTHOR_EMAIL,
-    url="https://github.com/intel/dffml/blob/master/config/yaml/README.md",
+    url="https://github.com/intel/dffml/blob/master/configloader/yaml/README.md",
     license="MIT",
     keywords=["dffml"],
     classifiers=[

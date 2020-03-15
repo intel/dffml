@@ -59,13 +59,13 @@ setup(
             "coverage",
             "codecov",
             "sphinx",
-            "sphinxcontrib-asyncio",
+            "sphinx_rtd_theme",
             "recommonmark",
             "black",
-            "sphinx_rtd_theme",
+            "jsbeautifier",
         ],
     },
-    tests_require=["httptest>=0.0.15",],
+    tests_require=["httptest>=0.0.15"],
     entry_points={
         "console_scripts": ["dffml = dffml.cli.cli:CLI.main"],
         "dffml.source": [
@@ -77,7 +77,9 @@ setup(
         ],
         "dffml.port": ["json = dffml.port.json:JSON"],
         "dffml.service.cli": ["dev = dffml.service.dev:Develop"],
-        "dffml.config": ["json = dffml.config.json:JSONConfigLoader"],
+        "dffml.configloader": [
+            "json = dffml.configloader.json:JSONConfigLoader"
+        ],
         # Data Flow
         "dffml.operation": [
             # Output

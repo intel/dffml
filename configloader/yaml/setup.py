@@ -11,7 +11,9 @@ spec.loader.exec_module(common)
 
 common.KWARGS["install_requires"] += ["PyYAML>=5.1.2"]
 common.KWARGS["entry_points"] = {
-    "dffml.config": [f"yaml = {common.IMPORT_NAME}.config:YamlConfigLoader"]
+    "dffml.configloader": [
+        f"yaml = {common.IMPORT_NAME}.configloader:YamlConfigLoader"
+    ]
 }
 
 setup(**common.KWARGS)

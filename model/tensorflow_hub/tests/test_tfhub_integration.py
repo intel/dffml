@@ -17,20 +17,8 @@ class TestTextClassifier(IntegrationCLITestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-tensorflow-hub")
         # Randomly generate sample data
-        POSITIVE_WORDS = [
-            "fun",
-            "great",
-            "cool",
-            "awesome",
-            "rad",
-        ]
-        NEGATIVE_WORDS = [
-            "lame",
-            "dumb",
-            "silly",
-            "stupid",
-            "boring",
-        ]
+        POSITIVE_WORDS = ["fun", "great", "cool", "awesome", "rad"]
+        NEGATIVE_WORDS = ["lame", "dumb", "silly", "stupid", "boring"]
         WORDS = [NEGATIVE_WORDS, POSITIVE_WORDS]
 
         SENTENCES = [

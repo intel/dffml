@@ -37,6 +37,8 @@ The web UI (under heavy development) can be found `here <webui/>`_.
 This is the documentation for the latest release, documentation for the master
 branch can be found `here <master/index.html>`_.
 
+DFFML's source code can be found on `GitHub <https://github.com/intel/dffml>`_.
+
 .. toctree::
     :glob:
     :maxdepth: 2
@@ -44,6 +46,7 @@ branch can be found `here <master/index.html>`_.
 
     about
     installation
+    concepts/index
 
 .. toctree::
     :glob:

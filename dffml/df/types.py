@@ -122,6 +122,7 @@ class Operation(NamedTuple, Entrypoint):
     conditions: Optional[List[Definition]] = []
     expand: Optional[List[str]] = []
     instance_name: Optional[str] = None
+    validator: bool = False
 
     def export(self):
         exported = {
@@ -270,11 +271,13 @@ class Input(object):
         definition: Definition,
         parents: Optional[List["Input"]] = None,
         origin: Optional[Union[str, Tuple[Operation, str]]] = "seed",
+        validated: bool = True,
         *,
         uid: Optional[str] = "",
     ):
         # TODO Add optional parameter Input.target which specifies the operation
         # instance name this Input is intended for.
+        self.validated = validated
         if parents is None:
             parents = []
         if definition.spec is not None:
@@ -288,7 +291,11 @@ class Input(object):
             elif isinstance(value, dict):
                 value = definition.spec(**value)
         if definition.validate is not None:
-            value = definition.validate(value)
+            if callable(definition.validate):
+                value = definition.validate(value)
+            # if validate is a string (operation.instance_name) set `not validated`
+            elif isinstance(definition.validate, str):
+                self.validated = False
         self.value = value
         self.definition = definition
         self.parents = parents
@@ -362,6 +369,45 @@ class InputFlow:
 
 
 @dataclass
+class Forward:
+    """
+    Keeps a map of operation instance_names to list of definitions
+    of inputs which should be forwarded to the subflow running in that operation.
+    """
+
+    book: "Dict[str, List[Definitions]]" = None
+
+    def __post_init__(self):
+        if self.book is None:
+            self.book = {}
+        self._internal_book = []
+
+    def add(self, instance_name: str, definition_list: List[Definition]):
+        self.book[instance_name] = definition_list
+        self._internal_book.extend(definition_list)
+
+    def get_instances_to_forward(self, definition: Definition) -> List[str]:
+        """
+        Returns a list of all instances of operation to which `definition` should
+        be forwarded to.
+        """
+        if not definition in self._internal_book:
+            return []
+        return [
+            instance_name
+            for instance_name, definitions in self.book.items()
+            if definition in definitions
+        ]
+
+    def export(self):
+        return export_dict(**asdict(self))
+
+    @classmethod
+    def _fromdict(cls, **kwargs):
+        return cls(**kwargs)
+
+
+@dataclass
 class DataFlow:
     operations: Dict[str, Union[Operation, Callable]]
     seed: List[Input] = field(default=None)
@@ -372,6 +418,7 @@ class DataFlow:
     # Implementations can be provided in case they haven't been registered via
     # the entrypoint system.
     implementations: Dict[str, "OperationImplementation"] = field(default=None)
+    forward: Forward = field(default_factory=lambda: Forward())
 
     def __post_init__(self):
         # Prevent usage of a global dict (if we set default to {} then all the
@@ -384,6 +431,8 @@ class DataFlow:
             self.by_origin = {}
         if self.implementations is None:
             self.implementations = {}
+        self.validators = {}  # Maps `validator` ops instance_name to op
+
         # Allow callers to pass in functions decorated with op. Iterate over the
         # given operations and replace any which have been decorated with their
         # operation. Add the implementation to our dict of implementations.
@@ -411,9 +460,10 @@ class DataFlow:
                 self.operations[instance_name] = operation
                 value = operation
             # Make sure every operation has the correct instance name
-            self.operations[instance_name] = value._replace(
-                instance_name=instance_name
-            )
+            value = value._replace(instance_name=instance_name)
+            self.operations[instance_name] = value
+            if value.validator:
+                self.validators[instance_name] = value
         # Grab all definitions from operations
         operations = list(self.operations.values())
         definitions = list(
@@ -487,6 +537,7 @@ class DataFlow:
             "seed": self.seed.copy(),
             "configs": self.configs.copy(),
             "flow": self.flow.copy(),
+            "forward": self.forward.export(),
         }
         if linked:
             exported["linked"] = True
@@ -515,6 +566,8 @@ class DataFlow:
             instance_name: InputFlow._fromdict(**input_flow)
             for instance_name, input_flow in kwargs["flow"].items()
         }
+        # Import forward
+        kwargs["forward"] = Forward._fromdict(**kwargs["forward"])
         return cls(**kwargs)
 
     @classmethod

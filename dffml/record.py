@@ -182,6 +182,27 @@ class Record(object):
     def evaluated(self, results: Dict[str, Any], overwrite=False):
         """
         Updates features with the result dict
+
+        Parameters
+        ----------
+        results : dict
+            The results that will be added to the features.
+        overwrite : boolean
+            If 'True', the function overwrites the current features with the results provided.
+            If 'Fasle', the function updates the current features with the results provided.
+
+        Examples
+        --------
+        >>> example = Record("example", data=dict(features=dict(dead="beef")))
+        >>> print(example.features())
+        {'dead': 'beef'}
+        >>> results = {"new": "feature"}
+        >>> example.evaluated({"feed": "face"})
+        >>> print(example.features())
+        {'dead': 'beef', 'feed': 'face'}
+        >>> example.evaluated(results, overwrite=True)
+        >>> print(example.features())
+        {'new': 'feature'}
         """
         if overwrite:
             self.data.features = results
@@ -193,6 +214,23 @@ class Record(object):
     def features(self, subset: List[str] = []) -> Dict[str, Any]:
         """
         Returns all features for the record or the subset specified.
+
+        Parameters
+        ----------
+        subset : list[str]
+            The subset of features that will be returned.
+
+        Returns
+        -------
+        dict
+            features.
+
+        Examples
+        --------
+        >>> example = Record("example", data=dict(features=dict(dead="beef")))
+        >>>
+        >>> print(example.features(["dead"]))
+        {'dead': 'beef'}
         """
         if not subset:
             return self.data.features
@@ -207,6 +245,22 @@ class Record(object):
     def feature(self, name: str) -> Any:
         """
         Returns a feature of the record.
+
+        Parameters
+        ----------
+        name : str
+            The name of the feature that will be returned.
+
+        Returns
+        -------
+        any
+            feature.
+
+        Examples
+        --------
+        >>> example = Record("example", data=dict(features=dict(dead="beef")))
+        >>> print(example.feature("dead"))
+        beef
         """
         if name not in self.data.features:
             raise NoSuchFeature(name)
@@ -214,7 +268,21 @@ class Record(object):
 
     def predicted(self, target: str, value: Any, confidence: float):
         """
-        Set the prediction for this record
+        Set the prediction for this record.
+
+        Parameters
+        ----------
+        target : str
+            The target you want to store the prediction at.
+        value : Any
+            The prediction.
+
+        Examples
+        --------
+        >>> example = Record("example", data=dict(features=dict(dead="beef")))
+        >>> example.predicted("target_name", "feed", 1.00)
+        >>> print(example.prediction("target_name"))
+        {'confidence': 1.0, 'value': 'feed'}
         """
         self.data.prediction[target] = RecordPrediction(
             value=value, confidence=float(confidence)
@@ -223,11 +291,49 @@ class Record(object):
 
     def prediction(self, target: str) -> RecordPrediction:
         """
-        Get the prediction for this record
+        Get the prediction for this record.
+
+        Parameters
+        ----------
+        target : str
+            The name of the feature that will be returned.
+
+        Returns
+        -------
+        RecordPrediction
+            The prediction of the target specified.
+
+        Examples
+        --------
+        >>> example = Record("example", data=dict(features=dict(dead="beef")))
+        >>> example.predicted("target_name", "feed", 1.00)
+        >>> print(example.prediction("target_name"))
+        {'confidence': 1.0, 'value': 'feed'}
         """
         return self.data.prediction[target]
 
     def predictions(self, subset: List[str] = []) -> Dict[str, Any]:
+        """
+        Get the predictions for the subset of record.
+
+        Parameters
+        ----------
+        subset : list[str]
+            The list of subset of the record that predictions are returned for.
+
+        Returns
+        -------
+        dict
+            The prediction of the specified subset.
+
+        Examples
+        --------
+        >>> example = Record("example", data=dict(features=dict(dead="beef")))
+        >>> example.predicted("target_name1", "feed", 1.00)
+        >>> example.predicted("target_name2", "deed", 0.97)
+        >>> print(example.predictions(["target_name1", "target_name2"]))
+        {'target_name1': {'confidence': 1.0, 'value': 'feed'}, 'target_name2': {'confidence': 0.97, 'value': 'deed'}}
+        """
         if not subset:
             return self.data.prediction
         for name in subset:

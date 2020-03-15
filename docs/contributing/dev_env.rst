@@ -174,7 +174,7 @@ all the packages in development mode.
     $ mkdir -p .venv
     $ export HOME="${PWD}/.venv"
     $ export PATH="${HOME}/.local/bin:${PATH}"
-    $ pip install --user -U setuptools
+    $ pip install --user -U pip setuptools
     $ pip install --prefix=~/.local -e .[dev]
     $ dffml service dev install -user
 

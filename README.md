@@ -6,6 +6,22 @@
 [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.svg)](https://gitter.im/dffml/community)
 [![PyPI version](https://img.shields.io/pypi/v/dffml.svg)](https://pypi.org/project/dffml)
 
+## Mission Statement
+
+DFFML aims to be the easiest way to use Machine Learning.
+
+We take a "just bring your data" approach to ML. DFFML is an AutoML (Automated
+Machine Learning) library, command line application, HTTP service, and soon, web
+UI.
+
+You give DFFML your data and tell it what kind of model you want to train and it
+creates a model for you.
+
+If you want finer grained control over the model, you can easily do so by
+implementing your own model plugin.
+
+We also make it easy to use and deploy your models.
+
 ## Documentation
 
 Documentation for the latest release is hosted at https://intel.github.io/dffml/

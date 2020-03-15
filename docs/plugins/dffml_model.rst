@@ -30,63 +30,38 @@ dffml_model_tensorflow
 tfdnnc
 ~~~~~~
 
-*Core*
+*Official*
 
 Implemented using Tensorflow's DNNClassifier.
 
-.. code-block:: console
+First we create the training and testing datasets
 
-    $ wget http://download.tensorflow.org/data/iris_training.csv
-    $ wget http://download.tensorflow.org/data/iris_test.csv
-    $ head iris_training.csv
-    $ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' *.csv
-    $ head iris_training.csv
-    $ dffml train \
-        -model tfdnnc \
-        -model-epochs 3000 \
-        -model-steps 20000 \
-        -model-predict classification:int:1 \
-        -model-classifications 0 1 2 \
-        -model-clstype int \
-        -sources iris=csv \
-        -source-filename iris_training.csv \
-        -model-features \
-          SepalLength:float:1 \
-          SepalWidth:float:1 \
-          PetalLength:float:1 \
-          PetalWidth:float:1 \
-        -log debug
-    ... lots of output ...
-    $ dffml accuracy \
-        -model tfdnnc \
-        -model-predict classification:int:1 \
-        -model-classifications 0 1 2 \
-        -model-clstype int \
-        -sources iris=csv \
-        -source-filename iris_test.csv \
-        -model-features \
-          SepalLength:float:1 \
-          SepalWidth:float:1 \
-          PetalLength:float:1 \
-          PetalWidth:float:1 \
-        -log critical
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/train_data.sh
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/accuracy.sh
+
+Output
+
+.. code-block::
+
     0.99996233782
-    $ dffml predict all \
-        -model tfdnnc \
-        -model-predict classification:int:1 \
-        -model-classifications 0 1 2 \
-        -model-clstype int \
-        -sources iris=csv \
-        -source-filename iris_test.csv \
-        -model-features \
-          SepalLength:float:1 \
-          SepalWidth:float:1 \
-          PetalLength:float:1 \
-          PetalWidth:float:1 \
-        -caching \
-        -log critical \
-      > results.json
-    $ head -n 33 results.json
+
+Make a prediction
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/predict.sh
+
+Output
+
+.. code-block:: json
+
     [
         {
             "extra": {},
@@ -107,25 +82,11 @@ Implemented using Tensorflow's DNNClassifier.
             },
             "key": "0"
         },
-        {
-            "extra": {},
-            "features": {
-                "PetalLength": 5.4,
-                "PetalWidth": 2.1,
-                "SepalLength": 6.9,
-                "SepalWidth": 3.1,
-                "classification": 2
-            },
-            "last_updated": "2019-07-31T02:00:12Z",
-            "prediction": {
-                "classification":
-                {
-                    "confidence": 0.9999984502792358,
-                    "value": 2
-                }
-            },
-            "key": "1"
-        },
+    ]
+
+Example usage of Tensorflow DNNClassifier model using python API
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/tfdnnc.py
 
 **Args**
 
@@ -166,9 +127,9 @@ Implemented using Tensorflow's DNNClassifier.
   - default: 30
   - Number of iterations to pass over all records in a source
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/tensorflow
+  - default: ~/.cache/dffml/tensorflow
   - Directory where state should be saved
 
 - hidden: List of integers
@@ -179,7 +140,7 @@ Implemented using Tensorflow's DNNClassifier.
 tfdnnr
 ~~~~~~
 
-*Core*
+*Official*
 
 Implemented using Tensorflow's DNNEstimator.
 
@@ -287,9 +248,9 @@ predict).
   - default: 30
   - Number of iterations to pass over all records in a source
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/tensorflow
+  - default: ~/.cache/dffml/tensorflow
   - Directory where state should be saved
 
 - hidden: List of integers
@@ -308,7 +269,7 @@ dffml_model_tensorflow_hub
 text_classifier
 ~~~~~~~~~~~~~~~
 
-*Core*
+*Official*
 
 Implemented using Tensorflow hub pretrained models.
 
@@ -465,9 +426,9 @@ Implemented using Tensorflow hub pretrained models.
   - default: 10
   - Number of iterations to pass over all records in a source
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/tensorflow_hub
+  - default: ~/.cache/dffml/tensorflow_hub
   - Directory where state should be saved
 
 dffml_model_scratch
@@ -481,7 +442,7 @@ dffml_model_scratch
 scratchslr
 ~~~~~~~~~~
 
-*Core*
+*Official*
 
 Simple Linear Regression Model for 2 variables implemented from scratch.
 Models are saved under the ``directory`` in subdirectories named after the
@@ -548,9 +509,9 @@ hash of their feature names.
 
   - Features to train on
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/scratch
+  - default: ~/.cache/dffml/scratch
   - Directory where state should be saved
 
 dffml_model_scikit
@@ -684,7 +645,7 @@ Predicting with trained model:
 
 **Usage Example:**
 
-Example below uses LinearRegression Model on a small dataset.
+Example below uses LinearRegression Model using the command line.
 
 Let us take a simple example:
 
@@ -704,60 +665,57 @@ Let us take a simple example:
 |          5           |     11     |      1.2     |   60   |
 +----------------------+------------+--------------+--------+
 
-.. code-block:: console
+First we create the files
 
-    $ cat > train.csv << EOF
-    Years,Expertise,Trust,Salary
-    0,1,0.2,10
-    1,3,0.4,20
-    2,5,0.6,30
-    3,7,0.8,40
-    EOF
-    $ cat > test.csv << EOF
-    Years,Expertise,Trust,Salary
-    4,9,1.0,50
-    5,11,1.2,60
-    EOF
-    $ dffml train \
-        -model scikitlr \
-        -model-features Years:int:1 Expertise:int:1 Trust:float:1 \
-        -model-predict Salary:float:1 \
-        -sources f=csv \
-        -source-filename train.csv \
-        -log debug
-    $ dffml accuracy \
-        -model scikitlr \
-        -model-features Years:int:1 Expertise:int:1 Trust:float:1 \
-        -model-predict Salary:float:1 \
-        -sources f=csv \
-        -source-filename test.csv \
-        -log debug
+.. literalinclude:: /../model/scikit/examples/lr/train_data.sh
+
+.. literalinclude:: /../model/scikit/examples/lr/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/scikit/examples/lr/train.sh
+
+Assess accuracy
+
+.. literalinclude:: /../model/scikit/examples/lr/accuracy.sh
+
+Output:
+
+.. code-block::
+
     1.0
-    $ echo -e 'Years,Expertise,Trust\n6,13,1.4\n' | \
-      dffml predict all \
-        -model scikitlr \
-        -model-features Years:int:1 Expertise:int:1 Trust:float:1 \
-        -model-predict Salary:float:1 \
-        -sources f=csv \
-        -source-filename /dev/stdin \
-        -log debug
+
+Make a prediction
+
+.. literalinclude:: /../model/scikit/examples/lr/predict.sh
+
+Output:
+
+.. code-block:: json
+
     [
         {
             "extra": {},
             "features": {
                 "Expertise": 13,
-                "Trust": 1.4,
+                "Trust": 0.7,
                 "Years": 6
             },
-            "last_updated": "2019-09-18T19:04:18Z",
+            "key": "0",
+            "last_updated": "2020-03-01T22:26:46Z",
             "prediction": {
-                "confidence": 1.0,
-                "value": 70.00000000000001
-            },
-            "key": 0
+                "Salary": {
+                    "confidence": 1.0,
+                    "value": 70.0
+                }
+            }
         }
     ]
 
+
+Example usage of Linear Regression Model using python API:
+
+.. literalinclude:: /../model/scikit/examples/lr/lr.py
 
 Example below uses KMeans Clustering Model on a small randomly generated dataset.
 
@@ -805,22 +763,54 @@ Example below uses KMeans Clustering Model on a small randomly generated dataset
         -source-readonly \
         -log debug
     [
-    {
-        "extra": {},
-        "features": {
-            "Col1": 6.09809669,
-            "Col2": 8.36434181,
-            "Col3": 6.70940915,
-            "Col4": -7.91491768
-        },
-        "last_updated": "2020-01-12T22:51:15Z",
-        "prediction": {
-            "confidence": 0.6365141682948129,
-            "value": 2
-        },
-        "key": "0"
-    }
+        {
+            "extra": {},
+            "features": {
+                "Col1": 6.09809669,
+                "Col2": 8.36434181,
+                "Col3": 6.70940915,
+                "Col4": -7.91491768
+            },
+            "last_updated": "2020-01-12T22:51:15Z",
+            "prediction": {
+                "confidence": 0.6365141682948129,
+                "value": 2
+            },
+            "key": "0"
+        }
     ]
+
+Example usage of KMeans Clustering Model using python API:
+
+.. code-block:: python
+
+    from dffml import CSVSource, Features, DefFeature
+    from dffml.noasync import train, accuracy, predict
+    from dffml_model_scikit import KMeansModel
+
+    model = KMeansModel(
+        features=Features(
+            DefFeature("Col1", float, 1),
+            DefFeature("Col2", float, 1),
+            DefFeature("Col3", float, 1),
+            DefFeature("Col4", float, 1),
+        ),
+        tcluster=DefFeature("cluster", int, 1)
+    )
+
+    # Train the model
+    train(model, "train.csv")
+
+    # Assess accuracy (alternate way of specifying data source)
+    print("Accuracy:", accuracy(model, CSVSource(filename="test.csv")))
+
+    # Make prediction
+    for i, features, prediction in predict(
+        model,
+        {"Col1": 6.09809669, "Col2": 8.36434181, "Col3": 6.70940915, "Col4": -7.91491768},
+    ):
+        features["cluster"] = prediction["cluster"]["value"]
+        print(features)
 
 **NOTE**: `Transductive <https://scikit-learn.org/stable/glossary.html#term-transductive/>`_ Clusterers(scikitsc, scikitac, scikitoptics) cannot handle unseen data.
 Ensure that `predict` and `accuracy` for these algorithms uses training data.
@@ -842,8 +832,8 @@ Ensure that `predict` and `accuracy` for these algorithms uses training data.
 
   - Features to train on
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/scikit-{Entrypoint}
+  - default: ~/.cache/dffml/scikit-{entrypoint}
   - Directory where state should be saved
 

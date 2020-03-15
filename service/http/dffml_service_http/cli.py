@@ -160,6 +160,15 @@ class Server(TLSCMD, MultiCommCMD, Routes):
         help="Directory to store uploaded files in",
         default=None,
     )
+    arg_static = Arg(
+        "-static", help="Directory to serve static content from", default=None
+    )
+    arg_js = Arg(
+        "-js",
+        help="Serve JavaScript API file at /api.js",
+        default=False,
+        action="store_true",
+    )
     arg_insecure = Arg(
         "-insecure",
         help="Start without TLS encryption",
@@ -174,19 +183,8 @@ class Server(TLSCMD, MultiCommCMD, Routes):
     )
 
     def __init__(self, *args, **kwargs):
-        self._port: int = 0
         self.site = None
         super().__init__(*args, **kwargs)
-
-    @property
-    def port(self):
-        if self.site is None or self.site._server is None:
-            return self._port
-        return self.site._server.sockets[0].getsockname()[1]
-
-    @port.setter
-    def port(self, value):
-        self._port = value
 
     async def start(self):
         if self.insecure:
@@ -205,6 +203,7 @@ class Server(TLSCMD, MultiCommCMD, Routes):
                 ssl_context=ssl_context,
             )
         await self.site.start()
+        self.port = self.site._server.sockets[0].getsockname()[1]
         self.logger.info(f"Serving on {self.addr}:{self.port}")
 
     async def run(self):

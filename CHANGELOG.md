@@ -6,14 +6,65 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Docstrings and doctestable examples to `record.py`.
+- Inputs can be validated using operations
+  - `validate` parameter in `Input` takes `Operation.instance_name`
+### Fixed
+- New model tutorial mentions file paths that should be edited.
+
+## [0.3.5] - 2020-03-10
+### Added
+- Parent flows can now forward inputs to active contexts of subflows.
+  - `forward` parameter in `DataFlow`
+  - `subflow` in `OperationImplementationContext`
+- Documentation on writing examples and running doctests
+- Doctestable Examples to high-level API.
+- Shouldi got an operation to run npm-audit on JavaScript code
+- Docstrings and doctestable examples for `record.py` (features and evaluated)
+- Simplified model API with SimpleModel
+- Documentation on how DataFlows work conceptually.
+- Style guide now contains information on class, variable, and function naming.
+### Changed
+- Restructured contributing documentation
+- Use randomly generated data for scikit tests
+- Change Core to Official to clarify who maintains each plugin
+- Name of output of unsupervised model from "Prediction" to "cluster"
+- Test scikit LR documentation examples in CI
+- Create a fresh archive of the git repo for release instead of cleaning
+  existing repo with `git clean` for development service release command.
+- Simplified SLR tests for scratch model
+- Test tensorflow DNNClassifier documentation exaples in CI
+- config directories and files associated with ConfigLoaders have been renamed
+  to configloader.
+- Model config directory parameters are now `pathlib.Path` objects
+- New model tutorial and `skel/model` use simplifeid model API.
+
+## [0.3.4] - 2020-02-28
+### Added
 - Tensorflow hub NLP models.
 - Notes on development dependencies in `setup.py` files to codebase notes.
 - Test for `cached_download`
+- `dffml.util.net.cached_download_unpack_archive` to run a cached download and
+  unpack the archive, very useful for testing. Documented on the Networking
+  Helpers API docs page.
+- Directions on how to read the CI under the Git and GitHub page of the
+  contributing documentation.
+- HTTP API
+  - Static file serving from a dirctory with `-static`
+  - `api.js` file serving with the `-js` flag
+  - Docs page for JavaScript example
+- shouldi got an operation to run golangci-lint on Golang code
+- Note about using black via VSCode
+### Fixed
+- Port assignment for the HTTP API via the `-port` flag
 ### Changed
 - `repo`/`Repo` to `record`/`Record`
 - Definitions with a `spec` can use the `subspec` parameter to declare that they
   are a list or a dict where the values are of the `spec` type. Rather than the
   list or dict itself being of the `spec` type.
+- Fixed the URL mentioned in example to configure a model.
+- Sphinx doctests are now run in the CI in the DOCS task.
+- Lint JavaScript files with js-beautify and enforce with CI
 ### Removed
 - Unused imports
 
