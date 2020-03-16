@@ -1,4 +1,5 @@
 import os
+import sqlite3
 import tempfile
 from typing import Dict
 
@@ -14,10 +15,26 @@ class TestDbSource(AsyncTestCase, SourceTest):
     database_name: str
     cols: Dict[str, str]
 
+    SQL_TEARDOWN = """
+    DROP TABLE IF EXISTS `TestTable`;
+    """
+    SQL_SETUP = """
+    CREATE TABLE `TestTable` (
+      `key` varchar(100) NOT NULL,
+      `feature_PetalLength` float DEFAULT NULL,
+      `feature_PetalWidth` float DEFAULT NULL,
+      `feature_SepalLength` float DEFAULT NULL,
+      `feature_SepalWidth` float DEFAULT NULL,
+      `target_name_confidence` float DEFAULT NULL,
+      `target_name_value` varchar(100) DEFAULT NULL,
+      PRIMARY KEY (`key`)
+    );
+    """
+
     @classmethod
     def setUpClass(cls):
         # SQL table info
-        cls.table_name = "testTable"
+        cls.table_name = "TestTable"
         cls.cols = {
             "key": "varchar(100) NOT NULL PRIMARY KEY",
             "feature_PetalLength": "float DEFAULT NULL",
@@ -27,10 +44,6 @@ class TestDbSource(AsyncTestCase, SourceTest):
             "target_name_confidence": "float DEFAULT NULL",
             "target_name_value": "varchar(100) DEFAULT NULL",
         }
-
-        # TODO: We could either manually create the table and test each new db implementation
-        # TODO: or we could add a hook after setUpSource() to use the abstract db.create_table()
-        # TODO: Add in Docker environment stuff?
 
         # Sqlite db file
         file, cls.database_name = tempfile.mkstemp(suffix=".db")
@@ -47,17 +60,22 @@ class TestDbSource(AsyncTestCase, SourceTest):
             model_columns="key feature_PetalLength feature_PetalWidth feature_SepalLength feature_SepalWidth target_name_confidence target_name_value",
         )
 
+        # Setup connection to reset state (different from the connection used in the tests)
+        conn = sqlite3.connect(cls.database_name)
+        db_cursor = conn.cursor()
+        db_cursor.execute(cls.SQL_TEARDOWN)
+        db_cursor.execute(cls.SQL_SETUP)
+        conn.commit()
+        db_cursor.close()
+        conn.close()
+
     @classmethod
     def tearDownClass(cls):
         os.remove(cls.database_name)
 
     async def setUpSource(self):
-        db_src = DbSource(self.source_config)
+        return DbSource(self.source_config)
 
-        # Create table
-        await db_src.__aenter__()
-        async with db_src.db_impl() as db_ctx:
-            await db_ctx.create_table(self.table_name, self.cols)
-        await db_src.__aexit__(None, None, None)
 
-        return db_src
+# TODO: Potential shortcoming: No way to call this source from the CLI because of SqliteDatabaseConfig
+# dffml list records -sources primary=dbsource -source-db_implementation sqlite -source-table_name testTable -source-db_config SqliteDatabaseConfig\(filename=\"/tmp/some_sqlite.db\"\) -source-model_columns "key feature_PetalLength feature_PetalWidth feature_SepalLength feature_SepalWidth target_name_confidence target_name_value"

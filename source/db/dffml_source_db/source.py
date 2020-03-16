@@ -4,7 +4,7 @@ from typing import Type, AsyncIterator, List
 from dffml.base import config, BaseConfig
 from dffml.db.base import BaseDatabase, Condition
 from dffml.db.sqlite import SqliteDatabase
-from dffml.record import Record, RecordPrediction
+from dffml.record import Record
 from dffml.source.source import BaseSource, BaseSourceContext
 from dffml.util.entrypoint import entrypoint
 
@@ -18,14 +18,6 @@ class DbSourceConfig(BaseConfig):
 
 
 class DbSourceContext(BaseSourceContext):
-    async def __aenter__(self) -> "DbSourceContext":
-        # TODO: Maybe establish db connection?
-        return self
-
-    async def __aexit__(self, exc_type, exc_value, traceback):
-        # TODO: Maybe commit any query?
-        pass
-
     async def update(self, record: Record):
         model_columns = self.parent.config.model_columns.split()
         key_value_pairs = collections.OrderedDict()
@@ -56,8 +48,15 @@ class DbSourceContext(BaseSourceContext):
             # TODO: Maybe change the sqlite update query to use INSERT INTO ... ON DUPLICATE KEY UPDATE
             # Note that this would impose all other db implementations to use "update or create if not exists" functionality
             await db_ctx.insert(self.parent.config.table_name, key_value_pairs)
-            await db_ctx.update(self.parent.config.table_name, key_value_pairs, [[Condition("key", "=", record.key)]])
-            results = [row async for row in db_ctx.lookup(self.parent.config.table_name)]
+            await db_ctx.update(
+                self.parent.config.table_name,
+                key_value_pairs,
+                [[Condition("key", "=", record.key)]],
+            )
+            results = [
+                row
+                async for row in db_ctx.lookup(self.parent.config.table_name)
+            ]
         self.logger.debug("update: %s", await self.record(record.key))
 
     async def records(self) -> AsyncIterator[Record]:
