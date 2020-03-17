@@ -212,7 +212,7 @@ def gen_docs(
 
 def fake_getpwuid(uid):
     return pwd.struct_passwd(
-        ("user", "x", uid, uid, "", "/home/user", "/bin/bash",)
+        ("user", "x", uid, uid, "", "/home/user", "/bin/bash")
     )
 
 
