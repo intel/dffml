@@ -24,7 +24,7 @@ class PNGConfigLoaderContext(BaseConfigLoaderContext):
         return img_784
 
     async def dumpb(self, resource: Dict) -> bytes:
-        return repr(resource).encode()
+        raise NotImplementedError
 
 
 @entrypoint("mnistpng")

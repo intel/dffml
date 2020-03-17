@@ -48,28 +48,32 @@ Assess the model's accuracy.
 The accuracy likely won't be very good right now because we need to normalize
 the data first.
 
-Create an ``image.csv`` file which contains the names of the images to predict on.
+Create an ``image.csv`` file which contains the names of the images (with their extension .mnistpng) to predict on.
 
 .. literalinclude:: /../examples/MNIST/image_file.sh
 
-In this example, the ``image.csv`` file contains the names of the following images :-
+In this example, the ``image.csv`` file contains the names of the following images
 
-.. image:: /../examples/MNIST/image1.png
+.. image:: /../examples/MNIST/image1.mnistpng
     :width: 140px
     :height: 140px
 
-.. image:: /../examples/MNIST/image2.png
+.. image:: /../examples/MNIST/image2.mnistpng
     :width: 140px
     :height: 140px
 
-.. image:: /../examples/MNIST/image3.png
+.. image:: /../examples/MNIST/image3.mnistpng
     :width: 140px
     :height: 140px
 
-.. image:: /../examples/MNIST/image4.png
+.. image:: /../examples/MNIST/image4.mnistpng
     :width: 140px
     :height: 140px
 
-Predicting with the trained model :-
+Predicting with the trained model
 
 .. literalinclude:: /../examples/MNIST/predict.sh
+
+Output
+
+.. literalinclude:: /../examples/MNIST/output.sh

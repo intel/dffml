@@ -9,4 +9,4 @@ dffml predict all \
     -sources images=csv \
     -source-filename image.csv  \
     -source-loadfiles image  \
-    -log debug
+    -log critical

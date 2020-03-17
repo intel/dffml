@@ -4,14 +4,14 @@ import ast
 from pathlib import Path
 from setuptools import find_packages
 
-ORG = "tron"
+ORG = "intel"
 NAME = "dffml-config-png"
 DESCRIPTION = "DFFML config dffml-config-png"
 AUTHOR_NAME = "sakshamarora1"
 AUTHOR_EMAIL = "sakshamarora1001@gmail.com"
 # Install dffml if it is not installed in development mode
 INSTALL_REQUIRES = [] + (
-    ["dffml>=0.3.2"]
+    ["dffml>=0.3.5"]
     if not any(
         list(
             map(
@@ -59,7 +59,7 @@ KWARGS = dict(
     author_email=AUTHOR_EMAIL,
     maintainer=AUTHOR_NAME,
     maintainer_email=AUTHOR_EMAIL,
-    url=f"https://github.com/{ORG}/{NAME}",
+    url=f"https://github.com/dffml/blob/master/configloader/png/README.md",
     license="MIT",
     keywords=["dffml"],
     classifiers=[

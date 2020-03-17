@@ -2,7 +2,7 @@
 
 ## About
 
-REPLACE_PACKAGE_DESCRIPTION
+Allows for reading of 'PNG' images for [MNIST dataset](../../docs/usage/mnist.rst)
 
 ## License
 

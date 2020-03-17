@@ -11,7 +11,7 @@ spec.loader.exec_module(common)
 
 common.KWARGS["entry_points"] = {
     "dffml.configloader": [
-        f"minstpng = {common.IMPORT_NAME}.configloader:PNGConfigLoader"
+        f"mnistpng = {common.IMPORT_NAME}.configloader:PNGConfigLoader"
     ]
 }
 
