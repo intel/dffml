@@ -91,13 +91,13 @@ class LogisticRegression(SimpleModel):
             gradJ = np.sum(x * f)
             w = w - learning_rate * gradJ / len(x)
         error = 0
-        for _id in range(len(x)):
-            yhat = x[_id] * w + b > 0.5
+        for x_id in range(len(x)):
+            yhat = x[x_id] * w + b > 0.5
             if yhat:
                 yhat = 1
             else:
                 yhat = 0
-            if yhat != y[_id]:
+            if yhat != y[x_id]:
                 error += 1
         accuracy = 1 - (error / len(x))
         return (w, b, accuracy)
