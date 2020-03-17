@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Docstrings and doctestable examples to `record.py`.
 - Inputs can be validated using operations
   - `validate` parameter in `Input` takes `Operation.instance_name`
+- Logistic Regression with SAG optimizer
 - Test tensorflow DNNEstimator documentation exaples in CI
 - Add python code for tensorflow DNNEstimator
 ### Fixed
