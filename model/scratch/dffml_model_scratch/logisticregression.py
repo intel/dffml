@@ -29,7 +29,63 @@ class LogisticRegressionConfig:
 
 @entrypoint("scratchlgr")
 class LogisticRegression(SimpleModel):
+    r"""
+    Simple Linear Regression Model for 2 variables implemented from scratch.
+    Models are saved under the ``directory`` in subdirectories named after the
+    hash of their feature names.
 
+    .. code-block:: console
+
+        $ cat > dataset.csv << EOF
+        f1,ans
+        0.1,0
+        0.7,1
+        0.6,1
+        0.2,0
+        0.8,1
+        EOF
+        $ dffml train \
+            -model scratchslr \
+            -model-features f1:float:1 \
+            -model-predict ans:int:1 \
+            -sources f=csv \
+            -source-filename dataset.csv \
+            -log debug
+        $ dffml accuracy \
+            -model scratchslr \
+            -model-features f1:float:1 \
+            -model-predict ans:int:1 \
+            -sources f=csv \
+            -source-filename dataset.csv \
+            -log debug
+        1.0
+        $ echo -e 'f1,ans\n0.8,0\n' | \
+          dffml predict all \
+            -model scratchslr \
+            -model-features f1:float:1 \
+            -model-predict ans:int:1 \
+            -sources f=csv \
+            -source-filename /dev/stdin \
+            -log debug
+        [
+            {
+                "extra": {},
+                "features": {
+                    "ans": 0,
+                    "f1": 0.8
+                },
+                "last_updated": "2019-07-19T09:46:45Z",
+                "prediction": {
+                    "ans": {
+                        "confidence": 1.0,
+                        "value": 1
+                    }
+                },
+                "key": "0"
+            }
+        ]
+
+    """
     # The configuration class needs to be set as the CONFIG property
     CONFIG = LogisticRegressionConfig
     # Logistic Regression only supports training on a single feature
@@ -50,16 +106,15 @@ class LogisticRegression(SimpleModel):
         return self.storage.get("separating_line", None)
 
     @separating_line.setter
-    def separating_line(self, rline):
+    def separating_line(self, sline):
         """
         Set separating_line in self.storage so it will be saved to disk
         """
-        self.storage["separating_line"] = rline
+        self.storage["separating_line"] = sline
 
     def predict_input(self, x):
         """
-        Use the regression
-        line to make a prediction by returning ``m * x + b``.
+        The Logistic regression with SAG optimizer: returns w * x + b > 0.5
         """
         prediction = self.separating_line[0] * x + self.separating_line[1]
         if prediction > 0.5:
@@ -73,7 +128,11 @@ class LogisticRegression(SimpleModel):
         )
         return prediction
 
-    def best_fit_line(self):
+    def best_separating_line(self):
+        """
+        Determine the best separating hyperplane (here integer weight) 
+        s.t. w * x + b is the best farhtest form 0.5.
+        """
         self.logger.debug(
             "Number of input records: {}".format(len(self.xData))
         )
@@ -82,14 +141,16 @@ class LogisticRegression(SimpleModel):
         learning_rate = 0.01
         w = 0.01
         b = 0.0
+        # epochs' loop
         for _ in range(1, 1500):
             z = w * x + b
             val = -np.multiply(y, z)
             num = -np.multiply(y, np.exp(val))
             den = 1 + np.exp(val)
-            f = num / den
-            gradJ = np.sum(x * f)
-            w = w - learning_rate * gradJ / len(x)
+            f = num / den  # f is gradient dJ for each data point
+            gradJ = np.sum(x * f)  # total dJ
+            w = w - learning_rate * gradJ / len(x)  # SAG subtraction
+        # Accuracy calculation
         error = 0
         for x_id in range(len(x)):
             yhat = x[x_id] * w + b > 0.5
@@ -113,7 +174,7 @@ class LogisticRegression(SimpleModel):
             self.yData = np.append(
                 self.yData, feature_data[self.config.predict.NAME]
             )
-        self.separating_line = self.best_fit_line()
+        self.separating_line = self.best_separating_line()
 
     async def accuracy(self, sources: Sources) -> Accuracy:
         # Ensure the model has been trained before we try to make a prediction
