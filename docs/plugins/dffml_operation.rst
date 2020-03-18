@@ -44,19 +44,19 @@ dffml.dataflow.run
 Starts a subflow ``self.config.dataflow`` and adds ``inputs`` in it.
 
 Parameters
-----------
+++++++++++
 inputs : dict
     The inputs to add to the subflow. These should be a key value mapping of
     the context string to the inputs which should be seeded for that context
     string.
 
 Returns
--------
++++++++
 dict
     Maps context strings in inputs to output after running through dataflow.
 
 Examples
---------
+++++++++
 
 >>> URL = Definition(name="URL", primitive="string")
 >>>
