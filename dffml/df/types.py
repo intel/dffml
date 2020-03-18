@@ -278,6 +278,8 @@ class Input(object):
         *,
         uid: Optional[str] = "",
     ):
+        if not isinstance(definition, Definition):
+            raise TypeError("Input given non definition")
         # TODO Add optional parameter Input.target which specifies the operation
         # instance name this Input is intended for.
         self.validated = validated
