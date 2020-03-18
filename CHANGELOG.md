@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add python code for tensorflow DNNEstimator
 ### Fixed
 - New model tutorial mentions file paths that should be edited.
+- DataFlow is no longer a dataclass to prevent it from being exported
+  incorrectly.
 
 ## [0.3.5] - 2020-03-10
 ### Added
