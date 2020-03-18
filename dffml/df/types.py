@@ -57,8 +57,11 @@ class Definition(NamedTuple):
         exported = dict(self._asdict())
         if not self.lock:
             del exported["lock"]
+        if not self.validate:
+            del exported["validate"]
         if not self.spec:
             del exported["spec"]
+            del exported["subspec"]
         else:
             exported["spec"] = export_dict(
                 name=self.spec.__qualname__,
