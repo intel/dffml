@@ -1,7 +1,7 @@
 from typing import Dict, Any
 
 from dffml.base import config
-from dffml.df.base import op
+from dffml.df.base import op, OperationImplementationContext
 from dffml.df.types import DataFlow, Input, Definition
 
 
@@ -21,24 +21,24 @@ class RunDataFlowConfig:
     config_cls=RunDataFlowConfig,
     expand=["results"],
 )
-async def run_dataflow(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
+class run_dataflow(OperationImplementationContext):
     """
     Starts a subflow ``self.config.dataflow`` and adds ``inputs`` in it.
 
     Parameters
-    ----------
+    ++++++++++
     inputs : dict
         The inputs to add to the subflow. These should be a key value mapping of
         the context string to the inputs which should be seeded for that context
         string.
 
     Returns
-    -------
+    +++++++
     dict
         Maps context strings in inputs to output after running through dataflow.
 
     Examples
-    --------
+    ++++++++
 
     >>> URL = Definition(name="URL", primitive="string")
     >>>
@@ -81,21 +81,24 @@ async def run_dataflow(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
     >>> asyncio.run(main())
     {'flow_results': {'dffml': {'URL': 'https://github.com/intel/dffml'}}}
     """
-    inputs_created = {}
-    definitions = self.config.dataflow.definitions
 
-    for ctx_str, val_defs in inputs.items():
-        inputs_created[ctx_str] = [
-            Input(
-                value=val_def["value"],
-                definition=definitions[val_def["definition"]],
-            )
-            for val_def in val_defs
-        ]
-    async with self.subflow(self.config.dataflow) as octx:
-        results = [
-            {(await ctx.handle()).as_string(): result}
-            async for ctx, result in octx.run(inputs_created)
-        ]
+    async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
+        inputs = inputs["inputs"]
+        inputs_created = {}
+        definitions = self.config.dataflow.definitions
 
-    return {"results": results}
+        for ctx_str, val_defs in inputs.items():
+            inputs_created[ctx_str] = [
+                Input(
+                    value=val_def["value"],
+                    definition=definitions[val_def["definition"]],
+                )
+                for val_def in val_defs
+            ]
+        async with self.subflow(self.config.dataflow) as octx:
+            results = [
+                {(await ctx.handle()).as_string(): result}
+                async for ctx, result in octx.run(inputs_created)
+            ]
+
+        return {"results": results}
