@@ -550,11 +550,15 @@ class DataFlow:
                 instance_name: operation.export()
                 for instance_name, operation in self.operations.items()
             },
-            "seed": self.seed.copy(),
-            "configs": self.configs.copy(),
-            "flow": self.flow.copy(),
-            "forward": self.forward.export(),
         }
+        if self.seed:
+            exported["seed"] = self.seed.copy()
+        if self.flow:
+            exported["flow"] = self.flow.copy()
+        if self.configs:
+            exported["configs"] = self.configs.copy()
+        if self.forward.book:
+            exported["forward"] = self.forward.export()
         if linked:
             exported["linked"] = True
             exported["definitions"] = self.definitions.copy()
@@ -574,16 +578,19 @@ class DataFlow:
             for instance_name, operation in kwargs["operations"].items()
         }
         # Import seed inputs
-        kwargs["seed"] = [
-            Input._fromdict(**input_data) for input_data in kwargs["seed"]
-        ]
+        if "seed" in kwargs:
+            kwargs["seed"] = [
+                Input._fromdict(**input_data) for input_data in kwargs["seed"]
+            ]
         # Import input flows
-        kwargs["flow"] = {
-            instance_name: InputFlow._fromdict(**input_flow)
-            for instance_name, input_flow in kwargs["flow"].items()
-        }
+        if "flow" in kwargs:
+            kwargs["flow"] = {
+                instance_name: InputFlow._fromdict(**input_flow)
+                for instance_name, input_flow in kwargs["flow"].items()
+            }
         # Import forward
-        kwargs["forward"] = Forward._fromdict(**kwargs["forward"])
+        if "forward" in kwargs:
+            kwargs["forward"] = Forward._fromdict(**kwargs["forward"])
         return cls(**kwargs)
 
     @classmethod
