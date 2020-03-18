@@ -50,6 +50,9 @@ class Definition(NamedTuple):
     def __str__(self):
         return repr(self)
 
+    def __eq__(self, other):
+        return bool(self.export() == other.export())
+
     def export(self):
         exported = dict(self._asdict())
         if not self.lock:
