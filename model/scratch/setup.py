@@ -65,5 +65,10 @@ setup(
     ],
     install_requires=INSTALL_REQUIRES,
     packages=find_packages(),
-    entry_points={"dffml.model": ["scratchslr = dffml_model_scratch.slr:SLR"]},
+    entry_points={
+        "dffml.model": [
+            "scratchslr = dffml_model_scratch.slr:SLR",
+            "scratchlgr = dffml_model_scratch.logisticregression:LogisticRegression",
+        ]
+    },
 )

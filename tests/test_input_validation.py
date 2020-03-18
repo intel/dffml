@@ -19,6 +19,10 @@ Area = Definition(name="area", primitive="float")
 ShapeName = Definition(
     name="shape_name", primitive="str", validate=lambda x: x.upper()
 )
+SHOUTIN = Definition(
+    name="shout_in", primitive="str", validate="validate_shout_instance"
+)
+SHOUTOUT = Definition(name="shout_out", primitive="str")
 
 
 @op(
@@ -33,6 +37,20 @@ async def get_circle(name: str, radius: float, pie: float):
             "area": pie * radius * radius,
         }
     }
+
+
+@op(
+    inputs={"shout_in": SHOUTIN},
+    outputs={"shout_in_validated": SHOUTIN},
+    validator=True,
+)
+def validate_shouts(shout_in):
+    return {"shout_in_validated": shout_in + "_validated"}
+
+
+@op(inputs={"shout_in": SHOUTIN}, outputs={"shout_out": SHOUTOUT})
+def echo_shout(shout_in):
+    return {"shout_out": shout_in}
 
 
 class TestDefintion(AsyncTestCase):
@@ -80,3 +98,34 @@ class TestDefintion(AsyncTestCase):
                 ]
             }
             pass
+
+    async def test_vaildation_by_op(self):
+        test_dataflow = DataFlow(
+            operations={
+                "validate_shout_instance": validate_shouts.op,
+                "echo_shout": echo_shout.op,
+                "get_single": GetSingle.imp.op,
+            },
+            seed=[
+                Input(
+                    value=[echo_shout.op.outputs["shout_out"].name],
+                    definition=GetSingle.op.inputs["spec"],
+                )
+            ],
+            implementations={
+                validate_shouts.op.name: validate_shouts.imp,
+                echo_shout.op.name: echo_shout.imp,
+            },
+        )
+        test_inputs = {
+            "TestShoutOut": [
+                Input(value="validation_status:", definition=SHOUTIN)
+            ]
+        }
+        async with MemoryOrchestrator.withconfig({}) as orchestrator:
+            async with orchestrator(test_dataflow) as octx:
+                async for ctx_str, results in octx.run(test_inputs):
+                    self.assertIn("shout_out", results)
+                    self.assertEqual(
+                        results["shout_out"], "validation_status:_validated"
+                    )
