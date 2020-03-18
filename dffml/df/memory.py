@@ -1,4 +1,5 @@
 import io
+import copy
 import asyncio
 import secrets
 import hashlib
@@ -872,7 +873,8 @@ class MemoryOperationImplementationNetworkContext(
             else:
                 raise OperationImplementationNotInstantiable(operation.name)
         # Set the correct instance_name
-        opimp.op = opimp.op._replace(instance_name=operation.instance_name)
+        opimp = copy.deepcopy(opimp)
+        opimp.op = operation
         self.operations[
             operation.instance_name
         ] = await self._stack.enter_async_context(opimp(config))
