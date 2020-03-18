@@ -412,22 +412,33 @@ class Forward:
         return cls(**kwargs)
 
 
-@dataclass
 class DataFlow:
-    operations: Dict[str, Union[Operation, Callable]]
-    seed: List[Input] = field(default=None)
-    configs: Dict[str, BaseConfig] = field(default=None)
-    definitions: Dict[str, Definition] = field(init=False)
-    flow: Dict[str, InputFlow] = field(default=None)
-    by_origin: Dict[Stage, Dict[str, Operation]] = field(default=None)
-    # Implementations can be provided in case they haven't been registered via
-    # the entrypoint system.
-    implementations: Dict[str, "OperationImplementation"] = field(default=None)
-    forward: Forward = field(default_factory=lambda: Forward())
+    def __init__(
+        self,
+        operations: Dict[str, Union[Operation, Callable]],
+        seed: List[Input] = None,
+        configs: Dict[str, BaseConfig] = None,
+        definitions: Dict[str, Definition] = False,
+        flow: Dict[str, InputFlow] = None,
+        by_origin: Dict[Stage, Dict[str, Operation]] = None,
+        # Implementations can be provided in case they haven't been registered
+        # via the entrypoint system.
+        implementations: Dict[str, "OperationImplementation"] = None,
+        forward: Forward = None,
+    ) -> None:
+        self.operations = operations
+        self.seed = seed
+        self.configs = configs
+        self.definitions = definitions
+        self.flow = flow
+        self.by_origin = by_origin
+        self.implementations = implementations
+        self.forward = forward
 
-    def __post_init__(self):
         # Prevent usage of a global dict (if we set default to {} then all the
         # instances will share the same instance of that dict, or list)
+        if self.forward is None:
+            self.forward = Forward()
         if self.seed is None:
             self.seed = []
         if self.configs is None:
