@@ -260,6 +260,8 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         """
         Takes input from parent dataflow and adds it to every active context
         """
+        if not inputs:
+            return
         async with self.ctxhd_lock:
             ctx_keys = list(self.ctxhd.keys())
         self.logger.debug(f"Receiving {inputs} from parent flow")
@@ -1273,10 +1275,14 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         return ctx
 
     async def forward_inputs_to_subflow(self, inputs: List[Input]):
+        if not inputs:
+            return
         # Go through input set,find instance_names of registered subflows which
         # have definition of the current input listed in `forward`.
         # If found,add `input` to list of inputs to forward for that instance_name
         forward = self.config.dataflow.forward
+        if not forward.book:
+            return
         inputs_to_forward = {}
         for item in inputs:
             instance_list = forward.get_instances_to_forward(item.definition)
