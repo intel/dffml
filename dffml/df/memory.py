@@ -1230,6 +1230,13 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                             operation.name,
                         )
                         opimp_config = BaseConfig()
+                    else:
+                        self.logger.debug(
+                            "Instantiating operation implementation %s(%s) with provided config %r",
+                            operation.instance_name,
+                            operation.name,
+                            opimp_config,
+                        )
                     if isinstance(opimp_config, dict) and hasattr(
                         getattr(opimp, "CONFIG", False), "_fromdict"
                     ):
