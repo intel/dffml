@@ -129,8 +129,8 @@ class LogisticRegression(SimpleModel):
 
     def best_separating_line(self):
         """
-        Determine the best separating hyperplane (here integer weight) 
-        s.t. w * x + b is the best farhtest form 0.5.
+        Determine the best separating hyperplane (here, the integer weight) 
+        s.t. w * x + b is well separable from 0.5.
         """
         self.logger.debug(
             "Number of input records: {}".format(len(self.xData))
