@@ -422,7 +422,7 @@ scratchlgrsag
 
 *Official*
 
-Logistic Regerssion using stochastic average gradient descent optimizer
+Logistic Regression using stochastic average gradient descent optimizer
 
 
 .. code-block:: console
