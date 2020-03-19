@@ -417,14 +417,13 @@ dffml_model_scratch
     pip install dffml-model-scratch
 
 
-scratchlgr
-~~~~~~~~~~
+scratchlgrsag
+~~~~~~~~~~~~~
 
 *Official*
 
-Simple Linear Regression Model for 2 variables implemented from scratch.
-Models are saved under the ``directory`` in subdirectories named after the
-hash of their feature names.
+Logistic Regerssion using stochastic average gradient descent optimizer
+
 
 .. code-block:: console
 
@@ -437,14 +436,14 @@ hash of their feature names.
     0.8,1
     EOF
     $ dffml train \
-        -model scratchslr \
+        -model scratchlgrsag \
         -model-features f1:float:1 \
         -model-predict ans:int:1 \
         -sources f=csv \
         -source-filename dataset.csv \
         -log debug
     $ dffml accuracy \
-        -model scratchslr \
+        -model scratchlgrsag \
         -model-features f1:float:1 \
         -model-predict ans:int:1 \
         -sources f=csv \
@@ -453,7 +452,7 @@ hash of their feature names.
     1.0
     $ echo -e 'f1,ans\n0.8,0\n' | \
       dffml predict all \
-        -model scratchslr \
+        -model scratchlgrsag \
         -model-features f1:float:1 \
         -model-predict ans:int:1 \
         -sources f=csv \
