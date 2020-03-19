@@ -6,9 +6,10 @@ model for prediction via the DFFML CLI and HTTP API.
 
 Download the files and verify them with ``sha384sum``.
 
+.. literalinclude:: /../examples/MNIST/image_data.sh
+
 .. code-block:: console
 
-    $ curl -sSLO "http://yann.lecun.com/exdb/mnist/{train-images-idx3,train-labels-idx1,t10k-images-idx3,t10k-labels-idx1}-ubyte.gz"
     $ sha384sum -c - << EOF
     1bf45877962fd391f7abb20534a30fd2203d0865309fec5f87d576dbdbefdcb16adb49220afc22a0f3478359d229449c  t10k-images-idx3-ubyte.gz
     ccc1ee70f798a04e6bfeca56a4d0f0de8d8eeeca9f74641c1e1bfb00cf7cc4aa4d023f6ea1b40e79bb4707107845479d  t10k-labels-idx1-ubyte.gz
@@ -50,6 +51,9 @@ the data first.
 
 Create an ``image.csv`` file which contains the names of the images (with their extension .mnistpng) to predict on.
 
+.. note::
+    Make sure to download each image and save them with the `.mnistpng` extension.
+
 .. literalinclude:: /../examples/MNIST/image_file.sh
 
 In this example, the ``image.csv`` file contains the names of the following images
@@ -70,10 +74,10 @@ In this example, the ``image.csv`` file contains the names of the following imag
     :width: 140px
     :height: 140px
 
-Predicting with the trained model
+Predict with the trained model.
 
 .. literalinclude:: /../examples/MNIST/predict.sh
 
 Output
 
-.. literalinclude:: /../examples/MNIST/output.sh
+.. literalinclude:: /../examples/MNIST/output.json
