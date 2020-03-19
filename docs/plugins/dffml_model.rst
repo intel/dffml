@@ -127,9 +127,9 @@ Example usage of Tensorflow DNNClassifier model using python API
   - default: 30
   - Number of iterations to pass over all records in a source
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/tensorflow
+  - default: ~/.cache/dffml/tensorflow
   - Directory where state should be saved
 
 - hidden: List of integers
@@ -154,58 +154,32 @@ Generating train and test data
   make sure to take a BACKUP of files with same name in the directory
   from where this command is run as it overwrites any existing files.
 
-.. code-block:: console
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/train_data.sh
 
-    $ cat > train.csv << EOF
-    Feature1,Feature2,TARGET
-    0.93,0.68,3.89
-    0.24,0.42,1.75
-    0.36,0.68,2.75
-    0.53,0.31,2.00
-    0.29,0.25,1.32
-    0.29,0.52,2.14
-    EOF
-    $ cat > test.csv << EOF
-    Feature1,Feature2,TARGET
-    0.57,0.84,3.65
-    0.95,0.19,2.46
-    0.23,0.15,0.93
-    EOF
-    $ dffml train \
-        -model tfdnnr \
-        -model-epochs 300 \
-        -model-steps 2000 \
-        -model-predict TARGET:float:1 \
-        -model-hidden 8 16 8 \
-        -sources s=csv \
-        -source-filename train.csv \
-        -model-features \
-          Feature1:float:1 \
-          Feature2:float:1 \
-        -log debug
-    Enabling debug log shows tensorflow losses...
-    $ dffml accuracy \
-        -model tfdnnr \
-        -model-predict TARGET:float:1 \
-        -model-hidden 8 16 8 \
-        -sources s=csv \
-        -source-filename test.csv \
-        -model-features \
-          Feature1:float:1 \
-          Feature2:float:1 \
-        -log critical
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/accuracy.sh
+
+Output
+
+.. code-block::
+
     0.9468210011
-    $ echo -e 'Feature1,Feature2,TARGET\n0.21,0.18,0.84\n' | \
-      dffml predict all \
-        -model tfdnnr \
-        -model-predict TARGET:float:1 \
-        -model-hidden 8 16 8 \
-        -sources s=csv \
-        -source-filename /dev/stdin \
-        -model-features \
-          Feature1:float:1 \
-          Feature2:float:1 \
-        -log critical
+
+Make a prediction
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/predict.sh
+
+Output
+
+.. code-block:: json
+
     [
         {
             "extra": {},
@@ -224,6 +198,10 @@ Generating train and test data
             "key": 0
         }
     ]
+
+Example usage of Tensorflow DNNEstimator model using python API
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/tfdnnr.py
 
 The ``NaN`` in ``confidence`` is the expected behaviour. (See TODO in
 predict).
@@ -248,9 +226,9 @@ predict).
   - default: 30
   - Number of iterations to pass over all records in a source
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/tensorflow
+  - default: ~/.cache/dffml/tensorflow
   - Directory where state should be saved
 
 - hidden: List of integers
@@ -426,9 +404,9 @@ Implemented using Tensorflow hub pretrained models.
   - default: 10
   - Number of iterations to pass over all records in a source
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/tensorflow_hub
+  - default: ~/.cache/dffml/tensorflow_hub
   - Directory where state should be saved
 
 dffml_model_transformers
@@ -600,6 +578,28 @@ dffml_model_scratch
 
     pip install dffml-model-scratch
 
+
+scratchlgr
+~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Label or the value to be predicted
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - default: ~/.cache/dffml/scratch
+  - Directory where state should be saved
 
 scratchslr
 ~~~~~~~~~~
@@ -994,8 +994,8 @@ Ensure that `predict` and `accuracy` for these algorithms uses training data.
 
   - Features to train on
 
-- directory: String
+- directory: Path
 
-  - default: /home/user/.cache/dffml/scikit-{Entrypoint}
+  - default: ~/.cache/dffml/scikit-{entrypoint}
   - Directory where state should be saved
 
