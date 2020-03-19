@@ -448,7 +448,7 @@ No description
 
 - output_dir: String
 
-  - default: /home/user/.cache/dffml/transformers/checkpoints
+  - default: ~/.cache/dffml/transformers/checkpoints
   - The output directory where the model checkpoints will be written
 
 - config_name: String
@@ -463,7 +463,7 @@ No description
 
 - cache_dir: String
 
-  - default: /home/user/.cache/dffml/transformers
+  - default: ~/.cache/dffml/transformers
   - Directory to store the pre-trained models downloaded from s3
 
 - max_seq_length: Integer
@@ -578,28 +578,6 @@ dffml_model_scratch
 
     pip install dffml-model-scratch
 
-
-scratchlgr
-~~~~~~~~~~
-
-*Official*
-
-No description
-
-**Args**
-
-- predict: Feature
-
-  - Label or the value to be predicted
-
-- features: List of features
-
-  - Features to train on
-
-- directory: Path
-
-  - default: ~/.cache/dffml/scratch
-  - Directory where state should be saved
 
 scratchslr
 ~~~~~~~~~~

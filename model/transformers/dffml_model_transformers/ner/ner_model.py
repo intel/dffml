@@ -85,11 +85,7 @@ class NERModelConfig:
         "The output directory where the model checkpoints will be written",
         default=str(
             pathlib.Path(
-                pathlib.Path.home(),
-                ".cache",
-                "dffml",
-                "transformers",
-                "checkpoints",
+                "~", ".cache", "dffml", "transformers", "checkpoints",
             )
         ),
     )
@@ -103,11 +99,7 @@ class NERModelConfig:
     )
     cache_dir: str = field(
         "Directory to store the pre-trained models downloaded from s3",
-        default=str(
-            pathlib.Path(
-                pathlib.Path.home(), ".cache", "dffml", "transformers"
-            )
-        ),
+        default=str(pathlib.Path("~", ".cache", "dffml", "transformers")),
     )
     max_seq_length: int = field(
         "The maximum total input sentence length after tokenization.Sequences longer than this will be truncated, sequences shorter will be padded",
