@@ -139,10 +139,6 @@ class Operation(NamedTuple, Entrypoint):
             "stage": self.stage.value,
             "expand": self.expand.copy(),
         }
-        for to_string in ["conditions"]:
-            exported[to_string] = list(
-                map(lambda definition: definition.name, exported[to_string])
-            )
         for to_string in ["inputs", "outputs"]:
             exported[to_string] = dict(
                 map(
@@ -562,11 +558,10 @@ class DataFlow:
             exported["configs"] = self.configs.copy()
         if self.forward.book:
             exported["forward"] = self.forward.export()
+        exported = export_dict(**exported)
         if linked:
-            exported["linked"] = True
-            exported["definitions"] = self.definitions.copy()
-            exported.update(self._linked()),
-        return export_dict(**exported)
+            self._linked(exported)
+        return exported
 
     @classmethod
     def _fromdict(cls, *, linked: bool = False, **kwargs):
@@ -728,24 +723,25 @@ class DataFlow:
             item["definition"] = definitions[item["definition"]]
         return source
 
-    def _linked(self):
-        exported = {}
+    def _linked(self, exported):
+        # Set linked
+        exported["linked"] = True
+        # Include definitions
+        exported["definitions"] = export_dict(**self.definitions.copy())
         # Remove definitions from operations, just use definition name
-        operations = {}
-        for operation in self.operations.values():
-            exported_operation = operation.export()
-            for name, definition in operation.inputs.items():
-                exported_operation["inputs"][name] = definition.name
-            for name, definition in operation.outputs.items():
-                exported_operation["outputs"][name] = definition.name
-            operations[operation.instance_name] = exported_operation
+        for operation in exported["operations"].values():
+            for arg in ["conditions"]:
+                if not arg in operation:
+                    continue
+                for i, definition in enumerate(operation[arg]):
+                    operation[arg][i] = definition["name"]
+            for arg in ["inputs", "outputs"]:
+                if not arg in operation:
+                    continue
+                for io_name, definition in operation[arg].items():
+                    operation[arg][io_name] = definition["name"]
         # Remove definitions from seed inputs, just use definition name
-        seed = []
-        for item in self.seed:
-            exported_item = item.export()
-            exported_item["definition"] = exported_item["definition"]["name"]
-            seed.append(exported_item)
-        # Set linked exported
-        exported["seed"] = seed
-        exported["operations"] = operations
+        if "seed" in exported:
+            for item in exported["seed"]:
+                item["definition"] = item["definition"]["name"]
         return exported
