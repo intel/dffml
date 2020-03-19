@@ -30,7 +30,7 @@ class LogisticRegressionConfig:
 @entrypoint("scratchlgrsag")
 class LogisticRegression(SimpleModel):
     r"""
-    Logistic Regerssion using stochastic average gradient descent optimizer
+    Logistic Regression using stochastic average gradient descent optimizer
 
 
     .. code-block:: console
