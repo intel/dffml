@@ -448,6 +448,16 @@ class DataFlow:
             self.implementations = {}
         self.validators = {}  # Maps `validator` ops instance_name to op
 
+        self.update(auto_flow=bool(self.flow is None))
+
+    def update(self, auto_flow: bool = False):
+        self.update_operations()
+        self.update_definitions()
+        if auto_flow:
+            self.flow = self.auto_flow()
+        self.update_by_origin()
+
+    def update_operations(self):
         # Allow callers to pass in functions decorated with op. Iterate over the
         # given operations and replace any which have been decorated with their
         # operation. Add the implementation to our dict of implementations.
@@ -479,6 +489,8 @@ class DataFlow:
             self.operations[instance_name] = value
             if value.validator:
                 self.validators[instance_name] = value
+
+    def update_definitions(self):
         # Grab all definitions from operations
         operations = list(self.operations.values())
         definitions = list(
@@ -499,10 +511,6 @@ class DataFlow:
             definition.name: definition for definition in definitions
         }
         self.definitions = definitions
-        # Determine the dataflow if not given
-        if self.flow is None:
-            self.flow = self.auto_flow()
-        self.update_by_origin()
 
     def update_by_origin(self):
         # Create by_origin which maps operation instance names to the sources
@@ -601,6 +609,7 @@ class DataFlow:
         )
 
     def auto_flow(self):
+        # Determine the dataflow if not given
         flow_dict = {}
         # Create output_dict, which maps all of the definitions to the
         # operations that create them.
