@@ -52,7 +52,8 @@ class LogisticRegression(SimpleModel):
             -source-filename dataset.csv \
             -log debug
         $ dffml accuracy \
-            -model scratchslr \
+            -model scratchlgr \
+
             -model-features f1:float:1 \
             -model-predict ans:int:1 \
             -sources f=csv \
