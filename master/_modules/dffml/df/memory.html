@@ -172,6 +172,7 @@
             
   <h1>Source code for dffml.df.memory</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">secrets</span>
 <span class="kn">import</span> <span class="nn">hashlib</span>
@@ -433,6 +434,8 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Takes input from parent dataflow and adds it to every active context</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd_lock</span><span class="p">:</span>
             <span class="n">ctx_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Receiving </span><span class="si">{</span><span class="n">inputs</span><span class="si">}</span><span class="s2"> from parent flow&quot;</span><span class="p">)</span>
@@ -1043,7 +1046,8 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">OperationImplementationNotInstantiable</span><span class="p">(</span><span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="c1"># Set the correct instance_name</span>
-        <span class="n">opimp</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">opimp</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">instance_name</span><span class="o">=</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">)</span>
+        <span class="n">opimp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">opimp</span><span class="p">)</span>
+        <span class="n">opimp</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">operation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span>
             <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span>
         <span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">enter_async_context</span><span class="p">(</span><span class="n">opimp</span><span class="p">(</span><span class="n">config</span><span class="p">))</span></div>
@@ -1399,6 +1403,13 @@
                             <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                         <span class="p">)</span>
                         <span class="n">opimp_config</span> <span class="o">=</span> <span class="n">BaseConfig</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                            <span class="s2">&quot;Instantiating operation implementation </span><span class="si">%s</span><span class="s2">(</span><span class="si">%s</span><span class="s2">) with provided config </span><span class="si">%r</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">,</span>
+                            <span class="n">operation</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                            <span class="n">opimp_config</span><span class="p">,</span>
+                        <span class="p">)</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">opimp_config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span>
                         <span class="nb">getattr</span><span class="p">(</span><span class="n">opimp</span><span class="p">,</span> <span class="s2">&quot;CONFIG&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span> <span class="s2">&quot;_fromdict&quot;</span>
                     <span class="p">):</span>
@@ -1446,10 +1457,14 @@
         <span class="k">return</span> <span class="n">ctx</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">forward_inputs_to_subflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="c1"># Go through input set,find instance_names of registered subflows which</span>
         <span class="c1"># have definition of the current input listed in `forward`.</span>
         <span class="c1"># If found,add `input` to list of inputs to forward for that instance_name</span>
         <span class="n">forward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="o">.</span><span class="n">forward</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">forward</span><span class="o">.</span><span class="n">book</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="n">inputs_to_forward</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
             <span class="n">instance_list</span> <span class="o">=</span> <span class="n">forward</span><span class="o">.</span><span class="n">get_instances_to_forward</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="p">)</span>

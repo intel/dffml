@@ -264,12 +264,16 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Logistic Regression with SAG optimizer</p></li>
 <li><p>Test tensorflow DNNEstimator documentation exaples in CI</p></li>
 <li><p>Add python code for tensorflow DNNEstimator</p></li>
+<li><p>Ability to run a subflow as if it were an operation using the
+<code class="docutils literal notranslate"><span class="pre">dffml.dataflow.run</span></code> operation.</p></li>
 </ul>
 </div>
 <div class="section" id="fixed">
 <h3>Fixed<a class="headerlink" href="#fixed" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>New model tutorial mentions file paths that should be edited.</p></li>
+<li><p>DataFlow is no longer a dataclass to prevent it from being exported
+incorrectly.</p></li>
 </ul>
 </div>
 </div>
