@@ -57,7 +57,6 @@ class TestNERModel(AsyncTestCase):
                 words=DefFeature("words", str, 1),
                 predict=DefFeature("ner_tag", str, 1),
                 output_dir=cls.model_dir.name,
-                cache_dir=pathlib.Path("~", ".cache", "dffml", "transformers"),
                 model_architecture_type="bert",
                 model_name_or_path="bert-base-cased",
                 no_cuda=True,
