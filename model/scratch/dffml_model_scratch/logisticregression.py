@@ -61,7 +61,7 @@ class LogisticRegression(SimpleModel):
         1.0
         $ echo -e 'f1,ans\n0.8,0\n' | \
           dffml predict all \
-            -model scratchslr \
+            -model scratchlgr \
             -model-features f1:float:1 \
             -model-predict ans:int:1 \
             -sources f=csv \
