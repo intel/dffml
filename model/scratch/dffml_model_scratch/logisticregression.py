@@ -27,10 +27,11 @@ class LogisticRegressionConfig:
     )
 
 
-@entrypoint("scratchlgr")
+@entrypoint("scratchlgrsag")
 class LogisticRegression(SimpleModel):
     r"""
-    Simple Linear Regression Model for 2 variables implemented from scratch.
+    Logistic Regerssion using stochastic average gradient descent optimizer
+
 
     .. code-block:: console
 
@@ -43,16 +44,14 @@ class LogisticRegression(SimpleModel):
         0.8,1
         EOF
         $ dffml train \
-            -model scratchlgr \
-
+            -model scratchlgrsag \
             -model-features f1:float:1 \
             -model-predict ans:int:1 \
             -sources f=csv \
             -source-filename dataset.csv \
             -log debug
         $ dffml accuracy \
-            -model scratchlgr \
-
+            -model scratchlgrsag \
             -model-features f1:float:1 \
             -model-predict ans:int:1 \
             -sources f=csv \
@@ -61,7 +60,7 @@ class LogisticRegression(SimpleModel):
         1.0
         $ echo -e 'f1,ans\n0.8,0\n' | \
           dffml predict all \
-            -model scratchlgr \
+            -model scratchlgrsag \
             -model-features f1:float:1 \
             -model-predict ans:int:1 \
             -sources f=csv \
@@ -74,7 +73,7 @@ class LogisticRegression(SimpleModel):
                     "ans": 0,
                     "f1": 0.8
                 },
-                "last_updated": "2019-07-19T09:46:45Z",
+                "last_updated": "2020-03-19T13:41:08Z",
                 "prediction": {
                     "ans": {
                         "confidence": 1.0,
@@ -136,13 +135,13 @@ class LogisticRegression(SimpleModel):
         self.logger.debug(
             "Number of input records: {}".format(len(self.xData))
         )
-        x = self.xData
-        y = self.yData
-        learning_rate = 0.01
-        w = 0.01
-        b = 0.0
-        # epochs' loop
-        for _ in range(1, 1500):
+        x = self.xData  # feature array
+        y = self.yData  # class array
+        learning_rate = 0.01  # learning rate for step: weight -= lr * step
+        w = 0.01  # initial weight
+        b = 0.0  # here unbiased data is considered so b = 0
+        # epochs' loop: 1500 epochs
+        for _ in range(0, 1500):
             z = w * x + b
             val = -np.multiply(y, z)
             num = -np.multiply(y, np.exp(val))
@@ -151,7 +150,7 @@ class LogisticRegression(SimpleModel):
             gradJ = np.sum(x * f)  # total dJ
             w = w - learning_rate * gradJ / len(x)  # SAG subtraction
         # Accuracy calculation
-        error = 0
+        error = 0  # incorrect values
         for x_id in range(len(x)):
             yhat = x[x_id] * w + b > 0.5
             if yhat:
