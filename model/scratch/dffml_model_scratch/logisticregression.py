@@ -31,7 +31,6 @@ class LogisticRegressionConfig:
 class LogisticRegression(SimpleModel):
     r"""
     Simple Linear Regression Model for 2 variables implemented from scratch.
-    hash of their feature names.
 
     .. code-block:: console
 
