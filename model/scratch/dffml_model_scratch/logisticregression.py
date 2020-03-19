@@ -45,7 +45,8 @@ class LogisticRegression(SimpleModel):
         0.8,1
         EOF
         $ dffml train \
-            -model scratchslr \
+            -model scratchlgr \
+
             -model-features f1:float:1 \
             -model-predict ans:int:1 \
             -sources f=csv \
