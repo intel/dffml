@@ -470,7 +470,7 @@ No description
 
 - output_dir: String
 
-  - default: /home/user/.cache/dffml/transformers/checkpoints
+  - default: ~/.cache/dffml/transformers/checkpoints
   - The output directory where the model checkpoints will be written
 
 - config_name: String
@@ -485,7 +485,7 @@ No description
 
 - cache_dir: String
 
-  - default: /home/user/.cache/dffml/transformers
+  - default: ~/.cache/dffml/transformers
   - Directory to store the pre-trained models downloaded from s3
 
 - max_seq_length: Integer
@@ -540,7 +540,7 @@ No description
 
 - epochs: Integer
 
-  - default: 2
+  - default: 1
   - Total number of training epochs to perform.
 
 - warmup_steps: Integer

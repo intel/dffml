@@ -1,4 +1,3 @@
-import os
 import logging
 
 logger = logging.getLogger(__name__)
@@ -52,6 +51,8 @@ def read_examples_from_df(data, mode, sentence_id, words, labels):
     return examples
 
 
+# Taken from https://github.com/huggingface/transformers/blob/master/examples/ner/utils_ner.py
+# License http://www.apache.org/licenses/LICENSE-2.0
 def convert_examples_to_features(
     examples,
     label_list,
@@ -158,10 +159,22 @@ def convert_examples_to_features(
             segment_ids += [pad_token_segment_id] * padding_length
             label_ids += [pad_token_label_id] * padding_length
 
-        assert len(input_ids) == max_seq_length
-        assert len(input_mask) == max_seq_length
-        assert len(segment_ids) == max_seq_length
-        assert len(label_ids) == max_seq_length
+        if not (len(input_ids) == max_seq_length):
+            raise AssertionError(
+                "Length of input id not equal to maximum sequence length"
+            )
+        if not (len(input_mask) == max_seq_length):
+            raise AssertionError(
+                "Length of input mask not equal to maximum sequence length"
+            )
+        if not (len(segment_ids) == max_seq_length):
+            raise AssertionError(
+                "Length of segment id not equal to maximum sequence length"
+            )
+        if not (len(label_ids) == max_seq_length):
+            raise AssertionError(
+                "Length of label id not equal to maximum sequence length"
+            )
 
         if ex_index < 5:
             logger.info("*** Example ***")

@@ -2,6 +2,7 @@ import os
 import re
 import glob
 import math
+import pathlib
 import datetime
 import collections
 from typing import Any, List, Tuple, AsyncIterator
@@ -82,12 +83,8 @@ class NERModelConfig:
     )
     output_dir: str = field(
         "The output directory where the model checkpoints will be written",
-        default=os.path.join(
-            os.path.expanduser("~"),
-            ".cache",
-            "dffml",
-            "transformers",
-            "checkpoints",
+        default=pathlib.Path(
+            "~", ".cache", "dffml", "transformers", "checkpoints"
         ),
     )
     config_name: str = field(
@@ -100,9 +97,7 @@ class NERModelConfig:
     )
     cache_dir: str = field(
         "Directory to store the pre-trained models downloaded from s3",
-        default=os.path.join(
-            os.path.expanduser("~"), ".cache", "dffml", "transformers"
-        ),
+        default=pathlib.Path("~", ".cache", "dffml", "transformers"),
     )
     max_seq_length: int = field(
         "The maximum total input sentence length after tokenization.Sequences longer than this will be truncated, sequences shorter will be padded",
@@ -144,7 +139,7 @@ class NERModelConfig:
     adam_epsilon: float = field("Epsilon for Adam optimizer", default=1e-8)
     max_grad_norm: float = field("Max gradient norm.", default=1.0)
     epochs: int = field(
-        "Total number of training epochs to perform.", default=2
+        "Total number of training epochs to perform.", default=1
     )
     warmup_steps: int = field("Linear warmup over warmup_steps.", default=0)
     save_steps: int = field(
@@ -572,14 +567,6 @@ class NERModelContext(ModelContext):
         labels = config["ner_tags"]
         preds = None
         num_eval_steps = math.ceil(num_eval_examples / eval_batch_size)
-        master = master_bar(range(1))
-        master.main_bar.last_v = 0
-        eval_iterator = progress_bar(
-            eval_dataset,
-            total=num_eval_steps,
-            parent=master,
-            display=config["n_device"] > 1,
-        )
         loss_fct = tf.keras.losses.SparseCategoricalCrossentropy(
             reduction=tf.keras.losses.Reduction.NONE
         )
@@ -589,7 +576,7 @@ class NERModelContext(ModelContext):
         self.logger.info("  Num examples = %d", num_eval_examples)
         self.logger.info("  Batch size = %d", eval_batch_size)
 
-        for eval_features, eval_labels in eval_iterator:
+        for eval_features, eval_labels in eval_dataset:
             inputs = {
                 "attention_mask": eval_features["input_mask"],
                 "training": False,
@@ -644,15 +631,6 @@ class NERModelContext(ModelContext):
         labels = config["ner_tags"]
         preds = None
         num_test_steps = math.ceil(num_test_examples / test_batch_size)
-        master = master_bar(range(1))
-        master.main_bar.last_v = 0
-
-        test_iterator = progress_bar(
-            test_dataset,
-            total=num_test_steps,
-            parent=master,
-            display=config["n_device"] > 1,
-        )
         loss_fct = tf.keras.losses.SparseCategoricalCrossentropy(
             reduction=tf.keras.losses.Reduction.NONE
         )
@@ -662,7 +640,7 @@ class NERModelContext(ModelContext):
         self.logger.info("  Num examples = %d", num_test_examples)
         self.logger.info("  Batch size = %d", test_batch_size)
 
-        for test_features, test_labels in test_iterator:
+        for test_features, test_labels in test_dataset:
             inputs = {
                 "attention_mask": test_features["input_mask"],
                 "training": False,
@@ -697,8 +675,7 @@ class NERModelContext(ModelContext):
 
         for i in range(label_ids.shape[0]):
             for j in range(label_ids.shape[1]):
-                if label_ids[i, j] != self.pad_token_label_id:
-                    y_pred[i].append(labels[preds[i, j] - 1])
+                y_pred[i].append(labels[preds[i, j] - 1])
         return y_pred
 
     async def train(self, sources: Sources):
@@ -831,6 +808,7 @@ class NERModelContext(ModelContext):
         output_eval_file = os.path.join(
             config["output_dir"], "accuracy_results.txt"
         )
+        # create the report and save in output_dir
         with tf.io.gfile.GFile(output_eval_file, "w") as writer:
             for res in results:
                 for key, val in res.items():
@@ -865,8 +843,8 @@ class NERModelContext(ModelContext):
             config["per_device_eval_batch_size"] * config["n_device"]
         )
         async for record in records:
-            words = record.features([self.parent.config.words.NAME])
-            df = pd.DataFrame(words, index=[0])
+            sentence = record.features([self.parent.config.words.NAME])
+            df = pd.DataFrame(sentence, index=[0])
             test_dataset, num_test_examples = self.get_dataset(
                 df,
                 tokenizer,
@@ -887,11 +865,9 @@ class NERModelContext(ModelContext):
             preds = [
                 [
                     {word: y_pred[i][j]}
-                    for j, word in enumerate(
-                        sentence.split()[: len(y_pred[i])]
-                    )
+                    for j, word in enumerate(s.split()[: len(y_pred[i])])
                 ]
-                for i, sentence in enumerate(
+                for i, s in enumerate(
                     df[self.parent.config.words.NAME].to_list()
                 )
             ]
