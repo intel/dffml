@@ -37,9 +37,9 @@ from transformers import (
 from dffml.record import Record
 from dffml.base import config, field
 from dffml.source.source import Sources
+from dffml.feature.feature import Feature
 from dffml.model.accuracy import Accuracy
 from dffml.util.entrypoint import entrypoint
-from dffml.feature.feature import Feature, Features
 from dffml.model.model import ModelContext, Model, ModelNotTrained
 
 from .utils import read_examples_from_df, convert_examples_to_features
@@ -632,7 +632,6 @@ class NERModelContext(ModelContext):
         config["n_device"] = self.parent.config.n_device
         labels = config["ner_tags"]
         preds = None
-        num_test_steps = math.ceil(num_test_examples / test_batch_size)
         loss_fct = tf.keras.losses.SparseCategoricalCrossentropy(
             reduction=tf.keras.losses.Reduction.NONE
         )

@@ -579,6 +579,28 @@ dffml_model_scratch
     pip install dffml-model-scratch
 
 
+scratchlgr
+~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Label or the value to be predicted
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - default: ~/.cache/dffml/scratch
+  - Directory where state should be saved
+
 scratchslr
 ~~~~~~~~~~
 
