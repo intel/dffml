@@ -31,7 +31,6 @@ class LogisticRegressionConfig:
 class LogisticRegression(SimpleModel):
     r"""
     Simple Linear Regression Model for 2 variables implemented from scratch.
-    Models are saved under the ``directory`` in subdirectories named after the
     hash of their feature names.
 
     .. code-block:: console
