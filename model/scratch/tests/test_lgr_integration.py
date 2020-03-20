@@ -23,7 +23,7 @@ class TestLogisticRegression(IntegrationCLITestCase):
         # Arguments for the model
         model_args = [
             "-model",
-            "scratchlgr",
+            "scratchlgrsag",
             "-model-features",
             "f1:int:1",
             "-model-predict",
