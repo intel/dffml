@@ -417,12 +417,64 @@ dffml_model_scratch
     pip install dffml-model-scratch
 
 
-scratchlgr
-~~~~~~~~~~
+scratchlgrsag
+~~~~~~~~~~~~~
 
 *Official*
 
-No description
+Logistic Regression using stochastic average gradient descent optimizer
+
+
+.. code-block:: console
+
+    $ cat > dataset.csv << EOF
+    f1,ans
+    0.1,0
+    0.7,1
+    0.6,1
+    0.2,0
+    0.8,1
+    EOF
+    $ dffml train \
+        -model scratchlgrsag \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -sources f=csv \
+        -source-filename dataset.csv \
+        -log debug
+    $ dffml accuracy \
+        -model scratchlgrsag \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -sources f=csv \
+        -source-filename dataset.csv \
+        -log debug
+    1.0
+    $ echo -e 'f1,ans\n0.8,0\n' | \
+      dffml predict all \
+        -model scratchlgrsag \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -sources f=csv \
+        -source-filename /dev/stdin \
+        -log debug
+    [
+        {
+            "extra": {},
+            "features": {
+                "ans": 0,
+                "f1": 0.8
+            },
+            "last_updated": "2020-03-19T13:41:08Z",
+            "prediction": {
+                "ans": {
+                    "confidence": 1.0,
+                    "value": 1
+                }
+            },
+            "key": "0"
+        }
+    ]
 
 **Args**
 
