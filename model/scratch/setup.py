@@ -68,7 +68,7 @@ setup(
     entry_points={
         "dffml.model": [
             "scratchslr = dffml_model_scratch.slr:SLR",
-            "scratchlgr = dffml_model_scratch.logisticregression:LogisticRegression",
+            "scratchlgrsag = dffml_model_scratch.logisticregression:LogisticRegression",
         ]
     },
 )
