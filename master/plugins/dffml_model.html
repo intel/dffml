@@ -112,7 +112,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-scratch">dffml_model_scratch</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#scratchlgr">scratchlgr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scratchlgrsag">scratchlgrsag</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#scratchslr">scratchslr</a></li>
 </ul>
 </li>
@@ -775,10 +775,60 @@ predict).</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-scratch</span>
 </pre></div>
 </div>
-<div class="section" id="scratchlgr">
-<h3>scratchlgr<a class="headerlink" href="#scratchlgr" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="scratchlgrsag">
+<h3>scratchlgrsag<a class="headerlink" href="#scratchlgrsag" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
-<p>No description</p>
+<p>Logistic Regression using stochastic average gradient descent optimizer</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; dataset.csv &lt;&lt; EOF
+<span class="go">f1,ans</span>
+<span class="go">0.1,0</span>
+<span class="go">0.7,1</span>
+<span class="go">0.6,1</span>
+<span class="go">0.2,0</span>
+<span class="go">0.8,1</span>
+<span class="go">EOF</span>
+<span class="gp">$</span> dffml train <span class="se">\</span>
+    -model scratchlgrsag <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename dataset.csv <span class="se">\</span>
+    -log debug
+<span class="gp">$</span> dffml accuracy <span class="se">\</span>
+    -model scratchlgrsag <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename dataset.csv <span class="se">\</span>
+    -log debug
+<span class="go">1.0</span>
+<span class="gp">$</span> <span class="nb">echo</span> -e <span class="s1">&#39;f1,ans\n0.8,0\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
+  dffml predict all <span class="se">\</span>
+    -model scratchlgrsag <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-filename /dev/stdin <span class="se">\</span>
+    -log debug
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;ans&quot;: 0,</span>
+<span class="go">            &quot;f1&quot;: 0.8</span>
+<span class="go">        },</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2020-03-19T13:41:08Z&quot;,</span>
+<span class="go">        &quot;prediction&quot;: {</span>
+<span class="go">            &quot;ans&quot;: {</span>
+<span class="go">                &quot;confidence&quot;: 1.0,</span>
+<span class="go">                &quot;value&quot;: 1</span>
+<span class="go">            }</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;0&quot;</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+</pre></div>
+</div>
 <p><strong>Args</strong></p>
 <ul class="simple">
 <li><p>predict: Feature</p>
