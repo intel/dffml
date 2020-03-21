@@ -1026,6 +1026,7 @@ class MemoryOperationImplementationNetworkContext(
         task.add_done_callback(ignore_args(self.completed_event.set))
         return task
 
+
 @entrypoint("memory")
 class MemoryOperationImplementationNetwork(
     BaseOperationImplementationNetwork, BaseMemoryDataFlowObject
@@ -1347,6 +1348,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                     task.cancel()
                 else:
                     task.exception()
+
     async def operations_parameter_set_pairs(
         self,
         ictx: BaseInputNetworkContext,
@@ -1405,7 +1407,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
             ):
                 if not exists:
                     yield validator, parameter_set
-
 
     async def run_operations_for_ctx(
         self, ctx: BaseContextHandle, *, strict: bool = True

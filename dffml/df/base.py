@@ -483,7 +483,7 @@ class BaseInputSet(abc.ABC):
         }
 
     @abc.abstractmethod
-    async def remove_input(self, item: Input)->None:
+    async def remove_input(self, item: Input) -> None:
         """
         Removes item from input set
         """
@@ -494,8 +494,6 @@ class BaseInputSet(abc.ABC):
         """
         Removes `unvalidated` inputs from internal list and returns the same.
         """
-
-
 
 
 class BaseParameterSetConfig(NamedTuple):

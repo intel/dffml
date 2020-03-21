@@ -556,7 +556,7 @@ class DataFlow:
             "operations": {
                 instance_name: operation.export()
                 for instance_name, operation in self.operations.items()
-            },
+            }
         }
         if self.seed:
             exported["seed"] = self.seed.copy()
