@@ -482,6 +482,21 @@ class BaseInputSet(abc.ABC):
             item.definition.name: item.value async for item in self.inputs()
         }
 
+    @abc.abstractmethod
+    async def remove_input(self, item: Input)->None:
+        """
+        Removes item from input set
+        """
+        pass
+
+    @abc.abstractmethod
+    async def remove_unvalidated_inputs(self) -> "BaseInputSet":
+        """
+        Removes `unvalidated` inputs from internal list and returns the same.
+        """
+
+
+
 
 class BaseParameterSetConfig(NamedTuple):
     ctx: BaseInputSetContext

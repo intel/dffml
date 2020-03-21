@@ -127,13 +127,13 @@ class MemoryInputSet(BaseInputSet):
         for item in self.__inputs:
             yield item
 
-    def remove_input(self, item: Input):
+    async def remove_input(self, item: Input):
         for x in self.__inputs[:]:
             if x.uid == item.uid:
                 self.__inputs.remove(x)
                 break
 
-    def remove_unvalidated_inputs(self) -> "MemoryInputSet":
+    async def remove_unvalidated_inputs(self) -> "MemoryInputSet":
         """
         Removes `unvalidated` inputs from internal list and returns the same.
         """
@@ -278,7 +278,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         # self.ctxhd
 
         # remove unvalidated inputs
-        unvalidated_input_set = input_set.remove_unvalidated_inputs()
+        unvalidated_input_set = await input_set.remove_unvalidated_inputs()
 
         # If the context for this input set does not exist create a
         # NotificationSet for it to notify the orchestrator
