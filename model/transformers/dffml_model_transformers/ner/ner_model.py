@@ -68,10 +68,10 @@ ORIGINAL_NER_MODELS = {
 
 @config
 class NERModelConfig:
-    sentence_id: Feature = field(
+    SENTENCE_ID: Feature = field(
         "Unique Id to identify words of each sentence"
     )
-    words: Feature = field("Tokens to train NER model")
+    WORDS: Feature = field("Tokens to train NER model")
     predict: Feature = field("NER Tags (B-MISC, I-PER, O etc.) for tokens")
     model_architecture_type: str = field(
         "Model architecture selected in the : "
@@ -223,8 +223,8 @@ class NERModelContext(ModelContext):
             feature: []
             for feature in (
                 [
-                    self.parent.config.sentence_id.NAME,
-                    self.parent.config.words.NAME,
+                    self.parent.config.SENTENCE_ID.NAME,
+                    self.parent.config.WORDS.NAME,
                 ]
             )
         }
@@ -232,8 +232,8 @@ class NERModelContext(ModelContext):
         all_records = []
         all_sources = sources.with_features(
             [
-                self.parent.config.sentence_id.NAME,
-                self.parent.config.words.NAME,
+                self.parent.config.SENTENCE_ID.NAME,
+                self.parent.config.WORDS.NAME,
                 self.parent.config.predict.NAME,
             ]
         )
@@ -246,8 +246,8 @@ class NERModelContext(ModelContext):
         for record in all_records:
             for feature, results in record.features(
                 [
-                    self.parent.config.sentence_id.NAME,
-                    self.parent.config.words.NAME,
+                    self.parent.config.SENTENCE_ID.NAME,
+                    self.parent.config.WORDS.NAME,
                 ]
             ).items():
                 x_cols[feature].append(np.array(results))
@@ -329,11 +329,11 @@ class NERModelContext(ModelContext):
         config = self.parent.config._asdict()
         drop_remainder = True if config["tpu"] or mode == "train" else False
         labels = config["ner_tags"]
-        sentence_id_col = self.parent.config.sentence_id.NAME
-        words_col = self.parent.config.words.NAME
+        SENTENCE_ID_col = self.parent.config.SENTENCE_ID.NAME
+        WORDS_col = self.parent.config.WORDS.NAME
         labels_col = self.parent.config.predict.NAME
         examples = read_examples_from_df(
-            data, mode, sentence_id_col, words_col, labels_col
+            data, mode, SENTENCE_ID_col, WORDS_col, labels_col
         )
         features = convert_examples_to_features(
             examples,
@@ -844,7 +844,7 @@ class NERModelContext(ModelContext):
             config["per_device_eval_batch_size"] * config["n_device"]
         )
         async for record in records:
-            sentence = record.features([self.parent.config.words.NAME])
+            sentence = record.features([self.parent.config.WORDS.NAME])
             df = pd.DataFrame(sentence, index=[0])
             test_dataset, num_test_examples = self.get_dataset(
                 df,
@@ -869,7 +869,7 @@ class NERModelContext(ModelContext):
                     for j, word in enumerate(s.split()[: len(y_pred[i])])
                 ]
                 for i, s in enumerate(
-                    df[self.parent.config.words.NAME].to_list()
+                    df[self.parent.config.WORDS.NAME].to_list()
                 )
             ]
             record.predicted(self.parent.config.predict.NAME, preds, "Nan")
@@ -878,5 +878,117 @@ class NERModelContext(ModelContext):
 
 @entrypoint("ner_tagger")
 class NERModel(Model):
+    """
+    Implemented using HuggingFace Transformers Tensorflow based Models.
+
+    First we create the training and testing datasets
+
+    .. literalinclude:: /../model/transformers/examples/ner/train_data.sh
+
+    .. literalinclude:: /../model/transformers/examples/ner/test_data.sh
+
+    Train the model
+
+    .. literalinclude:: /../model/transformers/examples/ner/train.sh
+
+    Assess the accuracy
+
+    .. literalinclude:: /../model/transformers/examples/ner/accuracy.sh
+
+    Output
+
+    .. code-block::
+
+                    precision    recall  f1-score   support
+
+            MISC     0.0000    0.0000    0.0000         2
+
+        micro avg     0.0000    0.0000    0.0000         2
+        macro avg     0.0000    0.0000    0.0000         2
+
+        INFO:dffml.NERModelContext:final_loss = 1.4586552
+        0.0
+
+    Make a prediction
+
+    .. literalinclude:: /../model/transformers/examples/ner/predict.sh
+
+    Output
+
+    .. code-block:: json
+
+        [
+            {
+                "extra": {},
+                "features": {
+                    "SentenceId": 1,
+                    "Words": "DFFML models can do NER"
+                },
+                "key": "0",
+                "last_updated": "2020-03-21T23:14:41Z",
+                "prediction": {
+                    "Tag": {
+                        "confidence": NaN,
+                        "value": [
+                            [
+                                {
+                                    "DFFML": "I-LOC"
+                                },
+                                {
+                                    "models": "O"
+                                },
+                                {
+                                    "can": "I-LOC"
+                                },
+                                {
+                                    "do": "I-LOC"
+                                },
+                                {
+                                    "NER": "I-LOC"
+                                }
+                            ]
+                        ]
+                    }
+                }
+            },
+            {
+                "extra": {},
+                "features": {
+                    "SentenceId": 2,
+                    "Words": "DFFML models can do regression"
+                },
+                "key": "1",
+                "last_updated": "2020-03-21T23:14:42Z",
+                "prediction": {
+                    "Tag": {
+                        "confidence": NaN,
+                        "value": [
+                            [
+                                {
+                                    "DFFML": "I-LOC"
+                                },
+                                {
+                                    "models": "O"
+                                },
+                                {
+                                    "can": "I-LOC"
+                                },
+                                {
+                                    "do": "I-LOC"
+                                },
+                                {
+                                    "regression": "I-LOC"
+                                }
+                            ]
+                        ]
+                    }
+                }
+            }
+        ]
+    The model can be trained on large datasets to get the expected
+    output. The example shown above is to demonstrate the commandline usage
+    of the model.
+    """
+
     CONTEXT = NERModelContext
     CONFIG = NERModelConfig

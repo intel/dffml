@@ -422,15 +422,123 @@ ner_tagger
 
 *Official*
 
-No description
+Implemented using HuggingFace Transformers Tensorflow based Models.
+
+First we create the training and testing datasets
+
+.. literalinclude:: /../model/transformers/examples/ner/train_data.sh
+
+.. literalinclude:: /../model/transformers/examples/ner/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/transformers/examples/ner/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/transformers/examples/ner/accuracy.sh
+
+Output
+
+.. code-block::
+
+                precision    recall  f1-score   support
+
+        MISC     0.0000    0.0000    0.0000         2
+
+    micro avg     0.0000    0.0000    0.0000         2
+    macro avg     0.0000    0.0000    0.0000         2
+
+    INFO:dffml.NERModelContext:final_loss = 1.4586552
+    0.0
+
+Make a prediction
+
+.. literalinclude:: /../model/transformers/examples/ner/predict.sh
+
+Output
+
+.. code-block:: json
+
+    [
+        {
+            "extra": {},
+            "features": {
+                "SentenceId": 1,
+                "Words": "DFFML models can do NER"
+            },
+            "key": "0",
+            "last_updated": "2020-03-21T23:14:41Z",
+            "prediction": {
+                "Tag": {
+                    "confidence": NaN,
+                    "value": [
+                        [
+                            {
+                                "DFFML": "I-LOC"
+                            },
+                            {
+                                "models": "O"
+                            },
+                            {
+                                "can": "I-LOC"
+                            },
+                            {
+                                "do": "I-LOC"
+                            },
+                            {
+                                "NER": "I-LOC"
+                            }
+                        ]
+                    ]
+                }
+            }
+        },
+        {
+            "extra": {},
+            "features": {
+                "SentenceId": 2,
+                "Words": "DFFML models can do regression"
+            },
+            "key": "1",
+            "last_updated": "2020-03-21T23:14:42Z",
+            "prediction": {
+                "Tag": {
+                    "confidence": NaN,
+                    "value": [
+                        [
+                            {
+                                "DFFML": "I-LOC"
+                            },
+                            {
+                                "models": "O"
+                            },
+                            {
+                                "can": "I-LOC"
+                            },
+                            {
+                                "do": "I-LOC"
+                            },
+                            {
+                                "regression": "I-LOC"
+                            }
+                        ]
+                    ]
+                }
+            }
+        }
+    ]
+The model can be trained on large datasets to get the expected
+output. The example shown above is to demonstrate the commandline usage
+of the model.
 
 **Args**
 
-- sentence_id: Feature
+- SENTENCE_ID: Feature
 
   - Unique Id to identify words of each sentence
 
-- words: Feature
+- WORDS: Feature
 
   - Tokens to train NER model
 
