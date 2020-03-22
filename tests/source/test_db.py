@@ -6,7 +6,7 @@ from typing import Dict
 from dffml.db.sqlite import SqliteDatabaseConfig, SqliteDatabase
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.util.testing.source import SourceTest
-from source.db.dffml_source_db.source import DbSource, DbSourceConfig
+from dffml.source.db import DbSource, DbSourceConfig
 
 
 class TestDbSource(AsyncTestCase, SourceTest):
@@ -54,8 +54,7 @@ class TestDbSource(AsyncTestCase, SourceTest):
 
         # DbSource config
         cls.source_config = DbSourceConfig(
-            db_implementation="sqlite",
-            db_config=cls.db_config,
+            db=SqliteDatabase(cls.db_config),
             table_name=cls.table_name,
             model_columns="key feature_PetalLength feature_PetalWidth feature_SepalLength feature_SepalWidth target_name_confidence target_name_value",
         )
@@ -77,5 +76,5 @@ class TestDbSource(AsyncTestCase, SourceTest):
         return DbSource(self.source_config)
 
 
-# TODO: Potential shortcoming: No way to call this source from the CLI because of SqliteDatabaseConfig
-# dffml list records -sources primary=dbsource -source-db_implementation sqlite -source-table_name testTable -source-db_config SqliteDatabaseConfig\(filename=\"/tmp/some_sqlite.db\"\) -source-model_columns "key feature_PetalLength feature_PetalWidth feature_SepalLength feature_SepalWidth target_name_confidence target_name_value"
+# TODO: Potential shortcoming: Is there a way to call this source from the CLI and pass the db object (e.g. SqliteDatabase)?
+# dffml list records -sources primary=dbsource -source-db_implementation sqlite -source-table_name testTable -source-db ??? -source-model_columns "key feature_PetalLength feature_PetalWidth feature_SepalLength feature_SepalWidth target_name_confidence target_name_value"

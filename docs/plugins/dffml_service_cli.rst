@@ -28,18 +28,3 @@ dev
 *Official*
 
 Development utilities for hacking on DFFML itself
-
-dffml_service_http
-------------------
-
-.. code-block:: console
-
-    pip install dffml-service-http
-
-
-http
-~~~~
-
-*Official*
-
-HTTP interface to access DFFML API.
