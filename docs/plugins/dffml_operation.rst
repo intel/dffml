@@ -44,19 +44,21 @@ dffml.dataflow.run
 Starts a subflow ``self.config.dataflow`` and adds ``inputs`` in it.
 
 Parameters
-----------
+++++++++++
 inputs : dict
     The inputs to add to the subflow. These should be a key value mapping of
     the context string to the inputs which should be seeded for that context
     string.
 
 Returns
--------
++++++++
 dict
     Maps context strings in inputs to output after running through dataflow.
 
 Examples
---------
+++++++++
+
+The following shows how to use run dataflow in its default behavior.
 
 >>> URL = Definition(name="URL", primitive="string")
 >>>
@@ -98,6 +100,55 @@ Examples
 >>>
 >>> asyncio.run(main())
 {'flow_results': {'dffml': {'URL': 'https://github.com/intel/dffml'}}}
+
+The following shows how to use run dataflow with custom inputs and outputs.
+This allows you to run a subflow as if it were an opertion.
+
+>>> URL = Definition(name="URL", primitive="string")
+>>>
+>>> @op(
+...     inputs={"url": URL},
+...     outputs={"last": Definition("last_element_in_path", primitive="string")},
+... )
+... def last_path(url):
+...     return {"last": url.split("/")[-1]}
+>>>
+>>> subflow = DataFlow.auto(last_path, GetSingle)
+>>> subflow.seed.append(
+...     Input(
+...         value=[last_path.op.outputs["last"].name],
+...         definition=GetSingle.op.inputs["spec"],
+...     )
+... )
+>>>
+>>> dataflow = DataFlow.auto(run_dataflow, GetSingle)
+>>> dataflow.operations[run_dataflow.op.name] = run_dataflow.op._replace(
+...     inputs={"URL": URL},
+...     outputs={last_path.op.outputs["last"].name: last_path.op.outputs["last"]},
+...     expand=[],
+... )
+>>> dataflow.configs[run_dataflow.op.name] = RunDataFlowConfig(subflow)
+>>> dataflow.seed.append(
+...     Input(
+...         value=[last_path.op.outputs["last"].name],
+...         definition=GetSingle.op.inputs["spec"],
+...     )
+... )
+>>> dataflow.update(auto_flow=True)
+>>>
+>>> async def main():
+...     async for ctx, results in MemoryOrchestrator.run(
+...         dataflow,
+...         {
+...             "run_subflow": [
+...                 Input(value="https://github.com/intel/dffml", definition=URL)
+...             ]
+...         },
+...     ):
+...         print(results)
+>>>
+>>> asyncio.run(main())
+{'last_element_in_path': 'dffml'}
 
 **Stage: processing**
 
