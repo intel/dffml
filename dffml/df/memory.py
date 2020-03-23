@@ -1351,9 +1351,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
 
     async def operations_parameter_set_pairs(
         self,
-        ictx: BaseInputNetworkContext,
-        octx: BaseOperationNetworkContext,
-        rctx: BaseRedundancyCheckerContext,
         ctx: BaseInputSetContext,
         dataflow: DataFlow,
         *,
@@ -1367,19 +1364,17 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         along with their operations as they are generated.
         """
         # Get operations which may possibly run as a result of these new inputs
-        async for operation in octx.operations(
+        async for operation in self.octx.operations(
             dataflow, input_set=new_input_set, stage=stage
         ):
             # Generate all pairs of un-run input combinations
-            async for parameter_set in ictx.gather_inputs(
-                rctx, operation, dataflow, ctx=ctx
+            async for parameter_set in self.ictx.gather_inputs(
+                self.rctx, operation, dataflow, ctx=ctx
             ):
                 yield operation, parameter_set
 
     async def validator_target_set_pairs(
         self,
-        octx: BaseOperationNetworkContext,
-        rctx: BaseRedundancyCheckerContext,
         ctx: BaseInputSetContext,
         dataflow: DataFlow,
         unvalidated_input_set: BaseInputSet,
@@ -1402,7 +1397,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
             parameter_set = MemoryParameterSet(
                 MemoryParameterSetConfig(ctx=ctx, parameters=[parameter])
             )
-            async for parameter_set, exists in rctx.exists(
+            async for parameter_set, exists in self.rctx.exists(
                 validator, parameter_set
             ):
                 if not exists:
@@ -1469,8 +1464,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                             new_input_set,
                         ) in new_input_sets:
                             async for operation, parameter_set in self.validator_target_set_pairs(
-                                self.octx,
-                                self.rctx,
                                 ctx,
                                 self.config.dataflow,
                                 unvalidated_input_set,
@@ -1498,9 +1491,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                             # Identify which operations have completed contextually
                             # appropriate input sets which haven't been run yet
                             async for operation, parameter_set in self.operations_parameter_set_pairs(
-                                self.ictx,
-                                self.octx,
-                                self.rctx,
                                 ctx,
                                 self.config.dataflow,
                                 new_input_set=new_input_set,
@@ -1569,9 +1559,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # Identify which operations have complete contextually appropriate
         # input sets which haven't been run yet and are stage operations
         async for operation, parameter_set in self.operations_parameter_set_pairs(
-            self.ictx,
-            self.octx,
-            self.rctx,
             ctx,
             self.config.dataflow,
             stage=stage,
