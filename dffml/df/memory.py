@@ -1559,9 +1559,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # Identify which operations have complete contextually appropriate
         # input sets which haven't been run yet and are stage operations
         async for operation, parameter_set in self.operations_parameter_set_pairs(
-            ctx,
-            self.config.dataflow,
-            stage=stage,
+            ctx, self.config.dataflow, stage=stage
         ):
             # Add inputs and operation to redundancy checker before dispatch
             await self.rctx.add(operation, parameter_set)
