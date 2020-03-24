@@ -54,7 +54,6 @@ CORE_PLUGINS = [
     ("feature", "auth"),
     ("service", "http"),
     ("source", "mysql"),
-    ("source", "db"),
 ]
 
 

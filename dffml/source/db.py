@@ -106,7 +106,7 @@ class DbSourceContext(BaseSourceContext):
         return record
 
 
-@entrypoint("dbsource")
+@entrypoint("db")
 class DbSource(BaseSource):
     CONFIG = DbSourceConfig
     CONTEXT = DbSourceContext
