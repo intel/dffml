@@ -24,3 +24,4 @@ docs/plugins/service/http
 *pip-wheel-metadata/
 *.gz
 doctest/
+*.mnistpng
