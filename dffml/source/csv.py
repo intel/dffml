@@ -16,6 +16,7 @@ from .memory import MemorySource
 from .file import FileSource, FileSourceConfig
 from ..base import config
 from ..util.entrypoint import entrypoint
+from ..configloader.configloader import ConfigLoaders
 
 csv.register_dialect("strip", skipinitialspace=True)
 
@@ -41,6 +42,7 @@ class OpenCSVFile:
 CSV_SOURCE_CONFIG_DEFAULT_KEY = "key"
 CSV_SOURCE_CONFIG_DEFAULT_tag = "untagged"
 CSV_SOURCE_CONFIG_DEFAULT_tag_COLUMN = "tag"
+CSV_SOURCE_CONFIG_DEFAULT_LOADFILES_NAME = None
 
 
 @config
@@ -48,6 +50,7 @@ class CSVSourceConfig(FileSourceConfig):
     key: str = CSV_SOURCE_CONFIG_DEFAULT_KEY
     tag: str = CSV_SOURCE_CONFIG_DEFAULT_tag
     tagcol: str = CSV_SOURCE_CONFIG_DEFAULT_tag_COLUMN
+    loadfiles: str = CSV_SOURCE_CONFIG_DEFAULT_LOADFILES_NAME
 
 
 # CSVSource is a bit of a mess
@@ -64,6 +67,7 @@ class CSVSource(FileSource, MemorySource):
 
     OPEN_CSV_FILES: Dict[str, OpenCSVFile] = {}
     OPEN_CSV_FILES_LOCK: asyncio.Lock = asyncio.Lock()
+    CONFIG_LOADER = ConfigLoaders()
 
     @asynccontextmanager
     async def _open_csv(self, fd=None):
@@ -99,6 +103,12 @@ class CSVSource(FileSource, MemorySource):
         for row in dict_reader:
             # Grab tag from row
             tag = row.get(self.config.tagcol, self.config.tag)
+            # Load via ConfigLoaders if loadfiles parameter is given
+            if self.config.loadfiles:
+                async with self.CONFIG_LOADER as cfgl:
+                    _, cfgl_data = await cfgl.load_file(
+                        row[self.config.loadfiles]
+                    )
             if self.config.tagcol in row:
                 del row[self.config.tagcol]
             index.setdefault(tag, 0)
@@ -133,6 +143,8 @@ class CSVSource(FileSource, MemorySource):
             # Set the features
             features = {}
             for _key, _value in row.items():
+                if self.config.loadfiles:
+                    _value = cfgl_data
                 if _value != "":
                     try:
                         features[_key] = ast.literal_eval(_value)
