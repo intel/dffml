@@ -1,4 +1,5 @@
 import io
+import copy
 import asyncio
 import secrets
 import hashlib
@@ -260,6 +261,8 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         """
         Takes input from parent dataflow and adds it to every active context
         """
+        if not inputs:
+            return
         async with self.ctxhd_lock:
             ctx_keys = list(self.ctxhd.keys())
         self.logger.debug(f"Receiving {inputs} from parent flow")
@@ -870,7 +873,8 @@ class MemoryOperationImplementationNetworkContext(
             else:
                 raise OperationImplementationNotInstantiable(operation.name)
         # Set the correct instance_name
-        opimp.op = opimp.op._replace(instance_name=operation.instance_name)
+        opimp = copy.deepcopy(opimp)
+        opimp.op = operation
         self.operations[
             operation.instance_name
         ] = await self._stack.enter_async_context(opimp(config))
@@ -1226,6 +1230,13 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                             operation.name,
                         )
                         opimp_config = BaseConfig()
+                    else:
+                        self.logger.debug(
+                            "Instantiating operation implementation %s(%s) with provided config %r",
+                            operation.instance_name,
+                            operation.name,
+                            opimp_config,
+                        )
                     if isinstance(opimp_config, dict) and hasattr(
                         getattr(opimp, "CONFIG", False), "_fromdict"
                     ):
@@ -1273,10 +1284,14 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         return ctx
 
     async def forward_inputs_to_subflow(self, inputs: List[Input]):
+        if not inputs:
+            return
         # Go through input set,find instance_names of registered subflows which
         # have definition of the current input listed in `forward`.
         # If found,add `input` to list of inputs to forward for that instance_name
         forward = self.config.dataflow.forward
+        if not forward.book:
+            return
         inputs_to_forward = {}
         for item in inputs:
             instance_list = forward.get_instances_to_forward(item.definition)

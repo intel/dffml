@@ -33,7 +33,7 @@ from dffml.operation.output import GetSingle
 from dffml.util.asynctestcase import AsyncTestCase
 
 definitions = [
-    Definition(name="calc_string", primitive="str"),
+    Definition(name="calc_string", primitive="string"),
     Definition(name="is_add", primitive="bool"),
     Definition(name="is_mult", primitive="bool"),
     Definition(name="numbers", primitive="List[int]"),

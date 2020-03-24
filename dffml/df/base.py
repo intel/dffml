@@ -194,7 +194,12 @@ def op(imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
             kwargs["conditions"] = []
 
         func.op = Operation(**kwargs)
-        cls_name = func.op.name.replace("_", " ").title().replace(" ", "")
+        cls_name = (
+            func.op.name.replace(".", " ")
+            .replace("_", " ")
+            .title()
+            .replace(" ", "")
+        )
 
         sig = inspect.signature(func)
         # Check if the function uses the operation implementation context
