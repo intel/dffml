@@ -750,24 +750,6 @@ class BaseOperationImplementationNetworkContext(BaseDataFlowObjectContext):
         Schedule the running of an operation
         """
 
-    @abc.abstractmethod
-    async def operations_parameter_set_pairs(
-        self,
-        ictx: BaseInputNetworkContext,
-        octx: BaseOperationNetworkContext,
-        rctx: BaseRedundancyCheckerContext,
-        ctx: BaseInputSetContext,
-        *,
-        new_input_set: BaseInputSet = None,
-        stage: Stage = Stage.PROCESSING,
-    ) -> AsyncIterator[Tuple[Operation, BaseParameterSet]]:
-        """
-        Use new_input_set to determine which operations in the network might be
-        up for running. Cross check using existing inputs to generate per
-        input set context novel input pairings. Yield novel input pairings
-        along with their operations as they are generated.
-        """
-
 
 # TODO We should be able to specify multiple operation implementation  networks.
 # This would enable operations to live in different place, accessed via the
@@ -801,6 +783,21 @@ class BaseOrchestratorContext(BaseDataFlowObjectContext):
     ) -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
         """
         Run all the operations then run cleanup and output operations
+        """
+
+    @abc.abstractmethod
+    async def operations_parameter_set_pairs(
+        self,
+        ctx: BaseInputSetContext,
+        *,
+        new_input_set: BaseInputSet = None,
+        stage: Stage = Stage.PROCESSING,
+    ) -> AsyncIterator[Tuple[Operation, BaseParameterSet]]:
+        """
+        Use new_input_set to determine which operations in the network might be
+        up for running. Cross check using existing inputs to generate per
+        input set context novel input pairings. Yield novel input pairings
+        along with their operations as they are generated.
         """
 
 
