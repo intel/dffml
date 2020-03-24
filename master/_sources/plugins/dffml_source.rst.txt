@@ -48,6 +48,10 @@ Uses a CSV file as the source of record feature data
 
   - default: tag
 
+- loadfiles: String
+
+  - default: None
+
 idx1
 ~~~~
 

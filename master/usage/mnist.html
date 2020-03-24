@@ -186,14 +186,16 @@
 <p>This example will show you how to train a model on the MNIST dataset and use the
 model for prediction via the DFFML CLI and HTTP API.</p>
 <p>Download the files and verify them with <code class="docutils literal notranslate"><span class="pre">sha384sum</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sSLO <span class="s2">&quot;http://yann.lecun.com/exdb/mnist/{train-images-idx3,train-labels-idx1,t10k-images-idx3,t10k-labels-idx1}-ubyte.gz&quot;</span>
-<span class="gp">$</span> sha384sum -c - &lt;&lt; EOF
-<span class="go">1bf45877962fd391f7abb20534a30fd2203d0865309fec5f87d576dbdbefdcb16adb49220afc22a0f3478359d229449c  t10k-images-idx3-ubyte.gz</span>
-<span class="go">ccc1ee70f798a04e6bfeca56a4d0f0de8d8eeeca9f74641c1e1bfb00cf7cc4aa4d023f6ea1b40e79bb4707107845479d  t10k-labels-idx1-ubyte.gz</span>
-<span class="go">f40eb179f7c3d2637e789663bde56d444a23e4a0a14477a9e6ed88bc39c8ad6eaff68056c0cd9bb60daf0062b70dc8ee  train-images-idx3-ubyte.gz</span>
-<span class="go">ba9c11bf9a7f7c2c04127b8b3e568cf70dd3429d9029ca59b7650977a4ac32f8ff5041fe42bc872097487b06a6794e00  train-labels-idx1-ubyte.gz</span>
-<span class="go">EOF</span>
-<span class="go">t10k-images-idx3-ubyte.gz: OK</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">sSLO</span> <span class="s2">&quot;http://yann.lecun.com/exdb/mnist/{train-images-idx3,train-labels-idx1,t10k-images-idx3,t10k-labels-idx1}-ubyte.gz&quot;</span>
+<span class="n">sha384sum</span> <span class="o">-</span><span class="n">c</span> <span class="o">-</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="mi">1</span><span class="n">bf45877962fd391f7abb20534a30fd2203d0865309fec5f87d576dbdbefdcb16adb49220afc22a0f3478359d229449c</span>  <span class="n">t10k</span><span class="o">-</span><span class="n">images</span><span class="o">-</span><span class="n">idx3</span><span class="o">-</span><span class="n">ubyte</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">ccc1ee70f798a04e6bfeca56a4d0f0de8d8eeeca9f74641c1e1bfb00cf7cc4aa4d023f6ea1b40e79bb4707107845479d</span>  <span class="n">t10k</span><span class="o">-</span><span class="n">labels</span><span class="o">-</span><span class="n">idx1</span><span class="o">-</span><span class="n">ubyte</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">f40eb179f7c3d2637e789663bde56d444a23e4a0a14477a9e6ed88bc39c8ad6eaff68056c0cd9bb60daf0062b70dc8ee</span>  <span class="n">train</span><span class="o">-</span><span class="n">images</span><span class="o">-</span><span class="n">idx3</span><span class="o">-</span><span class="n">ubyte</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">ba9c11bf9a7f7c2c04127b8b3e568cf70dd3429d9029ca59b7650977a4ac32f8ff5041fe42bc872097487b06a6794e00</span>  <span class="n">train</span><span class="o">-</span><span class="n">labels</span><span class="o">-</span><span class="n">idx1</span><span class="o">-</span><span class="n">ubyte</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">t10k-images-idx3-ubyte.gz: OK</span>
 <span class="go">t10k-labels-idx1-ubyte.gz: OK</span>
 <span class="go">train-images-idx3-ubyte.gz: OK</span>
 <span class="go">train-labels-idx1-ubyte.gz: OK</span>
@@ -206,49 +208,162 @@ with <code class="docutils literal notranslate"><span class="pre">pip</span></co
 </pre></div>
 </div>
 <p>Train the model.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
-    -model tfdnnc <span class="se">\</span>
-    -model-batchsize <span class="m">1000</span> <span class="se">\</span>
-    -model-hidden <span class="m">30</span> <span class="m">50</span> <span class="m">25</span> <span class="se">\</span>
-    -model-clstype int <span class="se">\</span>
-    -model-predict label:int:1 <span class="se">\</span>
-    -model-classifications <span class="k">$(</span>seq <span class="m">0</span> <span class="m">9</span><span class="k">)</span> <span class="se">\</span>
-    -model-features image:int:<span class="k">$((</span><span class="m">28</span> <span class="o">*</span> <span class="m">28</span><span class="k">))</span> <span class="se">\</span>
-    -sources <span class="nv">images</span><span class="o">=</span>idx3 <span class="nv">label</span><span class="o">=</span>idx1 <span class="se">\</span>
-    -source-images-filename train-images-idx3-ubyte.gz <span class="se">\</span>
-    -source-images-feature image <span class="se">\</span>
-    -source-label-filename train-labels-idx1-ubyte.gz <span class="se">\</span>
-    -source-label-feature label <span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml train \
+    -model tfdnnc \
+    -model-batchsize 1000 \
+    -model-hidden 30 50 25 \
+    -model-clstype int \
+    -model-predict label:int:1 \
+    -model-classifications $(seq 0 9) \
+    -model-features image:int:$((28 * 28)) \
+    -sources images=idx3 label=idx1 \
+    -source-images-filename train-images-idx3-ubyte.gz \
+    -source-images-feature image \
+    -source-label-filename train-labels-idx1-ubyte.gz \
+    -source-label-feature label \
     -log debug
-<span class="go">... log output ...</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">... log output ...</span>
 </pre></div>
 </div>
 <p>Assess the model’s accuracy.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml accuracy <span class="se">\</span>
-    -model tfdnnc <span class="se">\</span>
-    -model-batchsize <span class="m">1000</span> <span class="se">\</span>
-    -model-hidden <span class="m">30</span> <span class="m">50</span> <span class="m">25</span> <span class="se">\</span>
-    -model-clstype int <span class="se">\</span>
-    -model-predict label:int:1 <span class="se">\</span>
-    -model-classifications <span class="k">$(</span>seq <span class="m">0</span> <span class="m">9</span><span class="k">)</span> <span class="se">\</span>
-    -model-features image:int:<span class="k">$((</span><span class="m">28</span> <span class="o">*</span> <span class="m">28</span><span class="k">))</span> <span class="se">\</span>
-    -sources <span class="nv">images</span><span class="o">=</span>idx3 <span class="nv">label</span><span class="o">=</span>idx1 <span class="se">\</span>
-    -source-images-filename t10k-images-idx3-ubyte.gz <span class="se">\</span>
-    -source-images-feature image <span class="se">\</span>
-    -source-label-filename t10k-labels-idx1-ubyte.gz <span class="se">\</span>
-    -source-label-feature label <span class="se">\</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml accuracy \
+    -model tfdnnc \
+    -model-batchsize 1000 \
+    -model-hidden 30 50 25 \
+    -model-clstype int \
+    -model-predict label:int:1 \
+    -model-classifications $(seq 0 9) \
+    -model-features image:int:$((28 * 28)) \
+    -sources images=idx3 label=idx1 \
+    -source-images-filename t10k-images-idx3-ubyte.gz \
+    -source-images-feature image \
+    -source-label-filename t10k-labels-idx1-ubyte.gz \
+    -source-label-feature label \
     -log debug
-<span class="go">... log output followed by accuracy as float ...</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">... log output followed by accuracy as float ...</span>
 <span class="go">0.8269000053405762</span>
 </pre></div>
 </div>
 <p>The accuracy likely won’t be very good right now because we need to normalize
 the data first.</p>
+<p>Create an <code class="docutils literal notranslate"><span class="pre">image.csv</span></code> file which contains the names of the images (with their extension .mnistpng) to predict on.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Prediction and rest of this tutorial comming soon! We’re currently working
-on getting the data normailzation working and reading image files from
-formats other than IDX.</p>
+<p>Make sure to download each image and save them with the <cite>.mnistpng</cite> extension.</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">image</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">key</span><span class="p">,</span><span class="n">image</span>
+<span class="n">four</span><span class="p">,</span><span class="n">image1</span><span class="o">.</span><span class="n">mnistpng</span>
+<span class="n">five</span><span class="p">,</span><span class="n">image2</span><span class="o">.</span><span class="n">mnistpng</span>
+<span class="n">three</span><span class="p">,</span><span class="n">image3</span><span class="o">.</span><span class="n">mnistpng</span>
+<span class="n">two</span><span class="p">,</span><span class="n">image4</span><span class="o">.</span><span class="n">mnistpng</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<p>In this example, the <code class="docutils literal notranslate"><span class="pre">image.csv</span></code> file contains the names of the following images</p>
+<a class="reference internal image-reference" href="../_images/image1.mnistpng"><img alt="../_images/image1.mnistpng" src="../_images/image1.mnistpng" style="width: 140px; height: 140px;" /></a>
+<a class="reference internal image-reference" href="../_images/image2.mnistpng"><img alt="../_images/image2.mnistpng" src="../_images/image2.mnistpng" style="width: 140px; height: 140px;" /></a>
+<a class="reference internal image-reference" href="../_images/image3.mnistpng"><img alt="../_images/image3.mnistpng" src="../_images/image3.mnistpng" style="width: 140px; height: 140px;" /></a>
+<a class="reference internal image-reference" href="../_images/image4.mnistpng"><img alt="../_images/image4.mnistpng" src="../_images/image4.mnistpng" style="width: 140px; height: 140px;" /></a>
+<p>Predict with the trained model.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml predict all \
+    -model tfdnnc \
+    -model-batchsize 1000 \
+    -model-hidden 30 50 25 \
+    -model-clstype int \
+    -model-predict label:int:1 \
+    -model-classifications $(seq 0 9) \
+    -model-features image:int:$((28 * 28)) \
+    -sources images=csv \
+    -source-filename image.csv  \
+    -source-loadfiles image  \
+    -log critical
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="o">.</span>
+                <span class="o">.</span>
+                <span class="mi">0</span>
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;four&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-03-18T04:07:01Z&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.4963473677635193</span><span class="p">,</span>
+                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">4</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="o">.</span>
+                <span class="o">.</span>
+                <span class="mi">0</span>            
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;five&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-03-18T04:07:01Z&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.9070320725440979</span><span class="p">,</span>
+                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">5</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="o">.</span>
+                <span class="o">.</span>
+                <span class="mi">0</span>            
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;three&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-03-18T04:07:01Z&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.9998736381530762</span><span class="p">,</span>
+                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">3</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="o">.</span>
+                <span class="o">.</span>
+                <span class="mi">0</span>            
+            <span class="p">]</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;two&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-03-18T04:07:01Z&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">2</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
 </div>
 </div>
 
