@@ -9,6 +9,9 @@ spec = importlib.util.spec_from_file_location(
 common = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(common)
 
+common.KWARGS["install_requires"] += [
+    "Pillow>=7.0.0",
+]
 common.KWARGS["entry_points"] = {
     "dffml.configloader": [
         f"mnistpng = {common.IMPORT_NAME}.configloader:PNGConfigLoader"
