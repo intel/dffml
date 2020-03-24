@@ -50,12 +50,18 @@ class Definition(NamedTuple):
     def __str__(self):
         return repr(self)
 
+    def __eq__(self, other):
+        return bool(self.export() == other.export())
+
     def export(self):
         exported = dict(self._asdict())
         if not self.lock:
             del exported["lock"]
+        if not self.validate:
+            del exported["validate"]
         if not self.spec:
             del exported["spec"]
+            del exported["subspec"]
         else:
             exported["spec"] = export_dict(
                 name=self.spec.__qualname__,
@@ -122,6 +128,7 @@ class Operation(NamedTuple, Entrypoint):
     conditions: Optional[List[Definition]] = []
     expand: Optional[List[str]] = []
     instance_name: Optional[str] = None
+    validator: bool = False
 
     def export(self):
         exported = {
@@ -132,10 +139,6 @@ class Operation(NamedTuple, Entrypoint):
             "stage": self.stage.value,
             "expand": self.expand.copy(),
         }
-        for to_string in ["conditions"]:
-            exported[to_string] = list(
-                map(lambda definition: definition.name, exported[to_string])
-            )
         for to_string in ["inputs", "outputs"]:
             exported[to_string] = dict(
                 map(
@@ -270,11 +273,15 @@ class Input(object):
         definition: Definition,
         parents: Optional[List["Input"]] = None,
         origin: Optional[Union[str, Tuple[Operation, str]]] = "seed",
+        validated: bool = True,
         *,
         uid: Optional[str] = "",
     ):
+        if not isinstance(definition, Definition):
+            raise TypeError("Input given non definition")
         # TODO Add optional parameter Input.target which specifies the operation
         # instance name this Input is intended for.
+        self.validated = validated
         if parents is None:
             parents = []
         if definition.spec is not None:
@@ -288,7 +295,11 @@ class Input(object):
             elif isinstance(value, dict):
                 value = definition.spec(**value)
         if definition.validate is not None:
-            value = definition.validate(value)
+            if callable(definition.validate):
+                value = definition.validate(value)
+            # if validate is a string (operation.instance_name) set `not validated`
+            elif isinstance(definition.validate, str):
+                self.validated = False
         self.value = value
         self.definition = definition
         self.parents = parents
@@ -400,22 +411,33 @@ class Forward:
         return cls(**kwargs)
 
 
-@dataclass
 class DataFlow:
-    operations: Dict[str, Union[Operation, Callable]]
-    seed: List[Input] = field(default=None)
-    configs: Dict[str, BaseConfig] = field(default=None)
-    definitions: Dict[str, Definition] = field(init=False)
-    flow: Dict[str, InputFlow] = field(default=None)
-    by_origin: Dict[Stage, Dict[str, Operation]] = field(default=None)
-    # Implementations can be provided in case they haven't been registered via
-    # the entrypoint system.
-    implementations: Dict[str, "OperationImplementation"] = field(default=None)
-    forward: Forward = field(default_factory=lambda: Forward())
+    def __init__(
+        self,
+        operations: Dict[str, Union[Operation, Callable]],
+        seed: List[Input] = None,
+        configs: Dict[str, BaseConfig] = None,
+        definitions: Dict[str, Definition] = False,
+        flow: Dict[str, InputFlow] = None,
+        by_origin: Dict[Stage, Dict[str, Operation]] = None,
+        # Implementations can be provided in case they haven't been registered
+        # via the entrypoint system.
+        implementations: Dict[str, "OperationImplementation"] = None,
+        forward: Forward = None,
+    ) -> None:
+        self.operations = operations
+        self.seed = seed
+        self.configs = configs
+        self.definitions = definitions
+        self.flow = flow
+        self.by_origin = by_origin
+        self.implementations = implementations
+        self.forward = forward
 
-    def __post_init__(self):
         # Prevent usage of a global dict (if we set default to {} then all the
         # instances will share the same instance of that dict, or list)
+        if self.forward is None:
+            self.forward = Forward()
         if self.seed is None:
             self.seed = []
         if self.configs is None:
@@ -424,6 +446,18 @@ class DataFlow:
             self.by_origin = {}
         if self.implementations is None:
             self.implementations = {}
+        self.validators = {}  # Maps `validator` ops instance_name to op
+
+        self.update(auto_flow=bool(self.flow is None))
+
+    def update(self, auto_flow: bool = False):
+        self.update_operations()
+        self.update_definitions()
+        if auto_flow:
+            self.flow = self.auto_flow()
+        self.update_by_origin()
+
+    def update_operations(self):
         # Allow callers to pass in functions decorated with op. Iterate over the
         # given operations and replace any which have been decorated with their
         # operation. Add the implementation to our dict of implementations.
@@ -451,9 +485,12 @@ class DataFlow:
                 self.operations[instance_name] = operation
                 value = operation
             # Make sure every operation has the correct instance name
-            self.operations[instance_name] = value._replace(
-                instance_name=instance_name
-            )
+            value = value._replace(instance_name=instance_name)
+            self.operations[instance_name] = value
+            if value.validator:
+                self.validators[instance_name] = value
+
+    def update_definitions(self):
         # Grab all definitions from operations
         operations = list(self.operations.values())
         definitions = list(
@@ -474,10 +511,6 @@ class DataFlow:
             definition.name: definition for definition in definitions
         }
         self.definitions = definitions
-        # Determine the dataflow if not given
-        if self.flow is None:
-            self.flow = self.auto_flow()
-        self.update_by_origin()
 
     def update_by_origin(self):
         # Create by_origin which maps operation instance names to the sources
@@ -524,16 +557,19 @@ class DataFlow:
                 instance_name: operation.export()
                 for instance_name, operation in self.operations.items()
             },
-            "seed": self.seed.copy(),
-            "configs": self.configs.copy(),
-            "flow": self.flow.copy(),
-            "forward": self.forward.export(),
         }
+        if self.seed:
+            exported["seed"] = self.seed.copy()
+        if self.flow:
+            exported["flow"] = self.flow.copy()
+        if self.configs:
+            exported["configs"] = self.configs.copy()
+        if self.forward.book:
+            exported["forward"] = self.forward.export()
+        exported = export_dict(**exported)
         if linked:
-            exported["linked"] = True
-            exported["definitions"] = self.definitions.copy()
-            exported.update(self._linked()),
-        return export_dict(**exported)
+            self._linked(exported)
+        return exported
 
     @classmethod
     def _fromdict(cls, *, linked: bool = False, **kwargs):
@@ -548,16 +584,19 @@ class DataFlow:
             for instance_name, operation in kwargs["operations"].items()
         }
         # Import seed inputs
-        kwargs["seed"] = [
-            Input._fromdict(**input_data) for input_data in kwargs["seed"]
-        ]
+        if "seed" in kwargs:
+            kwargs["seed"] = [
+                Input._fromdict(**input_data) for input_data in kwargs["seed"]
+            ]
         # Import input flows
-        kwargs["flow"] = {
-            instance_name: InputFlow._fromdict(**input_flow)
-            for instance_name, input_flow in kwargs["flow"].items()
-        }
+        if "flow" in kwargs:
+            kwargs["flow"] = {
+                instance_name: InputFlow._fromdict(**input_flow)
+                for instance_name, input_flow in kwargs["flow"].items()
+            }
         # Import forward
-        kwargs["forward"] = Forward._fromdict(**kwargs["forward"])
+        if "forward" in kwargs:
+            kwargs["forward"] = Forward._fromdict(**kwargs["forward"])
         return cls(**kwargs)
 
     @classmethod
@@ -570,6 +609,7 @@ class DataFlow:
         )
 
     def auto_flow(self):
+        # Determine the dataflow if not given
         flow_dict = {}
         # Create output_dict, which maps all of the definitions to the
         # operations that create them.
@@ -692,24 +732,25 @@ class DataFlow:
             item["definition"] = definitions[item["definition"]]
         return source
 
-    def _linked(self):
-        exported = {}
+    def _linked(self, exported):
+        # Set linked
+        exported["linked"] = True
+        # Include definitions
+        exported["definitions"] = export_dict(**self.definitions.copy())
         # Remove definitions from operations, just use definition name
-        operations = {}
-        for operation in self.operations.values():
-            exported_operation = operation.export()
-            for name, definition in operation.inputs.items():
-                exported_operation["inputs"][name] = definition.name
-            for name, definition in operation.outputs.items():
-                exported_operation["outputs"][name] = definition.name
-            operations[operation.instance_name] = exported_operation
+        for operation in exported["operations"].values():
+            for arg in ["conditions"]:
+                if not arg in operation:
+                    continue
+                for i, definition in enumerate(operation[arg]):
+                    operation[arg][i] = definition["name"]
+            for arg in ["inputs", "outputs"]:
+                if not arg in operation:
+                    continue
+                for io_name, definition in operation[arg].items():
+                    operation[arg][io_name] = definition["name"]
         # Remove definitions from seed inputs, just use definition name
-        seed = []
-        for item in self.seed:
-            exported_item = item.export()
-            exported_item["definition"] = exported_item["definition"]["name"]
-            seed.append(exported_item)
-        # Set linked exported
-        exported["seed"] = seed
-        exported["operations"] = operations
+        if "seed" in exported:
+            for item in exported["seed"]:
+                item["definition"] = item["definition"]["name"]
         return exported

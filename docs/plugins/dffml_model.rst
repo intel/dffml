@@ -154,58 +154,32 @@ Generating train and test data
   make sure to take a BACKUP of files with same name in the directory
   from where this command is run as it overwrites any existing files.
 
-.. code-block:: console
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/train_data.sh
 
-    $ cat > train.csv << EOF
-    Feature1,Feature2,TARGET
-    0.93,0.68,3.89
-    0.24,0.42,1.75
-    0.36,0.68,2.75
-    0.53,0.31,2.00
-    0.29,0.25,1.32
-    0.29,0.52,2.14
-    EOF
-    $ cat > test.csv << EOF
-    Feature1,Feature2,TARGET
-    0.57,0.84,3.65
-    0.95,0.19,2.46
-    0.23,0.15,0.93
-    EOF
-    $ dffml train \
-        -model tfdnnr \
-        -model-epochs 300 \
-        -model-steps 2000 \
-        -model-predict TARGET:float:1 \
-        -model-hidden 8 16 8 \
-        -sources s=csv \
-        -source-filename train.csv \
-        -model-features \
-          Feature1:float:1 \
-          Feature2:float:1 \
-        -log debug
-    Enabling debug log shows tensorflow losses...
-    $ dffml accuracy \
-        -model tfdnnr \
-        -model-predict TARGET:float:1 \
-        -model-hidden 8 16 8 \
-        -sources s=csv \
-        -source-filename test.csv \
-        -model-features \
-          Feature1:float:1 \
-          Feature2:float:1 \
-        -log critical
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/accuracy.sh
+
+Output
+
+.. code-block::
+
     0.9468210011
-    $ echo -e 'Feature1,Feature2,TARGET\n0.21,0.18,0.84\n' | \
-      dffml predict all \
-        -model tfdnnr \
-        -model-predict TARGET:float:1 \
-        -model-hidden 8 16 8 \
-        -sources s=csv \
-        -source-filename /dev/stdin \
-        -model-features \
-          Feature1:float:1 \
-          Feature2:float:1 \
-        -log critical
+
+Make a prediction
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/predict.sh
+
+Output
+
+.. code-block:: json
+
     [
         {
             "extra": {},
@@ -224,6 +198,10 @@ Generating train and test data
             "key": 0
         }
     ]
+
+Example usage of Tensorflow DNNEstimator model using python API
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/tfdnnr.py
 
 The ``NaN`` in ``confidence`` is the expected behaviour. (See TODO in
 predict).
@@ -438,6 +416,80 @@ dffml_model_scratch
 
     pip install dffml-model-scratch
 
+
+scratchlgrsag
+~~~~~~~~~~~~~
+
+*Official*
+
+Logistic Regression using stochastic average gradient descent optimizer
+
+
+.. code-block:: console
+
+    $ cat > dataset.csv << EOF
+    f1,ans
+    0.1,0
+    0.7,1
+    0.6,1
+    0.2,0
+    0.8,1
+    EOF
+    $ dffml train \
+        -model scratchlgrsag \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -sources f=csv \
+        -source-filename dataset.csv \
+        -log debug
+    $ dffml accuracy \
+        -model scratchlgrsag \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -sources f=csv \
+        -source-filename dataset.csv \
+        -log debug
+    1.0
+    $ echo -e 'f1,ans\n0.8,0\n' | \
+      dffml predict all \
+        -model scratchlgrsag \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
+        -sources f=csv \
+        -source-filename /dev/stdin \
+        -log debug
+    [
+        {
+            "extra": {},
+            "features": {
+                "ans": 0,
+                "f1": 0.8
+            },
+            "last_updated": "2020-03-19T13:41:08Z",
+            "prediction": {
+                "ans": {
+                    "confidence": 1.0,
+                    "value": 1
+                }
+            },
+            "key": "0"
+        }
+    ]
+
+**Args**
+
+- predict: Feature
+
+  - Label or the value to be predicted
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - default: ~/.cache/dffml/scratch
+  - Directory where state should be saved
 
 scratchslr
 ~~~~~~~~~~

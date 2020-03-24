@@ -1,0 +1,26 @@
+from dffml import CSVSource, Features, DefFeature
+from dffml.noasync import train, accuracy, predict
+from dffml_model_tensorflow.dnnr import DNNRegressionModel
+
+model = DNNRegressionModel(
+    features=Features(
+        DefFeature("Feature1", float, 1), DefFeature("Feature2", float, 1),
+    ),
+    predict=DefFeature("TARGET", float, 1),
+    epochs=300,
+    steps=2000,
+    hidden=[8, 16, 8],
+)
+
+# Train the model
+train(model, "train.csv")
+
+# Assess accuracy (alternate way of specifying data source)
+print("Accuracy:", accuracy(model, CSVSource(filename="test.csv")))
+
+# Make prediction
+for i, features, prediction in predict(
+    model, {"Feature1": 0.21, "Feature2": 0.18, "TARGET": 0.84},
+):
+    features["TARGET"] = prediction["TARGET"]["value"]
+    print(features)

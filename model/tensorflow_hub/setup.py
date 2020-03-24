@@ -26,7 +26,7 @@ INSTALL_REQUIRES = (
         "numpy>=1.16.4",
     ]
     + (
-        ["dffml>=0.3.4"]
+        ["dffml>=0.3.5"]
         if not any(
             list(
                 map(
