@@ -122,8 +122,7 @@ is okay.
 +--------------+---------------------------------------------------------------+
 | STYLE        | You need to run the ``black`` formater                        |
 +--------------+---------------------------------------------------------------+
-| DOCS         | You changed a docstring for something and didn't run          |
-|              | ./scripts/docs.sh before commiting and pushing                |
+| DOCS         | There was an issue when running the ./scripts/docs.sh script  |
 +--------------+---------------------------------------------------------------+
 
 For the tests in the various plugins:
