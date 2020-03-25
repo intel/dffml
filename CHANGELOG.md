@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New model tutorial mentions file paths that should be edited.
 - DataFlow is no longer a dataclass to prevent it from being exported
   incorrectly.
+- `operations_parameter_set_pairs` moved to `MemoryOrchestratorContext`
 
 ## [0.3.5] - 2020-03-10
 ### Added
