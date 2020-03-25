@@ -81,13 +81,13 @@ class Model(BaseDataFlowFacilitatorObject):
 
     def __init__(self, config):
         super().__init__(config)
-        # to treat "~" as the the home directory rather than a literal
-        self.config = self.config.replace(directory=self.config.directory.resolve())
         # TODO Just in case its a string. We should make it so that on
         # instantiation of an @config we convert properties to their correct
         # types.
         if isinstance(getattr(self.config, "directory", None), str):
             self.config.directory = pathlib.Path(self.config.directory)
+        # to treat "~" as the the home directory rather than a literal
+        self.config = self.config._replace(directory=self.config.directory.resolve())
 
     def __call__(self) -> ModelContext:
         self._make_config_directory()
