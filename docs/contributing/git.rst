@@ -132,3 +132,8 @@ For the tests in the various plugins:
 
 - You need to add any dependencies (``pip install ...``)  you need to the
   ``setup.py`` file of the plugin your working on.
+
+- For ``model/tensorflow`` sometimes the neural networks get bad accuracy,
+  causing the tests to fail. This is because they are initialized with random
+  weights. Click on the failing test, then re-run it (as of writing this GitHub
+  only allows re-running all of the tests).
