@@ -299,8 +299,7 @@ is okay.</p>
 <td><p>You need to run the <code class="docutils literal notranslate"><span class="pre">black</span></code> formater</p></td>
 </tr>
 <tr class="row-odd"><td><p>DOCS</p></td>
-<td><p>You changed a docstring for something and didn’t run
-./scripts/docs.sh before commiting and pushing</p></td>
+<td><p>There was an issue when running the ./scripts/docs.sh script</p></td>
 </tr>
 </tbody>
 </table>
@@ -310,6 +309,10 @@ is okay.</p>
 adapt to them, for example if something got renamed, check the changelog.</p></li>
 <li><p>You need to add any dependencies (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">...</span></code>)  you need to the
 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file of the plugin your working on.</p></li>
+<li><p>For <code class="docutils literal notranslate"><span class="pre">model/tensorflow</span></code> sometimes the neural networks get bad accuracy,
+causing the tests to fail. This is because they are initialized with random
+weights. Click on the failing test, then re-run it (as of writing this GitHub
+only allows re-running all of the tests).</p></li>
 </ul>
 </div>
 </div>
