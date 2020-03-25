@@ -300,13 +300,13 @@
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__inputs</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">item</span>
 
-    <span class="k">def</span> <span class="nf">remove_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
+<div class="viewcode-block" id="MemoryInputSet.remove_input"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputSet.remove_input">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">remove_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">Input</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__inputs</span><span class="p">[:]:</span>
             <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">uid</span> <span class="o">==</span> <span class="n">item</span><span class="o">.</span><span class="n">uid</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__inputs</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-                <span class="k">break</span>
+                <span class="k">break</span></div>
 
-<div class="viewcode-block" id="MemoryInputSet.remove_unvalidated_inputs"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputSet.remove_unvalidated_inputs">[docs]</a>    <span class="k">def</span> <span class="nf">remove_unvalidated_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;MemoryInputSet&quot;</span><span class="p">:</span>
+<div class="viewcode-block" id="MemoryInputSet.remove_unvalidated_inputs"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryInputSet.remove_unvalidated_inputs">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">remove_unvalidated_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;MemoryInputSet&quot;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes `unvalidated` inputs from internal list and returns the same.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -451,7 +451,7 @@
         <span class="c1"># self.ctxhd</span>
 
         <span class="c1"># remove unvalidated inputs</span>
-        <span class="n">unvalidated_input_set</span> <span class="o">=</span> <span class="n">input_set</span><span class="o">.</span><span class="n">remove_unvalidated_inputs</span><span class="p">()</span>
+        <span class="n">unvalidated_input_set</span> <span class="o">=</span> <span class="k">await</span> <span class="n">input_set</span><span class="o">.</span><span class="n">remove_unvalidated_inputs</span><span class="p">()</span>
 
         <span class="c1"># If the context for this input set does not exist create a</span>
         <span class="c1"># NotificationSet for it to notify the orchestrator</span>
@@ -1197,66 +1197,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">run_dispatch</span><span class="p">(</span><span class="n">octx</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">task</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">ignore_args</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">set</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">task</span></div>
-
-<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.operations_parameter_set_pairs"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.operations_parameter_set_pairs">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">operations_parameter_set_pairs</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">ictx</span><span class="p">:</span> <span class="n">BaseInputNetworkContext</span><span class="p">,</span>
-        <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOperationNetworkContext</span><span class="p">,</span>
-        <span class="n">rctx</span><span class="p">:</span> <span class="n">BaseRedundancyCheckerContext</span><span class="p">,</span>
-        <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span>
-        <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">new_input_set</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseInputSet</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">stage</span><span class="p">:</span> <span class="n">Stage</span> <span class="o">=</span> <span class="n">Stage</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Operation</span><span class="p">,</span> <span class="n">BaseInputSet</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Use new_input_set to determine which operations in the network might be</span>
-<span class="sd">        up for running. Cross check using existing inputs to generate per</span>
-<span class="sd">        input set context novel input pairings. Yield novel input pairings</span>
-<span class="sd">        along with their operations as they are generated.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Get operations which may possibly run as a result of these new inputs</span>
-        <span class="k">async</span> <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">octx</span><span class="o">.</span><span class="n">operations</span><span class="p">(</span>
-            <span class="n">dataflow</span><span class="p">,</span> <span class="n">input_set</span><span class="o">=</span><span class="n">new_input_set</span><span class="p">,</span> <span class="n">stage</span><span class="o">=</span><span class="n">stage</span>
-        <span class="p">):</span>
-            <span class="c1"># Generate all pairs of un-run input combinations</span>
-            <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="n">ictx</span><span class="o">.</span><span class="n">gather_inputs</span><span class="p">(</span>
-                <span class="n">rctx</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span>
-            <span class="p">):</span>
-                <span class="k">yield</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span></div>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">validator_target_set_pairs</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOperationNetworkContext</span><span class="p">,</span>
-        <span class="n">rctx</span><span class="p">:</span> <span class="n">BaseRedundancyCheckerContext</span><span class="p">,</span>
-        <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span>
-        <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">,</span>
-        <span class="n">unvalidated_input_set</span><span class="p">:</span> <span class="n">BaseInputSet</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="k">async</span> <span class="k">for</span> <span class="n">unvalidated_input</span> <span class="ow">in</span> <span class="n">unvalidated_input_set</span><span class="o">.</span><span class="n">inputs</span><span class="p">():</span>
-            <span class="n">validator_instance_name</span> <span class="o">=</span> <span class="n">unvalidated_input</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">validate</span>
-            <span class="n">validator</span> <span class="o">=</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">validators</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">validator_instance_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">validator</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">ValidatorMissing</span><span class="p">(</span>
-                    <span class="s2">&quot;Validator with instance_name </span><span class="si">{validator_instance_name}</span><span class="s2"> not found&quot;</span>
-                <span class="p">)</span>
-            <span class="c1"># There is only one `input` in `validators`</span>
-            <span class="n">input_name</span><span class="p">,</span> <span class="n">input_definition</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">validator</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">parameter</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
-                <span class="n">key</span><span class="o">=</span><span class="n">input_name</span><span class="p">,</span>
-                <span class="n">value</span><span class="o">=</span><span class="n">unvalidated_input</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                <span class="n">origin</span><span class="o">=</span><span class="n">unvalidated_input</span><span class="p">,</span>
-                <span class="n">definition</span><span class="o">=</span><span class="n">input_definition</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">parameter_set</span> <span class="o">=</span> <span class="n">MemoryParameterSet</span><span class="p">(</span>
-                <span class="n">MemoryParameterSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="n">parameter</span><span class="p">])</span>
-            <span class="p">)</span>
-            <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">exists</span> <span class="ow">in</span> <span class="n">rctx</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span>
-                <span class="n">validator</span><span class="p">,</span> <span class="n">parameter_set</span>
-            <span class="p">):</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">validator</span><span class="p">,</span> <span class="n">parameter_set</span></div>
+        <span class="k">return</span> <span class="n">task</span></div></div>
 
 
 <div class="viewcode-block" id="MemoryOperationImplementationNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
@@ -1581,6 +1522,60 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">task</span><span class="o">.</span><span class="n">exception</span><span class="p">()</span></div>
 
+<div class="viewcode-block" id="MemoryOrchestratorContext.operations_parameter_set_pairs"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOrchestratorContext.operations_parameter_set_pairs">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">operations_parameter_set_pairs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span>
+        <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">new_input_set</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseInputSet</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">stage</span><span class="p">:</span> <span class="n">Stage</span> <span class="o">=</span> <span class="n">Stage</span><span class="o">.</span><span class="n">PROCESSING</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Operation</span><span class="p">,</span> <span class="n">BaseInputSet</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Use new_input_set to determine which operations in the network might be</span>
+<span class="sd">        up for running. Cross check using existing inputs to generate per</span>
+<span class="sd">        input set context novel input pairings. Yield novel input pairings</span>
+<span class="sd">        along with their operations as they are generated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get operations which may possibly run as a result of these new inputs</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">operations</span><span class="p">(</span>
+            <span class="n">dataflow</span><span class="p">,</span> <span class="n">input_set</span><span class="o">=</span><span class="n">new_input_set</span><span class="p">,</span> <span class="n">stage</span><span class="o">=</span><span class="n">stage</span>
+        <span class="p">):</span>
+            <span class="c1"># Generate all pairs of un-run input combinations</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">gather_inputs</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rctx</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span>
+            <span class="p">):</span>
+                <span class="k">yield</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span></div>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">validator_target_set_pairs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span>
+        <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">,</span>
+        <span class="n">unvalidated_input_set</span><span class="p">:</span> <span class="n">BaseInputSet</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">unvalidated_input</span> <span class="ow">in</span> <span class="n">unvalidated_input_set</span><span class="o">.</span><span class="n">inputs</span><span class="p">():</span>
+            <span class="n">validator_instance_name</span> <span class="o">=</span> <span class="n">unvalidated_input</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">validate</span>
+            <span class="n">validator</span> <span class="o">=</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">validators</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">validator_instance_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">validator</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ValidatorMissing</span><span class="p">(</span>
+                    <span class="s2">&quot;Validator with instance_name </span><span class="si">{validator_instance_name}</span><span class="s2"> not found&quot;</span>
+                <span class="p">)</span>
+            <span class="c1"># There is only one `input` in `validators`</span>
+            <span class="n">input_name</span><span class="p">,</span> <span class="n">input_definition</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">validator</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">parameter</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+                <span class="n">key</span><span class="o">=</span><span class="n">input_name</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">unvalidated_input</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">origin</span><span class="o">=</span><span class="n">unvalidated_input</span><span class="p">,</span>
+                <span class="n">definition</span><span class="o">=</span><span class="n">input_definition</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">parameter_set</span> <span class="o">=</span> <span class="n">MemoryParameterSet</span><span class="p">(</span>
+                <span class="n">MemoryParameterSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="n">parameter</span><span class="p">])</span>
+            <span class="p">)</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">exists</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rctx</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span>
+                <span class="n">validator</span><span class="p">,</span> <span class="n">parameter_set</span>
+            <span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">validator</span><span class="p">,</span> <span class="n">parameter_set</span>
+
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run_operations_for_ctx</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseContextHandle</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">BaseContextHandle</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
@@ -1641,9 +1636,7 @@
                             <span class="n">unvalidated_input_set</span><span class="p">,</span>
                             <span class="n">new_input_set</span><span class="p">,</span>
                         <span class="p">)</span> <span class="ow">in</span> <span class="n">new_input_sets</span><span class="p">:</span>
-                            <span class="k">async</span> <span class="k">for</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">validator_target_set_pairs</span><span class="p">(</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">rctx</span><span class="p">,</span>
+                            <span class="k">async</span> <span class="k">for</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">validator_target_set_pairs</span><span class="p">(</span>
                                 <span class="n">ctx</span><span class="p">,</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span>
                                 <span class="n">unvalidated_input_set</span><span class="p">,</span>
@@ -1670,10 +1663,7 @@
                             <span class="p">)</span>
                             <span class="c1"># Identify which operations have completed contextually</span>
                             <span class="c1"># appropriate input sets which haven&#39;t been run yet</span>
-                            <span class="k">async</span> <span class="k">for</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">operations_parameter_set_pairs</span><span class="p">(</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">ictx</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">rctx</span><span class="p">,</span>
+                            <span class="k">async</span> <span class="k">for</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations_parameter_set_pairs</span><span class="p">(</span>
                                 <span class="n">ctx</span><span class="p">,</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span>
                                 <span class="n">new_input_set</span><span class="o">=</span><span class="n">new_input_set</span><span class="p">,</span>
@@ -1741,13 +1731,8 @@
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run_stage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span> <span class="n">stage</span><span class="p">:</span> <span class="n">Stage</span><span class="p">):</span>
         <span class="c1"># Identify which operations have complete contextually appropriate</span>
         <span class="c1"># input sets which haven&#39;t been run yet and are stage operations</span>
-        <span class="k">async</span> <span class="k">for</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">operations_parameter_set_pairs</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ictx</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rctx</span><span class="p">,</span>
-            <span class="n">ctx</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span>
-            <span class="n">stage</span><span class="o">=</span><span class="n">stage</span><span class="p">,</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations_parameter_set_pairs</span><span class="p">(</span>
+            <span class="n">ctx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">stage</span><span class="o">=</span><span class="n">stage</span>
         <span class="p">):</span>
             <span class="c1"># Add inputs and operation to redundancy checker before dispatch</span>
             <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">rctx</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
