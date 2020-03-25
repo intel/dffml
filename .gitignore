@@ -25,3 +25,4 @@ docs/plugins/service/http
 *.gz
 doctest/
 *.mnistpng
+docs/plugins/dffml_*.rst
