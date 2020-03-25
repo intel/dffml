@@ -1,6 +1,9 @@
 Documentation
 =============
 
+You'll want to have all of the official plugins installed when generating the
+documentation. See :ref:`dev_env_install_official_plugins`.
+
 To build, run the docs script.
 
 .. code-block:: console
