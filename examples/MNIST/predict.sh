@@ -1,0 +1,12 @@
+dffml predict all \
+    -model tfdnnc \
+    -model-batchsize 1000 \
+    -model-hidden 30 50 25 \
+    -model-clstype int \
+    -model-predict label:int:1 \
+    -model-classifications $(seq 0 9) \
+    -model-features image:int:$((28 * 28)) \
+    -sources images=csv \
+    -source-filename image.csv  \
+    -source-loadfiles image  \
+    -log critical

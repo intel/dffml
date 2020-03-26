@@ -45,10 +45,12 @@ EMAIL = config.get("user", "email", fallback="unknown@example.com")
 
 CORE_PLUGINS = [
     ("configloader", "yaml"),
+    ("configloader", "png"),
     ("model", "tensorflow"),
     ("model", "scratch"),
     ("model", "scikit"),
     ("model", "tensorflow_hub"),
+    ("model", "transformers"),
     ("examples", "shouldi"),
     ("feature", "git"),
     ("feature", "auth"),
