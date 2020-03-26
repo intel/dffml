@@ -105,12 +105,17 @@ Create the virtual environment.
 
     $ python3.7 -m venv .venv
 
-
-Activate it.
+Activate it (on Linux / OSX / UNIX variants)
 
 .. code-block:: console
 
     $ . .venv/bin/activate
+
+Activate it (on Widows)
+
+.. code-block:: console
+
+    $ .\.venv\Scripts\activate
 
 Install the packages in development mode.
 
