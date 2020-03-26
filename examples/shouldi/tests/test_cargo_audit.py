@@ -26,9 +26,9 @@ class TestRunCargo_AuditOp(AsyncTestCase):
         pathlib.Path(__file__).parent / "downloads/tarpaulin-download",
         "03c10779bdf09baa9b6a8caab367de8e780e9b72778b40c017adb85c1b1ec38b96355ba67482067fcd06917632a81f69",
     )
-    async def test_run(self, cargo_audit, tarpaulin):
+    async def test_run(self, rust, cargo_audit, tarpaulin):
         with prepend_to_path(
-            rust/ "bin",
+            rust/ "rust-1.42.0-x86_64-unknown-linux-gnu" / "cargo" / "bin",
             cargo_audit/ "cargo-audit-0.11.2",
         ):
             results = await run_cargo_audit(
