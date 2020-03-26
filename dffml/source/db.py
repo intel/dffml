@@ -17,7 +17,7 @@ class DbSourceConfig(BaseConfig):
 
 class DbSourceContext(BaseSourceContext):
     async def update(self, record: Record):
-        model_columns = self.parent.config.model_columns.split()
+        model_columns = self.parent.config.model_columns
         key_value_pairs = collections.OrderedDict()
         for key in model_columns:
             if key.startswith("feature_"):

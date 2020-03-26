@@ -56,7 +56,7 @@ class TestDbSource(AsyncTestCase, SourceTest):
         cls.source_config = DbSourceConfig(
             db=SqliteDatabase(cls.db_config),
             table_name=cls.table_name,
-            model_columns="key feature_PetalLength feature_PetalWidth feature_SepalLength feature_SepalWidth target_name_confidence target_name_value",
+            model_columns="key feature_PetalLength feature_PetalWidth feature_SepalLength feature_SepalWidth target_name_confidence target_name_value".split(),
         )
 
         # Setup connection to reset state (different from the connection used in the tests)
