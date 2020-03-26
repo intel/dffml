@@ -1,6 +1,5 @@
 dffml predict all \
   -model ner_tagger \
-  -model-predict TARGET:float:1 \
   -sources s=csv \
   -source-filename test.csv \
   -model-sid SentenceId:int:1 \

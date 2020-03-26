@@ -1,5 +1,5 @@
 cat > train.csv << EOF
-sentence_id,words,tag
+SentenceId,Words,Tag
 1,DFFML,B-MISC
 1,Models,I-MISC
 1,are,O

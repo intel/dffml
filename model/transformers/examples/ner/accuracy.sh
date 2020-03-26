@@ -1,6 +1,5 @@
 dffml accuracy \
   -model ner_tagger \
-  -model-predict TARGET:float:1 \
   -sources s=csv \
   -source-filename train.csv \
   -model-sid SentenceId:int:1 \

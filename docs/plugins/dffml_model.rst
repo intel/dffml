@@ -533,6 +533,10 @@ The model can be trained on large datasets to get the expected
 output. The example shown above is to demonstrate the commandline usage
 of the model.
 
+Example usage of NER model using python API
+
+.. literalinclude:: /../model/transformers/examples/ner/ner_model.py
+
 **Args**
 
 - sid: Feature
@@ -688,8 +692,8 @@ dffml_model_scratch
     pip install dffml-model-scratch
 
 
-scratchlgr
-~~~~~~~~~~
+scratchlgrsag
+~~~~~~~~~~~~~
 
 *Official*
 

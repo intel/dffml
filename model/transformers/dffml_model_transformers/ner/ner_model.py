@@ -429,7 +429,7 @@ class NERModelContext(ModelContext):
         )
         self.logger.info("  Total training steps = %d", num_train_steps)
 
-        model.summary()
+        self.logger.debug(model.summary())
 
         @tf.function
         def apply_gradients():
@@ -543,7 +543,7 @@ class NERModelContext(ModelContext):
                 f"loss epoch {epoch + 1}: {loss_metric.result()}"
             )
             loss_metric.reset_states()
-        self.logger.info(
+        self.logger.debug(
             "  Training took time = {}".format(
                 datetime.datetime.now() - current_time
             )
@@ -808,12 +808,12 @@ class NERModelContext(ModelContext):
             for res in results:
                 for key, val in res.items():
                     if "loss" in key:
-                        self.logger.info(key + " = " + str(val))
+                        self.logger.debug(key + " = " + str(val))
                         writer.write(key + " = " + str(val))
                         writer.write("\n")
                     else:
-                        self.logger.info(key)
-                        self.logger.info("\n" + report)
+                        self.logger.debug(key)
+                        self.logger.debug("\n" + report)
                         writer.write(key + "\n")
                         writer.write(report)
                         writer.write("\n")
@@ -983,6 +983,10 @@ class NERModel(Model):
     The model can be trained on large datasets to get the expected
     output. The example shown above is to demonstrate the commandline usage
     of the model.
+
+    Example usage of NER model using python API
+
+    .. literalinclude:: /../model/transformers/examples/ner/ner_model.py
     """
 
     CONTEXT = NERModelContext
