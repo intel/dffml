@@ -68,10 +68,10 @@ ORIGINAL_NER_MODELS = {
 
 @config
 class NERModelConfig:
-    SENTENCE_ID: Feature = field(
-        "Unique Id to identify words of each sentence"
+    sid: Feature = field(
+        "Unique Id to identify words of each sentence (Sentence ID)"
     )
-    WORDS: Feature = field("Tokens to train NER model")
+    words: Feature = field("Tokens to train NER model")
     predict: Feature = field("NER Tags (B-MISC, I-PER, O etc.) for tokens")
     model_architecture_type: str = field(
         "Model architecture selected in the : "
@@ -222,18 +222,15 @@ class NERModelContext(ModelContext):
         x_cols: Dict[str, Any] = {
             feature: []
             for feature in (
-                [
-                    self.parent.config.SENTENCE_ID.NAME,
-                    self.parent.config.WORDS.NAME,
-                ]
+                [self.parent.config.sid.NAME, self.parent.config.words.NAME,]
             )
         }
         y_cols = []
         all_records = []
         all_sources = sources.with_features(
             [
-                self.parent.config.SENTENCE_ID.NAME,
-                self.parent.config.WORDS.NAME,
+                self.parent.config.sid.NAME,
+                self.parent.config.words.NAME,
                 self.parent.config.predict.NAME,
             ]
         )
@@ -245,10 +242,7 @@ class NERModelContext(ModelContext):
                 all_records.append(record)
         for record in all_records:
             for feature, results in record.features(
-                [
-                    self.parent.config.SENTENCE_ID.NAME,
-                    self.parent.config.WORDS.NAME,
-                ]
+                [self.parent.config.sid.NAME, self.parent.config.words.NAME,]
             ).items():
                 x_cols[feature].append(np.array(results))
             y_cols.append(record.feature(self.parent.config.predict.NAME))
@@ -329,11 +323,11 @@ class NERModelContext(ModelContext):
         config = self.parent.config._asdict()
         drop_remainder = True if config["tpu"] or mode == "train" else False
         labels = config["ner_tags"]
-        SENTENCE_ID_col = self.parent.config.SENTENCE_ID.NAME
-        WORDS_col = self.parent.config.WORDS.NAME
+        sid_col = self.parent.config.sid.NAME
+        words_col = self.parent.config.words.NAME
         labels_col = self.parent.config.predict.NAME
         examples = read_examples_from_df(
-            data, mode, SENTENCE_ID_col, WORDS_col, labels_col
+            data, mode, sid_col, words_col, labels_col
         )
         features = convert_examples_to_features(
             examples,
@@ -844,7 +838,7 @@ class NERModelContext(ModelContext):
             config["per_device_eval_batch_size"] * config["n_device"]
         )
         async for record in records:
-            sentence = record.features([self.parent.config.WORDS.NAME])
+            sentence = record.features([self.parent.config.words.NAME])
             df = pd.DataFrame(sentence, index=[0])
             test_dataset, num_test_examples = self.get_dataset(
                 df,
@@ -869,7 +863,7 @@ class NERModelContext(ModelContext):
                     for j, word in enumerate(s.split()[: len(y_pred[i])])
                 ]
                 for i, s in enumerate(
-                    df[self.parent.config.WORDS.NAME].to_list()
+                    df[self.parent.config.words.NAME].to_list()
                 )
             ]
             record.predicted(self.parent.config.predict.NAME, preds, "Nan")
@@ -879,7 +873,8 @@ class NERModelContext(ModelContext):
 @entrypoint("ner_tagger")
 class NERModel(Model):
     """
-    Implemented using HuggingFace Transformers Tensorflow based Models.
+    Implemented using ![HuggingFace Transformers](https://huggingface.co/transformers/index.html) Tensorflow based Models.
+    Description about pretrianed models can be found ![here](https://huggingface.co/transformers/pretrained_models.html)
 
     First we create the training and testing datasets
 

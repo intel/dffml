@@ -53,8 +53,8 @@ class TestNERModel(AsyncTestCase):
         cls.model_dir = tempfile.TemporaryDirectory()
         cls.model = NERModel(
             NERModelConfig(
-                SENTENCE_ID=DefFeature("sentence_id", int, 1),
-                WORDS=DefFeature("words", str, 1),
+                sid=DefFeature("sentence_id", int, 1),
+                words=DefFeature("words", str, 1),
                 predict=DefFeature("ner_tag", str, 1),
                 output_dir=cls.model_dir.name,
                 model_architecture_type="bert",

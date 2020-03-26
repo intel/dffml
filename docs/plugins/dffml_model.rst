@@ -422,7 +422,8 @@ ner_tagger
 
 *Official*
 
-Implemented using HuggingFace Transformers Tensorflow based Models.
+Implemented using ![HuggingFace Transformers](https://huggingface.co/transformers/index.html) Tensorflow based Models.
+Description about pretrianed models can be found ![here](https://huggingface.co/transformers/pretrained_models.html)
 
 First we create the training and testing datasets
 
@@ -534,11 +535,11 @@ of the model.
 
 **Args**
 
-- SENTENCE_ID: Feature
+- sid: Feature
 
-  - Unique Id to identify words of each sentence
+  - Unique Id to identify words of each sentence (Sentence ID)
 
-- WORDS: Feature
+- words: Feature
 
   - Tokens to train NER model
 
