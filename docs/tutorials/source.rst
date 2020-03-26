@@ -96,4 +96,4 @@ The following command installs your new source.
 
 .. code-block:: console
 
-    $ python3.7 -m pip install -e .
+    $ python3.7 -m pip install --prefix=~/.local -e .

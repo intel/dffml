@@ -127,13 +127,13 @@ class MemoryInputSet(BaseInputSet):
         for item in self.__inputs:
             yield item
 
-    def remove_input(self, item: Input):
+    async def remove_input(self, item: Input):
         for x in self.__inputs[:]:
             if x.uid == item.uid:
                 self.__inputs.remove(x)
                 break
 
-    def remove_unvalidated_inputs(self) -> "MemoryInputSet":
+    async def remove_unvalidated_inputs(self) -> "MemoryInputSet":
         """
         Removes `unvalidated` inputs from internal list and returns the same.
         """
@@ -278,7 +278,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         # self.ctxhd
 
         # remove unvalidated inputs
-        unvalidated_input_set = input_set.remove_unvalidated_inputs()
+        unvalidated_input_set = await input_set.remove_unvalidated_inputs()
 
         # If the context for this input set does not exist create a
         # NotificationSet for it to notify the orchestrator
@@ -1026,65 +1026,6 @@ class MemoryOperationImplementationNetworkContext(
         task.add_done_callback(ignore_args(self.completed_event.set))
         return task
 
-    async def operations_parameter_set_pairs(
-        self,
-        ictx: BaseInputNetworkContext,
-        octx: BaseOperationNetworkContext,
-        rctx: BaseRedundancyCheckerContext,
-        ctx: BaseInputSetContext,
-        dataflow: DataFlow,
-        *,
-        new_input_set: Optional[BaseInputSet] = None,
-        stage: Stage = Stage.PROCESSING,
-    ) -> AsyncIterator[Tuple[Operation, BaseInputSet]]:
-        """
-        Use new_input_set to determine which operations in the network might be
-        up for running. Cross check using existing inputs to generate per
-        input set context novel input pairings. Yield novel input pairings
-        along with their operations as they are generated.
-        """
-        # Get operations which may possibly run as a result of these new inputs
-        async for operation in octx.operations(
-            dataflow, input_set=new_input_set, stage=stage
-        ):
-            # Generate all pairs of un-run input combinations
-            async for parameter_set in ictx.gather_inputs(
-                rctx, operation, dataflow, ctx=ctx
-            ):
-                yield operation, parameter_set
-
-    async def validator_target_set_pairs(
-        self,
-        octx: BaseOperationNetworkContext,
-        rctx: BaseRedundancyCheckerContext,
-        ctx: BaseInputSetContext,
-        dataflow: DataFlow,
-        unvalidated_input_set: BaseInputSet,
-    ):
-        async for unvalidated_input in unvalidated_input_set.inputs():
-            validator_instance_name = unvalidated_input.definition.validate
-            validator = dataflow.validators.get(validator_instance_name, None)
-            if validator is None:
-                raise ValidatorMissing(
-                    "Validator with instance_name {validator_instance_name} not found"
-                )
-            # There is only one `input` in `validators`
-            input_name, input_definition = list(validator.inputs.items())[0]
-            parameter = Parameter(
-                key=input_name,
-                value=unvalidated_input.value,
-                origin=unvalidated_input,
-                definition=input_definition,
-            )
-            parameter_set = MemoryParameterSet(
-                MemoryParameterSetConfig(ctx=ctx, parameters=[parameter])
-            )
-            async for parameter_set, exists in rctx.exists(
-                validator, parameter_set
-            ):
-                if not exists:
-                    yield validator, parameter_set
-
 
 @entrypoint("memory")
 class MemoryOperationImplementationNetwork(
@@ -1408,6 +1349,60 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 else:
                     task.exception()
 
+    async def operations_parameter_set_pairs(
+        self,
+        ctx: BaseInputSetContext,
+        dataflow: DataFlow,
+        *,
+        new_input_set: Optional[BaseInputSet] = None,
+        stage: Stage = Stage.PROCESSING,
+    ) -> AsyncIterator[Tuple[Operation, BaseInputSet]]:
+        """
+        Use new_input_set to determine which operations in the network might be
+        up for running. Cross check using existing inputs to generate per
+        input set context novel input pairings. Yield novel input pairings
+        along with their operations as they are generated.
+        """
+        # Get operations which may possibly run as a result of these new inputs
+        async for operation in self.octx.operations(
+            dataflow, input_set=new_input_set, stage=stage
+        ):
+            # Generate all pairs of un-run input combinations
+            async for parameter_set in self.ictx.gather_inputs(
+                self.rctx, operation, dataflow, ctx=ctx
+            ):
+                yield operation, parameter_set
+
+    async def validator_target_set_pairs(
+        self,
+        ctx: BaseInputSetContext,
+        dataflow: DataFlow,
+        unvalidated_input_set: BaseInputSet,
+    ):
+        async for unvalidated_input in unvalidated_input_set.inputs():
+            validator_instance_name = unvalidated_input.definition.validate
+            validator = dataflow.validators.get(validator_instance_name, None)
+            if validator is None:
+                raise ValidatorMissing(
+                    "Validator with instance_name {validator_instance_name} not found"
+                )
+            # There is only one `input` in `validators`
+            input_name, input_definition = list(validator.inputs.items())[0]
+            parameter = Parameter(
+                key=input_name,
+                value=unvalidated_input.value,
+                origin=unvalidated_input,
+                definition=input_definition,
+            )
+            parameter_set = MemoryParameterSet(
+                MemoryParameterSetConfig(ctx=ctx, parameters=[parameter])
+            )
+            async for parameter_set, exists in self.rctx.exists(
+                validator, parameter_set
+            ):
+                if not exists:
+                    yield validator, parameter_set
+
     async def run_operations_for_ctx(
         self, ctx: BaseContextHandle, *, strict: bool = True
     ) -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
@@ -1468,9 +1463,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                             unvalidated_input_set,
                             new_input_set,
                         ) in new_input_sets:
-                            async for operation, parameter_set in self.nctx.validator_target_set_pairs(
-                                self.octx,
-                                self.rctx,
+                            async for operation, parameter_set in self.validator_target_set_pairs(
                                 ctx,
                                 self.config.dataflow,
                                 unvalidated_input_set,
@@ -1497,10 +1490,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                             )
                             # Identify which operations have completed contextually
                             # appropriate input sets which haven't been run yet
-                            async for operation, parameter_set in self.nctx.operations_parameter_set_pairs(
-                                self.ictx,
-                                self.octx,
-                                self.rctx,
+                            async for operation, parameter_set in self.operations_parameter_set_pairs(
                                 ctx,
                                 self.config.dataflow,
                                 new_input_set=new_input_set,
@@ -1568,13 +1558,8 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
     async def run_stage(self, ctx: BaseInputSetContext, stage: Stage):
         # Identify which operations have complete contextually appropriate
         # input sets which haven't been run yet and are stage operations
-        async for operation, parameter_set in self.nctx.operations_parameter_set_pairs(
-            self.ictx,
-            self.octx,
-            self.rctx,
-            ctx,
-            self.config.dataflow,
-            stage=stage,
+        async for operation, parameter_set in self.operations_parameter_set_pairs(
+            ctx, self.config.dataflow, stage=stage
         ):
             # Add inputs and operation to redundancy checker before dispatch
             await self.rctx.add(operation, parameter_set)

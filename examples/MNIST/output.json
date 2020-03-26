@@ -1,0 +1,78 @@
+[
+    {
+        "extra": {},
+        "features": {
+            "image": [
+                0,
+                .
+                .
+                0
+            ]
+        },
+        "key": "four",
+        "last_updated": "2020-03-18T04:07:01Z",
+        "prediction": {
+            "label": {
+                "confidence": 0.4963473677635193,
+                "value": 4
+            }
+        }
+    },
+    {
+        "extra": {},
+        "features": {
+            "image": [
+                0,
+                .
+                .
+                0            
+            ]
+        },
+        "key": "five",
+        "last_updated": "2020-03-18T04:07:01Z",
+        "prediction": {
+            "label": {
+                "confidence": 0.9070320725440979,
+                "value": 5
+            }
+        }
+    },
+    {
+        "extra": {},
+        "features": {
+            "image": [
+                0,
+                .
+                .
+                0            
+            ]
+        },
+        "key": "three",
+        "last_updated": "2020-03-18T04:07:01Z",
+        "prediction": {
+            "label": {
+                "confidence": 0.9998736381530762,
+                "value": 3
+            }
+        }
+    },
+    {
+        "extra": {},
+        "features": {
+            "image": [
+                0,
+                .
+                .
+                0            
+            ]
+        },
+        "key": "two",
+        "last_updated": "2020-03-18T04:07:01Z",
+        "prediction": {
+            "label": {
+                "confidence": 1.0,
+                "value": 2
+            }
+        }
+    }
+]
