@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Treat `"~"` as the the home directory rather than a literal
 - Windows support by selecting `asyncio.ProactorEventLoop` and not using
   `asyncio.FastChildWatcher`.
+
 ## [0.3.5] - 2020-03-10
 ### Added
 - Parent flows can now forward inputs to active contexts of subflows.
