@@ -17,7 +17,9 @@ class TestRunNPM_AuditOp(AsyncTestCase):
     @cached_download_unpack_archive(
         "https://github.com/trekhleb/javascript-algorithms/archive/ba2d8dc4a8e27659c1420fe52390cb7981df4a94.tar.gz",
         pathlib.Path(__file__).parent / "downloads" / "javascript_algo.tar.gz",
-        pathlib.Path(__file__).parent / "downloads" / "javascript_algo-download",
+        pathlib.Path(__file__).parent
+        / "downloads"
+        / "javascript_algo-download",
         "36b3ce51780ee6ea8dcec266c9d09e3a00198868ba1b041569950b82cf45884da0c47ec354dd8514022169849dfe8b7c",
     )
     async def test_run(self, npm_audit, javascript_algo):

@@ -23,8 +23,8 @@ async def run_cargo_audit(pkg: str) -> Dict[str, Any]:
     CLI usage: dffml service dev run -log debug shouldi.cargo_audit:run_cargo_audit -pkg .
     """
     proc = await asyncio.create_subprocess_exec(
-        "cargo",
-        "audit",
+        "cargo-audit",
+        "audit"
         "--json",
         cwd=pkg,
         stdout=asyncio.subprocess.PIPE,
@@ -38,4 +38,4 @@ async def run_cargo_audit(pkg: str) -> Dict[str, Any]:
     issues = json.loads(cargo_audit_op)
     result = issues["vulnerabilities"]["count"]
 
-    return result
+    return {"report": result}

@@ -37,4 +37,4 @@ class TestRunCargo_AuditOp(AsyncTestCase):
                     / "tarpaulin-59f1c4f48765fba27319cf64e8aab7b08f8a0f66"
                 )
             )
-            self.assertEqual(type(results), int)
+            self.assertEqual(results["report"], int)

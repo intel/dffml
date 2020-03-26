@@ -37,8 +37,12 @@ class TestRunGolangci_lintOp(AsyncTestCase):
     )
     @cached_download_unpack_archive(
         "https://github.com/intel/cri-resource-manager/archive/c5e6091c79830cf7d076bbdec59c4a253b369d6a.tar.gz",
-        pathlib.Path(__file__).parent / "downloads" / "cri-resource-manager.tar.gz",
-        pathlib.Path(__file__).parent / "downloads" / "cri-resource-manager-download",
+        pathlib.Path(__file__).parent
+        / "downloads"
+        / "cri-resource-manager.tar.gz",
+        pathlib.Path(__file__).parent
+        / "downloads"
+        / "cri-resource-manager-download",
         "bdcbc8dadf9c6ee2f7571d10cb54459fe54773036982ad7485f007606efae96d7aaec7da18e2fea806fb6f68eb1722a8",
     )
     async def test_run(self, golang, golangci_lint, cri_resource_manager):
