@@ -84,12 +84,14 @@ class Model(BaseDataFlowFacilitatorObject):
         # TODO Just in case its a string. We should make it so that on
         # instantiation of an @config we convert properties to their correct
         # types.
-        if isinstance(getattr(self.config, "directory", None), str):
+        directory = getattr(self.config, "directory", None)
+        if isinstance(directory, str):
             self.config.directory = pathlib.Path(self.config.directory)
-            # to treat "~" as the the home directory rather than a literal
-            self.config = self.config._replace(
-                directory=self.config.directory.resolve()
-            )
+            if isinstance(directory, pathlib.Path):
+                # to treat "~" as the the home directory rather than a literal
+                self.config = self.config._replace(
+                    directory=self.config.directory.resolve()
+                )
 
     def __call__(self) -> ModelContext:
         self._make_config_directory()
