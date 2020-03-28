@@ -1025,20 +1025,20 @@ class MemoryOperationImplementationNetworkContext(
         )
         task.add_done_callback(ignore_args(self.completed_event.set))
         return task
-    async def dispatch_auto_starts(self,octx:BaseOrchestratorContext,ctx):
+
+    async def dispatch_auto_starts(self, octx: BaseOrchestratorContext, ctx):
         """
         """
         empty_parameter_set = MemoryParameterSet(
-                MemoryParameterSetConfig(ctx=ctx, parameters=[])
-            )
-        
+            MemoryParameterSetConfig(ctx=ctx, parameters=[])
+        )
+
         for operation in octx.config.dataflow.auto_starts.values():
             task = asyncio.create_task(
                 self.run_dispatch(octx, operation, empty_parameter_set)
-                )
+            )
             task.add_done_callback(ignore_args(self.completed_event.set))
             yield task
-
 
 
 @entrypoint("memory")
@@ -1430,8 +1430,8 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # TODO(dfass) Make ictx.added(ctx) specific to dataflow
         input_set_enters_network = asyncio.create_task(self.ictx.added(ctx))
         tasks.add(input_set_enters_network)
-        #schedule running of operations with no inputs
-        async for task in self.nctx.dispatch_auto_starts(self,ctx):
+        # schedule running of operations with no inputs
+        async for task in self.nctx.dispatch_auto_starts(self, ctx):
             tasks.add(task)
 
         try:

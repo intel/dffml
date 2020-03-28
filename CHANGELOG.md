@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add python code for tensorflow DNNEstimator
 - Ability to run a subflow as if it were an operation using the
   `dffml.dataflow.run` operation.
+- Option `auto_start` to start operations without inputs as soon as `DataFlow` starts.
 ### Fixed
 - New model tutorial mentions file paths that should be edited.
 - DataFlow is no longer a dataclass to prevent it from being exported
