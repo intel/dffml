@@ -3,6 +3,7 @@ Debugging
 
 The following are ways to debug issues you might run into when working on DFFML.
 
+
 Many times issues are because a package you are working on is not installed in
 development mode. First try checking ``~/.local/lib/python3.7/site-packages/`` and
 if you see anything other than ``.egg-link`` behind the name of the ``dffml``
