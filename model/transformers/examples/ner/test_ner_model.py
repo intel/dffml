@@ -31,7 +31,8 @@ class TestExample(unittest.TestCase):
         stdout = subprocess.check_output([sys.executable, filepath])
         lines = stdout.decode().split("\n")
         # Check the Accuracy
-        self.assertIn("Accuracy: 0.0", lines)
+        if not list(filter(lambda line: line.startswith("Accuracy: "), lines)):
+            raise AssertionError(f"Accuracy not found in: {lines}")
         # Check the predicted tag
         for line in lines:
             try:
