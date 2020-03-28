@@ -86,7 +86,7 @@ class Model(BaseDataFlowFacilitatorObject):
         # types.
         directory = getattr(self.config, "directory", None)
         if isinstance(directory, str):
-            self.config.directory = pathlib.Path(self.config.directory)
+            directory = pathlib.Path(directory)
         if isinstance(directory, pathlib.Path):
             # to treat "~" as the the home directory rather than a literal
             self.config = self.config._replace(
