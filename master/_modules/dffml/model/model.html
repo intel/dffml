@@ -258,8 +258,13 @@
         <span class="c1"># TODO Just in case its a string. We should make it so that on</span>
         <span class="c1"># instantiation of an @config we convert properties to their correct</span>
         <span class="c1"># types.</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;directory&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+        <span class="n">directory</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;directory&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">directory</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">):</span>
+            <span class="c1"># to treat &quot;~&quot; as the the home directory rather than a literal</span>
+            <span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModelContext</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_make_config_directory</span><span class="p">()</span>
