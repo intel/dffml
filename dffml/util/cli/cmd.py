@@ -16,6 +16,9 @@ from .arg import Arg, parse_unknown
 
 DisplayHelp = "Display help message"
 
+if sys.platform == "win32":  # pragma: no cov
+    asyncio.set_event_loop(asyncio.ProactorEventLoop())
+
 
 class ParseLoggingAction(argparse.Action):
     def __call__(self, parser, namespace, value, option_string=None):
@@ -202,7 +205,11 @@ class CMD(object):
             # is the default and may cause BlockingIOErrors when many
             # subprocesses are created
             # https://docs.python.org/3/library/asyncio-policy.html#asyncio.FastChildWatcher
-            if sys.version_info.major == 3 and sys.version_info.minor == 7:
+            if (
+                sys.version_info.major == 3
+                and sys.version_info.minor == 7
+                and sys.platform != "win32"
+            ):
                 watcher = asyncio.FastChildWatcher()
                 asyncio.set_child_watcher(watcher)
                 watcher.attach_loop(loop)
