@@ -8,7 +8,7 @@
 
 ## Mission Statement
 
-DFFML aims to be the easiest way to use Machine Learning.
+DFFML aims to be the easiest and convinient way to use Machine Learning.
 
 We take a "just bring your data" approach to ML. DFFML is an AutoML (Automated
 Machine Learning) library, command line application, HTTP service, and soon, web
