@@ -90,7 +90,7 @@ class Model(BaseDataFlowFacilitatorObject):
         if isinstance(directory, pathlib.Path):
             # to treat "~" as the the home directory rather than a literal
             directory = directory.expanduser().resolve()
-            self.config.directory = directory
+        self.config.directory = directory
 
     def __call__(self) -> ModelContext:
         self._make_config_directory()
