@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   incorrectly.
 - `operations_parameter_set_pairs` moved to `MemoryOrchestratorContext`
 - Ignore generated files in `docs/plugins/`
+- Treat `"~"` as the the home directory rather than a literal
 - Windows support by selecting `asyncio.ProactorEventLoop` and not using
   `asyncio.FastChildWatcher`.
 
