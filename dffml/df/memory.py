@@ -1028,6 +1028,7 @@ class MemoryOperationImplementationNetworkContext(
 
     async def dispatch_auto_starts(self, octx: BaseOrchestratorContext, ctx):
         """
+        Schedule the running of all operations without inputs
         """
         empty_parameter_set = MemoryParameterSet(
             MemoryParameterSetConfig(ctx=ctx, parameters=[])
