@@ -19,25 +19,12 @@ from dffml.util.entrypoint import entrypoint
 from dffml.base import config, field
 from dffml.feature.feature import Feature, Features
 
-from .dnnc import TensorflowModelContext
+from .dnnc import TensorflowModelContext, BaseConfig
 
 
 @config
-class DNNRegressionModelConfig:
-    predict: Feature = field("Feature name holding target values")
-    features: Features = field("Features to train on")
-    steps: int = field("Number of steps to train the model", default=3000)
-    epochs: int = field(
-        "Number of iterations to pass over all records in a source", default=30
-    )
-    directory: pathlib.Path = field(
-        "Directory where state should be saved",
-        default=pathlib.Path("~", ".cache", "dffml", "tensorflow"),
-    )
-    hidden: List[int] = field(
-        "List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer",
-        default_factory=lambda: [12, 40, 15],
-    )
+class DNNRegressionModelConfig(BaseConfig):
+    pass
 
 
 class DNNRegressionModelContext(TensorflowModelContext):

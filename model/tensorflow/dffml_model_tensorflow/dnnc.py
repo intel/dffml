@@ -23,6 +23,23 @@ from dffml.feature.feature import Feature, Features
 from dffml.model.model import ModelContext, Model, ModelNotTrained
 
 
+class BaseConfig:
+    predict: Feature = field("Feature name holding target values")
+    features: Features = field("Features to train on")
+    steps: int = field("Number of steps to train the model", default=3000)
+    epochs: int = field(
+        "Number of iterations to pass over all records in a source", default=30
+    )
+    directory: pathlib.Path = field(
+        "Directory where state should be saved",
+        default=pathlib.Path("~", ".cache", "dffml", "tensorflow"),
+    )
+    hidden: List[int] = field(
+        "List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer",
+        default_factory=lambda: [12, 40, 15],
+    )
+
+
 class TensorflowModelContext(ModelContext):
     """
     Tensorflow based model contexts should derive from this model context. As it
@@ -131,28 +148,14 @@ class TensorflowModelContext(ModelContext):
 
 
 @config
-class DNNClassifierModelConfig:
-    predict: Feature = field("Feature name holding predict value")
+class DNNClassifierModelConfig(BaseConfig):
     classifications: List[str] = field("Options for value of classification")
-    features: Features = field("Features to train on")
     clstype: Type = field("Data type of classifications values", default=str)
     batchsize: int = field(
         "Number records to pass through in an epoch", default=20
     )
     shuffle: bool = field(
         "Randomise order of records in a batch", default=True
-    )
-    steps: int = field("Number of steps to train the model", default=3000)
-    epochs: int = field(
-        "Number of iterations to pass over all records in a source", default=30
-    )
-    directory: pathlib.Path = field(
-        "Directory where state should be saved",
-        default=pathlib.Path("~", ".cache", "dffml", "tensorflow"),
-    )
-    hidden: List[int] = field(
-        "List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer",
-        default_factory=lambda: [12, 40, 15],
     )
 
     def __post_init__(self):
