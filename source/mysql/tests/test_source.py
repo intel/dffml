@@ -67,6 +67,7 @@ CREATE TABLE `record_data` (
     @classmethod
     def tearDownClass(cls):
         super().tearDownClass()
+        cls._exit_stack.__exit__(None, None, None)
 
     async def setUpSource(self):
         return MySQLSource(self.source_config)
