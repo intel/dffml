@@ -446,7 +446,6 @@ class DataFlow:
             self.by_origin = {}
         if self.implementations is None:
             self.implementations = {}
-
         self.validators = {}  # Maps `validator` ops instance_name to op
         self.update(auto_flow=bool(self.flow is None))
 
