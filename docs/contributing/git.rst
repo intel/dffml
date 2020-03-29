@@ -25,20 +25,6 @@ Using the following command, create a new branch to track your debugging process
 
    $ git checkout -b new_branch_name
 
-
-..
-   Working On A Branch
-   -------------------
-
-   Be sure to checkout a new branch to do your work on.
-
-   comment code-block:: console
-
-      $ git fetch origin
-      $ git checkout -b my_new_thing origin/master
-
-   You'll need to fork the repo on GitHub too. Then add that as a remote.
-
 .. note::
 
     ``$USER`` in this case would be your GitHub username
