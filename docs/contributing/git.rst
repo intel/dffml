@@ -1,23 +1,43 @@
 Git and GitHub
 ==============
 
-We encourage people to commit code and push it up to GitHub often. That way, if
-you're having trouble with something you can send others a link to your code
-where they can easily get an idea of what might be going wrong. Don't worry if
-it's nowhere near complete! Asking each other for help just gets us to working
-code faster!
+We encourage people to commit code and push it up to GitHub often. That way, if you're having trouble with something you can send others a link to your code
+where they can easily get an idea of what might be going wrong. Don't worry if it's nowhere near complete! Asking each other for help just gets us to working code faster!
 
-Working On A Branch
--------------------
+You need to have your own version of DFFML to track your work. Log in to your Github account and go to `DFFML <https://github.com/intel/dffml>`_ repository. There is a ``Fork`` tab at the top right of the page. Click on the button to fork a copy into your Github account. 
+ 
+In your local computer, create a new folder for the project, open terminal (Mac and Linux) or `Gitbash <https://gitforwindows.org/>`_ (Windows) and navigate to the folder. Using the following command, clone your forked DFFML repository to this folder.
 
-Be sure to checkout a new branch to do your work on.
+.. code-block:: console
+
+    $ git clone git@github.com:$USER/dffml.git
+
+Navigate inside the DFFML folder and run the following command to make sure that you have the latest version of the code.
 
 .. code-block:: console
 
     $ git fetch origin
-    $ git checkout -b my_new_thing origin/master
 
-You'll need to fork the repo on GitHub too. Then add that as a remote.
+
+Using the following command, create a new branch to track your debugging process.
+
+.. code-block:: console
+
+   $ git checkout -b new_branch_name
+
+
+..
+   Working On A Branch
+   -------------------
+
+   Be sure to checkout a new branch to do your work on.
+
+   comment code-block:: console
+
+      $ git fetch origin
+      $ git checkout -b my_new_thing origin/master
+
+   You'll need to fork the repo on GitHub too. Then add that as a remote.
 
 .. note::
 
