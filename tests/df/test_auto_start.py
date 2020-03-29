@@ -8,7 +8,7 @@ STRING = Definition(name="string", primitive="str")
 
 
 @op(inputs={}, outputs={"string_out": STRING})
-async def announce(*args):
+async def announce():
     return {"string_out": "EXISTS"}
 
 
