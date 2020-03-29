@@ -129,7 +129,6 @@ class Operation(NamedTuple, Entrypoint):
     expand: Optional[List[str]] = []
     instance_name: Optional[str] = None
     validator: bool = False
-    auto_start: bool = False
 
     def export(self):
         exported = {
@@ -449,9 +448,6 @@ class DataFlow:
             self.implementations = {}
 
         self.validators = {}  # Maps `validator` ops instance_name to op
-        # Maps instance_names to operations which starts with no inputs
-        # updated in `update_operations` so that the instance_names of operations are correctly set
-        self.auto_starts = {}
         self.update(auto_flow=bool(self.flow is None))
 
     def update(self, auto_flow: bool = False):
@@ -493,11 +489,6 @@ class DataFlow:
             self.operations[instance_name] = value
             if value.validator:
                 self.validators[instance_name] = value
-        self.auto_starts = {
-            instance_name: op
-            for instance_name, op in self.operations.items()
-            if op.auto_start
-        }
 
     def update_definitions(self):
         # Grab all definitions from operations

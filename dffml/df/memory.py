@@ -1033,7 +1033,9 @@ class MemoryOperationImplementationNetworkContext(
             MemoryParameterSetConfig(ctx=ctx, parameters=[])
         )
 
-        for operation in octx.config.dataflow.auto_starts.values():
+        for operation in octx.config.dataflow.operations.values():
+            if operation.inputs:
+                continue
             task = asyncio.create_task(
                 self.run_dispatch(octx, operation, empty_parameter_set)
             )
