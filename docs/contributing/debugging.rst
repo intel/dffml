@@ -96,7 +96,7 @@ re-install it in development mode (``pip install -e``).
 Plugin Loading / Entrypoint Issues
 ----------------------------------
 
-interface, HTTP API, etc. It's probably an entry point issue.
+If you can't load the plugin you've been working on via the command line interface, HTTP API, etc. It's probably an entry point issue.
 
 The ``dev`` service has a helper command to help you debug issues with installed
 entrypoints.
