@@ -3,7 +3,7 @@ import unittest
 
 from dffml import train, accuracy, predict, DefFeature, Features, AsyncTestCase
 
-from dffml_model_scratch.slr import SLR, SLRConfig
+from dffml.model.slr import SLRModel, SLRModelConfig
 
 TRAIN_DATA = [
     [12.4, 11.2],
@@ -49,7 +49,7 @@ class TestSLR(AsyncTestCase):
         for x, y in TEST_DATA:
             cls.test_data.append({"X": x, "Y": y})
         # Create an instance of the model
-        cls.model = SLR(
+        cls.model = SLRModel(
             directory=cls.model_dir.name,
             predict=DefFeature("Y", float, 1),
             features=Features(DefFeature("X", float, 1)),

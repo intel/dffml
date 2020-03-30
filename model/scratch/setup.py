@@ -67,7 +67,6 @@ setup(
     packages=find_packages(),
     entry_points={
         "dffml.model": [
-            "scratchslr = dffml_model_scratch.slr:SLR",
             "scratchlgrsag = dffml_model_scratch.logisticregression:LogisticRegression",
         ]
     },
