@@ -29,9 +29,15 @@ Right now `shouldi` runs the following static analysis tools and complains if:
 
 - [safety](https://pyup.io/safety/)
   - Any issues are found
-- TODO: [bandit](https://pypi.org/project/bandit/)
+  
 - TODO: [pylint](https://pypi.org/project/pylint/)
   - TDB (something about the number of errors)
+  
+Also , shouldi as been updated with following code wrappers:
+
+- [bandit](https://pypi.org/project/bandit/)
+- [golangci_lint](https://github.com/golangci/golangci-lint/blob/master/README.md)
+- [npm-audit](https://docs.npmjs.com/cli/audit)
 
 ## License
 
