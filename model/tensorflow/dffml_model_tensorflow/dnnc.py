@@ -7,6 +7,7 @@ import abc
 import hashlib
 import inspect
 import pathlib
+from dataclasses import dataclass
 from typing import List, Dict, Any, AsyncIterator, Type
 
 import numpy as np
@@ -23,6 +24,7 @@ from dffml.feature.feature import Feature, Features
 from dffml.model.model import ModelContext, Model, ModelNotTrained
 
 
+@dataclass
 class BaseConfig:
     predict: Feature = field("Feature name holding target values")
     features: Features = field("Features to train on")
@@ -149,7 +151,9 @@ class TensorflowModelContext(ModelContext):
 
 @config
 class DNNClassifierModelConfig(BaseConfig):
-    classifications: List[str] = field("Options for value of classification")
+    classifications: List[str] = field(
+        "Options for value of classification", default=None
+    )
     clstype: Type = field("Data type of classifications values", default=str)
     batchsize: int = field(
         "Number records to pass through in an epoch", default=20
