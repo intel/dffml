@@ -100,7 +100,9 @@ class ClassificationModel(Embedder):
                 outputs = layer(outputs)
         else:
             # default classifier
-            outputs = self.tf.keras.layers.Dense(256, activation="relu")(outputs)
+            outputs = self.tf.keras.layers.Dense(256, activation="relu")(
+                outputs
+            )
             outputs = self.tf.keras.layers.Dense(
                 len(self.config.classifications), activation="softmax"
             )(outputs)

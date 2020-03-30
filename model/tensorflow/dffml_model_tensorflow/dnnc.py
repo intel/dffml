@@ -35,7 +35,7 @@ class TensorflowModelContext(ModelContext):
         super().__init__(parent)
         self._model = None
         self.feature_columns = self._feature_columns()
-        self.features = self._applicable_features()e
+        self.features = self._applicable_features()
         self.tf = importlib.import_module("tensorflow")
 
     def _feature_columns(self):

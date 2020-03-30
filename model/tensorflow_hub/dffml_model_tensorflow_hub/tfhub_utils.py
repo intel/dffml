@@ -241,7 +241,6 @@ class WordpieceTokenizer(object):
         self.unk_token = unk_token
         self.max_input_chars_per_word = max_input_chars_per_word
 
-
     def tokenize(self, text):
         """Tokenizes a piece of text into its word pieces."""
 
