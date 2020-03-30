@@ -14,7 +14,7 @@ import pandas as pd
 
 # should be set before importing tensorflow
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-import tensorflow as tf
+import importlib
 
 from dffml.record import Record
 from dffml.model.accuracy import Accuracy
@@ -91,13 +91,14 @@ class TextClassifierContext(ModelContext):
         self.classifications = self._classifications(self.cids)
         self.features = self._applicable_features()
         self.model_dir_path = self._model_dir_path()
+        self.tf = importlib.import_module("tensorflow")
         self._model = None
 
     async def __aenter__(self):
         path = self._model_dir_path()
         if os.path.isfile(os.path.join(path, "saved_model.pb")):
             self.logger.info(f"Using saved model from {path}")
-            self._model = tf.keras.models.load_model(os.path.join(path))
+            self._model = self.tf.keras.models.load_model(os.path.join(path))
         else:
             self._model = self.createModel()
         return self
@@ -269,7 +270,7 @@ class TextClassifierContext(ModelContext):
             batch_size=self.parent.config.batch_size,
             verbose=1,
         )
-        tf.keras.models.save_model(self._model, self._model_dir_path())
+        self.tf.keras.models.save_model(self._model, self._model_dir_path())
 
     async def accuracy(self, sources: Sources) -> Accuracy:
         """

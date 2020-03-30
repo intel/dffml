@@ -11,7 +11,7 @@ from __future__ import print_function
 import collections
 import unicodedata
 import six
-import tensorflow as tf
+import importlib
 
 
 def convert_to_unicode(text):
@@ -61,6 +61,7 @@ def load_vocab(vocab_file):
     """Loads a vocabulary file into a dictionary."""
     vocab = collections.OrderedDict()
     index = 0
+    tf = importlib.import_module("tensorflow")
     with tf.io.gfile.GFile(vocab_file, "r") as reader:
         while True:
             token = convert_to_unicode(reader.readline())
@@ -105,6 +106,7 @@ class FullTokenizer(object):
         self.inv_vocab = {v: k for k, v in self.vocab.items()}
         self.basic_tokenizer = BasicTokenizer(do_lower_case=do_lower_case)
         self.wordpiece_tokenizer = WordpieceTokenizer(vocab=self.vocab)
+        self.tf = importlib.import_module("tensorflow")
 
     def tokenize(self, text):
         split_tokens = []
@@ -130,6 +132,7 @@ class BasicTokenizer(object):
       do_lower_case: Whether to lower case the input.
     """
         self.do_lower_case = do_lower_case
+        self.tf = importlib.import_module("tensorflow")
 
     def tokenize(self, text):
         """Tokenizes a piece of text."""
@@ -237,6 +240,7 @@ class WordpieceTokenizer(object):
         self.vocab = vocab
         self.unk_token = unk_token
         self.max_input_chars_per_word = max_input_chars_per_word
+
 
     def tokenize(self, text):
         """Tokenizes a piece of text into its word pieces."""

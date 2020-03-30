@@ -10,9 +10,10 @@ import pathlib
 from typing import List, Dict, Any, AsyncIterator, Type
 
 import numpy as np
+import importlib
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-import tensorflow as tf
+
 
 from dffml.record import Record
 from dffml.model.accuracy import Accuracy
@@ -34,7 +35,8 @@ class TensorflowModelContext(ModelContext):
         super().__init__(parent)
         self._model = None
         self.feature_columns = self._feature_columns()
-        self.features = self._applicable_features()
+        self.features = self._applicable_features()e
+        self.tf = importlib.import_module("tensorflow")
 
     def _feature_columns(self):
         """
@@ -63,7 +65,7 @@ class TensorflowModelContext(ModelContext):
             or dtype is float
             or issubclass(dtype, float)
         ):
-            return tf.feature_column.numeric_column(
+            return self.tf.feature_column.numeric_column(
                 feature.NAME, shape=feature.length()
             )
         self.logger.warning(
@@ -170,6 +172,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         self.cids = self._mkcids(self.parent.config.classifications)
         self.classifications = self._classifications(self.cids)
         self.model_dir_path = self._model_dir_path()
+        self.tf = importlib.import_module("tensorflow")
 
     def _mkcids(self, classifications):
         """
@@ -204,7 +207,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
             len(self.classifications),
             self.classifications,
         )
-        self._model = tf.compat.v1.estimator.DNNClassifier(
+        self._model = self.tf.compat.v1.estimator.DNNClassifier(
             feature_columns=list(self.feature_columns.values()),
             hidden_units=self.parent.config.hidden,
             n_classes=len(self.parent.config.classifications),
@@ -243,7 +246,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
-        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
+        input_fn = self.tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
             batch_size=self.parent.config.batchsize,
@@ -281,7 +284,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
-        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
+        input_fn = self.tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
             batch_size=self.parent.config.batchsize,

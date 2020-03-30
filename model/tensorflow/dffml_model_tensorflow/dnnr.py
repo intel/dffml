@@ -9,7 +9,7 @@ from typing import List, Dict, Any, AsyncIterator
 import numpy as np
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-import tensorflow as tf
+import importlib
 
 from dffml.record import Record
 from dffml.model.model import Model
@@ -53,6 +53,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
             self.parent.config.predict.NAME
         ]
         self.features = self._applicable_features()
+        self.tensorflow = importlib.import_module("tensorflow")
 
     @property
     def model(self):
@@ -99,7 +100,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
-        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
+        input_fn = self.tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
             batch_size=batch_size,
@@ -135,7 +136,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
-        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
+        input_fn = self.tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
             batch_size=batch_size,
