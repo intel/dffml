@@ -1198,7 +1198,24 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">run_dispatch</span><span class="p">(</span><span class="n">octx</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">task</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">ignore_args</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">set</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">task</span></div></div>
+        <span class="k">return</span> <span class="n">task</span></div>
+
+<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.dispatch_auto_starts"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetworkContext.dispatch_auto_starts">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch_auto_starts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOrchestratorContext</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Schedule the running of all operations without inputs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">empty_parameter_set</span> <span class="o">=</span> <span class="n">MemoryParameterSet</span><span class="p">(</span>
+            <span class="n">MemoryParameterSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[])</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">octx</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">operation</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">run_dispatch</span><span class="p">(</span><span class="n">octx</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">empty_parameter_set</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">task</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">ignore_args</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">set</span><span class="p">))</span>
+            <span class="k">yield</span> <span class="n">task</span></div></div>
 
 
 <div class="viewcode-block" id="MemoryOperationImplementationNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationImplementationNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
@@ -1590,6 +1607,10 @@
         <span class="c1"># TODO(dfass) Make ictx.added(ctx) specific to dataflow</span>
         <span class="n">input_set_enters_network</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">added</span><span class="p">(</span><span class="n">ctx</span><span class="p">))</span>
         <span class="n">tasks</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">input_set_enters_network</span><span class="p">)</span>
+        <span class="c1"># schedule running of operations with no inputs</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">dispatch_auto_starts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+            <span class="n">tasks</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># Return when outstanding operations reaches zero</span>
             <span class="k">while</span> <span class="n">tasks</span><span class="p">:</span>
