@@ -9,6 +9,36 @@ abstract the usage of machine learning models.
 If you want to get started creating your own model, check out the
 :ref:`model_tutorial`.
 
+dffml
+-----
+
+.. code-block:: console
+
+    pip install dffml
+
+
+slr
+~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Label or the value to be predicted
+
+- features: List of features
+
+  - Features to train on. For SLR only 1 allowed
+
+- directory: Path
+
+  - default: ~/.cache/dffml/slr
+  - Directory where state should be saved
+
 dffml_model_tensorflow
 ----------------------
 
@@ -745,81 +775,6 @@ Logistic Regression using stochastic average gradient descent optimizer
                 "ans": {
                     "confidence": 1.0,
                     "value": 1
-                }
-            },
-            "key": "0"
-        }
-    ]
-
-**Args**
-
-- predict: Feature
-
-  - Label or the value to be predicted
-
-- features: List of features
-
-  - Features to train on
-
-- directory: Path
-
-  - default: ~/.cache/dffml/scratch
-  - Directory where state should be saved
-
-scratchslr
-~~~~~~~~~~
-
-*Official*
-
-Simple Linear Regression Model for 2 variables implemented from scratch.
-Models are saved under the ``directory`` in subdirectories named after the
-hash of their feature names.
-
-.. code-block:: console
-
-    $ cat > dataset.csv << EOF
-    Years,Salary
-    1,40
-    2,50
-    3,60
-    4,70
-    5,80
-    EOF
-    $ dffml train \
-        -model scratchslr \
-        -model-features Years:int:1 \
-        -model-predict Salary:float:1 \
-        -sources f=csv \
-        -source-filename dataset.csv \
-        -log debug
-    $ dffml accuracy \
-        -model scratchslr \
-        -model-features Years:int:1 \
-        -model-predict Salary:float:1 \
-        -sources f=csv \
-        -source-filename dataset.csv \
-        -log debug
-    1.0
-    $ echo -e 'Years,Salary\n6,0\n' | \
-      dffml predict all \
-        -model scratchslr \
-        -model-features Years:int:1 \
-        -model-predict Salary:float:1 \
-        -sources f=csv \
-        -source-filename /dev/stdin \
-        -log debug
-    [
-        {
-            "extra": {},
-            "features": {
-                "Salary": 0,
-                "Years": 6
-            },
-            "last_updated": "2019-07-19T09:46:45Z",
-            "prediction": {
-                "Salary": {
-                    "confidence": 1.0,
-                    "value": 90.0
                 }
             },
             "key": "0"

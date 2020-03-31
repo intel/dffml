@@ -102,6 +102,10 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="dffml_source.html">Sources</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dffml">dffml</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#slr">slr</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-tensorflow">dffml_model_tensorflow</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#tfdnnc">tfdnnc</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#tfdnnr">tfdnnr</a></li>
@@ -117,7 +121,6 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-scratch">dffml_model_scratch</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#scratchlgrsag">scratchlgrsag</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#scratchslr">scratchslr</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-scikit">dffml_model_scikit</a></li>
@@ -210,6 +213,36 @@
 abstract the usage of machine learning models.</p>
 <p>If you want to get started creating your own model, check out the
 <a class="reference internal" href="../tutorials/model.html#model-tutorial"><span class="std std-ref">New Model Tutorial</span></a>.</p>
+<div class="section" id="dffml">
+<h2>dffml<a class="headerlink" href="#dffml" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml</span>
+</pre></div>
+</div>
+<div class="section" id="slr">
+<h3>slr<a class="headerlink" href="#slr" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>predict: Feature</p>
+<ul>
+<li><p>Label or the value to be predicted</p></li>
+</ul>
+</li>
+<li><p>features: List of features</p>
+<ul>
+<li><p>Features to train on. For SLR only 1 allowed</p></li>
+</ul>
+</li>
+<li><p>directory: Path</p>
+<ul>
+<li><p>default: ~/.cache/dffml/slr</p></li>
+<li><p>Directory where state should be saved</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 <div class="section" id="dffml-model-tensorflow">
 <h2>dffml_model_tensorflow<a class="headerlink" href="#dffml-model-tensorflow" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-tensorflow</span>
@@ -1200,82 +1233,6 @@ of the model.</p>
 <span class="go">            &quot;ans&quot;: {</span>
 <span class="go">                &quot;confidence&quot;: 1.0,</span>
 <span class="go">                &quot;value&quot;: 1</span>
-<span class="go">            }</span>
-<span class="go">        },</span>
-<span class="go">        &quot;key&quot;: &quot;0&quot;</span>
-<span class="go">    }</span>
-<span class="go">]</span>
-</pre></div>
-</div>
-<p><strong>Args</strong></p>
-<ul class="simple">
-<li><p>predict: Feature</p>
-<ul>
-<li><p>Label or the value to be predicted</p></li>
-</ul>
-</li>
-<li><p>features: List of features</p>
-<ul>
-<li><p>Features to train on</p></li>
-</ul>
-</li>
-<li><p>directory: Path</p>
-<ul>
-<li><p>default: ~/.cache/dffml/scratch</p></li>
-<li><p>Directory where state should be saved</p></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="scratchslr">
-<h3>scratchslr<a class="headerlink" href="#scratchslr" title="Permalink to this headline">¶</a></h3>
-<p><em>Official</em></p>
-<p>Simple Linear Regression Model for 2 variables implemented from scratch.
-Models are saved under the <code class="docutils literal notranslate"><span class="pre">directory</span></code> in subdirectories named after the
-hash of their feature names.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; dataset.csv &lt;&lt; EOF
-<span class="go">Years,Salary</span>
-<span class="go">1,40</span>
-<span class="go">2,50</span>
-<span class="go">3,60</span>
-<span class="go">4,70</span>
-<span class="go">5,80</span>
-<span class="go">EOF</span>
-<span class="gp">$</span> dffml train <span class="se">\</span>
-    -model scratchslr <span class="se">\</span>
-    -model-features Years:int:1 <span class="se">\</span>
-    -model-predict Salary:float:1 <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename dataset.csv <span class="se">\</span>
-    -log debug
-<span class="gp">$</span> dffml accuracy <span class="se">\</span>
-    -model scratchslr <span class="se">\</span>
-    -model-features Years:int:1 <span class="se">\</span>
-    -model-predict Salary:float:1 <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename dataset.csv <span class="se">\</span>
-    -log debug
-<span class="go">1.0</span>
-<span class="gp">$</span> <span class="nb">echo</span> -e <span class="s1">&#39;Years,Salary\n6,0\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
-  dffml predict all <span class="se">\</span>
-    -model scratchslr <span class="se">\</span>
-    -model-features Years:int:1 <span class="se">\</span>
-    -model-predict Salary:float:1 <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename /dev/stdin <span class="se">\</span>
-    -log debug
-<span class="go">[</span>
-<span class="go">    {</span>
-<span class="go">        &quot;extra&quot;: {},</span>
-<span class="go">        &quot;features&quot;: {</span>
-<span class="go">            &quot;Salary&quot;: 0,</span>
-<span class="go">            &quot;Years&quot;: 6</span>
-<span class="go">        },</span>
-<span class="go">        &quot;last_updated&quot;: &quot;2019-07-19T09:46:45Z&quot;,</span>
-<span class="go">        &quot;prediction&quot;: {</span>
-<span class="go">            &quot;Salary&quot;: {</span>
-<span class="go">                &quot;confidence&quot;: 1.0,</span>
-<span class="go">                &quot;value&quot;: 90.0</span>
 <span class="go">            }</span>
 <span class="go">        },</span>
 <span class="go">        &quot;key&quot;: &quot;0&quot;</span>
