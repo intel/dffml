@@ -74,6 +74,7 @@ setup(
             "memory = dffml.source.memory:MemorySource",
             "idx1 = dffml.source.idx1:IDX1Source",
             "idx3 = dffml.source.idx3:IDX3Source",
+            "db = dffml.source.db:DbSource",
         ],
         "dffml.port": ["json = dffml.port.json:JSON"],
         "dffml.service.cli": ["dev = dffml.service.dev:Develop"],
