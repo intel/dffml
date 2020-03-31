@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Hugging Face Transformers tensorflow based NER models.
 - PNG ConfigLoader for reading images as arrays to predict using MNIST trained models
 - Docstrings and doctestable examples to `record.py`.
 - Inputs can be validated using operations
@@ -16,12 +17,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ability to run a subflow as if it were an operation using the
   `dffml.dataflow.run` operation.
 - Instructions for setting up debugging environment in VSCode
+- Support for operations without inputs.
+
 ### Fixed
 - New model tutorial mentions file paths that should be edited.
 - DataFlow is no longer a dataclass to prevent it from being exported
   incorrectly.
 - `operations_parameter_set_pairs` moved to `MemoryOrchestratorContext`
 - Ignore generated files in `docs/plugins/`
+- Treat `"~"` as the the home directory rather than a literal
 - Windows support by selecting `asyncio.ProactorEventLoop` and not using
   `asyncio.FastChildWatcher`.
 
