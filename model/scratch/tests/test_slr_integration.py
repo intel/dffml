@@ -20,7 +20,7 @@ class TestSLR(IntegrationCLITestCase):
         # Arguments for the model
         model_args = [
             "-model",
-            "scratchslr",
+            "slr",
             "-model-features",
             "Years:int:1",
             "-model-predict",
