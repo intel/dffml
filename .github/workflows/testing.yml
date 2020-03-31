@@ -106,7 +106,7 @@ jobs:
         feature/auth=${{ secrets.PYPI_FEATURE_AUTH }}
         service/http=${{ secrets.PYPI_SERVICE_HTTP }}
         configloader/yaml=${{ secrets.PYPI_CONFIG_YAML }}
-        configloader/png=${{ secrets.PYPI_CONFIG_PNG}}
+        configloader/png=${{ secrets.PYPI_CONFIG_PNG }}
         EOF
         export TWINE_USERNAME=__token__
         if [ "x${PLUGIN}" = "x." ]; then
