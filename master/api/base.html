@@ -201,7 +201,7 @@ as their config.</p>
 
 <dl class="class">
 <dt id="dffml.base.BaseConfigurable">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.base.</code><code class="sig-name descname">BaseConfigurable</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/base.html#BaseConfigurable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.base.BaseConfigurable" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.base.</code><code class="sig-name descname">BaseConfigurable</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/base.html#BaseConfigurable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.base.BaseConfigurable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class which produces a config for itself by providing Args to a CMD (from
 dffml.util.cli.base) and then using a CMD after it contains parsed args to
 instantiate a config (deriving from BaseConfig) which will be used as the
@@ -272,7 +272,7 @@ them into the instance of the CONFIG class.</p>
 
 <dl class="class">
 <dt id="dffml.base.BaseDataFlowFacilitatorObject">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.base.</code><code class="sig-name descname">BaseDataFlowFacilitatorObject</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/base.html#BaseDataFlowFacilitatorObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.base.BaseDataFlowFacilitatorObject" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.base.</code><code class="sig-name descname">BaseDataFlowFacilitatorObject</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/base.html#BaseDataFlowFacilitatorObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.base.BaseDataFlowFacilitatorObject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for all Data Flow Facilitator objects conforming to the
 instantiate -&gt; enter context -&gt; return context via __call__ -&gt; enter
 returned context’s context pattern. Therefore they must contain a CONTEXT

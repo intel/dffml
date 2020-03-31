@@ -204,7 +204,7 @@
 
 <dl class="class">
 <dt id="dffml.df.base.BaseDataFlowObject">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseDataFlowObject</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseDataFlowObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseDataFlowObject" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseDataFlowObject</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseDataFlowObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseDataFlowObject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Data Flow Objects create their child contexts’ by passing only itself as an
 argument to the child’s __init__ (of type BaseDataFlowObjectContext).</p>
 <dl class="method">
@@ -243,7 +243,7 @@ definition.</p>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseInputNetwork">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseInputNetwork</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseInputNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseInputNetwork" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseInputNetwork</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseInputNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseInputNetwork" title="Permalink to this definition">¶</a></dt>
 <dd><p>Input networks store all of the input data and output data of operations,
 which in turn becomes input data to other operations.</p>
 </dd></dl>
@@ -327,7 +327,7 @@ that, according to the redundancy checker, haven’t been run yet.</p>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseKeyValueStore">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseKeyValueStore</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseKeyValueStore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseKeyValueStore" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseKeyValueStore</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseKeyValueStore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseKeyValueStore" title="Permalink to this definition">¶</a></dt>
 <dd><p>Abstract Base Class for key value storage</p>
 </dd></dl>
 
@@ -351,7 +351,7 @@ that, according to the redundancy checker, haven’t been run yet.</p>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseLockNetwork">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseLockNetwork</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseLockNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseLockNetwork" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseLockNetwork</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseLockNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseLockNetwork" title="Permalink to this definition">¶</a></dt>
 <dd><p>Acquires locks on inputs which may not be used simultaneously</p>
 </dd></dl>
 
@@ -369,7 +369,7 @@ the parameter set.</p>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseOperationImplementationNetwork">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseOperationImplementationNetwork</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationImplementationNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationImplementationNetwork" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseOperationImplementationNetwork</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationImplementationNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationImplementationNetwork" title="Permalink to this definition">¶</a></dt>
 <dd><p>Knows where operations are or if they can be made</p>
 </dd></dl>
 
@@ -420,7 +420,7 @@ return the results.</p>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseOperationNetwork">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseOperationNetwork</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationNetwork" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseOperationNetwork</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOperationNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOperationNetwork" title="Permalink to this definition">¶</a></dt>
 <dd><p>Operation networks hold Operation objects to allow for looking up of their
 inputs, outputs, and conditions.</p>
 </dd></dl>
@@ -446,7 +446,7 @@ operations who have inputs with definitions in the input set.</p>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseOrchestrator">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseOrchestrator</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOrchestrator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOrchestrator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseOrchestrator</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseOrchestrator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseOrchestrator" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
@@ -522,7 +522,7 @@ along with their operations as they are generated.</p>
 
 <dl class="class">
 <dt id="dffml.df.base.BaseRedundancyChecker">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseRedundancyChecker</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseRedundancyChecker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseRedundancyChecker" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">BaseRedundancyChecker</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/base.html#BaseRedundancyChecker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.BaseRedundancyChecker" title="Permalink to this definition">¶</a></dt>
 <dd><p>Redundancy Checkers ensure that each operation within a context only gets
 run with a give permutation of inputs once.</p>
 </dd></dl>
