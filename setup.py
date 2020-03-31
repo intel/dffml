@@ -109,5 +109,7 @@ setup(
         "dffml.orchestrator": ["memory = dffml.df.memory:MemoryOrchestrator"],
         # Databases
         "dffml.db": ["sqlite = dffml.db.sqlite:SqliteDatabase"],
+        # Models
+        "dffml.model": ["slr = dffml.model.slr:SLRModel"],
     },
 )
