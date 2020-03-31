@@ -1,6 +1,6 @@
 from dffml.util.asynctestcase import AsyncTestCase
 
-from dffml_config_yaml.config import YamlConfigLoader
+from dffml_config_yaml.configloader import YamlConfigLoader
 
 
 class TestConfig(AsyncTestCase):
