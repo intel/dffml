@@ -6,7 +6,7 @@ Codebase Layout And Notes
 Plugins
 -------
 
-DFFML is plugin based. This means that there the source code for the main
+DFFML is plugin based. This means that the source code for the main
 package ``dffml``, is separate from the source code for many of the things you
 might want to use in conjunction with it. For example, if you wanted to use the
 machine learning models based on scikit, you'd install ``dffml-model-scikit``.
