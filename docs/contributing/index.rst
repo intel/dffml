@@ -19,3 +19,4 @@ or post in the `Gitter Chat <https://gitter.im/dffml/community>`_.
     testing
     docs
     debugging
+    editors/index
