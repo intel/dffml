@@ -237,20 +237,20 @@ table <cite>table_name</cite></p>
 
 <dl class="method">
 <dt id="dffml.db.sqlite.SqliteDatabaseContext.lookup">
-<code class="sig-name descname">lookup</code><span class="sig-paren">(</span><em class="sig-param">table_name: str, cols: Optional[List[str]] = None, conditions: Union[List[List[dffml.db.base.Condtion]], List[List[Tuple[str]]], None] = None</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[Dict[str, Any]]<a class="reference internal" href="../../_modules/dffml/db/sqlite.html#SqliteDatabaseContext.lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.db.sqlite.SqliteDatabaseContext.lookup" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">lookup</code><span class="sig-paren">(</span><em class="sig-param">table_name: str, cols: Optional[List[str]] = None, conditions: Union[List[List[dffml.db.base.Condition]], List[List[Tuple[str]]], None] = None</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[Dict[str, Any]]<a class="reference internal" href="../../_modules/dffml/db/sqlite.html#SqliteDatabaseContext.lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.db.sqlite.SqliteDatabaseContext.lookup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns list of rows (satisfying <cite>conditions</cite> if provided) from
 <cite>table_name</cite></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="dffml.db.sqlite.SqliteDatabaseContext.remove">
-<code class="sig-name descname">remove</code><span class="sig-paren">(</span><em class="sig-param">table_name: str, conditions: Union[List[List[dffml.db.base.Condtion]], List[List[Tuple[str]]], None] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/db/sqlite.html#SqliteDatabaseContext.remove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.db.sqlite.SqliteDatabaseContext.remove" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">remove</code><span class="sig-paren">(</span><em class="sig-param">table_name: str, conditions: Union[List[List[dffml.db.base.Condition]], List[List[Tuple[str]]], None] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/db/sqlite.html#SqliteDatabaseContext.remove"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.db.sqlite.SqliteDatabaseContext.remove" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes rows (satisfying <cite>conditions</cite>) from <cite>table_name</cite></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="dffml.db.sqlite.SqliteDatabaseContext.update">
-<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">table_name: str, data: Dict[str, Any], conditions: Union[List[List[dffml.db.base.Condtion]], List[List[Tuple[str]]], None] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../_modules/dffml/db/sqlite.html#SqliteDatabaseContext.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.db.sqlite.SqliteDatabaseContext.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">table_name: str, data: Dict[str, Any], conditions: Union[List[List[dffml.db.base.Condition]], List[List[Tuple[str]]], None] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../_modules/dffml/db/sqlite.html#SqliteDatabaseContext.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.db.sqlite.SqliteDatabaseContext.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates values of rows (satisfying <cite>conditions</cite> if provided) with <cite>data</cite>
 in <cite>table_name</cite></p>
 </dd></dl>

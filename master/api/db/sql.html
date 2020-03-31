@@ -247,7 +247,7 @@ if it doesn’t exist.</p>
 
 <dl class="method">
 <dt id="dffml.db.sql.SQLDatabaseContext.lookup_query">
-<code class="sig-name descname">lookup_query</code><span class="sig-paren">(</span><em class="sig-param">table_name: str, cols: Optional[List[str]] = None, conditions: Union[List[List[dffml.db.base.Condtion]], List[List[Tuple[str]]], None] = None</em><span class="sig-paren">)</span> &#x2192; Tuple[str, Tuple[Any]]<a class="reference internal" href="../../_modules/dffml/db/sql.html#SQLDatabaseContext.lookup_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.db.sql.SQLDatabaseContext.lookup_query" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">lookup_query</code><span class="sig-paren">(</span><em class="sig-param">table_name: str, cols: Optional[List[str]] = None, conditions: Union[List[List[dffml.db.base.Condition]], List[List[Tuple[str]]], None] = None</em><span class="sig-paren">)</span> &#x2192; Tuple[str, Tuple[Any]]<a class="reference internal" href="../../_modules/dffml/db/sql.html#SQLDatabaseContext.lookup_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.db.sql.SQLDatabaseContext.lookup_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a query string and tuple of parameters used as bindings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -290,7 +290,7 @@ else returns <cite>None</cite></p>
 
 <dl class="method">
 <dt id="dffml.db.sql.SQLDatabaseContext.remove_query">
-<code class="sig-name descname">remove_query</code><span class="sig-paren">(</span><em class="sig-param">table_name: str, conditions: Union[List[List[dffml.db.base.Condtion]], List[List[Tuple[str]]], None] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/db/sql.html#SQLDatabaseContext.remove_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.db.sql.SQLDatabaseContext.remove_query" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">remove_query</code><span class="sig-paren">(</span><em class="sig-param">table_name: str, conditions: Union[List[List[dffml.db.base.Condition]], List[List[Tuple[str]]], None] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/db/sql.html#SQLDatabaseContext.remove_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.db.sql.SQLDatabaseContext.remove_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a delete query to remove rows from <code class="docutils literal notranslate"><span class="pre">table_name</span></code> (satisfying
 <code class="docutils literal notranslate"><span class="pre">conditions</span></code> if provided).</p>
 <dl class="field-list simple">
@@ -312,7 +312,7 @@ else returns <cite>None</cite></p>
 
 <dl class="method">
 <dt id="dffml.db.sql.SQLDatabaseContext.update_query">
-<code class="sig-name descname">update_query</code><span class="sig-paren">(</span><em class="sig-param">table_name: str, data: Dict[str, Any], conditions: Union[List[List[dffml.db.base.Condtion]], List[List[Tuple[str]]], None] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../_modules/dffml/db/sql.html#SQLDatabaseContext.update_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.db.sql.SQLDatabaseContext.update_query" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update_query</code><span class="sig-paren">(</span><em class="sig-param">table_name: str, data: Dict[str, Any], conditions: Union[List[List[dffml.db.base.Condition]], List[List[Tuple[str]]], None] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../../_modules/dffml/db/sql.html#SQLDatabaseContext.update_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.db.sql.SQLDatabaseContext.update_query" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates update query setting values of rows (satisfying <code class="docutils literal notranslate"><span class="pre">conditions</span></code>
 if provided) with <code class="docutils literal notranslate"><span class="pre">data</span></code> in <code class="docutils literal notranslate"><span class="pre">table_name</span></code>.</p>
 <dl class="field-list simple">
