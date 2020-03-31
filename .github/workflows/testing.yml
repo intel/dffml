@@ -51,7 +51,7 @@ jobs:
       fail-fast: false
       max-parallel: 40
       matrix:
-        plugin: [., examples/shouldi, model/tensorflow, model/tensorflow_hub, model/transformers, model/scratch, model/scikit, source/mysql, feature/git, feature/auth, service/http, configloader/yaml]
+        plugin: [., examples/shouldi, model/tensorflow, model/tensorflow_hub, model/transformers, model/scratch, model/scikit, source/mysql, feature/git, feature/auth, service/http, configloader/yaml, configloader/png]
         python-version: [3.7]
 
     steps:
@@ -106,6 +106,7 @@ jobs:
         feature/auth=${{ secrets.PYPI_FEATURE_AUTH }}
         service/http=${{ secrets.PYPI_SERVICE_HTTP }}
         configloader/yaml=${{ secrets.PYPI_CONFIG_YAML }}
+        configloader/png=${{ secrets.PYPI_CONFIG_PNG}}
         EOF
         export TWINE_USERNAME=__token__
         if [ "x${PLUGIN}" = "x." ]; then
