@@ -48,7 +48,7 @@ CREATE TABLE `record_data` (
             ca=cls.ca,
         )
         # Make it so that when the client tries to connect to mysql.unittest the
-        # address it get's back is the one for the container
+        # address it gets back is the one for the container
         cls.exit_stack.enter_context(
             patch(
                 "socket.getaddrinfo",
