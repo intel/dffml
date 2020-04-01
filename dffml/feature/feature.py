@@ -113,6 +113,27 @@ class Feature(abc.ABC, Entrypoint):
     Once the appropriate data is fetched the parse method is responsible for
     storing the parts of that data which will be used to calculate in the
     subclass
+
+    Examples
+    --------
+
+    Define a feature using load_def:
+    >>> feature = Feature.load_def("example", "float", 10)
+    >>> feature.dtype()
+    float
+    >>> feature.NAME
+    "example"
+    >>> feature.length()
+    10
+
+    Defining a feature directly using DefFeature:
+    >>> feature = DefFeature("example2", "int", 20)
+    >>> feature.dtype()
+    int
+    >>> feature.NAME
+    "example2"
+    >>> feature.length()
+    20
     """
 
     LOGGER = LOGGER.getChild("Feature")
@@ -147,6 +168,13 @@ class Feature(abc.ABC, Entrypoint):
     def dtype(self) -> Type:
         """
         Models need to know a Feature's datatype.
+
+        Examples
+        --------
+
+        >>> feature = Feature()
+        >>> feature.dtype()
+        int
         """
         self.LOGGER.warning("%s dtype unimplemented", self)
         return int
@@ -155,6 +183,13 @@ class Feature(abc.ABC, Entrypoint):
         """
         Models need to know a Feature's length, 1 means single value, more than
         that is the length of the array calc returns.
+
+        Examples
+        --------
+
+        >>> feature = Feature()
+        >>> feature.length()
+        1
         """
         self.LOGGER.warning("%s length unimplemented", self)
         return 1
