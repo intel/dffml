@@ -58,18 +58,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
 
         return self._model
 
-    async def training_input_fn(
-        self,
-        sources: Sources,
-        batch_size=20,
-        shuffle=False,
-        epochs=1,
-        **kwargs,
-    ):
-        """
-        Uses the numpy input function with data from record features.
-        """
-        self.logger.debug("Training on features: %r", self.features)
+    async def sources_to_array(self, sources: Sources):
         x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
         y_cols = []
 
@@ -82,6 +71,22 @@ class DNNRegressionModelContext(TensorflowModelContext):
         y_cols = np.array(y_cols)
         for feature in x_cols:
             x_cols[feature] = np.array(x_cols[feature])
+
+        return x_cols, y_cols
+
+    async def training_input_fn(
+        self,
+        sources: Sources,
+        batch_size=20,
+        shuffle=False,
+        epochs=1,
+        **kwargs,
+    ):
+        """
+        Uses the numpy input function with data from record features.
+        """
+        self.logger.debug("Training on features: %r", self.features)
+        x_cols, y_cols = await self.sources_to_array(sources)
         self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
@@ -107,17 +112,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
         """
         Uses the numpy input function with data from record features.
         """
-        x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
-        y_cols = []
-
-        async for record in sources.with_features(self.all_features):
-            for feature, results in record.features(self.features).items():
-                x_cols[feature].append(np.array(results))
-            y_cols.append(record.feature(self.parent.config.predict.NAME))
-
-        y_cols = np.array(y_cols)
-        for feature in x_cols:
-            x_cols[feature] = np.array(x_cols[feature])
+        x_cols, y_cols = await self.sources_to_array(sources)
         self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
