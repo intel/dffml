@@ -4,12 +4,11 @@ import contextlib
 from unittest import mock
 
 from dffml.df.base import op
-from dffml.df.types import DataFlow, Input, Definition
 from dffml.operation.output import GetSingle
-from dffml.util.asynctestcase import AsyncTestCase
 from dffml.df.memory import MemoryOrchestrator
-
-from dffml_feature_nlp.operations import AcceptUserInput, printOutput
+from dffml.util.asynctestcase import AsyncTestCase
+from dffml.df.types import DataFlow, Input, Definition
+from dffml.operation.io import AcceptUserInput, printOutput
 
 
 class TestInputOutput(AsyncTestCase):

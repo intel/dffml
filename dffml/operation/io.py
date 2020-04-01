@@ -1,19 +1,19 @@
-import os
-import hashlib
 import asyncio
-import warnings
 import concurrent.futures
 from typing import Dict, Any
 
 from dffml.df.base import op
 from dffml.df.types import Operation
+from dffml.df.types import Definition
 from dffml.df.base import (
     OperationImplementationContext,
     OperationImplementation,
 )
 
-# pylint: disable=no-name-in-module
-from .definitions import UserInput, DataToPrint
+
+# Definitions
+UserInput = Definition(name="UserInput", primitive="str")
+DataToPrint = Definition(name="DataToPrint", primitive="str")
 
 AcceptUserInput = Operation(
     name="AcceptUserInput",
