@@ -11,10 +11,25 @@ cargo_audit_output = Definition(
 )
 
 
-class Cargo_AuditError(Exception):
+class CargoAuditError(Exception):
     """
     Raised when cargo-audit fails
     """
+
+
+async def run_cargo_build(pkg_input: str):
+
+    new_proc = await asyncio.create_subprocess_exec(
+        "cargo",
+        "build",
+        "--release",
+        cwd=pkg_input,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+    )
+    stdout, stderr = await new_proc.communicate()
+    if stderr == 0:
+        raise Exception
 
 
 @op(inputs={"pkg": package_src_dir}, outputs={"report": cargo_audit_output})
@@ -24,15 +39,14 @@ async def run_cargo_audit(pkg: str) -> Dict[str, Any]:
     """
     proc = await asyncio.create_subprocess_exec(
         "cargo-audit",
-        "audit"
-        "--json",
+        "audit" "--json",
         cwd=pkg,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
     )
     stdout, stderr = await proc.communicate()
     if len(stdout) == 0:
-        raise Cargo_AuditError(stderr)
+        raise CargoAuditError(stderr)
 
     cargo_audit_op = stdout.decode()
     issues = json.loads(cargo_audit_op)

@@ -1,13 +1,14 @@
 import pathlib
+from pathlib import Path
 
 from dffml.util.os import prepend_to_path
 from dffml.util.net import cached_download_unpack_archive
 from dffml.util.asynctestcase import AsyncTestCase
 
-from shouldi.cargo_audit import run_cargo_audit
+from shouldi.cargo_audit import run_cargo_audit, run_cargo_build
 
 
-class TestRunCargo_AuditOp(AsyncTestCase):
+class TestRunCargoAuditOp(AsyncTestCase):
     @cached_download_unpack_archive(
         "https://static.rust-lang.org/dist/rust-1.42.0-x86_64-unknown-linux-gnu.tar.gz",
         pathlib.Path(__file__).parent / "downloads" / "rust.tar.gz",
@@ -27,9 +28,22 @@ class TestRunCargo_AuditOp(AsyncTestCase):
         "03c10779bdf09baa9b6a8caab367de8e780e9b72778b40c017adb85c1b1ec38b96355ba67482067fcd06917632a81f69",
     )
     async def test_run(self, rust, cargo_audit, tarpaulin):
+        if not Path(
+            cargo_audit
+            / "cargo-audit-0.11.2"
+            / "target"
+            / "release"
+            / "cargo-audit"
+        ).is_file():
+            run_cargo_build(cargo_audit / "cargo-audit-0.11.2")
+
         with prepend_to_path(
             rust / "rust-1.42.0-x86_64-unknown-linux-gnu" / "cargo" / "bin",
-            cargo_audit / "cargo-audit-0.11.2",
+            cargo_audit
+            / "cargo-audit-0.11.2"
+            / "target"
+            / "release"
+            / "cargo-audit",
         ):
             results = await run_cargo_audit(
                 str(
