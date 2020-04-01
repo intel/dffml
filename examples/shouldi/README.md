@@ -28,9 +28,6 @@ any issues in any of the python packages you were thinking of installing.
 Right now `shouldi` runs the following static analysis tools and complains if:
 
 - [safety](https://pyup.io/safety/)
-  
-shouldi as been updated with following code wrappers:
-
 - [bandit](https://pypi.org/project/bandit/)
 - [golangci_lint](https://github.com/golangci/golangci-lint/blob/master/README.md)
 - [npm-audit](https://docs.npmjs.com/cli/audit)
