@@ -19,11 +19,11 @@ from dffml.util.entrypoint import entrypoint
 from dffml.base import config, field
 from dffml.feature.feature import Feature, Features
 
-from .dnnc import TensorflowModelContext, BaseConfig
+from .dnnc import TensorflowModelContext, TensorflowBaseConfig
 
 
 @config
-class DNNRegressionModelConfig(BaseConfig):
+class DNNRegressionModelConfig(TensorflowBaseConfig):
     pass
 
 

@@ -150,7 +150,7 @@ class TensorflowModelContext(ModelContext):
 
 
 @config
-class DNNClassifierModelConfig(BaseConfig):
+class DNNClassifierModelConfig(TensorflowBaseConfig):
     classifications: List[str] = field(
         "Options for value of classification", default=None
     )
