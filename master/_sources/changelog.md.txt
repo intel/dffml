@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `dffml.dataflow.run` operation.
 - Support for operations without inputs.
 - Partial doctestable examples to `features.py`
+- Doctestable examples for `BaseSource`
 ### Fixed
 - New model tutorial mentions file paths that should be edited.
 - DataFlow is no longer a dataclass to prevent it from being exported
