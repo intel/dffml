@@ -220,10 +220,33 @@ on disk.</p>
 <p>Once the appropriate data is fetched the parse method is responsible for
 storing the parts of that data which will be used to calculate in the
 subclass</p>
+<p class="rubric">Examples</p>
+<p>Define a feature using load_def:
+&gt;&gt;&gt; feature = Feature.load_def(“example”, “float”, 10)
+&gt;&gt;&gt; feature.dtype()
+float
+&gt;&gt;&gt; feature.NAME
+“example”
+&gt;&gt;&gt; feature.length()
+10</p>
+<p>Defining a feature directly using DefFeature:
+&gt;&gt;&gt; feature = DefFeature(“example2”, “int”, 20)
+&gt;&gt;&gt; feature.dtype()
+int
+&gt;&gt;&gt; feature.NAME
+“example2”
+&gt;&gt;&gt; feature.length()
+20</p>
 <dl class="method">
 <dt id="dffml.feature.feature.Feature.dtype">
 <code class="sig-name descname">dtype</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Type<a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.dtype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.dtype" title="Permalink to this definition">¶</a></dt>
 <dd><p>Models need to know a Feature’s datatype.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span><span class="o">.</span><span class="n">dtype</span><span class="p">()</span>
+<span class="go">int</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
@@ -231,6 +254,12 @@ subclass</p>
 <code class="sig-name descname">length</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../_modules/dffml/feature/feature.html#Feature.length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.length" title="Permalink to this definition">¶</a></dt>
 <dd><p>Models need to know a Feature’s length, 1 means single value, more than
 that is the length of the array calc returns.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
+<span class="go">1</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
