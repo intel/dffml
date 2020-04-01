@@ -25,7 +25,7 @@ from dffml.model.model import ModelContext, Model, ModelNotTrained
 
 
 @dataclass
-class BaseConfig:
+class TensorflowBaseConfig:
     predict: Feature = field("Feature name holding target values")
     features: Features = field("Features to train on")
     steps: int = field("Number of steps to train the model", default=3000)
