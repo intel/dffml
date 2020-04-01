@@ -3,21 +3,19 @@ Uses Tensorflow to create a generic DNN which learns on all of the features in a
 record.
 """
 import os
-import pathlib
-from typing import List, Dict, Any, AsyncIterator
+from typing import Dict, Any, AsyncIterator
 
 import numpy as np
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
 
+from dffml.base import config
 from dffml.record import Record
 from dffml.model.model import Model
 from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
-from dffml.base import config, field
-from dffml.feature.feature import Feature, Features
 
 from .dnnc import TensorflowModelContext, TensorflowBaseConfig
 
