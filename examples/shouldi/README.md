@@ -28,10 +28,9 @@ any issues in any of the python packages you were thinking of installing.
 Right now `shouldi` runs the following static analysis tools and complains if:
 
 - [safety](https://pyup.io/safety/)
-  - Any issues are found
-- TODO: [bandit](https://pypi.org/project/bandit/)
-- TODO: [pylint](https://pypi.org/project/pylint/)
-  - TDB (something about the number of errors)
+- [bandit](https://pypi.org/project/bandit/)
+- [golangci_lint](https://github.com/golangci/golangci-lint/blob/master/README.md)
+- [npm-audit](https://docs.npmjs.com/cli/audit)
 
 ## License
 
