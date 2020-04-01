@@ -203,12 +203,39 @@
     <span class="k">async</span> <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">Record</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Updates a record for a source</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; async def main():</span>
+<span class="sd">        ...     async with MemorySource(records=[]) as source:</span>
+<span class="sd">        ...         # Open, update, and close</span>
+<span class="sd">        ...         async with source() as ctx:</span>
+<span class="sd">        ...             example = Record(&quot;one&quot;, data=dict(features=dict(feed=&quot;face&quot;)))</span>
+<span class="sd">        ...             # ... Update one into our records ...</span>
+<span class="sd">        ...             await ctx.update(example)</span>
+<span class="sd">        ...             # Let&#39;s check out our records after calling `record` and `update`.</span>
+<span class="sd">        ...             async for record in ctx.records():</span>
+<span class="sd">        ...                 print(record.export())</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; asyncio.run(main())</span>
+<span class="sd">        {&#39;key&#39;: &#39;one&#39;, &#39;features&#39;: {&#39;feed&#39;: &#39;face&#39;}, &#39;extra&#39;: {}}</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="BaseSourceContext.records"><a class="viewcode-back" href="../../../tutorials/source.html#dffml.source.source.BaseSourceContext.records">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">records</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a list of records retrieved from self.src</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; async def main():</span>
+<span class="sd">        ...     async with MemorySource(records=[Record(&quot;example&quot;, data=dict(features=dict(dead=&quot;beef&quot;)))]) as source:</span>
+<span class="sd">        ...         async with source() as ctx:</span>
+<span class="sd">        ...             async for record in ctx.records():</span>
+<span class="sd">        ...                 print(record.export())</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; asyncio.run(main())</span>
+<span class="sd">        {&#39;key&#39;: &#39;example&#39;, &#39;features&#39;: {&#39;dead&#39;: &#39;beef&#39;}, &#39;extra&#39;: {}}</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># mypy ignores AsyncIterator[Record], therefore this is needed</span>
         <span class="k">yield</span> <span class="n">Record</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span></div>
@@ -216,7 +243,24 @@
 <div class="viewcode-block" id="BaseSourceContext.record"><a class="viewcode-back" href="../../../tutorials/source.html#dffml.source.source.BaseSourceContext.record">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get a record from the source or add it if it doesn&#39;t exist</span>
+<span class="sd">        Get a record from the source or add it if it doesn&#39;t exist.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; async def main():</span>
+<span class="sd">        ...     async with MemorySource(records=[Record(&quot;example&quot;, data=dict(features=dict(dead=&quot;beef&quot;)))]) as source:</span>
+<span class="sd">        ...         # Open, update, and close</span>
+<span class="sd">        ...         async with source() as ctx:</span>
+<span class="sd">        ...             example = await ctx.record(&quot;example&quot;)</span>
+<span class="sd">        ...             # Let&#39;s also try calling `record` for a record that doesnt exist.</span>
+<span class="sd">        ...             one = await ctx.record(&quot;one&quot;)</span>
+<span class="sd">        ...             await ctx.update(one)</span>
+<span class="sd">        ...             async for record in ctx.records():</span>
+<span class="sd">        ...                 print(record.export())</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; asyncio.run(main())</span>
+<span class="sd">        {&#39;key&#39;: &#39;example&#39;, &#39;features&#39;: {&#39;dead&#39;: &#39;beef&#39;}, &#39;extra&#39;: {}}</span>
+<span class="sd">        {&#39;key&#39;: &#39;one&#39;, &#39;extra&#39;: {}}</span>
 <span class="sd">        &quot;&quot;&quot;</span></div></div>
 
 

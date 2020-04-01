@@ -212,19 +212,63 @@ class and implement the records method.</p>
 <dd><dl class="method">
 <dt id="dffml.source.source.BaseSourceContext.record">
 <em class="property">abstract async </em><code class="sig-name descname">record</code><span class="sig-paren">(</span><em class="sig-param">key: str</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSourceContext.record"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSourceContext.record" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a record from the source or add it if it doesn’t exist</p>
+<dd><p>Get a record from the source or add it if it doesn’t exist.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">MemorySource</span><span class="p">(</span><span class="n">records</span><span class="o">=</span><span class="p">[</span><span class="n">Record</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dead</span><span class="o">=</span><span class="s2">&quot;beef&quot;</span><span class="p">)))])</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># Open, update, and close</span>
+<span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="n">example</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="c1"># Let&#39;s also try calling `record` for a record that doesnt exist.</span>
+<span class="gp">... </span>            <span class="n">one</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s2">&quot;one&quot;</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">one</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
+<span class="gp">... </span>                <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;key&#39;: &#39;example&#39;, &#39;features&#39;: {&#39;dead&#39;: &#39;beef&#39;}, &#39;extra&#39;: {}}</span>
+<span class="go">{&#39;key&#39;: &#39;one&#39;, &#39;extra&#39;: {}}</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="dffml.source.source.BaseSourceContext.records">
 <em class="property">abstract </em><code class="sig-name descname">records</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.record.Record]<a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSourceContext.records"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSourceContext.records" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of records retrieved from self.src</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">MemorySource</span><span class="p">(</span><span class="n">records</span><span class="o">=</span><span class="p">[</span><span class="n">Record</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dead</span><span class="o">=</span><span class="s2">&quot;beef&quot;</span><span class="p">)))])</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
+<span class="gp">... </span>                <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;key&#39;: &#39;example&#39;, &#39;features&#39;: {&#39;dead&#39;: &#39;beef&#39;}, &#39;extra&#39;: {}}</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="dffml.source.source.BaseSourceContext.update">
 <em class="property">abstract async </em><code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">record: dffml.record.Record</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#BaseSourceContext.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.BaseSourceContext.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates a record for a source</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">MemorySource</span><span class="p">(</span><span class="n">records</span><span class="o">=</span><span class="p">[])</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># Open, update, and close</span>
+<span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="n">example</span> <span class="o">=</span> <span class="n">Record</span><span class="p">(</span><span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">feed</span><span class="o">=</span><span class="s2">&quot;face&quot;</span><span class="p">)))</span>
+<span class="gp">... </span>            <span class="c1"># ... Update one into our records ...</span>
+<span class="gp">... </span>            <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">example</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="c1"># Let&#39;s check out our records after calling `record` and `update`.</span>
+<span class="gp">... </span>            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
+<span class="gp">... </span>                <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;key&#39;: &#39;one&#39;, &#39;features&#39;: {&#39;feed&#39;: &#39;face&#39;}, &#39;extra&#39;: {}}</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
