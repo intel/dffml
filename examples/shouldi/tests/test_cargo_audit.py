@@ -1,5 +1,4 @@
 import pathlib
-from pathlib import Path
 
 from dffml.util.os import prepend_to_path
 from dffml.util.net import cached_download_unpack_archive
@@ -28,7 +27,7 @@ class TestRunCargoAuditOp(AsyncTestCase):
         "03c10779bdf09baa9b6a8caab367de8e780e9b72778b40c017adb85c1b1ec38b96355ba67482067fcd06917632a81f69",
     )
     async def test_run(self, rust, cargo_audit, tarpaulin):
-        if not Path(
+        if not (
             cargo_audit
             / "cargo-audit-0.11.2"
             / "target"
@@ -42,8 +41,7 @@ class TestRunCargoAuditOp(AsyncTestCase):
             cargo_audit
             / "cargo-audit-0.11.2"
             / "target"
-            / "release"
-            / "cargo-audit",
+            / "release",
         ):
             results = await run_cargo_audit(
                 str(

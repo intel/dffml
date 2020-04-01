@@ -28,8 +28,8 @@ async def run_cargo_build(pkg_input: str):
         stderr=asyncio.subprocess.PIPE,
     )
     stdout, stderr = await new_proc.communicate()
-    if stderr == 0:
-        raise Exception
+    if stderr:
+        raise Exception(stderr.decode())
 
 
 @op(inputs={"pkg": package_src_dir}, outputs={"report": cargo_audit_output})
@@ -39,14 +39,15 @@ async def run_cargo_audit(pkg: str) -> Dict[str, Any]:
     """
     proc = await asyncio.create_subprocess_exec(
         "cargo-audit",
-        "audit" "--json",
+        "audit" ,
+        "--json",
         cwd=pkg,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
     )
     stdout, stderr = await proc.communicate()
     if len(stdout) == 0:
-        raise CargoAuditError(stderr)
+        raise CargoAuditError(stderr.decode())
 
     cargo_audit_op = stdout.decode()
     issues = json.loads(cargo_audit_op)
