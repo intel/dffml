@@ -60,7 +60,7 @@ class AcceptUserInput(OperationImplementation):
 
 
 @op(
-    inputs={"DataToPrint": DataToPrint}, outputs={}, conditions=[],
+    inputs={"data": DataToPrint}, outputs={}, conditions=[],
 )
-async def printOutput(DataToPrint: str):
-    print("\n" + DataToPrint)
+async def print_output(data: str):
+    print("\n" + data)

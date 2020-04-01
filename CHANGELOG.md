@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Operations for taking input from the user(AcceptUserInput) and for printing the output(printOuput)
+- Operations for taking input from the user(AcceptUserInput) and for printing the output(print_output)
 - Hugging Face Transformers tensorflow based NER models.
 - PNG ConfigLoader for reading images as arrays to predict using MNIST trained models
 - Docstrings and doctestable examples to `record.py`.

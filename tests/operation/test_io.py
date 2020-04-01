@@ -8,7 +8,7 @@ from dffml.operation.output import GetSingle
 from dffml.df.memory import MemoryOrchestrator
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.df.types import DataFlow, Input, Definition
-from dffml.operation.io import AcceptUserInput, printOutput
+from dffml.operation.io import AcceptUserInput, print_output
 
 
 class TestInputOutput(AsyncTestCase):
@@ -31,10 +31,10 @@ class TestInputOutput(AsyncTestCase):
 
         OutputDataflow = DataFlow(
             operations={
-                "printOutput": printOutput.op,
+                "print_output": print_output.op,
                 "get_single": GetSingle.imp.op,
             },
-            implementations={printOutput.op.name: printOutput.imp},
+            implementations={print_output.op.name: print_output.imp},
         )
 
         self.InputDataflow = InputDataflow
