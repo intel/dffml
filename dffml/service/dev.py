@@ -54,6 +54,7 @@ CORE_PLUGINS = [
     ("examples", "shouldi"),
     ("feature", "git"),
     ("feature", "auth"),
+    ("feature", "nlp"),
     ("service", "http"),
     ("source", "mysql"),
 ]
