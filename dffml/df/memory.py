@@ -970,45 +970,50 @@ class MemoryOperationImplementationNetworkContext(
                 await parameter_set._asdict(),
             )
             if outputs is None:
-                return []
-        # Create a list of inputs from the outputs using the definition mapping
-        try:
-            inputs = []
-            if operation.expand:
-                expand = operation.expand
-            else:
-                expand = []
-            parents = [
-                item.origin async for item in parameter_set.parameters()
-            ]
-            for key, output in outputs.items():
-                if not key in expand:
-                    output = [output]
-                for value in output:
-                    new_input = Input(
-                        value=value,
-                        definition=operation.outputs[key],
-                        parents=parents,
-                        origin=(operation.instance_name, key),
+                return
+            if not inspect.isasyncgen(outputs):
+                async def to_async_gen(x):
+                    yield x
+                outputs = to_async_gen(outputs)
+        async for an_output in outputs:
+            # Create a list of inputs from the outputs using the definition mapping
+            try:
+                inputs = []
+                if operation.expand:
+                    expand = operation.expand
+                else:
+                    expand = []
+                parents = [
+                    item.origin async for item in parameter_set.parameters()
+                ]
+                for key, output in an_output.items():
+                    if not key in expand:
+                        output = [output]
+                    for value in output:
+                        new_input = Input(
+                            value=value,
+                            definition=operation.outputs[key],
+                            parents=parents,
+                            origin=(operation.instance_name, key),
+                        )
+                        new_input.validated = set_valid
+                        inputs.append(new_input)
+            except KeyError as error:
+                raise KeyError(
+                    "Value %s missing from output:definition mapping %s(%s)"
+                    % (
+                        str(error),
+                        operation.instance_name,
+                        ", ".join(operation.outputs.keys()),
                     )
-                    new_input.validated = set_valid
-                    inputs.append(new_input)
-        except KeyError as error:
-            raise KeyError(
-                "Value %s missing from output:definition mapping %s(%s)"
-                % (
-                    str(error),
-                    operation.instance_name,
-                    ", ".join(operation.outputs.keys()),
+                ) from error
+            # Add the input set made from the outputs to the input set network
+            await octx.ictx.add(
+                MemoryInputSet(
+                    MemoryInputSetConfig(ctx=parameter_set.ctx, inputs=inputs)
                 )
-            ) from error
-        # Add the input set made from the outputs to the input set network
-        await octx.ictx.add(
-            MemoryInputSet(
-                MemoryInputSetConfig(ctx=parameter_set.ctx, inputs=inputs)
             )
-        )
-        return inputs
+            # yield inputs
 
     async def dispatch(
         self,
@@ -1025,6 +1030,7 @@ class MemoryOperationImplementationNetworkContext(
         )
         task.add_done_callback(ignore_args(self.completed_event.set))
         return task
+
 
     async def dispatch_auto_starts(self, octx: BaseOrchestratorContext, ctx):
         """
@@ -1491,7 +1497,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                             ):
                                 await self.rctx.add(
                                     operation, parameter_set
-                                )  # is this required here?
+                                )
                                 dispatch_operation = await self.nctx.dispatch(
                                     self, operation, parameter_set
                                 )
