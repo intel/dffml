@@ -37,6 +37,7 @@ class AcceptUserInputContext(OperationImplementationContext):
 class AcceptUserInput(OperationImplementation):
     """
     Accept input from stdin using python input()
+
     Parameters
     ++++++++++
     inputs : dict
@@ -46,8 +47,10 @@ class AcceptUserInput(OperationImplementation):
     +++++++
     dict
         A dictionary containing user input.
+
     Examples
     ++++++++
+
     The following example shows how to use AcceptUserInput.
     >>> dataflow = DataFlow.auto(AcceptUserInput, GetSingle)
     >>> dataflow.seed.append(
@@ -93,6 +96,7 @@ class AcceptUserInput(OperationImplementation):
 async def print_output(data: str):
     """
     Print the output on stdout using python print()
+
     Parameters
     ++++++++++
     inputs : list
@@ -100,6 +104,7 @@ async def print_output(data: str):
 
     Examples
     ++++++++
+    
     The following example shows how to use print_output.
     >>> dataflow = DataFlow.auto(print_output, GetSingle)
     >>> inputs = [
