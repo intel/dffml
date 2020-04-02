@@ -54,10 +54,10 @@ class TestInputOutput(AsyncTestCase):
                             results["UserInput"]["data"],
                         )
 
-    async def test_printOutput(self):
+    async def test_print_output(self):
         test_inputs = [
             Input(
-                value="Testing printOutput",
+                value="Testing print_output",
                 definition=self.OutputDataflow.definitions["DataToPrint"],
                 parents=None,
             )
@@ -67,4 +67,4 @@ class TestInputOutput(AsyncTestCase):
                 with contextlib.redirect_stdout(self.stdout):
                     async for ctx_str, _ in octx.run(test_inputs):
                         results = self.stdout.getvalue()
-                        self.assertIn("Testing printOutput", results)
+                        self.assertIn("Testing print_output", results)
