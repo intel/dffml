@@ -104,6 +104,7 @@
 <li class="toctree-l2"><a class="reference internal" href="dffml_model.html">Models</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Operations</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#dffml">dffml</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#acceptuserinput">AcceptUserInput</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#associate">associate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#dffml-dataflow-run">dffml.dataflow.run</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#dffml-mapping-create">dffml.mapping.create</a></li>
@@ -111,6 +112,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#dffml-model-predict">dffml.model.predict</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#get-single">get_single</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#group-by">group_by</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#print-output">print_output</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-feature-git">dffml_feature_git</a><ul>
@@ -229,6 +231,48 @@ the roadmap.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml</span>
 </pre></div>
 </div>
+<div class="section" id="acceptuserinput">
+<h3>AcceptUserInput<a class="headerlink" href="#acceptuserinput" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Accept input from stdin using python input()</p>
+<div class="section" id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>inputs<span class="classifier">dict</span></dt><dd><p>A dictionary with a key and empty list as value.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>dict</dt><dd><p>A dictionary containing user input.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<p>The following example shows how to use AcceptUserInput.
+&gt;&gt;&gt; dataflow = DataFlow.auto(AcceptUserInput, GetSingle)
+&gt;&gt;&gt; dataflow.seed.append(
+…     Input(
+…         value=[AcceptUserInput.op.outputs[“InputData”].name],
+…         definition=GetSingle.op.inputs[“spec”]
+…     )
+… )
+&gt;&gt;&gt;
+&gt;&gt;&gt; async def main():
+…     async for ctx, results in MemoryOrchestrator.run(dataflow, {“input”:[]}):
+…         print(results)
+&gt;&gt;&gt;
+&gt;&gt;&gt; asyncio.run(main())
+{‘UserInput’: {‘data’: ‘Data flow is awesome’}}</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>InputData: UserInput(type: str)</p></li>
+</ul>
+</div>
+</div>
 <div class="section" id="associate">
 <h3>associate<a class="headerlink" href="#associate" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
@@ -247,8 +291,8 @@ the roadmap.</p>
 <h3>dffml.dataflow.run<a class="headerlink" href="#dffml-dataflow-run" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Starts a subflow <code class="docutils literal notranslate"><span class="pre">self.config.dataflow</span></code> and adds <code class="docutils literal notranslate"><span class="pre">inputs</span></code> in it.</p>
-<div class="section" id="parameters">
-<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id1">
+<h4>Parameters<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>inputs<span class="classifier">dict</span></dt><dd><p>The inputs to add to the subflow. These should be a key value mapping of
 the context string to the inputs which should be seeded for that context
@@ -256,15 +300,15 @@ string.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="returns">
-<h4>Returns<a class="headerlink" href="#returns" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id2">
+<h4>Returns<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Maps context strings in inputs to output after running through dataflow.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="examples">
-<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id3">
+<h4>Examples<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
 <p>The following shows how to use run dataflow in its default behavior.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -447,6 +491,41 @@ This allows you to run a subflow as if it were an opertion.</p>
 <ul class="simple">
 <li><p>output: group_by_output(type: Dict[str, List[Any]])</p></li>
 </ul>
+</div>
+<div class="section" id="print-output">
+<h3>print_output<a class="headerlink" href="#print-output" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Print the output on stdout using python print()</p>
+<div class="section" id="id4">
+<h4>Parameters<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>inputs<span class="classifier">list</span></dt><dd><p>A list of Inputs whose value is to be printed.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id5">
+<h4>Examples<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<p>The following example shows how to use print_output.
+&gt;&gt;&gt; dataflow = DataFlow.auto(print_output, GetSingle)
+&gt;&gt;&gt; inputs = [
+…     Input(
+…         value=”print_output example”,
+…         definition=dataflow.definitions[“DataToPrint”],
+…         parents=None,)]
+&gt;&gt;&gt;
+&gt;&gt;&gt; async def main():
+…     async for ctx, results in MemoryOrchestrator.run(dataflow, inputs):
+…         print(“String to be printed is ‘print_output example’”)
+&gt;&gt;&gt;
+&gt;&gt;&gt; asyncio.run(main())
+print_output example
+String to be printed is ‘print_output example’</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>data: DataToPrint(type: str)</p></li>
+</ul>
+</div>
 </div>
 </div>
 <div class="section" id="dffml-feature-git">
