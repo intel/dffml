@@ -104,7 +104,7 @@ async def print_output(data: str):
 
     Examples
     ++++++++
-    
+
     The following example shows how to use print_output.
     >>> dataflow = DataFlow.auto(print_output, GetSingle)
     >>> inputs = [
