@@ -12,7 +12,7 @@ from typing import Dict, Any
 from ...record import Record
 from ...feature import Feature
 
-from .arg import Arg, parse_unknown
+from .plugin import Plugin, parse_unknown
 
 DisplayHelp = "Display help message"
 
@@ -81,7 +81,7 @@ class Parser(argparse.ArgumentParser):
                 parser.set_defaults(cmd=method)
                 parser.set_defaults(parser=parser)
                 parser.add_subs(method)  # type: ignore
-            elif isinstance(method, Arg):
+            elif isinstance(method, Plugin):
                 try:
                     self.add_argument(method.name, **method)
                 except argparse.ArgumentError as error:
@@ -93,7 +93,7 @@ class CMD(object):
     JSONEncoder = JSONEncoder
     EXTRA_CONFIG_ARGS = {}
 
-    arg_log = Arg(
+    plugin_log = Plugin(
         "-log",
         help="Logging level",
         action=ParseLoggingAction,
@@ -111,9 +111,9 @@ class CMD(object):
             extra_config = {}
         self.extra_config = extra_config
         for name, method in [
-            (name.lower().replace("arg_", ""), method)
+            (name.lower().replace("plugin_", ""), method)
             for name, method in inspect.getmembers(self)
-            if isinstance(method, Arg)
+            if isinstance(method, Plugin)
         ]:
             if not name in kwargs and method.name in kwargs:
                 name = method.name

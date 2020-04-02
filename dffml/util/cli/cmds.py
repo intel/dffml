@@ -8,7 +8,7 @@ from ...source.file import FileSourceConfig
 from ...model import Model
 
 
-from .arg import Arg
+from .plugin import Plugin
 from .cmd import CMD
 from .parser import list_action
 
@@ -39,7 +39,7 @@ class ListEntrypoint(CMD):
 
 class SourcesCMD(CMD):
 
-    arg_sources = Arg(
+    plugin_sources = Plugin(
         "-sources",
         help="Sources for loading and saving",
         nargs="+",
@@ -75,7 +75,7 @@ class ModelCMD(CMD):
     Set a models model dir.
     """
 
-    arg_model = Arg(
+    plugin_model = Plugin(
         "-model", help="Model used for ML", type=Model.load, required=True
     )
 
@@ -87,12 +87,12 @@ class ModelCMD(CMD):
 
 class PortCMD(CMD):
 
-    arg_port = Arg("port", type=Port.load)
+    plugin_port = Plugin("port", type=Port.load)
 
 
 class KeysCMD(CMD):
 
-    arg_keys = Arg(
+    plugin_keys = Plugin(
         "-keys",
         help="Key used for source lookup and evaluation",
         nargs="+",

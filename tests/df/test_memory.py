@@ -1,7 +1,7 @@
 from unittest.mock import patch
 from typing import NamedTuple
 
-from dffml.util.cli.arg import Arg, parse_unknown
+from dffml.util.cli.plugin import Plugin, parse_unknown
 from dffml.util.entrypoint import entrypoint
 from dffml.df.base import BaseKeyValueStore, BaseRedundancyCheckerConfig
 from dffml.df.memory import MemoryKeyValueStore, MemoryRedundancyChecker
@@ -22,7 +22,7 @@ class KeyValueStoreWithArguments(BaseKeyValueStore):
 
     @classmethod
     def args(cls, args, *above):
-        cls.config_set(args, above, "filename", Arg(type=str))
+        cls.config_set(args, above, "filename", Plugin(type=str))
         return args
 
     @classmethod
@@ -45,22 +45,22 @@ class TestMemoryRedundancyChecker(AsyncTestCase):
             MemoryRedundancyChecker.args({}),
             {
                 "rchecker": {
-                    "arg": None,
+                    "plugin": None,
                     "config": {
                         "memory": {
-                            "arg": None,
+                            "plugin": None,
                             "config": {
                                 "kvstore": {
-                                    "arg": Arg(
+                                    "plugin": Plugin(
                                         type=BaseKeyValueStore.load,
                                         default=MemoryKeyValueStore,
                                     ),
                                     "config": {
                                         "withargs": {
-                                            "arg": None,
+                                            "plugin": None,
                                             "config": {
                                                 "filename": {
-                                                    "arg": Arg(type=str),
+                                                    "plugin": Plugin(type=str),
                                                     "config": {},
                                                 }
                                             },

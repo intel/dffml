@@ -55,8 +55,8 @@ class RecordsTestCase(AsyncExitStackTestCase):
         self._stack.enter_context(
             patch.object(
                 ModelCMD,
-                "arg_model",
-                new=ModelCMD.arg_model.modify(type=model_load),
+                "plugin_model",
+                new=ModelCMD.plugin_model.modify(type=model_load),
             )
         )
         self._stack.enter_context(

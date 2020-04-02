@@ -10,7 +10,7 @@ from ..version import VERSION
 from ..record import Record
 from ..source.source import BaseSource
 from ..util.packaging import is_develop
-from ..util.cli.arg import Arg
+from ..util.cli.plugin import Plugin
 from ..util.cli.cmd import CMD
 from ..util.cli.cmds import SourcesCMD, PortCMD, KeysCMD
 
@@ -50,10 +50,10 @@ class Merge(CMD):
     Merge record data between sources
     """
 
-    arg_dest = Arg(
+    plugin_dest = Plugin(
         "dest", help="Sources merge records into", type=BaseSource.load_labeled
     )
-    arg_src = Arg(
+    plugin_src = Plugin(
         "src",
         help="Sources to pull records from",
         type=BaseSource.load_labeled,
@@ -74,7 +74,7 @@ class Merge(CMD):
 class ImportExportCMD(PortCMD, SourcesCMD):
     """Shared import export arguments"""
 
-    arg_filename = Arg("filename", type=str)
+    plugin_filename = Plugin("filename", type=str)
 
 
 class Import(ImportExportCMD):

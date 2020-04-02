@@ -9,7 +9,7 @@ import numpy as np
 from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml.util.cli.arg import parse_unknown
+from dffml.util.cli.plugin import parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature import Feature, Features, DefFeature
 

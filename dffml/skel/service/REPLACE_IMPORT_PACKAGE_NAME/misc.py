@@ -1,4 +1,4 @@
-from dffml.util.cli.arg import Arg
+from dffml.util.cli.plugin import Plugin
 from dffml.util.cli.cmd import CMD
 from dffml.util.entrypoint import entrypoint
 
@@ -9,7 +9,7 @@ class MiscService(CMD):
     Description of the DFFML related command
     """
 
-    arg_integer = Arg(
+    plugin_integer = Plugin(
         "-integer",
         type=int,
         help=f"Port to do nothing with",

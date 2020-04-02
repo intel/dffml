@@ -5,7 +5,7 @@ from typing import AsyncIterator, NamedTuple, Dict
 from dffml.base import BaseConfig
 from dffml.record import Record
 from dffml.source.source import BaseSourceContext, BaseSource
-from dffml.util.cli.arg import Arg
+from dffml.util.cli.plugin import Plugin
 
 
 class CustomSQLiteSourceConfig(BaseConfig, NamedTuple):
@@ -106,8 +106,8 @@ class CustomSQLiteSource(BaseSource):
         await self.__db.__aexit__(exc_type, exc_value, traceback)
 
     @classmethod
-    def args(cls, args, *above) -> Dict[str, Arg]:
-        cls.config_set(args, above, "filename", Arg())
+    def args(cls, args, *above) -> Dict[str, Plugin]:
+        cls.config_set(args, above, "filename", Plugin())
         return args
 
     @classmethod

@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Partial doctestable examples to `features.py`
 - Doctestable examples for `BaseSource`
 ### Fixed
+- Renamed `Arg` to `Plugin`.
 - New model tutorial mentions file paths that should be edited.
 - DataFlow is no longer a dataclass to prevent it from being exported
   incorrectly.

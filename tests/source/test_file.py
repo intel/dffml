@@ -7,7 +7,7 @@ from typing import AsyncIterator
 from dffml.record import Record
 from dffml.source.source import BaseSourceContext
 from dffml.source.file import FileSource, FileSourceConfig
-from dffml.util.cli.arg import Arg, parse_unknown
+from dffml.util.cli.plugin import Plugin, parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
 
 
@@ -44,17 +44,17 @@ class TestFileSource(AsyncTestCase):
             FileSource.args({}),
             {
                 "source": {
-                    "arg": None,
+                    "plugin": None,
                     "config": {
                         "file": {
-                            "arg": None,
+                            "plugin": None,
                             "config": {
                                 "filename": {
-                                    "arg": Arg(type=str),
+                                    "plugin": Plugin(type=str),
                                     "config": {},
                                 },
                                 "readwrite": {
-                                    "arg": Arg(
+                                    "plugin": Plugin(
                                         type=bool,
                                         action="store_true",
                                         default=False,
@@ -62,7 +62,7 @@ class TestFileSource(AsyncTestCase):
                                     "config": {},
                                 },
                                 "allowempty": {
-                                    "arg": Arg(
+                                    "plugin": Plugin(
                                         type=bool,
                                         action="store_true",
                                         default=False,
@@ -70,7 +70,9 @@ class TestFileSource(AsyncTestCase):
                                     "config": {},
                                 },
                                 "tag": {
-                                    "arg": Arg(type=str, default="untagged"),
+                                    "plugin": Plugin(
+                                        type=str, default="untagged"
+                                    ),
                                     "config": {},
                                 },
                             },

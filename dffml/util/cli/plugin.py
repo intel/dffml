@@ -10,21 +10,21 @@ def parse_unknown(*unknown):
     parsed = {}
     name = []
     add_to_parsed = []
-    for arg in unknown:
+    for plugin in unknown:
         if (
-            arg.startswith("-")
-            and not arg.lstrip("-").replace(".", "").isnumeric()
+            plugin.startswith("-")
+            and not plugin.lstrip("-").replace(".", "").isnumeric()
         ):
             if not name:
-                name = arg.lstrip("-").split("-")
+                name = plugin.lstrip("-").split("-")
             if not add_to_parsed:
                 traverse_config_set(parsed, *name, [True])
             else:
                 traverse_config_set(parsed, *name, add_to_parsed)
-            name = arg.lstrip("-").split("-")
+            name = plugin.lstrip("-").split("-")
             add_to_parsed = []
         else:
-            add_to_parsed.append(arg)
+            add_to_parsed.append(plugin)
     if unknown and name:
         if not add_to_parsed:
             traverse_config_set(parsed, *name, [True])
@@ -33,7 +33,7 @@ def parse_unknown(*unknown):
     return parsed
 
 
-class Arg(dict):
+class Plugin(dict):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(**kwargs)
         self.name = "no-name"

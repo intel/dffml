@@ -10,7 +10,7 @@ from unittest.mock import patch
 from dffml.record import Record
 from dffml.feature import Feature, Features
 
-from dffml.util.cli.arg import Arg, parse_unknown
+from dffml.util.cli.plugin import Plugin, parse_unknown
 from dffml.util.cli.cmd import JSONEncoder, CMD, Parser, ParseLoggingAction
 from dffml.util.cli.parser import list_action, ParseInputsAction
 from dffml.util.cli.cmds import ListEntrypoint
@@ -85,8 +85,8 @@ class TestJSONEncoder(unittest.TestCase):
 class TestCMD(AsyncTestCase):
     def test_init(self):
         class CMDTest(CMD):
-            arg_nope_present = Arg("nope", default=False)
-            arg_ignored = Arg("ignored")
+            plugin_nope_present = Plugin("nope", default=False)
+            plugin_ignored = Plugin("ignored")
 
         cmd = CMDTest(nope=True)
         self.assertTrue(getattr(cmd, "log", False))
@@ -177,18 +177,18 @@ class TestCMD(AsyncTestCase):
             mock_method.assert_called_once()
 
 
-class TestArg(unittest.TestCase):
+class TestPlugin(unittest.TestCase):
     def test_init(self):
-        arg = Arg("-test", key="value")
-        self.assertEqual(arg.name, "-test")
-        self.assertIn("key", arg)
-        self.assertEqual(arg["key"], "value")
+        plugin = Plugin("-test", key="value")
+        self.assertEqual(plugin.name, "-test")
+        self.assertIn("key", plugin)
+        self.assertEqual(plugin["key"], "value")
 
     def test_modify(self):
-        arg = Arg("-test", key="value")
-        first = arg.modify(name="-first")
-        second = arg.modify(key="new_value")
-        self.assertEqual(arg.name, "-test")
+        plugin = Plugin("-test", key="value")
+        first = plugin.modify(name="-first")
+        second = plugin.modify(key="new_value")
+        self.assertEqual(plugin.name, "-test")
         self.assertEqual(first.name, "-first")
         self.assertEqual(second.name, "-test")
         self.assertEqual(second["key"], "new_value")
@@ -204,19 +204,19 @@ class TestArg(unittest.TestCase):
             parsed,
             {
                 "rchecker": {
-                    "arg": None,
+                    "plugin": None,
                     "config": {
                         "memory": {
-                            "arg": None,
+                            "plugin": None,
                             "config": {
                                 "kvstore": {
-                                    "arg": ["withargs"],
+                                    "plugin": ["withargs"],
                                     "config": {
                                         "withargs": {
-                                            "arg": None,
+                                            "plugin": None,
                                             "config": {
                                                 "filename": {
-                                                    "arg": ["somefile"],
+                                                    "plugin": ["somefile"],
                                                     "config": {},
                                                 }
                                             },
@@ -234,7 +234,7 @@ class TestArg(unittest.TestCase):
 class TestParser(unittest.TestCase):
     def test_add_subs(self):
         class FakeSubCMD(CMD):
-            arg_test = Arg("-test")
+            plugin_test = Plugin("-test")
 
         class FakeCMD(CMD):
             sub_cmd = FakeSubCMD

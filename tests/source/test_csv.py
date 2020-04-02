@@ -9,7 +9,7 @@ from dffml.source.csv import CSVSource, CSVSourceConfig
 from dffml.util.testing.source import FileSourceTest
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.record import Record
-from dffml.util.cli.arg import parse_unknown
+from dffml.util.cli.plugin import parse_unknown
 
 
 class TestCSVSource(FileSourceTest, AsyncTestCase):

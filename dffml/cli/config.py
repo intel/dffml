@@ -4,20 +4,20 @@ import pathlib
 from ..configloader.configloader import BaseConfigLoader
 from ..configloader.json import JSONConfigLoader
 from ..util.cli.cmd import CMD
-from ..util.cli.cmd import Arg
+from ..util.cli.cmd import Plugin
 
 
 class Convert(CMD):
 
-    arg_original = Arg("original", help="Config to convert")
-    arg_config_in = Arg(
+    plugin_original = Plugin("original", help="Config to convert")
+    plugin_config_in = Plugin(
         "-config-in",
         dest="config_in",
         help="ConfigLoader to use for importing",
         type=BaseConfigLoader.load,
         default=None,
     )
-    arg_config_out = Arg(
+    plugin_config_out = Plugin(
         "-config-out",
         dest="config_out",
         help="ConfigLoader to use for exporting",
