@@ -21,12 +21,12 @@ class TestRunCargoAuditOp(AsyncTestCase):
         "dea36731efaac4d0fd37a295c65520a7e9b23b5faa0a92dce7ab20764f8323fc34856079524c676e4cad1cb065ee6472",
     )
     @cached_download_unpack_archive(
-        "https://github.com/xd009642/tarpaulin/archive/59f1c4f48765fba27319cf64e8aab7b08f8a0f66.tar.gz",
-        pathlib.Path(__file__).parent / "downloads" / "tarpaulin.tar.gz",
-        pathlib.Path(__file__).parent / "downloads" / "tarpaulin-download",
-        "03c10779bdf09baa9b6a8caab367de8e780e9b72778b40c017adb85c1b1ec38b96355ba67482067fcd06917632a81f69",
+        "https://github.com/rust-lang/crates.io/archive/8c1a7e29073e175f0e69e0e537374269da244cee.tar.gz",
+        pathlib.Path(__file__).parent / "downloads" / "crates.tar.gz",
+        pathlib.Path(__file__).parent / "downloads" / "crates-download",
+        "1bf0c3459373882f51132942872d0dbf8da01eee8d42c3c2090d234e4db99b39d4858c1fd2492c85917d670cae2519ca",
     )
-    async def test_run(self, rust, cargo_audit, tarpaulin):
+    async def test_run(self, rust, cargo_audit, crates):
         if not (
             cargo_audit
             / "cargo-audit-0.11.2"
@@ -45,8 +45,8 @@ class TestRunCargoAuditOp(AsyncTestCase):
         ):
             results = await run_cargo_audit(
                 str(
-                    tarpaulin
-                    / "tarpaulin-59f1c4f48765fba27319cf64e8aab7b08f8a0f66"
+                    crates
+                    / "crates.io-8c1a7e29073e175f0e69e0e537374269da244cee"
                 )
             )
-            self.assertEqual(results["report"], int)
+            self.assertEqual(type(results["report"]), int)
