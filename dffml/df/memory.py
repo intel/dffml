@@ -1013,7 +1013,7 @@ class MemoryOperationImplementationNetworkContext(
                     MemoryInputSetConfig(ctx=parameter_set.ctx, inputs=inputs)
                 )
             )
-            # yield inputs
+
 
     async def dispatch(
         self,
@@ -1437,11 +1437,14 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         ctx_str = (await ctx.handle()).as_string()
         # Create initial events to wait on
         # TODO(dfass) Make ictx.added(ctx) specific to dataflow
-        input_set_enters_network = asyncio.create_task(self.ictx.added(ctx))
-        tasks.add(input_set_enters_network)
+
         # schedule running of operations with no inputs
         async for task in self.nctx.dispatch_auto_starts(self, ctx):
             tasks.add(task)
+
+        input_set_enters_network = asyncio.create_task(self.ictx.added(ctx))
+        tasks.add(input_set_enters_network)
+
 
         try:
             # Return when outstanding operations reaches zero

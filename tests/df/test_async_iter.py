@@ -8,7 +8,6 @@ from dffml.operation.mapping import MAPPING
 
 CountStart = Definition(name="count_start",primitive="int")
 Count = Definition(name="count",primitive="int")
-Sum = Definition(name="Sum",primitive="int")
 Number = Definition(name="number",primitive="int")
 
 
@@ -25,7 +24,7 @@ async def counter_auto_start():
 
 @op(inputs={"number_in": Count}, outputs={"number_out": Number})
 def echo_num(number_in:int):
-    print(f"Blah {number_in}")
+    print(f"{number_in}")
     return {"number_out":number_in}
 
 
@@ -71,7 +70,7 @@ class TestAsyncIter(AsyncTestCase):
                     echo_num.op.name : echo_num.imp
                             },
         )
-        test_inputs = {"TestCount": [Input(value=1, definition=CountStart),]}
+        test_inputs = {"TestCountAutoStart": [Input(value=1, definition=CountStart),]}
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
             async with orchestrator(test_dataflow) as octx:
                 async for ctx_str, results in octx.run(test_inputs):
