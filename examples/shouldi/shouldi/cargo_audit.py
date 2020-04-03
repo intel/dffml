@@ -28,7 +28,7 @@ async def run_cargo_build(pkg_input: str):
         stderr=asyncio.subprocess.PIPE,
     )
     stdout, stderr = await new_proc.communicate()
-    if stderr:
+    if new_proc.returncode != 0:
         raise Exception(stderr.decode())
 
 
