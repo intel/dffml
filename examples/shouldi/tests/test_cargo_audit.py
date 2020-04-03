@@ -34,7 +34,7 @@ class TestRunCargoAuditOp(AsyncTestCase):
             / "release"
             / "cargo-audit"
         ).is_file():
-            run_cargo_build(cargo_audit / "cargo-audit-0.11.2")
+            await run_cargo_build(cargo_audit / "cargo-audit-0.11.2")
 
         with prepend_to_path(
             rust / "rust-1.42.0-x86_64-unknown-linux-gnu" / "cargo" / "bin",
