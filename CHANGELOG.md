@@ -13,13 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `validate` parameter in `Input` takes `Operation.instance_name`
 - New db source can utilize any database that inherits from `BaseDatabase`
 - Logistic Regression with SAG optimizer
-- Test tensorflow DNNEstimator documentation exaples in CI
+- Test tensorflow DNNEstimator documentation examples in CI
 - Add python code for tensorflow DNNEstimator
 - Ability to run a subflow as if it were an operation using the
   `dffml.dataflow.run` operation.
 - Support for operations without inputs.
 - Partial doctestable examples to `features.py`
 - Doctestable examples for `BaseSource`
+- Support for async generator operations
 ### Fixed
 - New model tutorial mentions file paths that should be edited.
 - DataFlow is no longer a dataclass to prevent it from being exported

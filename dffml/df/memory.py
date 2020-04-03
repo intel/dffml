@@ -972,8 +972,10 @@ class MemoryOperationImplementationNetworkContext(
             if outputs is None:
                 return
             if not inspect.isasyncgen(outputs):
+
                 async def to_async_gen(x):
                     yield x
+
                 outputs = to_async_gen(outputs)
         async for an_output in outputs:
             # Create a list of inputs from the outputs using the definition mapping
@@ -1014,7 +1016,6 @@ class MemoryOperationImplementationNetworkContext(
                 )
             )
 
-
     async def dispatch(
         self,
         octx: BaseOrchestratorContext,
@@ -1030,7 +1031,6 @@ class MemoryOperationImplementationNetworkContext(
         )
         task.add_done_callback(ignore_args(self.completed_event.set))
         return task
-
 
     async def dispatch_auto_starts(self, octx: BaseOrchestratorContext, ctx):
         """
@@ -1437,15 +1437,11 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         ctx_str = (await ctx.handle()).as_string()
         # Create initial events to wait on
         # TODO(dfass) Make ictx.added(ctx) specific to dataflow
-
         # schedule running of operations with no inputs
         async for task in self.nctx.dispatch_auto_starts(self, ctx):
             tasks.add(task)
-
         input_set_enters_network = asyncio.create_task(self.ictx.added(ctx))
         tasks.add(input_set_enters_network)
-
-
         try:
             # Return when outstanding operations reaches zero
             while tasks:
@@ -1498,9 +1494,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                                 self.config.dataflow,
                                 unvalidated_input_set,
                             ):
-                                await self.rctx.add(
-                                    operation, parameter_set
-                                )
+                                await self.rctx.add(operation, parameter_set)
                                 dispatch_operation = await self.nctx.dispatch(
                                     self, operation, parameter_set
                                 )
