@@ -1,5 +1,5 @@
-Setting up debugging in Visual Studio Code (VSCode)
-===================================================
+Visual Studio Code (VSCode)
+===========================
 
 `VSCode <https://code.visualstudio.com/>`_ provides powerful tools for
 debugging support. For this project, we use a Python extension. For more
