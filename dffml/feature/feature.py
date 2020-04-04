@@ -120,7 +120,7 @@ class Feature(abc.ABC, Entrypoint):
     Define a feature using load_def:
     >>> feature = Feature.load_def("example", "float", 10)
     >>> feature.dtype()
-    float
+    <class 'float'>
     >>> feature.NAME
     "example"
     >>> feature.length()
@@ -129,7 +129,7 @@ class Feature(abc.ABC, Entrypoint):
     Defining a feature directly using DefFeature:
     >>> feature = DefFeature("example2", "int", 20)
     >>> feature.dtype()
-    int
+    <class 'int'>
     >>> feature.NAME
     "example2"
     >>> feature.length()
@@ -174,7 +174,7 @@ class Feature(abc.ABC, Entrypoint):
 
         >>> feature = Feature()
         >>> feature.dtype()
-        int
+        <class 'int'>
         """
         self.LOGGER.warning("%s dtype unimplemented", self)
         return int
