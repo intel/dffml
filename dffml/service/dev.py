@@ -21,7 +21,7 @@ from ..base import BaseConfig
 from ..util.os import chdir, MODE_BITS_SECURE
 from ..version import VERSION
 from ..util.skel import Skel, SkelTemplateConfig
-from ..util.cli.plugin import Plugin
+from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
 from ..util.entrypoint import load
 from ..base import MissingConfig
@@ -68,39 +68,37 @@ def create_from_skel(name):
 
         skel = Skel()
 
-        plugin_user = Plugin(
+        arg_user = Arg(
             "-user",
             help=f"Your username (default: {USER})",
             default=USER,
             required=False,
         )
-        plugin_name = Plugin(
+        arg_name = Arg(
             "-name",
             help=f"Your name (default: {NAME})",
             default=NAME,
             required=False,
         )
-        plugin_email = Plugin(
+        arg_email = Arg(
             "-email",
             help=f"Your email (default: {EMAIL})",
             default=EMAIL,
             required=False,
         )
-        plugin_description = Plugin(
+        arg_description = Arg(
             "-description",
             help=f"Description of python package (default: DFFML {name} {{package name}})",
             default=None,
             required=False,
         )
-        plugin_target = Plugin(
+        arg_target = Arg(
             "-target",
             help=f"Directory to put code in (default: same as package name)",
             default=None,
             required=False,
         )
-        plugin_package = Plugin(
-            "package", help="Name of python package to create"
-        )
+        arg_package = Arg("package", help="Name of python package to create")
 
         async def run(self):
             # Set description if None
@@ -163,7 +161,7 @@ class Run(CMD):
     Run a single operation
     """
 
-    plugin_operation = Plugin("operation", help="Python path to operation")
+    arg_operation = Arg("operation", help="Python path to operation")
 
     async def run(self):
         # Push current directory into front of path so we can run things
@@ -184,7 +182,7 @@ class Run(CMD):
             value = traverse_config_get(self.extra_config, key)
         except KeyError as error:
             raise MissingConfig("%s missing %s" % (op.name, key))
-        # TODO Argparse nargs and Plugin and primitives need to be unified
+        # TODO Argparse nargs and Arg and primitives need to be unified
         if "Dict" in definition.primitive:
             # TODO handle Dict / spec completely
             self.logger.critical(
@@ -258,7 +256,7 @@ class Run(CMD):
 
 class ListEntrypoints(CMD):
 
-    plugin_entrypoint = Plugin(
+    arg_entrypoint = Arg(
         "entrypoint", help="Entrypoint to list, example: dffml.model"
     )
 
@@ -274,20 +272,20 @@ class Entrypoints(CMD):
 
 class Export(CMD):
 
-    plugin_config = Plugin(
+    arg_config = Arg(
         "-config",
         help="ConfigLoader to use",
         type=BaseConfigLoader.load,
         default=JSONConfigLoader,
     )
-    plugin_not_linked = Plugin(
+    arg_not_linked = Arg(
         "-not-linked",
         dest="not_linked",
         help="Do not export dataflows as linked",
         default=False,
         action="store_true",
     )
-    plugin_export = Plugin("export", help="Python path to object to export")
+    arg_export = Arg("export", help="Python path to object to export")
 
     async def run(self):
         async with self.config(BaseConfig()) as configloader:
@@ -317,7 +315,7 @@ class Install(CMD):
     Uninstall production packages and install dffml in development mode.
     """
 
-    plugin_user = Plugin(
+    arg_user = Arg(
         "-user", "Preform user install", default=False, action="store_true"
     )
 
@@ -352,8 +350,8 @@ class SetupPyKWArg(CMD):
     Get a keyword argument from a call to setup in a setup.py file.
     """
 
-    plugin_kwarg = Plugin("kwarg", help="Keyword argument to write to stdout")
-    plugin_setup_filepath = Plugin("setup_filepath", help="Path to setup.py")
+    arg_kwarg = Arg("kwarg", help="Keyword argument to write to stdout")
+    arg_setup_filepath = Arg("setup_filepath", help="Path to setup.py")
 
     @staticmethod
     def get_kwargs(setup_filepath: str):
@@ -395,7 +393,7 @@ class Release(CMD):
     Release a package (if not already released)
     """
 
-    plugin_package = Plugin(
+    arg_package = Arg(
         "package", help="Relative path to package to release", type=Path
     )
 
@@ -488,21 +486,21 @@ class BumpPackages(CMD):
     given.
     """
 
-    plugin_skip = Plugin(
+    arg_skip = Arg(
         "-skip",
         help="Do not increment versions in these packages",
         nargs="+",
         default=[],
         required=False,
     )
-    plugin_only = Plugin(
+    arg_only = Arg(
         "-only",
         help="Only increment versions in these packages",
         nargs="+",
         default=[],
         required=False,
     )
-    plugin_version = Plugin("version", help="Version to increment by")
+    arg_version = Arg("version", help="Version to increment by")
 
     @staticmethod
     def bump_version(original, increment):

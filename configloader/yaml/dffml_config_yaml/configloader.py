@@ -5,7 +5,7 @@ import yaml
 from typing import Dict
 
 from dffml.util.entrypoint import entrypoint
-from dffml.util.cli.plugin import Plugin
+from dffml.util.cli.arg import Arg
 from dffml.base import BaseConfig
 from dffml.configloader.configloader import (
     BaseConfigLoaderContext,
@@ -26,7 +26,7 @@ class YamlConfigLoader(BaseConfigLoader):
     CONTEXT = YamlConfigLoaderContext
 
     @classmethod
-    def args(cls, args, *above) -> Dict[str, Plugin]:
+    def args(cls, args, *above) -> Dict[str, Arg]:
         return args
 
     @classmethod

@@ -5,7 +5,7 @@ import subprocess
 
 from aiohttp import web
 
-from dffml.util.cli.plugin import Plugin
+from dffml.util.cli.arg import Arg
 from dffml.util.cli.cmd import CMD
 from dffml.util.entrypoint import entrypoint
 
@@ -14,10 +14,8 @@ from .routes import Routes
 
 class TLSCMD(CMD):
 
-    plugin_key = Plugin("-key", help="Path to key file", default="server.key")
-    plugin_cert = Plugin(
-        "-cert", help="Path to cert file", default="server.pem"
-    )
+    arg_key = Arg("-key", help="Path to key file", default="server.key")
+    arg_cert = Arg("-cert", help="Path to cert file", default="server.pem")
 
 
 class CreateTLSServer(TLSCMD):
@@ -25,7 +23,7 @@ class CreateTLSServer(TLSCMD):
     Used to generate server key and cert
     """
 
-    plugin_bits = Plugin(
+    arg_bits = Arg(
         "-bits", help="Number of bits to use for key", default=4096, type=int
     )
 
@@ -65,22 +63,18 @@ class CreateTLSClient(CMD):
 
     CLI_FORMATTER_CLASS = argparse.RawDescriptionHelpFormatter
 
-    plugin_bits = Plugin(
+    arg_bits = Arg(
         "-bits", help="Number of bits to use for key", default=4096, type=int
     )
-    plugin_key = Plugin(
-        "-key", help="Path to client key file", default="client.key"
-    )
-    plugin_cert = Plugin(
+    arg_key = Arg("-key", help="Path to client key file", default="client.key")
+    arg_cert = Arg(
         "-cert", help="Path to client cert file", default="client.pem"
     )
-    plugin_csr = Plugin(
-        "-csr", help="Path to client csr file", default="client.csr"
-    )
-    plugin_server_key = Plugin(
+    arg_csr = Arg("-csr", help="Path to client csr file", default="client.csr")
+    arg_server_key = Arg(
         "-server-key", help="Path to server key file", default="server.key"
     )
-    plugin_server_cert = Plugin(
+    arg_server_cert = Arg(
         "-server-cert", help="Path to server cert file", default="server.pem"
     )
 
@@ -134,13 +128,13 @@ class CreateTLS(TLSCMD):
 
 class MultiCommCMD(CMD):
 
-    plugin_mc_config = Plugin(
+    arg_mc_config = Arg(
         "-mc-config",
         dest="mc_config",
         default=None,
         help="MultiComm config directory",
     )
-    plugin_mc_atomic = Plugin(
+    arg_mc_atomic = Arg(
         "-mc-atomic",
         dest="mc_atomic",
         action="store_true",
@@ -159,33 +153,29 @@ class Server(TLSCMD, MultiCommCMD, Routes):
     RUN_YIELD_FINISH = False
     INSECURE_NO_TLS = False
 
-    plugin_port = Plugin(
-        "-port", help="Port to bind to", type=int, default=8080
-    )
-    plugin_addr = Plugin(
-        "-addr", help="Address to bind to", default="127.0.0.1"
-    )
-    plugin_upload_dir = Plugin(
+    arg_port = Arg("-port", help="Port to bind to", type=int, default=8080)
+    arg_addr = Arg("-addr", help="Address to bind to", default="127.0.0.1")
+    arg_upload_dir = Arg(
         "-upload-dir",
         help="Directory to store uploaded files in",
         default=None,
     )
-    plugin_static = Plugin(
+    arg_static = Arg(
         "-static", help="Directory to serve static content from", default=None
     )
-    plugin_js = Plugin(
+    arg_js = Arg(
         "-js",
         help="Serve JavaScript API file at /api.js",
         default=False,
         action="store_true",
     )
-    plugin_insecure = Plugin(
+    arg_insecure = Arg(
         "-insecure",
         help="Start without TLS encryption",
         action="store_true",
         default=False,
     )
-    plugin_cors_domains = Plugin(
+    arg_cors_domains = Arg(
         "-cors-domains",
         help="Domains to allow CORS for (see keys in defaults dict for aiohttp_cors.setup)",
         nargs="+",

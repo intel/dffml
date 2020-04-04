@@ -1,5 +1,5 @@
 from ..source.source import SubsetSources
-from ..util.cli.plugin import Plugin
+from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
 from ..high_level import train, predict, accuracy
 from ..util.cli.cmds import SourcesCMD, ModelCMD, KeysCMD
@@ -36,7 +36,7 @@ class Accuracy(MLCMD):
 class PredictAll(MLCMD):
     """Predicts for all sources"""
 
-    plugin_update = Plugin(
+    arg_update = Arg(
         "-update",
         help="Update record with sources",
         required=False,

@@ -7,7 +7,7 @@ from PIL import Image
 import numpy as np
 
 from dffml.util.entrypoint import entrypoint
-from dffml.util.cli.plugin import Plugin
+from dffml.util.cli.arg import Arg
 from dffml.base import BaseConfig
 from dffml.configloader.configloader import (
     BaseConfigLoaderContext,
@@ -32,7 +32,7 @@ class PNGConfigLoader(BaseConfigLoader):
     CONTEXT = PNGConfigLoaderContext
 
     @classmethod
-    def args(cls, args, *above) -> Dict[str, Plugin]:
+    def args(cls, args, *above) -> Dict[str, Arg]:
         return args
 
     @classmethod

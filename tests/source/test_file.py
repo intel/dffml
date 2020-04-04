@@ -7,7 +7,7 @@ from typing import AsyncIterator
 from dffml.record import Record
 from dffml.source.source import BaseSourceContext
 from dffml.source.file import FileSource, FileSourceConfig
-from dffml.util.cli.plugin import Plugin, parse_unknown
+from dffml.util.cli.arg import Arg, parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
 
 
@@ -50,11 +50,11 @@ class TestFileSource(AsyncTestCase):
                             "plugin": None,
                             "config": {
                                 "filename": {
-                                    "plugin": Plugin(type=str),
+                                    "plugin": Arg(type=str),
                                     "config": {},
                                 },
                                 "readwrite": {
-                                    "plugin": Plugin(
+                                    "plugin": Arg(
                                         type=bool,
                                         action="store_true",
                                         default=False,
@@ -62,7 +62,7 @@ class TestFileSource(AsyncTestCase):
                                     "config": {},
                                 },
                                 "allowempty": {
-                                    "plugin": Plugin(
+                                    "plugin": Arg(
                                         type=bool,
                                         action="store_true",
                                         default=False,
@@ -70,7 +70,7 @@ class TestFileSource(AsyncTestCase):
                                     "config": {},
                                 },
                                 "tag": {
-                                    "plugin": Plugin(
+                                    "plugin": Arg(
                                         type=str, default="untagged"
                                     ),
                                     "config": {},

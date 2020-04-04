@@ -3,7 +3,7 @@ from typing import AsyncIterator, Dict, List
 from dffml.base import BaseConfig
 from dffml.record import Record
 from dffml.source.source import BaseSourceContext, BaseSource
-from dffml.util.cli.plugin import Plugin
+from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entrypoint
 from dffml.base import config
 
@@ -40,9 +40,9 @@ class MiscSource(BaseSource):
             self.mem = {record.key: record for record in self.config.records}
 
     @classmethod
-    def args(cls, args, *above) -> Dict[str, Plugin]:
+    def args(cls, args, *above) -> Dict[str, Arg]:
         cls.config_set(
-            args, above, "keys", Plugin(type=str, nargs="+", default=[])
+            args, above, "keys", Arg(type=str, nargs="+", default=[])
         )
         return args
 

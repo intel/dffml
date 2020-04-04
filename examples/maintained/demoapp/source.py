@@ -5,7 +5,7 @@ from typing import AsyncIterator, NamedTuple, Dict
 from dffml.base import BaseConfig
 from dffml.record import Record
 from dffml.source.source import BaseSourceContext, BaseSource
-from dffml.util.cli.plugin import Plugin
+from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entrypoint
 
 
@@ -89,12 +89,12 @@ class DemoAppSource(BaseSource):
         await self.pool.wait_closed()
 
     @classmethod
-    def args(cls, args, *above) -> Dict[str, Plugin]:
-        cls.config_set(args, above, "host", Plugin(default="127.0.0.1"))
-        cls.config_set(args, above, "port", Plugin(type=int, default=3306))
-        cls.config_set(args, above, "user", Plugin(default="user"))
-        cls.config_set(args, above, "password", Plugin(default="pass"))
-        cls.config_set(args, above, "db", Plugin(default="db"))
+    def args(cls, args, *above) -> Dict[str, Arg]:
+        cls.config_set(args, above, "host", Arg(default="127.0.0.1"))
+        cls.config_set(args, above, "port", Arg(type=int, default=3306))
+        cls.config_set(args, above, "user", Arg(default="user"))
+        cls.config_set(args, above, "password", Arg(default="pass"))
+        cls.config_set(args, above, "db", Arg(default="db"))
         return args
 
     @classmethod

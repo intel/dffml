@@ -25,7 +25,7 @@ except ImportError:
         return getattr(t, "__args__", None)
 
 
-from .util.cli.plugin import Plugin
+from .util.cli.arg import Arg
 from .util.data import (
     traverse_config_set,
     traverse_config_get,
@@ -68,7 +68,7 @@ def list_action(list_cls):
     return LIST_ACTIONS[list_cls]
 
 
-class MissingPlugin(Exception):
+class MissingArg(Exception):
     """
     Raised when a BaseConfigurable is missing an argument from the args dict it
     created with args(). If this exception is raised then the config() method is
@@ -118,61 +118,61 @@ class BaseConfig(object):
         return repr(self)
 
 
-def mkplugin(field):
-    plugin = Plugin(type=field.type)
+def mkarg(field):
+    arg = Arg(type=field.type)
     # HACK For detecting dataclasses._MISSING_TYPE
     if "dataclasses._MISSING_TYPE" not in repr(field.default):
-        plugin["default"] = field.default
+        arg["default"] = field.default
     if "dataclasses._MISSING_TYPE" not in repr(field.default_factory):
-        plugin["default"] = field.default_factory()
+        arg["default"] = field.default_factory()
     if field.type == bool:
-        plugin["action"] = "store_true"
+        arg["action"] = "store_true"
     elif inspect.isclass(field.type):
         if issubclass(field.type, (list, collections.UserList)):
-            plugin["nargs"] = "+"
+            arg["nargs"] = "+"
             if not hasattr(field.type, "SINGLETON"):
                 raise AttributeError(
                     f"{field.type.__qualname__} missing attribute SINGLETON"
                 )
-            plugin["action"] = list_action(field.type)
-            plugin["type"] = field.type.SINGLETON
-        if hasattr(plugin["type"], "load"):
+            arg["action"] = list_action(field.type)
+            arg["type"] = field.type.SINGLETON
+        if hasattr(arg["type"], "load"):
             # TODO (python3.8) Use Protocol
-            plugin["type"] = plugin["type"].load
+            arg["type"] = arg["type"].load
     elif get_origin(field.type) is list:
-        plugin["type"] = get_args(field.type)[0]
-        plugin["nargs"] = "+"
+        arg["type"] = get_args(field.type)[0]
+        arg["nargs"] = "+"
     if "description" in field.metadata:
-        plugin["help"] = field.metadata["description"]
-    return plugin
+        arg["help"] = field.metadata["description"]
+    return arg
 
 
-def convert_value(plugin, value):
+def convert_value(arg, value):
     if value is None:
         # Return default if not found and available
-        if "default" in plugin:
-            return copy.deepcopy(plugin["default"])
+        if "default" in arg:
+            return copy.deepcopy(arg["default"])
         raise MissingConfig
 
-    if not "nargs" in plugin and isinstance(value, list):
+    if not "nargs" in arg and isinstance(value, list):
         value = value[0]
-    if "type" in plugin:
-        type_cls = plugin["type"]
+    if "type" in arg:
+        type_cls = arg["type"]
         if type_cls == Type:
             type_cls = type_lookup
         # TODO This is a oversimplification of argparse's nargs
-        if "nargs" in plugin:
+        if "nargs" in arg:
             value = list(map(type_cls, value))
         else:
             value = type_cls(value)
-    if "action" in plugin:
-        if isinstance(plugin["action"], str):
+    if "action" in arg:
+        if isinstance(arg["action"], str):
             # HACK This accesses _pop_action_class from ArgumentParser
             # which is prefaced with an underscore indicating it not an API
             # we can rely on
-            plugin["action"] = ARGP._pop_action_class(plugin)
+            arg["action"] = ARGP._pop_action_class(arg)
         namespace = ConfigurableParsingNamespace()
-        action = plugin["action"](dest="dest", option_strings="")
+        action = arg["action"](dest="dest", option_strings="")
         action(None, namespace, value)
         value = namespace.dest
     return value
@@ -193,7 +193,7 @@ def _fromdict(cls, **kwargs):
             config = {}
             if is_config_dict(value):
                 value, config = value["plugin"], value["config"]
-            value = convert_value(mkplugin(field), value)
+            value = convert_value(mkarg(field), value)
             if inspect.isclass(value) and issubclass(value, BaseConfigurable):
                 # TODO This probably isn't 100% correct. Figure out what we need
                 # to do with nested configs.
@@ -402,15 +402,15 @@ class BaseConfigurable(metaclass=BaseConfigurableMetaClass):
         label_above = cls.add_label(*above) + list(path)
         no_label_above = cls.add_label(*above)[:-1] + list(path)
 
-        plugin = None
+        arg = None
         try:
-            plugin = traverse_config_get(args, *args_above)
+            arg = traverse_config_get(args, *args_above)
         except KeyError as error:
             pass
 
-        if plugin is None:
-            raise MissingPlugin(
-                "Plugin %r missing from %s%s%s"
+        if arg is None:
+            raise MissingArg(
+                "Arg %r missing from %s%s%s"
                 % (
                     args_above[-1],
                     cls.__qualname__,
@@ -430,7 +430,7 @@ class BaseConfigurable(metaclass=BaseConfigurableMetaClass):
                 value = traverse_config_get(config, *no_label_above)
 
         try:
-            return convert_value(plugin, value)
+            return convert_value(arg, value)
         except MissingConfig as error:
             error.args = (
                 (
@@ -445,7 +445,7 @@ class BaseConfigurable(metaclass=BaseConfigurableMetaClass):
             raise
 
     @classmethod
-    def args(cls, args, *above) -> Dict[str, Plugin]:
+    def args(cls, args, *above) -> Dict[str, Arg]:
         """
         Return a dict containing arguments required for this class
         """
@@ -454,7 +454,7 @@ class BaseConfigurable(metaclass=BaseConfigurableMetaClass):
                 f"{cls.__qualname__} requires CONFIG property or implementation of args() classmethod"
             )
         for field in dataclasses.fields(cls.CONFIG):
-            cls.config_set(args, above, field.name, mkplugin(field))
+            cls.config_set(args, above, field.name, mkarg(field))
         return args
 
     @classmethod

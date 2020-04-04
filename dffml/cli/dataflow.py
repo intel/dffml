@@ -16,23 +16,23 @@ from ..configloader.json import JSONConfigLoader
 from ..source.source import SubsetSources
 from ..util.data import merge
 from ..util.entrypoint import load
-from ..util.cli.plugin import Plugin
+from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
 from ..util.cli.cmds import SourcesCMD, KeysCMD
 from ..util.cli.parser import ParseInputsAction
 
 
 class Merge(CMD):
-    plugin_dataflows = Plugin(
+    arg_dataflows = Arg(
         "dataflows", help="DataFlows to merge", nargs="+", type=pathlib.Path
     )
-    plugin_config = Plugin(
+    arg_config = Arg(
         "-config",
         help="ConfigLoader to use for exporting",
         type=BaseConfigLoader.load,
         default=JSONConfigLoader,
     )
-    plugin_not_linked = Plugin(
+    arg_not_linked = Arg(
         "-not-linked",
         dest="not_linked",
         help="Do not export dataflows as linked",
@@ -61,16 +61,16 @@ class Merge(CMD):
 
 
 class Create(CMD):
-    plugin_operations = Plugin(
+    arg_operations = Arg(
         "operations", nargs="+", help="Operations to create a dataflow for"
     )
-    plugin_config = Plugin(
+    arg_config = Arg(
         "-config",
         help="ConfigLoader to use",
         type=BaseConfigLoader.load,
         default=JSONConfigLoader,
     )
-    plugin_not_linked = Plugin(
+    arg_not_linked = Arg(
         "-not-linked",
         dest="not_linked",
         help="Do not export dataflows as linked",
@@ -94,22 +94,22 @@ class Create(CMD):
 
 class RunCMD(SourcesCMD):
 
-    plugin_sources = SourcesCMD.plugin_sources.modify(required=False)
-    plugin_caching = Plugin(
+    arg_sources = SourcesCMD.arg_sources.modify(required=False)
+    arg_caching = Arg(
         "-caching",
         help="Skip running DataFlow if a record already contains these features",
         nargs="+",
         required=False,
         default=[],
     )
-    plugin_no_update = Plugin(
+    arg_no_update = Arg(
         "-no-update",
         help="Update record with sources",
         required=False,
         default=False,
         action="store_true",
     )
-    plugin_no_strict = Plugin(
+    arg_no_strict = Arg(
         "-no-strict",
         help="Do not exit on operation exceptions, just log errors",
         dest="no_strict",
@@ -117,19 +117,19 @@ class RunCMD(SourcesCMD):
         default=False,
         action="store_true",
     )
-    plugin_dataflow = Plugin(
+    arg_dataflow = Arg(
         "-dataflow", help="File containing exported DataFlow", required=True
     )
-    plugin_config = Plugin(
+    arg_config = Arg(
         "-config",
         help="ConfigLoader to use for importing DataFlow",
         type=BaseConfigLoader.load,
         default=None,
     )
-    plugin_orchestrator = Plugin(
+    arg_orchestrator = Arg(
         "-orchestrator", type=BaseOrchestrator.load, default=MemoryOrchestrator
     )
-    plugin_inputs = Plugin(
+    arg_inputs = Arg(
         "-inputs",
         nargs="+",
         action=ParseInputsAction,
@@ -137,7 +137,7 @@ class RunCMD(SourcesCMD):
         help="Other inputs to add under each ctx (record's key will "
         + "be used as the context)",
     )
-    plugin_record_def = Plugin(
+    arg_record_def = Arg(
         "-record-def",
         default=False,
         type=str,
@@ -265,30 +265,28 @@ class Run(CMD):
 
 class Diagram(CMD):
 
-    plugin_stages = Plugin(
+    arg_stages = Arg(
         "-stages",
         help="Which stages to display: (processing, cleanup, output)",
         nargs="+",
         default=[],
         required=False,
     )
-    plugin_simple = Plugin(
+    arg_simple = Arg(
         "-simple",
         help="Don't display input and output names",
         default=False,
         action="store_true",
         required=False,
     )
-    plugin_display = Plugin(
+    arg_display = Arg(
         "-display",
         help="How to display (TD: top down, LR, RL, BT)",
         default="TD",
         required=False,
     )
-    plugin_dataflow = Plugin(
-        "dataflow", help="File containing exported DataFlow"
-    )
-    plugin_config = Plugin(
+    arg_dataflow = Arg("dataflow", help="File containing exported DataFlow")
+    arg_config = Arg(
         "-config",
         help="ConfigLoader to use for importing",
         type=BaseConfigLoader.load,

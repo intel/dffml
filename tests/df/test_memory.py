@@ -1,7 +1,7 @@
 from unittest.mock import patch
 from typing import NamedTuple
 
-from dffml.util.cli.plugin import Plugin, parse_unknown
+from dffml.util.cli.arg import Arg, parse_unknown
 from dffml.util.entrypoint import entrypoint
 from dffml.df.base import BaseKeyValueStore, BaseRedundancyCheckerConfig
 from dffml.df.memory import MemoryKeyValueStore, MemoryRedundancyChecker
@@ -22,7 +22,7 @@ class KeyValueStoreWithArguments(BaseKeyValueStore):
 
     @classmethod
     def args(cls, args, *above):
-        cls.config_set(args, above, "filename", Plugin(type=str))
+        cls.config_set(args, above, "filename", Arg(type=str))
         return args
 
     @classmethod
@@ -51,7 +51,7 @@ class TestMemoryRedundancyChecker(AsyncTestCase):
                             "plugin": None,
                             "config": {
                                 "kvstore": {
-                                    "plugin": Plugin(
+                                    "plugin": Arg(
                                         type=BaseKeyValueStore.load,
                                         default=MemoryKeyValueStore,
                                     ),
@@ -60,7 +60,7 @@ class TestMemoryRedundancyChecker(AsyncTestCase):
                                             "plugin": None,
                                             "config": {
                                                 "filename": {
-                                                    "plugin": Plugin(type=str),
+                                                    "plugin": Arg(type=str),
                                                     "config": {},
                                                 }
                                             },

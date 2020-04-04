@@ -2,7 +2,7 @@ import json
 from typing import Dict
 
 from ..util.entrypoint import entrypoint
-from ..util.cli.plugin import Plugin
+from ..util.cli.arg import Arg
 from ..base import BaseConfig
 from .configloader import BaseConfigLoaderContext, BaseConfigLoader
 
@@ -20,7 +20,7 @@ class JSONConfigLoader(BaseConfigLoader):
     CONTEXT = JSONConfigLoaderContext
 
     @classmethod
-    def args(cls, args, *above) -> Dict[str, Plugin]:
+    def args(cls, args, *above) -> Dict[str, Arg]:
         return args
 
     @classmethod

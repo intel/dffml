@@ -24,7 +24,7 @@ from ..base import (
     BaseDataFlowFacilitatorObjectContext,
     BaseDataFlowFacilitatorObject,
 )
-from ..util.cli.plugin import Plugin
+from ..util.cli.arg import Arg
 from ..util.asynchelper import context_stacker
 from ..util.entrypoint import base_entry_point
 
@@ -49,7 +49,7 @@ class BaseDataFlowObject(BaseDataFlowFacilitatorObject):
     """
 
     @classmethod
-    def args(cls, args, *above) -> Dict[str, Plugin]:
+    def args(cls, args, *above) -> Dict[str, Arg]:
         if hasattr(cls, "CONFIG"):
             return super(BaseDataFlowObject, cls).args(args, *above)
         return args
@@ -92,7 +92,7 @@ class OperationImplementationContext(BaseDataFlowObjectContext):
         """
         Registers subflow `dataflow` with parent flow and yields an instance of `BaseOrchestratorContext`
 
-        >>> async def my_operation(plugin):
+        >>> async def my_operation(arg):
         ...     async with self.subflow(self.config.dataflow) as octx:
         ...         return octx.run({"ctx_str": []})
         """

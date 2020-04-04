@@ -12,7 +12,7 @@ from dffml.source.source import BaseSource
 from dffml.source.csv import CSVSource
 from dffml.source.json import JSONSource
 from dffml.util.entrypoint import entrypoint, base_entry_point
-from dffml.util.cli.plugin import Plugin
+from dffml.util.cli.arg import Arg
 from dffml.util.cli.cmd import parse_unknown
 
 
@@ -38,7 +38,7 @@ class FakeTesting(BaseTesting):
     CONFIG = FakeTestingConfig
 
 
-class TestAutoPluginsConfig(unittest.TestCase):
+class TestAutoArgsConfig(unittest.TestCase):
     def test_00_args(self):
         self.maxDiff = 99999
         self.assertEqual(
@@ -51,15 +51,15 @@ class TestAutoPluginsConfig(unittest.TestCase):
                             "plugin": None,
                             "config": {
                                 "num": {
-                                    "plugin": Plugin(type=float),
+                                    "plugin": Arg(type=float),
                                     "config": {},
                                 },
                                 "files": {
-                                    "plugin": Plugin(type=str, nargs="+"),
+                                    "plugin": Arg(type=str, nargs="+"),
                                     "config": {},
                                 },
                                 "features": {
-                                    "plugin": Plugin(
+                                    "plugin": Arg(
                                         type=Feature.load,
                                         nargs="+",
                                         action=list_action(Features),
@@ -67,13 +67,13 @@ class TestAutoPluginsConfig(unittest.TestCase):
                                     "config": {},
                                 },
                                 "name": {
-                                    "plugin": Plugin(
+                                    "plugin": Arg(
                                         type=str, help="Name of FakeTesting"
                                     ),
                                     "config": {},
                                 },
                                 "readonly": {
-                                    "plugin": Plugin(
+                                    "plugin": Arg(
                                         type=bool,
                                         action="store_true",
                                         default=False,
@@ -81,13 +81,13 @@ class TestAutoPluginsConfig(unittest.TestCase):
                                     "config": {},
                                 },
                                 "label": {
-                                    "plugin": Plugin(
+                                    "plugin": Arg(
                                         type=str, default="unlabeled"
                                     ),
                                     "config": {},
                                 },
                                 "source": {
-                                    "plugin": Plugin(
+                                    "plugin": Arg(
                                         type=BaseSource.load,
                                         default=JSONSource,
                                     ),

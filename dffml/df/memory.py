@@ -61,7 +61,7 @@ from .base import (
 )
 
 from ..util.entrypoint import entrypoint
-from ..util.cli.plugin import Plugin
+from ..util.cli.arg import Arg
 from ..util.data import ignore_args
 from ..util.asynchelper import aenter_stack, concurrently
 
@@ -597,12 +597,12 @@ class MemoryOperationNetwork(BaseOperationNetwork, BaseMemoryDataFlowObject):
     CONTEXT = MemoryOperationNetworkContext
 
     @classmethod
-    def args(cls, args, *above) -> Dict[str, Plugin]:
+    def args(cls, args, *above) -> Dict[str, Arg]:
         cls.config_set(
             args,
             above,
             "ops",
-            Plugin(type=Operation.load, nargs="+", default=[]),
+            Arg(type=Operation.load, nargs="+", default=[]),
         )
         return args
 
@@ -731,13 +731,13 @@ class MemoryRedundancyChecker(BaseRedundancyChecker, BaseMemoryDataFlowObject):
         await self.__stack.__aexit__(exc_type, exc_value, traceback)
 
     @classmethod
-    def args(cls, args, *above) -> Dict[str, Plugin]:
+    def args(cls, args, *above) -> Dict[str, Arg]:
         # Enable the user to specify a key value store
         cls.config_set(
             args,
             above,
             "kvstore",
-            Plugin(type=BaseKeyValueStore.load, default=MemoryKeyValueStore),
+            Arg(type=BaseKeyValueStore.load, default=MemoryKeyValueStore),
         )
         # Load all the key value stores and add the arguments they might require
         for loaded in BaseKeyValueStore.load():
@@ -1055,7 +1055,7 @@ class MemoryOperationImplementationNetwork(
     CONTEXT = MemoryOperationImplementationNetworkContext
 
     @classmethod
-    def args(cls, args, *above) -> Dict[str, Plugin]:
+    def args(cls, args, *above) -> Dict[str, Arg]:
         # Enable the user to specify operation implementations to be loaded via
         # the entrypoint system (by ParseOperationImplementationAction)
         # TODO opimps should be operations
@@ -1063,7 +1063,7 @@ class MemoryOperationImplementationNetwork(
             args,
             above,
             "opimps",
-            Plugin(type=OperationImplementation.load, nargs="+", default=[]),
+            Arg(type=OperationImplementation.load, nargs="+", default=[]),
         )
         # Add orig label to above since we are done loading
         above = cls.add_orig_label(*above)
@@ -1630,21 +1630,21 @@ class MemoryOrchestrator(BaseOrchestrator, BaseMemoryDataFlowObject):
         )
 
     @classmethod
-    def args(cls, args, *above) -> Dict[str, Plugin]:
+    def args(cls, args, *above) -> Dict[str, Arg]:
         # Extending above is done right before loading args of subclasses
         cls.config_set(
             args,
             above,
             "input",
             "network",
-            Plugin(type=BaseInputNetwork.load, default=MemoryInputNetwork),
+            Arg(type=BaseInputNetwork.load, default=MemoryInputNetwork),
         )
         cls.config_set(
             args,
             above,
             "operation",
             "network",
-            Plugin(
+            Arg(
                 type=BaseOperationNetwork.load, default=MemoryOperationNetwork
             ),
         )
@@ -1653,7 +1653,7 @@ class MemoryOrchestrator(BaseOrchestrator, BaseMemoryDataFlowObject):
             above,
             "opimp",
             "network",
-            Plugin(
+            Arg(
                 type=BaseOperationImplementationNetwork.load,
                 default=MemoryOperationImplementationNetwork,
             ),
@@ -1663,13 +1663,13 @@ class MemoryOrchestrator(BaseOrchestrator, BaseMemoryDataFlowObject):
             above,
             "lock",
             "network",
-            Plugin(type=BaseLockNetwork.load, default=MemoryLockNetwork),
+            Arg(type=BaseLockNetwork.load, default=MemoryLockNetwork),
         )
         cls.config_set(
             args,
             above,
             "rchecker",
-            Plugin(
+            Arg(
                 type=BaseRedundancyChecker.load,
                 default=MemoryRedundancyChecker,
             ),

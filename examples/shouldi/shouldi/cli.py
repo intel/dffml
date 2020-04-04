@@ -1,6 +1,6 @@
 # Command line interface helpers
 from dffml.util.cli.cmd import CMD
-from dffml.util.cli.plugin import Plugin
+from dffml.util.cli.arg import Arg
 
 # DataFlow specific classes
 from dffml.df.types import DataFlow, Input
@@ -47,7 +47,7 @@ DATAFLOW.seed.append(
 
 class Install(CMD):
 
-    plugin_packages = Plugin(
+    arg_packages = Arg(
         "packages", nargs="+", help="Package to check if we should install"
     )
 

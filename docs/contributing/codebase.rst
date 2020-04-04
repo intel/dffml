@@ -134,7 +134,7 @@ For example:
           length: 10
           name: work
 
-Here, ``plugin`` is the ``...Plugin`` class which signifies the plugin to load.
+Here, ``plugin`` is the ``...Arg`` class which signifies the plugin to load.
 ``config`` is the ``...Config`` class as a dict for that plugin.
 
 The command line equivalent for the model is...

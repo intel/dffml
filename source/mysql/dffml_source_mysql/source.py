@@ -7,7 +7,7 @@ import aiomysql
 from dffml.base import BaseConfig
 from dffml.record import Record
 from dffml.source.source import BaseSourceContext, BaseSource
-from dffml.util.cli.plugin import Plugin
+from dffml.util.cli.arg import Arg
 from dffml.util.entrypoint import entrypoint
 
 
@@ -158,17 +158,17 @@ class MySQLSource(BaseSource):
         await self.pool.wait_closed()
 
     @classmethod
-    def args(cls, args, *above) -> Dict[str, Plugin]:
-        cls.config_set(args, above, "host", Plugin(default="127.0.0.1"))
-        cls.config_set(args, above, "port", Plugin(type=int, default=3306))
-        cls.config_set(args, above, "user", Plugin())
-        cls.config_set(args, above, "password", Plugin())
-        cls.config_set(args, above, "db", Plugin())
+    def args(cls, args, *above) -> Dict[str, Arg]:
+        cls.config_set(args, above, "host", Arg(default="127.0.0.1"))
+        cls.config_set(args, above, "port", Arg(type=int, default=3306))
+        cls.config_set(args, above, "user", Arg())
+        cls.config_set(args, above, "password", Arg())
+        cls.config_set(args, above, "db", Arg())
         cls.config_set(
             args,
             above,
             "records-query",
-            Plugin(
+            Arg(
                 type=str,
                 help="SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM record_data",
             ),
@@ -177,7 +177,7 @@ class MySQLSource(BaseSource):
             args,
             above,
             "record-query",
-            Plugin(
+            Arg(
                 type=str,
                 help="SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM record_data WHERE `key`=%s",
             ),
@@ -186,7 +186,7 @@ class MySQLSource(BaseSource):
             args,
             above,
             "update-query",
-            Plugin(
+            Arg(
                 type=str,
                 help="INSERT INTO record_data (`key`, data_1, data_2) VALUES(%s, %s, %s) ON DUPLICATE KEY UPDATE data_1 = %s, data_2=%s",
             ),
@@ -195,15 +195,13 @@ class MySQLSource(BaseSource):
             args,
             above,
             "model-columns",
-            Plugin(type=str, nargs="+", help="Order of Columns in table"),
+            Arg(type=str, nargs="+", help="Order of Columns in table"),
         )
         cls.config_set(
             args,
             above,
             "ca",
-            Plugin(
-                type=str, help="Path to server TLS certificate", default=None
-            ),
+            Arg(type=str, help="Path to server TLS certificate", default=None),
         )
         return args
 

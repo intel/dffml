@@ -10,7 +10,7 @@ from unittest.mock import patch
 from dffml.record import Record
 from dffml.feature import Feature, Features
 
-from dffml.util.cli.plugin import Plugin, parse_unknown
+from dffml.util.cli.arg import Arg, parse_unknown
 from dffml.util.cli.cmd import JSONEncoder, CMD, Parser, ParseLoggingAction
 from dffml.util.cli.parser import list_action, ParseInputsAction
 from dffml.util.cli.cmds import ListEntrypoint
@@ -85,8 +85,8 @@ class TestJSONEncoder(unittest.TestCase):
 class TestCMD(AsyncTestCase):
     def test_init(self):
         class CMDTest(CMD):
-            plugin_nope_present = Plugin("nope", default=False)
-            plugin_ignored = Plugin("ignored")
+            arg_nope_present = Arg("nope", default=False)
+            arg_ignored = Arg("ignored")
 
         cmd = CMDTest(nope=True)
         self.assertTrue(getattr(cmd, "log", False))
@@ -177,18 +177,18 @@ class TestCMD(AsyncTestCase):
             mock_method.assert_called_once()
 
 
-class TestPlugin(unittest.TestCase):
+class TestArg(unittest.TestCase):
     def test_init(self):
-        plugin = Plugin("-test", key="value")
-        self.assertEqual(plugin.name, "-test")
-        self.assertIn("key", plugin)
-        self.assertEqual(plugin["key"], "value")
+        arg = Arg("-test", key="value")
+        self.assertEqual(arg.name, "-test")
+        self.assertIn("key", arg)
+        self.assertEqual(arg["key"], "value")
 
     def test_modify(self):
-        plugin = Plugin("-test", key="value")
-        first = plugin.modify(name="-first")
-        second = plugin.modify(key="new_value")
-        self.assertEqual(plugin.name, "-test")
+        arg = Arg("-test", key="value")
+        first = arg.modify(name="-first")
+        second = arg.modify(key="new_value")
+        self.assertEqual(arg.name, "-test")
         self.assertEqual(first.name, "-first")
         self.assertEqual(second.name, "-test")
         self.assertEqual(second["key"], "new_value")
@@ -234,7 +234,7 @@ class TestPlugin(unittest.TestCase):
 class TestParser(unittest.TestCase):
     def test_add_subs(self):
         class FakeSubCMD(CMD):
-            plugin_test = Plugin("-test")
+            arg_test = Arg("-test")
 
         class FakeCMD(CMD):
             sub_cmd = FakeSubCMD
