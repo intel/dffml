@@ -115,7 +115,6 @@
 <li class="toctree-l2"><a class="reference internal" href="style.html">Style</a></li>
 <li class="toctree-l2"><a class="reference internal" href="codebase.html">Codebase Layout And Notes</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Git and GitHub</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#working-on-a-branch">Working On A Branch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#issue-and-pull-request-title-formatting">Issue and Pull Request title formatting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#submitting-a-pull-request">Submitting A Pull Request</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#how-to-read-the-ci">How to Read the CI</a></li>
@@ -124,6 +123,7 @@
 <li class="toctree-l2"><a class="reference internal" href="testing.html">Testing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="docs.html">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="debugging.html">Debugging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="editors/index.html">Setting Up Your Editor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="maintainers.html">Maintainer Docs</a></li>
 </ul>
 </li>
@@ -198,19 +198,29 @@
             
   <div class="section" id="git-and-github">
 <h1>Git and GitHub<a class="headerlink" href="#git-and-github" title="Permalink to this headline">¶</a></h1>
-<p>We encourage people to commit code and push it up to GitHub often. That way, if
-you’re having trouble with something you can send others a link to your code
+<p>We encourage people to commit code and push it up to GitHub often. That way,
+if you’re having trouble with something you can send others a link to your code
 where they can easily get an idea of what might be going wrong. Don’t worry if
 it’s nowhere near complete! Asking each other for help just gets us to working
 code faster!</p>
-<div class="section" id="working-on-a-branch">
-<h2>Working On A Branch<a class="headerlink" href="#working-on-a-branch" title="Permalink to this headline">¶</a></h2>
-<p>Be sure to checkout a new branch to do your work on.</p>
+<p>In your local computer, create a new folder for the project, open terminal
+(Mac and Linux) or <a class="reference external" href="https://gitforwindows.org/">Gitbash</a> (Windows) and
+navigate to the folder. Using the following command, clone DFFML
+repository to this folder.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git clone git@github.com:intel/dffml
+</pre></div>
+</div>
+<p>Navigate inside the DFFML folder and run the following command to make sure
+that you have the latest version of the code. Be sure to checkout a new branch
+to do your work on.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git fetch origin
 <span class="gp">$</span> git checkout -b my_new_thing origin/master
 </pre></div>
 </div>
-<p>You’ll need to fork the repo on GitHub too. Then add that as a remote.</p>
+<p>You need to have your own version of DFFML to track your work. Log in to your
+Github account and go to <a class="reference external" href="https://github.com/intel/dffml">DFFML</a> repository.
+There is a <code class="docutils literal notranslate"><span class="pre">Fork</span></code> tab at the top right of the page. Click on the button to
+fork a copy into your Github account.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><code class="docutils literal notranslate"><span class="pre">$USER</span></code> in this case would be your GitHub username</p>
@@ -222,9 +232,8 @@ code faster!</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git push -u <span class="nv">$USER</span> my_new_thing
 </pre></div>
 </div>
-<p>Then you can keep committing on this branch and just use <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span></code> to send your
-new commits to GitHub.</p>
-</div>
+<p>Then you can keep committing on this branch and just use <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span></code> to send
+your new commits to GitHub.</p>
 <div class="section" id="issue-and-pull-request-title-formatting">
 <h2>Issue and Pull Request title formatting<a class="headerlink" href="#issue-and-pull-request-title-formatting" title="Permalink to this headline">¶</a></h2>
 <p>Please create issues and Pull Requests with titles in the format of</p>
