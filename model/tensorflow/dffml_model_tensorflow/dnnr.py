@@ -3,41 +3,26 @@ Uses Tensorflow to create a generic DNN which learns on all of the features in a
 record.
 """
 import os
-import pathlib
-from typing import List, Dict, Any, AsyncIterator
+from typing import Dict, Any, AsyncIterator
 
 import numpy as np
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
 
+from dffml.base import config
 from dffml.record import Record
 from dffml.model.model import Model
 from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
-from dffml.base import config, field
-from dffml.feature.feature import Feature, Features
 
-from .dnnc import TensorflowModelContext
+from .dnnc import TensorflowModelContext, TensorflowBaseConfig
 
 
 @config
-class DNNRegressionModelConfig:
-    predict: Feature = field("Feature name holding target values")
-    features: Features = field("Features to train on")
-    steps: int = field("Number of steps to train the model", default=3000)
-    epochs: int = field(
-        "Number of iterations to pass over all records in a source", default=30
-    )
-    directory: pathlib.Path = field(
-        "Directory where state should be saved",
-        default=pathlib.Path("~", ".cache", "dffml", "tensorflow"),
-    )
-    hidden: List[int] = field(
-        "List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer",
-        default_factory=lambda: [12, 40, 15],
-    )
+class DNNRegressionModelConfig(TensorflowBaseConfig):
+    pass
 
 
 class DNNRegressionModelContext(TensorflowModelContext):
@@ -71,18 +56,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
 
         return self._model
 
-    async def training_input_fn(
-        self,
-        sources: Sources,
-        batch_size=20,
-        shuffle=False,
-        epochs=1,
-        **kwargs,
-    ):
-        """
-        Uses the numpy input function with data from record features.
-        """
-        self.logger.debug("Training on features: %r", self.features)
+    async def sources_to_array(self, sources: Sources):
         x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
         y_cols = []
 
@@ -95,6 +69,22 @@ class DNNRegressionModelContext(TensorflowModelContext):
         y_cols = np.array(y_cols)
         for feature in x_cols:
             x_cols[feature] = np.array(x_cols[feature])
+
+        return x_cols, y_cols
+
+    async def training_input_fn(
+        self,
+        sources: Sources,
+        batch_size=20,
+        shuffle=False,
+        epochs=1,
+        **kwargs,
+    ):
+        """
+        Uses the numpy input function with data from record features.
+        """
+        self.logger.debug("Training on features: %r", self.features)
+        x_cols, y_cols = await self.sources_to_array(sources)
         self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
@@ -120,17 +110,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
         """
         Uses the numpy input function with data from record features.
         """
-        x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
-        y_cols = []
-
-        async for record in sources.with_features(self.all_features):
-            for feature, results in record.features(self.features).items():
-                x_cols[feature].append(np.array(results))
-            y_cols.append(record.feature(self.parent.config.predict.NAME))
-
-        y_cols = np.array(y_cols)
-        for feature in x_cols:
-            x_cols[feature] = np.array(x_cols[feature])
+        x_cols, y_cols = await self.sources_to_array(sources)
         self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
@@ -164,15 +144,8 @@ class DNNRegressionModelContext(TensorflowModelContext):
         """
         Uses trained data to make a prediction about the quality of a record.
         """
-
-        if not os.path.isdir(self.model_dir_path):
-            raise NotADirectoryError("Model not trained")
-        # Create the input function
-        input_fn, predict_record = await self.predict_input_fn(records)
-        # Makes predictions on
-        predictions = self.model.predict(input_fn=input_fn)
-        target = self.parent.config.predict.NAME
-        for record, pred_dict in zip(predict_record, predictions):
+        predict, predictions, target = await self.get_predictions(records)
+        for record, pred_dict in zip(predict, predictions):
             # TODO Instead of float("nan") save accuracy value and use that.
             record.predicted(
                 target, float(pred_dict["predictions"]), float("nan")

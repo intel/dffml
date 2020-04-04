@@ -7,6 +7,7 @@ import abc
 import hashlib
 import inspect
 import pathlib
+from dataclasses import dataclass
 from typing import List, Dict, Any, AsyncIterator, Type
 
 import numpy as np
@@ -21,6 +22,24 @@ from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
 from dffml.feature.feature import Feature, Features
 from dffml.model.model import ModelContext, Model, ModelNotTrained
+
+
+@dataclass
+class TensorflowBaseConfig:
+    predict: Feature = field("Feature name holding target values")
+    features: Features = field("Features to train on")
+    steps: int = field("Number of steps to train the model", default=3000)
+    epochs: int = field(
+        "Number of iterations to pass over all records in a source", default=30
+    )
+    directory: pathlib.Path = field(
+        "Directory where state should be saved",
+        default=pathlib.Path("~", ".cache", "dffml", "tensorflow"),
+    )
+    hidden: List[int] = field(
+        "List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer",
+        default_factory=lambda: [12, 40, 15],
+    )
 
 
 class TensorflowModelContext(ModelContext):
@@ -122,6 +141,17 @@ class TensorflowModelContext(ModelContext):
         input_fn = await self.training_input_fn(sources)
         self.model.train(input_fn=input_fn, steps=self.parent.config.steps)
 
+    async def get_predictions(self, records: Record):
+        if not os.path.isdir(self.model_dir_path):
+            raise ModelNotTrained("Train model before prediction.")
+        # Create the input function
+        input_fn, predict = await self.predict_input_fn(records)
+        # Makes predictions on classifications
+        predictions = self.model.predict(input_fn=input_fn)
+        target = self.parent.config.predict.NAME
+
+        return predict, predictions, target
+
     @property
     @abc.abstractmethod
     def model(self):
@@ -131,28 +161,16 @@ class TensorflowModelContext(ModelContext):
 
 
 @config
-class DNNClassifierModelConfig:
-    predict: Feature = field("Feature name holding predict value")
-    classifications: List[str] = field("Options for value of classification")
-    features: Features = field("Features to train on")
+class DNNClassifierModelConfig(TensorflowBaseConfig):
+    classifications: List[str] = field(
+        "Options for value of classification", default=None
+    )
     clstype: Type = field("Data type of classifications values", default=str)
     batchsize: int = field(
         "Number records to pass through in an epoch", default=20
     )
     shuffle: bool = field(
         "Randomise order of records in a batch", default=True
-    )
-    steps: int = field("Number of steps to train the model", default=3000)
-    epochs: int = field(
-        "Number of iterations to pass over all records in a source", default=30
-    )
-    directory: pathlib.Path = field(
-        "Directory where state should be saved",
-        default=pathlib.Path("~", ".cache", "dffml", "tensorflow"),
-    )
-    hidden: List[int] = field(
-        "List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer",
-        default_factory=lambda: [12, 40, 15],
     )
 
     def __post_init__(self):
@@ -212,11 +230,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         )
         return self._model
 
-    async def training_input_fn(self, sources: Sources, **kwargs):
-        """
-        Uses the numpy input function with data from record features.
-        """
-        self.logger.debug("Training on features: %r", self.features)
+    async def sources_to_array(self, sources: Sources):
         x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
         y_cols = []
         for record in [
@@ -239,6 +253,15 @@ class DNNClassifierModelContext(TensorflowModelContext):
         y_cols = np.array(y_cols)
         for feature in x_cols:
             x_cols[feature] = np.array(x_cols[feature])
+
+        return x_cols, y_cols
+
+    async def training_input_fn(self, sources: Sources, **kwargs):
+        """
+        Uses the numpy input function with data from record features.
+        """
+        self.logger.debug("Training on features: %r", self.features)
+        x_cols, y_cols = await self.sources_to_array(sources)
         self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
@@ -257,26 +280,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         """
         Uses the numpy input function with data from record features.
         """
-        x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
-        y_cols = []
-        for record in [
-            record
-            async for record in sources.with_features(
-                self.features + [self.parent.config.predict.NAME]
-            )
-            if record.feature(self.parent.config.predict.NAME)
-            in self.classifications
-        ]:
-            for feature, results in record.features(self.features).items():
-                x_cols[feature].append(np.array(results))
-            y_cols.append(
-                self.classifications[
-                    record.feature(self.parent.config.predict.NAME)
-                ]
-            )
-        y_cols = np.array(y_cols)
-        for feature in x_cols:
-            x_cols[feature] = np.array(x_cols[feature])
+        x_cols, y_cols = await self.sources_to_array(sources)
         self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
@@ -308,13 +312,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         """
         Uses trained data to make a prediction about the quality of a record.
         """
-        if not os.path.isdir(self.model_dir_path):
-            raise ModelNotTrained("Train model before prediction.")
-        # Create the input function
-        input_fn, predict = await self.predict_input_fn(records)
-        # Makes predictions on classifications
-        predictions = self.model.predict(input_fn=input_fn)
-        target = self.parent.config.predict.NAME
+        predict, predictions, target = await self.get_predictions(records)
         for record, pred_dict in zip(predict, predictions):
             class_id = pred_dict["class_ids"][0]
             probability = pred_dict["probabilities"][class_id]
