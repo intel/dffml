@@ -290,22 +290,23 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-
 <span class="sd">    Define a feature using load_def:</span>
+
 <span class="sd">    &gt;&gt;&gt; feature = Feature.load_def(&quot;example&quot;, &quot;float&quot;, 10)</span>
 <span class="sd">    &gt;&gt;&gt; feature.dtype()</span>
-<span class="sd">    float</span>
+<span class="sd">    &lt;class &#39;float&#39;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; feature.NAME</span>
-<span class="sd">    &quot;example&quot;</span>
+<span class="sd">    &#39;example&#39;</span>
 <span class="sd">    &gt;&gt;&gt; feature.length()</span>
 <span class="sd">    10</span>
 
 <span class="sd">    Defining a feature directly using DefFeature:</span>
-<span class="sd">    &gt;&gt;&gt; feature = DefFeature(&quot;example2&quot;, &quot;int&quot;, 20)</span>
+
+<span class="sd">    &gt;&gt;&gt; feature = DefFeature(&quot;example2&quot;, int, 20)</span>
 <span class="sd">    &gt;&gt;&gt; feature.dtype()</span>
-<span class="sd">    int</span>
+<span class="sd">    &lt;class &#39;int&#39;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; feature.NAME</span>
-<span class="sd">    &quot;example2&quot;</span>
+<span class="sd">    &#39;example2&#39;</span>
 <span class="sd">    &gt;&gt;&gt; feature.length()</span>
 <span class="sd">    20</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -348,7 +349,7 @@
 
 <span class="sd">        &gt;&gt;&gt; feature = Feature()</span>
 <span class="sd">        &gt;&gt;&gt; feature.dtype()</span>
-<span class="sd">        int</span>
+<span class="sd">        &lt;class &#39;int&#39;&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> dtype unimplemented&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">int</span></div>
