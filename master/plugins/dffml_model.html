@@ -397,35 +397,12 @@ look for a different saved model.</p>
 <ul class="simple">
 <li><p>predict: Feature</p>
 <ul>
-<li><p>Feature name holding predict value</p></li>
-</ul>
-</li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
+<li><p>Feature name holding target values</p></li>
 </ul>
 </li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
-</ul>
-</li>
-<li><p>clstype: Type</p>
-<ul>
-<li><p>default: &lt;class ‘str’&gt;</p></li>
-<li><p>Data type of classifications values</p></li>
-</ul>
-</li>
-<li><p>batchsize: Integer</p>
-<ul>
-<li><p>default: 20</p></li>
-<li><p>Number records to pass through in an epoch</p></li>
-</ul>
-</li>
-<li><p>shuffle: Boolean</p>
-<ul>
-<li><p>default: True</p></li>
-<li><p>Randomise order of records in a batch</p></li>
 </ul>
 </li>
 <li><p>steps: Integer</p>
@@ -450,6 +427,30 @@ look for a different saved model.</p>
 <ul>
 <li><p>default: [12, 40, 15]</p></li>
 <li><p>List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer</p></li>
+</ul>
+</li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
+<li><p>clstype: Type</p>
+<ul>
+<li><p>default: &lt;class ‘str’&gt;</p></li>
+<li><p>Data type of classifications values</p></li>
+</ul>
+</li>
+<li><p>batchsize: Integer</p>
+<ul>
+<li><p>default: 20</p></li>
+<li><p>Number records to pass through in an epoch</p></li>
+</ul>
+</li>
+<li><p>shuffle: Boolean</p>
+<ul>
+<li><p>default: True</p></li>
+<li><p>Randomise order of records in a batch</p></li>
 </ul>
 </li>
 </ul>

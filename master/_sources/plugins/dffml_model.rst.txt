@@ -122,30 +122,11 @@ Example usage of Tensorflow DNNClassifier model using python API
 
 - predict: Feature
 
-  - Feature name holding predict value
-
-- classifications: List of strings
-
-  - Options for value of classification
+  - Feature name holding target values
 
 - features: List of features
 
   - Features to train on
-
-- clstype: Type
-
-  - default: <class 'str'>
-  - Data type of classifications values
-
-- batchsize: Integer
-
-  - default: 20
-  - Number records to pass through in an epoch
-
-- shuffle: Boolean
-
-  - default: True
-  - Randomise order of records in a batch
 
 - steps: Integer
 
@@ -166,6 +147,26 @@ Example usage of Tensorflow DNNClassifier model using python API
 
   - default: [12, 40, 15]
   - List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- batchsize: Integer
+
+  - default: 20
+  - Number records to pass through in an epoch
+
+- shuffle: Boolean
+
+  - default: True
+  - Randomise order of records in a batch
 
 tfdnnr
 ~~~~~~
