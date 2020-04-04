@@ -6,16 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Operations for taking input from the user(AcceptUserInput) and for printing the output(print_output)
 - Hugging Face Transformers tensorflow based NER models.
 - PNG ConfigLoader for reading images as arrays to predict using MNIST trained models
 - Docstrings and doctestable examples to `record.py`.
 - Inputs can be validated using operations
   - `validate` parameter in `Input` takes `Operation.instance_name`
+- New db source can utilize any database that inherits from `BaseDatabase`
 - Logistic Regression with SAG optimizer
 - Test tensorflow DNNEstimator documentation exaples in CI
 - Add python code for tensorflow DNNEstimator
 - Ability to run a subflow as if it were an operation using the
   `dffml.dataflow.run` operation.
+- Support for operations without inputs.
+- Partial doctestable examples to `features.py`
+- Doctestable examples for `BaseSource`
 ### Fixed
 - New model tutorial mentions file paths that should be edited.
 - DataFlow is no longer a dataclass to prevent it from being exported
@@ -25,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Treat `"~"` as the the home directory rather than a literal
 - Windows support by selecting `asyncio.ProactorEventLoop` and not using
   `asyncio.FastChildWatcher`.
+- Moved SLR into the main dffml package and removed `scratch:slr`.
 
 ## [0.3.5] - 2020-03-10
 ### Added

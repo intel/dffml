@@ -74,6 +74,7 @@ setup(
             "memory = dffml.source.memory:MemorySource",
             "idx1 = dffml.source.idx1:IDX1Source",
             "idx3 = dffml.source.idx3:IDX3Source",
+            "db = dffml.source.db:DbSource",
         ],
         "dffml.port": ["json = dffml.port.json:JSON"],
         "dffml.service.cli": ["dev = dffml.service.dev:Develop"],
@@ -93,6 +94,9 @@ setup(
             "dffml.dataflow.run = dffml.operation.dataflow:run_dataflow",
             # Model
             "dffml.model.predict = dffml.operation.model:model_predict",
+            # io
+            "AcceptUserInput = dffml.operation.io:AcceptUserInput",
+            "print_output = dffml.operation.io:print_output",
         ],
         "dffml.kvstore": ["memory = dffml.df.memory:MemoryKeyValueStore"],
         "dffml.input.network": ["memory = dffml.df.memory:MemoryInputNetwork"],
@@ -109,5 +113,7 @@ setup(
         "dffml.orchestrator": ["memory = dffml.df.memory:MemoryOrchestrator"],
         # Databases
         "dffml.db": ["sqlite = dffml.db.sqlite:SqliteDatabase"],
+        # Models
+        "dffml.model": ["slr = dffml.model.slr:SLRModel"],
     },
 )

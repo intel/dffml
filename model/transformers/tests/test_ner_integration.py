@@ -5,6 +5,8 @@ import pathlib
 import contextlib
 
 from dffml.cli.cli import CLI
+from dffml.df.types import DataFlow
+from dffml.service.dev import Develop
 from dffml.util.asynctestcase import IntegrationCLITestCase
 
 
@@ -138,6 +140,36 @@ class TestNER(IntegrationCLITestCase):
             results = results[0]
             self.assertIn("prediction", results)
             results = results["prediction"]
+            self.assertIn("target", results)
+            results = results["target"]
+            self.assertIn("value", results)
+            results = results["value"]
+            self.assertTrue(results is not None)
+
+            # Make prediction using dffml.operations.predict
+            results = await Develop.cli(
+                "run",
+                "-log",
+                "debug",
+                "dffml.operation.model:model_predict",
+                "-features",
+                json.dumps({"A": 1, "B": "Jack works at Yahoo"}),
+                "-config-model",
+                "ner_tagger",
+                "-config-model-sid",
+                "A:int:1",
+                "-config-model-words",
+                "B:str:1",
+                "-config-model-predict",
+                "target:str:1",
+                "-config-model-model_architecture_type",
+                "bert",
+                "-config-model-model_name_or_path",
+                "bert-base-cased",
+                "-config-model-no_cuda",
+            )
+            self.assertIn("model_predictions", results)
+            results = results["model_predictions"]
             self.assertIn("target", results)
             results = results["target"]
             self.assertIn("value", results)
