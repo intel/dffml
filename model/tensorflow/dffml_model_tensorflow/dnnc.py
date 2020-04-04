@@ -141,6 +141,17 @@ class TensorflowModelContext(ModelContext):
         input_fn = await self.training_input_fn(sources)
         self.model.train(input_fn=input_fn, steps=self.parent.config.steps)
 
+    async def get_predictions(self, records: Record):
+        if not os.path.isdir(self.model_dir_path):
+            raise ModelNotTrained("Train model before prediction.")
+        # Create the input function
+        input_fn, predict = await self.predict_input_fn(records)
+        # Makes predictions on classifications
+        predictions = self.model.predict(input_fn=input_fn)
+        target = self.parent.config.predict.NAME
+
+        return predict, predictions, target
+
     @property
     @abc.abstractmethod
     def model(self):
@@ -301,13 +312,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         """
         Uses trained data to make a prediction about the quality of a record.
         """
-        if not os.path.isdir(self.model_dir_path):
-            raise ModelNotTrained("Train model before prediction.")
-        # Create the input function
-        input_fn, predict = await self.predict_input_fn(records)
-        # Makes predictions on classifications
-        predictions = self.model.predict(input_fn=input_fn)
-        target = self.parent.config.predict.NAME
+        predict, predictions, target = await self.get_predictions(records)
         for record, pred_dict in zip(predict, predictions):
             class_id = pred_dict["class_ids"][0]
             probability = pred_dict["probabilities"][class_id]

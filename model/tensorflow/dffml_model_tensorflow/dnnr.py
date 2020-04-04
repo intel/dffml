@@ -144,15 +144,8 @@ class DNNRegressionModelContext(TensorflowModelContext):
         """
         Uses trained data to make a prediction about the quality of a record.
         """
-
-        if not os.path.isdir(self.model_dir_path):
-            raise NotADirectoryError("Model not trained")
-        # Create the input function
-        input_fn, predict_record = await self.predict_input_fn(records)
-        # Makes predictions on
-        predictions = self.model.predict(input_fn=input_fn)
-        target = self.parent.config.predict.NAME
-        for record, pred_dict in zip(predict_record, predictions):
+        predict, predictions, target = await self.get_predictions(records)
+        for record, pred_dict in zip(predict, predictions):
             # TODO Instead of float("nan") save accuracy value and use that.
             record.predicted(
                 target, float(pred_dict["predictions"]), float("nan")
