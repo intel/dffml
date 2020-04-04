@@ -72,6 +72,11 @@ For example, to install the TensorFlow models
 
     $ python3.7 -m pip install --prefix=~/.local -e model/tensorflow
 
+.. _dev_env_install_official_plugins:
+
+Installing Plugins In Development Mode
+--------------------------------------
+
 To install all the plugins in development mode use the development service's
 install command.
 
@@ -100,12 +105,17 @@ Create the virtual environment.
 
     $ python3.7 -m venv .venv
 
-
-Activate it.
+Activate it (on Linux / OSX / UNIX variants)
 
 .. code-block:: console
 
     $ . .venv/bin/activate
+
+Activate it (on Widows)
+
+.. code-block:: console
+
+    $ .\.venv\Scripts\activate
 
 Install the packages in development mode.
 

@@ -48,6 +48,25 @@ Uses a CSV file as the source of record feature data
 
   - default: tag
 
+- loadfiles: String
+
+  - default: None
+
+db
+~~
+
+*Official*
+
+No description
+
+**Args**
+
+- db: Entrypoint
+
+- table_name: String
+
+- model_columns: List of strings
+
 idx1
 ~~~~
 

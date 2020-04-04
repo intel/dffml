@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>New Model Tutorial &mdash; DFFML 0.3.5 documentation</title>
+  <title>New Model Tutorial &mdash; DFFML 0.3.6 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.5
+                0.3.6
               </div>
             
           
@@ -137,6 +137,7 @@
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
@@ -194,7 +195,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/tutorials/model.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/tutorials/model.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -236,6 +239,7 @@ means it finds the best fit line for a dataset.</p>
 <p>If you’re planing on importing any third party packages, anything on
 <a class="reference external" href="https://pypi.org">PyPi</a>, you’ll want to add it to the <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file
 first.</p>
+<p><strong>setup.py</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">common</span><span class="o">.</span><span class="n">KWARGS</span><span class="p">[</span><span class="s2">&quot;install_requires&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;scikit-learn&gt;=0.21.2&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -264,12 +268,14 @@ data.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">typing</span></code> is for Python’s static type hinting. It lets use give hints to our
 editor or IDE so they can help us check our code before we run it.</p></li>
 </ul>
+<p><strong>dffml_model_myslr/misc.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">statistics</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AsyncIterator</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">List</span>
 </pre></div>
 </div>
 <p>We’ll also need a few things from DFFML.</p>
+<p><strong>dffml_model_myslr/misc.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">config</span><span class="p">,</span>
     <span class="n">field</span><span class="p">,</span>
@@ -298,13 +304,14 @@ going to skip over them in this tutorial.</p>
 <h3>Config<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h3>
 <p>Anything that a user might want to tweak about a models behavior should go in
 the <code class="docutils literal notranslate"><span class="pre">Config</span></code> class for the model.</p>
+<p><strong>dffml_model_myslr/misc.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">MiscModelConfig</span><span class="p">:</span>
     <span class="n">predict</span><span class="p">:</span> <span class="n">Feature</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Label or the value to be predicted&quot;</span><span class="p">)</span>
     <span class="n">features</span><span class="p">:</span> <span class="n">Features</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Features to train on. For SLR only 1 allowed&quot;</span><span class="p">)</span>
     <span class="n">directory</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="s2">&quot;Directory where state should be saved&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.cache&quot;</span><span class="p">,</span> <span class="s2">&quot;dffml&quot;</span><span class="p">,</span> <span class="s2">&quot;miscmodel&quot;</span><span class="p">),</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.cache&quot;</span><span class="p">,</span> <span class="s2">&quot;dffml&quot;</span><span class="p">,</span> <span class="s2">&quot;misc&quot;</span><span class="p">),</span>
     <span class="p">)</span>
 </pre></div>
 </div>
@@ -330,7 +337,8 @@ model from the DFFML command line and other interfaces.</p>
 reference the model by. Instead of <code class="docutils literal notranslate"><span class="pre">miscmodel</span></code>, use <code class="docutils literal notranslate"><span class="pre">myslr</span></code>.</p></li>
 <li><p>We must set the <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code> attribute to the respective <code class="docutils literal notranslate"><span class="pre">Config</span></code> class.</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;miscmodel&quot;</span><span class="p">)</span>
+<p><strong>dffml_model_myslr/misc.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;misc&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">MiscModel</span><span class="p">(</span><span class="n">SimpleModel</span><span class="p">):</span>
     <span class="c1"># The configuration class needs to be set as the CONFIG property</span>
     <span class="n">CONFIG</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">MiscModelConfig</span><span class="p">]</span> <span class="o">=</span> <span class="n">MiscModelConfig</span>
@@ -340,6 +348,7 @@ reference the model by. Instead of <code class="docutils literal notranslate"><s
 <li><p>We must make sure <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>’s <code class="docutils literal notranslate"><span class="pre">&quot;entry_points&quot;</span></code> field correctly references
 the location of our model.</p></li>
 </ul>
+<p><strong>setup.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">common</span><span class="o">.</span><span class="n">KWARGS</span><span class="p">[</span><span class="s2">&quot;entry_points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;dffml.model&quot;</span><span class="p">:</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;misc = </span><span class="si">{</span><span class="n">common</span><span class="o">.</span><span class="n">IMPORT_NAME</span><span class="si">}</span><span class="s2">.misc:MiscModel&quot;</span><span class="p">]</span>
 <span class="p">}</span>
@@ -359,6 +368,7 @@ any <code class="docutils literal notranslate"><span class="pre">records</span><
 <p>Models should save their state to disk after training. Classes derived from
 <code class="docutils literal notranslate"><span class="pre">SimpleModel</span></code> can put anything they want saved into <code class="docutils literal notranslate"><span class="pre">self.storage</span></code>, which
 is saved and loaded from a JSON on disk.</p>
+<p><strong>dffml_model_myslr/misc.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># X and Y data</span>
         <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
@@ -382,6 +392,7 @@ is saved and loaded from a JSON on disk.</p>
 <h3>Accuracy<a class="headerlink" href="#accuracy" title="Permalink to this headline">¶</a></h3>
 <p>We saved the accuracy as the 2nd index into the <code class="docutils literal notranslate"><span class="pre">&quot;regression_line&quot;</span></code> key in the
 <code class="docutils literal notranslate"><span class="pre">self.storage</span></code> dictionary. When we assess the accuracy we reload from there.</p>
+<p><strong>dffml_model_myslr/misc.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Accuracy</span><span class="p">:</span>
         <span class="c1"># Load saved regression line</span>
         <span class="n">regression_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;regression_line&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -402,6 +413,7 @@ we use the <code class="docutils literal notranslate"><span class="pre">m</span>
 <p>We call <a class="reference internal" href="../api/record.html#dffml.record.Record.predicted" title="dffml.record.Record.predicted"><code class="xref py py-meth docutils literal notranslate"><span class="pre">record.predicted</span></code></a>
 passing it the name of the feature we predicted, the predicted value, and the
 confidence in our prediction.</p>
+<p><strong>dffml_model_myslr/misc.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">records</span><span class="p">:</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Record</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
@@ -433,11 +445,16 @@ confidence in our prediction.</p>
 <h3>Rename the imports<a class="headerlink" href="#rename-the-imports" title="Permalink to this headline">¶</a></h3>
 <p>We need to make sure our model is imported via it’s new name, <code class="docutils literal notranslate"><span class="pre">MySRL</span></code> instead
 of <code class="docutils literal notranslate"><span class="pre">Misc</span></code>.</p>
+<p><strong>tests/test_model.py</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml_model_myslr.misc</span> <span class="kn">import</span> <span class="n">MySLRModel</span><span class="p">,</span> <span class="n">MySLRModelConfig</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="test-data">
 <h3>Test data<a class="headerlink" href="#test-data" title="Permalink to this headline">¶</a></h3>
 <p>We usually try to randomly generate training and test data, but for this example
 we’re just going to hard code in some data.</p>
+<p><strong>tests/test_model.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TRAIN_DATA</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[</span><span class="mf">12.4</span><span class="p">,</span> <span class="mf">11.2</span><span class="p">],</span>
     <span class="p">[</span><span class="mf">14.3</span><span class="p">,</span> <span class="mf">12.5</span><span class="p">],</span>
@@ -473,7 +490,11 @@ we’re just going to hard code in some data.</p>
 <h3>Rename the test class<a class="headerlink" href="#rename-the-test-class" title="Permalink to this headline">¶</a></h3>
 <p>Change the test class’s name, and make sure <code class="docutils literal notranslate"><span class="pre">cls.model</span></code> is instantiating a
 <code class="docutils literal notranslate"><span class="pre">MySLR</span></code> model instead of the <code class="docutils literal notranslate"><span class="pre">Misc</span></code> model.</p>
-<p>We create a temporary directory for our tests to use</p>
+<p>We create a temporary directory for our tests to use, and clean it up when
+they’re done. The tests are prefixed with numbers to indicate what order they
+should be run in, ensuring that accuracy and predict test always have a trained
+model to work with.</p>
+<p><strong>tests/test_model.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TestMiscModel</span><span class="p">(</span><span class="n">AsyncTestCase</span><span class="p">):</span>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
@@ -503,6 +524,9 @@ we’re just going to hard code in some data.</p>
 </div>
 <div class="section" id="testing-train">
 <h3>Testing Train<a class="headerlink" href="#testing-train" title="Permalink to this headline">¶</a></h3>
+<p>Similarly to the quickstart, all we need to to is pass the model and training
+data to the <code class="xref py py-func docutils literal notranslate"><span class="pre">train</span></code> function.</p>
+<p><strong>tests/test_model.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_00_train</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Train the model on the training data</span>
         <span class="k">await</span> <span class="n">train</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">train_data</span><span class="p">)</span>
@@ -511,6 +535,12 @@ we’re just going to hard code in some data.</p>
 </div>
 <div class="section" id="testing-accuracy">
 <h3>Testing Accuracy<a class="headerlink" href="#testing-accuracy" title="Permalink to this headline">¶</a></h3>
+<p>Once again, all we need to to is pass the model and test data to the
+<code class="xref py py-func docutils literal notranslate"><span class="pre">accuracy</span></code> function. Then we check if it’s in an
+acceptable range. This test is helpful to make sure you never make any horribly
+wrong changes to your model, since it will check that the accuracy is within an
+acceptable range.</p>
+<p><strong>tests/test_model.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_01_accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Use the test data to assess the model&#39;s accuracy</span>
         <span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="n">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">test_data</span><span class="p">)</span>
@@ -521,6 +551,10 @@ we’re just going to hard code in some data.</p>
 </div>
 <div class="section" id="testing-prediction">
 <h3>Testing Prediction<a class="headerlink" href="#testing-prediction" title="Permalink to this headline">¶</a></h3>
+<p>Finally, we use the test data and model with the
+<code class="xref py py-func docutils literal notranslate"><span class="pre">predict</span></code> function. Then we check if each predicted Y
+value is within 10% of what it should be.</p>
+<p><strong>tests/test_model.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_02_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Get the prediction for each piece of test data</span>
         <span class="k">async</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>

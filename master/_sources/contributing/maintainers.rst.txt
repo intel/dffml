@@ -26,3 +26,22 @@ script.
 
 Finally, update the ``PYPI_TOKENS`` file in ``.github/workflows/testing.yml``.
 Add a line for the plugin along with it's sceret.
+
+Doing a Release
+---------------
+
+- Increment the version number of each package
+
+- Increment the version number of the main package in the dependency list of
+  each package
+
+- Commit the new version
+
+- Tag a release
+
+.. code-block:: console
+
+    $ dffml service dev bump packages 0.0.1 -log debug
+    $ dffml service dev bump main
+    $ git c "release: Version $(dffml service dev setuppy kwarg version setup.py)"
+    $ git tag $(dffml service dev setuppy kwarg version setup.py)

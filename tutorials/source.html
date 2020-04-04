@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>New Source Tutorial &mdash; DFFML 0.3.5 documentation</title>
+  <title>New Source Tutorial &mdash; DFFML 0.3.6 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.5
+                0.3.6
               </div>
             
           
@@ -102,6 +102,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#create-the-package">Create the Package</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#edit-the-source">Edit the Source</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#interact-with-the-database">Interact with the Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#write-the-tests">Write the tests</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#run-the-tests">Run the tests</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#register-your-source">Register your source</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#install-your-package">Install your package</a></li>
@@ -120,6 +121,7 @@
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
@@ -177,7 +179,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/tutorials/source.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/tutorials/source.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -220,19 +224,63 @@ connection establishment in the <a class="reference internal" href="../api/sourc
 <dd><dl class="method">
 <dt>
 <em class="property">abstract async </em><code class="sig-name descname">record</code><span class="sig-paren">(</span><em class="sig-param">key: str</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/source/source.html#BaseSourceContext.record"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Get a record from the source or add it if it doesn’t exist</p>
+<dd><p>Get a record from the source or add it if it doesn’t exist.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">MemorySource</span><span class="p">(</span><span class="n">records</span><span class="o">=</span><span class="p">[</span><span class="n">Record</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dead</span><span class="o">=</span><span class="s2">&quot;beef&quot;</span><span class="p">)))])</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># Open, update, and close</span>
+<span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="n">example</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="c1"># Let&#39;s also try calling `record` for a record that doesnt exist.</span>
+<span class="gp">... </span>            <span class="n">one</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s2">&quot;one&quot;</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">one</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
+<span class="gp">... </span>                <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;key&#39;: &#39;example&#39;, &#39;features&#39;: {&#39;dead&#39;: &#39;beef&#39;}, &#39;extra&#39;: {}}</span>
+<span class="go">{&#39;key&#39;: &#39;one&#39;, &#39;extra&#39;: {}}</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt>
 <em class="property">abstract </em><code class="sig-name descname">records</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; AsyncIterator[dffml.record.Record]<a class="reference internal" href="../_modules/dffml/source/source.html#BaseSourceContext.records"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Returns a list of records retrieved from self.src</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">MemorySource</span><span class="p">(</span><span class="n">records</span><span class="o">=</span><span class="p">[</span><span class="n">Record</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dead</span><span class="o">=</span><span class="s2">&quot;beef&quot;</span><span class="p">)))])</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
+<span class="gp">... </span>                <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;key&#39;: &#39;example&#39;, &#39;features&#39;: {&#39;dead&#39;: &#39;beef&#39;}, &#39;extra&#39;: {}}</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt>
 <em class="property">abstract async </em><code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param">record: dffml.record.Record</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/source/source.html#BaseSourceContext.update"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Updates a record for a source</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">MemorySource</span><span class="p">(</span><span class="n">records</span><span class="o">=</span><span class="p">[])</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># Open, update, and close</span>
+<span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="n">example</span> <span class="o">=</span> <span class="n">Record</span><span class="p">(</span><span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">feed</span><span class="o">=</span><span class="s2">&quot;face&quot;</span><span class="p">)))</span>
+<span class="gp">... </span>            <span class="c1"># ... Update one into our records ...</span>
+<span class="gp">... </span>            <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">example</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="c1"># Let&#39;s check out our records after calling `record` and `update`.</span>
+<span class="gp">... </span>            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
+<span class="gp">... </span>                <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;key&#39;: &#39;one&#39;, &#39;features&#39;: {&#39;feed&#39;: &#39;face&#39;}, &#39;extra&#39;: {}}</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -368,6 +416,31 @@ so.</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="write-the-tests">
+<h2>Write the tests<a class="headerlink" href="#write-the-tests" title="Permalink to this headline">¶</a></h2>
+<p><strong>examples/source/test_custom_sqlite.py</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="kn">from</span> <span class="nn">dffml.util.testing.source</span> <span class="kn">import</span> <span class="n">FileSourceTest</span>
+<span class="kn">from</span> <span class="nn">dffml.util.asynctestcase</span> <span class="kn">import</span> <span class="n">AsyncTestCase</span>
+
+<span class="kn">from</span> <span class="nn">.custom_sqlite</span> <span class="kn">import</span> <span class="n">CustomSQLiteSourceConfig</span><span class="p">,</span> <span class="n">CustomSQLiteSource</span>
+
+
+<span class="k">class</span> <span class="nc">TestCustomSQliteSource</span><span class="p">(</span><span class="n">FileSourceTest</span><span class="p">,</span> <span class="n">AsyncTestCase</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">setUpSource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">CustomSQLiteSource</span><span class="p">(</span>
+            <span class="n">CustomSQLiteSourceConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">testfile</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="nd">@unittest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="s2">&quot;tags not implemented&quot;</span><span class="p">)</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">test_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        tags not implemented</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="run-the-tests">
 <h2>Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 setup.py <span class="nb">test</span>
@@ -395,7 +468,7 @@ it).</p>
 <div class="section" id="install-your-package">
 <h2>Install your package<a class="headerlink" href="#install-your-package" title="Permalink to this headline">¶</a></h2>
 <p>The following command installs your new source.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install --prefix<span class="o">=</span>~/.local -e .
 </pre></div>
 </div>
 </div>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.feature.feature &mdash; DFFML 0.3.5 documentation</title>
+  <title>dffml.feature.feature &mdash; DFFML 0.3.6 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.5
+                0.3.6
               </div>
             
           
@@ -104,6 +104,7 @@
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contributing/index.html">Contributing</a></li>
@@ -286,6 +287,28 @@
 <span class="sd">    Once the appropriate data is fetched the parse method is responsible for</span>
 <span class="sd">    storing the parts of that data which will be used to calculate in the</span>
 <span class="sd">    subclass</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Define a feature using load_def:</span>
+
+<span class="sd">    &gt;&gt;&gt; feature = Feature.load_def(&quot;example&quot;, &quot;float&quot;, 10)</span>
+<span class="sd">    &gt;&gt;&gt; feature.dtype()</span>
+<span class="sd">    &lt;class &#39;float&#39;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; feature.NAME</span>
+<span class="sd">    &#39;example&#39;</span>
+<span class="sd">    &gt;&gt;&gt; feature.length()</span>
+<span class="sd">    10</span>
+
+<span class="sd">    Defining a feature directly using DefFeature:</span>
+
+<span class="sd">    &gt;&gt;&gt; feature = DefFeature(&quot;example2&quot;, int, 20)</span>
+<span class="sd">    &gt;&gt;&gt; feature.dtype()</span>
+<span class="sd">    &lt;class &#39;int&#39;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; feature.NAME</span>
+<span class="sd">    &#39;example2&#39;</span>
+<span class="sd">    &gt;&gt;&gt; feature.length()</span>
+<span class="sd">    20</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">LOGGER</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s2">&quot;Feature&quot;</span><span class="p">)</span>
@@ -320,6 +343,13 @@
 <div class="viewcode-block" id="Feature.dtype"><a class="viewcode-back" href="../../../api/feature.html#dffml.feature.feature.Feature.dtype">[docs]</a>    <span class="k">def</span> <span class="nf">dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Models need to know a Feature&#39;s datatype.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        &gt;&gt;&gt; feature = Feature()</span>
+<span class="sd">        &gt;&gt;&gt; feature.dtype()</span>
+<span class="sd">        &lt;class &#39;int&#39;&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> dtype unimplemented&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">int</span></div>
@@ -328,6 +358,13 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Models need to know a Feature&#39;s length, 1 means single value, more than</span>
 <span class="sd">        that is the length of the array calc returns.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        &gt;&gt;&gt; feature = Feature()</span>
+<span class="sd">        &gt;&gt;&gt; feature.length()</span>
+<span class="sd">        1</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> length unimplemented&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="mi">1</span></div>

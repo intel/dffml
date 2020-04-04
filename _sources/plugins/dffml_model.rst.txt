@@ -9,6 +9,36 @@ abstract the usage of machine learning models.
 If you want to get started creating your own model, check out the
 :ref:`model_tutorial`.
 
+dffml
+-----
+
+.. code-block:: console
+
+    pip install dffml
+
+
+slr
+~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Label or the value to be predicted
+
+- features: List of features
+
+  - Features to train on. For SLR only 1 allowed
+
+- directory: Path
+
+  - default: ~/.cache/dffml/slr
+  - Directory where state should be saved
+
 dffml_model_tensorflow
 ----------------------
 
@@ -92,30 +122,11 @@ Example usage of Tensorflow DNNClassifier model using python API
 
 - predict: Feature
 
-  - Feature name holding predict value
-
-- classifications: List of strings
-
-  - Options for value of classification
+  - Feature name holding target values
 
 - features: List of features
 
   - Features to train on
-
-- clstype: Type
-
-  - default: <class 'str'>
-  - Data type of classifications values
-
-- batchsize: Integer
-
-  - default: 20
-  - Number records to pass through in an epoch
-
-- shuffle: Boolean
-
-  - default: True
-  - Randomise order of records in a batch
 
 - steps: Integer
 
@@ -137,6 +148,26 @@ Example usage of Tensorflow DNNClassifier model using python API
   - default: [12, 40, 15]
   - List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- batchsize: Integer
+
+  - default: 20
+  - Number records to pass through in an epoch
+
+- shuffle: Boolean
+
+  - default: True
+  - Randomise order of records in a batch
+
 tfdnnr
 ~~~~~~
 
@@ -154,58 +185,32 @@ Generating train and test data
   make sure to take a BACKUP of files with same name in the directory
   from where this command is run as it overwrites any existing files.
 
-.. code-block:: console
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/train_data.sh
 
-    $ cat > train.csv << EOF
-    Feature1,Feature2,TARGET
-    0.93,0.68,3.89
-    0.24,0.42,1.75
-    0.36,0.68,2.75
-    0.53,0.31,2.00
-    0.29,0.25,1.32
-    0.29,0.52,2.14
-    EOF
-    $ cat > test.csv << EOF
-    Feature1,Feature2,TARGET
-    0.57,0.84,3.65
-    0.95,0.19,2.46
-    0.23,0.15,0.93
-    EOF
-    $ dffml train \
-        -model tfdnnr \
-        -model-epochs 300 \
-        -model-steps 2000 \
-        -model-predict TARGET:float:1 \
-        -model-hidden 8 16 8 \
-        -sources s=csv \
-        -source-filename train.csv \
-        -model-features \
-          Feature1:float:1 \
-          Feature2:float:1 \
-        -log debug
-    Enabling debug log shows tensorflow losses...
-    $ dffml accuracy \
-        -model tfdnnr \
-        -model-predict TARGET:float:1 \
-        -model-hidden 8 16 8 \
-        -sources s=csv \
-        -source-filename test.csv \
-        -model-features \
-          Feature1:float:1 \
-          Feature2:float:1 \
-        -log critical
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/accuracy.sh
+
+Output
+
+.. code-block::
+
     0.9468210011
-    $ echo -e 'Feature1,Feature2,TARGET\n0.21,0.18,0.84\n' | \
-      dffml predict all \
-        -model tfdnnr \
-        -model-predict TARGET:float:1 \
-        -model-hidden 8 16 8 \
-        -sources s=csv \
-        -source-filename /dev/stdin \
-        -model-features \
-          Feature1:float:1 \
-          Feature2:float:1 \
-        -log critical
+
+Make a prediction
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/predict.sh
+
+Output
+
+.. code-block:: json
+
     [
         {
             "extra": {},
@@ -224,6 +229,10 @@ Generating train and test data
             "key": 0
         }
     ]
+
+Example usage of Tensorflow DNNEstimator model using python API
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/tfdnnr.py
 
 The ``NaN`` in ``confidence`` is the expected behaviour. (See TODO in
 predict).
@@ -431,6 +440,281 @@ Implemented using Tensorflow hub pretrained models.
   - default: ~/.cache/dffml/tensorflow_hub
   - Directory where state should be saved
 
+dffml_model_transformers
+------------------------
+
+.. code-block:: console
+
+    pip install dffml-model-transformers
+
+
+ner_tagger
+~~~~~~~~~~
+
+*Official*
+
+Implemented using ![HuggingFace Transformers](https://huggingface.co/transformers/index.html) Tensorflow based Models.
+Description about pretrianed models can be found ![here](https://huggingface.co/transformers/pretrained_models.html)
+
+First we create the training and testing datasets
+
+.. literalinclude:: /../model/transformers/examples/ner/train_data.sh
+
+.. literalinclude:: /../model/transformers/examples/ner/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/transformers/examples/ner/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/transformers/examples/ner/accuracy.sh
+
+Output
+
+.. code-block::
+
+                precision    recall  f1-score   support
+
+        MISC     0.0000    0.0000    0.0000         2
+
+    micro avg     0.0000    0.0000    0.0000         2
+    macro avg     0.0000    0.0000    0.0000         2
+
+    INFO:dffml.NERModelContext:final_loss = 1.4586552
+    0.0
+
+Make a prediction
+
+.. literalinclude:: /../model/transformers/examples/ner/predict.sh
+
+Output
+
+.. code-block:: json
+
+    [
+        {
+            "extra": {},
+            "features": {
+                "SentenceId": 1,
+                "Words": "DFFML models can do NER"
+            },
+            "key": "0",
+            "last_updated": "2020-03-21T23:14:41Z",
+            "prediction": {
+                "Tag": {
+                    "confidence": NaN,
+                    "value": [
+                        [
+                            {
+                                "DFFML": "I-LOC"
+                            },
+                            {
+                                "models": "O"
+                            },
+                            {
+                                "can": "I-LOC"
+                            },
+                            {
+                                "do": "I-LOC"
+                            },
+                            {
+                                "NER": "I-LOC"
+                            }
+                        ]
+                    ]
+                }
+            }
+        },
+        {
+            "extra": {},
+            "features": {
+                "SentenceId": 2,
+                "Words": "DFFML models can do regression"
+            },
+            "key": "1",
+            "last_updated": "2020-03-21T23:14:42Z",
+            "prediction": {
+                "Tag": {
+                    "confidence": NaN,
+                    "value": [
+                        [
+                            {
+                                "DFFML": "I-LOC"
+                            },
+                            {
+                                "models": "O"
+                            },
+                            {
+                                "can": "I-LOC"
+                            },
+                            {
+                                "do": "I-LOC"
+                            },
+                            {
+                                "regression": "I-LOC"
+                            }
+                        ]
+                    ]
+                }
+            }
+        }
+    ]
+The model can be trained on large datasets to get the expected
+output. The example shown above is to demonstrate the commandline usage
+of the model.
+
+Example usage of NER model using python API
+
+.. literalinclude:: /../model/transformers/examples/ner/ner_model.py
+
+**Args**
+
+- sid: Feature
+
+  - Unique Id to identify words of each sentence (Sentence ID)
+
+- words: Feature
+
+  - Tokens to train NER model
+
+- predict: Feature
+
+  - NER Tags (B-MISC, I-PER, O etc.) for tokens
+
+- model_architecture_type: String
+
+  - Model architecture selected in the : bert, distilbert, roberta
+
+- model_name_or_path: String
+
+  - Path to pre-trained model or shortcut name selected in the list: bert-base-uncased, bert-large-uncased, bert-base-cased, bert-large-cased, bert-base-multilingual-uncased, bert-base-multilingual-cased, bert-base-chinese, bert-base-german-cased, bert-large-uncased-whole-word-masking, bert-large-cased-whole-word-masking, bert-large-uncased-whole-word-masking-finetuned-squad, bert-large-cased-whole-word-masking-finetuned-squad, bert-base-cased-finetuned-mrpc, bert-base-german-dbmdz-cased, bert-base-german-dbmdz-uncased, bert-base-japanese, bert-base-japanese-whole-word-masking, bert-base-japanese-char, bert-base-japanese-char-whole-word-masking, bert-base-finnish-cased-v1, bert-base-finnish-uncased-v1, bert-base-dutch-cased, roberta-base, roberta-large, roberta-large-mnli, distilroberta-base, roberta-base-openai-detector, roberta-large-openai-detector, distilbert-base-uncased, distilbert-base-uncased-distilled-squad, distilbert-base-cased, distilbert-base-cased-distilled-squad, distilbert-base-german-cased, distilbert-base-multilingual-cased, distilbert-base-uncased-finetuned-sst-2-english
+
+- output_dir: String
+
+  - default: ~/.cache/dffml/transformers/checkpoints
+  - The output directory where the model checkpoints will be written
+
+- config_name: String
+
+  - default: None
+  - Pretrained config name or path if not the same as model_name
+
+- tokenizer_name: String
+
+  - default: None
+  - Pretrained tokenizer name or path if not the same as model_name
+
+- cache_dir: String
+
+  - default: ~/.cache/dffml/transformers
+  - Directory to store the pre-trained models downloaded from s3
+
+- max_seq_length: Integer
+
+  - default: 128
+  - The maximum total input sentence length after tokenization.Sequences longer than this will be truncated, sequences shorter will be padded
+
+- max_steps: Integer
+
+  - default: 0
+  - If greater than zero then sets total number of training steps to perform. Overrides `epochs`
+
+- use_fp16: Boolean
+
+  - default: False
+  - Whether to use 16-bit (mixed) precision instead of 32-bit
+
+- ner_tags: List of strings
+
+  - default: ['O', 'B-MISC', 'I-MISC', 'B-PER', 'I-PER', 'B-ORG', 'I-ORG', 'B-LOC', 'I-LOC']
+  - List of all distinct NER Tags
+
+- do_lower_case: Boolean
+
+  - default: False
+  - Set this flag if using uncased model.
+
+- gradient_accumulation_steps: Integer
+
+  - default: 1
+  - Number of updates steps to accumulate before performing a backward pass.
+
+- learning_rate: float
+
+  - default: 5e-05
+  - The initial learning rate for Adam
+
+- weight_decay: float
+
+  - default: 0.0
+  - Weight decay
+
+- adam_epsilon: float
+
+  - default: 1e-08
+  - Epsilon for Adam optimizer
+
+- max_grad_norm: float
+
+  - default: 1.0
+  - Max gradient norm.
+
+- epochs: Integer
+
+  - default: 1
+  - Total number of training epochs to perform.
+
+- warmup_steps: Integer
+
+  - default: 0
+  - Linear warmup over warmup_steps.
+
+- save_steps: Integer
+
+  - default: 10
+  - Save checkpoint every X update steps.
+
+- seed: Integer
+
+  - default: 2020
+  - Random seed for initialization
+
+- gpus: String
+
+  - default: 0
+  - List of gpu devices. If only one, switch to single gpu strategy, if None takes all availabel gpus
+
+- tpu: String
+
+  - default: None
+  - The Cloud TPU to use for training. This should be either the name used when creating the Cloud TPU, or a grpc://ip.address.of.tpu:8470 url
+
+- num_tpu_cores: Integer
+
+  - default: 8
+  - Total number of TPU cores to use.
+
+- per_device_train_batch_size: Integer
+
+  - default: 8
+  - Batch size per GPU/CPU/TPU for training
+
+- per_device_eval_batch_size: Integer
+
+  - default: 8
+  - Batch size per GPU/CPU/TPU for assessing accuracy
+
+- no_cuda: Boolean
+
+  - default: False
+  - Avoid using CUDA when available
+
+- eval_all_checkpoints: Boolean
+
+  - default: False
+  - Evaluate all checkpoints starting with the same prefix as model_name ending and ending with step number
+
 dffml_model_scratch
 -------------------
 
@@ -439,45 +723,44 @@ dffml_model_scratch
     pip install dffml-model-scratch
 
 
-scratchslr
-~~~~~~~~~~
+scratchlgrsag
+~~~~~~~~~~~~~
 
 *Official*
 
-Simple Linear Regression Model for 2 variables implemented from scratch.
-Models are saved under the ``directory`` in subdirectories named after the
-hash of their feature names.
+Logistic Regression using stochastic average gradient descent optimizer
+
 
 .. code-block:: console
 
     $ cat > dataset.csv << EOF
-    Years,Salary
-    1,40
-    2,50
-    3,60
-    4,70
-    5,80
+    f1,ans
+    0.1,0
+    0.7,1
+    0.6,1
+    0.2,0
+    0.8,1
     EOF
     $ dffml train \
-        -model scratchslr \
-        -model-features Years:int:1 \
-        -model-predict Salary:float:1 \
+        -model scratchlgrsag \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
         -sources f=csv \
         -source-filename dataset.csv \
         -log debug
     $ dffml accuracy \
-        -model scratchslr \
-        -model-features Years:int:1 \
-        -model-predict Salary:float:1 \
+        -model scratchlgrsag \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
         -sources f=csv \
         -source-filename dataset.csv \
         -log debug
     1.0
-    $ echo -e 'Years,Salary\n6,0\n' | \
+    $ echo -e 'f1,ans\n0.8,0\n' | \
       dffml predict all \
-        -model scratchslr \
-        -model-features Years:int:1 \
-        -model-predict Salary:float:1 \
+        -model scratchlgrsag \
+        -model-features f1:float:1 \
+        -model-predict ans:int:1 \
         -sources f=csv \
         -source-filename /dev/stdin \
         -log debug
@@ -485,14 +768,14 @@ hash of their feature names.
         {
             "extra": {},
             "features": {
-                "Salary": 0,
-                "Years": 6
+                "ans": 0,
+                "f1": 0.8
             },
-            "last_updated": "2019-07-19T09:46:45Z",
+            "last_updated": "2020-03-19T13:41:08Z",
             "prediction": {
-                "Salary": {
+                "ans": {
                     "confidence": 1.0,
-                    "value": 90.0
+                    "value": 1
                 }
             },
             "key": "0"

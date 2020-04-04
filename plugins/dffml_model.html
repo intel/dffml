@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Models &mdash; DFFML 0.3.5 documentation</title>
+  <title>Models &mdash; DFFML 0.3.6 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.5
+                0.3.6
               </div>
             
           
@@ -102,6 +102,10 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="dffml_source.html">Sources</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dffml">dffml</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#slr">slr</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-tensorflow">dffml_model_tensorflow</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#tfdnnc">tfdnnc</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#tfdnnr">tfdnnr</a></li>
@@ -111,8 +115,12 @@
 <li class="toctree-l4"><a class="reference internal" href="#text-classifier">text_classifier</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-transformers">dffml_model_transformers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ner-tagger">ner_tagger</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-scratch">dffml_model_scratch</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#scratchslr">scratchslr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scratchlgrsag">scratchlgrsag</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-scikit">dffml_model_scikit</a></li>
@@ -128,6 +136,7 @@
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributing</a></li>
@@ -185,7 +194,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/plugins/dffml_model.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/plugins/dffml_model.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -204,6 +215,36 @@
 abstract the usage of machine learning models.</p>
 <p>If you want to get started creating your own model, check out the
 <a class="reference internal" href="../tutorials/model.html#model-tutorial"><span class="std std-ref">New Model Tutorial</span></a>.</p>
+<div class="section" id="dffml">
+<h2>dffml<a class="headerlink" href="#dffml" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml</span>
+</pre></div>
+</div>
+<div class="section" id="slr">
+<h3>slr<a class="headerlink" href="#slr" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>predict: Feature</p>
+<ul>
+<li><p>Label or the value to be predicted</p></li>
+</ul>
+</li>
+<li><p>features: List of features</p>
+<ul>
+<li><p>Features to train on. For SLR only 1 allowed</p></li>
+</ul>
+</li>
+<li><p>directory: Path</p>
+<ul>
+<li><p>default: ~/.cache/dffml/slr</p></li>
+<li><p>Directory where state should be saved</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 <div class="section" id="dffml-model-tensorflow">
 <h2>dffml_model_tensorflow<a class="headerlink" href="#dffml-model-tensorflow" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-tensorflow</span>
@@ -358,35 +399,12 @@ look for a different saved model.</p>
 <ul class="simple">
 <li><p>predict: Feature</p>
 <ul>
-<li><p>Feature name holding predict value</p></li>
-</ul>
-</li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
+<li><p>Feature name holding target values</p></li>
 </ul>
 </li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
-</ul>
-</li>
-<li><p>clstype: Type</p>
-<ul>
-<li><p>default: &lt;class ‘str’&gt;</p></li>
-<li><p>Data type of classifications values</p></li>
-</ul>
-</li>
-<li><p>batchsize: Integer</p>
-<ul>
-<li><p>default: 20</p></li>
-<li><p>Number records to pass through in an epoch</p></li>
-</ul>
-</li>
-<li><p>shuffle: Boolean</p>
-<ul>
-<li><p>default: True</p></li>
-<li><p>Randomise order of records in a batch</p></li>
 </ul>
 </li>
 <li><p>steps: Integer</p>
@@ -413,6 +431,30 @@ look for a different saved model.</p>
 <li><p>List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
+<li><p>clstype: Type</p>
+<ul>
+<li><p>default: &lt;class ‘str’&gt;</p></li>
+<li><p>Data type of classifications values</p></li>
+</ul>
+</li>
+<li><p>batchsize: Integer</p>
+<ul>
+<li><p>default: 20</p></li>
+<li><p>Number records to pass through in an epoch</p></li>
+</ul>
+</li>
+<li><p>shuffle: Boolean</p>
+<ul>
+<li><p>default: True</p></li>
+<li><p>Randomise order of records in a batch</p></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="section" id="tfdnnr">
@@ -429,74 +471,119 @@ look for a different saved model.</p>
 make sure to take a BACKUP of files with same name in the directory
 from where this command is run as it overwrites any existing files.</p></li>
 </ul>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; train.csv &lt;&lt; EOF
-<span class="go">Feature1,Feature2,TARGET</span>
-<span class="go">0.93,0.68,3.89</span>
-<span class="go">0.24,0.42,1.75</span>
-<span class="go">0.36,0.68,2.75</span>
-<span class="go">0.53,0.31,2.00</span>
-<span class="go">0.29,0.25,1.32</span>
-<span class="go">0.29,0.52,2.14</span>
-<span class="go">EOF</span>
-<span class="gp">$</span> cat &gt; test.csv &lt;&lt; EOF
-<span class="go">Feature1,Feature2,TARGET</span>
-<span class="go">0.57,0.84,3.65</span>
-<span class="go">0.95,0.19,2.46</span>
-<span class="go">0.23,0.15,0.93</span>
-<span class="go">EOF</span>
-<span class="gp">$</span> dffml train <span class="se">\</span>
-    -model tfdnnr <span class="se">\</span>
-    -model-epochs <span class="m">300</span> <span class="se">\</span>
-    -model-steps <span class="m">2000</span> <span class="se">\</span>
-    -model-predict TARGET:float:1 <span class="se">\</span>
-    -model-hidden <span class="m">8</span> <span class="m">16</span> <span class="m">8</span> <span class="se">\</span>
-    -sources <span class="nv">s</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename train.csv <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      Feature1:float:1 <span class="se">\</span>
-      Feature2:float:1 <span class="se">\</span>
-    -log debug
-<span class="go">Enabling debug log shows tensorflow losses...</span>
-<span class="gp">$</span> dffml accuracy <span class="se">\</span>
-    -model tfdnnr <span class="se">\</span>
-    -model-predict TARGET:float:1 <span class="se">\</span>
-    -model-hidden <span class="m">8</span> <span class="m">16</span> <span class="m">8</span> <span class="se">\</span>
-    -sources <span class="nv">s</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename test.csv <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      Feature1:float:1 <span class="se">\</span>
-      Feature2:float:1 <span class="se">\</span>
-    -log critical
-<span class="go">0.9468210011</span>
-<span class="gp">$</span> <span class="nb">echo</span> -e <span class="s1">&#39;Feature1,Feature2,TARGET\n0.21,0.18,0.84\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
-  dffml predict all <span class="se">\</span>
-    -model tfdnnr <span class="se">\</span>
-    -model-predict TARGET:float:1 <span class="se">\</span>
-    -model-hidden <span class="m">8</span> <span class="m">16</span> <span class="m">8</span> <span class="se">\</span>
-    -sources <span class="nv">s</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename /dev/stdin <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      Feature1:float:1 <span class="se">\</span>
-      Feature2:float:1 <span class="se">\</span>
-    -log critical
-<span class="go">[</span>
-<span class="go">    {</span>
-<span class="go">        &quot;extra&quot;: {},</span>
-<span class="go">        &quot;features&quot;: {</span>
-<span class="go">            &quot;Feature1&quot;: 0.21,</span>
-<span class="go">            &quot;Feature2&quot;: 0.18,</span>
-<span class="go">            &quot;TARGET&quot;: 0.84</span>
-<span class="go">        },</span>
-<span class="go">        &quot;last_updated&quot;: &quot;2019-10-24T15:26:41Z&quot;,</span>
-<span class="go">        &quot;prediction&quot;: {</span>
-<span class="go">            &quot;TARGET&quot; : {</span>
-<span class="go">                &quot;confidence&quot;: NaN,</span>
-<span class="go">                &quot;value&quot;: 1.1983429193496704</span>
-<span class="go">            }</span>
-<span class="go">        },</span>
-<span class="go">        &quot;key&quot;: 0</span>
-<span class="go">    }</span>
-<span class="go">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">Feature1</span><span class="p">,</span><span class="n">Feature2</span><span class="p">,</span><span class="n">TARGET</span>
+<span class="mf">0.93</span><span class="p">,</span><span class="mf">0.68</span><span class="p">,</span><span class="mf">3.89</span>
+<span class="mf">0.24</span><span class="p">,</span><span class="mf">0.42</span><span class="p">,</span><span class="mf">1.75</span>
+<span class="mf">0.36</span><span class="p">,</span><span class="mf">0.68</span><span class="p">,</span><span class="mf">2.75</span>
+<span class="mf">0.53</span><span class="p">,</span><span class="mf">0.31</span><span class="p">,</span><span class="mf">2.00</span>
+<span class="mf">0.29</span><span class="p">,</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">1.32</span>
+<span class="mf">0.29</span><span class="p">,</span><span class="mf">0.52</span><span class="p">,</span><span class="mf">2.14</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">Feature1</span><span class="p">,</span><span class="n">Feature2</span><span class="p">,</span><span class="n">TARGET</span>
+<span class="mf">0.57</span><span class="p">,</span><span class="mf">0.84</span><span class="p">,</span><span class="mf">3.65</span>
+<span class="mf">0.95</span><span class="p">,</span><span class="mf">0.19</span><span class="p">,</span><span class="mf">2.46</span>
+<span class="mf">0.23</span><span class="p">,</span><span class="mf">0.15</span><span class="p">,</span><span class="mf">0.93</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<p>Train the model</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">tfdnnr</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">300</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">steps</span> <span class="mi">2000</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">TARGET</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">hidden</span> <span class="mi">8</span> <span class="mi">16</span> <span class="mi">8</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
+    <span class="n">Feature1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+    <span class="n">Feature2</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Assess the accuracy</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">tfdnnr</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">TARGET</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">hidden</span> <span class="mi">8</span> <span class="mi">16</span> <span class="mi">8</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
+    <span class="n">Feature1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+    <span class="n">Feature2</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">critical</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.9468210011</span>
+</pre></div>
+</div>
+<p>Make a prediction</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="o">-</span><span class="n">e</span> <span class="s1">&#39;Feature1,Feature2,TARGET</span><span class="se">\n</span><span class="s1">0.21,0.18,0.84</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">|</span> \
+  <span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">tfdnnr</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">TARGET</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">hidden</span> <span class="mi">8</span> <span class="mi">16</span> <span class="mi">8</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">stdin</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
+    <span class="n">Feature1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+    <span class="n">Feature2</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">critical</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>[
+    {
+        &quot;extra&quot;: {},
+        &quot;features&quot;: {
+            &quot;Feature1&quot;: 0.21,
+            &quot;Feature2&quot;: 0.18,
+            &quot;TARGET&quot;: 0.84
+        },
+        &quot;last_updated&quot;: &quot;2019-10-24T15:26:41Z&quot;,
+        &quot;prediction&quot;: {
+            &quot;TARGET&quot; : {
+                &quot;confidence&quot;: NaN,
+                &quot;value&quot;: 1.1983429193496704
+            }
+        },
+        &quot;key&quot;: 0
+    }
+]
+</pre></div>
+</div>
+<p>Example usage of Tensorflow DNNEstimator model using python API</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">DefFeature</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<span class="kn">from</span> <span class="nn">dffml_model_tensorflow.dnnr</span> <span class="kn">import</span> <span class="n">DNNRegressionModel</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">DNNRegressionModel</span><span class="p">(</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span>
+        <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Feature1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Feature2&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="p">),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;TARGET&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+    <span class="n">steps</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
+    <span class="n">hidden</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+
+<span class="c1"># Make prediction</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Feature1&quot;</span><span class="p">:</span> <span class="mf">0.21</span><span class="p">,</span> <span class="s2">&quot;Feature2&quot;</span><span class="p">:</span> <span class="mf">0.18</span><span class="p">,</span> <span class="s2">&quot;TARGET&quot;</span><span class="p">:</span> <span class="mf">0.84</span><span class="p">}</span>
+<span class="p">):</span>
+    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;TARGET&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;TARGET&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">NaN</span></code> in <code class="docutils literal notranslate"><span class="pre">confidence</span></code> is the expected behaviour. (See TODO in
@@ -724,45 +811,416 @@ predict).</p>
 </ul>
 </div>
 </div>
+<div class="section" id="dffml-model-transformers">
+<h2>dffml_model_transformers<a class="headerlink" href="#dffml-model-transformers" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-transformers</span>
+</pre></div>
+</div>
+<div class="section" id="ner-tagger">
+<h3>ner_tagger<a class="headerlink" href="#ner-tagger" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Implemented using ![HuggingFace Transformers](<a class="reference external" href="https://huggingface.co/transformers/index.html">https://huggingface.co/transformers/index.html</a>) Tensorflow based Models.
+Description about pretrianed models can be found ![here](<a class="reference external" href="https://huggingface.co/transformers/pretrained_models.html">https://huggingface.co/transformers/pretrained_models.html</a>)</p>
+<p>First we create the training and testing datasets</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">SentenceId</span><span class="p">,</span><span class="n">Words</span><span class="p">,</span><span class="n">Tag</span>
+<span class="mi">1</span><span class="p">,</span><span class="n">DFFML</span><span class="p">,</span><span class="n">B</span><span class="o">-</span><span class="n">MISC</span>
+<span class="mi">1</span><span class="p">,</span><span class="n">Models</span><span class="p">,</span><span class="n">I</span><span class="o">-</span><span class="n">MISC</span>
+<span class="mi">1</span><span class="p">,</span><span class="n">are</span><span class="p">,</span><span class="n">O</span>
+<span class="mi">1</span><span class="p">,</span><span class="n">cool</span><span class="p">,</span><span class="n">B</span><span class="o">-</span><span class="n">MISC</span>
+<span class="mi">2</span><span class="p">,</span><span class="n">DFFML</span><span class="p">,</span><span class="n">B</span><span class="o">-</span><span class="n">MISC</span>
+<span class="mi">2</span><span class="p">,</span><span class="n">Models</span><span class="p">,</span><span class="n">I</span><span class="o">-</span><span class="n">MISC</span>
+<span class="mi">2</span><span class="p">,</span><span class="n">can</span><span class="p">,</span><span class="n">O</span>
+<span class="mi">2</span><span class="p">,</span><span class="n">do</span><span class="p">,</span><span class="n">O</span>
+<span class="mi">2</span><span class="p">,</span><span class="n">classification</span><span class="p">,</span><span class="n">B</span><span class="o">-</span><span class="n">MISC</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">SentenceId</span><span class="p">,</span><span class="n">Words</span>
+<span class="mi">1</span><span class="p">,</span><span class="n">DFFML</span> <span class="n">models</span> <span class="n">can</span> <span class="n">do</span> <span class="n">NER</span>
+<span class="mi">2</span><span class="p">,</span><span class="n">DFFML</span> <span class="n">models</span> <span class="n">can</span> <span class="n">do</span> <span class="n">regression</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<p>Train the model</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">ner_tagger</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">2</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">sid</span> <span class="n">SentenceId</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">words</span> <span class="n">Words</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Tag</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_architecture_type</span> <span class="n">bert</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">1</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Assess the accuracy</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">ner_tagger</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">sid</span> <span class="n">SentenceId</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">words</span> <span class="n">Words</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Tag</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_architecture_type</span> <span class="n">bert</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>            <span class="n">precision</span>    <span class="n">recall</span>  <span class="n">f1</span><span class="o">-</span><span class="n">score</span>   <span class="n">support</span>
+
+    <span class="n">MISC</span>     <span class="mf">0.0000</span>    <span class="mf">0.0000</span>    <span class="mf">0.0000</span>         <span class="mi">2</span>
+
+<span class="n">micro</span> <span class="n">avg</span>     <span class="mf">0.0000</span>    <span class="mf">0.0000</span>    <span class="mf">0.0000</span>         <span class="mi">2</span>
+<span class="n">macro</span> <span class="n">avg</span>     <span class="mf">0.0000</span>    <span class="mf">0.0000</span>    <span class="mf">0.0000</span>         <span class="mi">2</span>
+
+<span class="n">INFO</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">NERModelContext</span><span class="p">:</span><span class="n">final_loss</span> <span class="o">=</span> <span class="mf">1.4586552</span>
+<span class="mf">0.0</span>
+</pre></div>
+</div>
+<p>Make a prediction</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">ner_tagger</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">sid</span> <span class="n">SentenceId</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">words</span> <span class="n">Words</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Tag</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_architecture_type</span> <span class="n">bert</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>[
+    {
+        &quot;extra&quot;: {},
+        &quot;features&quot;: {
+            &quot;SentenceId&quot;: 1,
+            &quot;Words&quot;: &quot;DFFML models can do NER&quot;
+        },
+        &quot;key&quot;: &quot;0&quot;,
+        &quot;last_updated&quot;: &quot;2020-03-21T23:14:41Z&quot;,
+        &quot;prediction&quot;: {
+            &quot;Tag&quot;: {
+                &quot;confidence&quot;: NaN,
+                &quot;value&quot;: [
+                    [
+                        {
+                            &quot;DFFML&quot;: &quot;I-LOC&quot;
+                        },
+                        {
+                            &quot;models&quot;: &quot;O&quot;
+                        },
+                        {
+                            &quot;can&quot;: &quot;I-LOC&quot;
+                        },
+                        {
+                            &quot;do&quot;: &quot;I-LOC&quot;
+                        },
+                        {
+                            &quot;NER&quot;: &quot;I-LOC&quot;
+                        }
+                    ]
+                ]
+            }
+        }
+    },
+    {
+        &quot;extra&quot;: {},
+        &quot;features&quot;: {
+            &quot;SentenceId&quot;: 2,
+            &quot;Words&quot;: &quot;DFFML models can do regression&quot;
+        },
+        &quot;key&quot;: &quot;1&quot;,
+        &quot;last_updated&quot;: &quot;2020-03-21T23:14:42Z&quot;,
+        &quot;prediction&quot;: {
+            &quot;Tag&quot;: {
+                &quot;confidence&quot;: NaN,
+                &quot;value&quot;: [
+                    [
+                        {
+                            &quot;DFFML&quot;: &quot;I-LOC&quot;
+                        },
+                        {
+                            &quot;models&quot;: &quot;O&quot;
+                        },
+                        {
+                            &quot;can&quot;: &quot;I-LOC&quot;
+                        },
+                        {
+                            &quot;do&quot;: &quot;I-LOC&quot;
+                        },
+                        {
+                            &quot;regression&quot;: &quot;I-LOC&quot;
+                        }
+                    ]
+                ]
+            }
+        }
+    }
+]
+</pre></div>
+</div>
+<p>The model can be trained on large datasets to get the expected
+output. The example shown above is to demonstrate the commandline usage
+of the model.</p>
+<p>Example usage of NER model using python API</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">DefFeature</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<span class="kn">from</span> <span class="nn">dffml_model_transformers.ner.ner_model</span> <span class="kn">import</span> <span class="n">NERModel</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">NERModel</span><span class="p">(</span>
+    <span class="n">sid</span><span class="o">=</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;SentenceId&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">words</span><span class="o">=</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Words&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Tag&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">model_architecture_type</span><span class="o">=</span><span class="s2">&quot;distilbert&quot;</span><span class="p">,</span>
+    <span class="n">model_name_or_path</span><span class="o">=</span><span class="s2">&quot;distilbert-base-cased&quot;</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">no_cuda</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;train.csv&quot;</span><span class="p">)))</span>
+
+<span class="c1"># Make prediction</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="p">{</span><span class="s2">&quot;SentenceID&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Words&quot;</span><span class="p">:</span> <span class="s2">&quot;DFFML models can do NER&quot;</span><span class="p">,},</span>
+    <span class="p">{</span><span class="s2">&quot;SentenceID&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Words&quot;</span><span class="p">:</span> <span class="s2">&quot;DFFML models can do regression&quot;</span><span class="p">,},</span>
+<span class="p">):</span>
+    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;Tag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;Tag&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>sid: Feature</p>
+<ul>
+<li><p>Unique Id to identify words of each sentence (Sentence ID)</p></li>
+</ul>
+</li>
+<li><p>words: Feature</p>
+<ul>
+<li><p>Tokens to train NER model</p></li>
+</ul>
+</li>
+<li><p>predict: Feature</p>
+<ul>
+<li><p>NER Tags (B-MISC, I-PER, O etc.) for tokens</p></li>
+</ul>
+</li>
+<li><p>model_architecture_type: String</p>
+<ul>
+<li><p>Model architecture selected in the : bert, distilbert, roberta</p></li>
+</ul>
+</li>
+<li><p>model_name_or_path: String</p>
+<ul>
+<li><p>Path to pre-trained model or shortcut name selected in the list: bert-base-uncased, bert-large-uncased, bert-base-cased, bert-large-cased, bert-base-multilingual-uncased, bert-base-multilingual-cased, bert-base-chinese, bert-base-german-cased, bert-large-uncased-whole-word-masking, bert-large-cased-whole-word-masking, bert-large-uncased-whole-word-masking-finetuned-squad, bert-large-cased-whole-word-masking-finetuned-squad, bert-base-cased-finetuned-mrpc, bert-base-german-dbmdz-cased, bert-base-german-dbmdz-uncased, bert-base-japanese, bert-base-japanese-whole-word-masking, bert-base-japanese-char, bert-base-japanese-char-whole-word-masking, bert-base-finnish-cased-v1, bert-base-finnish-uncased-v1, bert-base-dutch-cased, roberta-base, roberta-large, roberta-large-mnli, distilroberta-base, roberta-base-openai-detector, roberta-large-openai-detector, distilbert-base-uncased, distilbert-base-uncased-distilled-squad, distilbert-base-cased, distilbert-base-cased-distilled-squad, distilbert-base-german-cased, distilbert-base-multilingual-cased, distilbert-base-uncased-finetuned-sst-2-english</p></li>
+</ul>
+</li>
+<li><p>output_dir: String</p>
+<ul>
+<li><p>default: ~/.cache/dffml/transformers/checkpoints</p></li>
+<li><p>The output directory where the model checkpoints will be written</p></li>
+</ul>
+</li>
+<li><p>config_name: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Pretrained config name or path if not the same as model_name</p></li>
+</ul>
+</li>
+<li><p>tokenizer_name: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Pretrained tokenizer name or path if not the same as model_name</p></li>
+</ul>
+</li>
+<li><p>cache_dir: String</p>
+<ul>
+<li><p>default: ~/.cache/dffml/transformers</p></li>
+<li><p>Directory to store the pre-trained models downloaded from s3</p></li>
+</ul>
+</li>
+<li><p>max_seq_length: Integer</p>
+<ul>
+<li><p>default: 128</p></li>
+<li><p>The maximum total input sentence length after tokenization.Sequences longer than this will be truncated, sequences shorter will be padded</p></li>
+</ul>
+</li>
+<li><p>max_steps: Integer</p>
+<ul>
+<li><p>default: 0</p></li>
+<li><p>If greater than zero then sets total number of training steps to perform. Overrides <cite>epochs</cite></p></li>
+</ul>
+</li>
+<li><p>use_fp16: Boolean</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Whether to use 16-bit (mixed) precision instead of 32-bit</p></li>
+</ul>
+</li>
+<li><p>ner_tags: List of strings</p>
+<ul>
+<li><p>default: [‘O’, ‘B-MISC’, ‘I-MISC’, ‘B-PER’, ‘I-PER’, ‘B-ORG’, ‘I-ORG’, ‘B-LOC’, ‘I-LOC’]</p></li>
+<li><p>List of all distinct NER Tags</p></li>
+</ul>
+</li>
+<li><p>do_lower_case: Boolean</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Set this flag if using uncased model.</p></li>
+</ul>
+</li>
+<li><p>gradient_accumulation_steps: Integer</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>Number of updates steps to accumulate before performing a backward pass.</p></li>
+</ul>
+</li>
+<li><p>learning_rate: float</p>
+<ul>
+<li><p>default: 5e-05</p></li>
+<li><p>The initial learning rate for Adam</p></li>
+</ul>
+</li>
+<li><p>weight_decay: float</p>
+<ul>
+<li><p>default: 0.0</p></li>
+<li><p>Weight decay</p></li>
+</ul>
+</li>
+<li><p>adam_epsilon: float</p>
+<ul>
+<li><p>default: 1e-08</p></li>
+<li><p>Epsilon for Adam optimizer</p></li>
+</ul>
+</li>
+<li><p>max_grad_norm: float</p>
+<ul>
+<li><p>default: 1.0</p></li>
+<li><p>Max gradient norm.</p></li>
+</ul>
+</li>
+<li><p>epochs: Integer</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>Total number of training epochs to perform.</p></li>
+</ul>
+</li>
+<li><p>warmup_steps: Integer</p>
+<ul>
+<li><p>default: 0</p></li>
+<li><p>Linear warmup over warmup_steps.</p></li>
+</ul>
+</li>
+<li><p>save_steps: Integer</p>
+<ul>
+<li><p>default: 10</p></li>
+<li><p>Save checkpoint every X update steps.</p></li>
+</ul>
+</li>
+<li><p>seed: Integer</p>
+<ul>
+<li><p>default: 2020</p></li>
+<li><p>Random seed for initialization</p></li>
+</ul>
+</li>
+<li><p>gpus: String</p>
+<ul>
+<li><p>default: 0</p></li>
+<li><p>List of gpu devices. If only one, switch to single gpu strategy, if None takes all availabel gpus</p></li>
+</ul>
+</li>
+<li><p>tpu: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>The Cloud TPU to use for training. This should be either the name used when creating the Cloud TPU, or a grpc://ip.address.of.tpu:8470 url</p></li>
+</ul>
+</li>
+<li><p>num_tpu_cores: Integer</p>
+<ul>
+<li><p>default: 8</p></li>
+<li><p>Total number of TPU cores to use.</p></li>
+</ul>
+</li>
+<li><p>per_device_train_batch_size: Integer</p>
+<ul>
+<li><p>default: 8</p></li>
+<li><p>Batch size per GPU/CPU/TPU for training</p></li>
+</ul>
+</li>
+<li><p>per_device_eval_batch_size: Integer</p>
+<ul>
+<li><p>default: 8</p></li>
+<li><p>Batch size per GPU/CPU/TPU for assessing accuracy</p></li>
+</ul>
+</li>
+<li><p>no_cuda: Boolean</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Avoid using CUDA when available</p></li>
+</ul>
+</li>
+<li><p>eval_all_checkpoints: Boolean</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Evaluate all checkpoints starting with the same prefix as model_name ending and ending with step number</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 <div class="section" id="dffml-model-scratch">
 <h2>dffml_model_scratch<a class="headerlink" href="#dffml-model-scratch" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-scratch</span>
 </pre></div>
 </div>
-<div class="section" id="scratchslr">
-<h3>scratchslr<a class="headerlink" href="#scratchslr" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="scratchlgrsag">
+<h3>scratchlgrsag<a class="headerlink" href="#scratchlgrsag" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
-<p>Simple Linear Regression Model for 2 variables implemented from scratch.
-Models are saved under the <code class="docutils literal notranslate"><span class="pre">directory</span></code> in subdirectories named after the
-hash of their feature names.</p>
+<p>Logistic Regression using stochastic average gradient descent optimizer</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; dataset.csv &lt;&lt; EOF
-<span class="go">Years,Salary</span>
-<span class="go">1,40</span>
-<span class="go">2,50</span>
-<span class="go">3,60</span>
-<span class="go">4,70</span>
-<span class="go">5,80</span>
+<span class="go">f1,ans</span>
+<span class="go">0.1,0</span>
+<span class="go">0.7,1</span>
+<span class="go">0.6,1</span>
+<span class="go">0.2,0</span>
+<span class="go">0.8,1</span>
 <span class="go">EOF</span>
 <span class="gp">$</span> dffml train <span class="se">\</span>
-    -model scratchslr <span class="se">\</span>
-    -model-features Years:int:1 <span class="se">\</span>
-    -model-predict Salary:float:1 <span class="se">\</span>
+    -model scratchlgrsag <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename dataset.csv <span class="se">\</span>
     -log debug
 <span class="gp">$</span> dffml accuracy <span class="se">\</span>
-    -model scratchslr <span class="se">\</span>
-    -model-features Years:int:1 <span class="se">\</span>
-    -model-predict Salary:float:1 <span class="se">\</span>
+    -model scratchlgrsag <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename dataset.csv <span class="se">\</span>
     -log debug
 <span class="go">1.0</span>
-<span class="gp">$</span> <span class="nb">echo</span> -e <span class="s1">&#39;Years,Salary\n6,0\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
+<span class="gp">$</span> <span class="nb">echo</span> -e <span class="s1">&#39;f1,ans\n0.8,0\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
   dffml predict all <span class="se">\</span>
-    -model scratchslr <span class="se">\</span>
-    -model-features Years:int:1 <span class="se">\</span>
-    -model-predict Salary:float:1 <span class="se">\</span>
+    -model scratchlgrsag <span class="se">\</span>
+    -model-features f1:float:1 <span class="se">\</span>
+    -model-predict ans:int:1 <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename /dev/stdin <span class="se">\</span>
     -log debug
@@ -770,14 +1228,14 @@ hash of their feature names.</p>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>
 <span class="go">        &quot;features&quot;: {</span>
-<span class="go">            &quot;Salary&quot;: 0,</span>
-<span class="go">            &quot;Years&quot;: 6</span>
+<span class="go">            &quot;ans&quot;: 0,</span>
+<span class="go">            &quot;f1&quot;: 0.8</span>
 <span class="go">        },</span>
-<span class="go">        &quot;last_updated&quot;: &quot;2019-07-19T09:46:45Z&quot;,</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2020-03-19T13:41:08Z&quot;,</span>
 <span class="go">        &quot;prediction&quot;: {</span>
-<span class="go">            &quot;Salary&quot;: {</span>
+<span class="go">            &quot;ans&quot;: {</span>
 <span class="go">                &quot;confidence&quot;: 1.0,</span>
-<span class="go">                &quot;value&quot;: 90.0</span>
+<span class="go">                &quot;value&quot;: 1</span>
 <span class="go">            }</span>
 <span class="go">        },</span>
 <span class="go">        &quot;key&quot;: &quot;0&quot;</span>
