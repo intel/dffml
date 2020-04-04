@@ -35,6 +35,11 @@ Doing a Release
 - Increment the version number of the main package in the dependency list of
   each package
 
+.. warning::
+
+    `model/tensorflow_hub` depends on `model/tensorflow`. Its important to
+    update the version of `dffml-model-tensorflow` in `model/tensorflow_hub`.
+
 - Commit the new version
 
 - Tag a release
