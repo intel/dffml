@@ -81,7 +81,7 @@ def entrypoint(label):
 def base_entry_point(entrypoint, *args):
     """
     Any class which subclasses from Entrypoint needs this decorator applied to
-    it. The decorator sets the ENTRYPOINT and ENTRY_POINT_NAME proprieties on
+    it. The decorator sets the ENTRYPOINT and ENTRY_POINT_NAME properties on
     the class.
 
     This allows the load() classmethod to be called to load subclasses of the

@@ -24,7 +24,7 @@ class SourceTest(abc.ABC):
     """
 
     @abc.abstractmethod
-    async def setUpSource(self, fileobj):
+    async def setUpSource(self):
         pass  # pragma: no cover
 
     async def test_update(self):

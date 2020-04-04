@@ -29,12 +29,39 @@ class BaseSourceContext(BaseDataFlowFacilitatorObjectContext):
     async def update(self, record: Record):
         """
         Updates a record for a source
+
+        Examples
+        --------
+        >>> async def main():
+        ...     async with MemorySource(records=[]) as source:
+        ...         # Open, update, and close
+        ...         async with source() as ctx:
+        ...             example = Record("one", data=dict(features=dict(feed="face")))
+        ...             # ... Update one into our records ...
+        ...             await ctx.update(example)
+        ...             # Let's check out our records after calling `record` and `update`.
+        ...             async for record in ctx.records():
+        ...                 print(record.export())
+        >>>
+        >>> asyncio.run(main())
+        {'key': 'one', 'features': {'feed': 'face'}, 'extra': {}}
         """
 
     @abc.abstractmethod
     async def records(self) -> AsyncIterator[Record]:
         """
         Returns a list of records retrieved from self.src
+
+        Examples
+        --------
+        >>> async def main():
+        ...     async with MemorySource(records=[Record("example", data=dict(features=dict(dead="beef")))]) as source:
+        ...         async with source() as ctx:
+        ...             async for record in ctx.records():
+        ...                 print(record.export())
+        >>>
+        >>> asyncio.run(main())
+        {'key': 'example', 'features': {'dead': 'beef'}, 'extra': {}}
         """
         # mypy ignores AsyncIterator[Record], therefore this is needed
         yield Record("")  # pragma: no cover
@@ -42,7 +69,24 @@ class BaseSourceContext(BaseDataFlowFacilitatorObjectContext):
     @abc.abstractmethod
     async def record(self, key: str):
         """
-        Get a record from the source or add it if it doesn't exist
+        Get a record from the source or add it if it doesn't exist.
+
+        Examples
+        --------
+        >>> async def main():
+        ...     async with MemorySource(records=[Record("example", data=dict(features=dict(dead="beef")))]) as source:
+        ...         # Open, update, and close
+        ...         async with source() as ctx:
+        ...             example = await ctx.record("example")
+        ...             # Let's also try calling `record` for a record that doesnt exist.
+        ...             one = await ctx.record("one")
+        ...             await ctx.update(one)
+        ...             async for record in ctx.records():
+        ...                 print(record.export())
+        >>>
+        >>> asyncio.run(main())
+        {'key': 'example', 'features': {'dead': 'beef'}, 'extra': {}}
+        {'key': 'one', 'extra': {}}
         """
 
 

@@ -9,7 +9,7 @@ from dffml.util.entrypoint import base_entry_point
 
 
 Condition = collections.namedtuple(
-    "Condtion", ["column", "operation", "value"]
+    "Condition", ["column", "operation", "value"]
 )
 Conditions = Union[List[List[Condition]], List[List[Tuple[str]]]]
 
