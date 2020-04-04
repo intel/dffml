@@ -17,6 +17,51 @@ dffml
     pip install dffml
 
 
+AcceptUserInput
+~~~~~~~~~~~~~~~
+
+*Official*
+
+Accept input from stdin using python input()
+
+Parameters
+++++++++++
+inputs : dict
+    A dictionary with a key and empty list as value.
+
+Returns
++++++++
+dict
+    A dictionary containing user input.
+
+Examples
+++++++++
+
+The following example shows how to use AcceptUserInput.
+
+>>> dataflow = DataFlow.auto(AcceptUserInput, GetSingle)
+>>> dataflow.seed.append(
+...     Input(
+...         value=[AcceptUserInput.op.outputs["InputData"].name],
+...         definition=GetSingle.op.inputs["spec"]
+...     )
+... )
+>>>
+>>> async def main():
+...     async for ctx, results in MemoryOrchestrator.run(dataflow, {"input":[]}):
+...         print(results)
+>>>
+>>> asyncio.run(main())
+{'UserInput': {'data': 'Data flow is awesome'}}
+
+**Stage: processing**
+
+
+
+**Outputs**
+
+- InputData: UserInput(type: str)
+
 associate
 ~~~~~~~~~
 
@@ -44,19 +89,21 @@ dffml.dataflow.run
 Starts a subflow ``self.config.dataflow`` and adds ``inputs`` in it.
 
 Parameters
-----------
+++++++++++
 inputs : dict
     The inputs to add to the subflow. These should be a key value mapping of
     the context string to the inputs which should be seeded for that context
     string.
 
 Returns
--------
++++++++
 dict
     Maps context strings in inputs to output after running through dataflow.
 
 Examples
---------
+++++++++
+
+The following shows how to use run dataflow in its default behavior.
 
 >>> URL = Definition(name="URL", primitive="string")
 >>>
@@ -98,6 +145,55 @@ Examples
 >>>
 >>> asyncio.run(main())
 {'flow_results': {'dffml': {'URL': 'https://github.com/intel/dffml'}}}
+
+The following shows how to use run dataflow with custom inputs and outputs.
+This allows you to run a subflow as if it were an opertion.
+
+>>> URL = Definition(name="URL", primitive="string")
+>>>
+>>> @op(
+...     inputs={"url": URL},
+...     outputs={"last": Definition("last_element_in_path", primitive="string")},
+... )
+... def last_path(url):
+...     return {"last": url.split("/")[-1]}
+>>>
+>>> subflow = DataFlow.auto(last_path, GetSingle)
+>>> subflow.seed.append(
+...     Input(
+...         value=[last_path.op.outputs["last"].name],
+...         definition=GetSingle.op.inputs["spec"],
+...     )
+... )
+>>>
+>>> dataflow = DataFlow.auto(run_dataflow, GetSingle)
+>>> dataflow.operations[run_dataflow.op.name] = run_dataflow.op._replace(
+...     inputs={"URL": URL},
+...     outputs={last_path.op.outputs["last"].name: last_path.op.outputs["last"]},
+...     expand=[],
+... )
+>>> dataflow.configs[run_dataflow.op.name] = RunDataFlowConfig(subflow)
+>>> dataflow.seed.append(
+...     Input(
+...         value=[last_path.op.outputs["last"].name],
+...         definition=GetSingle.op.inputs["spec"],
+...     )
+... )
+>>> dataflow.update(auto_flow=True)
+>>>
+>>> async def main():
+...     async for ctx, results in MemoryOrchestrator.run(
+...         dataflow,
+...         {
+...             "run_subflow": [
+...                 Input(value="https://github.com/intel/dffml", definition=URL)
+...             ]
+...         },
+...     ):
+...         print(results)
+>>>
+>>> asyncio.run(main())
+{'last_element_in_path': 'dffml'}
 
 **Stage: processing**
 
@@ -215,6 +311,46 @@ No description
 **Outputs**
 
 - output: group_by_output(type: Dict[str, List[Any]])
+
+print_output
+~~~~~~~~~~~~
+
+*Official*
+
+Print the output on stdout using python print()
+
+Parameters
+++++++++++
+inputs : list
+    A list of Inputs whose value is to be printed.
+
+Examples
+++++++++
+
+The following example shows how to use print_output.
+
+>>> dataflow = DataFlow.auto(print_output, GetSingle)
+>>> inputs = [
+...     Input(
+...         value="print_output example",
+...         definition=dataflow.definitions["DataToPrint"],
+...         parents=None,)]
+>>>
+>>> async def main():
+...     async for ctx, results in MemoryOrchestrator.run(dataflow, inputs):
+...         print("String to be printed is 'print_output example'")
+>>>
+>>> asyncio.run(main())
+print_output example
+String to be printed is 'print_output example'
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- data: DataToPrint(type: str)
 
 dffml_feature_git
 -----------------

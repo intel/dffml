@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>About &mdash; DFFML 0.3.5 documentation</title>
+  <title>About &mdash; DFFML 0.3.6 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.5
+                0.3.6
               </div>
             
           
@@ -88,6 +88,7 @@
               <p class="caption"><span class="caption-text">Introduction</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mission-statement">Mission Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#why-dffml">Why DFFML</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#architecture">Architecture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#machine-learning">Machine Learning</a></li>
@@ -116,6 +117,7 @@
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing/index.html">Contributing</a></li>
@@ -171,7 +173,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/about.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/about.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -203,6 +207,22 @@ could use them to build a web app for instance.</p></li>
 <a class="reference internal" href="plugins/index.html#plugins"><span class="std std-ref">Plugins</span></a> pages. DFFML has a plugin based architecture, which allows us to
 include some sources, models, and operations as a part of the main package,
 <code class="docutils literal notranslate"><span class="pre">dffml</span></code>, and other functionality in more specific packages.</p>
+<div class="section" id="mission-statement">
+<h2>Mission Statement<a class="headerlink" href="#mission-statement" title="Permalink to this headline">¶</a></h2>
+<p>DFFML aims to be the easiest and most convenient way to use Machine Learning.</p>
+<ul class="simple">
+<li><p>It’s an AutoML Python library, command line application, and HTTP service.</p></li>
+<li><p>You give it your data and tell it what kind of model you want to train. It
+creates a model for you.</p></li>
+<li><p>If you want finer grained control over the model, you can easily do so by
+implementing your own model plugin.</p></li>
+<li><p>We make it easy to use and deploy your models.</p></li>
+<li><p>We provide a directed graph concurrent execution environment with managed
+locking which we call DataFlows.</p></li>
+<li><p>DataFlows make it easy to generate datasets or modify existing datasets for
+rapid iteration on feature engineering.</p></li>
+</ul>
+</div>
 <div class="section" id="why-dffml">
 <h2>Why DFFML<a class="headerlink" href="#why-dffml" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">

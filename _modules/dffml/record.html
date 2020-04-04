@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.record &mdash; DFFML 0.3.5 documentation</title>
+  <title>dffml.record &mdash; DFFML 0.3.6 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                0.3.5
+                0.3.6
               </div>
             
           
@@ -104,6 +104,7 @@
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
@@ -390,7 +391,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        subset : list</span>
+<span class="sd">        subset : list[str]</span>
 <span class="sd">            The subset of features that will be returned.</span>
 
 <span class="sd">        Returns</span>
@@ -418,6 +419,22 @@
 <div class="viewcode-block" id="Record.feature"><a class="viewcode-back" href="../../api/record.html#dffml.record.Record.feature">[docs]</a>    <span class="k">def</span> <span class="nf">feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a feature of the record.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the feature that will be returned.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        any</span>
+<span class="sd">            feature.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; example = Record(&quot;example&quot;, data=dict(features=dict(dead=&quot;beef&quot;)))</span>
+<span class="sd">        &gt;&gt;&gt; print(example.feature(&quot;dead&quot;))</span>
+<span class="sd">        beef</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">features</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">NoSuchFeature</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
@@ -425,7 +442,21 @@
 
 <div class="viewcode-block" id="Record.predicted"><a class="viewcode-back" href="../../api/record.html#dffml.record.Record.predicted">[docs]</a>    <span class="k">def</span> <span class="nf">predicted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">confidence</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the prediction for this record</span>
+<span class="sd">        Set the prediction for this record.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        target : str</span>
+<span class="sd">            The target you want to store the prediction at.</span>
+<span class="sd">        value : Any</span>
+<span class="sd">            The prediction.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; example = Record(&quot;example&quot;, data=dict(features=dict(dead=&quot;beef&quot;)))</span>
+<span class="sd">        &gt;&gt;&gt; example.predicted(&quot;target_name&quot;, &quot;feed&quot;, 1.00)</span>
+<span class="sd">        &gt;&gt;&gt; print(example.prediction(&quot;target_name&quot;))</span>
+<span class="sd">        {&#39;confidence&#39;: 1.0, &#39;value&#39;: &#39;feed&#39;}</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">prediction</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">=</span> <span class="n">RecordPrediction</span><span class="p">(</span>
             <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">confidence</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">confidence</span><span class="p">)</span>
@@ -434,11 +465,49 @@
 
 <div class="viewcode-block" id="Record.prediction"><a class="viewcode-back" href="../../api/record.html#dffml.record.Record.prediction">[docs]</a>    <span class="k">def</span> <span class="nf">prediction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RecordPrediction</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the prediction for this record</span>
+<span class="sd">        Get the prediction for this record.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        target : str</span>
+<span class="sd">            The name of the feature that will be returned.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        RecordPrediction</span>
+<span class="sd">            The prediction of the target specified.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; example = Record(&quot;example&quot;, data=dict(features=dict(dead=&quot;beef&quot;)))</span>
+<span class="sd">        &gt;&gt;&gt; example.predicted(&quot;target_name&quot;, &quot;feed&quot;, 1.00)</span>
+<span class="sd">        &gt;&gt;&gt; print(example.prediction(&quot;target_name&quot;))</span>
+<span class="sd">        {&#39;confidence&#39;: 1.0, &#39;value&#39;: &#39;feed&#39;}</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">prediction</span><span class="p">[</span><span class="n">target</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">predictions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subset</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<div class="viewcode-block" id="Record.predictions"><a class="viewcode-back" href="../../api/record.html#dffml.record.Record.predictions">[docs]</a>    <span class="k">def</span> <span class="nf">predictions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subset</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the predictions for the subset of record.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        subset : list[str]</span>
+<span class="sd">            The list of subset of the record that predictions are returned for.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            The prediction of the specified subset.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; example = Record(&quot;example&quot;, data=dict(features=dict(dead=&quot;beef&quot;)))</span>
+<span class="sd">        &gt;&gt;&gt; example.predicted(&quot;target_name1&quot;, &quot;feed&quot;, 1.00)</span>
+<span class="sd">        &gt;&gt;&gt; example.predicted(&quot;target_name2&quot;, &quot;deed&quot;, 0.97)</span>
+<span class="sd">        &gt;&gt;&gt; print(example.predictions([&quot;target_name1&quot;, &quot;target_name2&quot;]))</span>
+<span class="sd">        {&#39;target_name1&#39;: {&#39;confidence&#39;: 1.0, &#39;value&#39;: &#39;feed&#39;}, &#39;target_name2&#39;: {&#39;confidence&#39;: 0.97, &#39;value&#39;: &#39;deed&#39;}}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">subset</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">prediction</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">subset</span><span class="p">:</span>
@@ -447,7 +516,7 @@
                 <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">prediction</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
             <span class="p">):</span>
                 <span class="k">return</span> <span class="p">{}</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">prediction</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">subset</span><span class="p">}</span></div>
+        <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">prediction</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">subset</span><span class="p">}</span></div></div>
 </pre></div>
 
            </div>

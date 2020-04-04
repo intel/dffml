@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Data Flow Types &mdash; DFFML 0.3.5 documentation</title>
+  <title>Data Flow Types &mdash; DFFML 0.3.6 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.5
+                0.3.6
               </div>
             
           
@@ -122,6 +122,7 @@
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
@@ -181,7 +182,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/api/df/types.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/api/df/types.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -196,11 +199,6 @@
             
   <div class="section" id="module-dffml.df.types">
 <span id="data-flow-types"></span><h1>Data Flow Types<a class="headerlink" href="#module-dffml.df.types" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="dffml.df.types.DataFlow">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">DataFlow</code><span class="sig-paren">(</span><em class="sig-param">operations: Dict[str, Union[dffml.df.types.Operation, Callable]], seed: List[dffml.df.types.Input] = None, configs: Dict[str, dffml.base.BaseConfig] = None, flow: Dict[str, dffml.df.types.InputFlow] = None, by_origin: Dict[dffml.df.types.Stage, Dict[str, dffml.df.types.Operation]] = None, implementations: Dict[str, ForwardRef('OperationImplementation')] = None, forward: dffml.df.types.Forward = &lt;factory&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#DataFlow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.DataFlow" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="class">
 <dt id="dffml.df.types.Definition">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Definition</code><a class="reference internal" href="../../_modules/dffml/df/types.html#Definition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Definition" title="Permalink to this definition">¶</a></dt>
@@ -272,7 +270,7 @@ be forwarded to.</p>
 
 <dl class="class">
 <dt id="dffml.df.types.Input">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Input</code><span class="sig-paren">(</span><em class="sig-param">value: Any, definition: dffml.df.types.Definition, parents: Optional[List[Input]] = None, origin: Union[str, Tuple[dffml.df.types.Operation, str], None] = 'seed', *, uid: Optional[str] = ''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Input" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Input</code><span class="sig-paren">(</span><em class="sig-param">value: Any, definition: dffml.df.types.Definition, parents: Optional[List[Input]] = None, origin: Union[str, Tuple[dffml.df.types.Operation, str], None] = 'seed', validated: bool = True, *, uid: Optional[str] = ''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Input" title="Permalink to this definition">¶</a></dt>
 <dd><p>All inputs have a unique id. Without it they can’t be tracked for locking
 purposes.</p>
 </dd></dl>
@@ -289,7 +287,7 @@ network.</p>
 
 <dl class="class">
 <dt id="dffml.df.types.Operation">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Operation</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">inputs</em>, <em class="sig-param">outputs</em>, <em class="sig-param">stage</em>, <em class="sig-param">conditions</em>, <em class="sig-param">expand</em>, <em class="sig-param">instance_name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Operation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Operation</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">inputs</em>, <em class="sig-param">outputs</em>, <em class="sig-param">stage</em>, <em class="sig-param">conditions</em>, <em class="sig-param">expand</em>, <em class="sig-param">instance_name</em>, <em class="sig-param">validator</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Operation" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="dffml.df.types.Operation.conditions">
 <em class="property">property </em><code class="sig-name descname">conditions</code><a class="headerlink" href="#dffml.df.types.Operation.conditions" title="Permalink to this definition">¶</a></dt>
@@ -337,6 +335,12 @@ given operations.</p>
 <dt id="dffml.df.types.Operation.stage">
 <em class="property">property </em><code class="sig-name descname">stage</code><a class="headerlink" href="#dffml.df.types.Operation.stage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.types.Operation.validator">
+<em class="property">property </em><code class="sig-name descname">validator</code><a class="headerlink" href="#dffml.df.types.Operation.validator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 7</p>
 </dd></dl>
 
 </dd></dl>

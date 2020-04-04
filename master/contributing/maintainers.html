@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Maintainer Docs &mdash; DFFML 0.3.5 documentation</title>
+  <title>Maintainer Docs &mdash; DFFML 0.3.6 documentation</title>
   
 
   
@@ -37,7 +37,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Changelog" href="../changelog.html" />
-    <link rel="prev" title="Setting up debugging in Visual Studio Code (VSCode)" href="editors/vscode.html" /> 
+    <link rel="prev" title="Visual Studio Code (VSCode)" href="editors/vscode.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.5
+                0.3.6
               </div>
             
           
@@ -121,6 +121,7 @@
 <li class="toctree-l2"><a class="reference internal" href="editors/index.html">Setting Up Your Editor</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Maintainer Docs</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#adding-a-new-plugin">Adding A New Plugin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#doing-a-release">Doing a Release</a></li>
 </ul>
 </li>
 </ul>
@@ -216,6 +217,22 @@ script.</p>
 <p>Finally, update the <code class="docutils literal notranslate"><span class="pre">PYPI_TOKENS</span></code> file in <code class="docutils literal notranslate"><span class="pre">.github/workflows/testing.yml</span></code>.
 Add a line for the plugin along with it’s sceret.</p>
 </div>
+<div class="section" id="doing-a-release">
+<h2>Doing a Release<a class="headerlink" href="#doing-a-release" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Increment the version number of each package</p></li>
+<li><p>Increment the version number of the main package in the dependency list of
+each package</p></li>
+<li><p>Commit the new version</p></li>
+<li><p>Tag a release</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev bump packages <span class="m">0</span>.0.1 -log debug
+<span class="gp">$</span> dffml service dev bump main
+<span class="gp">$</span> git c <span class="s2">&quot;release: Version </span><span class="k">$(</span>dffml service dev setuppy kwarg version setup.py<span class="k">)</span><span class="s2">&quot;</span>
+<span class="gp">$</span> git tag <span class="k">$(</span>dffml service dev setuppy kwarg version setup.py<span class="k">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -229,7 +246,7 @@ Add a line for the plugin along with it’s sceret.</p>
         <a href="../changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="editors/vscode.html" class="btn btn-neutral float-left" title="Setting up debugging in Visual Studio Code (VSCode)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="editors/vscode.html" class="btn btn-neutral float-left" title="Visual Studio Code (VSCode)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

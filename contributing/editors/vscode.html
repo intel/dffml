@@ -1,0 +1,322 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Visual Studio Code (VSCode) &mdash; DFFML 0.3.6 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Maintainer Docs" href="../maintainers.html" />
+    <link rel="prev" title="Setting Up Your Editor" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.6
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Contributing</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../dev_community.html">What To Work On</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev_env.html">Getting Set Up To Work On DFFML</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../style.html">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../codebase.html">Codebase Layout And Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../git.html">Git and GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing.html">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docs.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging.html">Debugging</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Setting Up Your Editor</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Visual Studio Code (VSCode)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../maintainers.html">Maintainer Docs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Contributing</a> &raquo;</li>
+        
+          <li><a href="index.html">Setting Up Your Editor</a> &raquo;</li>
+        
+      <li>Visual Studio Code (VSCode)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/contributing/editors/vscode.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="visual-studio-code-vscode">
+<h1>Visual Studio Code (VSCode)<a class="headerlink" href="#visual-studio-code-vscode" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://code.visualstudio.com/">VSCode</a> provides powerful tools for
+debugging support. For this project, we use a Python extension. For more
+details about debugging configurations for Python apps in VSCode, see this
+<a class="reference external" href="https://code.visualstudio.com/docs/python/debugging">link</a>.</p>
+<p>If you are planning on contributing to the project, or track your debugging
+process, it is a better idea to have your own copy of DFFML on your Github
+account. For more details about setting up your git repository,
+read <span class="xref std std-doc">git</span> page.</p>
+<p>After setting up the version controlling configurations, you need to install
+DFFML. See <span class="xref std std-doc">dev_env</span> page for installing details in the development mode.</p>
+<p>Open the VSCode app, on the menu bar, click on <code class="docutils literal notranslate"><span class="pre">File</span></code> then choose
+<code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Folder</span></code>. Locate DFFML folder and open it. Inside the folder in VSCode,
+select <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file. This helps VSCode to retrieve your Python environment
+(either base or any virtual environment) that you setup. You can close the
+<code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file.</p>
+<p>Go to the menu bar and click on <code class="docutils literal notranslate"><span class="pre">Run</span></code>, then select <code class="docutils literal notranslate"><span class="pre">Add</span> <span class="pre">configuration</span></code>.
+Choose Python from the drop-down menu and then select <code class="docutils literal notranslate"><span class="pre">module</span></code>. Inside the
+module text input field type <code class="docutils literal notranslate"><span class="pre">dffml</span></code> and press Enter. This will create a
+<code class="docutils literal notranslate"><span class="pre">launch.json</span></code> file under the <code class="docutils literal notranslate"><span class="pre">.vscode</span></code> folder.</p>
+<p>It should be similar to the following:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">    // Use IntelliSense to learn about possible attributes.</span>
+<span class="go">    // Hover to view descriptions of existing attributes.</span>
+<span class="go">    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387</span>
+<span class="go">    &quot;version&quot;: &quot;0.2.0&quot;,</span>
+<span class="go">    &quot;configurations&quot;: [</span>
+<span class="go">        {</span>
+<span class="go">            &quot;name&quot;: &quot;Python: Module&quot;,</span>
+<span class="go">            &quot;type&quot;: &quot;python&quot;,</span>
+<span class="go">            &quot;request&quot;: &quot;launch&quot;,</span>
+<span class="go">            &quot;module&quot;: &quot;dffml&quot;</span>
+<span class="go">        }</span>
+<span class="go">    ]</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">dffml</span></code> module needs arguments to run. Add arguments as a key-value pair into
+the embedded configurations container. Here is the example <code class="docutils literal notranslate"><span class="pre">launch.json</span></code> file
+for the <a class="reference internal" href="../../quickstart/model.html"><span class="doc">Quickstart</span></a> example.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{</span>
+<span class="go">    // Use IntelliSense to learn about possible attributes.</span>
+<span class="go">    // Hover to view descriptions of existing attributes.</span>
+<span class="go">    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387</span>
+<span class="go">    &quot;version&quot;: &quot;0.2.0&quot;,</span>
+<span class="go">    &quot;configurations&quot;: [</span>
+<span class="go">        {</span>
+<span class="go">            &quot;name&quot;: &quot;Python: Module&quot;,</span>
+<span class="go">            &quot;type&quot;: &quot;python&quot;,</span>
+<span class="go">            &quot;request&quot;: &quot;launch&quot;,</span>
+<span class="go">            &quot;module&quot;: &quot;dffml&quot;,</span>
+<span class="go">            &quot;args&quot;: [</span>
+<span class="go">                &quot;train&quot;,</span>
+<span class="go">                &quot;-model&quot;, &quot;scikitlr&quot;,</span>
+<span class="go">                &quot;-model-features&quot;, &quot;Years:int:1&quot;, &quot;Expertise:int:1&quot;,</span>
+<span class="go">                &quot;Trust:float:1&quot;,</span>
+<span class="go">                &quot;-model-predict&quot;, &quot;Salary:float:1&quot;,</span>
+<span class="go">                &quot;-sources&quot;, &quot;f=csv&quot;,</span>
+<span class="go">                &quot;-source-filename&quot;, &quot;training.csv&quot;</span>
+<span class="go">            ]</span>
+<span class="go">        }</span>
+<span class="go">    ]</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<p>Save the file and click on the <code class="docutils literal notranslate"><span class="pre">Run</span></code> at the menu bar, and then click on
+<code class="docutils literal notranslate"><span class="pre">Start</span> <span class="pre">Debugging</span></code>. The code should run successfully to the end. You can add
+<code class="docutils literal notranslate"><span class="pre">&quot;stopOnEntry&quot;:</span> <span class="pre">true,</span></code> in the configurations container to break immediately
+when the program launches or you can use break point to stop at any arbitrary
+point in the code. Read more about debugging a Python code in
+VSCode <a class="reference external" href="https://code.visualstudio.com/docs/python/debugging">here</a>.</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../maintainers.html" class="btn btn-neutral float-right" title="Maintainer Docs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Setting Up Your Editor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Intel
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

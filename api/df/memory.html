@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Data Flow Memory Objects &mdash; DFFML 0.3.5 documentation</title>
+  <title>Data Flow Memory Objects &mdash; DFFML 0.3.6 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                0.3.5
+                0.3.6
               </div>
             
           
@@ -122,6 +122,7 @@
 </ul>
 <p class="caption"><span class="caption-text">Community</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
@@ -181,7 +182,9 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/api/df/memory.rst.txt" rel="nofollow"> View page source</a>
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/api/df/memory.rst" class="fa fa-github"> Edit on GitHub</a>
+            
           
         
       </li>
@@ -198,7 +201,7 @@
 <span id="data-flow-memory-objects"></span><h1>Data Flow Memory Objects<a class="headerlink" href="#module-dffml.df.memory" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="dffml.df.memory.BaseMemoryDataFlowObject">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.memory.</code><code class="sig-name descname">BaseMemoryDataFlowObject</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#BaseMemoryDataFlowObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.BaseMemoryDataFlowObject" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.memory.</code><code class="sig-name descname">BaseMemoryDataFlowObject</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#BaseMemoryDataFlowObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.BaseMemoryDataFlowObject" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
@@ -226,7 +229,7 @@ definition.</p>
 
 <dl class="class">
 <dt id="dffml.df.memory.MemoryInputNetwork">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.memory.</code><code class="sig-name descname">MemoryInputNetwork</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetwork" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.memory.</code><code class="sig-name descname">MemoryInputNetwork</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetwork" title="Permalink to this definition">¶</a></dt>
 <dd><p>Inputs backed by a set</p>
 <dl class="attribute">
 <dt id="dffml.df.memory.MemoryInputNetwork.CONTEXT">
@@ -344,6 +347,18 @@ containing a random value for the string.</p>
 <dd><p>Add an input to the input set.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="dffml.df.memory.MemoryInputSet.remove_input">
+<em class="property">async </em><code class="sig-name descname">remove_input</code><span class="sig-paren">(</span><em class="sig-param">item: dffml.df.types.Input</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputSet.remove_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputSet.remove_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes item from input set</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.memory.MemoryInputSet.remove_unvalidated_inputs">
+<em class="property">async </em><code class="sig-name descname">remove_unvalidated_inputs</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dffml.df.memory.MemoryInputSet<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputSet.remove_unvalidated_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputSet.remove_unvalidated_inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes <cite>unvalidated</cite> inputs from internal list and returns the same.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -365,7 +380,7 @@ containing a random value for the string.</p>
 
 <dl class="class">
 <dt id="dffml.df.memory.MemoryKeyValueStore">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.memory.</code><code class="sig-name descname">MemoryKeyValueStore</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryKeyValueStore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryKeyValueStore" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.memory.</code><code class="sig-name descname">MemoryKeyValueStore</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryKeyValueStore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryKeyValueStore" title="Permalink to this definition">¶</a></dt>
 <dd><p>Key Value store backed by dict</p>
 <dl class="attribute">
 <dt id="dffml.df.memory.MemoryKeyValueStore.CONTEXT">
@@ -394,7 +409,7 @@ containing a random value for the string.</p>
 
 <dl class="class">
 <dt id="dffml.df.memory.MemoryLockNetwork">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.memory.</code><code class="sig-name descname">MemoryLockNetwork</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryLockNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryLockNetwork" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.memory.</code><code class="sig-name descname">MemoryLockNetwork</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryLockNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryLockNetwork" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="attribute">
 <dt id="dffml.df.memory.MemoryLockNetwork.CONTEXT">
 <code class="sig-name descname">CONTEXT</code><a class="headerlink" href="#dffml.df.memory.MemoryLockNetwork.CONTEXT" title="Permalink to this definition">¶</a></dt>
@@ -417,7 +432,7 @@ prior to running an operation using the input.</p>
 
 <dl class="class">
 <dt id="dffml.df.memory.MemoryOperationImplementationNetwork">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.memory.</code><code class="sig-name descname">MemoryOperationImplementationNetwork</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetwork" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.memory.</code><code class="sig-name descname">MemoryOperationImplementationNetwork</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetwork" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="attribute">
 <dt id="dffml.df.memory.MemoryOperationImplementationNetwork.CONTEXT">
 <code class="sig-name descname">CONTEXT</code><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetwork.CONTEXT" title="Permalink to this definition">¶</a></dt>
@@ -466,6 +481,12 @@ config dict.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="dffml.df.memory.MemoryOperationImplementationNetworkContext.dispatch_auto_starts">
+<code class="sig-name descname">dispatch_auto_starts</code><span class="sig-paren">(</span><em class="sig-param">octx: dffml.df.base.BaseOrchestratorContext</em>, <em class="sig-param">ctx</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.dispatch_auto_starts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.dispatch_auto_starts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Schedule the running of all operations without inputs</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="dffml.df.memory.MemoryOperationImplementationNetworkContext.ensure_contains">
 <em class="property">async </em><code class="sig-name descname">ensure_contains</code><span class="sig-paren">(</span><em class="sig-param">operation: dffml.df.types.Operation</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.ensure_contains"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.ensure_contains" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raise errors if we don’t have and can’t instantiate an operation.</p>
@@ -491,15 +512,6 @@ Return true if instantiation was successful.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="dffml.df.memory.MemoryOperationImplementationNetworkContext.operations_parameter_set_pairs">
-<code class="sig-name descname">operations_parameter_set_pairs</code><span class="sig-paren">(</span><em class="sig-param">ictx: dffml.df.base.BaseInputNetworkContext</em>, <em class="sig-param">octx: dffml.df.base.BaseOperationNetworkContext</em>, <em class="sig-param">rctx: dffml.df.base.BaseRedundancyCheckerContext</em>, <em class="sig-param">ctx: dffml.df.base.BaseInputSetContext</em>, <em class="sig-param">dataflow: dffml.df.types.DataFlow</em>, <em class="sig-param">*</em>, <em class="sig-param">new_input_set: Optional[dffml.df.base.BaseInputSet] = None</em>, <em class="sig-param">stage: dffml.df.types.Stage = &lt;Stage.PROCESSING: 'processing'&gt;</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[Tuple[dffml.df.types.Operation, dffml.df.base.BaseInputSet]]<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.operations_parameter_set_pairs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.operations_parameter_set_pairs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use new_input_set to determine which operations in the network might be
-up for running. Cross check using existing inputs to generate per
-input set context novel input pairings. Yield novel input pairings
-along with their operations as they are generated.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="dffml.df.memory.MemoryOperationImplementationNetworkContext.run">
 <em class="property">async </em><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">ctx: dffml.df.base.BaseInputSetContext, octx: dffml.df.base.BaseOrchestratorContext, operation: dffml.df.types.Operation, inputs: Dict[str, Any]</em><span class="sig-paren">)</span> &#x2192; Union[bool, Dict[str, Any]]<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run an operation in our network.</p>
@@ -507,7 +519,7 @@ along with their operations as they are generated.</p>
 
 <dl class="method">
 <dt id="dffml.df.memory.MemoryOperationImplementationNetworkContext.run_dispatch">
-<em class="property">async </em><code class="sig-name descname">run_dispatch</code><span class="sig-paren">(</span><em class="sig-param">octx: dffml.df.base.BaseOrchestratorContext</em>, <em class="sig-param">operation: dffml.df.types.Operation</em>, <em class="sig-param">parameter_set: dffml.df.base.BaseParameterSet</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.run_dispatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.run_dispatch" title="Permalink to this definition">¶</a></dt>
+<em class="property">async </em><code class="sig-name descname">run_dispatch</code><span class="sig-paren">(</span><em class="sig-param">octx: dffml.df.base.BaseOrchestratorContext</em>, <em class="sig-param">operation: dffml.df.types.Operation</em>, <em class="sig-param">parameter_set: dffml.df.base.BaseParameterSet</em>, <em class="sig-param">set_valid: bool = True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.run_dispatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.run_dispatch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run an operation in the background and add its outputs to the input
 network when complete</p>
 </dd></dl>
@@ -516,7 +528,7 @@ network when complete</p>
 
 <dl class="class">
 <dt id="dffml.df.memory.MemoryOperationNetwork">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.memory.</code><code class="sig-name descname">MemoryOperationNetwork</code><span class="sig-paren">(</span><em class="sig-param">config: dffml.base.BaseConfig</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationNetwork" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.memory.</code><code class="sig-name descname">MemoryOperationNetwork</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationNetwork"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationNetwork" title="Permalink to this definition">¶</a></dt>
 <dd><p>Operations backed by a set</p>
 <dl class="attribute">
 <dt id="dffml.df.memory.MemoryOperationNetwork.CONTEXT">
@@ -618,6 +630,15 @@ config dict.</p>
 within the operation implementation network context</p></li>
 <li><p>Seed input network context with given inputs</p></li>
 </ol>
+</dd></dl>
+
+<dl class="method">
+<dt id="dffml.df.memory.MemoryOrchestratorContext.operations_parameter_set_pairs">
+<code class="sig-name descname">operations_parameter_set_pairs</code><span class="sig-paren">(</span><em class="sig-param">ctx: dffml.df.base.BaseInputSetContext</em>, <em class="sig-param">dataflow: dffml.df.types.DataFlow</em>, <em class="sig-param">*</em>, <em class="sig-param">new_input_set: Optional[dffml.df.base.BaseInputSet] = None</em>, <em class="sig-param">stage: dffml.df.types.Stage = &lt;Stage.PROCESSING: 'processing'&gt;</em><span class="sig-paren">)</span> &#x2192; AsyncIterator[Tuple[dffml.df.types.Operation, dffml.df.base.BaseInputSet]]<a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOrchestratorContext.operations_parameter_set_pairs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOrchestratorContext.operations_parameter_set_pairs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use new_input_set to determine which operations in the network might be
+up for running. Cross check using existing inputs to generate per
+input set context novel input pairings. Yield novel input pairings
+along with their operations as they are generated.</p>
 </dd></dl>
 
 <dl class="method">
