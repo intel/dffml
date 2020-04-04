@@ -116,22 +116,23 @@ class Feature(abc.ABC, Entrypoint):
 
     Examples
     --------
-
     Define a feature using load_def:
+
     >>> feature = Feature.load_def("example", "float", 10)
     >>> feature.dtype()
     <class 'float'>
     >>> feature.NAME
-    "example"
+    'example'
     >>> feature.length()
     10
 
     Defining a feature directly using DefFeature:
-    >>> feature = DefFeature("example2", "int", 20)
+
+    >>> feature = DefFeature("example2", int, 20)
     >>> feature.dtype()
     <class 'int'>
     >>> feature.NAME
-    "example2"
+    'example2'
     >>> feature.length()
     20
     """
