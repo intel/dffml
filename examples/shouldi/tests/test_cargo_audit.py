@@ -38,10 +38,7 @@ class TestRunCargoAuditOp(AsyncTestCase):
 
         with prepend_to_path(
             rust / "rust-1.42.0-x86_64-unknown-linux-gnu" / "cargo" / "bin",
-            cargo_audit
-            / "cargo-audit-0.11.2"
-            / "target"
-            / "release",
+            cargo_audit / "cargo-audit-0.11.2" / "target" / "release",
         ):
             results = await run_cargo_audit(
                 str(
