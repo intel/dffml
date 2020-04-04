@@ -21,6 +21,27 @@ You'll find the existing implementations of all of these on their respective
 include some sources, models, and operations as a part of the main package,
 ``dffml``, and other functionality in more specific packages.
 
+Mission Statement
+-----------------
+
+DFFML aims to be the easiest and most convenient way to use Machine Learning.
+
+- It's an AutoML Python library, command line application, and HTTP service.
+
+- You give it your data and tell it what kind of model you want to train. It
+  creates a model for you.
+
+- If you want finer grained control over the model, you can easily do so by
+  implementing your own model plugin.
+
+- We make it easy to use and deploy your models.
+
+- We provide a directed graph concurrent execution environment with managed
+  locking which we call DataFlows.
+
+- DataFlows make it easy to generate datasets or modify existing datasets for
+  rapid iteration on feature engineering.
+
 Why DFFML
 ---------
 
