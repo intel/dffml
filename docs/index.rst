@@ -32,8 +32,6 @@ Output:
 You can use DFFML from the command line, Python, or the HTTP API, see the
 :doc:`quickstart/model` to get started right away.
 
-The web UI (under heavy development) can be found `here <webui/>`_.
-
 This is the documentation for the latest release, documentation for the master
 branch can be found `here <master/index.html>`_.
 
