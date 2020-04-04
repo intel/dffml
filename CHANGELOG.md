@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Python prompts `>>>` can now be enabled or disabled for easy copying of code into interactive sessions.
+- `GetMulti` operation which gets all Inputs of a given definition
 ### Changed
 - Renamed `"arg"` to `"plugin"`.
 
