@@ -251,21 +251,23 @@ the roadmap.</p>
 </div>
 <div class="section" id="examples">
 <h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
-<p>The following example shows how to use AcceptUserInput.
-&gt;&gt;&gt; dataflow = DataFlow.auto(AcceptUserInput, GetSingle)
-&gt;&gt;&gt; dataflow.seed.append(
-…     Input(
-…         value=[AcceptUserInput.op.outputs[“InputData”].name],
-…         definition=GetSingle.op.inputs[“spec”]
-…     )
-… )
-&gt;&gt;&gt;
-&gt;&gt;&gt; async def main():
-…     async for ctx, results in MemoryOrchestrator.run(dataflow, {“input”:[]}):
-…         print(results)
-&gt;&gt;&gt;
-&gt;&gt;&gt; asyncio.run(main())
-{‘UserInput’: {‘data’: ‘Data flow is awesome’}}</p>
+<p>The following example shows how to use AcceptUserInput.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">AcceptUserInput</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">AcceptUserInput</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;InputData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;input&quot;</span><span class="p">:[]}):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;UserInput&#39;: {&#39;data&#39;: &#39;Data flow is awesome&#39;}}</span>
+</pre></div>
+</div>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Outputs</strong></p>
 <ul class="simple">
@@ -505,21 +507,23 @@ This allows you to run a subflow as if it were an opertion.</p>
 </div>
 <div class="section" id="id5">
 <h4>Examples<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
-<p>The following example shows how to use print_output.
-&gt;&gt;&gt; dataflow = DataFlow.auto(print_output, GetSingle)
-&gt;&gt;&gt; inputs = [
-…     Input(
-…         value=”print_output example”,
-…         definition=dataflow.definitions[“DataToPrint”],
-…         parents=None,)]
-&gt;&gt;&gt;
-&gt;&gt;&gt; async def main():
-…     async for ctx, results in MemoryOrchestrator.run(dataflow, inputs):
-…         print(“String to be printed is ‘print_output example’”)
-&gt;&gt;&gt;
-&gt;&gt;&gt; asyncio.run(main())
-print_output example
-String to be printed is ‘print_output example’</p>
+<p>The following example shows how to use print_output.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">print_output</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="s2">&quot;print_output example&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">dataflow</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="s2">&quot;DataToPrint&quot;</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">parents</span><span class="o">=</span><span class="kc">None</span><span class="p">,)]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;String to be printed is &#39;print_output example&#39;&quot;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">print_output example</span>
+<span class="go">String to be printed is &#39;print_output example&#39;</span>
+</pre></div>
+</div>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">

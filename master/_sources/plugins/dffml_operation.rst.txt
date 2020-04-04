@@ -38,6 +38,7 @@ Examples
 ++++++++
 
 The following example shows how to use AcceptUserInput.
+
 >>> dataflow = DataFlow.auto(AcceptUserInput, GetSingle)
 >>> dataflow.seed.append(
 ...     Input(
@@ -327,6 +328,7 @@ Examples
 ++++++++
 
 The following example shows how to use print_output.
+
 >>> dataflow = DataFlow.auto(print_output, GetSingle)
 >>> inputs = [
 ...     Input(
