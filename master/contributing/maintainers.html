@@ -223,6 +223,13 @@ Add a line for the plugin along with it’s sceret.</p>
 <li><p>Increment the version number of each package</p></li>
 <li><p>Increment the version number of the main package in the dependency list of
 each package</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><cite>model/tensorflow_hub</cite> depends on <cite>model/tensorflow</cite>. Its important to
+update the version of <cite>dffml-model-tensorflow</cite> in <cite>model/tensorflow_hub</cite>.</p>
+</div>
+<ul class="simple">
 <li><p>Commit the new version</p></li>
 <li><p>Tag a release</p></li>
 </ul>
