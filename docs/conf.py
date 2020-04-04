@@ -74,12 +74,12 @@ html_context = {
     "github_repo": "dffml",
     "github_version": "master",
     "conf_py_path": "/docs/",
-    "display_github": True
+    "display_github": True,
 }
 
 html_theme_options = {
     "description": "The fastest path to machine learning integration",
-    "github_url": "https://github.com/intel/dffml/"
+    "github_url": "https://github.com/intel/dffml/",
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
