@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Windows support by selecting `asyncio.ProactorEventLoop` and not using
   `asyncio.FastChildWatcher`.
 - Moved SLR into the main dffml package and removed `scratch:slr`.
+- Refactor `model/tensroflow`
 
 ## [0.3.5] - 2020-03-10
 ### Added
