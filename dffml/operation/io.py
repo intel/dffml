@@ -53,6 +53,7 @@ class AcceptUserInput(OperationImplementation):
     ++++++++
 
     The following example shows how to use AcceptUserInput.
+
     >>> dataflow = DataFlow.auto(AcceptUserInput, GetSingle)
     >>> dataflow.seed.append(
     ...     Input(
@@ -107,6 +108,7 @@ async def print_output(data: str):
     ++++++++
 
     The following example shows how to use print_output.
+
     >>> dataflow = DataFlow.auto(print_output, GetSingle)
     >>> inputs = [
     ...     Input(
@@ -122,4 +124,4 @@ async def print_output(data: str):
     print_output example
     String to be printed is 'print_output example'
     """
-    print("\n" + data)
+    print(data)

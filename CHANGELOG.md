@@ -6,8 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Usage example for io operations
-- Operations for taking input from the user(AcceptUserInput) and for printing the output(print_output)
+- IO operations demo
+- Operations for taking input from the user `AcceptUserInput` and for printing the output `print_output`
 - Hugging Face Transformers tensorflow based NER models.
 - PNG ConfigLoader for reading images as arrays to predict using MNIST trained models
 - Docstrings and doctestable examples to `record.py`.
@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `validate` parameter in `Input` takes `Operation.instance_name`
 - New db source can utilize any database that inherits from `BaseDatabase`
 - Logistic Regression with SAG optimizer
+- shouldi got an operation to run cargo-audit on rust code.
+- Moved all the downloads to tests/downloads to speed the CI test.
 - Test tensorflow DNNEstimator documentation exaples in CI
 - Add python code for tensorflow DNNEstimator
 - Ability to run a subflow as if it were an operation using the
