@@ -25,7 +25,6 @@ async def counter_auto_start():
 
 @op(inputs={"number_in": Count}, outputs={"number_out": Number})
 def echo_num(number_in: int):
-    print(f"{number_in}")
     return {"number_out": number_in}
 
 
