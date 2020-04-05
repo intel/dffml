@@ -330,7 +330,7 @@ plugin needs to be loaded, and what the arguments for the configuration class of
 that plugin are.</p>
 <p>For example:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">model</span><span class="p">:</span>
-  <span class="nt">arg</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tfdnnc</span>
+  <span class="nt">plugin</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">tfdnnc</span>
   <span class="nt">config</span><span class="p">:</span>
     <span class="nt">epochs</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">400</span>
     <span class="nt">steps</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4000</span>
@@ -353,8 +353,8 @@ that plugin are.</p>
       <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">work</span>
 </pre></div>
 </div>
-<p>Currently, <code class="docutils literal notranslate"><span class="pre">arg</span></code> needs to be renamed to <code class="docutils literal notranslate"><span class="pre">plugin</span></code>, it signifies the plugin to
-load. <code class="docutils literal notranslate"><span class="pre">config</span></code> is the <code class="docutils literal notranslate"><span class="pre">...Config</span></code> class as a dict for that plugin.</p>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">plugin</span></code> is the <code class="docutils literal notranslate"><span class="pre">...Arg</span></code> class which signifies the plugin to load.
+<code class="docutils literal notranslate"><span class="pre">config</span></code> is the <code class="docutils literal notranslate"><span class="pre">...Config</span></code> class as a dict for that plugin.</p>
 <p>The command line equivalent for the model is…</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml ... <span class="se">\</span>
     -model tfdnnc <span class="se">\</span>
@@ -368,8 +368,6 @@ load. <code class="docutils literal notranslate"><span class="pre">config</span>
       work:int:10 <span class="se">\</span>
 </pre></div>
 </div>
-<p>The reason it’s called <code class="docutils literal notranslate"><span class="pre">arg</span></code> right now is because the parsing of the command
-line came first and the argument is stored there when it’s not nested.</p>
 </div>
 <div class="section" id="setup-py">
 <h2><a class="toc-backref" href="#id6">setup.py</a><a class="headerlink" href="#setup-py" title="Permalink to this headline">¶</a></h2>

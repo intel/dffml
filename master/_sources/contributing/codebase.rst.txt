@@ -112,7 +112,7 @@ For example:
 .. code-block:: yaml
 
     model:
-      arg: tfdnnc
+      plugin: tfdnnc
       config:
         epochs: 400
         steps: 4000
@@ -134,8 +134,8 @@ For example:
           length: 10
           name: work
 
-Currently, ``arg`` needs to be renamed to ``plugin``, it signifies the plugin to
-load. ``config`` is the ``...Config`` class as a dict for that plugin.
+Here, ``plugin`` is the ``...Arg`` class which signifies the plugin to load.
+``config`` is the ``...Config`` class as a dict for that plugin.
 
 The command line equivalent for the model is...
 
@@ -152,8 +152,6 @@ The command line equivalent for the model is...
           commits:int:10 \
           work:int:10 \
 
-The reason it's called ``arg`` right now is because the parsing of the command
-line came first and the argument is stored there when it's not nested.
 
 setup.py
 --------

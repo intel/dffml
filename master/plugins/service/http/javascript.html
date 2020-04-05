@@ -227,10 +227,10 @@ following files.</p>
 
   <span class="nx">await</span> <span class="nx">training_source</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="s2">&quot;my_training_dataset&quot;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s2">&quot;source&quot;</span><span class="o">:</span> <span class="p">{</span>
-      <span class="s2">&quot;arg&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
       <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
         <span class="s2">&quot;filename&quot;</span><span class="o">:</span> <span class="p">{</span>
-          <span class="s2">&quot;arg&quot;</span><span class="o">:</span> <span class="p">[</span>
+          <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="p">[</span>
             <span class="s2">&quot;my_training_dataset.csv&quot;</span>
           <span class="p">],</span>
           <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{}</span>
@@ -257,10 +257,10 @@ following files.</p>
 
   <span class="nx">await</span> <span class="nx">test_source</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="s2">&quot;my_test_dataset&quot;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s2">&quot;source&quot;</span><span class="o">:</span> <span class="p">{</span>
-      <span class="s2">&quot;arg&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
       <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
         <span class="s2">&quot;filename&quot;</span><span class="o">:</span> <span class="p">{</span>
-          <span class="s2">&quot;arg&quot;</span><span class="o">:</span> <span class="p">[</span>
+          <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="p">[</span>
             <span class="s2">&quot;my_test_dataset.csv&quot;</span>
           <span class="p">],</span>
           <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{}</span>
@@ -289,10 +289,10 @@ following files.</p>
 
   <span class="nx">await</span> <span class="nx">model</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="s2">&quot;scikitlr&quot;</span><span class="p">,</span> <span class="s2">&quot;mymodel&quot;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s2">&quot;model&quot;</span><span class="o">:</span> <span class="p">{</span>
-      <span class="s2">&quot;arg&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
       <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
         <span class="s2">&quot;predict&quot;</span><span class="o">:</span> <span class="p">{</span>
-          <span class="s2">&quot;arg&quot;</span><span class="o">:</span> <span class="p">[{</span>
+          <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="p">[{</span>
             <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Salary&quot;</span><span class="p">,</span>
             <span class="s2">&quot;dtype&quot;</span><span class="o">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
             <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mi">1</span>
@@ -300,7 +300,7 @@ following files.</p>
           <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{}</span>
         <span class="p">},</span>
         <span class="s2">&quot;features&quot;</span><span class="o">:</span> <span class="p">{</span>
-          <span class="s2">&quot;arg&quot;</span><span class="o">:</span> <span class="p">[{</span>
+          <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="p">[{</span>
             <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Years&quot;</span><span class="p">,</span>
             <span class="s2">&quot;dtype&quot;</span><span class="o">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
             <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mi">1</span>
