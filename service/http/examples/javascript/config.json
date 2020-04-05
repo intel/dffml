@@ -1,9 +1,9 @@
 {
   "source": {
-    "arg": null,
+    "plugin": null,
     "config": {
       "filename": {
-        "arg": [
+        "plugin": [
           "mydataset.json"
         ],
         "config": {}

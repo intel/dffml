@@ -44,17 +44,17 @@ class TestFileSource(AsyncTestCase):
             FileSource.args({}),
             {
                 "source": {
-                    "arg": None,
+                    "plugin": None,
                     "config": {
                         "file": {
-                            "arg": None,
+                            "plugin": None,
                             "config": {
                                 "filename": {
-                                    "arg": Arg(type=str),
+                                    "plugin": Arg(type=str),
                                     "config": {},
                                 },
                                 "readwrite": {
-                                    "arg": Arg(
+                                    "plugin": Arg(
                                         type=bool,
                                         action="store_true",
                                         default=False,
@@ -62,7 +62,7 @@ class TestFileSource(AsyncTestCase):
                                     "config": {},
                                 },
                                 "allowempty": {
-                                    "arg": Arg(
+                                    "plugin": Arg(
                                         type=bool,
                                         action="store_true",
                                         default=False,
@@ -70,7 +70,9 @@ class TestFileSource(AsyncTestCase):
                                     "config": {},
                                 },
                                 "tag": {
-                                    "arg": Arg(type=str, default="untagged"),
+                                    "plugin": Arg(
+                                        type=str, default="untagged"
+                                    ),
                                     "config": {},
                                 },
                             },
