@@ -221,12 +221,12 @@
 </ol>
 <div class="section" id="module-dffml.source.json">
 <span id="json"></span><h2>JSON<a class="headerlink" href="#module-dffml.source.json" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="dffml.source.json.JSONSource">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.json.</code><code class="sig-name descname">JSONSource</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/json.html#JSONSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.json.JSONSource" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.json.</code><code class="sig-name descname">JSONSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">Type<span class="p">[</span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig">dffml.base.BaseConfig</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/json.html#JSONSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.json.JSONSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>JSONSource reads and write from a JSON file on open / close. Otherwise
 stored in memory.</p>
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="dffml.source.json.JSONSource.CONFIG">
 <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.source.json.JSONSource.CONFIG" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#dffml.source.json.JSONSourceConfig" title="dffml.source.json.JSONSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">JSONSourceConfig</span></code></a></p>
@@ -234,61 +234,61 @@ stored in memory.</p>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="dffml.source.json.JSONSourceConfig">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.json.</code><code class="sig-name descname">JSONSourceConfig</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">tag: str = 'untagged'</em>, <em class="sig-param">readwrite: bool = False</em>, <em class="sig-param">allowempty: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/json.html#JSONSourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.json.JSONSourceConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.json.</code><code class="sig-name descname">JSONSourceConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em>, <em class="sig-param"><span class="n">tag</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'untagged'</span></em>, <em class="sig-param"><span class="n">readwrite</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">allowempty</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/json.html#JSONSourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.json.JSONSourceConfig" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="dffml.source.json.OpenJSONFile">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.json.</code><code class="sig-name descname">OpenJSONFile</code><span class="sig-paren">(</span><em class="sig-param">data: Dict[str, Dict], active: int, lock: asyncio.locks.Lock</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/json.html#OpenJSONFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.json.OpenJSONFile" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.json.</code><code class="sig-name descname">OpenJSONFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">, </span>Dict<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">active</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span></em>, <em class="sig-param"><span class="n">lock</span><span class="p">:</span> <span class="n">asyncio.locks.Lock</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/json.html#OpenJSONFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.json.OpenJSONFile" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
 <div class="section" id="module-dffml.source.csv">
 <span id="csv"></span><h2>CSV<a class="headerlink" href="#module-dffml.source.csv" title="Permalink to this headline">¶</a></h2>
 <p>Loads records from a csv file, using columns as features</p>
-<dl class="class">
+<dl class="py class">
 <dt id="dffml.source.csv.CSVSource">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.csv.</code><code class="sig-name descname">CSVSource</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.csv.</code><code class="sig-name descname">CSVSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">Type<span class="p">[</span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig">dffml.base.BaseConfig</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uses a CSV file as the source of record feature data</p>
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="dffml.source.csv.CSVSource.CONFIG">
 <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.source.csv.CSVSource.CONFIG" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#dffml.source.csv.CSVSourceConfig" title="dffml.source.csv.CSVSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">CSVSourceConfig</span></code></a></p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="dffml.source.csv.CSVSource.dump_fd">
-<em class="property">async </em><code class="sig-name descname">dump_fd</code><span class="sig-paren">(</span><em class="sig-param">fd</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource.dump_fd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource.dump_fd" title="Permalink to this definition">¶</a></dt>
+<em class="property">async </em><code class="sig-name descname">dump_fd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fd</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource.dump_fd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource.dump_fd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dumps data into a CSV stream</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="dffml.source.csv.CSVSource.load_fd">
-<em class="property">async </em><code class="sig-name descname">load_fd</code><span class="sig-paren">(</span><em class="sig-param">fd</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource.load_fd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource.load_fd" title="Permalink to this definition">¶</a></dt>
+<em class="property">async </em><code class="sig-name descname">load_fd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fd</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSource.load_fd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSource.load_fd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parses a CSV stream into Record instances</p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="dffml.source.csv.CSVSourceConfig">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.csv.</code><code class="sig-name descname">CSVSourceConfig</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">tag: str = 'untagged'</em>, <em class="sig-param">readwrite: bool = False</em>, <em class="sig-param">allowempty: bool = False</em>, <em class="sig-param">key: str = 'key'</em>, <em class="sig-param">tagcol: str = 'tag'</em>, <em class="sig-param">loadfiles: str = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.csv.</code><code class="sig-name descname">CSVSourceConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em>, <em class="sig-param"><span class="n">tag</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'untagged'</span></em>, <em class="sig-param"><span class="n">readwrite</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">allowempty</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">key</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'key'</span></em>, <em class="sig-param"><span class="n">tagcol</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'tag'</span></em>, <em class="sig-param"><span class="n">loadfiles</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#CSVSourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.CSVSourceConfig" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="dffml.source.csv.OpenCSVFile">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.csv.</code><code class="sig-name descname">OpenCSVFile</code><span class="sig-paren">(</span><em class="sig-param">write_out: Dict</em>, <em class="sig-param">active: int</em>, <em class="sig-param">lock: asyncio.locks.Lock</em>, <em class="sig-param">write_back_key: bool = True</em>, <em class="sig-param">write_back_tag: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#OpenCSVFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.OpenCSVFile" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.csv.</code><code class="sig-name descname">OpenCSVFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">write_out</span><span class="p">:</span> <span class="n">Dict</span></em>, <em class="sig-param"><span class="n">active</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a></span></em>, <em class="sig-param"><span class="n">lock</span><span class="p">:</span> <span class="n">asyncio.locks.Lock</span></em>, <em class="sig-param"><span class="n">write_back_key</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">write_back_tag</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/csv.html#OpenCSVFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.csv.OpenCSVFile" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
 <div class="section" id="module-dffml.source.file">
 <span id="generic-file-based"></span><h2>Generic File Based<a class="headerlink" href="#module-dffml.source.file" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="dffml.source.file.BinaryFileSource">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.file.</code><code class="sig-name descname">BinaryFileSource</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#BinaryFileSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.BinaryFileSource" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.file.</code><code class="sig-name descname">BinaryFileSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">Type<span class="p">[</span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig">dffml.base.BaseConfig</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#BinaryFileSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.BinaryFileSource" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
 <dt id="dffml.source.file.BinaryFileSource.CONFIG">
 <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.source.file.BinaryFileSource.CONFIG" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#dffml.source.file.BinaryFileSourceConfig" title="dffml.source.file.BinaryFileSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryFileSourceConfig</span></code></a></p>
@@ -296,16 +296,16 @@ stored in memory.</p>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="dffml.source.file.BinaryFileSourceConfig">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.file.</code><code class="sig-name descname">BinaryFileSourceConfig</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">tag: str = 'untagged'</em>, <em class="sig-param">readwrite: bool = False</em>, <em class="sig-param">allowempty: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#BinaryFileSourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.BinaryFileSourceConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.file.</code><code class="sig-name descname">BinaryFileSourceConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em>, <em class="sig-param"><span class="n">tag</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'untagged'</span></em>, <em class="sig-param"><span class="n">readwrite</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">allowempty</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#BinaryFileSourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.BinaryFileSourceConfig" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="dffml.source.file.FileSource">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.file.</code><code class="sig-name descname">FileSource</code><span class="sig-paren">(</span><em class="sig-param">config: Type[dffml.base.BaseConfig]</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#FileSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.FileSource" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.file.</code><code class="sig-name descname">FileSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">Type<span class="p">[</span><a class="reference internal" href="../base.html#dffml.base.BaseConfig" title="dffml.base.BaseConfig">dffml.base.BaseConfig</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#FileSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.FileSource" title="Permalink to this definition">¶</a></dt>
 <dd><p>FileSource reads and write from a file on open / close.</p>
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="dffml.source.file.FileSource.CONFIG">
 <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.source.file.FileSource.CONFIG" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#dffml.source.file.FileSourceConfig" title="dffml.source.file.FileSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">FileSourceConfig</span></code></a></p>
@@ -313,9 +313,9 @@ stored in memory.</p>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="dffml.source.file.FileSourceConfig">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.file.</code><code class="sig-name descname">FileSourceConfig</code><span class="sig-paren">(</span><em class="sig-param">filename: str</em>, <em class="sig-param">tag: str = 'untagged'</em>, <em class="sig-param">readwrite: bool = False</em>, <em class="sig-param">allowempty: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#FileSourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.FileSourceConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.file.</code><code class="sig-name descname">FileSourceConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em>, <em class="sig-param"><span class="n">tag</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'untagged'</span></em>, <em class="sig-param"><span class="n">readwrite</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">allowempty</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/file.html#FileSourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.file.FileSourceConfig" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
