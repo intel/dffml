@@ -773,7 +773,10 @@
 <div class="viewcode-block" id="MemoryOperationNetwork.args"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryOperationNetwork.args">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Arg</span><span class="p">]:</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">config_set</span><span class="p">(</span>
-            <span class="n">args</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;ops&quot;</span><span class="p">,</span> <span class="n">Arg</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">Operation</span><span class="o">.</span><span class="n">load</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[])</span>
+            <span class="n">args</span><span class="p">,</span>
+            <span class="n">above</span><span class="p">,</span>
+            <span class="s2">&quot;ops&quot;</span><span class="p">,</span>
+            <span class="n">Arg</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">Operation</span><span class="o">.</span><span class="n">load</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[]),</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">args</span></div>
 
