@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Renamed `"arg"` to `"plugin"`.
 
 ## [0.3.6] - 2020-04-04
 ### Added
@@ -27,7 +29,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Doctestable examples for `BaseSource`
 - Instructions for setting up debugging environment in VSCode
 ### Fixed
-- Renamed `Arg` to `Plugin`.
 - New model tutorial mentions file paths that should be edited.
 - DataFlow is no longer a dataclass to prevent it from being exported
   incorrectly.
