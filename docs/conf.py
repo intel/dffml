@@ -87,6 +87,9 @@ html_theme_options = {
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 
+def setup(app):
+    app.add_javascript("copybutton.js")
+
 # -- Extension configuration -------------------------------------------------
 
 napoleon_numpy_docstring = True
