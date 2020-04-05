@@ -28,16 +28,16 @@ def traverse_config_set(target, *args):
     """
     >>> traverse_config_set({
     ...     "level": {
-    ...         "arg": None,
+    ...         "plugin": None,
     ...         "config": {
     ...             "one": {
-    ...                 "arg": 1,
+    ...                 "plugin": 1,
     ...                 "config": {},
     ...             },
     ...         },
     ...     },
     ... }, "level", "one", 42)
-    {'level': {'arg': None, 'config': {'one': {'arg': 42, 'config': {}}}}}
+    {'level': {'plugin': None, 'config': {'one': {'plugin': 42, 'config': {}}}}}
     """
     # Seperate the path down from the value to set
     path, value = args[:-1], args[-1]
@@ -45,10 +45,10 @@ def traverse_config_set(target, *args):
     last = target
     for level in path:
         if not level in current:
-            current[level] = {"arg": None, "config": {}}
+            current[level] = {"plugin": None, "config": {}}
         last = current[level]
         current = last["config"]
-    last["arg"] = value
+    last["plugin"] = value
     return target
 
 
@@ -56,10 +56,10 @@ def traverse_config_get(target, *args):
     """
     >>> traverse_config_get({
     ...     "level": {
-    ...         "arg": None,
+    ...         "plugin": None,
     ...         "config": {
     ...             "one": {
-    ...                 "arg": 1,
+    ...                 "plugin": 1,
     ...                 "config": {},
     ...             },
     ...         },
@@ -72,7 +72,7 @@ def traverse_config_get(target, *args):
     for level in args:
         last = current[level]
         current = last["config"]
-    return last["arg"]
+    return last["plugin"]
 
 
 def traverse_get(target, *args):

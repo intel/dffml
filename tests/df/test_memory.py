@@ -45,22 +45,22 @@ class TestMemoryRedundancyChecker(AsyncTestCase):
             MemoryRedundancyChecker.args({}),
             {
                 "rchecker": {
-                    "arg": None,
+                    "plugin": None,
                     "config": {
                         "memory": {
-                            "arg": None,
+                            "plugin": None,
                             "config": {
                                 "kvstore": {
-                                    "arg": Arg(
+                                    "plugin": Arg(
                                         type=BaseKeyValueStore.load,
                                         default=MemoryKeyValueStore,
                                     ),
                                     "config": {
                                         "withargs": {
-                                            "arg": None,
+                                            "plugin": None,
                                             "config": {
                                                 "filename": {
-                                                    "arg": Arg(type=str),
+                                                    "plugin": Arg(type=str),
                                                     "config": {},
                                                 }
                                             },

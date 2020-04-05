@@ -599,7 +599,10 @@ class MemoryOperationNetwork(BaseOperationNetwork, BaseMemoryDataFlowObject):
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
         cls.config_set(
-            args, above, "ops", Arg(type=Operation.load, nargs="+", default=[])
+            args,
+            above,
+            "ops",
+            Arg(type=Operation.load, nargs="+", default=[]),
         )
         return args
 

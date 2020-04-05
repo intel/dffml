@@ -111,17 +111,17 @@ sources.
     {
       "csv": {
         "source": {
-          "arg": null,
+          "plugin": null,
           "config": {
             "csv": {
-              "arg": null,
+              "plugin": null,
               "config": {
                 "filename": {
-                  "arg": {},
+                  "plugin": {},
                   "config": {}
                 },
                 "readwrite": {
-                  "arg": {
+                  "plugin": {
                     "type": "bool",
                     "action": "store_true",
                     "default": false
@@ -129,7 +129,7 @@ sources.
                   "config": {}
                 },
                 "allowempty": {
-                  "arg": {
+                  "plugin": {
                     "type": "bool",
                     "action": "store_true",
                     "default": false
@@ -137,14 +137,14 @@ sources.
                   "config": {}
                 },
                 "label": {
-                  "arg": {
+                  "plugin": {
                     "type": "str",
                     "default": "unlabeled"
                   },
                   "config": {}
                 },
                 "key": {
-                  "arg": {
+                  "plugin": {
                     "type": "str",
                     "default": null
                   },
@@ -207,16 +207,16 @@ URL this ``POST`` request is sent to is.
 
     {
       "source": {
-        "arg": null,
+        "plugin": null,
         "config": {
           "filename": {
-            "arg": [
+            "plugin": [
               "dataset.csv"
             ],
             "config": {}
           },
           "readwrite": {
-            "arg": [
+            "plugin": [
               true
             ],
             "config": {}
@@ -237,16 +237,16 @@ The following is an example request body to configure a model. The URL this
 
   {
     "model": {
-      "arg": null,
+      "plugin": null,
       "config": {
         "directory": {
-          "arg": [
+          "plugin": [
             "/home/user/modeldirs/mymodel"
           ],
           "config": {}
         },
         "features": {
-          "arg": [
+          "plugin": [
             {
               "name": "Years",
               "dtype": "int",
