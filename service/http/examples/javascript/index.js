@@ -20,10 +20,10 @@ var runit = async function() {
 
   await training_source.configure("csv", "my_training_dataset", {
     "source": {
-      "arg": null,
+      "plugin": null,
       "config": {
         "filename": {
-          "arg": [
+          "plugin": [
             "my_training_dataset.csv"
           ],
           "config": {}
@@ -50,10 +50,10 @@ var runit = async function() {
 
   await test_source.configure("csv", "my_test_dataset", {
     "source": {
-      "arg": null,
+      "plugin": null,
       "config": {
         "filename": {
-          "arg": [
+          "plugin": [
             "my_test_dataset.csv"
           ],
           "config": {}
@@ -82,10 +82,10 @@ var runit = async function() {
 
   await model.configure("scikitlr", "mymodel", {
     "model": {
-      "arg": null,
+      "plugin": null,
       "config": {
         "predict": {
-          "arg": [{
+          "plugin": [{
             "name": "Salary",
             "dtype": "int",
             "length": 1
@@ -93,7 +93,7 @@ var runit = async function() {
           "config": {}
         },
         "features": {
-          "arg": [{
+          "plugin": [{
             "name": "Years",
             "dtype": "int",
             "length": 1

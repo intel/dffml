@@ -72,20 +72,24 @@ def sanitize_default(default):
 def build_args(config):
     args = []
     for key, value in config.items():
-        arg = value["arg"]
-        if arg is None:
+        plugin = value["plugin"]
+        if plugin is None:
             continue
         build = ""
         build += "- %s: %s\n" % (
             key,
-            data_type_string(arg.get("type", str), arg.get("nargs", None)),
+            data_type_string(
+                plugin.get("type", str), plugin.get("nargs", None)
+            ),
         )
-        if "default" in arg or "help" in arg:
+        if "default" in plugin or "help" in plugin:
             build += "\n"
-        if "default" in arg:
-            build += "  - default: %s\n" % (sanitize_default(arg["default"]),)
-        if "help" in arg:
-            build += "  - %s\n" % (arg["help"],)
+        if "default" in plugin:
+            build += "  - default: %s\n" % (
+                sanitize_default(plugin["default"]),
+            )
+        if "help" in plugin:
+            build += "  - %s\n" % (plugin["help"],)
         args.append(build.rstrip())
     if args:
         return "**Args**\n\n" + "\n\n".join(args)

@@ -180,7 +180,7 @@ def convert_value(arg, value):
 
 def is_config_dict(value):
     return bool(
-        "arg" in value
+        "plugin" in value
         and "config" in value
         and isinstance(value["config"], dict)
     )
@@ -192,7 +192,7 @@ def _fromdict(cls, **kwargs):
             value = kwargs[field.name]
             config = {}
             if is_config_dict(value):
-                value, config = value["arg"], value["config"]
+                value, config = value["plugin"], value["config"]
             value = convert_value(mkarg(field), value)
             if inspect.isclass(value) and issubclass(value, BaseConfigurable):
                 # TODO This probably isn't 100% correct. Figure out what we need
@@ -200,11 +200,11 @@ def _fromdict(cls, **kwargs):
                 value = value.withconfig(
                     {
                         value.ENTRY_POINT_NAME[-1]: {
-                            "arg": None,
+                            "plugin": None,
                             "config": {
                                 key: value
                                 if is_config_dict(value)
-                                else {"arg": value, "config": {}}
+                                else {"plugin": value, "config": {}}
                                 for key, value in config.items()
                             },
                         }
