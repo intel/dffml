@@ -45,18 +45,21 @@ class TestAutoArgsConfig(unittest.TestCase):
             FakeTesting.args({}),
             {
                 "test": {
-                    "arg": None,
+                    "plugin": None,
                     "config": {
                         "fake": {
-                            "arg": None,
+                            "plugin": None,
                             "config": {
-                                "num": {"arg": Arg(type=float), "config": {}},
+                                "num": {
+                                    "plugin": Arg(type=float),
+                                    "config": {},
+                                },
                                 "files": {
-                                    "arg": Arg(type=str, nargs="+"),
+                                    "plugin": Arg(type=str, nargs="+"),
                                     "config": {},
                                 },
                                 "features": {
-                                    "arg": Arg(
+                                    "plugin": Arg(
                                         type=Feature.load,
                                         nargs="+",
                                         action=list_action(Features),
@@ -64,13 +67,13 @@ class TestAutoArgsConfig(unittest.TestCase):
                                     "config": {},
                                 },
                                 "name": {
-                                    "arg": Arg(
+                                    "plugin": Arg(
                                         type=str, help="Name of FakeTesting"
                                     ),
                                     "config": {},
                                 },
                                 "readonly": {
-                                    "arg": Arg(
+                                    "plugin": Arg(
                                         type=bool,
                                         action="store_true",
                                         default=False,
@@ -78,11 +81,13 @@ class TestAutoArgsConfig(unittest.TestCase):
                                     "config": {},
                                 },
                                 "label": {
-                                    "arg": Arg(type=str, default="unlabeled"),
+                                    "plugin": Arg(
+                                        type=str, default="unlabeled"
+                                    ),
                                     "config": {},
                                 },
                                 "source": {
-                                    "arg": Arg(
+                                    "plugin": Arg(
                                         type=BaseSource.load,
                                         default=JSONSource,
                                     ),

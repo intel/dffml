@@ -69,13 +69,17 @@ source_suffix = {
 #
 html_theme = "sphinx_rtd_theme"
 
-html_theme_options = {
-    "description": "The fastest path to machine learning integration",
+html_context = {
     "github_user": "intel",
     "github_repo": "dffml",
-    "github_button": True,
-    "travis_button": True,
-    "codecov_button": True,
+    "github_version": "master",
+    "conf_py_path": "/docs/",
+    "display_github": True,
+}
+
+html_theme_options = {
+    "description": "The fastest path to machine learning integration",
+    "github_url": "https://github.com/intel/dffml/",
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

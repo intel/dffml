@@ -5,7 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Renamed `"arg"` to `"plugin"`.
+
+## [0.3.6] - 2020-04-04
 ### Added
+- Operations for taking input from the user `AcceptUserInput` and for printing the output `print_output`
 - Hugging Face Transformers tensorflow based NER models.
 - PNG ConfigLoader for reading images as arrays to predict using MNIST trained models
 - Docstrings and doctestable examples to `record.py`.
@@ -14,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New db source can utilize any database that inherits from `BaseDatabase`
 - Logistic Regression with SAG optimizer
 - Test tensorflow DNNEstimator documentation examples in CI
+- shouldi got an operation to run cargo-audit on rust code.
+- Moved all the downloads to tests/downloads to speed the CI test.
+- Test tensorflow DNNEstimator documentation exaples in CI
 - Add python code for tensorflow DNNEstimator
 - Ability to run a subflow as if it were an operation using the
   `dffml.dataflow.run` operation.
@@ -21,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Partial doctestable examples to `features.py`
 - Doctestable examples for `BaseSource`
 - Support for async generator operations
+- Instructions for setting up debugging environment in VSCode
 ### Fixed
 - New model tutorial mentions file paths that should be edited.
 - DataFlow is no longer a dataclass to prevent it from being exported
@@ -31,6 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Windows support by selecting `asyncio.ProactorEventLoop` and not using
   `asyncio.FastChildWatcher`.
 - Moved SLR into the main dffml package and removed `scratch:slr`.
+### Changed
+- Refactor `model/tensroflow`
 
 ## [0.3.5] - 2020-03-10
 ### Added
