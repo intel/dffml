@@ -52,6 +52,7 @@ class AcceptUserInput(OperationImplementation):
     ++++++++
 
     The following example shows how to use AcceptUserInput.
+    (Assumes that the input from stdio is "Data flow is awesome"!)
 
     >>> dataflow = DataFlow.auto(AcceptUserInput, GetSingle)
     >>> dataflow.seed.append(
@@ -66,7 +67,7 @@ class AcceptUserInput(OperationImplementation):
     ...         print(results)
     >>>
     >>> asyncio.run(main())
-    {'UserInput': {'data': 'Data flow is awesome'}}
+    {'UserInput': 'Data flow is awesome'}
     """
 
     op = AcceptUserInput
