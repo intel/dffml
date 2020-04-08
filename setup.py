@@ -97,6 +97,8 @@ setup(
             # io
             "AcceptUserInput = dffml.operation.io:AcceptUserInput",
             "print_output = dffml.operation.io:print_output",
+            # preprocess
+            "literal_eval = dffml.operation.preprocess:literal_eval",
         ],
         "dffml.kvstore": ["memory = dffml.df.memory:MemoryKeyValueStore"],
         "dffml.input.network": ["memory = dffml.df.memory:MemoryInputNetwork"],

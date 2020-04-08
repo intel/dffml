@@ -25,7 +25,6 @@ AcceptUserInput = Operation(
 class AcceptUserInputContext(OperationImplementationContext):
     @staticmethod
     def receive_input():
-        # TODO should we literal_eval input ?
         return input()
 
     async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
