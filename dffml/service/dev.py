@@ -9,6 +9,7 @@ import pathlib
 import getpass
 import tempfile
 import importlib
+import subprocess
 import contextlib
 import configparser
 import pkg_resources
@@ -530,8 +531,17 @@ class BumpPackages(CMD):
             )
         main_package = pathlib.Path(main_package)
         skel = main_package / "dffml" / "skel"
+        version_files = map(
+            lambda path: pathlib.Path(*path.split("/")).resolve(),
+            filter(
+                bool,
+                subprocess.check_output(["git", "ls-files", "*/version.py"])
+                .decode()
+                .split("\n"),
+            ),
+        )
         # Update all the version files
-        for version_file in main_package.rglob("**/version.py"):
+        for version_file in version_files:
             # Ignore skel
             if skel in version_file.parents:
                 self.logger.debug(
@@ -542,7 +552,10 @@ class BumpPackages(CMD):
             # check we're in the right package, skip if not.
             setup_filepath = version_file.parent.parent / "setup.py"
             with chdir(setup_filepath.parent):
-                name = SetupPyKWArg.get_kwargs(setup_filepath)["name"]
+                try:
+                    name = SetupPyKWArg.get_kwargs(setup_filepath)["name"]
+                except Exception as error:
+                    raise Exception(setup_filepath) from error
                 if self.only and name not in self.only:
                     self.logger.debug(
                         "Verison file not in only %s", version_file

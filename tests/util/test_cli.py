@@ -204,19 +204,19 @@ class TestArg(unittest.TestCase):
             parsed,
             {
                 "rchecker": {
-                    "arg": None,
+                    "plugin": None,
                     "config": {
                         "memory": {
-                            "arg": None,
+                            "plugin": None,
                             "config": {
                                 "kvstore": {
-                                    "arg": ["withargs"],
+                                    "plugin": ["withargs"],
                                     "config": {
                                         "withargs": {
-                                            "arg": None,
+                                            "plugin": None,
                                             "config": {
                                                 "filename": {
-                                                    "arg": ["somefile"],
+                                                    "plugin": ["somefile"],
                                                     "config": {},
                                                 }
                                             },

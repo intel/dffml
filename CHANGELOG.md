@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - IO operations demo
+- Python prompts `>>>` can now be enabled or disabled for easy copying of code into interactive sessions.
+### Changed
+- Renamed `"arg"` to `"plugin"`.
+
+## [0.3.6] - 2020-04-04
+### Added
 - Operations for taking input from the user `AcceptUserInput` and for printing the output `print_output`
 - Hugging Face Transformers tensorflow based NER models.
 - PNG ConfigLoader for reading images as arrays to predict using MNIST trained models
@@ -24,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for operations without inputs.
 - Partial doctestable examples to `features.py`
 - Doctestable examples for `BaseSource`
+- Instructions for setting up debugging environment in VSCode
 ### Fixed
 - New model tutorial mentions file paths that should be edited.
 - DataFlow is no longer a dataclass to prevent it from being exported
