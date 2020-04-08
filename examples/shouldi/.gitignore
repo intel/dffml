@@ -24,5 +24,8 @@ tests/downloads/npm-audit-download/
 tests/downloads/cargo-audit-download/
 tests/downloads/rust-download/
 tests/downloads/crates-download/
+tests/downloads/java-download/
+tests/downloads/dependency_check-download/
+tests/downloads/RxJava-download/
 tests/downloads/golang-download/
 tests/downloads/cri-resource-manager-download/
