@@ -194,6 +194,7 @@ def op(imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
             kwargs["conditions"] = []
 
         func.op = Operation(**kwargs)
+        func.ENTRY_POINT_NAME = ["operation"]
         cls_name = (
             func.op.name.replace(".", " ")
             .replace("_", " ")
