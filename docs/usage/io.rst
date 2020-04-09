@@ -37,3 +37,4 @@ The output is:
 .. code-block:: console
 
     {'Salary': {'confidence': 1.0, 'value': 220.0}}
+    Finished

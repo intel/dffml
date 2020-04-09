@@ -45,12 +45,12 @@ dataflow = DataFlow(
     configs={"predict_using_model": ModelPredictConfig(model=slr_model)},
     flow={
         "literal_eval_input": InputFlow(
-            inputs={"InputStr": [{"get_user_input": "InputData"}]}
+            inputs={"str_to_eval": [{"get_user_input": "InputData"}]}
         ),
         "create_feature_map": InputFlow(
             inputs={
                 "key": ["seed.Years"],
-                "value": [{"literal_eval_input": "EvaluatedStr"}],
+                "value": [{"literal_eval_input": "str_after_eval"}],
             }
         ),
         "predict_using_model": InputFlow(
