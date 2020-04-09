@@ -14,6 +14,8 @@ Services. It also helps developers hack on DFFML itself.
 
     $ dffml service -h
 
+.. _plugin_service_dffml:
+
 dffml
 -----
 
@@ -22,12 +24,16 @@ dffml
     pip install dffml
 
 
+.. _plugin_service_dffml_dev:
+
 dev
 ~~~
 
 *Official*
 
 Development utilities for hacking on DFFML itself
+
+.. _plugin_service_dffml_service_http:
 
 dffml_service_http
 ------------------
@@ -36,6 +42,8 @@ dffml_service_http
 
     pip install dffml-service-http
 
+
+.. _plugin_service_dffml_service_http_http:
 
 http
 ~~~~
