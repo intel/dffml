@@ -577,7 +577,9 @@ class BaseInputNetworkContext(BaseDataFlowObjectContext):
         """
 
     @abc.abstractmethod
-    def definition(self, ctx: BaseInputSetContext) -> BaseDefinitionSetContext:
+    def definitions(
+        self, ctx: BaseInputSetContext
+    ) -> BaseDefinitionSetContext:
         """
         Return a DefinitionSet context that can be used to access the inputs
         within the given context, by definition.
