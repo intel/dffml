@@ -7,7 +7,7 @@ from dffml.df.types import Definition
 
 package_src_dir = Definition(name="package_src_dir", primitive="str")
 cargo_audit_output = Definition(
-    name="golangci_lint_output", primitive="Dict[str, Any]"
+    name="cargo_audit_output", primitive="Dict[str, Any]"
 )
 
 
