@@ -9,6 +9,8 @@ abstract the usage of machine learning models.
 If you want to get started creating your own model, check out the
 :ref:`model_tutorial`.
 
+.. _plugin_model_dffml:
+
 dffml
 -----
 
@@ -16,6 +18,8 @@ dffml
 
     pip install dffml
 
+
+.. _plugin_model_dffml_slr:
 
 slr
 ~~~
@@ -39,6 +43,8 @@ No description
   - default: ~/.cache/dffml/slr
   - Directory where state should be saved
 
+.. _plugin_model_dffml_model_tensorflow:
+
 dffml_model_tensorflow
 ----------------------
 
@@ -56,6 +62,8 @@ dffml_model_tensorflow
     after the hash of their feature names and hidden layer config. Which means
     if any of those parameters change between invocations, it's being told to
     look for a different saved model.
+
+.. _plugin_model_dffml_model_tensorflow_tfdnnc:
 
 tfdnnc
 ~~~~~~
@@ -168,6 +176,8 @@ Example usage of Tensorflow DNNClassifier model using python API
   - default: True
   - Randomise order of records in a batch
 
+.. _plugin_model_dffml_model_tensorflow_tfdnnr:
+
 tfdnnr
 ~~~~~~
 
@@ -267,6 +277,8 @@ predict).
   - default: [12, 40, 15]
   - List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer
 
+.. _plugin_model_dffml_model_tensorflow_hub:
+
 dffml_model_tensorflow_hub
 --------------------------
 
@@ -274,6 +286,8 @@ dffml_model_tensorflow_hub
 
     pip install dffml-model-tensorflow-hub
 
+
+.. _plugin_model_dffml_model_tensorflow_hub_text_classifier:
 
 text_classifier
 ~~~~~~~~~~~~~~~
@@ -440,6 +454,8 @@ Implemented using Tensorflow hub pretrained models.
   - default: ~/.cache/dffml/tensorflow_hub
   - Directory where state should be saved
 
+.. _plugin_model_dffml_model_transformers:
+
 dffml_model_transformers
 ------------------------
 
@@ -447,6 +463,8 @@ dffml_model_transformers
 
     pip install dffml-model-transformers
 
+
+.. _plugin_model_dffml_model_transformers_ner_tagger:
 
 ner_tagger
 ~~~~~~~~~~
@@ -715,6 +733,8 @@ Example usage of NER model using python API
   - default: False
   - Evaluate all checkpoints starting with the same prefix as model_name ending and ending with step number
 
+.. _plugin_model_dffml_model_scratch:
+
 dffml_model_scratch
 -------------------
 
@@ -722,6 +742,8 @@ dffml_model_scratch
 
     pip install dffml-model-scratch
 
+
+.. _plugin_model_dffml_model_scratch_scratchlgrsag:
 
 scratchlgrsag
 ~~~~~~~~~~~~~
@@ -796,6 +818,8 @@ Logistic Regression using stochastic average gradient descent optimizer
 
   - default: ~/.cache/dffml/scratch
   - Directory where state should be saved
+
+.. _plugin_model_dffml_model_scikit:
 
 dffml_model_scikit
 ------------------

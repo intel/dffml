@@ -9,6 +9,8 @@ abstract the loading and storage of data / datasets.
 If you want to get started creating your own source, check out the
 :ref:`source_tutorial`.
 
+.. _plugin_source_dffml:
+
 dffml
 -----
 
@@ -16,6 +18,8 @@ dffml
 
     pip install dffml
 
+
+.. _plugin_source_dffml_csv:
 
 csv
 ~~~
@@ -52,6 +56,8 @@ Uses a CSV file as the source of record feature data
 
   - default: None
 
+.. _plugin_source_dffml_db:
+
 db
 ~~
 
@@ -66,6 +72,8 @@ No description
 - table_name: String
 
 - model_columns: List of strings
+
+.. _plugin_source_dffml_idx1:
 
 idx1
 ~~~~
@@ -90,6 +98,8 @@ Source to read files in IDX1 format (such as MNIST digit label dataset).
 
   - default: False
 
+.. _plugin_source_dffml_idx3:
+
 idx3
 ~~~~
 
@@ -112,6 +122,8 @@ Source to read files in IDX3 format (such as MNIST digit image dataset).
 - allowempty: Boolean
 
   - default: False
+
+.. _plugin_source_dffml_json:
 
 json
 ~~~~
@@ -137,6 +149,8 @@ stored in memory.
 
   - default: False
 
+.. _plugin_source_dffml_memory:
+
 memory
 ~~~~~~
 
@@ -148,6 +162,8 @@ Stores records in a dict in memory
 
 - records: List of records
 
+.. _plugin_source_dffml_source_mysql:
+
 dffml_source_mysql
 ------------------
 
@@ -155,6 +171,8 @@ dffml_source_mysql
 
     pip install dffml-source-mysql
 
+
+.. _plugin_source_dffml_source_mysql_mysql:
 
 mysql
 ~~~~~

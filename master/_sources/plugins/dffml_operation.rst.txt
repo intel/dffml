@@ -9,6 +9,8 @@ They don't necessarily have to be written in Python. Although DFFML isn't quite
 to the point where it can use operations written in other languages yet, it's on
 the roadmap.
 
+.. _plugin_operation_dffml:
+
 dffml
 -----
 
@@ -16,6 +18,8 @@ dffml
 
     pip install dffml
 
+
+.. _plugin_operation_dffml_AcceptUserInput:
 
 AcceptUserInput
 ~~~~~~~~~~~~~~~
@@ -62,6 +66,8 @@ The following example shows how to use AcceptUserInput.
 
 - InputData: UserInput(type: str)
 
+.. _plugin_operation_dffml_associate:
+
 associate
 ~~~~~~~~~
 
@@ -80,6 +86,8 @@ No description
 **Outputs**
 
 - output: associate_output(type: Dict[str, Any])
+
+.. _plugin_operation_dffml_dffml_dataflow_run:
 
 dffml.dataflow.run
 ~~~~~~~~~~~~~~~~~~
@@ -211,6 +219,8 @@ This allows you to run a subflow as if it were an opertion.
 
 - dataflow: DataFlow
 
+.. _plugin_operation_dffml_dffml_mapping_create:
+
 dffml.mapping.create
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -231,6 +241,8 @@ No description
 
 - mapping: mapping(type: map)
 
+.. _plugin_operation_dffml_dffml_mapping_extract:
+
 dffml.mapping.extract
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -250,6 +262,8 @@ No description
 **Outputs**
 
 - value: value(type: generic)
+
+.. _plugin_operation_dffml_dffml_model_predict:
 
 dffml.model.predict
 ~~~~~~~~~~~~~~~~~~~
@@ -274,6 +288,8 @@ No description
 
 - model: Entrypoint
 
+.. _plugin_operation_dffml_get_single:
+
 get_single
 ~~~~~~~~~~
 
@@ -293,6 +309,8 @@ No description
 
 - output: get_single_output(type: map)
 
+.. _plugin_operation_dffml_group_by:
+
 group_by
 ~~~~~~~~
 
@@ -311,6 +329,8 @@ No description
 **Outputs**
 
 - output: group_by_output(type: Dict[str, List[Any]])
+
+.. _plugin_operation_dffml_print_output:
 
 print_output
 ~~~~~~~~~~~~
@@ -352,6 +372,8 @@ String to be printed is 'print_output example'
 
 - data: DataToPrint(type: str)
 
+.. _plugin_operation_dffml_feature_git:
+
 dffml_feature_git
 -----------------
 
@@ -359,6 +381,8 @@ dffml_feature_git
 
     pip install dffml-feature-git
 
+
+.. _plugin_operation_dffml_feature_git_check_if_valid_git_repository_URL:
 
 check_if_valid_git_repository_URL
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -379,6 +403,8 @@ No description
 
 - valid: valid_git_repository_URL(type: boolean)
 
+.. _plugin_operation_dffml_feature_git_cleanup_git_repo:
+
 cleanup_git_repo
 ~~~~~~~~~~~~~~~~
 
@@ -396,6 +422,8 @@ No description
 
   - URL: str
   - directory: str
+
+.. _plugin_operation_dffml_feature_git_clone_git_repo:
 
 clone_git_repo
 ~~~~~~~~~~~~~~
@@ -423,6 +451,8 @@ No description
 
 - valid_git_repository_URL: boolean
 
+.. _plugin_operation_dffml_feature_git_count_authors:
+
 count_authors
 ~~~~~~~~~~~~~
 
@@ -441,6 +471,8 @@ No description
 **Outputs**
 
 - authors: author_count(type: int)
+
+.. _plugin_operation_dffml_feature_git_git_commits:
 
 git_commits
 ~~~~~~~~~~~
@@ -466,6 +498,8 @@ No description
 
 - commits: commit_count(type: int)
 
+.. _plugin_operation_dffml_feature_git_git_repo_author_lines_for_dates:
+
 git_repo_author_lines_for_dates
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -489,6 +523,8 @@ No description
 **Outputs**
 
 - author_lines: author_line_count(type: Dict[str, int])
+
+.. _plugin_operation_dffml_feature_git_git_repo_checkout:
 
 git_repo_checkout
 ~~~~~~~~~~~~~~~~~
@@ -517,6 +553,8 @@ No description
   - directory: str
   - commit: str
 
+.. _plugin_operation_dffml_feature_git_git_repo_commit_from_date:
+
 git_repo_commit_from_date
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -540,6 +578,8 @@ No description
 **Outputs**
 
 - commit: git_commit(type: string)
+
+.. _plugin_operation_dffml_feature_git_git_repo_default_branch:
 
 git_repo_default_branch
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -567,6 +607,8 @@ No description
 
 - no_git_branch_given: boolean
 
+.. _plugin_operation_dffml_feature_git_git_repo_release:
+
 git_repo_release
 ~~~~~~~~~~~~~~~~
 
@@ -590,6 +632,8 @@ Was there a release within this date range
 **Outputs**
 
 - present: release_within_period(type: bool)
+
+.. _plugin_operation_dffml_feature_git_lines_of_code_by_language:
 
 lines_of_code_by_language
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -633,6 +677,8 @@ On OSX
 
 - lines_by_language: lines_by_language_count(type: Dict[str, Dict[str, int]])
 
+.. _plugin_operation_dffml_feature_git_lines_of_code_to_comments:
+
 lines_of_code_to_comments
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -651,6 +697,8 @@ No description
 **Outputs**
 
 - code_to_comment_ratio: language_to_comment_ratio(type: int)
+
+.. _plugin_operation_dffml_feature_git_quarters_back_to_date:
 
 quarters_back_to_date
 ~~~~~~~~~~~~~~~~~~~~~
@@ -673,6 +721,8 @@ No description
 - date: date(type: string)
 - start_end: date_pair(type: List[date])
 
+.. _plugin_operation_dffml_feature_git_work:
+
 work
 ~~~~
 
@@ -692,6 +742,8 @@ No description
 
 - work: work_spread(type: int)
 
+.. _plugin_operation_dffml_feature_auth:
+
 dffml_feature_auth
 ------------------
 
@@ -699,6 +751,8 @@ dffml_feature_auth
 
     pip install dffml-feature-auth
 
+
+.. _plugin_operation_dffml_feature_auth_scrypt:
 
 scrypt
 ~~~~~~
