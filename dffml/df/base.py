@@ -194,6 +194,7 @@ def op(imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
             kwargs["conditions"] = []
 
         func.op = Operation(**kwargs)
+        func.ENTRY_POINT_NAME = ["operation"]
         cls_name = (
             func.op.name.replace(".", " ")
             .replace("_", " ")
@@ -576,7 +577,9 @@ class BaseInputNetworkContext(BaseDataFlowObjectContext):
         """
 
     @abc.abstractmethod
-    def definition(self, ctx: BaseInputSetContext) -> BaseDefinitionSetContext:
+    def definitions(
+        self, ctx: BaseInputSetContext
+    ) -> BaseDefinitionSetContext:
         """
         Return a DefinitionSet context that can be used to access the inputs
         within the given context, by definition.
