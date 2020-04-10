@@ -3,11 +3,11 @@
 
 ## About
 
-Currently, dffml_model_transformers supports HuggingFace Transformers tensorflow based NER models. 
+Currently, dffml_model_transformers supports HuggingFace Transformers tensorflow based NER models.
 
 ## Documentation
 
-Documentation is hosted at https://intel.github.io/dffml/plugins/dffml_model.html#dffml-model-transformers 
+Documentation is hosted at https://intel.github.io/dffml/plugins/dffml_model.html#dffml-model-transformers
 
 ## Acknowledgement
 
