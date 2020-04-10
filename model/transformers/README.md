@@ -7,7 +7,7 @@ Currently, dffml_model_transformers supports HuggingFace Transformers tensorflow
 
 ## Documentation
 
-Documentation is hosted at https://intel.github.io/dffml/plugins/dffml_model.html#dffml-model-transformers. 
+Documentation is hosted at https://intel.github.io/dffml/plugins/dffml_model.html#dffml-model-transformers 
 
 ## Acknowledgement
 

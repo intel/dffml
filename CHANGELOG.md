@@ -7,12 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Python prompts `>>>` can now be enabled or disabled for easy copying of code into interactive sessions.
-<<<<<<< HEAD
 - Whitespace check now checks .rst and .md files too.
-=======
 - `GetMulti` operation which gets all Inputs of a given definition
 - Support for async generator operations
->>>>>>> 422cdb3a3920005f5c244689bfce8294414da1ae
 ### Changed
 - Renamed `"arg"` to `"plugin"`.
 
