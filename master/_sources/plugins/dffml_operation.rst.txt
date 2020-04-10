@@ -295,7 +295,47 @@ get_single
 
 *Official*
 
-No description
+Output operation to get a single Input for each definition given.
+
+Parameters
+++++++++++
+spec : list
+    List of definition names. An Input with matching definition will be
+    returned.
+
+Returns
++++++++
+dict
+    Maps definition names to an Input of that definition
+
+Examples
+++++++++
+
+The following shows how to grab an Inputs with the URL definition. If we
+had we run an operation which output a URL, that output URL could have also
+been returned to us.
+
+>>> URL = Definition(name="URL", primitive="string")
+>>>
+>>> dataflow = DataFlow.auto(GetSingle)
+>>> dataflow.seed.append(
+...     Input(
+...         value=[URL.name],
+...         definition=GetSingle.op.inputs["spec"]
+...     )
+... )
+>>>
+>>> async def main():
+...     async for ctx, results in MemoryOrchestrator.run(dataflow, [
+...         Input(
+...             value="https://github.com/intel/dffml",
+...             definition=URL
+...         )
+...     ]):
+...         print(results)
+...
+>>> asyncio.run(main())
+{'URL': 'https://github.com/intel/dffml'}
 
 **Stage: output**
 

@@ -472,7 +472,50 @@ This allows you to run a subflow as if it were an opertion.</p>
 <div class="section" id="get-single">
 <span id="plugin-operation-dffml-get-single"></span><h3>get_single<a class="headerlink" href="#get-single" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
-<p>No description</p>
+<p>Output operation to get a single Input for each definition given.</p>
+<div class="section" id="id4">
+<h4>Parameters<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>spec<span class="classifier">list</span></dt><dd><p>List of definition names. An Input with matching definition will be
+returned.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id5">
+<h4>Returns<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>dict</dt><dd><p>Maps definition names to an Input of that definition</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id6">
+<h4>Examples<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<p>The following shows how to grab an Inputs with the URL definition. If we
+had we run an operation which output a URL, that output URL could have also
+been returned to us.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">GetSingle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">URL</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;https://github.com/intel/dffml&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">URL</span>
+<span class="gp">... </span>        <span class="p">)</span>
+<span class="gp">... </span>    <span class="p">]):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;URL&#39;: &#39;https://github.com/intel/dffml&#39;}</span>
+</pre></div>
+</div>
 <p><strong>Stage: output</strong></p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
@@ -482,6 +525,7 @@ This allows you to run a subflow as if it were an opertion.</p>
 <ul class="simple">
 <li><p>output: get_single_output(type: map)</p></li>
 </ul>
+</div>
 </div>
 <div class="section" id="group-by">
 <span id="plugin-operation-dffml-group-by"></span><h3>group_by<a class="headerlink" href="#group-by" title="Permalink to this headline">¶</a></h3>
@@ -501,15 +545,15 @@ This allows you to run a subflow as if it were an opertion.</p>
 <span id="plugin-operation-dffml-print-output"></span><h3>print_output<a class="headerlink" href="#print-output" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Print the output on stdout using python print()</p>
-<div class="section" id="id4">
-<h4>Parameters<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id7">
+<h4>Parameters<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>inputs<span class="classifier">list</span></dt><dd><p>A list of Inputs whose value is to be printed.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id5">
-<h4>Examples<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id8">
+<h4>Examples<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use print_output.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">print_output</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
