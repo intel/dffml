@@ -91,9 +91,7 @@ class AcceptUserInput(OperationImplementation):
         self.loop = None
 
 
-@op(
-    inputs={"data": DataToPrint}, outputs={}, conditions=[],
-)
+@op(inputs={"data": DataToPrint}, outputs={}, conditions=[])
 async def print_output(data: str):
     """
     Print the output on stdout using python print()
