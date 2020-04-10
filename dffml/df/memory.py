@@ -599,10 +599,7 @@ class MemoryOperationNetwork(BaseOperationNetwork, BaseMemoryDataFlowObject):
     @classmethod
     def args(cls, args, *above) -> Dict[str, Arg]:
         cls.config_set(
-            args,
-            above,
-            "ops",
-            Arg(type=Operation.load, nargs="+", default=[]),
+            args, above, "ops", Arg(type=Operation.load, nargs="+", default=[])
         )
         return args
 
@@ -973,45 +970,51 @@ class MemoryOperationImplementationNetworkContext(
                 await parameter_set._asdict(),
             )
             if outputs is None:
-                return []
-        # Create a list of inputs from the outputs using the definition mapping
-        try:
-            inputs = []
-            if operation.expand:
-                expand = operation.expand
-            else:
-                expand = []
-            parents = [
-                item.origin async for item in parameter_set.parameters()
-            ]
-            for key, output in outputs.items():
-                if not key in expand:
-                    output = [output]
-                for value in output:
-                    new_input = Input(
-                        value=value,
-                        definition=operation.outputs[key],
-                        parents=parents,
-                        origin=(operation.instance_name, key),
+                return
+            if not inspect.isasyncgen(outputs):
+
+                async def to_async_gen(x):
+                    yield x
+
+                outputs = to_async_gen(outputs)
+        async for an_output in outputs:
+            # Create a list of inputs from the outputs using the definition mapping
+            try:
+                inputs = []
+                if operation.expand:
+                    expand = operation.expand
+                else:
+                    expand = []
+                parents = [
+                    item.origin async for item in parameter_set.parameters()
+                ]
+                for key, output in an_output.items():
+                    if not key in expand:
+                        output = [output]
+                    for value in output:
+                        new_input = Input(
+                            value=value,
+                            definition=operation.outputs[key],
+                            parents=parents,
+                            origin=(operation.instance_name, key),
+                        )
+                        new_input.validated = set_valid
+                        inputs.append(new_input)
+            except KeyError as error:
+                raise KeyError(
+                    "Value %s missing from output:definition mapping %s(%s)"
+                    % (
+                        str(error),
+                        operation.instance_name,
+                        ", ".join(operation.outputs.keys()),
                     )
-                    new_input.validated = set_valid
-                    inputs.append(new_input)
-        except KeyError as error:
-            raise KeyError(
-                "Value %s missing from output:definition mapping %s(%s)"
-                % (
-                    str(error),
-                    operation.instance_name,
-                    ", ".join(operation.outputs.keys()),
+                ) from error
+            # Add the input set made from the outputs to the input set network
+            await octx.ictx.add(
+                MemoryInputSet(
+                    MemoryInputSetConfig(ctx=parameter_set.ctx, inputs=inputs)
                 )
-            ) from error
-        # Add the input set made from the outputs to the input set network
-        await octx.ictx.add(
-            MemoryInputSet(
-                MemoryInputSetConfig(ctx=parameter_set.ctx, inputs=inputs)
             )
-        )
-        return inputs
 
     async def dispatch(
         self,
@@ -1432,14 +1435,13 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         tasks = set()
         # String representing the context we are executing operations for
         ctx_str = (await ctx.handle()).as_string()
+        # schedule running of operations with no inputs
+        async for task in self.nctx.dispatch_auto_starts(self, ctx):
+            tasks.add(task)
         # Create initial events to wait on
         # TODO(dfass) Make ictx.added(ctx) specific to dataflow
         input_set_enters_network = asyncio.create_task(self.ictx.added(ctx))
         tasks.add(input_set_enters_network)
-        # schedule running of operations with no inputs
-        async for task in self.nctx.dispatch_auto_starts(self, ctx):
-            tasks.add(task)
-
         try:
             # Return when outstanding operations reaches zero
             while tasks:
@@ -1492,9 +1494,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                                 self.config.dataflow,
                                 unvalidated_input_set,
                             ):
-                                await self.rctx.add(
-                                    operation, parameter_set
-                                )  # is this required here?
+                                await self.rctx.add(operation, parameter_set)
                                 dispatch_operation = await self.nctx.dispatch(
                                     self, operation, parameter_set
                                 )
