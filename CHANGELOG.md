@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Python prompts `>>>` can now be enabled or disabled for easy copying of code into interactive sessions.
 - `GetMulti` operation which gets all Inputs of a given definition
+- Support for async generator operations
+
 ### Changed
 - Renamed `"arg"` to `"plugin"`.
 
@@ -31,7 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for operations without inputs.
 - Partial doctestable examples to `features.py`
 - Doctestable examples for `BaseSource`
-- Support for async generator operations
 - Instructions for setting up debugging environment in VSCode
 ### Fixed
 - New model tutorial mentions file paths that should be edited.
