@@ -741,7 +741,7 @@
 <span class="sd">        Returns when a new input set has entered the network within a context</span>
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
-    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+<div class="viewcode-block" id="BaseInputNetworkContext.definition"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseInputNetworkContext.definition">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">definition</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span> <span class="n">definition</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Definition</span><span class="p">:</span>
@@ -749,10 +749,12 @@
 <span class="sd">        Search for the definition within a context given its name as a string.</span>
 <span class="sd">        Return the definition. Otherwise raise a DefinitionNotInContext</span>
 <span class="sd">        error. If the context is not present, raise a ContextNotPresent error.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
 
-<div class="viewcode-block" id="BaseInputNetworkContext.definition"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseInputNetworkContext.definition">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">def</span> <span class="nf">definition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseDefinitionSetContext</span><span class="p">:</span>
+<div class="viewcode-block" id="BaseInputNetworkContext.definitions"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.BaseInputNetworkContext.definitions">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">definitions</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseDefinitionSetContext</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a DefinitionSet context that can be used to access the inputs</span>
 <span class="sd">        within the given context, by definition.</span>
