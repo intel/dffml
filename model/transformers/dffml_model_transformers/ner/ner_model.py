@@ -84,9 +84,7 @@ class NERModelConfig:
     output_dir: str = field(
         "The output directory where the model checkpoints will be written",
         default=str(
-            pathlib.Path(
-                "~", ".cache", "dffml", "transformers", "checkpoints",
-            )
+            pathlib.Path("~", ".cache", "dffml", "transformers", "checkpoints")
         ),
     )
     config_name: str = field(
@@ -222,7 +220,7 @@ class NERModelContext(ModelContext):
         x_cols: Dict[str, Any] = {
             feature: []
             for feature in (
-                [self.parent.config.sid.NAME, self.parent.config.words.NAME,]
+                [self.parent.config.sid.NAME, self.parent.config.words.NAME]
             )
         }
         y_cols = []
@@ -242,7 +240,7 @@ class NERModelContext(ModelContext):
                 all_records.append(record)
         for record in all_records:
             for feature, results in record.features(
-                [self.parent.config.sid.NAME, self.parent.config.words.NAME,]
+                [self.parent.config.sid.NAME, self.parent.config.words.NAME]
             ).items():
                 x_cols[feature].append(np.array(results))
             y_cols.append(record.feature(self.parent.config.predict.NAME))
