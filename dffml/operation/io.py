@@ -25,7 +25,7 @@ AcceptUserInput = Operation(
 class AcceptUserInputContext(OperationImplementationContext):
     @staticmethod
     def receive_input():
-        print("Enter the value:")
+        print("Enter the value: ", end="")
         return input()
 
     async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
@@ -68,8 +68,7 @@ class AcceptUserInput(OperationImplementation):
     ...         print(results)
     >>>
     >>> asyncio.run(main())
-    Enter the value:
-    {'UserInput': 'Data flow is awesome'}
+    Enter the value: {'UserInput': 'Data flow is awesome'}
     """
 
     op = AcceptUserInput

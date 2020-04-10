@@ -72,7 +72,7 @@ dataflow.seed.append(
 
 async def main():
     async for ctx, results in MemoryOrchestrator.run(dataflow, {"inputs": []}):
-        print("Finished")
+        pass
 
 
 asyncio.run(main())

@@ -4,13 +4,9 @@ Prediction Using IO Operations
 This example will show you how to train a model using DFFML python API and use the
 model for prediction by taking input from stdio.
 
-The model we'll be using is ``slr`` which is a part of ``dffml`` models.
-We can install it
-with ``pip``.
-
-.. code-block:: console
-
-    $ pip install -U dffml
+DFFML offers several :ref:`plugin_models`. For this example
+we will be using the Simple Linear Regression model
+( ``slr`` ) which is in the ``dffml`` package.
 
 First we train the model and then create a DataFlow for making predictions
 on user input.
@@ -23,12 +19,13 @@ waits for input from stdio.
 
 .. code-block:: console
 
-    Enter the value:
-    21
+    Enter the value: 21
 
-The value (here "21") is then converted to `int` by
-`literal_eval` operation.
-A mapping is created by `create_mapping` operation ({"Years": 21})
+The feature value (which is the `str` "21") is then converted to `int` by
+`literal_eval` operation. Before passing this value to `model_predict`
+operation we need to create a mapping (`dict`) because `model_predict` takes a mapping for
+feature name to feature value.
+The mapping (`dict`) is created by `create_mapping` operation ( `{"Years": 21}` )
 which is then passed to `model_predict` operation for making prediction.
 The prediction is printed on stdout using `print_output` operation.
 
@@ -37,4 +34,3 @@ The output is:
 .. code-block:: console
 
     {'Salary': {'confidence': 1.0, 'value': 220.0}}
-    Finished
