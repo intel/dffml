@@ -9,10 +9,10 @@ from shouldi.dependency_check import run_dependency_check
 
 class TestRunDependencyCheckOp(AsyncTestCase):
     @cached_download_unpack_archive(
-        "https://download.oracle.com/otn-pub/java/jdk/14+36/076bab302c7b4508975440c56f6cc26a/jdk-14_osx-x64_bin.tar.gz",
+        "https://download.java.net/openjdk/jdk14/ri/openjdk-14+36_linux-x64_bin.tar.gz",
         pathlib.Path(__file__).parent / "downloads/java.tar.gz",
         pathlib.Path(__file__).parent / "downloads/java-download",
-        "fcd50cde4ec05c9ace95da88b3700d02c7633bb504fcb0329f242804a0f7735495d19e5da19c7e03a2bf58f87e9403d3",
+        "d87ab7b623e17c85d763fd9bf810fc6de7d7c001facf238266bb316586081732cfd4b08d9fbaa83655cbdf9a4f497ac9",
     )
     @cached_download_unpack_archive(
         "https://github.com/jeremylong/DependencyCheck/archive/v5.3.2.tar.gz",
