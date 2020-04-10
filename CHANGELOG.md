@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for async generator operations
 ### Changed
 - Renamed `"arg"` to `"plugin"`.
+### Fixed
+- Exporting plugins
 
 ## [0.3.6] - 2020-04-04
 ### Added
