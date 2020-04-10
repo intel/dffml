@@ -1194,38 +1194,54 @@ of the model.</p>
 <span id="plugin-model-dffml-model-scratch-scratchlgrsag"></span><h3>scratchlgrsag<a class="headerlink" href="#scratchlgrsag" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Logistic Regression using stochastic average gradient descent optimizer</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; dataset.csv &lt;&lt; EOF
-<span class="go">f1,ans</span>
-<span class="go">0.1,0</span>
-<span class="go">0.7,1</span>
-<span class="go">0.6,1</span>
-<span class="go">0.2,0</span>
-<span class="go">0.8,1</span>
-<span class="go">EOF</span>
-<span class="gp">$</span> dffml train <span class="se">\</span>
-    -model scratchlgrsag <span class="se">\</span>
-    -model-features f1:float:1 <span class="se">\</span>
-    -model-predict ans:int:1 <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename dataset.csv <span class="se">\</span>
-    -log debug
-<span class="gp">$</span> dffml accuracy <span class="se">\</span>
-    -model scratchlgrsag <span class="se">\</span>
-    -model-features f1:float:1 <span class="se">\</span>
-    -model-predict ans:int:1 <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename dataset.csv <span class="se">\</span>
-    -log debug
-<span class="go">1.0</span>
-<span class="gp">$</span> <span class="nb">echo</span> -e <span class="s1">&#39;f1,ans\n0.8,0\n&#39;</span> <span class="p">|</span> <span class="se">\</span>
-  dffml predict all <span class="se">\</span>
-    -model scratchlgrsag <span class="se">\</span>
-    -model-features f1:float:1 <span class="se">\</span>
-    -model-predict ans:int:1 <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename /dev/stdin <span class="se">\</span>
-    -log debug
-<span class="go">[</span>
+<p>The dataset used for training</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">dataset</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">f1</span><span class="p">,</span><span class="n">ans</span>
+<span class="mf">0.1</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.7</span><span class="p">,</span><span class="mi">1</span>
+<span class="mf">0.6</span><span class="p">,</span><span class="mi">1</span>
+<span class="mf">0.2</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">0.8</span><span class="p">,</span><span class="mi">1</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<p>Train the model</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">scratchlgrsag</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">f1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">ans</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">dataset</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Assess the accuracy</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">scratchlgrsag</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">f1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">ans</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">dataset</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">1.0</span>
+</pre></div>
+</div>
+<p>Make a prediction</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="o">-</span><span class="n">e</span> <span class="s1">&#39;f1,ans</span><span class="se">\n</span><span class="s1">0.8,0</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">|</span> \
+  <span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">scratchlgrsag</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">f1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">ans</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">stdin</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>
 <span class="go">        &quot;features&quot;: {</span>
@@ -1242,6 +1258,28 @@ of the model.</p>
 <span class="go">        &quot;key&quot;: &quot;0&quot;</span>
 <span class="go">    }</span>
 <span class="go">]</span>
+</pre></div>
+</div>
+<p>Example usage of Logistic Regression using Python</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">DefFeature</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<span class="kn">from</span> <span class="nn">dffml_model_scratch.logisticregression</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;ans&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;dataset.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;dataset.csv&quot;</span><span class="p">)))</span>
+
+<span class="c1"># Make prediction</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;f1&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s2">&quot;ans&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}):</span>
+    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;ans&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;ans&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Args</strong></p>
