@@ -752,40 +752,32 @@ scratchlgrsag
 
 Logistic Regression using stochastic average gradient descent optimizer
 
+The dataset used for training
+
+.. literalinclude:: /../model/scratch/examples/scratchlgrsag/dataset.sh
+
+Train the model
+
+.. literalinclude:: /../model/scratch/examples/scratchlgrsag/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/scratch/examples/scratchlgrsag/accuracy.sh
+
+Output
 
 .. code-block:: console
 
-    $ cat > dataset.csv << EOF
-    f1,ans
-    0.1,0
-    0.7,1
-    0.6,1
-    0.2,0
-    0.8,1
-    EOF
-    $ dffml train \
-        -model scratchlgrsag \
-        -model-features f1:float:1 \
-        -model-predict ans:int:1 \
-        -sources f=csv \
-        -source-filename dataset.csv \
-        -log debug
-    $ dffml accuracy \
-        -model scratchlgrsag \
-        -model-features f1:float:1 \
-        -model-predict ans:int:1 \
-        -sources f=csv \
-        -source-filename dataset.csv \
-        -log debug
     1.0
-    $ echo -e 'f1,ans\n0.8,0\n' | \
-      dffml predict all \
-        -model scratchlgrsag \
-        -model-features f1:float:1 \
-        -model-predict ans:int:1 \
-        -sources f=csv \
-        -source-filename /dev/stdin \
-        -log debug
+
+Make a prediction
+
+.. literalinclude:: /../model/scratch/examples/scratchlgrsag/predict.sh
+
+Output
+
+.. code-block:: console
+
     [
         {
             "extra": {},
@@ -803,6 +795,10 @@ Logistic Regression using stochastic average gradient descent optimizer
             "key": "0"
         }
     ]
+
+Example usage of Logistic Regression using Python
+
+.. literalinclude:: /../model/scratch/examples/scratchlgrsag/scratchlgrsag.py
 
 **Args**
 
