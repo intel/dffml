@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Python prompts `>>>` can now be enabled or disabled for easy copying of code into interactive sessions.
+- `GetMulti` operation which gets all Inputs of a given definition
 ### Changed
 - Renamed `"arg"` to `"plugin"`.
 
