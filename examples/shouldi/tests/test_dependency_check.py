@@ -28,7 +28,7 @@ class TestRunDependencyCheckOp(AsyncTestCase):
     )
     async def test_run(self, java, dependency_check, RxJava):
         with prepend_to_path(
-            java / "jdk-14.jdk" / "Contents" / "Home" / "bin",
+            java / "jdk-14" / "bin",
             dependency_check / "DependencyCheck-5.3.2",
         ):
             results = await run_dependency_check(str(RxJava / "RxJava-2.2.16"))
