@@ -998,8 +998,8 @@ of the model.</p>
 <span class="c1"># Make prediction</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
     <span class="n">model</span><span class="p">,</span>
-    <span class="p">{</span><span class="s2">&quot;SentenceID&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Words&quot;</span><span class="p">:</span> <span class="s2">&quot;DFFML models can do NER&quot;</span><span class="p">,},</span>
-    <span class="p">{</span><span class="s2">&quot;SentenceID&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Words&quot;</span><span class="p">:</span> <span class="s2">&quot;DFFML models can do regression&quot;</span><span class="p">,},</span>
+    <span class="p">{</span><span class="s2">&quot;SentenceID&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Words&quot;</span><span class="p">:</span> <span class="s2">&quot;DFFML models can do NER&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;SentenceID&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Words&quot;</span><span class="p">:</span> <span class="s2">&quot;DFFML models can do regression&quot;</span><span class="p">},</span>
 <span class="p">):</span>
     <span class="n">features</span><span class="p">[</span><span class="s2">&quot;Tag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;Tag&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
