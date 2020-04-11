@@ -25,7 +25,7 @@ class TestAutoStart(AsyncTestCase):
                     definition=GetSingle.op.inputs["spec"],
                 )
             ],
-            implementations={announce.op.name: announce.imp,},
+            implementations={announce.op.name: announce.imp},
         )
 
         self.dataflow = dataflow

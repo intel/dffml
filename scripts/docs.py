@@ -20,7 +20,9 @@ def traverse_get_config(target, *args):
     return current
 
 
-MODULE_TEMPLATE = """{name}
+MODULE_TEMPLATE = """{tag}
+
+{name}
 {underline}
 
 .. code-block:: console
@@ -31,7 +33,9 @@ MODULE_TEMPLATE = """{name}
 """
 
 
-TEMPLATE = """{name}
+TEMPLATE = """{tag}
+
+{name}
 {underline}
 
 *{maintenance}*
@@ -156,21 +160,26 @@ def format_op(op):
 def gen_docs(
     entrypoint: str, modules: List[str], maintenance: str = "Official"
 ):
-    per_module = {name: [None, []] for name in modules}
+    per_module = {name: [None, "", []] for name in modules}
     packagesconfig = configparser.ConfigParser()
     packagesconfig.read("scripts/packagesconfig.ini")
     for i in pkg_resources.iter_entry_points(entrypoint):
         cls = i.load()
+        plugin_type = "_".join(cls.ENTRY_POINT_NAME)
+        if plugin_type == "opimp":
+            plugin_type = "operation"
         module_name = i.module_name.split(".")[0]
         if module_name not in modules:
             continue
         per_module[module_name][0] = importlib.import_module(module_name)
+        per_module[module_name][1] = plugin_type
         doc = cls.__doc__
         if doc is None:
             doc = "No description"
         else:
             doc = inspect.cleandoc(doc)
         formatting = {
+            "tag": f".. _plugin_{plugin_type}_{module_name}_{i.name.replace('.', '_')}:",
             "name": i.name,
             "underline": "~" * len(i.name),
             "maintenance": maintenance,
@@ -186,11 +195,12 @@ def gen_docs(
             if defaults:
                 config = traverse_get_config(defaults, *cls.add_orig_label())
                 formatted += "\n\n" + build_args(config)
-            per_module[module_name][1].append(formatted)
+            per_module[module_name][2].append(formatted)
     return "\n\n".join(
         [
             MODULE_TEMPLATE.format(
                 **{
+                    "tag": f".. _plugin_{plugin_type}_{name}:",
                     "name": name,
                     "install": name.replace("_", "-"),
                     "underline": "-" * len(name),
@@ -208,7 +218,7 @@ def gen_docs(
                     else ""
                 )
             )
-            for name, (module, docs) in per_module.items()
+            for name, (module, plugin_type, docs) in per_module.items()
             if docs
         ]
     )

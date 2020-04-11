@@ -92,6 +92,7 @@ class CMD(object):
 
     JSONEncoder = JSONEncoder
     EXTRA_CONFIG_ARGS = {}
+    ENTRY_POINT_NAME = ["service"]
 
     arg_log = Arg(
         "-log",
