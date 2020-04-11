@@ -86,6 +86,7 @@ setup(
             # Output
             "group_by = dffml.operation.output:GroupBy",
             "get_single = dffml.operation.output:GetSingle",
+            "get_multi = dffml.operation.output:GetMulti",
             "associate = dffml.operation.output:Associate",
             # Mapping
             "dffml.mapping.extract = dffml.operation.mapping:mapping_extract_value",
