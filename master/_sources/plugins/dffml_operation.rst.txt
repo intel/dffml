@@ -42,6 +42,7 @@ Examples
 ++++++++
 
 The following example shows how to use AcceptUserInput.
+(Assumes that the input from stdio is "Data flow is awesome"!)
 
 >>> dataflow = DataFlow.auto(AcceptUserInput, GetSingle)
 >>> dataflow.seed.append(
@@ -56,7 +57,7 @@ The following example shows how to use AcceptUserInput.
 ...         print(results)
 >>>
 >>> asyncio.run(main())
-{'UserInput': {'data': 'Data flow is awesome'}}
+Enter the value: {'UserInput': 'Data flow is awesome'}
 
 **Stage: processing**
 
@@ -434,6 +435,63 @@ No description
 **Outputs**
 
 - output: group_by_output(type: Dict[str, List[Any]])
+
+.. _plugin_operation_dffml_literal_eval:
+
+literal_eval
+~~~~~~~~~~~~
+
+*Official*
+
+Evaluate the input using ast.literal_eval()
+
+Parameters
+++++++++++
+inputs : str
+    A string to be evaluated.
+
+Returns
++++++++
+A python literal.
+
+Examples
+++++++++
+
+The following example shows how to use literal_eval.
+
+>>> dataflow = DataFlow.auto(literal_eval, GetSingle)
+>>> dataflow.seed.append(
+...    Input(
+...        value=[literal_eval.op.outputs["str_after_eval"].name,],
+...        definition=GetSingle.op.inputs["spec"],
+...    )
+... )
+>>> inputs = [
+...    Input(
+...        value="[1,2,3]",
+...        definition=literal_eval.op.inputs["str_to_eval"],
+...        parents=None,
+...    )
+... ]
+>>>
+>>> async def main():
+...     async for ctx, results in MemoryOrchestrator.run(dataflow, inputs):
+...         print(results)
+>>>
+>>> asyncio.run(main())
+{'EvaluatedStr': [1, 2, 3]}
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- str_to_eval: InputStr(type: str)
+
+**Outputs**
+
+- str_after_eval: EvaluatedStr(type: generic)
 
 .. _plugin_operation_dffml_print_output:
 
