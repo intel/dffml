@@ -9,9 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Python prompts `>>>` can now be enabled or disabled for easy copying of code into interactive sessions.
 - Whitespace check now checks .rst and .md files too.
 - `GetMulti` operation which gets all Inputs of a given definition
+- Python usage example for LogisticRegression and its related tests.
 - Support for async generator operations
 ### Changed
 - Renamed `"arg"` to `"plugin"`.
+### Fixed
+- Exporting plugins
 
 ## [0.3.6] - 2020-04-04
 ### Added
