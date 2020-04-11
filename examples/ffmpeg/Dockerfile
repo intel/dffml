@@ -13,4 +13,5 @@ RUN python3 -m pip install -e .
 EXPOSE 8000
 
 ENTRYPOINT ["python3", "-m", "dffml", "service", "http"]
-CMD ["-mc-config", "deploy"]
+CMD ["server","insecure","-mc-config", "deploy"]
+

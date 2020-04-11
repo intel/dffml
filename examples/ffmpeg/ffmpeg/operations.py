@@ -13,8 +13,9 @@ from .definitions import input_file,output_file
     }
 )
 async def convert_to_gif(input_file,output_file):
-    # print(f"\n\n YEAH!! \n\n")
-    # add start and end times
+    # TODO
+    # add start and end times in second version and rebuild using webhook
+    # cleanup
     proc = await asyncio.create_subprocess_exec(
             "ffmpeg",
             "-ss",
