@@ -1,7 +1,7 @@
 * dffml service dev create operations ffmpeg
 * write operations and definitions
 * change setup.py
-* 
+*
     ```
     pip install -e .
 
@@ -9,8 +9,23 @@
     convert_to_gif
     EOF
 
-    dffml dataflow create -config yaml $(cat /tmp/operations) > dataflow.yaml
+    dffml dataflow create -config yaml $(cat /tmp/operations) > deploy/df/ffmpeg.yaml
 
-    
+    cd ffmpeg
+    mkdir -p deploy/mc/http
+        ffmpeg.yaml
+        path: /ffmpeg
+        presentation: json
+        asynchronous: false
+
+    dffml service http server -insecure -mc-config deploy
 
     ```
+
+* curl -s \
+  --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"convert": [{"value":"input.mp4","definition":"input_file"},{"value":"output.gif","definition":"output_file"}]}' \
+  http://localhost:8080/ffmpeg
+
+  works!!!
