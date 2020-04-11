@@ -3,6 +3,8 @@
 import ast
 import argparse
 
+from ..data import parser_helper
+
 
 def list_action(list_class):
     """
@@ -25,7 +27,7 @@ class ParseInputsAction(argparse.Action):
             values = [values]
         ouput_specs = [
             (
-                ast.literal_eval(value.split("=", maxsplit=1)[0]),
+                parser_helper(value.split("=", maxsplit=1)[0]),
                 value.split("=", maxsplit=1)[1],
             )
             for value in values
