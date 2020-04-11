@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- IO operations demo
+- IO operations demo and `literal_eval` operation.
 - Python prompts `>>>` can now be enabled or disabled for easy copying of code into interactive sessions.
 - Whitespace check now checks .rst and .md files too.
 - `GetMulti` operation which gets all Inputs of a given definition

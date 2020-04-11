@@ -64,15 +64,16 @@ dataflow.seed.append(
 async def main():
     # train the model
     train(
-    slr_model,
-    {"Years": 0, "Salary": 10},
-    {"Years": 1, "Salary": 20},
-    {"Years": 2, "Salary": 30},
-    {"Years": 3, "Salary": 40},
-)
+        slr_model,
+        {"Years": 0, "Salary": 10},
+        {"Years": 1, "Salary": 20},
+        {"Years": 2, "Salary": 30},
+        {"Years": 3, "Salary": 40},
+    )
     # Run the dataflow
     async for ctx, results in MemoryOrchestrator.run(dataflow, {"inputs": []}):
         pass
+
 
 if __name__ == "__main__":
     asyncio.run(main())

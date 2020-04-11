@@ -6,7 +6,7 @@ model for prediction by taking input from stdio.
 
 DFFML offers several :ref:`plugin_models`. For this example
 we will be using the Simple Linear Regression model
-( ``slr`` ) which is in the ``dffml`` package.
+(:ref:`plugin_model_dffml_slr`) which is in the ``dffml`` package.
 
 First we train the model and then create a DataFlow for making predictions
 on user input.
@@ -34,3 +34,15 @@ The output is:
 .. code-block:: console
 
     {'Salary': {'confidence': 1.0, 'value': 220.0}}
+
+The dataflow that we have created is
+
+.. image:: /.. /examples/io/dataflow_diagram.svg
+
+To re-generate the DataFlow diagram run.
+
+.. literalinclude:: /../examples/io/dataflow_diagram.sh
+
+Copy and pasting the output of the above code into the
+`mermaidjs live editor <https://mermaidjs.github.io/mermaid-live-editor>`_
+results in the graph.
