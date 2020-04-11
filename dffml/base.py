@@ -31,6 +31,7 @@ from .util.data import (
     traverse_config_get,
     type_lookup,
     export_dict,
+    parser_helper,
 )
 
 from .util.entrypoint import Entrypoint
@@ -365,19 +366,6 @@ class BaseConfigurable(metaclass=BaseConfigurableMetaClass):
             args, *(cls.add_orig_label(*above) + list(path))
         )
 
-    @staticmethod
-    def parser_helper(value):
-        if value.lower() in ["null", "nil", "none"]:
-            return None
-        elif value.lower() in ["yes", "true", "1", "on"]:
-            return True
-        elif value.lower() in ["no", "false", "0", "off"]:
-            return False
-        try:
-            return ast.literal_eval(value)
-        except:
-            return value
-
     @classmethod
     def type_for(cls, param: inspect.Parameter):
         """
@@ -387,11 +375,11 @@ class BaseConfigurable(metaclass=BaseConfigurableMetaClass):
         if param.annotation != inspect._empty:
             return param.annotation
         elif param.default is None:
-            return cls.parser_helper
+            return parser_helper
         else:
             type_of = type(param.default)
             if type_of is bool:
-                return lambda value: bool(cls.parser_helper(value))
+                return lambda value: bool(parser_helper(value))
             return type_of
 
     @classmethod
