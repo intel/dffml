@@ -25,13 +25,14 @@ AcceptUserInput = Operation(
 class AcceptUserInputContext(OperationImplementationContext):
     @staticmethod
     def receive_input():
+        print("Enter the value: ", end="")
         return input()
 
     async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
         user_input = await self.parent.loop.run_in_executor(
             self.parent.pool, self.receive_input
         )
-        return {"InputData": {"data": user_input}}
+        return {"InputData": user_input}
 
 
 class AcceptUserInput(OperationImplementation):
@@ -52,6 +53,7 @@ class AcceptUserInput(OperationImplementation):
     ++++++++
 
     The following example shows how to use AcceptUserInput.
+    (Assumes that the input from stdio is "Data flow is awesome"!)
 
     >>> dataflow = DataFlow.auto(AcceptUserInput, GetSingle)
     >>> dataflow.seed.append(
@@ -66,7 +68,7 @@ class AcceptUserInput(OperationImplementation):
     ...         print(results)
     >>>
     >>> asyncio.run(main())
-    {'UserInput': {'data': 'Data flow is awesome'}}
+    Enter the value: {'UserInput': 'Data flow is awesome'}
     """
 
     op = AcceptUserInput

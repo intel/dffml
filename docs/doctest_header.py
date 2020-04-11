@@ -30,6 +30,7 @@ from dffml.operation.io import *
 from dffml.source.memory import *
 from dffml.operation.output import *
 from dffml.operation.dataflow import *
+from dffml.operation.preprocess import *
 
 # Used for mocking input() for AcceptUserInput operation.
 mock.patch("builtins.input", return_value="Data flow is awesome").start()
