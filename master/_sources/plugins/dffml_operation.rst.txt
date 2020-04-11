@@ -288,6 +288,71 @@ No description
 
 - model: Entrypoint
 
+.. _plugin_operation_dffml_get_multi:
+
+get_multi
+~~~~~~~~~
+
+*Official*
+
+Output operation to get all Inputs matching given definitions.
+
+Parameters
+++++++++++
+spec : list
+    List of definition names. Any Inputs with matching definition will be
+    returned.
+
+Returns
++++++++
+dict
+    Maps definition names to all the Inputs of that definition
+
+Examples
+++++++++
+
+The following shows how to grab all Inputs with the URL definition. If we
+had we run an operation which output a URL, that output URL would have also
+been returned to us.
+
+>>> URL = Definition(name="URL", primitive="string")
+>>>
+>>> dataflow = DataFlow.auto(GetMulti)
+>>> dataflow.seed.append(
+...     Input(
+...         value=[URL.name],
+...         definition=GetMulti.op.inputs["spec"]
+...     )
+... )
+>>>
+>>> async def main():
+...     async for ctx, results in MemoryOrchestrator.run(dataflow, [
+...         Input(
+...             value="https://github.com/intel/dffml",
+...             definition=URL
+...         ),
+...         Input(
+...             value="https://github.com/intel/cve-bin-tool",
+...             definition=URL
+...         )
+...     ]):
+...         print(results)
+...
+>>> asyncio.run(main())
+{'URL': ['https://github.com/intel/dffml', 'https://github.com/intel/cve-bin-tool']}
+
+**Stage: output**
+
+
+
+**Inputs**
+
+- spec: get_n_spec(type: array)
+
+**Outputs**
+
+- output: get_n_output(type: map)
+
 .. _plugin_operation_dffml_get_single:
 
 get_single
