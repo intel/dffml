@@ -3,7 +3,7 @@
 
 ## About
 
-Currently, dffml_model_transformers supports HuggingFace Transformers tensorflow based NER models. 
+Currently, dffml_model_transformers supports HuggingFace Transformers tensorflow based NER models.
 
 ## Documentation
 

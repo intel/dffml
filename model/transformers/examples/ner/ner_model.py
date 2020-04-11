@@ -21,8 +21,8 @@ print("Accuracy:", accuracy(model, CSVSource(filename="train.csv")))
 # Make prediction
 for i, features, prediction in predict(
     model,
-    {"SentenceID": 1, "Words": "DFFML models can do NER",},
-    {"SentenceID": 2, "Words": "DFFML models can do regression",},
+    {"SentenceID": 1, "Words": "DFFML models can do NER"},
+    {"SentenceID": 2, "Words": "DFFML models can do regression"},
 ):
     features["Tag"] = prediction["Tag"]["value"]
     print(features)

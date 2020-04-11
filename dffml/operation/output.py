@@ -102,18 +102,66 @@ class GroupBy(OperationImplementationContext):
             return want
 
 
-get_single_spec = Definition(name="get_single_spec", primitive="array")
+get_n_spec = Definition(name="get_n_spec", primitive="array")
 
-get_single_output = Definition(name="get_single_output", primitive="map")
+get_n_output = Definition(name="get_n_output", primitive="map")
 
 
 @op(
-    name="get_single",
-    inputs={"spec": get_single_spec},
-    outputs={"output": get_single_output},
+    name="get_multi",
+    inputs={"spec": get_n_spec},
+    outputs={"output": get_n_output},
     stage=Stage.OUTPUT,
 )
-class GetSingle(OperationImplementationContext):
+class GetMulti(OperationImplementationContext):
+    """
+    Output operation to get all Inputs matching given definitions.
+
+    Parameters
+    ++++++++++
+    spec : list
+        List of definition names. Any Inputs with matching definition will be
+        returned.
+
+    Returns
+    +++++++
+    dict
+        Maps definition names to all the Inputs of that definition
+
+    Examples
+    ++++++++
+
+    The following shows how to grab all Inputs with the URL definition. If we
+    had we run an operation which output a URL, that output URL would have also
+    been returned to us.
+
+    >>> URL = Definition(name="URL", primitive="string")
+    >>>
+    >>> dataflow = DataFlow.auto(GetMulti)
+    >>> dataflow.seed.append(
+    ...     Input(
+    ...         value=[URL.name],
+    ...         definition=GetMulti.op.inputs["spec"]
+    ...     )
+    ... )
+    >>>
+    >>> async def main():
+    ...     async for ctx, results in MemoryOrchestrator.run(dataflow, [
+    ...         Input(
+    ...             value="https://github.com/intel/dffml",
+    ...             definition=URL
+    ...         ),
+    ...         Input(
+    ...             value="https://github.com/intel/cve-bin-tool",
+    ...             definition=URL
+    ...         )
+    ...     ]):
+    ...         print(results)
+    ...
+    >>> asyncio.run(main())
+    {'URL': ['https://github.com/intel/dffml', 'https://github.com/intel/cve-bin-tool']}
+    """
+
     async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
         # TODO Address the need to copy operation implementation inputs dict
         # In case the input is used elsewhere in the network
@@ -131,9 +179,73 @@ class GetSingle(OperationImplementationContext):
             # Group each requested output
             for definition in exported:
                 async for item in od.inputs(definition):
-                    want[definition.name] = item.value
-                    break
+                    want.setdefault(definition.name, [])
+                    want[definition.name].append(item.value)
             return want
+
+
+get_single_spec = Definition(name="get_single_spec", primitive="array")
+
+get_single_output = Definition(name="get_single_output", primitive="map")
+
+
+@op(
+    name="get_single",
+    inputs={"spec": get_single_spec},
+    outputs={"output": get_single_output},
+    stage=Stage.OUTPUT,
+)
+class GetSingle(GetMulti):
+    """
+    Output operation to get a single Input for each definition given.
+
+    Parameters
+    ++++++++++
+    spec : list
+        List of definition names. An Input with matching definition will be
+        returned.
+
+    Returns
+    +++++++
+    dict
+        Maps definition names to an Input of that definition
+
+    Examples
+    ++++++++
+
+    The following shows how to grab an Inputs with the URL definition. If we
+    had we run an operation which output a URL, that output URL could have also
+    been returned to us.
+
+    >>> URL = Definition(name="URL", primitive="string")
+    >>>
+    >>> dataflow = DataFlow.auto(GetSingle)
+    >>> dataflow.seed.append(
+    ...     Input(
+    ...         value=[URL.name],
+    ...         definition=GetSingle.op.inputs["spec"]
+    ...     )
+    ... )
+    >>>
+    >>> async def main():
+    ...     async for ctx, results in MemoryOrchestrator.run(dataflow, [
+    ...         Input(
+    ...             value="https://github.com/intel/dffml",
+    ...             definition=URL
+    ...         )
+    ...     ]):
+    ...         print(results)
+    ...
+    >>> asyncio.run(main())
+    {'URL': 'https://github.com/intel/dffml'}
+    """
+
+    async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
+        # Output dict
+        want = await super().run(inputs)
+        for key, value in want.items():
+            want[key] = value.pop()
+        return want
 
 
 associate_spec = Definition(name="associate_spec", primitive="List[str]")

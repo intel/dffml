@@ -120,7 +120,7 @@ function run_whitespace() {
     rm -f "$whitespace"
   }
   trap rmtempfile EXIT
-  find . -type f -name '*.py' -exec grep -EHn " +$" {} \; 2>&1 > "$whitespace"
+  find . -type f -name '*.py' -o -name '*.rst' -o -name '*.md' -exec grep -EHn " +$" {} \; 2>&1 > "$whitespace"
   lines=$(wc -l < "$whitespace")
   if [ "$lines" -ne 0 ]; then
     echo "Trailing whitespace found" >&2
@@ -221,11 +221,13 @@ function run_docs() {
     return
   fi
 
+  ssh_key_dir="$(mktemp -d)"
+  TEMP_DIRS+=("${ssh_key_dir}")
   mkdir -p ~/.ssh
   chmod 700 ~/.ssh
-  "${PYTHON}" -c "import pathlib, base64, os; keyfile = pathlib.Path('~/.ssh/github_dffml').expanduser(); keyfile.write_bytes(b''); keyfile.chmod(0o600); keyfile.write_bytes(base64.b32decode(os.environ['GITHUB_PAGES_KEY']))"
-  ssh-keygen -y -f ~/.ssh/github_dffml > ~/.ssh/github_dffml.pub
-  export GIT_SSH_COMMAND="${GIT_SSH_COMMAND} -o IdentityFile=~/.ssh/github_dffml"
+  "${PYTHON}" -c "import pathlib, base64, os; keyfile = pathlib.Path(\"${ssh_key_dir}/github\").absolute(); keyfile.write_bytes(b''); keyfile.chmod(0o600); keyfile.write_bytes(base64.b32decode(os.environ['GITHUB_PAGES_KEY']))"
+  ssh-keygen -y -f "${ssh_key_dir}/github" > "${ssh_key_dir}/github.pub"
+  export GIT_SSH_COMMAND="${GIT_SSH_COMMAND} -o IdentityFile=${ssh_key_dir}/github"
 
   git remote set-url origin git@github.com:intel/dffml
   git push -f
