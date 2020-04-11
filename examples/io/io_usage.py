@@ -1,7 +1,6 @@
 import asyncio
 
-from dffml.noasync import train
-from dffml import Features, DefFeature
+from dffml import train, Features, DefFeature
 from dffml.operation.output import GetSingle
 from dffml.df.memory import MemoryOrchestrator
 from dffml.operation.mapping import create_mapping
@@ -16,14 +15,6 @@ slr_model = SLRModel(
     predict=DefFeature("Salary", int, 1),
 )
 
-# Train the model
-train(
-    slr_model,
-    {"Years": 0, "Salary": 10},
-    {"Years": 1, "Salary": 20},
-    {"Years": 2, "Salary": 30},
-    {"Years": 3, "Salary": 40},
-)
 
 # This Dataflow takes input from stdio using `AcceptUserInput`
 # operation. The string input which corresponds to feature `Years`
@@ -71,8 +62,17 @@ dataflow.seed.append(
 
 
 async def main():
+    # train the model
+    train(
+    slr_model,
+    {"Years": 0, "Salary": 10},
+    {"Years": 1, "Salary": 20},
+    {"Years": 2, "Salary": 30},
+    {"Years": 3, "Salary": 40},
+)
+    # Run the dataflow
     async for ctx, results in MemoryOrchestrator.run(dataflow, {"inputs": []}):
         pass
 
-
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
