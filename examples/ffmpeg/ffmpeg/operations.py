@@ -33,6 +33,3 @@ async def convert_to_gif(input_file,output_file):
             stdout=asyncio.subprocess.PIPE
         )
     out, error = await proc.communicate()
-    print(f'out : {out.decode("utf8")}')
-    if error is not None:
-        print(f'error : {error.decode("utf8")}')

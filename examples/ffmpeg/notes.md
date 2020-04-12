@@ -29,3 +29,10 @@
   http://localhost:8080/ffmpeg
 
   works!!!
+
+  * docker run -p 8002:8080 -v ~/buffer:/usr/src/app/data -cvt_gif
+  * curl -s \
+  --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"convert": [{"value":"./data/input1.mp4","definition":"input_file"},{"value":"./data/output.gif","definition":"output_file"}]}' \
+  http://localhost:8002/ffmpeg
