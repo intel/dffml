@@ -5,7 +5,7 @@ Run doctests with
 
 python -m doctest -v dffml/util/data.py
 """
-
+import ast
 import pydoc
 import inspect
 from functools import wraps
@@ -235,3 +235,49 @@ async def nested_apply(target: dict, func: Callable):
             else:
                 target[key] = func(val)
     return target
+
+
+def parser_helper(value):
+    """
+    Calls checks if value is string and if it is it converts it to a bool if
+    the string is a string representation of common boolean value (on, off,
+    true, false, yes, no). Otherwise it tries to call
+    :py:func:`ast.literal_eval`, if that doesn't succeed the string value is
+    returned.
+
+
+    Examples
+    --------
+
+    Parsing a boolean value
+
+    >>> parser_helper("on")
+    True
+
+    Parsing an array
+
+    >>> parser_helper("[1, 2, 3]")
+    [1, 2, 3]
+
+    Parsing a string
+
+    >>> parser_helper("hello")
+    'hello'
+
+    Parsing a string of a string
+
+    >>> parser_helper("'on'")
+    'on'
+    """
+    if not isinstance(value, str):
+        return value
+    if value.lower() in ["null", "nil", "none"]:
+        return None
+    elif value.lower() in ["yes", "true", "on"]:
+        return True
+    elif value.lower() in ["no", "false", "off"]:
+        return False
+    try:
+        return ast.literal_eval(value)
+    except:
+        return value

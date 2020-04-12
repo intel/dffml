@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- IO operations demo and `literal_eval` operation.
 - Python prompts `>>>` can now be enabled or disabled for easy copying of code into interactive sessions.
 - Whitespace check now checks .rst and .md files too.
 - `GetMulti` operation which gets all Inputs of a given definition
@@ -15,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed `"arg"` to `"plugin"`.
 ### Fixed
 - Exporting plugins
+- Issue parsing string values when using the `dataflow run` command and
+  specifying extra inputs.
 
 ## [0.3.6] - 2020-04-04
 ### Added
