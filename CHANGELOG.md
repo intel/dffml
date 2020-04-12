@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Exporting plugins
 - Issue parsing string values when using the `dataflow run` command and
   specifying extra inputs.
+### Removed
+- Unused imports
 
 ## [0.3.6] - 2020-04-04
 ### Added
