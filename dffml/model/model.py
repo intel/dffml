@@ -142,6 +142,14 @@ class SimpleModel(Model):
         if not self._in_context:
             self.close()
 
+    @property
+    def parent(self):
+        """
+        Simple models are both the parent and the context. This property is used
+        to fake out anything attempting to access the model context's parent.
+        """
+        return self
+
     def open(self):
         """
         Load saved model from disk if it exists.
