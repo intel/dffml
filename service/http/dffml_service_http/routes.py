@@ -1,6 +1,7 @@
 import os
 import json
 import secrets
+import inspect
 import pathlib
 import traceback
 import pkg_resources
@@ -646,8 +647,22 @@ class Routes(BaseMultiCommContext):
         self.app["sources"] = {}
         self.app["source_contexts"] = {}
         self.app["source_records_iterkeys"] = {}
-        self.app["models"] = {}
-        self.app["model_contexts"] = {}
+
+        # Instantiate models if they aren't instantiated yet
+        for i, model in enumerate(self.models):
+            if inspect.isclass(model):
+                self.models[i] = model.withconfig(self.extra_config)
+
+        await self.app["exit_stack"].enter_async_context(self.models)
+        self.app["models"] = {
+            model.ENTRY_POINT_LABEL: model for model in self.models
+        }
+
+        mctx = await self.app["exit_stack"].enter_async_context(self.models())
+        self.app["model_contexts"] = {
+            model_ctx.parent.ENTRY_POINT_LABEL: model_ctx for model_ctx in mctx
+        }
+
         self.app.update(kwargs)
         # Allow no routes other than pre-registered if in atomic mode
         self.routes = (
