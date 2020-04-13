@@ -1,10 +1,9 @@
-import struct
 from configparser import ConfigParser
 
 from ..record import Record
+from .file import FileSource
 from ..base import config, field
 from .memory import MemorySource
-from .file import FileSource
 from ..util.entrypoint import entrypoint
 
 
@@ -46,4 +45,21 @@ class INISource(FileSource, MemorySource):
         self.logger.debug("%r loaded %d sections", self, len(self.mem))
 
     async def dump_fd(self, fd):
-        raise NotImplementedError
+        # create an instance of configparser
+        parser = ConfigParser()
+        # read the fileobj(fd) as dict where key is section name and values are dict of option and value pair
+        parser.read_dict(fd)
+
+        # go over each section in mem
+        for section in self.mem.keys():
+            # get each section data as a dict
+            section_data = section.features()
+            if section not in parser.keys():
+                # if section does not exist add new section
+                parser.add_section(section)
+            parser[section] = section_data  # set section data
+
+        # write to the fileobject
+        parser.write(fd)
+
+        self.logger.debug("%r saved %d sections", self, len(self.mem))
