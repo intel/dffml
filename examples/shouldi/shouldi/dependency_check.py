@@ -26,11 +26,11 @@ async def run_dependency_check(pkg: str) -> Dict[str, Any]:
     CLI usage: dffml service dev run -log debug shouldi.dependency_check:run_dependency_check -pkg .
     """
     proc = await asyncio.create_subprocess_exec(
-        "dependency-check",
+        "dependency-check.sh",
         "-f",
         "JSON",
         "-s",
-        "./...",
+        ".",
         cwd=pkg,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,

@@ -16,9 +16,7 @@ class TestRunDependencyCheckOp(AsyncTestCase):
     )
     @cached_download_unpack_archive(
         "https://dl.bintray.com/jeremy-long/owasp/dependency-check-5.3.2-release.zip",
-        pathlib.Path(__file__).parent
-        / "downloads"
-        / "dependency_check.zip",
+        pathlib.Path(__file__).parent / "downloads" / "dependency_check.zip",
         pathlib.Path(__file__).parent
         / "downloads"
         / "dependency_check-download",
