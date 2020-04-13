@@ -5,9 +5,12 @@ import subprocess
 
 from aiohttp import web
 
+from dffml import Model
 from dffml.util.cli.arg import Arg
 from dffml.util.cli.cmd import CMD
+from dffml.util.cli.parser import list_action
 from dffml.util.entrypoint import entrypoint
+from dffml.util.asynchelper import AsyncContextManagerList
 
 from .routes import Routes
 
@@ -180,6 +183,14 @@ class Server(TLSCMD, MultiCommCMD, Routes):
         help="Domains to allow CORS for (see keys in defaults dict for aiohttp_cors.setup)",
         nargs="+",
         default=[],
+    )
+    arg_models = Arg(
+        "-models",
+        help="Models configured on start",
+        nargs="+",
+        default=AsyncContextManagerList(),
+        type=Model.load_labeled,
+        action=list_action(AsyncContextManagerList),
     )
 
     def __init__(self, *args, **kwargs):
