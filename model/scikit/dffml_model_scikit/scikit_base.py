@@ -3,11 +3,9 @@
 """
 Base class for Scikit models
 """
-import os
 import json
 import hashlib
 import pathlib
-from pathlib import Path
 from typing import AsyncIterator, Tuple, Any, NamedTuple
 
 import joblib

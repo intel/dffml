@@ -5,7 +5,6 @@ Model subclasses are responsible for training themselves on records, making
 predictions about the value of a feature in the record, and assessing thei
 prediction accuracy.
 """
-import os
 import abc
 import json
 import hashlib
