@@ -5,6 +5,7 @@ import json
 import pydoc
 import shutil
 import asyncio
+import pathlib
 import getpass
 import tempfile
 import importlib
