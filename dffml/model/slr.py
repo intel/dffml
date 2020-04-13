@@ -63,6 +63,58 @@ class SLRModelConfig:
 
 @entrypoint("slr")
 class SLRModel(SimpleModel):
+    r"""
+    Logistic Regression training one variable to predict another.
+
+    The dataset used for training
+
+    .. literalinclude:: /../examples/model/slr/dataset.sh
+
+    Train the model
+
+    .. literalinclude:: /../examples/model/slr/train.sh
+
+    Assess the accuracy
+
+    .. literalinclude:: /../examples/model/slr/accuracy.sh
+
+    Output
+
+    .. code-block:: console
+
+        1.0
+
+    Make a prediction
+
+    .. literalinclude:: /../examples/model/slr/predict.sh
+
+    Output
+
+    .. code-block:: console
+
+        [
+            {
+                "extra": {},
+                "features": {
+                    "ans": 0,
+                    "f1": 0.8
+                },
+                "last_updated": "2020-03-19T13:41:08Z",
+                "prediction": {
+                    "ans": {
+                        "confidence": 1.0,
+                        "value": 1
+                    }
+                },
+                "key": "0"
+            }
+        ]
+
+    Example usage of Logistic Regression using Python
+
+    .. literalinclude:: /../examples/model/slr/slr.py
+
+    """
     # The configuration class needs to be set as the CONFIG property
     CONFIG: Type[SLRModelConfig] = SLRModelConfig
     # Simple Linear Regression only supports training on a single feature.
