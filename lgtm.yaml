@@ -3,6 +3,8 @@ path_classifiers:
     - scripts/docs.py
   test:
     - tests
+  queries:
+    - exclude: py/import-and-import-from
   python:
     python_setup:
       setup_py: setup.py
