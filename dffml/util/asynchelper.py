@@ -53,6 +53,10 @@ class AsyncContextManagerListContext(UserList):
 
 
 class AsyncContextManagerList(UserList):
+    CONTEXT: Type[
+        AsyncContextManagerListContext
+    ] = AsyncContextManagerListContext
+
     def __init__(self, *args):
         UserList.__init__(self, list(args))
         self.__stack = None
