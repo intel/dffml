@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Example CLI commands and Python code for `SLRModel`
 - `save` function in high level API to quickly save all given records to a
   source
+- Ability to configure models for HTTP API from command line when starting
+  server
 ### Changed
 - Renamed `"arg"` to `"plugin"`.
 - CSV source sorts feature names within headers when saving
