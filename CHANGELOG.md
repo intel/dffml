@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `GetMulti` operation which gets all Inputs of a given definition
 - Python usage example for LogisticRegression and its related tests.
 - Support for async generator operations
+- Example CLI commands and Python code for `SLRModel`
 ### Changed
 - Renamed `"arg"` to `"plugin"`.
 ### Fixed
