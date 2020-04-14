@@ -19,7 +19,7 @@ with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
 INSTALL_REQUIRES = [] + (
-    ["dffml>=0.3.6"]
+    ["dffml>=0.3.7"]
     if not any(
         list(
             map(

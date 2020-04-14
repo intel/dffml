@@ -11,7 +11,7 @@ AUTHOR_NAME = "sakshamarora1"
 AUTHOR_EMAIL = "sakshamarora1001@gmail.com"
 # Install dffml if it is not installed in development mode
 INSTALL_REQUIRES = [] + (
-    ["dffml>=0.3.6"]
+    ["dffml>=0.3.7"]
     if not any(
         list(
             map(
