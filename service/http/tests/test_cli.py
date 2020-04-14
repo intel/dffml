@@ -8,6 +8,9 @@ from unittest.mock import patch
 
 import aiohttp
 
+from dffml.model.slr import SLRModel
+from dffml.source.json import JSONSource
+from dffml import Record, Features, DefFeature, save, train, accuracy
 from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml_service_http.cli import HTTPService
@@ -221,3 +224,88 @@ class TestServer(AsyncTestCase):
                             {"Feedface": {"response": message}},
                             await response.json(),
                         )
+
+    async def test_models(self):
+        with tempfile.TemporaryDirectory() as tempdir:
+            # Model the HTTP API will pre-load
+            model = SLRModel(
+                features=Features(DefFeature("f1", float, 1)),
+                predict=DefFeature("ans", int, 1),
+                directory=tempdir,
+            )
+
+            # y = m * x + b for equation SLR is solving for
+            m = 5
+            b = 3
+
+            # Train the model
+            await train(
+                model, *[{"f1": x, "ans": m * x + b} for x in range(0, 10)]
+            )
+
+            await accuracy(
+                model, *[{"f1": x, "ans": m * x + b} for x in range(10, 20)]
+            )
+
+            async with ServerRunner.patch(HTTPService.server) as tserver:
+                cli = await tserver.start(
+                    HTTPService.server.cli(
+                        "-insecure",
+                        "-port",
+                        "0",
+                        "-models",
+                        "mymodel=slr",
+                        "-model-mymodel-directory",
+                        tempdir,
+                        "-model-mymodel-features",
+                        "f1:float:1",
+                        "-model-mymodel-predict",
+                        "ans:int:1",
+                    )
+                )
+                async with self.post(
+                    cli,
+                    f"/model/mymodel/predict/0",
+                    json={
+                        f"record_{x}": {"features": {"f1": x}}
+                        for x in range(20, 30)
+                    },
+                ) as response:
+                    response = await response.json()
+                    records = response["records"]
+                    self.assertEqual(len(records), 10)
+                    for record in records.values():
+                        should_be = m * record["features"]["f1"] + b
+                        prediction = record["prediction"]["ans"]["value"]
+                        percent_error = abs(should_be - prediction) / should_be
+                        self.assertLess(percent_error, 0.2)
+
+    async def test_sources(self):
+        with tempfile.TemporaryDirectory() as tempdir:
+            # Source the HTTP API will pre-load
+            source = JSONSource(
+                filename=str(pathlib.Path(tempdir, "source.json")),
+                allowempty=True,
+                readwrite=True,
+            )
+
+            # Record the source will have in it
+            myrecord = Record("myrecord", data={"features": {"f1": 0}})
+            await save(source, myrecord)
+
+            async with ServerRunner.patch(HTTPService.server) as tserver:
+                cli = await tserver.start(
+                    HTTPService.server.cli(
+                        "-insecure",
+                        "-port",
+                        "0",
+                        "-sources",
+                        "mysource=json",
+                        "-source-mysource-filename",
+                        source.config.filename,
+                    )
+                )
+                async with self.get(
+                    cli, "/source/mysource/record/myrecord"
+                ) as r:
+                    self.assertEqual(await r.json(), myrecord.export())

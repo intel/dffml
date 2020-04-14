@@ -12,12 +12,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `GetMulti` operation which gets all Inputs of a given definition
 - Python usage example for LogisticRegression and its related tests.
 - Support for async generator operations
+- Example CLI commands and Python code for `SLRModel`
+- `save` function in high level API to quickly save all given records to a
+  source
+- Ability to configure sources and models for HTTP API from command line when
+  starting server
+- Documentation page for command line usage of HTTP API
 ### Changed
 - Renamed `"arg"` to `"plugin"`.
+- CSV source sorts feature names within headers when saving
 ### Fixed
 - Exporting plugins
 - Issue parsing string values when using the `dataflow run` command and
   specifying extra inputs.
+### Removed
+- Unused imports
 
 ## [0.3.6] - 2020-04-04
 ### Added

@@ -1,10 +1,11 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 import ast
+import pathlib
 from io import open
 from setuptools import find_packages, setup
 
-with open("dffml/version.py", "r") as f:
+with open(pathlib.Path("dffml", "version.py"), "r") as f:
     for line in f:
         if line.startswith("VERSION"):
             VERSION = ast.literal_eval(line.strip().split("=")[-1].strip())
