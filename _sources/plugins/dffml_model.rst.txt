@@ -9,6 +9,8 @@ abstract the usage of machine learning models.
 If you want to get started creating your own model, check out the
 :ref:`model_tutorial`.
 
+.. _plugin_model_dffml:
+
 dffml
 -----
 
@@ -17,12 +19,62 @@ dffml
     pip install dffml
 
 
+.. _plugin_model_dffml_slr:
+
 slr
 ~~~
 
 *Official*
 
-No description
+Logistic Regression training one variable to predict another.
+
+The dataset used for training
+
+.. literalinclude:: /../examples/model/slr/dataset.sh
+
+Train the model
+
+.. literalinclude:: /../examples/model/slr/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../examples/model/slr/accuracy.sh
+
+Output
+
+.. code-block:: console
+
+    1.0
+
+Make a prediction
+
+.. literalinclude:: /../examples/model/slr/predict.sh
+
+Output
+
+.. code-block:: console
+
+    [
+        {
+            "extra": {},
+            "features": {
+                "ans": 0,
+                "f1": 0.8
+            },
+            "last_updated": "2020-03-19T13:41:08Z",
+            "prediction": {
+                "ans": {
+                    "confidence": 1.0,
+                    "value": 1
+                }
+            },
+            "key": "0"
+        }
+    ]
+
+Example usage of Logistic Regression using Python
+
+.. literalinclude:: /../examples/model/slr/slr.py
 
 **Args**
 
@@ -38,6 +90,8 @@ No description
 
   - default: ~/.cache/dffml/slr
   - Directory where state should be saved
+
+.. _plugin_model_dffml_model_tensorflow:
 
 dffml_model_tensorflow
 ----------------------
@@ -56,6 +110,8 @@ dffml_model_tensorflow
     after the hash of their feature names and hidden layer config. Which means
     if any of those parameters change between invocations, it's being told to
     look for a different saved model.
+
+.. _plugin_model_dffml_model_tensorflow_tfdnnc:
 
 tfdnnc
 ~~~~~~
@@ -168,6 +224,8 @@ Example usage of Tensorflow DNNClassifier model using python API
   - default: True
   - Randomise order of records in a batch
 
+.. _plugin_model_dffml_model_tensorflow_tfdnnr:
+
 tfdnnr
 ~~~~~~
 
@@ -267,6 +325,8 @@ predict).
   - default: [12, 40, 15]
   - List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer
 
+.. _plugin_model_dffml_model_tensorflow_hub:
+
 dffml_model_tensorflow_hub
 --------------------------
 
@@ -274,6 +334,8 @@ dffml_model_tensorflow_hub
 
     pip install dffml-model-tensorflow-hub
 
+
+.. _plugin_model_dffml_model_tensorflow_hub_text_classifier:
 
 text_classifier
 ~~~~~~~~~~~~~~~
@@ -440,6 +502,8 @@ Implemented using Tensorflow hub pretrained models.
   - default: ~/.cache/dffml/tensorflow_hub
   - Directory where state should be saved
 
+.. _plugin_model_dffml_model_transformers:
+
 dffml_model_transformers
 ------------------------
 
@@ -447,6 +511,8 @@ dffml_model_transformers
 
     pip install dffml-model-transformers
 
+
+.. _plugin_model_dffml_model_transformers_ner_tagger:
 
 ner_tagger
 ~~~~~~~~~~
@@ -715,6 +781,8 @@ Example usage of NER model using python API
   - default: False
   - Evaluate all checkpoints starting with the same prefix as model_name ending and ending with step number
 
+.. _plugin_model_dffml_model_scratch:
+
 dffml_model_scratch
 -------------------
 
@@ -723,6 +791,8 @@ dffml_model_scratch
     pip install dffml-model-scratch
 
 
+.. _plugin_model_dffml_model_scratch_scratchlgrsag:
+
 scratchlgrsag
 ~~~~~~~~~~~~~
 
@@ -730,40 +800,32 @@ scratchlgrsag
 
 Logistic Regression using stochastic average gradient descent optimizer
 
+The dataset used for training
+
+.. literalinclude:: /../model/scratch/examples/scratchlgrsag/dataset.sh
+
+Train the model
+
+.. literalinclude:: /../model/scratch/examples/scratchlgrsag/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/scratch/examples/scratchlgrsag/accuracy.sh
+
+Output
 
 .. code-block:: console
 
-    $ cat > dataset.csv << EOF
-    f1,ans
-    0.1,0
-    0.7,1
-    0.6,1
-    0.2,0
-    0.8,1
-    EOF
-    $ dffml train \
-        -model scratchlgrsag \
-        -model-features f1:float:1 \
-        -model-predict ans:int:1 \
-        -sources f=csv \
-        -source-filename dataset.csv \
-        -log debug
-    $ dffml accuracy \
-        -model scratchlgrsag \
-        -model-features f1:float:1 \
-        -model-predict ans:int:1 \
-        -sources f=csv \
-        -source-filename dataset.csv \
-        -log debug
     1.0
-    $ echo -e 'f1,ans\n0.8,0\n' | \
-      dffml predict all \
-        -model scratchlgrsag \
-        -model-features f1:float:1 \
-        -model-predict ans:int:1 \
-        -sources f=csv \
-        -source-filename /dev/stdin \
-        -log debug
+
+Make a prediction
+
+.. literalinclude:: /../model/scratch/examples/scratchlgrsag/predict.sh
+
+Output
+
+.. code-block:: console
+
     [
         {
             "extra": {},
@@ -782,6 +844,10 @@ Logistic Regression using stochastic average gradient descent optimizer
         }
     ]
 
+Example usage of Logistic Regression using Python
+
+.. literalinclude:: /../model/scratch/examples/scratchlgrsag/scratchlgrsag.py
+
 **Args**
 
 - predict: Feature
@@ -796,6 +862,8 @@ Logistic Regression using stochastic average gradient descent optimizer
 
   - default: ~/.cache/dffml/scratch
   - Directory where state should be saved
+
+.. _plugin_model_dffml_model_scikit:
 
 dffml_model_scikit
 ------------------

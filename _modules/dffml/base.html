@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.base &mdash; DFFML 0.3.6 documentation</title>
+  <title>dffml.base &mdash; DFFML 0.3.7 documentation</title>
   
 
   
@@ -25,6 +25,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -59,7 +60,7 @@
             
             
               <div class="version">
-                0.3.6
+                0.3.7
               </div>
             
           
@@ -205,6 +206,7 @@
     <span class="n">traverse_config_get</span><span class="p">,</span>
     <span class="n">type_lookup</span><span class="p">,</span>
     <span class="n">export_dict</span><span class="p">,</span>
+    <span class="n">parser_helper</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">.util.entrypoint</span> <span class="kn">import</span> <span class="n">Entrypoint</span>
@@ -354,7 +356,7 @@
 
 <div class="viewcode-block" id="is_config_dict"><a class="viewcode-back" href="../../api/base.html#dffml.base.is_config_dict">[docs]</a><span class="k">def</span> <span class="nf">is_config_dict</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span>
-        <span class="s2">&quot;arg&quot;</span> <span class="ow">in</span> <span class="n">value</span>
+        <span class="s2">&quot;plugin&quot;</span> <span class="ow">in</span> <span class="n">value</span>
         <span class="ow">and</span> <span class="s2">&quot;config&quot;</span> <span class="ow">in</span> <span class="n">value</span>
         <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span>
     <span class="p">)</span></div>
@@ -366,7 +368,7 @@
             <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
             <span class="n">config</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">if</span> <span class="n">is_config_dict</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-                <span class="n">value</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;arg&quot;</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">]</span>
+                <span class="n">value</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;plugin&quot;</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">]</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">convert_value</span><span class="p">(</span><span class="n">mkarg</span><span class="p">(</span><span class="n">field</span><span class="p">),</span> <span class="n">value</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">BaseConfigurable</span><span class="p">):</span>
                 <span class="c1"># TODO This probably isn&#39;t 100% correct. Figure out what we need</span>
@@ -374,11 +376,11 @@
                 <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span>
                     <span class="p">{</span>
                         <span class="n">value</span><span class="o">.</span><span class="n">ENTRY_POINT_NAME</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="p">{</span>
-                            <span class="s2">&quot;arg&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                            <span class="s2">&quot;plugin&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
                             <span class="s2">&quot;config&quot;</span><span class="p">:</span> <span class="p">{</span>
                                 <span class="n">key</span><span class="p">:</span> <span class="n">value</span>
                                 <span class="k">if</span> <span class="n">is_config_dict</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                                <span class="k">else</span> <span class="p">{</span><span class="s2">&quot;arg&quot;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">:</span> <span class="p">{}}</span>
+                                <span class="k">else</span> <span class="p">{</span><span class="s2">&quot;plugin&quot;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span> <span class="s2">&quot;config&quot;</span><span class="p">:</span> <span class="p">{}}</span>
                                 <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
                             <span class="p">},</span>
                         <span class="p">}</span>
@@ -539,19 +541,6 @@
             <span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">add_orig_label</span><span class="p">(</span><span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="BaseConfigurable.parser_helper"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfigurable.parser_helper">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">parser_helper</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="s2">&quot;nil&quot;</span><span class="p">,</span> <span class="s2">&quot;none&quot;</span><span class="p">]:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">elif</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;on&quot;</span><span class="p">]:</span>
-            <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">elif</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;no&quot;</span><span class="p">,</span> <span class="s2">&quot;false&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span> <span class="s2">&quot;off&quot;</span><span class="p">]:</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">value</span></div>
-
 <div class="viewcode-block" id="BaseConfigurable.type_for"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfigurable.type_for">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">type_for</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">param</span><span class="p">:</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -561,11 +550,11 @@
         <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">annotation</span> <span class="o">!=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">_empty</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">param</span><span class="o">.</span><span class="n">annotation</span>
         <span class="k">elif</span> <span class="n">param</span><span class="o">.</span><span class="n">default</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parser_helper</span>
+            <span class="k">return</span> <span class="n">parser_helper</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">type_of</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">type_of</span> <span class="ow">is</span> <span class="nb">bool</span><span class="p">:</span>
-                <span class="k">return</span> <span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">parser_helper</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                <span class="k">return</span> <span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">parser_helper</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">type_of</span></div>
 
 <div class="viewcode-block" id="BaseConfigurable.config_get"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfigurable.config_get">[docs]</a>    <span class="nd">@classmethod</span>

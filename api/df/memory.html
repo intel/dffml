@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Data Flow Memory Objects &mdash; DFFML 0.3.6 documentation</title>
+  <title>Data Flow Memory Objects &mdash; DFFML 0.3.7 documentation</title>
   
 
   
@@ -25,6 +25,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -61,7 +62,7 @@
             
             
               <div class="version">
-                0.3.6
+                0.3.7
               </div>
             
           
@@ -276,6 +277,14 @@ definition.</p>
 <dl class="py method">
 <dt id="dffml.df.memory.MemoryInputNetworkContext.definition">
 <em class="property">async </em><code class="sig-name descname">definition</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ctx</span><span class="p">:</span> <span class="n"><a class="reference internal" href="base.html#dffml.df.base.BaseInputSetContext" title="dffml.df.base.BaseInputSetContext">dffml.df.base.BaseInputSetContext</a></span></em>, <em class="sig-param"><span class="n">definition</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="types.html#dffml.df.types.Definition" title="dffml.df.types.Definition">dffml.df.types.Definition</a><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetworkContext.definition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContext.definition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for the definition within a context given its name as a string.
+Return the definition. Otherwise raise a DefinitionNotInContext
+error. If the context is not present, raise a ContextNotPresent error.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dffml.df.memory.MemoryInputNetworkContext.definitions">
+<code class="sig-name descname">definitions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ctx</span><span class="p">:</span> <span class="n"><a class="reference internal" href="base.html#dffml.df.base.BaseInputSetContext" title="dffml.df.base.BaseInputSetContext">dffml.df.base.BaseInputSetContext</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="base.html#dffml.df.base.BaseDefinitionSetContext" title="dffml.df.base.BaseDefinitionSetContext">dffml.df.base.BaseDefinitionSetContext</a><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetworkContext.definitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContext.definitions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a DefinitionSet context that can be used to access the inputs
 within the given context, by definition.</p>
 </dd></dl>

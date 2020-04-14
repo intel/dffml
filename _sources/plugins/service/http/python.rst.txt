@@ -24,16 +24,16 @@ This is an example of how you can use the web API from Python.
   PARAMS = {
     {
       "model": {
-        "arg": null,
+        "plugin": null,
         "config": {
           "directory": {
-            "arg": [
+            "plugin": [
               "/home/user/modeldirs/mymodel"
             ],
             "config": {}
           },
           "features": {
-            "arg": [
+            "plugin": [
               {
                 "name": "Years",
                 "dtype": "int",
