@@ -221,11 +221,10 @@ insecure, but easy for you to access for development purposes.</p>
 <h2>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h2>
 <p>To have the server start with models already configured and ready to be used for
 training, accuracy assessment, or prediction, use the <code class="docutils literal notranslate"><span class="pre">-models</span></code> flag.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -models <span class="nv">mymodel</span><span class="o">=</span>slr <span class="se">\</span>
-    -model-mymodel-features <span class="se">\</span>
-    X:float:1 <span class="se">\</span>
-    -model-mymodel-predict <span class="se">\</span>
-    Y:float:1
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server <span class="se">\</span>
+    -models <span class="nv">mymodel</span><span class="o">=</span>slr <span class="se">\</span>
+    -model-mymodel-features X:float:1 <span class="se">\</span>
+    -model-mymodel-predict Y:float:1
 </pre></div>
 </div>
 </div>
@@ -233,9 +232,9 @@ training, accuracy assessment, or prediction, use the <code class="docutils lite
 <h2>Sources<a class="headerlink" href="#sources" title="Permalink to this headline">¶</a></h2>
 <p>To have the server start with sources already configured and ready to be used
 for record retrieval or updating, use the <code class="docutils literal notranslate"><span class="pre">-sources</span></code> flag.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -sources <span class="nv">mysource</span><span class="o">=</span>csv
-<span class="go">    -source-mysource-filename</span>
-<span class="go">    training.csv</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server <span class="se">\</span>
+    -sources <span class="nv">mysource</span><span class="o">=</span>csv <span class="se">\</span>
+    -source-mysource-filename training.csv
 </pre></div>
 </div>
 </div>
