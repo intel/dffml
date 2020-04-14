@@ -382,7 +382,7 @@
                 <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
                     <span class="n">feature_fieldnames</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
                     <span class="n">prediction_fieldnames</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">prediction</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-            <span class="n">fieldnames</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">feature_fieldnames</span><span class="p">)</span>
+            <span class="n">fieldnames</span> <span class="o">+=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">feature_fieldnames</span><span class="p">))</span>
             <span class="n">fieldnames</span> <span class="o">+=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span>
                 <span class="o">*</span><span class="nb">list</span><span class="p">(</span>
                     <span class="nb">map</span><span class="p">(</span>

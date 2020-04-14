@@ -218,6 +218,50 @@
     <span class="k">return</span> <span class="n">sources</span>
 
 
+<div class="viewcode-block" id="save"><a class="viewcode-back" href="../../api/high_level.html#dffml.high_level.save">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="n">BaseSource</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Record</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update a source&#39;s knowledge about given records.</span>
+
+<span class="sd">    For each record given, call</span>
+<span class="sd">    :py:func:`update &lt;dffml.source.source.BaseSourceContext.update&gt;` on the</span>
+<span class="sd">    source. Effectively saving all the records to the source.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    source : BaseSource</span>
+<span class="sd">        Data source to use. See :doc:`/plugins/dffml_source` for sources and</span>
+<span class="sd">        options.</span>
+<span class="sd">    *args : list</span>
+<span class="sd">        Records to be saved.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; source = CSVSource(filename=&quot;save.csv&quot;, allowempty=True, readwrite=True)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; async def main():</span>
+<span class="sd">    ...     await save(</span>
+<span class="sd">    ...         source,</span>
+<span class="sd">    ...         Record(</span>
+<span class="sd">    ...             &quot;myrecord&quot;,</span>
+<span class="sd">    ...             data={</span>
+<span class="sd">    ...                 &quot;features&quot;: {&quot;Years&quot;: 0, &quot;Expertise&quot;: 1, &quot;Trust&quot;: 0.1},</span>
+<span class="sd">    ...                 &quot;prediction&quot;: {&quot;Salary&quot;: {&quot;value&quot;: 10, &quot;confidence&quot;: 1.0}},</span>
+<span class="sd">    ...             }</span>
+<span class="sd">    ...         )</span>
+<span class="sd">    ...     )</span>
+<span class="sd">    ...     print(pathlib.Path(&quot;save.csv&quot;).read_text().strip())</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+<span class="sd">    key,tag,Expertise,Trust,Years,prediction_Salary,confidence_Salary</span>
+<span class="sd">    myrecord,untagged,1,0.1,0,10,1.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">sctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">record</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="train"><a class="viewcode-back" href="../../api/high_level.html#dffml.high_level.train">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BaseSource</span><span class="p">,</span> <span class="n">Record</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Train a machine learning model.</span>

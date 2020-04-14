@@ -228,6 +228,10 @@
 
 
 <div class="viewcode-block" id="AsyncContextManagerList"><a class="viewcode-back" href="../../../api/util/asynchelper.html#dffml.util.asynchelper.AsyncContextManagerList">[docs]</a><span class="k">class</span> <span class="nc">AsyncContextManagerList</span><span class="p">(</span><span class="n">UserList</span><span class="p">):</span>
+    <span class="n">CONTEXT</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span>
+        <span class="n">AsyncContextManagerListContext</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">AsyncContextManagerListContext</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="n">UserList</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__stack</span> <span class="o">=</span> <span class="kc">None</span>
