@@ -47,13 +47,11 @@ class INISource(FileSource, MemorySource):
     async def dump_fd(self, fd):
         # create an instance of configparser
         parser = ConfigParser()
-        # read the fileobj(fd) as dict where key is section name and values are dict of option and value pair
-        parser.read_dict(fd)
 
-        # go over each section in mem
-        for section in self.mem.keys():
+        # go over each section and record in mem
+        for section, record in self.mem.items():
             # get each section data as a dict
-            section_data = section.features()
+            section_data = record.features()
             if section not in parser.keys():
                 # if section does not exist add new section
                 parser.add_section(section)
