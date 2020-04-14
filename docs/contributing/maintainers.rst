@@ -41,6 +41,9 @@ Doing a Release
     update the version of ``dffml-model-tensorflow`` in
     ``model/tensorflow_hub``.
 
+- Modify ``CHANGELOG.md`` to replace the ``Unreleased`` section header with the
+  new version and the date
+
 - Commit the new version
 
 - Tag a release
@@ -49,5 +52,6 @@ Doing a Release
 
     $ dffml service dev bump packages 0.0.1 -log debug
     $ dffml service dev bump main
+    $ sed -i "s/Unreleased]/$(dffml service dev setuppy kwarg version setup.py)] - $(date +%F)/" CHANGELOG.md
     $ git c "release: Version $(dffml service dev setuppy kwarg version setup.py)"
     $ git tag $(dffml service dev setuppy kwarg version setup.py)
