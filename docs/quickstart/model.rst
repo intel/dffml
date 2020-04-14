@@ -93,7 +93,7 @@ DFFML command line from other scripts or languages.
             "extra": {},
             "features": {
                 "Expertise": 13,
-                "Trust": 1.4,
+                "Trust": 0.7,
                 "Years": 6
             },
             "key": "0",
@@ -109,7 +109,7 @@ DFFML command line from other scripts or languages.
             "extra": {},
             "features": {
                 "Expertise": 15,
-                "Trust": 1.6,
+                "Trust": 0.8,
                 "Years": 7
             },
             "key": "1",
