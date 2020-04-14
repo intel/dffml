@@ -9,7 +9,8 @@ from unittest.mock import patch
 import aiohttp
 
 from dffml.model.slr import SLRModel
-from dffml import Features, DefFeature, train, accuracy
+from dffml.source.json import JSONSource
+from dffml import Record, Features, DefFeature, save, train, accuracy
 from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml_service_http.cli import HTTPService
@@ -278,3 +279,33 @@ class TestServer(AsyncTestCase):
                         prediction = record["prediction"]["ans"]["value"]
                         percent_error = abs(should_be - prediction) / should_be
                         self.assertLess(percent_error, 0.2)
+
+    async def test_sources(self):
+        with tempfile.TemporaryDirectory() as tempdir:
+            # Source the HTTP API will pre-load
+            source = JSONSource(
+                filename=str(pathlib.Path(tempdir, "source.json")),
+                allowempty=True,
+                readwrite=True,
+            )
+
+            # Record the source will have in it
+            myrecord = Record("myrecord", data={"features": {"f1": 0}})
+            await save(source, myrecord)
+
+            async with ServerRunner.patch(HTTPService.server) as tserver:
+                cli = await tserver.start(
+                    HTTPService.server.cli(
+                        "-insecure",
+                        "-port",
+                        "0",
+                        "-sources",
+                        "mysource=json",
+                        "-source-mysource-filename",
+                        source.config.filename,
+                    )
+                )
+                async with self.get(
+                    cli, "/source/mysource/record/myrecord"
+                ) as r:
+                    self.assertEqual(await r.json(), myrecord.export())
