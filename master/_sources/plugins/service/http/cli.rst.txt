@@ -5,8 +5,9 @@ Here are some useful command line invocations of the HTTP API, with explanation
 of relevant flags.
 
 .. warning::
+
     You should be sure to read the :doc:`security` docs! Some of these examples
-    are insecure and just used to help you get up and running.
+    are insecure and only used to help you get up and running.
 
 Quickstart
 ----------

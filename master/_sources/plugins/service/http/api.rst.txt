@@ -430,6 +430,8 @@ Sample response where the end of iteration has been reached.
       }
     }
 
+.. _plugin_service_http_api_model:
+
 Model
 ------
 
