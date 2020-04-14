@@ -37,8 +37,9 @@ Doing a Release
 
 .. warning::
 
-    `model/tensorflow_hub` depends on `model/tensorflow`. Its important to
-    update the version of `dffml-model-tensorflow` in `model/tensorflow_hub`.
+    ``model/tensorflow_hub`` depends on ``model/tensorflow``. Its important to
+    update the version of ``dffml-model-tensorflow`` in
+    ``model/tensorflow_hub``.
 
 - Commit the new version
 
