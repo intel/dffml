@@ -43,6 +43,50 @@ def _records_to_sources(*args):
     return sources
 
 
+async def save(source: BaseSource, *args: Record) -> None:
+    """
+    Update a source's knowledge about given records.
+
+    For each record given, call
+    :py:func:`update <dffml.source.source.BaseSourceContext.update>` on the
+    source. Effectively saving all the records to the source.
+
+    Parameters
+    ----------
+    source : BaseSource
+        Data source to use. See :doc:`/plugins/dffml_source` for sources and
+        options.
+    *args : list
+        Records to be saved.
+
+    Examples
+    --------
+
+    >>> source = CSVSource(filename="save.csv", allowempty=True, readwrite=True)
+    >>>
+    >>> async def main():
+    ...     await save(
+    ...         source,
+    ...         Record(
+    ...             "myrecord",
+    ...             data={
+    ...                 "features": {"Years": 0, "Expertise": 1, "Trust": 0.1},
+    ...                 "prediction": {"Salary": {"value": 10, "confidence": 1.0}},
+    ...             }
+    ...         )
+    ...     )
+    ...     print(pathlib.Path("save.csv").read_text().strip())
+    >>>
+    >>> asyncio.run(main())
+    key,tag,Expertise,Trust,Years,prediction_Salary,confidence_Salary
+    myrecord,untagged,1,0.1,0,10,1.0
+    """
+    async with source:
+        async with source() as sctx:
+            for record in args:
+                await sctx.update(record)
+
+
 async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
     """
     Train a machine learning model.
