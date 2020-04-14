@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   source
 - Ability to configure sources and models for HTTP API from command line when
   starting server
+- Documentation page for command line usage of HTTP API
 ### Changed
 - Renamed `"arg"` to `"plugin"`.
 - CSV source sorts feature names within headers when saving
