@@ -64,6 +64,7 @@ setup(
             "recommonmark",
             "black",
             "jsbeautifier",
+            "twine",
         ],
     },
     tests_require=["httptest>=0.0.15"],
