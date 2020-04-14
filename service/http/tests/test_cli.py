@@ -14,10 +14,10 @@ from dffml import Record, Features, DefFeature, save, train, accuracy
 from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml_service_http.cli import HTTPService
+from dffml_service_http.util.testing import ServerRunner, ServerException
 
-from .common import ServerRunner
+from .test_routes import TestRoutesMultiComm
 from .dataflow import formatter, HELLO_BLANK_DATAFLOW, HELLO_WORLD_DATAFLOW
-from .test_routes import ServerException, TestRoutesMultiComm
 
 
 class TestCreateTLS(AsyncTestCase):

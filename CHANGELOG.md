@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Renamed `"arg"` to `"plugin"`.
 - CSV source sorts feature names within headers when saving
+- Moved HTTP service testing code to HTTP service `util.testing`
 ### Fixed
 - Exporting plugins
 - Issue parsing string values when using the `dataflow run` command and
