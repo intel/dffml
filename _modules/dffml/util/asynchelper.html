@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dffml.util.asynchelper &mdash; DFFML 0.3.6 documentation</title>
+  <title>dffml.util.asynchelper &mdash; DFFML 0.3.7 documentation</title>
   
 
   
@@ -25,6 +25,7 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -59,7 +60,7 @@
             
             
               <div class="version">
-                0.3.6
+                0.3.7
               </div>
             
           
@@ -227,6 +228,10 @@
 
 
 <div class="viewcode-block" id="AsyncContextManagerList"><a class="viewcode-back" href="../../../api/util/asynchelper.html#dffml.util.asynchelper.AsyncContextManagerList">[docs]</a><span class="k">class</span> <span class="nc">AsyncContextManagerList</span><span class="p">(</span><span class="n">UserList</span><span class="p">):</span>
+    <span class="n">CONTEXT</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span>
+        <span class="n">AsyncContextManagerListContext</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">AsyncContextManagerListContext</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="n">UserList</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__stack</span> <span class="o">=</span> <span class="kc">None</span>

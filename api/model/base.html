@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Base Model &mdash; DFFML 0.3.6 documentation</title>
+  <title>Base Model &mdash; DFFML 0.3.7 documentation</title>
   
 
   
@@ -25,6 +25,7 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -61,7 +62,7 @@
             
             
               <div class="version">
-                0.3.6
+                0.3.7
               </div>
             
           
@@ -277,6 +278,13 @@ configuration of the model where data is saved and loaded.</p>
 <dt id="dffml.model.model.SimpleModel.open">
 <code class="sig-name descname">open</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/model/model.html#SimpleModel.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.model.model.SimpleModel.open" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load saved model from disk if it exists.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dffml.model.model.SimpleModel.parent">
+<em class="property">property </em><code class="sig-name descname">parent</code><a class="headerlink" href="#dffml.model.model.SimpleModel.parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple models are both the parent and the context. This property is used
+to fake out anything attempting to access the model context’s parent.</p>
 </dd></dl>
 
 </dd></dl>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Sources &mdash; DFFML 0.3.6 documentation</title>
+  <title>Sources &mdash; DFFML 0.3.7 documentation</title>
   
 
   
@@ -25,6 +25,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/language_data.js"></script>
+        <script src="../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -61,7 +62,7 @@
             
             
               <div class="version">
-                0.3.6
+                0.3.7
               </div>
             
           
@@ -104,8 +105,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#dffml">dffml</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#csv">csv</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#db">db</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#idx1">idx1</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#idx3">idx3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#plugin-source-dffml-idx1">idx1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#plugin-source-dffml-idx3">idx3</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#json">json</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#memory">memory</a></li>
 </ul>
@@ -207,12 +208,12 @@ abstract the loading and storage of data / datasets.</p>
 <p>If you want to get started creating your own source, check out the
 <a class="reference internal" href="../tutorials/source.html#source-tutorial"><span class="std std-ref">New Source Tutorial</span></a>.</p>
 <div class="section" id="dffml">
-<h2>dffml<a class="headerlink" href="#dffml" title="Permalink to this headline">¶</a></h2>
+<span id="plugin-source-dffml"></span><h2>dffml<a class="headerlink" href="#dffml" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml</span>
 </pre></div>
 </div>
 <div class="section" id="csv">
-<h3>csv<a class="headerlink" href="#csv" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-source-dffml-csv"></span><h3>csv<a class="headerlink" href="#csv" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Uses a CSV file as the source of record feature data</p>
 <p><strong>Args</strong></p>
@@ -251,7 +252,7 @@ abstract the loading and storage of data / datasets.</p>
 </ul>
 </div>
 <div class="section" id="db">
-<h3>db<a class="headerlink" href="#db" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-source-dffml-db"></span><h3>db<a class="headerlink" href="#db" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Args</strong></p>
@@ -261,8 +262,8 @@ abstract the loading and storage of data / datasets.</p>
 <li><p>model_columns: List of strings</p></li>
 </ul>
 </div>
-<div class="section" id="idx1">
-<h3>idx1<a class="headerlink" href="#idx1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="plugin-source-dffml-idx1">
+<span id="idx1"></span><h3>idx1<a class="headerlink" href="#plugin-source-dffml-idx1" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Source to read files in IDX1 format (such as MNIST digit label dataset).</p>
 <p><strong>Args</strong></p>
@@ -285,8 +286,8 @@ abstract the loading and storage of data / datasets.</p>
 </li>
 </ul>
 </div>
-<div class="section" id="idx3">
-<h3>idx3<a class="headerlink" href="#idx3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="plugin-source-dffml-idx3">
+<span id="idx3"></span><h3>idx3<a class="headerlink" href="#plugin-source-dffml-idx3" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Source to read files in IDX3 format (such as MNIST digit image dataset).</p>
 <p><strong>Args</strong></p>
@@ -310,7 +311,7 @@ abstract the loading and storage of data / datasets.</p>
 </ul>
 </div>
 <div class="section" id="json">
-<h3>json<a class="headerlink" href="#json" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-source-dffml-json"></span><h3>json<a class="headerlink" href="#json" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>JSONSource reads and write from a JSON file on open / close. Otherwise
 stored in memory.</p>
@@ -335,7 +336,7 @@ stored in memory.</p>
 </ul>
 </div>
 <div class="section" id="memory">
-<h3>memory<a class="headerlink" href="#memory" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-source-dffml-memory"></span><h3>memory<a class="headerlink" href="#memory" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Stores records in a dict in memory</p>
 <p><strong>Args</strong></p>
@@ -345,12 +346,12 @@ stored in memory.</p>
 </div>
 </div>
 <div class="section" id="dffml-source-mysql">
-<h2>dffml_source_mysql<a class="headerlink" href="#dffml-source-mysql" title="Permalink to this headline">¶</a></h2>
+<span id="plugin-source-dffml-source-mysql"></span><h2>dffml_source_mysql<a class="headerlink" href="#dffml-source-mysql" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-source-mysql</span>
 </pre></div>
 </div>
 <div class="section" id="mysql">
-<h3>mysql<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h3>
+<span id="plugin-source-dffml-source-mysql-mysql"></span><h3>mysql<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>No description</p>
 <p><strong>Args</strong></p>

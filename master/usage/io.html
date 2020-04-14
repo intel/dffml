@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Prediction Using IO Operations &mdash; DFFML 0.3.6 documentation</title>
+  <title>Prediction Using IO Operations &mdash; DFFML 0.3.7 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                0.3.6
+                0.3.7
               </div>
             
           
@@ -260,7 +260,7 @@ on user input.</p>
 
 <span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="c1"># train the model</span>
-    <span class="n">train</span><span class="p">(</span>
+    <span class="k">await</span> <span class="n">train</span><span class="p">(</span>
         <span class="n">slr_model</span><span class="p">,</span>
         <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
         <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span>

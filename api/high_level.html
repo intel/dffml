@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>High Level &mdash; DFFML 0.3.6 documentation</title>
+  <title>High Level &mdash; DFFML 0.3.7 documentation</title>
   
 
   
@@ -25,6 +25,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/language_data.js"></script>
+        <script src="../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -61,7 +62,7 @@
             
             
               <div class="version">
-                0.3.6
+                0.3.7
               </div>
             
           
@@ -333,6 +334,45 @@ Defaults to <code class="docutils literal notranslate"><span class="pre">False</
 <span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 <span class="go">{&#39;Years&#39;: 6, &#39;Expertise&#39;: 13, &#39;Trust&#39;: 0.7, &#39;Salary&#39;: 70.0}</span>
 <span class="go">{&#39;Years&#39;: 7, &#39;Expertise&#39;: 15, &#39;Trust&#39;: 0.8, &#39;Salary&#39;: 80.0}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dffml.high_level.save">
+<em class="property">async </em><code class="sig-prename descclassname">dffml.high_level.</code><code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span><span class="p">:</span> <span class="n"><a class="reference internal" href="source/base.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource">dffml.source.source.BaseSource</a></span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n"><a class="reference internal" href="record.html#dffml.record.Record" title="dffml.record.Record">dffml.record.Record</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)">None</a><a class="reference internal" href="../_modules/dffml/high_level.html#save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.high_level.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a source’s knowledge about given records.</p>
+<p>For each record given, call
+<a class="reference internal" href="source/base.html#dffml.source.source.BaseSourceContext.update" title="dffml.source.source.BaseSourceContext.update"><code class="xref py py-func docutils literal notranslate"><span class="pre">update</span></code></a> on the
+source. Effectively saving all the records to the source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> (<a class="reference internal" href="source/base.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><em>BaseSource</em></a>) – Data source to use. See <a class="reference internal" href="../plugins/dffml_source.html"><span class="doc">Sources</span></a> for sources and
+options.</p></li>
+<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – Records to be saved.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;save.csv&quot;</span><span class="p">,</span> <span class="n">allowempty</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">readwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">await</span> <span class="n">save</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">source</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">Record</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="s2">&quot;myrecord&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>                <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+<span class="gp">... </span>                <span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}},</span>
+<span class="gp">... </span>            <span class="p">}</span>
+<span class="gp">... </span>        <span class="p">)</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;save.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">key,tag,Expertise,Trust,Years,prediction_Salary,confidence_Salary</span>
+<span class="go">myrecord,untagged,1,0.1,0,10,1.0</span>
 </pre></div>
 </div>
 </dd></dl>

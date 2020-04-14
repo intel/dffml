@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>JavaScript &mdash; DFFML 0.3.6 documentation</title>
+  <title>JavaScript &mdash; DFFML 0.3.7 documentation</title>
   
 
   
@@ -25,6 +25,7 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -61,7 +62,7 @@
             
             
               <div class="version">
-                0.3.6
+                0.3.7
               </div>
             
           
@@ -102,6 +103,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../index.html">Plugins</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command Line</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">HTTP API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cli.html">Command Line</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="security.html">Security</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">JavaScript</a></li>
@@ -227,10 +229,10 @@ following files.</p>
 
   <span class="nx">await</span> <span class="nx">training_source</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="s2">&quot;my_training_dataset&quot;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s2">&quot;source&quot;</span><span class="o">:</span> <span class="p">{</span>
-      <span class="s2">&quot;arg&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
       <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
         <span class="s2">&quot;filename&quot;</span><span class="o">:</span> <span class="p">{</span>
-          <span class="s2">&quot;arg&quot;</span><span class="o">:</span> <span class="p">[</span>
+          <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="p">[</span>
             <span class="s2">&quot;my_training_dataset.csv&quot;</span>
           <span class="p">],</span>
           <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{}</span>
@@ -257,10 +259,10 @@ following files.</p>
 
   <span class="nx">await</span> <span class="nx">test_source</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="s2">&quot;my_test_dataset&quot;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s2">&quot;source&quot;</span><span class="o">:</span> <span class="p">{</span>
-      <span class="s2">&quot;arg&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
       <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
         <span class="s2">&quot;filename&quot;</span><span class="o">:</span> <span class="p">{</span>
-          <span class="s2">&quot;arg&quot;</span><span class="o">:</span> <span class="p">[</span>
+          <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="p">[</span>
             <span class="s2">&quot;my_test_dataset.csv&quot;</span>
           <span class="p">],</span>
           <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{}</span>
@@ -289,10 +291,10 @@ following files.</p>
 
   <span class="nx">await</span> <span class="nx">model</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="s2">&quot;scikitlr&quot;</span><span class="p">,</span> <span class="s2">&quot;mymodel&quot;</span><span class="p">,</span> <span class="p">{</span>
     <span class="s2">&quot;model&quot;</span><span class="o">:</span> <span class="p">{</span>
-      <span class="s2">&quot;arg&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
       <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
         <span class="s2">&quot;predict&quot;</span><span class="o">:</span> <span class="p">{</span>
-          <span class="s2">&quot;arg&quot;</span><span class="o">:</span> <span class="p">[{</span>
+          <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="p">[{</span>
             <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Salary&quot;</span><span class="p">,</span>
             <span class="s2">&quot;dtype&quot;</span><span class="o">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
             <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mi">1</span>
@@ -300,7 +302,7 @@ following files.</p>
           <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{}</span>
         <span class="p">},</span>
         <span class="s2">&quot;features&quot;</span><span class="o">:</span> <span class="p">{</span>
-          <span class="s2">&quot;arg&quot;</span><span class="o">:</span> <span class="p">[{</span>
+          <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="p">[{</span>
             <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Years&quot;</span><span class="p">,</span>
             <span class="s2">&quot;dtype&quot;</span><span class="o">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
             <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mi">1</span>
