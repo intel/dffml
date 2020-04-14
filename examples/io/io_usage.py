@@ -63,7 +63,7 @@ dataflow.seed.append(
 
 async def main():
     # train the model
-    train(
+    await train(
         slr_model,
         {"Years": 0, "Salary": 10},
         {"Years": 1, "Salary": 20},
