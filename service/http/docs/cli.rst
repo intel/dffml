@@ -36,11 +36,10 @@ training, accuracy assessment, or prediction, use the ``-models`` flag.
 
 .. code-block:: console
 
-    $ dffml service http server -models mymodel=slr \
-        -model-mymodel-features \
-        X:float:1 \
-        -model-mymodel-predict \
-        Y:float:1
+    $ dffml service http server \
+        -models mymodel=slr \
+        -model-mymodel-features X:float:1 \
+        -model-mymodel-predict Y:float:1
 
 Sources
 -------
@@ -50,6 +49,6 @@ for record retrieval or updating, use the ``-sources`` flag.
 
 .. code-block:: console
 
-    $ dffml service http server -sources mysource=csv
-        -source-mysource-filename
-        training.csv
+    $ dffml service http server \
+        -sources mysource=csv \
+        -source-mysource-filename training.csv
