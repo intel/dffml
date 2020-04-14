@@ -38,12 +38,13 @@ You should instead see the :doc:`security` docs!
 
 .. code-block:: console
 
-    $ dffml service http server -insecure -cors '*'
+    $ dffml service http server -insecure -cors '*' -addr 0.0.0.0 -port 8080
 
 .. toctree::
     :maxdepth: 2
     :caption: Contents:
 
+    cli
     api
     security
     javascript
