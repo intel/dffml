@@ -19,12 +19,13 @@ async def literal_eval(str_to_eval: str):
 
     Parameters
     ++++++++++
-    inputs : str
+    str_to_eval : str
         A string to be evaluated.
 
     Returns
     +++++++
-    A python literal.
+    dict
+        A dict containing python literal.
 
     Examples
     ++++++++
