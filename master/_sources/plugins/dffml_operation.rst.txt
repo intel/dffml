@@ -156,7 +156,7 @@ The following shows how to use run dataflow in its default behavior.
 {'flow_results': {'dffml': {'URL': 'https://github.com/intel/dffml'}}}
 
 The following shows how to use run dataflow with custom inputs and outputs.
-This allows you to run a subflow as if it were an opertion.
+This allows you to run a subflow as if it were an operation.
 
 >>> URL = Definition(name="URL", primitive="string")
 >>>
@@ -227,7 +227,45 @@ dffml.mapping.create
 
 *Official*
 
-No description
+Creates a mapping of a given key and value.
+
+Parameters
+++++++++++
+key : str
+    The key for the mapping.
+value : Any
+    The value for the mapping.
+
+Returns
++++++++
+dict
+    A dictionary containing the mapping created.
+
+Examples
+++++++++
+
+>>> dataflow = DataFlow.auto(create_mapping, GetSingle)
+>>> dataflow.seed.append(
+...     Input(
+...         value=[create_mapping.op.outputs["mapping"].name],
+...         definition=GetSingle.op.inputs["spec"],
+...     )
+... )
+>>> inputs = [
+...     Input(
+...         value="key1", definition=create_mapping.op.inputs["key"],
+...     ),
+...     Input(
+...         value=42, definition=create_mapping.op.inputs["value"],
+...     ),
+... ]
+>>>
+>>> async def main():
+...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
+...         print(result)
+>>>
+>>> asyncio.run(main())
+{'mapping': {'key1': 42}}
 
 **Stage: processing**
 
@@ -249,7 +287,48 @@ dffml.mapping.extract
 
 *Official*
 
-No description
+Extracts value from a given mapping.
+
+Parameters
+++++++++++
+mapping : dict
+    The mapping to extract the value from.
+traverse : list[str]
+    A list of keys to traverse through the mapping dictionary and extract the values.
+
+Returns
++++++++
+dict
+    A dictionary containing the value of the keys.
+
+Examples
+++++++++
+
+>>> dataflow = DataFlow.auto(mapping_extract_value, GetSingle)
+>>>
+>>> dataflow.seed.append(
+...     Input(
+...         value=[mapping_extract_value.op.outputs["value"].name],
+...         definition=GetSingle.op.inputs["spec"],
+...     )
+... )
+>>> inputs = [
+...     Input(
+...         value={"key1": {"key2": 42}},
+...         definition=mapping_extract_value.op.inputs["mapping"],
+...     ),
+...     Input(
+...         value=["key1", "key2"],
+...         definition=mapping_extract_value.op.inputs["traverse"],
+...     ),
+... ]
+>>>
+>>> async def main():
+...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
+...         print(result)
+>>>
+>>> asyncio.run(main())
+{'value': 42}
 
 **Stage: processing**
 
