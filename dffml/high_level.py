@@ -262,7 +262,48 @@ async def predict(
 
 async def load(source: BaseSource, *args: str) -> AsyncIterator[Record]:
     """
-    Returns records from a source
+    Returns records from a source.
+
+    For each record given, call
+    :py:func:`update <dffml.source.source.BaseSourceContext.update>` on the
+    source. Effectively saving all the records to the source.
+
+    Parameters
+    ----------
+    source : BaseSource
+        Data source to use. See :doc:`/plugins/dffml_source` for sources and
+        options.
+    *args : str
+        Records to be returned. If None all the records in a source will be returned.
+
+    Returns
+    -------
+    asynciterator
+        ``Record`` object
+
+    Examples
+    --------
+
+    >>> source = CSVSource(filename="save.csv", allowempty=True, readwrite=True)
+    >>>
+    >>> async def main():
+    ...     await save(
+    ...         source,
+    ...         Record("1", data={"features": {"A": 0, "B": 1},},),
+    ...         Record("2", data={"features": {"A": 3, "B": 4},},),
+    ...     )
+    ...
+    ...     async for record in load(source):
+    ...         print(record.export())
+    ...
+    ...     # For specific records in a source
+    ...     async for record in load(source, "1"):
+    ...         print(record.export())
+    >>>
+    >>> asyncio.run(main())
+    {'key': '1', 'features': {'A': 0, 'B': 1}, 'extra': {}}
+    {'key': '2', 'features': {'A': 3, 'B': 4}, 'extra': {}}
+    {'key': '1', 'features': {'A': 0, 'B': 1}, 'extra': {}}
     """
     async with source:
         async with source() as sctx:
