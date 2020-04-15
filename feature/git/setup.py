@@ -2,7 +2,7 @@ import os
 import sys
 import ast
 from io import open
-
+git_payload,get_url_from_payload
 from setuptools import find_packages, setup
 
 self_path = os.path.dirname(os.path.realpath(__file__))
