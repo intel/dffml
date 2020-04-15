@@ -290,7 +290,7 @@ async def load(source: BaseSource, *args: str) -> AsyncIterator[Record]:
     ...     await save(
     ...         source,
     ...         Record("1", data={"features": {"A": 0, "B": 1},},),
-    ...         Record("2", data={"features": {"A": 3, "B": 4},},),
+    ...         Record("2", data={"features": {"A": 3, "B": 4}}),
     ...     )
     ...
     ...     # All records in source
