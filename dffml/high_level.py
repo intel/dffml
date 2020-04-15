@@ -274,7 +274,7 @@ async def load(source: BaseSource, *args: str) -> AsyncIterator[Record]:
         Data source to use. See :doc:`/plugins/dffml_source` for sources and
         options.
     *args : str
-        Records to be returned. If None all the records in a source will be returned.
+        Records to be returned. If empty, all the records in a source will be returned.
 
     Returns
     -------
