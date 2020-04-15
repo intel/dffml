@@ -33,5 +33,11 @@ class TestRunDependencyCheckOp(AsyncTestCase):
             java / "jdk-14" / "bin",
             dependency_check / "dependency-check" / "bin",
         ):
+            (
+                dependency_check
+                / "dependency-check"
+                / "bin"
+                / "dependency-check.sh"
+            ).chmod(0o755)
             results = await run_dependency_check(str(RxJava / "RxJava-2.2.16"))
-            self.assertEqual(type(results["report"]["total_CVE"]), 99)
+            self.assertEqual(results["report"]["total_CVE"], 3)

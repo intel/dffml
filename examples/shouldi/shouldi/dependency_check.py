@@ -1,4 +1,5 @@
 import json
+import os
 import asyncio
 from typing import Dict, Any
 
@@ -9,12 +10,6 @@ package_src_dir = Definition(name="package_src_dir", primitive="str")
 dependency_check_output = Definition(
     name="dependency_check_output", primitive="Dict[str, Any]"
 )
-
-
-class DependencyCheckError(Exception):
-    """
-    Raised when dependency-check fails
-    """
 
 
 @op(
@@ -35,13 +30,13 @@ async def run_dependency_check(pkg: str) -> Dict[str, Any]:
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
     )
-    stdout, stderr = await proc.communicate()
-    if len(stdout) == 0:
-        raise DependencyCheckError(stderr.decode())
 
-    dependency_check_op = stdout.decode()
-    dependency_check_op = json.loads(dependency_check_op)
-    t_result = dependency_check_op["dependencies"]["vulnerabilities"]
+    with open(pkg + "/dependency-check-report.json") as f:
+        dependency_check_op = json.loads(f.read())
+
+    for items in dependency_check_op["dependencies"]:
+        t_result = items["vulnerabilities"]
+
     final_report = {}
     score = 0
     for item in t_result:
