@@ -40,7 +40,7 @@ async def model_predict(self, features: Dict[str, Any]) -> Dict[str, Any]:
 
     Parameters
     ++++++++++
-    inputs : dict
+    features : dict
         A dictionary contaning feature name and feature value.
 
     Returns
