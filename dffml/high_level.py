@@ -293,6 +293,7 @@ async def load(source: BaseSource, *args: str) -> AsyncIterator[Record]:
     ...         Record("2", data={"features": {"A": 3, "B": 4},},),
     ...     )
     ...
+    ...     # All records in source
     ...     async for record in load(source):
     ...         print(record.export())
     ...
