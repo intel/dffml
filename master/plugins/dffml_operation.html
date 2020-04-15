@@ -539,7 +539,62 @@ This allows you to run a subflow as if it were an operation.</p>
 <div class="section" id="dffml-model-predict">
 <span id="plugin-operation-dffml-dffml-model-predict"></span><h3>dffml.model.predict<a class="headerlink" href="#dffml-model-predict" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
-<p>No description</p>
+<p>Predict using dffml models.</p>
+<div class="section" id="id9">
+<h4>Parameters<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>features<span class="classifier">dict</span></dt><dd><p>A dictionary contaning feature name and feature value.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id10">
+<h4>Returns<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>dict</dt><dd><p>A dictionary containing prediction.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id11">
+<h4>Examples<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h4>
+<p>The following example shows how to use model_predict.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">slr_model</span> <span class="o">=</span> <span class="n">SLRModel</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+<span class="gp">... </span>    <span class="n">predict</span><span class="o">=</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;prediction_using_model&quot;</span><span class="p">:</span> <span class="n">model_predict</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;get_single&quot;</span><span class="p">:</span> <span class="n">GetSingle</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;prediction_using_model&quot;</span><span class="p">:</span> <span class="n">ModelPredictConfig</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">slr_model</span><span class="p">)},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">model_predict</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;prediction&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">await</span> <span class="n">train</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">slr_model</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">40</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span>    <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>       <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>           <span class="n">value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span> <span class="n">definition</span><span class="o">=</span><span class="n">model_predict</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">],</span>
+<span class="gp">... </span>       <span class="p">)</span>
+<span class="gp">... </span>    <span class="p">]</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;model_predictions&#39;: {&#39;Salary&#39;: {&#39;confidence&#39;: 1.0, &#39;value&#39;: 50.0}}}</span>
+</pre></div>
+</div>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
 <ul class="simple">
@@ -554,27 +609,28 @@ This allows you to run a subflow as if it were an operation.</p>
 <li><p>model: Entrypoint</p></li>
 </ul>
 </div>
+</div>
 <div class="section" id="get-multi">
 <span id="plugin-operation-dffml-get-multi"></span><h3>get_multi<a class="headerlink" href="#get-multi" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Output operation to get all Inputs matching given definitions.</p>
-<div class="section" id="id9">
-<h4>Parameters<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id12">
+<h4>Parameters<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>spec<span class="classifier">list</span></dt><dd><p>List of definition names. Any Inputs with matching definition will be
 returned.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id10">
-<h4>Returns<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id13">
+<h4>Returns<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Maps definition names to all the Inputs of that definition</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id11">
-<h4>Examples<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id14">
+<h4>Examples<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h4>
 <p>The following shows how to grab all Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL would have also
 been returned to us.</p>
@@ -620,23 +676,23 @@ been returned to us.</p>
 <span id="plugin-operation-dffml-get-single"></span><h3>get_single<a class="headerlink" href="#get-single" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Output operation to get a single Input for each definition given.</p>
-<div class="section" id="id12">
-<h4>Parameters<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id15">
+<h4>Parameters<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>spec<span class="classifier">list</span></dt><dd><p>List of definition names. An Input with matching definition will be
 returned.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id13">
-<h4>Returns<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id16">
+<h4>Returns<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>Maps definition names to an Input of that definition</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id14">
-<h4>Examples<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id17">
+<h4>Examples<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h4>
 <p>The following shows how to grab an Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL could have also
 been returned to us.</p>
@@ -692,22 +748,22 @@ been returned to us.</p>
 <span id="plugin-operation-dffml-literal-eval"></span><h3>literal_eval<a class="headerlink" href="#literal-eval" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Evaluate the input using ast.literal_eval()</p>
-<div class="section" id="id15">
-<h4>Parameters<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id18">
+<h4>Parameters<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>str_to_eval<span class="classifier">str</span></dt><dd><p>A string to be evaluated.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id16">
-<h4>Returns<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id19">
+<h4>Returns<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>dict</dt><dd><p>A dict containing python literal.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id17">
-<h4>Examples<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id20">
+<h4>Examples<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use literal_eval.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">literal_eval</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -747,15 +803,15 @@ been returned to us.</p>
 <span id="plugin-operation-dffml-print-output"></span><h3>print_output<a class="headerlink" href="#print-output" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Print the output on stdout using python print()</p>
-<div class="section" id="id18">
-<h4>Parameters<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id21">
+<h4>Parameters<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>data<span class="classifier">Any</span></dt><dd><p>A python literal to be printed.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id19">
-<h4>Examples<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id22">
+<h4>Examples<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use print_output.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">print_output</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
