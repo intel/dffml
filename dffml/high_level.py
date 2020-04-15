@@ -3,7 +3,7 @@ High level abstraction interfaces to DFFML. These are probably going to be used
 in a lot of quick and dirty python files.
 """
 import pathlib
-from typing import Union, Dict, Any
+from typing import Union, Dict, Any, AsyncIterator
 
 from .record import Record
 from .source.source import Sources, BaseSource
@@ -258,3 +258,19 @@ async def predict(
                 )
                 if update:
                     await sctx.update(record)
+
+
+async def load(source: BaseSource, *args: str) -> AsyncIterator[Record]:
+    """
+    Returns records from a source
+    """
+    async with source:
+        async with source() as sctx:
+            if args:
+                # If specific records are to be loaded
+                for record in args:
+                    yield await sctx.record(record)
+            else:
+                # All the records are loaded
+                async for record in sctx.records():
+                    yield record
