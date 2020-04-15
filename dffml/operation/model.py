@@ -35,6 +35,62 @@ class ModelPredictConfig:
     ctx_enter={"mctx": (lambda self: self.parent.model())},
 )
 async def model_predict(self, features: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Predict using dffml models.
+
+    Parameters
+    ++++++++++
+    inputs : dict
+        A dictionary contaning feature name and feature value.
+
+    Returns
+    +++++++
+    dict
+        A dictionary containing prediction.
+
+    Examples
+    ++++++++
+
+    The following example shows how to use model_predict.
+
+    >>> slr_model = SLRModel(
+    ... features=Features(DefFeature("Years", int, 1)),
+    ... predict=DefFeature("Salary", int, 1),
+    ... )
+    >>> dataflow = DataFlow(
+    ...    operations={
+    ...    "prediction_using_model": model_predict,
+    ...    "get_single": GetSingle,
+    ... },
+    ... configs={
+    ...    "prediction_using_model": ModelPredictConfig(model=slr_model)
+    ... },
+    ... )
+    >>> dataflow.seed.append(
+    ...    Input(
+    ...        value=[model_predict.op.outputs["prediction"].name],
+    ...        definition=GetSingle.op.inputs["spec"],
+    ...    )
+    ... )
+    >>> async def main():
+    ...    await train(
+    ...        slr_model,
+    ...        {"Years": 0, "Salary": 10},
+    ...        {"Years": 1, "Salary": 20},
+    ...        {"Years": 2, "Salary": 30},
+    ...        {"Years": 3, "Salary": 40},
+    ...    )
+    ...    inputs = [
+    ...        Input(
+    ...            value={"Years": 4}, definition=model_predict.op.inputs["features"],
+    ...        )
+    ...    ]
+    ...    async for ctx, results in MemoryOrchestrator.run(dataflow, inputs):
+    ...        print(results)
+    >>> asyncio.run(main())
+    {'model_predictions': {'Salary': {'confidence': 1.0, 'value': 50.0}}}
+    """
+
     async def records():
         yield Record("", data={"features": features})
 
