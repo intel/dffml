@@ -279,7 +279,7 @@ async def load(source: BaseSource, *args: str) -> AsyncIterator[Record]:
     Returns
     -------
     asynciterator
-        ``Record`` object
+        :py:class:`Record <dffml.record.Record>` object
 
     Examples
     --------
