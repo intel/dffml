@@ -12,7 +12,7 @@ from dffml.df.base import (
 
 # Definitions
 UserInput = Definition(name="UserInput", primitive="str")
-DataToPrint = Definition(name="DataToPrint", primitive="str")
+DataToPrint = Definition(name="DataToPrint", primitive="generic")
 
 AcceptUserInput = Operation(
     name="AcceptUserInput",
@@ -39,11 +39,6 @@ class AcceptUserInput(OperationImplementation):
     """
     Accept input from stdin using python input()
 
-    Parameters
-    ++++++++++
-    inputs : dict
-        A dictionary with a key and empty list as value.
-
     Returns
     +++++++
     dict
@@ -59,12 +54,12 @@ class AcceptUserInput(OperationImplementation):
     >>> dataflow.seed.append(
     ...     Input(
     ...         value=[AcceptUserInput.op.outputs["InputData"].name],
-    ...         definition=GetSingle.op.inputs["spec"]
+    ...         definition=GetSingle.op.inputs["spec"],
     ...     )
     ... )
     >>>
     >>> async def main():
-    ...     async for ctx, results in MemoryOrchestrator.run(dataflow, {"input":[]}):
+    ...     async for ctx, results in MemoryOrchestrator.run(dataflow, {"input": []}):
     ...         print(results)
     >>>
     >>> asyncio.run(main())
@@ -94,33 +89,32 @@ class AcceptUserInput(OperationImplementation):
 
 
 @op(inputs={"data": DataToPrint}, outputs={}, conditions=[])
-async def print_output(data: str):
+async def print_output(data: Any):
     """
     Print the output on stdout using python print()
 
     Parameters
     ++++++++++
-    inputs : list
-        A list of Inputs whose value is to be printed.
+    data : Any
+        A python literal to be printed.
 
     Examples
     ++++++++
 
     The following example shows how to use print_output.
 
-    >>> dataflow = DataFlow.auto(print_output, GetSingle)
+    >>> dataflow = DataFlow.auto(print_output)
     >>> inputs = [
     ...     Input(
-    ...         value="print_output example",
-    ...         definition=dataflow.definitions["DataToPrint"],
-    ...         parents=None,)]
+    ...         value="print_output example", definition=print_output.op.inputs["data"]
+    ...     )
+    ... ]
     >>>
     >>> async def main():
     ...     async for ctx, results in MemoryOrchestrator.run(dataflow, inputs):
-    ...         print("String to be printed is 'print_output example'")
+    ...         pass
     >>>
     >>> asyncio.run(main())
     print_output example
-    String to be printed is 'print_output example'
     """
     print(data)
