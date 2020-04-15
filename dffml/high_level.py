@@ -266,7 +266,7 @@ async def load(source: BaseSource, *args: str) -> AsyncIterator[Record]:
 
     For each record given, call
     :py:func:`update <dffml.source.source.BaseSourceContext.update>` on the
-    source. Effectively saving all the records to the source.
+    source.
 
     Parameters
     ----------
