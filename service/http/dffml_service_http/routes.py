@@ -131,10 +131,29 @@ def mctx_route(handler):
 
 
 class HTTPChannelConfig(NamedTuple):
+    """
+    Params:
+        path:route in server
+        dataflow:flow to which inputs from request to path is forwarded too.
+        input_mode:
+            * "default":Inputs are expected to be mapping of context
+                to list of input to definition mappings
+            eg:'{
+                "insecure-package":
+                    [
+                        {
+                            "value":"insecure-package",
+                            "definition":"package"
+                        }
+                    ]
+                }'
+            * "def:NAME" : input as whole is treated as value for defintion 'NAME'
+    """
     path: str
     presentation: str
     asynchronous: bool
     dataflow: DataFlow
+    input_mode:str = "default"
 
     @classmethod
     def _fromdict(cls, **kwargs):
@@ -156,16 +175,46 @@ class Routes(BaseMultiCommContext):
         inputs = []
         # If data was sent add those inputs
         if request.method == "POST":
-            # Accept a list of input data
-            # TODO validate that input data is dict of list of inputs each item
-            # has definition and value properties
-            for ctx, client_inputs in (await request.json()).items():
-                for input_data in client_inputs:
-                    if (
-                        not input_data["definition"]
-                        in config.dataflow.definitions
-                    ):
-                        return web.json_response(
+            # Accept a list of input data according to config.input_mode
+            if config.input_mode == "default":
+                # TODO validate that input data is dict of list of inputs each item
+                # has definition and value properties
+                for ctx, client_inputs in (await request.json()).items():
+                    for input_data in client_inputs:
+                        if (
+                            not input_data["definition"]
+                            in config.dataflow.definitions
+                        ):
+                            return web.json_response(
+                                {
+                                    "error": f"Missing definition for {input_data['definition']} in dataflow"
+                                },
+                                status=HTTPStatus.NOT_FOUND,
+                            )
+                    inputs.append(
+                        MemoryInputSet(
+                            MemoryInputSetConfig(
+                                ctx=StringInputSetContext(ctx),
+                                inputs=[
+                                    Input(
+                                        value=input_data["value"],
+                                        definition=config.dataflow.definitions[
+                                            input_data["definition"]
+                                        ],
+                                    )
+                                    for input_data in client_inputs
+                                ],
+                            )
+                        )
+                    )
+            elif config.input_mode.startswith("def:"):
+                # TODO
+                # add an option to parse input to json?
+                # or add `formatter` in config which points to dataflow
+                # for now :json loads
+                input_def = config.input_mode.replace("def:","")
+                if input_def not in config.dataflow.definitions:
+                    return web.json_response(
                             {
                                 "error": f"Missing definition for {input_data['definition']} in dataflow"
                             },
@@ -174,19 +223,20 @@ class Routes(BaseMultiCommContext):
                 inputs.append(
                     MemoryInputSet(
                         MemoryInputSetConfig(
-                            ctx=StringInputSetContext(ctx),
+                            ctx = StringInputSetContext("post_input"),
                             inputs=[
                                 Input(
-                                    value=input_data["value"],
-                                    definition=config.dataflow.definitions[
-                                        input_data["definition"]
-                                    ],
+                                    value=await request.json(),
+                                    definition=config.dataflow.definitions[input_def],
                                 )
-                                for input_data in client_inputs
-                            ],
+                            ]
                         )
                     )
                 )
+            else:
+                raise NotImplementedError(
+                    "Input modes other than default,def:NAME  not yet implemented"
+                    )
         # Run the operation in an orchestrator
         # TODO(dfass) Create the orchestrator on startup of the HTTP API itself
         async with MemoryOrchestrator.basic_config() as orchestrator:
