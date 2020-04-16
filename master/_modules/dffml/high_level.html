@@ -262,6 +262,63 @@
                 <span class="k">await</span> <span class="n">sctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">record</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="load"><a class="viewcode-back" href="../../api/high_level.html#dffml.high_level.load">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="n">BaseSource</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Yields records from a source.</span>
+
+<span class="sd">    Yields all the records from the source, if record keys are given then only</span>
+<span class="sd">    those records are yielded.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    source : BaseSource</span>
+<span class="sd">        Data source to use. See :doc:`/plugins/dffml_source` for sources and</span>
+<span class="sd">        options.</span>
+<span class="sd">    *args : str</span>
+<span class="sd">        Records to be returned. If empty, all the records in a source will be returned.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    asynciterator</span>
+<span class="sd">        :py:class:`Record &lt;dffml.record.Record&gt;` object</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; source = CSVSource(filename=&quot;load.csv&quot;, allowempty=True, readwrite=True)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; async def main():</span>
+<span class="sd">    ...     await save(</span>
+<span class="sd">    ...         source,</span>
+<span class="sd">    ...         Record(&quot;1&quot;, data={&quot;features&quot;: {&quot;A&quot;: 0, &quot;B&quot;: 1}}),</span>
+<span class="sd">    ...         Record(&quot;2&quot;, data={&quot;features&quot;: {&quot;A&quot;: 3, &quot;B&quot;: 4}}),</span>
+<span class="sd">    ...     )</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...     # All records in source</span>
+<span class="sd">    ...     async for record in load(source):</span>
+<span class="sd">    ...         print(record.export())</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...     # For specific records in a source</span>
+<span class="sd">    ...     async for record in load(source, &quot;1&quot;):</span>
+<span class="sd">    ...         print(record.export())</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+<span class="sd">    {&#39;key&#39;: &#39;1&#39;, &#39;features&#39;: {&#39;A&#39;: 0, &#39;B&#39;: 1}, &#39;extra&#39;: {}}</span>
+<span class="sd">    {&#39;key&#39;: &#39;2&#39;, &#39;features&#39;: {&#39;A&#39;: 3, &#39;B&#39;: 4}, &#39;extra&#39;: {}}</span>
+<span class="sd">    {&#39;key&#39;: &#39;1&#39;, &#39;features&#39;: {&#39;A&#39;: 0, &#39;B&#39;: 1}, &#39;extra&#39;: {}}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+                <span class="c1"># If specific records are to be loaded</span>
+                <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="k">await</span> <span class="n">sctx</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># All the records are loaded</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">sctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
+                    <span class="k">yield</span> <span class="n">record</span></div>
+
+
 <div class="viewcode-block" id="train"><a class="viewcode-back" href="../../api/high_level.html#dffml.high_level.train">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BaseSource</span><span class="p">,</span> <span class="n">Record</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Train a machine learning model.</span>
@@ -433,63 +490,6 @@
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="n">update</span><span class="p">:</span>
                     <span class="k">await</span> <span class="n">sctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">record</span><span class="p">)</span></div>
-
-
-<span class="k">async</span> <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="n">BaseSource</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Yields records from a source.</span>
-
-<span class="sd">    Yields all the records from the source, if record keys are given then only</span>
-<span class="sd">    those records are yielded.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    source : BaseSource</span>
-<span class="sd">        Data source to use. See :doc:`/plugins/dffml_source` for sources and</span>
-<span class="sd">        options.</span>
-<span class="sd">    *args : str</span>
-<span class="sd">        Records to be returned. If empty, all the records in a source will be returned.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    asynciterator</span>
-<span class="sd">        :py:class:`Record &lt;dffml.record.Record&gt;` object</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-
-<span class="sd">    &gt;&gt;&gt; source = CSVSource(filename=&quot;save.csv&quot;, allowempty=True, readwrite=True)</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; async def main():</span>
-<span class="sd">    ...     await save(</span>
-<span class="sd">    ...         source,</span>
-<span class="sd">    ...         Record(&quot;1&quot;, data={&quot;features&quot;: {&quot;A&quot;: 0, &quot;B&quot;: 1}}),</span>
-<span class="sd">    ...         Record(&quot;2&quot;, data={&quot;features&quot;: {&quot;A&quot;: 3, &quot;B&quot;: 4}}),</span>
-<span class="sd">    ...     )</span>
-<span class="sd">    ...</span>
-<span class="sd">    ...     # All records in source</span>
-<span class="sd">    ...     async for record in load(source):</span>
-<span class="sd">    ...         print(record.export())</span>
-<span class="sd">    ...</span>
-<span class="sd">    ...     # For specific records in a source</span>
-<span class="sd">    ...     async for record in load(source, &quot;1&quot;):</span>
-<span class="sd">    ...         print(record.export())</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
-<span class="sd">    {&#39;key&#39;: &#39;1&#39;, &#39;features&#39;: {&#39;A&#39;: 0, &#39;B&#39;: 1}, &#39;extra&#39;: {}}</span>
-<span class="sd">    {&#39;key&#39;: &#39;2&#39;, &#39;features&#39;: {&#39;A&#39;: 3, &#39;B&#39;: 4}, &#39;extra&#39;: {}}</span>
-<span class="sd">    {&#39;key&#39;: &#39;1&#39;, &#39;features&#39;: {&#39;A&#39;: 0, &#39;B&#39;: 1}, &#39;extra&#39;: {}}</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">:</span>
-        <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
-                <span class="c1"># If specific records are to be loaded</span>
-                <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="k">await</span> <span class="n">sctx</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># All the records are loaded</span>
-                <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">sctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
-                    <span class="k">yield</span> <span class="n">record</span>
 </pre></div>
 
            </div>
