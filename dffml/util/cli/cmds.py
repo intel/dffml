@@ -2,16 +2,15 @@ import os
 import inspect
 
 from ...port import Port
-from ...source.source import BaseSource, Sources
+from ...source.source import Sources
 from ...source.json import JSONSource
 from ...source.file import FileSourceConfig
 from ...model import Model
+from ...base import config, field
 
 
 from .arg import Arg
-from .cmd import CMD
-from .parser import list_action
-
+from .cmd import CMD, CMDConfig
 
 class ListEntrypoint(CMD):
     """
@@ -37,13 +36,11 @@ class ListEntrypoint(CMD):
             self.display(cls)
 
 
-class SourcesCMD(CMD):
-
-    arg_sources = Arg(
-        "-sources",
-        help="Sources for loading and saving",
-        nargs="+",
-        default=Sources(
+@config
+class SourcesCMDConfig(CMDConfig):
+    sources: Sources = field(
+        "Sources for loading and saving",
+        default_factory=lambda: Sources(
             JSONSource(
                 FileSourceConfig(
                     filename=os.path.join(
@@ -52,10 +49,15 @@ class SourcesCMD(CMD):
                 )
             )
         ),
-        type=BaseSource.load_labeled,
-        action=list_action(Sources),
+        metadata = {
+            "labeled" : True,
+        }
     )
 
+
+class SourcesCMD(CMD):
+
+    CONFIG = SourcesCMDConfig
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Correct type of sources list if its a list and not Sources
@@ -70,31 +72,51 @@ class SourcesCMD(CMD):
                 self.sources[i] = self.sources[i].withconfig(self.extra_config)
 
 
+
+@config
+class ModelCMDConfig(CMDConfig):
+    model: Model = field(
+        "Model used for ML",
+        default_factory = Model.load,
+    )
+
+
 class ModelCMD(CMD):
     """
     Set a models model dir.
     """
 
-    arg_model = Arg(
-        "-model", help="Model used for ML", type=Model.load, required=True
-    )
-
+    CONFIG = ModelCMDConfig
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if inspect.isclass(self.model):
             self.model = self.model.withconfig(self.extra_config)
 
 
+@config
+class PortCMDConfig(CMDConfig):
+    port: Port = field(
+        "Port",
+        default_factory = Port.load,
+    )
+
+
 class PortCMD(CMD):
 
-    arg_port = Arg("port", type=Port.load)
+    CONFIG = PortCMDConfig
+
+
+@config
+class KeysCMDConfig(CMDConfig):
+    keys: Port = field(
+        "Key used for source lookup and evaluation.",
+        default_factory = Port.load,
+        metadata= {
+            "required" : True,
+        }
+    )
 
 
 class KeysCMD(CMD):
 
-    arg_keys = Arg(
-        "-keys",
-        help="Key used for source lookup and evaluation",
-        nargs="+",
-        required=True,
-    )
+    CONFIG = KeysCMDConfig

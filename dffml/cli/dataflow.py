@@ -1,3 +1,4 @@
+import os
 import pathlib
 import hashlib
 import inspect
@@ -14,13 +15,16 @@ from ..df.memory import (
 )
 from ..configloader.configloader import BaseConfigLoader
 from ..configloader.json import JSONConfigLoader
-from ..source.source import SubsetSources
+from ..source.source import SubsetSources, Sources
+from ..source.file import  FileSourceConfig
+from ..source.json import JSONSource
 from ..util.data import merge
 from ..util.entrypoint import load
 from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD, CMDOutputOverride
-from ..util.cli.cmds import SourcesCMD, KeysCMD
-from ..util.cli.parser import ParseInputsAction
+from ..util.cli.cmds import SourcesCMD, KeysCMD, SourcesCMDConfig
+from ..util.cli.parser import ParseInputsAction, list_action
+from ..base import config, mkarg, field
 
 
 class Merge(CMD):
@@ -113,9 +117,29 @@ class Create(CMD):
                 print((await loader.dumpb(exported)).decode())
 
 
+@config
+class RunCMDConfig(SourcesCMDConfig):
+    # Just to get the sources working for now. Will probably change it later
+    sources: Sources = field(
+        "Sources for loading and saving",
+        default_factory=lambda: Sources(
+            JSONSource(
+                FileSourceConfig(
+                    filename=os.path.join(
+                        os.path.expanduser("~"), ".cache", "dffml.json"
+                    )
+                )
+            )
+        ),
+        metadata= {
+            "labeled" : True,
+            "required" : True,
+        }
+    )
+
 class RunCMD(SourcesCMD):
 
-    arg_sources = SourcesCMD.arg_sources.modify(required=False)
+    CONFIG = RunCMDConfig
     arg_caching = Arg(
         "-caching",
         help="Skip running DataFlow if a record already contains these features",

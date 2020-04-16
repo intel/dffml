@@ -2,8 +2,13 @@ from ..source.source import SubsetSources
 from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
 from ..high_level import train, predict, accuracy
-from ..util.cli.cmds import SourcesCMD, ModelCMD, KeysCMD
+from ..util.cli.cmds import SourcesCMD, ModelCMD, KeysCMD, ModelCMDConfig, SourcesCMDConfig, KeysCMDConfig
+from ..base import config
 
+
+@config
+class MLCMDConfig(ModelCMDConfig, SourcesCMDConfig):
+    pass 
 
 class MLCMD(ModelCMD, SourcesCMD):
     """
@@ -22,6 +27,7 @@ class Train(MLCMD):
     changes : model(features) -> model()
     """
 
+    CONFIG = MLCMDConfig
     async def run(self):
         return await train(self.model, self.sources)
 
@@ -29,13 +35,19 @@ class Train(MLCMD):
 class Accuracy(MLCMD):
     """Assess model accuracy on data from given sources"""
 
+    CONFIG = MLCMDConfig
     async def run(self):
         return await accuracy(self.model, self.sources)
 
 
+@config
+class PredictAllConfig(MLCMDConfig):
+    pass
+
 class PredictAll(MLCMD):
     """Predicts for all sources"""
 
+    CONFIG = PredictAllConfig
     arg_update = Arg(
         "-update",
         help="Update record with sources",
@@ -50,10 +62,15 @@ class PredictAll(MLCMD):
         ):
             yield record
 
+@config
+class PredictRecordConfig(PredictAllConfig, KeysCMDConfig):
+    pass
+
 
 class PredictRecord(PredictAll, KeysCMD):
     """Predictions for individual records"""
 
+    CONFIG = PredictRecordConfig
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.sources = SubsetSources(*self.sources, keys=self.keys)
