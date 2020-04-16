@@ -5,7 +5,6 @@ Model subclasses are responsible for training themselves on records, making
 predictions about the value of a feature in the record, and assessing thei
 prediction accuracy.
 """
-import os
 import abc
 import json
 import hashlib
@@ -142,6 +141,14 @@ class SimpleModel(Model):
         self._in_context -= 1
         if not self._in_context:
             self.close()
+
+    @property
+    def parent(self):
+        """
+        Simple models are both the parent and the context. This property is used
+        to fake out anything attempting to access the model context's parent.
+        """
+        return self
 
     def open(self):
         """

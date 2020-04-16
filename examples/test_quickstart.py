@@ -2,12 +2,20 @@ import os
 import ast
 import sys
 import json
+import shlex
+import shutil
+import asyncio
+import pathlib
 import tempfile
 import contextlib
 import subprocess
 import unittest.mock
 
 from dffml.util.os import chdir
+from dffml.util.asynctestcase import AsyncTestCase
+
+from dffml_service_http.cli import HTTPService
+from dffml_service_http.util.testing import ServerRunner
 
 
 def sh_filepath(filename):
@@ -24,7 +32,7 @@ def directory_with_csv_files():
             yield tempdir
 
 
-class TestQuickstart(unittest.TestCase):
+class TestQuickstart(AsyncTestCase):
     def python_test(self, filename):
         # Path to target file
         filepath = os.path.join(os.path.dirname(__file__), filename)
@@ -66,3 +74,52 @@ class TestQuickstart(unittest.TestCase):
             self.assertEqual(
                 int(records[1]["prediction"]["Salary"]["value"]), 80
             )
+
+    async def test_http(self):
+        # Read in command to start HTTP server
+        server_cmd = pathlib.Path(sh_filepath("model_start_http.sh"))
+        server_cmd = server_cmd.read_text()
+        server_cmd = server_cmd.replace("\n", "")
+        server_cmd = server_cmd.replace("\\", "")
+        # Remove `dffml service http server`
+        server_cmd = server_cmd.replace("dffml service http server", "")
+        # Replace port
+        server_cmd = server_cmd.replace("8080", "0")
+        server_cmd = shlex.split(server_cmd)
+        # Read in the curl command
+        curl_cmd = pathlib.Path(sh_filepath("model_curl_http.sh"))
+        curl_cmd = curl_cmd.read_text()
+        # Modify the curl command to use the correct version of python
+        curl_cmd = curl_cmd.replace("python", sys.executable)
+        # Create a temporary directory for new curl command
+        with directory_with_csv_files() as tempdir:
+            # Run training
+            subprocess.check_output(["sh", sh_filepath("train.sh")])
+            async with ServerRunner.patch(HTTPService.server) as tserver:
+                # Start the HTTP server
+                cli = await tserver.start(HTTPService.server.cli(*server_cmd))
+                # Modify the curl command to use the correct port
+                curl_cmd = curl_cmd.replace("8080", str(cli.port))
+                # Write out the modified curl command
+                pathlib.Path("curl.sh").write_text(curl_cmd)
+                # Make the prediction
+                proc = await asyncio.create_subprocess_exec(
+                    "sh",
+                    "curl.sh",
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE,
+                )
+                stdout, stderr = await proc.communicate()
+                if proc.returncode != 0:
+                    raise Exception(stderr.decode())
+                response = json.loads(stdout)
+                # Check the result
+                records = response["records"]
+                self.assertEqual(len(records), 1)
+                for record in records.values():
+                    # Correct value should be 90
+                    should_be = 90
+                    prediction = record["prediction"]["Salary"]["value"]
+                    # Check prediction within 20% of correct value
+                    percent_error = abs(should_be - prediction) / should_be
+                    self.assertLess(percent_error, 0.2)

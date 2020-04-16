@@ -2,7 +2,6 @@ import os
 import io
 import pathlib
 import tempfile
-from http import HTTPStatus
 from unittest.mock import patch
 from contextlib import asynccontextmanager, ExitStack, AsyncExitStack
 from typing import AsyncIterator, Dict
@@ -17,7 +16,6 @@ from dffml.util.entrypoint import EntrypointNotFound
 from dffml.model.model import ModelContext, Model
 from dffml.model.accuracy import Accuracy
 from dffml.feature import DefFeature
-from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.source.source import Sources
 from dffml.source.csv import CSVSourceConfig
 from dffml.util.cli.arg import parse_unknown
@@ -25,15 +23,20 @@ from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
 
-from dffml_service_http.cli import Server
 from dffml_service_http.routes import (
     OK,
     SOURCE_NOT_LOADED,
     MODEL_NOT_LOADED,
     MODEL_NO_SOURCES,
 )
+from dffml_service_http.util.testing import (
+    ServerRunner,
+    ServerException,
+    TestRoutesRunning,
+    FakeModel,
+    FakeModelConfig,
+)
 
-from .common import ServerRunner
 from .dataflow import (
     HELLO_BLANK_DATAFLOW,
     HELLO_WORLD_DATAFLOW,
@@ -42,112 +45,10 @@ from .dataflow import (
 )
 
 
-class ServerException(Exception):
-    pass  # pragma: no cov
-
-
-@config
-class FakeModelConfig:
-    directory: str
-    features: Features
-    predict: Feature
-
-
-class FakeModelContext(ModelContext):
-    def __init__(self, parent):
-        super().__init__(parent)
-        self.trained_on: Dict[str, Record] = {}
-
-    async def train(self, sources: Sources):
-        async for record in sources.records():
-            self.trained_on[record.key] = record
-
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        accuracy: int = 0
-        async for record in sources.records():
-            accuracy += int(record.key)
-        return Accuracy(accuracy)
-
-    async def predict(
-        self, records: AsyncIterator[Record]
-    ) -> AsyncIterator[Record]:
-        async for record in records:
-            record.predicted(
-                "Salary", record.feature("by_ten") * 10, float(record.key)
-            )
-            yield record
-
-
-@entrypoint("fake")
-class FakeModel(Model):
-
-    CONTEXT = FakeModelContext
-    CONFIG = FakeModelConfig
-
-
 def model_load(loading=None):
     if loading:
         return FakeModel
     return [FakeModel]
-
-
-class TestRoutesRunning:
-    async def setUp(self):
-        self.exit_stack = AsyncExitStack()
-        await self.exit_stack.__aenter__()
-        self.tserver = await self.exit_stack.enter_async_context(
-            ServerRunner.patch(Server)
-        )
-        self.cli = Server(port=0, insecure=True)
-        await self.tserver.start(self.cli.run())
-        # Set up client
-        self.session = await self.exit_stack.enter_async_context(
-            aiohttp.ClientSession()
-        )
-
-    async def tearDown(self):
-        await self.exit_stack.__aexit__(None, None, None)
-
-    @property
-    def url(self):
-        return f"http://{self.cli.addr}:{self.cli.port}"
-
-    @asynccontextmanager
-    async def get(self, path):
-        async with self.session.get(self.url + path) as r:
-            if r.status != HTTPStatus.OK:
-                raise ServerException((await r.json())["error"])
-            yield r
-
-    @asynccontextmanager
-    async def post(self, path, *args, **kwargs):
-        async with self.session.post(self.url + path, *args, **kwargs) as r:
-            if r.status != HTTPStatus.OK:
-                raise ServerException((await r.json())["error"])
-            yield r
-
-    @asynccontextmanager
-    async def _add_memory_source(self):
-        async with MemorySource(
-            MemorySourceConfig(
-                records=[
-                    Record(str(i), data={"features": {"by_ten": i * 10}})
-                    for i in range(0, self.num_records)
-                ]
-            )
-        ) as source:
-            self.source = self.cli.app["sources"][self.slabel] = source
-            async with source() as sctx:
-                self.sctx = self.cli.app["source_contexts"][self.slabel] = sctx
-                yield
-
-    @asynccontextmanager
-    async def _add_fake_model(self):
-        async with FakeModel(BaseConfig()) as model:
-            self.model = self.cli.app["models"][self.mlabel] = model
-            async with model() as mctx:
-                self.mctx = self.cli.app["model_contexts"][self.mlabel] = mctx
-                yield
 
 
 class TestRoutesService(TestRoutesRunning, AsyncTestCase):

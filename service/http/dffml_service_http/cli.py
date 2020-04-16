@@ -7,7 +7,10 @@ from aiohttp import web
 
 from dffml.util.cli.arg import Arg
 from dffml.util.cli.cmd import CMD
+from dffml import Model, Sources, BaseSource
+from dffml.util.cli.parser import list_action
 from dffml.util.entrypoint import entrypoint
+from dffml.util.asynchelper import AsyncContextManagerList
 
 from .routes import Routes
 
@@ -181,10 +184,22 @@ class Server(TLSCMD, MultiCommCMD, Routes):
         nargs="+",
         default=[],
     )
-
-    def __init__(self, *args, **kwargs):
-        self.site = None
-        super().__init__(*args, **kwargs)
+    arg_models = Arg(
+        "-models",
+        help="Models configured on start",
+        nargs="+",
+        default=AsyncContextManagerList(),
+        type=Model.load_labeled,
+        action=list_action(AsyncContextManagerList),
+    )
+    arg_sources = Arg(
+        "-sources",
+        help="Sources configured on start",
+        nargs="+",
+        default=Sources(),
+        type=BaseSource.load_labeled,
+        action=list_action(Sources),
+    )
 
     async def start(self):
         if self.insecure:

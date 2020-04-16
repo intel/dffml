@@ -6,16 +6,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Doctestable example for `model_predict` operation.
+- Doctestable examples to `operation/mapping.py`
+
+## [0.3.7] - 2020-04-14
+### Added
+- IO operations demo and `literal_eval` operation.
 - Python prompts `>>>` can now be enabled or disabled for easy copying of code into interactive sessions.
 - shouldi got an operation to run Dependency-check on java code.
 - Whitespace check now checks .rst and .md files too.
 - `GetMulti` operation which gets all Inputs of a given definition
 - Python usage example for LogisticRegression and its related tests.
 - Support for async generator operations
+- Example CLI commands and Python code for `SLRModel`
+- `save` function in high level API to quickly save all given records to a
+  source
+- Ability to configure sources and models for HTTP API from command line when
+  starting server
+- Documentation page for command line usage of HTTP API
+- Usage of HTTP API to the quickstart to use trained model
 ### Changed
 - Renamed `"arg"` to `"plugin"`.
+- CSV source sorts feature names within headers when saving
+- Moved HTTP service testing code to HTTP service `util.testing`
 ### Fixed
 - Exporting plugins
+- Issue parsing string values when using the `dataflow run` command and
+  specifying extra inputs.
+### Removed
+- Unused imports
 
 ## [0.3.6] - 2020-04-04
 ### Added
