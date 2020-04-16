@@ -262,11 +262,9 @@ async def predict(
 
 async def load(source: BaseSource, *args: str) -> AsyncIterator[Record]:
     """
-    Returns records from a source.
+    Yields records from a source.
 
-    For each record given, call
-    :py:func:`update <dffml.source.source.BaseSourceContext.update>` on the
-    source.
+    Yields all the records from the source, if record keys are given then only those records are yielded.
 
     Parameters
     ----------
