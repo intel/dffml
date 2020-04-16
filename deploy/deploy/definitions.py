@@ -6,7 +6,9 @@ definitions = [
     Definition(name="git_payload", primitive="Dict[Any]"),
     Definition(name="docker_image_id",primitive="str"),
     Definition(name="is_default_branch",primitive="bool"),
-    Definition(name="docker_image_tag",primitive="str")
+    Definition(name="docker_image_tag",primitive="str"),
+    Definition(name="is_image_built",primitive="bool"),
+
 ]
 
 for definition in definitions:

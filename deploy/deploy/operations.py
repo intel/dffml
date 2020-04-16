@@ -48,19 +48,22 @@ def get_image_tag(payload):
         "repo":clone_git_repo.op.outputs["repo"],
         "image_tag":docker_image_tag
         },
-    outputs={"image_id":docker_image_id},
+    outputs={"build_status":is_image_built},
     conditions=[check_if_default_branch]
 )
-async def docker_build_image(repo):
+async def docker_build_image(repo,image_tag):
     # finding top most `Dockerfile`
     docker_files = await check_output("find",".","-type","f","-name","Dockerfile",cwd=repo["directory"])
     docker_file = docker_files.split("\n")[0].replace("Dockerfile","")
     #building image
-    cmd_out = await check_output("docker","build",docker_file)
-    image_id = cmd_out.split("Successfully built")[-1].strip()
-    return {"image_id":image_id}
+    cmd_out = await check_output("docker","build","-t",image_tag,docker_file)
+    build_status = "Successfully built" in cmd_out
+    return {"build_status":build_status}
 
-@op(input{"tag":docker_image_tag})
+@op(
+    inputs={"tag":docker_image_tag},
+    conditions = [docker_build_image]
+    )
 async def restart_running_containers_by_tag(tag):
     read,write = os.pipe()
     ps = await asyncio.create_subprocess_exec("docker","ps",stdout=write)
