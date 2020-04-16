@@ -1,4 +1,7 @@
 import json
+import os
+import tempfile
+from pathlib import Path
 import asyncio
 from typing import Dict, Any
 
@@ -9,6 +12,7 @@ package_src_dir = Definition(name="package_src_dir", primitive="str")
 dependency_check_output = Definition(
     name="dependency_check_output", primitive="Dict[str, Any]"
 )
+tempdir = tempfile.TemporaryDirectory()
 
 
 @op(
@@ -19,18 +23,35 @@ async def run_dependency_check(pkg: str) -> Dict[str, Any]:
     """
     CLI usage: dffml service dev run -log debug shouldi.dependency_check:run_dependency_check -pkg .
     """
-    proc = await asyncio.create_subprocess_exec(
-        "dependency-check.sh",
-        "-f",
-        "JSON",
-        "-s",
-        ".",
-        cwd=pkg,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
-    )
+    if Path(pkg).is_file():
+        proc = await asyncio.create_subprocess_exec(
+            "dependency-check.sh",
+            "-f",
+            "JSON",
+            "--out",
+            '"' + os.path.dirname(tempdir.name) + '"',
+            "-s",
+            cwd=os.path.dirname(pkg),
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+    else:
+        proc = await asyncio.create_subprocess_exec(
+            "dependency-check.sh",
+            "-f",
+            "JSON",
+            "--out",
+            '"' + os.path.dirname(tempdir.name) + '"',
+            "-s",
+            ".",
+            cwd=pkg,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
 
-    with open(pkg + "/dependency-check-report.json") as f:
+    with open(
+        os.path.dirname(tempdir.name) + "/dependency-check-report.json"
+    ) as f:
         dependency_check_op = json.loads(f.read())
 
     for items in dependency_check_op["dependencies"]:

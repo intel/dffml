@@ -8,12 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Doctestable example for `model_predict` operation.
 - Doctestable examples to `operation/mapping.py`
+- shouldi got an operation to run Dependency-check on java code.
 
 ## [0.3.7] - 2020-04-14
 ### Added
 - IO operations demo and `literal_eval` operation.
 - Python prompts `>>>` can now be enabled or disabled for easy copying of code into interactive sessions.
-- shouldi got an operation to run Dependency-check on java code.
 - Whitespace check now checks .rst and .md files too.
 - `GetMulti` operation which gets all Inputs of a given definition
 - Python usage example for LogisticRegression and its related tests.
