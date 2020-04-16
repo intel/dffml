@@ -9,12 +9,14 @@ import inspect
 import asyncio
 import argparse
 from typing import Dict, Any
+import dataclasses
 
 from ...record import Record
 from ...feature import Feature
 
 from ..data import export_dict
 from .arg import Arg, parse_unknown
+from ...base import config, _fromdict, mkarg, field
 
 DisplayHelp = "Display help message"
 
@@ -98,20 +100,31 @@ class Parser(argparse.ArgumentParser):
                 except argparse.ArgumentError as error:
                     raise Exception(repr(add_from)) from error
 
+        for field in dataclasses.fields(add_from.CONFIG):
+            arg = mkarg(field)
+            if isinstance(arg, Arg):
+                try:
+                    # Add condition for positional arguments
+                    self.add_argument("-" + field.name, **arg)
+                except argparse.ArgumentError as error:
+                    raise Exception(repr(add_from)) from error
+
+
+@config
+class CMDConfig:
+    log: str = field(
+        "Logging Level",
+        default=logging.INFO,
+        metadata={"action": ParseLoggingAction, "required": False,},
+    )
+
 
 class CMD(object):
 
     JSONEncoder = JSONEncoder
     EXTRA_CONFIG_ARGS = {}
+    CONFIG = CMDConfig
     ENTRY_POINT_NAME = ["service"]
-
-    arg_log = Arg(
-        "-log",
-        help="Logging level",
-        action=ParseLoggingAction,
-        required=False,
-        default=logging.INFO,
-    )
 
     def __init__(self, extra_config=None, **kwargs) -> None:
         if not hasattr(self, "logger"):
@@ -122,6 +135,20 @@ class CMD(object):
         if extra_config is None:
             extra_config = {}
         self.extra_config = extra_config
+
+        for field in dataclasses.fields(self.CONFIG):
+            arg = mkarg(field)
+            if isinstance(arg, Arg):
+                if not field.name in kwargs and field.default:
+                    kwargs[field.name] = field.default
+                if field.name in kwargs and not hasattr(self, field.name):
+                    self.logger.debug(
+                        "Setting %s = %r", field.name, kwargs[field.name]
+                    )
+                    setattr(self, field.name, kwargs[field.name])
+                else:
+                    self.logger.debug("Ignored %s", field.name)
+
         for name, method in [
             (name.lower().replace("arg_", ""), method)
             for name, method in inspect.getmembers(self)

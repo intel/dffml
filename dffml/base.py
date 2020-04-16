@@ -127,6 +127,10 @@ def mkarg(field):
                 )
             arg["action"] = list_action(field.type)
             arg["type"] = field.type.SINGLETON
+        if hasattr(arg["type"], "load_labeled") and field.metadata.get(
+            "labeled", False
+        ):
+            arg["type"] = arg["type"].load_labeled
         if hasattr(arg["type"], "load"):
             # TODO (python3.8) Use Protocol
             arg["type"] = arg["type"].load
@@ -135,6 +139,10 @@ def mkarg(field):
         arg["nargs"] = "+"
     if "description" in field.metadata:
         arg["help"] = field.metadata["description"]
+    if field.metadata.get("action"):
+        arg["action"] = field.metadata["action"]
+    if field.metadata.get("required"):
+        arg["required"] = field.metadata["required"]
     return arg
 
 
@@ -213,6 +221,7 @@ def field(description: str, *args, metadata: Optional[dict] = None, **kwargs):
     """
     if not metadata:
         metadata = {}
+    #  Add code for positional arguments
     metadata["description"] = description
     return dataclasses.field(*args, metadata=metadata, **kwargs)
 
