@@ -264,7 +264,8 @@ async def load(source: BaseSource, *args: str) -> AsyncIterator[Record]:
     """
     Yields records from a source.
 
-    Yields all the records from the source, if record keys are given then only those records are yielded.
+    Yields all the records from the source, if record keys are given then only
+    those records are yielded.
 
     Parameters
     ----------
