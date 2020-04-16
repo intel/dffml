@@ -377,6 +377,53 @@ options.</p></li>
 </div>
 </dd></dl>
 
+<dl class="py function">
+<dt id="dffml.high_level.load">
+<code class="sig-prename descclassname">dffml.high_level.</code><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span><span class="p">:</span> <span class="n"><a class="reference internal" href="source/base.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource">dffml.source.source.BaseSource</a></span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em><span class="sig-paren">)</span> &#x2192; AsyncIterator<span class="p">[</span><a class="reference internal" href="record.html#dffml.record.Record" title="dffml.record.Record">dffml.record.Record</a><span class="p">]</span><a class="reference internal" href="../_modules/dffml/high_level.html#load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.high_level.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yields records from a source.</p>
+<p>Yields all the records from the source, if record keys are given then only
+those records are yielded.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source</strong> (<a class="reference internal" href="source/base.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource"><em>BaseSource</em></a>) – Data source to use. See <a class="reference internal" href="../plugins/dffml_source.html"><span class="doc">Sources</span></a> for sources and
+options.</p></li>
+<li><p><strong>*args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Records to be returned. If empty, all the records in a source will be returned.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="record.html#dffml.record.Record" title="dffml.record.Record"><code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code></a> object</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>asynciterator</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;load.csv&quot;</span><span class="p">,</span> <span class="n">allowempty</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">readwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">await</span> <span class="n">save</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">source</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">Record</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}),</span>
+<span class="gp">... </span>        <span class="n">Record</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}}),</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="c1"># All records in source</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+<span class="gp">...</span>
+<span class="gp">... </span>    <span class="c1"># For specific records in a source</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">load</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;key&#39;: &#39;1&#39;, &#39;features&#39;: {&#39;A&#39;: 0, &#39;B&#39;: 1}, &#39;extra&#39;: {}}</span>
+<span class="go">{&#39;key&#39;: &#39;2&#39;, &#39;features&#39;: {&#39;A&#39;: 3, &#39;B&#39;: 4}, &#39;extra&#39;: {}}</span>
+<span class="go">{&#39;key&#39;: &#39;1&#39;, &#39;features&#39;: {&#39;A&#39;: 0, &#39;B&#39;: 1}, &#39;extra&#39;: {}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </div>
 
 
