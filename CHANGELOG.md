@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Doctestable example for `model_predict` operation.
 - Doctestable examples to `operation/mapping.py`
 - load function in high_level API
 
