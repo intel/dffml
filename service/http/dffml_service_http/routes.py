@@ -1,6 +1,7 @@
 import os
 import json
 import secrets
+import inspect
 import pathlib
 import traceback
 import pkg_resources
@@ -643,11 +644,39 @@ class Routes(BaseMultiCommContext):
         self.app.on_shutdown.append(self.on_shutdown)
         self.app["multicomm_contexts"] = {"self": self}
         self.app["multicomm_routes"] = {}
-        self.app["sources"] = {}
-        self.app["source_contexts"] = {}
         self.app["source_records_iterkeys"] = {}
-        self.app["models"] = {}
-        self.app["model_contexts"] = {}
+
+        # Instantiate sources if they aren't instantiated yet
+        for i, source in enumerate(self.sources):
+            if inspect.isclass(source):
+                self.sources[i] = source.withconfig(self.extra_config)
+
+        await self.app["exit_stack"].enter_async_context(self.sources)
+        self.app["sources"] = {
+            source.ENTRY_POINT_LABEL: source for source in self.sources
+        }
+
+        mctx = await self.app["exit_stack"].enter_async_context(self.sources())
+        self.app["source_contexts"] = {
+            source_ctx.parent.ENTRY_POINT_LABEL: source_ctx
+            for source_ctx in mctx
+        }
+
+        # Instantiate models if they aren't instantiated yet
+        for i, model in enumerate(self.models):
+            if inspect.isclass(model):
+                self.models[i] = model.withconfig(self.extra_config)
+
+        await self.app["exit_stack"].enter_async_context(self.models)
+        self.app["models"] = {
+            model.ENTRY_POINT_LABEL: model for model in self.models
+        }
+
+        mctx = await self.app["exit_stack"].enter_async_context(self.models())
+        self.app["model_contexts"] = {
+            model_ctx.parent.ENTRY_POINT_LABEL: model_ctx for model_ctx in mctx
+        }
+
         self.app.update(kwargs)
         # Allow no routes other than pre-registered if in atomic mode
         self.routes = (

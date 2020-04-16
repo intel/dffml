@@ -207,7 +207,7 @@ class CSVSource(FileSource, MemorySource):
                 for record in records.values():
                     feature_fieldnames |= set(record.data.features.keys())
                     prediction_fieldnames |= set(record.data.prediction.keys())
-            fieldnames += list(feature_fieldnames)
+            fieldnames += sorted(list(feature_fieldnames))
             fieldnames += itertools.chain(
                 *list(
                     map(

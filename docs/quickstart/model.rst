@@ -93,7 +93,7 @@ DFFML command line from other scripts or languages.
             "extra": {},
             "features": {
                 "Expertise": 13,
-                "Trust": 1.4,
+                "Trust": 0.7,
                 "Years": 6
             },
             "key": "0",
@@ -109,7 +109,7 @@ DFFML command line from other scripts or languages.
             "extra": {},
             "features": {
                 "Expertise": 15,
-                "Trust": 1.6,
+                "Trust": 0.8,
                 "Years": 7
             },
             "key": "1",
@@ -220,3 +220,57 @@ You may have noticed we're importing from ``dffml.noasync``. If you're using
 ``asyncio`` then you can just import from ``dffml``.
 
 .. literalinclude:: /../examples/quickstart_async.py
+
+HTTP
+----
+
+We can also deploy our trained model behind an HTTP server.
+
+First we need to install the HTTP service, which is the HTTP server which will
+serve our model. See the :doc:`/plugins/service/http/index` docs for more
+information on the HTTP service.
+
+.. code-block:: console
+
+    $ pip install -U dffml-service-http
+
+We start the HTTP service and tell it that we want to make our model accessable
+via the HTTP :ref:`plugin_service_http_api_model` API.
+
+.. warning::
+    You should be sure to read the :doc:`/plugins/service/http/security` docs!
+    This example of running the HTTP API is insecure and is only used to help
+    you get up and running.
+
+.. literalinclude:: /../examples/quickstart/model_start_http.sh
+
+We can then ask the HTTP service to make predictions, or do training or accuracy
+assessment.
+
+.. literalinclude:: /../examples/quickstart/model_curl_http.sh
+
+You should see the following prediction
+
+.. code-block:: json
+
+    {
+        "iterkey": null,
+        "records": {
+            "0": {
+                "key": "0",
+                "features": {
+                    "Expertise": 17,
+                    "Trust": 0.9,
+                    "Years": 8
+                },
+                "prediction": {
+                    "Salary": {
+                        "confidence": 1.0,
+                        "value": 90.00000000000001
+                    }
+                },
+                "last_updated": "2020-04-14T20:07:11Z",
+                "extra": {}
+            }
+        }
+    }

@@ -33,17 +33,20 @@ anywhere on your network. If your running this on a public server, your network
 is the internet, which is dangerous. Also since your web app you're using for
 development is probably hosted on another port, you'll need the ``cors`` flag.
 
-By no means should you use the following command in a production environment!
-You should instead see the :doc:`security` docs!
+.. warning::
+
+    By no means should you use the following command in a production
+    environment! You should instead see the :doc:`security` docs!
 
 .. code-block:: console
 
-    $ dffml service http server -insecure -cors '*'
+    $ dffml service http server -insecure -cors '*' -addr 0.0.0.0 -port 8080
 
 .. toctree::
     :maxdepth: 2
     :caption: Contents:
 
+    cli
     api
     security
     javascript

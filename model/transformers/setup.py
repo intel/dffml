@@ -26,7 +26,7 @@ INSTALL_REQUIRES = [
     "fastprogress>=0.2.2",
     "transformers>=2.5.1",
 ] + (
-    ["dffml>=0.3.6"]
+    ["dffml>=0.3.7"]
     if not any(
         list(
             map(

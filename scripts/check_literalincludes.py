@@ -1,6 +1,4 @@
 import sys
-import pathlib
-import itertools
 import subprocess
 
 
