@@ -35,3 +35,24 @@ class TestINISource(AsyncTestCase):
             self.assertDictEqual(
                 source.mem["section2"].features(), {"C": 3, "D": 4,}
             )
+
+    async def test_dump_fd(self):
+        with tempfile.TemporaryDirectory() as testdir:
+            self.testfile = os.path.join(testdir, "testfile.ini")
+            source = INISource(
+                filename=self.testfile, allowempty=True, readwrite=True,
+            )
+            dump_data = {
+                "section1": Record(
+                    "section1", data={"features": {"A": 1, "B": 2,}}
+                ),
+                "section2": Record(
+                    "section2", data={"features": {"C": 3, "D": 4,}}
+                ),
+            }
+            source.mem = dump_data
+            with open(self.testfile, "w") as tfile:
+                await source.dump_fd(tfile)
+
+            allrecords = [record async for record in load(source)]
+            print(allrecords)
