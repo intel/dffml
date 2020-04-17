@@ -49,12 +49,12 @@ def get_image_tag(payload):
         "image_tag":docker_image_tag
         },
     outputs={"build_status":is_image_built},
-    conditions=[check_if_default_branch]
+    conditions=[is_deafault_branch]
 )
 async def docker_build_image(repo,image_tag):
     # finding top most `Dockerfile`
-    docker_files = await check_output("find",".","-type","f","-name","Dockerfile",cwd=repo["directory"])
-    docker_file = docker_files.split("\n")[0].replace("Dockerfile","")
+    docker_files = next(pathlib.Path(repo["directory"]).rglob("Dockerfile"))
+    docker_file = str(docker_file.parents[0])
     #building image
     cmd_out = await check_output("docker","build","-t",image_tag,docker_file)
     build_status = "Successfully built" in cmd_out
@@ -62,17 +62,11 @@ async def docker_build_image(repo,image_tag):
 
 @op(
     inputs={"tag":docker_image_tag},
-    conditions = [docker_build_image]
+    conditions = [is_image_built]
     )
 async def restart_running_containers_by_tag(tag):
-    read,write = os.pipe()
-    ps = await asyncio.create_subprocess_exec("docker","ps",stdout=write)
-    os.close(write)
-    grep = await asyncio.create_subprocess_exec("grep",tag,stdin=read,stdout=asyncio.subprocess.PIPE)
-    os.close(read)
-    containers = await grep.stdout.read()
-    containers = containers.decode().strip().split("\n")
-    containers = [ container.split(" ")[0] for container in containers if container]
+    containers = await check_output("docker","ps","--filter",f"ancestor={tag}", "--format","{{.ID}}" )
+    containers = containers.strip().split("\n")
 
     # stop running containers and get commands used to start them
     # and start it again

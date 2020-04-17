@@ -132,22 +132,28 @@ def mctx_route(handler):
 
 class HTTPChannelConfig(NamedTuple):
     """
-    Params:
-        path:route in server
-        dataflow:flow to which inputs from request to path is forwarded too.
-        input_mode:
-            * "default":Inputs are expected to be mapping of context
-                to list of input to definition mappings
-            eg:'{
-                "insecure-package":
-                    [
-                        {
-                            "value":"insecure-package",
-                            "definition":"package"
-                        }
-                    ]
-                }'
-            * "def:NAME" : input as whole is treated as value for defintion 'NAME'
+    Config for channels.
+
+    Parameters
+    ++++++++++
+        path : str
+            Route in server.
+        dataflow : DataFlow
+            Flow to which inputs from request to path is forwarded too.
+        input_mode : str
+            Mode according to which input data is passed to the dataflow,default:"default".
+                default : Inputs are expected to be mapping of context to list of input
+                        to definition mappings
+                        eg:'{
+                        "insecure-package":
+                            [
+                                {
+                                    "value":"insecure-package",
+                                    "definition":"package"
+                                }
+                            ]
+                        }'
+                "def:NAME" : Input as whole is treated as value for defintion 'NAME'
     """
     path: str
     presentation: str
