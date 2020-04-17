@@ -13,6 +13,7 @@ dependency_check_output = Definition(
     name="dependency_check_output", primitive="Dict[str, Any]"
 )
 
+
 @op(
     inputs={"pkg": package_src_dir},
     outputs={"report": dependency_check_output},
@@ -48,9 +49,7 @@ async def run_dependency_check(pkg: str) -> Dict[str, Any]:
                 stderr=asyncio.subprocess.PIPE,
             )
 
-        with open(
-            os.path.join(tempdir, "/dependency-check-report.json")
-        ) as f:
+        with open(os.path.join(tempdir, "/dependency-check-report.json")) as f:
             dependency_check_op = json.loads(f.read())
 
     for items in dependency_check_op["dependencies"]:
