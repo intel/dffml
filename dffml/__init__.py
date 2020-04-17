@@ -1,5 +1,5 @@
 # General
-from .high_level import save, load, train, accuracy, predict
+from .high_level import run, save, load, train, accuracy, predict
 from .feature import Features, Feature, DefFeature
 from .record import Record
 
