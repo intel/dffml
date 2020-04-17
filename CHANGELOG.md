@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Doctestable example for `model_predict` operation.
 - Doctestable examples to `operation/mapping.py`
 - shouldi got an operation to run Dependency-check on java code.
-- load function in high_level API
+- `load` and `run` functions in high level API
 - Doctestable examples to `db` operations.
 - Source for parsing `.ini` file formats
 - Tests for noasync high level API.
