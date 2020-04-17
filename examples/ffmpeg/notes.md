@@ -45,10 +45,12 @@ https://developer.github.com/v3/activity/events/types/#pushevent
     pip install -e .
 
     cat > /tmp/operations/ <<EOF
-    get_payload
     get_url_from_payload
+    clone_git_repo
     check_if_default_branch
     get_image_tag
+    get_running_containers
+    get_status_running_containes
     docker_build_image
     restart_running_containers_by_tag
     EOF

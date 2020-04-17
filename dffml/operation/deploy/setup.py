@@ -11,7 +11,6 @@ spec.loader.exec_module(common)
 
 common.KWARGS["entry_points"] = {
     "dffml.operation": [
-        f"get_payload = {common.IMPORT_NAME}.operations:get_payload",
         f"get_url_from_payload = {common.IMPORT_NAME}.operations:get_url_from_payload",
         f"check_if_default_branch = {common.IMPORT_NAME}.operations:check_if_default_branch",
         f"get_image_tag = {common.IMPORT_NAME}.operations:get_image_tag",

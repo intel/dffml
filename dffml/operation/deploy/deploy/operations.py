@@ -12,15 +12,6 @@ from dffml_feature_git.feature.operations import clone_git_repo
 from dffml_feature_git.util.proc import check_output, create, stop
 
 
-
-@op(
-    inputs = {"payload_str":git_payload_string},
-    outputs= {"payload":git_payload}
-)
-def get_payload(payload_str:str)->Dict[str,Any]:
-    payload = json.loads(payload_str)
-    return {"payload":payload}
-
 @op(
     inputs={"payload":git_payload},
     outputs={"url":clone_git_repo.op.inputs["URL"]}
