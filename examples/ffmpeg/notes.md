@@ -38,5 +38,43 @@
   http://localhost:8002/ffmpeg
 
 
-* mkidr deploy
 https://developer.github.com/v3/activity/events/types/#pushevent
+
+*
+    ```
+    pip install -e .
+
+    cat > /tmp/operations/ <<EOF
+    get_payload
+    get_url_from_payload
+    check_if_default_branch
+    get_image_tag
+    docker_build_image
+    restart_running_containers_by_tag
+    EOF
+
+
+
+    cd ffmpeg
+    mkdir  deploy/webhook/mc/http
+    mkdir deploy/webhook/df
+
+    dffml dataflow create -config yaml $(cat /tmp/operations) > deploy/webhook/df/webhook.yaml
+
+
+    dffml service http server -insecure -mc-config deploy/webhook
+
+  ```
+aghinsa/deploy_test_cvt_gif
+
+  curl -s \
+  --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"ref":"refs/master","repository":{"clone_url":"https://github.com/aghinsa/deploy_test_cvt_gif.git","default_branch":"master","html_url":"https://github.com/aghinsa/deploy_test_cvt_gif"}}' \
+  http://localhost:8082/webhook/github
+
+    curl -s \
+  --header "Content-Type: application/json" \
+  --request POST \
+  --data '{"tag":"aghinsa/deploy_test_cvt_gif"}' \
+  http://localhost:8082/webhook/github

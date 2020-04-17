@@ -243,6 +243,7 @@ class Routes(BaseMultiCommContext):
                 raise NotImplementedError(
                     "Input modes other than default,def:NAME  not yet implemented"
                     )
+        print(f"dataflow : {config.dataflow}n\n\n")
         # Run the operation in an orchestrator
         # TODO(dfass) Create the orchestrator on startup of the HTTP API itself
         async with MemoryOrchestrator.basic_config() as orchestrator:

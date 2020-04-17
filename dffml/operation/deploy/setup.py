@@ -13,6 +13,13 @@ common.KWARGS["entry_points"] = {
     "dffml.operation": [
         f"get_payload = {common.IMPORT_NAME}.operations:get_payload",
         f"get_url_from_payload = {common.IMPORT_NAME}.operations:get_url_from_payload",
+        f"check_if_default_branch = {common.IMPORT_NAME}.operations:check_if_default_branch",
+        f"get_image_tag = {common.IMPORT_NAME}.operations:get_image_tag",
+        f"get_running_containers = {common.IMPORT_NAME}.operations:get_running_containers",
+        f"get_status_running_containes = {common.IMPORT_NAME}.operations:get_status_running_containes",
+        f"docker_build_image = {common.IMPORT_NAME}.operations:docker_build_image",
+        f"restart_running_containers_by_tag = {common.IMPORT_NAME}.operations:restart_running_containers_by_tag",
+
     ]
 }
 
