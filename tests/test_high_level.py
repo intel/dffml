@@ -2,12 +2,15 @@
 This file contains integration tests for the high level (very abstract) APIs.
 """
 import importlib
+import contextlib
 
 from dffml.record import Record
-from dffml import train, accuracy, predict, save, load
+from dffml import run, train, accuracy, predict, save, load
 from dffml.source.csv import CSVSource
 from dffml.feature.feature import Features, DefFeature
 from dffml.util.asynctestcase import IntegrationCLITestCase
+
+from .test_df import TestOrchestrator, DATAFLOW
 
 FEATURE_NAMES = ["Years", "Expertise", "Trust", "Salary"]
 
@@ -129,3 +132,12 @@ class TestML(IntegrationCLITestCase):
         ]
         self.assertEqual(predictions[0][2]["Salary"]["value"], 70)
         self.assertEqual(predictions[1][2]["Salary"]["value"], 80)
+
+
+class TestDataFlow(TestOrchestrator):
+    @contextlib.asynccontextmanager
+    async def create_octx(self):
+        yield None
+
+    def run_dataflow(self, _octx, *inputs):
+        return run(DATAFLOW, *inputs)
