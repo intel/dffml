@@ -26,7 +26,7 @@ INSTALL_REQUIRES = (
         "numpy>=1.16.4",
     ]
     + (
-        ["dffml>=0.3.6"]
+        ["dffml>=0.3.7"]
         if not any(
             list(
                 map(
@@ -45,7 +45,7 @@ INSTALL_REQUIRES = (
         else []
     )
     + (
-        ["dffml-model-tensorflow>=0.2.6"]
+        ["dffml-model-tensorflow>=0.2.7"]
         if not any(
             list(
                 map(
