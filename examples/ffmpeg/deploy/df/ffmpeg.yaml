@@ -1,0 +1,24 @@
+definitions:
+  input_file:
+    name: input_file
+    primitive: str
+  output_file:
+    name: output_file
+    primitive: str
+flow:
+  convert_to_gif:
+    inputs:
+      input_file:
+      - seed
+      output_file:
+      - seed
+linked: true
+operations:
+  convert_to_gif:
+    inputs:
+      input_file: input_file
+      output_file: output_file
+    name: convert_to_gif
+    outputs: {}
+    stage: processing
+
