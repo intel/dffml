@@ -51,9 +51,9 @@ https://developer.github.com/v3/activity/events/types/#pushevent
     get_image_tag
     get_running_containers
     get_status_running_containes
+    parse_docker_commands
     docker_build_image
-    restart_running_containers_by_tag
-    EOF
+    restart_running_containers
 
 
 

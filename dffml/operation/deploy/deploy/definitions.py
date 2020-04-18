@@ -9,6 +9,7 @@ definitions = [
     Definition(name="docker_running_containers",primitive="List[str]"),
     Definition(name="got_running_containers",primitive="bool"),
     Definition(name="is_image_built",primitive="bool"),
+    Definition(name="docker_commands",primitive="Dict[str,Any]")
 
 ]
 

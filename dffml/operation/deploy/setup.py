@@ -16,8 +16,9 @@ common.KWARGS["entry_points"] = {
         f"get_image_tag = {common.IMPORT_NAME}.operations:get_image_tag",
         f"get_running_containers = {common.IMPORT_NAME}.operations:get_running_containers",
         f"get_status_running_containes = {common.IMPORT_NAME}.operations:get_status_running_containes",
+        f"parse_docker_commands = {common.IMPORT_NAME}.operations:parse_docker_commands",
         f"docker_build_image = {common.IMPORT_NAME}.operations:docker_build_image",
-        f"restart_running_containers_by_tag = {common.IMPORT_NAME}.operations:restart_running_containers_by_tag",
+        f"restart_running_containers = {common.IMPORT_NAME}.operations:restart_running_containers",
 
     ]
 }

@@ -227,14 +227,14 @@ class Routes(BaseMultiCommContext):
                             status=HTTPStatus.NOT_FOUND,
                         )
                 if preprocess_mode == "json":
-                    value = await response.json()
+                    value = await request.json()
                 elif preprocess_mode == "str":
-                    value = await response.text()
+                    value = await request.text()
                 elif preprocess_mode == "bytes":
-                    value = await response.read()
+                    value = await request.read()
                 # TODO : Verify usage of `stream`
                 elif preprocess == "stream":
-                    value = await response.content.read(-1)
+                    value = await request.content.read(-1)
                 else:
                     return web.json_response(
                             {
