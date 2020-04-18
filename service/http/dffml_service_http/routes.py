@@ -142,7 +142,8 @@ class HTTPChannelConfig(NamedTuple):
             Flow to which inputs from request to path is forwarded too.
         input_mode : str
             Mode according to which input data is passed to the dataflow,default:"default".
-                default : Inputs are expected to be mapping of context to list of input
+                * "default" :
+                    Inputs are expected to be mapping of context to list of input
                         to definition mappings
                         eg:'{
                         "insecure-package":
@@ -153,7 +154,9 @@ class HTTPChannelConfig(NamedTuple):
                                 }
                             ]
                         }'
-                "def:NAME" : Input as whole is treated as value for defintion 'NAME'
+                * "def:preprocess:definition_name" :
+                    Input as whole is treated as value with the given definition.
+                    Supported 'preporcess' tags : [json,text,bytes,stream]
     """
     path: str
     presentation: str
@@ -214,15 +217,27 @@ class Routes(BaseMultiCommContext):
                         )
                     )
             elif config.input_mode.startswith("def:"):
-                # TODO
-                # add an option to parse input to json?
-                # or add `formatter` in config which points to dataflow
-                # for now :json loads
-                input_def = config.input_mode.replace("def:","")
+                _,preprocess_mode,input_def = config.input_mode.split(":")
                 if input_def not in config.dataflow.definitions:
                     return web.json_response(
                             {
                                 "error": f"Missing definition for {input_data['definition']} in dataflow"
+                            },
+                            status=HTTPStatus.NOT_FOUND,
+                        )
+                if preprocess_mode == "json":
+                    value = await response.json()
+                elif preprocess_mode == "str":
+                    value = await response.text()
+                elif preprocess_mode == "bytes":
+                    value = await response.read()
+                # TODO : Verify usage of `stream`
+                elif preprocess == "stream":
+                    value = await response.content.read(-1)
+                else:
+                    return web.json_response(
+                            {
+                                "error": f"preprocess tag must be one of [json,text,bytes,stream],got {preprocess}"
                             },
                             status=HTTPStatus.NOT_FOUND,
                         )
@@ -232,7 +247,7 @@ class Routes(BaseMultiCommContext):
                             ctx = StringInputSetContext("post_input"),
                             inputs=[
                                 Input(
-                                    value=await request.json(),
+                                    value=value,
                                     definition=config.dataflow.definitions[input_def],
                                 )
                             ]
@@ -241,9 +256,8 @@ class Routes(BaseMultiCommContext):
                 )
             else:
                 raise NotImplementedError(
-                    "Input modes other than default,def:NAME  not yet implemented"
+                    "Input modes other than default,def:preprocess:NAME  not yet implemented"
                     )
-        print(f"dataflow : {config.dataflow}n\n\n")
         # Run the operation in an orchestrator
         # TODO(dfass) Create the orchestrator on startup of the HTTP API itself
         async with MemoryOrchestrator.basic_config() as orchestrator:
