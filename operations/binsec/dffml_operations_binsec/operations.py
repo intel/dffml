@@ -1,10 +1,5 @@
 import io
-import os
-import sys
 import tarfile
-import asyncio
-import logging
-import concurrent.futures
 from typing import Dict, Any, NamedTuple
 
 import aiohttp
