@@ -12,6 +12,7 @@ from ...base import config, field
 from .arg import Arg
 from .cmd import CMD, CMDConfig
 
+
 class ListEntrypoint(CMD):
     """
     Subclass this with an Entrypoint to display all registered classes.
@@ -49,15 +50,14 @@ class SourcesCMDConfig(CMDConfig):
                 )
             )
         ),
-        metadata = {
-            "labeled" : True,
-        }
+        labeled=True,
     )
 
 
 class SourcesCMD(CMD):
 
     CONFIG = SourcesCMDConfig
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Correct type of sources list if its a list and not Sources
@@ -72,12 +72,10 @@ class SourcesCMD(CMD):
                 self.sources[i] = self.sources[i].withconfig(self.extra_config)
 
 
-
 @config
 class ModelCMDConfig(CMDConfig):
     model: Model = field(
-        "Model used for ML",
-        default_factory = Model.load,
+        "Model used for ML", required=True,
     )
 
 
@@ -87,6 +85,7 @@ class ModelCMD(CMD):
     """
 
     CONFIG = ModelCMDConfig
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if inspect.isclass(self.model):
@@ -96,8 +95,7 @@ class ModelCMD(CMD):
 @config
 class PortCMDConfig(CMDConfig):
     port: Port = field(
-        "Port",
-        default_factory = Port.load,
+        "Port", required=True,
     )
 
 
@@ -108,12 +106,8 @@ class PortCMD(CMD):
 
 @config
 class KeysCMDConfig(CMDConfig):
-    keys: Port = field(
-        "Key used for source lookup and evaluation.",
-        default_factory = Port.load,
-        metadata= {
-            "required" : True,
-        }
+    keys: str = field(
+        "Key used for source lookup and evaluation", required=True,
     )
 
 

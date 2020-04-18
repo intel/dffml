@@ -213,7 +213,16 @@ def _fromdict(cls, **kwargs):
     return cls(**kwargs)
 
 
-def field(description: str, *args, metadata: Optional[dict] = None, **kwargs):
+def field(
+    description: str,
+    *args,
+    action=None,
+    required: bool = False,
+    position: int = None,
+    labeled: bool = False,
+    metadata: Optional[dict] = None,
+    **kwargs,
+):
     """
     Creates an instance of :py:func:`dataclasses.field`. The first argument,
     ``description`` is the description of the field, and will be set as the
@@ -221,8 +230,11 @@ def field(description: str, *args, metadata: Optional[dict] = None, **kwargs):
     """
     if not metadata:
         metadata = {}
-    #  Add code for positional arguments
     metadata["description"] = description
+    metadata["required"] = required
+    metadata["position"] = position
+    metadata["labeled"] = labeled
+    metadata["action"] = action
     return dataclasses.field(*args, metadata=metadata, **kwargs)
 
 
@@ -234,7 +246,61 @@ def config(cls):
     """
     Decorator to create a dataclass
     """
-    datacls = dataclasses.dataclass(eq=True, init=True)(cls)
+    class_list = []
+    newdict = {}
+    defaultdict = {}
+    if len(inspect.getmro(cls)) > 2:
+        class_list = list(inspect.getmro(cls)[:-1])
+    else:
+        class_list = [cls]
+    for clss in class_list:
+        cls_annotations = clss.__dict__.get("__annotations__", {})
+        cls_dict = clss.__dict__
+        for var in cls_annotations:
+            if not dataclasses.is_dataclass(clss):
+                if cls_dict.get(var) and isinstance(
+                    cls_dict.get(var), dataclasses.Field
+                ):
+                    if "dataclasses._MISSING_TYPE" in repr(
+                        cls_dict.get(var).default
+                    ) and "dataclasses._MISSING_TYPE" in repr(
+                        cls_dict.get(var).default_factory
+                    ):
+                        newdict[var] = cls_annotations[var]
+            else:
+                if clss.__dataclass_fields__.get(var):
+                    if "dataclasses._MISSING_TYPE" in repr(
+                        clss.__dataclass_fields__.get(var).default
+                    ) and "dataclasses._MISSING_TYPE" in repr(
+                        clss.__dataclass_fields__.get(var).default_factory
+                    ):
+                        newdict[var] = cls_annotations[var]
+
+        for var in cls_annotations:
+            if not dataclasses.is_dataclass(clss):
+                if cls_dict.get(var) and isinstance(
+                    cls_dict.get(var), dataclasses.Field
+                ):
+                    if "dataclasses._MISSING_TYPE" not in repr(
+                        cls_dict.get(var).default
+                    ) or "dataclasses._MISSING_TYPE" not in repr(
+                        cls_dict.get(var).default_factory
+                    ):
+                        defaultdict[var] = cls_annotations[var]
+            else:
+                if clss.__dataclass_fields__.get(var):
+                    if "dataclasses._MISSING_TYPE" not in repr(
+                        clss.__dataclass_fields__.get(var).default
+                    ) or "dataclasses._MISSING_TYPE" not in repr(
+                        clss.__dataclass_fields__.get(var).default_factory
+                    ):
+                        defaultdict[var] = cls_annotations[var]
+
+    defaultdict.update(cls.__annotations__)
+    newdict.update(defaultdict)
+    cls.__annotations__ = newdict
+
+    datacls = dataclasses.dataclass(eq=True, init=False)(cls)
     datacls._fromdict = classmethod(_fromdict)
     datacls._replace = lambda self, *args, **kwargs: dataclasses.replace(
         self, *args, **kwargs

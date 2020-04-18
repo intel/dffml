@@ -16,7 +16,7 @@ from ..df.memory import (
 from ..configloader.configloader import BaseConfigLoader
 from ..configloader.json import JSONConfigLoader
 from ..source.source import SubsetSources, Sources
-from ..source.file import  FileSourceConfig
+from ..source.file import FileSourceConfig
 from ..source.json import JSONSource
 from ..util.data import merge
 from ..util.entrypoint import load
@@ -29,7 +29,11 @@ from ..base import config, mkarg, field
 
 class Merge(CMD):
     arg_dataflows = Arg(
-        "dataflows", help="DataFlows to merge", nargs="+", type=pathlib.Path
+        "dataflows",
+        help="DataFlows to merge",
+        nargs="+",
+        type=pathlib.Path
+        # TODO Default value
     )
     arg_config = Arg(
         "-config",
@@ -119,7 +123,7 @@ class Create(CMD):
 
 @config
 class RunCMDConfig(SourcesCMDConfig):
-    # Just to get the sources working for now. Will probably change it later
+    # TODO Just to get the sources working for now. Will probably change it later
     sources: Sources = field(
         "Sources for loading and saving",
         default_factory=lambda: Sources(
@@ -131,11 +135,10 @@ class RunCMDConfig(SourcesCMDConfig):
                 )
             )
         ),
-        metadata= {
-            "labeled" : True,
-            "required" : True,
-        }
+        labeled=True,
+        required=True,
     )
+
 
 class RunCMD(SourcesCMD):
 

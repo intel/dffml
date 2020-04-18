@@ -6,19 +6,29 @@ Command line interface evaluates packages given their source URLs
 import pathlib
 import pdb
 import pkg_resources
+import os
 
 from ..version import VERSION
 from ..record import Record
-from ..source.source import BaseSource, SubsetSources
-from ..source.df import DataFlowSource, DataFlowSourceConfig
-from ..configloader.configloader import BaseConfigLoader
-from ..util.packaging import is_develop
-from ..util.cli.arg import Arg
-from ..util.cli.cmd import CMD
-from ..util.cli.cmds import SourcesCMD, PortCMD, KeysCMD
-from ..df.types import DataFlow
 from ..feature.feature import Features, Feature
 from ..util.cli.parser import list_action
+from ..df.types import DataFlow
+from ..source.df import DataFlowSource, DataFlowSourceConfig
+from ..source.source import Sources, BaseSource, SubsetSources
+from ..source.json import JSONSource
+from ..source.csv import CSVSource
+from ..source.file import FileSourceConfig
+from ..util.packaging import is_develop
+from ..util.cli.arg import Arg
+from ..util.cli.cmd import CMD, CMDConfig
+from ..util.cli.cmds import (
+    SourcesCMD,
+    PortCMD,
+    KeysCMD,
+    PortCMDConfig,
+    SourcesCMDConfig,
+)
+from ..base import field, config
 
 from .dataflow import Dataflow
 from .config import Config
@@ -115,19 +125,22 @@ class Edit(CMD):
     record = EditRecord
 
 
+@config
+class MergeConfig(CMDConfig):
+    src: Sources = field(
+        "Sources to pull records from", position=0, labeled=True,
+    )
+    dest: Sources = field(
+        "Sources to merge records into", position=1, labeled=True,
+    )
+
+
 class Merge(CMD):
     """
     Merge record data between sources
     """
 
-    arg_dest = Arg(
-        "dest", help="Sources merge records into", type=BaseSource.load_labeled
-    )
-    arg_src = Arg(
-        "src",
-        help="Sources to pull records from",
-        type=BaseSource.load_labeled,
-    )
+    CONFIG = MergeConfig
 
     async def run(self):
         async with self.src.withconfig(
@@ -141,10 +154,16 @@ class Merge(CMD):
                     await dctx.update(record)
 
 
+class ImportExportCMDConfig(PortCMDConfig, SourcesCMDConfig):
+    filename: str = field(
+        "Filename", default=None,
+    )
+
+
 class ImportExportCMD(PortCMD, SourcesCMD):
     """Shared import export arguments"""
 
-    arg_filename = Arg("filename", type=str)
+    CONFIG = ImportExportCMDConfig
 
 
 class Import(ImportExportCMD):
