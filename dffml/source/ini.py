@@ -1,8 +1,8 @@
 from configparser import ConfigParser
 
+from ..base import config
 from ..record import Record
 from .file import FileSource
-from ..base import config, field
 from .memory import MemorySource
 from ..util.entrypoint import entrypoint
 
