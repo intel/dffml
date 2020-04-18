@@ -101,7 +101,7 @@ class run_dataflow(OperationImplementationContext):
     {'flow_results': {'dffml': {'URL': 'https://github.com/intel/dffml'}}}
 
     The following shows how to use run dataflow with custom inputs and outputs.
-    This allows you to run a subflow as if it were an opertion.
+    This allows you to run a subflow as if it were an operation.
 
     >>> URL = Definition(name="URL", primitive="string")
     >>>

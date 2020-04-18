@@ -1,10 +1,11 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 import ast
+import pathlib
 from io import open
 from setuptools import find_packages, setup
 
-with open("dffml/version.py", "r") as f:
+with open(pathlib.Path("dffml", "version.py"), "r") as f:
     for line in f:
         if line.startswith("VERSION"):
             VERSION = ast.literal_eval(line.strip().split("=")[-1].strip())
@@ -63,6 +64,7 @@ setup(
             "recommonmark",
             "black",
             "jsbeautifier",
+            "twine",
         ],
     },
     tests_require=["httptest>=0.0.15"],
@@ -98,6 +100,8 @@ setup(
             # io
             "AcceptUserInput = dffml.operation.io:AcceptUserInput",
             "print_output = dffml.operation.io:print_output",
+            # preprocess
+            "literal_eval = dffml.operation.preprocess:literal_eval",
         ],
         "dffml.kvstore": ["memory = dffml.df.memory:MemoryKeyValueStore"],
         "dffml.input.network": ["memory = dffml.df.memory:MemoryInputNetwork"],
