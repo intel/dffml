@@ -1,15 +1,15 @@
 import os
-import tempfile
+from tempfile import TemporaryDirectory
 
 from dffml.record import Record
+from dffml.source.ini import INISource
 from dffml.high_level import load, save
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.source.ini import INISource, INISourceConfig
 
 
 class TestINISource(AsyncTestCase):
-    async def test_load_fd(self):
-        with tempfile.TemporaryDirectory() as testdir:
+    async def test_ini(self):
+        with TemporaryDirectory() as testdir:
             self.testfile = os.path.join(testdir, "testfile.ini")
             # Create a source
             source = INISource(
@@ -26,5 +26,5 @@ class TestINISource(AsyncTestCase):
 
             self.assertIsInstance(records, list)
             self.assertEqual(len(records), 2)
-            self.assertDictEqual(records[0].features(), {"A": 1, "B": 2})
-            self.assertDictEqual(records[1].features(), {"C": 3, "D": 4})
+            self.assertDictEqual(records[0].features(), {"a": "1", "b": "2"})
+            self.assertDictEqual(records[1].features(), {"c": "3", "d": "4"})
