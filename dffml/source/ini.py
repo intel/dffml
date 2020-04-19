@@ -34,12 +34,12 @@ class INISource(FileSource, MemorySource):
 
         # Go over each section
         for section in sections:
-            # Get the name and value pair under each section
-            for name, value in parser.items(section):
-                # Each section used as a record
-                self.mem[str(section)] = Record(
-                    str(section), data={"features": {str(name): str(value)}},
-                )
+            # Get data under each section as a dict
+            temp_dict = dict(parser.items(section))
+            # Each section used as a record
+            self.mem[str(section)] = Record(
+                str(section), data={"features": temp_dict},
+            )
 
         self.logger.debug("%r loaded %d sections", self, len(self.mem))
 
