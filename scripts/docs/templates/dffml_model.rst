@@ -1,3 +1,5 @@
+:github_url: hide
+
 .. _plugin_models:
 
 Models
