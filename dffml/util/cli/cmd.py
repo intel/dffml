@@ -100,29 +100,27 @@ class Parser(argparse.ArgumentParser):
                 except argparse.ArgumentError as error:
                     raise Exception(repr(add_from)) from error
 
-        # TODO Refactoring needed as I'm not sure if it works correctly due to the non default argument error
         position_list = {}
         for field in dataclasses.fields(add_from.CONFIG):
             arg = mkarg(field)
             if isinstance(arg, Arg):
-                try:
-                    if field.metadata.get("position"):
-                        position_list[field.metadata.get("position")] = (
-                            field.name,
-                            arg,
-                        )
-                        continue
-                    else:
+                if isinstance(field.metadata.get("position"), int):
+                    position_list[field.metadata.get("position")] = (
+                        field.name,
+                        arg,
+                    )
+                else:
+                    try:
                         if position_list:
                             for position in sorted(position_list.keys()):
                                 name, positional_arg = position_list[position]
                                 self.add_argument(name, **positional_arg)
                             position_list.clear()
-                        else:
+                        if not position_list:
                             self.add_argument("-" + field.name, **arg)
 
-                except argparse.ArgumentError as error:
-                    raise Exception(repr(add_from)) from error
+                    except argparse.ArgumentError as error:
+                        raise Exception(repr(add_from)) from error
 
 
 @config

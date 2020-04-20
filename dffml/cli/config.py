@@ -3,27 +3,27 @@ import pathlib
 
 from ..configloader.configloader import BaseConfigLoader
 from ..configloader.json import JSONConfigLoader
-from ..util.cli.cmd import CMD
+from ..util.cli.cmd import CMD, CMDConfig
 from ..util.cli.cmd import Arg
+from ..base import config, field
+
+
+@config
+class ConvertConfig(CMDConfig):
+    original: str = field(
+        "Config to convert", position=0,
+    )
+    config_in: BaseConfigLoader = field(
+        "ConfigLoader to use for importing", default=None,
+    )
+    config_out: BaseConfigLoader = field(
+        "ConfigLoader to use for exporting", default=JSONConfigLoader,
+    )
 
 
 class Convert(CMD):
 
-    arg_original = Arg("original", help="Config to convert")
-    arg_config_in = Arg(
-        "-config-in",
-        dest="config_in",
-        help="ConfigLoader to use for importing",
-        type=BaseConfigLoader.load,
-        default=None,
-    )
-    arg_config_out = Arg(
-        "-config-out",
-        dest="config_out",
-        help="ConfigLoader to use for exporting",
-        type=BaseConfigLoader.load,
-        default=JSONConfigLoader,
-    )
+    CONFIG = ConvertConfig
 
     async def run(self):
         original_path = pathlib.Path(self.original)

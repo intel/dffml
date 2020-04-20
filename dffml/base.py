@@ -110,7 +110,10 @@ class BaseConfig(object):
 
 
 def mkarg(field):
-    arg = Arg(type=field.type)
+    if field.type != bool:
+        arg = Arg(type=field.type)
+    else:
+        arg = Arg()
     # HACK For detecting dataclasses._MISSING_TYPE
     if "dataclasses._MISSING_TYPE" not in repr(field.default):
         arg["default"] = field.default

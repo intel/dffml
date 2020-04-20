@@ -95,7 +95,7 @@ class ModelCMD(CMD):
 @config
 class PortCMDConfig(CMDConfig):
     port: Port = field(
-        "Port", required=True,
+        "Port", required=True, position=0,
     )
 
 

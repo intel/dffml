@@ -127,10 +127,10 @@ class Edit(CMD):
 
 @config
 class MergeConfig(CMDConfig):
-    src: Sources = field(
+    src: BaseSource = field(
         "Sources to pull records from", position=0, labeled=True,
     )
-    dest: Sources = field(
+    dest: BaseSource = field(
         "Sources to merge records into", position=1, labeled=True,
     )
 
