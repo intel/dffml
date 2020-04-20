@@ -147,20 +147,6 @@ function run_docs() {
 
   last_release=$("${PYTHON}" -m dffml service dev setuppy kwarg version setup.py)
 
-  # Log failed tests to file
-  doctest_failures="$(mktemp)"
-  TEMP_DIRS+=("${doctest_failures}")
-
-  # Doctests
-  ./scripts/doctest.sh 2>&1 | tee "${doctest_failures}"
-
-  # Fail if any tests errored
-  skipped=$(grep 'in test' "${doctest_failures}" | grep -v '0 failures in tests' | wc -l)
-  if [ "$skipped" -ne 0 ]; then
-    echo "Tests failed" >&2
-    exit 1
-  fi
-
   # Fail if there are any changes to the Git repo
   changes=$(git status --porcelain | wc -l)
   if [ "$changes" -ne 0 ]; then
