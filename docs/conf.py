@@ -40,7 +40,6 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
-    "sphinx.ext.doctest",
     "recommonmark",
 ]
 
@@ -78,7 +77,7 @@ html_context = {
 }
 
 html_theme_options = {
-    "description": "The fastest path to machine learning integration",
+    "description": "The easiest way to use Machine Learning",
     "github_url": "https://github.com/intel/dffml/",
 }
 
@@ -95,7 +94,3 @@ def setup(app):
 # -- Extension configuration -------------------------------------------------
 
 napoleon_numpy_docstring = True
-
-doctest_global_setup = (
-    pathlib.Path(__file__).parent / "doctest_header.py"
-).read_text()
