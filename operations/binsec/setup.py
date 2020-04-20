@@ -18,7 +18,7 @@ with open(
 with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
-INSTALL_REQUIRES = ["aiohttp>=3.5.4", "rpmfile>=1.0.0", "pyelftools>=0.25"] + (
+INSTALL_REQUIRES = ["aiohttp>=3.6.2", "rpmfile>=1.0.2", "pyelftools>=0.25"] + (
     ["dffml>=0.3.7"]
     if not any(
         list(

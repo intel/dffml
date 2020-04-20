@@ -1,5 +1,5 @@
 # Usage
-# docker build -t himanshu/dffml_operations_binsec .
+# docker build -t intelotc/dffml_operations_binsec .
 # docker run --rm -ti -p 80:8080 intelotc/operations -insecure -log debug
 # curl -v http://127.0.0.1:80/list/sources
 FROM ubuntu:20.04
