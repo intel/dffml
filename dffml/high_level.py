@@ -164,11 +164,9 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
     Examples
     --------
 
-    >>> model = LinearRegressionModel(
+    >>> model = SLRModel(
     ...     features=Features(
     ...         DefFeature("Years", int, 1),
-    ...         DefFeature("Expertise", int, 1),
-    ...         DefFeature("Trust", float, 1),
     ...     ),
     ...     predict=DefFeature("Salary", int, 1),
     ... )
@@ -176,10 +174,10 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
     >>> async def main():
     ...     await train(
     ...         model,
-    ...         {"Years": 0, "Expertise": 1, "Trust": 0.1, "Salary": 10},
-    ...         {"Years": 1, "Expertise": 3, "Trust": 0.2, "Salary": 20},
-    ...         {"Years": 2, "Expertise": 5, "Trust": 0.3, "Salary": 30},
-    ...         {"Years": 3, "Expertise": 7, "Trust": 0.4, "Salary": 40},
+    ...         {"Years": 0, "Salary": 10},
+    ...         {"Years": 1, "Salary": 20},
+    ...         {"Years": 2, "Salary": 30},
+    ...         {"Years": 3, "Salary": 40},
     ...     )
     >>>
     >>> asyncio.run(main())
@@ -219,11 +217,9 @@ async def accuracy(
     Examples
     --------
 
-    >>> model = LinearRegressionModel(
+    >>> model = SLRModel(
     ...     features=Features(
     ...         DefFeature("Years", int, 1),
-    ...         DefFeature("Expertise", int, 1),
-    ...         DefFeature("Trust", float, 1),
     ...     ),
     ...     predict=DefFeature("Salary", int, 1),
     ... )
@@ -233,8 +229,8 @@ async def accuracy(
     ...         "Accuracy:",
     ...         await accuracy(
     ...             model,
-    ...             {"Years": 4, "Expertise": 9, "Trust": 0.5, "Salary": 50},
-    ...             {"Years": 5, "Expertise": 11, "Trust": 0.6, "Salary": 60},
+    ...             {"Years": 4, "Salary": 50},
+    ...             {"Years": 5, "Salary": 60},
     ...         ),
     ...     )
     >>>
@@ -282,11 +278,9 @@ async def predict(
     Examples
     --------
 
-    >>> model = LinearRegressionModel(
+    >>> model = SLRModel(
     ...     features=Features(
     ...         DefFeature("Years", int, 1),
-    ...         DefFeature("Expertise", int, 1),
-    ...         DefFeature("Trust", float, 1),
     ...     ),
     ...     predict=DefFeature("Salary", int, 1),
     ... )
@@ -294,15 +288,15 @@ async def predict(
     >>> async def main():
     ...     async for i, features, prediction in predict(
     ...         model,
-    ...         {"Years": 6, "Expertise": 13, "Trust": 0.7},
-    ...         {"Years": 7, "Expertise": 15, "Trust": 0.8},
+    ...         {"Years": 6},
+    ...         {"Years": 7},
     ...     ):
     ...         features["Salary"] = round(prediction["Salary"]["value"])
     ...         print(features)
     >>>
     >>> asyncio.run(main())
-    {'Years': 6, 'Expertise': 13, 'Trust': 0.7, 'Salary': 70.0}
-    {'Years': 7, 'Expertise': 15, 'Trust': 0.8, 'Salary': 80.0}
+    {'Years': 6, 'Salary': 70}
+    {'Years': 7, 'Salary': 80}
     """
     sources = _records_to_sources(*args)
     async with sources as sources, model as model:
