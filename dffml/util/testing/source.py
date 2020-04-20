@@ -13,14 +13,6 @@ class SourceTest(abc.ABC):
     """
     Test case class used to test a Source implementation. Subclass from and
     implement the setUpSource method.
-
-    >>> from dffml.source.file import FileSourceConfig
-    >>> from dffml.source.json import JSONSource
-    >>> from dffml.util.testing.source import SourceTest
-    >>> from dffml.util.asynctestcase import AsyncTestCase
-    >>> class TestCustomSQliteSource(SourceTest, AsyncTestCase):
-    >>>     async def setUpSource(self):
-    >>>         return MemorySource(MemorySourceConfig(records=[Record('a')]))
     """
 
     @abc.abstractmethod
@@ -105,14 +97,6 @@ class SourceTest(abc.ABC):
 class FileSourceTest(SourceTest):
     """
     Test case class used to test a FileSource implementation.
-
-    >>> from dffml.source.file import FileSourceConfig
-    >>> from dffml.source.json import JSONSource
-    >>> from dffml.util.testing.source import FileSourceTest
-    >>> from dffml.util.asynctestcase import AsyncTestCase
-    >>> class TestCustomSQliteSource(FileSourceTest, AsyncTestCase):
-    >>>     async def setUpSource(self):
-    >>>         return JSONSource(FileSourceConfig(filename=self.testfile))
     """
 
     async def test_update(self):
