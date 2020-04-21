@@ -1,0 +1,110 @@
+definitions:
+  URL:
+    name: URL
+    primitive: string
+  docker_image_tag:
+    name: docker_image_tag
+    primitive: str
+  git_payload:
+    name: git_payload
+    primitive: Dict[Any]
+  git_payload_string:
+    name: git_payload_string
+    primitive: str
+  git_repository:
+    lock: true
+    name: git_repository
+    primitive: Dict[str, str]
+    spec:
+      defaults: {}
+      name: GitRepoSpec
+      types:
+        URL: str
+        directory: str
+    subspec: false
+  is_default_branch:
+    name: is_default_branch
+    primitive: bool
+  is_image_built:
+    name: is_image_built
+    primitive: bool
+flow:
+  check_if_default_branch:
+    inputs:
+      payload:
+      - get_payload: payload
+  docker_build_image:
+    conditions:
+    - check_if_default_branch: is_default_branch
+    inputs:
+      image_tag:
+      - get_image_tag: image_tag
+      repo:
+      - seed
+  get_image_tag:
+    inputs:
+      payload:
+      - get_payload: payload
+  get_payload:
+    inputs:
+      payload_str:
+      - seed
+  get_url_from_payload:
+    inputs:
+      payload:
+      - get_payload: payload
+  restart_running_containers_by_tag:
+    conditions:
+    - docker_build_image: build_status
+    inputs:
+      tag:
+      - get_image_tag: image_tag
+linked: true
+operations:
+  check_if_default_branch:
+    inputs:
+      payload: git_payload
+    name: check_if_default_branch
+    outputs:
+      is_default_branch: is_default_branch
+    stage: processing
+  docker_build_image:
+    conditions:
+    - is_default_branch
+    inputs:
+      image_tag: docker_image_tag
+      repo: git_repository
+    name: docker_build_image
+    outputs:
+      build_status: is_image_built
+    stage: processing
+  get_image_tag:
+    inputs:
+      payload: git_payload
+    name: get_image_tag
+    outputs:
+      image_tag: docker_image_tag
+    stage: processing
+  get_payload:
+    inputs:
+      payload_str: git_payload_string
+    name: get_payload
+    outputs:
+      payload: git_payload
+    stage: processing
+  get_url_from_payload:
+    inputs:
+      payload: git_payload
+    name: get_url_from_payload
+    outputs:
+      url: URL
+    stage: processing
+  restart_running_containers_by_tag:
+    conditions:
+    - is_image_built
+    inputs:
+      tag: docker_image_tag
+    name: restart_running_containers_by_tag
+    outputs: {}
+    stage: processing
+

@@ -87,10 +87,11 @@ async def check_if_valid_git_repository_URL(URL: str):
     conditions=[valid_git_repository_URL],
 )
 async def clone_git_repo(URL: str):
+    print(f"\n\nRunning original clone repo\n\n")
     directory = tempfile.mkdtemp(prefix="dffml-feature-git-")
     exit_code = await exec_with_logging("git", "clone", URL, directory)
     if exit_code != 0:
-        shutil.rmtree(repo["directory"])
+        shutil.rmtree(directory)
         raise RuntimeError("Failed to clone git repo %r" % (URL,))
 
     return {"repo": {"URL": URL, "directory": directory}}

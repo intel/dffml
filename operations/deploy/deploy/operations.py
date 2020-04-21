@@ -8,7 +8,7 @@ from typing import List,Dict,Any
 
 from dffml.df.base import op
 from .definitions import *
-from .exceptions import CannotRemoveContainer
+from .exceptions import *
 
 from dffml_feature_git.feature.operations import clone_git_repo
 from dffml_feature_git.util.proc import check_output, create, stop
@@ -75,7 +75,9 @@ async def parse_docker_commands(repo,image_tag):
         # handles case were `FROM` starts immediatly after `usage` comments,
         # without blank comment in between
         x = re.findall("((?:#[ ]*docker run )(?:.|\n)*)FROM",s)
-    #TODO raise error when docker file does not have run command in usage
+    if not x:
+        raise UsageNotFound(f"docker run command not found in comments in {docker_file}")
+
     x = x[0].replace('#','').strip()
     docker_run_cmd = shlex.split(x)
 
@@ -100,21 +102,25 @@ async def docker_build_image(docker_commands):
 @op(
     inputs={"docker_commands":docker_commands,"containers":docker_running_containers},
     conditions = [is_image_built],
-    outputs={}
+    outputs={"containers":docker_restarted_containers}
     )
 async def restart_running_containers(docker_commands,containers):
     # if no containers are running ,start a fresh one else
     # stop running containers and start it again with the new built
+    new_containers = []
     if not containers:
         out = await check_output(*docker_commands["run"])
-        return
+        new_containers.append(out.strip())
+        return {
+            "containers":new_containers
+        }
 
     for container in containers:
         out = await check_output("docker","rm","-f",container)
         if not (out.strip()==container):
-            print(f"out = {out}")
-            print(f"container = {container}")
-            raise Exception(f"Error when stopping container {container}")
-        # TODO : enforce starting in detach?
+            raise CannotRemoveContainer(f"Error when force removing container {container}")
         out = await check_output(*docker_commands["run"])
-
+        new_containers.append(out.strip())
+    return {
+        "containers":new_containers
+    }
