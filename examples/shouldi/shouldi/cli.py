@@ -1,5 +1,7 @@
+from typing import List
+
 # Command line utility helpers and DataFlow specific classes
-from dffml import CMD, Arg, DataFlow, Input, GetSingle, run
+from dffml import CMD, Arg, DataFlow, Input, GetSingle, run, config
 
 # Import all the operations we wrote
 from .python.bandit import run_bandit
@@ -36,11 +38,16 @@ DATAFLOW.seed.append(
 )
 
 
+@config
+class InstallConfig(CMDConfig):
+    packages: List[str] = field(
+        "Package to check if we should install", position=0,
+    )
+
+
 class Install(CMD):
 
-    arg_packages = Arg(
-        "packages", nargs="+", help="Package to check if we should install"
-    )
+    CONFIG = InstallConfig
 
     async def run(self):
         # Run all the operations, Each iteration of this loop happens

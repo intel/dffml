@@ -2,23 +2,41 @@ import ssl
 import asyncio
 import argparse
 import subprocess
+from typing import List
 
 from aiohttp import web
 
 from dffml.util.cli.arg import Arg
-from dffml.util.cli.cmd import CMD
+from dffml.util.cli.cmd import CMD, CMDConfig
 from dffml import Model, Sources, BaseSource
 from dffml.util.cli.parser import list_action
 from dffml.util.entrypoint import entrypoint
 from dffml.util.asynchelper import AsyncContextManagerList
+from dffml.base import config, field
 
 from .routes import Routes
 
 
+@config
+class TLSCMDConfig(CMDConfig):
+    key: str = field(
+        "Path to key file", default="server.key",
+    )
+    cert: str = field(
+        "Path to cert file", default="server.pem",
+    )
+
+
 class TLSCMD(CMD):
 
-    arg_key = Arg("-key", help="Path to key file", default="server.key")
-    arg_cert = Arg("-cert", help="Path to cert file", default="server.pem")
+    CONFIG = TLSCMDConfig
+
+
+@config
+class CreateTLSServerConfig(TLSCMDConfig):
+    bits: int = field(
+        "Number of bits to use for key", default=4096,
+    )
 
 
 class CreateTLSServer(TLSCMD):
@@ -26,9 +44,7 @@ class CreateTLSServer(TLSCMD):
     Used to generate server key and cert
     """
 
-    arg_bits = Arg(
-        "-bits", help="Number of bits to use for key", default=4096, type=int
-    )
+    CONFIG = CreateTLSServerConfig
 
     async def run(self):
         subprocess.call(
@@ -52,6 +68,28 @@ class CreateTLSServer(TLSCMD):
         )
 
 
+@config
+class CreateTLSClientConfig(CMDConfig):
+    bits: int = field(
+        "Number of bits to use for key", default=4096,
+    )
+    key: str = field(
+        "Path to client key file", default="client.key",
+    )
+    cert: str = field(
+        "Path to client cert file", default="client.pem",
+    )
+    csr: str = field(
+        "Path to client csr file", default="client.csr",
+    )
+    server_key: str = field(
+        "Path to server key file", default="server.key",
+    )
+    server_cert: str = field(
+        "Path to server cert file", default="server.pem",
+    )
+
+
 class CreateTLSClient(CMD):
     """
     Create TLS client key and cert (used to authenticate to HTTP API server).
@@ -66,20 +104,7 @@ class CreateTLSClient(CMD):
 
     CLI_FORMATTER_CLASS = argparse.RawDescriptionHelpFormatter
 
-    arg_bits = Arg(
-        "-bits", help="Number of bits to use for key", default=4096, type=int
-    )
-    arg_key = Arg("-key", help="Path to client key file", default="client.key")
-    arg_cert = Arg(
-        "-cert", help="Path to client cert file", default="client.pem"
-    )
-    arg_csr = Arg("-csr", help="Path to client csr file", default="client.csr")
-    arg_server_key = Arg(
-        "-server-key", help="Path to server key file", default="server.key"
-    )
-    arg_server_cert = Arg(
-        "-server-cert", help="Path to server cert file", default="server.pem"
-    )
+    CONFIG = CreateTLSClientConfig
 
     async def run(self):
         subprocess.check_call(
@@ -129,20 +154,60 @@ class CreateTLS(TLSCMD):
     client = CreateTLSClient
 
 
-class MultiCommCMD(CMD):
-
-    arg_mc_config = Arg(
-        "-mc-config",
-        dest="mc_config",
-        default=None,
-        help="MultiComm config directory",
+@config
+class MultiCommCMDConfig(CMDConfig):
+    mc_config: str = field(
+        "MultiComm config directory", default=None,
     )
-    arg_mc_atomic = Arg(
-        "-mc-atomic",
-        dest="mc_atomic",
+    mc_atomic: bool = field(
+        "No routes other than dataflows registered at startup",
         action="store_true",
         default=False,
-        help="No routes other than dataflows registered at startup",
+    )
+
+
+class MultiCommCMD(CMD):
+
+    CONFIG = MultiCommCMDConfig
+
+
+@config
+class ServerConfig(TLSCMDConfig, MultiCommCMDConfig):
+    port: int = field(
+        "Port to bind to", default=8080,
+    )
+    addr: str = field(
+        "Address to bind to", default="127.0.0.1",
+    )
+    upload_dir: str = field(
+        "Directory to store uploaded files in", default=None,
+    )
+    static: str = field(
+        "Directory to serve static content from", default=None,
+    )
+    js: bool = field(
+        "Serve JavaScript API file at /api.js",
+        default=False,
+        action="store_true",
+    )
+    insecure: bool = field(
+        "Start without TLS encryption", action="store_true", default=False,
+    )
+    cors_domains: List[str] = field(
+        "Domains to allow CORS for (see keys in defaults dict for aiohttp_cors.setup)",
+        default_factory=lambda: [],
+    )
+    models: Model = field(
+        "Models configured on start",
+        default=AsyncContextManagerList(),
+        action=list_action(AsyncContextManagerList),
+        labeled=True,
+    )
+    sources: Sources = field(
+        "Sources configured on start",
+        default_factory=lambda: Sources,
+        action=list_action(Sources),
+        labeled=True,
     )
 
 
@@ -156,50 +221,7 @@ class Server(TLSCMD, MultiCommCMD, Routes):
     RUN_YIELD_FINISH = False
     INSECURE_NO_TLS = False
 
-    arg_port = Arg("-port", help="Port to bind to", type=int, default=8080)
-    arg_addr = Arg("-addr", help="Address to bind to", default="127.0.0.1")
-    arg_upload_dir = Arg(
-        "-upload-dir",
-        help="Directory to store uploaded files in",
-        default=None,
-    )
-    arg_static = Arg(
-        "-static", help="Directory to serve static content from", default=None
-    )
-    arg_js = Arg(
-        "-js",
-        help="Serve JavaScript API file at /api.js",
-        default=False,
-        action="store_true",
-    )
-    arg_insecure = Arg(
-        "-insecure",
-        help="Start without TLS encryption",
-        action="store_true",
-        default=False,
-    )
-    arg_cors_domains = Arg(
-        "-cors-domains",
-        help="Domains to allow CORS for (see keys in defaults dict for aiohttp_cors.setup)",
-        nargs="+",
-        default=[],
-    )
-    arg_models = Arg(
-        "-models",
-        help="Models configured on start",
-        nargs="+",
-        default=AsyncContextManagerList(),
-        type=Model.load_labeled,
-        action=list_action(AsyncContextManagerList),
-    )
-    arg_sources = Arg(
-        "-sources",
-        help="Sources configured on start",
-        nargs="+",
-        default=Sources(),
-        type=BaseSource.load_labeled,
-        action=list_action(Sources),
-    )
+    CONFIG = ServerConfig
 
     async def start(self):
         if self.insecure:
