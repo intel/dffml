@@ -412,7 +412,7 @@
 <span class="sd">            Variables to bind</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">condition_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_condition_expression</span><span class="p">(</span><span class="n">conditions</span><span class="p">)</span>
-
+        <span class="n">query_values</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">condition_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">condition_exp</span> <span class="o">=</span> <span class="n">condition_dict</span><span class="p">[</span><span class="s2">&quot;expression&quot;</span><span class="p">]</span>
             <span class="n">query_values</span> <span class="o">=</span> <span class="n">condition_dict</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">]</span>
