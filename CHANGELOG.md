@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Doctestable examples to `operation/mapping.py`
 - shouldi got an operation to run Dependency-check on java code.
 - load function in high_level API
+- Doctestable examples to `db` operations.
+### Changed
+- `Edit on Github` button now hidden for plugins.
 
 ## [0.3.7] - 2020-04-14
 ### Added
