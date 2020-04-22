@@ -23,4 +23,4 @@ class TestOperations(AsyncTestCase):
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
             async with orchestrator(dataflow) as octx:
                 async for ctx, results in octx.run(test_inputs):
-                    print(f"Results : {results}")
+                    pass

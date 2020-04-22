@@ -21,7 +21,7 @@ from dffml.df.base import (
     OperationImplementationNotInstantiable,
     OperationImplementationNotInstantiated,
 )
-from dffml.df.memory import (GetSingle,get_url_from_payload,clone_git_repo
+from dffml.df.memory import (
     MemoryKeyValueStore,
     MemoryOperationImplementationNetwork,
     MemoryOrchestrator,
