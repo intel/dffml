@@ -11,7 +11,7 @@ from dffml.operation.model import model_predict, ModelPredictConfig
 from dffml.model.slr import SLRModel
 
 slr_model = SLRModel(
-    features=Features(DefFeature("Years", int, 1),),
+    features=Features(DefFeature("Years", int, 1)),
     predict=DefFeature("Salary", int, 1),
 )
 

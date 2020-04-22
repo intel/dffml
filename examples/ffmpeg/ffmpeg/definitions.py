@@ -4,7 +4,6 @@ from dffml.df.types import Definition
 definitions = [
     Definition(name="input_file", primitive="str"),
     Definition(name="output_file", primitive="str"),
-
 ]
 
 for definition in definitions:

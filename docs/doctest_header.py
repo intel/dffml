@@ -43,8 +43,8 @@ os.chdir(DOCTEST_TEMPDIR)
 sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
 
 dataflow = DataFlow(
-    operations={"db_query_create": db_query_create_table.op,},
-    configs={"db_query_create": DatabaseQueryConfig(database=sdb),},
+    operations={"db_query_create": db_query_create_table.op},
+    configs={"db_query_create": DatabaseQueryConfig(database=sdb)},
     seed=[],
 )
 

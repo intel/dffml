@@ -11,7 +11,7 @@ spec.loader.exec_module(common)
 
 common.KWARGS["entry_points"] = {
     "dffml.operation": [
-        f"convert_to_gif = {common.IMPORT_NAME}.operations:convert_to_gif",
+        f"convert_to_gif = {common.IMPORT_NAME}.operations:convert_to_gif"
     ]
 }
 

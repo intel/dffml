@@ -19,7 +19,6 @@ common.KWARGS["entry_points"] = {
         f"parse_docker_commands = {common.IMPORT_NAME}.operations:parse_docker_commands",
         f"docker_build_image = {common.IMPORT_NAME}.operations:docker_build_image",
         f"restart_running_containers = {common.IMPORT_NAME}.operations:restart_running_containers",
-
     ]
 }
 

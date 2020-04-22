@@ -120,9 +120,7 @@ def type_lookup(typename):
 def export_value(obj, key, value):
     # export and _asdict are not classmethods
     if hasattr(value, "ENTRY_POINT_ORIG_LABEL") and hasattr(value, "config"):
-        obj[key] = {
-            "plugin": value.ENTRY_POINT_ORIG_LABEL,
-        }
+        obj[key] = {"plugin": value.ENTRY_POINT_ORIG_LABEL}
         export_value(obj[key], "config", value.config)
     elif inspect.isclass(value):
         obj[key] = value.__qualname__

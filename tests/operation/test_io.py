@@ -50,7 +50,7 @@ class TestInputOutput(AsyncTestCase):
                     async for ctx_str, results in octx.run(test_inputs):
                         self.assertIn("UserInput", results)
                         self.assertEqual(
-                            "Testing AcceptUserInput", results["UserInput"],
+                            "Testing AcceptUserInput", results["UserInput"]
                         )
 
     async def test_print_output(self):

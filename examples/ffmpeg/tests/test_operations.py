@@ -9,16 +9,20 @@ from dffml.util.asynctestcase import AsyncTestCase
 from ffmpeg.operations import convert_to_gif
 
 
-
-
 class TestOperations(AsyncTestCase):
     async def test_run(self):
         dataflow = DataFlow.auto(convert_to_gif)
         test_inputs = {
             "Test": [
-                Input(value="input.mp4", definition=convert_to_gif.op.inputs["input_file"] ),
-                Input(value="output.gif", definition=convert_to_gif.op.inputs["output_file"] ),
-                ]
+                Input(
+                    value="input.mp4",
+                    definition=convert_to_gif.op.inputs["input_file"],
+                ),
+                Input(
+                    value="output.gif",
+                    definition=convert_to_gif.op.inputs["output_file"],
+                ),
+            ]
         }
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
             async with orchestrator(dataflow) as octx:

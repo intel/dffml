@@ -155,15 +155,16 @@ class HTTPChannelConfig(NamedTuple):
                                 }
                             ]
                         }'
-                * "def:preprocess:definition_name" :
+                * "preprocess:definition_name" :
                     Input as whole is treated as value with the given definition.
                     Supported 'preporcess' tags : [json,text,bytes,stream]
     """
+
     path: str
     presentation: str
     asynchronous: bool
     dataflow: DataFlow
-    input_mode:str = "default"
+    input_mode: str = "default"
 
     @classmethod
     def _fromdict(cls, **kwargs):
@@ -217,15 +218,15 @@ class Routes(BaseMultiCommContext):
                             )
                         )
                     )
-            elif config.input_mode.startswith("def:"):
-                _,preprocess_mode,input_def = config.input_mode.split(":")
+            elif ":" in config.input_mode:
+                preprocess_mode, input_def = config.input_mode.split(":")
                 if input_def not in config.dataflow.definitions:
                     return web.json_response(
-                            {
-                                "error": f"Missing definition for {input_data['definition']} in dataflow"
-                            },
-                            status=HTTPStatus.NOT_FOUND,
-                        )
+                        {
+                            "error": f"Missing definition for {input_data['definition']} in dataflow"
+                        },
+                        status=HTTPStatus.NOT_FOUND,
+                    )
                 if preprocess_mode == "json":
                     value = await request.json()
                 elif preprocess_mode == "str":
@@ -237,28 +238,30 @@ class Routes(BaseMultiCommContext):
                     value = await request.content.read(-1)
                 else:
                     return web.json_response(
-                            {
-                                "error": f"preprocess tag must be one of [json,text,bytes,stream],got {preprocess}"
-                            },
-                            status=HTTPStatus.NOT_FOUND,
-                        )
+                        {
+                            "error": f"preprocess tag must be one of [json,text,bytes,stream],got {preprocess}"
+                        },
+                        status=HTTPStatus.NOT_FOUND,
+                    )
                 inputs.append(
                     MemoryInputSet(
                         MemoryInputSetConfig(
-                            ctx = StringInputSetContext("post_input"),
+                            ctx=StringInputSetContext("post_input"),
                             inputs=[
                                 Input(
                                     value=value,
-                                    definition=config.dataflow.definitions[input_def],
+                                    definition=config.dataflow.definitions[
+                                        input_def
+                                    ],
                                 )
-                            ]
+                            ],
                         )
                     )
                 )
             else:
                 raise NotImplementedError(
                     "Input modes other than default,def:preprocess:NAME  not yet implemented"
-                    )
+                )
         # Run the operation in an orchestrator
         # TODO(dfass) Create the orchestrator on startup of the HTTP API itself
         async with MemoryOrchestrator.basic_config() as orchestrator:

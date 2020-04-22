@@ -15,5 +15,3 @@ EXPOSE 8080
 
 ENTRYPOINT ["python3", "-m", "dffml", "service", "http","server","-addr", "0.0.0.0","-insecure"]
 CMD ["-mc-config", "deploy"]
-# CMD /bin/sh
-# python3 -m dffml service http server -addr 0.0.0.0 -insecure -mc-config deploy
