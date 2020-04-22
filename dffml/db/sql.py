@@ -233,7 +233,7 @@ class SQLDatabaseContext(BaseDatabaseContext):
             Variables to bind
         """
         condition_dict = self.make_condition_expression(conditions)
-
+        query_values = []
         if condition_dict is not None:
             condition_exp = condition_dict["expression"]
             query_values = condition_dict["values"]

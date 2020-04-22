@@ -95,7 +95,13 @@ class SqliteDatabase(BaseDatabase):
 
     def __init__(self, cfg):
         super().__init__(cfg)
+        self.lock = None
+        self.db = None
+        self.cursor = None
+
+    async def __aenter__(self):
+        self.lock = asyncio.Lock()
         self.db = sqlite3.connect(self.config.filename)
         self.db.row_factory = sqlite3.Row
         self.cursor = self.db.cursor()
-        self.lock = asyncio.Lock()
+        return await super().__aenter__()
