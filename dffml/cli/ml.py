@@ -52,8 +52,7 @@ class Accuracy(MLCMD):
 
 @config
 class PredictAllConfig(MLCMDConfig):
-    # TODO Can use parser_helper in base.py to convert str to bool as add_argument doesnl't accept bool
-    update: str = field(
+    update: bool = field(
         "Update record with sources", default=False,
     )
 

@@ -1,5 +1,6 @@
 import os
 import inspect
+from typing import List
 
 from ...port import Port
 from ...source.source import Sources
@@ -106,7 +107,7 @@ class PortCMD(CMD):
 
 @config
 class KeysCMDConfig(CMDConfig):
-    keys: str = field(
+    keys: List[str] = field(
         "Key used for source lookup and evaluation", required=True,
     )
 

@@ -3,6 +3,7 @@ import pathlib
 import hashlib
 import inspect
 import contextlib
+from typing import List
 
 from ..base import BaseConfig
 from ..df.base import BaseOrchestrator
@@ -21,33 +22,33 @@ from ..source.json import JSONSource
 from ..util.data import merge
 from ..util.entrypoint import load
 from ..util.cli.arg import Arg
-from ..util.cli.cmd import CMD, CMDOutputOverride
-from ..util.cli.cmds import SourcesCMD, KeysCMD, SourcesCMDConfig
+from ..util.cli.cmd import CMD, CMDConfig, CMDOutputOverride
+from ..util.cli.cmds import (
+    SourcesCMD,
+    KeysCMD,
+    SourcesCMDConfig,
+    KeysCMDConfig,
+)
 from ..util.cli.parser import ParseInputsAction, list_action
 from ..base import config, mkarg, field
 
 
+@config
+class MergeConfig(CMDConfig):
+    dataflows: List[pathlib.Path] = field(
+        "DataFlows to merge", position=0,
+    )
+    config: BaseConfigLoader = field(
+        "ConfigLoader to use for exporting", default=JSONConfigLoader,
+    )
+    not_linked: bool = field(
+        "Do not export dataflows as linked", default=False,
+    )
+
+
 class Merge(CMD):
-    arg_dataflows = Arg(
-        "dataflows",
-        help="DataFlows to merge",
-        nargs="+",
-        type=pathlib.Path
-        # TODO Default value
-    )
-    arg_config = Arg(
-        "-config",
-        help="ConfigLoader to use for exporting",
-        type=BaseConfigLoader.load,
-        default=JSONConfigLoader,
-    )
-    arg_not_linked = Arg(
-        "-not-linked",
-        dest="not_linked",
-        help="Do not export dataflows as linked",
-        default=False,
-        action="store_true",
-    )
+
+    CONFIG = MergeConfig
 
     async def run(self):
         # The merged dataflow
@@ -69,22 +70,16 @@ class Merge(CMD):
                 print((await loader.dumpb(exported)).decode())
 
 
-class Create(CMD):
-    arg_operations = Arg(
-        "operations", nargs="+", help="Operations to create a dataflow for"
+@config
+class CreateConfig(CMDConfig):
+    operations: List[str] = field(
+        "Operations to create a dataflow for", position=0,
     )
-    arg_config = Arg(
-        "-config",
-        help="ConfigLoader to use",
-        type=BaseConfigLoader.load,
-        default=JSONConfigLoader,
+    config: BaseConfigLoader = field(
+        "ConfigLoader to use", default=JSONConfigLoader,
     )
-    arg_not_linked = Arg(
-        "-not-linked",
-        dest="not_linked",
-        help="Do not export dataflows as linked",
-        default=False,
-        action="store_true",
+    not_linked: bool = field(
+        "Do not export dataflows as linked", default=False,
     )
     arg_seed = Arg(
         "-seed",
@@ -93,6 +88,11 @@ class Create(CMD):
         default=[],
         help="Inputs to be added to every context",
     )
+
+
+class Create(CMD):
+
+    CONFIG = CreateConfig
 
     async def run(self):
         operations = []
@@ -123,6 +123,12 @@ class Create(CMD):
 
 @config
 class RunCMDConfig(SourcesCMDConfig):
+    dataflow: str = field(
+        "File containing exported DataFlow", required=True,
+    )
+    config: BaseConfigLoader = field(
+        "ConfigLoader to use for importing DataFlow"
+    )
     # TODO Just to get the sources working for now. Will probably change it later
     sources: Sources = field(
         "Sources for loading and saving",
@@ -138,78 +144,57 @@ class RunCMDConfig(SourcesCMDConfig):
         labeled=True,
         required=True,
     )
+    caching: List[str] = field(
+        "Skip running DataFlow if a record already contains these features",
+        required=False,
+        default_factory=lambda: [],
+    )
+    no_update: bool = field(
+        "Update record with sources", required=False, default=False,
+    )
+    no_echo: bool = field(
+        "Do not echo back records", required=False, default=False,
+    )
+    no_strict: bool = field(
+        "Do not exit on operation exceptions, just log errors",
+        required=False,
+        default=False,
+    )
+    orchestrator: BaseOrchestrator = field(
+        "Orchestrator", default=MemoryOrchestrator,
+    )
+    inputs: List[str] = field(
+        "Other inputs to add under each ctx (record's key will "
+        + "be used as the context)",
+        action=ParseInputsAction,
+        default_factory=lambda: [],
+    )
+    record_def: str = field(
+        "Definition to be used for record.key."
+        + "If set, record.key will be added to the set of inputs "
+        + "under each context (which is also the record's key)",
+        default=False,
+    )
 
 
 class RunCMD(SourcesCMD):
 
     CONFIG = RunCMDConfig
-    arg_caching = Arg(
-        "-caching",
-        help="Skip running DataFlow if a record already contains these features",
-        nargs="+",
-        required=False,
-        default=[],
-    )
-    arg_no_update = Arg(
-        "-no-update",
-        help="Update record with sources",
-        dest="no_update",
-        required=False,
-        default=False,
-        action="store_true",
-    )
-    arg_no_echo = Arg(
-        "-no-echo",
-        help="Do not echo back records",
-        dest="no_echo",
-        required=False,
-        default=False,
-        action="store_true",
-    )
-    arg_no_strict = Arg(
-        "-no-strict",
-        help="Do not exit on operation exceptions, just log errors",
-        dest="no_strict",
-        required=False,
-        default=False,
-        action="store_true",
-    )
-    arg_dataflow = Arg(
-        "-dataflow", help="File containing exported DataFlow", required=True
-    )
-    arg_config = Arg(
-        "-config",
-        help="ConfigLoader to use for importing DataFlow",
-        type=BaseConfigLoader.load,
-        default=None,
-    )
-    arg_orchestrator = Arg(
-        "-orchestrator", type=BaseOrchestrator.load, default=MemoryOrchestrator
-    )
-    arg_inputs = Arg(
-        "-inputs",
-        nargs="+",
-        action=ParseInputsAction,
-        default=[],
-        help="Other inputs to add under each ctx (record's key will "
-        + "be used as the context)",
-    )
-    arg_record_def = Arg(
-        "-record-def",
-        default=False,
-        type=str,
-        help="Definition to be used for record.key."
-        + "If set, record.key will be added to the set of inputs "
-        + "under each context (which is also the record's key)",
-    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.orchestrator = self.orchestrator.withconfig(self.extra_config)
 
 
+@config
+class RunAllRecordsConfig(RunCMDConfig):
+    pass
+
+
 class RunAllRecords(RunCMD):
     """Run dataflow for all records in sources"""
+
+    CONFIG = RunAllRecordsConfig
 
     async def records(self, sctx):
         """
@@ -298,8 +283,15 @@ class RunAllRecords(RunCMD):
             yield CMDOutputOverride
 
 
+@config
+class RunRecordSetConfig(RunAllRecordsConfig, KeysCMDConfig):
+    pass
+
+
 class RunRecordSet(RunAllRecords, KeysCMD):
     """Run dataflow for single record or set of records"""
+
+    CONFIG = RunRecordSetConfig
 
     async def records(self, sctx):
         for key in self.keys:
@@ -323,35 +315,30 @@ class Run(CMD):
     records = RunRecords
 
 
-class Diagram(CMD):
-
-    arg_stages = Arg(
-        "-stages",
-        help="Which stages to display: (processing, cleanup, output)",
-        nargs="+",
-        default=[],
+@config
+class DiagramConfig(CMDConfig):
+    dataflow: str = field("File containing exported DataFlow", position=0)
+    config: BaseConfigLoader = field(
+        "ConfigLoader to use for importing DataFlow"
+    )
+    stages: List[str] = field(
+        "Which stages to display: (processing, cleanup, output)",
+        default_factory=lambda: [],
         required=False,
     )
-    arg_simple = Arg(
-        "-simple",
-        help="Don't display input and output names",
-        default=False,
-        action="store_true",
-        required=False,
+    simple: bool = field(
+        "Don't display input and output names", default=False, required=False,
     )
-    arg_display = Arg(
-        "-display",
-        help="How to display (TD: top down, LR, RL, BT)",
+    display: str = field(
+        "How to display (TD: top down, LR, RL, BT)",
         default="TD",
         required=False,
     )
-    arg_dataflow = Arg("dataflow", help="File containing exported DataFlow")
-    arg_config = Arg(
-        "-config",
-        help="ConfigLoader to use for importing",
-        type=BaseConfigLoader.load,
-        default=None,
-    )
+
+
+class Diagram(CMD):
+
+    CONFIG = DiagramConfig
 
     async def run(self):
         dataflow_path = pathlib.Path(self.dataflow)
