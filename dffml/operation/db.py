@@ -94,6 +94,7 @@ async def db_query_create_table(
     ++++++++
 
     >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+    >>>
     >>> dataflow = DataFlow(
     ...     operations={"db_query_create": db_query_create_table.op,},
     ...     configs={"db_query_create": DatabaseQueryConfig(database=sdb),},
@@ -146,6 +147,8 @@ async def db_query_insert(self, *, table_name: str, data: Dict[str, Any]):
     Examples
     ++++++++
 
+    >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+    >>>
     >>> dataflow = DataFlow(
     ...     operations={
     ...         "db_query_insert": db_query_insert.op,
@@ -160,7 +163,7 @@ async def db_query_insert(self, *, table_name: str, data: Dict[str, Any]):
     ... )
     >>>
     >>> inputs = {
-    ...     "insert":[
+    ...     "insert": [
     ...         Input(
     ...             value="myTable", definition=db_query_insert.op.inputs["table_name"],
     ...         ),
@@ -169,18 +172,12 @@ async def db_query_insert(self, *, table_name: str, data: Dict[str, Any]):
     ...             definition=db_query_insert.op.inputs["data"],
     ...         ),
     ...     ],
-    ...
     ...     "lookup": [
     ...         Input(
     ...             value="myTable", definition=db_query_lookup.op.inputs["table_name"],
     ...         ),
     ...         Input(
-    ...             value={
-    ...                 "key": "real",
-    ...                 "firstName": "text",
-    ...                 "lastName": "text",
-    ...                 "age": "real",
-    ...             },
+    ...             value=["firstName", "lastName", "age"],
     ...             definition=db_query_lookup.op.inputs["cols"],
     ...         ),
     ...         Input(value=[], definition=db_query_lookup.op.inputs["conditions"],),
@@ -193,11 +190,11 @@ async def db_query_insert(self, *, table_name: str, data: Dict[str, Any]):
     >>>
     >>> async def main():
     ...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
-    ...         if(result!={}):
+    ...         if result:
     ...             print(result)
     >>>
     >>> asyncio.run(main())
-    {'query_lookups': [{'key': 10.0, 'firstName': 'John', 'lastName': 'Doe', 'age': 16.0}]}
+    {'query_lookups': [{'firstName': 'John', 'lastName': 'Doe', 'age': 16}]}
     """
     await self.dbctx.insert(table_name=table_name, data=data)
 
@@ -231,6 +228,8 @@ async def db_query_update(
     Examples
     ++++++++
 
+    >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+    >>>
     >>> dataflow = DataFlow(
     ...     operations={
     ...         "db_query_update": db_query_update.op,
@@ -252,13 +251,14 @@ async def db_query_update(
     ...         ),
     ...         Input(
     ...             value={
-    ...                 "key": 11,
+    ...                 "key": 10,
     ...                 "firstName": "John",
-    ...                 "lastName": "Miles",
-    ...                 "age": 37,
+    ...                 "lastName": "Doe",
+    ...                 "age": 17,
     ...             },
     ...             definition=db_query_update.op.inputs["data"],
     ...         ),
+    ...         Input(value=[], definition=db_query_update.op.inputs["conditions"],),
     ...     ],
     ...     "lookup": [
     ...         Input(
@@ -266,12 +266,7 @@ async def db_query_update(
     ...             definition=db_query_lookup.op.inputs["table_name"],
     ...         ),
     ...         Input(
-    ...             value={
-    ...                 "key": "real",
-    ...                 "firstName": "text",
-    ...                 "lastName": "text",
-    ...                 "age": "real",
-    ...             },
+    ...             value=["firstName", "lastName", "age"],
     ...             definition=db_query_lookup.op.inputs["cols"],
     ...         ),
     ...         Input(value=[], definition=db_query_lookup.op.inputs["conditions"],),
@@ -284,11 +279,11 @@ async def db_query_update(
     >>>
     >>> async def main():
     ...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
-    ...         if(result!={}):
+    ...         if result:
     ...             print(result)
     >>>
     >>> asyncio.run(main())
-    {'query_lookups': [{'key': 10.0, 'firstName': 'John', 'lastName': 'Doe', 'age': 16.0}, {'key': 11.0, 'firstName': 'John', 'lastName': 'Wick', 'age': 38.0}]}
+    {'query_lookups': [{'firstName': 'John', 'lastName': 'Doe', 'age': 17}]}
     """
     await self.dbctx.update(
         table_name=table_name, data=data, conditions=conditions
@@ -318,6 +313,8 @@ async def db_query_remove(
     Examples
     ++++++++
 
+    >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+    >>>
     >>> dataflow = DataFlow(
     ...     operations={
     ...         "db_query_lookup": db_query_lookup.op,
@@ -334,7 +331,7 @@ async def db_query_remove(
     >>> inputs = {
     ...     "remove": [
     ...         Input(
-    ...             value="myTable1",
+    ...             value="myTable",
     ...             definition=db_query_remove.op.inputs["table_name"],
     ...         ),
     ...         Input(value=[],
@@ -342,16 +339,11 @@ async def db_query_remove(
     ...     ],
     ...     "lookup": [
     ...         Input(
-    ...             value="myTable1",
+    ...             value="myTable",
     ...             definition=db_query_lookup.op.inputs["table_name"],
     ...         ),
     ...         Input(
-    ...             value={
-    ...                 "key": "real",
-    ...                 "firstName": "text",
-    ...                 "lastName": "text",
-    ...                 "age": "real",
-    ...             },
+    ...             value=["firstName", "lastName", "age"],
     ...             definition=db_query_lookup.op.inputs["cols"],
     ...         ),
     ...         Input(value=[], definition=db_query_lookup.op.inputs["conditions"],),
@@ -364,7 +356,7 @@ async def db_query_remove(
     >>>
     >>> async def main():
     ...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
-    ...         if(result!={}):
+    ...         if result:
     ...             print(result)
     >>>
     >>> asyncio.run(main())
@@ -402,6 +394,8 @@ async def db_query_lookup(
     Examples
     ++++++++
 
+    >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+    >>>
     >>> dataflow = DataFlow(
     ...     operations={
     ...         "db_query_lookup": db_query_lookup.op,
@@ -418,12 +412,7 @@ async def db_query_lookup(
     ...             definition=db_query_lookup.op.inputs["table_name"],
     ...         ),
     ...         Input(
-    ...             value={
-    ...                 "key": "real",
-    ...                 "firstName": "text",
-    ...                 "lastName": "text",
-    ...                 "age": "real",
-    ...             },
+    ...             value=["firstName", "lastName", "age"],
     ...             definition=db_query_lookup.op.inputs["cols"],
     ...         ),
     ...         Input(value=[], definition=db_query_lookup.op.inputs["conditions"],),
@@ -436,11 +425,11 @@ async def db_query_lookup(
     >>>
     >>> async def main():
     ...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
-    ...         if(result!={}):
+    ...         if result:
     ...             print(result)
     >>>
     >>> asyncio.run(main())
-    {'query_lookups': [{'key': 10.0, 'firstName': 'John', 'lastName': 'Doe', 'age': 16.0}, {'key': 11.0, 'firstName': 'John', 'lastName': 'Wick', 'age': 38.0}]}
+    {'query_lookups': [{'firstName': 'John', 'lastName': 'Doe', 'age': 16}, {'firstName': 'John', 'lastName': 'Wick', 'age': 39}]}
     """
     result = self.dbctx.lookup(
         table_name=table_name, cols=cols, conditions=conditions
@@ -471,6 +460,10 @@ async def db_query_insert_or_update(
     Examples
     ++++++++
 
+    >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+    >>>
+    >>> person = {"key": 11, "firstName": "John", "lastName": "Wick", "age": 38}
+    >>>
     >>> dataflow = DataFlow(
     ...     operations={
     ...         "db_query_insert_or_update": db_query_insert_or_update.op,
@@ -490,7 +483,7 @@ async def db_query_insert_or_update(
     ...             value="myTable", definition=db_query_update.op.inputs["table_name"],
     ...         ),
     ...         Input(
-    ...             value={"key": 11, "firstName": "John", "lastName": "Wick", "age": 38},
+    ...             value=person,
     ...             definition=db_query_update.op.inputs["data"],
     ...         ),
     ...     ],
@@ -500,12 +493,7 @@ async def db_query_insert_or_update(
     ...             definition=db_query_lookup.op.inputs["table_name"],
     ...         ),
     ...         Input(
-    ...             value={
-    ...                 "key": "real",
-    ...                 "firstName": "text",
-    ...                 "lastName": "text",
-    ...                 "age": "real",
-    ...             },
+    ...             value=["firstName", "lastName", "age"],
     ...             definition=db_query_lookup.op.inputs["cols"],
     ...         ),
     ...         Input(value=[], definition=db_query_lookup.op.inputs["conditions"],),
@@ -518,10 +506,15 @@ async def db_query_insert_or_update(
     >>>
     >>> async def main():
     ...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
-    ...         if(result!={}):
+    ...         if result:
     ...             print(result)
     >>>
     >>> asyncio.run(main())
-    {'query_lookups': [{'key': 10.0, 'firstName': 'John', 'lastName': 'Doe', 'age': 16.0}, {'key': 11.0, 'firstName': 'John', 'lastName': 'Wick', 'age': 38.0}]}
+    {'query_lookups': [{'firstName': 'John', 'lastName': 'Wick', 'age': 38}]}
+    >>>
+    >>> person["age"] += 1
+    >>>
+    >>> asyncio.run(main())
+    {'query_lookups': [{'firstName': 'John', 'lastName': 'Wick', 'age': 39}]}
     """
     await self.dbctx.insert_or_update(table_name=table_name, data=data)
