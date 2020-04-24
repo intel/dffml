@@ -237,74 +237,22 @@ code in a separate file and format it there before copying it into the example.<
 </div>
 <div class="section" id="setup-for-example-code">
 <h2>Setup for Example Code<a class="headerlink" href="#setup-for-example-code" title="Permalink to this headline">¶</a></h2>
-<p>Everything the example code needs must be setup by the
-<code class="docutils literal notranslate"><span class="pre">docs/doctest_header.py</span></code> file. It contains the <code class="docutils literal notranslate"><span class="pre">import</span></code> statements and
-creates a temporary directory for the tests to run in.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">testsetup::</span></code> directive seemed to be crashing Sphinx, so be aware if
-you attempt to use it.</p>
-</div>
+<p>Everything the example code needs must be setup within the
+<code class="docutils literal notranslate"><span class="pre">tests/test_doctests.py</span></code> file. It imports all of the files within <code class="docutils literal notranslate"><span class="pre">dffml/</span></code>
+and creates a <code class="docutils literal notranslate"><span class="pre">unittest.TestCase</span></code> for each class or function with examples.
+It also creates a temporary directory for the tests to run in.</p>
+<p>See that file for more details on doing extra setup and tear down for specific
+tests.</p>
 </div>
 <div class="section" id="doctests">
 <h2>Doctests<a class="headerlink" href="#doctests" title="Permalink to this headline">¶</a></h2>
-<p>All the examples are tested by the Sphinx doctest extension. To test all of the
-examples, run the doctest script.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./scripts/doctest.sh
-<span class="go">Running Sphinx v2.4.3</span>
-<span class="go">making output directory... done</span>
-<span class="go">loading intersphinx inventory from https://docs.python.org/3/objects.inv...</span>
-<span class="go">building [mo]: targets for 0 po files that are out of date</span>
-<span class="go">building [doctest]: targets for 58 source files that are out of date</span>
-<span class="go">updating environment: [new config] 58 added, 0 changed, 0 removed</span>
-<span class="go">reading sources... [100%] usage/mnist</span>
-
-<span class="go">looking for now-outdated files... none found</span>
-<span class="go">pickling environment... done</span>
-<span class="go">checking consistency... done</span>
-<span class="go">running tests...</span>
-
-<span class="go">Document: api/high_level</span>
-<span class="go">------------------------</span>
-<span class="go">1 items passed all tests:</span>
-<span class="go">   3 tests in default</span>
-<span class="go">3 tests in 1 items.</span>
-<span class="go">3 passed and 0 failed.</span>
-<span class="go">Test passed.</span>
-
-<span class="go">Document: api/base</span>
-<span class="go">------------------</span>
-<span class="go">1 items passed all tests:</span>
-<span class="go">   4 tests in default</span>
-<span class="go">4 tests in 1 items.</span>
-<span class="go">4 passed and 0 failed.</span>
-<span class="go">Test passed.</span>
-
-<span class="go">Document: api/df/memory</span>
-<span class="go">-----------------------</span>
-<span class="go">1 items passed all tests:</span>
-<span class="go">   4 tests in default</span>
-<span class="go">4 tests in 1 items.</span>
-<span class="go">4 passed and 0 failed.</span>
-<span class="go">Test passed.</span>
-
-<span class="go">Document: api/util/net</span>
-<span class="go">----------------------</span>
-<span class="go">1 items passed all tests:</span>
-<span class="go">   4 tests in default</span>
-<span class="go">4 tests in 1 items.</span>
-<span class="go">4 passed and 0 failed.</span>
-<span class="go">Test passed.</span>
-
-<span class="go">Doctest summary</span>
-<span class="go">===============</span>
-<span class="go">   15 tests</span>
-<span class="go">    0 failures in tests</span>
-<span class="go">    0 failures in setup code</span>
-<span class="go">    0 failures in cleanup code</span>
-<span class="go">build succeeded, 4 warnings.</span>
-
-<span class="go">Testing of doctests in the sources finished, look at the results in ../../home/user/Documents/python/dffml/doctest/output.txt.</span>
+<p>To run all the examples</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 setup.py <span class="nb">test</span> -s tests.test_docstrings
+</pre></div>
+</div>
+<p>To run a specific example, determine python path to class or function, remove
+<code class="docutils literal notranslate"><span class="pre">dffml.</span></code> and change rest of <code class="docutils literal notranslate"><span class="pre">.</span></code> to <code class="docutils literal notranslate"><span class="pre">_</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 setup.py <span class="nb">test</span> -s tests.test_docstrings.util_asynctestcase_AsyncTestCase
 </pre></div>
 </div>
 </div>

@@ -343,11 +343,9 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; model = LinearRegressionModel(</span>
+<span class="sd">    &gt;&gt;&gt; model = SLRModel(</span>
 <span class="sd">    ...     features=Features(</span>
 <span class="sd">    ...         DefFeature(&quot;Years&quot;, int, 1),</span>
-<span class="sd">    ...         DefFeature(&quot;Expertise&quot;, int, 1),</span>
-<span class="sd">    ...         DefFeature(&quot;Trust&quot;, float, 1),</span>
 <span class="sd">    ...     ),</span>
 <span class="sd">    ...     predict=DefFeature(&quot;Salary&quot;, int, 1),</span>
 <span class="sd">    ... )</span>
@@ -355,10 +353,10 @@
 <span class="sd">    &gt;&gt;&gt; async def main():</span>
 <span class="sd">    ...     await train(</span>
 <span class="sd">    ...         model,</span>
-<span class="sd">    ...         {&quot;Years&quot;: 0, &quot;Expertise&quot;: 1, &quot;Trust&quot;: 0.1, &quot;Salary&quot;: 10},</span>
-<span class="sd">    ...         {&quot;Years&quot;: 1, &quot;Expertise&quot;: 3, &quot;Trust&quot;: 0.2, &quot;Salary&quot;: 20},</span>
-<span class="sd">    ...         {&quot;Years&quot;: 2, &quot;Expertise&quot;: 5, &quot;Trust&quot;: 0.3, &quot;Salary&quot;: 30},</span>
-<span class="sd">    ...         {&quot;Years&quot;: 3, &quot;Expertise&quot;: 7, &quot;Trust&quot;: 0.4, &quot;Salary&quot;: 40},</span>
+<span class="sd">    ...         {&quot;Years&quot;: 0, &quot;Salary&quot;: 10},</span>
+<span class="sd">    ...         {&quot;Years&quot;: 1, &quot;Salary&quot;: 20},</span>
+<span class="sd">    ...         {&quot;Years&quot;: 2, &quot;Salary&quot;: 30},</span>
+<span class="sd">    ...         {&quot;Years&quot;: 3, &quot;Salary&quot;: 40},</span>
 <span class="sd">    ...     )</span>
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
@@ -398,11 +396,9 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; model = LinearRegressionModel(</span>
+<span class="sd">    &gt;&gt;&gt; model = SLRModel(</span>
 <span class="sd">    ...     features=Features(</span>
 <span class="sd">    ...         DefFeature(&quot;Years&quot;, int, 1),</span>
-<span class="sd">    ...         DefFeature(&quot;Expertise&quot;, int, 1),</span>
-<span class="sd">    ...         DefFeature(&quot;Trust&quot;, float, 1),</span>
 <span class="sd">    ...     ),</span>
 <span class="sd">    ...     predict=DefFeature(&quot;Salary&quot;, int, 1),</span>
 <span class="sd">    ... )</span>
@@ -412,8 +408,8 @@
 <span class="sd">    ...         &quot;Accuracy:&quot;,</span>
 <span class="sd">    ...         await accuracy(</span>
 <span class="sd">    ...             model,</span>
-<span class="sd">    ...             {&quot;Years&quot;: 4, &quot;Expertise&quot;: 9, &quot;Trust&quot;: 0.5, &quot;Salary&quot;: 50},</span>
-<span class="sd">    ...             {&quot;Years&quot;: 5, &quot;Expertise&quot;: 11, &quot;Trust&quot;: 0.6, &quot;Salary&quot;: 60},</span>
+<span class="sd">    ...             {&quot;Years&quot;: 4, &quot;Salary&quot;: 50},</span>
+<span class="sd">    ...             {&quot;Years&quot;: 5, &quot;Salary&quot;: 60},</span>
 <span class="sd">    ...         ),</span>
 <span class="sd">    ...     )</span>
 <span class="sd">    &gt;&gt;&gt;</span>
@@ -461,11 +457,9 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; model = LinearRegressionModel(</span>
+<span class="sd">    &gt;&gt;&gt; model = SLRModel(</span>
 <span class="sd">    ...     features=Features(</span>
 <span class="sd">    ...         DefFeature(&quot;Years&quot;, int, 1),</span>
-<span class="sd">    ...         DefFeature(&quot;Expertise&quot;, int, 1),</span>
-<span class="sd">    ...         DefFeature(&quot;Trust&quot;, float, 1),</span>
 <span class="sd">    ...     ),</span>
 <span class="sd">    ...     predict=DefFeature(&quot;Salary&quot;, int, 1),</span>
 <span class="sd">    ... )</span>
@@ -473,15 +467,15 @@
 <span class="sd">    &gt;&gt;&gt; async def main():</span>
 <span class="sd">    ...     async for i, features, prediction in predict(</span>
 <span class="sd">    ...         model,</span>
-<span class="sd">    ...         {&quot;Years&quot;: 6, &quot;Expertise&quot;: 13, &quot;Trust&quot;: 0.7},</span>
-<span class="sd">    ...         {&quot;Years&quot;: 7, &quot;Expertise&quot;: 15, &quot;Trust&quot;: 0.8},</span>
+<span class="sd">    ...         {&quot;Years&quot;: 6},</span>
+<span class="sd">    ...         {&quot;Years&quot;: 7},</span>
 <span class="sd">    ...     ):</span>
 <span class="sd">    ...         features[&quot;Salary&quot;] = round(prediction[&quot;Salary&quot;][&quot;value&quot;])</span>
 <span class="sd">    ...         print(features)</span>
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
-<span class="sd">    {&#39;Years&#39;: 6, &#39;Expertise&#39;: 13, &#39;Trust&#39;: 0.7, &#39;Salary&#39;: 70.0}</span>
-<span class="sd">    {&#39;Years&#39;: 7, &#39;Expertise&#39;: 15, &#39;Trust&#39;: 0.8, &#39;Salary&#39;: 80.0}</span>
+<span class="sd">    {&#39;Years&#39;: 6, &#39;Salary&#39;: 70}</span>
+<span class="sd">    {&#39;Years&#39;: 7, &#39;Salary&#39;: 80}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sources</span> <span class="o">=</span> <span class="n">_records_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
     <span class="k">async</span> <span class="k">with</span> <span class="n">sources</span> <span class="k">as</span> <span class="n">sources</span><span class="p">,</span> <span class="n">model</span> <span class="k">as</span> <span class="n">model</span><span class="p">:</span>

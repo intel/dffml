@@ -456,7 +456,9 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">uid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="n">Definition</span><span class="p">):</span>
+        <span class="c1"># NOTE For some reason doctests end up with id(type(definition)) not</span>
+        <span class="c1"># equal to id(Definition). Therfore just compare the class name.</span>
+        <span class="k">if</span> <span class="n">definition</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__qualname__</span> <span class="o">!=</span> <span class="s2">&quot;Definition&quot;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Input given non definition&quot;</span><span class="p">)</span>
         <span class="c1"># TODO Add optional parameter Input.target which specifies the operation</span>
         <span class="c1"># instance name this Input is intended for.</span>
