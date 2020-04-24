@@ -6,9 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- binsec branch to `operations/binsec`
 - Doctestable example for `model_predict` operation.
 - Doctestable examples to `operation/mapping.py`
 - load function in high_level API
+- Doctestable examples to `db` operations.
+### Changed
+- `Edit on Github` button now hidden for plugins.
+- Doctests now run via unittests
 
 ## [0.3.7] - 2020-04-14
 ### Added

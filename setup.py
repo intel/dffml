@@ -103,6 +103,13 @@ setup(
             "print_output = dffml.operation.io:print_output",
             # preprocess
             "literal_eval = dffml.operation.preprocess:literal_eval",
+            # Database
+            "db_query_create_table = dffml.operation.db:db_query_create_table",
+            "db_query_insert = dffml.operation.db:db_query_insert",
+            "db_query_update = dffml.operation.db:db_query_update",
+            "db_query_remove = dffml.operation.db:db_query_remove",
+            "db_query_insert_or_update = dffml.operation.db:db_query_insert_or_update",
+            "db_query_lookup = dffml.operation.db:db_query_lookup",
         ],
         "dffml.kvstore": ["memory = dffml.df.memory:MemoryKeyValueStore"],
         "dffml.input.network": ["memory = dffml.df.memory:MemoryInputNetwork"],

@@ -80,6 +80,49 @@ async def db_query(
 async def db_query_create_table(
     self, *, table_name: str, cols: List[str] = []
 ):
+    """
+    Generates a create table query in the database.
+
+    Parameters
+    ++++++++++
+    table_name : str
+        The name of the table to be created.
+    cols : list[str]
+        Columns of the table.
+
+    Examples
+    ++++++++
+
+    >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+    >>>
+    >>> dataflow = DataFlow(
+    ...     operations={"db_query_create": db_query_create_table.op,},
+    ...     configs={"db_query_create": DatabaseQueryConfig(database=sdb),},
+    ...     seed=[],
+    ... )
+    >>>
+    >>> inputs = [
+    ...     Input(
+    ...         value="myTable1",
+    ...         definition=db_query_create_table.op.inputs["table_name"],
+    ...     ),
+    ...     Input(
+    ...         value={
+    ...             "key": "real",
+    ...             "firstName": "text",
+    ...             "lastName": "text",
+    ...             "age": "real",
+    ...         },
+    ...         definition=db_query_create_table.op.inputs["cols"],
+    ...     ),
+    ... ]
+    >>>
+    >>> async def main():
+    ...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
+    ...         pass
+    >>>
+    >>> asyncio.run(main())
+    """
     await self.dbctx.create_table(table_name=table_name, cols=cols)
 
 
@@ -91,6 +134,68 @@ async def db_query_create_table(
     ctx_enter={"dbctx": (lambda self: self.parent.database())},
 )
 async def db_query_insert(self, *, table_name: str, data: Dict[str, Any]):
+    """
+    Generates an insert query in the database.
+
+    Parameters
+    ++++++++++
+    table_name : str
+        The name of the table to insert data in to.
+    data : dict
+        Data to be inserted into the table.
+
+    Examples
+    ++++++++
+
+    >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+    >>>
+    >>> dataflow = DataFlow(
+    ...     operations={
+    ...         "db_query_insert": db_query_insert.op,
+    ...         "db_query_lookup": db_query_lookup.op,
+    ...         "get_single": GetSingle.imp.op,
+    ...     },
+    ...     configs={
+    ...         "db_query_lookup": DatabaseQueryConfig(database=sdb),
+    ...         "db_query_insert": DatabaseQueryConfig(database=sdb),
+    ...     },
+    ...     seed=[],
+    ... )
+    >>>
+    >>> inputs = {
+    ...     "insert": [
+    ...         Input(
+    ...             value="myTable", definition=db_query_insert.op.inputs["table_name"],
+    ...         ),
+    ...         Input(
+    ...            value={"key": 10, "firstName": "John", "lastName": "Doe", "age": 16},
+    ...             definition=db_query_insert.op.inputs["data"],
+    ...         ),
+    ...     ],
+    ...     "lookup": [
+    ...         Input(
+    ...             value="myTable", definition=db_query_lookup.op.inputs["table_name"],
+    ...         ),
+    ...         Input(
+    ...             value=["firstName", "lastName", "age"],
+    ...             definition=db_query_lookup.op.inputs["cols"],
+    ...         ),
+    ...         Input(value=[], definition=db_query_lookup.op.inputs["conditions"],),
+    ...         Input(
+    ...             value=[db_query_lookup.op.outputs["lookups"].name],
+    ...             definition=GetSingle.op.inputs["spec"],
+    ...         ),
+    ...     ]
+    ... }
+    >>>
+    >>> async def main():
+    ...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
+    ...         if result:
+    ...             print(result)
+    >>>
+    >>> asyncio.run(main())
+    {'query_lookups': [{'firstName': 'John', 'lastName': 'Doe', 'age': 16}]}
+    """
     await self.dbctx.insert(table_name=table_name, data=data)
 
 
@@ -108,6 +213,78 @@ async def db_query_insert(self, *, table_name: str, data: Dict[str, Any]):
 async def db_query_update(
     self, *, table_name: str, data: Dict[str, Any], conditions: Conditions = []
 ):
+    """
+    Generates an Update table query in the database.
+
+    Parameters
+    ++++++++++
+    table_name : str
+        The name of the table to insert data in to.
+    data : dict
+        Data to be updated into the table.
+    conditions : list
+        List of query conditions.
+
+    Examples
+    ++++++++
+
+    >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+    >>>
+    >>> dataflow = DataFlow(
+    ...     operations={
+    ...         "db_query_update": db_query_update.op,
+    ...         "db_query_lookup": db_query_lookup.op,
+    ...         "get_single": GetSingle.imp.op,
+    ...     },
+    ...     configs={
+    ...         "db_query_update": DatabaseQueryConfig(database=sdb),
+    ...         "db_query_lookup": DatabaseQueryConfig(database=sdb),
+    ...     },
+    ...     seed=[],
+    ... )
+    >>>
+    >>> inputs = {
+    ...     "update": [
+    ...         Input(
+    ...             value="myTable",
+    ...             definition=db_query_update.op.inputs["table_name"],
+    ...         ),
+    ...         Input(
+    ...             value={
+    ...                 "key": 10,
+    ...                 "firstName": "John",
+    ...                 "lastName": "Doe",
+    ...                 "age": 17,
+    ...             },
+    ...             definition=db_query_update.op.inputs["data"],
+    ...         ),
+    ...         Input(value=[], definition=db_query_update.op.inputs["conditions"],),
+    ...     ],
+    ...     "lookup": [
+    ...         Input(
+    ...             value="myTable",
+    ...             definition=db_query_lookup.op.inputs["table_name"],
+    ...         ),
+    ...         Input(
+    ...             value=["firstName", "lastName", "age"],
+    ...             definition=db_query_lookup.op.inputs["cols"],
+    ...         ),
+    ...         Input(value=[], definition=db_query_lookup.op.inputs["conditions"],),
+    ...         Input(
+    ...             value=[db_query_lookup.op.outputs["lookups"].name],
+    ...             definition=GetSingle.op.inputs["spec"],
+    ...         ),
+    ...     ],
+    ... }
+    >>>
+    >>> async def main():
+    ...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
+    ...         if result:
+    ...             print(result)
+    >>>
+    >>> asyncio.run(main())
+    {'query_lookups': [{'firstName': 'John', 'lastName': 'Doe', 'age': 17}]}
+    """
     await self.dbctx.update(
         table_name=table_name, data=data, conditions=conditions
     )
@@ -123,6 +300,68 @@ async def db_query_update(
 async def db_query_remove(
     self, *, table_name: str, conditions: Conditions = []
 ):
+    """
+    Generates a remove table query in the database.
+
+    Parameters
+    ++++++++++
+    table_name : str
+        The name of the table to insert data in to.
+    conditions : Conditions
+        Query conditions.
+
+    Examples
+    ++++++++
+
+    >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+    >>>
+    >>> dataflow = DataFlow(
+    ...     operations={
+    ...         "db_query_lookup": db_query_lookup.op,
+    ...         "db_query_remove": db_query_remove.op,
+    ...         "get_single": GetSingle.imp.op,
+    ...     },
+    ...     configs={
+    ...         "db_query_remove": DatabaseQueryConfig(database=sdb),
+    ...         "db_query_lookup": DatabaseQueryConfig(database=sdb),
+    ...     },
+    ...     seed=[],
+    ... )
+    >>>
+    >>> inputs = {
+    ...     "remove": [
+    ...         Input(
+    ...             value="myTable",
+    ...             definition=db_query_remove.op.inputs["table_name"],
+    ...         ),
+    ...         Input(value=[],
+    ...         definition=db_query_remove.op.inputs["conditions"],),
+    ...     ],
+    ...     "lookup": [
+    ...         Input(
+    ...             value="myTable",
+    ...             definition=db_query_lookup.op.inputs["table_name"],
+    ...         ),
+    ...         Input(
+    ...             value=["firstName", "lastName", "age"],
+    ...             definition=db_query_lookup.op.inputs["cols"],
+    ...         ),
+    ...         Input(value=[], definition=db_query_lookup.op.inputs["conditions"],),
+    ...         Input(
+    ...             value=[db_query_lookup.op.outputs["lookups"].name],
+    ...             definition=GetSingle.op.inputs["spec"],
+    ...         ),
+    ...     ],
+    ... }
+    >>>
+    >>> async def main():
+    ...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
+    ...         if result:
+    ...             print(result)
+    >>>
+    >>> asyncio.run(main())
+    {'query_lookups': []}
+    """
     await self.dbctx.remove(table_name=table_name, conditions=conditions)
 
 
@@ -140,6 +379,58 @@ async def db_query_remove(
 async def db_query_lookup(
     self, *, table_name: str, cols: List[str] = [], conditions: Conditions = []
 ) -> Dict[str, Any]:
+    """
+    Generates a lookup query in the database.
+
+    Parameters
+    ++++++++++
+    table_name : str
+        The name of the table.
+    cols : list[str]
+        Columns of the table.
+    conditions : Conditions
+        Query conditions.
+
+    Examples
+    ++++++++
+
+    >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+    >>>
+    >>> dataflow = DataFlow(
+    ...     operations={
+    ...         "db_query_lookup": db_query_lookup.op,
+    ...         "get_single": GetSingle.imp.op,
+    ...     },
+    ...     configs={"db_query_lookup": DatabaseQueryConfig(database=sdb),},
+    ...     seed=[],
+    ... )
+    >>>
+    >>> inputs = {
+    ...     "lookup": [
+    ...         Input(
+    ...             value="myTable",
+    ...             definition=db_query_lookup.op.inputs["table_name"],
+    ...         ),
+    ...         Input(
+    ...             value=["firstName", "lastName", "age"],
+    ...             definition=db_query_lookup.op.inputs["cols"],
+    ...         ),
+    ...         Input(value=[], definition=db_query_lookup.op.inputs["conditions"],),
+    ...         Input(
+    ...             value=[db_query_lookup.op.outputs["lookups"].name],
+    ...             definition=GetSingle.op.inputs["spec"],
+    ...         ),
+    ...     ],
+    ... }
+    >>>
+    >>> async def main():
+    ...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
+    ...         if result:
+    ...             print(result)
+    >>>
+    >>> asyncio.run(main())
+    {'query_lookups': [{'firstName': 'John', 'lastName': 'Doe', 'age': 16}, {'firstName': 'John', 'lastName': 'Wick', 'age': 39}]}
+    """
     result = self.dbctx.lookup(
         table_name=table_name, cols=cols, conditions=conditions
     )
@@ -156,4 +447,74 @@ async def db_query_lookup(
 async def db_query_insert_or_update(
     self, *, table_name: str, data: Dict[str, Any]
 ):
+    """
+    Automatically uses the better suited operation, insert query or update query.
+
+    Parameters
+    ++++++++++
+    table_name : str
+        The name of the table to insert data in to.
+    data : dict
+        Data to be inserted or updated into the table.
+
+    Examples
+    ++++++++
+
+    >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
+    >>>
+    >>> person = {"key": 11, "firstName": "John", "lastName": "Wick", "age": 38}
+    >>>
+    >>> dataflow = DataFlow(
+    ...     operations={
+    ...         "db_query_insert_or_update": db_query_insert_or_update.op,
+    ...         "db_query_lookup": db_query_lookup.op,
+    ...         "get_single": GetSingle.imp.op,
+    ...     },
+    ...     configs={
+    ...         "db_query_insert_or_update": DatabaseQueryConfig(database=sdb),
+    ...         "db_query_lookup": DatabaseQueryConfig(database=sdb),
+    ...     },
+    ...     seed=[],
+    ... )
+    >>>
+    >>> inputs = {
+    ...     "insert_or_update": [
+    ...         Input(
+    ...             value="myTable", definition=db_query_update.op.inputs["table_name"],
+    ...         ),
+    ...         Input(
+    ...             value=person,
+    ...             definition=db_query_update.op.inputs["data"],
+    ...         ),
+    ...     ],
+    ...     "lookup": [
+    ...         Input(
+    ...             value="myTable",
+    ...             definition=db_query_lookup.op.inputs["table_name"],
+    ...         ),
+    ...         Input(
+    ...             value=["firstName", "lastName", "age"],
+    ...             definition=db_query_lookup.op.inputs["cols"],
+    ...         ),
+    ...         Input(value=[], definition=db_query_lookup.op.inputs["conditions"],),
+    ...         Input(
+    ...             value=[db_query_lookup.op.outputs["lookups"].name],
+    ...             definition=GetSingle.op.inputs["spec"],
+    ...         ),
+    ...     ],
+    ... }
+    >>>
+    >>> async def main():
+    ...     async for ctx, result in MemoryOrchestrator.run(dataflow, inputs):
+    ...         if result:
+    ...             print(result)
+    >>>
+    >>> asyncio.run(main())
+    {'query_lookups': [{'firstName': 'John', 'lastName': 'Wick', 'age': 38}]}
+    >>>
+    >>> person["age"] += 1
+    >>>
+    >>> asyncio.run(main())
+    {'query_lookups': [{'firstName': 'John', 'lastName': 'Wick', 'age': 39}]}
+    """
     await self.dbctx.insert_or_update(table_name=table_name, data=data)
