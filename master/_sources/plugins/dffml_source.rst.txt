@@ -125,6 +125,27 @@ Source to read files in IDX3 format (such as MNIST digit image dataset).
 
   - default: False
 
+.. _plugin_source_dffml_ini:
+
+ini
+~~~
+
+*Official*
+
+Source to read files in .ini format.
+
+**Args**
+
+- filename: String
+
+- readwrite: Boolean
+
+  - default: False
+
+- allowempty: Boolean
+
+  - default: False
+
 .. _plugin_source_dffml_json:
 
 json
