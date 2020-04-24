@@ -4,6 +4,7 @@ from ..base import config
 from ..record import Record
 from .file import FileSource
 from .memory import MemorySource
+from ..util.data import parser_helper
 from ..util.entrypoint import entrypoint
 
 
