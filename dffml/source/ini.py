@@ -36,7 +36,7 @@ class INISource(FileSource, MemorySource):
         # Go over each section
         for section in sections:
             # Get data under each section as a dict
-            temp_dict = dict(parser.items(section))
+            temp_dict = dict(map(k, v: (k, parser_helper(v)), parser.items(section)))
             # Each section used as a record
             self.mem[str(section)] = Record(
                 str(section), data={"features": temp_dict},
