@@ -26,5 +26,5 @@ class TestINISource(AsyncTestCase):
 
             self.assertIsInstance(records, list)
             self.assertEqual(len(records), 2)
-            self.assertDictEqual(records[0].features(), {"a": "1", "b": "2"})
+            self.assertDictEqual(records[0].features(), {"a": 1, "b": 2})
             self.assertDictEqual(records[1].features(), {"c": "3", "d": "4"})
