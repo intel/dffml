@@ -141,6 +141,15 @@
 <li class="toctree-l4"><a class="reference internal" href="#work">work</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-operations-binsec">dffml_operations_binsec</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cleanup-rpm">cleanup_rpm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#files-in-rpm">files_in_rpm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#is-binary-pie">is_binary_pie</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#url-to-urlbytes">url_to_urlbytes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#urlbytes-to-rpmfile">urlbytes_to_rpmfile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#urlbytes-to-tarfile">urlbytes_to_tarfile</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-feature-auth">dffml_feature_auth</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#scrypt">scrypt</a></li>
 </ul>
@@ -1581,6 +1590,93 @@ check it’s releases page to make sure you’re installing the latest version.<
 <p><strong>Outputs</strong></p>
 <ul class="simple">
 <li><p>work: work_spread(type: int)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="dffml-operations-binsec">
+<span id="plugin-operation-dffml-operations-binsec"></span><h2>dffml_operations_binsec<a class="headerlink" href="#dffml-operations-binsec" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-binsec</span>
+</pre></div>
+</div>
+<div class="section" id="cleanup-rpm">
+<span id="plugin-operation-dffml-operations-binsec-cleanup-rpm"></span><h3>cleanup_rpm<a class="headerlink" href="#cleanup-rpm" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: cleanup</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+</ul>
+</div>
+<div class="section" id="files-in-rpm">
+<span id="plugin-operation-dffml-operations-binsec-files-in-rpm"></span><h3>files_in_rpm<a class="headerlink" href="#files-in-rpm" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>files: rpm_filename(type: str)</p></li>
+</ul>
+</div>
+<div class="section" id="is-binary-pie">
+<span id="plugin-operation-dffml-operations-binsec-is-binary-pie"></span><h3>is_binary_pie<a class="headerlink" href="#is-binary-pie" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+<li><p>filename: rpm_filename(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>is_pie: binary_is_PIE(type: bool)</p></li>
+</ul>
+</div>
+<div class="section" id="url-to-urlbytes">
+<span id="plugin-operation-dffml-operations-binsec-url-to-urlbytes"></span><h3>url_to_urlbytes<a class="headerlink" href="#url-to-urlbytes" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>URL: URL(type: string)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>download: URLBytes(type: python_obj)</p></li>
+</ul>
+</div>
+<div class="section" id="urlbytes-to-rpmfile">
+<span id="plugin-operation-dffml-operations-binsec-urlbytes-to-rpmfile"></span><h3>urlbytes_to_rpmfile<a class="headerlink" href="#urlbytes-to-rpmfile" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>download: URLBytes(type: python_obj)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
+</ul>
+</div>
+<div class="section" id="urlbytes-to-tarfile">
+<span id="plugin-operation-dffml-operations-binsec-urlbytes-to-tarfile"></span><h3>urlbytes_to_tarfile<a class="headerlink" href="#urlbytes-to-tarfile" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>download: URLBytes(type: python_obj)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>rpm: RPMObject(type: python_obj)</p></li>
 </ul>
 </div>
 </div>

@@ -1521,6 +1521,139 @@ No description
 
 - work: work_spread(type: int)
 
+.. _plugin_operation_dffml_operations_binsec:
+
+dffml_operations_binsec
+-----------------------
+
+.. code-block:: console
+
+    pip install dffml-operations-binsec
+
+
+.. _plugin_operation_dffml_operations_binsec_cleanup_rpm:
+
+cleanup_rpm
+~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: cleanup**
+
+
+
+**Inputs**
+
+- rpm: RPMObject(type: python_obj)
+
+.. _plugin_operation_dffml_operations_binsec_files_in_rpm:
+
+files_in_rpm
+~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- rpm: RPMObject(type: python_obj)
+
+**Outputs**
+
+- files: rpm_filename(type: str)
+
+.. _plugin_operation_dffml_operations_binsec_is_binary_pie:
+
+is_binary_pie
+~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- rpm: RPMObject(type: python_obj)
+- filename: rpm_filename(type: str)
+
+**Outputs**
+
+- is_pie: binary_is_PIE(type: bool)
+
+.. _plugin_operation_dffml_operations_binsec_url_to_urlbytes:
+
+url_to_urlbytes
+~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- URL: URL(type: string)
+
+**Outputs**
+
+- download: URLBytes(type: python_obj)
+
+.. _plugin_operation_dffml_operations_binsec_urlbytes_to_rpmfile:
+
+urlbytes_to_rpmfile
+~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- download: URLBytes(type: python_obj)
+
+**Outputs**
+
+- rpm: RPMObject(type: python_obj)
+
+.. _plugin_operation_dffml_operations_binsec_urlbytes_to_tarfile:
+
+urlbytes_to_tarfile
+~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- download: URLBytes(type: python_obj)
+
+**Outputs**
+
+- rpm: RPMObject(type: python_obj)
+
 .. _plugin_operation_dffml_feature_auth:
 
 dffml_feature_auth
