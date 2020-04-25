@@ -30,7 +30,7 @@ async def run_dependency_check(pkg: str) -> Dict[str, Any]:
                 "-f",
                 "JSON",
                 "--out",
-                os.path.dirname(tempdir),
+                os.path.abspath(tempdir),
                 "-s",
                 pkg,
                 cwd=os.path.dirname(pkg),
