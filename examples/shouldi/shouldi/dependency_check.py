@@ -32,6 +32,7 @@ async def run_dependency_check(pkg: str) -> Dict[str, Any]:
                 "--out",
                 os.path.dirname(tempdir),
                 "-s",
+                pkg,
                 cwd=os.path.dirname(pkg),
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
