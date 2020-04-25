@@ -14,6 +14,12 @@ dependency_check_output = Definition(
 )
 
 
+class DependencyCheckError(Exception):
+    """
+    Raised when dependency-check fails
+    """
+
+
 @op(
     inputs={"pkg": package_src_dir},
     outputs={"report": dependency_check_output},
@@ -50,6 +56,10 @@ async def run_dependency_check(pkg: str) -> Dict[str, Any]:
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
             )
+
+       _, stderr = await proc.communicate()
+       if proc.returncode != 0:
+           raise DependencyCheckError(stderr.decode())
 
         with open(
             os.path.join(
