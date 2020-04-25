@@ -28,7 +28,6 @@ async def run_dependency_check(pkg: str) -> Dict[str, Any]:
     """
     CLI usage: dffml service dev run -log debug shouldi.dependency_check:run_dependency_check -pkg .
     """
-    print(os.getcwd())
     with tempfile.TemporaryDirectory() as tempdir:
         if Path(pkg).is_file():
             proc = await asyncio.create_subprocess_exec(
@@ -43,6 +42,9 @@ async def run_dependency_check(pkg: str) -> Dict[str, Any]:
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
             )
+            _, stderr = await proc.communicate()
+            if proc.returncode != 0:
+                raise DependencyCheckError(stderr.decode())
         else:
             proc = await asyncio.create_subprocess_exec(
                 "dependency-check.sh",
@@ -56,10 +58,9 @@ async def run_dependency_check(pkg: str) -> Dict[str, Any]:
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
             )
-
-       _, stderr = await proc.communicate()
-       if proc.returncode != 0:
-           raise DependencyCheckError(stderr.decode())
+            _, stderr = await proc.communicate()
+            if proc.returncode != 0:
+                raise DependencyCheckError(stderr.decode())
 
         with open(
             os.path.join(
