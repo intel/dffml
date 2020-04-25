@@ -49,11 +49,12 @@ async def run_dependency_check(pkg: str) -> Dict[str, Any]:
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
             )
-        
-        print(os.path.abspath(tempdir))
-        print(os.listdir(tempdir))
-        with open(os.path.join(os.path.abspath(tempdir), "/dependency-check-report.json")) as f:
-            print(os.listdir(tempdir))
+
+        with open(
+            os.path.join(
+                os.path.abspath(tempdir), "dependency-check-report.json"
+            )
+        ) as f:
             dependency_check_op = json.loads(f.read())
 
     for items in dependency_check_op["dependencies"]:
