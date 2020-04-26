@@ -7,7 +7,7 @@ from dffml.util.asynctestcase import AsyncTestCase
 from shouldi.npm_audit import run_npm_audit
 
 
-class TestRunNPM_AuditOp(AsyncTestCase):
+class TestRunNPMAuditOp(AsyncTestCase):
     @cached_download_unpack_archive(
         "https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.gz",
         pathlib.Path(__file__).parent / "downloads" / "npm.tar.gz",

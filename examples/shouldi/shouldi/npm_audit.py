@@ -11,7 +11,7 @@ npm_audit_output = Definition(
 )
 
 
-class NPM_AuditError(Exception):
+class NPMAuditError(Exception):
     """
     Raised when npm-audit fails
     """
@@ -31,9 +31,9 @@ async def run_npm_audit(pkg: str) -> Dict[str, Any]:
         stderr=asyncio.subprocess.PIPE,
     )
 
-    stdout, _stderr = await proc.communicate()
-    if len(stdout) == 0:
-        raise NPM_AuditError(_stderr)
+    _, stderr = await proc.communicate()
+    if proc.returncode != 0:
+        raise NPMAuditError(stderr.decode())
 
     npm_audit_op = stdout.decode()
     npm_audit_op = json.loads(npm_audit_op)
