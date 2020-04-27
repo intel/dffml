@@ -1,6 +1,6 @@
 import sys
+import contextlib
 from unittest.mock import patch, MagicMock
-from contextlib import ExitStack
 from typing import List
 
 from dffml.df.types import (
@@ -141,6 +141,20 @@ class TestMemoryOperationImplementationNetwork(AsyncTestCase):
 
 
 class TestOrchestrator(AsyncTestCase):
+    """
+    create_octx and run exist so that we can subclass from them in
+    tests/test_high_level.py to test run.
+    """
+
+    @contextlib.asynccontextmanager
+    async def create_octx(self):
+        async with MemoryOrchestrator.withconfig({}) as orchestrator:
+            async with orchestrator(DATAFLOW) as octx:
+                yield octx
+
+    def run_dataflow(self, octx, *inputs):
+        return octx.run(*inputs)
+
     async def test_run(self):
         calc_strings_check = {"add 40 and 2": 42, "multiply 42 and 10": 420}
         # TODO(p0) Implement and test asyncgenerator
@@ -189,31 +203,30 @@ class TestOrchestrator(AsyncTestCase):
                 for to_calc in calc_strings_check.keys()
             ],
         }
-        async with MemoryOrchestrator.withconfig({}) as orchestrator:
-            async with orchestrator(DATAFLOW) as octx:
-                for callstyle, inputs in callstyles.items():
-                    with self.subTest(callstyle=callstyle):
-                        if callstyle in callstyles_no_expand:
-                            run_coro = octx.run(inputs)
+        async with self.create_octx() as octx:
+            for callstyle, inputs in callstyles.items():
+                with self.subTest(callstyle=callstyle):
+                    if callstyle in callstyles_no_expand:
+                        run_coro = self.run_dataflow(octx, inputs)
+                    else:
+                        run_coro = self.run_dataflow(octx, *inputs)
+                    async for ctx, results in run_coro:
+                        ctx_str = (await ctx.handle()).as_string()
+                        if callstyle == "uctx":
+                            self.assertIn(
+                                results[add.op.outputs["sum"].name],
+                                dict(
+                                    zip(
+                                        calc_strings_check.values(),
+                                        calc_strings_check.keys(),
+                                    )
+                                ),
+                            )
                         else:
-                            run_coro = octx.run(*inputs)
-                        async for ctx, results in run_coro:
-                            ctx_str = (await ctx.handle()).as_string()
-                            if callstyle == "uctx":
-                                self.assertIn(
-                                    results[add.op.outputs["sum"].name],
-                                    dict(
-                                        zip(
-                                            calc_strings_check.values(),
-                                            calc_strings_check.keys(),
-                                        )
-                                    ),
-                                )
-                            else:
-                                self.assertEqual(
-                                    calc_strings_check[ctx_str],
-                                    results[add.op.outputs["sum"].name],
-                                )
+                            self.assertEqual(
+                                calc_strings_check[ctx_str],
+                                results[add.op.outputs["sum"].name],
+                            )
 
 
 class MockIterEntryPoints(AsyncTestCase):
@@ -225,7 +238,7 @@ class MockIterEntryPoints(AsyncTestCase):
             yield mock
 
     async def setUp(self):
-        self.exit_stack = ExitStack().__enter__()
+        self.exit_stack = contextlib.ExitStack().__enter__()
         self.exit_stack.enter_context(
             patch(
                 "pkg_resources.iter_entry_points", new=self.iter_entry_points
