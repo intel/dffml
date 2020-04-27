@@ -16,3 +16,7 @@ sha384sum -c - <<EOF
 bf80c778867bd87d14588ff72ae10632b331427379a299ab2ac4d7ddefa9b648313720b796ab441359e0e47daf738109 pages/_static/copybutton.js
 EOF
 touch pages/.nojekyll
+
+if [ "x${HTTP}" != "x" ]; then
+  python3.7 -m http.server --directory pages/ 8080
+fi
