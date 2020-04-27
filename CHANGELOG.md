@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - load function in high_level API
 - Doctestable examples to `db` operations.
 - Source for parsing `.ini` file formats
+- Tests for noasync high level API.
 ### Changed
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
