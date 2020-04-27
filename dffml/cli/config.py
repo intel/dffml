@@ -1,8 +1,8 @@
 import sys
 import pathlib
 
-from ..config.config import BaseConfigLoader
-from ..config.json import JSONConfigLoader
+from ..configloader.configloader import BaseConfigLoader
+from ..configloader.json import JSONConfigLoader
 from ..util.cli.cmd import CMD
 from ..util.cli.cmd import Arg
 

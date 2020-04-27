@@ -1,0 +1,13 @@
+{
+  "source": {
+    "plugin": null,
+    "config": {
+      "filename": {
+        "plugin": [
+          "mydataset.json"
+        ],
+        "config": {}
+      }
+    }
+  }
+}

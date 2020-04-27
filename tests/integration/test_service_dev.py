@@ -44,7 +44,7 @@ class TestDevelop(IntegrationCLITestCase):
         await CLI.cli(
             "train",
             "-model",
-            "scratchslr",
+            "slr",
             "-model-features",
             "Years:int:1",
             "-model-predict",
@@ -63,7 +63,7 @@ class TestDevelop(IntegrationCLITestCase):
             "-features",
             json.dumps({"Years": 6}),
             "-config-model",
-            "scratchslr",
+            "slr",
             "-config-model-features",
             "Years:int:1",
             "-config-model-predict",

@@ -19,7 +19,7 @@ with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
 INSTALL_REQUIRES = ["numpy>=1.16.4"] + (
-    ["dffml>=0.3.3"]
+    ["dffml>=0.3.7"]
     if not any(
         list(
             map(
@@ -65,5 +65,9 @@ setup(
     ],
     install_requires=INSTALL_REQUIRES,
     packages=find_packages(),
-    entry_points={"dffml.model": ["scratchslr = dffml_model_scratch.slr:SLR"]},
+    entry_points={
+        "dffml.model": [
+            "scratchlgrsag = dffml_model_scratch.logisticregression:LogisticRegression"
+        ]
+    },
 )

@@ -6,15 +6,15 @@ Codebase Layout And Notes
 Plugins
 -------
 
-DFFML is plugin based. This means that there the source code for the main
+DFFML is plugin based. This means that the source code for the main
 package ``dffml``, is separate from the source code for many of the things you
 might want to use in conjunction with it. For example, if you wanted to use the
 machine learning models based on scikit, you'd install ``dffml-model-scikit``.
 If you wanted to use machine learning models based on TensorFlow, you'd install
-``dffml-model-tensorflow``. The source code for all *Core* plugins is within the
-same Git repo (https://github.com/intel/dffml).
+``dffml-model-tensorflow``. The source code for all *Official* plugins is within
+the same Git repo (https://github.com/intel/dffml).
 
-A *Core* plugin is any plugin maintained within the main Git repo.
+A *Official* plugin is any plugin maintained within the main Git repo.
 
 This means users only have to install what they need. TensorFlow is several
 hundred megabytes, not everyone wants that, or needs that to get machine
@@ -30,15 +30,16 @@ source plugin packages are in ``source/``.
 Adding A New Plugin
 +++++++++++++++++++
 
-To add a new *Core* plugin to DFFML. You need to first create the plugin in the
-appropriate directory. Then add it to the lists of core plugins.
+To add a new *Official* plugin to DFFML. You need to first create the plugin in
+the appropriate directory. Then add it to the lists of core plugins.
 
 .. warning::
 
     The release process is automated. You should **NOT** upload the package to
-    PyPi! Someone from Intel has to be the one to do that for *Core* plugins.
+    PyPi! Someone from Intel has to be the one to do that for *Official*
+    plugins.
 
-For *Core* plugins, the name given to create should be in the form of
+For *Official* plugins, the name given to create should be in the form of
 ``dffml-{PLUGIN_TYPE}-{NAME}``.
 
 .. code-block:: console
@@ -74,7 +75,7 @@ that with a database, client HTTP sessions, etc.
 .. code-block:: python
 
     import asyncio
-    from dffml.repo import Repo
+    from dffml.record import Record
     from dffml.source.csv import CSVSource, CSVSourceConfig
 
     async def main():
@@ -89,7 +90,7 @@ that with a database, client HTTP sessions, etc.
             # Two
             async with source() as sctx:
                 # Punch
-                await sctx.update(Repo("0", data={
+                await sctx.update(Record("0", data={
                     "features": {
                         "first_column": 42,
                         "second_column": 1776,
@@ -111,7 +112,7 @@ For example:
 .. code-block:: yaml
 
     model:
-      arg: tfdnnc
+      plugin: tfdnnc
       config:
         epochs: 400
         steps: 4000
@@ -133,8 +134,8 @@ For example:
           length: 10
           name: work
 
-Currently, ``arg`` needs to be renamed to ``plugin``, it signifies the plugin to
-load. ``config`` is the ``...Config`` class as a dict for that plugin.
+Here, ``plugin`` is the ``...Arg`` class which signifies the plugin to load.
+``config`` is the ``...Config`` class as a dict for that plugin.
 
 The command line equivalent for the model is...
 
@@ -151,8 +152,6 @@ The command line equivalent for the model is...
           commits:int:10 \
           work:int:10 \
 
-The reason it's called ``arg`` right now is because the parsing of the command
-line came first and the argument is stored there when it's not nested.
 
 setup.py
 --------
@@ -169,7 +168,7 @@ You might have asked yourself, what is this thing?
 .. code-block:: python
 
     INSTALL_REQUIRES = [] + (
-        ["dffml>=0.3.3"]
+        ["dffml>=0.3.7"]
         if not any(
             list(
                 map(

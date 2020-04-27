@@ -9,12 +9,17 @@ jobs:
       fail-fast: false
       max-parallel: 40
       matrix:
-        check: [CHANGELOG, WHITESPACE, STYLE, DOCS]
+        check: [CHANGELOG, WHITESPACE, STYLE, DOCS, LINES]
         python-version: [3.7]
         node-version: [12.x]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+    - name: Checkout full upstream repo
+      run: |
+        git remote set-url origin https://github.com/intel/dffml
+        git fetch --prune --unshallow
+        git fetch --depth=1 origin +refs/tags/*:refs/tags/*
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
@@ -23,6 +28,16 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - name: Get pip cache
+      id: pip-cache
+      run: |
+        python -c "from pip._internal.locations import USER_CACHE_DIR; print('::set-output name=dir::' + USER_CACHE_DIR)"
+    - uses: actions/cache@v1
+      with:
+        path: ${{ steps.pip-cache.outputs.dir }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -37,15 +52,30 @@ jobs:
       fail-fast: false
       max-parallel: 40
       matrix:
-        plugin: [., examples/shouldi, model/tensorflow, model/tensorflow_hub, model/scratch, model/scikit, model/vowpalWabbit, source/mysql, feature/git, feature/auth, service/http, config/yaml]
+        plugin: [., examples/shouldi, model/tensorflow, model/tensorflow_hub, model/transformers, model/scratch, model/scikit, operations/binsec, source/mysql, feature/git, feature/auth, service/http, configloader/yaml, configloader/png]
         python-version: [3.7]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+    - name: Checkout full upstream repo
+      run: |
+        git remote set-url origin https://github.com/intel/dffml
+        git fetch --prune --unshallow
+        git fetch --depth=1 origin +refs/tags/*:refs/tags/*
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Get pip cache
+      id: pip-cache
+      run: |
+        python -c "from pip._internal.locations import USER_CACHE_DIR; print('::set-output name=dir::' + USER_CACHE_DIR)"
+    - uses: actions/cache@v1
+      with:
+        path: ${{ steps.pip-cache.outputs.dir }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
     - name: Install dependencies
       run: |
         mkdir -p ~/.local/bin
@@ -74,19 +104,22 @@ jobs:
         examples/shouldi=${{ secrets.PYPI_SHOULDI }}
         model/tensorflow=${{ secrets.PYPI_MODEL_TENSORFLOW }}
         model/tensorflow_hub=${{ secrets.PYPI_MODEL_TENSORFLOW_HUB }}
+        model/transformers=${{ secrets.PYPI_MODEL_TRANSFORMERS }}
         model/scratch=${{ secrets.PYPI_MODEL_SCRATCH }}
         model/scikit=${{ secrets.PYPI_MODEL_SCIKIT }}
         source/mysql=${{ secrets.PYPI_SOURCE_MYSQL }}
         feature/git=${{ secrets.PYPI_FEATURE_GIT }}
         feature/auth=${{ secrets.PYPI_FEATURE_AUTH }}
+        operations/binsec=${{ secrets.PYPI_OPERATIONS_BINSEC }}
         service/http=${{ secrets.PYPI_SERVICE_HTTP }}
-        config/yaml=${{ secrets.PYPI_CONFIG_YAML }}
+        configloader/yaml=${{ secrets.PYPI_CONFIG_YAML }}
+        configloader/png=${{ secrets.PYPI_CONFIG_PNG }}
         EOF
         export TWINE_USERNAME=__token__
         if [ "x${PLUGIN}" = "x." ]; then
           export TWINE_PASSWORD=${{ secrets.PYPI_DFFML }}
         else
-          export TWINE_PASSWORD=$(grep "${PLUGIN}" "${PYPI_TOKENS}" | sed 's/^[^=]*=//g')
+          export TWINE_PASSWORD=$(grep "${PLUGIN}=" "${PYPI_TOKENS}" | sed 's/^[^=]*=//g')
         fi
         rm ${PYPI_TOKENS}
         ./.ci/run.sh

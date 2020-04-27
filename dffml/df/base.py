@@ -12,6 +12,7 @@ from typing import (
     Optional,
     Set,
 )
+from contextlib import asynccontextmanager
 
 from .exceptions import NotOpImp
 from .types import Operation, Input, Parameter, Stage, Definition
@@ -85,6 +86,19 @@ class OperationImplementationContext(BaseDataFlowObjectContext):
         with keys matching the input and output parameters of the Operation
         object associated with this operation implementation context.
         """
+
+    @asynccontextmanager
+    async def subflow(self, dataflow):
+        """
+        Registers subflow `dataflow` with parent flow and yields an instance of `BaseOrchestratorContext`
+
+        >>> async def my_operation(arg):
+        ...     async with self.subflow(self.config.dataflow) as octx:
+        ...         return octx.run({"ctx_str": []})
+        """
+        async with self.octx.parent(dataflow) as octx:
+            self.octx.subflows[self.parent.op.instance_name] = octx
+            yield octx
 
 
 class FailedToLoadOperationImplementation(Exception):
@@ -180,7 +194,13 @@ def op(imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
             kwargs["conditions"] = []
 
         func.op = Operation(**kwargs)
-        cls_name = func.op.name.replace("_", " ").title().replace(" ", "")
+        func.ENTRY_POINT_NAME = ["operation"]
+        cls_name = (
+            func.op.name.replace(".", " ")
+            .replace("_", " ")
+            .title()
+            .replace(" ", "")
+        )
 
         sig = inspect.signature(func)
         # Check if the function uses the operation implementation context
@@ -298,11 +318,6 @@ def isopimp(item):
     """
     Similar to inspect.isclass and that family of functions. Returns true if
     item is a subclass of OperationImpelmentation.
-
-    >>> # Get all operation implementations imported in a file
-    >>> list(map(lambda item: item[1],
-    >>>          inspect.getmembers(sys.modules[__name__],
-    >>>                             predicate=isopimp)))
     """
     return bool(
         (
@@ -322,11 +337,6 @@ def isoperation(item):
     """
     Similar to inspect.isclass and that family of functions. Returns true if
     item is an instance of Operation.
-
-    >>> # Get all operations imported in a file
-    >>> list(map(lambda item: item[1],
-    >>>          inspect.getmembers(sys.modules[__name__],
-    >>>                             predicate=isoperation)))
     """
     return bool(isinstance(item, Operation) and item is not Operation)
 
@@ -335,11 +345,6 @@ def isopwraped(item):
     """
     Similar to inspect.isclass and that family of functions. Returns true if a
     function has been wrapped with `op`.
-
-    >>> # Get all functions imported in a file that have been wrapped with `op`
-    >>> list(map(lambda item: item[1],
-    >>>          inspect.getmembers(sys.modules[__name__],
-    >>>                             predicate=isopwraped)))
     """
     return bool(
         getattr(item, "op", False)
@@ -478,6 +483,19 @@ class BaseInputSet(abc.ABC):
             item.definition.name: item.value async for item in self.inputs()
         }
 
+    @abc.abstractmethod
+    async def remove_input(self, item: Input) -> None:
+        """
+        Removes item from input set
+        """
+        pass
+
+    @abc.abstractmethod
+    async def remove_unvalidated_inputs(self) -> "BaseInputSet":
+        """
+        Removes `unvalidated` inputs from internal list and returns the same.
+        """
+
 
 class BaseParameterSetConfig(NamedTuple):
     ctx: BaseInputSetContext
@@ -559,7 +577,9 @@ class BaseInputNetworkContext(BaseDataFlowObjectContext):
         """
 
     @abc.abstractmethod
-    def definition(self, ctx: BaseInputSetContext) -> BaseDefinitionSetContext:
+    def definitions(
+        self, ctx: BaseInputSetContext
+    ) -> BaseDefinitionSetContext:
         """
         Return a DefinitionSet context that can be used to access the inputs
         within the given context, by definition.
@@ -733,24 +753,6 @@ class BaseOperationImplementationNetworkContext(BaseDataFlowObjectContext):
         Schedule the running of an operation
         """
 
-    @abc.abstractmethod
-    async def operations_parameter_set_pairs(
-        self,
-        ictx: BaseInputNetworkContext,
-        octx: BaseOperationNetworkContext,
-        rctx: BaseRedundancyCheckerContext,
-        ctx: BaseInputSetContext,
-        *,
-        new_input_set: BaseInputSet = None,
-        stage: Stage = Stage.PROCESSING,
-    ) -> AsyncIterator[Tuple[Operation, BaseParameterSet]]:
-        """
-        Use new_input_set to determine which operations in the network might be
-        up for running. Cross check using existing inputs to generate per
-        input set context novel input pairings. Yield novel input pairings
-        along with their operations as they are generated.
-        """
-
 
 # TODO We should be able to specify multiple operation implementation  networks.
 # This would enable operations to live in different place, accessed via the
@@ -786,7 +788,31 @@ class BaseOrchestratorContext(BaseDataFlowObjectContext):
         Run all the operations then run cleanup and output operations
         """
 
+    @abc.abstractmethod
+    async def operations_parameter_set_pairs(
+        self,
+        ctx: BaseInputSetContext,
+        *,
+        new_input_set: BaseInputSet = None,
+        stage: Stage = Stage.PROCESSING,
+    ) -> AsyncIterator[Tuple[Operation, BaseParameterSet]]:
+        """
+        Use new_input_set to determine which operations in the network might be
+        up for running. Cross check using existing inputs to generate per
+        input set context novel input pairings. Yield novel input pairings
+        along with their operations as they are generated.
+        """
+
 
 @base_entry_point("dffml.orchestrator", "orchestrator")
 class BaseOrchestrator(BaseDataFlowObject):
-    pass  # pragma: no cov
+    @classmethod
+    async def run(cls, dataflow, inputs, *, config=None, **kwargs):
+        if config is None:
+            self = cls.withconfig({})
+        else:
+            self = cls(config=config, **kwargs)
+        async with self as orchestrator:
+            async with orchestrator(dataflow) as octx:
+                async for ctx, results in octx.run(inputs):
+                    yield ctx, results

@@ -5,6 +5,7 @@ Description of what this model does
 """
 import os
 import sys
+import pathlib
 
 from sklearn.neural_network import MLPClassifier
 from sklearn.neighbors import KNeighborsClassifier
@@ -50,7 +51,7 @@ from sklearn.cluster import (
 )
 
 
-from dffml.base import make_config, field
+from dffml.base import field
 from dffml.util.config.numpy import make_config_numpy
 from dffml.util.entrypoint import entrypoint
 from dffml_model_scikit.scikit_base import (
@@ -214,21 +215,18 @@ for entry_point_name, name, cls, applicable_features_function in [
         config_fields["tcluster"] = (
             Feature,
             field(
-                "True cluster labelfor evaluating clustering models",
+                "True cluster label for evaluating clustering models",
                 default=None,
             ),
         )
     dffml_config_properties = {
         **{
             "directory": (
-                str,
+                pathlib.Path,
                 field(
                     "Directory where state should be saved",
-                    default=os.path.join(
-                        os.path.expanduser("~"),
-                        ".cache",
-                        "dffml",
-                        f"scikit-{entry_point_name}",
+                    default=pathlib.Path(
+                        "~", ".cache", "dffml", f"scikit-{entry_point_name}"
                     ),
                 ),
             ),
@@ -241,8 +239,8 @@ for entry_point_name, name, cls, applicable_features_function in [
         dffml_config_properties["predict"] = (
             Feature,
             field(
-                "field here for compability with other functions,no need to change",
-                default=DefFeature(name="Prediction", dtype="str", length=10),
+                "Name used as meaning of prediction",
+                default=DefFeature(name="cluster", dtype=str, length=1),
             ),
         )
 

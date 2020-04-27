@@ -2,7 +2,6 @@ import os
 import io
 import pathlib
 import tempfile
-from http import HTTPStatus
 from unittest.mock import patch
 from contextlib import asynccontextmanager, ExitStack, AsyncExitStack
 from typing import AsyncIterator, Dict
@@ -10,14 +9,13 @@ from typing import AsyncIterator, Dict
 import aiohttp
 
 from dffml.base import config
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml.df.base import BaseConfig
 from dffml.operation.output import GetSingle
 from dffml.util.entrypoint import EntrypointNotFound
 from dffml.model.model import ModelContext, Model
 from dffml.model.accuracy import Accuracy
 from dffml.feature import DefFeature
-from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.source.source import Sources
 from dffml.source.csv import CSVSourceConfig
 from dffml.util.cli.arg import parse_unknown
@@ -25,15 +23,20 @@ from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
 
-from dffml_service_http.cli import Server
 from dffml_service_http.routes import (
     OK,
     SOURCE_NOT_LOADED,
     MODEL_NOT_LOADED,
     MODEL_NO_SOURCES,
 )
+from dffml_service_http.util.testing import (
+    ServerRunner,
+    ServerException,
+    TestRoutesRunning,
+    FakeModel,
+    FakeModelConfig,
+)
 
-from .common import ServerRunner
 from .dataflow import (
     HELLO_BLANK_DATAFLOW,
     HELLO_WORLD_DATAFLOW,
@@ -42,110 +45,10 @@ from .dataflow import (
 )
 
 
-class ServerException(Exception):
-    pass  # pragma: no cov
-
-
-@config
-class FakeModelConfig:
-    directory: str
-    features: Features
-    predict: Feature
-
-
-class FakeModelContext(ModelContext):
-    def __init__(self, parent):
-        super().__init__(parent)
-        self.trained_on: Dict[str, Repo] = {}
-
-    async def train(self, sources: Sources):
-        async for repo in sources.repos():
-            self.trained_on[repo.key] = repo
-
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        accuracy: int = 0
-        async for repo in sources.repos():
-            accuracy += int(repo.key)
-        return Accuracy(accuracy)
-
-    async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
-        async for repo in repos:
-            repo.predicted(
-                "Salary", repo.feature("by_ten") * 10, float(repo.key)
-            )
-            yield repo
-
-
-@entrypoint("fake")
-class FakeModel(Model):
-
-    CONTEXT = FakeModelContext
-    CONFIG = FakeModelConfig
-
-
 def model_load(loading=None):
     if loading:
         return FakeModel
     return [FakeModel]
-
-
-class TestRoutesRunning:
-    async def setUp(self):
-        self.exit_stack = AsyncExitStack()
-        await self.exit_stack.__aenter__()
-        self.tserver = await self.exit_stack.enter_async_context(
-            ServerRunner.patch(Server)
-        )
-        self.cli = Server(port=0, insecure=True)
-        await self.tserver.start(self.cli.run())
-        # Set up client
-        self.session = await self.exit_stack.enter_async_context(
-            aiohttp.ClientSession()
-        )
-
-    async def tearDown(self):
-        await self.exit_stack.__aexit__(None, None, None)
-
-    @property
-    def url(self):
-        return f"http://{self.cli.addr}:{self.cli.port}"
-
-    @asynccontextmanager
-    async def get(self, path):
-        async with self.session.get(self.url + path) as r:
-            if r.status != HTTPStatus.OK:
-                raise ServerException((await r.json())["error"])
-            yield r
-
-    @asynccontextmanager
-    async def post(self, path, *args, **kwargs):
-        async with self.session.post(self.url + path, *args, **kwargs) as r:
-            if r.status != HTTPStatus.OK:
-                raise ServerException((await r.json())["error"])
-            yield r
-
-    @asynccontextmanager
-    async def _add_memory_source(self):
-        async with MemorySource(
-            MemorySourceConfig(
-                repos=[
-                    Repo(str(i), data={"features": {"by_ten": i * 10}})
-                    for i in range(0, self.num_repos)
-                ]
-            )
-        ) as source:
-            self.source = self.cli.app["sources"][self.slabel] = source
-            async with source() as sctx:
-                self.sctx = self.cli.app["source_contexts"][self.slabel] = sctx
-                yield
-
-    @asynccontextmanager
-    async def _add_fake_model(self):
-        async with FakeModel(BaseConfig()) as model:
-            self.model = self.cli.app["models"][self.mlabel] = model
-            async with model() as mctx:
-                self.mctx = self.cli.app["model_contexts"][self.mlabel] = mctx
-                yield
 
 
 class TestRoutesService(TestRoutesRunning, AsyncTestCase):
@@ -305,7 +208,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                 self.assertEqual(
                     self.cli.app["models"]["salary"].config,
                     FakeModelConfig(
-                        directory=tempdir,
+                        directory=pathlib.Path(tempdir),
                         features=Features(
                             DefFeature("Years", int, 1),
                             DefFeature("Experiance", int, 1),
@@ -445,7 +348,7 @@ class TestRoutesSource(TestRoutesRunning, AsyncTestCase):
     async def setUp(self):
         await super().setUp()
         self.slabel: str = "mydataset"
-        self.num_repos: int = 100
+        self.num_records: int = 100
         self.add_memory_source = await self.exit_stack.enter_async_context(
             self._add_memory_source()
         )
@@ -454,74 +357,80 @@ class TestRoutesSource(TestRoutesRunning, AsyncTestCase):
         with self.assertRaisesRegex(
             ServerException, list(SOURCE_NOT_LOADED.values())[0]
         ):
-            async with self.get("/source/non-existant/repo/key"):
+            async with self.get("/source/non-existant/record/key"):
                 pass  # pramga: no cov
 
-    async def test_repo(self):
-        for i in range(0, self.num_repos):
-            async with self.get(f"/source/{self.slabel}/repo/{i}") as r:
+    async def test_record(self):
+        for i in range(0, self.num_records):
+            async with self.get(f"/source/{self.slabel}/record/{i}") as r:
                 self.assertEqual(
-                    await r.json(), self.source.config.repos[i].export()
+                    await r.json(), self.source.config.records[i].export()
                 )
 
     async def test_update(self):
         key = "1"
-        new_repo = Repo(key, data={"features": {"by_ten": 10}})
+        new_record = Record(key, data={"features": {"by_ten": 10}})
         async with self.post(
-            f"/source/{self.slabel}/update/{key}", json=new_repo.export()
+            f"/source/{self.slabel}/update/{key}", json=new_record.export()
         ) as r:
             self.assertEqual(await r.json(), OK)
-        self.assertEqual((await self.sctx.repo(key)).feature("by_ten"), 10)
+        self.assertEqual((await self.sctx.record(key)).feature("by_ten"), 10)
 
     def _check_iter_response(self, response):
         self.assertIn("iterkey", response)
-        self.assertIn("repos", response)
-        for key, repo in response["repos"].items():
-            self.assertEqual(repo, self.source.config.repos[int(key)].export())
+        self.assertIn("records", response)
+        for key, record in response["records"].items():
+            self.assertEqual(
+                record, self.source.config.records[int(key)].export()
+            )
 
-    async def test_repos(self):
-        chunk_size = self.num_repos
-        async with self.get(f"/source/{self.slabel}/repos/{chunk_size}") as r:
+    async def test_records(self):
+        chunk_size = self.num_records
+        async with self.get(
+            f"/source/{self.slabel}/records/{chunk_size}"
+        ) as r:
             response = await r.json()
             self._check_iter_response(response)
             self.assertEqual(response["iterkey"], None)
-            got = len(response["repos"].values())
+            got = len(response["records"].values())
             self.assertEqual(
                 got,
-                self.num_repos,
-                f"Not all repos were received: got {got}, want: {self.num_repos}",
+                self.num_records,
+                f"Not all records were received: got {got}, want: {self.num_records}",
             )
 
-    async def test_repos_iterkey(self):
+    async def test_records_iterkey(self):
         chunk_size = 7
-        got_repos = {}
-        async with self.get(f"/source/{self.slabel}/repos/{chunk_size}") as r:
+        got_records = {}
+        async with self.get(
+            f"/source/{self.slabel}/records/{chunk_size}"
+        ) as r:
             response = await r.json()
             self._check_iter_response(response)
             iterkey = response["iterkey"]
             self.assertNotEqual(iterkey, None)
-            got_repos.update(response["repos"])
+            got_records.update(response["records"])
         while iterkey is not None:
             async with self.get(
-                f"/source/{self.slabel}/repos/{iterkey}/{chunk_size}"
+                f"/source/{self.slabel}/records/{iterkey}/{chunk_size}"
             ) as r:
                 response = await r.json()
                 self._check_iter_response(response)
-                got_repos.update(response["repos"])
+                got_records.update(response["records"])
                 iterkey = response["iterkey"]
-        got = len(got_repos.keys())
+        got = len(got_records.keys())
         self.assertEqual(
             got,
-            self.num_repos,
-            f"Not all repos were received: got {got}, want: {self.num_repos}",
+            self.num_records,
+            f"Not all records were received: got {got}, want: {self.num_records}",
         )
 
-    async def test_repos_iterkey_not_found(self):
-        chunk_size = self.num_repos
+    async def test_records_iterkey_not_found(self):
+        chunk_size = self.num_records
         iterkey = "feedface"
         with self.assertRaisesRegex(ServerException, "iterkey not found"):
             async with self.get(
-                f"/source/{self.slabel}/repos/{iterkey}/{chunk_size}"
+                f"/source/{self.slabel}/records/{iterkey}/{chunk_size}"
             ) as r:
                 pass  # pramga: no cov
 
@@ -531,7 +440,7 @@ class TestModel(TestRoutesRunning, AsyncTestCase):
         await super().setUp()
         self.mlabel: str = "mymodel"
         self.slabel: str = "mydataset"
-        self.num_repos: int = 100
+        self.num_records: int = 100
         self.add_memory_source = await self.exit_stack.enter_async_context(
             self._add_memory_source()
         )
@@ -573,7 +482,7 @@ class TestModel(TestRoutesRunning, AsyncTestCase):
             f"/model/{self.mlabel}/train", json=[self.slabel]
         ) as r:
             self.assertEqual(await r.json(), OK)
-        for i in range(0, self.num_repos):
+        for i in range(0, self.num_records):
             self.assertIn(str(i), self.mctx.trained_on)
 
     async def test_accuracy(self):
@@ -582,39 +491,39 @@ class TestModel(TestRoutesRunning, AsyncTestCase):
         ) as r:
             self.assertEqual(
                 await r.json(),
-                {"accuracy": float(sum(range(0, self.num_repos)))},
+                {"accuracy": float(sum(range(0, self.num_records)))},
             )
 
     async def test_predict(self):
-        repos: Dict[str, Repo] = {
-            repo.key: repo.export() async for repo in self.sctx.repos()
+        records: Dict[str, Record] = {
+            record.key: record.export() async for record in self.sctx.records()
         }
         async with self.post(
-            f"/model/{self.mlabel}/predict/0", json=repos
+            f"/model/{self.mlabel}/predict/0", json=records
         ) as r:
             i: int = 0
             response = await r.json()
-            for key, repo_data in response["repos"].items():
-                repo = Repo(key, data=repo_data)
-                self.assertEqual(int(repo.key), i)
+            for key, record_data in response["records"].items():
+                record = Record(key, data=record_data)
+                self.assertEqual(int(record.key), i)
                 self.assertEqual(
-                    repo.feature("by_ten"),
-                    repo.prediction("Salary").value / 10,
+                    record.feature("by_ten"),
+                    record.prediction("Salary").value / 10,
                 )
                 self.assertEqual(
-                    float(repo.key), repo.prediction("Salary").confidence
+                    float(record.key), record.prediction("Salary").confidence
                 )
                 i += 1
-            self.assertEqual(i, self.num_repos)
+            self.assertEqual(i, self.num_records)
 
     async def test_predict_chunk_size_unsupported(self):
-        repos: Dict[str, Repo] = {
-            repo.key: repo.export() async for repo in self.sctx.repos()
+        records: Dict[str, Record] = {
+            record.key: record.export() async for record in self.sctx.records()
         }
         with self.assertRaisesRegex(
             ServerException, "Multiple request iteration not yet supported"
         ):
             async with self.post(
-                f"/model/{self.mlabel}/predict/7", json=repos
+                f"/model/{self.mlabel}/predict/7", json=records
             ) as r:
                 pass  # pramga: no cov

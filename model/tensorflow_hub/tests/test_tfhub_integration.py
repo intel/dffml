@@ -8,8 +8,9 @@ import random
 import pathlib
 import contextlib
 
-
 from dffml.cli.cli import CLI
+from dffml.df.types import DataFlow
+from dffml.service.dev import Develop
 from dffml.util.asynctestcase import IntegrationCLITestCase
 
 
@@ -17,20 +18,8 @@ class TestTextClassifier(IntegrationCLITestCase):
     async def test_run(self):
         self.required_plugins("dffml-model-tensorflow-hub")
         # Randomly generate sample data
-        POSITIVE_WORDS = [
-            "fun",
-            "great",
-            "cool",
-            "awesome",
-            "rad",
-        ]
-        NEGATIVE_WORDS = [
-            "lame",
-            "dumb",
-            "silly",
-            "stupid",
-            "boring",
-        ]
+        POSITIVE_WORDS = ["fun", "great", "cool", "awesome", "rad"]
+        NEGATIVE_WORDS = ["lame", "dumb", "silly", "stupid", "boring"]
         WORDS = [NEGATIVE_WORDS, POSITIVE_WORDS]
 
         SENTENCES = [
@@ -125,6 +114,34 @@ class TestTextClassifier(IntegrationCLITestCase):
             results = results[0]
             self.assertIn("prediction", results)
             results = results["prediction"]
+            self.assertIn("sentiment", results)
+            results = results["sentiment"]
+            self.assertIn("value", results)
+            results = results["value"]
+            self.assertIn(results, [0, 1])
+
+            # Make prediction using dffml.operations.predict
+            results = await Develop.cli(
+                "run",
+                "-log",
+                "debug",
+                "dffml.operation.model:model_predict",
+                "-features",
+                json.dumps({"text": "My dog is awesome"}),
+                "-config-model",
+                "text_classifier",
+                "-config-model-features",
+                "text:str:1",
+                "-config-model-predict",
+                "sentiment:int:1",
+                "-config-model-classifications",
+                "0",
+                "1",
+                "-config-model-clstype",
+                "int",
+            )
+            self.assertIn("model_predictions", results)
+            results = results["model_predictions"]
             self.assertIn("sentiment", results)
             results = results["sentiment"]
             self.assertIn("value", results)

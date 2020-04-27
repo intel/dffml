@@ -44,6 +44,7 @@ branch can be found `here <master/index.html>`_.
 
     about
     installation
+    concepts/index
 
 .. toctree::
     :glob:
@@ -69,6 +70,7 @@ branch can be found `here <master/index.html>`_.
     :maxdepth: 2
     :caption: Community
 
+    GitHub <https://github.com/intel/dffml>
     publications
     contact
     contributing/index

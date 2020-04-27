@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 import os
-import getpass
+import pwd
 import inspect
 import argparse
 import importlib
-import pkg_resources
 import configparser
+import pkg_resources
+import unittest.mock
 from typing import List, Type
 
 
@@ -19,7 +20,9 @@ def traverse_get_config(target, *args):
     return current
 
 
-MODULE_TEMPLATE = """{name}
+MODULE_TEMPLATE = """{tag}
+
+{name}
 {underline}
 
 .. code-block:: console
@@ -30,7 +33,9 @@ MODULE_TEMPLATE = """{name}
 """
 
 
-TEMPLATE = """{name}
+TEMPLATE = """{tag}
+
+{name}
 {underline}
 
 *{maintenance}*
@@ -41,6 +46,8 @@ TEMPLATE = """{name}
 def data_type_string(data_type, nargs=None):
     if nargs is not None:
         return "List of %ss" % (data_type_string(data_type).lower(),)
+    elif hasattr(data_type, "SINGLETON"):
+        return "List of %ss" % (data_type_string(data_type.SINGLETON).lower(),)
     if hasattr(data_type, "__func__"):
         return data_type_string(data_type.__func__)
     elif data_type is str:
@@ -63,26 +70,30 @@ def data_type_string(data_type, nargs=None):
 def sanitize_default(default):
     if not isinstance(default, str):
         return sanitize_default(str(default))
-    return default.replace(getpass.getuser(), "user")
+    return default
 
 
 def build_args(config):
     args = []
     for key, value in config.items():
-        arg = value["arg"]
-        if arg is None:
+        plugin = value["plugin"]
+        if plugin is None:
             continue
         build = ""
         build += "- %s: %s\n" % (
             key,
-            data_type_string(arg.get("type", str), arg.get("nargs", None)),
+            data_type_string(
+                plugin.get("type", str), plugin.get("nargs", None)
+            ),
         )
-        if "default" in arg or "help" in arg:
+        if "default" in plugin or "help" in plugin:
             build += "\n"
-        if "default" in arg:
-            build += "  - default: %s\n" % (sanitize_default(arg["default"]),)
-        if "help" in arg:
-            build += "  - %s\n" % (arg["help"],)
+        if "default" in plugin:
+            build += "  - default: %s\n" % (
+                sanitize_default(plugin["default"]),
+            )
+        if "help" in plugin:
+            build += "  - %s\n" % (plugin["help"],)
         args.append(build.rstrip())
     if args:
         return "**Args**\n\n" + "\n\n".join(args)
@@ -146,22 +157,29 @@ def format_op(op):
     return "\n\n".join(build)
 
 
-def gen_docs(entrypoint: str, modules: List[str], maintenance: str = "Core"):
-    per_module = {name: [None, []] for name in modules}
+def gen_docs(
+    entrypoint: str, modules: List[str], maintenance: str = "Official"
+):
+    per_module = {name: [None, "", []] for name in modules}
     packagesconfig = configparser.ConfigParser()
     packagesconfig.read("scripts/packagesconfig.ini")
     for i in pkg_resources.iter_entry_points(entrypoint):
         cls = i.load()
+        plugin_type = "_".join(cls.ENTRY_POINT_NAME)
+        if plugin_type == "opimp":
+            plugin_type = "operation"
         module_name = i.module_name.split(".")[0]
         if module_name not in modules:
             continue
         per_module[module_name][0] = importlib.import_module(module_name)
+        per_module[module_name][1] = plugin_type
         doc = cls.__doc__
         if doc is None:
             doc = "No description"
         else:
             doc = inspect.cleandoc(doc)
         formatting = {
+            "tag": f".. _plugin_{plugin_type}_{module_name}_{i.name.replace('.', '_')}:",
             "name": i.name,
             "underline": "~" * len(i.name),
             "maintenance": maintenance,
@@ -177,11 +195,12 @@ def gen_docs(entrypoint: str, modules: List[str], maintenance: str = "Core"):
             if defaults:
                 config = traverse_get_config(defaults, *cls.add_orig_label())
                 formatted += "\n\n" + build_args(config)
-            per_module[module_name][1].append(formatted)
+            per_module[module_name][2].append(formatted)
     return "\n\n".join(
         [
             MODULE_TEMPLATE.format(
                 **{
+                    "tag": f".. _plugin_{plugin_type}_{name}:",
                     "name": name,
                     "install": name.replace("_", "-"),
                     "underline": "-" * len(name),
@@ -199,9 +218,15 @@ def gen_docs(entrypoint: str, modules: List[str], maintenance: str = "Core"):
                     else ""
                 )
             )
-            for name, (module, docs) in per_module.items()
+            for name, (module, plugin_type, docs) in per_module.items()
             if docs
         ]
+    )
+
+
+def fake_getpwuid(uid):
+    return pwd.struct_passwd(
+        ("user", "x", uid, uid, "", "/home/user", "/bin/bash")
     )
 
 
@@ -211,7 +236,7 @@ def main():
     parser.add_argument("--modules", help="Modules to care about", nargs="+")
     parser.add_argument(
         "--maintenance",
-        default="Core",
+        default="Official",
         help="Maintained as a part of DFFML or community managed",
     )
 
@@ -222,26 +247,32 @@ def main():
     )
     args = parser.parse_args()
 
-    if getattr(args, "entrypoint", False) and getattr(args, "modules", False):
-        print(gen_docs(args.entrypoint, args.modules, args.maintenance))
-        return
+    with unittest.mock.patch("pwd.getpwuid", new=fake_getpwuid):
 
-    with open(args.care, "rb") as genspec:
-        for line in genspec:
-            entrypoint, modules = line.decode("utf-8").split(maxsplit=1)
-            modules = modules.split()
-            template = entrypoint.replace(".", "_") + ".rst"
-            output = os.path.join("docs", "plugins", template)
-            template = os.path.join("scripts", "docs", "templates", template)
-            with open(template, "rb") as template_fd, open(
-                output, "wb"
-            ) as output_fd:
-                output_fd.write(
-                    (
-                        template_fd.read().decode("utf-8")
-                        + gen_docs(entrypoint, modules)
-                    ).encode("utf-8")
+        if getattr(args, "entrypoint", False) and getattr(
+            args, "modules", False
+        ):
+            print(gen_docs(args.entrypoint, args.modules, args.maintenance))
+            return
+
+        with open(args.care, "rb") as genspec:
+            for line in genspec:
+                entrypoint, modules = line.decode("utf-8").split(maxsplit=1)
+                modules = modules.split()
+                template = entrypoint.replace(".", "_") + ".rst"
+                output = os.path.join("docs", "plugins", template)
+                template = os.path.join(
+                    "scripts", "docs", "templates", template
                 )
+                with open(template, "rb") as template_fd, open(
+                    output, "wb"
+                ) as output_fd:
+                    output_fd.write(
+                        (
+                            template_fd.read().decode("utf-8")
+                            + gen_docs(entrypoint, modules)
+                        ).encode("utf-8")
+                    )
 
 
 if __name__ == "__main__":

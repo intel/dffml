@@ -7,7 +7,7 @@ import logging
 import unittest
 from unittest.mock import patch
 
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml.feature import Feature, Features
 
 from dffml.util.cli.arg import Arg, parse_unknown
@@ -72,8 +72,8 @@ class TestJSONEncoder(unittest.TestCase):
             json.dumps(UnregisteredObject, cls=JSONEncoder),
         )
 
-    def test_repo(self):
-        self.assertIn("face", json.dumps(Repo("face"), cls=JSONEncoder))
+    def test_record(self):
+        self.assertIn("face", json.dumps(Record("face"), cls=JSONEncoder))
 
     def test_feature(self):
         class FaceFeature(Feature):
@@ -204,19 +204,19 @@ class TestArg(unittest.TestCase):
             parsed,
             {
                 "rchecker": {
-                    "arg": None,
+                    "plugin": None,
                     "config": {
                         "memory": {
-                            "arg": None,
+                            "plugin": None,
                             "config": {
                                 "kvstore": {
-                                    "arg": ["withargs"],
+                                    "plugin": ["withargs"],
                                     "config": {
                                         "withargs": {
-                                            "arg": None,
+                                            "plugin": None,
                                             "config": {
                                                 "filename": {
-                                                    "arg": ["somefile"],
+                                                    "plugin": ["somefile"],
                                                     "config": {},
                                                 }
                                             },

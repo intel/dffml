@@ -5,7 +5,7 @@ Run doctests with
 
 python -m doctest -v dffml/util/data.py
 """
-
+import ast
 import pydoc
 import inspect
 from functools import wraps
@@ -28,16 +28,16 @@ def traverse_config_set(target, *args):
     """
     >>> traverse_config_set({
     ...     "level": {
-    ...         "arg": None,
+    ...         "plugin": None,
     ...         "config": {
     ...             "one": {
-    ...                 "arg": 1,
+    ...                 "plugin": 1,
     ...                 "config": {},
     ...             },
     ...         },
     ...     },
     ... }, "level", "one", 42)
-    {'level': {'arg': None, 'config': {'one': {'arg': 42, 'config': {}}}}}
+    {'level': {'plugin': None, 'config': {'one': {'plugin': 42, 'config': {}}}}}
     """
     # Seperate the path down from the value to set
     path, value = args[:-1], args[-1]
@@ -45,10 +45,10 @@ def traverse_config_set(target, *args):
     last = target
     for level in path:
         if not level in current:
-            current[level] = {"arg": None, "config": {}}
+            current[level] = {"plugin": None, "config": {}}
         last = current[level]
         current = last["config"]
-    last["arg"] = value
+    last["plugin"] = value
     return target
 
 
@@ -56,10 +56,10 @@ def traverse_config_get(target, *args):
     """
     >>> traverse_config_get({
     ...     "level": {
-    ...         "arg": None,
+    ...         "plugin": None,
     ...         "config": {
     ...             "one": {
-    ...                 "arg": 1,
+    ...                 "plugin": 1,
     ...                 "config": {},
     ...             },
     ...         },
@@ -72,7 +72,7 @@ def traverse_config_get(target, *args):
     for level in args:
         last = current[level]
         current = last["config"]
-    return last["arg"]
+    return last["plugin"]
 
 
 def traverse_get(target, *args):
@@ -119,8 +119,15 @@ def type_lookup(typename):
 
 def export_value(obj, key, value):
     # export and _asdict are not classmethods
-    if inspect.isclass(value):
+    if hasattr(value, "ENTRY_POINT_ORIG_LABEL") and hasattr(value, "config"):
+        obj[key] = {
+            "plugin": value.ENTRY_POINT_ORIG_LABEL,
+        }
+        export_value(obj[key], "config", value.config)
+    elif inspect.isclass(value):
         obj[key] = value.__qualname__
+    elif isinstance(value, pathlib.Path):
+        obj[key] = str(value)
     elif hasattr(value, "export"):
         obj[key] = value.export()
     elif hasattr(value, "_asdict"):
@@ -228,3 +235,49 @@ async def nested_apply(target: dict, func: Callable):
             else:
                 target[key] = func(val)
     return target
+
+
+def parser_helper(value):
+    """
+    Calls checks if value is string and if it is it converts it to a bool if
+    the string is a string representation of common boolean value (on, off,
+    true, false, yes, no). Otherwise it tries to call
+    :py:func:`ast.literal_eval`, if that doesn't succeed the string value is
+    returned.
+
+
+    Examples
+    --------
+
+    Parsing a boolean value
+
+    >>> parser_helper("on")
+    True
+
+    Parsing an array
+
+    >>> parser_helper("[1, 2, 3]")
+    [1, 2, 3]
+
+    Parsing a string
+
+    >>> parser_helper("hello")
+    'hello'
+
+    Parsing a string of a string
+
+    >>> parser_helper("'on'")
+    'on'
+    """
+    if not isinstance(value, str):
+        return value
+    if value.lower() in ["null", "nil", "none"]:
+        return None
+    elif value.lower() in ["yes", "true", "on"]:
+        return True
+    elif value.lower() in ["no", "false", "off"]:
+        return False
+    try:
+        return ast.literal_eval(value)
+    except:
+        return value

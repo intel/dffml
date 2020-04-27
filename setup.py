@@ -1,10 +1,11 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 import ast
+import pathlib
 from io import open
 from setuptools import find_packages, setup
 
-with open("dffml/version.py", "r") as f:
+with open(pathlib.Path("dffml", "version.py"), "r") as f:
     for line in f:
         if line.startswith("VERSION"):
             VERSION = ast.literal_eval(line.strip().split("=")[-1].strip())
@@ -59,13 +60,14 @@ setup(
             "coverage",
             "codecov",
             "sphinx",
-            "sphinxcontrib-asyncio",
+            "sphinx_rtd_theme",
             "recommonmark",
             "black",
-            "sphinx_rtd_theme",
+            "jsbeautifier",
+            "twine",
         ],
     },
-    tests_require=["httptest>=0.0.15",],
+    tests_require=["httptest>=0.0.15"],
     entry_points={
         "console_scripts": ["dffml = dffml.cli.cli:CLI.main"],
         "dffml.source": [
@@ -74,15 +76,20 @@ setup(
             "memory = dffml.source.memory:MemorySource",
             "idx1 = dffml.source.idx1:IDX1Source",
             "idx3 = dffml.source.idx3:IDX3Source",
+            "db = dffml.source.db:DbSource",
+            "ini = dffml.source.ini:INISource",
         ],
         "dffml.port": ["json = dffml.port.json:JSON"],
         "dffml.service.cli": ["dev = dffml.service.dev:Develop"],
-        "dffml.config": ["json = dffml.config.json:JSONConfigLoader"],
+        "dffml.configloader": [
+            "json = dffml.configloader.json:JSONConfigLoader"
+        ],
         # Data Flow
         "dffml.operation": [
             # Output
             "group_by = dffml.operation.output:GroupBy",
             "get_single = dffml.operation.output:GetSingle",
+            "get_multi = dffml.operation.output:GetMulti",
             "associate = dffml.operation.output:Associate",
             # Mapping
             "dffml.mapping.extract = dffml.operation.mapping:mapping_extract_value",
@@ -91,6 +98,18 @@ setup(
             "dffml.dataflow.run = dffml.operation.dataflow:run_dataflow",
             # Model
             "dffml.model.predict = dffml.operation.model:model_predict",
+            # io
+            "AcceptUserInput = dffml.operation.io:AcceptUserInput",
+            "print_output = dffml.operation.io:print_output",
+            # preprocess
+            "literal_eval = dffml.operation.preprocess:literal_eval",
+            # Database
+            "db_query_create_table = dffml.operation.db:db_query_create_table",
+            "db_query_insert = dffml.operation.db:db_query_insert",
+            "db_query_update = dffml.operation.db:db_query_update",
+            "db_query_remove = dffml.operation.db:db_query_remove",
+            "db_query_insert_or_update = dffml.operation.db:db_query_insert_or_update",
+            "db_query_lookup = dffml.operation.db:db_query_lookup",
         ],
         "dffml.kvstore": ["memory = dffml.df.memory:MemoryKeyValueStore"],
         "dffml.input.network": ["memory = dffml.df.memory:MemoryInputNetwork"],
@@ -107,5 +126,7 @@ setup(
         "dffml.orchestrator": ["memory = dffml.df.memory:MemoryOrchestrator"],
         # Databases
         "dffml.db": ["sqlite = dffml.db.sqlite:SqliteDatabase"],
+        # Models
+        "dffml.model": ["slr = dffml.model.slr:SLRModel"],
     },
 )

@@ -9,6 +9,7 @@ import inspect
 import argparse
 import functools
 import contextlib
+import collections
 import dataclasses
 from argparse import ArgumentParser
 from typing import Dict, Any, Type, Optional
@@ -25,7 +26,13 @@ except ImportError:
 
 
 from .util.cli.arg import Arg
-from .util.data import traverse_config_set, traverse_config_get, type_lookup
+from .util.data import (
+    traverse_config_set,
+    traverse_config_get,
+    type_lookup,
+    export_dict,
+    parser_helper,
+)
 
 from .util.entrypoint import Entrypoint
 
@@ -122,7 +129,7 @@ def mkarg(field):
     if field.type == bool:
         arg["action"] = "store_true"
     elif inspect.isclass(field.type):
-        if issubclass(field.type, list):
+        if issubclass(field.type, (list, collections.UserList)):
             arg["nargs"] = "+"
             if not hasattr(field.type, "SINGLETON"):
                 raise AttributeError(
@@ -174,7 +181,7 @@ def convert_value(arg, value):
 
 def is_config_dict(value):
     return bool(
-        "arg" in value
+        "plugin" in value
         and "config" in value
         and isinstance(value["config"], dict)
     )
@@ -186,7 +193,7 @@ def _fromdict(cls, **kwargs):
             value = kwargs[field.name]
             config = {}
             if is_config_dict(value):
-                value, config = value["arg"], value["config"]
+                value, config = value["plugin"], value["config"]
             value = convert_value(mkarg(field), value)
             if inspect.isclass(value) and issubclass(value, BaseConfigurable):
                 # TODO This probably isn't 100% correct. Figure out what we need
@@ -194,11 +201,11 @@ def _fromdict(cls, **kwargs):
                 value = value.withconfig(
                     {
                         value.ENTRY_POINT_NAME[-1]: {
-                            "arg": None,
+                            "plugin": None,
                             "config": {
                                 key: value
                                 if is_config_dict(value)
-                                else {"arg": value, "config": {}}
+                                else {"plugin": value, "config": {}}
                                 for key, value in config.items()
                             },
                         }
@@ -220,6 +227,10 @@ def field(description: str, *args, metadata: Optional[dict] = None, **kwargs):
     return dataclasses.field(*args, metadata=metadata, **kwargs)
 
 
+def config_asdict(self, *args, **kwargs):
+    return export_dict(**dataclasses.asdict(self, *args, **kwargs))
+
+
 def config(cls):
     """
     Decorator to create a dataclass
@@ -229,9 +240,7 @@ def config(cls):
     datacls._replace = lambda self, *args, **kwargs: dataclasses.replace(
         self, *args, **kwargs
     )
-    datacls._asdict = lambda self, *args, **kwargs: dataclasses.asdict(
-        self, *args, **kwargs
-    )
+    datacls._asdict = config_asdict
     return datacls
 
 
@@ -248,12 +257,7 @@ def make_config(cls_name: str, fields, *args, namespace=None, **kwargs):
             self, *args, **kwargs
         ),
     )
-    namespace.setdefault(
-        "_asdict",
-        lambda self, *args, **kwargs: dataclasses.asdict(
-            self, *args, **kwargs
-        ),
-    )
+    namespace.setdefault("_asdict", config_asdict)
     kwargs["eq"] = True
     kwargs["init"] = True
     # Ensure non-default arguments always come before default arguments
@@ -279,6 +283,12 @@ class ConfigurableParsingNamespace(object):
         self.dest = None
 
 
+class ConfigAndKWArgsMutuallyExclusive(Exception):
+    """
+    Raised when both kwargs and config are specified.
+    """
+
+
 class BaseConfigurableMetaClass(type, abc.ABC):
     def __new__(cls, name, bases, props, module=None):
         # Create the class
@@ -298,7 +308,9 @@ class BaseConfigurableMetaClass(type, abc.ABC):
 
         @functools.wraps(func)
         def wrapper(self, config: Optional[BaseConfig] = None, **kwargs):
-            if config is None and hasattr(self, "CONFIG") and kwargs:
+            if config is not None and len(kwargs):
+                raise ConfigAndKWArgsMutuallyExclusive
+            elif config is None and hasattr(self, "CONFIG") and kwargs:
                 try:
                     config = self.CONFIG(**kwargs)
                 except TypeError as error:
@@ -325,7 +337,7 @@ class BaseConfigurable(metaclass=BaseConfigurableMetaClass):
     only parameter to the __init__ of a BaseDataFlowFacilitatorObject.
     """
 
-    def __init__(self, config: BaseConfig) -> None:
+    def __init__(self, config: Type[BaseConfig]) -> None:
         """
         BaseConfigurable takes only one argument to __init__,
         its config, which should inherit from BaseConfig. It shall be a object
@@ -354,19 +366,6 @@ class BaseConfigurable(metaclass=BaseConfigurableMetaClass):
             args, *(cls.add_orig_label(*above) + list(path))
         )
 
-    @staticmethod
-    def parser_helper(value):
-        if value.lower() in ["null", "nil", "none"]:
-            return None
-        elif value.lower() in ["yes", "true", "1", "on"]:
-            return True
-        elif value.lower() in ["no", "false", "0", "off"]:
-            return False
-        try:
-            return ast.literal_eval(value)
-        except:
-            return value
-
     @classmethod
     def type_for(cls, param: inspect.Parameter):
         """
@@ -376,11 +375,11 @@ class BaseConfigurable(metaclass=BaseConfigurableMetaClass):
         if param.annotation != inspect._empty:
             return param.annotation
         elif param.default is None:
-            return cls.parser_helper
+            return parser_helper
         else:
             type_of = type(param.default)
             if type_of is bool:
-                return lambda value: bool(cls.parser_helper(value))
+                return lambda value: bool(parser_helper(value))
             return type_of
 
     @classmethod
@@ -484,10 +483,7 @@ class BaseDataFlowFacilitatorObjectContext(LoggingLogger):
     classes which support async context management. Classes ending with
     ...Context are the most inner context's which are used in DFFML.
 
-    >>> # Calling obj returns an instance which is a subclass of this class,
-    >>> # BaseDataFlowFacilitatorObjectContext.
-    >>> async with obj() as ctx:
-    >>>     await ctx.method()
+    See the :class:BaseDataFlowFacilitatorObject for example usage.
     """
 
     async def __aenter__(self) -> "BaseDataFlowFacilitatorObjectContext":
@@ -516,12 +512,21 @@ class BaseDataFlowFacilitatorObject(
     >>> # setup. Call obj to get an instance of obj.CONTEXT, which is a subclass
     >>> # of BaseDataFlowFacilitatorObjectContext. ctx, the inner context, does
     >>> # all the heavy lifting.
-    >>> async with BaseDataFlowObject() as obj:
-    >>>     async with obj() as ctx:
-    >>>         await ctx.method()
+    >>> class Context(BaseDataFlowFacilitatorObjectContext):
+    ...     async def method(self):
+    ...         return
+    >>> class Object(BaseDataFlowFacilitatorObject):
+    ...     CONTEXT = Context
+    ...     def __call__(self):
+    ...         return Context()
+    >>> async def main():
+    ...     async with Object(BaseConfig()) as obj:
+    ...         async with obj() as ctx:
+    ...             await ctx.method()
+    >>> asyncio.run(main())
     """
 
-    def __init__(self, config: BaseConfig) -> None:
+    def __init__(self, config: Type[BaseConfig]) -> None:
         BaseConfigurable.__init__(self, config)
         # TODO figure out how to call these in __new__
         self.__ensure_property("CONTEXT")

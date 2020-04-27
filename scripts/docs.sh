@@ -10,9 +10,9 @@ ln -s "${PWD}/service/http/docs/" docs/plugins/service/http
 python3.7 scripts/docs.py
 python3.7 -c 'import os, pkg_resources; [e.load() for e in pkg_resources.iter_entry_points("console_scripts") if e.name.startswith("sphinx-build")][0]()' -b html docs pages \
   || (echo "[ERROR] Failed run sphinx, is it installed (pip install -U .[dev])?" 1>&2 ; exit 1)
-find pages/ -name \*.html -exec \
-  sed -i 's/<span class="gp">\&gt;\&gt;\&gt; <\/span>//g' {} \;
-find pages/ -name \*.html -exec \
-  sed -i 's/<span class="go">\&gt;\&gt;\&gt;<\/span>//g' {} \;
 cp -r docs/images pages/
+curl -sSL -o pages/_static/copybutton.js "https://raw.githubusercontent.com/python/python-docs-theme/master/python_docs_theme/static/copybutton.js"
+sha384sum -c - <<EOF
+bf80c778867bd87d14588ff72ae10632b331427379a299ab2ac4d7ddefa9b648313720b796ab441359e0e47daf738109 pages/_static/copybutton.js
+EOF
 touch pages/.nojekyll

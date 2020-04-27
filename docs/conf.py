@@ -12,6 +12,7 @@
 #
 import os
 import sys
+import pathlib
 
 sys.path.insert(0, os.path.abspath("."))
 from dffml.version import VERSION
@@ -39,7 +40,6 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
-    "sphinxcontrib.asyncio",
     "recommonmark",
 ]
 
@@ -68,19 +68,28 @@ source_suffix = {
 #
 html_theme = "sphinx_rtd_theme"
 
-html_theme_options = {
-    "description": "The fastest path to machine learning integration",
+html_context = {
     "github_user": "intel",
     "github_repo": "dffml",
-    "github_button": True,
-    "travis_button": True,
-    "codecov_button": True,
+    "github_version": "master",
+    "conf_py_path": "/docs/",
+    "display_github": True,
+}
+
+html_theme_options = {
+    "description": "The easiest way to use Machine Learning",
+    "github_url": "https://github.com/intel/dffml/",
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
+
+
+def setup(app):
+    app.add_javascript("copybutton.js")
+
 
 # -- Extension configuration -------------------------------------------------
 

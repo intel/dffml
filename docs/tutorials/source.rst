@@ -20,7 +20,7 @@ to create it for you.
     $ dffml service dev create source my-source
     $ cd my-source
 
-This creates a Python package for you with a source that stores ``Repo`` objects
+This creates a Python package for you with a source that stores ``Record`` objects
 in memory, called ``MiscSource``, and some tests.
 
 Edit the Source
@@ -53,6 +53,13 @@ so.
 **examples/source/custom_sqlite.py**
 
 .. literalinclude:: /../examples/source/custom_sqlite.py
+
+Write the tests
+---------------
+
+**examples/source/test_custom_sqlite.py**
+
+.. literalinclude:: /../examples/source/test_custom_sqlite.py
 
 Run the tests
 -------------
@@ -89,4 +96,4 @@ The following command installs your new source.
 
 .. code-block:: console
 
-    $ python3.7 -m pip install -e .
+    $ python3.7 -m pip install --prefix=~/.local -e .

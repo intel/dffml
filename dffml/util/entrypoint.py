@@ -56,18 +56,23 @@ def entrypoint(label):
     This decorator sets the ENTRY_POINT_ORIG_LABEL and ENTRY_POINT_LABEL class
     proprieties to the same value, label.
 
-    For example in setup.py (dict would be the setup() function in this case).
-    EntrypointSubclassClass in this case needs to have this decorator applied to
-    it with label set to mylabel.
-    >>> dict(
-    >>>     entry_points={
-    >>>         'dffml.entrypoint': [
-    >>>             'mylabel = module.path.to:EntrypointSubclassClass',
-    >>>         ]
-    >>>     }
-    >>> )
+    Examples
+    --------
+
     >>> @entrypoint('mylabel')
-    >>> class EntrypointSubclassClass(Entrypoint): pass
+    ... class EntrypointSubclassClass(Entrypoint): pass
+
+    In setup.py, EntrypointSubclassClass needs to have this decorator applied to
+    it with label set to mylabel.
+
+    .. code-block:: python
+
+            entry_points={
+                'dffml.entrypoint': [
+                    'mylabel = module.path.to:EntrypointSubclassClass',
+                ]
+            }
+
     """
 
     def add_entry_point_label(cls):
@@ -81,7 +86,7 @@ def entrypoint(label):
 def base_entry_point(entrypoint, *args):
     """
     Any class which subclasses from Entrypoint needs this decorator applied to
-    it. The decorator sets the ENTRYPOINT and ENTRY_POINT_NAME proprieties on
+    it. The decorator sets the ENTRYPOINT and ENTRY_POINT_NAME properties on
     the class.
 
     This allows the load() classmethod to be called to load subclasses of the
@@ -92,15 +97,21 @@ def base_entry_point(entrypoint, *args):
     reference to the class. It comes from all arguments after the entrypoint
     argument (first argument) is a list which would turn into an command line
     argument if it were joined with hyphens.
-    >>> dict(
-    >>>     entry_points={
-    >>>         'dffml.entrypoint': [ # Same as ENTRYPOINT
-    >>>             'mylabel = module.path.to:EntrypointSubclassClass',
-    >>>         ]
-    >>>     }
-    >>> )
+
+    Examples
+    --------
+
     >>> @base_entry_point('dffml.entrypoint', 'entrypoint')
-    >>> class BaseEntrypointSubclassClass(Entrypoint): pass
+    ... class BaseEntrypointSubclassClass(Entrypoint): pass
+
+    .. code-block:: python
+
+            entry_points={
+                # dffml.entrypoint = ENTRYPOINT
+                'dffml.entrypoint': [
+                    'mylabel = module.path.to:EntrypointSubclassClass',
+                ]
+            }
     """
 
     def add_entry_point_and_name(cls):

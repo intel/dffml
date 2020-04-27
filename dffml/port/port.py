@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 """
-Port subclasses import and export repos.
+Port subclasses import and export records.
 """
 import abc
 
@@ -11,7 +11,7 @@ from ..util.entrypoint import Entrypoint
 
 class Port(abc.ABC, Entrypoint):
     """
-    Port repos into the format the porter understands
+    Port records into the format the porter understands
     """
 
     ENTRYPOINT = "dffml.port"
@@ -19,13 +19,13 @@ class Port(abc.ABC, Entrypoint):
     @abc.abstractmethod
     async def export_fd(self, source: BaseSource, fd):
         """
-        Export repos
+        Export records
         """
 
     @abc.abstractmethod
     async def import_fd(self, source: BaseSource, fd):
         """
-        Import repos
+        Import records
         """
 
     async def export_to_file(self, source: BaseSource, filename: str):

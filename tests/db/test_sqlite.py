@@ -19,6 +19,7 @@ class TestSqlDatabase(AsyncTestCase):
         self.sdb = SqliteDatabase(
             SqliteDatabaseConfig(filename=self.database_name)
         )
+        await self.sdb.__aenter__()
         self.table_name = "myTable"
         self.cols = {
             "key": "INTEGER NOT NULL PRIMARY KEY",
@@ -31,6 +32,9 @@ class TestSqlDatabase(AsyncTestCase):
             {"key": 11, "firstName": "John", "lastName": "Miles", "age": 37},
             {"key": 12, "firstName": "Bill", "lastName": "Miles", "age": 40},
         ]
+
+    async def tearDown(self):
+        await self.sdb.__aexit__(None, None, None)
 
     async def test_0_create_table(self):
         async with self.sdb() as db_ctx:

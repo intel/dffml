@@ -33,7 +33,7 @@ from dffml.operation.output import GetSingle
 from dffml.util.asynctestcase import AsyncTestCase
 
 definitions = [
-    Definition(name="calc_string", primitive="str"),
+    Definition(name="calc_string", primitive="string"),
     Definition(name="is_add", primitive="bool"),
     Definition(name="is_mult", primitive="bool"),
     Definition(name="numbers", primitive="List[int]"),
@@ -249,12 +249,20 @@ class TestOperation(MockIterEntryPoints):
         loaded = Operation.load()
         self.assertIn(add.op, loaded)
         self.assertIn(mult.op, loaded)
-        self.assertIn(parse_line.op, loaded)
+        try:
+            self.assertIn(parse_line.op, loaded)
+        except:
+            self.assertIn(
+                parse_line.op._replace(instance_name="parse_line"), loaded
+            )
 
     async def test_load_name_given(self):
         self.assertEqual(add.op, Operation.load("add"))
         self.assertEqual(mult.op, Operation.load("mult"))
-        self.assertEqual(parse_line.op, Operation.load("parse_line"))
+        self.assertEqual(
+            parse_line.op._replace(instance_name="parse_line"),
+            Operation.load("parse_line")._replace(instance_name="parse_line"),
+        )
 
 
 class TestDataFlow(MockIterEntryPoints):

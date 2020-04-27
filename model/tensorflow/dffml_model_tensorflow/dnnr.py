@@ -1,44 +1,28 @@
 """
 Uses Tensorflow to create a generic DNN which learns on all of the features in a
-repo.
+record.
 """
 import os
-from typing import List, Dict, Any, AsyncIterator
+from typing import Dict, Any, AsyncIterator
 
 import numpy as np
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
 
-from dffml.repo import Repo
+from dffml.base import config
+from dffml.record import Record
 from dffml.model.model import Model
 from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
-from dffml.base import config, field
-from dffml.feature.feature import Feature, Features
 
-from .dnnc import TensorflowModelContext
+from .dnnc import TensorflowModelContext, TensorflowBaseConfig
 
 
 @config
-class DNNRegressionModelConfig:
-    predict: Feature = field("Feature name holding target values")
-    features: Features = field("Features to train on")
-    steps: int = field("Number of steps to train the model", default=3000)
-    epochs: int = field(
-        "Number of iterations to pass over all repos in a source", default=30
-    )
-    directory: str = field(
-        "Directory where state should be saved",
-        default=os.path.join(
-            os.path.expanduser("~"), ".cache", "dffml", "tensorflow"
-        ),
-    )
-    hidden: List[int] = field(
-        "List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer",
-        default_factory=lambda: [12, 40, 15],
-    )
+class DNNRegressionModelConfig(TensorflowBaseConfig):
+    pass
 
 
 class DNNRegressionModelContext(TensorflowModelContext):
@@ -72,6 +56,22 @@ class DNNRegressionModelContext(TensorflowModelContext):
 
         return self._model
 
+    async def sources_to_array(self, sources: Sources):
+        x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
+        y_cols = []
+
+        async for record in sources.with_features(self.all_features):
+            for feature, results in record.features(self.features).items():
+
+                x_cols[feature].append(np.array(results))
+            y_cols.append(record.feature(self.parent.config.predict.NAME))
+
+        y_cols = np.array(y_cols)
+        for feature in x_cols:
+            x_cols[feature] = np.array(x_cols[feature])
+
+        return x_cols, y_cols
+
     async def training_input_fn(
         self,
         sources: Sources,
@@ -81,22 +81,11 @@ class DNNRegressionModelContext(TensorflowModelContext):
         **kwargs,
     ):
         """
-        Uses the numpy input function with data from repo features.
+        Uses the numpy input function with data from record features.
         """
         self.logger.debug("Training on features: %r", self.features)
-        x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
-        y_cols = []
-
-        async for repo in sources.with_features(self.all_features):
-            for feature, results in repo.features(self.features).items():
-
-                x_cols[feature].append(np.array(results))
-            y_cols.append(repo.feature(self.parent.config.predict.NAME))
-
-        y_cols = np.array(y_cols)
-        for feature in x_cols:
-            x_cols[feature] = np.array(x_cols[feature])
-        self.logger.info("------ Repo Data ------")
+        x_cols, y_cols = await self.sources_to_array(sources)
+        self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
@@ -119,20 +108,10 @@ class DNNRegressionModelContext(TensorflowModelContext):
         **kwargs,
     ):
         """
-        Uses the numpy input function with data from repo features.
+        Uses the numpy input function with data from record features.
         """
-        x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
-        y_cols = []
-
-        async for repo in sources.with_features(self.all_features):
-            for feature, results in repo.features(self.features).items():
-                x_cols[feature].append(np.array(results))
-            y_cols.append(repo.feature(self.parent.config.predict.NAME))
-
-        y_cols = np.array(y_cols)
-        for feature in x_cols:
-            x_cols[feature] = np.array(x_cols[feature])
-        self.logger.info("------ Repo Data ------")
+        x_cols, y_cols = await self.sources_to_array(sources)
+        self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
@@ -148,7 +127,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
 
     async def accuracy(self, sources: Sources) -> Accuracy:
         """
-        Evaluates the accuracy of our model after training using the input repos
+        Evaluates the accuracy of our model after training using the input records
         as test data.
         """
         if not os.path.isdir(self.model_dir_path):
@@ -159,24 +138,19 @@ class DNNRegressionModelContext(TensorflowModelContext):
         metrics = self.model.evaluate(input_fn=input_fn)
         return Accuracy(1 - metrics["loss"])  # 1 - mse
 
-    async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
+    async def predict(
+        self, records: AsyncIterator[Record]
+    ) -> AsyncIterator[Record]:
         """
-        Uses trained data to make a prediction about the quality of a repo.
+        Uses trained data to make a prediction about the quality of a record.
         """
-
-        if not os.path.isdir(self.model_dir_path):
-            raise NotADirectoryError("Model not trained")
-        # Create the input function
-        input_fn, predict_repo = await self.predict_input_fn(repos)
-        # Makes predictions on
-        predictions = self.model.predict(input_fn=input_fn)
-        target = self.parent.config.predict.NAME
-        for repo, pred_dict in zip(predict_repo, predictions):
+        predict, predictions, target = await self.get_predictions(records)
+        for record, pred_dict in zip(predict, predictions):
             # TODO Instead of float("nan") save accuracy value and use that.
-            repo.predicted(
+            record.predicted(
                 target, float(pred_dict["predictions"]), float("nan")
             )
-            yield repo
+            yield record
 
 
 @entrypoint("tfdnnr")
@@ -194,58 +168,32 @@ class DNNRegressionModel(Model):
       make sure to take a BACKUP of files with same name in the directory
       from where this command is run as it overwrites any existing files.
 
-    .. code-block:: console
+    .. literalinclude:: /../model/tensorflow/examples/tfdnnr/train_data.sh
 
-        $ cat > train.csv << EOF
-        Feature1,Feature2,TARGET
-        0.93,0.68,3.89
-        0.24,0.42,1.75
-        0.36,0.68,2.75
-        0.53,0.31,2.00
-        0.29,0.25,1.32
-        0.29,0.52,2.14
-        EOF
-        $ cat > test.csv << EOF
-        Feature1,Feature2,TARGET
-        0.57,0.84,3.65
-        0.95,0.19,2.46
-        0.23,0.15,0.93
-        EOF
-        $ dffml train \\
-            -model tfdnnr \\
-            -model-epochs 300 \\
-            -model-steps 2000 \\
-            -model-predict TARGET:float:1 \\
-            -model-hidden 8 16 8 \\
-            -sources s=csv \\
-            -source-filename train.csv \\
-            -model-features \\
-              Feature1:float:1 \\
-              Feature2:float:1 \\
-            -log debug
-        Enabling debug log shows tensorflow losses...
-        $ dffml accuracy \\
-            -model tfdnnr \\
-            -model-predict TARGET:float:1 \\
-            -model-hidden 8 16 8 \\
-            -sources s=csv \\
-            -source-filename test.csv \\
-            -model-features \\
-              Feature1:float:1 \\
-              Feature2:float:1 \\
-            -log critical
+    .. literalinclude:: /../model/tensorflow/examples/tfdnnr/test_data.sh
+
+    Train the model
+
+    .. literalinclude:: /../model/tensorflow/examples/tfdnnr/train.sh
+
+    Assess the accuracy
+
+    .. literalinclude:: /../model/tensorflow/examples/tfdnnr/accuracy.sh
+
+    Output
+
+    .. code-block::
+
         0.9468210011
-        $ echo -e 'Feature1,Feature2,TARGET\\n0.21,0.18,0.84\\n' | \\
-          dffml predict all \\
-            -model tfdnnr \\
-            -model-predict TARGET:float:1 \\
-            -model-hidden 8 16 8 \\
-            -sources s=csv \\
-            -source-filename /dev/stdin \\
-            -model-features \\
-              Feature1:float:1 \\
-              Feature2:float:1 \\
-            -log critical
+
+    Make a prediction
+
+    .. literalinclude:: /../model/tensorflow/examples/tfdnnr/predict.sh
+
+    Output
+
+    .. code-block:: json
+
         [
             {
                 "extra": {},
@@ -264,6 +212,10 @@ class DNNRegressionModel(Model):
                 "key": 0
             }
         ]
+
+    Example usage of Tensorflow DNNEstimator model using python API
+
+    .. literalinclude:: /../model/tensorflow/examples/tfdnnr/tfdnnr.py
 
     The ``NaN`` in ``confidence`` is the expected behaviour. (See TODO in
     predict).

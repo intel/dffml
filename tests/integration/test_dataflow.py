@@ -14,7 +14,7 @@ import contextlib
 from dffml.df.types import Operation, DataFlow, Input
 from dffml.cli.cli import CLI
 from dffml.util.entrypoint import load
-from dffml.config.config import BaseConfigLoader
+from dffml.configloader.configloader import BaseConfigLoader
 from dffml.util.asynctestcase import IntegrationCLITestCase, relative_path
 
 
@@ -90,7 +90,7 @@ class TestDataFlowMerge(TestDataFlow):
         orig = self.mktempfile() + ".json"
         pathlib.Path(orig).write_text(json.dumps(self.DATAFLOW.export()))
         # Import from feature/git
-        transform_to_repo = Operation.load("dffml.mapping.create")
+        transform_to_record = Operation.load("dffml.mapping.create")
         lines_of_code_by_language, lines_of_code_to_comments = list(
             load(
                 "dffml_feature_git.feature.operations:lines_of_code_by_language",
@@ -100,7 +100,7 @@ class TestDataFlowMerge(TestDataFlow):
         )
         # Create new dataflow
         override = DataFlow.auto(
-            transform_to_repo,
+            transform_to_record,
             lines_of_code_by_language,
             lines_of_code_to_comments,
         )

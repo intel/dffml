@@ -1,11 +1,13 @@
 """
 Uses Tensorflow to create a generic DNN which learns on all of the features in a
-repo.
+record.
 """
 import os
 import abc
 import hashlib
 import inspect
+import pathlib
+from dataclasses import dataclass
 from typing import List, Dict, Any, AsyncIterator, Type
 
 import numpy as np
@@ -13,13 +15,31 @@ import numpy as np
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 import tensorflow as tf
 
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml.model.accuracy import Accuracy
 from dffml.base import config, field
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
 from dffml.feature.feature import Feature, Features
 from dffml.model.model import ModelContext, Model, ModelNotTrained
+
+
+@dataclass
+class TensorflowBaseConfig:
+    predict: Feature = field("Feature name holding target values")
+    features: Features = field("Features to train on")
+    steps: int = field("Number of steps to train the model", default=3000)
+    epochs: int = field(
+        "Number of iterations to pass over all records in a source", default=30
+    )
+    directory: pathlib.Path = field(
+        "Directory where state should be saved",
+        default=pathlib.Path("~", ".cache", "dffml", "tensorflow"),
+    )
+    hidden: List[int] = field(
+        "List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer",
+        default_factory=lambda: [12, 40, 15],
+    )
 
 
 class TensorflowModelContext(ModelContext):
@@ -37,7 +57,7 @@ class TensorflowModelContext(ModelContext):
 
     def _feature_columns(self):
         """
-        Converts repos into training data
+        Converts records into training data
         """
         cols: Dict[str, Any] = {}
         for feature in self.parent.config.features:
@@ -92,27 +112,27 @@ class TensorflowModelContext(ModelContext):
             )
         return os.path.join(self.parent.config.directory, model)
 
-    async def predict_input_fn(self, repos: AsyncIterator[Repo], **kwargs):
+    async def predict_input_fn(self, records: AsyncIterator[Record], **kwargs):
         """
-        Uses the numpy input function with data from repo features.
+        Uses the numpy input function with data from record features.
         """
         x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
-        ret_repos = []
-        async for repo in repos:
-            if not repo.features(self.features):
+        ret_records = []
+        async for record in records:
+            if not record.features(self.features):
                 continue
-            ret_repos.append(repo)
-            for feature, results in repo.features(self.features).items():
+            ret_records.append(record)
+            for feature, results in record.features(self.features).items():
                 x_cols[feature].append(np.array(results))
         for feature in x_cols:
             x_cols[feature] = np.array(x_cols[feature])
-        self.logger.info("------ Repo Data ------")
+        self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("-----------------------")
         input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols, shuffle=False, num_epochs=1, **kwargs
         )
-        return input_fn, ret_repos
+        return input_fn, ret_records
 
     async def train(self, sources: Sources):
         """
@@ -120,6 +140,17 @@ class TensorflowModelContext(ModelContext):
         """
         input_fn = await self.training_input_fn(sources)
         self.model.train(input_fn=input_fn, steps=self.parent.config.steps)
+
+    async def get_predictions(self, records: Record):
+        if not os.path.isdir(self.model_dir_path):
+            raise ModelNotTrained("Train model before prediction.")
+        # Create the input function
+        input_fn, predict = await self.predict_input_fn(records)
+        # Makes predictions on classifications
+        predictions = self.model.predict(input_fn=input_fn)
+        target = self.parent.config.predict.NAME
+
+        return predict, predictions, target
 
     @property
     @abc.abstractmethod
@@ -130,28 +161,16 @@ class TensorflowModelContext(ModelContext):
 
 
 @config
-class DNNClassifierModelConfig:
-    predict: Feature = field("Feature name holding predict value")
-    classifications: List[str] = field("Options for value of classification")
-    features: Features = field("Features to train on")
+class DNNClassifierModelConfig(TensorflowBaseConfig):
+    classifications: List[str] = field(
+        "Options for value of classification", default=None
+    )
     clstype: Type = field("Data type of classifications values", default=str)
     batchsize: int = field(
-        "Number repos to pass through in an epoch", default=20
+        "Number records to pass through in an epoch", default=20
     )
-    shuffle: bool = field("Randomise order of repos in a batch", default=True)
-    steps: int = field("Number of steps to train the model", default=3000)
-    epochs: int = field(
-        "Number of iterations to pass over all repos in a source", default=30
-    )
-    directory: str = field(
-        "Directory where state should be saved",
-        default=os.path.join(
-            os.path.expanduser("~"), ".cache", "dffml", "tensorflow"
-        ),
-    )
-    hidden: List[int] = field(
-        "List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer",
-        default_factory=lambda: [12, 40, 15],
+    shuffle: bool = field(
+        "Randomise order of records in a batch", default=True
     )
 
     def __post_init__(self):
@@ -211,34 +230,39 @@ class DNNClassifierModelContext(TensorflowModelContext):
         )
         return self._model
 
-    async def training_input_fn(self, sources: Sources, **kwargs):
-        """
-        Uses the numpy input function with data from repo features.
-        """
-        self.logger.debug("Training on features: %r", self.features)
+    async def sources_to_array(self, sources: Sources):
         x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
         y_cols = []
-        for repo in [
-            repo
-            async for repo in sources.with_features(
+        for record in [
+            record
+            async for record in sources.with_features(
                 self.features + [self.parent.config.predict.NAME]
             )
-            if repo.feature(self.parent.config.predict.NAME)
+            if record.feature(self.parent.config.predict.NAME)
             in self.classifications
         ]:
-            for feature, results in repo.features(self.features).items():
+            for feature, results in record.features(self.features).items():
                 x_cols[feature].append(np.array(results))
             y_cols.append(
                 self.classifications[
-                    repo.feature(self.parent.config.predict.NAME)
+                    record.feature(self.parent.config.predict.NAME)
                 ]
             )
         if not y_cols:
-            raise ValueError("No repos to train on")
+            raise ValueError("No records to train on")
         y_cols = np.array(y_cols)
         for feature in x_cols:
             x_cols[feature] = np.array(x_cols[feature])
-        self.logger.info("------ Repo Data ------")
+
+        return x_cols, y_cols
+
+    async def training_input_fn(self, sources: Sources, **kwargs):
+        """
+        Uses the numpy input function with data from record features.
+        """
+        self.logger.debug("Training on features: %r", self.features)
+        x_cols, y_cols = await self.sources_to_array(sources)
+        self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
@@ -254,29 +278,10 @@ class DNNClassifierModelContext(TensorflowModelContext):
 
     async def accuracy_input_fn(self, sources: Sources, **kwargs):
         """
-        Uses the numpy input function with data from repo features.
+        Uses the numpy input function with data from record features.
         """
-        x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
-        y_cols = []
-        for repo in [
-            repo
-            async for repo in sources.with_features(
-                self.features + [self.parent.config.predict.NAME]
-            )
-            if repo.feature(self.parent.config.predict.NAME)
-            in self.classifications
-        ]:
-            for feature, results in repo.features(self.features).items():
-                x_cols[feature].append(np.array(results))
-            y_cols.append(
-                self.classifications[
-                    repo.feature(self.parent.config.predict.NAME)
-                ]
-            )
-        y_cols = np.array(y_cols)
-        for feature in x_cols:
-            x_cols[feature] = np.array(x_cols[feature])
-        self.logger.info("------ Repo Data ------")
+        x_cols, y_cols = await self.sources_to_array(sources)
+        self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
@@ -292,7 +297,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
 
     async def accuracy(self, sources: Sources) -> Accuracy:
         """
-        Evaluates the accuracy of our model after training using the input repos
+        Evaluates the accuracy of our model after training using the input records
         as test data.
         """
         if not os.path.isdir(self.model_dir_path):
@@ -301,22 +306,18 @@ class DNNClassifierModelContext(TensorflowModelContext):
         accuracy_score = self.model.evaluate(input_fn=input_fn)
         return Accuracy(accuracy_score["accuracy"])
 
-    async def predict(self, repos: AsyncIterator[Repo]) -> AsyncIterator[Repo]:
+    async def predict(
+        self, records: AsyncIterator[Record]
+    ) -> AsyncIterator[Record]:
         """
-        Uses trained data to make a prediction about the quality of a repo.
+        Uses trained data to make a prediction about the quality of a record.
         """
-        if not os.path.isdir(self.model_dir_path):
-            raise ModelNotTrained("Train model before prediction.")
-        # Create the input function
-        input_fn, predict = await self.predict_input_fn(repos)
-        # Makes predictions on classifications
-        predictions = self.model.predict(input_fn=input_fn)
-        target = self.parent.config.predict.NAME
-        for repo, pred_dict in zip(predict, predictions):
+        predict, predictions, target = await self.get_predictions(records)
+        for record, pred_dict in zip(predict, predictions):
             class_id = pred_dict["class_ids"][0]
             probability = pred_dict["probabilities"][class_id]
-            repo.predicted(target, self.cids[class_id], probability)
-            yield repo
+            record.predicted(target, self.cids[class_id], probability)
+            yield record
 
 
 @entrypoint("tfdnnc")
@@ -324,59 +325,34 @@ class DNNClassifierModel(Model):
     """
     Implemented using Tensorflow's DNNClassifier.
 
-    .. code-block:: console
+    First we create the training and testing datasets
 
-        $ wget http://download.tensorflow.org/data/iris_training.csv
-        $ wget http://download.tensorflow.org/data/iris_test.csv
-        $ head iris_training.csv
-        $ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' *.csv
-        $ head iris_training.csv
-        $ dffml train \\
-            -model tfdnnc \\
-            -model-epochs 3000 \\
-            -model-steps 20000 \\
-            -model-predict classification:int:1 \\
-            -model-classifications 0 1 2 \\
-            -model-clstype int \\
-            -sources iris=csv \\
-            -source-filename iris_training.csv \\
-            -model-features \\
-              SepalLength:float:1 \\
-              SepalWidth:float:1 \\
-              PetalLength:float:1 \\
-              PetalWidth:float:1 \\
-            -log debug
-        ... lots of output ...
-        $ dffml accuracy \\
-            -model tfdnnc \\
-            -model-predict classification:int:1 \\
-            -model-classifications 0 1 2 \\
-            -model-clstype int \\
-            -sources iris=csv \\
-            -source-filename iris_test.csv \\
-            -model-features \\
-              SepalLength:float:1 \\
-              SepalWidth:float:1 \\
-              PetalLength:float:1 \\
-              PetalWidth:float:1 \\
-            -log critical
+    .. literalinclude:: /../model/tensorflow/examples/tfdnnc/train_data.sh
+
+    .. literalinclude:: /../model/tensorflow/examples/tfdnnc/test_data.sh
+
+    Train the model
+
+    .. literalinclude:: /../model/tensorflow/examples/tfdnnc/train.sh
+
+    Assess the accuracy
+
+    .. literalinclude:: /../model/tensorflow/examples/tfdnnc/accuracy.sh
+
+    Output
+
+    .. code-block::
+
         0.99996233782
-        $ dffml predict all \\
-            -model tfdnnc \\
-            -model-predict classification:int:1 \\
-            -model-classifications 0 1 2 \\
-            -model-clstype int \\
-            -sources iris=csv \\
-            -source-filename iris_test.csv \\
-            -model-features \\
-              SepalLength:float:1 \\
-              SepalWidth:float:1 \\
-              PetalLength:float:1 \\
-              PetalWidth:float:1 \\
-            -caching \\
-            -log critical \\
-          > results.json
-        $ head -n 33 results.json
+
+    Make a prediction
+
+    .. literalinclude:: /../model/tensorflow/examples/tfdnnc/predict.sh
+
+    Output
+
+    .. code-block:: json
+
         [
             {
                 "extra": {},
@@ -397,25 +373,11 @@ class DNNClassifierModel(Model):
                 },
                 "key": "0"
             },
-            {
-                "extra": {},
-                "features": {
-                    "PetalLength": 5.4,
-                    "PetalWidth": 2.1,
-                    "SepalLength": 6.9,
-                    "SepalWidth": 3.1,
-                    "classification": 2
-                },
-                "last_updated": "2019-07-31T02:00:12Z",
-                "prediction": {
-                    "classification":
-                    {
-                        "confidence": 0.9999984502792358,
-                        "value": 2
-                    }
-                },
-                "key": "1"
-            },
+        ]
+
+    Example usage of Tensorflow DNNClassifier model using python API
+
+    .. literalinclude:: /../model/tensorflow/examples/tfdnnc/tfdnnc.py
 
     """
 

@@ -218,7 +218,7 @@ The ``lines_of_code_to_comments`` operation needs the output given by
 
 A ``git_repository_checked_out`` is defined as:
 
- - repo: git_repository_checked_out(type: Dict[str, str])
+ - record: git_repository_checked_out(type: Dict[str, str])
 
   - URL: str
   - directory: str

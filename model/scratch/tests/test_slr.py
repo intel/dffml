@@ -1,102 +1,84 @@
 import tempfile
+import unittest
 
+from dffml import train, accuracy, predict, DefFeature, Features, AsyncTestCase
 
-from dffml.repo import Repo
-from dffml.source.source import Sources
-from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml.util.asynctestcase import AsyncTestCase
-from dffml.feature import DefFeature, Features
+from dffml.model.slr import SLRModel, SLRModelConfig
 
-from dffml_model_scratch.slr import SLR, SLRConfig
+TRAIN_DATA = [
+    [12.4, 11.2],
+    [14.3, 12.5],
+    [14.5, 12.7],
+    [14.9, 13.1],
+    [16.1, 14.1],
+    [16.9, 14.8],
+    [16.5, 14.4],
+    [15.4, 13.4],
+    [17.0, 14.9],
+    [17.9, 15.6],
+    [18.8, 16.4],
+    [20.3, 17.7],
+    [22.4, 19.6],
+    [19.4, 16.9],
+    [15.5, 14.0],
+    [16.7, 14.6],
+]
 
-FEATURE_DATA = [
-    [12.39999962, 11.19999981],
-    [14.30000019, 12.5],
-    [14.5, 12.69999981],
-    [14.89999962, 13.10000038],
-    [16.10000038, 14.10000038],
-    [16.89999962, 14.80000019],
-    [16.5, 14.39999962],
-    [15.39999962, 13.39999962],
-    [17, 14.89999962],
-    [17.89999962, 15.60000038],
-    [18.79999924, 16.39999962],
-    [20.29999924, 17.70000076],
-    [22.39999962, 19.60000038],
-    [19.39999962, 16.89999962],
-    [15.5, 14],
-    [16.70000076, 14.60000038],
-    [17.29999924, 15.10000038],
-    [18.39999962, 16.10000038],
-    [19.20000076, 16.79999924],
-    [17.39999962, 15.19999981],
-    [19.5, 17],
-    [19.70000076, 17.20000076],
-    [21.20000076, 18.60000038],
+TEST_DATA = [
+    [17.3, 15.1],
+    [18.4, 16.1],
+    [19.2, 16.8],
+    [17.4, 15.2],
+    [19.5, 17.0],
+    [19.7, 17.2],
+    [21.2, 18.6],
 ]
 
 
 class TestSLR(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
+        # Create a temporary directory to store the trained model
         cls.model_dir = tempfile.TemporaryDirectory()
-        cls.feature = DefFeature("X", float, 1)
-        cls.features = Features(cls.feature)
-        X, Y = list(zip(*FEATURE_DATA))
-        cls.repos = [
-            Repo(str(i), data={"features": {"X": X[i], "Y": Y[i]}})
-            for i in range(0, len(Y))
-        ]
-        cls.sources = Sources(
-            MemorySource(MemorySourceConfig(repos=cls.repos))
-        )
-        cls.model = SLR(
-            SLRConfig(
-                directory=cls.model_dir.name,
-                predict=DefFeature("Y", float, 1),
-                features=cls.features,
-            )
+        # Create the training data
+        cls.train_data = []
+        for x, y in TRAIN_DATA:
+            cls.train_data.append({"X": x, "Y": y})
+        # Create the test data
+        cls.test_data = []
+        for x, y in TEST_DATA:
+            cls.test_data.append({"X": x, "Y": y})
+        # Create an instance of the model
+        cls.model = SLRModel(
+            directory=cls.model_dir.name,
+            predict=DefFeature("Y", float, 1),
+            features=Features(DefFeature("X", float, 1)),
         )
 
     @classmethod
     def tearDownClass(cls):
+        # Remove the temporary directory where the trained model was stored
         cls.model_dir.cleanup()
 
-    async def test_context(self):
-        async with self.sources as sources, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                # Test train
-                await mctx.train(sctx)
-                # Test accuracy
-                res = await mctx.accuracy(sctx)
-                self.assertTrue(0.0 <= res < 1.0)
-                # Test predict
-                target_name = model.config.predict.NAME
-                async for repo in mctx.predict(sctx.repos()):
-                    correct = FEATURE_DATA[int(repo.key)][1]
-                    # Comparison of correct to prediction to make sure prediction is within a reasonable range
-                    prediction = repo.prediction(target_name).value
-                    self.assertGreater(prediction, correct - (correct * 0.10))
-                    self.assertLess(prediction, correct + (correct * 0.10))
-
     async def test_00_train(self):
-        async with self.sources as sources, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                await mctx.train(sctx)
+        # Train the model on the training data
+        await train(self.model, *self.train_data)
 
     async def test_01_accuracy(self):
-        async with self.sources as sources, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                res = await mctx.accuracy(sctx)
-                self.assertTrue(0.0 <= res < 1.0)
+        # Use the test data to assess the model's accuracy
+        res = await accuracy(self.model, *self.test_data)
+        # Ensure the accuracy is above 80%
+        self.assertTrue(0.8 <= res < 1.0)
 
     async def test_02_predict(self):
-        async with self.sources as sources, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                target_name = model.config.predict.NAME
-                async for repo in mctx.predict(sctx.repos()):
-                    target_name = model.config.predict.NAME
-                    correct = FEATURE_DATA[int(repo.key)][1]
-                    prediction = repo.prediction(target_name).value
-                    self.assertGreater(prediction, correct - (correct * 0.10))
-                    self.assertLess(prediction, correct + (correct * 0.10))
+        # Get the prediction for each piece of test data
+        async for i, features, prediction in predict(
+            self.model, *self.test_data
+        ):
+            # Grab the correct value
+            correct = self.test_data[i]["Y"]
+            # Grab the predicted value
+            prediction = prediction["Y"]["value"]
+            # Check that the percent error is less than 10%
+            self.assertLess(prediction, correct * 1.1)
+            self.assertGreater(prediction, correct * (1.0 - 0.1))

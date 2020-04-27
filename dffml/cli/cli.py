@@ -7,16 +7,12 @@ import pdb
 import pkg_resources
 
 from ..version import VERSION
-from ..repo import Repo
+from ..record import Record
 from ..source.source import BaseSource
 from ..util.packaging import is_develop
 from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
-from ..util.cli.cmds import (
-    SourcesCMD,
-    PortCMD,
-    KeysCMD,
-)
+from ..util.cli.cmds import SourcesCMD, PortCMD, KeysCMD
 
 from .dataflow import Dataflow
 from .config import Config
@@ -37,28 +33,30 @@ class Version(CMD):
 
 class Edit(SourcesCMD, KeysCMD):
     """
-    Edit each specified repo
+    Edit each specified record
     """
 
     async def run(self):
         async with self.sources as sources:
             async with sources() as sctx:
                 for key in self.keys:
-                    repo = await sctx.repo(key)
+                    record = await sctx.record(key)
                     pdb.set_trace()
-                    await sctx.update(repo)
+                    await sctx.update(record)
 
 
 class Merge(CMD):
     """
-    Merge repo data between sources
+    Merge record data between sources
     """
 
     arg_dest = Arg(
-        "dest", help="Sources merge repos into", type=BaseSource.load_labeled
+        "dest", help="Sources merge records into", type=BaseSource.load_labeled
     )
     arg_src = Arg(
-        "src", help="Sources to pull repos from", type=BaseSource.load_labeled
+        "src",
+        help="Sources to pull records from",
+        type=BaseSource.load_labeled,
     )
 
     async def run(self):
@@ -66,11 +64,11 @@ class Merge(CMD):
             self.extra_config
         ) as src, self.dest.withconfig(self.extra_config) as dest:
             async with src() as sctx, dest() as dctx:
-                async for src in sctx.repos():
-                    repo = Repo(src.key)
-                    repo.merge(src)
-                    repo.merge(await dctx.repo(repo.key))
-                    await dctx.update(repo)
+                async for src in sctx.records():
+                    record = Record(src.key)
+                    record.merge(src)
+                    record.merge(await dctx.record(record.key))
+                    await dctx.update(record)
 
 
 class ImportExportCMD(PortCMD, SourcesCMD):
@@ -80,7 +78,7 @@ class ImportExportCMD(PortCMD, SourcesCMD):
 
 
 class Import(ImportExportCMD):
-    """Imports repos"""
+    """Imports records"""
 
     async def run(self):
         async with self.sources as sources:
@@ -89,7 +87,7 @@ class Import(ImportExportCMD):
 
 
 class Export(ImportExportCMD):
-    """Exports repos"""
+    """Exports records"""
 
     async def run(self):
         async with self.sources as sources:
