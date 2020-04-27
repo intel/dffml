@@ -32,7 +32,7 @@ async def run_npm_audit(pkg: str) -> Dict[str, Any]:
     )
 
     _, stderr = await proc.communicate()
-    if proc.returncode != 0:
+    if proc.returncode != 0 and stderr:
         raise NPMAuditError(stderr.decode())
 
     npm_audit_op = stdout.decode()
