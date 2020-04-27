@@ -19,6 +19,7 @@ from typing import (
     Union,
     Optional,
     Set,
+    Callable,
 )
 
 from .exceptions import (
@@ -96,6 +97,20 @@ class MemoryKeyValueStoreContext(BaseKeyValueStoreContext):
     async def set(self, key: str, value: bytes):
         async with self.lock:
             self.memory[key] = value
+
+    async def conditional_set(
+        self,
+        key: str,
+        value,
+        *,
+        checker: Optional[Callable[[bytes], bool]] = lambda value: value
+        is not None,
+    ) -> bool:
+        async with self.lock:
+            if checker(self.memory.get(key)):
+                self.memory[key] = value
+                return True
+        return False
 
 
 @entrypoint("memory")
@@ -529,9 +544,11 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
             )
         )
         # Check if each permutation has been executed before
-        async for parameter_set, exists in rctx.exists(operation, *products):
-            # If not then yield the permutation
-            if not exists:
+        async for parameter_set, taken in rctx.take_if_non_existant(
+            operation, *products
+        ):
+            # If taken then yield the permutation
+            if taken:
                 yield parameter_set
 
 
@@ -644,31 +661,31 @@ class MemoryRedundancyCheckerContext(BaseRedundancyCheckerContext):
         SHA384 hash of the parameter set context handle as a string, the
         operation.instance_name, and the sorted list of input uuids.
         """
-        uid_list = [
+        return self._unique(
             operation.instance_name,
             (await parameter_set.ctx.handle()).as_string(),
-        ] + sorted(
-            [item.origin.uid async for item in parameter_set.parameters()]
+            *[item.origin.uid async for item in parameter_set.parameters()],
         )
-        return hashlib.sha384("".join(uid_list).encode("utf-8")).hexdigest()
 
-    async def _exists(self, coro) -> bool:
-        return bool(await self.kvctx.get(await coro) == "\x01")
+    async def _take(self, coro) -> bool:
+        return await self.kvctx.conditional_set(
+            await coro, "\x01", checker=lambda value: value != "\x01"
+        )
 
-    async def exists(
+    async def take_if_non_existant(
         self, operation: Operation, *parameter_sets: BaseParameterSet
     ) -> bool:
         # TODO(p4) Run tests to choose an optimal threaded vs non-threaded value
         if len(parameter_sets) < 4:
             for parameter_set in parameter_sets:
-                yield parameter_set, await self._exists(
+                yield parameter_set, await self._take(
                     self.unique(operation, parameter_set)
                 )
         else:
-            async for parameter_set, exists in concurrently(
+            async for parameter_set, taken in concurrently(
                 {
                     asyncio.create_task(
-                        self._exists(
+                        self._take(
                             self.parent.loop.run_in_executor(
                                 self.parent.pool,
                                 self._unique,
@@ -684,15 +701,7 @@ class MemoryRedundancyCheckerContext(BaseRedundancyCheckerContext):
                     for parameter_set in parameter_sets
                 }
             ):
-                yield parameter_set, exists
-
-    async def add(self, operation: Operation, parameter_set: BaseParameterSet):
-        # self.logger.debug('adding parameter_set: %s', list(map(
-        #     lambda p: p.value,
-        #     [p async for p in parameter_set.parameters()])))
-        await self.kvctx.set(
-            await self.unique(operation, parameter_set), "\x01"
-        )
+                yield parameter_set, taken
 
 
 @entrypoint("memory")
@@ -1420,10 +1429,10 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
             parameter_set = MemoryParameterSet(
                 MemoryParameterSetConfig(ctx=ctx, parameters=[parameter])
             )
-            async for parameter_set, exists in self.rctx.exists(
+            async for parameter_set, taken in self.rctx.take_if_non_existant(
                 validator, parameter_set
             ):
-                if not exists:
+                if taken:
                     yield validator, parameter_set
 
     async def run_operations_for_ctx(
@@ -1494,7 +1503,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                                 self.config.dataflow,
                                 unvalidated_input_set,
                             ):
-                                await self.rctx.add(operation, parameter_set)
                                 dispatch_operation = await self.nctx.dispatch(
                                     self, operation, parameter_set
                                 )
@@ -1522,9 +1530,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                                 # Validation operations shouldn't be run here
                                 if operation.validator:
                                     continue
-                                # Add inputs and operation to redundancy checker before
-                                # dispatch
-                                await self.rctx.add(operation, parameter_set)
                                 # Dispatch the operation and input set for running
                                 dispatch_operation = await self.nctx.dispatch(
                                     self, operation, parameter_set
@@ -1585,8 +1590,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         async for operation, parameter_set in self.operations_parameter_set_pairs(
             ctx, self.config.dataflow, stage=stage
         ):
-            # Add inputs and operation to redundancy checker before dispatch
-            await self.rctx.add(operation, parameter_set)
             # Run the operation, input set pair
             yield operation, await self.nctx.run(
                 ctx, self, operation, await parameter_set._asdict()
