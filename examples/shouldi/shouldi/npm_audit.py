@@ -31,7 +31,7 @@ async def run_npm_audit(pkg: str) -> Dict[str, Any]:
         stderr=asyncio.subprocess.PIPE,
     )
 
-    _, stderr = await proc.communicate()
+    stdout, stderr = await proc.communicate()
     if proc.returncode != 0 and stderr:
         raise NPMAuditError(stderr.decode())
 
