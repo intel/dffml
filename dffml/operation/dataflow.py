@@ -74,10 +74,10 @@ class run_dataflow(OperationImplementationContext):
     ... )
     >>>
     >>> dataflow = DataFlow.auto(run_dataflow, GetSingle)
-    >>> dataflow.configs[run_dataflow.imp.op.name] = RunDataFlowConfig(subflow)
+    >>> dataflow.configs[run_dataflow.op.name] = RunDataFlowConfig(subflow)
     >>> dataflow.seed.append(
     ...     Input(
-    ...         value=[run_dataflow.imp.op.outputs["results"].name],
+    ...         value=[run_dataflow.op.outputs["results"].name],
     ...         definition=GetSingle.op.inputs["spec"]
     ...     )
     ... )
@@ -94,7 +94,7 @@ class run_dataflow(OperationImplementationContext):
     ...                         }
     ...                     ]
     ...                 },
-    ...                 definition=run_dataflow.imp.op.inputs["inputs"]
+    ...                 definition=run_dataflow.op.inputs["inputs"]
     ...             )
     ...         ]
     ...     }):
