@@ -135,6 +135,9 @@ class GetMulti(OperationImplementationContext):
     had we run an operation which output a URL, that output URL would have also
     been returned to us.
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> URL = Definition(name="URL", primitive="string")
     >>>
     >>> dataflow = DataFlow.auto(GetMulti)
@@ -217,6 +220,9 @@ class GetSingle(GetMulti):
     had we run an operation which output a URL, that output URL could have also
     been returned to us.
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> URL = Definition(name="URL", primitive="string")
     >>>
     >>> dataflow = DataFlow.auto(GetSingle)

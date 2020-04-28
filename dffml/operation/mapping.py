@@ -34,6 +34,9 @@ def mapping_extract_value(mapping: Dict[str, Any], traverse: List[str]):
     Examples
     ++++++++
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> dataflow = DataFlow.auto(mapping_extract_value, GetSingle)
     >>>
     >>> dataflow.seed.append(
@@ -87,6 +90,9 @@ def create_mapping(key: str, value: Any):
     Examples
     ++++++++
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> dataflow = DataFlow.auto(create_mapping, GetSingle)
     >>> dataflow.seed.append(
     ...     Input(

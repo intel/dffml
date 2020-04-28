@@ -156,8 +156,10 @@ async def run(
 
     >>> # Socket server derived from
     >>> # https://docs.python.org/3/library/socketserver.html#asynchronous-mixins
+    >>> import asyncio
     >>> import threading
     >>> import socketserver
+    >>> from dffml import *
     >>>
     >>> class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     ...     def handle(self):
@@ -244,6 +246,10 @@ async def save(source: BaseSource, *args: Record) -> None:
     Examples
     --------
 
+    >>> import asyncio
+    >>> import pathlib
+    >>> from dffml import *
+    >>>
     >>> source = CSVSource(filename="save.csv", allowempty=True, readwrite=True)
     >>>
     >>> async def main():
@@ -292,6 +298,9 @@ async def load(source: BaseSource, *args: str) -> AsyncIterator[Record]:
     Examples
     --------
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> source = CSVSource(filename="load.csv", allowempty=True, readwrite=True)
     >>>
     >>> async def main():
@@ -346,6 +355,9 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
     Examples
     --------
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> model = SLRModel(
     ...     features=Features(
     ...         DefFeature("Years", int, 1),
@@ -399,6 +411,9 @@ async def accuracy(
     Examples
     --------
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> model = SLRModel(
     ...     features=Features(
     ...         DefFeature("Years", int, 1),
@@ -460,6 +475,9 @@ async def predict(
     Examples
     --------
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> model = SLRModel(
     ...     features=Features(
     ...         DefFeature("Years", int, 1),

@@ -33,6 +33,9 @@ async def literal_eval(str_to_eval: str):
 
     The following example shows how to use literal_eval.
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> dataflow = DataFlow.auto(literal_eval, GetSingle)
     >>> dataflow.seed.append(
     ...    Input(
