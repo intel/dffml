@@ -162,10 +162,9 @@ class Entrypoint(object):
                 )
                 raise
             loaded.ENTRY_POINT_LABEL = i.name
-            if issubclass(loaded, cls):
-                loading_classes.append(loaded)
-                if loading is not None and i.name == loading:
-                    return loaded
+            loading_classes.append(loaded)
+            if loading is not None and i.name == loading:
+                return loaded
         if loading is not None:
             raise EntrypointNotFound(
                 f"{loading!r} was not found in: {loaded_names}"
