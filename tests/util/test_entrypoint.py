@@ -33,19 +33,6 @@ class TestEntrypoint(unittest.TestCase):
         Loadable("three", FakeEntrypoint),
     ]
 
-    def test_load_only_subclasses(self):
-        with patch.object(
-            pkg_resources, "iter_entry_points", return_value=self.FAKE_ITER
-        ) as mock_method:
-            loaded = FakeEntrypoint.load()
-            self.assertTrue(loaded)
-            names = [i.name for i in loaded]
-            for should_load in ["one", "three"]:
-                with self.subTest(should_load=should_load):
-                    self.assertIn(should_load, names)
-            with self.subTest(should_not_load="two"):
-                self.assertNotIn("two", names)
-
     def test_load_given_name(self):
         with patch.object(
             pkg_resources, "iter_entry_points", return_value=self.FAKE_ITER
