@@ -59,6 +59,8 @@ def entrypoint(label):
     Examples
     --------
 
+    >>> from dffml import entrypoint, Entrypoint
+    >>>
     >>> @entrypoint('mylabel')
     ... class EntrypointSubclassClass(Entrypoint): pass
 
@@ -101,6 +103,8 @@ def base_entry_point(entrypoint, *args):
     Examples
     --------
 
+    >>> from dffml import base_entry_point, Entrypoint
+    >>>
     >>> @base_entry_point('dffml.entrypoint', 'entrypoint')
     ... class BaseEntrypointSubclassClass(Entrypoint): pass
 

@@ -118,6 +118,8 @@ class Feature(abc.ABC, Entrypoint):
     --------
     Define a feature using load_def:
 
+    >>> from dffml import *
+    >>>
     >>> feature = Feature.load_def("example", "float", 10)
     >>> feature.dtype()
     <class 'float'>
@@ -128,6 +130,8 @@ class Feature(abc.ABC, Entrypoint):
 
     Defining a feature directly using DefFeature:
 
+    >>> from dffml import *
+    >>>
     >>> feature = DefFeature("example2", int, 20)
     >>> feature.dtype()
     <class 'int'>
@@ -173,6 +177,8 @@ class Feature(abc.ABC, Entrypoint):
         Examples
         --------
 
+        >>> from dffml import *
+        >>>
         >>> feature = Feature()
         >>> feature.dtype()
         <class 'int'>
@@ -188,6 +194,8 @@ class Feature(abc.ABC, Entrypoint):
         Examples
         --------
 
+        >>> from dffml import *
+        >>>
         >>> feature = Feature()
         >>> feature.length()
         1

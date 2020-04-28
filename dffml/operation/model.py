@@ -53,6 +53,9 @@ async def model_predict(self, features: Dict[str, Any]) -> Dict[str, Any]:
 
     The following example shows how to use model_predict.
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> slr_model = SLRModel(
     ...     features=Features(DefFeature("Years", int, 1)),
     ...     predict=DefFeature("Salary", int, 1),

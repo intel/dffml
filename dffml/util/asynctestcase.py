@@ -37,7 +37,8 @@ class AsyncTestCase(unittest.TestCase):
     Examples
     --------
 
-    >>> from dffml.util.asynctestcase import AsyncTestCase
+    >>> import asyncio
+    >>> from dffml import AsyncTestCase
     >>>
     >>> class AsyncTestCase(AsyncTestCase):
     ...     async def test_sleep(self):
