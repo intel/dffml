@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tests for noasync high level API.
 - Tests for load and save functions in high level API.
 - `Operation` inputs and ouputs default to empty `dict` if not given.
+- Ability to export any object with `dffml service dev export`
 ### Changed
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
