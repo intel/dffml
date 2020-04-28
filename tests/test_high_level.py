@@ -4,7 +4,7 @@ This file contains integration tests for the high level (very abstract) APIs.
 import importlib
 
 from dffml.record import Record
-from dffml import train, accuracy, predict
+from dffml import train, accuracy, predict, save, load
 from dffml.source.csv import CSVSource
 from dffml.feature.feature import Features, DefFeature
 from dffml.util.asynctestcase import IntegrationCLITestCase
@@ -23,6 +23,8 @@ class TestML(IntegrationCLITestCase):
 
     async def setUp(self):
         await super().setUp()
+        save_and_load_file = self.mktempfile() + ".csv"
+        setattr(self, "save_and_load", save_and_load_file)
         self.train_data = [
             [0, 1, 0.2, 10],
             [1, 3, 0.4, 20],
@@ -42,6 +44,61 @@ class TestML(IntegrationCLITestCase):
             filename = self.mktempfile() + ".csv"
             setattr(self, f"{use}_filename", filename)
             await self.populate_source(CSVSource, *records, filename=filename)
+
+    async def test_save_and_load(self):
+        source = CSVSource(
+            filename=self.save_and_load, allowempty=True, readwrite=True
+        )
+        await save(
+            source,
+            Record(
+                "1",
+                data={
+                    "features": {"A": 0, "B": 1},
+                    "prediction": {"C": {"value": 1, "confidence": 1.0}},
+                },
+            ),
+            Record(
+                "2",
+                data={
+                    "features": {"A": 3, "B": 4},
+                    "prediction": {"C": {"value": 2, "confidence": 1.0}},
+                },
+            ),
+        )
+        # All records in source
+        results = [record.export() async for record in load(source)]
+        self.assertEqual(
+            results,
+            [
+                {
+                    "key": "1",
+                    "features": {"A": 0, "B": 1},
+                    "prediction": {"C": {"confidence": 1.0, "value": "1"}},
+                    "extra": {},
+                },
+                {
+                    "key": "2",
+                    "features": {"A": 3, "B": 4},
+                    "prediction": {"C": {"confidence": 1.0, "value": "2"}},
+                    "extra": {},
+                },
+            ],
+        )
+
+        # For specific records in a source
+        results = [record.export() async for record in load(source, "1")]
+        self.assertEqual(
+            results,
+            [
+                {
+                    "key": "1",
+                    "features": {"A": 0, "B": 1},
+                    "prediction": {"C": {"confidence": 1.0, "value": "1"}},
+                    "extra": {},
+                }
+            ],
+        )
 
     async def test_predict(self):
         self.required_plugins("dffml-model-scikit")
