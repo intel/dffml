@@ -12,6 +12,11 @@ from ffmpeg.operations import convert_to_gif
 class TestOperations(AsyncTestCase):
     async def test_run(self):
         dataflow = DataFlow.auto(convert_to_gif)
+        dataflow.seed.append(
+            Input(
+                value=1920, definition=convert_to_gif.op.inputs["resolution"]
+            )
+        )
         test_inputs = {
             "Test": [
                 Input(

@@ -3,6 +3,7 @@ from dffml.df.types import Definition
 
 definitions = [
     Definition(name="input_file", primitive="str"),
+    Definition(name="resolution", primitive="int"),
     Definition(name="output_file", primitive="str"),
 ]
 

@@ -1,11 +1,18 @@
 import asyncio
 
 from dffml.df.base import op
-from .definitions import input_file, output_file
+from .definitions import *
 
 
-@op(inputs={"input_file": input_file, "output_file": output_file}, outputs={})
-async def convert_to_gif(input_file, output_file):
+@op(
+    inputs={
+        "input_file": input_file,
+        "resolution": resolution,
+        "output_file": output_file,
+    },
+    outputs={},
+)
+async def convert_to_gif(input_file, resolution, output_file):
     # TODO
     # add start and end times in second version and rebuild using webhook
     # cleanup
@@ -19,7 +26,7 @@ async def convert_to_gif(input_file, output_file):
         input_file,
         "-y",
         "-vf",
-        "fps=10,scale=1920:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse",
+        f"fps=10,scale={resolution}:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse",
         "-loop",
         "0",
         output_file,
