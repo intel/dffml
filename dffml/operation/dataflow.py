@@ -1,8 +1,8 @@
 from typing import Dict, Any
 
-from dffml.base import config
-from dffml.df.base import op, OperationImplementationContext
-from dffml.df.types import DataFlow, Input, Definition
+from ..base import config
+from ..df.base import op, OperationImplementationContext
+from ..df.types import DataFlow, Input, Definition
 
 
 class InvalidCustomRunDataFlowContext(Exception):

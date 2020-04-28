@@ -1,6 +1,7 @@
 import ast
-from dffml.df.types import Definition
-from dffml.df.base import op
+
+from ..df.types import Definition
+from ..df.base import op
 
 
 # Definitions
