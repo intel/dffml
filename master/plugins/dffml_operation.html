@@ -813,10 +813,10 @@ string.</p>
 <span class="gp">... </span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">run_dataflow</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">configs</span><span class="p">[</span><span class="n">run_dataflow</span><span class="o">.</span><span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">RunDataFlowConfig</span><span class="p">(</span><span class="n">subflow</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">configs</span><span class="p">[</span><span class="n">run_dataflow</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">RunDataFlowConfig</span><span class="p">(</span><span class="n">subflow</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">run_dataflow</span><span class="o">.</span><span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">run_dataflow</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
 <span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">]</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -833,7 +833,7 @@ string.</p>
 <span class="gp">... </span>                        <span class="p">}</span>
 <span class="gp">... </span>                    <span class="p">]</span>
 <span class="gp">... </span>                <span class="p">},</span>
-<span class="gp">... </span>                <span class="n">definition</span><span class="o">=</span><span class="n">run_dataflow</span><span class="o">.</span><span class="n">imp</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">]</span>
+<span class="gp">... </span>                <span class="n">definition</span><span class="o">=</span><span class="n">run_dataflow</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">]</span>
 <span class="gp">... </span>            <span class="p">)</span>
 <span class="gp">... </span>        <span class="p">]</span>
 <span class="gp">... </span>    <span class="p">}):</span>

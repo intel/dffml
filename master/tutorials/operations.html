@@ -809,17 +809,8 @@ with it.</p>
 orchestrator run them. DFFML also provides a quick and dirty CLI abstraction
 based on <a class="reference external" href="https://docs.python.org/3/library/argparse.html#module-argparse" title="(in Python v3.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">argparse</span></code></a> which will speed things up.</p>
 <p><strong>shouldi/cli.py</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Command line interface helpers</span>
-<span class="kn">from</span> <span class="nn">dffml.util.cli.cmd</span> <span class="kn">import</span> <span class="n">CMD</span>
-<span class="kn">from</span> <span class="nn">dffml.util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
-
-<span class="c1"># DataFlow specific classes</span>
-<span class="kn">from</span> <span class="nn">dffml.df.types</span> <span class="kn">import</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Input</span>
-<span class="kn">from</span> <span class="nn">dffml.df.memory</span> <span class="kn">import</span> <span class="n">MemoryOrchestrator</span>
-
-<span class="c1"># The GetSingle operation will grab the data we want from the ouputs of our</span>
-<span class="c1"># operations and present it as the result</span>
-<span class="kn">from</span> <span class="nn">dffml.operation.output</span> <span class="kn">import</span> <span class="n">GetSingle</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Command line utility helpers and DataFlow specific classes</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CMD</span><span class="p">,</span> <span class="n">Arg</span><span class="p">,</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">,</span> <span class="n">run</span>
 
 <span class="c1"># Import all the operations we wrote</span>
 <span class="kn">from</span> <span class="nn">shouldi.bandit</span> <span class="kn">import</span> <span class="n">run_bandit</span>
@@ -863,51 +854,40 @@ based on <a class="reference external" href="https://docs.python.org/3/library/a
     <span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># Create an Orchestrator which will manage the running of our operations</span>
-        <span class="k">async</span> <span class="k">with</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">withconfig</span><span class="p">({})</span> <span class="k">as</span> <span class="n">orchestrator</span><span class="p">:</span>
-            <span class="c1"># Create a orchestrator context, everything in DFFML follows this</span>
-            <span class="c1"># one-two context entry pattern</span>
-            <span class="k">async</span> <span class="k">with</span> <span class="n">orchestrator</span><span class="p">(</span><span class="n">DATAFLOW</span><span class="p">)</span> <span class="k">as</span> <span class="n">octx</span><span class="p">:</span>
-                <span class="c1"># Run all the operations, Each iteration of this loop happens</span>
-                <span class="c1"># when all inputs are exhausted for a context, the output</span>
-                <span class="c1"># operations are then run and their results are yielded</span>
-                <span class="k">async</span> <span class="k">for</span> <span class="n">package_name</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">octx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-                    <span class="p">{</span>
-                        <span class="c1"># For each package add a new input set to the input network</span>
-                        <span class="c1"># The context operations execute under is the package name</span>
-                        <span class="c1"># to evaluate. Contexts ensure that data pertaining to</span>
-                        <span class="c1"># package A doesn&#39;t mingle with data pertaining to package B</span>
-                        <span class="n">package_name</span><span class="p">:</span> <span class="p">[</span>
-                            <span class="c1"># The only input to the operations is the package name.</span>
-                            <span class="n">Input</span><span class="p">(</span>
-                                <span class="n">value</span><span class="o">=</span><span class="n">package_name</span><span class="p">,</span>
-                                <span class="n">definition</span><span class="o">=</span><span class="n">pypi_package_json</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span>
-                                    <span class="s2">&quot;package&quot;</span>
-                                <span class="p">],</span>
-                            <span class="p">)</span>
-                        <span class="p">]</span>
-                        <span class="k">for</span> <span class="n">package_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">packages</span>
-                    <span class="p">}</span>
-                <span class="p">):</span>
-                    <span class="c1"># Grab the number of safety issues and the bandit report</span>
-                    <span class="c1"># from the results dict</span>
-                    <span class="n">safety_issues</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span>
-                        <span class="n">safety_check</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;issues&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
-                    <span class="p">]</span>
-                    <span class="n">bandit_report</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span>
-                        <span class="n">run_bandit</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;report&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
-                    <span class="p">]</span>
-                    <span class="c1"># Decide if those numbers mean we should stop ship or not</span>
-                    <span class="k">if</span> <span class="p">(</span>
-                        <span class="n">safety_issues</span> <span class="o">&gt;</span> <span class="mi">0</span>
-                        <span class="ow">or</span> <span class="n">bandit_report</span><span class="p">[</span><span class="s2">&quot;CONFIDENCE.HIGH_AND_SEVERITY.HIGH&quot;</span><span class="p">]</span>
-                        <span class="o">&gt;</span> <span class="mi">5</span>
-                    <span class="p">):</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Do not install </span><span class="si">{</span><span class="n">package_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
-                        <span class="k">for</span> <span class="n">definition_name</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">definition_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">package_name</span><span class="si">}</span><span class="s2"> is okay to install&quot;</span><span class="p">)</span>
+        <span class="c1"># Run all the operations, Each iteration of this loop happens</span>
+        <span class="c1"># when all inputs are exhausted for a context, the output</span>
+        <span class="c1"># operations are then run and their results are yielded</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">package_name</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">run</span><span class="p">(</span>
+            <span class="n">DATAFLOW</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="c1"># For each package add a new input set to the input network</span>
+                <span class="c1"># The context operations execute under is the package name</span>
+                <span class="c1"># to evaluate. Contexts ensure that data pertaining to</span>
+                <span class="c1"># package A doesn&#39;t mingle with data pertaining to package B</span>
+                <span class="n">package_name</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="c1"># The only input to the operations is the package name.</span>
+                    <span class="n">Input</span><span class="p">(</span>
+                        <span class="n">value</span><span class="o">=</span><span class="n">package_name</span><span class="p">,</span>
+                        <span class="n">definition</span><span class="o">=</span><span class="n">pypi_package_json</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;package&quot;</span><span class="p">],</span>
+                    <span class="p">)</span>
+                <span class="p">]</span>
+                <span class="k">for</span> <span class="n">package_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">packages</span>
+            <span class="p">},</span>
+        <span class="p">):</span>
+            <span class="c1"># Grab the number of safety issues and the bandit report</span>
+            <span class="c1"># from the results dict</span>
+            <span class="n">safety_issues</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">safety_check</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;issues&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">bandit_report</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">run_bandit</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;report&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+            <span class="c1"># Decide if those numbers mean we should stop ship or not</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">safety_issues</span> <span class="o">&gt;</span> <span class="mi">0</span>
+                <span class="ow">or</span> <span class="n">bandit_report</span><span class="p">[</span><span class="s2">&quot;CONFIDENCE.HIGH_AND_SEVERITY.HIGH&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">5</span>
+            <span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Do not install </span><span class="si">{</span><span class="n">package_name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">definition_name</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">definition_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">package_name</span><span class="si">}</span><span class="s2"> is okay to install&quot;</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">ShouldI</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
