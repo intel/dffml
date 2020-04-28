@@ -2,18 +2,16 @@ import pathlib
 import statistics
 from typing import AsyncIterator, Tuple, Any, Type, List
 
-from dffml import (
-    config,
-    field,
-    entrypoint,
+from ..base import config, field
+from ..util.entrypoint import entrypoint
+from .model import (
     SimpleModel,
     ModelNotTrained,
-    Accuracy,
-    Feature,
-    Features,
-    Sources,
-    Record,
 )
+from .accuracy import Accuracy
+from ..feature.feature import Feature, Features
+from ..source.source import Sources
+from ..record import Record
 
 
 def matrix_subtract(one, two):

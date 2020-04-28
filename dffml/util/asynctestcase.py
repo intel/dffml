@@ -27,7 +27,7 @@ import contextlib
 
 from typing import Optional
 
-from dffml.util.packaging import is_develop
+from .packaging import is_develop
 
 
 class AsyncTestCase(unittest.TestCase):

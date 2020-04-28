@@ -2,8 +2,8 @@ import asyncio
 import concurrent.futures
 from typing import Dict, Any
 
-from dffml.df.types import Operation, Definition
-from dffml.df.base import (
+from ..df.types import Operation, Definition
+from ..df.base import (
     op,
     OperationImplementationContext,
     OperationImplementation,
