@@ -198,6 +198,7 @@
     <span class="n">Union</span><span class="p">,</span>
     <span class="n">Optional</span><span class="p">,</span>
     <span class="n">Set</span><span class="p">,</span>
+    <span class="n">Callable</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="p">(</span>
@@ -274,7 +275,21 @@
 
 <div class="viewcode-block" id="MemoryKeyValueStoreContext.set"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreContext.set">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">conditional_set</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">checker</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">bytes</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="n">value</span>
+        <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">checker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
 
 <div class="viewcode-block" id="MemoryKeyValueStore"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryKeyValueStore">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
@@ -505,10 +520,14 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shorthand for creating a MemoryInputSet with a StringInputSetContext.</span>
 
+<span class="sd">        &gt;&gt;&gt; import asyncio</span>
+<span class="sd">        &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; async def main():</span>
 <span class="sd">        ...     async with MemoryOrchestrator.withconfig({}) as orchestrator:</span>
 <span class="sd">        ...         async with orchestrator(DataFlow.auto()) as octx:</span>
 <span class="sd">        ...             await octx.ictx.sadd(&quot;Hi&quot;)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; asyncio.run(main())</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ctx</span> <span class="o">=</span> <span class="n">StringInputSetContext</span><span class="p">(</span><span class="n">context_handle_string</span><span class="p">)</span>
@@ -521,10 +540,14 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Shorthand for creating a MemoryInputSet with an existing context.</span>
 
+<span class="sd">        &gt;&gt;&gt; import asyncio</span>
+<span class="sd">        &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; async def main():</span>
 <span class="sd">        ...     async with MemoryOrchestrator.withconfig({}) as orchestrator:</span>
 <span class="sd">        ...         async with orchestrator(DataFlow.auto()) as octx:</span>
 <span class="sd">        ...             await octx.ictx.sadd(StringInputSetContext(&quot;Hi&quot;))</span>
+<span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; asyncio.run(main())</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
@@ -708,9 +731,11 @@
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="c1"># Check if each permutation has been executed before</span>
-        <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">exists</span> <span class="ow">in</span> <span class="n">rctx</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="o">*</span><span class="n">products</span><span class="p">):</span>
-            <span class="c1"># If not then yield the permutation</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">taken</span> <span class="ow">in</span> <span class="n">rctx</span><span class="o">.</span><span class="n">take_if_non_existant</span><span class="p">(</span>
+            <span class="n">operation</span><span class="p">,</span> <span class="o">*</span><span class="n">products</span>
+        <span class="p">):</span>
+            <span class="c1"># If taken then yield the permutation</span>
+            <span class="k">if</span> <span class="n">taken</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">parameter_set</span></div></div>
 
 
@@ -823,31 +848,31 @@
 <span class="sd">        SHA384 hash of the parameter set context handle as a string, the</span>
 <span class="sd">        operation.instance_name, and the sorted list of input uuids.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">uid_list</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unique</span><span class="p">(</span>
             <span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">,</span>
             <span class="p">(</span><span class="k">await</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">())</span><span class="o">.</span><span class="n">as_string</span><span class="p">(),</span>
-        <span class="p">]</span> <span class="o">+</span> <span class="nb">sorted</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">uid</span> <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">parameters</span><span class="p">()]</span>
+            <span class="o">*</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">uid</span> <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">parameters</span><span class="p">()],</span>
+        <span class="p">)</span></div>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_take</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coro</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">kvctx</span><span class="o">.</span><span class="n">conditional_set</span><span class="p">(</span>
+            <span class="k">await</span> <span class="n">coro</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\x01</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">checker</span><span class="o">=</span><span class="k">lambda</span> <span class="n">value</span><span class="p">:</span> <span class="n">value</span> <span class="o">!=</span> <span class="s2">&quot;</span><span class="se">\x01</span><span class="s2">&quot;</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha384</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">uid_list</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coro</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">kvctx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="k">await</span> <span class="n">coro</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\x01</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span>
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">take_if_non_existant</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="o">*</span><span class="n">parameter_sets</span><span class="p">:</span> <span class="n">BaseParameterSet</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="c1"># TODO(p4) Run tests to choose an optimal threaded vs non-threaded value</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameter_sets</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="n">parameter_sets</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exists</span><span class="p">(</span>
+                <span class="k">yield</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_take</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
                 <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">exists</span> <span class="ow">in</span> <span class="n">concurrently</span><span class="p">(</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">taken</span> <span class="ow">in</span> <span class="n">concurrently</span><span class="p">(</span>
                 <span class="p">{</span>
                     <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_exists</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_take</span><span class="p">(</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">loop</span><span class="o">.</span><span class="n">run_in_executor</span><span class="p">(</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">pool</span><span class="p">,</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">_unique</span><span class="p">,</span>
@@ -863,15 +888,7 @@
                     <span class="k">for</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="n">parameter_sets</span>
                 <span class="p">}</span>
             <span class="p">):</span>
-                <span class="k">yield</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">exists</span>
-
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">:</span> <span class="n">BaseParameterSet</span><span class="p">):</span>
-        <span class="c1"># self.logger.debug(&#39;adding parameter_set: %s&#39;, list(map(</span>
-        <span class="c1">#     lambda p: p.value,</span>
-        <span class="c1">#     [p async for p in parameter_set.parameters()])))</span>
-        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">kvctx</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
-            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">),</span> <span class="s2">&quot;</span><span class="se">\x01</span><span class="s2">&quot;</span>
-        <span class="p">)</span></div>
+                <span class="k">yield</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">taken</span></div>
 
 
 <div class="viewcode-block" id="MemoryRedundancyChecker"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.df.memory.MemoryRedundancyChecker">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
@@ -1599,10 +1616,10 @@
             <span class="n">parameter_set</span> <span class="o">=</span> <span class="n">MemoryParameterSet</span><span class="p">(</span>
                 <span class="n">MemoryParameterSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="n">parameter</span><span class="p">])</span>
             <span class="p">)</span>
-            <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">exists</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rctx</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">parameter_set</span><span class="p">,</span> <span class="n">taken</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rctx</span><span class="o">.</span><span class="n">take_if_non_existant</span><span class="p">(</span>
                 <span class="n">validator</span><span class="p">,</span> <span class="n">parameter_set</span>
             <span class="p">):</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">exists</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">taken</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">validator</span><span class="p">,</span> <span class="n">parameter_set</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run_operations_for_ctx</span><span class="p">(</span>
@@ -1673,7 +1690,6 @@
                                 <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span>
                                 <span class="n">unvalidated_input_set</span><span class="p">,</span>
                             <span class="p">):</span>
-                                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">rctx</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
                                 <span class="n">dispatch_operation</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span>
                                     <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span>
                                 <span class="p">)</span>
@@ -1701,9 +1717,6 @@
                                 <span class="c1"># Validation operations shouldn&#39;t be run here</span>
                                 <span class="k">if</span> <span class="n">operation</span><span class="o">.</span><span class="n">validator</span><span class="p">:</span>
                                     <span class="k">continue</span>
-                                <span class="c1"># Add inputs and operation to redundancy checker before</span>
-                                <span class="c1"># dispatch</span>
-                                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">rctx</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
                                 <span class="c1"># Dispatch the operation and input set for running</span>
                                 <span class="n">dispatch_operation</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span>
                                     <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span>
@@ -1764,8 +1777,6 @@
         <span class="k">async</span> <span class="k">for</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations_parameter_set_pairs</span><span class="p">(</span>
             <span class="n">ctx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">stage</span><span class="o">=</span><span class="n">stage</span>
         <span class="p">):</span>
-            <span class="c1"># Add inputs and operation to redundancy checker before dispatch</span>
-            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">rctx</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
             <span class="c1"># Run the operation, input set pair</span>
             <span class="k">yield</span> <span class="n">operation</span><span class="p">,</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
                 <span class="n">ctx</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="k">await</span> <span class="n">parameter_set</span><span class="o">.</span><span class="n">_asdict</span><span class="p">()</span>

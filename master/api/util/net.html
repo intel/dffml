@@ -241,7 +241,10 @@ need to override this.</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@cached_download</span><span class="p">(</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">cached_download</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@cached_download</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="s2">&quot;https://github.com/intel/dffml/raw/152c2b92535fac6beec419236f8639b0d75d707d/MANIFEST.in&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="s2">&quot;MANIFEST.in&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="s2">&quot;f7aadf5cdcf39f161a779b4fa77ec56a49630cf7680e21fb3dc6c36ce2d8c6fae0d03d5d3094a6aec4fea1561393c14c&quot;</span><span class="p">,</span>
@@ -284,7 +287,10 @@ need to override this.</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@cached_download_unpack_archive</span><span class="p">(</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">cached_download_unpack_archive</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@cached_download_unpack_archive</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="s2">&quot;https://github.com/intel/dffml/archive/152c2b92535fac6beec419236f8639b0d75d707d.tar.gz&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="s2">&quot;dffml.tar.gz&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="s2">&quot;dffml&quot;</span><span class="p">,</span>

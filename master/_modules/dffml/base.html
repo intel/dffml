@@ -687,21 +687,28 @@
 <span class="sd">    named ENTRYPOINT. In the form of `dffml.load_point` which will be used to</span>
 <span class="sd">    load all classes registered to that entry point.</span>
 
+<span class="sd">    &gt;&gt;&gt; import asyncio</span>
+<span class="sd">    &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; # Create the base object. Then enter it&#39;s context to preform any initial</span>
 <span class="sd">    &gt;&gt;&gt; # setup. Call obj to get an instance of obj.CONTEXT, which is a subclass</span>
 <span class="sd">    &gt;&gt;&gt; # of BaseDataFlowFacilitatorObjectContext. ctx, the inner context, does</span>
 <span class="sd">    &gt;&gt;&gt; # all the heavy lifting.</span>
+<span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; class Context(BaseDataFlowFacilitatorObjectContext):</span>
 <span class="sd">    ...     async def method(self):</span>
 <span class="sd">    ...         return</span>
+<span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; class Object(BaseDataFlowFacilitatorObject):</span>
 <span class="sd">    ...     CONTEXT = Context</span>
 <span class="sd">    ...     def __call__(self):</span>
 <span class="sd">    ...         return Context()</span>
+<span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; async def main():</span>
 <span class="sd">    ...     async with Object(BaseConfig()) as obj:</span>
 <span class="sd">    ...         async with obj() as ctx:</span>
 <span class="sd">    ...             await ctx.method()</span>
+<span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 

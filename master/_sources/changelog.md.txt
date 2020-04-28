@@ -10,14 +10,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Doctestable example for `model_predict` operation.
 - Doctestable examples to `operation/mapping.py`
 - shouldi got an operation to run Dependency-check on java code.
-- load function in high_level API
+- `load` and `run` functions in high level API
 - Doctestable examples to `db` operations.
 - Source for parsing `.ini` file formats
 - Tests for noasync high level API.
 - Tests for load and save functions in high level API.
+- `Operation` inputs and ouputs default to empty `dict` if not given.
 ### Changed
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
+- Every class and function can now be imported from the top level module
+### Fixed
+- Race condition in `MemoryRedundancyChecker` when more than 4 possible
+  parameter sets for an operation.
 
 ## [0.3.7] - 2020-04-14
 ### Added

@@ -263,10 +263,14 @@ definition.</p>
 <dt id="dffml.df.memory.MemoryInputNetworkContext.cadd">
 <em class="property">async </em><code class="sig-name descname">cadd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ctx</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n"><a class="reference internal" href="types.html#dffml.df.types.Input" title="dffml.df.types.Input">dffml.df.types.Input</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetworkContext.cadd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContext.cadd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shorthand for creating a MemoryInputSet with an existing context.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">withconfig</span><span class="p">({})</span> <span class="k">as</span> <span class="n">orchestrator</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">orchestrator</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">())</span> <span class="k">as</span> <span class="n">octx</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">await</span> <span class="n">octx</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span><span class="n">StringInputSetContext</span><span class="p">(</span><span class="s2">&quot;Hi&quot;</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </pre></div>
 </div>
@@ -310,10 +314,14 @@ that, according to the redundancy checker, haven’t been run yet.</p>
 <dt id="dffml.df.memory.MemoryInputNetworkContext.sadd">
 <em class="property">async </em><code class="sig-name descname">sadd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">context_handle_string</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n"><a class="reference internal" href="types.html#dffml.df.types.Input" title="dffml.df.types.Input">dffml.df.types.Input</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryInputNetworkContext.sadd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryInputNetworkContext.sadd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shorthand for creating a MemoryInputSet with a StringInputSetContext.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 <span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">withconfig</span><span class="p">({})</span> <span class="k">as</span> <span class="n">orchestrator</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">orchestrator</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">())</span> <span class="k">as</span> <span class="n">octx</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="k">await</span> <span class="n">octx</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">sadd</span><span class="p">(</span><span class="s2">&quot;Hi&quot;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </pre></div>
 </div>

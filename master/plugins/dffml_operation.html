@@ -260,7 +260,10 @@ the roadmap.</p>
 <h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use AcceptUserInput.
 (Assumes that the input from stdio is “Data flow is awesome”!)</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">AcceptUserInput</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">AcceptUserInput</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">AcceptUserInput</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;InputData&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
@@ -312,7 +315,10 @@ the roadmap.</p>
 </div>
 <div class="section" id="id1">
 <h4>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;db_query_create&quot;</span><span class="p">:</span> <span class="n">db_query_create_table</span><span class="o">.</span><span class="n">op</span><span class="p">,},</span>
@@ -370,7 +376,10 @@ the roadmap.</p>
 </div>
 <div class="section" id="id3">
 <h4>Examples<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
@@ -447,7 +456,10 @@ the roadmap.</p>
 </div>
 <div class="section" id="id5">
 <h4>Examples<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">person</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s2">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;Wick&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">38</span><span class="p">}</span>
 <span class="go">&gt;&gt;&gt;</span>
@@ -534,7 +546,10 @@ the roadmap.</p>
 </div>
 <div class="section" id="id7">
 <h4>Examples<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
@@ -604,7 +619,10 @@ the roadmap.</p>
 </div>
 <div class="section" id="id9">
 <h4>Examples<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
@@ -683,7 +701,10 @@ the roadmap.</p>
 </div>
 <div class="section" id="id11">
 <h4>Examples<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h4>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sdb</span> <span class="o">=</span> <span class="n">SqliteDatabase</span><span class="p">(</span><span class="n">SqliteDatabaseConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;examples.db&quot;</span><span class="p">))</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
@@ -777,7 +798,10 @@ string.</p>
 <div class="section" id="id14">
 <h4>Examples<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h4>
 <p>The following shows how to use run dataflow in its default behavior.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">GetSingle</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subflow</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="n">URL</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">URL</span>
@@ -821,7 +845,10 @@ string.</p>
 </div>
 <p>The following shows how to use run dataflow with custom inputs and outputs.
 This allows you to run a subflow as if it were an operation.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nd">@op</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">URL</span><span class="p">},</span>
@@ -905,7 +932,10 @@ This allows you to run a subflow as if it were an operation.</p>
 </div>
 <div class="section" id="id17">
 <h4>Examples<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h4>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">create_mapping</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">create_mapping</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">create_mapping</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;mapping&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
@@ -963,7 +993,10 @@ This allows you to run a subflow as if it were an operation.</p>
 </div>
 <div class="section" id="id20">
 <h4>Examples<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h4>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">mapping_extract_value</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">mapping_extract_value</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
@@ -1023,7 +1056,10 @@ This allows you to run a subflow as if it were an operation.</p>
 <div class="section" id="id23">
 <h4>Examples<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use model_predict.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">slr_model</span> <span class="o">=</span> <span class="n">SLRModel</span><span class="p">(</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">slr_model</span> <span class="o">=</span> <span class="n">SLRModel</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
 <span class="gp">... </span>    <span class="n">predict</span><span class="o">=</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -1100,7 +1136,10 @@ returned.</p>
 <p>The following shows how to grab all Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL would have also
 been returned to us.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">GetMulti</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -1162,7 +1201,10 @@ returned.</p>
 <p>The following shows how to grab an Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL could have also
 been returned to us.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">GetSingle</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -1231,7 +1273,10 @@ been returned to us.</p>
 <div class="section" id="id32">
 <h4>Examples<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use literal_eval.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">literal_eval</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">literal_eval</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
 <span class="gp">... </span>   <span class="n">Input</span><span class="p">(</span>
 <span class="gp">... </span>       <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">literal_eval</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;str_after_eval&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,],</span>
@@ -1279,7 +1324,10 @@ been returned to us.</p>
 <div class="section" id="id34">
 <h4>Examples<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use print_output.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">print_output</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">print_output</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
 <span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
 <span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="s2">&quot;print_output example&quot;</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">print_output</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
