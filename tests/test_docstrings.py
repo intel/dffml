@@ -24,13 +24,6 @@ from dffml.db.sqlite import SqliteDatabase, SqliteDatabaseConfig
 from dffml.operation.db import db_query_create_table, DatabaseQueryConfig
 
 
-def import_file(import_name: str, path: pathlib.Path):
-    spec = importlib.util.spec_from_file_location(import_name, str(path))
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
 def modules(
     root: pathlib.Path,
     package_name: str,
@@ -51,7 +44,7 @@ def modules(
         if skip and skip(import_name, path):
             continue
         # Import module
-        yield import_name, import_file(import_name, path)
+        yield import_name, importlib.import_module(import_name)
 
 
 root = pathlib.Path(__file__).parent.parent / "dffml"
