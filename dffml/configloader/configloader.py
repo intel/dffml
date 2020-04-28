@@ -11,7 +11,7 @@ from ..base import (
     BaseDataFlowFacilitatorObjectContext,
     BaseDataFlowFacilitatorObject,
 )
-from dffml.util.data import explore_directories, nested_apply
+from ..util.data import explore_directories, nested_apply
 
 
 class BaseConfigLoaderContext(BaseDataFlowFacilitatorObjectContext):

@@ -8,7 +8,7 @@ import inspect
 import dataclasses
 from typing import Dict, Optional, Tuple, Type, Any, Callable
 
-from dffml.base import make_config, field
+from ...base import make_config, field
 
 from .exceptions import ParameterNotInDocString
 
