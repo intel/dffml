@@ -508,21 +508,28 @@ class BaseDataFlowFacilitatorObject(
     named ENTRYPOINT. In the form of `dffml.load_point` which will be used to
     load all classes registered to that entry point.
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> # Create the base object. Then enter it's context to preform any initial
     >>> # setup. Call obj to get an instance of obj.CONTEXT, which is a subclass
     >>> # of BaseDataFlowFacilitatorObjectContext. ctx, the inner context, does
     >>> # all the heavy lifting.
+    >>>
     >>> class Context(BaseDataFlowFacilitatorObjectContext):
     ...     async def method(self):
     ...         return
+    >>>
     >>> class Object(BaseDataFlowFacilitatorObject):
     ...     CONTEXT = Context
     ...     def __call__(self):
     ...         return Context()
+    >>>
     >>> async def main():
     ...     async with Object(BaseConfig()) as obj:
     ...         async with obj() as ctx:
     ...             await ctx.method()
+    >>>
     >>> asyncio.run(main())
     """
 

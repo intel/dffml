@@ -32,6 +32,10 @@ class BaseSourceContext(BaseDataFlowFacilitatorObjectContext):
 
         Examples
         --------
+
+        >>> import asyncio
+        >>> from dffml import *
+        >>>
         >>> async def main():
         ...     async with MemorySource(records=[]) as source:
         ...         # Open, update, and close
@@ -54,6 +58,10 @@ class BaseSourceContext(BaseDataFlowFacilitatorObjectContext):
 
         Examples
         --------
+
+        >>> import asyncio
+        >>> from dffml import *
+        >>>
         >>> async def main():
         ...     async with MemorySource(records=[Record("example", data=dict(features=dict(dead="beef")))]) as source:
         ...         async with source() as ctx:
@@ -73,6 +81,10 @@ class BaseSourceContext(BaseDataFlowFacilitatorObjectContext):
 
         Examples
         --------
+
+        >>> import asyncio
+        >>> from dffml import *
+        >>>
         >>> async def main():
         ...     async with MemorySource(records=[Record("example", data=dict(features=dict(dead="beef")))]) as source:
         ...         # Open, update, and close

@@ -94,6 +94,9 @@ def cached_download(
     Examples
     --------
 
+    >>> import asyncio
+    >>> from dffml import cached_download
+    >>>
     >>> @cached_download(
     ...     "https://github.com/intel/dffml/raw/152c2b92535fac6beec419236f8639b0d75d707d/MANIFEST.in",
     ...     "MANIFEST.in",
@@ -177,6 +180,9 @@ def cached_download_unpack_archive(
     Examples
     --------
 
+    >>> import asyncio
+    >>> from dffml import cached_download_unpack_archive
+    >>>
     >>> @cached_download_unpack_archive(
     ...     "https://github.com/intel/dffml/archive/152c2b92535fac6beec419236f8639b0d75d707d.tar.gz",
     ...     "dffml.tar.gz",

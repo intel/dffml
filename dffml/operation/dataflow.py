@@ -59,6 +59,9 @@ class run_dataflow(OperationImplementationContext):
 
     The following shows how to use run dataflow in its default behavior.
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> URL = Definition(name="URL", primitive="string")
     >>>
     >>> subflow = DataFlow.auto(GetSingle)
@@ -103,6 +106,9 @@ class run_dataflow(OperationImplementationContext):
     The following shows how to use run dataflow with custom inputs and outputs.
     This allows you to run a subflow as if it were an operation.
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> URL = Definition(name="URL", primitive="string")
     >>>
     >>> @op(
