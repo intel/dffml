@@ -41,6 +41,9 @@ Examples
 The following example shows how to use AcceptUserInput.
 (Assumes that the input from stdio is "Data flow is awesome"!)
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> dataflow = DataFlow.auto(AcceptUserInput, GetSingle)
 >>> dataflow.seed.append(
 ...     Input(
@@ -104,6 +107,9 @@ cols : list[str]
 Examples
 ++++++++
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
 >>>
 >>> dataflow = DataFlow(
@@ -166,6 +172,9 @@ data : dict
 Examples
 ++++++++
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
 >>>
 >>> dataflow = DataFlow(
@@ -247,6 +256,9 @@ data : dict
 Examples
 ++++++++
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
 >>>
 >>> person = {"key": 11, "firstName": "John", "lastName": "Wick", "age": 38}
@@ -338,6 +350,9 @@ conditions : Conditions
 Examples
 ++++++++
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
 >>>
 >>> dataflow = DataFlow(
@@ -412,6 +427,9 @@ conditions : Conditions
 Examples
 ++++++++
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
 >>>
 >>> dataflow = DataFlow(
@@ -495,6 +513,9 @@ conditions : list
 Examples
 ++++++++
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
 >>>
 >>> dataflow = DataFlow(
@@ -592,6 +613,9 @@ Examples
 
 The following shows how to use run dataflow in its default behavior.
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> URL = Definition(name="URL", primitive="string")
 >>>
 >>> subflow = DataFlow.auto(GetSingle)
@@ -636,6 +660,9 @@ The following shows how to use run dataflow in its default behavior.
 The following shows how to use run dataflow with custom inputs and outputs.
 This allows you to run a subflow as if it were an operation.
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> URL = Definition(name="URL", primitive="string")
 >>>
 >>> @op(
@@ -722,6 +749,9 @@ dict
 Examples
 ++++++++
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> dataflow = DataFlow.auto(create_mapping, GetSingle)
 >>> dataflow.seed.append(
 ...     Input(
@@ -782,6 +812,9 @@ dict
 Examples
 ++++++++
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> dataflow = DataFlow.auto(mapping_extract_value, GetSingle)
 >>>
 >>> dataflow.seed.append(
@@ -845,6 +878,9 @@ Examples
 
 The following example shows how to use model_predict.
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> slr_model = SLRModel(
 ...     features=Features(DefFeature("Years", int, 1)),
 ...     predict=DefFeature("Salary", int, 1),
@@ -925,6 +961,9 @@ The following shows how to grab all Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL would have also
 been returned to us.
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> URL = Definition(name="URL", primitive="string")
 >>>
 >>> dataflow = DataFlow.auto(GetMulti)
@@ -990,6 +1029,9 @@ The following shows how to grab an Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL could have also
 been returned to us.
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> URL = Definition(name="URL", primitive="string")
 >>>
 >>> dataflow = DataFlow.auto(GetSingle)
@@ -1069,6 +1111,9 @@ Examples
 
 The following example shows how to use literal_eval.
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> dataflow = DataFlow.auto(literal_eval, GetSingle)
 >>> dataflow.seed.append(
 ...    Input(
@@ -1122,6 +1167,9 @@ Examples
 
 The following example shows how to use print_output.
 
+>>> import asyncio
+>>> from dffml import *
+>>>
 >>> dataflow = DataFlow.auto(print_output)
 >>> inputs = [
 ...     Input(

@@ -181,12 +181,16 @@
 <span class="sd">High level abstraction interfaces to DFFML. These are probably going to be used</span>
 <span class="sd">in a lot of quick and dirty python files.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">AsyncIterator</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">AsyncIterator</span>
 
 <span class="kn">from</span> <span class="nn">.record</span> <span class="kn">import</span> <span class="n">Record</span>
+<span class="kn">from</span> <span class="nn">.df.types</span> <span class="kn">import</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Input</span>
+<span class="kn">from</span> <span class="nn">.df.memory</span> <span class="kn">import</span> <span class="n">MemoryOrchestrator</span>
 <span class="kn">from</span> <span class="nn">.source.source</span> <span class="kn">import</span> <span class="n">Sources</span><span class="p">,</span> <span class="n">BaseSource</span>
 <span class="kn">from</span> <span class="nn">.source.memory</span> <span class="kn">import</span> <span class="n">MemorySource</span><span class="p">,</span> <span class="n">MemorySourceConfig</span>
+<span class="kn">from</span> <span class="nn">.df.base</span> <span class="kn">import</span> <span class="n">BaseInputSetContext</span><span class="p">,</span> <span class="n">BaseOrchestrator</span><span class="p">,</span> <span class="n">BaseInputSet</span>
 
 
 <span class="k">def</span> <span class="nf">_records_to_sources</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
@@ -222,6 +226,186 @@
     <span class="k">return</span> <span class="n">sources</span>
 
 
+<div class="viewcode-block" id="run"><a class="viewcode-back" href="../../api/high_level.html#dffml.high_level.run">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span>
+    <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">,</span>
+    <span class="o">*</span><span class="n">input_sets</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">],</span> <span class="n">BaseInputSet</span><span class="p">],</span>
+    <span class="n">orchestrator</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseOrchestrator</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">ctx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseInputSetContext</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">halt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">BaseInputSetContext</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run a DataFlow</span>
+
+<span class="sd">    Run a DataFlow using the the default orchestrator</span>
+<span class="sd">    (:py:class:`MemoryOrchestrator &lt;dffml.df.memory.MemoryOrchestrator&gt;`),</span>
+<span class="sd">    or the specified one.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dataflow : DataFlow</span>
+<span class="sd">        :py:class:`DataFlow &lt;dffml.df.types.DataFlow&gt;` to run.</span>
+<span class="sd">    input_sets : InputSet, list, dict, optional</span>
+<span class="sd">        :py:class:`Inputs &lt;dffml.df.types.Input&gt;` to give to the</span>
+<span class="sd">        :py:class:`DataFlow &lt;dffml.df.types.DataFlow&gt;` when it starts. Can be in</span>
+<span class="sd">        multiple formats.</span>
+
+<span class="sd">        If each element is a ``list`` then it&#39;s expected that each element of</span>
+<span class="sd">        that list be an :py:class:`Input &lt;dffml.df.types.Input&gt;`, in this case</span>
+<span class="sd">        an :py:class:`InputSet &lt;dffml.df.base.BaseInputSet&gt;` will be created</span>
+<span class="sd">        with a random string used as the</span>
+<span class="sd">        :py:class:`StringInputSetContext &lt;dffml.df.base.StringInputSetContext&gt;`.</span>
+
+<span class="sd">        If a ``dict`` is given then each key will become a</span>
+<span class="sd">        :py:class:`StringInputSetContext &lt;dffml.df.base.StringInputSetContext&gt;`.</span>
+<span class="sd">        The value for each key should be a ``list`` of</span>
+<span class="sd">        :py:class:`Input &lt;dffml.df.types.Input&gt;` objects.</span>
+
+<span class="sd">        If each element is a :py:class:`InputSet &lt;dffml.df.base.BaseInputSet&gt;`</span>
+<span class="sd">        then each context</span>
+<span class="sd">        :py:class:`InputSetContext &lt;dffml.df.base.BaseInputSetContext&gt;`</span>
+<span class="sd">        will have its respective :py:class:`Inputs &lt;dffml.df.types.Input&gt;` added</span>
+<span class="sd">        to it.</span>
+<span class="sd">    orchestrator : BaseOrchestrator, optional</span>
+<span class="sd">        Orchestrator to use, defaults to</span>
+<span class="sd">        :py:class:`MemoryOrchestrator &lt;dffml.df.memory.MemoryOrchestrator&gt;`</span>
+<span class="sd">        if ``None``.</span>
+<span class="sd">    strict : bool, optional</span>
+<span class="sd">        If true (default), raise exceptions when they occur in operations. If</span>
+<span class="sd">        false, log exceptions without raising.</span>
+<span class="sd">    ctx : BaseInputSetContext, optional</span>
+<span class="sd">        If given and input_sets is a ``list`` then add inputs under the given</span>
+<span class="sd">        context. Otherwise they are added under randomly generated contexts.</span>
+<span class="sd">    halt : Event, optional</span>
+<span class="sd">        If given, keep the dataflow running until this :py:class:`asyncio.Event`</span>
+<span class="sd">        is set.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    asynciterator</span>
+<span class="sd">        ``tuple`` of</span>
+<span class="sd">        :py:class:`InputSetContext &lt;dffml.df.base.BaseInputSetContext&gt;`</span>
+<span class="sd">        and ``dict`` where contents are determined by output operations.</span>
+<span class="sd">        If multiple output operations are used, then the top level keys will be</span>
+<span class="sd">        the names of the output operations. If only one is used, then the</span>
+<span class="sd">        ``dict`` will be whatever the return value of that output operation was.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    The following creates a TCP echo server. We write an operation which using a</span>
+<span class="sd">    DataFlow to open a connection and send a message to the server.</span>
+
+<span class="sd">    For the inputs to the DataFlow, we create 2 Input objects whose values are</span>
+<span class="sd">    the message to be sent to the TCP server. We also create Input objects for</span>
+<span class="sd">    the host and port. When running a DataFlow, operations will be run with each</span>
+<span class="sd">    possible permutation of their inputs.</span>
+
+<span class="sd">    .. TODO Autogenerate this image during docs build</span>
+
+<span class="sd">        graph LR</span>
+<span class="sd">          send_to_server</span>
+
+<span class="sd">          1[First echo message]</span>
+<span class="sd">          port[Port]</span>
+<span class="sd">          host[Host]</span>
+<span class="sd">          2[Second echo message]</span>
+
+<span class="sd">          1_c[Host, Port, First echo]</span>
+<span class="sd">          2_c[Host, Port, Second echo]</span>
+
+<span class="sd">          host --&gt; 1_c</span>
+<span class="sd">          port --&gt; 1_c</span>
+<span class="sd">          2 --&gt; 2_c</span>
+<span class="sd">          port --&gt; 2_c</span>
+<span class="sd">          host --&gt; 2_c</span>
+<span class="sd">          1 --&gt; 1_c</span>
+
+<span class="sd">          1_c --&gt; send_to_server</span>
+<span class="sd">          2_c --&gt; send_to_server</span>
+
+<span class="sd">    .. image:: /images/high_level_run_echo_server_input_combination.svg</span>
+<span class="sd">        :alt: Flow chart showing how both echo messages create a parameter set including that echo message and the host and port</span>
+
+<span class="sd">    Because there is a different Input object for each of the 2 &quot;echo&quot; messages,</span>
+<span class="sd">    one will get combined with the host and port to make an argument list for</span>
+<span class="sd">    the ``send_to_server`` operation. The other also combines with the host and</span>
+<span class="sd">    port to make another argument list. Both argument lists are used to call the</span>
+<span class="sd">    ``send_to_server`` operation.</span>
+
+<span class="sd">    &gt;&gt;&gt; # Socket server derived from</span>
+<span class="sd">    &gt;&gt;&gt; # https://docs.python.org/3/library/socketserver.html#asynchronous-mixins</span>
+<span class="sd">    &gt;&gt;&gt; import asyncio</span>
+<span class="sd">    &gt;&gt;&gt; import threading</span>
+<span class="sd">    &gt;&gt;&gt; import socketserver</span>
+<span class="sd">    &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):</span>
+<span class="sd">    ...     def handle(self):</span>
+<span class="sd">    ...         self.request.sendall(self.request.recv(1024))</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):</span>
+<span class="sd">    ...     pass</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; HOST = Definition(name=&quot;host&quot;, primitive=&quot;string&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; PORT = Definition(name=&quot;port&quot;, primitive=&quot;int&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; MESSAGE = Definition(name=&quot;message&quot;, primitive=&quot;string&quot;)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; @op(inputs={&quot;host&quot;: HOST, &quot;port&quot;: PORT, &quot;message&quot;: MESSAGE})</span>
+<span class="sd">    ... async def send_to_server(host: str, port: int, message: str):</span>
+<span class="sd">    ...     reader, writer = await asyncio.open_connection(host, port)</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...     writer.write(message.encode())</span>
+<span class="sd">    ...     await writer.drain()</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...     data = await reader.read(100)</span>
+<span class="sd">    ...     print(f&quot;Client sent {message!r}, got: {data.decode()!r}&quot;)</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...     writer.close()</span>
+<span class="sd">    ...     await writer.wait_closed()</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # List of messages to send to the server, 2 long, each value is &quot;echo&quot;</span>
+<span class="sd">    &gt;&gt;&gt; messages = [Input(value=&quot;echo&quot;, definition=MESSAGE) for _ in range(0, 2)]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # DataFlow consisting of the single operation</span>
+<span class="sd">    &gt;&gt;&gt; dataflow = DataFlow.auto(send_to_server)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; async def main():</span>
+<span class="sd">    ...     # Create a server with and pass 0 to get a random port assigned</span>
+<span class="sd">    ...     server = ThreadedTCPServer((&quot;127.0.0.1&quot;, 0), ThreadedTCPRequestHandler)</span>
+<span class="sd">    ...     with server:</span>
+<span class="sd">    ...         host, port = server.server_address</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...         # Start a thread to run the server in the background</span>
+<span class="sd">    ...         server_thread = threading.Thread(target=server.serve_forever)</span>
+<span class="sd">    ...         # Exit the server thread when the main thread terminates</span>
+<span class="sd">    ...         server_thread.daemon = True</span>
+<span class="sd">    ...         server_thread.start()</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...         # Add the host and port to the list of Inputs for the DataFlow</span>
+<span class="sd">    ...         inputs = messages + [</span>
+<span class="sd">    ...             Input(value=host, definition=HOST),</span>
+<span class="sd">    ...             Input(value=port, definition=PORT)</span>
+<span class="sd">    ...         ]</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...         try:</span>
+<span class="sd">    ...             async for ctx, results in run(dataflow, inputs):</span>
+<span class="sd">    ...                 pass</span>
+<span class="sd">    ...         finally:</span>
+<span class="sd">    ...             server.shutdown()</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
+<span class="sd">    Client sent &#39;echo&#39;, got: &#39;echo&#39;</span>
+<span class="sd">    Client sent &#39;echo&#39;, got: &#39;echo&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">orchestrator</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">orchestrator</span> <span class="o">=</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">withconfig</span><span class="p">({})</span>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">orchestrator</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">orchestrator</span><span class="p">(</span><span class="n">dataflow</span><span class="p">)</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="o">*</span><span class="n">input_sets</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span></div>
+
+
 <div class="viewcode-block" id="save"><a class="viewcode-back" href="../../api/high_level.html#dffml.high_level.save">[docs]</a><span class="k">async</span> <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="n">BaseSource</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Record</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Update a source&#39;s knowledge about given records.</span>
@@ -241,6 +425,10 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
+<span class="sd">    &gt;&gt;&gt; import asyncio</span>
+<span class="sd">    &gt;&gt;&gt; import pathlib</span>
+<span class="sd">    &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; source = CSVSource(filename=&quot;save.csv&quot;, allowempty=True, readwrite=True)</span>
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; async def main():</span>
@@ -289,6 +477,9 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
+<span class="sd">    &gt;&gt;&gt; import asyncio</span>
+<span class="sd">    &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; source = CSVSource(filename=&quot;load.csv&quot;, allowempty=True, readwrite=True)</span>
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; async def main():</span>
@@ -343,6 +534,9 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
+<span class="sd">    &gt;&gt;&gt; import asyncio</span>
+<span class="sd">    &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; model = SLRModel(</span>
 <span class="sd">    ...     features=Features(</span>
 <span class="sd">    ...         DefFeature(&quot;Years&quot;, int, 1),</span>
@@ -396,6 +590,9 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
+<span class="sd">    &gt;&gt;&gt; import asyncio</span>
+<span class="sd">    &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; model = SLRModel(</span>
 <span class="sd">    ...     features=Features(</span>
 <span class="sd">    ...         DefFeature(&quot;Years&quot;, int, 1),</span>
@@ -457,6 +654,9 @@
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
+<span class="sd">    &gt;&gt;&gt; import asyncio</span>
+<span class="sd">    &gt;&gt;&gt; from dffml import *</span>
+<span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; model = SLRModel(</span>
 <span class="sd">    ...     features=Features(</span>
 <span class="sd">    ...         DefFeature(&quot;Years&quot;, int, 1),</span>
