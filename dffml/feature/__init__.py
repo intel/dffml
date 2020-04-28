@@ -1,1 +1,1 @@
-from .feature import Data, Feature, Features, LoggingDict, DefFeature
+from .feature import Feature, Features, DefFeature
