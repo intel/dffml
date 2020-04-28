@@ -277,7 +277,9 @@ class Input(object):
         *,
         uid: Optional[str] = "",
     ):
-        if not isinstance(definition, Definition):
+        # NOTE For some reason doctests end up with id(type(definition)) not
+        # equal to id(Definition). Therfore just compare the class name.
+        if definition.__class__.__qualname__ != "Definition":
             raise TypeError("Input given non definition")
         # TODO Add optional parameter Input.target which specifies the operation
         # instance name this Input is intended for.

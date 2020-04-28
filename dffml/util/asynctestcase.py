@@ -34,13 +34,14 @@ class AsyncTestCase(unittest.TestCase):
     """
     Runs any test_ methods as coroutines in the default event loop.
 
-    USAGE
+    Examples
+    --------
+
     >>> from dffml.util.asynctestcase import AsyncTestCase
     >>>
-    >>> class AsyncTestCase(unittest.AsyncTestCase):
-    >>>
-    >>>     async def test_sleep(self):
-    >>>         await asyncio.sleep(1)
+    >>> class AsyncTestCase(AsyncTestCase):
+    ...     async def test_sleep(self):
+    ...         await asyncio.sleep(1)
     """
 
     # The event loop to run test_ functions in

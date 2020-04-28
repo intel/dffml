@@ -18,4 +18,3 @@ wheelhouse/
 *.modeldir
 *.db
 htmlcov/
-tests/downloads/
