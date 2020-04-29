@@ -11,7 +11,7 @@ else
   echo "Starting new container"
   echo $PWD
   echo $SRC_ROOT
-#   ls
+  ls
 #   cat "${SRC_ROOT}/.ci/run.sh"
-  sudo docker run --name ${CONTAINER_NAME} --rm -w ${SRC_ROOT} --entrypoint /bin/bash continuumio/anaconda3 -c "${SRC_ROOT}/.ci/run.sh" ;
+  sudo docker run --name ${CONTAINER_NAME} --rm -w ${SRC_ROOT} --entrypoint /bin/bash continuumio/anaconda3 -c ../.ci/run.sh ;
 fi

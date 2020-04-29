@@ -91,10 +91,10 @@ jobs:
           sudo apt-get update && sudo apt-get install -y docker-ce docker-ce-cli containerd.io
           docker pull mariadb:10
         fi
-        if [ "${{ matrix.plugin }}" == "model/vowpalWabbit" ]; then
-          docker pull continuumio/anaconda3
-          # sudo apt-get update && sudo apt-get install libboost-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev libboost-math-dev libboost-test-dev libboost-python-dev zlib1g-dev cmake python3 python3-pip
-        fi
+        # if [ "${{ matrix.plugin }}" == "model/vowpalWabbit" ]; then
+        #   docker pull continuumio/anaconda3
+        #   # sudo apt-get update && sudo apt-get install libboost-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev libboost-math-dev libboost-test-dev libboost-python-dev zlib1g-dev cmake python3 python3-pip
+        # fi
     - name: Test
       run: |
         export PLUGIN=${{ matrix.plugin }}
