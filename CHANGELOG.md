@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Python 3.8 support
 - binsec branch to `operations/binsec`
 - Doctestable example for `model_predict` operation.
 - Doctestable examples to `operation/mapping.py`

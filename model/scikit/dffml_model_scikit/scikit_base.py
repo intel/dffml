@@ -158,7 +158,7 @@ class ScikitContextUnsprvised(ScikitContext):
         data = []
         target = []
         estimator_type = self.clf._estimator_type
-        if estimator_type is "clusterer":
+        if estimator_type == "clusterer":
             target = (
                 []
                 if self.parent.config.tcluster is None
@@ -206,7 +206,7 @@ class ScikitContextUnsprvised(ScikitContext):
         if not self._filepath.is_file():
             raise ModelNotTrained("Train model before prediction.")
         estimator_type = self.clf._estimator_type
-        if estimator_type is "clusterer":
+        if estimator_type == "clusterer":
             if hasattr(self.clf, "predict"):
                 # inductive clusterer
                 predictor = self.clf.predict
@@ -215,9 +215,12 @@ class ScikitContextUnsprvised(ScikitContext):
                 self.logger.critical(
                     "Predict found transductive clusterer, ensure data being passed is training data"
                 )
-                labels = [
-                    (yield label) for label in self.clf.labels_.astype(np.int)
-                ]
+
+                def yield_labels():
+                    for label in self.clf.labels_.astype(np.int):
+                        yield label
+
+                labels = yield_labels()
                 predictor = lambda predict: [next(labels)]
 
         async for record in records:
