@@ -7,13 +7,80 @@ command line interface too (and HTTP API).
 There are many more commands than what is listed here. Use the ``-h`` flag to
 see them all.
 
-.. contents:: Command Line Interface
+Any command can be run with logging. Just add ``-log debug`` to it to get all
+logs.
 
 Model
 -----
 
 Train, asses accuracy, and use models for prediction. See the
-plugin docs for :doc:`/plugins/dffml_model` for usage.
+plugin docs for :doc:`/plugins/dffml_model` for usage of individual models
+
+The followings shows how to use the Logistic Regression model which trains on
+one variable to predict another.
+
+First, create the dataset used for training. Since this is a simple example
+we're going to use the same dataset for training and test data, you should of
+course have separate training and test data.
+
+.. literalinclude:: /../examples/model/slr/dataset.sh
+
+Train
+~~~~~
+
+We specify the name of the model we want to use (options can be found on the
+:doc:`/plugins/dffml_model` plugins page). We specify the arguments the model
+requires using the ``-model-xyz`` flags.
+
+We can give multiple sources the data should come from, each source is given a
+label, which is the string to the left side of the ``=``. This is so that if you
+give multiple sources, you can configure each of them individually. See the
+:ref:`quickstart_command_line_flags_explained` section of the quickstart for
+more details on this.
+
+.. literalinclude:: /../examples/model/slr/train.sh
+
+Accuracy
+~~~~~~~~
+
+Assess the accuracy of a model by providing it with a test dataset.
+
+.. literalinclude:: /../examples/model/slr/accuracy.sh
+
+Output
+
+.. code-block:: console
+
+    1.0
+
+Prediction
+~~~~~~~~~~
+
+Ask a trained model to make a prediction.
+
+.. literalinclude:: /../examples/model/slr/predict.sh
+
+Output
+
+.. code-block:: console
+
+    [
+        {
+            "extra": {},
+            "features": {
+                "ans": 0,
+                "f1": 0.8
+            },
+            "last_updated": "2020-03-19T13:41:08Z",
+            "prediction": {
+                "ans": {
+                    "confidence": 1.0,
+                    "value": 1
+                }
+            },
+            "key": "0"
+        }
+    ]
 
 DataFlow
 --------
@@ -43,8 +110,13 @@ linked.
 Run
 ~~~
 
-Ouput the dataflow description to standard output using the specified config
-format.
+Iterate over each record in a source and run a dataflow on it. The records
+unique key can be assigned a definition using the ``-record-def`` flag.
+
+More inputs can be given for each record using the ``-inputs`` flag.
+
+The ``-no-echo`` flag says that we don't want the contents of the records echoed
+back to the terminal when the DataFlow completes.
 
 The ``-no-strict`` flag tell DFFML not to exit if one key fails, continue
 running the dataflow until everything is complete, useful for error prone
@@ -100,24 +172,12 @@ HTTP
 
 Everything you can do via the Python library or command line interface you can
 also do over an HTTP interface. See the
-:doc:`/plugins/service/http/index` docs for more information.
+:doc:`/plugins/service/http/cli` docs for more information.
 
 Dev
 ~~~
 
 Development utilities for creating new packages or hacking on the core codebase.
-
-Export
-++++++
-
-Given the
-`entrypoint <https://packaging.python.org/specifications/entry-points/>`_
-of an object, covert the object to it's ``dict`` representation, and export it
-using the given config format.
-
-.. code-block:: console
-
-    $ dffml service dev export -config json shouldi.cli:DATAFLOW
 
 .. _cli_service_dev_create:
 
@@ -129,8 +189,8 @@ DFFML right away with the ``create`` command of ``dev``.
 
 .. code-block:: console
 
-    $ dffml service dev create model cool-ml-model
-    $ cd cool-ml-model
+    $ dffml service dev create model dffml-model-mycoolmodel
+    $ cd dffml-model-mycoolmodel
     $ python setup.py test
 
 When you're done you can upload it to PyPi and it'll be ``pip`` installable so
@@ -140,12 +200,35 @@ want to mess with uploading to ``PyPi``, you can install it from your git repo
 
 .. code-block:: console
 
-    $ python -m pip install -U git+https://github.com/user/cool-ml-model
+    $ python3 -m pip install -U git+https://github.com/$USER/dffml-model-mycoolmodel
 
 Make sure to look in ``setup.py`` and edit the ``entry_points`` to match
 whatever you've edited. This way whatever you make will be usable by others
 within the DFFML CLI and HTTP API as soon as they ``pip`` install your package,
 nothing else required.
+
+Export
+++++++
+
+Given the
+`entrypoint <https://packaging.python.org/specifications/entry-points/>`_
+of an object, covert the object to it's ``dict`` representation, and export it
+using the given config format.
+
+All DFFML objects are exportable. Here's and example of exporting a DataFlow.
+
+.. code-block:: console
+
+    $ dffml service dev export -config json shouldi.cli:DATAFLOW
+
+This is an example of exporting a model. Be sure the files you're exporting from
+have a ``if __name__ == "__main__":`` block, or else loading the file will
+result in running the code in it instead of just exporting a global variable,
+which is what you want.
+
+.. code-block:: console
+
+    $ dffml service dev export -config yaml quickstart:model
 
 Entrypoints
 +++++++++++
