@@ -217,7 +217,7 @@ without the need to hardcode in <code class="docutils literal notranslate"><span
   --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
   --request POST <span class="se">\</span>
   --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39;</span> <span class="se">\</span>
-  http://localhost:8080/shouldi <span class="p">|</span> python3.7 -m json.tool
+  http://localhost:8080/shouldi <span class="p">|</span> python3 -m json.tool
 <span class="go">{</span>
 <span class="go">    &quot;insecure-package&quot;: {</span>
 <span class="go">        &quot;safety_check_number_of_issues&quot;: 1,</span>
@@ -244,7 +244,7 @@ without the need to hardcode in <code class="docutils literal notranslate"><span
 representations of DataFlows are not fun to hand edit. YAML looks a lot cleaner.</p>
 <p>We’re going to install the <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code> package so that we don’t have
 to look at JSON.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install dffml-config-yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install dffml-config-yaml
 </pre></div>
 </div>
 <p>We’ll be working from the top level directory of the <code class="docutils literal notranslate"><span class="pre">shouldi</span></code> package we
@@ -281,7 +281,7 @@ when a particular word immediately follows the bots name.</p>
 <p>The HTTP server was the first <code class="docutils literal notranslate"><span class="pre">MultiComm</span></code> written for DFFML. It’s channels of
 communication are URL paths (Example: <code class="docutils literal notranslate"><span class="pre">/some/url/path</span></code>).</p>
 <p>Let’s install the HTTP API service.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install dffml-service-http
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install dffml-service-http
 </pre></div>
 </div>
 </div>
@@ -326,7 +326,7 @@ items that you want evaluated.</p>
   --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
   --request POST <span class="se">\</span>
   --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39;</span> <span class="se">\</span>
-  http://localhost:8080/shouldi <span class="p">|</span> python3.7 -m json.tool
+  http://localhost:8080/shouldi <span class="p">|</span> python3 -m json.tool
 <span class="go">{</span>
 <span class="go">    &quot;bandit_output&quot;: {</span>
 <span class="go">        &quot;CONFIDENCE.HIGH&quot;: 0,</span>
@@ -352,7 +352,7 @@ items that you want evaluated.</p>
 Git and source code analysis related operations (a list of all available
 operations can be found on the <a class="reference internal" href="../plugins/dffml_operation.html"><span class="doc">Operations</span></a> plugins page).</p>
 <p>We’ll be using those operations, so we need to install them</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3.7 -m pip install dffml-feature-git
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install dffml-feature-git
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">lines_of_code_to_comments</span></code> operation will give use the ratio of the
@@ -538,7 +538,7 @@ configs.</p>
   --header <span class="s2">&quot;Content-Type: application/json&quot;</span> <span class="se">\</span>
   --request POST <span class="se">\</span>
   --data <span class="s1">&#39;{&quot;insecure-package&quot;: [{&quot;value&quot;:&quot;insecure-package&quot;,&quot;definition&quot;:&quot;package&quot;}], &quot;dffml&quot;: [{&quot;value&quot;:&quot;dffml&quot;,&quot;definition&quot;:&quot;package&quot;}]}&#39;</span> <span class="se">\</span>
-  http://localhost:8080/shouldi <span class="p">|</span> python3.7 -m json.tool
+  http://localhost:8080/shouldi <span class="p">|</span> python3 -m json.tool
 <span class="go">{</span>
 <span class="go">    &quot;dffml&quot;: {</span>
 <span class="go">        &quot;bandit_output&quot;: {</span>

@@ -9,13 +9,13 @@ You can run the tests with
 
 .. code-block:: console
 
-    $ python3.7 setup.py test
+    $ python3 setup.py test
 
 To run a specific test, use the ``-s`` flag.
 
 .. code-block:: console
 
-    $ python3.7 setup.py test -s tests.test_cli.TestPredict.test_record
+    $ python3 setup.py test -s tests.test_cli.TestPredict.test_record
 
 Debug Logging
 -------------
@@ -33,9 +33,9 @@ Each pull request is expected to maintain or increase test coverage
 
 .. code-block:: console
 
-    $ python3.7 -m coverage run setup.py test
-    $ python3.7 -m coverage report -m
-    $ python3.7 -m coverage html
+    $ python3 -m coverage run setup.py test
+    $ python3 -m coverage report -m
+    $ python3 -m coverage html
 
 
 The last command generates a folder called ``htmlcov``, you can check the report
@@ -43,7 +43,7 @@ by opening the ``index.html`` in a web browser.
 
 .. code-block:: console
 
-    $ python3.7 -m http.server --directory htmlcov/ 8080
+    $ python3 -m http.server --directory htmlcov/ 8080
 
 
 You can now view the coverage report at http://127.0.0.1:8080/
