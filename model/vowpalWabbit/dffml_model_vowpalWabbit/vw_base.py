@@ -20,7 +20,7 @@ from vowpalwabbit import pyvw
 from sklearn.utils import shuffle
 from sklearn.metrics import accuracy_score, r2_score
 
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml.model.accuracy import Accuracy
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
@@ -252,12 +252,12 @@ class VWContext(ModelContext):
             class_cost = [
                 feature.NAME for feature in self.parent.config.class_cost
             ]
-        async for repo in sources.with_features(
+        async for record in sources.with_features(
             self.features
             + [self.parent.config.predict.NAME]
             + self.parent.config.extra_cols
         ):
-            feature_data = repo.features(
+            feature_data = record.features(
                 self.features
                 + [self.parent.config.predict.NAME]
                 + self.parent.config.extra_cols
@@ -277,7 +277,7 @@ class VWContext(ModelContext):
                 use_binary_label=self.parent.config.use_binary_label,
                 class_cost=class_cost,
             )
-        self.logger.info("Number of input repos: {}".format(len(vw_data)))
+        self.logger.info("Number of input records: {}".format(len(vw_data)))
         for n in range(self.parent.config.passes):
             if n > 1:
                 X = shuffle(vw_data)
@@ -300,14 +300,14 @@ class VWContext(ModelContext):
 
         if self.parent.config.base:
             base = self.parent.config.base.NAME
-        async for repo in sources.with_features(self.features):
-            feature_data = repo.features(
+        async for record in sources.with_features(self.features):
+            feature_data = record.features(
                 self.features + [self.parent.config.predict.NAME]
             )
             data.append(feature_data)
         df = pd.DataFrame(data)
         xdata = df.drop([self.parent.config.predict.NAME], 1)
-        self.logger.debug("Number of input repos: {}".format(len(xdata)))
+        self.logger.debug("Number of input records: {}".format(len(xdata)))
         if self.parent.config.convert_to_vw:
             xdata = df_to_vw_format(
                 xdata,
@@ -337,8 +337,8 @@ class VWContext(ModelContext):
         return self.confidence
 
     async def predict(
-        self, repos: AsyncIterator[Repo]
-    ) -> AsyncIterator[Tuple[Repo, Any, float]]:
+        self, records: AsyncIterator[Record]
+    ) -> AsyncIterator[Tuple[Record, Any, float]]:
         if not os.path.isfile(self._filename()):
             raise ModelNotTrained("Train model before prediction.")
         importance, tag, base, class_cost = None, None, None, None
@@ -350,8 +350,8 @@ class VWContext(ModelContext):
 
         if self.parent.config.base:
             base = self.parent.config.base.NAME
-        async for repo in repos:
-            feature_data = repo.features(self.features)
+        async for record in records:
+            feature_data = record.features(self.features)
             data = pd.DataFrame(feature_data, index=[0])
             if self.parent.config.convert_to_vw:
                 data = df_to_vw_format(
@@ -372,8 +372,8 @@ class VWContext(ModelContext):
                 )
             )
             target = self.parent.config.predict.NAME
-            repo.predicted(target, prediction, self.confidence)
-            yield repo
+            record.predicted(target, prediction, self.confidence)
+            yield record
 
 
 @entrypoint("vwmodel")

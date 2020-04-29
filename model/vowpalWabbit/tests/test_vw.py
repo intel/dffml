@@ -5,7 +5,7 @@ import tempfile
 import numpy as np
 from sklearn.datasets import make_friedman1
 
-from dffml.repo import Repo
+from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import DefFeature, Features
@@ -28,8 +28,8 @@ class TestVWModel(AsyncTestCase):
         cls.features.append(DefFeature("H", int, 1))
 
         A, B, C, D, E, F, G, H, X = list(zip(*DATA))
-        cls.repos = [
-            Repo(
+        cls.records = [
+            Record(
                 str(i),
                 data={
                     "features": {
@@ -49,7 +49,7 @@ class TestVWModel(AsyncTestCase):
         ]
 
         cls.sources = Sources(
-            MemorySource(MemorySourceConfig(repos=cls.repos))
+            MemorySource(MemorySourceConfig(records=cls.records))
         )
         cls.model = VWModel(
             VWConfig(
@@ -93,8 +93,8 @@ class TestVWModel(AsyncTestCase):
         async with self.sources as sources, self.model as model:
             target = model.config.predict.NAME
             async with sources() as sctx, model() as mctx:
-                async for repo in mctx.predict(sctx.repos()):
-                    prediction = repo.prediction(target).value
+                async for record in mctx.predict(sctx.records()):
+                    prediction = record.prediction(target).value
                     self.assertTrue(isinstance(prediction, float))
 
 

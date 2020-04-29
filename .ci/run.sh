@@ -32,6 +32,10 @@ function run_plugin() {
     "${PYTHON}" -m pip install -U -e "${SRC_ROOT}/model/tensorflow"
   fi
 
+  if [ "x${PLUGIN}" = "xmodel/vowpalWabbit" ]; then
+    conda install -y -c conda-forge vowpalwabbit
+  fi
+
   cd "${SRC_ROOT}/${PLUGIN}"
 
   # Install plugin
