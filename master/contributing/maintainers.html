@@ -208,10 +208,10 @@ won’t find anything useful here, unless your just curious.</p>
 <h2>Adding A New Plugin<a class="headerlink" href="#adding-a-new-plugin" title="Permalink to this headline">¶</a></h2>
 <p>When a new plugin is added we need to go manually upload it for the first time.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> model/new_model
-<span class="gp">$</span> python3.7 setup.py <span class="nb">test</span>
+<span class="gp">$</span> python3 setup.py <span class="nb">test</span>
 <span class="gp">$</span> rm -rf dist
 <span class="gp">$</span> git clean -xdf
-<span class="gp">$</span> python3.7 setup.py sdist
+<span class="gp">$</span> python3 setup.py sdist
 <span class="gp">$</span> twine upload dist/*
 </pre></div>
 </div>
