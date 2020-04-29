@@ -12,10 +12,10 @@ When a new plugin is added we need to go manually upload it for the first time.
 .. code-block:: console
 
     $ cd model/new_model
-    $ python3.7 setup.py test
+    $ python3 setup.py test
     $ rm -rf dist
     $ git clean -xdf
-    $ python3.7 setup.py sdist
+    $ python3 setup.py sdist
     $ twine upload dist/*
 
 Once it's be uploaded, we go to PyPi and create an API key which will be used to
