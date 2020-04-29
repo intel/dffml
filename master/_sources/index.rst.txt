@@ -17,7 +17,11 @@ Welcome to DFFML!
     :target: https://pypi.org/project/dffml
     :alt: PyPI version
 
-Training and using machine learning models as simple as
+You can use DFFML from the :doc:`Command Line <cli>`, :doc:`Python
+<api/high_level>`, or the :doc:`HTTP API <plugins/service/http/index>`, see the
+:doc:`quickstart/model` to get started right away.
+
+It makes training and using machine learning models as simple as
 
 .. literalinclude:: /../examples/quickstart.py
 
@@ -28,9 +32,6 @@ Output:
     Accuracy: 1.0
     {'Years': 6, 'Expertise': 13, 'Trust': 0.7, 'Salary': 70.0}
     {'Years': 7, 'Expertise': 15, 'Trust': 0.8, 'Salary': 80.0}
-
-You can use DFFML from the command line, Python, or the HTTP API, see the
-:doc:`quickstart/model` to get started right away.
 
 The web UI (under heavy development) can be found `here <webui/>`_.
 
