@@ -7,7 +7,7 @@ Models created using scikit.
 ## Install
 
 ```console
-python3.7 -m pip install --user dffml-model-scikit
+$ python3 -m pip install --user dffml-model-scikit
 ```
 
 ## Usage
