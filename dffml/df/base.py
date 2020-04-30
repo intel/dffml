@@ -167,7 +167,7 @@ class OperationImplementation(BaseDataFlowObject):
         return loading_classes
 
 
-def op(imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
+def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
     """
     The ``op`` decorator creates a subclass of
     :py:class:`dffml.df.OperationImplementation` and assigns that
@@ -193,16 +193,31 @@ def op(imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
         if not "conditions" in kwargs:
             kwargs["conditions"] = []
 
-        primitive_types = (int, float, str, bool)
+        primitive_types = (int, float, str, bool, dict, list)
+        # Used to convert python types in to their programming language agnostic
+        # names
+        # TODO Combine with logic in dffml.util.data
+        primitive_convert = {dict: "map", list: "array"}
 
         if not "inputs" in kwargs:
             sig = inspect.signature(func)
             kwargs["inputs"] = {}
 
             for name, param in sig.parameters.items():
+                name_list = [func.__qualname__, name]
+                if func.__module__ != "__main__":
+                    name_list.insert(0, func.__module__)
+
                 if param.annotation in primitive_types:
                     kwargs["inputs"][name] = Definition(
-                        name=name, primitive=param.annotation.__name__
+                        name=".".join(name_list),
+                        primitive=primitive_convert.get(
+                            param.annotation, param.annotation.__name__
+                        ),
+                    )
+                else:
+                    raise OpCouldNotDeterminePrimitive(
+                        f"The primitive of {name} could not be determined"
                     )
 
         func.op = Operation(**kwargs)
@@ -306,6 +321,11 @@ def op(imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                 },
             )
             return func
+
+    # This case handles if op was called with no arguments, args will be a tuple
+    # with one element, that element being func, the function to wrap.
+    if args:
+        return wrap(args[0])
 
     return wrap
 
