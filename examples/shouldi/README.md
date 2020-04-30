@@ -15,7 +15,7 @@ Do not install insecure-package! {'safety_check_number_of_issues': 1}
 `shouldi` depends on safety, pylint, and bandit being installed separately.
 
 ```console
-$ python3.7 -m pip install -U safety pylint bandit
+$ python3 -m pip install -U safety pylint bandit
 ```
 
 ## WTF is this

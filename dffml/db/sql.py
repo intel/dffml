@@ -3,7 +3,7 @@ Base classes to wrap various SQL based databases in dffml.db abstraction.
 """
 from typing import Dict, Any, List, Tuple, Optional
 
-from dffml.db.base import BaseDatabaseContext, Conditions
+from .base import BaseDatabaseContext, Conditions
 
 
 class SQLDatabaseContext(BaseDatabaseContext):

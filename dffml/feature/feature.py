@@ -12,90 +12,7 @@ from contextlib import AsyncExitStack
 from typing import List, Dict, Type, Any
 
 from .log import LOGGER
-from ..util.monitor import Task
 from ..util.entrypoint import Entrypoint
-
-
-class Frequency(object):
-    """
-    Frequency in months
-    """
-
-    MONTHS: int = 0
-
-
-class Quarterly(Frequency):
-    """
-    Evaluate on a quarterly basis (every 3 months).
-    """
-
-    MONTHS = 3
-
-
-class Yearly(Frequency):
-    """
-    Evaluate on a yearly basis.
-    """
-
-    MONTHS = 12
-
-
-class LoggingDict(object):
-    def __init__(self, data: "Data") -> None:
-        self.__data = data
-        self.__dict: Dict = {}
-        self.ignore = (asyncio.Lock,)
-
-    async def get(self, key, default=None):
-        val = self.__dict.get(key, default)
-        return val
-
-    async def set(self, key, value):
-        self.__dict[key] = value
-        if not isinstance(value, self.ignore):
-            await self.__data.update({key: value}, event="set")
-
-    async def inc(self, key, default=None, by=1):
-        value = await self.get(key, default=default)
-        value += by
-        await self.set(key, value)
-        return value
-
-
-class Data(Task):
-    """
-    Passed to each feature during evaluation. Shared between all features a record
-    is being evaluated with
-    """
-
-    LOGGER = LOGGER.getChild("Data")
-
-    def __init__(self, key: str) -> None:
-        super().__init__(_key=key)
-        self.key = key
-        self.lock: asyncio.Lock = asyncio.Lock()
-        self.temp: Dict[str, Any] = {}
-        self.data: LoggingDict = LoggingDict(self)
-        self.results: Dict[str, Any] = {}
-        self.locks: Dict[str, Any] = {}
-
-    async def mklock(self, name: str) -> asyncio.Lock:
-        """
-        Return a lock stored in data under the key `name`. Create the lock if it
-        does not exist.
-        """
-        async with self.lock:
-            lock = self.locks.get(name, None)
-            if lock is None:
-                lock = asyncio.Lock()
-                self.locks[name] = lock
-            return lock
-
-    async def result(self):
-        results = await self.complete()
-        self.results = results
-        self.LOGGER.debug("Data got results: %r", results)
-        return results
 
 
 class Feature(abc.ABC, Entrypoint):
@@ -118,6 +35,8 @@ class Feature(abc.ABC, Entrypoint):
     --------
     Define a feature using load_def:
 
+    >>> from dffml import *
+    >>>
     >>> feature = Feature.load_def("example", "float", 10)
     >>> feature.dtype()
     <class 'float'>
@@ -128,6 +47,8 @@ class Feature(abc.ABC, Entrypoint):
 
     Defining a feature directly using DefFeature:
 
+    >>> from dffml import *
+    >>>
     >>> feature = DefFeature("example2", int, 20)
     >>> feature.dtype()
     <class 'int'>
@@ -173,6 +94,8 @@ class Feature(abc.ABC, Entrypoint):
         Examples
         --------
 
+        >>> from dffml import *
+        >>>
         >>> feature = Feature()
         >>> feature.dtype()
         <class 'int'>
@@ -188,6 +111,8 @@ class Feature(abc.ABC, Entrypoint):
         Examples
         --------
 
+        >>> from dffml import *
+        >>>
         >>> feature = Feature()
         >>> feature.length()
         1
@@ -258,15 +183,11 @@ def DefFeature(name, dtype, length):
 
 class Features(collections.UserList):
 
-    TIMEOUT: int = 60 * 2
     SINGLETON = Feature
 
-    LOGGER = LOGGER.getChild("Features")
-
-    def __init__(self, *args: Feature, timeout: int = None) -> None:
+    def __init__(self, *args: Feature) -> None:
         super().__init__(args)
         self._stack = None
-        self.timeout = timeout if not timeout is None else self.TIMEOUT
 
     def names(self) -> List[str]:
         return list(({feature.NAME: True for feature in self.data}).keys())

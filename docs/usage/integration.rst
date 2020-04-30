@@ -39,7 +39,7 @@ Create a virtual environment for Python 3.7.
 
 .. code-block:: console
 
-    $ python3.7 -m venv .venv
+    $ python3 -m venv .venv
     $ . .venv/bin/activate
 
 Install DFFML.

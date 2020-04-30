@@ -6,16 +6,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Python 3.8 support
 - binsec branch to `operations/binsec`
 - Doctestable example for `model_predict` operation.
 - Doctestable examples to `operation/mapping.py`
-- load function in high_level API
+- shouldi got an operation to run Dependency-check on java code.
+- `load` and `run` functions in high level API
 - Doctestable examples to `db` operations.
 - Source for parsing `.ini` file formats
+- Tests for noasync high level API.
+- Tests for load and save functions in high level API.
+- `Operation` inputs and ouputs default to empty `dict` if not given.
+- Ability to export any object with `dffml service dev export`
 - Documentation for creating Source for new File types taking `.ini` as an example.
 ### Changed
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
+- Every class and function can now be imported from the top level module
+### Fixed
+- Race condition in `MemoryRedundancyChecker` when more than 4 possible
+  parameter sets for an operation.
+### Removed
+- Monitor class and associated tests (unused)
 
 ## [0.3.7] - 2020-04-14
 ### Added

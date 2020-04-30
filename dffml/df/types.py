@@ -122,8 +122,8 @@ class FailedToLoadOperation(Exception):
 @base_entry_point("dffml.operation", "operation")
 class Operation(NamedTuple, Entrypoint):
     name: str
-    inputs: Dict[str, Definition]
-    outputs: Dict[str, Definition]
+    inputs: Dict[str, Definition] = {}
+    outputs: Dict[str, Definition] = {}
     stage: Stage = Stage.PROCESSING
     conditions: Optional[List[Definition]] = []
     expand: Optional[List[str]] = []

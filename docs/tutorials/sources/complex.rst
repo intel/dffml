@@ -66,7 +66,7 @@ Run the tests
 
 .. code-block:: console
 
-    $ python3.7 setup.py test
+    $ python3 setup.py test
 
 Register your source
 --------------------
@@ -96,4 +96,4 @@ The following command installs your new source.
 
 .. code-block:: console
 
-    $ python3.7 -m pip install --prefix=~/.local -e .
+    $ python3 -m pip install --prefix=~/.local -e .
