@@ -1,6 +1,5 @@
-from dffml import Features, DefFeature
+from dffml import Features, DefFeature, SLRModel
 from dffml.noasync import train, accuracy, predict
-from dffml.model.slr import SLRModel
 
 model = SLRModel(
     features=Features(DefFeature("f1", float, 1)),

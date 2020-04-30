@@ -3,8 +3,8 @@ import json
 import asyncio
 from typing import Dict, Any
 
-from dffml.df.base import op
-from dffml.df.types import Definition
+from dffml import op
+from dffml import Definition
 
 package = Definition(name="package", primitive="str")
 package_version = Definition(name="package_version", primitive="str")

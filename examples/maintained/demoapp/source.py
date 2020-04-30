@@ -2,19 +2,16 @@ import json
 import aiomysql
 from typing import AsyncIterator, NamedTuple, Dict
 
-from dffml.base import BaseConfig
-from dffml.record import Record
-from dffml.source.source import BaseSourceContext, BaseSource
-from dffml.util.cli.arg import Arg
-from dffml.util.entrypoint import entrypoint
+from dffml import config, entrypoint, Record, BaseSourceContext, BaseSource
 
 
-class DemoAppSourceConfig(BaseConfig, NamedTuple):
-    host: str
-    port: int
-    user: str
-    password: str
-    db: str
+@config
+class DemoAppSourceConfig:
+    host: str = "127.0.0.1"
+    port: int = 3306
+    user: str = "user"
+    password: str = "pass"
+    db: str = "db"
 
 
 class DemoAppSourceContext(BaseSourceContext):
@@ -69,6 +66,7 @@ class DemoAppSourceContext(BaseSourceContext):
 @entrypoint("demoapp")
 class DemoAppSource(BaseSource):
 
+    CONFIG = DemoAppSourceConfig
     CONTEXT = DemoAppSourceContext
 
     async def __aenter__(self) -> "DemoAppSource":
@@ -87,22 +85,3 @@ class DemoAppSource(BaseSource):
         await self.__db.__aexit__(exc_type, exc_value, traceback)
         self.pool.close()
         await self.pool.wait_closed()
-
-    @classmethod
-    def args(cls, args, *above) -> Dict[str, Arg]:
-        cls.config_set(args, above, "host", Arg(default="127.0.0.1"))
-        cls.config_set(args, above, "port", Arg(type=int, default=3306))
-        cls.config_set(args, above, "user", Arg(default="user"))
-        cls.config_set(args, above, "password", Arg(default="pass"))
-        cls.config_set(args, above, "db", Arg(default="db"))
-        return args
-
-    @classmethod
-    def config(cls, config, *above):
-        return DemoAppSourceConfig(
-            host=cls.config_get(config, above, "host"),
-            port=cls.config_get(config, above, "port"),
-            user=cls.config_get(config, above, "user"),
-            password=cls.config_get(config, above, "password"),
-            db=cls.config_get(config, above, "db"),
-        )
