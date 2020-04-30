@@ -45,10 +45,16 @@ Create Source
 .. literalinclude:: ../../../dffml/source/ini.py
     :lines: 18-24
 
-Here we have added the entrypoint to INISource class as "ini". The INISource will inherit
-from FileSource and MemorySource which provides read / write operations for file and
-memory. Set the CONFIG variable to the INISourceConfig which we created earlier. Next we
-will writing the load and dump methods for INISource.
+Here we have added the entrypoint to INISource class as "ini". The New Source should inherit
+from FileSource and MemorySource as it abstracts the saving and loading of files so that
+we only have to implement the load_fd and dump_fd methods. It takes care of decompression
+on load and re-compression on save if the files extension signifies that it's compressed.
+We inherit from MemorySource because it implements the methods required by a
+:py:class:`Source <dffml.source.source.BaseSourceContext>` provided that self.mem contains
+Record objects.
+Set the CONFIG variable to the INISourceConfig which we created earlier. Setting
+the CONFIG variable is important because the instantiated version of CONFIG is accessible
+as self.config Next we will writing the load and dump methods for INISource.
 
 Add load method
 ---------------
@@ -62,7 +68,7 @@ from the file object (fileobj) and loading that data into memory (self.mem). Eac
 record and data (dict type), with data having a key ``features`` which stores all
 the data for that record.
 
-Going over the code, we have defined a coroutine with two parameters self and fileobj, here
+Going over the code, we have defined a coroutine with parameter fileobj, here
 fileobj is the file object. we are reading from the fileobj file object. Each section of the
 INI file is used as a Record, with the name of the section used as key for that Record.
 Each section consist of name and value pair which we store it as a dict, under that Record
@@ -77,7 +83,7 @@ Add dump method
 This method will be used to dump the data to the file. We will read data from memory
 (self.mem) and save that data in file object (fileobj).
 
-Going over the code, we have defined a coroutine with two parameters self and fileobj, here
+Going over the code, we have defined a coroutine with parameter fileobj, here
 fileobj is the file object. We are going over each section name and its corresponding Record.
 We are reading all the data from the memory (self.mem) and writing that data to our file
 object (fileobj). Hence dumping all our data into file.
