@@ -14,7 +14,7 @@ import contextlib
 from dffml.df.types import Operation, DataFlow, Input
 from dffml.cli.cli import CLI
 from dffml.util.entrypoint import load
-from dffml.configloader.configloader import BaseConfigLoader
+from dffml.configloader.configloader import BaseConfigLoader, ConfigLoaders
 from dffml.util.asynctestcase import IntegrationCLITestCase, relative_path
 
 
@@ -142,3 +142,59 @@ class TestDataFlowMerge(TestDataFlow):
         # TODO Figure out how nested model config options will work
         # print(dataflow_yaml.read_text())
         return
+
+
+class TestDataFlowCreate(TestDataFlow):
+    async def test_dataflow_run_cli_example(self):
+        # Write out override dataflow
+        created = self.mktempfile() + ".yaml"
+        with open(created, "w") as fileobj:
+            with contextlib.redirect_stdout(fileobj):
+                await CLI.cli(
+                    "dataflow",
+                    "create",
+                    "dffml.mapping.create",
+                    "print_output",
+                    "-config",
+                    "yaml",
+                )
+        # Load the generated dataflow
+        async with ConfigLoaders() as cfgl:
+            _, exported = await cfgl.load_file(created)
+            dataflow = DataFlow._fromdict(**exported)
+        # Modify the dataflow
+        dataflow.flow["print_output"].inputs["data"] = [
+            {"dffml.mapping.create": "mapping"}
+        ]
+        # Write back modified dataflow
+        async with BaseConfigLoader.load("yaml").withconfig(
+            {}
+        ) as configloader:
+            async with configloader() as loader:
+                with open(created, "wb") as fileobj:
+                    fileobj.write(
+                        await loader.dumpb(dataflow.export(linked=True))
+                    )
+        # Run the dataflow
+        with contextlib.redirect_stdout(self.stdout):
+            await CLI.cli(
+                "dataflow",
+                "run",
+                "records",
+                "all",
+                "-no-echo",
+                "-record-def",
+                "value",
+                "-inputs",
+                "hello=key",
+                "-dataflow",
+                created,
+                "-sources",
+                "m=memory",
+                "-source-records",
+                "world",
+                "user",
+            )
+        self.assertEqual(
+            self.stdout.getvalue(), "{'hello': 'world'}\n{'hello': 'user'}\n"
+        )
