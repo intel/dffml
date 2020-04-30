@@ -10,24 +10,46 @@ DESCRIPTION = "Meta static analysis tool for Python packages"
 AUTHOR_NAME = "John Andersen"
 AUTHOR_EMAIL = "john.s.andersen@intel.com"
 # Install dffml if it is not installed in development mode
-INSTALL_REQUIRES = [] + (
-    ["dffml>=0.3.7"]
-    if not any(
-        list(
-            map(
-                os.path.isfile,
-                list(
-                    map(
-                        lambda syspath: os.path.join(
-                            syspath, "dffml.egg-link"
-                        ),
-                        sys.path,
-                    )
-                ),
+INSTALL_REQUIRES = (
+    []
+    + (
+        ["dffml>=0.3.7"]
+        if not any(
+            list(
+                map(
+                    os.path.isfile,
+                    list(
+                        map(
+                            lambda syspath: os.path.join(
+                                syspath, "dffml.egg-link"
+                            ),
+                            sys.path,
+                        )
+                    ),
+                )
             )
         )
+        else []
     )
-    else []
+    + (
+        ["dffml-feature-git>=0.2.7"]
+        if not any(
+            list(
+                map(
+                    os.path.isfile,
+                    list(
+                        map(
+                            lambda syspath: os.path.join(
+                                syspath, "dffml-feature-git.egg-link"
+                            ),
+                            sys.path,
+                        )
+                    ),
+                )
+            )
+        )
+        else []
+    )
 )
 
 IMPORT_NAME = (
