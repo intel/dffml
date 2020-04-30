@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Operation` inputs and ouputs default to empty `dict` if not given.
 - Ability to export any object with `dffml service dev export`
 - Complete example for dataflow run cli command
+- Tests for default configs instantiation.
 ### Changed
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
