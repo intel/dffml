@@ -1,7 +1,7 @@
 .. _source_tutorial:
 
-New Source Tutorial
-===================
+Example SQLite source
+=====================
 
 This tutorial is for implementing a data source. Which is probably what you want
 if the way you store your data doesn't have an existing :ref:`plugin_sources`
