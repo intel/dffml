@@ -193,6 +193,18 @@ def op(imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
         if not "conditions" in kwargs:
             kwargs["conditions"] = []
 
+        primitive_types = (int, float, str, bool)
+
+        if not "inputs" in kwargs:
+            sig = inspect.signature(func)
+            kwargs["inputs"] = {}
+
+            for name, param in sig.parameters.items():
+                if param.annotation in primitive_types:
+                    kwargs["inputs"][name] = Definition(
+                        name=name, primitive=param.annotation.__name__
+                    )
+
         func.op = Operation(**kwargs)
         func.ENTRY_POINT_NAME = ["operation"]
         cls_name = (
