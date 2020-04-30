@@ -30,6 +30,15 @@ If you want to stay on the bleeding edge of bug fixes, etc. Install via git.
 
     $ python3 -m pip install -U git+https://github.com/intel/dffml
 
+You can also install the bleeding edge version of any plugin. To get the
+subdirectory you should use, take the package name on PyPi and remove ``dffml-``
+and replace ``-`` with ``/``.
+
+.. code-block:: console
+
+    $ python3 -m pip install git+https://github.com/intel/dffml \
+        git+https://github.com/intel/dffml#subdirectory=model/scikit
+
 If you want to install all of the machine learning model plugins that are
 maintained as a part of the core repository, you can append ``[models]``.
 
