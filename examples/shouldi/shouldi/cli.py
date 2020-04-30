@@ -1,6 +1,12 @@
 # Command line utility helpers and DataFlow specific classes
 from dffml import CMD, Arg, DataFlow, Input, GetSingle, run
 
+# Import operations we need from the Git operations
+from dffml_feature_git.feature.operations import (
+    clone_git_repo,
+    cleanup_git_repo,
+)
+
 # Import all the operations we wrote
 from shouldi.bandit import run_bandit
 from shouldi.pypi import pypi_latest_package_version
@@ -10,8 +16,83 @@ from shouldi.pypi import pypi_package_contents
 from shouldi.pypi import cleanup_pypi_package
 from shouldi.safety import safety_check
 
-# Link inputs and outputs together according to their definitions
-DATAFLOW = DataFlow.auto(
+from dffml import op, Definition, run_dataflow
+
+from typing import NamedTuple
+
+
+class SAResultsSpec(NamedTuple):
+    """
+    Static analysis results for a language
+    """
+
+    critical: int
+    high: int
+    medium: int
+    low: int
+    report: dict
+
+
+SA_RESULTS = Definition(
+    name="static_analysis", primitive="string", spec=SAResultsSpec,
+)
+
+
+import pathlib
+
+
+def has_file(directory: str, filename: str):
+    return {"result": pathlib.Path(directory, filename).is_file()}
+
+
+HAS_SETUP_PY_RESULT = Definition(name="has_setup_py_result", primitive="bool")
+
+
+@op(
+    inputs={"repo": clone_git_repo.op.outputs["repo"]},
+    outputs={"result": HAS_SETUP_PY_RESULT},
+)
+def has_setup_py(repo: clone_git_repo.op.outputs["repo"].spec):
+    return has_file(repo.directory, "setup.py")
+
+
+HAS_PACKAGE_JSON_RESULT = Definition(
+    name="has_package_json_result", primitive="bool"
+)
+
+
+@op(
+    inputs={"repo": clone_git_repo.op.outputs["repo"]},
+    outputs={"result": HAS_PACKAGE_JSON_RESULT},
+)
+def has_package_json(repo: clone_git_repo.op.outputs["repo"].spec):
+    return has_file(repo.directory, "package.json")
+
+
+DATAFLOW_ID_PYTHON = DataFlow.auto(has_setup_py, GetSingle)
+DATAFLOW_ID_PYTHON.seed.append(
+    Input(
+        value=[has_setup_py.op.outputs["result"].name,],
+        definition=GetSingle.op.inputs["spec"],
+    )
+)
+
+
+@op(
+    inputs={"repo": clone_git_repo.op.outputs["repo"]},
+    outputs={"python": Definition(name="repo_is_python", primitive="string")},
+)
+async def is_lang_python(self, repo):
+    async with self.octx.parent(DATAFLOW_ID_PYTHON) as octx:
+        async for _, results in octx.run(
+            [Input(value=repo, definition=self.parent.op.inputs["repo"])]
+        ):
+            if results[has_setup_py.op.outputs["result"].name]:
+                return {"python": True}
+
+
+# DataFlow for doing static analysis on Python code
+DATAFLOW_SA_PYTHON = DataFlow.auto(
     pypi_package_json,
     pypi_latest_package_version,
     pypi_package_url,
@@ -25,7 +106,7 @@ DATAFLOW = DataFlow.auto(
 # GetSingle output operation that we want the output of the network to include
 # data matching the "issues" output of the safety_check operation, and the
 # "report" output of the run_bandit operation, for each context.
-DATAFLOW.seed.append(
+DATAFLOW_SA_PYTHON.seed.append(
     Input(
         value=[
             safety_check.op.outputs["issues"].name,
@@ -33,6 +114,85 @@ DATAFLOW.seed.append(
         ],
         definition=GetSingle.op.inputs["spec"],
     )
+)
+
+
+import os
+from dffml import SetupPyKWArg
+
+
+@op(
+    inputs={"repo": clone_git_repo.op.outputs["repo"]},
+    outputs={"result": SA_RESULTS},
+    conditions=[is_lang_python.op.outputs["python"]],
+)
+async def run_python_sa(self, repo):
+    """
+    Run Python static analysis
+    """
+    setup_kwargs = SetupPyKWArg.get_kwargs(
+        os.path.join(repo.directory, "setup.py")
+    )
+
+    # TODO Make is so that
+    async with self.octx.parent(DATAFLOW_SA_PYTHON) as octx:
+        async for _, results in octx.run(
+            [
+                Input(
+                    value=setup_kwargs["name"],
+                    definition=pypi_package_json.op.inputs["package"],
+                )
+            ]
+        ):
+            # TODO Make this report more useful
+            safety_issues = results[safety_check.op.outputs["issues"].name]
+            bandit_report = results[run_bandit.op.outputs["report"].name]
+            return {
+                "result": SAResultsSpec(
+                    critical=safety_issues,
+                    high=bandit_report["CONFIDENCE.HIGH_AND_SEVERITY.HIGH"],
+                    medium=0,
+                    low=0,
+                    report=results,
+                )
+            }
+
+
+DATAFLOW_ID_JAVASCRIPT = DataFlow.auto(has_package_json, GetSingle)
+DATAFLOW_ID_JAVASCRIPT.seed.append(
+    Input(
+        value=[has_package_json.op.outputs["result"].name,],
+        definition=GetSingle.op.inputs["spec"],
+    )
+)
+
+
+@op(
+    inputs={"repo": clone_git_repo.op.outputs["repo"]},
+    outputs={
+        "javascript": Definition(name="repo_is_javascript", primitive="string")
+    },
+)
+async def is_lang_javascript(self, repo):
+    async with self.octx.parent(DATAFLOW_ID_JAVASCRIPT) as octx:
+        async for _, results in octx.run(
+            [Input(value=repo, definition=self.parent.op.inputs["repo"])]
+        ):
+            if results[has_package_json.op.outputs["result"].name]:
+                return {"javascript": True}
+
+
+# Link inputs and outputs together according to their definitions
+DATAFLOW = DataFlow.auto(
+    clone_git_repo,
+    is_lang_python,
+    run_python_sa,
+    is_lang_javascript,
+    cleanup_git_repo,
+    GetSingle,
+)
+DATAFLOW.seed.append(
+    Input(value=[SA_RESULTS.name,], definition=GetSingle.op.inputs["spec"],)
 )
 
 
@@ -57,26 +217,13 @@ class Install(CMD):
                     # The only input to the operations is the package name.
                     Input(
                         value=package_name,
-                        definition=pypi_package_json.op.inputs["package"],
+                        definition=clone_git_repo.op.inputs["URL"],
                     )
                 ]
                 for package_name in self.packages
             },
         ):
-            # Grab the number of safety issues and the bandit report
-            # from the results dict
-            safety_issues = results[safety_check.op.outputs["issues"].name]
-            bandit_report = results[run_bandit.op.outputs["report"].name]
-            # Decide if those numbers mean we should stop ship or not
-            if (
-                safety_issues > 0
-                or bandit_report["CONFIDENCE.HIGH_AND_SEVERITY.HIGH"] > 5
-            ):
-                print(f"Do not install {package_name}!")
-                for definition_name, result in results.items():
-                    print(f"    {definition_name}: {result}")
-            else:
-                print(f"{package_name} is okay to install")
+            print(results)
 
 
 class ShouldI(CMD):
