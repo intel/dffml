@@ -17,15 +17,17 @@ or more name and value parameters.
 Import modules
 --------------
 
-.. literalinclude:: ../../../dffml/source/ini.py
-    :lines: 1-8
+.. code-block:: python
+
+    from configparser import ConfigParser
+
+    from dffml import config, entrypoint, Record, FileSource, MemorySource, parser_helper
 
 Here we are importing some common modules which will be required. The ``configparser``
 module will be helpful in parsing INI files. The ``FileSource`` and ``MemorySource``
 will be used as base class for our new Source. The config was imported to set the
 configuration options for our new INISource. The entrypoint will be used to add the
-entrypoint to our INISource. The ``Record`` is the dffml way of storing all the
-data of the file(s).
+entrypoint to our INISource. A ``Record`` is a unique entry in a source.
 
 Add configuration
 -----------------
@@ -55,9 +57,10 @@ Add load method
     :lines: 26-47
 
 This method will be used to load the data from the file(s). We will be reading data
-from the file object (ifile) and loading that data into memory (self.mem). Each Record
-instance consist of name(str type) of the record and data(dict type), with data having
-a key ``features`` which stores all the data for that record.
+from the file object (ifile) and loading that data into memory (self.mem). Each
+:py:class:`Record <dffml.record.Record>` instance consist of key (str type) of the
+record and data (dict type), with data having a key ``features`` which stores all
+the data for that record.
 
 Going over the code, we have defined a coroutine with two parameters self and ifile, here
 ifile is the file object. we are reading from the ifile file object. Each section of the
