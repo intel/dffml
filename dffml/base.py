@@ -310,17 +310,30 @@ class BaseConfigurableMetaClass(type, abc.ABC):
         def wrapper(self, config: Optional[BaseConfig] = None, **kwargs):
             if config is not None and len(kwargs):
                 raise ConfigAndKWArgsMutuallyExclusive
-            elif config is None and hasattr(self, "CONFIG") and kwargs:
-                try:
-                    config = self.CONFIG(**kwargs)
-                except TypeError as error:
-                    error.args = (
-                        error.args[0].replace(
-                            "__init__", f"{self.CONFIG.__qualname__}"
-                        ),
-                    )
-                    raise
-            if config is None:
+            elif config is None and hasattr(self, "CONFIG"):
+                if kwargs:
+                    try:
+                        config = self.CONFIG(**kwargs)
+                    except TypeError as error:
+                        error.args = (
+                            error.args[0].replace(
+                                "__init__", f"{self.CONFIG.__qualname__}"
+                            ),
+                        )
+                        raise
+                else:
+                    use_CONFIG = True
+                    for field in dataclasses.fields(self.CONFIG):
+                        if field.default is dataclasses.MISSING:
+                            use_CONFIG = False
+                            break
+                    if use_CONFIG:
+                        config = self.CONFIG(**kwargs)
+                    else:
+                        raise TypeError(
+                            "__init__() missing 1 required positional argument: 'config'"
+                        )
+            elif config is None:
                 raise TypeError(
                     "__init__() missing 1 required positional argument: 'config'"
                 )
