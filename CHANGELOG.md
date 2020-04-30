@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Every class and function can now be imported from the top level module
 - `op` attempts to create `Definition`s for each argument if an `inputs` are not
   given.
+- Classes now use `CONFIG` if it has a default for every field and `config` is `None`
 ### Fixed
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
   parameter sets for an operation.
