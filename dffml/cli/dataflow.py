@@ -17,7 +17,7 @@ from ..source.source import SubsetSources
 from ..util.data import merge
 from ..util.entrypoint import load
 from ..util.cli.arg import Arg
-from ..util.cli.cmd import CMD
+from ..util.cli.cmd import CMD, CMDOutputOverride
 from ..util.cli.cmds import SourcesCMD, KeysCMD
 from ..util.cli.parser import ParseInputsAction
 
@@ -105,6 +105,15 @@ class RunCMD(SourcesCMD):
     arg_no_update = Arg(
         "-no-update",
         help="Update record with sources",
+        dest="no_update",
+        required=False,
+        default=False,
+        action="store_true",
+    )
+    arg_no_echo = Arg(
+        "-no-echo",
+        help="Do not echo back records",
+        dest="no_echo",
         required=False,
         default=False,
         action="store_true",
@@ -235,7 +244,10 @@ class RunAllRecords(RunCMD):
             async for record in self.run_dataflow(
                 orchestrator, sources, dataflow
             ):
-                yield record
+                if not self.no_echo:
+                    yield record
+        if self.no_echo:
+            yield CMDOutputOverride
 
 
 class RunRecordSet(RunAllRecords, KeysCMD):

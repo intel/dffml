@@ -87,6 +87,10 @@ DataFlow
 
 Create, modify, run, and visualize DataFlows.
 
+.. note::
+
+    Some of these examples assume you have ``dffml-config-yaml`` installed.
+
 Create
 ~~~~~~
 
@@ -122,15 +126,67 @@ The ``-no-strict`` flag tell DFFML not to exit if one key fails, continue
 running the dataflow until everything is complete, useful for error prone
 scraping tasks.
 
+In the following example we create a DataFlow consisting of 2 operations,
+``dffml.mapping.create``, and ``print_output``. We use ``sed`` to edit the
+DataFlow and have the input of the ``print_output`` operation come from the
+ouput of the ``dffml.mapping.create`` operation. If you want to see the
+difference create a diagram of the DataFlow with and without using the ``sed``
+command during generation.
+
 .. code-block:: console
 
-    $ dffml dataflow run records set \
-        -keys https://github.com/intel/dffml \
-        -record-def URL \
+    $ dffml dataflow create dffml.mapping.create print_output -config yaml | \
+        sed 'N;s/data:\n      - seed/data:\n      - dffml.mapping.create: mapping/g' | \
+        tee df.yaml
+    definitions:
+      DataToPrint:
+        name: DataToPrint
+        primitive: generic
+      key:
+        name: key
+        primitive: str
+      mapping:
+        name: mapping
+        primitive: map
+      value:
+        name: value
+        primitive: generic
+    flow:
+      dffml.mapping.create:
+        inputs:
+          key:
+          - seed
+          value:
+          - seed
+      print_output:
+        inputs:
+          data:
+          - dffml.mapping.create: mapping
+    linked: true
+    operations:
+      dffml.mapping.create:
+        inputs:
+          key: key
+          value: value
+        name: dffml.mapping.create
+        outputs:
+          mapping: mapping
+        stage: processing
+      print_output:
+        inputs:
+          data: DataToPrint
+        name: print_output
+        outputs: {}
+        stage: processing
+    $ dffml dataflow run records all \
+        -no-echo \
+        -record-def value \
+        -inputs hello=key \
         -dataflow df.yaml \
-        -sources gathered=json \
-        -source-filename /tmp/data.json \
-        -no-strict
+        -sources m=memory \
+        -source-records world $USER
+    {'hello': 'world'}
+    {'hello': 'user'}
 
 Diagram
 ~~~~~~~

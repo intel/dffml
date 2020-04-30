@@ -16,6 +16,13 @@ from .arg import Arg, parse_unknown
 
 DisplayHelp = "Display help message"
 
+
+class CMDOutputOverride:
+    """
+    Override dumping of results
+    """
+
+
 if sys.platform == "win32":  # pragma: no cov
     asyncio.set_event_loop(asyncio.ProactorEventLoop())
 
@@ -183,7 +190,12 @@ class CMD(object):
     @classmethod
     async def _main(cls, *args):
         result = await cls.cli(*args)
-        if not result is None and result is not DisplayHelp:
+        if (
+            result is not None
+            and result is not DisplayHelp
+            and result is not CMDOutputOverride
+            and result != [CMDOutputOverride]
+        ):
             json.dump(
                 result,
                 sys.stdout,
