@@ -36,7 +36,7 @@ and replace ``-`` with ``/``.
 
 .. code-block:: console
 
-    $ python3 -m pip install git+https://github.com/intel/dffml \
+    $ python3 -m pip install -U git+https://github.com/intel/dffml \
         git+https://github.com/intel/dffml#subdirectory=model/scikit
 
 If you want to install all of the machine learning model plugins that are
