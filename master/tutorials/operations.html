@@ -394,8 +394,8 @@ the latest version and use that version.</p>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
 
-<span class="kn">from</span> <span class="nn">dffml.df.base</span> <span class="kn">import</span> <span class="n">op</span>
-<span class="kn">from</span> <span class="nn">dffml.df.types</span> <span class="kn">import</span> <span class="n">Definition</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">op</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Definition</span>
 
 <span class="n">package</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;package&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
 <span class="n">package_version</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;package_version&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
@@ -434,7 +434,7 @@ the latest version and use that version.</p>
 </div>
 <p>Write a test for it</p>
 <p><strong>tests/test_safety.py</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml.util.asynctestcase</span> <span class="kn">import</span> <span class="n">AsyncTestCase</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">AsyncTestCase</span>
 
 <span class="kn">from</span> <span class="nn">shouldi.safety</span> <span class="kn">import</span> <span class="n">safety_check</span>
 
@@ -513,8 +513,8 @@ the latest version and use that version.</p>
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
 
-<span class="kn">from</span> <span class="nn">dffml.df.base</span> <span class="kn">import</span> <span class="n">op</span>
-<span class="kn">from</span> <span class="nn">dffml.df.types</span> <span class="kn">import</span> <span class="n">Definition</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">op</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Definition</span>
 
 <span class="n">package_src_dir</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;package_src_dir&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;str&quot;</span><span class="p">)</span>
 <span class="n">bandit_output</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;bandit_output&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;Dict[str, Any]&quot;</span><span class="p">)</span>
@@ -559,7 +559,7 @@ the latest version and use that version.</p>
 <p><strong>tests/test_bandit.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 
-<span class="kn">from</span> <span class="nn">dffml.util.asynctestcase</span> <span class="kn">import</span> <span class="n">AsyncTestCase</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">AsyncTestCase</span>
 
 <span class="kn">from</span> <span class="nn">shouldi.bandit</span> <span class="kn">import</span> <span class="n">run_bandit</span>
 
@@ -654,8 +654,7 @@ we care about.</p></li>
 
 <span class="kn">import</span> <span class="nn">aiohttp</span>
 
-<span class="kn">from</span> <span class="nn">dffml.df.base</span> <span class="kn">import</span> <span class="n">op</span>
-<span class="kn">from</span> <span class="nn">dffml.df.types</span> <span class="kn">import</span> <span class="n">Definition</span><span class="p">,</span> <span class="n">Stage</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">op</span><span class="p">,</span> <span class="n">Definition</span><span class="p">,</span> <span class="n">Stage</span>
 
 <span class="kn">from</span> <span class="nn">.safety</span> <span class="kn">import</span> <span class="n">package</span><span class="p">,</span> <span class="n">package_version</span>
 <span class="kn">from</span> <span class="nn">.bandit</span> <span class="kn">import</span> <span class="n">package_src_dir</span>
@@ -755,7 +754,7 @@ with it.</p>
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 
-<span class="kn">from</span> <span class="nn">dffml.util.asynctestcase</span> <span class="kn">import</span> <span class="n">AsyncTestCase</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">AsyncTestCase</span>
 
 <span class="kn">from</span> <span class="nn">shouldi.pypi</span> <span class="kn">import</span> <span class="n">pypi_package_json</span>
 <span class="kn">from</span> <span class="nn">shouldi.pypi</span> <span class="kn">import</span> <span class="n">pypi_latest_package_version</span>
@@ -901,7 +900,7 @@ command line.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span>
 
-<span class="kn">from</span> <span class="nn">dffml.util.asynctestcase</span> <span class="kn">import</span> <span class="n">AsyncTestCase</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">AsyncTestCase</span>
 
 <span class="kn">from</span> <span class="nn">shouldi.cli</span> <span class="kn">import</span> <span class="n">ShouldI</span>
 

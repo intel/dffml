@@ -314,13 +314,11 @@ so.</p>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">AsyncIterator</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">Dict</span>
 
-<span class="kn">from</span> <span class="nn">dffml.base</span> <span class="kn">import</span> <span class="n">BaseConfig</span>
-<span class="kn">from</span> <span class="nn">dffml.record</span> <span class="kn">import</span> <span class="n">Record</span>
-<span class="kn">from</span> <span class="nn">dffml.source.source</span> <span class="kn">import</span> <span class="n">BaseSourceContext</span><span class="p">,</span> <span class="n">BaseSource</span>
-<span class="kn">from</span> <span class="nn">dffml.util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">Record</span><span class="p">,</span> <span class="n">BaseSource</span><span class="p">,</span> <span class="n">BaseSourceContext</span>
 
 
-<span class="k">class</span> <span class="nc">CustomSQLiteSourceConfig</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">,</span> <span class="n">NamedTuple</span><span class="p">):</span>
+<span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">CustomSQLiteSourceConfig</span><span class="p">:</span>
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span>
 
 
@@ -389,6 +387,7 @@ so.</p>
 
 <span class="k">class</span> <span class="nc">CustomSQLiteSource</span><span class="p">(</span><span class="n">BaseSource</span><span class="p">):</span>
 
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">CustomSQLiteSourceConfig</span>
     <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">CustomSQLiteSourceContext</span>
     <span class="n">FEATURE_COLS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;PetalLength&quot;</span><span class="p">,</span> <span class="s2">&quot;PetalWidth&quot;</span><span class="p">,</span> <span class="s2">&quot;SepalLength&quot;</span><span class="p">,</span> <span class="s2">&quot;SepalWidth&quot;</span><span class="p">]</span>
     <span class="n">PREDICTION_COLS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;confidence&quot;</span><span class="p">]</span>
@@ -416,17 +415,6 @@ so.</p>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">__db</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">args</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Arg</span><span class="p">]:</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">config_set</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;filename&quot;</span><span class="p">,</span> <span class="n">Arg</span><span class="p">())</span>
-        <span class="k">return</span> <span class="n">args</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="o">*</span><span class="n">above</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">CustomSQLiteSourceConfig</span><span class="p">(</span>
-            <span class="n">filename</span><span class="o">=</span><span class="bp">cls</span><span class="o">.</span><span class="n">config_get</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">above</span><span class="p">,</span> <span class="s2">&quot;filename&quot;</span><span class="p">)</span>
-        <span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -435,8 +423,7 @@ so.</p>
 <p><strong>examples/source/test_custom_sqlite.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unittest</span>
 
-<span class="kn">from</span> <span class="nn">dffml.util.testing.source</span> <span class="kn">import</span> <span class="n">FileSourceTest</span>
-<span class="kn">from</span> <span class="nn">dffml.util.asynctestcase</span> <span class="kn">import</span> <span class="n">AsyncTestCase</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">AsyncTestCase</span><span class="p">,</span> <span class="n">FileSourceTest</span>
 
 <span class="kn">from</span> <span class="nn">.custom_sqlite</span> <span class="kn">import</span> <span class="n">CustomSQLiteSourceConfig</span><span class="p">,</span> <span class="n">CustomSQLiteSource</span>
 
