@@ -11,5 +11,5 @@ open an `issue <https://github.com/intel/dffml/issues/new?assignees=&labels=docu
     :maxdepth: 2
     :caption: Contents:
 
-    complex
     file
+    complex
