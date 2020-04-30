@@ -168,11 +168,7 @@ async def run(
     >>> class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     ...     pass
     >>>
-    >>> HOST = Definition(name="host", primitive="string")
-    >>> PORT = Definition(name="port", primitive="int")
-    >>> MESSAGE = Definition(name="message", primitive="string")
-    >>>
-    >>> @op(inputs={"host": HOST, "port": PORT, "message": MESSAGE})
+    >>> @op
     ... async def send_to_server(host: str, port: int, message: str):
     ...     reader, writer = await asyncio.open_connection(host, port)
     ...
@@ -186,7 +182,8 @@ async def run(
     ...     await writer.wait_closed()
     >>>
     >>> # List of messages to send to the server, 2 long, each value is "echo"
-    >>> messages = [Input(value="echo", definition=MESSAGE) for _ in range(0, 2)]
+    >>> messages = [Input(value="echo", definition=send_to_server.op.inputs["message"])
+    ...             for _ in range(0, 2)]
     >>>
     >>> # DataFlow consisting of the single operation
     >>> dataflow = DataFlow.auto(send_to_server)
@@ -205,8 +202,8 @@ async def run(
     ...
     ...         # Add the host and port to the list of Inputs for the DataFlow
     ...         inputs = messages + [
-    ...             Input(value=host, definition=HOST),
-    ...             Input(value=port, definition=PORT)
+    ...             Input(value=host, definition=send_to_server.op.inputs["host"]),
+    ...             Input(value=port, definition=send_to_server.op.inputs["port"])
     ...         ]
     ...
     ...         try:
