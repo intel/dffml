@@ -1,7 +1,5 @@
-.. _new_file_type_source_tutorial:
-
-Source for New file types
-=========================
+Simple source for new file types
+================================
 
 This tutorial will help you with implementing your own ``Source`` for new file
 types. You may want to do this if you have some specific file formats from which
