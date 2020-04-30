@@ -57,13 +57,13 @@ Add load method
     :lines: 26-47
 
 This method will be used to load the data from the file(s). We will be reading data
-from the file object (ifile) and loading that data into memory (self.mem). Each
+from the file object (fileobj) and loading that data into memory (self.mem). Each
 :py:class:`Record <dffml.record.Record>` instance consist of key (str type) of the
 record and data (dict type), with data having a key ``features`` which stores all
 the data for that record.
 
-Going over the code, we have defined a coroutine with two parameters self and ifile, here
-ifile is the file object. we are reading from the ifile file object. Each section of the
+Going over the code, we have defined a coroutine with two parameters self and fileobj, here
+fileobj is the file object. we are reading from the fileobj file object. Each section of the
 INI file is used as a Record, with the name of the section used as key for that Record.
 Each section consist of name and value pair which we store it as a dict, under that Record
 features key.
@@ -75,9 +75,9 @@ Add dump method
     :lines: 49-66
 
 This method will be used to dump the data to the file. We will read data from memory
-(self.mem) and save that data in file object (fd).
+(self.mem) and save that data in file object (fileobj).
 
-Going over the code, we have defined a coroutine with two parameters self and fd, here
-fd is the file object. We are going over each section name and its corresponding Record.
+Going over the code, we have defined a coroutine with two parameters self and fileobj, here
+fileobj is the file object. We are going over each section name and its corresponding Record.
 We are reading all the data from the memory (self.mem) and writing that data to our file
-object (fd). Hence dumping all our data into file.
+object (fileobj). Hence dumping all our data into file.
