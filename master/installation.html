@@ -210,6 +210,13 @@ includes the <code class="docutils literal notranslate"><span class="pre">sklear
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install -U git+https://github.com/intel/dffml
 </pre></div>
 </div>
+<p>You can also install the bleeding edge version of any plugin. To get the
+subdirectory you should use, take the package name on PyPi and remove <code class="docutils literal notranslate"><span class="pre">dffml-</span></code>
+and replace <code class="docutils literal notranslate"><span class="pre">-</span></code> with <code class="docutils literal notranslate"><span class="pre">/</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install git+https://github.com/intel/dffml <span class="se">\</span>
+    git+https://github.com/intel/dffml#subdirectory<span class="o">=</span>model/scikit
+</pre></div>
+</div>
 <p>If you want to install all of the machine learning model plugins that are
 maintained as a part of the core repository, you can append <code class="docutils literal notranslate"><span class="pre">[models]</span></code>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install -U dffml<span class="o">[</span>models<span class="o">]</span>

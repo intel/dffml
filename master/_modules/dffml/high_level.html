@@ -347,11 +347,7 @@
 <span class="sd">    &gt;&gt;&gt; class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):</span>
 <span class="sd">    ...     pass</span>
 <span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; HOST = Definition(name=&quot;host&quot;, primitive=&quot;string&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; PORT = Definition(name=&quot;port&quot;, primitive=&quot;int&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; MESSAGE = Definition(name=&quot;message&quot;, primitive=&quot;string&quot;)</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; @op(inputs={&quot;host&quot;: HOST, &quot;port&quot;: PORT, &quot;message&quot;: MESSAGE})</span>
+<span class="sd">    &gt;&gt;&gt; @op</span>
 <span class="sd">    ... async def send_to_server(host: str, port: int, message: str):</span>
 <span class="sd">    ...     reader, writer = await asyncio.open_connection(host, port)</span>
 <span class="sd">    ...</span>
@@ -365,7 +361,8 @@
 <span class="sd">    ...     await writer.wait_closed()</span>
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; # List of messages to send to the server, 2 long, each value is &quot;echo&quot;</span>
-<span class="sd">    &gt;&gt;&gt; messages = [Input(value=&quot;echo&quot;, definition=MESSAGE) for _ in range(0, 2)]</span>
+<span class="sd">    &gt;&gt;&gt; messages = [Input(value=&quot;echo&quot;, definition=send_to_server.op.inputs[&quot;message&quot;])</span>
+<span class="sd">    ...             for _ in range(0, 2)]</span>
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; # DataFlow consisting of the single operation</span>
 <span class="sd">    &gt;&gt;&gt; dataflow = DataFlow.auto(send_to_server)</span>
@@ -384,8 +381,8 @@
 <span class="sd">    ...</span>
 <span class="sd">    ...         # Add the host and port to the list of Inputs for the DataFlow</span>
 <span class="sd">    ...         inputs = messages + [</span>
-<span class="sd">    ...             Input(value=host, definition=HOST),</span>
-<span class="sd">    ...             Input(value=port, definition=PORT)</span>
+<span class="sd">    ...             Input(value=host, definition=send_to_server.op.inputs[&quot;host&quot;]),</span>
+<span class="sd">    ...             Input(value=port, definition=send_to_server.op.inputs[&quot;port&quot;])</span>
 <span class="sd">    ...         ]</span>
 <span class="sd">    ...</span>
 <span class="sd">    ...         try:</span>
