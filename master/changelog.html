@@ -291,6 +291,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p><code class="docutils literal notranslate"><span class="pre">Operation</span></code> inputs and ouputs default to empty <code class="docutils literal notranslate"><span class="pre">dict</span></code> if not given.</p></li>
 <li><p>Ability to export any object with <code class="docutils literal notranslate"><span class="pre">dffml</span> <span class="pre">service</span> <span class="pre">dev</span> <span class="pre">export</span></code></p></li>
 <li><p>Complete example for dataflow run cli command</p></li>
+<li><p>Tests for default configs instantiation.</p></li>
 </ul>
 </div>
 <div class="section" id="changed">
@@ -301,6 +302,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Every class and function can now be imported from the top level module</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">op</span></code> attempts to create <code class="docutils literal notranslate"><span class="pre">Definition</span></code>s for each argument if an <code class="docutils literal notranslate"><span class="pre">inputs</span></code> are not
 given.</p></li>
+<li><p>Classes now use <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code> if it has a default for every field and <code class="docutils literal notranslate"><span class="pre">config</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
 </ul>
 </div>
 <div class="section" id="fixed">
