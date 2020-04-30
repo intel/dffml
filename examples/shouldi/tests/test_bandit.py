@@ -1,6 +1,6 @@
 import os
 
-from dffml.util.asynctestcase import AsyncTestCase
+from dffml import AsyncTestCase
 
 from shouldi.bandit import run_bandit
 

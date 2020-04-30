@@ -7,7 +7,7 @@ import contextlib
 import subprocess
 import unittest.mock
 
-from dffml.util.os import chdir
+from dffml import chdir
 
 
 def sh_filepath(filename):
