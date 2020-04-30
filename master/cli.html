@@ -315,6 +315,10 @@ more details on this.</p>
 <div class="section" id="dataflow">
 <h2>DataFlow<a class="headerlink" href="#dataflow" title="Permalink to this headline">¶</a></h2>
 <p>Create, modify, run, and visualize DataFlows.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some of these examples assume you have <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code> installed.</p>
+</div>
 <div class="section" id="create">
 <h3>Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
 <p>Ouput the dataflow description to standard output using the specified config
@@ -341,13 +345,64 @@ back to the terminal when the DataFlow completes.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">-no-strict</span></code> flag tell DFFML not to exit if one key fails, continue
 running the dataflow until everything is complete, useful for error prone
 scraping tasks.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow run records <span class="nb">set</span> <span class="se">\</span>
-    -keys https://github.com/intel/dffml <span class="se">\</span>
-    -record-def URL <span class="se">\</span>
+<p>In the following example we create a DataFlow consisting of 2 operations,
+<code class="docutils literal notranslate"><span class="pre">dffml.mapping.create</span></code>, and <code class="docutils literal notranslate"><span class="pre">print_output</span></code>. We use <code class="docutils literal notranslate"><span class="pre">sed</span></code> to edit the
+DataFlow and have the input of the <code class="docutils literal notranslate"><span class="pre">print_output</span></code> operation come from the
+ouput of the <code class="docutils literal notranslate"><span class="pre">dffml.mapping.create</span></code> operation. If you want to see the
+difference create a diagram of the DataFlow with and without using the <code class="docutils literal notranslate"><span class="pre">sed</span></code>
+command during generation.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create dffml.mapping.create print_output -config yaml <span class="p">|</span> <span class="se">\</span>
+    sed <span class="s1">&#39;N;s/data:\n      - seed/data:\n      - dffml.mapping.create: mapping/g&#39;</span> <span class="p">|</span> <span class="se">\</span>
+    tee df.yaml
+<span class="go">definitions:</span>
+<span class="go">  DataToPrint:</span>
+<span class="go">    name: DataToPrint</span>
+<span class="go">    primitive: generic</span>
+<span class="go">  key:</span>
+<span class="go">    name: key</span>
+<span class="go">    primitive: str</span>
+<span class="go">  mapping:</span>
+<span class="go">    name: mapping</span>
+<span class="go">    primitive: map</span>
+<span class="go">  value:</span>
+<span class="go">    name: value</span>
+<span class="go">    primitive: generic</span>
+<span class="go">flow:</span>
+<span class="go">  dffml.mapping.create:</span>
+<span class="go">    inputs:</span>
+<span class="go">      key:</span>
+<span class="go">      - seed</span>
+<span class="go">      value:</span>
+<span class="go">      - seed</span>
+<span class="go">  print_output:</span>
+<span class="go">    inputs:</span>
+<span class="go">      data:</span>
+<span class="go">      - dffml.mapping.create: mapping</span>
+<span class="go">linked: true</span>
+<span class="go">operations:</span>
+<span class="go">  dffml.mapping.create:</span>
+<span class="go">    inputs:</span>
+<span class="go">      key: key</span>
+<span class="go">      value: value</span>
+<span class="go">    name: dffml.mapping.create</span>
+<span class="go">    outputs:</span>
+<span class="go">      mapping: mapping</span>
+<span class="go">    stage: processing</span>
+<span class="go">  print_output:</span>
+<span class="go">    inputs:</span>
+<span class="go">      data: DataToPrint</span>
+<span class="go">    name: print_output</span>
+<span class="go">    outputs: {}</span>
+<span class="go">    stage: processing</span>
+<span class="gp">$</span> dffml dataflow run records all <span class="se">\</span>
+    -no-echo <span class="se">\</span>
+    -record-def value <span class="se">\</span>
+    -inputs <span class="nv">hello</span><span class="o">=</span>key <span class="se">\</span>
     -dataflow df.yaml <span class="se">\</span>
-    -sources <span class="nv">gathered</span><span class="o">=</span>json <span class="se">\</span>
-    -source-filename /tmp/data.json <span class="se">\</span>
-    -no-strict
+    -sources <span class="nv">m</span><span class="o">=</span>memory <span class="se">\</span>
+    -source-records world <span class="nv">$USER</span>
+<span class="go">{&#39;hello&#39;: &#39;world&#39;}</span>
+<span class="go">{&#39;hello&#39;: &#39;user&#39;}</span>
 </pre></div>
 </div>
 </div>
