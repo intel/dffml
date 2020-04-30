@@ -200,16 +200,7 @@ we will be using the Simple Linear Regression model
 <p>First we train the model and then create a DataFlow for making predictions
 on user input.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
-
-<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">DefFeature</span>
-<span class="kn">from</span> <span class="nn">dffml.operation.output</span> <span class="kn">import</span> <span class="n">GetSingle</span>
-<span class="kn">from</span> <span class="nn">dffml.df.memory</span> <span class="kn">import</span> <span class="n">MemoryOrchestrator</span>
-<span class="kn">from</span> <span class="nn">dffml.operation.mapping</span> <span class="kn">import</span> <span class="n">create_mapping</span>
-<span class="kn">from</span> <span class="nn">dffml.operation.preprocess</span> <span class="kn">import</span> <span class="n">literal_eval</span>
-<span class="kn">from</span> <span class="nn">dffml.df.types</span> <span class="kn">import</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">InputFlow</span>
-<span class="kn">from</span> <span class="nn">dffml.operation.io</span> <span class="kn">import</span> <span class="n">AcceptUserInput</span><span class="p">,</span> <span class="n">print_output</span>
-<span class="kn">from</span> <span class="nn">dffml.operation.model</span> <span class="kn">import</span> <span class="n">model_predict</span><span class="p">,</span> <span class="n">ModelPredictConfig</span>
-<span class="kn">from</span> <span class="nn">dffml.model.slr</span> <span class="kn">import</span> <span class="n">SLRModel</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">slr_model</span> <span class="o">=</span> <span class="n">SLRModel</span><span class="p">(</span>
     <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),),</span>
@@ -263,7 +254,7 @@ on user input.</p>
 
 
 <span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="c1"># train the model</span>
+    <span class="c1"># Train the model</span>
     <span class="k">await</span> <span class="n">train</span><span class="p">(</span>
         <span class="n">slr_model</span><span class="p">,</span>
         <span class="p">{</span><span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>

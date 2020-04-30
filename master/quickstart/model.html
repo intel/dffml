@@ -512,7 +512,7 @@ each this way.</p></li>
 </pre></div>
 </div>
 <p>Check out the plugin docs for <a class="reference internal" href="../plugins/dffml_model.html"><span class="doc">Models</span></a> for usage of other
-models. The <span class="xref std std-doc">API</span> docs may also be useful.</p>
+models. The <a class="reference internal" href="../api/high_level.html"><span class="doc">API</span></a> docs may also be useful.</p>
 </div>
 <div class="section" id="data-sources">
 <h2>Data Sources<a class="headerlink" href="#data-sources" title="Permalink to this headline">¶</a></h2>
@@ -554,8 +554,8 @@ supply the filenames in place of the data.</p>
 <code class="docutils literal notranslate"><span class="pre">asyncio</span></code> then you can just import from <code class="docutils literal notranslate"><span class="pre">dffml</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
 
-<span class="kn">from</span> <span class="nn">dffml_model_scikit</span> <span class="kn">import</span> <span class="n">LinearRegressionModel</span>
 <span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">DefFeature</span>
+<span class="kn">from</span> <span class="nn">dffml_model_scikit</span> <span class="kn">import</span> <span class="n">LinearRegressionModel</span>
 
 
 <span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
