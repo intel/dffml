@@ -52,6 +52,7 @@ on load and re-compression on save if the files extension signifies that it's co
 We inherit from MemorySource because it implements the methods required by a
 :py:class:`Source <dffml.source.source.BaseSourceContext>` provided that self.mem contains
 Record objects.
+
 Set the CONFIG variable to the INISourceConfig which we created earlier. Setting
 the CONFIG variable is important because the instantiated version of CONFIG is accessible
 as self.config.
