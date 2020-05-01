@@ -3,8 +3,24 @@ Simple source for new file types
 
 This tutorial will help you with implementing your own ``Source`` for new file
 types. You may want to do this if you have some specific file formats from which
-you want to load and save data from. Here we will go through implementing a source
-for ``.ini`` file formats.
+you want to load and save data from.
+
+Here we will go through implementing a source for ``.ini`` file formats.
+
+Create the Package
+------------------
+
+To create a new source we first create a new Python package. DFFML has a script
+to do it for you.
+
+.. code-block:: console
+
+    $ dffml service dev create source dffml-source-ini
+    $ cd dffml-source-ini
+    $ ls
+    dffml_source_ini  LICENSE  MANIFEST.in  pyproject.toml  README.md  setup_common.py  setup.py  tests
+
+We will start writing our source in ./dffml_source_ini/misc.py
 
 About INI files
 ---------------
@@ -124,8 +140,8 @@ Run the tests
 
 To run the tests
 
-.. code-block:: bash
+.. code-block:: console
 
-    python setup.py test -s dffml_source_ini.test_misc
+    $ python setup.py test -s tests.test_source
 
-This will look into the file test_mis and run all the tests.
+This will look into the file test_source and run all the tests.
