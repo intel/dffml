@@ -111,16 +111,17 @@ class Parser(argparse.ArgumentParser):
                     )
                 else:
                     try:
-                        if position_list:
-                            for position in sorted(position_list.keys()):
-                                name, positional_arg = position_list[position]
-                                self.add_argument(name, **positional_arg)
-                            position_list.clear()
-                        if not position_list:
-                            self.add_argument("-" + field.name, **arg)
-
+                        self.add_argument(
+                            "-" + field.name.replace("_", "-"), **arg
+                        )
                     except argparse.ArgumentError as error:
                         raise Exception(repr(add_from)) from error
+
+        if position_list:
+            for position in sorted(position_list.keys()):
+                name, positional_arg = position_list[position]
+                self.add_argument(name.replace("_", "-"), **positional_arg)
+            position_list.clear()
 
 
 @config

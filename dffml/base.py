@@ -249,18 +249,18 @@ def config(cls):
     """
     Decorator to create a dataclass
     """
-    class_list = []
     newdict = {}
     defaultdict = {}
-    if len(inspect.getmro(cls)) > 2:
-        class_list = list(inspect.getmro(cls)[:-1])
-    else:
-        class_list = [cls]
-    for clss in class_list:
-        cls_annotations = clss.__dict__.get("__annotations__", {})
-        cls_dict = clss.__dict__
+    # Get all the base classes and the current class in a tuple except <class 'object'>
+    class_list = inspect.getmro(cls)[:-1]
+
+    for basecls in class_list:
+        cls_annotations = basecls.__dict__.get("__annotations__", {})
+        cls_dict = basecls.__dict__
         for var in cls_annotations:
-            if not dataclasses.is_dataclass(clss):
+            # is_dataclass method returns True for current config class (cls)
+            # if the current class inherits from a dataclass
+            if not cls_dict.get("__dataclass_fields__"):
                 if cls_dict.get(var) and isinstance(
                     cls_dict.get(var), dataclasses.Field
                 ):
@@ -271,16 +271,16 @@ def config(cls):
                     ):
                         newdict[var] = cls_annotations[var]
             else:
-                if clss.__dataclass_fields__.get(var):
+                if basecls.__dataclass_fields__.get(var):
                     if "dataclasses._MISSING_TYPE" in repr(
-                        clss.__dataclass_fields__.get(var).default
+                        basecls.__dataclass_fields__.get(var).default
                     ) and "dataclasses._MISSING_TYPE" in repr(
-                        clss.__dataclass_fields__.get(var).default_factory
+                        basecls.__dataclass_fields__.get(var).default_factory
                     ):
                         newdict[var] = cls_annotations[var]
 
         for var in cls_annotations:
-            if not dataclasses.is_dataclass(clss):
+            if not dataclasses.is_dataclass(basecls):
                 if cls_dict.get(var) and isinstance(
                     cls_dict.get(var), dataclasses.Field
                 ):
@@ -291,19 +291,23 @@ def config(cls):
                     ):
                         defaultdict[var] = cls_annotations[var]
             else:
-                if clss.__dataclass_fields__.get(var):
+                if basecls.__dataclass_fields__.get(var):
                     if "dataclasses._MISSING_TYPE" not in repr(
-                        clss.__dataclass_fields__.get(var).default
+                        basecls.__dataclass_fields__.get(var).default
                     ) or "dataclasses._MISSING_TYPE" not in repr(
-                        clss.__dataclass_fields__.get(var).default_factory
+                        basecls.__dataclass_fields__.get(var).default_factory
                     ):
                         defaultdict[var] = cls_annotations[var]
 
+    # Tried multiple ways to update these dictionary to have the desired result
+    # but nothing works for me as `init=True` overrides everything
+    # Also as we discussed in the meeting it's going through every config class
+    # So we have to take care of errors arising due to Example: CSVSourceConfig inheriting from FileSourceConfig
     defaultdict.update(cls.__annotations__)
     newdict.update(defaultdict)
     cls.__annotations__ = newdict
 
-    datacls = dataclasses.dataclass(eq=True, init=False)(cls)
+    datacls = dataclasses.dataclass(eq=True, init=True)(cls)
     datacls._fromdict = classmethod(_fromdict)
     datacls._replace = lambda self, *args, **kwargs: dataclasses.replace(
         self, *args, **kwargs

@@ -47,7 +47,7 @@ NAME = config.get("user", "name", fallback="Unknown")
 EMAIL = config.get("user", "email", fallback="unknown@example.com")
 
 
-def create_from_skel(self_name):
+def create_from_skel(plugin_type):
     """
     Copies samples out of skel/ and does re-naming.
     """
@@ -65,7 +65,7 @@ def create_from_skel(self_name):
             f"Your email (default: {EMAIL})", default=EMAIL, required=False,
         )
         description: str = field(
-            f"Description of python package (default: DFFML {self_name} {{package name}})",
+            f"Description of python package (default: DFFML {plugin_type} {{package name}})",
             default=None,
             required=False,
         )
@@ -84,13 +84,13 @@ def create_from_skel(self_name):
         async def run(self):
             # Set description if None
             if not self.description:
-                self.description = f"DFFML {self_name} {self.package}"
+                self.description = f"DFFML {plugin_type} {self.package}"
             # Set target directory to package name if not given
             if not self.target:
                 self.target = self.package
             # Extract
             self.skel.from_template(
-                self_name,
+                plugin_type,
                 self.target,
                 SkelTemplateConfig(
                     org=self.user,
