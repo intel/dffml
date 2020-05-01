@@ -54,7 +54,9 @@ We inherit from MemorySource because it implements the methods required by a
 Record objects.
 Set the CONFIG variable to the INISourceConfig which we created earlier. Setting
 the CONFIG variable is important because the instantiated version of CONFIG is accessible
-as self.config Next we will writing the load and dump methods for INISource.
+as self.config.
+
+Next we will writing the load and dump methods for INISource.
 
 Add load method
 ---------------
