@@ -45,21 +45,7 @@ jobs:
     - name: Run check
       run: |
         ${{ matrix.check }}=1 GITHUB_PAGES_KEY=${{ secrets.GITHUB_PAGES_KEY }} ./.ci/run.sh
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        plugin: [model/vowpalWabbit]
-        python-version: [3.7]
 
-    steps:
-      -uses: actions/checkout@v2
-      -name: Setup conda
-      uses: s-weighted/setup-conda@v1
-      with:
-        update-conda: true
-        python-version: ${{ matrix.python-version }}
-        conda-channels: anaconda, conda-forge
   test:
     runs-on: ubuntu-latest
     strategy:
@@ -67,7 +53,7 @@ jobs:
       max-parallel: 40
       matrix:
         plugin: [., examples/shouldi, model/tensorflow, model/tensorflow_hub, model/transformers, model/scratch, model/scikit, model/vowpalWabbit, operations/binsec, source/mysql, feature/git, feature/auth, service/http, configloader/yaml, configloader/png]
-        python-version: [3.7]
+        python-version: [3.7, 3.8]
 
     steps:
     - uses: actions/checkout@v2
@@ -119,7 +105,7 @@ jobs:
         export PYTHON=python${{ matrix.python-version }}
         export PLUGIN=${{ matrix.plugin }}
         if [[ "x${PYTHON}" = "xpython3.8" ]]; then
-          if [[ "x${PLUGIN}" = "xmodel/tensorflow" ]] || [[ "x${PLUGIN}" = "xmodel/tensorflow_hub" ]] || [[ "x${PLUGIN}" = "xmodel/transformers" ]]; then
+          if [[ "x${PLUGIN}" = "xmodel/tensorflow" ]] || [[ "x${PLUGIN}" = "xmodel/tensorflow_hub" ]] || [[ "x${PLUGIN}" = "xmodel/vowpalWabbit" ]] || [[ "x${PLUGIN}" = "xmodel/transformers" ]]; then
             exit 0
           fi
         fi
