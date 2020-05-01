@@ -92,3 +92,40 @@ Going over the code, we have defined a coroutine with parameter fileobj, here
 fileobj is the file object. We are going over each section name and its corresponding Record.
 We are reading all the data from the memory (self.mem) and writing that data to our file
 object (fileobj). Hence dumping all our data into file.
+
+Add Tests
+---------
+
+.. literalinclude:: ../../../tests/source/test_ini.py
+    :lines: 1-7
+
+Before writing the test we need to import some modules which we will be using. We need
+to import the source file which we created earlier. We need to import ``save`` and
+``load`` from high_level. save method will be used to save the records to the source and
+load will be used to yield records from a source. AsyncTestCase will be used to run our
+test methods as coroutines in default event loop.
+
+.. literalinclude:: ../../../tests/source/test_ini.py
+    :lines: 10-30
+
+To test the working of the INISource created we will create a class TestINISource, since
+we are using the unittest testing framework. The TestINISource will inherit from AsyncTestCase
+so that it can be run as a coroutine in the default event loop. In the test method we will
+create a TemporaryDirectory which will contain our `.ini` file.
+
+We will create an instance of our INISource with configuration options. Next we will use
+the save method to save some records to the source. Do not forget to await the save method
+as it is a coroutine. Next we will use the load method to yield records from the source.
+load method will return AsyncIterator[Record] type object. Lastly, We need to check that
+the records we saved is the same record which gets loaded.
+
+Run the tests
+-------------
+
+To run the tests
+
+.. code-block:: bash
+
+    python setup.py test -s dffml_source_ini.test_misc
+
+This will look into the file test_mis and run all the tests.
