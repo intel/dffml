@@ -145,3 +145,18 @@ To run the tests
     $ python setup.py test -s tests.test_source
 
 This will look into the file test_source and run all the tests.
+
+Add the entrypoint
+------------------
+
+To register your source under dffml entrypoint you need to add the following
+to the setup.py file
+
+.. code-block:: python
+
+    common.KWARGS["entry_points"] = {
+        "dffml.source": [f"ini = {common.IMPORT_NAME}.misc:INISource"]
+    }
+
+This will add the newly created source to the dffml entrypoints and hence can
+also be used in CLI.
