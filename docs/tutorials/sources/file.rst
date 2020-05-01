@@ -78,7 +78,6 @@ Each section consists of key value pairs stored as a dict. We're going to treat
 this data as the feature data for each Record. To do so we pass the data as
 the value for the ``features`` key under the ``data`` keyword argument when
 creating a new Record.
-features key.
 
 Add dump method
 ---------------
