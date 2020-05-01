@@ -6,6 +6,7 @@ from dffml.base import (
     config,
     field,
     list_action,
+    BaseDataFlowFacilitatorObjectContext,
 )
 from dffml.feature.feature import DefFeature, Feature, Features
 from dffml.source.source import BaseSource
@@ -168,3 +169,43 @@ class TestAutoArgsConfig(unittest.TestCase):
                 DefFeature("Year", int, 1), DefFeature("Commits", int, 10)
             ),
         )
+
+
+class FakeTestingContext(BaseDataFlowFacilitatorObjectContext):
+    """
+    Fake Testing Context
+    """
+
+
+@config
+class FakeTestingConfig2:
+    name: str = field("Name of FakeTesting2")
+    num: float
+    features: Features = Features(
+        DefFeature("default", int, 1), DefFeature("features", int, 10)
+    )
+    label: str = "unlabeled"
+
+
+@entrypoint("fake2")
+class FakeTesting2(BaseTesting):
+    CONTEXT = FakeTestingContext
+    CONFIG = FakeTestingConfig2
+
+
+@config
+class FakeTestingConfig3:
+    label: str = "unlabeled"
+
+
+@entrypoint("fake3")
+class FakeTesting3(BaseTesting):
+    CONTEXT = FakeTestingContext
+    CONFIG = FakeTestingConfig3
+
+
+class TestCONFIG(unittest.TestCase):
+    def test_CONFIG(self):
+        with self.assertRaises(TypeError):
+            config = FakeTesting2()
+        config = FakeTesting3()

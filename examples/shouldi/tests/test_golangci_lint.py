@@ -2,9 +2,11 @@ import os
 import copy
 import pathlib
 
-from dffml.util.os import prepend_to_path
-from dffml.util.net import cached_download_unpack_archive
-from dffml.util.asynctestcase import AsyncTestCase
+from dffml import (
+    prepend_to_path,
+    cached_download_unpack_archive,
+    AsyncTestCase,
+)
 
 from shouldi.golangci_lint import run_golangci_lint
 

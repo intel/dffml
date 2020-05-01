@@ -1,16 +1,25 @@
 Installation
 ============
 
-DFFML currently **only supports Python 3.7**. If your distribution's package
-manager doesn't provide Python 3.7,
+DFFML currently **supports Python 3.7 and 3.8**. If your distribution's package
+manager doesn't provide Python 3.7 or 3.8,
 `pyenv <https://github.com/pyenv/pyenv#simple-python-version-management-pyenv>`_
 is another good way to install it. You could also use the docker container.
+
+.. warning::
+
+    As of 2020-04-29 TensorFlow does not yet support Python 3.8
+    See https://github.com/tensorflow/tensorflow/issues/33374 for more details.
+    So long as that issue is open you won't be able to install DFFML
+    plugins which require TensorFlow, if you're running Python 3.8.
+
+    There are many other non-TensorFlow based plugins which you can install.
 
 DFFML is available via pip.
 
 .. code-block:: console
 
-    $ python3.7 -m pip install -U dffml[all]
+    $ python3 -m pip install -U dffml[all]
 
 The ``[all]`` suffix tells ``pip`` to install all of the core plugins. This
 includes the ``sklearn`` and ``tensorflow`` models, ``MySQL`` source, etc.
@@ -19,14 +28,23 @@ If you want to stay on the bleeding edge of bug fixes, etc. Install via git.
 
 .. code-block:: console
 
-    $ python3.7 -m pip install -U git+https://github.com/intel/dffml
+    $ python3 -m pip install -U git+https://github.com/intel/dffml
+
+You can also install the bleeding edge version of any plugin. To get the
+subdirectory you should use, take the package name on PyPi and remove ``dffml-``
+and replace ``-`` with ``/``.
+
+.. code-block:: console
+
+    $ python3 -m pip install -U git+https://github.com/intel/dffml \
+        git+https://github.com/intel/dffml#subdirectory=model/scikit
 
 If you want to install all of the machine learning model plugins that are
 maintained as a part of the core repository, you can append ``[models]``.
 
 .. code-block:: console
 
-    $ python3.7 -m pip install -U dffml[models]
+    $ python3 -m pip install -U dffml[models]
 
 There's an online IDE based on Theia (similar to VS Code) called GitPod that
 gives you a setup development environment to get started working with/on DFFML
@@ -38,6 +56,12 @@ run the above commands to get the lastest released version.
 
 Ubuntu
 ------
+
+For Ubuntu 20.XX python3 means Python 3.8 so far as ``apt`` is concerend.
+
+.. code-block:: console
+
+    $ sudo apt-get update && sudo apt-get install -y python3 python3-pip
 
 For Ubuntu 18.XX python3 means Python 3.6 so far as ``apt`` is concerend.
 However, ``python3-pip`` works for all 3.X versions. So you'll need to install

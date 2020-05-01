@@ -23,7 +23,7 @@ without the need to hardcode in ``import`` statements.
       --header "Content-Type: application/json" \
       --request POST \
       --data '{"insecure-package": [{"value":"insecure-package","definition":"package"}]}' \
-      http://localhost:8080/shouldi | python3.7 -m json.tool
+      http://localhost:8080/shouldi | python3 -m json.tool
     {
         "insecure-package": {
             "safety_check_number_of_issues": 1,
@@ -54,7 +54,7 @@ to look at JSON.
 
 .. code-block:: console
 
-    $ python3.7 -m pip install dffml-config-yaml
+    $ python3 -m pip install dffml-config-yaml
 
 We'll be working from the top level directory of the ``shouldi`` package we
 created in the :doc:`/tutorials/operations`.
@@ -103,7 +103,7 @@ Let's install the HTTP API service.
 
 .. code-block:: console
 
-    $ python3.7 -m pip install dffml-service-http
+    $ python3 -m pip install dffml-service-http
 
 HTTP Channel Config
 -------------------
@@ -155,7 +155,7 @@ items that you want evaluated.
       --header "Content-Type: application/json" \
       --request POST \
       --data '{"insecure-package": [{"value":"insecure-package","definition":"package"}]}' \
-      http://localhost:8080/shouldi | python3.7 -m json.tool
+      http://localhost:8080/shouldi | python3 -m json.tool
     {
         "bandit_output": {
             "CONFIDENCE.HIGH": 0,
@@ -184,7 +184,7 @@ We'll be using those operations, so we need to install them
 
 .. code-block:: console
 
-    $ python3.7 -m pip install dffml-feature-git
+    $ python3 -m pip install dffml-feature-git
 
 The ``lines_of_code_to_comments`` operation will give use the ratio of the
 number of lines of comments to the number of lines of code.
@@ -315,7 +315,7 @@ Here's an example of evaluating two packages using the new DataFlow.
       --header "Content-Type: application/json" \
       --request POST \
       --data '{"insecure-package": [{"value":"insecure-package","definition":"package"}], "dffml": [{"value":"dffml","definition":"package"}]}' \
-      http://localhost:8080/shouldi | python3.7 -m json.tool
+      http://localhost:8080/shouldi | python3 -m json.tool
     {
         "dffml": {
             "bandit_output": {

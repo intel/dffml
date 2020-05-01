@@ -7,16 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Vowpal Wabbit models
+- Python 3.8 support
 - binsec branch to `operations/binsec`
 - Doctestable example for `model_predict` operation.
 - Doctestable examples to `operation/mapping.py`
 - shouldi got an operation to run Dependency-check on java code.
-- load function in high_level API
+- `load` and `run` functions in high level API
 - Doctestable examples to `db` operations.
 - Source for parsing `.ini` file formats
+- Tests for noasync high level API.
+- Tests for load and save functions in high level API.
+- `Operation` inputs and ouputs default to empty `dict` if not given.
+- Ability to export any object with `dffml service dev export`
+- Complete example for dataflow run cli command
+- Tests for default configs instantiation.
 ### Changed
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
+- Every class and function can now be imported from the top level module
+- `op` attempts to create `Definition`s for each argument if an `inputs` are not
+  given.
+- Classes now use `CONFIG` if it has a default for every field and `config` is `None`
+### Fixed
+- Race condition in `MemoryRedundancyChecker` when more than 4 possible
+  parameter sets for an operation.
+### Removed
+- Monitor class and associated tests (unused)
 
 ## [0.3.7] - 2020-04-14
 ### Added

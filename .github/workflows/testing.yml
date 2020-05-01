@@ -116,7 +116,13 @@ jobs:
         fi
     - name: Test
       run: |
+        export PYTHON=python${{ matrix.python-version }}
         export PLUGIN=${{ matrix.plugin }}
+        if [[ "x${PYTHON}" = "xpython3.8" ]]; then
+          if [[ "x${PLUGIN}" = "xmodel/tensorflow" ]] || [[ "x${PLUGIN}" = "xmodel/tensorflow_hub" ]] || [[ "x${PLUGIN}" = "xmodel/transformers" ]]; then
+            exit 0
+          fi
+        fi
         export LOGGING=debug
         export PATH="${HOME}/.local/bin:${PATH}"
         export PYPI_TOKENS=$(mktemp)

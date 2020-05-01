@@ -24,13 +24,6 @@ from dffml.db.sqlite import SqliteDatabase, SqliteDatabaseConfig
 from dffml.operation.db import db_query_create_table, DatabaseQueryConfig
 
 
-def import_file(import_name: str, path: pathlib.Path):
-    spec = importlib.util.spec_from_file_location(import_name, str(path))
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
 def modules(
     root: pathlib.Path,
     package_name: str,
@@ -51,7 +44,7 @@ def modules(
         if skip and skip(import_name, path):
             continue
         # Import module
-        yield import_name, import_file(import_name, path)
+        yield import_name, importlib.import_module(import_name)
 
 
 root = pathlib.Path(__file__).parent.parent / "dffml"
@@ -64,9 +57,6 @@ skip = lambda _import_name, path: skel in path.parents or path.name.startswith(
 
 # All classes to test
 to_test = {}
-
-
-globs = {}
 
 
 @contextlib.contextmanager
@@ -173,8 +163,6 @@ def mktestcase(name, import_name, module, obj):
         "name": name,
         "verbose": os.environ.get("LOGGING", "").lower() == "debug",
     }
-    state["globs"].update(globs)
-    state["globs"].update(module.__dict__)
     # Check if there is a function within this file which will be used to do
     # extra setup and tear down for the test. Its the same name as the test but
     # prefixed with wrap_. Also look all the way up the path for wrap_ functions
@@ -202,9 +190,6 @@ def mktestcase(name, import_name, module, obj):
 
 
 for import_name, module in modules(root, package_name, skip=skip):
-    # Add everything in the module to the dict of values to be accessible within
-    # the global space of the doctests
-    globs.update(module.__dict__)
     # Iterate over all of the objects in the module
     for name, obj in inspect.getmembers(module):
         # Skip if not a class or function

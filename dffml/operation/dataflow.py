@@ -1,8 +1,8 @@
 from typing import Dict, Any
 
-from dffml.base import config
-from dffml.df.base import op, OperationImplementationContext
-from dffml.df.types import DataFlow, Input, Definition
+from ..base import config
+from ..df.base import op, OperationImplementationContext
+from ..df.types import DataFlow, Input, Definition
 
 
 class InvalidCustomRunDataFlowContext(Exception):
@@ -59,6 +59,9 @@ class run_dataflow(OperationImplementationContext):
 
     The following shows how to use run dataflow in its default behavior.
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> URL = Definition(name="URL", primitive="string")
     >>>
     >>> subflow = DataFlow.auto(GetSingle)
@@ -71,10 +74,10 @@ class run_dataflow(OperationImplementationContext):
     ... )
     >>>
     >>> dataflow = DataFlow.auto(run_dataflow, GetSingle)
-    >>> dataflow.configs[run_dataflow.imp.op.name] = RunDataFlowConfig(subflow)
+    >>> dataflow.configs[run_dataflow.op.name] = RunDataFlowConfig(subflow)
     >>> dataflow.seed.append(
     ...     Input(
-    ...         value=[run_dataflow.imp.op.outputs["results"].name],
+    ...         value=[run_dataflow.op.outputs["results"].name],
     ...         definition=GetSingle.op.inputs["spec"]
     ...     )
     ... )
@@ -91,7 +94,7 @@ class run_dataflow(OperationImplementationContext):
     ...                         }
     ...                     ]
     ...                 },
-    ...                 definition=run_dataflow.imp.op.inputs["inputs"]
+    ...                 definition=run_dataflow.op.inputs["inputs"]
     ...             )
     ...         ]
     ...     }):
@@ -103,6 +106,9 @@ class run_dataflow(OperationImplementationContext):
     The following shows how to use run dataflow with custom inputs and outputs.
     This allows you to run a subflow as if it were an operation.
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> URL = Definition(name="URL", primitive="string")
     >>>
     >>> @op(

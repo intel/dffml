@@ -59,6 +59,8 @@ def entrypoint(label):
     Examples
     --------
 
+    >>> from dffml import entrypoint, Entrypoint
+    >>>
     >>> @entrypoint('mylabel')
     ... class EntrypointSubclassClass(Entrypoint): pass
 
@@ -101,6 +103,8 @@ def base_entry_point(entrypoint, *args):
     Examples
     --------
 
+    >>> from dffml import base_entry_point, Entrypoint
+    >>>
     >>> @base_entry_point('dffml.entrypoint', 'entrypoint')
     ... class BaseEntrypointSubclassClass(Entrypoint): pass
 
@@ -158,10 +162,9 @@ class Entrypoint(object):
                 )
                 raise
             loaded.ENTRY_POINT_LABEL = i.name
-            if issubclass(loaded, cls):
-                loading_classes.append(loaded)
-                if loading is not None and i.name == loading:
-                    return loaded
+            loading_classes.append(loaded)
+            if loading is not None and i.name == loading:
+                return loaded
         if loading is not None:
             raise EntrypointNotFound(
                 f"{loading!r} was not found in: {loaded_names}"

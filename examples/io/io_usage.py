@@ -1,14 +1,5 @@
 import asyncio
-
-from dffml import train, Features, DefFeature
-from dffml.operation.output import GetSingle
-from dffml.df.memory import MemoryOrchestrator
-from dffml.operation.mapping import create_mapping
-from dffml.operation.preprocess import literal_eval
-from dffml.df.types import DataFlow, Input, InputFlow
-from dffml.operation.io import AcceptUserInput, print_output
-from dffml.operation.model import model_predict, ModelPredictConfig
-from dffml.model.slr import SLRModel
+from dffml import *
 
 slr_model = SLRModel(
     features=Features(DefFeature("Years", int, 1),),
@@ -62,7 +53,7 @@ dataflow.seed.append(
 
 
 async def main():
-    # train the model
+    # Train the model
     await train(
         slr_model,
         {"Years": 0, "Salary": 10},

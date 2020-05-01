@@ -7,7 +7,7 @@ Models created without a machine learning framework.
 ## Install
 
 ```console
-python3.7 -m pip install --user dffml-model-scratch
+$ python3 -m pip install --user dffml-model-scratch
 ```
 
 ## Usage

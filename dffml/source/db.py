@@ -1,11 +1,11 @@
 import collections
 from typing import Type, AsyncIterator, List
 
-from dffml.base import config, BaseConfig
-from dffml.db.base import BaseDatabase, Condition
-from dffml.record import Record
-from dffml.source.source import BaseSource, BaseSourceContext
-from dffml.util.entrypoint import entrypoint
+from ..base import config, BaseConfig
+from ..db.base import BaseDatabase, Condition
+from ..record import Record
+from ..source.source import BaseSource, BaseSourceContext
+from ..util.entrypoint import entrypoint
 
 
 @config

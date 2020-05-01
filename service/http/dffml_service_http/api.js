@@ -2,7 +2,7 @@
 /*
  * From the examples/web directory run
  *
- * $ python3.7 -m http.server 9090
+ * $ python3 -m http.server 9090
  * $ dffml service http -insecure -cors '*' -port 8080 -upload-dir .
  *
  * Or for a temp directory to upload to run:
