@@ -43,4 +43,5 @@ async def run_npm_audit(self, pkg: str) -> Dict[str, Any]:
         raise
 
     result = npm_audit_op["metadata"]["vulnerabilities"]
-    return result
+
+    return {"report": result}

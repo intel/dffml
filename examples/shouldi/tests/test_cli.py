@@ -20,3 +20,18 @@ class TestCLI(AsyncTestCase):
             output = stdout.getvalue()
         self.assertIn("shouldi is okay to install", output)
         self.assertIn("Do not install insecure-package!", output)
+
+    async def test_install_js(self):
+        import pathlib
+
+        await ShouldI.install.cli(
+            "https://github.com/trekhleb/javascript-algorithms"
+        )
+
+        return
+
+        with patch("sys.stdout", new_callable=io.StringIO) as stdout:
+            await ShouldI.install.cli("javascript-algorithm", "shouldi")
+            output = stdout.getvalue()
+        self.assertIn("shouldi is okay to install", output)
+        self.assertIn("Do not install javascript-algorithm!", output)

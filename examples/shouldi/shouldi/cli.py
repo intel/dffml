@@ -1,7 +1,7 @@
 # Command line utility helpers and DataFlow specific classes
 from dffml import CMD, Arg, DataFlow, Input, GetSingle, run
 
-# Import operations we need from the Git operations
+# Import operations we need for the Git operations
 from dffml_feature_git.feature.operations import (
     clone_git_repo,
     cleanup_git_repo,
@@ -15,6 +15,7 @@ from shouldi.pypi import pypi_package_url
 from shouldi.pypi import pypi_package_contents
 from shouldi.pypi import cleanup_pypi_package
 from shouldi.safety import safety_check
+from shouldi.npm_audit import run_npm_audit
 
 from dffml import op, Definition, run_dataflow
 
@@ -182,12 +183,56 @@ async def is_lang_javascript(self, repo):
                 return {"javascript": True}
 
 
+DATAFLOW_SA_JAVASCRIPT = DataFlow.auto(run_npm_audit, GetSingle,)
+
+DATAFLOW_SA_JAVASCRIPT.seed.append(
+    Input(
+        value=[run_npm_audit.op.outputs["report"].name,],
+        definition=GetSingle.op.inputs["spec"],
+    )
+)
+
+
+@op(
+    inputs={"repo": clone_git_repo.op.outputs["repo"]},
+    outputs={"result": SA_RESULTS},
+    conditions=[is_lang_javascript.op.outputs["javascript"]],
+)
+async def run_javascript_sa(self, repo):
+    """
+    Run JS static analysis
+    """
+
+    # TODO Make is so that
+    async with self.octx.parent(DATAFLOW_SA_JAVASCRIPT) as octx:
+        async for _, results in octx.run(
+            [
+                Input(
+                    value=repo.directory,
+                    definition=run_npm_audit.op.inputs["pkg"],
+                )
+            ]
+        ):
+            # TODO Make this report more useful
+            npm_report = results[run_npm_audit.op.outputs["report"].name]
+            return {
+                "result": SAResultsSpec(
+                    critical=npm_report["critical"],
+                    high=npm_report["high"],
+                    medium=npm_report["moderate"],
+                    low=npm_report["low"],
+                    report=results,
+                )
+            }
+
+
 # Link inputs and outputs together according to their definitions
 DATAFLOW = DataFlow.auto(
     clone_git_repo,
     is_lang_python,
     run_python_sa,
     is_lang_javascript,
+    run_javascript_sa,
     cleanup_git_repo,
     GetSingle,
 )
