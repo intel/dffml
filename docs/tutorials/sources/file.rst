@@ -45,7 +45,7 @@ Create Source
 .. literalinclude:: ../../../dffml/source/ini.py
     :lines: 18-24
 
-Here we have added the entrypoint to INISource class as "ini". The New Source should inherit
+Here we have added the entrypoint to INISource class as "ini". The new Source should inherit
 from FileSource and MemorySource as it abstracts the saving and loading of files so that
 we only have to implement the load_fd and dump_fd methods. It takes care of decompression
 on load and re-compression on save if the files extension signifies that it's compressed.
