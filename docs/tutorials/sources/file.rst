@@ -33,6 +33,8 @@ or more name and value parameters.
 Import modules
 --------------
 
+**dffml_source_ini/misc.py**
+
 .. code-block:: python
 
     from configparser import ConfigParser
@@ -48,6 +50,8 @@ entrypoint to our INISource. A ``Record`` is a unique entry in a source.
 Add configuration
 -----------------
 
+**dffml_source_ini/misc.py**
+
 .. literalinclude:: ../../../dffml/source/ini.py
     :lines: 11-15
 
@@ -57,6 +61,8 @@ three configuration options.
 
 Create Source
 -------------
+
+**dffml_source_ini/misc.py**
 
 .. literalinclude:: ../../../dffml/source/ini.py
     :lines: 18-24
@@ -78,6 +84,8 @@ Next we will writing the load and dump methods for INISource.
 Add load method
 ---------------
 
+**dffml_source_ini/misc.py**
+
 .. literalinclude:: ../../../dffml/source/ini.py
     :lines: 26-47
 
@@ -98,6 +106,8 @@ creating a new Record.
 Add dump method
 ---------------
 
+**dffml_source_ini/misc.py**
+
 .. literalinclude:: ../../../dffml/source/ini.py
     :lines: 49-66
 
@@ -112,6 +122,8 @@ object (fileobj). Hence dumping all our data into file.
 Add Tests
 ---------
 
+**tests/test_source.py**
+
 .. literalinclude:: ../../../tests/source/test_ini.py
     :lines: 1-7
 
@@ -120,6 +132,8 @@ to import the source file which we created earlier. We need to import ``save`` a
 ``load`` from high_level. save method will be used to save the records to the source and
 load will be used to yield records from a source. AsyncTestCase will be used to run our
 test methods as coroutines in default event loop.
+
+**tests/test_source.py**
 
 .. literalinclude:: ../../../tests/source/test_ini.py
     :lines: 10-30
@@ -148,6 +162,8 @@ This will look into the file test_source and run all the tests.
 
 Add the entrypoint
 ------------------
+
+**setup.py**
 
 To register your source under dffml entrypoint you need to add the following
 to the setup.py file
