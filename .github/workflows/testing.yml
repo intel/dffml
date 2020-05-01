@@ -77,7 +77,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pip-
     - name: Setup conda
-      uses: s-weighted/setup-conda@v1
+      uses: s-weigand/setup-conda@v1
       with:
         update-conda: true
         python-version: ${{ matrix.python-version }}
