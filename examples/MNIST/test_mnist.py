@@ -2,14 +2,14 @@ import os
 import ast
 import sys
 import json
+import shutil
+import pathlib
 import tempfile
 import contextlib
 import subprocess
 import unittest.mock
-import shutil
-import pathlib
 
-from dffml.util.os import chdir
+from dffml import chdir
 
 
 def sh_filepath(filename):
