@@ -45,7 +45,21 @@ jobs:
     - name: Run check
       run: |
         ${{ matrix.check }}=1 GITHUB_PAGES_KEY=${{ secrets.GITHUB_PAGES_KEY }} ./.ci/run.sh
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        plugin: [model/vowpalWabbit]
+        python-version: [3.7]
 
+    steps:
+      -uses: actions/checkout@v2
+      -name: Setup conda
+      uses: s-weighted/setup-conda@v1
+      with:
+        update-conda: true
+        python-version: ${{ matrix.python-version }}
+        conda-channels: anaconda, conda-forge
   test:
     runs-on: ubuntu-latest
     strategy:
@@ -76,6 +90,12 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
         restore-keys: |
           ${{ runner.os }}-pip-
+    - name: Setup conda
+      uses: s-weighted/setup-conda@v1
+      with:
+        update-conda: true
+        python-version: ${{ matrix.python-version }}
+        conda-channels: anaconda, conda-forge
     - name: Install dependencies
       run: |
         mkdir -p ~/.local/bin
@@ -91,10 +111,9 @@ jobs:
           sudo apt-get update && sudo apt-get install -y docker-ce docker-ce-cli containerd.io
           docker pull mariadb:10
         fi
-        # if [ "${{ matrix.plugin }}" == "model/vowpalWabbit" ]; then
-        #   docker pull continuumio/anaconda3
-        #   # sudo apt-get update && sudo apt-get install libboost-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev libboost-math-dev libboost-test-dev libboost-python-dev zlib1g-dev cmake python3 python3-pip
-        # fi
+        if [ "${{ matrix.plugin }}" == "model/vowpalWabbit" ]; then
+          conda install -y -c conda-forge vowpalwabbit
+        fi
     - name: Test
       run: |
         export PLUGIN=${{ matrix.plugin }}
@@ -123,7 +142,7 @@ jobs:
           export TWINE_PASSWORD=$(grep "${PLUGIN}=" "${PYPI_TOKENS}" | sed 's/^[^=]*=//g')
         fi
         rm ${PYPI_TOKENS}
-        ./.ci/conda.sh
+        ./.ci/run.sh
         if [ "x${PLUGIN}" = "x." ]; then
           CODECOV_TOKEN=${{ secrets.CODECOV_TOKEN }} codecov
         fi
