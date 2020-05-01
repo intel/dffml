@@ -74,7 +74,10 @@ the data for that record.
 Going over the code, we have defined a coroutine with parameter fileobj, here
 fileobj is the file object. we are reading from the fileobj file object. Each section of the
 INI file is used as a Record, with the name of the section used as key for that Record.
-Each section consist of name and value pair which we store it as a dict, under that Record
+Each section consists of key value pairs stored as a dict. We're going to treat
+this data as the feature data for each Record. To do so we pass the data as
+the value for the ``features`` key under the ``data`` keyword argument when
+creating a new Record.
 features key.
 
 Add dump method
