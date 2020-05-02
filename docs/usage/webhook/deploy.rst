@@ -11,7 +11,7 @@ Create a ``Dataflow`` with operation ``convert_to_gif`` and save it in ``deploy/
 .. code-block:: console
 
     $ mkdir -p deploy/mc/http deploy/df
-    $ cat > /tmp/operations/ <<EOF
+    $ cat > /tmp/operations <<EOF
     convert_to_gif
     EOF
 
@@ -20,7 +20,13 @@ Create a ``Dataflow`` with operation ``convert_to_gif`` and save it in ``deploy/
 Create the `Config <../../plugins/service/http/dataflow.html#HttpChannelConfig>`__ file for the http server
 in ``deploy/mc/http/ffmpeg.yaml``
 
-.. literalinclude:: /../examples/ffmpeg/deploy/mc/http/ffmpeg.yaml
+.. code-block:: console
+
+    $ cat > ./deploy/mc/http/ffmpeg.yaml <<EOF
+    path: /ffmpeg
+    presentation: json
+    asynchronous: false
+    EOF
 
 .. _usage_ffmpeg_deploy_serve:
 
@@ -39,7 +45,7 @@ Serving the dataflow on port 8080
     tutorial. See documentation on HTTP API
     :doc:`/plugins/service/http/security` for more information.
 
-Now we can send post requests to the dataflow running at this port
+Now from another terminal,we can send post requests to the dataflow running at this port.
 
 .. code-block:: console
 

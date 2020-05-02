@@ -1,6 +1,6 @@
 # Usage
 # docker build -t aghinsa/ffmpeg .
-# docker run --rm -d -v ~/Videos:/usr/src/app/data -ti -p 80:8080 aghinsa/ffmpeg  -insecure -log debug
+# docker run --rm -d -v ~/Videos:/usr/src/app/data -ti -p 8080:8080 aghinsa/ffmpeg -mc-config deploy -insecure -log debug
 #
 # curl -v http://127.0.0.1:80/list/sources
 FROM ubuntu:20.04
@@ -16,6 +16,7 @@ RUN apt-get update && \
     ffmpeg && \
   python3 -m pip install -U pip && \
   python3 -m pip install dffml-service-http && \
+  python3 -m pip install dffml-config-yaml && \
   apt-get purge -y \
     gcc \
     python3-dev && \

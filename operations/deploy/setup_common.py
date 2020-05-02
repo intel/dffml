@@ -5,7 +5,7 @@ from pathlib import Path
 from setuptools import find_packages
 
 ORG = "aghinsa"
-NAME = "dffml_operations_deploy"
+NAME = "deploy"
 DESCRIPTION = "DFFML operations deploy"
 AUTHOR_NAME = "Aghin Shah Alin"
 AUTHOR_EMAIL = "aghinsa@gmail.com"
