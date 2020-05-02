@@ -14,7 +14,7 @@ Python's built in HTTP server is useful for viewing the documentation.
 
 .. code-block:: console
 
-    $ python3.7 -m http.server --directory pages/ 7000
+    $ python3 -m http.server --directory pages/ 7000
 
 Examples
 --------
@@ -59,11 +59,11 @@ To run all the examples
 
 .. code-block:: console
 
-    $ python3.7 setup.py test -s tests.test_docstrings
+    $ python3 setup.py test -s tests.test_docstrings
 
 To run a specific example, determine python path to class or function, remove
 ``dffml.`` and change rest of ``.`` to ``_``.
 
 .. code-block:: console
 
-    $ python3.7 setup.py test -s tests.test_docstrings.util_asynctestcase_AsyncTestCase
+    $ python3 setup.py test -s tests.test_docstrings.util_asynctestcase_AsyncTestCase

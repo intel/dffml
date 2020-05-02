@@ -5,8 +5,7 @@ from pathlib import Path
 import asyncio
 from typing import Dict, Any
 
-from dffml.df.base import op
-from dffml.df.types import Definition
+from dffml import op, Definition
 
 package_src_dir = Definition(name="package_src_dir", primitive="str")
 dependency_check_output = Definition(

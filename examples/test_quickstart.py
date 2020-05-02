@@ -11,8 +11,7 @@ import contextlib
 import subprocess
 import unittest.mock
 
-from dffml.util.os import chdir
-from dffml.util.asynctestcase import AsyncTestCase
+from dffml import chdir, AsyncTestCase
 
 from dffml_service_http.cli import HTTPService
 from dffml_service_http.util.testing import ServerRunner

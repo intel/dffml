@@ -310,17 +310,30 @@ class BaseConfigurableMetaClass(type, abc.ABC):
         def wrapper(self, config: Optional[BaseConfig] = None, **kwargs):
             if config is not None and len(kwargs):
                 raise ConfigAndKWArgsMutuallyExclusive
-            elif config is None and hasattr(self, "CONFIG") and kwargs:
-                try:
-                    config = self.CONFIG(**kwargs)
-                except TypeError as error:
-                    error.args = (
-                        error.args[0].replace(
-                            "__init__", f"{self.CONFIG.__qualname__}"
-                        ),
-                    )
-                    raise
-            if config is None:
+            elif config is None and hasattr(self, "CONFIG"):
+                if kwargs:
+                    try:
+                        config = self.CONFIG(**kwargs)
+                    except TypeError as error:
+                        error.args = (
+                            error.args[0].replace(
+                                "__init__", f"{self.CONFIG.__qualname__}"
+                            ),
+                        )
+                        raise
+                else:
+                    use_CONFIG = True
+                    for field in dataclasses.fields(self.CONFIG):
+                        if field.default is dataclasses.MISSING:
+                            use_CONFIG = False
+                            break
+                    if use_CONFIG:
+                        config = self.CONFIG(**kwargs)
+                    else:
+                        raise TypeError(
+                            "__init__() missing 1 required positional argument: 'config'"
+                        )
+            elif config is None:
                 raise TypeError(
                     "__init__() missing 1 required positional argument: 'config'"
                 )
@@ -508,21 +521,28 @@ class BaseDataFlowFacilitatorObject(
     named ENTRYPOINT. In the form of `dffml.load_point` which will be used to
     load all classes registered to that entry point.
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> # Create the base object. Then enter it's context to preform any initial
     >>> # setup. Call obj to get an instance of obj.CONTEXT, which is a subclass
     >>> # of BaseDataFlowFacilitatorObjectContext. ctx, the inner context, does
     >>> # all the heavy lifting.
+    >>>
     >>> class Context(BaseDataFlowFacilitatorObjectContext):
     ...     async def method(self):
     ...         return
+    >>>
     >>> class Object(BaseDataFlowFacilitatorObject):
     ...     CONTEXT = Context
     ...     def __call__(self):
     ...         return Context()
+    >>>
     >>> async def main():
     ...     async with Object(BaseConfig()) as obj:
     ...         async with obj() as ctx:
     ...             await ctx.method()
+    >>>
     >>> asyncio.run(main())
     """
 

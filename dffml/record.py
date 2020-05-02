@@ -193,6 +193,9 @@ class Record(object):
 
         Examples
         --------
+
+        >>> from dffml import *
+        >>>
         >>> example = Record("example", data=dict(features=dict(dead="beef")))
         >>> print(example.features())
         {'dead': 'beef'}
@@ -227,6 +230,9 @@ class Record(object):
 
         Examples
         --------
+
+        >>> from dffml import *
+        >>>
         >>> example = Record("example", data=dict(features=dict(dead="beef")))
         >>>
         >>> print(example.features(["dead"]))
@@ -258,6 +264,9 @@ class Record(object):
 
         Examples
         --------
+
+        >>> from dffml import *
+        >>>
         >>> example = Record("example", data=dict(features=dict(dead="beef")))
         >>> print(example.feature("dead"))
         beef
@@ -279,6 +288,9 @@ class Record(object):
 
         Examples
         --------
+
+        >>> from dffml import *
+        >>>
         >>> example = Record("example", data=dict(features=dict(dead="beef")))
         >>> example.predicted("target_name", "feed", 1.00)
         >>> print(example.prediction("target_name"))
@@ -305,6 +317,9 @@ class Record(object):
 
         Examples
         --------
+
+        >>> from dffml import *
+        >>>
         >>> example = Record("example", data=dict(features=dict(dead="beef")))
         >>> example.predicted("target_name", "feed", 1.00)
         >>> print(example.prediction("target_name"))
@@ -328,6 +343,9 @@ class Record(object):
 
         Examples
         --------
+
+        >>> from dffml import *
+        >>>
         >>> example = Record("example", data=dict(features=dict(dead="beef")))
         >>> example.predicted("target_name1", "feed", 1.00)
         >>> example.predicted("target_name2", "deed", 0.97)

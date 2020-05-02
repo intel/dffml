@@ -2,8 +2,8 @@ import asyncio
 import concurrent.futures
 from typing import Dict, Any
 
-from dffml.df.types import Operation, Definition
-from dffml.df.base import (
+from ..df.types import Operation, Definition
+from ..df.base import (
     op,
     OperationImplementationContext,
     OperationImplementation,
@@ -50,6 +50,9 @@ class AcceptUserInput(OperationImplementation):
     The following example shows how to use AcceptUserInput.
     (Assumes that the input from stdio is "Data flow is awesome"!)
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> dataflow = DataFlow.auto(AcceptUserInput, GetSingle)
     >>> dataflow.seed.append(
     ...     Input(
@@ -103,6 +106,9 @@ async def print_output(data: Any):
 
     The following example shows how to use print_output.
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> dataflow = DataFlow.auto(print_output)
     >>> inputs = [
     ...     Input(

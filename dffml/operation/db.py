@@ -93,6 +93,9 @@ async def db_query_create_table(
     Examples
     ++++++++
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
     >>>
     >>> dataflow = DataFlow(
@@ -147,6 +150,9 @@ async def db_query_insert(self, *, table_name: str, data: Dict[str, Any]):
     Examples
     ++++++++
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
     >>>
     >>> dataflow = DataFlow(
@@ -228,6 +234,9 @@ async def db_query_update(
     Examples
     ++++++++
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
     >>>
     >>> dataflow = DataFlow(
@@ -313,6 +322,9 @@ async def db_query_remove(
     Examples
     ++++++++
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
     >>>
     >>> dataflow = DataFlow(
@@ -394,6 +406,9 @@ async def db_query_lookup(
     Examples
     ++++++++
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
     >>>
     >>> dataflow = DataFlow(
@@ -460,6 +475,9 @@ async def db_query_insert_or_update(
     Examples
     ++++++++
 
+    >>> import asyncio
+    >>> from dffml import *
+    >>>
     >>> sdb = SqliteDatabase(SqliteDatabaseConfig(filename="examples.db"))
     >>>
     >>> person = {"key": 11, "firstName": "John", "lastName": "Wick", "age": 38}

@@ -27,7 +27,7 @@ from ..util.cli.cmd import CMD
 from ..util.entrypoint import load
 from ..base import MissingConfig
 from ..util.packaging import is_develop
-from ..util.data import traverse_config_get
+from ..util.data import traverse_config_get, export_dict
 from ..df.types import Input, DataFlow
 from ..df.memory import MemoryOrchestrator
 from ..configloader.configloader import BaseConfigLoader
@@ -47,11 +47,8 @@ EMAIL = config.get("user", "email", fallback="unknown@example.com")
 CORE_PLUGINS = [
     ("configloader", "yaml"),
     ("configloader", "png"),
-    ("model", "tensorflow"),
     ("model", "scratch"),
     ("model", "scikit"),
-    ("model", "tensorflow_hub"),
-    ("model", "transformers"),
     ("examples", "shouldi"),
     ("feature", "git"),
     ("feature", "auth"),
@@ -59,6 +56,14 @@ CORE_PLUGINS = [
     ("service", "http"),
     ("source", "mysql"),
 ]
+
+# Tensorflow currently doesn't support Python 3.8
+if sys.version_info.major == 3 and sys.version_info.minor < 8:
+    CORE_PLUGINS += [
+        ("model", "tensorflow"),
+        ("model", "tensorflow_hub"),
+        ("model", "transformers"),
+    ]
 
 
 def create_from_skel(name):
@@ -307,6 +312,11 @@ class Export(CMD):
                     elif hasattr(obj, "_asdict"):
                         sys.stdout.buffer.write(
                             await loader.dumpb(obj._asdict())
+                        )
+                    else:
+                        exported = export_dict(value=obj)
+                        sys.stdout.buffer.write(
+                            await loader.dumpb(exported["value"])
                         )
 
 

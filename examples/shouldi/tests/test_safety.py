@@ -1,4 +1,4 @@
-from dffml.util.asynctestcase import AsyncTestCase
+from dffml import AsyncTestCase
 
 from shouldi.safety import safety_check
 

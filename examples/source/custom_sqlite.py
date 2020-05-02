@@ -2,13 +2,11 @@ import aiosqlite
 from collections import OrderedDict
 from typing import AsyncIterator, NamedTuple, Dict
 
-from dffml.base import BaseConfig
-from dffml.record import Record
-from dffml.source.source import BaseSourceContext, BaseSource
-from dffml.util.cli.arg import Arg
+from dffml import config, Record, BaseSource, BaseSourceContext
 
 
-class CustomSQLiteSourceConfig(BaseConfig, NamedTuple):
+@config
+class CustomSQLiteSourceConfig:
     filename: str
 
 
@@ -77,6 +75,7 @@ class CustomSQLiteSourceContext(BaseSourceContext):
 
 class CustomSQLiteSource(BaseSource):
 
+    CONFIG = CustomSQLiteSourceConfig
     CONTEXT = CustomSQLiteSourceContext
     FEATURE_COLS = ["PetalLength", "PetalWidth", "SepalLength", "SepalWidth"]
     PREDICTION_COLS = ["value", "confidence"]
@@ -104,14 +103,3 @@ class CustomSQLiteSource(BaseSource):
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         await self.__db.__aexit__(exc_type, exc_value, traceback)
-
-    @classmethod
-    def args(cls, args, *above) -> Dict[str, Arg]:
-        cls.config_set(args, above, "filename", Arg())
-        return args
-
-    @classmethod
-    def config(cls, config, *above):
-        return CustomSQLiteSourceConfig(
-            filename=cls.config_get(config, above, "filename")
-        )

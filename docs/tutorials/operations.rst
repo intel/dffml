@@ -187,7 +187,7 @@ Now install the newly created package in development mode.
 
 .. code-block:: console
 
-    $ python3.7 -m pip install -e .
+    $ python3 -m pip install -e .
 
 Safety Operation
 ----------------
@@ -223,7 +223,7 @@ Run the tests
 
 .. code-block:: console
 
-    $ python3.7 setup.py test -s tests.test_safety
+    $ python3 setup.py test -s tests.test_safety
 
 Bandit Operation
 ----------------
@@ -301,7 +301,7 @@ Run the tests
 
 .. code-block:: console
 
-    $ python3.7 setup.py test -s tests.test_bandit
+    $ python3 setup.py test -s tests.test_bandit
 
 What's the Data Flow?
 ---------------------
@@ -371,7 +371,7 @@ Let's write an operation to grab the JSON information about a package.
 **shouldi/pypi.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/pypi.py
-    :lines: 1-35
+    :lines: 1-34
 
 After we have the package information, we extract the version and URL where we
 can get the source code.
@@ -379,7 +379,7 @@ can get the source code.
 **shouldi/pypi.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/pypi.py
-    :lines: 38-60
+    :lines: 37-59
 
 Once we have the URL, we download the package source and extract it to a
 temporary directory.
@@ -387,7 +387,7 @@ temporary directory.
 **shouldi/pypi.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/pypi.py
-    :lines: 63-82
+    :lines: 62-81
 
 Finally, we make a ``cleanup`` operation to remove the directory once we're done
 with it.
@@ -395,7 +395,7 @@ with it.
 **shouldi/pypi.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/pypi.py
-    :lines: 85-90
+    :lines: 84-89
 
 Now we write tests for each operation.
 
@@ -407,7 +407,7 @@ Run the tests
 
 .. code-block:: console
 
-    $ python3.7 setup.py test -s tests.test_pypi
+    $ python3 setup.py test -s tests.test_pypi
 
 CLI
 ---
@@ -431,7 +431,7 @@ Run the all the tests this time
 
 .. code-block:: console
 
-    $ python3.7 setup.py test
+    $ python3 setup.py test
 
 We want this to be usable as a command line utility, Python's
 :py:mod:`setuptools` allows us to define console ``entry_points``. All we have
@@ -449,7 +449,7 @@ Re-install the package via pip
 
 .. code-block:: console
 
-    $ python3.7 -m pip install -e .
+    $ python3 -m pip install -e .
 
 Now we should be able to run our new tool via the CLI! (Provided your ``$PATH``
 is set up correctly).
@@ -554,7 +554,7 @@ Re-install the package via pip to make registrations take effect.
 
 .. code-block:: console
 
-    $ python3.7 -m pip install -e .
+    $ python3 -m pip install -e .
 
 After you've registered the operations, services such as the
 :doc:`/plugins/service/http/index` will have access to your operations.

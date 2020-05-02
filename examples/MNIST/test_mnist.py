@@ -2,14 +2,14 @@ import os
 import ast
 import sys
 import json
+import shutil
+import pathlib
 import tempfile
 import contextlib
 import subprocess
 import unittest.mock
-import shutil
-import pathlib
 
-from dffml.util.os import chdir
+from dffml import chdir
 
 
 def sh_filepath(filename):
@@ -28,6 +28,10 @@ def directory_with_data_files():
 
 
 class TestMNIST(unittest.TestCase):
+    @unittest.skipIf(
+        sys.version_info.major == 3 and sys.version_info.minor >= 8,
+        "Tensorflow does not support Python 3.8",
+    )
     def test_shell(self):
         with directory_with_data_files() as tempdir:
             # Run training

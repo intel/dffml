@@ -26,6 +26,11 @@ def merge(one, two, list_append: bool = True):
 
 def traverse_config_set(target, *args):
     """
+    Examples
+    --------
+
+    >>> from dffml import traverse_config_set
+    >>>
     >>> traverse_config_set({
     ...     "level": {
     ...         "plugin": None,
@@ -54,6 +59,11 @@ def traverse_config_set(target, *args):
 
 def traverse_config_get(target, *args):
     """
+    Examples
+    --------
+
+    >>> from dffml import traverse_config_get
+    >>>
     >>> traverse_config_get({
     ...     "level": {
     ...         "plugin": None,
@@ -78,6 +88,12 @@ def traverse_config_get(target, *args):
 def traverse_get(target, *args):
     """
     Travel down through a dict
+
+    Examples
+    --------
+
+    >>> from dffml import traverse_get
+    >>>
     >>> traverse_get({"one": {"two": 3}}, "one", "two")
     3
     """
@@ -164,9 +180,13 @@ def explore_directories(path_dict: dict):
     """
     Recursively explores any path binded to a key in `path_dict`
 
+    Examples
+    --------
+
     >>> import pathlib
     >>> import tempfile
-
+    >>> from dffml import explore_directories
+    >>>
     >>> with tempfile.TemporaryDirectory() as root:
     ...     # Setup directories for example
     ...     STRUCTURE = '''
@@ -247,23 +267,14 @@ def parser_helper(value):
     Examples
     --------
 
-    Parsing a boolean value
-
+    >>> from dffml import parser_helper
+    >>>
     >>> parser_helper("on")
     True
-
-    Parsing an array
-
     >>> parser_helper("[1, 2, 3]")
     [1, 2, 3]
-
-    Parsing a string
-
     >>> parser_helper("hello")
     'hello'
-
-    Parsing a string of a string
-
     >>> parser_helper("'on'")
     'on'
     """

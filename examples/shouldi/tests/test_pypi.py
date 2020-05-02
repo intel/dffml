@@ -2,7 +2,7 @@ import os
 import shutil
 import tempfile
 
-from dffml.util.asynctestcase import AsyncTestCase
+from dffml import AsyncTestCase
 
 from shouldi.pypi import pypi_package_json
 from shouldi.pypi import pypi_latest_package_version
