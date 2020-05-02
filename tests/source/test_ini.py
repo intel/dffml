@@ -13,13 +13,13 @@ class TestINISource(AsyncTestCase):
             self.testfile = os.path.join(testdir, "testfile.ini")
             # Create a source
             source = INISource(
-                filename=self.testfile, allowempty=True, readwrite=True,
+                filename=self.testfile, allowempty=True, readwrite=True
             )
             # Save some data in the source
             await save(
                 source,
-                Record("section1", data={"features": {"A": 1, "B": 2,}}),
-                Record("section2", data={"features": {"C": 3, "D": 4,}}),
+                Record("section1", data={"features": {"A": 1, "B": 2}}),
+                Record("section2", data={"features": {"C": 3, "D": 4}}),
             )
             # Load all the records
             records = [record async for record in load(source)]

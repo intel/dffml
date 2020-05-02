@@ -50,12 +50,12 @@ Testing the operation
 
 .. literalinclude:: /../examples/ffmpeg/tests/test_operations.py
 
-Copy a mp4 file named ``input.mp4`` to tests/,and run the test by
+Copy a mp4 file named ``input.mp4`` to tests/,and run the test.The test runs the dataflow and
+checks that ``output.gif`` is created and its size is greater than 2 MB.
 
 .. code-block:: console
 
     $ python3.7 setup.py test
 
-verify that the operation is working by checking ``tests/output.gif``
 
 

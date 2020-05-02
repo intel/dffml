@@ -5,13 +5,13 @@ from pathlib import Path
 from setuptools import find_packages
 
 ORG = "aghinsa"
-NAME = "deploy"
+NAME = "dffml_operations_deploy"
 DESCRIPTION = "DFFML operations deploy"
 AUTHOR_NAME = "Aghin Shah Alin"
 AUTHOR_EMAIL = "aghinsa@gmail.com"
 # Install dffml if it is not installed in development mode
 INSTALL_REQUIRES = [] + (
-    ["dffml>=0.3.6"]
+    ["dffml>=0.3.6", "dffml_feature_git"]
     if not any(
         list(
             map(
