@@ -1,6 +1,6 @@
 # Usage
 # docker build -t dffml/deploy .
-# docker run --rm -ti -p 80:8080 operations/deploy -insecure -log debug
+# docker run --rm -ti -p 80:8080 dffml/deploy -insecure -log debug
 #
 FROM ubuntu:20.04
 
