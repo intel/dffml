@@ -7,13 +7,14 @@ import abc
 import hashlib
 import inspect
 import pathlib
+
+import importlib
+
 from dataclasses import dataclass
 from typing import List, Dict, Any, AsyncIterator, Type
 
-import numpy as np
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-import tensorflow as tf
 
 from dffml.record import Record
 from dffml.model.accuracy import Accuracy
@@ -51,6 +52,8 @@ class TensorflowModelContext(ModelContext):
 
     def __init__(self, parent):
         super().__init__(parent)
+        self.tf = importlib.import_module("tensorflow")
+        self.np = importlib.import_module("numpy")
         self._model = None
         self.feature_columns = self._feature_columns()
         self.features = self._applicable_features()
@@ -82,7 +85,7 @@ class TensorflowModelContext(ModelContext):
             or dtype is float
             or issubclass(dtype, float)
         ):
-            return tf.feature_column.numeric_column(
+            return self.tf.feature_column.numeric_column(
                 feature.NAME, shape=feature.length()
             )
         self.logger.warning(
@@ -123,13 +126,13 @@ class TensorflowModelContext(ModelContext):
                 continue
             ret_records.append(record)
             for feature, results in record.features(self.features).items():
-                x_cols[feature].append(np.array(results))
+                x_cols[feature].append(self.np.array(results))
         for feature in x_cols:
-            x_cols[feature] = np.array(x_cols[feature])
+            x_cols[feature] = self.np.array(x_cols[feature])
         self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("-----------------------")
-        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
+        input_fn = self.tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols, shuffle=False, num_epochs=1, **kwargs
         )
         return input_fn, ret_records
@@ -222,7 +225,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
             len(self.classifications),
             self.classifications,
         )
-        self._model = tf.compat.v1.estimator.DNNClassifier(
+        self._model = self.tf.compat.v1.estimator.DNNClassifier(
             feature_columns=list(self.feature_columns.values()),
             hidden_units=self.parent.config.hidden,
             n_classes=len(self.parent.config.classifications),
@@ -242,7 +245,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
             in self.classifications
         ]:
             for feature, results in record.features(self.features).items():
-                x_cols[feature].append(np.array(results))
+                x_cols[feature].append(self.np.array(results))
             y_cols.append(
                 self.classifications[
                     record.feature(self.parent.config.predict.NAME)
@@ -250,9 +253,9 @@ class DNNClassifierModelContext(TensorflowModelContext):
             )
         if not y_cols:
             raise ValueError("No records to train on")
-        y_cols = np.array(y_cols)
+        y_cols = self.np.array(y_cols)
         for feature in x_cols:
-            x_cols[feature] = np.array(x_cols[feature])
+            x_cols[feature] = self.np.array(x_cols[feature])
 
         return x_cols, y_cols
 
@@ -266,7 +269,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
-        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
+        input_fn = self.tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
             batch_size=self.parent.config.batchsize,
@@ -285,7 +288,7 @@ class DNNClassifierModelContext(TensorflowModelContext):
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
-        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
+        input_fn = self.tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
             batch_size=self.parent.config.batchsize,

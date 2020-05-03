@@ -7,14 +7,12 @@ Description of what this model does
 import os
 import hashlib
 import pathlib
+import importlib
 from typing import AsyncIterator, Tuple, Any, List, Type
 
-import numpy as np
-import pandas as pd
 
 # should be set before importing tensorflow
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-import tensorflow as tf
 
 from dffml.record import Record
 from dffml.model.accuracy import Accuracy
@@ -87,6 +85,9 @@ class TextClassifierContext(ModelContext):
 
     def __init__(self, parent) -> None:
         super().__init__(parent)
+        self.tf = importlib.import_module("tensorflow")
+        self.np = importlib.import_module("numpy")
+        self.pd = importlib.import_module("pandas")
         self.cids = self._mkcids(self.parent.config.classifications)
         self.classifications = self._classifications(self.cids)
         self.features = self._applicable_features()
@@ -97,7 +98,7 @@ class TextClassifierContext(ModelContext):
         path = self._model_dir_path()
         if os.path.isfile(os.path.join(path, "saved_model.pb")):
             self.logger.info(f"Using saved model from {path}")
-            self._model = tf.keras.models.load_model(os.path.join(path))
+            self._model = self.tf.keras.models.load_model(os.path.join(path))
         else:
             self._model = self.createModel()
         return self
@@ -199,15 +200,15 @@ class TextClassifierContext(ModelContext):
                 all_records.append(record)
         for record in all_records:
             for feature, results in record.features(self.features).items():
-                x_cols[feature].append(np.array(results))
+                x_cols[feature].append(self.np.array(results))
             y_cols.append(
                 self.classifications[record.feature(self.classification)]
             )
         if not y_cols:
             raise ValueError("No records to train on")
-        y_cols = np.array(y_cols)
+        y_cols = self.np.array(y_cols)
         for feature in x_cols:
-            x_cols[feature] = np.array(x_cols[feature])
+            x_cols[feature] = self.np.array(x_cols[feature])
         self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
@@ -269,7 +270,7 @@ class TextClassifierContext(ModelContext):
             batch_size=self.parent.config.batch_size,
             verbose=1,
         )
-        tf.keras.models.save_model(self._model, self._model_dir_path())
+        self.tf.keras.models.save_model(self._model, self._model_dir_path())
 
     async def accuracy(self, sources: Sources) -> Accuracy:
         """
@@ -297,15 +298,17 @@ class TextClassifierContext(ModelContext):
 
         async for record in records:
             feature_data = record.features(self.features)
-            df = pd.DataFrame(feature_data, index=[0])
-            predict = await self.prediction_data_generator(np.array(df)[0])
+            df = self.pd.DataFrame(feature_data, index=[0])
+            predict = await self.prediction_data_generator(
+                self.np.array(df)[0]
+            )
             all_prob = self._model.predict(predict)
             max_prob_idx = all_prob.argmax(axis=-1)
             target = self.parent.config.predict.NAME
             self.logger.debug(
                 "Predicted probability of {} for {}: {}".format(
                     self.parent.config.predict.NAME,
-                    np.array(df)[0],
+                    self.np.array(df)[0],
                     all_prob[0],
                 )
             )

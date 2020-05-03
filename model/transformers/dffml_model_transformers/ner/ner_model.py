@@ -1,18 +1,16 @@
 import os
 import re
-import glob
 import math
 import pathlib
 import datetime
 import collections
+import importlib
+
 from typing import Any, List, Tuple, AsyncIterator
 
-import numpy as np
-import pandas as pd
 from seqeval.metrics import f1_score, classification_report
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-import tensorflow as tf
 
 try:
     from fastprogress import master_bar, progress_bar
@@ -168,31 +166,36 @@ class NERModelConfig:
     )
 
     def __post_init__(self):
+        self.tf = importlib.import_module("tensorflow")
         if self.use_fp16:
-            tf.config.optimizer.set_experimental_options(
+            self.tf.config.optimizer.set_experimental_options(
                 {"auto_mixed_precision": True}
             )
         if self.tpu:
-            resolver = tf.distribute.cluster_resolver.TPUClusterResolver(
+            resolver = self.tf.distribute.cluster_resolver.TPUClusterResolver(
                 tpu=self.parent.config.tpu
             )
-            tf.config.experimental_connect_to_cluster(resolver)
-            tf.tpu.experimental.initialize_tpu_system(resolver)
-            self.strategy = tf.distribute.experimental.TPUStrategy(resolver)
+            self.tf.config.experimental_connect_to_cluster(resolver)
+            self.tf.tpu.experimental.initialize_tpu_system(resolver)
+            self.strategy = self.tf.distribute.experimental.TPUStrategy(
+                resolver
+            )
             self.n_device = self.num_tpu_cores
         elif len(self.gpus.split(",")) > 1:
             self.n_device = len(
                 [f"/gpu:{gpu}" for gpu in self.gpus.split(",")]
             )
-            self.strategy = tf.distribute.MirroredStrategy(
+            self.strategy = self.tf.distribute.MirroredStrategy(
                 devices=[f"/gpu:{gpu}" for gpu in self.gpus.split(",")]
             )
         elif self.no_cuda:
             self.n_device = 1
-            self.strategy = tf.distribute.OneDeviceStrategy(device="/cpu:0")
+            self.strategy = self.tf.distribute.OneDeviceStrategy(
+                device="/cpu:0"
+            )
         else:
             self.n_device = len(self.gpus.split(","))
-            self.strategy = tf.distribute.OneDeviceStrategy(
+            self.strategy = self.tf.distribute.OneDeviceStrategy(
                 device="/gpu:" + self.gpus.split(",")[0]
             )
 
@@ -200,6 +203,9 @@ class NERModelConfig:
 class NERModelContext(ModelContext):
     def __init__(self, parent, **kwconfig):
         super().__init__(parent)
+        self.pd = importlib.import_module("pandas")
+        self.np = importlib.import_module("numpy")
+        self.tf = importlib.import_module("tensorflow")
         self.pad_token_label_id = 0
         (
             self.ner_config_class,
@@ -242,19 +248,19 @@ class NERModelContext(ModelContext):
             for feature, results in record.features(
                 [self.parent.config.sid.NAME, self.parent.config.words.NAME]
             ).items():
-                x_cols[feature].append(np.array(results))
+                x_cols[feature].append(self.np.array(results))
             y_cols.append(record.feature(self.parent.config.predict.NAME))
         if not y_cols:
             raise ValueError("No records to train on")
-        y_cols = np.array(y_cols)
+        y_cols = self.np.array(y_cols)
         for feature in x_cols:
-            x_cols[feature] = np.array(x_cols[feature])
+            x_cols[feature] = self.np.array(x_cols[feature])
 
         self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
-        df = pd.DataFrame.from_dict(x_cols)
+        df = self.pd.DataFrame.from_dict(x_cols)
         df[self.parent.config.predict.NAME] = y_cols
         return df
 
@@ -262,14 +268,22 @@ class NERModelContext(ModelContext):
         self, serialized_features, max_seq_length
     ):
         name_to_features = {
-            "input_ids": tf.io.FixedLenFeature([max_seq_length], tf.int64),
-            "input_mask": tf.io.FixedLenFeature([max_seq_length], tf.int64),
-            "segment_ids": tf.io.FixedLenFeature([max_seq_length], tf.int64),
-            "label_ids": tf.io.FixedLenFeature([max_seq_length], tf.int64),
+            "input_ids": self.tf.io.FixedLenFeature(
+                [max_seq_length], self.tf.int64
+            ),
+            "input_mask": self.tf.io.FixedLenFeature(
+                [max_seq_length], self.tf.int64
+            ),
+            "segment_ids": self.tf.io.FixedLenFeature(
+                [max_seq_length], self.tf.int64
+            ),
+            "label_ids": self.tf.io.FixedLenFeature(
+                [max_seq_length], self.tf.int64
+            ),
         }
 
         def _decode_record(record):
-            example = tf.io.parse_single_example(record, name_to_features)
+            example = self.tf.io.parse_single_example(record, name_to_features)
             features = {}
             features["input_ids"] = example["input_ids"]
             features["input_mask"] = example["input_mask"]
@@ -277,7 +291,7 @@ class NERModelContext(ModelContext):
 
             return features, example["label_ids"]
 
-        d = tf.data.Dataset.from_tensor_slices(serialized_features)
+        d = self.tf.data.Dataset.from_tensor_slices(serialized_features)
         d = d.map(_decode_record, num_parallel_calls=4)
         count = d.reduce(0, lambda x, _: x + 1)
         return d, count.numpy()
@@ -292,8 +306,8 @@ class NERModelContext(ModelContext):
                 )
 
             def create_int_feature(values):
-                f = tf.train.Feature(
-                    int64_list=tf.train.Int64List(value=list(values))
+                f = self.tf.train.Feature(
+                    int64_list=self.tf.train.Int64List(value=list(values))
                 )
                 return f
 
@@ -307,13 +321,13 @@ class NERModelContext(ModelContext):
             )
             record_feature["label_ids"] = create_int_feature(feature.label_ids)
 
-            tf_example = tf.train.Example(
-                features=tf.train.Features(feature=record_feature)
+            tf_example = self.tf.train.Example(
+                features=self.tf.train.Features(feature=record_feature)
             )
             serialized_example = tf_example.SerializeToString()
 
             all_examples.append(serialized_example)
-        return tf.convert_to_tensor(all_examples, tf.string)
+        return self.tf.convert_to_tensor(all_examples, self.tf.string)
 
     def get_dataset(
         self, data, tokenizer, pad_token_label_id, batch_size, mode
@@ -393,8 +407,8 @@ class NERModelContext(ModelContext):
             )
 
         with config["strategy"].scope():
-            loss_fct = tf.keras.losses.SparseCategoricalCrossentropy(
-                reduction=tf.keras.losses.Reduction.NONE
+            loss_fct = self.tf.keras.losses.SparseCategoricalCrossentropy(
+                reduction=self.tf.keras.losses.Reduction.NONE
             )
             optimizer = create_optimizer(
                 config["learning_rate"],
@@ -403,11 +417,13 @@ class NERModelContext(ModelContext):
             )
 
             if config["use_fp16"]:
-                optimizer = tf.keras.mixed_precision.experimental.LossScaleOptimizer(
+                optimizer = self.tf.keras.mixed_precision.experimental.LossScaleOptimizer(
                     optimizer, "dynamic"
                 )
 
-            loss_metric = tf.keras.metrics.Mean(name="loss", dtype=tf.float32)
+            loss_metric = self.tf.keras.metrics.Mean(
+                name="loss", dtype=self.tf.float32
+            )
             gradient_accumulator = GradientAccumulator()
 
         self.logger.info("***** Running training *****")
@@ -429,7 +445,7 @@ class NERModelContext(ModelContext):
 
         self.logger.debug(model.summary())
 
-        @tf.function
+        @self.tf.function
         def apply_gradients():
             grads_and_vars = []
 
@@ -448,7 +464,7 @@ class NERModelContext(ModelContext):
             optimizer.apply_gradients(grads_and_vars, config["max_grad_norm"])
             gradient_accumulator.reset()
 
-        @tf.function
+        @self.tf.function
         def train_step(train_features, train_labels):
             def step_fn(train_features, train_labels):
                 inputs = {
@@ -464,17 +480,19 @@ class NERModelContext(ModelContext):
                         else None
                     )
 
-                with tf.GradientTape() as tape:
+                with self.tf.GradientTape() as tape:
                     logits = model(train_features["input_ids"], **inputs)[0]
-                    logits = tf.reshape(logits, (-1, len(labels) + 1))
-                    active_loss = tf.reshape(
+                    logits = self.tf.reshape(logits, (-1, len(labels) + 1))
+                    active_loss = self.tf.reshape(
                         train_features["input_mask"], (-1,)
                     )
-                    active_logits = tf.boolean_mask(logits, active_loss)
-                    train_labels = tf.reshape(train_labels, (-1,))
-                    active_labels = tf.boolean_mask(train_labels, active_loss)
+                    active_logits = self.tf.boolean_mask(logits, active_loss)
+                    train_labels = self.tf.reshape(train_labels, (-1,))
+                    active_labels = self.tf.boolean_mask(
+                        train_labels, active_loss
+                    )
                     cross_entropy = loss_fct(active_labels, active_logits)
-                    loss = tf.reduce_sum(cross_entropy) * (
+                    loss = self.tf.reduce_sum(cross_entropy) * (
                         1.0 / train_batch_size
                     )
                     grads = tape.gradient(loss, model.trainable_variables)
@@ -487,7 +505,7 @@ class NERModelContext(ModelContext):
                 step_fn, args=(train_features, train_labels)
             )
             mean_loss = config["strategy"].reduce(
-                tf.distribute.ReduceOp.MEAN, per_example_losses, axis=0
+                self.tf.distribute.ReduceOp.MEAN, per_example_losses, axis=0
             )
 
             return mean_loss
@@ -561,8 +579,8 @@ class NERModelContext(ModelContext):
         labels = config["ner_tags"]
         preds = None
         num_eval_steps = math.ceil(num_eval_examples / eval_batch_size)
-        loss_fct = tf.keras.losses.SparseCategoricalCrossentropy(
-            reduction=tf.keras.losses.Reduction.NONE
+        loss_fct = self.tf.keras.losses.SparseCategoricalCrossentropy(
+            reduction=self.tf.keras.losses.Reduction.NONE
         )
         loss = 0.0
 
@@ -585,22 +603,30 @@ class NERModelContext(ModelContext):
 
             with config["strategy"].scope():
                 logits = model(eval_features["input_ids"], **inputs)[0]
-                tmp_logits = tf.reshape(logits, (-1, len(labels) + 1))
-                active_loss = tf.reshape(eval_features["input_mask"], (-1,))
-                active_logits = tf.boolean_mask(tmp_logits, active_loss)
-                tmp_eval_labels = tf.reshape(eval_labels, (-1,))
-                active_labels = tf.boolean_mask(tmp_eval_labels, active_loss)
+                tmp_logits = self.tf.reshape(logits, (-1, len(labels) + 1))
+                active_loss = self.tf.reshape(
+                    eval_features["input_mask"], (-1,)
+                )
+                active_logits = self.tf.boolean_mask(tmp_logits, active_loss)
+                tmp_eval_labels = self.tf.reshape(eval_labels, (-1,))
+                active_labels = self.tf.boolean_mask(
+                    tmp_eval_labels, active_loss
+                )
                 cross_entropy = loss_fct(active_labels, active_logits)
-                loss += tf.reduce_sum(cross_entropy) * (1.0 / eval_batch_size)
+                loss += self.tf.reduce_sum(cross_entropy) * (
+                    1.0 / eval_batch_size
+                )
 
             if preds is None:
                 preds = logits.numpy()
                 label_ids = eval_labels.numpy()
             else:
-                preds = np.append(preds, logits.numpy(), axis=0)
-                label_ids = np.append(label_ids, eval_labels.numpy(), axis=0)
+                preds = self.np.append(preds, logits.numpy(), axis=0)
+                label_ids = self.np.append(
+                    label_ids, eval_labels.numpy(), axis=0
+                )
 
-        preds = np.argmax(preds, axis=2)
+        preds = self.np.argmax(preds, axis=2)
         y_pred = [[] for _ in range(label_ids.shape[0])]
         y_true = [[] for _ in range(label_ids.shape[0])]
         loss = loss / num_eval_steps
@@ -624,8 +650,8 @@ class NERModelContext(ModelContext):
         config["n_device"] = self.parent.config.n_device
         labels = config["ner_tags"]
         preds = None
-        loss_fct = tf.keras.losses.SparseCategoricalCrossentropy(
-            reduction=tf.keras.losses.Reduction.NONE
+        loss_fct = self.tf.keras.losses.SparseCategoricalCrossentropy(
+            reduction=self.tf.keras.losses.Reduction.NONE
         )
         loss = 0.0
 
@@ -648,22 +674,30 @@ class NERModelContext(ModelContext):
 
             with config["strategy"].scope():
                 logits = model(test_features["input_ids"], **inputs)[0]
-                tmp_logits = tf.reshape(logits, (-1, len(labels) + 1))
-                active_loss = tf.reshape(test_features["input_mask"], (-1,))
-                active_logits = tf.boolean_mask(tmp_logits, active_loss)
-                tmp_test_labels = tf.reshape(test_labels, (-1,))
-                active_labels = tf.boolean_mask(tmp_test_labels, active_loss)
+                tmp_logits = self.tf.reshape(logits, (-1, len(labels) + 1))
+                active_loss = self.tf.reshape(
+                    test_features["input_mask"], (-1,)
+                )
+                active_logits = self.tf.boolean_mask(tmp_logits, active_loss)
+                tmp_test_labels = self.tf.reshape(test_labels, (-1,))
+                active_labels = self.tf.boolean_mask(
+                    tmp_test_labels, active_loss
+                )
                 cross_entropy = loss_fct(active_labels, active_logits)
-                loss += tf.reduce_sum(cross_entropy) * (1.0 / test_batch_size)
+                loss += self.tf.reduce_sum(cross_entropy) * (
+                    1.0 / test_batch_size
+                )
 
             if preds is None:
                 preds = logits.numpy()
                 label_ids = test_labels.numpy()
             else:
-                preds = np.append(preds, logits.numpy(), axis=0)
-                label_ids = np.append(label_ids, test_labels.numpy(), axis=0)
+                preds = self.np.append(preds, logits.numpy(), axis=0)
+                label_ids = self.np.append(
+                    label_ids, test_labels.numpy(), axis=0
+                )
 
-        preds = np.argmax(preds, axis=2)
+        preds = self.np.argmax(preds, axis=2)
         y_pred = [[] for _ in range(label_ids.shape[0])]
 
         for i in range(label_ids.shape[0]):
@@ -692,7 +726,9 @@ class NERModelContext(ModelContext):
                 if self.parent.config.cache_dir
                 else None,
             )
-            self.model.layers[-1].activation = tf.keras.activations.softmax
+            self.model.layers[
+                -1
+            ].activation = self.tf.keras.activations.softmax
 
         train_batch_size = (
             self.parent.config.per_device_train_batch_size
@@ -758,10 +794,9 @@ class NERModelContext(ModelContext):
             checkpoints = list(
                 os.path.dirname(c)
                 for c in sorted(
-                    glob.glob(
-                        config["output_dir"] + "/**/" + TF2_WEIGHTS_NAME,
-                        recursive=True,
-                    ),
+                    pathlib(
+                        config["output_dir"] + "/**/" + TF2_WEIGHTS_NAME
+                    ).glob(recursive=True,),
                     key=lambda f: int("".join(filter(str.isdigit, f)) or -1),
                 )
             )
@@ -802,7 +837,7 @@ class NERModelContext(ModelContext):
             config["output_dir"], "accuracy_results.txt"
         )
         # create the report and save in output_dir
-        with tf.io.gfile.GFile(output_eval_file, "w") as writer:
+        with self.tf.io.gfile.GFile(output_eval_file, "w") as writer:
             for res in results:
                 for key, val in res.items():
                     if "loss" in key:
@@ -837,7 +872,7 @@ class NERModelContext(ModelContext):
         )
         async for record in records:
             sentence = record.features([self.parent.config.words.NAME])
-            df = pd.DataFrame(sentence, index=[0])
+            df = self.pd.DataFrame(sentence, index=[0])
             test_dataset, num_test_examples = self.get_dataset(
                 df,
                 tokenizer,
