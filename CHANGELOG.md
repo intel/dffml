@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tests for default configs instantiation.
 - Example ffmpeg operation.
 - Operations to deploy docker container on receving github webhook.
-- New use case `Redeploying dataflow on webhook reception` in docs.
+- New use case `Redeploying dataflow on webhook` in docs.
 ### Changed
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
