@@ -63,7 +63,7 @@ We'll be using operations from ``dffml_operations_deploy`` and ``dffml_feature_g
 
 .. code-block:: console
 
-    $ pip install dffml_operations_deploy dffml_feature_git
+    $ pip install dffml-operations-deploy dffml_feature_git
 
 Setup a http server in ``ffmpeg/deploy/webhook``, to receive webhook and redploy ffmpeg
 
