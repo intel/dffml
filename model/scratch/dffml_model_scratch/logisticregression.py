@@ -1,7 +1,6 @@
 import pathlib
+import importlib
 from typing import AsyncIterator, Tuple, Any
-
-import numpy as np
 
 from dffml import (
     config,
@@ -90,8 +89,9 @@ class LogisticRegression(SimpleModel):
 
     def __init__(self, config):
         super().__init__(config)
-        self.xData = np.array([])
-        self.yData = np.array([])
+        self.np = importlib.import_module("numpy")
+        self.xData = self.np.array([])
+        self.yData = self.np.array([])
 
     @property
     def separating_line(self):
@@ -139,11 +139,11 @@ class LogisticRegression(SimpleModel):
         # epochs' loop: 1500 epochs
         for _ in range(0, 1500):
             z = w * x + b
-            val = -np.multiply(y, z)
-            num = -np.multiply(y, np.exp(val))
-            den = 1 + np.exp(val)
+            val = -self.np.multiply(y, z)
+            num = -self.np.multiply(y, self.np.exp(val))
+            den = 1 + self.np.exp(val)
             f = num / den  # f is gradient dJ for each data point
-            gradJ = np.sum(x * f)  # total dJ
+            gradJ = self.np.sum(x * f)  # total dJ
             w = w - learning_rate * gradJ / len(x)  # SAG subtraction
         # Accuracy calculation
         error = 0  # incorrect values
@@ -165,8 +165,10 @@ class LogisticRegression(SimpleModel):
             feature_data = record.features(
                 self.features + [self.config.predict.NAME]
             )
-            self.xData = np.append(self.xData, feature_data[self.features[0]])
-            self.yData = np.append(
+            self.xData = self.np.append(
+                self.xData, feature_data[self.features[0]]
+            )
+            self.yData = self.np.append(
                 self.yData, feature_data[self.config.predict.NAME]
             )
         self.separating_line = self.best_separating_line()
