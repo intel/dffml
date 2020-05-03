@@ -45,7 +45,7 @@ Serving the dataflow on port 8080
     tutorial. See documentation on HTTP API
     :doc:`/plugins/service/http/security` for more information.
 
-Now from another terminal,we can send post requests to the dataflow running at this port.
+Now from another terminal, we can send post requests to the dataflow running at this port.
 
 .. code-block:: console
 
@@ -56,7 +56,6 @@ Now from another terminal,we can send post requests to the dataflow running at t
   {"value":"PATH_TO_OUTPUT","definition":"output_file"},
   {"value":1920,"definition":"resolution"}]}' \
   http://localhost:8080/ffmpeg
-
 
 
 
