@@ -3,12 +3,10 @@ Uses Tensorflow to create a generic DNN which learns on all of the features in a
 record.
 """
 import os
+import importlib
 from typing import Dict, Any, AsyncIterator
 
-import numpy as np
-
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-import tensorflow as tf
 
 from dffml.base import config
 from dffml.record import Record
@@ -33,6 +31,8 @@ class DNNRegressionModelContext(TensorflowModelContext):
 
     def __init__(self, parent) -> None:
         super().__init__(parent)
+        self.tf = importlib.import_module("tensorflow")
+        self.np = importlib.import_module("numpy")
         self.model_dir_path = self._model_dir_path()
         self.all_features = self.parent.config.features.names() + [
             self.parent.config.predict.NAME
@@ -48,7 +48,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
             return self._model
         self.logger.debug("Loading model ")
 
-        self._model = tf.compat.v1.estimator.DNNRegressor(
+        self._model = self.tf.compat.v1.estimator.DNNRegressor(
             feature_columns=list(self.feature_columns.values()),
             hidden_units=self.parent.config.hidden,
             model_dir=self.model_dir_path,
@@ -63,12 +63,12 @@ class DNNRegressionModelContext(TensorflowModelContext):
         async for record in sources.with_features(self.all_features):
             for feature, results in record.features(self.features).items():
 
-                x_cols[feature].append(np.array(results))
+                x_cols[feature].append(self.np.array(results))
             y_cols.append(record.feature(self.parent.config.predict.NAME))
 
-        y_cols = np.array(y_cols)
+        y_cols = self.np.array(y_cols)
         for feature in x_cols:
-            x_cols[feature] = np.array(x_cols[feature])
+            x_cols[feature] = self.np.array(x_cols[feature])
 
         return x_cols, y_cols
 
@@ -89,7 +89,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
-        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
+        input_fn = self.tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
             batch_size=batch_size,
@@ -115,7 +115,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
-        input_fn = tf.compat.v1.estimator.inputs.numpy_input_fn(
+        input_fn = self.tf.compat.v1.estimator.inputs.numpy_input_fn(
             x_cols,
             y_cols,
             batch_size=batch_size,

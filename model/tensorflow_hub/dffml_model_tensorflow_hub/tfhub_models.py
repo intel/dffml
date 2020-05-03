@@ -3,10 +3,7 @@
 """
 Description of what this model does
 """
-
-import numpy as np
-import tensorflow as tf
-import tensorflow_hub as hub
+import importlib
 
 from .tfhub_utils import FullTokenizer
 
@@ -15,6 +12,7 @@ def bert_tokenizer(text, max_seq_length, vocab, do_lower_case=False):
     """
     Convert input text to bert format.
     """
+    np = importlib.import_module("numpy")
     tokenizer = FullTokenizer(vocab, do_lower_case)
     input_ids = []
     input_masks = []
@@ -43,12 +41,14 @@ def bert_tokenizer(text, max_seq_length, vocab, do_lower_case=False):
 
 class Embedder:
     def __init__(self, config):
+        self.tf = importlib.import_module("tensorflow")
+        self.hub = importlib.import_module("tensorflow_hub")
         self.config = config
         self.mainLayer = self._mainLayer()
         self.inputs, self.outputs = self._model()
 
     def _mainLayer(self):
-        mainLayer = hub.KerasLayer(
+        mainLayer = self.hub.KerasLayer(
             self.config.model_path, trainable=self.config.trainable
         )
         if self.config.embedType in ["bert"]:
@@ -62,27 +62,27 @@ class Embedder:
 
     def _model(self):
         if self.config.embedType in ["bert"]:
-            input_word_ids = tf.keras.layers.Input(
+            input_word_ids = self.tf.keras.layers.Input(
                 shape=(self.config.max_seq_length,),
-                dtype=tf.int32,
+                dtype=self.tf.int32,
                 name="input_word_ids",
             )
-            input_mask = tf.keras.layers.Input(
+            input_mask = self.tf.keras.layers.Input(
                 shape=(self.config.max_seq_length,),
-                dtype=tf.int32,
+                dtype=self.tf.int32,
                 name="input_mask",
             )
-            segment_ids = tf.keras.layers.Input(
+            segment_ids = self.tf.keras.layers.Input(
                 shape=(self.config.max_seq_length,),
-                dtype=tf.int32,
+                dtype=self.tf.int32,
                 name="segment_ids",
             )
 
             inputs = [input_word_ids, input_mask, segment_ids]
             outputs, _ = self.mainLayer(inputs)
         else:
-            inputs = tf.keras.layers.Input(
-                shape=[], name="input_text", dtype=tf.string
+            inputs = self.tf.keras.layers.Input(
+                shape=[], name="input_text", dtype=self.tf.string
             )
             outputs = self.mainLayer(inputs)
         return inputs, outputs
@@ -99,16 +99,18 @@ class ClassificationModel(Embedder):
                 outputs = layer(outputs)
         else:
             # default classifier
-            outputs = tf.keras.layers.Dense(256, activation="relu")(outputs)
-            outputs = tf.keras.layers.Dense(
+            outputs = self.tf.keras.layers.Dense(256, activation="relu")(
+                outputs
+            )
+            outputs = self.tf.keras.layers.Dense(
                 len(self.config.classifications), activation="softmax"
             )(outputs)
 
-        model = tf.keras.models.Model(inputs=self.inputs, outputs=outputs)
+        model = self.tf.keras.models.Model(inputs=self.inputs, outputs=outputs)
         if self.config.embedType == "bert":
             # save vocab_file and `do_lower_case` variable
-            model.vocab_file = tf.saved_model.Asset(self.vocab_file)
-            model.do_lower_case = tf.Variable(
+            model.vocab_file = self.tf.saved_model.Asset(self.vocab_file)
+            model.do_lower_case = self.tf.Variable(
                 self.do_lower_case, trainable=False
             )
         return model

@@ -6,11 +6,10 @@ Base class for Scikit models
 import json
 import hashlib
 import pathlib
+import importlib
+
 from typing import AsyncIterator, Tuple, Any, NamedTuple
 
-import joblib
-import numpy as np
-import pandas as pd
 from sklearn.metrics import silhouette_score, mutual_info_score
 
 from dffml.record import Record
@@ -30,6 +29,9 @@ class ScikitConfig(ModelConfig, NamedTuple):
 class ScikitContext(ModelContext):
     def __init__(self, parent):
         super().__init__(parent)
+        self.pd = importlib.import_module("pandas")
+        self.np = importlib.import_module("numpy")
+        self.joblib = importlib.import_module("joblib")
         self.features = self.applicable_features(self.parent.config.features)
         self._features_hash = self._feature_predict_hash()
         self.clf = None
@@ -60,7 +62,7 @@ class ScikitContext(ModelContext):
 
     async def __aenter__(self):
         if self._filepath.is_file():
-            self.clf = joblib.load(str(self._filepath))
+            self.clf = self.joblib.load(str(self._filepath))
         else:
             config = self.parent.config._asdict()
             del config["directory"]
@@ -81,12 +83,12 @@ class ScikitContext(ModelContext):
                 self.features + [self.parent.config.predict.NAME]
             )
             data.append(feature_data)
-        df = pd.DataFrame(data)
-        xdata = np.array(df.drop([self.parent.config.predict.NAME], 1))
-        ydata = np.array(df[self.parent.config.predict.NAME])
+        df = self.pd.DataFrame(data)
+        xdata = self.np.array(df.drop([self.parent.config.predict.NAME], 1))
+        ydata = self.np.array(df[self.parent.config.predict.NAME])
         self.logger.info("Number of input records: {}".format(len(xdata)))
         self.clf.fit(xdata, ydata)
-        joblib.dump(self.clf, str(self._filepath))
+        self.joblib.dump(self.clf, str(self._filepath))
 
     async def accuracy(self, sources: Sources) -> Accuracy:
         if not self._filepath.is_file():
@@ -97,9 +99,9 @@ class ScikitContext(ModelContext):
                 self.features + [self.parent.config.predict.NAME]
             )
             data.append(feature_data)
-        df = pd.DataFrame(data)
-        xdata = np.array(df.drop([self.parent.config.predict.NAME], 1))
-        ydata = np.array(df[self.parent.config.predict.NAME])
+        df = self.pd.DataFrame(data)
+        xdata = self.np.array(df.drop([self.parent.config.predict.NAME], 1))
+        ydata = self.np.array(df[self.parent.config.predict.NAME])
         self.logger.debug("Number of input records: {}".format(len(xdata)))
         self.confidence = self.clf.score(xdata, ydata)
         self.logger.debug("Model Accuracy: {}".format(self.confidence))
@@ -112,8 +114,8 @@ class ScikitContext(ModelContext):
             raise ModelNotTrained("Train model before prediction.")
         async for record in records:
             feature_data = record.features(self.features)
-            df = pd.DataFrame(feature_data, index=[0])
-            predict = np.array(df)
+            df = self.pd.DataFrame(feature_data, index=[0])
+            predict = self.np.array(df)
             self.logger.debug(
                 "Predicted Value of {} for {}: {}".format(
                     self.parent.config.predict,
@@ -131,7 +133,7 @@ class ScikitContext(ModelContext):
 class ScikitContextUnsprvised(ScikitContext):
     async def __aenter__(self):
         if self._filepath.is_file():
-            self.clf = joblib.load(str(self._filepath))
+            self.clf = self.joblib.load(str(self._filepath))
         else:
             config = self.parent.config._asdict()
             del config["directory"]
@@ -146,11 +148,11 @@ class ScikitContextUnsprvised(ScikitContext):
         async for record in sources.with_features(self.features):
             feature_data = record.features(self.features)
             data.append(feature_data)
-        df = pd.DataFrame(data)
-        xdata = np.array(df)
+        df = self.pd.DataFrame(data)
+        xdata = self.np.array(df)
         self.logger.info("Number of input records: {}".format(len(xdata)))
         self.clf.fit(xdata)
-        joblib.dump(self.clf, str(self._filepath))
+        self.joblib.dump(self.clf, str(self._filepath))
 
     async def accuracy(self, sources: Sources) -> Accuracy:
         if not self._filepath.is_file():
@@ -167,11 +169,11 @@ class ScikitContextUnsprvised(ScikitContext):
         async for record in sources.with_features(self.features):
             feature_data = record.features(self.features + target)
             data.append(feature_data)
-        df = pd.DataFrame(data)
-        xdata = np.array(df.drop(target, axis=1))
+        df = self.pd.DataFrame(data)
+        xdata = self.np.array(df.drop(target, axis=1))
         self.logger.debug("Number of input records: {}".format(len(xdata)))
         if target:
-            ydata = np.array(df[target]).flatten()
+            ydata = self.np.array(df[target]).flatten()
             if hasattr(self.clf, "predict"):
                 # xdata can be training data or unseen data
                 # inductive clusterer with ground truth
@@ -217,7 +219,7 @@ class ScikitContextUnsprvised(ScikitContext):
                 )
 
                 def yield_labels():
-                    for label in self.clf.labels_.astype(np.int):
+                    for label in self.clf.labels_.astype(self.np.int):
                         yield label
 
                 labels = yield_labels()
@@ -225,8 +227,8 @@ class ScikitContextUnsprvised(ScikitContext):
 
         async for record in records:
             feature_data = record.features(self.features)
-            df = pd.DataFrame(feature_data, index=[0])
-            predict = np.array(df)
+            df = self.pd.DataFrame(feature_data, index=[0])
+            predict = self.np.array(df)
             prediction = predictor(predict)
             self.logger.debug(
                 "Predicted cluster for {}: {}".format(predict, prediction)
