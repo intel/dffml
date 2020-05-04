@@ -1,6 +1,9 @@
 Dataflow
 ========
 
+The following documentation explains how to configure and deploy DataFlows
+via the HTTP service.
+
 HttpChannelConfig
 -----------------
 
