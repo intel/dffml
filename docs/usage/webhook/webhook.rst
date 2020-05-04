@@ -33,7 +33,9 @@ and in comment section of ``Dockerfile``.
 The additional flags are:
 
     - -d : start the container in detached mode
-    - -v : map the directory ``~/Videos`` in host to ``/usr/src/app/data`` in container
+- ``-v ~/Videos:/usr/src/app/data``
+
+  - Map the directory ``~/Videos`` in host to ``/usr/src/app/data`` in container
 
 .. note::
     The image built after pulling the contaier will be taged ``USERNAME/REPONAME``,where USERNAME and REPONAME
@@ -155,4 +157,3 @@ to
 
 on pushing the changes to our repo,the container will be redeployed.To verify this run
 ``docker ps`` and check the up time of the container.
-
