@@ -62,7 +62,7 @@ to verify that the container is working.
 Dataflow for redploying
 -----------------------
 
-We'll be using operations from ``dffml_operations_deploy`` and ``dffml_feature_git``.
+We'll be using operations from ``dffml-operations-deploy`` and ``dffml-feature-git``.
 
 .. code-block:: console
 
