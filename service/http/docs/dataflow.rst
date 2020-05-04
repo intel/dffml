@@ -3,6 +3,7 @@ Dataflow
 
 HttpChannelConfig
 -----------------
+
     - ``asynchronous: bool`` 
         Unused right now but will be accessible over a websocket in the future 
         and used for long running flows.
