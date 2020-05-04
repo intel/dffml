@@ -21,7 +21,7 @@ HttpChannelConfig
                     to definition mappings
                     eg:
 
-                    .. code-block:: console
+.. code-block:: json
 
                         {
                         "insecure-package":
