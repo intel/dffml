@@ -176,3 +176,41 @@ to the setup.py file
 
 This will add the newly created source to the dffml entrypoints and hence can
 also be used in CLI.
+
+Install your package
+--------------------
+
+To install your new source run
+
+.. code-block:: console
+
+    $ python3 -m pip install --prefix=~/.local -e .
+
+CLI Usage
+---------
+
+To use your newly created source in CLI.
+
+.. code-block:: console
+
+    $ cat > data.ini << EOF
+    [dffml]
+    third_party = yes
+    maintained = true
+
+    [python]
+    third_party = no
+    maintained = true
+    EOF
+
+    $ dffml list records -sources data=ini -source-filename data.ini
+    dffml
+    third_party                   True
+    maintained                    True
+    Predictions
+    Undetermined
+    python
+    third_party                   False
+    maintained                    True
+    Predictions
+    Undetermined
