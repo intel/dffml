@@ -158,7 +158,7 @@ To run the tests
 
     $ python setup.py test -s tests.test_source
 
-This will look into the file test_source and run all the tests.
+This will look into the file test_source.py and run all the tests.
 
 Add the entrypoint
 ------------------
