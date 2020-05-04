@@ -38,7 +38,7 @@ The additional flags are:
   - Map the directory ``~/Videos`` in host to ``/usr/src/app/data`` in container
 
 .. note::
-    The image built after pulling the contaier will be taged ``USERNAME/REPONAME``,where USERNAME and REPONAME
+    The image built after pulling the contaier will be taged ``USERNAME/REPONAME``, where USERNAME and REPONAME
     are gathered from the github html url,received in the webhook.
 
 We can run the container and sent a post request like we did in :ref:`usage_ffmpeg_deploy_serve`
