@@ -67,13 +67,14 @@ Create Source
 .. literalinclude:: ../../../dffml/source/ini.py
     :lines: 18-24
 
-Here we have added the entrypoint to INISource class as "ini". The new Source should inherit
-from FileSource and MemorySource as it abstracts the saving and loading of files so that
-we only have to implement the load_fd and dump_fd methods. It takes care of decompression
-on load and re-compression on save if the files extension signifies that it's compressed.
-We inherit from MemorySource because it implements the methods required by a
-:py:class:`Source <dffml.source.source.BaseSourceContext>` provided that self.mem contains
-Record objects.
+Here we have added the entrypoint to INISource class as "ini". Do note that "ini" source
+already exist in dffml list of sources, so you may want to call your own source as "myini".
+The new Source should inherit from FileSource and MemorySource as it abstracts the saving
+and loading of files so that we only have to implement the load_fd and dump_fd methods.
+It takes care of decompression on load and re-compression on save if the files extension
+signifies that it's compressed. We inherit from MemorySource because it implements the
+methods required by a :py:class:`Source <dffml.source.source.BaseSourceContext>` provided
+that self.mem contains Record objects.
 
 Set the CONFIG variable to the INISourceConfig which we created earlier. Setting
 the CONFIG variable is important because the instantiated version of CONFIG is accessible
@@ -209,13 +210,21 @@ To use your newly created source in CLI.
     maintained = true
     EOF
     $ dffml list records -sources data=myini -source-filename data.ini
-    dffml
-    third_party                   True
-    maintained                    True
-    Predictions
-    Undetermined
-    python
-    third_party                   False
-    maintained                    True
-    Predictions
-    Undetermined
+    [
+        {
+            "extra": {},
+            "features": {
+                "maintained": true,
+                "third_party": true
+            },
+            "key": "dffml"
+        },
+        {
+            "extra": {},
+            "features": {
+                "maintained": true,
+                "third_party": false
+            },
+            "key": "python"
+        }
+    ]
