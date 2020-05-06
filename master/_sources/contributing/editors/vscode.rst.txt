@@ -9,10 +9,10 @@ details about debugging configurations for Python apps in VSCode, see this
 If you are planning on contributing to the project, or track your debugging
 process, it is a better idea to have your own copy of DFFML on your Github
 account. For more details about setting up your git repository,
-read :doc:`git` page.
+read :doc:`../git` page.
 
 After setting up the version controlling configurations, you need to install
-DFFML. See :doc:`dev_env` page for installing details in the development mode.
+DFFML. See :doc:`../dev_env` page for installing details in the development mode.
 
 Open the VSCode app, on the menu bar, click on ``File`` then choose
 ``Open Folder``. Locate DFFML folder and open it. Inside the folder in VSCode,

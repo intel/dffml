@@ -1,0 +1,366 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Cli Cli &mdash; DFFML 0.3.7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Cli Ml" href="ml.html" />
+    <link rel="prev" title="Cli List" href="list.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../noasync.html">High Level (noasync)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../version.html">Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Cli</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dataflow.html">Cli Dataflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html">Cli Config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list.html">Cli List</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Cli Cli</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ml.html">Cli Ml</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Cli</a> &raquo;</li>
+        
+      <li>Cli Cli</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/api/cli/cli.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-dffml.cli.cli">
+<span id="cli-cli"></span><h1>Cli Cli<a class="headerlink" href="#module-dffml.cli.cli" title="Permalink to this headline">¶</a></h1>
+<p>Command line interface evaluates packages given their source URLs</p>
+<dl class="py class">
+<dt id="dffml.cli.cli.CLI">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">CLI</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#CLI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.CLI" title="Permalink to this definition">¶</a></dt>
+<dd><p>CLI interface for dffml</p>
+<dl class="py attribute">
+<dt id="dffml.cli.cli.CLI.accuracy">
+<code class="sig-name descname">accuracy</code><a class="headerlink" href="#dffml.cli.cli.CLI.accuracy" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="ml.html#dffml.cli.ml.Accuracy" title="dffml.cli.ml.Accuracy"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.cli.ml.Accuracy</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="dffml.cli.cli.CLI.edit">
+<code class="sig-name descname">edit</code><a class="headerlink" href="#dffml.cli.cli.CLI.edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.cli.Edit" title="dffml.cli.cli.Edit"><code class="xref py py-class docutils literal notranslate"><span class="pre">Edit</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="dffml.cli.cli.CLI.export">
+<code class="sig-name descname">export</code><a class="headerlink" href="#dffml.cli.cli.CLI.export" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.cli.Export" title="dffml.cli.cli.Export"><code class="xref py py-class docutils literal notranslate"><span class="pre">Export</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="dffml.cli.cli.CLI.merge">
+<code class="sig-name descname">merge</code><a class="headerlink" href="#dffml.cli.cli.CLI.merge" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.cli.Merge" title="dffml.cli.cli.Merge"><code class="xref py py-class docutils literal notranslate"><span class="pre">Merge</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="dffml.cli.cli.CLI.predict">
+<code class="sig-name descname">predict</code><a class="headerlink" href="#dffml.cli.cli.CLI.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="ml.html#dffml.cli.ml.Predict" title="dffml.cli.ml.Predict"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.cli.ml.Predict</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="dffml.cli.cli.CLI.service">
+<code class="sig-name descname">service</code><a class="headerlink" href="#dffml.cli.cli.CLI.service" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">services.&lt;locals&gt;.Service</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="dffml.cli.cli.CLI.train">
+<code class="sig-name descname">train</code><a class="headerlink" href="#dffml.cli.cli.CLI.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="ml.html#dffml.cli.ml.Train" title="dffml.cli.ml.Train"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.cli.ml.Train</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="dffml.cli.cli.CLI.version">
+<code class="sig-name descname">version</code><a class="headerlink" href="#dffml.cli.cli.CLI.version" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.cli.Version" title="dffml.cli.cli.Version"><code class="xref py py-class docutils literal notranslate"><span class="pre">Version</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dffml.cli.cli.Edit">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">Edit</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#Edit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.Edit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Edit each specified record</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="dffml.cli.cli.Export">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">Export</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#Export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.Export" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exports records</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="dffml.cli.cli.Import">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">Import</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#Import"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.Import" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imports records</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="dffml.cli.cli.ImportExportCMD">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">ImportExportCMD</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#ImportExportCMD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.ImportExportCMD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shared import export arguments</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="dffml.cli.cli.Merge">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">Merge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#Merge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.Merge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge record data between sources</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="dffml.cli.cli.Version">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">Version</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#Version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.Version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print version and installed dffml packages</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dffml.cli.cli.services">
+<code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">services</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#services"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.services" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads dffml.services.cli entrypoint and creates a CMD class incorporating
+all of the loaded CLI versions of services as subcommands.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ml.html" class="btn btn-neutral float-right" title="Cli Ml" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="list.html" class="btn btn-neutral float-left" title="Cli List" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Intel
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

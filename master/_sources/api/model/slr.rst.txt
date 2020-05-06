@@ -1,0 +1,5 @@
+Model Slr
+=========
+
+.. automodule:: dffml.model.slr
+   :members:

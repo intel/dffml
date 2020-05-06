@@ -1,0 +1,377 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Util Entrypoint &mdash; DFFML 0.3.7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Util Tempdir" href="tempdir.html" />
+    <link rel="prev" title="Utilities" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../noasync.html">High Level (noasync)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../version.html">Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html">Cli</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Utilities</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Util Entrypoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tempdir.html">Util Tempdir</a></li>
+<li class="toctree-l3"><a class="reference internal" href="packaging.html">Util Packaging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="log.html">Util Log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="net.html">Networking Helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="skel.html">Util Skel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="asynctestcase.html">Util Asynctestcase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="asynchelper.html">Asyncio Helpers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data.html">Util Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="os.html">Util Os</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli/index.html">Util Cli</a></li>
+<li class="toctree-l3"><a class="reference internal" href="testing/index.html">Util Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config/index.html">Util Config</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.html">Utilities</a> &raquo;</li>
+        
+      <li>Util Entrypoint</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/api/util/entrypoint.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-dffml.util.entrypoint">
+<span id="util-entrypoint"></span><h1>Util Entrypoint<a class="headerlink" href="#module-dffml.util.entrypoint" title="Permalink to this headline">¶</a></h1>
+<p>Loader subclasses know how to load classes under their entry point which conform
+to their subclasses.</p>
+<dl class="py class">
+<dt id="dffml.util.entrypoint.Entrypoint">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.util.entrypoint.</code><code class="sig-name descname">Entrypoint</code><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the pkg_resources.iter_entry_points on the ENTRYPOINT of the class</p>
+<dl class="py method">
+<dt id="dffml.util.entrypoint.Entrypoint.load">
+<em class="property">classmethod </em><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loading</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads all installed loading and returns them as a list. Sources to be
+loaded should be registered to ENTRYPOINT via setuptools.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dffml.util.entrypoint.Entrypoint.load_dict">
+<em class="property">classmethod </em><code class="sig-name descname">load_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">to_load</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint.load_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint.load_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads each class tagged with the key it should be accessed by without
+instantiating it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dffml.util.entrypoint.Entrypoint.load_multiple">
+<em class="property">classmethod </em><code class="sig-name descname">load_multiple</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">to_load</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#Entrypoint.load_multiple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.entrypoint.Entrypoint.load_multiple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads each class requested without instantiating it.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt id="dffml.util.entrypoint.EntrypointNotFound">
+<em class="property">exception </em><code class="sig-prename descclassname">dffml.util.entrypoint.</code><code class="sig-name descname">EntrypointNotFound</code><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#EntrypointNotFound"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.entrypoint.EntrypointNotFound" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt id="dffml.util.entrypoint.MissingLabel">
+<em class="property">exception </em><code class="sig-prename descclassname">dffml.util.entrypoint.</code><code class="sig-name descname">MissingLabel</code><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#MissingLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.entrypoint.MissingLabel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="dffml.util.entrypoint.base_entry_point">
+<code class="sig-prename descclassname">dffml.util.entrypoint.</code><code class="sig-name descname">base_entry_point</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entrypoint</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#base_entry_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.entrypoint.base_entry_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Any class which subclasses from Entrypoint needs this decorator applied to
+it. The decorator sets the ENTRYPOINT and ENTRY_POINT_NAME properties on
+the class.</p>
+<p>This allows the load() classmethod to be called to load subclasses of the
+class being decorated. This is how the subclasses get loaded via the
+entry point system by calling BaseClass.load().</p>
+<p>ENTRY_POINT_NAME corresponds to the command line argument and config file
+reference to the class. It comes from all arguments after the entrypoint
+argument (first argument) is a list which would turn into an command line
+argument if it were joined with hyphens.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">base_entry_point</span><span class="p">,</span> <span class="n">Entrypoint</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s1">&#39;dffml.entrypoint&#39;</span><span class="p">,</span> <span class="s1">&#39;entrypoint&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">BaseEntrypointSubclassClass</span><span class="p">(</span><span class="n">Entrypoint</span><span class="p">):</span> <span class="k">pass</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">entry_points</span><span class="o">=</span><span class="p">{</span>
+    <span class="c1"># dffml.entrypoint = ENTRYPOINT</span>
+    <span class="s1">&#39;dffml.entrypoint&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;mylabel = module.path.to:EntrypointSubclassClass&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dffml.util.entrypoint.entrypoint">
+<code class="sig-prename descclassname">dffml.util.entrypoint.</code><code class="sig-name descname">entrypoint</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#entrypoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.entrypoint.entrypoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>If a class if going to be registered with setuptools as an entrypoint it
+must have the label it will be registered under associated with it via this
+decorator.</p>
+<p>This decorator sets the ENTRY_POINT_ORIG_LABEL and ENTRY_POINT_LABEL class
+proprieties to the same value, label.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">entrypoint</span><span class="p">,</span> <span class="n">Entrypoint</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@entrypoint</span><span class="p">(</span><span class="s1">&#39;mylabel&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">EntrypointSubclassClass</span><span class="p">(</span><span class="n">Entrypoint</span><span class="p">):</span> <span class="k">pass</span>
+</pre></div>
+</div>
+<p>In setup.py, EntrypointSubclassClass needs to have this decorator applied to
+it with label set to mylabel.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">entry_points</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;dffml.entrypoint&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;mylabel = module.path.to:EntrypointSubclassClass&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dffml.util.entrypoint.load">
+<code class="sig-prename descclassname">dffml.util.entrypoint.</code><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em>, <em class="sig-param"><span class="n">relative</span><span class="p">:</span> <span class="n">Union[str, pathlib.Path, None]</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; Iterator<span class="p">[</span>Any<span class="p">]</span><a class="reference internal" href="../../_modules/dffml/util/entrypoint.html#load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.entrypoint.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load objects given the entrypoint formatted path to the object. Roughly how
+the python stdlib docs say entrypoint loading works.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tempdir.html" class="btn btn-neutral float-right" title="Util Tempdir" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Intel
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+Model Model
+===========
+
+.. automodule:: dffml.model.model
+   :members:

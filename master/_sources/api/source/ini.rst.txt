@@ -1,0 +1,5 @@
+Source Ini
+==========
+
+.. automodule:: dffml.source.ini
+   :members:

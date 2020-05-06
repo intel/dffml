@@ -195,11 +195,11 @@
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">LOGGER</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s2">&quot;json&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="JSONSourceConfig"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.json.JSONSourceConfig">[docs]</a><span class="k">class</span> <span class="nc">JSONSourceConfig</span><span class="p">(</span><span class="n">FileSourceConfig</span><span class="p">):</span>
+<div class="viewcode-block" id="JSONSourceConfig"><a class="viewcode-back" href="../../../api/source/json.html#dffml.source.json.JSONSourceConfig">[docs]</a><span class="k">class</span> <span class="nc">JSONSourceConfig</span><span class="p">(</span><span class="n">FileSourceConfig</span><span class="p">):</span>
     <span class="k">pass</span>  <span class="c1"># pragma: no cov</span></div>
 
 
-<div class="viewcode-block" id="OpenJSONFile"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.json.OpenJSONFile">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="OpenJSONFile"><a class="viewcode-back" href="../../../api/source/json.html#dffml.source.json.OpenJSONFile">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">OpenJSONFile</span><span class="p">:</span>
     <span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]</span>
     <span class="n">active</span><span class="p">:</span> <span class="nb">int</span>
@@ -215,7 +215,7 @@
             <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="JSONSource"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.json.JSONSource">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;json&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="JSONSource"><a class="viewcode-back" href="../../../api/source/json.html#dffml.source.json.JSONSource">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;json&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">JSONSource</span><span class="p">(</span><span class="n">FileSource</span><span class="p">,</span> <span class="n">MemorySource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    JSONSource reads and write from a JSON file on open / close. Otherwise</span>
