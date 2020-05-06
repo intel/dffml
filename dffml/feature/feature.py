@@ -66,6 +66,8 @@ class Feature(abc.ABC, Entrypoint):
     ENTRYPOINT = "dffml.feature"
 
     def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
         self_tuple = (self.NAME, self.dtype(), self.length())
         other_tuple = (other.NAME, other.dtype(), other.length())
         return bool(self_tuple == other_tuple)
