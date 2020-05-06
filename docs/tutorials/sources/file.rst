@@ -162,7 +162,7 @@ To run the tests
 
 .. code-block:: console
 
-    $ python setup.py test -s tests.test_source
+    $ python3 setup.py test -s tests.test_source
 
 This will look into the file test_source.py and run all the tests.
 
