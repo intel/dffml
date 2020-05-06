@@ -7,6 +7,7 @@ feature project's feature URL.
 import abc
 import pydoc
 import asyncio
+import functools
 import collections
 from contextlib import AsyncExitStack
 from typing import List, Dict, Type, Any
@@ -66,7 +67,9 @@ class Feature(abc.ABC, Entrypoint):
     ENTRYPOINT = "dffml.feature"
 
     def __eq__(self, other):
-        if not isinstance(other, self.__class__):
+        if not all(
+            map(functools.partial(hasattr, other), ["NAME", "dtype", "length"])
+        ):
             return False
         self_tuple = (self.NAME, self.dtype(), self.length())
         other_tuple = (other.NAME, other.dtype(), other.length())
@@ -154,33 +157,34 @@ class Feature(abc.ABC, Entrypoint):
         pass
 
 
+class DefinedFeature(Feature):
+
+    LOGGER = LOGGER.getChild("DefFeature")
+
+    def __init__(self, dtype: Type = int, length: int = 1) -> None:
+        super().__init__()
+        self._dtype = dtype
+        self._length = length
+
+    def dtype(self) -> Type:
+        """
+        Models need to know a Feature's datatype.
+        """
+        return self._dtype
+
+    def length(self) -> int:
+        """
+        Models need to know a Feature's length, 1 means single value, more than
+        that is the length of the array calc returns.
+        """
+        return self._length
+
+
 def DefFeature(name, dtype, length):
-    class DefinedFeature(Feature):
 
-        LOGGER = LOGGER.getChild("DefFeature")
-
-        def __init__(
-            self, name: str = "", dtype: Type = int, length: int = 1
-        ) -> None:
-            super().__init__()
-            self.NAME = name
-            self._dtype = dtype
-            self._length = length
-
-        def dtype(self) -> Type:
-            """
-            Models need to know a Feature's datatype.
-            """
-            return self._dtype
-
-        def length(self) -> int:
-            """
-            Models need to know a Feature's length, 1 means single value, more than
-            that is the length of the array calc returns.
-            """
-            return self._length
-
-    return DefinedFeature(name=name, dtype=dtype, length=length)
+    return type("Feature" + name, (DefinedFeature, Feature), {"NAME": name})(
+        dtype=dtype, length=length
+    )
 
 
 class Features(collections.UserList):
