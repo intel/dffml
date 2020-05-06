@@ -208,7 +208,7 @@ To use your newly created source in CLI.
     third_party = no
     maintained = true
     EOF
-    $ dffml list records -sources data=ini -source-filename data.ini
+    $ dffml list records -sources data=myini -source-filename data.ini
     dffml
     third_party                   True
     maintained                    True
