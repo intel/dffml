@@ -906,8 +906,8 @@ class NERModelContext(ModelContext):
 @entrypoint("ner_tagger")
 class NERModel(Model):
     """
-    Implemented using ![HuggingFace Transformers](https://huggingface.co/transformers/index.html) Tensorflow based Models.
-    Description about pretrianed models can be found ![here](https://huggingface.co/transformers/pretrained_models.html)
+    Implemented using `HuggingFace Transformers <https://huggingface.co/transformers/index.html>`_ Tensorflow based Models.
+    Description about pretrianed models can be found `here <https://huggingface.co/transformers/pretrained_models.html>`_
 
     First we create the training and testing datasets
 
