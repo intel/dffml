@@ -36,5 +36,5 @@ HttpChannelConfig
     - ``path : str`` 
         Route in server.
 
-    - ``presentation : str`` 
+    - ``output_mode : str`` 
         how the output will be displayed.

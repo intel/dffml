@@ -92,7 +92,7 @@ Config
 
     $ cat > ./deploy/webhook/mc/http/webhook.yaml <<EOF
     path: /webhook/github
-    presentation: json
+    output_mode: json
     asynchronous: false
     input_mode: json:git_payload
     EOF

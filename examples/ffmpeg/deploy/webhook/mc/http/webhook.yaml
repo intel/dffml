@@ -1,4 +1,3 @@
 path: /webhook/github
-presentation: json
-asynchronous: false
+output_mode: json
 input_mode: json:git_payload

@@ -24,8 +24,9 @@ from dffml.df.memory import (
     MemoryInputSetConfig,
     StringInputSetContext,
 )
-from dffml.base import MissingConfig
 from dffml.model import Model
+from dffml.base import MissingConfig
+from dffml.util.data import traverse_get
 from dffml.source.source import BaseSource, SourcesContext
 from dffml.util.entrypoint import EntrypointNotFound, entrypoint
 
@@ -161,9 +162,9 @@ class HTTPChannelConfig(NamedTuple):
     """
 
     path: str
-    presentation: str
-    asynchronous: bool
     dataflow: DataFlow
+    output_mode: str = "json"
+    asynchronous: bool = False
     input_mode: str = "default"
 
     @classmethod
@@ -174,7 +175,7 @@ class HTTPChannelConfig(NamedTuple):
 
 @entrypoint("http")
 class Routes(BaseMultiCommContext):
-    PRESENTATION_OPTIONS = ["json", "blob", "text"]
+    OUTPUT_MODES = ["json","text" ,"bytes","stream"]
 
     async def get_registered_handler(self, request):
         return self.app["multicomm_routes"].get(request.path, None)
@@ -233,9 +234,8 @@ class Routes(BaseMultiCommContext):
                     value = await request.text()
                 elif preprocess_mode == "bytes":
                     value = await request.read()
-                # TODO : Verify usage of `stream`
                 elif preprocess == "stream":
-                    value = await request.content.read(-1)
+                    value = request.content
                 else:
                     return web.json_response(
                         {
@@ -270,15 +270,53 @@ class Routes(BaseMultiCommContext):
                 results = {
                     str(ctx): result async for ctx, result in octx.run(*inputs)
                 }
-                # TODO Implement input and presentation stages?
+                # TODO Implement input and output_mode stages?
                 """
-                if config.presentation == "blob":
+                if config.output_mode == "blob":
                     return web.Response(body=results)
-                elif config.presentation == "text":
+                elif config.output_mode == "text":
                     return web.Response(text=results)
                 else:
                 """
-                return web.json_response(results)
+                if config.output_mode == "json":
+                    return web.json_response(results)
+
+                # content info is a list in case of stream
+                # and string in others
+                postprocess_mode, content_info = config.output_mode.split(":")
+
+                if postprocess_mode == "stream":
+                    # stream:text/plain:get_single.beef
+                    content_type,output_keys = content_info
+                    output_data = traverse_get(result,*content_info.split("."))
+
+                    response = web.StreamResponse(
+                    status=200,
+                    reason='OK',
+                    headers={'Content-Type': content_type },
+                        )
+
+                    await response.prepare(request)
+
+                    for data in output_data:
+                        await response.write(data)
+                    await response.write_eof()
+                    return response
+
+                output_data = traverse_get(result,*content_info.split("."))
+
+                if postprocess_mode == "bytes":
+                    return web.Response(body=output_data)
+                elif postprocess_mode == "text":
+                    return web.Response(text=output_data)
+
+                else:
+                    return web.json_response(
+                        {
+                            "error": f"output mode not valid"
+                        },
+                        status=HTTPStatus.NOT_FOUND,
+                    )
 
     async def multicomm_dataflow_asynchronous(self, config, request):
         # TODO allow list of valid definitions to seed
@@ -531,10 +569,10 @@ class Routes(BaseMultiCommContext):
     @mcctx_route
     async def multicomm_register(self, request, mcctx):
         config = mcctx.register_config()._fromdict(**(await request.json()))
-        if config.presentation not in self.PRESENTATION_OPTIONS:
+        if config.output_mode not in self.OUTPUT_MODES:
             return web.json_response(
                 {
-                    "error": f"{config.presentation!r} is not a valid presentation option: {self.PRESENTATION_OPTIONS!r}"
+                    "error": f"{config.output_mode!r} is not a valid output_mode option: {self.OUTPUT_MODES!r}"
                 },
                 status=HTTPStatus.BAD_REQUEST,
             )

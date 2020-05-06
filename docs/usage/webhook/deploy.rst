@@ -24,8 +24,7 @@ in ``deploy/mc/http/ffmpeg.yaml``
 
     $ cat > ./deploy/mc/http/ffmpeg.yaml <<EOF
     path: /ffmpeg
-    presentation: json
-    asynchronous: false
+    output_mode: json
     EOF
 
 .. _usage_ffmpeg_deploy_serve:

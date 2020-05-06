@@ -152,7 +152,7 @@ class TestServer(AsyncTestCase):
                 json.dumps(
                     {
                         "path": hello_world_url,
-                        "presentation": "json",
+                        "output_mode": "json",
                         "asynchronous": False,
                     },
                     sort_keys=True,
@@ -163,7 +163,7 @@ class TestServer(AsyncTestCase):
                 json.dumps(
                     {
                         "path": hello_blank_url,
-                        "presentation": "json",
+                        "output_mode": "json",
                         "asynchronous": False,
                     },
                     sort_keys=True,
