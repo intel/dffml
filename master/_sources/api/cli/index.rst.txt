@@ -1,0 +1,12 @@
+Cli
+===
+.. toctree::
+    :glob:
+    :maxdepth: 2
+    :caption: Contents:
+
+    dataflow
+    config
+    list
+    cli
+    ml

@@ -1,0 +1,5 @@
+Source Idx3
+===========
+
+.. automodule:: dffml.source.idx3
+   :members:

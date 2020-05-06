@@ -1,0 +1,5 @@
+Util Config Exceptions
+======================
+
+.. automodule:: dffml.util.config.exceptions
+   :members:

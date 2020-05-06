@@ -200,7 +200,7 @@
 <span class="n">csv</span><span class="o">.</span><span class="n">register_dialect</span><span class="p">(</span><span class="s2">&quot;strip&quot;</span><span class="p">,</span> <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="OpenCSVFile"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.csv.OpenCSVFile">[docs]</a><span class="nd">@dataclass</span>
+<div class="viewcode-block" id="OpenCSVFile"><a class="viewcode-back" href="../../../api/source/csv.html#dffml.source.csv.OpenCSVFile">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">OpenCSVFile</span><span class="p">:</span>
     <span class="n">write_out</span><span class="p">:</span> <span class="n">Dict</span>
     <span class="n">active</span><span class="p">:</span> <span class="nb">int</span>
@@ -224,7 +224,7 @@
 <span class="n">CSV_SOURCE_CONFIG_DEFAULT_LOADFILES_NAME</span> <span class="o">=</span> <span class="kc">None</span>
 
 
-<div class="viewcode-block" id="CSVSourceConfig"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.csv.CSVSourceConfig">[docs]</a><span class="nd">@config</span>
+<div class="viewcode-block" id="CSVSourceConfig"><a class="viewcode-back" href="../../../api/source/csv.html#dffml.source.csv.CSVSourceConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">CSVSourceConfig</span><span class="p">(</span><span class="n">FileSourceConfig</span><span class="p">):</span>
     <span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_KEY</span>
     <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_tag</span>
@@ -233,7 +233,7 @@
 
 
 <span class="c1"># CSVSource is a bit of a mess</span>
-<div class="viewcode-block" id="CSVSource"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.csv.CSVSource">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="CSVSource"><a class="viewcode-back" href="../../../api/source/csv.html#dffml.source.csv.CSVSource">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">CSVSource</span><span class="p">(</span><span class="n">FileSource</span><span class="p">,</span> <span class="n">MemorySource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Uses a CSV file as the source of record feature data</span>
@@ -355,7 +355,7 @@
             <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="p">{})</span>
             <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="p">[</span><span class="n">tag</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">Record</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">record_data</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CSVSource.load_fd"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.csv.CSVSource.load_fd">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">load_fd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fd</span><span class="p">):</span>
+<div class="viewcode-block" id="CSVSource.load_fd"><a class="viewcode-back" href="../../../api/source/csv.html#dffml.source.csv.CSVSource.load_fd">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">load_fd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fd</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parses a CSV stream into Record instances</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -363,7 +363,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">mem</span> <span class="o">=</span> <span class="n">open_file</span><span class="o">.</span><span class="n">write_out</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tag</span><span class="p">,</span> <span class="p">{})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> loaded </span><span class="si">%d</span><span class="s2"> records&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mem</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="CSVSource.dump_fd"><a class="viewcode-back" href="../../../api/source/file.html#dffml.source.csv.CSVSource.dump_fd">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">dump_fd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fd</span><span class="p">):</span>
+<div class="viewcode-block" id="CSVSource.dump_fd"><a class="viewcode-back" href="../../../api/source/csv.html#dffml.source.csv.CSVSource.dump_fd">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">dump_fd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fd</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Dumps data into a CSV stream</span>
 <span class="sd">        &quot;&quot;&quot;</span>
