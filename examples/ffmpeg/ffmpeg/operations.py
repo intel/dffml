@@ -1,4 +1,5 @@
 import asyncio
+import tempfile
 
 from dffml.df.base import op
 from .definitions import *
@@ -6,13 +7,14 @@ from .definitions import *
 
 @op(
     inputs={
-        "input_file": input_file,
-        "resolution": resolution,
-        "output_file": output_file,
+        "input_file": Input_file,
+        "resolution": Resolution
     },
-    outputs={},
+    outputs={"output_file":Output_file},
 )
-async def convert_to_gif(input_file, resolution, output_file):
+async def convert_to_gif(input_file,resolution):
+    temp_input_file = tempfile.NamedTemporaryFile()
+    temp_input_file.write(input_file)
     proc = await asyncio.create_subprocess_exec(
         "ffmpeg",
         "-ss",
@@ -20,13 +22,22 @@ async def convert_to_gif(input_file, resolution, output_file):
         "-t",
         "10",
         "-i",
-        input_file,
+        temp_input_file.name,
         "-y",
         "-vf",
         f"fps=10,scale={resolution}:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse",
         "-loop",
         "0",
-        output_file,
+        "-f",
+        "gif",
+        "pipe:1",
         stdout=asyncio.subprocess.PIPE,
     )
     out, error = await proc.communicate()
+    # print(f"\n\n\nError : {error}\n\n\n")
+    # print(f"\n\n\nOut : {out}\n\n\n")
+
+    return{
+        "output_file":out
+    }
+

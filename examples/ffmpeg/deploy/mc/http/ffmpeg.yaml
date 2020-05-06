@@ -1,3 +1,4 @@
 path: /ffmpeg
 presentation: json
 asynchronous: false
+input_mode: bytes:input_file

@@ -260,7 +260,7 @@ class Routes(BaseMultiCommContext):
                 )
             else:
                 raise NotImplementedError(
-                    "Input modes other than default,def:preprocess:NAME  not yet implemented"
+                    "Input modes other than default,preprocess:definition_name  not yet implemented"
                 )
         # Run the operation in an orchestrator
         # TODO(dfass) Create the orchestrator on startup of the HTTP API itself
