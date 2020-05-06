@@ -125,7 +125,14 @@ Add Tests
 **tests/test_source.py**
 
 .. literalinclude:: ../../../tests/source/test_ini.py
-    :lines: 1-7
+.. code-block:: python
+
+    import os
+    from tempfile import TemporaryDirectory
+
+    from dffml import Record, load, save, AsyncTestCase
+
+    from dffml_source_ini.misc import INISource
 
 Before writing the test we need to import some modules which we will be using. We need
 to import the source file which we created earlier. We need to import ``save`` and
