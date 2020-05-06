@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   given.
 - Classes now use `CONFIG` if it has a default for every field and `config` is `None`
 - Models now dynamically import third party modules.
-- In CLI, Records from Sources gets yielded instead of printing it.
+- `dffml list records` command prints Records as JSON using `.export()`
 ### Fixed
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
   parameter sets for an operation.
