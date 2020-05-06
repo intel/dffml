@@ -26,3 +26,4 @@ docs/plugins/service/http
 doctest/
 *.mnistpng
 docs/plugins/dffml_*.rst
+docs/api/**
