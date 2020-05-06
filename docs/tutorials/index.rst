@@ -11,4 +11,4 @@ or operations.
     intro
     model
     operations
-    source
+    sources/index
