@@ -13,18 +13,18 @@ from dffml.util.asynctestcase import IntegrationCLITestCase
 class TestList(IntegrationCLITestCase):
     async def test_records(self):
         keys = ["A", "B", "C"]
-        with contextlib.redirect_stdout(self.stdout):
-            await CLI.cli(
-                "list",
-                "records",
-                "-sources",
-                "feed=memory",
-                "-source-records",
-                *keys,
-            )
-        stdout = self.stdout.getvalue()
+        records = await CLI.cli(
+            "list",
+            "records",
+            "-sources",
+            "feed=memory",
+            "-source-records",
+            *keys,
+        )
+        records = list(map(lambda r: r.export(), records))
+        records = dict(map(lambda r: (r["key"], r), records))
         for key in keys:
-            self.assertIn(key, stdout)
+            self.assertIn(key, records)
 
 
 class TestMerge(IntegrationCLITestCase):
@@ -44,18 +44,18 @@ class TestMerge(IntegrationCLITestCase):
             "-source-src-readwrite",
             "-source-dest-readwrite",
         )
-        with contextlib.redirect_stdout(self.stdout):
-            await CLI.cli(
-                "list",
-                "records",
-                "-sources",
-                "tmp=json",
-                "-source-tmp-filename",
-                filename,
-            )
-        stdout = self.stdout.getvalue()
+        records = await CLI.cli(
+            "list",
+            "records",
+            "-sources",
+            "tmp=json",
+            "-source-tmp-filename",
+            filename,
+        )
+        records = list(map(lambda r: r.export(), records))
+        records = dict(map(lambda r: (r["key"], r), records))
         for key in keys:
-            self.assertIn(key, stdout)
+            self.assertIn(key, records)
 
     async def test_memory_to_csv(self):
         keys = ["A", "B", "C"]
