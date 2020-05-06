@@ -15,7 +15,7 @@ class ListRecords(SourcesCMD):
         async with self.sources as sources:
             async with sources() as sctx:
                 async for record in sctx.records():
-                    print(record)
+                    yield record
 
 
 class ListServices(ListEntrypoint):

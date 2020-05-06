@@ -256,19 +256,19 @@ class TestMerge(RecordsTestCase):
 
 class TestListRecords(RecordsTestCase):
     async def test_run(self):
-        stdout = io.StringIO()
-        with contextlib.redirect_stdout(stdout):
-            result = await List.cli(
-                "records",
-                "-sources",
-                "primary=json",
-                "-source-primary-filename",
-                self.temp_filename,
-                "-source-primary-readwrite",
-                "true",
-            )
+        result = await List.cli(
+            "records",
+            "-sources",
+            "primary=json",
+            "-source-primary-filename",
+            self.temp_filename,
+            "-source-primary-readwrite",
+            "true",
+        )
+        result = list(map(lambda r: r.export(), result))
+        result = dict(map(lambda r: (r["key"], r), result))
         for record in self.records:
-            self.assertIn(record.key, stdout.getvalue())
+            self.assertIn(record.key, result)
 
 
 class TestDataflowRunAllRecords(RecordsTestCase):
