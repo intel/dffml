@@ -6,6 +6,7 @@ Run doctests with
 python -m doctest -v dffml/util/data.py
 """
 import ast
+import types
 import pydoc
 import inspect
 from functools import wraps
@@ -157,7 +158,7 @@ def export_value(obj, key, value):
 def export_list(iterable):
     for i, value in enumerate(iterable):
         export_value(iterable, i, value)
-        if isinstance(iterable[i], dict):
+        if isinstance(kwargs[key], (dict, types.MappingProxyType)):
             iterable[i] = export_dict(**iterable[i])
         elif isinstance(value, list):
             iterable[i] = export_list(iterable[i])
@@ -171,7 +172,7 @@ def export_dict(**kwargs):
     """
     for key, value in kwargs.items():
         export_value(kwargs, key, value)
-        if isinstance(kwargs[key], dict):
+        if isinstance(kwargs[key], (dict, types.MappingProxyType)):
             kwargs[key] = export_dict(**kwargs[key])
         elif isinstance(kwargs[key], list):
             kwargs[key] = export_list(kwargs[key])
