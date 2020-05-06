@@ -7,8 +7,32 @@ def train(*args, **kwargs):
     return asyncio.run(high_level.train(*args, **kwargs))
 
 
+train.__doc__ = (
+    high_level.train.__doc__.replace("await ", "")
+    .replace("async ", "")
+    .replace("asyncio.run(main())", "main()")
+    .replace("    >>> import asyncio\n", "")
+    .replace(
+        "    >>> from dffml import *\n",
+        "    >>> from dffml import *\n    >>> from dffml.noasync import *\n",
+    )
+)
+
+
 def accuracy(*args, **kwargs):
     return asyncio.run(high_level.accuracy(*args, **kwargs))
+
+
+accuracy.__doc__ = (
+    high_level.accuracy.__doc__.replace("await ", "")
+    .replace("async ", "")
+    .replace("asyncio.run(main())", "main()")
+    .replace("    >>> import asyncio\n", "")
+    .replace(
+        "    >>> from dffml import *\n",
+        "    >>> from dffml import *\n    >>> from dffml.noasync import *\n",
+    )
+)
 
 
 def predict(*args, **kwargs):
@@ -29,3 +53,16 @@ def predict(*args, **kwargs):
         except:
             cleanup()
             raise
+
+
+predict.__doc__ = (
+    high_level.predict.__doc__.replace("await ", "")
+    .replace("asynciterator", "iterator")
+    .replace("async ", "")
+    .replace("asyncio.run(main())", "main()")
+    .replace("    >>> import asyncio\n", "")
+    .replace(
+        "    >>> from dffml import *\n",
+        "    >>> from dffml import *\n    >>> from dffml.noasync import *\n",
+    )
+)

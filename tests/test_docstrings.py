@@ -97,6 +97,26 @@ def wrap_high_level_accuracy(state):
 wrap_high_level_predict = wrap_high_level_accuracy
 
 
+def wrap_noasync_accuracy(state):
+    model = SLRModel(
+        features=Features(DefFeature("Years", int, 1),),
+        predict=DefFeature("Salary", int, 1),
+    )
+
+    train(
+        model,
+        {"Years": 0, "Salary": 10},
+        {"Years": 1, "Salary": 20},
+        {"Years": 2, "Salary": 30},
+        {"Years": 3, "Salary": 40},
+    )
+
+    yield
+
+
+wrap_noasync_predict = wrap_noasync_accuracy
+
+
 async def operation_db():
     """
     Create the database and table (myTable) for the db operations

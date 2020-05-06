@@ -13,11 +13,3 @@ accessible within one :class:`dffml.record.Record`.
 DFFML has several built in sources which can be used programmatically or via the
 CLI and other services.
 
-.. toctree::
-    :glob:
-    :maxdepth: 2
-    :caption: Contents:
-
-    base
-    memory
-    file
