@@ -171,7 +171,7 @@ to the setup.py file
 .. code-block:: python
 
     common.KWARGS["entry_points"] = {
-        "dffml.source": [f"ini = {common.IMPORT_NAME}.misc:INISource"]
+        "dffml.source": [f"myini = {common.IMPORT_NAME}.misc:INISource"]
     }
 
 This will add the newly created source to the dffml entrypoints and hence can
