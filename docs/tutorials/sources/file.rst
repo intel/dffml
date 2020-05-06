@@ -124,7 +124,6 @@ Add Tests
 
 **tests/test_source.py**
 
-.. literalinclude:: ../../../tests/source/test_ini.py
 .. code-block:: python
 
     import os
