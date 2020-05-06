@@ -158,7 +158,7 @@ def export_value(obj, key, value):
 def export_list(iterable):
     for i, value in enumerate(iterable):
         export_value(iterable, i, value)
-        if isinstance(kwargs[key], (dict, types.MappingProxyType)):
+        if isinstance(value, (dict, types.MappingProxyType)):
             iterable[i] = export_dict(**iterable[i])
         elif isinstance(value, list):
             iterable[i] = export_list(iterable[i])
