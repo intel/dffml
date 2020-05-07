@@ -284,7 +284,7 @@ class TestServer(AsyncTestCase):
         with tempfile.TemporaryDirectory() as tempdir:
             # Source the HTTP API will pre-load
             source = JSONSource(
-                filename=str(pathlib.Path(tempdir, "source.json")),
+                filename=pathlib.Path(tempdir, "source.json"),
                 allowempty=True,
                 readwrite=True,
             )
