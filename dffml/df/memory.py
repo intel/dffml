@@ -1098,7 +1098,7 @@ class MemoryOperationImplementationNetworkContext(
                     operation.instance_name
                 )
 
-    async def run(
+    async def run_no_retry(
         self,
         ctx: BaseInputSetContext,
         octx: BaseOrchestratorContext,
@@ -1106,7 +1106,7 @@ class MemoryOperationImplementationNetworkContext(
         inputs: Dict[str, Any],
     ) -> Union[bool, Dict[str, Any]]:
         """
-        Run an operation in our network.
+        Run an operation in our network without retry if it fails
         """
         # Check that our network contains the operation
         await self.ensure_contains(operation)
@@ -1149,6 +1149,33 @@ class MemoryOperationImplementationNetworkContext(
             )
             self.logger.debug("---")
             return outputs
+
+    async def run(
+        self,
+        ctx: BaseInputSetContext,
+        octx: BaseOrchestratorContext,
+        operation: Operation,
+        inputs: Dict[str, Any],
+    ) -> Union[bool, Dict[str, Any]]:
+        """
+        Run an operation in our network.
+        """
+        if not operation.retry:
+            return await self.run_no_retry(ctx, octx, operation, inputs)
+        for retry in range(0, operation.retry):
+            try:
+                return await self.run_no_retry(ctx, octx, operation, inputs)
+            except Exception:
+                # Raise if no more tries left
+                if (retry + 1) == operation.retry:
+                    raise
+                # Otherwise if there was an exception log it
+                self.logger.error(
+                    "%r: try %d: %s",
+                    operation.instance_name,
+                    retry + 1,
+                    traceback.format_exc().rstrip(),
+                )
 
     async def operation_completed(self):
         await self.completed_event.wait()

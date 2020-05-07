@@ -83,6 +83,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Option to run dataflow without sources from cli.
 - Sphinx extension for automated testing of tutorials (consoletest)
 - Example of software portal using DataFlows and HTTP service
+- Retry parameter to `Operation`. Allows for setting number of times operation
+  should be retried before it's exception should be raised.
 ### Changed
 - Renamed `-seed` to `-inputs` in `dataflow create` command
 - Renamed configloader/png to configloader/image and added support for loading JPEG and TIFF file formats
