@@ -6,13 +6,10 @@ from .definitions import *
 
 
 @op(
-    inputs={
-        "input_file": Input_file,
-        "resolution": Resolution
-    },
-    outputs={"output_file":Output_file},
+    inputs={"input_file": Input_file, "resolution": Resolution},
+    outputs={"output_file": Output_file},
 )
-async def convert_to_gif(input_file,resolution):
+async def convert_to_gif(input_file, resolution):
     print("\n\n\n\n Running cvt gif\n\n\n")
     temp_input_file = tempfile.NamedTemporaryFile()
     temp_input_file.write(input_file)
@@ -36,7 +33,4 @@ async def convert_to_gif(input_file,resolution):
     )
     out, error = await proc.communicate()
 
-    return{
-        "output_file":out
-    }
-
+    return {"output_file": out}

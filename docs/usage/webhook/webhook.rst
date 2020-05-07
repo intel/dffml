@@ -3,18 +3,18 @@
 Redeploying on receving github webhook
 ======================================
 
-We'll move  ``ffmpeg`` to a github repo, and set up the webhook dataflow such that whenever we push
-to the default branch, the new version is pulled and a docker container is build and run with this
-new version.
+We'll move  ``ffmpeg`` to a github repo, and set up a ``webhook dataflow`` such that whenever
+we push to the default branch, the new version is pulled and a docker container is build and
+run.
 
-Dataflow for redploying
------------------------
+Webhook Dataflow
+----------------
 
-We'll be using operations from ``dffml_operations_deploy`` and ``dffml_feature_git``.
+We'll be using operations from ``dffml-operations-deploy`` and ``dffml-feature-git``.
 
 .. code-block:: console
 
-    $ pip install dffml-operations-deploy dffml_feature_git
+    $ pip install dffml-operations-deploy dffml-feature-git
 
 Setup a http server in ``ffmpeg/deploy/webhook``, to receive webhook and redploy ffmpeg
 
@@ -73,9 +73,9 @@ Copy paste the output url to ``Payload URL`` in webhook settings of ffmpeg repo.
 
 .. image:: ./images/github_settings.png
 
-Now whenever theres a push to the default branch of the repo the ffmpeg container which is running,
-get redeployed from the fresh pull.To check this we can change the end time of the conversion from 10
-to 12 in ``ffmpeg/operations.py`` by changing
+Now whenever there's a push to the default branch of the repo, the ffmpeg container
+which is running gets redeployed from the fresh pull.To check this we will modify the
+end time of the conversion from 10 to 12 in ``ffmpeg/operations.py`` by changing
 
 .. code-block:: python
 
@@ -105,6 +105,3 @@ to
 
 on pushing the changes to our repo, the container will be redeployed.To verify this run
 ``docker ps`` and check the up time of the container.
-
-
-

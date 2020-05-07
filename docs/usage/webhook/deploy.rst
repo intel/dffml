@@ -45,13 +45,14 @@ in ``deploy/mc/http/ffmpeg.yaml``
     output_mode: bytes:post_input.Output_file
     EOF
 
-- ``input_mode`` : ``bytes:Input_file`` because we want the input from the request to be treated as bytes with
-                    definition ``Input_file``.
-- ``output_mode`` : ``bytes:post_input.Output_file`` because we want the response to
-                    be bytes taken from  ``results["post_input"]["Output_file"]``,
-                    where ``results`` is the output of the dataflow.
+- ``input_mode``
+    - ``bytes:Input_file``
+        - we want the input from the request to be treated as bytes with definition ``Input_file``.
+- ``output_mode``
+    - ``bytes:post_input.Output_file``
+        - we want the response to be bytes taken from  ``results["post_input"]["Output_file"]``, where ``results`` is the output of the dataflow.
 
-For more details see `Config <../../plugins/service/http/dataflow.html#HttpChannelConfig>`__ .
+For more details see `HttpChannelConfig <../../plugins/service/http/dataflow.html#HttpChannelConfig>`__ .
 
 .. _usage_ffmpeg_deploy_serve:
 
@@ -70,16 +71,16 @@ Serving the dataflow on port 8080
     tutorial. See documentation on HTTP API
     :doc:`/plugins/service/http/security` for more information.
 
-Now from another terminal,we can send post requests to the dataflow running at this port.
+Now from another terminal, we can send post requests to the dataflow running at this port.
 
 .. code-block:: console
 
     $ curl -v --request POST --data-binary @input.mp4 http://localhost:8080/ffmpeg -o output.gif
 
-This command will convert input.mp4(change path to your file) to output.gif
+This command will convert input.mp4 to output.gif
 
 Deploying on docker container
------------------------------
+=============================
 
 A ``Dockerfile`` is already generated in ffmpeg folder. We need to modify it to include ``ffmpeg``.
 
@@ -102,16 +103,15 @@ For this tutorial we will change it to
     The image built after pulling the contaier will be taged ``USERNAME/REPONAME``, where USERNAME and REPONAME
     are gathered from the github html url, received in the webhook.
 
-We can run the container and sent a post request like we did in :ref:`usage_ffmpeg_deploy_serve`
-to verify that the container is working.
+We can run the container and sent a post request to verify that the container is working.
 
 .. code-block:: console
 
-    $ docker build -t USERNAME/REPONAME .
+    $ docker build -t aghinsa/ffmpeg .
     $ docker run --rm -d -ti -p 8080:8080 aghinsa/ffmpeg -mc-config deploy -insecure -log debug
 
 .. code-block:: console
 
     $ curl -v --request POST --data-binary @input.mp4 http://localhost:8080/ffmpeg -o output.gif
 
-Now in :ref:`usage_ffmpeg_deploy_serve` we'll setup this container to be redployed on github webhook.
+Now in :ref:`usage_webhook` we'll setup this container to be redployed .

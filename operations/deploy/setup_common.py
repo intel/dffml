@@ -11,7 +11,7 @@ AUTHOR_NAME = "Aghin Shah Alin"
 AUTHOR_EMAIL = "aghinsa@gmail.com"
 # Install dffml if it is not installed in development mode
 INSTALL_REQUIRES = [] + (
-    ["dffml>=0.3.6"]
+    ["dffml>=0.3.7"]
     if not any(
         list(
             map(
@@ -29,7 +29,7 @@ INSTALL_REQUIRES = [] + (
     )
     else []
     + (
-        ["dffml_feature_git"]
+        ["dffml-feature-git>=0.2.7 "]
         if not any(
             list(
                 map(
@@ -37,7 +37,7 @@ INSTALL_REQUIRES = [] + (
                     list(
                         map(
                             lambda syspath: os.path.join(
-                                syspath, "dffml_feature_git"
+                                syspath, "dffml_feature_git.egg-link"
                             ),
                             sys.path,
                         )

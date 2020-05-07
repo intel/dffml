@@ -175,7 +175,7 @@ class HTTPChannelConfig(NamedTuple):
 
 @entrypoint("http")
 class Routes(BaseMultiCommContext):
-    OUTPUT_MODES = ["json","text" ,"bytes","stream"]
+    OUTPUT_MODES = ["json", "text", "bytes", "stream"]
 
     async def get_registered_handler(self, request):
         return self.app["multicomm_routes"].get(request.path, None)
@@ -280,13 +280,14 @@ class Routes(BaseMultiCommContext):
 
                 if postprocess_mode == "stream":
                     # stream:text/plain:get_single.beef
-                    content_type,output_keys = content_info
-                    output_data = traverse_get(results,*output_keys.split("."))
+                    content_type, output_keys = content_info
+                    output_data = traverse_get(
+                        results, *output_keys.split(".")
+                    )
 
                     response = web.StreamResponse(
-                    status=200,
-                    headers={'Content-Type': content_type },
-                        )
+                        status=200, headers={"Content-Type": content_type}
+                    )
 
                     await response.prepare(request)
 
@@ -295,7 +296,9 @@ class Routes(BaseMultiCommContext):
                     await response.write_eof()
                     return response
 
-                output_data = traverse_get(results,*content_info[0].split("."))
+                output_data = traverse_get(
+                    results, *content_info[0].split(".")
+                )
 
                 if postprocess_mode == "bytes":
                     return web.Response(body=output_data)
@@ -304,9 +307,7 @@ class Routes(BaseMultiCommContext):
 
                 else:
                     return web.json_response(
-                        {
-                            "error": f"output mode not valid"
-                        },
+                        {"error": f"output mode not valid"},
                         status=HTTPStatus.NOT_FOUND,
                     )
 
