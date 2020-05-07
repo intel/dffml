@@ -1,5 +1,9 @@
 .. _usage_ffmpeg_deploy:
 
+In this tutorial we will deploy a dataflow(ffmpeg dataflow) which converts a video to gif over an http server.We'll also
+see how to deploy the same http server in a docker container.Finally in :ref:`usage_ffmpeg_deploy_serve`
+we'll setup another http server which waits on gtihub webhooks to rebuilt and deploy the ffmpeg dataflow.
+
 Deploying on http server
 ========================
 
@@ -7,9 +11,12 @@ Deploying on http server
 
     All the code for this example is located under the
     `examples/ffmpeg <https://github.com/intel/dffml/blob/master/examples/ffmpeg/>`_
-    directory of the DFFML source code.
+    directory of the DFFML source code.Rest of the tutorial is ran from the root of
+    this folder.
 
-Writing operations and definitions to convert videos files to gif by calling ``ffmpeg``
+Write operations and definitions to convert videos files to gif by calling
+``ffmpeg`` (Make sure you `download and install <https://www.ffmpeg.org/download.html>`_ it.).
+The operation accepts bytes (of the video), converts it to gif and outputs it as bytes.
 
 **ffmpeg/operations.py**
 
@@ -18,26 +25,33 @@ Writing operations and definitions to convert videos files to gif by calling ``f
 Dataflow and Config files
 -------------------------
 
-Create a ``Dataflow`` with operation ``convert_to_gif`` and save it in ``deploy/df/ffmpeg.yaml``
+**ffmpeg/dataflow.py**
+
+.. literalinclude:: /../examples/ffmpeg/ffmpeg/dataflow.py
 
 .. code-block:: console
 
     $ mkdir -p deploy/mc/http deploy/df
-    $ cat > /tmp/operations <<EOF
-    convert_to_gif
-    EOF
+    $ dffml service dev export -config yaml ffmpeg.dataflow:DATAFLOW > deploy/df/ffmpeg.yaml
 
-    $ dffml dataflow create -config yaml $(cat /tmp/operations) > deploy/df/ffmpeg.yaml
-
-Create the `Config <../../plugins/service/http/dataflow.html#HttpChannelConfig>`__ file for the http server
+Create the config file for the http server
 in ``deploy/mc/http/ffmpeg.yaml``
 
 .. code-block:: console
 
     $ cat > ./deploy/mc/http/ffmpeg.yaml <<EOF
     path: /ffmpeg
-    output_mode: json
+    input_mode: bytes:Input_file
+    output_mode: bytes:post_input.Output_file
     EOF
+
+- ``input_mode`` : ``bytes:Input_file`` because we want the input from the request to be treated as bytes with
+                    definition ``Input_file``.
+- ``output_mode`` : ``bytes:post_input.Output_file`` because we want the response to
+                    be bytes taken from  ``results["post_input"]["Output_file"]``,
+                    where ``results`` is the output of the dataflow.
+
+For more details see `Config <../../plugins/service/http/dataflow.html#HttpChannelConfig>`__ .
 
 .. _usage_ffmpeg_deploy_serve:
 
@@ -60,17 +74,44 @@ Now from another terminal,we can send post requests to the dataflow running at t
 
 .. code-block:: console
 
-    $ curl -s \
-  --header "Content-Type: application/json" \
-  --request POST \
-  --data '{"convert": [{"value":"PATH_TO_INPUT","definition":"input_file"},
-  {"value":"PATH_TO_OUTPUT","definition":"output_file"},
-  {"value":1920,"definition":"resolution"}]}' \
-  http://localhost:8080/ffmpeg
+    $ curl -v --request POST --data-binary @input.mp4 http://localhost:8080/ffmpeg -o output.gif
 
+This command will convert input.mp4(change path to your file) to output.gif
 
+Deploying on docker container
+-----------------------------
 
+A ``Dockerfile`` is already generated in ffmpeg folder. We need to modify it to include ``ffmpeg``.
 
+**Dockerfile**
 
+.. literalinclude:: /../examples/ffmpeg/Dockerfile
 
+.. note::
+    The run command in the comment section of the Dockerfile will be used to execute
+    the container after receving webhooks , so make sure you change it to your usecase.
 
+For this tutorial we will change it to
+
+.. code-block:: console
+
+    docker run --rm -d -ti -p 8080:8080 aghinsa/ffmpeg -mc-config deploy -insecure -log debug
+
+.. note::
+
+    The image built after pulling the contaier will be taged ``USERNAME/REPONAME``, where USERNAME and REPONAME
+    are gathered from the github html url, received in the webhook.
+
+We can run the container and sent a post request like we did in :ref:`usage_ffmpeg_deploy_serve`
+to verify that the container is working.
+
+.. code-block:: console
+
+    $ docker build -t USERNAME/REPONAME .
+    $ docker run --rm -d -ti -p 8080:8080 aghinsa/ffmpeg -mc-config deploy -insecure -log debug
+
+.. code-block:: console
+
+    $ curl -v --request POST --data-binary @input.mp4 http://localhost:8080/ffmpeg -o output.gif
+
+Now in :ref:`usage_ffmpeg_deploy_serve` we'll setup this container to be redployed on github webhook.

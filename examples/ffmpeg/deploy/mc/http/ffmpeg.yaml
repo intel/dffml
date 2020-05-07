@@ -1,3 +1,3 @@
 path: /ffmpeg
-output_mode: bytes:post_input.Output_file
 input_mode: bytes:Input_file
+output_mode: bytes:post_input.Output_file
