@@ -1,8 +1,8 @@
 Redeploying on receving github webhook
 ======================================
 
-We'll move  ``ffmpeg`` to a github repo,and set up the webhook dataflow such that whenever we push
-to the default branch,the new version is pulled and a docker container is build and run with this
+We'll move  ``ffmpeg`` to a github repo, and set up the webhook dataflow such that whenever we push
+to the default branch, the new version is pulled and a docker container is build and run with this
 new version.
 
 Deploying on docker container
@@ -17,7 +17,7 @@ already generated in ffmpeg.We need to modify it to include ``ffmpeg``.
 
 .. note::
     The run command in the comment section of the Dockerfile will be used to execute
-    the container after receving webhooks,so make sure you change it to your usecase.
+    the container after receving webhooks , so make sure you change it to your usecase.
 
 For this tutorial we will change it to
 
@@ -26,17 +26,15 @@ For this tutorial we will change it to
     docker run --rm -d -v ~/Videos:/usr/src/app/data -ti -p 8080:8080 aghinsa/ffmpeg \
         -mc-config deploy -insecure -log debug
 
-you should replace ``aghinsa/ffmpeg`` with your ``USERNAME/REPONAME``,in both run and build commands,in cli
-and in comment section of ``Dockerfile``.
-
 The additional flags are:
 
     - -d : start the container in detached mode
     - -v : map the directory ``~/Videos`` in host to ``/usr/src/app/data`` in container
 
 .. note::
-    The image built after pulling the contaier will be taged ``USERNAME/REPONAME``,where USERNAME and REPONAME
-    are gathered from the github html url,received in the webhook.
+
+    The image built after pulling the contaier will be taged ``USERNAME/REPONAME``, where USERNAME and REPONAME
+    are gathered from the github html url, received in the webhook.
 
 We can run the container and sent a post request like we did in :ref:`usage_ffmpeg_deploy_serve`
 to verify that the container is working.
@@ -97,7 +95,7 @@ Config
     input_mode: json:git_payload
     EOF
 
-Note that the input_mode is ``json:git_payload``,this means that inputs from post request will
+Note that the input_mode is ``json:git_payload``, this means that inputs from post request will
 be forwarded to dataflow as json with ``git_payload`` definition.
 
 Deploy it in port 8081 as 8080 is being used by ffmpeg http service
@@ -152,7 +150,7 @@ to
         ..
     )
 
-on pushing the changes to our repo,the container will be redeployed.To verify this run
+on pushing the changes to our repo, the container will be redeployed.To verify this run
 ``docker ps`` and check the up time of the container.
 
 

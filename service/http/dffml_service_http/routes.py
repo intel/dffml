@@ -262,6 +262,7 @@ class Routes(BaseMultiCommContext):
                 raise NotImplementedError(
                     "Input modes other than default,preprocess:definition_name  not yet implemented"
                 )
+
         # Run the operation in an orchestrator
         # TODO(dfass) Create the orchestrator on startup of the HTTP API itself
         async with MemoryOrchestrator.basic_config() as orchestrator:
@@ -270,29 +271,20 @@ class Routes(BaseMultiCommContext):
                 results = {
                     str(ctx): result async for ctx, result in octx.run(*inputs)
                 }
-                # TODO Implement input and output_mode stages?
-                """
-                if config.output_mode == "blob":
-                    return web.Response(body=results)
-                elif config.output_mode == "text":
-                    return web.Response(text=results)
-                else:
-                """
                 if config.output_mode == "json":
                     return web.json_response(results)
 
-                # content info is a list in case of stream
+                # content_info is a list in case of stream
                 # and string in others
-                postprocess_mode, content_info = config.output_mode.split(":")
+                postprocess_mode, *content_info = config.output_mode.split(":")
 
                 if postprocess_mode == "stream":
                     # stream:text/plain:get_single.beef
                     content_type,output_keys = content_info
-                    output_data = traverse_get(result,*content_info.split("."))
+                    output_data = traverse_get(results,*output_keys.split("."))
 
                     response = web.StreamResponse(
                     status=200,
-                    reason='OK',
                     headers={'Content-Type': content_type },
                         )
 
@@ -303,7 +295,7 @@ class Routes(BaseMultiCommContext):
                     await response.write_eof()
                     return response
 
-                output_data = traverse_get(result,*content_info.split("."))
+                output_data = traverse_get(results,*content_info[0].split("."))
 
                 if postprocess_mode == "bytes":
                     return web.Response(body=output_data)

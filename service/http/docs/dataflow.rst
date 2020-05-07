@@ -1,4 +1,4 @@
-Dataflow
+DataFlow
 ========
 
 HttpChannelConfig
@@ -11,7 +11,7 @@ HttpChannelConfig
         Flow to which inputs from request to path is forwarded too.
 
     - ``input_mode : str`` 
-        Mode according to which input data is passed to the dataflow,``default:default``.
+        Mode according to which input data is passed to the dataflow, ``default:default``.
             - ``default``
                 Inputs are expected to be mapping of context to list of input
                     to definition mappings

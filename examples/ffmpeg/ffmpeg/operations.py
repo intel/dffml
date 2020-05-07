@@ -13,6 +13,7 @@ from .definitions import *
     outputs={"output_file":Output_file},
 )
 async def convert_to_gif(input_file,resolution):
+    print("\n\n\n\n Running cvt gif\n\n\n")
     temp_input_file = tempfile.NamedTemporaryFile()
     temp_input_file.write(input_file)
     proc = await asyncio.create_subprocess_exec(
@@ -34,8 +35,6 @@ async def convert_to_gif(input_file,resolution):
         stdout=asyncio.subprocess.PIPE,
     )
     out, error = await proc.communicate()
-    # print(f"\n\n\nError : {error}\n\n\n")
-    # print(f"\n\n\nOut : {out}\n\n\n")
 
     return{
         "output_file":out

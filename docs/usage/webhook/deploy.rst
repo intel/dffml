@@ -3,6 +3,18 @@
 Deploying on http server
 ========================
 
+.. note::
+
+    All the code for this example is located under the
+    `examples/ffmpeg <https://github.com/intel/dffml/blob/master/examples/ffmpeg/>`_
+    directory of the DFFML source code.
+
+Writing operations and definitions to convert videos files to gif by calling ``ffmpeg``
+
+**ffmpeg/operations.py**
+
+.. literalinclude:: /../examples/ffmpeg/ffmpeg/operations.py
+
 Dataflow and Config files
 -------------------------
 

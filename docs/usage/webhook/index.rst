@@ -15,6 +15,5 @@ For this example we will
     :maxdepth: 2
     :caption: Contents:
 
-    ffmpeg
     deploy
     webhook
