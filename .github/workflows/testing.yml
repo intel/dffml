@@ -119,6 +119,7 @@ jobs:
         model/transformers=${{ secrets.PYPI_MODEL_TRANSFORMERS }}
         model/scratch=${{ secrets.PYPI_MODEL_SCRATCH }}
         model/scikit=${{ secrets.PYPI_MODEL_SCIKIT }}
+        model/vowpalWabbit=${{ secrets.PYPI_MODEL_VOWPALWABBIT }}
         source/mysql=${{ secrets.PYPI_SOURCE_MYSQL }}
         feature/git=${{ secrets.PYPI_FEATURE_GIT }}
         feature/auth=${{ secrets.PYPI_FEATURE_AUTH }}
