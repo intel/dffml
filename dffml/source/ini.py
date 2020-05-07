@@ -23,11 +23,11 @@ class INISource(FileSource, MemorySource):
 
     CONFIG = INISourceConfig
 
-    async def load_fd(self, ifile):
+    async def load_fd(self, fileobj):
         # Creating an instance of configparser
         parser = ConfigParser()
         # Read from a file object
-        parser.read_file(ifile)
+        parser.read_file(fileobj)
         # Get all the sections present in the file
         sections = parser.sections()
 
@@ -46,7 +46,7 @@ class INISource(FileSource, MemorySource):
 
         self.logger.debug("%r loaded %d sections", self, len(self.mem))
 
-    async def dump_fd(self, fd):
+    async def dump_fd(self, fileobj):
         # Create an instance of configparser
         parser = ConfigParser()
 
@@ -61,6 +61,6 @@ class INISource(FileSource, MemorySource):
             parser[section] = section_data
 
         # Write to the fileobject
-        parser.write(fd)
+        parser.write(fileobj)
 
         self.logger.debug("%r saved %d sections", self, len(self.mem))

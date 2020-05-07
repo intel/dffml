@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Vowpal Wabbit Models
 - Python 3.8 support
 - binsec branch to `operations/binsec`
 - Doctestable example for `model_predict` operation.
@@ -20,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ability to export any object with `dffml service dev export`
 - Complete example for dataflow run cli command
 - Tests for default configs instantiation.
+- Documentation for creating Source for new File types taking `.ini` as an example.
 ### Changed
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
@@ -28,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   given.
 - Classes now use `CONFIG` if it has a default for every field and `config` is `None`
 - Models now dynamically import third party modules.
+- `dffml list records` command prints Records as JSON using `.export()`
 - FileSource takes pathlib.Path as filename
 ### Fixed
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
