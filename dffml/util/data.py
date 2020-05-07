@@ -6,8 +6,10 @@ Run doctests with
 python -m doctest -v dffml/util/data.py
 """
 import ast
+import types
 import pydoc
 import inspect
+import dataclasses
 from functools import wraps
 import pathlib
 from typing import Callable
@@ -146,6 +148,8 @@ def export_value(obj, key, value):
         obj[key] = value.export()
     elif hasattr(value, "_asdict"):
         obj[key] = value._asdict()
+    elif dataclasses.is_dataclass(value):
+        obj[key] = export_dict(**dataclasses.asdict(value))
     elif getattr(value, "__module__", None) == "typing":
         obj[key] = STANDARD_TYPES.get(
             str(value).replace("typing.", ""), "generic"
@@ -155,8 +159,10 @@ def export_value(obj, key, value):
 def export_list(iterable):
     for i, value in enumerate(iterable):
         export_value(iterable, i, value)
-        if isinstance(iterable[i], dict):
+        if isinstance(value, (dict, types.MappingProxyType)):
             iterable[i] = export_dict(**iterable[i])
+        elif dataclasses.is_dataclass(value):
+            iterable[i] = export_dict(**dataclasses.asdict(value))
         elif isinstance(value, list):
             iterable[i] = export_list(iterable[i])
     return iterable
@@ -169,7 +175,7 @@ def export_dict(**kwargs):
     """
     for key, value in kwargs.items():
         export_value(kwargs, key, value)
-        if isinstance(kwargs[key], dict):
+        if isinstance(kwargs[key], (dict, types.MappingProxyType)):
             kwargs[key] = export_dict(**kwargs[key])
         elif isinstance(kwargs[key], list):
             kwargs[key] = export_list(kwargs[key])

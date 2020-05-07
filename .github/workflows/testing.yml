@@ -52,7 +52,7 @@ jobs:
       fail-fast: false
       max-parallel: 40
       matrix:
-        plugin: [., examples/shouldi, model/tensorflow, model/tensorflow_hub, model/transformers, model/scratch, model/scikit, operations/binsec, source/mysql, feature/git, feature/auth, service/http, configloader/yaml, configloader/png]
+        plugin: [., examples/shouldi, model/tensorflow, model/tensorflow_hub, model/transformers, model/scratch, model/scikit, model/vowpalWabbit, operations/binsec, source/mysql, feature/git, feature/auth, service/http, configloader/yaml, configloader/png]
         python-version: [3.7, 3.8]
 
     steps:
@@ -76,6 +76,12 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
         restore-keys: |
           ${{ runner.os }}-pip-
+    - name: Setup conda
+      uses: s-weigand/setup-conda@v1
+      with:
+        update-conda: true
+        python-version: ${{ matrix.python-version }}
+        conda-channels: anaconda, conda-forge
     - name: Install dependencies
       run: |
         mkdir -p ~/.local/bin
@@ -91,12 +97,15 @@ jobs:
           sudo apt-get update && sudo apt-get install -y docker-ce docker-ce-cli containerd.io
           docker pull mariadb:10
         fi
+        if [ "${{ matrix.plugin }}" == "model/vowpalWabbit" ]; then
+          conda install -y -c conda-forge vowpalwabbit
+        fi
     - name: Test
       run: |
         export PYTHON=python${{ matrix.python-version }}
         export PLUGIN=${{ matrix.plugin }}
         if [[ "x${PYTHON}" = "xpython3.8" ]]; then
-          if [[ "x${PLUGIN}" = "xmodel/tensorflow" ]] || [[ "x${PLUGIN}" = "xmodel/tensorflow_hub" ]] || [[ "x${PLUGIN}" = "xmodel/transformers" ]]; then
+          if [[ "x${PLUGIN}" = "xmodel/tensorflow" ]] || [[ "x${PLUGIN}" = "xmodel/tensorflow_hub" ]] || [[ "x${PLUGIN}" = "xmodel/vowpalWabbit" ]] || [[ "x${PLUGIN}" = "xmodel/transformers" ]]; then
             exit 0
           fi
         fi
@@ -110,6 +119,7 @@ jobs:
         model/transformers=${{ secrets.PYPI_MODEL_TRANSFORMERS }}
         model/scratch=${{ secrets.PYPI_MODEL_SCRATCH }}
         model/scikit=${{ secrets.PYPI_MODEL_SCIKIT }}
+        model/vowpalWabbit=${{ secrets.PYPI_MODEL_VOWPALWABBIT }}
         source/mysql=${{ secrets.PYPI_SOURCE_MYSQL }}
         feature/git=${{ secrets.PYPI_FEATURE_GIT }}
         feature/auth=${{ secrets.PYPI_FEATURE_AUTH }}

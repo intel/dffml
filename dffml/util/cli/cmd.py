@@ -12,6 +12,7 @@ from typing import Dict, Any
 from ...record import Record
 from ...feature import Feature
 
+from ..data import export_dict
 from .arg import Arg, parse_unknown
 
 DisplayHelp = "Display help message"
@@ -197,7 +198,7 @@ class CMD(object):
             and result != [CMDOutputOverride]
         ):
             json.dump(
-                result,
+                export_dict(result=result)["result"],
                 sys.stdout,
                 sort_keys=True,
                 indent=4,

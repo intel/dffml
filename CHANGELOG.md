@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Vowpal Wabbit Models
 - Python 3.8 support
 - binsec branch to `operations/binsec`
 - Doctestable example for `model_predict` operation.
@@ -24,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Operations to deploy docker container on receving github webhook.
 - New use case `Redeploying dataflow on webhook` in docs.
 - New input modes,output modes in `HttpChannelConfig`.
+- Documentation for creating Source for new File types taking `.ini` as an example.
 ### Changed
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
@@ -31,6 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `op` attempts to create `Definition`s for each argument if an `inputs` are not
   given.
 - Classes now use `CONFIG` if it has a default for every field and `config` is `None`
+- Models now dynamically import third party modules.
+- `dffml list records` command prints Records as JSON using `.export()`
 ### Fixed
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
   parameter sets for an operation.
