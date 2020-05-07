@@ -177,6 +177,7 @@ class Operation(NamedTuple, Entrypoint):
     expand: Optional[List[str]] = []
     instance_name: Optional[str] = None
     validator: bool = False
+    retry: int = 0
 
     def export(self):
         exported = {
@@ -186,6 +187,7 @@ class Operation(NamedTuple, Entrypoint):
             "conditions": self.conditions.copy(),
             "stage": self.stage.value,
             "expand": self.expand.copy(),
+            "retry": self.retry,
         }
         for to_string in ["inputs", "outputs"]:
             exported[to_string] = dict(
