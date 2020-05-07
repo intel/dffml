@@ -9,6 +9,7 @@ import ast
 import types
 import pydoc
 import inspect
+import dataclasses
 from functools import wraps
 import pathlib
 from typing import Callable
@@ -149,6 +150,8 @@ def export_value(obj, key, value):
         obj[key] = value.export()
     elif hasattr(value, "_asdict"):
         obj[key] = value._asdict()
+    elif dataclasses.is_dataclass(value):
+        obj[key] = export_dict(**dataclasses.asdict(value))
     elif getattr(value, "__module__", None) == "typing":
         obj[key] = STANDARD_TYPES.get(
             str(value).replace("typing.", ""), "generic"
@@ -160,6 +163,8 @@ def export_list(iterable):
         export_value(iterable, i, value)
         if isinstance(value, (dict, types.MappingProxyType)):
             iterable[i] = export_dict(**iterable[i])
+        elif dataclasses.is_dataclass(value):
+            iterable[i] = export_dict(**dataclasses.asdict(value))
         elif isinstance(value, list):
             iterable[i] = export_list(iterable[i])
     return iterable
