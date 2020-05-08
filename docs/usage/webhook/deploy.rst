@@ -94,7 +94,7 @@ A ``Dockerfile`` is already generated in ffmpeg folder. We need to modify it to 
 
 For this tutorial we will change it to
 
-.. code-block:: console
+.. code-block:: json
 
     docker run --rm -d -ti -p 8080:8080 aghinsa/ffmpeg -mc-config deploy -insecure -log debug
 
