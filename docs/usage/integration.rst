@@ -1,4 +1,4 @@
-Automating Classification
+utomating Classification
 =========================
 
 This example will show you how to automate a manual classification process,
