@@ -29,7 +29,27 @@ class DefinitionMissing(Exception):
 
 class Definition(NamedTuple):
     """
-    List[type] is how to specify a list
+    Examples
+    --------
+
+    >>> from dffml import Definition, Input
+    >>> from typing import NamedTuple
+    >>>
+    >>> class Person(NamedTuple):
+    ...   name: str
+    ...   age: int
+    >>>
+    >>> Friend = Definition(name="Friend", primitive="map", spec=Person)
+    >>> Input(value={"name": "Bob", "age": 42}, definition=Friend)
+    Input(value=Person(name='Bob', age=42), definition=Friend)
+    >>>
+    >>> SignUpQueue = Definition(name="SignUpQueue", primitive="array", spec=Person, subspec=True)
+    >>> Input(value=[{"name": "Bob", "age": 42}], definition=SignUpQueue)
+    Input(value=[Person(name='Bob', age=42)], definition=SignUpQueue)
+    >>>
+    >>> AddressBook = Definition(name="AddressBook", primitive="map", spec=Person, subspec=True)
+    >>> Input(value={"bob": {"name": "Bob", "age": 42}}, definition=AddressBook)
+    Input(value={'bob': Person(name='Bob', age=42)}, definition=AddressBook)
     """
 
     name: str
