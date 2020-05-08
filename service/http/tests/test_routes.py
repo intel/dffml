@@ -296,7 +296,7 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
             f"/multicomm/self/register",
             json={
                 "path": url,
-                "presentation": "json",
+                "output_mode": "json",
                 "asynchronous": False,
                 "dataflow": HELLO_WORLD_DATAFLOW.export(),
             },
@@ -321,7 +321,7 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
             f"/multicomm/self/register",
             json={
                 "path": url,
-                "presentation": "json",
+                "output_mode": "json",
                 "asynchronous": False,
                 "dataflow": HELLO_BLANK_DATAFLOW.export(),
             },
