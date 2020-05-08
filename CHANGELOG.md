@@ -24,8 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Example ffmpeg operation.
 - Operations to deploy docker container on receving github webhook.
 - New use case `Redeploying dataflow on webhook` in docs.
-- New input modes,output modes in `HttpChannelConfig`.
 - Documentation for creating Source for new File types taking `.ini` as an example.
+- New input modes,output modes in `HttpChannelConfig`.
 ### Changed
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
