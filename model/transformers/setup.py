@@ -19,7 +19,7 @@ with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
 INSTALL_REQUIRES = [
-    "tensorflow>=2.0.0",
+    "tensorflow>=2.0.0,<2.2.0",
     "pandas>=0.25.0",
     "numpy>=1.16.4",
     "seqeval>=0.0.12",
