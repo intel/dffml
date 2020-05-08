@@ -208,7 +208,27 @@
 
 <div class="viewcode-block" id="Definition"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Definition">[docs]</a><span class="k">class</span> <span class="nc">Definition</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    List[type] is how to specify a list</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; from dffml import Definition, Input</span>
+<span class="sd">    &gt;&gt;&gt; from typing import NamedTuple</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; class Person(NamedTuple):</span>
+<span class="sd">    ...   name: str</span>
+<span class="sd">    ...   age: int</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; Friend = Definition(name=&quot;Friend&quot;, primitive=&quot;map&quot;, spec=Person)</span>
+<span class="sd">    &gt;&gt;&gt; Input(value={&quot;name&quot;: &quot;Bob&quot;, &quot;age&quot;: 42}, definition=Friend)</span>
+<span class="sd">    Input(value=Person(name=&#39;Bob&#39;, age=42), definition=Friend)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; SignUpQueue = Definition(name=&quot;SignUpQueue&quot;, primitive=&quot;array&quot;, spec=Person, subspec=True)</span>
+<span class="sd">    &gt;&gt;&gt; Input(value=[{&quot;name&quot;: &quot;Bob&quot;, &quot;age&quot;: 42}], definition=SignUpQueue)</span>
+<span class="sd">    Input(value=[Person(name=&#39;Bob&#39;, age=42)], definition=SignUpQueue)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; AddressBook = Definition(name=&quot;AddressBook&quot;, primitive=&quot;map&quot;, spec=Person, subspec=True)</span>
+<span class="sd">    &gt;&gt;&gt; Input(value={&quot;bob&quot;: {&quot;name&quot;: &quot;Bob&quot;, &quot;age&quot;: 42}}, definition=AddressBook)</span>
+<span class="sd">    Input(value={&#39;bob&#39;: Person(name=&#39;Bob&#39;, age=42)}, definition=AddressBook)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
