@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Operations to deploy docker container on receving github webhook.
 - New use case `Redeploying dataflow on webhook` in docs.
 - Documentation for creating Source for new File types taking `.ini` as an example.
-- New input modes,output modes in `HttpChannelConfig`.
+- New input modes, output modes for HTTP API dataflow registration.
 ### Changed
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests

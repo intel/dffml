@@ -46,11 +46,16 @@ in ``deploy/mc/http/ffmpeg.yaml``
     EOF
 
 - ``input_mode``
+
     - ``bytes:Input_file``
-        - we want the input from the request to be treated as bytes with definition ``Input_file``.
+
+        - We want the input from the request to be treated as bytes with definition ``Input_file``.
+
 - ``output_mode``
+
     - ``bytes:post_input.Output_file``
-        - we want the response to be bytes taken from  ``results["post_input"]["Output_file"]``, where ``results`` is the output of the dataflow.
+
+        - We want the response to be bytes taken from  ``results["post_input"]["Output_file"]``, where ``results`` is the output of the dataflow.
 
 For more details see `HttpChannelConfig <../../plugins/service/http/dataflow.html#HttpChannelConfig>`__ .
 
@@ -77,7 +82,8 @@ Now from another terminal, we can send post requests to the dataflow running at 
 
     $ curl -v --request POST --data-binary @input.mp4 http://localhost:8080/ffmpeg -o output.gif
 
-This command will convert input.mp4 to output.gif
+You should replace ``input.mp4`` with path to your video file and ``output.gif`` to where you want the converted gif
+to be output to. An example video is available `here <https://github.com/intel/dffml/blob/master/examples/ffmpeg/>`_ .
 
 Deploying on docker container
 =============================
@@ -96,7 +102,7 @@ For this tutorial we will change it to
 
 .. code-block:: json
 
-    docker run --rm -d -ti -p 8080:8080 aghinsa/ffmpeg -mc-config deploy -insecure -log debug
+    docker run --rm -d -ti -p 8080:8080 $USER/ffmpeg -mc-config deploy -insecure -log debug
 
 .. note::
 
@@ -107,11 +113,12 @@ We can run the container and sent a post request to verify that the container is
 
 .. code-block:: console
 
-    $ docker build -t aghinsa/ffmpeg .
-    $ docker run --rm -d -ti -p 8080:8080 aghinsa/ffmpeg -mc-config deploy -insecure -log debug
+    $ docker build -t $USER/ffmpeg .
+    $ docker run --rm -d -ti -p 8080:8080 $USER/ffmpeg -mc-config deploy -insecure -log debug
 
 .. code-block:: console
 
     $ curl -v --request POST --data-binary @input.mp4 http://localhost:8080/ffmpeg -o output.gif
 
-Now in :ref:`usage_webhook` we'll setup this container to be redployed .
+Now in :ref:`usage_webhook` we'll setup this container to be automatically redeployed
+whenever we push to the Git repo containing this code.

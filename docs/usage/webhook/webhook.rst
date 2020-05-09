@@ -3,9 +3,8 @@
 Redeploying on receving github webhook
 ======================================
 
-We'll move  ``ffmpeg`` to a github repo, and set up a ``webhook dataflow`` such that whenever
-we push to the default branch, the new version is pulled and a docker container is build and
-run.
+We'll move ``ffmpeg`` to a github repo, and set up a ``webhook dataflow`` such that whenever
+we push to the default branch, the new version is pulled and its docker container is built and run.
 
 Webhook Dataflow
 ----------------
@@ -48,7 +47,7 @@ Config
     EOF
 
 Note that the input_mode is ``json:git_payload``, this means that inputs from post request will
-be forwarded to dataflow as json with ``git_payload`` definition.
+be parsed as JSON and then forwarded to dataflow as the ``git_payload`` definition..
 
 Deploy it in port 8081 as 8080 is being used by ffmpeg http service
 
@@ -61,7 +60,7 @@ Deploy it in port 8081 as 8080 is being used by ffmpeg http service
     If you're not setting this up on a server directly accessible on the internet,
     here are two methods of exposing the webhook, https://localhost.run and https://ngrok.com .
 
-using ngrok
+Using ngrok
 
 .. code-block:: console
 

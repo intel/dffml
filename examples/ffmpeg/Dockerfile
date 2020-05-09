@@ -1,6 +1,6 @@
 # Usage
 # docker build -t aghinsa/ffmpeg .
-# docker run --rm -d -ti -p 8080:8080 aghinsa/ffmpeg -mc-config deploy -insecure -log debug
+# docker run --rm -d -ti -p 8080:8080 $USER/ffmpeg -mc-config deploy -insecure -log debug
 #
 # curl -v http://127.0.0.1:80/list/sources
 FROM ubuntu:20.04
