@@ -100,6 +100,9 @@ jobs:
         if [ "${{ matrix.plugin }}" == "model/vowpalWabbit" ]; then
           conda install -y -c conda-forge vowpalwabbit
         fi
+        if [ "${{ matrix.plugin }}" == "examples/ffmpeg" ]; then
+          sudo apt-get instal ffmpeg
+        fi
     - name: Test
       run: |
         export PYTHON=python${{ matrix.python-version }}
