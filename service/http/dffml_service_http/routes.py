@@ -144,7 +144,7 @@ class HTTPChannelConfig(NamedTuple):
             Flow to which inputs from request to path is forwarded too.
         input_mode : str
             Mode according to which input data is passed to the dataflow,default:"default".
-                * "default" :
+                - "default" :
                     Inputs are expected to be mapping of context to list of input
                         to definition mappings
                         eg:'{
@@ -156,9 +156,30 @@ class HTTPChannelConfig(NamedTuple):
                                 }
                             ]
                         }'
-                * "preprocess:definition_name" :
+                - "preprocess:definition_name" :
                     Input as whole is treated as value with the given definition.
                     Supported 'preporcess' tags : [json,text,bytes,stream]
+        output_mode : str
+            Mode according to which output from dataflow is treated.
+                - bytes:OUTPUT_KEYS :
+                    OUTPUT_KEYS are . seperated string which is used as keys to traverse the
+                    ouput of the flow.
+                    eg:
+                        `results = {
+                            "post_input":
+                                {
+                                    "hex":b'speak'
+                                }
+                        }`
+                    then bytes:post_input.hex will return b'speak'.
+                - text:OUTPUT_KEYS
+                - json
+                    - output of dataflow (Dict) is passes as json
+                - stream:content_type:OUPUT_KEYS
+                    - a response of stream type is returned,to which results.OUTPUT_KEYS are wrote.
+
+
+
     """
 
     path: str
