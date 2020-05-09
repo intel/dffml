@@ -101,7 +101,7 @@ jobs:
           conda install -y -c conda-forge vowpalwabbit
         fi
         if [ "${{ matrix.plugin }}" == "examples/ffmpeg" ]; then
-          sudo apt-get install ffmpeg
+          sudo apt-get update && sudo apt-get install ffmpeg
         fi
     - name: Test
       run: |
