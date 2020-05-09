@@ -13,7 +13,7 @@ from dffml.base import BaseDataFlowFacilitatorObjectContext
 
 
 from dffml.operation.output import GetSingle
-from deploy.operations import *
+from dffml_operations_deploy.operations import *
 from dffml_feature_git.feature.operations import (
     clone_git_repo,
     cleanup_git_repo,
@@ -137,7 +137,7 @@ class TestOperations(AsyncTestCase):
                             "{{.ID}} {{.RunningFor}}",
                         )
                         self.assertNotEqual(before, after)
-                        self.assertIn("seconds", after)
+                        self.assertIn("second", after)
                         self.assertIn("docker_restarted_containers", results)
                         self.containers_to_remove = results[
                             "docker_restarted_containers"
