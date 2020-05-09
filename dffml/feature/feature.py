@@ -180,6 +180,7 @@ class DefinedFeature(Feature):
         return self._length
 
 
+
 def DefFeature(name, dtype, length):
 
     return type("Feature" + name, (DefinedFeature, Feature), {"NAME": name})(
