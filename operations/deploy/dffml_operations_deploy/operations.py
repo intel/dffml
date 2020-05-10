@@ -1,17 +1,14 @@
-import os
 import re
-import json
 import shlex
-import asyncio
 import pathlib
-from typing import List, Dict, Any
+from typing import Dict, Any
 
 from dffml.df.base import op
 from .definitions import *
 from .exceptions import *
 
+from dffml_feature_git.util.proc import check_output
 from dffml_feature_git.feature.operations import clone_git_repo
-from dffml_feature_git.util.proc import check_output, create, stop
 
 
 @op(
