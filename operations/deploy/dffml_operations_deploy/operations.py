@@ -60,7 +60,7 @@ async def get_running_containers(tag):
     inputs={"containers": docker_running_containers},
     outputs={"status": got_running_containers},
 )
-def get_status_running_containes(containers):
+def get_status_running_containers(containers):
     return {"status": True}
 
 

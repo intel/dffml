@@ -51,7 +51,7 @@ flow:
   docker_build_image:
     conditions:
     - check_if_default_branch: is_default_branch
-    - get_status_running_containes: status
+    - get_status_running_containers: status
     inputs:
       docker_commands:
       - parse_docker_commands: docker_commands
@@ -63,7 +63,7 @@ flow:
     inputs:
       tag:
       - get_image_tag: image_tag
-  get_status_running_containes:
+  get_status_running_containers:
     inputs:
       containers:
       - get_running_containers: running_containers
@@ -127,10 +127,10 @@ operations:
     outputs:
       running_containers: docker_running_containers
     stage: processing
-  get_status_running_containes:
+  get_status_running_containers:
     inputs:
       containers: docker_running_containers
-    name: get_status_running_containes
+    name: get_status_running_containers
     outputs:
       status: got_running_containers
     stage: processing

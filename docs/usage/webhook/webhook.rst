@@ -26,7 +26,7 @@ Setup a http server in ``ffmpeg/deploy/webhook``, to receive webhook and redploy
     check_if_default_branch
     get_image_tag
     get_running_containers
-    get_status_running_containes
+    get_status_running_containers
     parse_docker_commands
     docker_build_image
     restart_running_containers
