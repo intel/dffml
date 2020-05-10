@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
   parameter sets for an operation.
+- app.add_javascript() is deprecated so replaced it with app.add_js_file() in 'DOCS/CONF.PY' file.
 ### Removed
 - Monitor class and associated tests (unused)
 
