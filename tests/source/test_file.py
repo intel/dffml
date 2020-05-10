@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 import pathlib
-
 from unittest.mock import patch, mock_open
 from contextlib import contextmanager
 from typing import AsyncIterator
