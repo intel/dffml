@@ -302,7 +302,7 @@ class TestServer(AsyncTestCase):
                         "-sources",
                         "mysource=json",
                         "-source-mysource-filename",
-                        source.config.filename,
+                        str(source.config.filename),
                     )
                 )
                 async with self.get(
