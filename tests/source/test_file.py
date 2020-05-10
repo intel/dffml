@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
+import pathlib
+
 from unittest.mock import patch, mock_open
 from contextlib import contextmanager
 from typing import AsyncIterator
@@ -125,10 +127,10 @@ class TestFileSource(AsyncTestCase):
             async with FakeFileSource(
                 self.config("testfile", readwrite=False)
             ):
-                m_open.assert_called_once_with("testfile", "r")
+                pass
+            m_open.assert_called_once_with(pathlib.Path("testfile"), "r")
 
     async def test_open_gz(self):
-        source = FakeFileSource("testfile.gz")
         m_open = mock_open()
         with patch("os.path.exists", return_value=True), patch(
             "gzip.open", m_open
@@ -136,7 +138,9 @@ class TestFileSource(AsyncTestCase):
             async with FakeFileSource(
                 self.config("testfile.gz", readwrite=False)
             ):
-                m_open.assert_called_once_with("testfile.gz", "rt")
+                m_open.assert_called_once_with(
+                    pathlib.Path("testfile.gz"), "rt"
+                )
 
     async def test_open_bz2(self):
         m_open = mock_open()
@@ -146,7 +150,9 @@ class TestFileSource(AsyncTestCase):
             async with FakeFileSource(
                 self.config("testfile.bz2", readwrite=False)
             ):
-                m_open.assert_called_once_with("testfile.bz2", "rt")
+                m_open.assert_called_once_with(
+                    pathlib.Path("testfile.bz2"), "rt"
+                )
 
     async def test_open_lzma(self):
         m_open = mock_open()
@@ -156,7 +162,9 @@ class TestFileSource(AsyncTestCase):
             async with FakeFileSource(
                 self.config("testfile.lzma", readwrite=False)
             ):
-                m_open.assert_called_once_with("testfile.lzma", "rt")
+                m_open.assert_called_once_with(
+                    pathlib.Path("testfile.lzma"), "rt"
+                )
 
     async def test_open_xz(self):
         m_open = mock_open()
@@ -166,7 +174,9 @@ class TestFileSource(AsyncTestCase):
             async with FakeFileSource(
                 self.config("testfile.xz", readwrite=False)
             ):
-                m_open.assert_called_once_with("testfile.xz", "rt")
+                m_open.assert_called_once_with(
+                    pathlib.Path("testfile.xz"), "rt"
+                )
 
     async def test_open_zip(self):
         source = FakeFileSource(self.config("testfile.zip", readwrite=False))
@@ -192,7 +202,7 @@ class TestFileSource(AsyncTestCase):
         ):
             async with FakeFileSource(self.config("testfile")):
                 pass
-            m_open.assert_called_once_with("testfile", "w+")
+            m_open.assert_called_once_with(pathlib.Path("testfile"), "w+")
 
     async def test_close_gz(self):
         m_open = mock_open()
@@ -201,7 +211,7 @@ class TestFileSource(AsyncTestCase):
         ):
             async with FakeFileSource(self.config("testfile.gz")):
                 pass
-            m_open.assert_called_once_with("testfile.gz", "wt")
+            m_open.assert_called_once_with(pathlib.Path("testfile.gz"), "wt")
 
     async def test_close_bz2(self):
         m_open = mock_open()
@@ -210,7 +220,7 @@ class TestFileSource(AsyncTestCase):
         ):
             async with FakeFileSource(self.config("testfile.bz2")):
                 pass
-            m_open.assert_called_once_with("testfile.bz2", "wt")
+            m_open.assert_called_once_with(pathlib.Path("testfile.bz2"), "wt")
 
     async def test_close_lzma(self):
         m_open = mock_open()
@@ -219,7 +229,7 @@ class TestFileSource(AsyncTestCase):
         ):
             async with FakeFileSource(self.config("testfile.lzma")):
                 pass
-            m_open.assert_called_once_with("testfile.lzma", "wt")
+            m_open.assert_called_once_with(pathlib.Path("testfile.lzma"), "wt")
 
     async def test_close_xz(self):
         m_open = mock_open()
@@ -228,7 +238,7 @@ class TestFileSource(AsyncTestCase):
         ):
             async with FakeFileSource(self.config("testfile.xz")):
                 pass
-            m_open.assert_called_once_with("testfile.xz", "wt")
+            m_open.assert_called_once_with(pathlib.Path("testfile.xz"), "wt")
 
     async def test_close_zip(self):
         source = FakeFileSource(self.config("testfile.zip"))
