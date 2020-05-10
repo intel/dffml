@@ -154,7 +154,7 @@ class TestRoutesList(TestRoutesRunning, AsyncTestCase):
 class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
     async def test_source(self):
         config = parse_unknown(
-            "--source-filename", pathlib.Path('dataset.csv').resolve(), "-source-allowempty"
+            "--source-filename", "dataset.csv", "-source-allowempty",
         )
         async with self.post("/configure/source/csv/salary", json=config) as r:
             self.assertEqual(await r.json(), OK)
@@ -162,7 +162,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
             self.assertEqual(
                 self.cli.app["sources"]["salary"].config,
                 CSVSourceConfig(
-                    filename=pathlib.Path("dataset.csv"),
+                    filename="dataset.csv",
                     tag="untagged",
                     key="key",
                     tagcol="tag",
