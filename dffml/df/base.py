@@ -216,8 +216,10 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                         ),
                     )
                 else:
-                    raise OpCouldNotDeterminePrimitive(
-                        f"The primitive of {name} could not be determined"
+                    kwargs["input"][name] = Definition(
+                        name=".".join(name_list),
+                        primitive="map",
+                        spec=param.annotation,
                     )
 
         func.op = Operation(**kwargs)
