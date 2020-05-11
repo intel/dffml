@@ -216,7 +216,7 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                         ),
                     )
                 else:
-                    kwargs["input"][name] = Definition(
+                    kwargs["inputs"][name] = Definition(
                         name=".".join(name_list),
                         primitive="map",
                         spec=param.annotation,
