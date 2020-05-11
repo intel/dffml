@@ -6,15 +6,6 @@ manager doesn't provide Python 3.7 or 3.8,
 `pyenv <https://github.com/pyenv/pyenv#simple-python-version-management-pyenv>`_
 is another good way to install it. You could also use the docker container.
 
-.. warning::
-
-    As of 2020-04-29 TensorFlow does not yet support Python 3.8
-    See https://github.com/tensorflow/tensorflow/issues/33374 for more details.
-    So long as that issue is open you won't be able to install DFFML
-    plugins which require TensorFlow, if you're running Python 3.8.
-
-    There are many other non-TensorFlow based plugins which you can install.
-
 DFFML is available via pip.
 
 .. code-block:: console
