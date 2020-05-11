@@ -162,7 +162,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
             self.assertEqual(
                 self.cli.app["sources"]["salary"].config,
                 CSVSourceConfig(
-                    filename="dataset.csv",
+                    filename=pathlib.Path("dataset.csv"),
                     tag="untagged",
                     key="key",
                     tagcol="tag",

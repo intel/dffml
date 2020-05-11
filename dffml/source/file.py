@@ -9,6 +9,7 @@ import lzma
 import errno
 import zipfile
 from contextlib import contextmanager
+import pathlib
 
 from ..base import config
 from .source import BaseSource
@@ -34,6 +35,12 @@ class FileSource(BaseSource):
     WRITEMODE: str = "w"
     READMODE_COMPRESSED: str = "rt"
     WRITEMODE_COMPRESSED: str = "wt"
+
+    def __init__(self, config):
+        super().__init__(config)
+
+        if isinstance(getattr(self.config, "filename", None), str):
+            self.config.filename = pathlib.Path(self.config.filename)
 
     async def __aenter__(self) -> "BaseSourceContext":
         await self._open()
@@ -62,15 +69,16 @@ class FileSource(BaseSource):
                     os.strerror(errno.ENOENT),
                     self.config.filename,
                 )
-        if self.config.filename[::-1].startswith((".gz")[::-1]):
+        if self.config.filename.suffix == ".gz":
             opener = gzip.open(self.config.filename, self.READMODE_COMPRESSED)
-        elif self.config.filename[::-1].startswith((".bz2")[::-1]):
+        elif self.config.filename.suffix == ".bz2":
             opener = bz2.open(self.config.filename, self.READMODE_COMPRESSED)
-        elif self.config.filename[::-1].startswith(
-            (".xz")[::-1]
-        ) or self.config.filename[::-1].startswith((".lzma")[::-1]):
+        elif (
+            self.config.filename.suffix == ".xz"
+            or self.config.filename.suffix == ".lzma"
+        ):
             opener = lzma.open(self.config.filename, self.READMODE_COMPRESSED)
-        elif self.config.filename[::-1].startswith((".zip")[::-1]):
+        elif self.config.filename.suffix == ".zip":
             opener = self.zip_opener_helper()
         else:
             opener = open(self.config.filename, self.READMODE)
@@ -79,21 +87,22 @@ class FileSource(BaseSource):
 
     async def _close(self):
         if self.config.readwrite:
-            if self.config.filename[::-1].startswith((".gz")[::-1]):
+            if self.config.filename.suffix == ".gz":
                 close = gzip.open(
                     self.config.filename, self.WRITEMODE_COMPRESSED
                 )
-            elif self.config.filename[::-1].startswith((".bz2")[::-1]):
+            elif self.config.filename.suffix == ".bz2":
                 close = bz2.open(
                     self.config.filename, self.WRITEMODE_COMPRESSED
                 )
-            elif self.config.filename[::-1].startswith(
-                (".xz")[::-1]
-            ) or self.config.filename[::-1].startswith((".lzma")[::-1]):
+            elif (
+                self.config.filename.suffix == ".xz"
+                or self.config.filename.suffix == ".lzma"
+            ):
                 close = lzma.open(
                     self.config.filename, self.WRITEMODE_COMPRESSED
                 )
-            elif self.config.filename[::-1].startswith((".zip")[::-1]):
+            elif self.config.filename.suffix == ".zip":
                 close = self.zip_closer_helper()
             else:
                 close = open(self.config.filename, "w+")
