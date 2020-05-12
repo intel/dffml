@@ -1,9 +1,9 @@
 definitions:
-  Input_file:
-    name: Input_file
+  input_file:
+    name: input_file
     primitive: bytes
-  Output_file:
-    name: Output_file
+  output_file:
+    name: output_file
     primitive: bytes
   Resolution:
     name: Resolution
@@ -29,11 +29,11 @@ linked: true
 operations:
   convert_to_gif:
     inputs:
-      input_file: Input_file
+      input_file: input_file
       resolution: Resolution
     name: convert_to_gif
     outputs:
-      output_file: Output_file
+      output_file: output_file
     stage: processing
   get_single:
     inputs:
@@ -45,6 +45,6 @@ operations:
 seed:
 - definition: get_single_spec
   value:
-  - Output_file
+  - output_file
 - definition: Resolution
   value: 480

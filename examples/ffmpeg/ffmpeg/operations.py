@@ -6,8 +6,8 @@ from .definitions import *
 
 
 @op(
-    inputs={"input_file": Input_file, "resolution": Resolution},
-    outputs={"output_file": Output_file},
+    inputs={"input_file": input_file, "resolution": Resolution},
+    outputs={"output_file": output_file},
 )
 async def convert_to_gif(input_file, resolution):
     temp_input_file = tempfile.NamedTemporaryFile()

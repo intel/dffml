@@ -48,6 +48,6 @@ class TestOperations(AsyncTestCase):
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
             async with orchestrator(dataflow) as octx:
                 async for ctx, results in octx.run(test_inputs):
-                    self.assertIn("Output_file", results)
-                    output = results["Output_file"]
+                    self.assertIn("output_file", results)
+                    output = results["output_file"]
                     self.assertGreater(len(output), 100000)

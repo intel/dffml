@@ -41,21 +41,21 @@ in ``deploy/mc/http/ffmpeg.yaml``
 
     $ cat > ./deploy/mc/http/ffmpeg.yaml <<EOF
     path: /ffmpeg
-    input_mode: bytes:Input_file
-    output_mode: bytes:post_input.Output_file
+    input_mode: bytes:input_file
+    output_mode: bytes:post_input.output_file
     EOF
 
 - ``input_mode``
 
-    - ``bytes:Input_file``
+    - ``bytes:input_file``
 
-        - We want the input from the request to be treated as bytes with definition ``Input_file``.
+        - We want the input from the request to be treated as bytes with definition ``input_file``.
 
 - ``output_mode``
 
-    - ``bytes:post_input.Output_file``
+    - ``bytes:post_input.output_file``
 
-        - We want the response to be bytes taken from  ``results["post_input"]["Output_file"]``, where ``results`` is the output of the dataflow.
+        - We want the response to be bytes taken from  ``results["post_input"]["output_file"]``, where ``results`` is the output of the dataflow.
 
 For more details see `HttpChannelConfig <../../plugins/service/http/dataflow.html#HttpChannelConfig>`__ .
 
