@@ -1,11 +1,11 @@
 .. _usage_ffmpeg_deploy:
 
+Deploying with the HTTP Service
+===============================
+
 In this tutorial we will deploy a dataflow(ffmpeg dataflow) which converts a video to gif over an http server.We'll also
 see how to deploy the same http server in a docker container.Finally in :ref:`usage_ffmpeg_deploy_serve`
-we'll setup another http server which waits on gtihub webhooks to rebuilt and deploy the ffmpeg dataflow.
-
-Deploying on http server
-========================
+we'll setup another http server which waits on GitHub webhooks to rebuilt and deploy the ffmpeg dataflow.
 
 .. note::
 
@@ -34,7 +34,7 @@ Dataflow and Config files
     $ mkdir -p deploy/mc/http deploy/df
     $ dffml service dev export -config yaml ffmpeg.dataflow:DATAFLOW > deploy/df/ffmpeg.yaml
 
-Create the config file for the http server
+Create the config file for the HTTP service
 in ``deploy/mc/http/ffmpeg.yaml``
 
 .. code-block:: console
