@@ -3,9 +3,9 @@
 Deploying with the HTTP Service
 ===============================
 
-In this tutorial we will deploy a dataflow(ffmpeg dataflow) which converts a video to gif over an http server.We'll also
-see how to deploy the same http server in a docker container.Finally in :ref:`usage_ffmpeg_deploy_serve`
-we'll setup another http server which waits on GitHub webhooks to rebuilt and deploy the ffmpeg dataflow.
+In this tutorial we will deploy a dataflow(ffmpeg dataflow) which converts a video to gif over an HTTP service. We'll
+also see how to deploy the same in a docker container. Finally in :ref:`usage_ffmpeg_deploy_serve`
+we'll setup another HTTP service which waits on GitHub webhooks to rebuilt and deploy the ffmpeg dataflow.
 
 .. note::
 
@@ -14,13 +14,40 @@ we'll setup another http server which waits on GitHub webhooks to rebuilt and de
     directory of the DFFML source code.Rest of the tutorial is ran from the root of
     this folder.
 
+Create the Package
+------------------
+
+To create a new operation we first create a new Python package. DFFML has a script to do it for you.
+
+.. code-block:: console
+
+    $ dffml service dev create operations ffmpeg
+    $ cd ffmpeg
+
 Write operations and definitions to convert videos files to gif by calling
 ``ffmpeg`` (Make sure you `download and install <https://www.ffmpeg.org/download.html>`_ it.).
 The operation accepts bytes (of the video), converts it to gif and outputs it as bytes.
+We will start writing our operation in ``./ffmpeg/operations.py``
 
 **ffmpeg/operations.py**
 
 .. literalinclude:: /../examples/ffmpeg/ffmpeg/operations.py
+
+Add the operation to ``ffmpeg/setup.py``
+
+.. code-block:: python
+
+    common.KWARGS["entry_points"] = {
+        "dffml.operation": [
+            f"convert_to_gif = {common.IMPORT_NAME}.operations:convert_to_gif"
+        ]
+    }
+
+Install the package
+
+.. code-block:: console
+
+    $ pip install -e .
 
 Dataflow and Config files
 -------------------------
@@ -42,7 +69,7 @@ in ``deploy/mc/http/ffmpeg.yaml``
     $ cat > ./deploy/mc/http/ffmpeg.yaml <<EOF
     path: /ffmpeg
     input_mode: bytes:input_file
-    output_mode: bytes:post_input.output_file
+    output_mode: bytes:application/octet-stream:post_input.output_file
     EOF
 
 - ``input_mode``
@@ -53,9 +80,10 @@ in ``deploy/mc/http/ffmpeg.yaml``
 
 - ``output_mode``
 
-    - ``bytes:post_input.output_file``
+    - ``bytes:application/octet-stream:post_input.output_file``
 
-        - We want the response to be bytes taken from  ``results["post_input"]["output_file"]``, where ``results`` is the output of the dataflow.
+        - We want the response (content_type = application/octet-stream) to be bytes taken from  ``results["post_input"]["output_file"]``,
+          where ``results`` is the output of the dataflow.
 
 For more details see `HttpChannelConfig <../../plugins/service/http/dataflow.html#HttpChannelConfig>`__ .
 
@@ -96,13 +124,13 @@ A ``Dockerfile`` is already generated in ffmpeg folder. We need to modify it to 
 
 .. note::
     The run command in the comment section of the Dockerfile will be used to execute
-    the container after receving webhooks , so make sure you change it to your usecase.
+    the container after receving webhooks, so make sure you change it to your usecase.
 
 For this tutorial we will change it to
 
-.. code-block:: json
+.. code-block:: Dockerfile
 
-    docker run --rm -d -ti -p 8080:8080 $USER/ffmpeg -mc-config deploy -insecure -log debug
+    # docker run --rm -d -ti -p 8080:8080 $USER/ffmpeg -mc-config deploy -insecure -log debug
 
 .. note::
 

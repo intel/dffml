@@ -50,12 +50,12 @@ HttpChannelConfig
 
     - Mode according to which output from dataflow is treated.
 
-        - ``bytes:OUTPUT_KEYS``
+        - ``bytes:content_type:OUTPUT_KEYS``
 
             - OUTPUT_KEYS are ``.`` seperated string which is used as keys to traverse the ouput of the flow.
             eg:
 
-            .. code-block:: json
+            .. code-block:: python
 
                 results = {
                     "post_input":
@@ -72,6 +72,3 @@ HttpChannelConfig
 
             - output of dataflow (Dict) is passes as json
 
-        - `stream:content_type:OUPUT_KEYS`
-
-            - a response of stream type is returned,to which results.OUTPUT_KEYS are wrote.

@@ -14,7 +14,6 @@ PLUGINS=("${SRC_ROOT}/" \
 	"${SRC_ROOT}/model/scratch" \
 	"${SRC_ROOT}/model/scikit" \
 	"${SRC_ROOT}/examples/shouldi" \
-	"${SRC_ROOT}/examples/ffmpeg" \
 	"${SRC_ROOT}/operations/deploy" \
 	"${SRC_ROOT}/feature/git" \
 	"${SRC_ROOT}/feature/auth" \

@@ -29,7 +29,7 @@ INSTALL_REQUIRES = [] + (
     )
     else []
     + (
-        ["dffml-feature-git>=0.2.7 "]
+        ["dffml-feature-git>=0.2.7"]
         if not any(
             list(
                 map(

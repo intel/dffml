@@ -52,7 +52,7 @@ jobs:
       fail-fast: false
       max-parallel: 40
       matrix:
-        plugin: [., examples/shouldi, examples/ffmpeg, model/tensorflow, model/tensorflow_hub, model/transformers, model/scratch, model/scikit, model/vowpalWabbit, operations/binsec, operations/deploy, source/mysql, feature/git, feature/auth, service/http, configloader/yaml, configloader/png]
+        plugin: [., examples/shouldi, model/tensorflow, model/tensorflow_hub, model/transformers, model/scratch, model/scikit, model/vowpalWabbit, operations/binsec, operations/deploy, source/mysql, feature/git, feature/auth, service/http, configloader/yaml, configloader/png]
         python-version: [3.7, 3.8]
 
     steps:
@@ -100,9 +100,6 @@ jobs:
         if [ "${{ matrix.plugin }}" == "model/vowpalWabbit" ]; then
           conda install -y -c conda-forge vowpalwabbit
         fi
-        if [ "${{ matrix.plugin }}" == "examples/ffmpeg" ]; then
-          sudo apt-get update && sudo apt-get install ffmpeg
-        fi
     - name: Test
       run: |
         export PYTHON=python${{ matrix.python-version }}
@@ -117,7 +114,6 @@ jobs:
         export PYPI_TOKENS=$(mktemp)
         cat > ${PYPI_TOKENS} <<EOF
         examples/shouldi=${{ secrets.PYPI_SHOULDI }}
-        examples/ffmpeg=${{ secrets.PYPI_EXAMPLES_FFMPEG }}
         model/tensorflow=${{ secrets.PYPI_MODEL_TENSORFLOW }}
         model/tensorflow_hub=${{ secrets.PYPI_MODEL_TENSORFLOW_HUB }}
         model/transformers=${{ secrets.PYPI_MODEL_TRANSFORMERS }}

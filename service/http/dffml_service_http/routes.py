@@ -161,7 +161,7 @@ class HTTPChannelConfig(NamedTuple):
                     Supported 'preporcess' tags : [json,text,bytes,stream]
         output_mode : str
             Mode according to which output from dataflow is treated.
-                - bytes:OUTPUT_KEYS :
+                - bytes:content_type:OUTPUT_KEYS :
                     OUTPUT_KEYS are . seperated string which is used as keys to traverse the
                     ouput of the flow.
                     eg:
@@ -175,10 +175,6 @@ class HTTPChannelConfig(NamedTuple):
                 - text:OUTPUT_KEYS
                 - json
                     - output of dataflow (Dict) is passes as json
-                - stream:content_type:OUPUT_KEYS
-                    - a response of stream type is returned,to which results.OUTPUT_KEYS are wrote.
-
-
 
     """
 
@@ -196,7 +192,7 @@ class HTTPChannelConfig(NamedTuple):
 
 @entrypoint("http")
 class Routes(BaseMultiCommContext):
-    OUTPUT_MODES = ["json", "text", "bytes", "stream"]
+    IO_MODES = ["json", "text", "bytes", "stream"]
 
     async def get_registered_handler(self, request):
         return self.app["multicomm_routes"].get(request.path, None)
@@ -260,7 +256,7 @@ class Routes(BaseMultiCommContext):
                 else:
                     return web.json_response(
                         {
-                            "error": f"preprocess tag must be one of [json,text,bytes,stream],got {preprocess}"
+                            "error": f"preprocess tag must be one of {IO_MODES}, got {preprocess}"
                         },
                         status=HTTPStatus.NOT_FOUND,
                     )
@@ -295,35 +291,27 @@ class Routes(BaseMultiCommContext):
                 if config.output_mode == "json":
                     return web.json_response(results)
 
-                # content_info is a list in case of stream
-                # and string in others
+                # content_info is a List[str] ([content_type,output_keys]) 
+                # in case of stream,bytes and string in others
                 postprocess_mode, *content_info = config.output_mode.split(":")
 
                 if postprocess_mode == "stream":
                     # stream:text/plain:get_single.beef
+                    raise NotImplementedError(
+                        "output mode  not yet implemented"
+                    )
+
+                elif postprocess_mode == "bytes":
                     content_type, output_keys = content_info
                     output_data = traverse_get(
                         results, *output_keys.split(".")
-                    )
-
-                    response = web.StreamResponse(
-                        status=200, headers={"Content-Type": content_type}
-                    )
-
-                    await response.prepare(request)
-
-                    for data in output_data:
-                        await response.write(data)
-                    await response.write_eof()
-                    return response
-
-                output_data = traverse_get(
-                    results, *content_info[0].split(".")
-                )
-
-                if postprocess_mode == "bytes":
+                        )
                     return web.Response(body=output_data)
+
                 elif postprocess_mode == "text":
+                    output_data = traverse_get(
+                    results, *content_info[0].split(".")
+                        )
                     return web.Response(text=output_data)
 
                 else:
@@ -583,10 +571,10 @@ class Routes(BaseMultiCommContext):
     @mcctx_route
     async def multicomm_register(self, request, mcctx):
         config = mcctx.register_config()._fromdict(**(await request.json()))
-        if config.output_mode not in self.OUTPUT_MODES:
+        if config.output_mode not in self.IO_MODES:
             return web.json_response(
                 {
-                    "error": f"{config.output_mode!r} is not a valid output_mode option: {self.OUTPUT_MODES!r}"
+                    "error": f"{config.output_mode!r} is not a valid output_mode option: {self.IO_MODES!r}"
                 },
                 status=HTTPStatus.BAD_REQUEST,
             )

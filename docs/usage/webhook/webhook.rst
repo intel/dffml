@@ -1,9 +1,9 @@
 .. _usage_webhook:
 
-Redeploying on receving github webhook
+Redeploying on receving GitHub webhook
 ======================================
 
-We'll move ``ffmpeg`` to a github repo, and set up a ``webhook dataflow`` such that whenever
+We'll move ``ffmpeg`` to a GitHub repo, and set up a webhook DataFlow such that whenever
 we push to the default branch, the new version is pulled and its docker container is built and run.
 
 Webhook Dataflow
@@ -58,13 +58,25 @@ Deploy it in port 8081 as 8080 is being used by ffmpeg http service
 .. note::
 
     If you're not setting this up on a server directly accessible on the internet,
-    here are two methods of exposing the webhook, https://localhost.run and https://ngrok.com .
+    here are two methods of exposing the webhook,
 
-Using ngrok
+    Using `localhost.run <https://localhost.run>`_
 
-.. code-block:: console
+    .. code-block:: console
 
-    $ ~/ngrok http 8081
+        $ ssh -R 80:localhost:8081 $RANDOM@ssh.localhost.run
+
+    Using ngrok
+
+    .. code-block:: console
+
+        $ ~/ngrok http 8081
+
+we'll be using ``ngrok`` in this tutorial
+
+    .. code-block:: console
+
+        $ ~/ngrok http 8081
 
 .. image:: ./images/ngrok_out.png
 
@@ -73,7 +85,7 @@ Copy paste the output url to ``Payload URL`` in webhook settings of ffmpeg repo.
 .. image:: ./images/github_settings.png
 
 Now whenever there's a push to the default branch of the repo, the ffmpeg container
-which is running gets redeployed from the fresh pull.To check this we will modify the
+which is running gets redeployed from the fresh pull. To check this we will modify the
 end time of the conversion from 10 to 12 in ``ffmpeg/operations.py`` by changing
 
 .. code-block:: python
@@ -102,5 +114,5 @@ to
         ..
     )
 
-on pushing the changes to our repo, the container will be redeployed.To verify this run
+on pushing the changes to our repo, the container will be redeployed. To verify this run
 ``docker ps`` and check the up time of the container.
