@@ -12,6 +12,7 @@ from typing import (
     Optional,
     Set,
 )
+from dataclasses import is_dataclass
 from contextlib import asynccontextmanager
 
 from .exceptions import NotOpImp
@@ -215,11 +216,18 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                             param.annotation, param.annotation.__name__
                         ),
                     )
-                else:
+                elif is_dataclass(param.annotation) or bool(
+                    issubclass(param.annotation, tuple)
+                    and hasattr(param.annotation, "_asdict")
+                ):
                     kwargs["inputs"][name] = Definition(
                         name=".".join(name_list),
                         primitive="map",
                         spec=param.annotation,
+                    )
+                else:
+                    raise OpCouldNotDeterminePrimitive(
+                        f"The primitive of {name} could not be determined"
                     )
 
         func.op = Operation(**kwargs)
