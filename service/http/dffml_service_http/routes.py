@@ -291,7 +291,7 @@ class Routes(BaseMultiCommContext):
                 if config.output_mode == "json":
                     return web.json_response(results)
 
-                # content_info is a List[str] ([content_type,output_keys]) 
+                # content_info is a List[str] ([content_type,output_keys])
                 # in case of stream,bytes and string in others
                 postprocess_mode, *content_info = config.output_mode.split(":")
 
@@ -305,13 +305,13 @@ class Routes(BaseMultiCommContext):
                     content_type, output_keys = content_info
                     output_data = traverse_get(
                         results, *output_keys.split(".")
-                        )
+                    )
                     return web.Response(body=output_data)
 
                 elif postprocess_mode == "text":
                     output_data = traverse_get(
-                    results, *content_info[0].split(".")
-                        )
+                        results, *content_info[0].split(".")
+                    )
                     return web.Response(text=output_data)
 
                 else:
