@@ -5,14 +5,14 @@ from dffml import op, Definition
 
 
 @op(
- inputs={
-     "input_file": Definition(name="input_file", primitive="bytes"),
-     "resolution": Definition(name="resolution", primitive="int"),
- },
- outputs={"output_file": Definition(name="output_file", primitive="bytes")}
+    inputs={
+        "input_file": Definition(name="input_file", primitive="bytes"),
+        "resolution": Definition(name="resolution", primitive="int"),
+    },
+    outputs={"output_file": Definition(name="output_file", primitive="bytes")},
 )
 async def convert_to_gif(input_file, resolution):
-    temp_input_file = tempfile.NamedTemporaryFile(prefix="ffmpeg-",)
+    temp_input_file = tempfile.NamedTemporaryFile(prefix="ffmpeg-")
     temp_input_file.write(input_file)
     temp_input_file.seek(0)
     proc = await asyncio.create_subprocess_exec(

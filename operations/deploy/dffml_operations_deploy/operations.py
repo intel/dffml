@@ -98,16 +98,14 @@ async def parse_docker_commands(repo, image_tag):
         )
 
     x = x[0].replace("#", "").strip()
-    if "--rm" in x: # --rm and --restart=always are conflicting options
-        x = x.replace("docker run","docker run -d")
+    if "--rm" in x:  # --rm and --restart=always are conflicting options
+        x = x.replace("docker run", "docker run -d")
     else:
-        x = x.replace("docker run","docker run -d --restart=always")
+        x = x.replace("docker run", "docker run -d --restart=always")
     docker_run_cmd = shlex.split(x)
     docker_commands = {"build": docker_build_cmd, "run": docker_run_cmd}
     LOGGER.debug(f"Docker commands:{docker_commands}")
-    return {
-        "docker_commands": docker_commands
-    }
+    return {"docker_commands": docker_commands}
 
 
 @op(
