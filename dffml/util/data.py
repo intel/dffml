@@ -14,6 +14,16 @@ from functools import wraps
 import pathlib
 from typing import Callable
 
+try:
+    from typing import get_origin, get_args
+except ImportError:
+    # Added in Python 3.8
+    def get_origin(t):
+        return getattr(t, "__origin__", None)
+
+    def get_args(t):
+        return getattr(t, "__args__", None)
+
 
 def merge(one, two, list_append: bool = True):
     for key, value in two.items():
