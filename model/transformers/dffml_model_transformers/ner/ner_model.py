@@ -501,7 +501,7 @@ class NERModelContext(ModelContext):
 
                 return cross_entropy
 
-            per_example_losses = config["strategy"].experimental_run_v2(
+            per_example_losses = config["strategy"].run(
                 step_fn, args=(train_features, train_labels)
             )
             mean_loss = config["strategy"].reduce(
@@ -529,7 +529,7 @@ class NERModelContext(ModelContext):
                     loss = train_step(train_features, train_labels)
 
                     if step % config["gradient_accumulation_steps"] == 0:
-                        config["strategy"].experimental_run_v2(apply_gradients)
+                        config["strategy"].run(apply_gradients)
                         loss_metric(loss)
                         global_step += 1
                         if (
