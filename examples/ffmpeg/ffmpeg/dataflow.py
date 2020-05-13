@@ -1,6 +1,5 @@
-from dffml.df.types import DataFlow, Input
+from dffml import DataFlow, Input, GetSingle
 from .operations import convert_to_gif
-from dffml.operation.output import GetSingle
 
 DATAFLOW = DataFlow.auto(convert_to_gif, GetSingle)
 DATAFLOW.seed = [

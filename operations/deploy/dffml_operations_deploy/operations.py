@@ -6,6 +6,7 @@ from typing import Dict, Any
 from dffml.df.base import op
 from .definitions import *
 from .exceptions import *
+from .log import LOGGER
 
 from dffml_feature_git.util.proc import check_output
 from dffml_feature_git.feature.operations import clone_git_repo
@@ -16,7 +17,9 @@ from dffml_feature_git.feature.operations import clone_git_repo
     outputs={"url": clone_git_repo.op.inputs["URL"]},
 )
 def get_url_from_payload(payload: Dict[str, Any]):
-    return {"url": payload["repository"]["clone_url"]}
+    url = payload["repository"]["clone_url"]
+    LOGGER.debug(f"Got url:{url} from payload")
+    return {"url": url}
 
 
 @op(
@@ -36,6 +39,7 @@ def get_image_tag(payload):
     ]  # eg:-"https://github.com/username/Hello-World",
     tag = url.split("/")
     tag = f"{tag[-2]}/{tag[-1]}"
+    LOGGER.debug(f"Got image tag:{tag}")
     return {"image_tag": tag}
 
 
@@ -50,6 +54,7 @@ async def get_running_containers(tag):
     containers = [
         container for container in containers.strip().split("\n") if container
     ]
+    LOGGER.debug(f"Running containers:{containers}")
     return {"running_containers": containers}
 
 
@@ -93,10 +98,15 @@ async def parse_docker_commands(repo, image_tag):
         )
 
     x = x[0].replace("#", "").strip()
+    if "--rm" in x: # --rm and --restart=always are conflicting options
+        x = x.replace("docker run","docker run -d")
+    else:
+        x = x.replace("docker run","docker run -d --restart=always")
     docker_run_cmd = shlex.split(x)
-
+    docker_commands = {"build": docker_build_cmd, "run": docker_run_cmd}
+    LOGGER.debug(f"Docker commands:{docker_commands}")
     return {
-        "docker_commands": {"build": docker_build_cmd, "run": docker_run_cmd}
+        "docker_commands": docker_commands
     }
 
 
@@ -109,6 +119,7 @@ async def docker_build_image(docker_commands):
     # building image
     cmd_out = await check_output(*docker_commands["build"])
     build_status = "Successfully built" in cmd_out
+    LOGGER.debug("Image built status : {build_status}")
     return {"build_status": build_status}
 
 

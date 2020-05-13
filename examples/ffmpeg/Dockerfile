@@ -1,8 +1,8 @@
 # Usage
-# docker build -t aghinsa/ffmpeg .
-# docker run --rm -d -ti -p 8080:8080 $USER/ffmpeg -mc-config deploy -insecure -log debug
+# docker build -t $USER/ffmpeg .
+# docker run --rm -ti -p 8080:8080 $USER/ffmpeg -mc-config deploy -insecure -log debug
 #
-# curl -v http://127.0.0.1:80/list/sources
+# curl -v --request POST --data-binary @input.mp4 http://localhost:8080/ffmpeg -o output.gif
 FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -27,5 +27,5 @@ COPY . /usr/src/app
 
 RUN python3 -m pip install -e .
 
-ENTRYPOINT ["python3", "-m", "dffml", "service", "http","server","-addr", "0.0.0.0"]
+ENTRYPOINT ["python3", "-m", "dffml", "service", "http", "server", "-addr", "0.0.0.0"]
 CMD ["-mc-config", "deploy"]

@@ -9,11 +9,11 @@ we push to the default branch, the new version is pulled and its docker containe
 Webhook Dataflow
 ----------------
 
-We'll be using operations from ``dffml-operations-deploy`` and ``dffml-feature-git``.
+We'll be using operations from ``dffml-operations-deploy``, ``dffml-feature-git``, ``dffml-config-yaml``.
 
 .. code-block:: console
 
-    $ pip install dffml-operations-deploy dffml-feature-git
+    $ pip install dffml-operations-deploy dffml-feature-git dffml-config-yaml
 
 Setup a http server in ``ffmpeg/deploy/webhook``, to receive webhook and redploy ffmpeg
 
@@ -66,19 +66,15 @@ Deploy it in port 8081 as 8080 is being used by ffmpeg http service
 
         $ ssh -R 80:localhost:8081 $RANDOM@ssh.localhost.run
 
+    .. image:: ./images/localhost_run.png
+
     Using ngrok
 
     .. code-block:: console
 
         $ ~/ngrok http 8081
 
-we'll be using ``ngrok`` in this tutorial
-
-    .. code-block:: console
-
-        $ ~/ngrok http 8081
-
-.. image:: ./images/ngrok_out.png
+    .. image:: ./images/ngrok_out.png
 
 Copy paste the output url to ``Payload URL`` in webhook settings of ffmpeg repo.
 
