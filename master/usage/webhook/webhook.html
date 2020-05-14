@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Redeploying on receving GitHub webhook &mdash; DFFML 0.3.7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Plugins" href="../../plugins/index.html" />
+    <link rel="prev" title="Deploying with the HTTP Service" href="deploy.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Use Cases</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../integration.html">Automating Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dataflows.html">DataFlow HTTP Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mnist.html">MNIST Handwriten Digits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../io.html">Prediction Using IO Operations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Continuous Deployment of DataFlows</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="deploy.html">Deploying with the HTTP Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deploy.html#deploying-via-container">Deploying via container</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Redeploying on receving GitHub webhook</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#webhook-dataflow">Webhook Dataflow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Use Cases</a> &raquo;</li>
+        
+          <li><a href="index.html">Continuous Deployment of DataFlows</a> &raquo;</li>
+        
+      <li>Redeploying on receving GitHub webhook</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/usage/webhook/webhook.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="redeploying-on-receving-github-webhook">
+<span id="usage-webhook"></span><h1>Redeploying on receving GitHub webhook<a class="headerlink" href="#redeploying-on-receving-github-webhook" title="Permalink to this headline">¶</a></h1>
+<p>We’ll move <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> to a GitHub repo, and set up a webhook DataFlow such that whenever
+we push to the default branch, the new version is pulled and its docker container is built and run.</p>
+<div class="section" id="webhook-dataflow">
+<h2>Webhook Dataflow<a class="headerlink" href="#webhook-dataflow" title="Permalink to this headline">¶</a></h2>
+<p>We’ll be using operations from <code class="docutils literal notranslate"><span class="pre">dffml-operations-deploy</span></code>, <code class="docutils literal notranslate"><span class="pre">dffml-feature-git</span></code>, <code class="docutils literal notranslate"><span class="pre">dffml-config-yaml</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install dffml-operations-deploy dffml-feature-git dffml-config-yaml
+</pre></div>
+</div>
+<p>Setup a http server in <code class="docutils literal notranslate"><span class="pre">ffmpeg/deploy/webhook</span></code>, to receive webhook and redploy ffmpeg</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir -p deploy/webhook/df deploy/webhook/mc/http
+<span class="gp">$</span> cat &gt; /tmp/operations &lt;&lt;EOF
+<span class="go">get_url_from_payload</span>
+<span class="go">clone_git_repo</span>
+<span class="go">check_if_default_branch</span>
+<span class="go">get_image_tag</span>
+<span class="go">get_running_containers</span>
+<span class="go">get_status_running_containers</span>
+<span class="go">parse_docker_commands</span>
+<span class="go">docker_build_image</span>
+<span class="go">restart_running_containers</span>
+<span class="go">cleanup_git_repo</span>
+<span class="go">EOF</span>
+<span class="gp">$</span> dffml dataflow create -config yaml <span class="k">$(</span>cat /tmp/operations<span class="k">)</span> &gt; deploy/webhook/df/webhook.yaml
+</pre></div>
+</div>
+<p>Config</p>
+<p><strong>deploy/webhook/mc/http/webhook.yaml</strong></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; ./deploy/webhook/mc/http/webhook.yaml &lt;&lt;EOF
+<span class="go">path: /webhook/github</span>
+<span class="go">output_mode: json</span>
+<span class="go">input_mode: json:git_payload</span>
+<span class="go">EOF</span>
+</pre></div>
+</div>
+<p>Note that the input_mode is <code class="docutils literal notranslate"><span class="pre">json:git_payload</span></code>, this means that inputs from post request will
+be parsed as JSON and then forwarded to dataflow as the <code class="docutils literal notranslate"><span class="pre">git_payload</span></code> definition..</p>
+<p>Deploy it in port 8081 as 8080 is being used by ffmpeg http service</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -insecure -mc-config deploy/webhook -port <span class="m">8081</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you’re not setting this up on a server directly accessible on the internet,
+here are two methods of exposing the webhook,</p>
+<p>Using <a class="reference external" href="https://localhost.run">localhost.run</a></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ssh -R <span class="m">80</span>:localhost:8081 <span class="nv">$RANDOM</span>@ssh.localhost.run
+</pre></div>
+</div>
+<img alt="../../_images/localhost_run.png" src="../../_images/localhost_run.png" />
+<p>Using ngrok</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ~/ngrok http <span class="m">8081</span>
+</pre></div>
+</div>
+<img alt="../../_images/ngrok_out.png" src="../../_images/ngrok_out.png" />
+</div>
+<p>Copy paste the output url to <code class="docutils literal notranslate"><span class="pre">Payload</span> <span class="pre">URL</span></code> in webhook settings of ffmpeg repo.</p>
+<img alt="../../_images/github_settings.png" src="../../_images/github_settings.png" />
+<p>Now whenever there’s a push to the default branch of the repo, the ffmpeg container
+which is running gets redeployed from the fresh pull. To check this we will modify the
+end time of the conversion from 10 to 12 in <code class="docutils literal notranslate"><span class="pre">ffmpeg/operations.py</span></code> by changing</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span>
+    <span class="s2">&quot;ffmpeg&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;-ss&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;0.3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;-t&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;10&quot;</span><span class="p">,</span>
+    <span class="o">..</span>
+    <span class="o">..</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>to</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span>
+    <span class="s2">&quot;ffmpeg&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;-ss&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;0.3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;-t&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;12&quot;</span><span class="p">,</span>
+    <span class="o">..</span>
+    <span class="o">..</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>on pushing the changes to our repo, the container will be redeployed. To verify this run
+<code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span></code> and check the up time of the container.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../plugins/index.html" class="btn btn-neutral float-right" title="Plugins" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="deploy.html" class="btn btn-neutral float-left" title="Deploying with the HTTP Service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Intel
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
