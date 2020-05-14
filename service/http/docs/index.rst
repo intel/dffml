@@ -47,6 +47,7 @@ development is probably hosted on another port, you'll need the ``cors`` flag.
     :caption: Contents:
 
     cli
+    dataflow
     api
     security
     javascript

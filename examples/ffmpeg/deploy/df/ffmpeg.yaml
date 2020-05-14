@@ -1,0 +1,50 @@
+definitions:
+  input_file:
+    name: input_file
+    primitive: bytes
+  output_file:
+    name: output_file
+    primitive: bytes
+  Resolution:
+    name: Resolution
+    primitive: int
+  get_single_output:
+    name: get_single_output
+    primitive: map
+  get_single_spec:
+    name: get_single_spec
+    primitive: array
+flow:
+  convert_to_gif:
+    inputs:
+      input_file:
+      - seed
+      resolution:
+      - seed
+  get_single:
+    inputs:
+      spec:
+      - seed
+linked: true
+operations:
+  convert_to_gif:
+    inputs:
+      input_file: input_file
+      resolution: Resolution
+    name: convert_to_gif
+    outputs:
+      output_file: output_file
+    stage: processing
+  get_single:
+    inputs:
+      spec: get_single_spec
+    name: get_single
+    outputs:
+      output: get_single_output
+    stage: output
+seed:
+- definition: get_single_spec
+  value:
+  - output_file
+- definition: Resolution
+  value: 480

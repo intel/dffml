@@ -101,11 +101,7 @@ for import_name, module in modules(root, package_name, skip=skip):
                     f"new: {module}) "
                 )
         # Add to dict to ensure no duplicates
-        cls_func_all[obj.__qualname__] = (
-            import_name_no_package,
-            module,
-            obj,
-        )
+        cls_func_all[obj.__qualname__] = (import_name_no_package, module, obj)
 
 for name, (_import_name, _module, obj) in cls_func_all.items():
     setattr(sys.modules[__name__], name, obj)
