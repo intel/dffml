@@ -5,8 +5,8 @@ Util Cli
     :maxdepth: 2
     :caption: Contents:
 
-    cmds
     arg
     cmd
-    log
     parser
+    log
+    cmds
