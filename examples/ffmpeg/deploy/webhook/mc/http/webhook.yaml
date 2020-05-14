@@ -1,0 +1,3 @@
+path: /webhook/github
+output_mode: json
+input_mode: json:git_payload

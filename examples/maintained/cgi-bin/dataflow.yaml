@@ -1,4 +1,3 @@
-configs: {}
 definitions:
   URL:
     name: URL
@@ -34,6 +33,7 @@ definitions:
       types:
         URL: str
         directory: str
+    subspec: false
   git_repository_checked_out:
     lock: true
     name: git_repository_checked_out
@@ -45,19 +45,13 @@ definitions:
         URL: str
         commit: str
         directory: str
+    subspec: false
   group_by_output:
     name: group_by_output
     primitive: Dict[str, List[Any]]
   group_by_spec:
     name: group_by_spec
     primitive: Dict[str, Any]
-    spec:
-      defaults: {}
-      name: GroupBySpec
-      types:
-        by: Definition
-        fill: generic
-        group: Definition
   no_git_branch_given:
     name: no_git_branch_given
     primitive: boolean
@@ -300,3 +294,5 @@ seed:
   value: 8
 - definition: quarter
   value: 9
+
+

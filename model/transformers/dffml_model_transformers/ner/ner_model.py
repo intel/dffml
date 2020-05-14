@@ -796,7 +796,7 @@ class NERModelContext(ModelContext):
                 for c in sorted(
                     pathlib(
                         config["output_dir"] + "/**/" + TF2_WEIGHTS_NAME
-                    ).glob(recursive=True,),
+                    ).glob(recursive=True),
                     key=lambda f: int("".join(filter(str.isdigit, f)) or -1),
                 )
             )

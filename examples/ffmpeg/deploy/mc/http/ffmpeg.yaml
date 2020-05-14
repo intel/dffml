@@ -1,0 +1,3 @@
+path: /ffmpeg
+input_mode: bytes:input_file
+output_mode: bytes:image/gif:post_input.output_file
