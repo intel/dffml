@@ -7,7 +7,7 @@ import contextlib
 from dffml.record import Record
 from dffml import run, train, accuracy, predict, save, load
 from dffml.source.csv import CSVSource
-from dffml.feature.feature import Features, Feature #, DefFeature
+from dffml.feature.feature import Features, Feature
 from dffml.util.asynctestcase import IntegrationCLITestCase
 
 from .test_df import TestOrchestrator, DATAFLOW

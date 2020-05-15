@@ -76,11 +76,7 @@ class TestJSONEncoder(unittest.TestCase):
         self.assertIn("face", json.dumps(Record("face"), cls=JSONEncoder))
 
     def test_feature(self):
-        class FaceFeature(Feature):
-            def __init__(self,name="face"):
-                super().__init__(name)
-
-        self.assertIn("face", json.dumps(FaceFeature(), cls=JSONEncoder))
+        self.assertIn("face", json.dumps(Feature("face"), cls=JSONEncoder))
 
 
 class TestCMD(AsyncTestCase):
