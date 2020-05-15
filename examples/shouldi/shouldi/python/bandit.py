@@ -33,13 +33,15 @@ async def run_bandit(pkg: str) -> Dict[str, Any]:
     bandit_op = stdout.decode()
     bandit_op = json.loads(bandit_op)
     t_results = bandit_op["results"]
-    high_sev_high_conf = 0
-    for item in t_results:
-        if (
-            item["issue_confidence"] == "HIGH"
-            and item["issue_severity"] == "HIGH"
-        ):
-            high_sev_high_conf += 1
     final_result = bandit_op["metrics"]["_totals"]
-    final_result["CONFIDENCE.HIGH_AND_SEVERITY.HIGH"] = high_sev_high_conf
+    # Count put number of issues that are high confidence
+    for level in ["LOW", "MEDIUM", "HIGH"]:
+        high_conf = 0
+        for item in t_results:
+            if (
+                item["issue_confidence"] == "HIGH"
+                and item["issue_severity"] == level
+            ):
+                high_conf += 1
+        final_result["CONFIDENCE.HIGH_AND_SEVERITY." + level] = high_conf
     return {"report": final_result}
