@@ -105,7 +105,7 @@ jobs:
         export PYTHON=python${{ matrix.python-version }}
         export PLUGIN=${{ matrix.plugin }}
         if [[ "x${PYTHON}" = "xpython3.8" ]]; then
-          if [[ "x${PLUGIN}" = "xmodel/tensorflow" ]] || [[ "x${PLUGIN}" = "xmodel/tensorflow_hub" ]] || [[ "x${PLUGIN}" = "xmodel/vowpalWabbit" ]] || [[ "x${PLUGIN}" = "xmodel/transformers" ]]; then
+          if [[ "x${PLUGIN}" = "xmodel/vowpalWabbit" ]]; then
             exit 0
           fi
         fi
