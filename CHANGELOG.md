@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Support for Tensorflow 2.2
 - Vowpal Wabbit Models
 - Python 3.8 support
 - binsec branch to `operations/binsec`
