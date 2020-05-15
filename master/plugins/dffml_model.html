@@ -718,87 +718,132 @@ predict).</p>
 <span id="plugin-model-dffml-model-tensorflow-hub-text-classifier"></span><h3>text_classifier<a class="headerlink" href="#text-classifier" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Implemented using Tensorflow hub pretrained models.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; train.csv &lt;&lt; EOF
-<span class="go">sentence,sentiment</span>
-<span class="go">Life is good,1</span>
-<span class="go">This book is amazing,1</span>
-<span class="go">It&#39;s a terrible movie,0</span>
-<span class="go">Global warming is bad,0</span>
-<span class="go">EOF</span>
-<span class="gp">$</span> cat &gt; test.csv &lt;&lt; EOF
-<span class="go">sentence,sentiment</span>
-<span class="go">I am not feeling good,0</span>
-<span class="go">Our trip was full of adventures,1</span>
-<span class="go">EOF</span>
-<span class="gp">$</span> dffml train <span class="se">\</span>
-    -model text_classifier <span class="se">\</span>
-    -model-epochs <span class="m">30</span> <span class="se">\</span>
-    -model-predict sentiment:int:1 <span class="se">\</span>
-    -model-classifications <span class="m">0</span> <span class="m">1</span>  <span class="se">\</span>
-    -model-clstype int <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename train.csv <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      sentence:str:1 <span class="se">\</span>
-    -model-model_path <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> <span class="se">\</span>
-    -model-add_layers <span class="se">\</span>
-    -model-layers <span class="s2">&quot;Dense(units=512, activation=&#39;relu&#39;)&quot;</span> <span class="s2">&quot;Dense(units=2, activation=&#39;softmax&#39;)&quot;</span> <span class="se">\</span>
-    -log debug
-<span class="gp">$</span> dffml accuracy <span class="se">\</span>
-    -model text_classifier <span class="se">\</span>
-    -model-predict sentiment:int:1 <span class="se">\</span>
-    -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
-    -model-model_path <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> <span class="se">\</span>
-    -model-clstype int <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename test.csv <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      sentence:str:1 <span class="se">\</span>
-    -log critical
-<span class="go">    1.0</span>
-<span class="gp">$</span> dffml predict all <span class="se">\</span>
-    -model text_classifier <span class="se">\</span>
-    -model-predict sentiment:int:1 <span class="se">\</span>
-    -model-classifications <span class="m">0</span> <span class="m">1</span> <span class="se">\</span>
-    -model-model_path <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> <span class="se">\</span>
-    -model-clstype int <span class="se">\</span>
-    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
-    -source-filename test.csv <span class="se">\</span>
-    -model-features <span class="se">\</span>
-      sentence:str:1 <span class="se">\</span>
-    -log debug
-<span class="go">[</span>
-<span class="go">    {</span>
-<span class="go">        &quot;extra&quot;: {},</span>
-<span class="go">        &quot;features&quot;: {</span>
-<span class="go">            &quot;sentence&quot;: &quot;I am not feeling good&quot;,</span>
-<span class="go">            &quot;sentiment&quot;: 0</span>
-<span class="go">        },</span>
-<span class="go">        &quot;key&quot;: &quot;0&quot;,</span>
-<span class="go">        &quot;last_updated&quot;: &quot;2020-02-15T02:54:02Z&quot;,</span>
-<span class="go">        &quot;prediction&quot;: {</span>
-<span class="go">            &quot;sentiment&quot;: {</span>
-<span class="go">                &quot;confidence&quot;: 0.7630850076675415,</span>
-<span class="go">                &quot;value&quot;: 0</span>
-<span class="go">            }</span>
-<span class="go">        }</span>
-<span class="go">    },</span>
-<span class="go">    {</span>
-<span class="go">        &quot;extra&quot;: {},</span>
-<span class="go">        &quot;features&quot;: {</span>
-<span class="go">            &quot;sentence&quot;: &quot;Our trip was full of adventures&quot;,</span>
-<span class="go">            &quot;sentiment&quot;: 1</span>
-<span class="go">        },</span>
-<span class="go">        &quot;key&quot;: &quot;1&quot;,</span>
-<span class="go">        &quot;last_updated&quot;: &quot;2020-02-15T02:54:02Z&quot;,</span>
-<span class="go">        &quot;prediction&quot;: {</span>
-<span class="go">            &quot;sentiment&quot;: {</span>
-<span class="go">                &quot;confidence&quot;: 0.6673157811164856,</span>
-<span class="go">                &quot;value&quot;: 1</span>
-<span class="go">            }</span>
-<span class="go">        }</span>
-<span class="go">    }</span>
-<span class="go">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cat &gt; train.csv &lt;&lt; EOF
+sentence,sentiment
+Life is good,1
+This book is amazing,1
+It&#39;s a terrible movie,2
+Global warming is bad,0
+I hate you!!,2
+This movie is horrible,2
+EOF
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">sentence</span><span class="p">,</span><span class="n">sentiment</span>
+<span class="n">I</span> <span class="n">am</span> <span class="ow">not</span> <span class="n">feeling</span> <span class="n">good</span><span class="p">,</span><span class="mi">0</span>
+<span class="n">Our</span> <span class="n">trip</span> <span class="n">was</span> <span class="n">full</span> <span class="n">of</span> <span class="n">adventures</span><span class="p">,</span><span class="mi">1</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<p>Train the model</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">text_classifier</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">30</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
+    <span class="n">sentence</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_path</span> <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">add_layers</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">layers</span> <span class="s2">&quot;Dense(units=512, activation=&#39;relu&#39;)&quot;</span> <span class="s2">&quot;Dense(units=2, activation=&#39;softmax&#39;)&quot;</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Assess the accuracy</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">text_classifier</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_path</span> <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
+    <span class="n">sentence</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">critical</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.5</span>
+</pre></div>
+</div>
+<p>Make a prediction</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">text_classifier</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_path</span> <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
+    <span class="n">sentence</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;I am not feeling good&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="mi">0</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-14T20:14:30Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.9999992847442627</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">1</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;Our trip was full of adventures&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-14T20:14:30Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.9999088048934937</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">1</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Example usage of Tensorflow_hub Text Classifier model using python API</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CSVSource</span><span class="p">,</span> <span class="n">Features</span><span class="p">,</span> <span class="n">DefFeature</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
+<span class="kn">from</span> <span class="nn">dffml_model_tensorflow_hub.text_classifier</span> <span class="kn">import</span> <span class="n">TextClassificationModel</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">TextClassificationModel</span><span class="p">(</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;sentence&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;sentiment&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">classifications</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="n">clstype</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># Assess accuracy (alternate way of specifying data source)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy:&quot;</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">CSVSource</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;test.csv&quot;</span><span class="p">)))</span>
+
+<span class="c1"># Make prediction</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">predict</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;This track is horrible&quot;</span><span class="p">},</span>
+<span class="p">):</span>
+    <span class="n">features</span><span class="p">[</span><span class="s2">&quot;sentiment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">[</span><span class="s2">&quot;sentiment&quot;</span><span class="p">][</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Args</strong></p>
