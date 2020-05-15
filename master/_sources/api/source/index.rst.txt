@@ -20,6 +20,7 @@ CLI and other services.
 
     idx3
     ini
+    df
     memory
     json
     source

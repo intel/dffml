@@ -644,6 +644,13 @@
                         <span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">condition_source</span><span class="p">)</span>
                     <span class="c1"># Ensure all conditions from all origins are True</span>
                     <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">origins</span><span class="p">:</span>
+                        <span class="c1"># See comment in input_flow.inputs section</span>
+                        <span class="n">alternate_definitions</span> <span class="o">=</span> <span class="p">[]</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+                            <span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
+                        <span class="p">):</span>
+                            <span class="n">alternate_definitions</span> <span class="o">=</span> <span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                            <span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                         <span class="c1"># Bail if the condition doesn&#39;t exist</span>
                         <span class="k">if</span> <span class="ow">not</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">by_origin</span><span class="p">:</span>
                             <span class="k">return</span>
@@ -654,7 +661,13 @@
                             <span class="c1"># (and inputs for input_flow.inputs.items()) where</span>
                             <span class="c1"># the definition doesn&#39;t match, but it&#39;s within the</span>
                             <span class="c1"># correct origin.</span>
-                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condition_source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="n">alternate_definitions</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="p">(</span>
+                                    <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span>
+                                    <span class="ow">not</span> <span class="ow">in</span> <span class="n">alternate_definitions</span>
+                                <span class="p">):</span>
+                                    <span class="k">continue</span>
+                            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condition_source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                                 <span class="k">if</span> <span class="p">(</span>
                                     <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span>
                                     <span class="o">!=</span> <span class="n">operation</span><span class="o">.</span><span class="n">conditions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
@@ -682,6 +695,19 @@
                         <span class="k">else</span><span class="p">:</span>
                             <span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input_source</span><span class="p">)</span>
                         <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">origins</span><span class="p">:</span>
+                            <span class="c1"># Check if the origin is a tuple where the first</span>
+                            <span class="c1"># value is the origin (such as &quot;seed&quot;) and the</span>
+                            <span class="c1"># second value is an array of allowed alternate</span>
+                            <span class="c1"># Definition&#39;s (their names) within that origin.</span>
+                            <span class="c1"># These definitions will be used instead of the</span>
+                            <span class="c1"># default one the input specified for the</span>
+                            <span class="c1"># operation).</span>
+                            <span class="n">alternate_definitions</span> <span class="o">=</span> <span class="p">[]</span>
+                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+                                <span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
+                            <span class="p">):</span>
+                                <span class="n">alternate_definitions</span> <span class="o">=</span> <span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                                <span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                             <span class="c1"># Don&#39;t try to grab inputs from an origin that</span>
                             <span class="c1"># doesn&#39;t have any to give us</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">by_origin</span><span class="p">:</span>
@@ -694,7 +720,13 @@
                                 <span class="c1"># types which will not equal each other. We</span>
                                 <span class="c1"># maybe want to consider switching to comparing</span>
                                 <span class="c1"># exported Defintions</span>
-                                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                                <span class="k">if</span> <span class="n">alternate_definitions</span><span class="p">:</span>
+                                    <span class="k">if</span> <span class="p">(</span>
+                                        <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span>
+                                        <span class="ow">not</span> <span class="ow">in</span> <span class="n">alternate_definitions</span>
+                                    <span class="p">):</span>
+                                        <span class="k">continue</span>
+                                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                                     <span class="k">if</span> <span class="p">(</span>
                                         <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span>
                                         <span class="o">!=</span> <span class="n">operation</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">input_name</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>

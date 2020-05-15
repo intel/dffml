@@ -730,6 +730,8 @@
                     <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">output_source</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,)):</span>
+                            <span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">by_origin</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">stage</span><span class="p">]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="p">[])</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">by_origin</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">stage</span><span class="p">][</span><span class="n">origin</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                             <span class="n">operation</span>
@@ -745,6 +747,14 @@
                         <span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">output_source</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                            <span class="c1"># If we have an output_source item with an origin</span>
+                            <span class="c1"># that has a list as it&#39;s value we know that the key</span>
+                            <span class="c1"># (aka origin[0] since output_source is a dict) is</span>
+                            <span class="c1"># the Input.origin (like &quot;seed&quot;). And the value</span>
+                            <span class="c1"># (origin[1]) is the list of definitions which are</span>
+                            <span class="c1"># acceptable from that origin for this input.</span>
+                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,)):</span>
+                                <span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">by_origin</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">stage</span><span class="p">]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span>
                                 <span class="n">origin</span><span class="p">,</span> <span class="p">[]</span>
                             <span class="p">)</span>

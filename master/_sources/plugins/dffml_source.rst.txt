@@ -75,6 +75,23 @@ No description
 
 - model_columns: List of strings
 
+.. _plugin_source_dffml_df:
+
+df
+~~
+
+*Official*
+
+No description
+
+**Args**
+
+- source: Entrypoint
+
+- dataflow: DataFlow
+
+- features: List of features
+
 .. _plugin_source_dffml_idx1:
 
 idx1
