@@ -108,7 +108,7 @@ def tensorflow_docstring_args(cls: Callable):
     generate a config class with properties containing the correct types,
     and default values.
     """
-    parameters = inspect.signature(cls).parameters
+    parameters = inspect.signature(getattr(cls, "__init__")).parameters
     docstring = inspect.getdoc(cls)
     docparams = {}
 
@@ -139,7 +139,7 @@ def tensorflow_docstring_args(cls: Callable):
 
     # Ensure all required parameters are present in docstring
     for param_name, param in parameters.items():
-        if param_name in ["args", "kwargs"]:
+        if param_name in ["self", "args", "kwargs"]:
             continue
         if not param_name in docparams:
             raise ParameterNotInDocString(
