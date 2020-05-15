@@ -326,57 +326,33 @@ class TextClassificationModel(Model):
     """
     Implemented using Tensorflow hub pretrained models.
 
-    .. code-block:: console
+    
+    .. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/train_data.sh
 
-        $ cat > train.csv << EOF
-        sentence,sentiment
-        Life is good,1
-        This book is amazing,1
-        It's a terrible movie,0
-        Global warming is bad,0
-        EOF
-        $ cat > test.csv << EOF
-        sentence,sentiment
-        I am not feeling good,0
-        Our trip was full of adventures,1
-        EOF
-        $ dffml train \\
-            -model text_classifier \\
-            -model-epochs 30 \\
-            -model-predict sentiment:int:1 \\
-            -model-classifications 0 1  \\
-            -model-clstype int \\
-            -sources f=csv \\
-            -source-filename train.csv \\
-            -model-features \\
-              sentence:str:1 \\
-            -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \\
-            -model-add_layers \\
-            -model-layers "Dense(units=512, activation='relu')" "Dense(units=2, activation='softmax')" \\
-            -log debug
-        $ dffml accuracy \\
-            -model text_classifier \\
-            -model-predict sentiment:int:1 \\
-            -model-classifications 0 1 \\
-            -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \\
-            -model-clstype int \\
-            -sources f=csv \\
-            -source-filename test.csv \\
-            -model-features \\
-              sentence:str:1 \\
-            -log critical
-            1.0
-        $ dffml predict all \\
-            -model text_classifier \\
-            -model-predict sentiment:int:1 \\
-            -model-classifications 0 1 \\
-            -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \\
-            -model-clstype int \\
-            -sources f=csv \\
-            -source-filename test.csv \\
-            -model-features \\
-              sentence:str:1 \\
-            -log debug
+    .. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/test_data.sh
+
+    Train the model
+
+    .. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/train.sh
+
+    Assess the accuracy
+
+    .. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/accuracy.sh
+
+    Output
+
+    .. code-block::
+
+        0.5
+
+    Make a prediction
+
+    .. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/predict.sh
+
+    Output
+
+    .. code-block:: json
+
         [
             {
                 "extra": {},
@@ -385,11 +361,11 @@ class TextClassificationModel(Model):
                     "sentiment": 0
                 },
                 "key": "0",
-                "last_updated": "2020-02-15T02:54:02Z",
+                "last_updated": "2020-05-14T20:14:30Z",
                 "prediction": {
                     "sentiment": {
-                        "confidence": 0.7630850076675415,
-                        "value": 0
+                        "confidence": 0.9999992847442627,
+                        "value": 1
                     }
                 }
             },
@@ -400,16 +376,21 @@ class TextClassificationModel(Model):
                     "sentiment": 1
                 },
                 "key": "1",
-                "last_updated": "2020-02-15T02:54:02Z",
+                "last_updated": "2020-05-14T20:14:30Z",
                 "prediction": {
                     "sentiment": {
-                        "confidence": 0.6673157811164856,
+                        "confidence": 0.9999088048934937,
                         "value": 1
                     }
                 }
             }
         ]
 
+
+
+    Example usage of Tensorflow_hub Text Classifier model using python API
+
+    .. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/textclassifier.py
     """
 
     CONTEXT = TextClassifierContext

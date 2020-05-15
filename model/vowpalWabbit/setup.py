@@ -76,7 +76,5 @@ setup(
     ],
     install_requires=INSTALL_REQUIRES,
     packages=find_packages(),
-    entry_points={
-        "dffml.model": [f"vwmodel = {IMPORT_NAME}.vw_base:VWModel",]
-    },
+    entry_points={"dffml.model": [f"vwmodel = {IMPORT_NAME}.vw_base:VWModel"]},
 )

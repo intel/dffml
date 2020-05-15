@@ -7,12 +7,7 @@ import os
 import json
 import hashlib
 from pathlib import Path
-from typing import (
-    AsyncIterator,
-    Tuple,
-    Any,
-    List,
-)
+from typing import AsyncIterator, Tuple, Any, List
 
 import numpy as np
 import pandas as pd
@@ -368,7 +363,7 @@ class VWContext(ModelContext):
             prediction = self.clf.predict(data[0])
             self.logger.debug(
                 "Predicted Value of {} for {}: {}".format(
-                    self.parent.config.predict.NAME, data, prediction,
+                    self.parent.config.predict.NAME, data, prediction
                 )
             )
             target = self.parent.config.predict.NAME

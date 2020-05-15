@@ -4,10 +4,7 @@ from typing import AsyncIterator, Tuple, Any, Type, List
 
 from ..base import config, field
 from ..util.entrypoint import entrypoint
-from .model import (
-    SimpleModel,
-    ModelNotTrained,
-)
+from .model import SimpleModel, ModelNotTrained
 from .accuracy import Accuracy
 from ..feature.feature import Feature, Features
 from ..source.source import Sources

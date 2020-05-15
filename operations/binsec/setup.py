@@ -71,6 +71,6 @@ setup(
             "files_in_rpm = dffml_operations_binsec.operations:files_in_rpm",
             "is_binary_pie = dffml_operations_binsec.operations:is_binary_pie",
             "cleanup_rpm = dffml_operations_binsec.operations:cleanup_rpm",
-        ],
+        ]
     },
 )

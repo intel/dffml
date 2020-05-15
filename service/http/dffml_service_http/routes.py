@@ -24,8 +24,9 @@ from dffml.df.memory import (
     MemoryInputSetConfig,
     StringInputSetContext,
 )
-from dffml.base import MissingConfig
 from dffml.model import Model
+from dffml.base import MissingConfig
+from dffml.util.data import traverse_get
 from dffml.source.source import BaseSource, SourcesContext
 from dffml.util.entrypoint import EntrypointNotFound, entrypoint
 
@@ -132,10 +133,56 @@ def mctx_route(handler):
 
 
 class HTTPChannelConfig(NamedTuple):
+    """
+    Config for channels.
+
+    Parameters
+    ++++++++++
+        path : str
+            Route in server.
+        dataflow : DataFlow
+            Flow to which inputs from request to path is forwarded too.
+        input_mode : str
+            Mode according to which input data is passed to the dataflow,default:"default".
+                - "default" :
+                    Inputs are expected to be mapping of context to list of input
+                        to definition mappings
+                        eg:'{
+                        "insecure-package":
+                            [
+                                {
+                                    "value":"insecure-package",
+                                    "definition":"package"
+                                }
+                            ]
+                        }'
+                - "preprocess:definition_name" :
+                    Input as whole is treated as value with the given definition.
+                    Supported 'preporcess' tags : [json,text,bytes,stream]
+        output_mode : str
+            Mode according to which output from dataflow is treated.
+                - bytes:content_type:OUTPUT_KEYS :
+                    OUTPUT_KEYS are . seperated string which is used as keys to traverse the
+                    ouput of the flow.
+                    eg:
+                        `results = {
+                            "post_input":
+                                {
+                                    "hex":b'speak'
+                                }
+                        }`
+                    then bytes:post_input.hex will return b'speak'.
+                - text:OUTPUT_KEYS
+                - json
+                    - output of dataflow (Dict) is passes as json
+
+    """
+
     path: str
-    presentation: str
-    asynchronous: bool
     dataflow: DataFlow
+    output_mode: str = "json"
+    asynchronous: bool = False
+    input_mode: str = "default"
 
     @classmethod
     def _fromdict(cls, **kwargs):
@@ -145,7 +192,7 @@ class HTTPChannelConfig(NamedTuple):
 
 @entrypoint("http")
 class Routes(BaseMultiCommContext):
-    PRESENTATION_OPTIONS = ["json", "blob", "text"]
+    IO_MODES = ["json", "text", "bytes", "stream"]
 
     async def get_registered_handler(self, request):
         return self.app["multicomm_routes"].get(request.path, None)
@@ -157,37 +204,82 @@ class Routes(BaseMultiCommContext):
         inputs = []
         # If data was sent add those inputs
         if request.method == "POST":
-            # Accept a list of input data
-            # TODO validate that input data is dict of list of inputs each item
-            # has definition and value properties
-            for ctx, client_inputs in (await request.json()).items():
-                for input_data in client_inputs:
-                    if (
-                        not input_data["definition"]
-                        in config.dataflow.definitions
-                    ):
-                        return web.json_response(
-                            {
-                                "error": f"Missing definition for {input_data['definition']} in dataflow"
-                            },
-                            status=HTTPStatus.NOT_FOUND,
+            # Accept a list of input data according to config.input_mode
+            if config.input_mode == "default":
+                # TODO validate that input data is dict of list of inputs each item
+                # has definition and value properties
+                for ctx, client_inputs in (await request.json()).items():
+                    for input_data in client_inputs:
+                        if (
+                            not input_data["definition"]
+                            in config.dataflow.definitions
+                        ):
+                            return web.json_response(
+                                {
+                                    "error": f"Missing definition for {input_data['definition']} in dataflow"
+                                },
+                                status=HTTPStatus.NOT_FOUND,
+                            )
+                    inputs.append(
+                        MemoryInputSet(
+                            MemoryInputSetConfig(
+                                ctx=StringInputSetContext(ctx),
+                                inputs=[
+                                    Input(
+                                        value=input_data["value"],
+                                        definition=config.dataflow.definitions[
+                                            input_data["definition"]
+                                        ],
+                                    )
+                                    for input_data in client_inputs
+                                ],
+                            )
                         )
+                    )
+            elif ":" in config.input_mode:
+                preprocess_mode, input_def = config.input_mode.split(":")
+                if input_def not in config.dataflow.definitions:
+                    return web.json_response(
+                        {
+                            "error": f"Missing definition for {input_data['definition']} in dataflow"
+                        },
+                        status=HTTPStatus.NOT_FOUND,
+                    )
+                if preprocess_mode == "json":
+                    value = await request.json()
+                elif preprocess_mode == "str":
+                    value = await request.text()
+                elif preprocess_mode == "bytes":
+                    value = await request.read()
+                elif preprocess == "stream":
+                    value = request.content
+                else:
+                    return web.json_response(
+                        {
+                            "error": f"preprocess tag must be one of {IO_MODES}, got {preprocess}"
+                        },
+                        status=HTTPStatus.NOT_FOUND,
+                    )
                 inputs.append(
                     MemoryInputSet(
                         MemoryInputSetConfig(
-                            ctx=StringInputSetContext(ctx),
+                            ctx=StringInputSetContext("post_input"),
                             inputs=[
                                 Input(
-                                    value=input_data["value"],
+                                    value=value,
                                     definition=config.dataflow.definitions[
-                                        input_data["definition"]
+                                        input_def
                                     ],
                                 )
-                                for input_data in client_inputs
                             ],
                         )
                     )
                 )
+            else:
+                raise NotImplementedError(
+                    "Input modes other than default,preprocess:definition_name  not yet implemented"
+                )
+
         # Run the operation in an orchestrator
         # TODO(dfass) Create the orchestrator on startup of the HTTP API itself
         async with MemoryOrchestrator.basic_config() as orchestrator:
@@ -196,15 +288,37 @@ class Routes(BaseMultiCommContext):
                 results = {
                     str(ctx): result async for ctx, result in octx.run(*inputs)
                 }
-                # TODO Implement input and presentation stages?
-                """
-                if config.presentation == "blob":
-                    return web.Response(body=results)
-                elif config.presentation == "text":
-                    return web.Response(text=results)
+                if config.output_mode == "json":
+                    return web.json_response(results)
+
+                # content_info is a List[str] ([content_type,output_keys])
+                # in case of stream,bytes and string in others
+                postprocess_mode, *content_info = config.output_mode.split(":")
+
+                if postprocess_mode == "stream":
+                    # stream:text/plain:get_single.beef
+                    raise NotImplementedError(
+                        "output mode  not yet implemented"
+                    )
+
+                elif postprocess_mode == "bytes":
+                    content_type, output_keys = content_info
+                    output_data = traverse_get(
+                        results, *output_keys.split(".")
+                    )
+                    return web.Response(body=output_data)
+
+                elif postprocess_mode == "text":
+                    output_data = traverse_get(
+                        results, *content_info[0].split(".")
+                    )
+                    return web.Response(text=output_data)
+
                 else:
-                """
-                return web.json_response(results)
+                    return web.json_response(
+                        {"error": f"output mode not valid"},
+                        status=HTTPStatus.NOT_FOUND,
+                    )
 
     async def multicomm_dataflow_asynchronous(self, config, request):
         # TODO allow list of valid definitions to seed
@@ -457,10 +571,10 @@ class Routes(BaseMultiCommContext):
     @mcctx_route
     async def multicomm_register(self, request, mcctx):
         config = mcctx.register_config()._fromdict(**(await request.json()))
-        if config.presentation not in self.PRESENTATION_OPTIONS:
+        if config.output_mode not in self.IO_MODES:
             return web.json_response(
                 {
-                    "error": f"{config.presentation!r} is not a valid presentation option: {self.PRESENTATION_OPTIONS!r}"
+                    "error": f"{config.output_mode!r} is not a valid output_mode option: {self.IO_MODES!r}"
                 },
                 status=HTTPStatus.BAD_REQUEST,
             )

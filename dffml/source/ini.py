@@ -41,7 +41,7 @@ class INISource(FileSource, MemorySource):
                 temp_dict[k] = parser_helper(v)
             # Each section used as a record
             self.mem[str(section)] = Record(
-                str(section), data={"features": temp_dict},
+                str(section), data={"features": temp_dict}
             )
 
         self.logger.debug("%r loaded %d sections", self, len(self.mem))

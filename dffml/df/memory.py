@@ -465,6 +465,13 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                         origins.append(condition_source)
                     # Ensure all conditions from all origins are True
                     for origin in origins:
+                        # See comment in input_flow.inputs section
+                        alternate_definitions = []
+                        if isinstance(origin, tuple) and isinstance(
+                            origin[1], (list, tuple)
+                        ):
+                            alternate_definitions = origin[1]
+                            origin = origin[0]
                         # Bail if the condition doesn't exist
                         if not origin in by_origin:
                             return
@@ -475,7 +482,13 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                             # (and inputs for input_flow.inputs.items()) where
                             # the definition doesn't match, but it's within the
                             # correct origin.
-                            if isinstance(condition_source, str):
+                            if alternate_definitions:
+                                if (
+                                    item.definition.name
+                                    not in alternate_definitions
+                                ):
+                                    continue
+                            elif isinstance(condition_source, str):
                                 if (
                                     item.definition.name
                                     != operation.conditions[i].name
@@ -503,6 +516,19 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                         else:
                             origins.append(input_source)
                         for origin in origins:
+                            # Check if the origin is a tuple where the first
+                            # value is the origin (such as "seed") and the
+                            # second value is an array of allowed alternate
+                            # Definition's (their names) within that origin.
+                            # These definitions will be used instead of the
+                            # default one the input specified for the
+                            # operation).
+                            alternate_definitions = []
+                            if isinstance(origin, tuple) and isinstance(
+                                origin[1], (list, tuple)
+                            ):
+                                alternate_definitions = origin[1]
+                                origin = origin[0]
                             # Don't try to grab inputs from an origin that
                             # doesn't have any to give us
                             if not origin in by_origin:
@@ -515,7 +541,13 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                                 # types which will not equal each other. We
                                 # maybe want to consider switching to comparing
                                 # exported Defintions
-                                if isinstance(input_source, str):
+                                if alternate_definitions:
+                                    if (
+                                        item.definition.name
+                                        not in alternate_definitions
+                                    ):
+                                        continue
+                                elif isinstance(origin, str):
                                     if (
                                         item.definition.name
                                         != operation.inputs[input_name].name
