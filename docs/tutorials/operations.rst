@@ -285,7 +285,7 @@ To get parsable output, we'll run with the ``-f json`` flag.
     }
 
 
-Let's now write the operation to call ``safety`` via a subprocess.
+Let's now write the operation to call ``bandit`` via a subprocess.
 
 **shouldi/bandit.py**
 
