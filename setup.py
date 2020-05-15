@@ -78,6 +78,7 @@ setup(
             "idx3 = dffml.source.idx3:IDX3Source",
             "db = dffml.source.db:DbSource",
             "ini = dffml.source.ini:INISource",
+            "df = dffml.source.df:DataFlowSource",
         ],
         "dffml.port": ["json = dffml.port.json:JSON"],
         "dffml.service.cli": ["dev = dffml.service.dev:Develop"],

@@ -31,6 +31,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   produced as a result of passing Inputs with those definitions to operations.
 - DataFlows now have a syntax for providing a set of definitions that will
   override the operations default definition for a given input.
+- Source which modifies record features as they are read from another source.
+  Useful for modifying datasets as they are used with ML commands or editing
+  in bulk.
 ### Changed
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
