@@ -26,6 +26,7 @@ from ..base import (
     BaseDataFlowFacilitatorObject,
 )
 from ..util.cli.arg import Arg
+from ..util.data import get_origin, get_args
 from ..util.asynchelper import context_stacker
 from ..util.entrypoint import base_entry_point
 
@@ -220,11 +221,34 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                     issubclass(param.annotation, tuple)
                     and hasattr(param.annotation, "_asdict")
                 ):
+                    # If the annotation is either a dataclass or namedtuple
                     kwargs["inputs"][name] = Definition(
                         name=".".join(name_list),
                         primitive="map",
                         spec=param.annotation,
                     )
+                elif (
+                    get_origin(param.annotation) is list
+                    or get_origin(param.annotation) is dict
+                ):
+                    # If the annotation are of the form List[MyDataClass] or Dict[Any, MyDataClass]
+                    if get_origin(param.annotation) is list:
+                        primitive = "array"
+                        innerclass = list(get_args(param.annotation))[0]
+                    else:
+                        primitive = "map"
+                        innerclass = list(get_args(param.annotation))[1]
+
+                    if is_dataclass(innerclass) or bool(
+                        issubclass(innerclass, tuple)
+                        and hasattr(innerclass, "_asdict")
+                    ):
+                        kwargs["inputs"][name] = Definition(
+                            name=".".join(name_list),
+                            primitive=primitive,
+                            spec=innerclass,
+                            subspec=True,
+                        )
                 else:
                     raise OpCouldNotDeterminePrimitive(
                         f"The primitive of {name} could not be determined"
