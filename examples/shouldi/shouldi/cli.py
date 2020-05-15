@@ -239,6 +239,14 @@ DATAFLOW = DataFlow.auto(
 DATAFLOW.seed.append(
     Input(value=[SA_RESULTS.name,], definition=GetSingle.op.inputs["spec"],)
 )
+for opimp in [
+    is_lang_python,
+    run_python_sa,
+    is_lang_javascript,
+    run_javascript_sa,
+]:
+    DATAFLOW.flow[opimp.op.name].inputs["repo"].append("seed")
+DATAFLOW.update()
 
 
 class Install(CMD):
@@ -261,6 +269,23 @@ class Install(CMD):
                 package_name: [
                     # The only input to the operations is the package name.
                     Input(
+                        value={
+                            "URL": "file://"
+                            + str(
+                                pathlib.Path(package_name)
+                                .expanduser()
+                                .resolve()
+                            ),
+                            "directory": str(
+                                pathlib.Path(package_name)
+                                .expanduser()
+                                .resolve()
+                            ),
+                        },
+                        definition=clone_git_repo.op.outputs["repo"],
+                    )
+                    if pathlib.Path(package_name).is_dir()
+                    else Input(
                         value=package_name,
                         definition=clone_git_repo.op.inputs["URL"],
                     )
