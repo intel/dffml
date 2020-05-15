@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation for creating Source for new File types taking `.ini` as an example.
 - New input modes, output modes for HTTP API dataflow registration.
 - Usage example for tfhub text classifier.
+- `AssociateDefinition` output operation to map definition names to values
+  produced as a result of passing Inputs with those definitions to operations.
 ### Changed
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
