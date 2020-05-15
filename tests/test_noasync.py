@@ -6,7 +6,7 @@ import importlib
 from dffml.record import Record
 from dffml.noasync import train, accuracy, predict
 from dffml.source.csv import CSVSource
-from dffml.feature.feature import Features, DefFeature
+from dffml.feature.feature import Features, Feature #, DefFeature
 from dffml.util.asynctestcase import IntegrationCLITestCase
 
 FEATURE_NAMES = ["Years", "Expertise", "Trust", "Salary"]
@@ -50,11 +50,11 @@ class TestML(IntegrationCLITestCase):
         # Instantiate the model
         model = dffml_model_scikit.LinearRegressionModel(
             directory=self.mktempdir(),
-            predict=DefFeature("Salary", int, 1),
+            predict=Feature("Salary", int, 1),
             features=Features(
-                DefFeature("Years", int, 1),
-                DefFeature("Expertise", int, 1),
-                DefFeature("Trust", float, 1),
+                Feature("Years", int, 1),
+                Feature("Expertise", int, 1),
+                Feature("Trust", float, 1),
             ),
         )
 

@@ -14,7 +14,7 @@ import importlib
 import contextlib
 from typing import Optional, Callable
 
-from dffml import Features, DefFeature
+from dffml import Features, Feature #, DefFeature
 from dffml.df.types import DataFlow, Input
 from dffml.df.memory import MemoryOrchestrator
 from dffml.noasync import train
@@ -79,8 +79,8 @@ def wrap_operation_io_AcceptUserInput(state):
 
 def wrap_high_level_accuracy(state):
     model = SLRModel(
-        features=Features(DefFeature("Years", int, 1),),
-        predict=DefFeature("Salary", int, 1),
+        features=Features(Feature("Years", int, 1),),
+        predict=Feature("Salary", int, 1),
     )
 
     train(
@@ -99,8 +99,8 @@ wrap_high_level_predict = wrap_high_level_accuracy
 
 def wrap_noasync_accuracy(state):
     model = SLRModel(
-        features=Features(DefFeature("Years", int, 1),),
-        predict=DefFeature("Salary", int, 1),
+        features=Features(Feature("Years", int, 1),),
+        predict=Feature("Salary", int, 1),
     )
 
     train(

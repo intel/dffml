@@ -46,7 +46,7 @@ class JSONEncoder(json.JSONEncoder):
         if isinstance(obj, Record):
             return obj.dict()
         elif isinstance(obj, Feature):
-            return obj.NAME
+            return obj.name
         elif isinstance(obj, enum.Enum):
             return str(obj.value)
         elif isinstance(obj, type):

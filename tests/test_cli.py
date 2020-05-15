@@ -81,13 +81,16 @@ class FakeConfig:
 
 class FakeFeature(Feature):
 
-    NAME: str = "fake"
+    # NAME: str = "fake"
+    
+    def __init__(self,name="fake",dt=float,length=1):
+        super().__init__(name,dt,length)
 
-    def dtype(self):
-        return float  # pragma: no cov
+    # def dtype(self):
+    #     return float  # pragma: no cov
 
-    def length(self):
-        return 1  # pragma: no cov
+    # def length(self):
+    #     return 1  # pragma: no cov
 
 
 class FakeModelContext(ModelContext):
@@ -100,7 +103,7 @@ class FakeModelContext(ModelContext):
     async def predict(
         self, records: AsyncIterator[Record]
     ) -> AsyncIterator[Record]:
-        target = self.parent.config.predict.NAME
+        target = self.parent.config.predict.name
         async for record in records:
             record.predicted(target, random.random(), float(record.key))
             yield record

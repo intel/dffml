@@ -57,8 +57,8 @@ async def model_predict(self, features: Dict[str, Any]) -> Dict[str, Any]:
     >>> from dffml import *
     >>>
     >>> slr_model = SLRModel(
-    ...     features=Features(DefFeature("Years", int, 1)),
-    ...     predict=DefFeature("Salary", int, 1),
+    ...     features=Features(Feature("Years", int, 1)),
+    ...     predict=Feature("Salary", int, 1),
     ... )
     >>> dataflow = DataFlow(
     ...     operations={

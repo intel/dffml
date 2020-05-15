@@ -209,7 +209,7 @@ class SimpleModel(Model):
         # Check data type and length for each feature
         for feature in features:
             if self.check_applicable_feature(feature):
-                usable.append(feature.NAME)
+                usable.append(feature.name)
         # Return a sorted list of feature names for consistency. In case users
         # provide the same list of features to applicable_features in a
         # different order.

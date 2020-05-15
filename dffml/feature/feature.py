@@ -16,7 +16,7 @@ from .log import LOGGER
 from ..util.entrypoint import Entrypoint
 
 
-class Feature(abc.ABC, Entrypoint):
+class Feature(abc.ABC):
     """
     Abstract base class for all features. New features must be derived from this
     class and implement the fetch, parse, and calc methods. These methods are
@@ -38,10 +38,10 @@ class Feature(abc.ABC, Entrypoint):
 
     >>> from dffml import *
     >>>
-    >>> feature = Feature.load_def("example", "float", 10)
+    >>> feature = Feature("example", float, 10)
     >>> feature.dtype()
     <class 'float'>
-    >>> feature.NAME
+    >>> feature.name
     'example'
     >>> feature.length()
     10
@@ -50,10 +50,10 @@ class Feature(abc.ABC, Entrypoint):
 
     >>> from dffml import *
     >>>
-    >>> feature = DefFeature("example2", int, 20)
+    >>> feature = Feature("example2", int, 20)
     >>> feature.dtype()
     <class 'int'>
-    >>> feature.NAME
+    >>> feature.name
     'example2'
     >>> feature.length()
     20
@@ -61,36 +61,42 @@ class Feature(abc.ABC, Entrypoint):
 
     LOGGER = LOGGER.getChild("Feature")
 
-    NAME: str = ""
+    # NAME: str = ""
     # LENGTH: int = 10
     # FREQUENCY: Type[Frequency] = Quarterly
     ENTRYPOINT = "dffml.feature"
 
+    def __init__(self, name: str, dtype: Type = int, length: int = 1)-> Any:
+        super().__init__()
+        self._dtype = dtype
+        self._length = length
+        self.name = name
+
     def __eq__(self, other):
         if not all(
-            map(functools.partial(hasattr, other), ["NAME", "dtype", "length"])
+            map(functools.partial(hasattr, other), ["name", "dtype", "length"])
         ):
             return False
-        self_tuple = (self.NAME, self.dtype(), self.length())
-        other_tuple = (other.NAME, other.dtype(), other.length())
+        self_tuple = (self.name, self.dtype(), self.length())
+        other_tuple = (other.name, other.dtype(), other.length())
         return bool(self_tuple == other_tuple)
 
     def __str__(self):
-        return "%s(%s)" % (self.NAME, self.__class__.__qualname__)
+        return "%s(%s)" % (self.name, self.__class__.__qualname__)
 
     def __repr__(self):
         return "%s[%r, %d]" % (self.__str__(), self.dtype(), self.length())
 
     def export(self):
         return {
-            "name": self.NAME,
+            "name": self.name,
             "dtype": self.dtype().__qualname__,
             "length": self.length(),
         }
 
     @classmethod
-    def _fromdict(cls, **kwargs):
-        return cls.load_def(**kwargs)
+    def _fromdict(cls,**kwargs):
+        return Feature(**kwargs)
 
     def dtype(self) -> Type:
         """
@@ -101,12 +107,12 @@ class Feature(abc.ABC, Entrypoint):
 
         >>> from dffml import *
         >>>
-        >>> feature = Feature()
+        >>> feature = Feature("name",int,1)
         >>> feature.dtype()
         <class 'int'>
         """
         self.LOGGER.warning("%s dtype unimplemented", self)
-        return int
+        return self._dtype
 
     def length(self) -> int:
         """
@@ -118,12 +124,12 @@ class Feature(abc.ABC, Entrypoint):
 
         >>> from dffml import *
         >>>
-        >>> feature = Feature()
+        >>> feature = Feature("name",int,1)
         >>> feature.length()
         1
         """
         self.LOGGER.warning("%s length unimplemented", self)
-        return 1
+        return self._length
 
     @classmethod
     def load(cls, loading=None):
@@ -131,16 +137,15 @@ class Feature(abc.ABC, Entrypoint):
         # TODO Consolidate this
         if loading is not None:
             if isinstance(loading, dict):
-                return cls.load_def(
-                    loading["name"], loading["dtype"], loading["length"]
-                )
+                return Feature(loading["name"], loading["dtype"], loading["length"])
             elif loading.count(":") == 2:
-                return cls.load_def(*loading.split(":"))
+                tempvar = loading.split(":")
+                return Feature(tempvar[0], cls.convert_dtype(tempvar[1]), int(tempvar[2]))
         return super().load(loading)
 
-    @classmethod
-    def load_def(cls, name: str, dtype: str, length: str):
-        return DefFeature(name, cls.convert_dtype(dtype), int(length))
+    # @classmethod
+    # def load_def(cls, name: str, dtype: str, length: str):
+    #     return DefFeature(name, cls.convert_dtype(dtype), int(length))
 
     @classmethod
     def convert_dtype(cls, dtype: str):
@@ -157,35 +162,35 @@ class Feature(abc.ABC, Entrypoint):
         pass
 
 
-class DefinedFeature(Feature):
+# class DefinedFeature(Feature):
 
-    LOGGER = LOGGER.getChild("DefFeature")
+#     LOGGER = LOGGER.getChild("DefFeature")
 
-    def __init__(self, dtype: Type = int, length: int = 1) -> None:
-        super().__init__()
-        self._dtype = dtype
-        self._length = length
+#     def __init__(self, dtype: Type = int, length: int = 1) -> None:
+#         super().__init__()
+#         self._dtype = dtype
+#         self._length = length
 
-    def dtype(self) -> Type:
-        """
-        Models need to know a Feature's datatype.
-        """
-        return self._dtype
+#     def dtype(self) -> Type:
+#         """
+#         Models need to know a Feature's datatype.
+#         """
+#         return self._dtype
 
-    def length(self) -> int:
-        """
-        Models need to know a Feature's length, 1 means single value, more than
-        that is the length of the array calc returns.
-        """
-        return self._length
+#     def length(self) -> int:
+#         """
+#         Models need to know a Feature's length, 1 means single value, more than
+#         that is the length of the array calc returns.
+#         """
+#         return self._length
 
 
 
-def DefFeature(name, dtype, length):
+# def DefFeature(name, dtype, length):
 
-    return type("Feature" + name, (DefinedFeature, Feature), {"NAME": name})(
-        dtype=dtype, length=length
-    )
+#     return type("Feature" + name, (Feature,), {})(name=name,
+#         dtype=dtype, length=length
+#     )
 
 
 class Features(collections.UserList):
@@ -197,10 +202,10 @@ class Features(collections.UserList):
         self._stack = None
 
     def names(self) -> List[str]:
-        return list(({feature.NAME: True for feature in self.data}).keys())
+        return list(({feature.name: True for feature in self.data}).keys())
 
     def export(self):
-        return {feature.NAME: feature.export() for feature in self.data}
+        return {feature.name: feature.export() for feature in self.data}
 
     @classmethod
     def _fromdict(cls, **kwargs):
