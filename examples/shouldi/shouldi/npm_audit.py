@@ -18,7 +18,7 @@ class NPMAuditError(Exception):
 
 
 @op(inputs={"pkg": package_src_dir}, outputs={"report": npm_audit_output})
-async def run_npm_audit(pkg: str) -> Dict[str, Any]:
+async def run_npm_audit(self, pkg: str) -> Dict[str, Any]:
     """
     CLI usage: dffml service dev run -log debug shouldi.npm_audit:run_npm_audit -pkg .
     """
@@ -36,6 +36,11 @@ async def run_npm_audit(pkg: str) -> Dict[str, Any]:
         raise NPMAuditError(stderr.decode())
 
     npm_audit_op = stdout.decode()
-    npm_audit_op = json.loads(npm_audit_op)
+    try:
+        npm_audit_op = json.loads(npm_audit_op)
+    except json.decoder.JSONDecodeError:
+        self.logger.error("npm audit --json %r: %s", pkg, npm_audit_op)
+        raise
+
     result = npm_audit_op["metadata"]["vulnerabilities"]
     return result
