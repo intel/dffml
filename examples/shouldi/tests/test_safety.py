@@ -1,6 +1,6 @@
 from dffml import AsyncTestCase
 
-from shouldi.safety import safety_check
+from shouldi.python.safety import safety_check
 
 
 class TestSafetyCheck(AsyncTestCase):

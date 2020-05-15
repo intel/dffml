@@ -2,13 +2,13 @@
 from dffml import CMD, Arg, DataFlow, Input, GetSingle, run
 
 # Import all the operations we wrote
-from shouldi.bandit import run_bandit
-from shouldi.pypi import pypi_latest_package_version
-from shouldi.pypi import pypi_package_json
-from shouldi.pypi import pypi_package_url
-from shouldi.pypi import pypi_package_contents
-from shouldi.pypi import cleanup_pypi_package
-from shouldi.safety import safety_check
+from .python.bandit import run_bandit
+from .python.pypi import pypi_latest_package_version
+from .python.pypi import pypi_package_json
+from .python.pypi import pypi_package_url
+from .python.pypi import pypi_package_contents
+from .python.pypi import cleanup_pypi_package
+from .python.safety import safety_check
 
 # Link inputs and outputs together according to their definitions
 DATAFLOW = DataFlow.auto(

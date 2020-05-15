@@ -209,9 +209,9 @@ To get parsable output, we'll run ``safety`` with the ``--json`` flag.
 
 Let's now write the operation to call ``safety`` via a subprocess.
 
-**shouldi/safety.py**
+**shouldi/python/safety.py**
 
-.. literalinclude:: /../examples/shouldi/shouldi/safety.py
+.. literalinclude:: /../examples/shouldi/shouldi/python/safety.py
 
 Write a test for it
 
@@ -287,9 +287,9 @@ To get parsable output, we'll run with the ``-f json`` flag.
 
 Let's now write the operation to call ``bandit`` via a subprocess.
 
-**shouldi/bandit.py**
+**shouldi/python/bandit.py**
 
-.. literalinclude:: /../examples/shouldi/shouldi/bandit.py
+.. literalinclude:: /../examples/shouldi/shouldi/python/bandit.py
 
 Write a test for it
 
@@ -368,33 +368,33 @@ PyPi Operations
 
 Let's write an operation to grab the JSON information about a package.
 
-**shouldi/pypi.py**
+**shouldi/python/pypi.py**
 
-.. literalinclude:: /../examples/shouldi/shouldi/pypi.py
+.. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
     :lines: 1-34
 
 After we have the package information, we extract the version and URL where we
 can get the source code.
 
-**shouldi/pypi.py**
+**shouldi/python/pypi.py**
 
-.. literalinclude:: /../examples/shouldi/shouldi/pypi.py
+.. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
     :lines: 37-59
 
 Once we have the URL, we download the package source and extract it to a
 temporary directory.
 
-**shouldi/pypi.py**
+**shouldi/python/pypi.py**
 
-.. literalinclude:: /../examples/shouldi/shouldi/pypi.py
+.. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
     :lines: 62-81
 
 Finally, we make a ``cleanup`` operation to remove the directory once we're done
 with it.
 
-**shouldi/pypi.py**
+**shouldi/python/pypi.py**
 
-.. literalinclude:: /../examples/shouldi/shouldi/pypi.py
+.. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
     :lines: 84-89
 
 Now we write tests for each operation.

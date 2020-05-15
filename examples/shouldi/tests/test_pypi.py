@@ -4,11 +4,13 @@ import tempfile
 
 from dffml import AsyncTestCase
 
-from shouldi.pypi import pypi_package_json
-from shouldi.pypi import pypi_latest_package_version
-from shouldi.pypi import pypi_package_url
-from shouldi.pypi import pypi_package_contents
-from shouldi.pypi import cleanup_pypi_package
+from shouldi.python.pypi import (
+    pypi_package_json,
+    pypi_latest_package_version,
+    pypi_package_url,
+    pypi_package_contents,
+    cleanup_pypi_package,
+)
 
 
 class TestPyPiOperations(AsyncTestCase):

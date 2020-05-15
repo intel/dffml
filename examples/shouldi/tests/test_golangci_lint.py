@@ -8,7 +8,7 @@ from dffml import (
     AsyncTestCase,
 )
 
-from shouldi.golangci_lint import run_golangci_lint
+from shouldi.golang.golangci_lint import run_golangci_lint
 
 
 class TestRunGolangci_lintOp(AsyncTestCase):

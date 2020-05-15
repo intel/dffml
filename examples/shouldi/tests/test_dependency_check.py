@@ -6,7 +6,7 @@ from dffml import (
     AsyncTestCase,
 )
 
-from shouldi.dependency_check import run_dependency_check
+from shouldi.java.dependency_check import run_dependency_check
 
 
 class TestRunDependencyCheckOp(AsyncTestCase):

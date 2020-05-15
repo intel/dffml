@@ -6,7 +6,7 @@ from dffml import (
     AsyncTestCase,
 )
 
-from shouldi.npm_audit import run_npm_audit
+from shouldi.javascript.npm_audit import run_npm_audit
 
 
 class TestRunNPMAuditOp(AsyncTestCase):
