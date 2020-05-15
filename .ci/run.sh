@@ -28,6 +28,10 @@ function run_plugin_examples() {
 function run_plugin() {
   export PLUGIN="${1}"
 
+  if [ "x${PLUGIN}" = "xexamples/shouldi" ]; then
+    "${PYTHON}" -m pip install -U -e "${SRC_ROOT}/feature/git"
+  fi
+
   cd "${SRC_ROOT}/${PLUGIN}"
 
   # Install plugin
