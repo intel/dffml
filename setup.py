@@ -91,6 +91,7 @@ setup(
             "get_single = dffml.operation.output:GetSingle",
             "get_multi = dffml.operation.output:GetMulti",
             "associate = dffml.operation.output:Associate",
+            "associate_definition = dffml.operation.output:AssociateDefinition",
             # Mapping
             "dffml.mapping.extract = dffml.operation.mapping:mapping_extract_value",
             "dffml.mapping.create = dffml.operation.mapping:create_mapping",
