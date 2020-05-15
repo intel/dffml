@@ -209,7 +209,9 @@ def cached_download_unpack_archive(
     def mkwrapper(func):
         @functools.wraps(func)
         async def wrapper(*args, **kwds):
-            if not directory_path.is_dir():
+            if not directory_path.is_dir() or not list(
+                directory_path.glob("*")
+            ):
                 directory_path.mkdir(parents=True)
                 await extract()
             return await func(*(list(args) + [directory_path]), **kwds)
