@@ -2,7 +2,7 @@ import os
 
 from dffml import AsyncTestCase
 
-from shouldi.bandit import run_bandit
+from shouldi.python.bandit import run_bandit
 
 
 class TestRunBanditOp(AsyncTestCase):

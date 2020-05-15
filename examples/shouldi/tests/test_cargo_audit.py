@@ -6,7 +6,7 @@ from dffml import (
     AsyncTestCase,
 )
 
-from shouldi.cargo_audit import run_cargo_audit, run_cargo_build
+from shouldi.rust.cargo_audit import run_cargo_audit, run_cargo_build
 
 
 class TestRunCargoAuditOp(AsyncTestCase):
