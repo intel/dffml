@@ -299,6 +299,13 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Documentation for creating Source for new File types taking <code class="docutils literal notranslate"><span class="pre">.ini</span></code> as an example.</p></li>
 <li><p>New input modes, output modes for HTTP API dataflow registration.</p></li>
 <li><p>Usage example for tfhub text classifier.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AssociateDefinition</span></code> output operation to map definition names to values
+produced as a result of passing Inputs with those definitions to operations.</p></li>
+<li><p>DataFlows now have a syntax for providing a set of definitions that will
+override the operations default definition for a given input.</p></li>
+<li><p>Source which modifies record features as they are read from another source.
+Useful for modifying datasets as they are used with ML commands or editing
+in bulk.</p></li>
 </ul>
 </div>
 <div class="section" id="changed">

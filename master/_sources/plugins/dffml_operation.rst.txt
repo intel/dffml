@@ -88,6 +88,68 @@ No description
 
 - output: associate_output(type: Dict[str, Any])
 
+.. _plugin_operation_dffml_associate_definition:
+
+associate_definition
+~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+Examples
+++++++++
+
+>>> import asyncio
+>>> from dffml import *
+>>>
+>>> feed_def = Definition(name="feed", primitive="string")
+>>> dead_def = Definition(name="dead", primitive="string")
+>>> output = Definition(name="output", primitive="string")
+>>>
+>>> feed_input = Input(value="my favorite value", definition=feed_def)
+>>> face_input = Input(
+...     value="face", definition=output, parents=[feed_input]
+... )
+>>>
+>>> dead_input = Input(
+...     value="my second favorite value", definition=dead_def
+... )
+>>> beef_input = Input(
+...     value="beef", definition=output, parents=[dead_input]
+... )
+>>>
+>>> async def main():
+...     for value in ["feed", "dead"]:
+...         async for ctx, results in MemoryOrchestrator.run(
+...             DataFlow.auto(AssociateDefinition),
+...             [
+...                 feed_input,
+...                 face_input,
+...                 dead_input,
+...                 beef_input,
+...                 Input(
+...                     value={value: "output"},
+...                     definition=AssociateDefinition.op.inputs["spec"],
+...                 ),
+...             ],
+...         ):
+...             print(results)
+>>>
+>>> asyncio.run(main())
+{'feed': 'face'}
+{'dead': 'beef'}
+
+**Stage: output**
+
+
+
+**Inputs**
+
+- spec: associate_spec(type: List[str])
+
+**Outputs**
+
+- output: associate_output(type: Dict[str, Any])
+
 .. _plugin_operation_dffml_db_query_create_table:
 
 db_query_create_table
