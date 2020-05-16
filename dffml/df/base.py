@@ -216,7 +216,7 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
     ...     ],
     ...     definition=isTeen.op.inputs["p"],
     ... )
-    Input(value=[Person(name='Bob', age=20), Person(name='Mark', age=20), Person(name='Alice', age=20)], definition=isTeen.p)
+    Input(value=[Person(name='Bob', age=20), Person(name='Mark', age=21), Person(name='Alice', age=90)], definition=isTeen.p)
     >>> @op
     ... def canVote(p: Dict[str, Person]):
     ...     return [True if person.age > 18 else False for name,person in p.items()]
