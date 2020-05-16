@@ -228,6 +228,9 @@
     <span class="p">(</span><span class="s2">&quot;configloader&quot;</span><span class="p">,</span> <span class="s2">&quot;png&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;scratch&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;scikit&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;tensorflow&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;tensorflow_hub&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;transformers&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;examples&quot;</span><span class="p">,</span> <span class="s2">&quot;shouldi&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;feature&quot;</span><span class="p">,</span> <span class="s2">&quot;git&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;feature&quot;</span><span class="p">,</span> <span class="s2">&quot;auth&quot;</span><span class="p">),</span>
@@ -239,9 +242,6 @@
 <span class="c1"># Tensorflow currently doesn&#39;t support Python 3.8</span>
 <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">minor</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">:</span>
     <span class="n">CORE_PLUGINS</span> <span class="o">+=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;tensorflow&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;tensorflow_hub&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;transformers&quot;</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;vowpalWabbit&quot;</span><span class="p">),</span>
     <span class="p">]</span>
 
