@@ -12,11 +12,20 @@ from shouldi.cli import ShouldI
 
 
 class TestCLI(AsyncTestCase):
+
     async def test_install_py(self):
         # Issue is B322, use of input in Python 2 is unsafe (eval). DFFML is
         # Python 3.7+ only, so doesn't effect us (it's the 1 high that will be
         # found).
         dffml_source_root = list(pathlib.Path(__file__).parents)[3]
+    async def test_install(self):
+        import pathlib
+
+        await ShouldI.install.cli(str(list(pathlib.Path(__file__).parents)[3]))
+        # await ShouldI.install.cli("https://github.com/intel/dffml")
+
+        return
+
         with patch("sys.stdout", new_callable=io.StringIO) as stdout:
             await ShouldI.install.cli(str(dffml_source_root))
             output = stdout.getvalue()

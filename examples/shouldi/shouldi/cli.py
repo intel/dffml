@@ -1,7 +1,9 @@
 # Command line utility helpers and DataFlow specific classes
 from dffml import CMD, Arg, DataFlow, Input, GetSingle, run
 
+
 # Import operations we need for the Git operations
+# Import operations we need from the Git operations
 from dffml_feature_git.feature.operations import (
     clone_git_repo,
     cleanup_git_repo,
@@ -226,6 +228,8 @@ async def run_javascript_sa(self, repo):
             }
 
 
+
+
 # Link inputs and outputs together according to their definitions
 DATAFLOW = DataFlow.auto(
     clone_git_repo,
@@ -239,6 +243,7 @@ DATAFLOW = DataFlow.auto(
 DATAFLOW.seed.append(
     Input(value=[SA_RESULTS.name,], definition=GetSingle.op.inputs["spec"],)
 )
+
 for opimp in [
     is_lang_python,
     run_python_sa,
