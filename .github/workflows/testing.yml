@@ -113,11 +113,6 @@ jobs:
         set -x
         export PYTHON=python${{ matrix.python-version }}
         export PLUGIN=${{ matrix.plugin }}
-        if [[ "x${PYTHON}" == "xpython3.8" ]]; then
-          if [[ "x${PLUGIN}" == "xmodel/vowpalWabbit" ]]; then
-            exit 0
-          fi
-        fi
         export LOGGING=debug
         export PATH="${HOME}/.local/bin:${PATH}"
         export PYPI_TOKENS=$(mktemp)
