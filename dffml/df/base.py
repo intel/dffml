@@ -110,6 +110,12 @@ class FailedToLoadOperationImplementation(Exception):
     """
 
 
+class OpCouldNotDeterminePrimitive(Exception):
+    """
+    op could not determine the primitive of the parameter
+    """
+
+
 @base_entry_point("dffml.operation", "opimp")
 class OperationImplementation(BaseDataFlowObject):
     def __init__(self, config: "BaseConfig") -> None:
@@ -217,16 +223,6 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                             param.annotation, param.annotation.__name__
                         ),
                     )
-                elif is_dataclass(param.annotation) or bool(
-                    issubclass(param.annotation, tuple)
-                    and hasattr(param.annotation, "_asdict")
-                ):
-                    # If the annotation is either a dataclass or namedtuple
-                    kwargs["inputs"][name] = Definition(
-                        name=".".join(name_list),
-                        primitive="map",
-                        spec=param.annotation,
-                    )
                 elif (
                     get_origin(param.annotation) is list
                     or get_origin(param.annotation) is dict
@@ -249,6 +245,16 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                             spec=innerclass,
                             subspec=True,
                         )
+                elif is_dataclass(param.annotation) or bool(
+                    issubclass(param.annotation, tuple)
+                    and hasattr(param.annotation, "_asdict")
+                ):
+                    # If the annotation is either a dataclass or namedtuple
+                    kwargs["inputs"][name] = Definition(
+                        name=".".join(name_list),
+                        primitive="map",
+                        spec=param.annotation,
+                    )
                 else:
                     raise OpCouldNotDeterminePrimitive(
                         f"The primitive of {name} could not be determined"
