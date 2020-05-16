@@ -217,9 +217,9 @@ class SimpleModel(Model):
 
     def check_applicable_feature(self, feature):
         # Check the data datatype is in the list of supported data types
-        self.check_feature_dtype(feature.dtype())
+        self.check_feature_dtype(feature.dtype)
         # Check that length (dimensions) of feature is supported
-        self.check_feature_length(feature.length())
+        self.check_feature_length(feature.length)
         return True
 
     def check_feature_dtype(self, dtype):

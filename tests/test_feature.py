@@ -40,17 +40,17 @@ class TestFeature(AsyncTestCase):
         self.feature = Feature("name", int, 1)
 
     def test_default_dtype(self):
-        self.assertEqual(self.feature.dtype(), int)
+        self.assertEqual(self.feature.dtype, int)
 
     def test_default_length(self):
-        self.assertEqual(self.feature.length(), 1)
+        self.assertEqual(self.feature.length, 1)
 
     def test_load_def(self):
         # TODO This test should be removed or its name should be modified.
         feature = Feature("test", float, 10)
         self.assertEqual(feature.name, "test")
-        self.assertEqual(feature.dtype(), float)
-        self.assertEqual(feature.length(), 10)
+        self.assertEqual(feature.dtype, float)
+        self.assertEqual(feature.length, 10)
 
     def test_convert_dtype(self):
         self.assertEqual(Feature.convert_dtype("float"), float)

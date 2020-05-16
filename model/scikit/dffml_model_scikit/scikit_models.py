@@ -66,9 +66,9 @@ from dffml.feature.feature import Feature, Features  # , DefFeature
 def applicable_features(self, features):
     usable = []
     for feature in features:
-        if feature.dtype() != int and feature.dtype() != float:
+        if feature.dtype != int and feature.dtype != float:
             raise ValueError("Models only supports int or float feature")
-        if feature.length() != 1:
+        if feature.length != 1:
             raise ValueError(
                 "Models only supports single values (non-matrix / array)"
             )

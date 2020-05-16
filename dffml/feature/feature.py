@@ -40,11 +40,11 @@ class Feature(abc.ABC):
     >>> from dffml import *
     >>>
     >>> feature = Feature("example", float, 10)
-    >>> feature.dtype()
+    >>> feature.dtype
     <class 'float'>
     >>> feature.name
     'example'
-    >>> feature.length()
+    >>> feature.length
     10
 
     Defining a feature directly using DefFeature:
@@ -52,11 +52,11 @@ class Feature(abc.ABC):
     >>> from dffml import *
     >>>
     >>> feature = Feature("example2", int, 20)
-    >>> feature.dtype()
+    >>> feature.dtype
     <class 'int'>
     >>> feature.name
     'example2'
-    >>> feature.length()
+    >>> feature.length
     20
     """
 
@@ -76,8 +76,8 @@ class Feature(abc.ABC):
             length = parser_helper(tempvar[2])
         if isinstance(dtype, str):
             dtype = self.convert_dtype(tempvar[1])
-        self._dtype = dtype
-        self._length = length
+        self.dtype = dtype
+        self.length = length
         self.name = name
 
     def __eq__(self, other):
@@ -85,21 +85,21 @@ class Feature(abc.ABC):
             map(functools.partial(hasattr, other), ["name", "dtype", "length"])
         ):
             return False
-        self_tuple = (self.name, self.dtype(), self.length())
-        other_tuple = (other.name, other.dtype(), other.length())
+        self_tuple = (self.name, self.dtype, self.length)
+        other_tuple = (other.name, other.dtype, other.length)
         return bool(self_tuple == other_tuple)
 
     def __str__(self):
         return "%s(%s)" % (self.name, self.__class__.__qualname__)
 
     def __repr__(self):
-        return "%s[%r, %r]" % (self.__str__(), self.dtype(), self.length())
+        return "%s[%r, %r]" % (self.__str__(), self.dtype, self.length)
 
     def export(self):
         return {
             "name": self.name,
-            "dtype": self.dtype().__qualname__,
-            "length": self.length(),
+            "dtype": self.dtype.__qualname__,
+            "length": self.length,
         }
 
     @classmethod
