@@ -49,6 +49,9 @@ CORE_PLUGINS = [
     ("configloader", "png"),
     ("model", "scratch"),
     ("model", "scikit"),
+    ("model", "tensorflow"),
+    ("model", "tensorflow_hub"),
+    ("model", "transformers"),
     ("examples", "shouldi"),
     ("feature", "git"),
     ("feature", "auth"),
@@ -60,9 +63,6 @@ CORE_PLUGINS = [
 # Tensorflow currently doesn't support Python 3.8
 if sys.version_info.major == 3 and sys.version_info.minor < 8:
     CORE_PLUGINS += [
-        ("model", "tensorflow"),
-        ("model", "tensorflow_hub"),
-        ("model", "transformers"),
         ("model", "vowpalWabbit"),
     ]
 
