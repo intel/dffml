@@ -356,6 +356,8 @@ class Install(CMD):
         self.logger.debug("Running: %s", " ".join(cmd))
         proc = await asyncio.create_subprocess_exec(*cmd)
         await proc.wait()
+        if proc.returncode != 0:
+            raise RuntimeError("pip failed to install dependencies")
 
 
 class SetupPyKWArg(CMD):
