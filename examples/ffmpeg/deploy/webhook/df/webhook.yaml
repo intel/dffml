@@ -1,0 +1,161 @@
+definitions:
+  URL:
+    name: URL
+    primitive: string
+  docker_commands:
+    name: docker_commands
+    primitive: Dict[str,Any]
+  docker_image_tag:
+    name: docker_image_tag
+    primitive: str
+  docker_running_containers:
+    name: docker_running_containers
+    primitive: List[str]
+  git_payload:
+    name: git_payload
+    primitive: Dict[Any]
+  git_repository:
+    lock: true
+    name: git_repository
+    primitive: Dict[str, str]
+    spec:
+      defaults: {}
+      name: GitRepoSpec
+      types:
+        URL: str
+        directory: str
+    subspec: false
+  got_running_containers:
+    name: got_running_containers
+    primitive: bool
+  is_default_branch:
+    name: is_default_branch
+    primitive: bool
+  is_image_built:
+    name: is_image_built
+    primitive: bool
+  valid_git_repository_URL:
+    name: valid_git_repository_URL
+    primitive: boolean
+flow:
+  check_if_default_branch:
+    inputs:
+      payload:
+      - seed
+  clone_git_repo:
+    conditions:
+    - seed
+    inputs:
+      URL:
+      - get_url_from_payload: url
+  docker_build_image:
+    conditions:
+    - check_if_default_branch: is_default_branch
+    - get_status_running_containers: status
+    inputs:
+      docker_commands:
+      - parse_docker_commands: docker_commands
+  get_image_tag:
+    inputs:
+      payload:
+      - seed
+  get_running_containers:
+    inputs:
+      tag:
+      - get_image_tag: image_tag
+  get_status_running_containers:
+    inputs:
+      containers:
+      - get_running_containers: running_containers
+  get_url_from_payload:
+    inputs:
+      payload:
+      - seed
+  parse_docker_commands:
+    inputs:
+      image_tag:
+      - get_image_tag: image_tag
+      repo:
+      - clone_git_repo: repo
+  restart_running_containers:
+    conditions:
+    - docker_build_image: build_status
+    inputs:
+      containers:
+      - get_running_containers: running_containers
+      docker_commands:
+      - parse_docker_commands: docker_commands
+linked: true
+operations:
+  check_if_default_branch:
+    inputs:
+      payload: git_payload
+    name: check_if_default_branch
+    outputs:
+      is_default_branch: is_default_branch
+    stage: processing
+  clone_git_repo:
+    conditions:
+    - valid_git_repository_URL
+    inputs:
+      URL: URL
+    name: clone_git_repo
+    outputs:
+      repo: git_repository
+    stage: processing
+  docker_build_image:
+    conditions:
+    - is_default_branch
+    - got_running_containers
+    inputs:
+      docker_commands: docker_commands
+    name: docker_build_image
+    outputs:
+      build_status: is_image_built
+    stage: processing
+  get_image_tag:
+    inputs:
+      payload: git_payload
+    name: get_image_tag
+    outputs:
+      image_tag: docker_image_tag
+    stage: processing
+  get_running_containers:
+    inputs:
+      tag: docker_image_tag
+    name: get_running_containers
+    outputs:
+      running_containers: docker_running_containers
+    stage: processing
+  get_status_running_containers:
+    inputs:
+      containers: docker_running_containers
+    name: get_status_running_containers
+    outputs:
+      status: got_running_containers
+    stage: processing
+  get_url_from_payload:
+    inputs:
+      payload: git_payload
+    name: get_url_from_payload
+    outputs:
+      url: URL
+    stage: processing
+  parse_docker_commands:
+    inputs:
+      image_tag: docker_image_tag
+      repo: git_repository
+    name: parse_docker_commands
+    outputs:
+      docker_commands: docker_commands
+    stage: processing
+  restart_running_containers:
+    conditions:
+    - is_image_built
+    inputs:
+      containers: docker_running_containers
+      docker_commands: docker_commands
+    name: restart_running_containers
+    outputs: {}
+    stage: processing
+

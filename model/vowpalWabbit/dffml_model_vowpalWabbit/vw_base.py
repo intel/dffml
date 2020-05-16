@@ -7,12 +7,7 @@ import os
 import json
 import hashlib
 from pathlib import Path
-from typing import (
-    AsyncIterator,
-    Tuple,
-    Any,
-    List,
-)
+from typing import AsyncIterator, Tuple, Any, List
 
 import numpy as np
 import pandas as pd

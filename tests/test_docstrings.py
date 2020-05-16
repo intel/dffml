@@ -247,11 +247,7 @@ for import_name, module in modules(root, package_name, skip=skip):
                     + cls.__qualname__
                     + "."
                     + obj.__qualname__
-                ] = (
-                    import_name,
-                    module,
-                    obj,
-                )
+                ] = (import_name, module, obj)
 
 for name, (import_name, module, obj) in to_test.items():
     # Check that class or function has an example that could be doctested

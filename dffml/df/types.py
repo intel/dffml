@@ -27,6 +27,12 @@ class DefinitionMissing(Exception):
     """
 
 
+class PrimitiveDoesNotMatchValue(Exception):
+    """
+    Primitive does not match the value type
+    """
+
+
 class Definition(NamedTuple):
     """
     Examples
@@ -308,12 +314,16 @@ class Input(object):
             parents = []
         if definition.spec is not None:
             if definition.subspec:
-                if isinstance(value, list):
+                if isinstance(value, list) and definition.primitive == "array":
                     for i, subvalue in enumerate(value):
                         value[i] = definition.spec(**subvalue)
-                elif isinstance(value, dict):
+                elif isinstance(value, dict) and definition.primitive == "map":
                     for key, subvalue in value.items():
                         value[key] = definition.spec(**subvalue)
+                else:
+                    raise PrimitiveDoesNotMatchValue(
+                        f"{type(value)} is not the right type for primitive {definition.primitive}"
+                    )
             elif isinstance(value, dict):
                 value = definition.spec(**value)
         if definition.validate is not None:
@@ -551,6 +561,8 @@ class DataFlow:
                     )
                 else:
                     for origin in output_source.items():
+                        if isinstance(origin[1], (list, tuple,)):
+                            origin = origin[0]
                         self.by_origin[operation.stage].setdefault(origin, [])
                         self.by_origin[operation.stage][origin].append(
                             operation
@@ -566,6 +578,14 @@ class DataFlow:
                         )
                     else:
                         for origin in output_source.items():
+                            # If we have an output_source item with an origin
+                            # that has a list as it's value we know that the key
+                            # (aka origin[0] since output_source is a dict) is
+                            # the Input.origin (like "seed"). And the value
+                            # (origin[1]) is the list of definitions which are
+                            # acceptable from that origin for this input.
+                            if isinstance(origin[1], (list, tuple,)):
+                                origin = origin[0]
                             self.by_origin[operation.stage].setdefault(
                                 origin, []
                             )

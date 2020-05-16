@@ -78,6 +78,7 @@ setup(
             "idx3 = dffml.source.idx3:IDX3Source",
             "db = dffml.source.db:DbSource",
             "ini = dffml.source.ini:INISource",
+            "df = dffml.source.df:DataFlowSource",
         ],
         "dffml.port": ["json = dffml.port.json:JSON"],
         "dffml.service.cli": ["dev = dffml.service.dev:Develop"],
@@ -91,6 +92,7 @@ setup(
             "get_single = dffml.operation.output:GetSingle",
             "get_multi = dffml.operation.output:GetMulti",
             "associate = dffml.operation.output:Associate",
+            "associate_definition = dffml.operation.output:AssociateDefinition",
             # Mapping
             "dffml.mapping.extract = dffml.operation.mapping:mapping_extract_value",
             "dffml.mapping.create = dffml.operation.mapping:create_mapping",

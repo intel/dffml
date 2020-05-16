@@ -14,6 +14,16 @@ from functools import wraps
 import pathlib
 from typing import Callable
 
+try:
+    from typing import get_origin, get_args
+except ImportError:
+    # Added in Python 3.8
+    def get_origin(t):
+        return getattr(t, "__origin__", None)
+
+    def get_args(t):
+        return getattr(t, "__args__", None)
+
 
 def merge(one, two, list_append: bool = True):
     for key, value in two.items():
@@ -138,9 +148,7 @@ def type_lookup(typename):
 def export_value(obj, key, value):
     # export and _asdict are not classmethods
     if hasattr(value, "ENTRY_POINT_ORIG_LABEL") and hasattr(value, "config"):
-        obj[key] = {
-            "plugin": value.ENTRY_POINT_ORIG_LABEL,
-        }
+        obj[key] = {"plugin": value.ENTRY_POINT_ORIG_LABEL}
         export_value(obj[key], "config", value.config)
     elif inspect.isclass(value):
         obj[key] = value.__qualname__

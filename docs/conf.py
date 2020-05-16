@@ -88,7 +88,7 @@ html_static_path = ["_static"]
 
 
 def setup(app):
-    app.add_javascript("copybutton.js")
+    app.add_js_file("copybutton.js")
 
 
 # -- Extension configuration -------------------------------------------------
