@@ -12,6 +12,7 @@ from typing import (
     Optional,
     Set,
 )
+from dataclasses import is_dataclass
 from contextlib import asynccontextmanager
 
 from .exceptions import NotOpImp
@@ -25,6 +26,7 @@ from ..base import (
     BaseDataFlowFacilitatorObject,
 )
 from ..util.cli.arg import Arg
+from ..util.data import get_origin, get_args
 from ..util.asynchelper import context_stacker
 from ..util.entrypoint import base_entry_point
 
@@ -108,6 +110,12 @@ class FailedToLoadOperationImplementation(Exception):
     """
 
 
+class OpCouldNotDeterminePrimitive(Exception):
+    """
+    op could not determine the primitive of the parameter
+    """
+
+
 @base_entry_point("dffml.operation", "opimp")
 class OperationImplementation(BaseDataFlowObject):
     def __init__(self, config: "BaseConfig") -> None:
@@ -184,6 +192,49 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
     iterated over and the values in that ``dict`` are entered. The value yielded
     upon entry is assigned to a parameter in the ``OperationImplementation``
     instance named after the respective key.
+
+    Examples
+    --------
+
+    >>> from dffml import Definition, Input, op
+    >>> from typing import NamedTuple, List, Dict
+    >>>
+    >>> class Person(NamedTuple):
+    ...     name: str
+    ...     age: int
+    ...
+    >>> @op
+    ... def cannotVote(p: List[Person]):
+    ...     return list(filter(lambda person: person.age < 18, p))
+    ...
+    >>>
+    >>> Input(
+    ...     value=[
+    ...         {"name": "Bob", "age": 20},
+    ...         {"name": "Mark", "age": 21},
+    ...         {"name": "Alice", "age": 90},
+    ...     ],
+    ...     definition=cannotVote.op.inputs["p"],
+    ... )
+    Input(value=[Person(name='Bob', age=20), Person(name='Mark', age=21), Person(name='Alice', age=90)], definition=cannotVote.p)
+    >>>
+    >>> @op
+    ... def canVote(p: Dict[str, Person]):
+    ...     return {
+    ...         person.name: person
+    ...         for person in filter(lambda person: person.age >= 18, p.values())
+    ...     }
+    ...
+    >>>
+    >>> Input(
+    ...     value={
+    ...         "Bob": {"name": "Bob", "age": 19},
+    ...         "Alice": {"name": "Alice", "age": 21},
+    ...         "Mark": {"name": "Mark", "age": 90},
+    ...     },
+    ...     definition=canVote.op.inputs["p"],
+    ... )
+    Input(value={'Bob': Person(name='Bob', age=19), 'Alice': Person(name='Alice', age=21), 'Mark': Person(name='Mark', age=90)}, definition=canVote.p)
     """
 
     def wrap(func):
@@ -214,6 +265,38 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                         primitive=primitive_convert.get(
                             param.annotation, param.annotation.__name__
                         ),
+                    )
+                elif (
+                    get_origin(param.annotation) is list
+                    or get_origin(param.annotation) is dict
+                ):
+                    # If the annotation are of the form List[MyDataClass] or Dict[Any, MyDataClass]
+                    if get_origin(param.annotation) is list:
+                        primitive = "array"
+                        innerclass = list(get_args(param.annotation))[0]
+                    else:
+                        primitive = "map"
+                        innerclass = list(get_args(param.annotation))[1]
+
+                    if is_dataclass(innerclass) or bool(
+                        issubclass(innerclass, tuple)
+                        and hasattr(innerclass, "_asdict")
+                    ):
+                        kwargs["inputs"][name] = Definition(
+                            name=".".join(name_list),
+                            primitive=primitive,
+                            spec=innerclass,
+                            subspec=True,
+                        )
+                elif is_dataclass(param.annotation) or bool(
+                    issubclass(param.annotation, tuple)
+                    and hasattr(param.annotation, "_asdict")
+                ):
+                    # If the annotation is either a dataclass or namedtuple
+                    kwargs["inputs"][name] = Definition(
+                        name=".".join(name_list),
+                        primitive="map",
+                        spec=param.annotation,
                     )
                 else:
                     raise OpCouldNotDeterminePrimitive(
