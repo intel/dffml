@@ -231,6 +231,7 @@
     <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;tensorflow&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;tensorflow_hub&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;transformers&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;vowpalWabbit&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;examples&quot;</span><span class="p">,</span> <span class="s2">&quot;shouldi&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;feature&quot;</span><span class="p">,</span> <span class="s2">&quot;git&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;feature&quot;</span><span class="p">,</span> <span class="s2">&quot;auth&quot;</span><span class="p">),</span>
@@ -238,12 +239,6 @@
     <span class="p">(</span><span class="s2">&quot;service&quot;</span><span class="p">,</span> <span class="s2">&quot;http&quot;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&quot;source&quot;</span><span class="p">,</span> <span class="s2">&quot;mysql&quot;</span><span class="p">),</span>
 <span class="p">]</span>
-
-<span class="c1"># Tensorflow currently doesn&#39;t support Python 3.8</span>
-<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">major</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">minor</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">:</span>
-    <span class="n">CORE_PLUGINS</span> <span class="o">+=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="s2">&quot;vowpalWabbit&quot;</span><span class="p">),</span>
-    <span class="p">]</span>
 
 
 <div class="viewcode-block" id="create_from_skel"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.create_from_skel">[docs]</a><span class="k">def</span> <span class="nf">create_from_skel</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
