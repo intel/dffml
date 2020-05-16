@@ -233,6 +233,12 @@
                 <span class="c1"># Don&#39;t symlink if we already have</span>
                 <span class="k">if</span> <span class="n">linkpath</span><span class="o">.</span><span class="n">is_symlink</span><span class="p">():</span>
                     <span class="k">continue</span>
+                <span class="c1"># Make links relative</span>
+                <span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">linkpath</span><span class="o">.</span><span class="n">parents</span><span class="p">:</span>
+                    <span class="n">filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="n">filepath</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">common</span> <span class="o">==</span> <span class="n">path</span><span class="p">:</span>
+                        <span class="k">break</span>
                 <span class="c1"># Resolving first gives more helpful error message if it fails</span>
                 <span class="n">linkpath</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">symlink_to</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
 
