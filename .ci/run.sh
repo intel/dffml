@@ -6,7 +6,10 @@ if [ -d "$HOME/.local/bin" ]; then
 fi
 
 SRC_ROOT=${SRC_ROOT:-"${PWD}"}
-PYTHON=${PYTHON:-"python3.7"}
+PYTHON=${PYTHON:-"python3"}
+if [ "x${VIRTUAL_ENV}" != "x" ]; then
+  PYTHON="python"
+fi
 
 TEMP_DIRS=()
 
@@ -23,14 +26,7 @@ function run_plugin_examples() {
 }
 
 function run_plugin() {
-  "${PYTHON}" -m pip install -U pip twine
-
-  # Install main package
-  "${PYTHON}" -m pip install -U -e "${SRC_ROOT}[dev]"
-
-  if [ "x${PLUGIN}" = "xmodel/tensorflow_hub" ]; then
-    "${PYTHON}" -m pip install -U -e "${SRC_ROOT}/model/tensorflow"
-  fi
+  export PLUGIN="${1}"
 
   cd "${SRC_ROOT}/${PLUGIN}"
 
@@ -240,16 +236,19 @@ function cleanup_temp_dirs() {
 # Clean up temporary directories on exit
 trap cleanup_temp_dirs EXIT
 
-if [ "x${PLUGIN}" != "x" ]; then
-  run_plugin
-elif [ "x${CHANGELOG}" != "x" ]; then
+if [ "x${1}" == "xchangelog" ]; then
   run_changelog
-elif [ "x${WHITESPACE}" != "x" ]; then
+elif [ "x${1}" == "xwhitespace" ]; then
   run_whitespace
-elif [ "x${STYLE}" != "x" ]; then
+elif [ "x${1}" == "xstyle" ]; then
   run_style
-elif [ "x${DOCS}" != "x" ]; then
+elif [ "x${1}" == "xdocs" ]; then
   run_docs
-elif [ "x${LINES}" != "x" ]; then
+elif [ "x${1}" == "xlines" ]; then
   run_lines
+elif [ -d "${1}" ]; then
+  run_plugin "${1}"
+else
+  echo "Not sure what to do" 2>&1
+  exit 1
 fi
