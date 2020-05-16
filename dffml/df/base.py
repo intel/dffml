@@ -204,8 +204,8 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
     ...     age: int
     ...
     >>> @op
-    ... def isTeen(p: List[Person]):
-    ...     return [True if person.age > 18 else False for person in p]
+    ... def cannotVote(p: List[Person]):
+    ...     return list(filter(lambda person: person.age < 18, p))
     ...
     >>>
     >>> Input(
@@ -216,10 +216,14 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
     ...     ],
     ...     definition=isTeen.op.inputs["p"],
     ... )
-    Input(value=[Person(name='Bob', age=20), Person(name='Mark', age=21), Person(name='Alice', age=90)], definition=isTeen.p)
+    Input(value=[Person(name='Bob', age=20), Person(name='Mark', age=21), Person(name='Alice', age=90)], definition=cannotVote.p)
+    >>>
     >>> @op
     ... def canVote(p: Dict[str, Person]):
-    ...     return [True if person.age > 18 else False for name,person in p.items()]
+    ...     return {
+    ...         person.name: person
+    ...         for person in filter(lambda person: person.age >= 18, p.values())
+    ...     }
     ...
     >>>
     >>> Input(
