@@ -125,6 +125,10 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-scikit">dffml_model_scikit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-model-vowpalwabbit">dffml_model_vowpalWabbit</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vwmodel">vwmodel</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="dffml_operation.html">Operations</a></li>
@@ -1900,6 +1904,86 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
 </ul>
 </li>
 </ul>
+</div>
+<div class="section" id="dffml-model-vowpalwabbit">
+<span id="plugin-model-dffml-model-vowpalwabbit"></span><h2>dffml_model_vowpalWabbit<a class="headerlink" href="#dffml-model-vowpalwabbit" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-vowpalWabbit</span>
+</pre></div>
+</div>
+<div class="section" id="vwmodel">
+<span id="plugin-model-dffml-model-vowpalwabbit-vwmodel"></span><h3>vwmodel<a class="headerlink" href="#vwmodel" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>features: List of features</p></li>
+<li><p>predict: Feature</p>
+<ul>
+<li><p>Feature to predict</p></li>
+</ul>
+</li>
+<li><p>class_cost: List of features</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Features with name <cite>Cost_{class}</cite> contaning cost of <cite>class</cite> for each input example, used when <cite>csoaa</cite> is used</p></li>
+</ul>
+</li>
+<li><p>task: String</p>
+<ul>
+<li><p>default: regression</p></li>
+<li><p>Task to perform, possible values are <cite>classification</cite>, <cite>regression</cite></p></li>
+</ul>
+</li>
+<li><p>use_binary_label: Boolean</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Convert target labels to -1 and 1 for binary classification</p></li>
+</ul>
+</li>
+<li><p>vwcmd: List of strings</p>
+<ul>
+<li><p>default: [‘loss_function’, ‘logistic’, ‘link’, ‘logistic’, ‘l2’, ‘0.04’]</p></li>
+<li><p>Command Line Arguements as per vowpal wabbit convention</p></li>
+</ul>
+</li>
+<li><p>namespace: List of strings</p>
+<ul>
+<li><p>default: []</p></li>
+<li><p>Namespace for input features. Should be in format {namespace}_{feature name}</p></li>
+</ul>
+</li>
+<li><p>importance: Feature</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Feature containing <cite>importance</cite> of each example, used in conversion of input data to vowpal wabbit input format</p></li>
+</ul>
+</li>
+<li><p>base: Feature</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Feature containing <cite>base</cite> for each example, used for residual regression</p></li>
+</ul>
+</li>
+<li><p>tag: Feature</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Feature to be used as <cite>tag</cite> in conversion of data to vowpal wabbit input format</p></li>
+</ul>
+</li>
+<li><p>convert_to_vw: Boolean</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Convert the input to vowpal wabbit standard input format</p></li>
+</ul>
+</li>
+<li><p>directory: String</p>
+<ul>
+<li><p>default: /home/runner/.cache/dffml/vowpalWabbit</p></li>
+<li><p>Directory where state should be saved</p></li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 </div>
 

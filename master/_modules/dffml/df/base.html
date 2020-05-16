@@ -191,6 +191,7 @@
     <span class="n">Optional</span><span class="p">,</span>
     <span class="n">Set</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">is_dataclass</span>
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">asynccontextmanager</span>
 
 <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">NotOpImp</span>
@@ -204,6 +205,7 @@
     <span class="n">BaseDataFlowFacilitatorObject</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
+<span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">get_origin</span><span class="p">,</span> <span class="n">get_args</span>
 <span class="kn">from</span> <span class="nn">..util.asynchelper</span> <span class="kn">import</span> <span class="n">context_stacker</span>
 <span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">base_entry_point</span>
 
@@ -287,6 +289,12 @@
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
+<div class="viewcode-block" id="OpCouldNotDeterminePrimitive"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.OpCouldNotDeterminePrimitive">[docs]</a><span class="k">class</span> <span class="nc">OpCouldNotDeterminePrimitive</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    op could not determine the primitive of the parameter</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
 <div class="viewcode-block" id="OperationImplementation"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.OperationImplementation">[docs]</a><span class="nd">@base_entry_point</span><span class="p">(</span><span class="s2">&quot;dffml.operation&quot;</span><span class="p">,</span> <span class="s2">&quot;opimp&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">OperationImplementation</span><span class="p">(</span><span class="n">BaseDataFlowObject</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="s2">&quot;BaseConfig&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -363,6 +371,49 @@
 <span class="sd">    iterated over and the values in that ``dict`` are entered. The value yielded</span>
 <span class="sd">    upon entry is assigned to a parameter in the ``OperationImplementation``</span>
 <span class="sd">    instance named after the respective key.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; from dffml import Definition, Input, op</span>
+<span class="sd">    &gt;&gt;&gt; from typing import NamedTuple, List, Dict</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; class Person(NamedTuple):</span>
+<span class="sd">    ...     name: str</span>
+<span class="sd">    ...     age: int</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt; @op</span>
+<span class="sd">    ... def cannotVote(p: List[Person]):</span>
+<span class="sd">    ...     return list(filter(lambda person: person.age &lt; 18, p))</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; Input(</span>
+<span class="sd">    ...     value=[</span>
+<span class="sd">    ...         {&quot;name&quot;: &quot;Bob&quot;, &quot;age&quot;: 20},</span>
+<span class="sd">    ...         {&quot;name&quot;: &quot;Mark&quot;, &quot;age&quot;: 21},</span>
+<span class="sd">    ...         {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 90},</span>
+<span class="sd">    ...     ],</span>
+<span class="sd">    ...     definition=cannotVote.op.inputs[&quot;p&quot;],</span>
+<span class="sd">    ... )</span>
+<span class="sd">    Input(value=[Person(name=&#39;Bob&#39;, age=20), Person(name=&#39;Mark&#39;, age=21), Person(name=&#39;Alice&#39;, age=90)], definition=cannotVote.p)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; @op</span>
+<span class="sd">    ... def canVote(p: Dict[str, Person]):</span>
+<span class="sd">    ...     return {</span>
+<span class="sd">    ...         person.name: person</span>
+<span class="sd">    ...         for person in filter(lambda person: person.age &gt;= 18, p.values())</span>
+<span class="sd">    ...     }</span>
+<span class="sd">    ...</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; Input(</span>
+<span class="sd">    ...     value={</span>
+<span class="sd">    ...         &quot;Bob&quot;: {&quot;name&quot;: &quot;Bob&quot;, &quot;age&quot;: 19},</span>
+<span class="sd">    ...         &quot;Alice&quot;: {&quot;name&quot;: &quot;Alice&quot;, &quot;age&quot;: 21},</span>
+<span class="sd">    ...         &quot;Mark&quot;: {&quot;name&quot;: &quot;Mark&quot;, &quot;age&quot;: 90},</span>
+<span class="sd">    ...     },</span>
+<span class="sd">    ...     definition=canVote.op.inputs[&quot;p&quot;],</span>
+<span class="sd">    ... )</span>
+<span class="sd">    Input(value={&#39;Bob&#39;: Person(name=&#39;Bob&#39;, age=19), &#39;Alice&#39;: Person(name=&#39;Alice&#39;, age=21), &#39;Mark&#39;: Person(name=&#39;Mark&#39;, age=90)}, definition=canVote.p)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
@@ -393,6 +444,38 @@
                         <span class="n">primitive</span><span class="o">=</span><span class="n">primitive_convert</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
                             <span class="n">param</span><span class="o">.</span><span class="n">annotation</span><span class="p">,</span> <span class="n">param</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="vm">__name__</span>
                         <span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="k">elif</span> <span class="p">(</span>
+                    <span class="n">get_origin</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">annotation</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span>
+                    <span class="ow">or</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">annotation</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">dict</span>
+                <span class="p">):</span>
+                    <span class="c1"># If the annotation are of the form List[MyDataClass] or Dict[Any, MyDataClass]</span>
+                    <span class="k">if</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">annotation</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+                        <span class="n">primitive</span> <span class="o">=</span> <span class="s2">&quot;array&quot;</span>
+                        <span class="n">innerclass</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">get_args</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">annotation</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">primitive</span> <span class="o">=</span> <span class="s2">&quot;map&quot;</span>
+                        <span class="n">innerclass</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">get_args</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">annotation</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span>
+
+                    <span class="k">if</span> <span class="n">is_dataclass</span><span class="p">(</span><span class="n">innerclass</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">bool</span><span class="p">(</span>
+                        <span class="nb">issubclass</span><span class="p">(</span><span class="n">innerclass</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
+                        <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">innerclass</span><span class="p">,</span> <span class="s2">&quot;_asdict&quot;</span><span class="p">)</span>
+                    <span class="p">):</span>
+                        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span>
+                            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name_list</span><span class="p">),</span>
+                            <span class="n">primitive</span><span class="o">=</span><span class="n">primitive</span><span class="p">,</span>
+                            <span class="n">spec</span><span class="o">=</span><span class="n">innerclass</span><span class="p">,</span>
+                            <span class="n">subspec</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">is_dataclass</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">annotation</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">bool</span><span class="p">(</span>
+                    <span class="nb">issubclass</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">annotation</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">annotation</span><span class="p">,</span> <span class="s2">&quot;_asdict&quot;</span><span class="p">)</span>
+                <span class="p">):</span>
+                    <span class="c1"># If the annotation is either a dataclass or namedtuple</span>
+                    <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span>
+                        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name_list</span><span class="p">),</span>
+                        <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;map&quot;</span><span class="p">,</span>
+                        <span class="n">spec</span><span class="o">=</span><span class="n">param</span><span class="o">.</span><span class="n">annotation</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">OpCouldNotDeterminePrimitive</span><span class="p">(</span>

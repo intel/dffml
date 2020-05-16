@@ -578,6 +578,12 @@ the dffml.operation entrypoint.</p>
 </dd></dl>
 
 <dl class="py exception">
+<dt id="dffml.df.base.OpCouldNotDeterminePrimitive">
+<em class="property">exception </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">OpCouldNotDeterminePrimitive</code><a class="reference internal" href="../../_modules/dffml/df/base.html#OpCouldNotDeterminePrimitive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OpCouldNotDeterminePrimitive" title="Permalink to this definition">¶</a></dt>
+<dd><p>op could not determine the primitive of the parameter</p>
+</dd></dl>
+
+<dl class="py exception">
 <dt id="dffml.df.base.OperationException">
 <em class="property">exception </em><code class="sig-prename descclassname">dffml.df.base.</code><code class="sig-name descname">OperationException</code><a class="reference internal" href="../../_modules/dffml/df/base.html#OperationException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.base.OperationException" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised by the orchestrator when an operation throws an exception.</p>
@@ -694,6 +700,48 @@ and assigns it to the <code class="docutils literal notranslate"><span class="pr
 iterated over and the values in that <code class="docutils literal notranslate"><span class="pre">dict</span></code> are entered. The value yielded
 upon entry is assigned to a parameter in the <code class="docutils literal notranslate"><span class="pre">OperationImplementation</span></code>
 instance named after the respective key.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Definition</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">op</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NamedTuple</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<span class="gp">... </span>    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@op</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">cannotVote</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Person</span><span class="p">]):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">person</span><span class="p">:</span> <span class="n">person</span><span class="o">.</span><span class="n">age</span> <span class="o">&lt;</span> <span class="mi">18</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">value</span><span class="o">=</span><span class="p">[</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">},</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mark&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">21</span><span class="p">},</span>
+<span class="gp">... </span>        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">90</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="p">],</span>
+<span class="gp">... </span>    <span class="n">definition</span><span class="o">=</span><span class="n">cannotVote</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">Input(value=[Person(name=&#39;Bob&#39;, age=20), Person(name=&#39;Mark&#39;, age=21), Person(name=&#39;Alice&#39;, age=90)], definition=cannotVote.p)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@op</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">canVote</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Person</span><span class="p">]):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="p">{</span>
+<span class="gp">... </span>        <span class="n">person</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">person</span>
+<span class="gp">... </span>        <span class="k">for</span> <span class="n">person</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">person</span><span class="p">:</span> <span class="n">person</span><span class="o">.</span><span class="n">age</span> <span class="o">&gt;=</span> <span class="mi">18</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+<span class="gp">... </span>    <span class="p">}</span>
+<span class="gp">...</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">value</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;Bob&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">19</span><span class="p">},</span>
+<span class="gp">... </span>        <span class="s2">&quot;Alice&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">21</span><span class="p">},</span>
+<span class="gp">... </span>        <span class="s2">&quot;Mark&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mark&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">90</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">definition</span><span class="o">=</span><span class="n">canVote</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">Input(value={&#39;Bob&#39;: Person(name=&#39;Bob&#39;, age=19), &#39;Alice&#39;: Person(name=&#39;Alice&#39;, age=21), &#39;Mark&#39;: Person(name=&#39;Mark&#39;, age=90)}, definition=canVote.p)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </div>
