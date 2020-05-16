@@ -73,7 +73,7 @@ class TensorflowModelContext(ModelContext):
         """
         Creates a feature column for a feature
         """
-        dtype = feature.dtype()
+        dtype = feature.dtype
         if not inspect.isclass(dtype):
             self.logger.warning(
                 "Unknown dtype %r. Cound not create column" % (dtype)
@@ -86,7 +86,7 @@ class TensorflowModelContext(ModelContext):
             or issubclass(dtype, float)
         ):
             return self.tf.feature_column.numeric_column(
-                feature.name, shape=feature.length()
+                feature.name, shape=feature.length
             )
         self.logger.warning(
             "Unknown dtype %r. Cound not create column" % (dtype)

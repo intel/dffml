@@ -79,7 +79,7 @@ class TestDNN(AsyncTestCase):
         self.assertEqual(config.steps, 3000)
         self.assertEqual(config.epochs, 30)
         self.assertEqual(config.hidden, [12, 40, 15])
-        self.assertEqual(config.predict.NAME, "TARGET")
+        self.assertEqual(config.predict.name, "TARGET")
 
     async def test_00_train(self):
         async with self.sources as sources, self.model as model:
@@ -104,15 +104,15 @@ class TestDNN(AsyncTestCase):
             "a",
             data={
                 "features": {
-                    self.feature1.NAME: test_feature_val[1],
-                    self.feature2.NAME: test_feature_val[2],
+                    self.feature1.name: test_feature_val[1],
+                    self.feature2.name: test_feature_val[2],
                 }
             },
         )
         async with Sources(
             MemorySource(MemorySourceConfig(records=[a]))
         ) as sources, self.model as model:
-            target_name = model.config.predict.NAME
+            target_name = model.config.predict.name
             async with sources() as sctx, model() as mctx:
                 res = [record async for record in mctx.predict(sctx.records())]
                 self.assertEqual(len(res), 1)

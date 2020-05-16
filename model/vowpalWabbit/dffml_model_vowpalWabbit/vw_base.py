@@ -166,7 +166,7 @@ class VWContext(ModelContext):
     def applicable_features(self, features):
         usable = []
         for feature in features:
-            usable.append(feature.NAME)
+            usable.append(feature.name)
         return sorted(usable)
 
     def modify_config(self):
@@ -241,25 +241,25 @@ class VWContext(ModelContext):
         data = []
         importance, tag, base, class_cost = None, None, None, None
         if self.parent.config.importance:
-            importance = self.parent.config.importance.NAME
+            importance = self.parent.config.importance.name
 
         if self.parent.config.tag:
-            tag = self.parent.config.tag.NAME
+            tag = self.parent.config.tag.name
 
         if self.parent.config.base:
-            base = self.parent.config.base.NAME
+            base = self.parent.config.base.name
         if self.parent.config.class_cost:
             class_cost = [
-                feature.NAME for feature in self.parent.config.class_cost
+                feature.name for feature in self.parent.config.class_cost
             ]
         async for record in sources.with_features(
             self.features
-            + [self.parent.config.predict.NAME]
+            + [self.parent.config.predict.name]
             + self.parent.config.extra_cols
         ):
             feature_data = record.features(
                 self.features
-                + [self.parent.config.predict.NAME]
+                + [self.parent.config.predict.name]
                 + self.parent.config.extra_cols
             )
             data.append(feature_data)
@@ -268,7 +268,7 @@ class VWContext(ModelContext):
             vw_data = df_to_vw_format(
                 vw_data,
                 vwcmd=self.parent.config.vwcmd,
-                target=self.parent.config.predict.NAME,
+                target=self.parent.config.predict.name,
                 namespace=self.parent.config.namespace,
                 importance=importance,
                 tag=tag,
@@ -293,20 +293,20 @@ class VWContext(ModelContext):
         data = []
         importance, tag, base, class_cost = None, None, None, None
         if self.parent.config.importance:
-            importance = self.parent.config.importance.NAME
+            importance = self.parent.config.importance.name
 
         if self.parent.config.tag:
-            tag = self.parent.config.tag.NAME
+            tag = self.parent.config.tag.name
 
         if self.parent.config.base:
-            base = self.parent.config.base.NAME
+            base = self.parent.config.base.name
         async for record in sources.with_features(self.features):
             feature_data = record.features(
-                self.features + [self.parent.config.predict.NAME]
+                self.features + [self.parent.config.predict.name]
             )
             data.append(feature_data)
         df = pd.DataFrame(data)
-        xdata = df.drop([self.parent.config.predict.NAME], 1)
+        xdata = df.drop([self.parent.config.predict.name], 1)
         self.logger.debug("Number of input records: {}".format(len(xdata)))
         if self.parent.config.convert_to_vw:
             xdata = df_to_vw_format(
@@ -320,7 +320,7 @@ class VWContext(ModelContext):
                 task=self.parent.config.task,
                 use_binary_label=self.parent.config.use_binary_label,
             )
-        ydata = np.array(df[self.parent.config.predict.NAME])
+        ydata = np.array(df[self.parent.config.predict.name])
         shape = [len(xdata)]
         # TODO support probabilites
         # if 'oaa' in self.parent.config.vwcmd and 'probabilities' in self.parent.config.vwcmd:
@@ -343,13 +343,13 @@ class VWContext(ModelContext):
             raise ModelNotTrained("Train model before prediction.")
         importance, tag, base, class_cost = None, None, None, None
         if self.parent.config.importance:
-            importance = self.parent.config.importance.NAME
+            importance = self.parent.config.importance.name
 
         if self.parent.config.tag:
-            tag = self.parent.config.tag.NAME
+            tag = self.parent.config.tag.name
 
         if self.parent.config.base:
-            base = self.parent.config.base.NAME
+            base = self.parent.config.base.name
         async for record in records:
             feature_data = record.features(self.features)
             data = pd.DataFrame(feature_data, index=[0])
@@ -368,10 +368,10 @@ class VWContext(ModelContext):
             prediction = self.clf.predict(data[0])
             self.logger.debug(
                 "Predicted Value of {} for {}: {}".format(
-                    self.parent.config.predict.NAME, data, prediction,
+                    self.parent.config.predict.name, data, prediction,
                 )
             )
-            target = self.parent.config.predict.NAME
+            target = self.parent.config.predict.name
             record.predicted(target, prediction, self.confidence)
             yield record
 
