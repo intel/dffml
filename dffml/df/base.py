@@ -214,7 +214,7 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
     ...         {"name": "Mark", "age": 21},
     ...         {"name": "Alice", "age": 90},
     ...     ],
-    ...     definition=isTeen.op.inputs["p"],
+    ...     definition=cannotVote.op.inputs["p"],
     ... )
     Input(value=[Person(name='Bob', age=20), Person(name='Mark', age=21), Person(name='Alice', age=90)], definition=cannotVote.p)
     >>>
