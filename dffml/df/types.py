@@ -27,6 +27,12 @@ class DefinitionMissing(Exception):
     """
 
 
+class PrimitiveDoesNotMatchValue(Exception):
+    """
+    Primitive does not match the value type
+    """
+
+
 class Definition(NamedTuple):
     """
     Examples
@@ -308,12 +314,16 @@ class Input(object):
             parents = []
         if definition.spec is not None:
             if definition.subspec:
-                if isinstance(value, list):
+                if isinstance(value, list) and definition.primitive == "array":
                     for i, subvalue in enumerate(value):
                         value[i] = definition.spec(**subvalue)
-                elif isinstance(value, dict):
+                elif isinstance(value, dict) and definition.primitive == "map":
                     for key, subvalue in value.items():
                         value[key] = definition.spec(**subvalue)
+                else:
+                    raise PrimitiveDoesNotMatchValue(
+                        f"{type(value)} is not the right type for primitive {definition.primitive}"
+                    )
             elif isinstance(value, dict):
                 value = definition.spec(**value)
         if definition.validate is not None:

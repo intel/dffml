@@ -14,17 +14,7 @@ import dataclasses
 from argparse import ArgumentParser
 from typing import Dict, Any, Type, Optional
 
-try:
-    from typing import get_origin, get_args
-except ImportError:
-    # Added in Python 3.8
-    def get_origin(t):
-        return getattr(t, "__origin__", None)
-
-    def get_args(t):
-        return getattr(t, "__args__", None)
-
-
+from .util.data import get_args, get_origin
 from .util.cli.arg import Arg
 from .util.data import (
     traverse_config_set,
