@@ -19,10 +19,7 @@ from ..util.entrypoint import Entrypoint
 
 class Feature(abc.ABC):
     """
-    Abstract base class for all features. New features must be derived from this
-    class and implement the fetch, parse, and calc methods. These methods are
-    always expected to be called in order. Anything you add to your feature
-    subclass in fetch or parse is accessible in calc.
+    Class for all features. 
 
     A feature is provided with the feature URL of the package (in self._key)
     and is expected to fetch any data it needs to calculate itself when fetch
@@ -35,7 +32,7 @@ class Feature(abc.ABC):
 
     Examples
     --------
-    Define a feature using load_def:
+    Define a feature:
 
     >>> from dffml import *
     >>>
@@ -47,24 +44,10 @@ class Feature(abc.ABC):
     >>> feature.length
     10
 
-    Defining a feature directly using DefFeature:
-
-    >>> from dffml import *
-    >>>
-    >>> feature = Feature("example2", int, 20)
-    >>> feature.dtype
-    <class 'int'>
-    >>> feature.name
-    'example2'
-    >>> feature.length
-    20
     """
 
     LOGGER = LOGGER.getChild("Feature")
 
-    # NAME: str = ""
-    # LENGTH: int = 10
-    # FREQUENCY: Type[Frequency] = Quarterly
     ENTRYPOINT = "dffml.feature"
 
     def __init__(self, name: str, dtype: Type = int, length: int = 1) -> Any:
@@ -106,59 +89,6 @@ class Feature(abc.ABC):
     def _fromdict(cls, **kwargs):
         return Feature(**kwargs)
 
-    # def dtype(self) -> Type:
-    #     """
-    #     Models need to know a Feature's datatype.
-
-    #     Examples
-    #     --------
-
-    #     >>> from dffml import *
-    #     >>>
-    #     >>> feature = Feature("name",int,1)
-    #     >>> feature.dtype()
-    #     <class 'int'>
-    #     """
-    #     # self.LOGGER.warning("%s dtype unimplemented", self)
-    #     return self._dtype
-
-    # def length(self) -> int:
-    #     """
-    #     Models need to know a Feature's length, 1 means single value, more than
-    #     that is the length of the array calc returns.
-
-    #     Examples
-    #     --------
-
-    #     >>> from dffml import *
-    #     >>>
-    #     >>> feature = Feature("name",int,1)
-    #     >>> feature.length()
-    #     1
-    #     """
-    #     # self.LOGGER.warning("%s length unimplemented", self)
-    #     return self._length
-
-    # @classmethod
-    # def load(cls, loading=None):
-    #     # CLI or dict compatibility
-    #     # TODO Consolidate this
-    #     if loading is not None:
-    #         if isinstance(loading, dict):
-    #             return Feature(
-    #                 loading["name"], loading["dtype"], loading["length"]
-    #             )
-    #         elif loading.count(":") == 2:
-    #             tempvar = loading.split(":")
-    #             return Feature(
-    #                 tempvar[0], cls.convert_dtype(tempvar[1]), int(tempvar[2])
-    #             )
-    #     return super().load(loading)
-
-    # @classmethod
-    # def load_def(cls, name: str, dtype: str, length: str):
-    #     return DefFeature(name, cls.convert_dtype(dtype), int(length))
-
     @classmethod
     def convert_dtype(cls, dtype: str):
         found = pydoc.locate(dtype)
@@ -172,36 +102,6 @@ class Feature(abc.ABC):
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         pass
-
-
-# class DefinedFeature(Feature):
-
-#     LOGGER = LOGGER.getChild("DefFeature")
-
-#     def __init__(self, dtype: Type = int, length: int = 1) -> None:
-#         super().__init__()
-#         self._dtype = dtype
-#         self._length = length
-
-#     def dtype(self) -> Type:
-#         """
-#         Models need to know a Feature's datatype.
-#         """
-#         return self._dtype
-
-#     def length(self) -> int:
-#         """
-#         Models need to know a Feature's length, 1 means single value, more than
-#         that is the length of the array calc returns.
-#         """
-#         return self._length
-
-
-# def DefFeature(name, dtype, length):
-
-#     return type("Feature" + name, (Feature,), {})(name=name,
-#         dtype=dtype, length=length
-#     )
 
 
 class Features(collections.UserList):

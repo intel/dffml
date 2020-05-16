@@ -10,7 +10,7 @@ import aiohttp
 
 from dffml.model.slr import SLRModel
 from dffml.source.json import JSONSource
-from dffml import Record, Features, DefFeature, save, train, accuracy
+from dffml import Record, Features, Feature, save, train, accuracy
 from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml_service_http.cli import HTTPService
@@ -229,8 +229,8 @@ class TestServer(AsyncTestCase):
         with tempfile.TemporaryDirectory() as tempdir:
             # Model the HTTP API will pre-load
             model = SLRModel(
-                features=Features(DefFeature("f1", float, 1)),
-                predict=DefFeature("ans", int, 1),
+                features=Features(Feature("f1", float, 1)),
+                predict=Feature("ans", int, 1),
                 directory=tempdir,
             )
 

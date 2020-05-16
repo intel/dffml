@@ -1,12 +1,12 @@
-from dffml import CSVSource, Features, DefFeature
+from dffml import CSVSource, Features, Feature
 from dffml.noasync import train, accuracy, predict
 from dffml_model_tensorflow.dnnr import DNNRegressionModel
 
 model = DNNRegressionModel(
     features=Features(
-        DefFeature("Feature1", float, 1), DefFeature("Feature2", float, 1)
+        Feature("Feature1", float, 1), Feature("Feature2", float, 1)
     ),
-    predict=DefFeature("TARGET", float, 1),
+    predict=Feature("TARGET", float, 1),
     epochs=300,
     steps=2000,
     hidden=[8, 16, 8],

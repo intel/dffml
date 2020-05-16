@@ -14,7 +14,7 @@ import importlib
 import contextlib
 from typing import Optional, Callable
 
-from dffml import Features, Feature  # , DefFeature
+from dffml import Features, Feature
 from dffml.df.types import DataFlow, Input
 from dffml.df.memory import MemoryOrchestrator
 from dffml.noasync import train

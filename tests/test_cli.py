@@ -59,9 +59,6 @@ class RecordsTestCase(AsyncExitStackTestCase):
                 new=ModelCMD.arg_model.modify(type=model_load),
             )
         )
-        # self._stack.enter_context(
-        #     patch("dffml.feature.feature.Feature.load", new=feature_load)
-        # )
         self._stack.enter_context(
             patch("dffml.df.base.OperationImplementation.load", new=opimp_load)
         )
@@ -81,16 +78,8 @@ class FakeConfig:
 
 class FakeFeature(Feature):
 
-    # NAME: str = "fake"
-
     def __init__(self, name="fake", dt=float, length=1):
         super().__init__(name, dt, length)
-
-    # def dtype(self):
-    #     return float  # pragma: no cov
-
-    # def length(self):
-    #     return 1  # pragma: no cov
 
 
 class FakeModelContext(ModelContext):
@@ -114,12 +103,6 @@ class FakeModel(Model):
 
     CONTEXT = FakeModelContext
     CONFIG = FakeConfig
-
-
-# def feature_load(loading=None):
-#     if loading == "fake":
-#         return FakeFeature()
-#     return [FakeFeature()]
 
 
 def model_load(loading):

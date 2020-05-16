@@ -3,36 +3,8 @@
 import asyncio
 from unittest.mock import patch
 
-from dffml.feature import Feature, Features  # , DefFeature
+from dffml.feature import Feature, Features
 from dffml.util.asynctestcase import AsyncTestCase
-
-
-class SingleFeature(Feature):
-    def dtype(self):
-        return bool  # pragma: no cov
-
-    def length(self):
-        return 1  # pragma: no cov
-
-
-class OneFeatureTester(SingleFeature):
-    NAME: str = "one"
-
-
-class TwoFeatureTester(SingleFeature):
-    NAME: str = "two"
-
-
-class TwoBFeatureTester(SingleFeature):
-    pass
-
-
-class ThreeFeatureTester(SingleFeature):
-    NAME: str = "three"
-
-
-class ProgessFeatureTester(SingleFeature):
-    NAME: str = "progress"
 
 
 class TestFeature(AsyncTestCase):
@@ -58,14 +30,6 @@ class TestFeature(AsyncTestCase):
     def test_convert_dtype_invalid(self):
         with self.assertRaisesRegex(TypeError, "Failed to convert"):
             Feature.convert_dtype("not a python data type")
-
-
-# class TestDefFeature(AsyncTestCase):
-#     def test_deffeature(self):
-#         feature = DefFeature("test", float, 10)
-#         self.assertEqual(feature.NAME, "test")
-#         self.assertEqual(feature.dtype(), float)
-#         self.assertEqual(feature.length(), 10)
 
 
 class TestFeatures(AsyncTestCase):

@@ -7,7 +7,7 @@ from typing import Type
 from dffml.record import Record, RecordData
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml.feature import Feature, Features, DefFeature
+from dffml.feature import Feature, Features
 from dffml.util.cli.arg import parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
 
@@ -17,22 +17,11 @@ from dffml_model_tensorflow.dnnc import (
 )
 
 
-class StartsWithA(Feature):
-
-    NAME: str = "starts_with_a"
-
-    def dtype(self) -> Type:
-        return int
-
-    def length(self) -> int:
-        return 1
-
-
 class TestDNN(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
         cls.model_dir = tempfile.TemporaryDirectory()
-        cls.feature = StartsWithA()
+        cls.feature = Feature("starts_with_a", int, 1)
         cls.features = Features(cls.feature)
         cls.records = [
             Record(
@@ -57,7 +46,7 @@ class TestDNN(AsyncTestCase):
                 steps=1000,
                 epochs=40,
                 hidden=[50, 20, 10],
-                predict=DefFeature("string", str, 1),
+                predict=Feature("string", str, 1),
                 classifications=["a", "not a"],
                 clstype=str,
                 features=cls.features,

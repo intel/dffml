@@ -5,7 +5,7 @@ import numpy as np
 from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml.feature import DefFeature, Features
+from dffml.feature import Feature, Features
 from dffml.util.asynctestcase import AsyncTestCase
 
 import dffml_model_scikit.scikit_models
@@ -18,15 +18,15 @@ class TestScikitModel:
         cls.model_dir = tempfile.TemporaryDirectory()
         cls.features = Features()
         if cls.MODEL_TYPE is "CLASSIFICATION":
-            cls.features.append(DefFeature("A", float, 1))
-            cls.features.append(DefFeature("B", float, 1))
-            cls.features.append(DefFeature("C", float, 1))
-            cls.features.append(DefFeature("D", float, 1))
-            cls.features.append(DefFeature("E", float, 1))
-            cls.features.append(DefFeature("F", float, 1))
-            cls.features.append(DefFeature("G", float, 1))
-            cls.features.append(DefFeature("H", float, 1))
-            cls.features.append(DefFeature("I", float, 1))
+            cls.features.append(Feature("A", float, 1))
+            cls.features.append(Feature("B", float, 1))
+            cls.features.append(Feature("C", float, 1))
+            cls.features.append(Feature("D", float, 1))
+            cls.features.append(Feature("E", float, 1))
+            cls.features.append(Feature("F", float, 1))
+            cls.features.append(Feature("G", float, 1))
+            cls.features.append(Feature("H", float, 1))
+            cls.features.append(Feature("I", float, 1))
             A, B, C, D, E, F, G, H, I, X = list(
                 zip(*FEATURE_DATA_CLASSIFICATION)
             )
@@ -51,9 +51,9 @@ class TestScikitModel:
                 for i in range(0, len(A))
             ]
         elif cls.MODEL_TYPE is "REGRESSION":
-            cls.features.append(DefFeature("A", float, 1))
-            cls.features.append(DefFeature("B", float, 1))
-            cls.features.append(DefFeature("C", float, 1))
+            cls.features.append(Feature("A", float, 1))
+            cls.features.append(Feature("B", float, 1))
+            cls.features.append(Feature("C", float, 1))
             A, B, C, X = list(zip(*FEATURE_DATA_REGRESSION))
             cls.records = [
                 Record(
@@ -70,10 +70,10 @@ class TestScikitModel:
                 for i in range(0, len(A))
             ]
         elif cls.MODEL_TYPE is "CLUSTERING":
-            cls.features.append(DefFeature("A", float, 1))
-            cls.features.append(DefFeature("B", float, 1))
-            cls.features.append(DefFeature("C", float, 1))
-            cls.features.append(DefFeature("D", float, 1))
+            cls.features.append(Feature("A", float, 1))
+            cls.features.append(Feature("B", float, 1))
+            cls.features.append(Feature("C", float, 1))
+            cls.features.append(Feature("D", float, 1))
             A, B, C, D, X = list(zip(*FEATURE_DATA_CLUSTERING))
             cls.records = [
                 Record(
@@ -101,10 +101,10 @@ class TestScikitModel:
         config_fields = dict()
         estimator_type = cls.MODEL.SCIKIT_MODEL._estimator_type
         if estimator_type in supervised_estimators:
-            config_fields["predict"] = DefFeature("X", float, 1)
+            config_fields["predict"] = Feature("X", float, 1)
         elif estimator_type in unsupervised_estimators:
             if cls.TRUE_CLSTR_PRESENT:
-                config_fields["tcluster"] = DefFeature("X", float, 1)
+                config_fields["tcluster"] = Feature("X", float, 1)
         cls.model = cls.MODEL(
             cls.MODEL_CONFIG(**{**properties, **config_fields})
         )

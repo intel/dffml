@@ -11,42 +11,20 @@ from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.util.cli.arg import parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.feature import Feature, Features, DefFeature
+from dffml.feature import Feature, Features
 
 from dffml_model_tensorflow.dnnr import (
     DNNRegressionModel,
     DNNRegressionModelConfig,
 )
 
-# Creating feature classes
-class Feature_1(Feature):
-
-    NAME: str = "feature_1"
-
-    def dtype(self) -> Type:
-        return float
-
-    def length(self) -> int:
-        return 1
-
-
-class Feature_2(Feature):
-
-    NAME: str = "feature_2"
-
-    def dtype(self) -> Type:
-        return float
-
-    def length(self) -> int:
-        return 1
-
 
 class TestDNN(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
         cls.model_dir = tempfile.TemporaryDirectory()
-        cls.feature1 = Feature_1()
-        cls.feature2 = Feature_2()
+        cls.feature1 = Feature("feature_1", float, 1)
+        cls.feature2 = Feature("feature_2", float, 2)
         cls.features = Features(cls.feature1, cls.feature2)
         cls.model = DNNRegressionModel(
             DNNRegressionModelConfig(
@@ -54,7 +32,7 @@ class TestDNN(AsyncTestCase):
                 steps=1000,
                 epochs=40,
                 hidden=[50, 20, 10],
-                predict=DefFeature("TARGET", float, 1),
+                predict=Feature("TARGET", float, 1),
                 features=cls.features,
             )
         )

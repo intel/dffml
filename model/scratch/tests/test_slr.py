@@ -1,7 +1,7 @@
 import tempfile
 import unittest
 
-from dffml import train, accuracy, predict, DefFeature, Features, AsyncTestCase
+from dffml import train, accuracy, predict, Feature, Features, AsyncTestCase
 
 from dffml.model.slr import SLRModel, SLRModelConfig
 
@@ -51,8 +51,8 @@ class TestSLR(AsyncTestCase):
         # Create an instance of the model
         cls.model = SLRModel(
             directory=cls.model_dir.name,
-            predict=DefFeature("Y", float, 1),
-            features=Features(DefFeature("X", float, 1)),
+            predict=Feature("Y", float, 1),
+            features=Features(Feature("X", float, 1)),
         )
 
     @classmethod
