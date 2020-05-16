@@ -106,38 +106,38 @@ class Feature(abc.ABC):
     def _fromdict(cls, **kwargs):
         return Feature(**kwargs)
 
-    def dtype(self) -> Type:
-        """
-        Models need to know a Feature's datatype.
+    # def dtype(self) -> Type:
+    #     """
+    #     Models need to know a Feature's datatype.
 
-        Examples
-        --------
+    #     Examples
+    #     --------
 
-        >>> from dffml import *
-        >>>
-        >>> feature = Feature("name",int,1)
-        >>> feature.dtype()
-        <class 'int'>
-        """
-        self.LOGGER.warning("%s dtype unimplemented", self)
-        return self._dtype
+    #     >>> from dffml import *
+    #     >>>
+    #     >>> feature = Feature("name",int,1)
+    #     >>> feature.dtype()
+    #     <class 'int'>
+    #     """
+    #     # self.LOGGER.warning("%s dtype unimplemented", self)
+    #     return self._dtype
 
-    def length(self) -> int:
-        """
-        Models need to know a Feature's length, 1 means single value, more than
-        that is the length of the array calc returns.
+    # def length(self) -> int:
+    #     """
+    #     Models need to know a Feature's length, 1 means single value, more than
+    #     that is the length of the array calc returns.
 
-        Examples
-        --------
+    #     Examples
+    #     --------
 
-        >>> from dffml import *
-        >>>
-        >>> feature = Feature("name",int,1)
-        >>> feature.length()
-        1
-        """
-        self.LOGGER.warning("%s length unimplemented", self)
-        return self._length
+    #     >>> from dffml import *
+    #     >>>
+    #     >>> feature = Feature("name",int,1)
+    #     >>> feature.length()
+    #     1
+    #     """
+    #     # self.LOGGER.warning("%s length unimplemented", self)
+    #     return self._length
 
     # @classmethod
     # def load(cls, loading=None):
