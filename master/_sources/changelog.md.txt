@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Source which modifies record features as they are read from another source.
   Useful for modifying datasets as they are used with ML commands or editing
   in bulk.
+- Auto create Definition for the `op` when they might have a spec, subspec.
 ### Changed
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
