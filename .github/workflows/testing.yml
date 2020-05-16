@@ -97,11 +97,8 @@ jobs:
           sudo apt-get update && sudo apt-get install -y docker-ce docker-ce-cli containerd.io
           docker pull mariadb:10
         fi
-        if [ "${{ matrix.plugin }}" == "model/vowpalWabbit" ]; then
-          conda install -y -c conda-forge vowpalwabbit
-        fi
         if [[ "x${PLUGIN}" = "xmodel/vowpalWabbit" ]] || [[ "x${PLUGIN}" = "x." ]]; then
-          sudo apt-get update && sudo apt-get install -y libboost-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev libboost-math-dev libboost-test-dev libboost-python-dev zlib1g-dev cmake
+          conda install -y -c conda-forge vowpalwabbit
         fi
     - name: Test
       run: |
