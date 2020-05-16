@@ -27,6 +27,12 @@ class DefinitionMissing(Exception):
     """
 
 
+class PrimitiveDoesNotMatchValue(Exception):
+    """
+    Primitive does not match the value type
+    """
+
+
 class Definition(NamedTuple):
     """
     Examples
