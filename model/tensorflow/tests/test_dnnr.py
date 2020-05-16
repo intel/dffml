@@ -24,7 +24,7 @@ class TestDNN(AsyncTestCase):
     def setUpClass(cls):
         cls.model_dir = tempfile.TemporaryDirectory()
         cls.feature1 = Feature("feature_1", float, 1)
-        cls.feature2 = Feature("feature_2", float, 2)
+        cls.feature2 = Feature("feature_2", float, 1)
         cls.features = Features(cls.feature1, cls.feature2)
         cls.model = DNNRegressionModel(
             DNNRegressionModelConfig(
