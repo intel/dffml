@@ -13,6 +13,7 @@ from contextlib import AsyncExitStack
 from typing import List, Dict, Type, Any
 
 from .log import LOGGER
+from ..util.data import parser_helper
 from ..util.entrypoint import Entrypoint
 
 
@@ -66,8 +67,15 @@ class Feature(abc.ABC):
     # FREQUENCY: Type[Frequency] = Quarterly
     ENTRYPOINT = "dffml.feature"
 
-    def __init__(self, name: str, dtype: Type = int, length: int = 1)-> Any:
+    def __init__(self, name: str, dtype: Type = int, length: int = 1) -> Any:
         super().__init__()
+        if name.count(":") == 2:
+            tempvar = name.split(":")
+            name = tempvar[0]
+            dtype = tempvar[1]
+            length = parser_helper(tempvar[2])
+        if isinstance(dtype, str):
+            dtype = self.convert_dtype(tempvar[1])
         self._dtype = dtype
         self._length = length
         self.name = name
@@ -85,7 +93,7 @@ class Feature(abc.ABC):
         return "%s(%s)" % (self.name, self.__class__.__qualname__)
 
     def __repr__(self):
-        return "%s[%r, %d]" % (self.__str__(), self.dtype(), self.length())
+        return "%s[%r, %r]" % (self.__str__(), self.dtype(), self.length())
 
     def export(self):
         return {
@@ -95,7 +103,7 @@ class Feature(abc.ABC):
         }
 
     @classmethod
-    def _fromdict(cls,**kwargs):
+    def _fromdict(cls, **kwargs):
         return Feature(**kwargs)
 
     def dtype(self) -> Type:
@@ -131,17 +139,21 @@ class Feature(abc.ABC):
         self.LOGGER.warning("%s length unimplemented", self)
         return self._length
 
-    @classmethod
-    def load(cls, loading=None):
-        # CLI or dict compatibility
-        # TODO Consolidate this
-        if loading is not None:
-            if isinstance(loading, dict):
-                return Feature(loading["name"], loading["dtype"], loading["length"])
-            elif loading.count(":") == 2:
-                tempvar = loading.split(":")
-                return Feature(tempvar[0], cls.convert_dtype(tempvar[1]), int(tempvar[2]))
-        return super().load(loading)
+    # @classmethod
+    # def load(cls, loading=None):
+    #     # CLI or dict compatibility
+    #     # TODO Consolidate this
+    #     if loading is not None:
+    #         if isinstance(loading, dict):
+    #             return Feature(
+    #                 loading["name"], loading["dtype"], loading["length"]
+    #             )
+    #         elif loading.count(":") == 2:
+    #             tempvar = loading.split(":")
+    #             return Feature(
+    #                 tempvar[0], cls.convert_dtype(tempvar[1]), int(tempvar[2])
+    #             )
+    #     return super().load(loading)
 
     # @classmethod
     # def load_def(cls, name: str, dtype: str, length: str):
@@ -183,7 +195,6 @@ class Feature(abc.ABC):
 #         that is the length of the array calc returns.
 #         """
 #         return self._length
-
 
 
 # def DefFeature(name, dtype, length):

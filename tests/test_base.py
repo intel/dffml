@@ -61,7 +61,7 @@ class TestAutoArgsConfig(unittest.TestCase):
                                 },
                                 "features": {
                                     "plugin": Arg(
-                                        type=Feature.load,
+                                        type=Feature,
                                         nargs="+",
                                         action=list_action(Features),
                                     ),
@@ -128,9 +128,7 @@ class TestAutoArgsConfig(unittest.TestCase):
         self.assertEqual(config.source.config.filename, "file.json")
         self.assertEqual(
             config.features,
-            Features(
-                Feature("Year", int, 1), Feature("Commits", int, 10)
-            ),
+            Features(Feature("Year", int, 1), Feature("Commits", int, 10)),
         )
 
     def test_config_set(self):
@@ -165,9 +163,7 @@ class TestAutoArgsConfig(unittest.TestCase):
         self.assertEqual(config.source.config.filename, "file.csv")
         self.assertEqual(
             config.features,
-            Features(
-                Feature("Year", int, 1), Feature("Commits", int, 10)
-            ),
+            Features(Feature("Year", int, 1), Feature("Commits", int, 10)),
         )
 
 

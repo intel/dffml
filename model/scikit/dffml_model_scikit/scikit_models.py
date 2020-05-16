@@ -60,7 +60,7 @@ from dffml_model_scikit.scikit_base import (
     ScikitUnsprvised,
     ScikitContextUnsprvised,
 )
-from dffml.feature.feature import Feature, Features #, DefFeature
+from dffml.feature.feature import Feature, Features  # , DefFeature
 
 
 def applicable_features(self, features):
