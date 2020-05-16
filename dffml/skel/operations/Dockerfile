@@ -1,6 +1,7 @@
 # Usage
 # docker build -t REPLACE_ORG_NAME/REPLACE_IMPORT_PACKAGE_NAME .
-# docker run --rm -ti -p 80:8080 intelotc/operations -insecure -log debug
+# docker run --rm -ti -p 80:8080 REPLACE_ORG_NAME/REPLACE_IMPORT_PACKAGE_NAME  -insecure -log debug
+#
 # curl -v http://127.0.0.1:80/list/sources
 FROM ubuntu:20.04
 

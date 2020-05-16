@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Support for Tensorflow 2.2
 - Vowpal Wabbit Models
 - Python 3.8 support
 - binsec branch to `operations/binsec`
@@ -21,7 +22,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ability to export any object with `dffml service dev export`
 - Complete example for dataflow run cli command
 - Tests for default configs instantiation.
+- Example ffmpeg operation.
+- Operations to deploy docker container on receving github webhook.
+- New use case `Redeploying dataflow on webhook` in docs.
 - Documentation for creating Source for new File types taking `.ini` as an example.
+- New input modes, output modes for HTTP API dataflow registration.
+- Usage example for tfhub text classifier.
+- `AssociateDefinition` output operation to map definition names to values
+  produced as a result of passing Inputs with those definitions to operations.
+- DataFlows now have a syntax for providing a set of definitions that will
+  override the operations default definition for a given input.
+- Source which modifies record features as they are read from another source.
+  Useful for modifying datasets as they are used with ML commands or editing
+  in bulk.
 ### Changed
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
@@ -31,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Classes now use `CONFIG` if it has a default for every field and `config` is `None`
 - Models now dynamically import third party modules.
 - `dffml list records` command prints Records as JSON using `.export()`
+- FileSource takes pathlib.Path as filename
 ### Fixed
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
   parameter sets for an operation.

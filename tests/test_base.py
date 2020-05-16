@@ -1,5 +1,6 @@
 import unittest
 from typing import List
+import pathlib
 
 from dffml.base import (
     BaseDataFlowFacilitatorObject,
@@ -125,7 +126,9 @@ class TestAutoArgsConfig(unittest.TestCase):
         self.assertEqual(config.label, "unlabeled")
         self.assertFalse(config.readonly)
         self.assertTrue(isinstance(config.source, JSONSource))
-        self.assertEqual(config.source.config.filename, "file.json")
+        self.assertEqual(
+            config.source.config.filename, pathlib.Path("file.json")
+        )
         self.assertEqual(
             config.features,
             Features(
@@ -162,7 +165,9 @@ class TestAutoArgsConfig(unittest.TestCase):
         self.assertEqual(config.label, "default-label")
         self.assertTrue(config.readonly)
         self.assertTrue(isinstance(config.source, CSVSource))
-        self.assertEqual(config.source.config.filename, "file.csv")
+        self.assertEqual(
+            config.source.config.filename, pathlib.Path("file.csv")
+        )
         self.assertEqual(
             config.features,
             Features(

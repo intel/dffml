@@ -561,6 +561,8 @@ class DataFlow:
                     )
                 else:
                     for origin in output_source.items():
+                        if isinstance(origin[1], (list, tuple,)):
+                            origin = origin[0]
                         self.by_origin[operation.stage].setdefault(origin, [])
                         self.by_origin[operation.stage][origin].append(
                             operation
@@ -576,6 +578,14 @@ class DataFlow:
                         )
                     else:
                         for origin in output_source.items():
+                            # If we have an output_source item with an origin
+                            # that has a list as it's value we know that the key
+                            # (aka origin[0] since output_source is a dict) is
+                            # the Input.origin (like "seed"). And the value
+                            # (origin[1]) is the list of definitions which are
+                            # acceptable from that origin for this input.
+                            if isinstance(origin[1], (list, tuple,)):
+                                origin = origin[0]
                             self.by_origin[operation.stage].setdefault(
                                 origin, []
                             )

@@ -162,7 +162,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
             self.assertEqual(
                 self.cli.app["sources"]["salary"].config,
                 CSVSourceConfig(
-                    filename="dataset.csv",
+                    filename=pathlib.Path("dataset.csv"),
                     tag="untagged",
                     key="key",
                     tagcol="tag",
@@ -296,7 +296,7 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
             f"/multicomm/self/register",
             json={
                 "path": url,
-                "presentation": "json",
+                "output_mode": "json",
                 "asynchronous": False,
                 "dataflow": HELLO_WORLD_DATAFLOW.export(),
             },
@@ -321,7 +321,7 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
             f"/multicomm/self/register",
             json={
                 "path": url,
-                "presentation": "json",
+                "output_mode": "json",
                 "asynchronous": False,
                 "dataflow": HELLO_BLANK_DATAFLOW.export(),
             },

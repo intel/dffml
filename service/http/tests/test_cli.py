@@ -152,7 +152,7 @@ class TestServer(AsyncTestCase):
                 json.dumps(
                     {
                         "path": hello_world_url,
-                        "presentation": "json",
+                        "output_mode": "json",
                         "asynchronous": False,
                     },
                     sort_keys=True,
@@ -163,7 +163,7 @@ class TestServer(AsyncTestCase):
                 json.dumps(
                     {
                         "path": hello_blank_url,
-                        "presentation": "json",
+                        "output_mode": "json",
                         "asynchronous": False,
                     },
                     sort_keys=True,
@@ -284,7 +284,7 @@ class TestServer(AsyncTestCase):
         with tempfile.TemporaryDirectory() as tempdir:
             # Source the HTTP API will pre-load
             source = JSONSource(
-                filename=str(pathlib.Path(tempdir, "source.json")),
+                filename=pathlib.Path(tempdir, "source.json"),
                 allowempty=True,
                 readwrite=True,
             )
@@ -302,7 +302,7 @@ class TestServer(AsyncTestCase):
                         "-sources",
                         "mysource=json",
                         "-source-mysource-filename",
-                        source.config.filename,
+                        str(source.config.filename),
                     )
                 )
                 async with self.get(
