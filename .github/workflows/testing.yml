@@ -84,6 +84,7 @@ jobs:
         conda-channels: anaconda, conda-forge
     - name: Install dependencies
       run: |
+        set -x
         mkdir -p ~/.local/bin
         python -m pip install --upgrade pip twine
         pip install -U -e .[dev]
@@ -97,15 +98,16 @@ jobs:
           sudo apt-get update && sudo apt-get install -y docker-ce docker-ce-cli containerd.io
           docker pull mariadb:10
         fi
-        if [[ "x${PLUGIN}" = "xmodel/vowpalWabbit" ]] || [[ "x${PLUGIN}" = "x." ]]; then
+        if [[ "x${PLUGIN}" == "xmodel/vowpalWabbit" ]] || [[ "x${PLUGIN}" == "x." ]]; then
           conda install -y -c conda-forge vowpalwabbit
         fi
     - name: Test
       run: |
+        set -x
         export PYTHON=python${{ matrix.python-version }}
         export PLUGIN=${{ matrix.plugin }}
-        if [[ "x${PYTHON}" = "xpython3.8" ]]; then
-          if [[ "x${PLUGIN}" = "xmodel/vowpalWabbit" ]]; then
+        if [[ "x${PYTHON}" == "xpython3.8" ]]; then
+          if [[ "x${PLUGIN}" == "xmodel/vowpalWabbit" ]]; then
             exit 0
           fi
         fi
