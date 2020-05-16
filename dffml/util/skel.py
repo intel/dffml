@@ -54,6 +54,12 @@ class Skel:
                 # Don't symlink if we already have
                 if linkpath.is_symlink():
                     continue
+                # Make links relative
+                filepath = filepath.relative_to(self.common.parent)
+                for path in linkpath.parents:
+                    filepath = Path("..") / filepath
+                    if self.common == path:
+                        break
                 # Resolving first gives more helpful error message if it fails
                 linkpath.resolve().symlink_to(filepath)
 
