@@ -226,30 +226,30 @@ class NERModelContext(ModelContext):
         x_cols: Dict[str, Any] = {
             feature: []
             for feature in (
-                [self.parent.config.sid.NAME, self.parent.config.words.NAME]
+                [self.parent.config.sid.name, self.parent.config.words.name]
             )
         }
         y_cols = []
         all_records = []
         all_sources = sources.with_features(
             [
-                self.parent.config.sid.NAME,
-                self.parent.config.words.NAME,
-                self.parent.config.predict.NAME,
+                self.parent.config.sid.name,
+                self.parent.config.words.name,
+                self.parent.config.predict.name,
             ]
         )
         async for record in all_sources:
             if (
-                record.feature(self.parent.config.predict.NAME)
+                record.feature(self.parent.config.predict.name)
                 in self.parent.config.ner_tags
             ):
                 all_records.append(record)
         for record in all_records:
             for feature, results in record.features(
-                [self.parent.config.sid.NAME, self.parent.config.words.NAME]
+                [self.parent.config.sid.name, self.parent.config.words.name]
             ).items():
                 x_cols[feature].append(self.np.array(results))
-            y_cols.append(record.feature(self.parent.config.predict.NAME))
+            y_cols.append(record.feature(self.parent.config.predict.name))
         if not y_cols:
             raise ValueError("No records to train on")
         y_cols = self.np.array(y_cols)
@@ -261,7 +261,7 @@ class NERModelContext(ModelContext):
         self.logger.info("y_cols:    %d", len(y_cols))
         self.logger.info("-----------------------")
         df = self.pd.DataFrame.from_dict(x_cols)
-        df[self.parent.config.predict.NAME] = y_cols
+        df[self.parent.config.predict.name] = y_cols
         return df
 
     def serialized_features_to_dataset(
@@ -335,9 +335,9 @@ class NERModelContext(ModelContext):
         config = self.parent.config._asdict()
         drop_remainder = True if config["tpu"] or mode == "train" else False
         labels = config["ner_tags"]
-        sid_col = self.parent.config.sid.NAME
-        words_col = self.parent.config.words.NAME
-        labels_col = self.parent.config.predict.NAME
+        sid_col = self.parent.config.sid.name
+        words_col = self.parent.config.words.name
+        labels_col = self.parent.config.predict.name
         examples = read_examples_from_df(
             data, mode, sid_col, words_col, labels_col
         )
@@ -871,7 +871,7 @@ class NERModelContext(ModelContext):
             config["per_device_eval_batch_size"] * config["n_device"]
         )
         async for record in records:
-            sentence = record.features([self.parent.config.words.NAME])
+            sentence = record.features([self.parent.config.words.name])
             df = self.pd.DataFrame(sentence, index=[0])
             test_dataset, num_test_examples = self.get_dataset(
                 df,
@@ -896,10 +896,10 @@ class NERModelContext(ModelContext):
                     for j, word in enumerate(s.split()[: len(y_pred[i])])
                 ]
                 for i, s in enumerate(
-                    df[self.parent.config.words.NAME].to_list()
+                    df[self.parent.config.words.name].to_list()
                 )
             ]
-            record.predicted(self.parent.config.predict.NAME, preds, "Nan")
+            record.predicted(self.parent.config.predict.name, preds, "Nan")
             yield record
 
 

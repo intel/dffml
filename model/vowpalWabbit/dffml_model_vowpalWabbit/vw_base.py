@@ -118,10 +118,10 @@ class VWConfig:
         self.namespace = namespace
 
         if self.class_cost:
-            self.extra_cols += [feature.NAME for feature in self.class_cost]
+            self.extra_cols += [feature.name for feature in self.class_cost]
         for col in [self.importance, self.base, self.tag]:
             if col is not None:
-                self.extra_cols.append(col.NAME)
+                self.extra_cols.append(col.name)
 
 
 class VWContext(ModelContext):
@@ -388,7 +388,7 @@ class VWModel(Model):
     def _filename(self):
         return os.path.join(
             self.config.directory,
-            hashlib.sha384(self.config.predict.NAME.encode()).hexdigest()
+            hashlib.sha384(self.config.predict.name.encode()).hexdigest()
             + ".json",
         )
 

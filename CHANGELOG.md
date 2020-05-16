@@ -33,14 +33,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `dffml list records` command prints Records as JSON using `.export()`
 - Feature class in `dffml/feature/feature.py` initialize a feature object
 - All DefFeatures() functions are substituted with Features()
-- All feature.type() and feature.lenght() are substituted with feature.type and feature.length 
+- All feature.type() and feature.lenght() are substituted with feature.type and feature.length
 
 ### Fixed
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
   parameter sets for an operation.
 ### Removed
 - Monitor class and associated tests (unused)
-- DefinedFeature class in `dffml/feature/feature.py` 
+- DefinedFeature class in `dffml/feature/feature.py`
 - DefFeature function in `dffml/feature/feature.py`
 - load_def function in Feature class in `dffml/feature/feature.py`
 

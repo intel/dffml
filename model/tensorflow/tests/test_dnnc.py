@@ -26,14 +26,14 @@ class TestDNN(AsyncTestCase):
         cls.records = [
             Record(
                 "a" + str(random.random()),
-                data={"features": {cls.feature.NAME: 1, "string": "a"}},
+                data={"features": {cls.feature.name: 1, "string": "a"}},
             )
             for _ in range(0, 1000)
         ]
         cls.records += [
             Record(
                 "b" + str(random.random()),
-                data={"features": {cls.feature.NAME: 0, "string": "not a"}},
+                data={"features": {cls.feature.name: 0, "string": "not a"}},
             )
             for _ in range(0, 1000)
         ]
@@ -79,7 +79,7 @@ class TestDNN(AsyncTestCase):
         self.assertEqual(config.steps, 3000)
         self.assertEqual(config.epochs, 30)
         self.assertEqual(config.hidden, [12, 40, 15])
-        self.assertEqual(config.predict.NAME, "feature_name")
+        self.assertEqual(config.predict.name, "feature_name")
         self.assertEqual(config.classifications, [0, 1, 2])
         self.assertEqual(config.clstype, int)
 
@@ -95,11 +95,11 @@ class TestDNN(AsyncTestCase):
                 self.assertGreater(res, 0.9)
 
     async def test_02_predict(self):
-        a = Record("a", data={"features": {self.feature.NAME: 1}})
+        a = Record("a", data={"features": {self.feature.name: 1}})
         async with Sources(
             MemorySource(MemorySourceConfig(records=[a]))
         ) as sources, self.model as model:
-            target_name = model.config.predict.NAME
+            target_name = model.config.predict.name
             async with sources() as sctx, model() as mctx:
                 res = [record async for record in mctx.predict(sctx.records())]
                 self.assertEqual(len(res), 1)

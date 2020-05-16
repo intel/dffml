@@ -118,7 +118,7 @@ class LogisticRegression(SimpleModel):
             prediction = 0
         self.logger.debug(
             "Predicted Value of {} {}:".format(
-                self.config.predict.NAME, prediction
+                self.config.predict.name, prediction
             )
         )
         return prediction
@@ -160,16 +160,16 @@ class LogisticRegression(SimpleModel):
 
     async def train(self, sources: Sources):
         async for record in sources.with_features(
-            self.features + [self.config.predict.NAME]
+            self.features + [self.config.predict.name]
         ):
             feature_data = record.features(
-                self.features + [self.config.predict.NAME]
+                self.features + [self.config.predict.name]
             )
             self.xData = self.np.append(
                 self.xData, feature_data[self.features[0]]
             )
             self.yData = self.np.append(
-                self.yData, feature_data[self.config.predict.NAME]
+                self.yData, feature_data[self.config.predict.name]
             )
         self.separating_line = self.best_separating_line()
 
@@ -186,7 +186,7 @@ class LogisticRegression(SimpleModel):
         # Ensure the model has been trained before we try to make a prediction
         if self.separating_line is None:
             raise ModelNotTrained("Train model before prediction.")
-        target = self.config.predict.NAME
+        target = self.config.predict.name
         async for record in records:
             feature_data = record.features(self.features)
             record.predicted(

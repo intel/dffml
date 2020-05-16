@@ -44,8 +44,8 @@ class TestDNN(AsyncTestCase):
                 "x" + str(random.random()),
                 data={
                     "features": {
-                        cls.feature1.NAME: float(_temp_data[0][i]),
-                        cls.feature2.NAME: float(_temp_data[1][i]),
+                        cls.feature1.name: float(_temp_data[0][i]),
+                        cls.feature2.name: float(_temp_data[1][i]),
                         "TARGET": 2 * _temp_data[0][i] + 3 * _temp_data[1][i],
                     }
                 },

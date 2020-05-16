@@ -77,7 +77,6 @@ class FakeConfig:
 
 
 class FakeFeature(Feature):
-
     def __init__(self, name="fake", dt=float, length=1):
         super().__init__(name, dt, length)
 

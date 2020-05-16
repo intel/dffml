@@ -80,7 +80,7 @@ class TestNERModel(AsyncTestCase):
 
     async def test_02_predict(self):
         async with self.predict_sources as sources, self.model as model:
-            target_name = model.config.predict.NAME
+            target_name = model.config.predict.name
             async with sources() as sctx, model() as mctx:
                 async for record in mctx.predict(sctx.records()):
                     prediction = record.prediction(target_name).value

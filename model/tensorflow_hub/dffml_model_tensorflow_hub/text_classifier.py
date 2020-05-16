@@ -108,7 +108,7 @@ class TextClassifierContext(ModelContext):
 
     @property
     def classification(self):
-        return self.parent.config.predict.NAME
+        return self.parent.config.predict.name
 
     def _applicable_features(self):
         return [name for name in self.parent.config.features.names()]
@@ -304,10 +304,10 @@ class TextClassifierContext(ModelContext):
             )
             all_prob = self._model.predict(predict)
             max_prob_idx = all_prob.argmax(axis=-1)
-            target = self.parent.config.predict.NAME
+            target = self.parent.config.predict.name
             self.logger.debug(
                 "Predicted probability of {} for {}: {}".format(
-                    self.parent.config.predict.NAME,
+                    self.parent.config.predict.name,
                     self.np.array(df)[0],
                     all_prob[0],
                 )
