@@ -10,7 +10,7 @@ DESCRIPTION = "DFFML model vowpalWabbit"
 AUTHOR_NAME = "Himanshu Tripathi"
 AUTHOR_EMAIL = "himanshutripathi366@gmail.com"
 INSTALL_REQUIRES = [
-    "vowpalwabbit>=8.8.0",
+    "vowpalwabbit>=8.8.1",
     "scikit-learn>=0.21.2",
     "pandas>=0.25.0",
 ] + (
