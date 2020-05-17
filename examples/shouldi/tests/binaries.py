@@ -57,3 +57,23 @@ cached_target_cri_resource_manager = cached_download_unpack_archive(
     downloads / "cri-resource-manager-download",
     "bdcbc8dadf9c6ee2f7571d10cb54459fe54773036982ad7485f007606efae96d7aaec7da18e2fea806fb6f68eb1722a8",
 )
+
+# Rust
+cached_rust = cached_download_unpack_archive(
+    "https://static.rust-lang.org/dist/rust-1.42.0-x86_64-unknown-linux-gnu.tar.gz",
+    downloads / "rust.tar.gz",
+    downloads / "rust-download",
+    "ad2ab72dc407b0f5d34621640555e2da751da8803cbad734396faa54111e03093093f6fa66f14a1948bece8f9e33730d",
+)
+cached_cargo_audit = cached_download_unpack_archive(
+    "https://github.com/RustSec/cargo-audit/archive/v0.11.2.tar.gz",
+    downloads / "cargo_audit.tar.gz",
+    downloads / "cargo-audit-download",
+    "dea36731efaac4d0fd37a295c65520a7e9b23b5faa0a92dce7ab20764f8323fc34856079524c676e4cad1cb065ee6472",
+)
+cached_target_crates = cached_download_unpack_archive(
+    "https://github.com/rust-lang/crates.io/archive/8c1a7e29073e175f0e69e0e537374269da244cee.tar.gz",
+    downloads / "crates.tar.gz",
+    downloads / "crates-download",
+    "1bf0c3459373882f51132942872d0dbf8da01eee8d42c3c2090d234e4db99b39d4858c1fd2492c85917d670cae2519ca",
+)
