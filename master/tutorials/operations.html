@@ -388,7 +388,7 @@ the latest version and use that version.</p>
 </pre></div>
 </div>
 <p>Let’s now write the operation to call <code class="docutils literal notranslate"><span class="pre">safety</span></code> via a subprocess.</p>
-<p><strong>shouldi/safety.py</strong></p>
+<p><strong>shouldi/python/safety.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
@@ -436,7 +436,7 @@ the latest version and use that version.</p>
 <p><strong>tests/test_safety.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">AsyncTestCase</span>
 
-<span class="kn">from</span> <span class="nn">shouldi.safety</span> <span class="kn">import</span> <span class="n">safety_check</span>
+<span class="kn">from</span> <span class="nn">shouldi.python.safety</span> <span class="kn">import</span> <span class="n">safety_check</span>
 
 
 <span class="k">class</span> <span class="nc">TestSafetyCheck</span><span class="p">(</span><span class="n">AsyncTestCase</span><span class="p">):</span>
@@ -506,8 +506,8 @@ the latest version and use that version.</p>
 <span class="go">}</span>
 </pre></div>
 </div>
-<p>Let’s now write the operation to call <code class="docutils literal notranslate"><span class="pre">safety</span></code> via a subprocess.</p>
-<p><strong>shouldi/bandit.py</strong></p>
+<p>Let’s now write the operation to call <code class="docutils literal notranslate"><span class="pre">bandit</span></code> via a subprocess.</p>
+<p><strong>shouldi/python/bandit.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
@@ -543,15 +543,17 @@ the latest version and use that version.</p>
     <span class="n">bandit_op</span> <span class="o">=</span> <span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
     <span class="n">bandit_op</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">bandit_op</span><span class="p">)</span>
     <span class="n">t_results</span> <span class="o">=</span> <span class="n">bandit_op</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">]</span>
-    <span class="n">high_sev_high_conf</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">t_results</span><span class="p">:</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="n">item</span><span class="p">[</span><span class="s2">&quot;issue_confidence&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;HIGH&quot;</span>
-            <span class="ow">and</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;issue_severity&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;HIGH&quot;</span>
-        <span class="p">):</span>
-            <span class="n">high_sev_high_conf</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="n">final_result</span> <span class="o">=</span> <span class="n">bandit_op</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;_totals&quot;</span><span class="p">]</span>
-    <span class="n">final_result</span><span class="p">[</span><span class="s2">&quot;CONFIDENCE.HIGH_AND_SEVERITY.HIGH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">high_sev_high_conf</span>
+    <span class="c1"># Count put number of issues that are high confidence</span>
+    <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;LOW&quot;</span><span class="p">,</span> <span class="s2">&quot;MEDIUM&quot;</span><span class="p">,</span> <span class="s2">&quot;HIGH&quot;</span><span class="p">]:</span>
+        <span class="n">high_conf</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">t_results</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">item</span><span class="p">[</span><span class="s2">&quot;issue_confidence&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;HIGH&quot;</span>
+                <span class="ow">and</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;issue_severity&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">level</span>
+            <span class="p">):</span>
+                <span class="n">high_conf</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">final_result</span><span class="p">[</span><span class="s2">&quot;CONFIDENCE.HIGH_AND_SEVERITY.&quot;</span> <span class="o">+</span> <span class="n">level</span><span class="p">]</span> <span class="o">=</span> <span class="n">high_conf</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;report&quot;</span><span class="p">:</span> <span class="n">final_result</span><span class="p">}</span>
 </pre></div>
 </div>
@@ -561,7 +563,7 @@ the latest version and use that version.</p>
 
 <span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">AsyncTestCase</span>
 
-<span class="kn">from</span> <span class="nn">shouldi.bandit</span> <span class="kn">import</span> <span class="n">run_bandit</span>
+<span class="kn">from</span> <span class="nn">shouldi.python.bandit</span> <span class="kn">import</span> <span class="n">run_bandit</span>
 
 
 <span class="k">class</span> <span class="nc">TestRunBanditOp</span><span class="p">(</span><span class="n">AsyncTestCase</span><span class="p">):</span>
@@ -647,7 +649,7 @@ we care about.</p></li>
 <div class="section" id="pypi-operations">
 <h2>PyPi Operations<a class="headerlink" href="#pypi-operations" title="Permalink to this headline">¶</a></h2>
 <p>Let’s write an operation to grab the JSON information about a package.</p>
-<p><strong>shouldi/pypi.py</strong></p>
+<p><strong>shouldi/python/pypi.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
@@ -686,7 +688,7 @@ we care about.</p></li>
 </div>
 <p>After we have the package information, we extract the version and URL where we
 can get the source code.</p>
-<p><strong>shouldi/pypi.py</strong></p>
+<p><strong>shouldi/python/pypi.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span>
     <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;response_json&quot;</span><span class="p">:</span> <span class="n">package_json</span><span class="p">},</span>
     <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">package_version</span><span class="p">},</span>
@@ -714,7 +716,7 @@ can get the source code.</p>
 </div>
 <p>Once we have the URL, we download the package source and extract it to a
 temporary directory.</p>
-<p><strong>shouldi/pypi.py</strong></p>
+<p><strong>shouldi/python/pypi.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span>
     <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">package_url</span><span class="p">},</span>
     <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;directory&quot;</span><span class="p">:</span> <span class="n">package_src_dir</span><span class="p">},</span>
@@ -739,7 +741,7 @@ temporary directory.</p>
 </div>
 <p>Finally, we make a <code class="docutils literal notranslate"><span class="pre">cleanup</span></code> operation to remove the directory once we’re done
 with it.</p>
-<p><strong>shouldi/pypi.py</strong></p>
+<p><strong>shouldi/python/pypi.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;directory&quot;</span><span class="p">:</span> <span class="n">package_src_dir</span><span class="p">},</span> <span class="n">outputs</span><span class="o">=</span><span class="p">{},</span> <span class="n">stage</span><span class="o">=</span><span class="n">Stage</span><span class="o">.</span><span class="n">CLEANUP</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">cleanup_pypi_package</span><span class="p">(</span><span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -756,11 +758,13 @@ with it.</p>
 
 <span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">AsyncTestCase</span>
 
-<span class="kn">from</span> <span class="nn">shouldi.pypi</span> <span class="kn">import</span> <span class="n">pypi_package_json</span>
-<span class="kn">from</span> <span class="nn">shouldi.pypi</span> <span class="kn">import</span> <span class="n">pypi_latest_package_version</span>
-<span class="kn">from</span> <span class="nn">shouldi.pypi</span> <span class="kn">import</span> <span class="n">pypi_package_url</span>
-<span class="kn">from</span> <span class="nn">shouldi.pypi</span> <span class="kn">import</span> <span class="n">pypi_package_contents</span>
-<span class="kn">from</span> <span class="nn">shouldi.pypi</span> <span class="kn">import</span> <span class="n">cleanup_pypi_package</span>
+<span class="kn">from</span> <span class="nn">shouldi.python.pypi</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">pypi_package_json</span><span class="p">,</span>
+    <span class="n">pypi_latest_package_version</span><span class="p">,</span>
+    <span class="n">pypi_package_url</span><span class="p">,</span>
+    <span class="n">pypi_package_contents</span><span class="p">,</span>
+    <span class="n">cleanup_pypi_package</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">TestPyPiOperations</span><span class="p">(</span><span class="n">AsyncTestCase</span><span class="p">):</span>
@@ -812,13 +816,13 @@ based on <a class="reference external" href="https://docs.python.org/3/library/a
 <span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CMD</span><span class="p">,</span> <span class="n">Arg</span><span class="p">,</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">,</span> <span class="n">run</span>
 
 <span class="c1"># Import all the operations we wrote</span>
-<span class="kn">from</span> <span class="nn">shouldi.bandit</span> <span class="kn">import</span> <span class="n">run_bandit</span>
-<span class="kn">from</span> <span class="nn">shouldi.pypi</span> <span class="kn">import</span> <span class="n">pypi_latest_package_version</span>
-<span class="kn">from</span> <span class="nn">shouldi.pypi</span> <span class="kn">import</span> <span class="n">pypi_package_json</span>
-<span class="kn">from</span> <span class="nn">shouldi.pypi</span> <span class="kn">import</span> <span class="n">pypi_package_url</span>
-<span class="kn">from</span> <span class="nn">shouldi.pypi</span> <span class="kn">import</span> <span class="n">pypi_package_contents</span>
-<span class="kn">from</span> <span class="nn">shouldi.pypi</span> <span class="kn">import</span> <span class="n">cleanup_pypi_package</span>
-<span class="kn">from</span> <span class="nn">shouldi.safety</span> <span class="kn">import</span> <span class="n">safety_check</span>
+<span class="kn">from</span> <span class="nn">.python.bandit</span> <span class="kn">import</span> <span class="n">run_bandit</span>
+<span class="kn">from</span> <span class="nn">.python.pypi</span> <span class="kn">import</span> <span class="n">pypi_latest_package_version</span>
+<span class="kn">from</span> <span class="nn">.python.pypi</span> <span class="kn">import</span> <span class="n">pypi_package_json</span>
+<span class="kn">from</span> <span class="nn">.python.pypi</span> <span class="kn">import</span> <span class="n">pypi_package_url</span>
+<span class="kn">from</span> <span class="nn">.python.pypi</span> <span class="kn">import</span> <span class="n">pypi_package_contents</span>
+<span class="kn">from</span> <span class="nn">.python.pypi</span> <span class="kn">import</span> <span class="n">cleanup_pypi_package</span>
+<span class="kn">from</span> <span class="nn">.python.safety</span> <span class="kn">import</span> <span class="n">safety_check</span>
 
 <span class="c1"># Link inputs and outputs together according to their definitions</span>
 <span class="n">DATAFLOW</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span>
@@ -1014,13 +1018,13 @@ DFFML, we need to register them with Python’s <code class="docutils literal no
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">common</span><span class="o">.</span><span class="n">KWARGS</span><span class="p">[</span><span class="s2">&quot;entry_points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;console_scripts&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;shouldi = shouldi.cli:ShouldI.main&quot;</span><span class="p">],</span>
     <span class="s2">&quot;dffml.operation&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s2">&quot;run_bandit = shouldi.bandit:run_bandit&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;safety_check = shouldi.safety:safety_check&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;pypi_latest_package_version = shouldi.pypi:pypi_latest_package_version&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;pypi_package_json = shouldi.pypi:pypi_package_json&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;pypi_package_url = shouldi.pypi:pypi_package_url&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;pypi_package_contents = shouldi.pypi:pypi_package_contents&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;cleanup_pypi_package = shouldi.pypi:cleanup_pypi_package&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;run_bandit = shouldi.python.bandit:run_bandit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;safety_check = shouldi.python.safety:safety_check&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pypi_latest_package_version = shouldi.python.pypi:pypi_latest_package_version&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pypi_package_json = shouldi.python.pypi:pypi_package_json&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pypi_package_url = shouldi.python.pypi:pypi_package_url&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pypi_package_contents = shouldi.python.pypi:pypi_package_contents&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cleanup_pypi_package = shouldi.python.pypi:cleanup_pypi_package&quot;</span><span class="p">,</span>
     <span class="p">],</span>
 <span class="p">}</span>
 </pre></div>
