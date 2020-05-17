@@ -357,9 +357,9 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
     >>>
     >>> model = SLRModel(
     ...     features=Features(
-    ...         DefFeature("Years", int, 1),
+    ...         Feature("Years", int, 1),
     ...     ),
-    ...     predict=DefFeature("Salary", int, 1),
+    ...     predict=Feature("Salary", int, 1),
     ... )
     >>>
     >>> async def main():
@@ -413,9 +413,9 @@ async def accuracy(
     >>>
     >>> model = SLRModel(
     ...     features=Features(
-    ...         DefFeature("Years", int, 1),
+    ...         Feature("Years", int, 1),
     ...     ),
-    ...     predict=DefFeature("Salary", int, 1),
+    ...     predict=Feature("Salary", int, 1),
     ... )
     >>>
     >>> async def main():
@@ -477,9 +477,9 @@ async def predict(
     >>>
     >>> model = SLRModel(
     ...     features=Features(
-    ...         DefFeature("Years", int, 1),
+    ...         Feature("Years", int, 1),
     ...     ),
-    ...     predict=DefFeature("Salary", int, 1),
+    ...     predict=Feature("Salary", int, 1),
     ... )
     >>>
     >>> async def main():

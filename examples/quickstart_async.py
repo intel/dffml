@@ -1,17 +1,17 @@
 import asyncio
 
-from dffml import train, accuracy, predict, Features, DefFeature
+from dffml import train, accuracy, predict, Features, Feature
 from dffml_model_scikit import LinearRegressionModel
 
 
 async def main():
     model = LinearRegressionModel(
         features=Features(
-            DefFeature("Years", int, 1),
-            DefFeature("Expertise", int, 1),
-            DefFeature("Trust", float, 1),
+            Feature("Years", int, 1),
+            Feature("Expertise", int, 1),
+            Feature("Trust", float, 1),
         ),
-        predict=DefFeature("Salary", int, 1),
+        predict=Feature("Salary", int, 1),
     )
 
     # Train the model

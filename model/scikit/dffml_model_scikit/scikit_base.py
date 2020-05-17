@@ -77,15 +77,15 @@ class ScikitContext(ModelContext):
     async def train(self, sources: Sources):
         data = []
         async for record in sources.with_features(
-            self.features + [self.parent.config.predict.NAME]
+            self.features + [self.parent.config.predict.name]
         ):
             feature_data = record.features(
-                self.features + [self.parent.config.predict.NAME]
+                self.features + [self.parent.config.predict.name]
             )
             data.append(feature_data)
         df = self.pd.DataFrame(data)
-        xdata = self.np.array(df.drop([self.parent.config.predict.NAME], 1))
-        ydata = self.np.array(df[self.parent.config.predict.NAME])
+        xdata = self.np.array(df.drop([self.parent.config.predict.name], 1))
+        ydata = self.np.array(df[self.parent.config.predict.name])
         self.logger.info("Number of input records: {}".format(len(xdata)))
         self.clf.fit(xdata, ydata)
         self.joblib.dump(self.clf, str(self._filepath))
@@ -96,12 +96,12 @@ class ScikitContext(ModelContext):
         data = []
         async for record in sources.with_features(self.features):
             feature_data = record.features(
-                self.features + [self.parent.config.predict.NAME]
+                self.features + [self.parent.config.predict.name]
             )
             data.append(feature_data)
         df = self.pd.DataFrame(data)
-        xdata = self.np.array(df.drop([self.parent.config.predict.NAME], 1))
-        ydata = self.np.array(df[self.parent.config.predict.NAME])
+        xdata = self.np.array(df.drop([self.parent.config.predict.name], 1))
+        ydata = self.np.array(df[self.parent.config.predict.name])
         self.logger.debug("Number of input records: {}".format(len(xdata)))
         self.confidence = self.clf.score(xdata, ydata)
         self.logger.debug("Model Accuracy: {}".format(self.confidence))
@@ -123,7 +123,7 @@ class ScikitContext(ModelContext):
                     self.clf.predict(predict),
                 )
             )
-            target = self.parent.config.predict.NAME
+            target = self.parent.config.predict.name
             record.predicted(
                 target, self.clf.predict(predict)[0], self.confidence
             )
@@ -164,7 +164,7 @@ class ScikitContextUnsprvised(ScikitContext):
             target = (
                 []
                 if self.parent.config.tcluster is None
-                else [self.parent.config.tcluster.NAME]
+                else [self.parent.config.tcluster.name]
             )
         async for record in sources.with_features(self.features):
             feature_data = record.features(self.features + target)
@@ -233,7 +233,7 @@ class ScikitContextUnsprvised(ScikitContext):
             self.logger.debug(
                 "Predicted cluster for {}: {}".format(predict, prediction)
             )
-            target = self.parent.config.predict.NAME
+            target = self.parent.config.predict.name
             record.predicted(target, prediction[0], self.confidence)
             yield record
 
@@ -246,7 +246,7 @@ class Scikit(Model):
     @property
     def _filepath(self):
         return self.config.directory / (
-            hashlib.sha384(self.config.predict.NAME.encode()).hexdigest()
+            hashlib.sha384(self.config.predict.name.encode()).hexdigest()
             + ".json"
         )
 
@@ -269,7 +269,7 @@ class ScikitUnsprvised(Scikit):
                     "".join(
                         [model_name]
                         + sorted(
-                            feature.NAME for feature in self.config.features
+                            feature.name for feature in self.config.features
                         )
                     )
                 ).encode()

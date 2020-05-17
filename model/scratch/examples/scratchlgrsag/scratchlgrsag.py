@@ -1,10 +1,9 @@
-from dffml import CSVSource, Features, DefFeature
+from dffml import CSVSource, Features, Feature
 from dffml.noasync import train, accuracy, predict
 from dffml_model_scratch.logisticregression import LogisticRegression
 
 model = LogisticRegression(
-    features=Features(DefFeature("f1", float, 1)),
-    predict=DefFeature("ans", int, 1),
+    features=Features(Feature("f1", float, 1)), predict=Feature("ans", int, 1),
 )
 
 # Train the model

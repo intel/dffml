@@ -128,10 +128,10 @@ class SLRModel(SimpleModel):
         # feature we want to predict. Since our model only supports 1 feature,
         # the self.features list will only have one element at index 0.
         async for record in sources.with_features(
-            self.features + [self.config.predict.NAME]
+            self.features + [self.config.predict.name]
         ):
             x.append(record.feature(self.features[0]))
-            y.append(record.feature(self.config.predict.NAME))
+            y.append(record.feature(self.config.predict.name))
         # Use self.logger to report how many records are being used for training
         self.logger.debug("Number of input records: %d", len(x))
         # Save m, b, and accuracy
@@ -164,6 +164,6 @@ class SLRModel(SimpleModel):
             # Calculate y
             y = m * x + b
             # Set the calculated value with the estimated accuracy
-            record.predicted(self.config.predict.NAME, y, accuracy)
+            record.predicted(self.config.predict.name, y, accuracy)
             # Yield the record to the caller
             yield record

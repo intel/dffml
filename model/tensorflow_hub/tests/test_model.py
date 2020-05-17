@@ -4,7 +4,7 @@ import tempfile
 from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.feature import Features, DefFeature
+from dffml.feature import Features, Feature
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml_model_tensorflow_hub.text_classifier import (
     TextClassificationModel,
@@ -16,7 +16,7 @@ class TestTextClassificationModel(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
         cls.features = Features()
-        cls.features.append(DefFeature("A", str, 1))
+        cls.features.append(Feature("A", str, 1))
         A, X = list(zip(*DATA))
         cls.records = [
             Record(str(i), data={"features": {"A": A[i], "X": X[i]}})
@@ -31,7 +31,7 @@ class TestTextClassificationModel(AsyncTestCase):
                 directory=cls.model_dir.name,
                 classifications=[0, 1],
                 features=cls.features,
-                predict=DefFeature("X", int, 1),
+                predict=Feature("X", int, 1),
                 add_layers=True,
                 layers=[
                     "Dense(units = 120, activation='relu')",
@@ -60,7 +60,7 @@ class TestTextClassificationModel(AsyncTestCase):
 
     async def test_02_predict(self):
         async with self.sources as sources, self.model as model:
-            target_name = model.config.predict.NAME
+            target_name = model.config.predict.name
             async with sources() as sctx, model() as mctx:
                 async for record in mctx.predict(sctx.records()):
                     prediction = record.prediction(target_name).value

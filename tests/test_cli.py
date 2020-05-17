@@ -60,9 +60,6 @@ class RecordsTestCase(AsyncExitStackTestCase):
             )
         )
         self._stack.enter_context(
-            patch("dffml.feature.feature.Feature.load", new=feature_load)
-        )
-        self._stack.enter_context(
             patch("dffml.df.base.OperationImplementation.load", new=opimp_load)
         )
         self._stack.enter_context(
@@ -80,14 +77,8 @@ class FakeConfig:
 
 
 class FakeFeature(Feature):
-
-    NAME: str = "fake"
-
-    def dtype(self):
-        return float  # pragma: no cov
-
-    def length(self):
-        return 1  # pragma: no cov
+    def __init__(self, name="fake", dt=float, length=1):
+        super().__init__(name, dt, length)
 
 
 class FakeModelContext(ModelContext):
@@ -100,7 +91,7 @@ class FakeModelContext(ModelContext):
     async def predict(
         self, records: AsyncIterator[Record]
     ) -> AsyncIterator[Record]:
-        target = self.parent.config.predict.NAME
+        target = self.parent.config.predict.name
         async for record in records:
             record.predicted(target, random.random(), float(record.key))
             yield record
@@ -111,12 +102,6 @@ class FakeModel(Model):
 
     CONTEXT = FakeModelContext
     CONFIG = FakeConfig
-
-
-def feature_load(loading=None):
-    if loading == "fake":
-        return FakeFeature()
-    return [FakeFeature()]
 
 
 def model_load(loading):
@@ -406,7 +391,7 @@ class TestPredict(RecordsTestCase):
             "-model",
             "fake",
             "-model-features",
-            "fake",
+            "fake:float:[10,0]",
             "-model-predict",
             "fake",
         )

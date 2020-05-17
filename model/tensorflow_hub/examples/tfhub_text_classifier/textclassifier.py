@@ -1,10 +1,10 @@
-from dffml import CSVSource, Features, DefFeature
+from dffml import CSVSource, Features, Feature
 from dffml.noasync import train, accuracy, predict
 from dffml_model_tensorflow_hub.text_classifier import TextClassificationModel
 
 model = TextClassificationModel(
-    features=Features(DefFeature("sentence", str, 1)),
-    predict=DefFeature("sentiment", int, 1),
+    features=Features(Feature("sentence", str, 1)),
+    predict=Feature("sentiment", int, 1),
     classifications=[0, 1, 2],
     clstype=int,
 )

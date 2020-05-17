@@ -15,7 +15,7 @@ from dffml.operation.output import GetSingle
 from dffml.util.entrypoint import EntrypointNotFound
 from dffml.model.model import ModelContext, Model
 from dffml.model.accuracy import Accuracy
-from dffml.feature import DefFeature
+from dffml.feature import Feature
 from dffml.source.source import Sources
 from dffml.source.csv import CSVSourceConfig
 from dffml.util.cli.arg import parse_unknown
@@ -210,10 +210,10 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                     FakeModelConfig(
                         directory=pathlib.Path(tempdir),
                         features=Features(
-                            DefFeature("Years", int, 1),
-                            DefFeature("Experiance", int, 1),
+                            Feature("Years", int, 1),
+                            Feature("Experiance", int, 1),
                         ),
-                        predict=DefFeature("Salary", float, 1),
+                        predict=Feature("Salary", float, 1),
                     ),
                 )
                 with self.subTest(context="salaryctx"):

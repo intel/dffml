@@ -261,18 +261,18 @@ Example usage of KMeans Clustering Model using python API:
 
 .. code-block:: python
 
-    from dffml import CSVSource, Features, DefFeature
+    from dffml import CSVSource, Features, Feature
     from dffml.noasync import train, accuracy, predict
     from dffml_model_scikit import KMeansModel
 
     model = KMeansModel(
         features=Features(
-            DefFeature("Col1", float, 1),
-            DefFeature("Col2", float, 1),
-            DefFeature("Col3", float, 1),
-            DefFeature("Col4", float, 1),
+            Feature("Col1", float, 1),
+            Feature("Col2", float, 1),
+            Feature("Col3", float, 1),
+            Feature("Col4", float, 1),
         ),
-        tcluster=DefFeature("cluster", int, 1)
+        tcluster=Feature("cluster", int, 1)
     )
 
     # Train the model

@@ -1,15 +1,15 @@
-from dffml import CSVSource, Features, DefFeature
+from dffml import CSVSource, Features, Feature
 from dffml.noasync import train, accuracy, predict
 from dffml_model_tensorflow.dnnc import DNNClassifierModel
 
 model = DNNClassifierModel(
     features=Features(
-        DefFeature("SepalLength", float, 1),
-        DefFeature("SepalWidth", float, 1),
-        DefFeature("PetalLength", float, 1),
-        DefFeature("PetalWidth", float, 1),
+        Feature("SepalLength", float, 1),
+        Feature("SepalWidth", float, 1),
+        Feature("PetalLength", float, 1),
+        Feature("PetalWidth", float, 1),
     ),
-    predict=DefFeature("classification", int, 1),
+    predict=Feature("classification", int, 1),
     epochs=3000,
     steps=20000,
     classifications=[0, 1, 2],

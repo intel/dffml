@@ -1,1 +1,1 @@
-from .feature import Feature, Features, DefFeature
+from .feature import Feature, Features

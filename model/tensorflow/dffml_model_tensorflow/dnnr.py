@@ -35,7 +35,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
         self.np = importlib.import_module("numpy")
         self.model_dir_path = self._model_dir_path()
         self.all_features = self.parent.config.features.names() + [
-            self.parent.config.predict.NAME
+            self.parent.config.predict.name
         ]
         self.features = self._applicable_features()
 
@@ -64,7 +64,7 @@ class DNNRegressionModelContext(TensorflowModelContext):
             for feature, results in record.features(self.features).items():
 
                 x_cols[feature].append(self.np.array(results))
-            y_cols.append(record.feature(self.parent.config.predict.NAME))
+            y_cols.append(record.feature(self.parent.config.predict.name))
 
         y_cols = self.np.array(y_cols)
         for feature in x_cols:
