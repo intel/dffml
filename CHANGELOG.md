@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- `edit all` command to edit records using DataFlowSource.
 - Support for Tensorflow 2.2
 - Vowpal Wabbit Models
 - Python 3.8 support
@@ -39,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `shouldi use` command which detects the language of the codebase given via
   path to directory or Git repo URL and runs the appropriate static analyzers.
 ### Changed
+- `edit` command substituted with `edit record`
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
 - Every class and function can now be imported from the top level module

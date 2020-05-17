@@ -148,11 +148,12 @@ The edit record command drops you into the Python debugger to edit a
 All
 ~~~
 
-Update all the records in any source using the :py:class:`DataFlowSource <dffml.source.df.DataFlowSource>`
+Update all the records in any source using the :py:class:`DataFlowSource <dffml.source.df.DataFlowSource>`.
 
+For this example, we are using the `edit_feature` operation which multiplies every value in a record by a factor of 10.
 The example dataflow file looks like this:
 
-.. literalinclude:: /../examples/maintained/edit_records.yaml
+.. literalinclude:: /../examples/edit_records.yaml
 
 Create a source file: 
 
@@ -170,11 +171,11 @@ Run the command:
 
 .. code-block:: console
 
-    $ dffml edit all
-        -sources f=csv -source-filename data.csv -source-readwrite
-        -features Years:int:1 Expertise:int:1 Trust:float:1 Salary:int:1
+    $ dffml edit all \
+        -sources f=csv -source-filename data.csv -source-readwrite \
+        -features Years:int:1 Expertise:int:1 Trust:float:1 Salary:int:1 \
         -dataflow edit_records.yaml
-    $ dffml list records -sources f=csv -source-filename train.csv                                                                                                           
+    $ dffml list records -sources f=csv -source-filename data.csv                                                                                                           
     [
         {
             "extra": {},
