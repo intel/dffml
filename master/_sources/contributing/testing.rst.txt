@@ -17,6 +17,48 @@ To run a specific test, use the ``-s`` flag.
 
     $ python3 setup.py test -s tests.test_cli.TestPredict.test_record
 
+.. _running_ci_tests_locally:
+
+Running CI Tests Locally
+------------------------
+
+You can run any of the CI tests with the following docker / podman command.
+
+.. code-block:: console
+
+    $ sudo docker run --rm -ti -u $(id -u):$(id -g) \
+        -e USER=$USER \
+        -v $HOME/.cache/pip:/home/$USER/.cache/pip -w /usr/src/dffml \
+        -v $PWD:/usr/src/dffml -w /usr/src/dffml \
+        --entrypoint .ci/docker-entrypoint.sh python:3.7 \
+        ./.ci/run.sh .
+
+The final argument tells the script which CI test to run. If you give a path,
+such as ``.`` for the main package, or ``model/scikit`` for one of the plugins,
+it will run the tests for the given package.
+
+You can also change the docker image from ``python:3.7`` to ``python:3.8`` to
+run the tests against another version of Python.
+
+If you want to run any of the named CI tests, you can do that by giving the name
+instead of a path. Make sure you run these with the ``python:3.7`` image (3.8
+seems to have some weird issues, lack of ``pkg_resources`` to name one).
+
+Options are as follows
+
+- ``changelog``
+
+- ``whitespace``
+
+- ``style``
+
+- ``docs``
+
+- ``lines``
+
+For example, to run the ``docs`` CI test, the final arguments to the above
+command would be ``./.ci/run/sh docs``
+
 Debug Logging
 -------------
 
