@@ -290,6 +290,8 @@ maintainer to merge your pull request at this point. Pull requests with the
 <h2>How to Read the CI<a class="headerlink" href="#how-to-read-the-ci" title="Permalink to this headline">¶</a></h2>
 <p>We have continuous integration setup which can tell you a lot about if your pull
 request is ready for review or not.</p>
+<p>If you want to run one of the tests locally, you reference
+<a class="reference internal" href="testing.html#running-ci-tests-locally"><span class="std std-ref">Running CI Tests Locally</span></a>.</p>
 <img alt="Screenshot of CI with some tests passing and some failing" src="../_images/how-to-read-ci-tests.png" />
 <p>Look through all of the tests and identify which ones are failing. Click on the
 test to view the logs, there is a drop down in the top right which will let you
@@ -308,17 +310,23 @@ is okay.</p>
 <tr class="row-odd"><td><p>CI Test</p></td>
 <td><p>What’s Probably Wrong</p></td>
 </tr>
-<tr class="row-even"><td><p>CHANGELOG</p></td>
+<tr class="row-even"><td><p>changelog</p></td>
 <td><p>You need to say what your change is doing in CHANGELOG.md</p></td>
 </tr>
-<tr class="row-odd"><td><p>WHITESPACE</p></td>
+<tr class="row-odd"><td><p>whitespace</p></td>
 <td><p><a class="reference external" href="https://softwareengineering.stackexchange.com/q/121555">https://softwareengineering.stackexchange.com/q/121555</a></p></td>
 </tr>
-<tr class="row-even"><td><p>STYLE</p></td>
+<tr class="row-even"><td><p>style</p></td>
 <td><p>You need to run the <code class="docutils literal notranslate"><span class="pre">black</span></code> formater</p></td>
 </tr>
-<tr class="row-odd"><td><p>DOCS</p></td>
+<tr class="row-odd"><td><p>docs</p></td>
 <td><p>There was an issue when running the ./scripts/docs.sh script</p></td>
+</tr>
+<tr class="row-even"><td><p>LINES</p></td>
+<td><p>A python file was changed that has specific lines referenced
+by a <code class="docutils literal notranslate"><span class="pre">.rst</span></code> file. If one of the files is not true, its
+because you need to merge or rebase origin/master into your
+branch.</p></td>
 </tr>
 </tbody>
 </table>

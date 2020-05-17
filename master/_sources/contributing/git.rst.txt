@@ -110,6 +110,9 @@ How to Read the CI
 We have continuous integration setup which can tell you a lot about if your pull
 request is ready for review or not.
 
+If you want to run one of the tests locally, you reference
+:ref:`running_ci_tests_locally`.
+
 .. image:: /images/how-to-read-ci-tests.png
     :alt: Screenshot of CI with some tests passing and some failing
 
@@ -127,13 +130,18 @@ is okay.
 +--------------+---------------------------------------------------------------+
 | CI Test      | What's Probably Wrong                                         |
 +--------------+---------------------------------------------------------------+
-| CHANGELOG    | You need to say what your change is doing in CHANGELOG.md     |
+| changelog    | You need to say what your change is doing in CHANGELOG.md     |
 +--------------+---------------------------------------------------------------+
-| WHITESPACE   | https://softwareengineering.stackexchange.com/q/121555        |
+| whitespace   | https://softwareengineering.stackexchange.com/q/121555        |
 +--------------+---------------------------------------------------------------+
-| STYLE        | You need to run the ``black`` formater                        |
+| style        | You need to run the ``black`` formater                        |
 +--------------+---------------------------------------------------------------+
-| DOCS         | There was an issue when running the ./scripts/docs.sh script  |
+| docs         | There was an issue when running the ./scripts/docs.sh script  |
++--------------+---------------------------------------------------------------+
+| LINES        | A python file was changed that has specific lines referenced  |
+|              | by a ``.rst`` file. If one of the files is not true, its      |
+|              | because you need to merge or rebase origin/master into your   |
+|              | branch.                                                       |
 +--------------+---------------------------------------------------------------+
 
 For the tests in the various plugins:
