@@ -303,6 +303,25 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                         f"The primitive of {name} could not be determined"
                     )
 
+        # Definition for return type of func
+        return_type = inspect.signature(func).return_annotation
+        if return_type not in (None, inspect._empty):
+            name_list = [func.__qualname__, "result"]
+            if func.__module__ != "__main__":
+                name_list.insert(0, func.__module__)
+
+            kwargs["output"] = {}
+
+            if return_type in primitive_types[:4]:
+                # dict and list are excluded
+                kwargs["output"]["result"] = Definition(
+                    name=".".join(name_list), primitive=return_type.__name__
+                )
+            else:
+                raise OpCouldNotDeterminePrimitive(
+                    f"primitive of {return_type} cannnot be determined"
+                )
+
         func.op = Operation(**kwargs)
         func.ENTRY_POINT_NAME = ["operation"]
         cls_name = (
