@@ -82,6 +82,64 @@ Output
         }
     ]
 
+Edit
+----
+
+The edit command drops you into the Python debugger to edit a
+:py:class:`Record <dffml.record.Record>` in any source.
+
+.. note::
+
+    Be sure to check the :doc:`/plugins/dffml_source` plugin page to see if the
+    source your trying to edit is read only be default, and requires you to add
+    another flag such as ``readwrite`` to enable editing.
+
+.. code-block:: console
+
+    $ cat > image.csv << EOF
+    > key,image
+    > four,image1.mnistpng
+    > five,image2.mnistpng
+    > three,image3.mnistpng
+    > two,image4.mnistpng
+    > EOF
+    $ dffml edit -sources f=csv -source-filename image.csv -source-readwrite -keys three
+    > /home/user/Documents/python/dffml/dffml/cli/cli.py(45)run()
+    -> await sctx.update(record)
+    (Pdb) record.data.features["image"] += "FEEDFACE"
+    (Pdb) c
+    $ dffml list records -sources f=csv -source-filename image.csv -source-readwrite
+    [
+        {
+            "extra": {},
+            "features": {
+                "image": "image1.mnistpng"
+            },
+            "key": "four"
+        },
+        {
+            "extra": {},
+            "features": {
+                "image": "image2.mnistpng"
+            },
+            "key": "five"
+        },
+        {
+            "extra": {},
+            "features": {
+                "image": "image3.mnistpngFEEDFACE"
+            },
+            "key": "three"
+        },
+        {
+            "extra": {},
+            "features": {
+                "image": "image4.mnistpng"
+            },
+            "key": "two"
+        }
+    ]
+
 DataFlow
 --------
 
