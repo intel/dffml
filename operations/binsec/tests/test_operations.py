@@ -30,7 +30,6 @@ class TestRunner(AsyncTestCase):
             "https://download.clearlinux.org/releases/10540/clear/x86_64/os/Packages/sudo-setuid-1.8.17p1-34.x86_64.rpm": {
                 "./usr/bin/sudo": True
             },
-            "https://rpmfind.net/linux/fedora/linux/updates/29/Everything/x86_64/Packages/g/gzip-1.9-9.fc29.x86_64.rpm": {},
             "https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/20/Everything/x86_64/os/Packages/c/curl-7.32.0-3.fc20.x86_64.rpm": {
                 "./usr/bin/curl": False
             },
