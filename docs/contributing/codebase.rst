@@ -50,7 +50,7 @@ For *Official* plugins, the name given to create should be in the form of
 
 Now that we've created the plugin, we need to add it to a few lists
 
-- Add the plugin to ``CORE_PLUGINS`` list in ``dffml/service/dev.py``
+- Add the plugin to ``CORE_PLUGINS`` list in ``dffml/plugins.py``
 
 - Update ``.github/workflows/testing.yml``
 

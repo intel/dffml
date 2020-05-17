@@ -33,6 +33,7 @@ from ..df.memory import MemoryOrchestrator
 from ..configloader.configloader import BaseConfigLoader
 from ..configloader.json import JSONConfigLoader
 from ..operation.output import GetSingle
+from ..plugins import CORE_PLUGINS
 
 config = configparser.ConfigParser()
 config.read(Path("~", ".gitconfig").expanduser())
@@ -43,23 +44,6 @@ with contextlib.suppress(KeyError):
 
 NAME = config.get("user", "name", fallback="Unknown")
 EMAIL = config.get("user", "email", fallback="unknown@example.com")
-
-CORE_PLUGINS = [
-    ("configloader", "yaml"),
-    ("configloader", "png"),
-    ("model", "scratch"),
-    ("model", "scikit"),
-    ("model", "tensorflow"),
-    ("model", "tensorflow_hub"),
-    ("model", "transformers"),
-    ("model", "vowpalWabbit"),
-    ("examples", "shouldi"),
-    ("feature", "git"),
-    ("feature", "auth"),
-    ("operations", "binsec"),
-    ("service", "http"),
-    ("source", "mysql"),
-]
 
 
 def create_from_skel(name):

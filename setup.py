@@ -11,6 +11,32 @@ with open(pathlib.Path("dffml", "version.py"), "r") as f:
             VERSION = ast.literal_eval(line.strip().split("=")[-1].strip())
             break
 
+CORE_PLUGINS = ast.literal_eval(
+    pathlib.Path("dffml", "plugins.py")
+    .read_text()
+    .replace(" ", "")
+    .split("=")[-1]
+    .strip()
+)
+
+# All packages under configloader/ are really named dffml-config-{name}
+ALTERNATIVES = {"configloader": "config"}
+ALTERNATIVES_FEATURE_TO_OP = ALTERNATIVES.copy()
+ALTERNATIVES_FEATURE_TO_OP.update({"feature": "operation"})
+EXTRAS_REQUIRES = {
+    (
+        ALTERNATIVES_FEATURE_TO_OP.get(plugin_type, plugin_type)
+        + ("s" if not plugin_type.endswith("s") else "")
+    ): [
+        "dffml-%s-%s"
+        % (ALTERNATIVES.get(plugin_type, plugin_type), name.replace("_", "-"),)
+        for sub_plugin_type, name in CORE_PLUGINS
+        if sub_plugin_type == plugin_type
+    ]
+    for plugin_type, _ in CORE_PLUGINS
+    if plugin_type != "examples"
+}
+
 with open("README.md", "r", encoding="utf-8") as f:
     README = f.read()
 
@@ -42,19 +68,13 @@ setup(
     include_package_data=True,
     zip_safe=False,
     extras_require={
-        "models": [
-            "dffml-model-tensorflow",
-            "dffml-model-scratch",
-            "dffml-model-scikit",
-        ],
-        "sources": ["dffml-source-mysql"],
         "all": [
-            "dffml-model-tensorflow",
-            "dffml-model-scratch",
-            "dffml-model-scikit",
-            "dffml-source-mysql",
-            "dffml-config-yaml",
-            "dffml-service-http",
+            "dffml-%s-%s"
+            % (
+                ALTERNATIVES.get(plugin_type, plugin_type),
+                name.replace("_", "-"),
+            )
+            for plugin_type, name in CORE_PLUGINS
         ],
         "dev": [
             "coverage",
@@ -66,6 +86,7 @@ setup(
             "jsbeautifier",
             "twine",
         ],
+        **EXTRAS_REQUIRES,
     },
     tests_require=["httptest>=0.0.15"],
     entry_points={
