@@ -16,6 +16,7 @@ exclude = '''
     | build
     | dist
     | examples/maintained/cgi-bin
+    | examples/shouldi/tests/downloads
   )
 )
 '''
