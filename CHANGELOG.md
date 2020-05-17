@@ -36,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Useful for modifying datasets as they are used with ML commands or editing
   in bulk.
 - Auto create Definition for the `op` when they might have a spec, subspec.
+- `shouldi use` command which detects the language of the codebase given via
+  path to directory or Git repo URL and runs the appropriate static analyzers.
 ### Changed
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
