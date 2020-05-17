@@ -1,0 +1,46 @@
+definitions:
+  edit_feature_def:
+    name: feature_data
+    primitive: generic
+  associate_spec:
+    name: associate_spec
+    primitive: List[str]
+  associate_output:
+    name: associate_output
+    primitive: Dict[str, Any]
+flow:
+  edit_feature:
+    inputs:
+      features:
+      - seed:
+        - Years
+        - Expertise
+        - Trust
+        - Salary
+  associate_definition:
+    inputs:
+      spec:
+      - seed
+linked: true
+operations:
+  edit_feature:
+    inputs:
+      features: edit_feature_def
+    name: edit_feature
+    outputs:
+      updated_features: edit_feature_def
+    stage: processing
+  associate_definition:
+    inputs:
+      spec: associate_spec
+    name: associate_definition
+    outputs:
+      output: associate_output
+    stage: output
+seed:
+  - definition: associate_spec
+    value:
+      Years: feature_data
+      Expertise: feature_data
+      Trust: feature_data
+      Salary: feature_data
