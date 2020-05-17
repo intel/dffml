@@ -66,14 +66,14 @@ class TensorflowModelContext(ModelContext):
         for feature in self.parent.config.features:
             col = self._feature_feature_column(feature)
             if not col is None:
-                cols[feature.NAME] = col
+                cols[feature.name] = col
         return cols
 
     def _feature_feature_column(self, feature: Feature):
         """
         Creates a feature column for a feature
         """
-        dtype = feature.dtype()
+        dtype = feature.dtype
         if not inspect.isclass(dtype):
             self.logger.warning(
                 "Unknown dtype %r. Cound not create column" % (dtype)
@@ -86,7 +86,7 @@ class TensorflowModelContext(ModelContext):
             or issubclass(dtype, float)
         ):
             return self.tf.feature_column.numeric_column(
-                feature.NAME, shape=feature.length()
+                feature.name, shape=feature.length
             )
         self.logger.warning(
             "Unknown dtype %r. Cound not create column" % (dtype)
@@ -151,7 +151,7 @@ class TensorflowModelContext(ModelContext):
         input_fn, predict = await self.predict_input_fn(records)
         # Makes predictions on classifications
         predictions = self.model.predict(input_fn=input_fn)
-        target = self.parent.config.predict.NAME
+        target = self.parent.config.predict.name
 
         return predict, predictions, target
 
@@ -239,16 +239,16 @@ class DNNClassifierModelContext(TensorflowModelContext):
         for record in [
             record
             async for record in sources.with_features(
-                self.features + [self.parent.config.predict.NAME]
+                self.features + [self.parent.config.predict.name]
             )
-            if record.feature(self.parent.config.predict.NAME)
+            if record.feature(self.parent.config.predict.name)
             in self.classifications
         ]:
             for feature, results in record.features(self.features).items():
                 x_cols[feature].append(self.np.array(results))
             y_cols.append(
                 self.classifications[
-                    record.feature(self.parent.config.predict.NAME)
+                    record.feature(self.parent.config.predict.name)
                 ]
             )
         if not y_cols:

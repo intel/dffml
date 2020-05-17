@@ -8,7 +8,7 @@ from sklearn.datasets import make_friedman1
 from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml.feature import DefFeature, Features
+from dffml.feature import Feature, Features
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml_model_vowpalWabbit.vw_base import VWModel, VWConfig
 
@@ -18,14 +18,14 @@ class TestVWModel(AsyncTestCase):
     def setUpClass(cls):
         cls.model_dir = tempfile.TemporaryDirectory()
         cls.features = Features()
-        cls.features.append(DefFeature("A", float, 1))
-        cls.features.append(DefFeature("B", float, 1))
-        cls.features.append(DefFeature("C", float, 1))
-        cls.features.append(DefFeature("D", float, 1))
-        cls.features.append(DefFeature("E", float, 1))
-        cls.features.append(DefFeature("F", float, 1))
-        cls.features.append(DefFeature("G", int, 1))
-        cls.features.append(DefFeature("H", int, 1))
+        cls.features.append(Feature("A", float, 1))
+        cls.features.append(Feature("B", float, 1))
+        cls.features.append(Feature("C", float, 1))
+        cls.features.append(Feature("D", float, 1))
+        cls.features.append(Feature("E", float, 1))
+        cls.features.append(Feature("F", float, 1))
+        cls.features.append(Feature("G", int, 1))
+        cls.features.append(Feature("H", int, 1))
 
         A, B, C, D, E, F, G, H, X = list(zip(*DATA))
         cls.records = [
@@ -55,12 +55,12 @@ class TestVWModel(AsyncTestCase):
             VWConfig(
                 directory=cls.model_dir.name,
                 features=cls.features,
-                predict=DefFeature("X", float, 1),
+                predict=Feature("X", float, 1),
                 # A and B will be namespace n1
                 # A and C will be in namespace n2
                 namespace=["n1_A_B", "n2_A_C"],
-                importance=DefFeature("H", int, 1),
-                tag=DefFeature("G", int, 1),
+                importance=Feature("H", int, 1),
+                tag=Feature("G", int, 1),
                 task="regression",
                 convert_to_vw=True,
                 vwcmd=[
@@ -91,7 +91,7 @@ class TestVWModel(AsyncTestCase):
 
     async def test_02_predict(self):
         async with self.sources as sources, self.model as model:
-            target = model.config.predict.NAME
+            target = model.config.predict.name
             async with sources() as sctx, model() as mctx:
                 async for record in mctx.predict(sctx.records()):
                     prediction = record.prediction(target).value

@@ -60,19 +60,19 @@ from dffml_model_scikit.scikit_base import (
     ScikitUnsprvised,
     ScikitContextUnsprvised,
 )
-from dffml.feature.feature import Feature, Features, DefFeature
+from dffml.feature.feature import Feature, Features
 
 
 def applicable_features(self, features):
     usable = []
     for feature in features:
-        if feature.dtype() != int and feature.dtype() != float:
+        if feature.dtype != int and feature.dtype != float:
             raise ValueError("Models only supports int or float feature")
-        if feature.length() != 1:
+        if feature.length != 1:
             raise ValueError(
                 "Models only supports single values (non-matrix / array)"
             )
-        usable.append(feature.NAME)
+        usable.append(feature.name)
     return sorted(usable)
 
 
@@ -240,7 +240,7 @@ for entry_point_name, name, cls, applicable_features_function in [
             Feature,
             field(
                 "Name used as meaning of prediction",
-                default=DefFeature(name="cluster", dtype=str, length=1),
+                default=Feature(name="cluster", dtype=str, length=1),
             ),
         )
 

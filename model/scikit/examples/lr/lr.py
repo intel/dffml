@@ -1,14 +1,14 @@
-from dffml import CSVSource, Features, DefFeature
+from dffml import CSVSource, Features, Feature
 from dffml.noasync import train, accuracy, predict
 from dffml_model_scikit import LinearRegressionModel
 
 model = LinearRegressionModel(
     features=Features(
-        DefFeature("Years", int, 1),
-        DefFeature("Expertise", int, 1),
-        DefFeature("Trust", float, 1),
+        Feature("Years", int, 1),
+        Feature("Expertise", int, 1),
+        Feature("Trust", float, 1),
     ),
-    predict=DefFeature("Salary", int, 1),
+    predict=Feature("Salary", int, 1),
 )
 
 # Train the model

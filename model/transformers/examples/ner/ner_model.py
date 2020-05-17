@@ -1,11 +1,11 @@
-from dffml import CSVSource, DefFeature
+from dffml import CSVSource, Feature
 from dffml.noasync import train, accuracy, predict
 from dffml_model_transformers.ner.ner_model import NERModel
 
 model = NERModel(
-    sid=DefFeature("SentenceId", int, 1),
-    words=DefFeature("Words", str, 1),
-    predict=DefFeature("Tag", str, 1),
+    sid=Feature("SentenceId", int, 1),
+    words=Feature("Words", str, 1),
+    predict=Feature("Tag", str, 1),
     model_architecture_type="distilbert",
     model_name_or_path="distilbert-base-cased",
     epochs=1,

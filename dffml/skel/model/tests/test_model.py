@@ -1,6 +1,6 @@
 import tempfile
 
-from dffml import train, accuracy, predict, DefFeature, Features, AsyncTestCase
+from dffml import train, accuracy, predict, Features, Feature, AsyncTestCase
 
 from REPLACE_IMPORT_PACKAGE_NAME.misc import MiscModel, MiscModelConfig
 
@@ -50,8 +50,8 @@ class TestMiscModel(AsyncTestCase):
         # Create an instance of the model
         cls.model = MiscModel(
             directory=cls.model_dir.name,
-            predict=DefFeature("Y", float, 1),
-            features=Features(DefFeature("X", float, 1)),
+            predict=Feature("Y", float, 1),
+            features=Features(Feature("X", float, 1)),
         )
 
     @classmethod

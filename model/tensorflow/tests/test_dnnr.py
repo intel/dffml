@@ -11,42 +11,20 @@ from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.util.cli.arg import parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.feature import Feature, Features, DefFeature
+from dffml.feature import Feature, Features
 
 from dffml_model_tensorflow.dnnr import (
     DNNRegressionModel,
     DNNRegressionModelConfig,
 )
 
-# Creating feature classes
-class Feature_1(Feature):
-
-    NAME: str = "feature_1"
-
-    def dtype(self) -> Type:
-        return float
-
-    def length(self) -> int:
-        return 1
-
-
-class Feature_2(Feature):
-
-    NAME: str = "feature_2"
-
-    def dtype(self) -> Type:
-        return float
-
-    def length(self) -> int:
-        return 1
-
 
 class TestDNN(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
         cls.model_dir = tempfile.TemporaryDirectory()
-        cls.feature1 = Feature_1()
-        cls.feature2 = Feature_2()
+        cls.feature1 = Feature("feature_1", float, 1)
+        cls.feature2 = Feature("feature_2", float, 1)
         cls.features = Features(cls.feature1, cls.feature2)
         cls.model = DNNRegressionModel(
             DNNRegressionModelConfig(
@@ -54,7 +32,7 @@ class TestDNN(AsyncTestCase):
                 steps=1000,
                 epochs=40,
                 hidden=[50, 20, 10],
-                predict=DefFeature("TARGET", float, 1),
+                predict=Feature("TARGET", float, 1),
                 features=cls.features,
             )
         )
@@ -66,8 +44,8 @@ class TestDNN(AsyncTestCase):
                 "x" + str(random.random()),
                 data={
                     "features": {
-                        cls.feature1.NAME: float(_temp_data[0][i]),
-                        cls.feature2.NAME: float(_temp_data[1][i]),
+                        cls.feature1.name: float(_temp_data[0][i]),
+                        cls.feature2.name: float(_temp_data[1][i]),
                         "TARGET": 2 * _temp_data[0][i] + 3 * _temp_data[1][i],
                     }
                 },
@@ -101,7 +79,7 @@ class TestDNN(AsyncTestCase):
         self.assertEqual(config.steps, 3000)
         self.assertEqual(config.epochs, 30)
         self.assertEqual(config.hidden, [12, 40, 15])
-        self.assertEqual(config.predict.NAME, "TARGET")
+        self.assertEqual(config.predict.name, "TARGET")
 
     async def test_00_train(self):
         async with self.sources as sources, self.model as model:
@@ -126,15 +104,15 @@ class TestDNN(AsyncTestCase):
             "a",
             data={
                 "features": {
-                    self.feature1.NAME: test_feature_val[1],
-                    self.feature2.NAME: test_feature_val[2],
+                    self.feature1.name: test_feature_val[1],
+                    self.feature2.name: test_feature_val[2],
                 }
             },
         )
         async with Sources(
             MemorySource(MemorySourceConfig(records=[a]))
         ) as sources, self.model as model:
-            target_name = model.config.predict.NAME
+            target_name = model.config.predict.name
             async with sources() as sctx, model() as mctx:
                 res = [record async for record in mctx.predict(sctx.records())]
                 self.assertEqual(len(res), 1)

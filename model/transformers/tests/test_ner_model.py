@@ -6,7 +6,7 @@ import tempfile
 from dffml.record import Record
 from dffml.source.source import Sources
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.feature import DefFeature
+from dffml.feature import Feature
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml_model_transformers.ner.ner_model import NERModel, NERModelConfig
 
@@ -53,9 +53,9 @@ class TestNERModel(AsyncTestCase):
         cls.model_dir = tempfile.TemporaryDirectory()
         cls.model = NERModel(
             NERModelConfig(
-                sid=DefFeature("sentence_id", int, 1),
-                words=DefFeature("words", str, 1),
-                predict=DefFeature("ner_tag", str, 1),
+                sid=Feature("sentence_id", int, 1),
+                words=Feature("words", str, 1),
+                predict=Feature("ner_tag", str, 1),
                 output_dir=cls.model_dir.name,
                 model_architecture_type="bert",
                 model_name_or_path="bert-base-cased",
@@ -80,7 +80,7 @@ class TestNERModel(AsyncTestCase):
 
     async def test_02_predict(self):
         async with self.predict_sources as sources, self.model as model:
-            target_name = model.config.predict.NAME
+            target_name = model.config.predict.name
             async with sources() as sctx, model() as mctx:
                 async for record in mctx.predict(sctx.records()):
                     prediction = record.prediction(target_name).value

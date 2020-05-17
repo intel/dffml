@@ -9,7 +9,7 @@ from dffml.base import (
     list_action,
     BaseDataFlowFacilitatorObjectContext,
 )
-from dffml.feature.feature import DefFeature, Feature, Features
+from dffml.feature.feature import Feature, Features
 from dffml.source.source import BaseSource
 from dffml.source.csv import CSVSource
 from dffml.source.json import JSONSource
@@ -62,7 +62,7 @@ class TestAutoArgsConfig(unittest.TestCase):
                                 },
                                 "features": {
                                     "plugin": Arg(
-                                        type=Feature.load,
+                                        type=Feature,
                                         nargs="+",
                                         action=list_action(Features),
                                     ),
@@ -131,9 +131,7 @@ class TestAutoArgsConfig(unittest.TestCase):
         )
         self.assertEqual(
             config.features,
-            Features(
-                DefFeature("Year", int, 1), DefFeature("Commits", int, 10)
-            ),
+            Features(Feature("Year", int, 1), Feature("Commits", int, 10)),
         )
 
     def test_config_set(self):
@@ -170,9 +168,7 @@ class TestAutoArgsConfig(unittest.TestCase):
         )
         self.assertEqual(
             config.features,
-            Features(
-                DefFeature("Year", int, 1), DefFeature("Commits", int, 10)
-            ),
+            Features(Feature("Year", int, 1), Feature("Commits", int, 10)),
         )
 
 
@@ -187,7 +183,7 @@ class FakeTestingConfig2:
     name: str = field("Name of FakeTesting2")
     num: float
     features: Features = Features(
-        DefFeature("default", int, 1), DefFeature("features", int, 10)
+        Feature("default", int, 1), Feature("features", int, 10)
     )
     label: str = "unlabeled"
 
