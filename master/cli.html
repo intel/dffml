@@ -108,6 +108,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#prediction">Prediction</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#edit">Edit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dataflow">DataFlow</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#create">Create</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#merge">Merge</a></li>
@@ -310,6 +311,62 @@ more details on this.</p>
 <span class="go">]</span>
 </pre></div>
 </div>
+</div>
+</div>
+<div class="section" id="edit">
+<h2>Edit<a class="headerlink" href="#edit" title="Permalink to this headline">¶</a></h2>
+<p>The edit command drops you into the Python debugger to edit a
+<a class="reference internal" href="api/record.html#dffml.record.Record" title="dffml.record.Record"><code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code></a> in any source.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Be sure to check the <a class="reference internal" href="plugins/dffml_source.html"><span class="doc">Sources</span></a> plugin page to see if the
+source your trying to edit is read only be default, and requires you to add
+another flag such as <code class="docutils literal notranslate"><span class="pre">readwrite</span></code> to enable editing.</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; image.csv <span class="s">&lt;&lt; EOF</span>
+<span class="gp">&gt;</span><span class="s"> key,image</span>
+<span class="gp">&gt;</span><span class="s"> four,image1.mnistpng</span>
+<span class="gp">&gt;</span><span class="s"> five,image2.mnistpng</span>
+<span class="gp">&gt;</span><span class="s"> three,image3.mnistpng</span>
+<span class="gp">&gt;</span><span class="s"> two,image4.mnistpng</span>
+<span class="gp">&gt;</span><span class="s"> EOF</span>
+<span class="gp">$</span> dffml edit -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename image.csv -source-readwrite -keys three
+<span class="gp">&gt;</span> /home/user/Documents/python/dffml/dffml/cli/cli.py<span class="o">(</span><span class="m">45</span><span class="o">)</span>run<span class="o">()</span>
+<span class="go">-&gt; await sctx.update(record)</span>
+<span class="gp gp-VirtualEnv">(Pdb)</span> <span class="go">record.data.features[&quot;image&quot;] += &quot;FEEDFACE&quot;</span>
+<span class="gp gp-VirtualEnv">(Pdb)</span> <span class="go">c</span>
+<span class="gp">$</span> dffml list records -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename image.csv -source-readwrite
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;image&quot;: &quot;image1.mnistpng&quot;</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;four&quot;</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;image&quot;: &quot;image2.mnistpng&quot;</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;five&quot;</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;image&quot;: &quot;image3.mnistpngFEEDFACE&quot;</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;three&quot;</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;image&quot;: &quot;image4.mnistpng&quot;</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;two&quot;</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+</pre></div>
 </div>
 </div>
 <div class="section" id="dataflow">
