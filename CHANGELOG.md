@@ -48,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Feature class in `dffml/feature/feature.py` initialize a feature object
 - All DefFeatures() functions are substituted with Features()
 - All feature.type() and feature.lenght() are substituted with
-feature.type and feature.length
+  feature.type and feature.length
 - FileSource takes pathlib.Path as filename
 ### Fixed
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
