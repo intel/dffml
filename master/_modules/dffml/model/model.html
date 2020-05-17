@@ -388,7 +388,7 @@
         <span class="c1"># Check data type and length for each feature</span>
         <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_applicable_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">):</span>
-                <span class="n">usable</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">NAME</span><span class="p">)</span>
+                <span class="n">usable</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="c1"># Return a sorted list of feature names for consistency. In case users</span>
         <span class="c1"># provide the same list of features to applicable_features in a</span>
         <span class="c1"># different order.</span>
@@ -396,9 +396,9 @@
 
     <span class="k">def</span> <span class="nf">check_applicable_feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">):</span>
         <span class="c1"># Check the data datatype is in the list of supported data types</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">check_feature_dtype</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">dtype</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_feature_dtype</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
         <span class="c1"># Check that length (dimensions) of feature is supported</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">check_feature_length</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">length</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_feature_length</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">check_feature_dtype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>

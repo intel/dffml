@@ -205,9 +205,9 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span>
                 <span class="p">[</span>
                     <span class="n">Input</span><span class="p">(</span>
-                        <span class="n">value</span><span class="o">=</span><span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">NAME</span><span class="p">),</span>
+                        <span class="n">value</span><span class="o">=</span><span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
                         <span class="n">definition</span><span class="o">=</span><span class="n">Definition</span><span class="p">(</span>
-                            <span class="n">name</span><span class="o">=</span><span class="n">feature</span><span class="o">.</span><span class="n">NAME</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">dtype</span><span class="p">())</span>
+                            <span class="n">name</span><span class="o">=</span><span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">dtype</span><span class="p">())</span>
                         <span class="p">),</span>
                     <span class="p">)</span>
                     <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">features</span>

@@ -214,30 +214,9 @@
 <p>Feature subclasses are responsible for generating an integer value given an open
 feature project’s feature URL.</p>
 <dl class="py class">
-<dt id="dffml.feature.feature.DefinedFeature">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">DefinedFeature</code><span class="sig-paren">(</span><em class="sig-param">dtype: Type = &lt;class 'int'&gt;</em>, <em class="sig-param">length: int = 1</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/feature/feature.html#DefinedFeature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.DefinedFeature" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt id="dffml.feature.feature.DefinedFeature.dtype">
-<code class="sig-name descname">dtype</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Type<a class="reference internal" href="../../_modules/dffml/feature/feature.html#DefinedFeature.dtype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.DefinedFeature.dtype" title="Permalink to this definition">¶</a></dt>
-<dd><p>Models need to know a Feature’s datatype.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dffml.feature.feature.DefinedFeature.length">
-<code class="sig-name descname">length</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><a class="reference internal" href="../../_modules/dffml/feature/feature.html#DefinedFeature.length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.DefinedFeature.length" title="Permalink to this definition">¶</a></dt>
-<dd><p>Models need to know a Feature’s length, 1 means single value, more than
-that is the length of the array calc returns.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt id="dffml.feature.feature.Feature">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Feature</code><a class="reference internal" href="../../_modules/dffml/feature/feature.html#Feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature" title="Permalink to this definition">¶</a></dt>
-<dd><p>Abstract base class for all features. New features must be derived from this
-class and implement the fetch, parse, and calc methods. These methods are
-always expected to be called in order. Anything you add to your feature
-subclass in fetch or parse is accessible in calc.</p>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.feature.feature.</code><code class="sig-name descname">Feature</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">dtype: Type = &lt;class 'int'&gt;</em>, <em class="sig-param">length: int = 1</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/feature/feature.html#Feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for all features.</p>
 <p>A feature is provided with the feature URL of the package (in self._key)
 and is expected to fetch any data it needs to calculate itself when fetch
 is called. All data fetched should be stored in tempdir() if it must reside
@@ -246,66 +225,18 @@ on disk.</p>
 storing the parts of that data which will be used to calculate in the
 subclass</p>
 <p class="rubric">Examples</p>
-<p>Define a feature using load_def:</p>
+<p>Define a feature:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="o">.</span><span class="n">load_def</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span><span class="o">.</span><span class="n">dtype</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span><span class="o">.</span><span class="n">dtype</span>
 <span class="go">&lt;class &#39;float&#39;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span><span class="o">.</span><span class="n">NAME</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span><span class="o">.</span><span class="n">name</span>
 <span class="go">&#39;example&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span><span class="o">.</span><span class="n">length</span>
 <span class="go">10</span>
 </pre></div>
 </div>
-<p>Defining a feature directly using DefFeature:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span> <span class="o">=</span> <span class="n">DefFeature</span><span class="p">(</span><span class="s2">&quot;example2&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span><span class="o">.</span><span class="n">dtype</span><span class="p">()</span>
-<span class="go">&lt;class &#39;int&#39;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span><span class="o">.</span><span class="n">NAME</span>
-<span class="go">&#39;example2&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
-<span class="go">20</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt id="dffml.feature.feature.Feature.dtype">
-<code class="sig-name descname">dtype</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Type<a class="reference internal" href="../../_modules/dffml/feature/feature.html#Feature.dtype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.dtype" title="Permalink to this definition">¶</a></dt>
-<dd><p>Models need to know a Feature’s datatype.</p>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span><span class="o">.</span><span class="n">dtype</span><span class="p">()</span>
-<span class="go">&lt;class &#39;int&#39;&gt;</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dffml.feature.feature.Feature.length">
-<code class="sig-name descname">length</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><a class="reference internal" href="../../_modules/dffml/feature/feature.html#Feature.length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.length" title="Permalink to this definition">¶</a></dt>
-<dd><p>Models need to know a Feature’s length, 1 means single value, more than
-that is the length of the array calc returns.</p>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span><span class="o">.</span><span class="n">length</span><span class="p">()</span>
-<span class="go">1</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt id="dffml.feature.feature.Feature.load">
-<em class="property">classmethod </em><code class="sig-name descname">load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loading</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/feature/feature.html#Feature.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.feature.feature.Feature.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads all installed loading and returns them as a list. Sources to be
-loaded should be registered to ENTRYPOINT via setuptools.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">

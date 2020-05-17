@@ -236,8 +236,8 @@
 <span class="sd">    &gt;&gt;&gt; from dffml import *</span>
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; slr_model = SLRModel(</span>
-<span class="sd">    ...     features=Features(DefFeature(&quot;Years&quot;, int, 1)),</span>
-<span class="sd">    ...     predict=DefFeature(&quot;Salary&quot;, int, 1),</span>
+<span class="sd">    ...     features=Features(Feature(&quot;Years&quot;, int, 1)),</span>
+<span class="sd">    ...     predict=Feature(&quot;Salary&quot;, int, 1),</span>
 <span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; dataflow = DataFlow(</span>
 <span class="sd">    ...     operations={</span>
