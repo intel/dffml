@@ -3,16 +3,22 @@
 """
 Command line interface evaluates packages given their source URLs
 """
+import pathlib
 import pdb
 import pkg_resources
 
 from ..version import VERSION
 from ..record import Record
 from ..source.source import BaseSource
+from ..source.df import DataFlowSource, DataFlowSourceConfig
+from ..configloader.configloader import BaseConfigLoader
 from ..util.packaging import is_develop
 from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
 from ..util.cli.cmds import SourcesCMD, PortCMD, KeysCMD
+from ..df.types import DataFlow
+from ..feature.feature import Features, Feature
+from ..util.cli.parser import list_action
 
 from .dataflow import Dataflow
 from .config import Config
@@ -31,7 +37,59 @@ class Version(CMD):
         print(f"dffml version {VERSION} (devmode: {str(devmode)})")
 
 
-class Edit(SourcesCMD, KeysCMD):
+class EditAllRecords(SourcesCMD):
+    """
+    Edit all records using operations
+    """
+
+    arg_dataflow = Arg(
+        "-dataflow", help="File containing exported DataFlow", required=True
+    )
+    arg_config = Arg(
+        "-config",
+        help="ConfigLoader to use for importing DataFlow",
+        type=BaseConfigLoader.load,
+        default=None,
+    )
+    arg_features = Arg(
+        "-features",
+        help="",
+        required=True,
+        default=[],
+        type=Feature,
+        nargs="+",
+        action=list_action(Features),
+    )
+
+    async def run(self):
+        dataflow_path = pathlib.Path(self.dataflow)
+        config_cls = self.config
+        if config_cls is None:
+            config_type = dataflow_path.suffix.replace(".", "")
+            config_cls = BaseConfigLoader.load(config_type)
+        async with config_cls.withconfig(self.extra_config) as configloader:
+            async with configloader() as loader:
+                exported = await loader.loadb(dataflow_path.read_bytes())
+                dataflow = DataFlow._fromdict(**exported)
+
+        dataflowsource = DataFlowSource(
+            DataFlowSourceConfig(
+                source=self.sources, dataflow=dataflow, features=self.features,
+            )
+        )
+        records = []
+        async with dataflowsource as source:
+            async with source() as dfsctx:
+                async for record in dfsctx.records():
+                    records.append(record)
+
+        async with self.sources as src:
+            async with src() as sctx:
+                for record in records:
+                    await sctx.update(record)
+
+
+class EditRecord(SourcesCMD, KeysCMD):
     """
     Edit each specified record
     """
@@ -43,6 +101,15 @@ class Edit(SourcesCMD, KeysCMD):
                     record = await sctx.record(key)
                     pdb.set_trace()
                     await sctx.update(record)
+
+
+class Edit(CMD):
+    """
+    Edit records
+    """
+
+    _all = EditAllRecords
+    record = EditRecord
 
 
 class Merge(CMD):

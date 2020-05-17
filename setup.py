@@ -105,6 +105,7 @@ setup(
             "print_output = dffml.operation.io:print_output",
             # preprocess
             "literal_eval = dffml.operation.preprocess:literal_eval",
+            "edit_feature = dffml.operation.preprocess:edit_feature",
             # Database
             "db_query_create_table = dffml.operation.db:db_query_create_table",
             "db_query_insert = dffml.operation.db:db_query_insert",
