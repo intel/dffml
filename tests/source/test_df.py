@@ -1,6 +1,6 @@
 from dffml.source.df import DataFlowSource, DataFlowSourceConfig
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml.feature import Features, DefFeature
+from dffml.feature import Features, Feature
 from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.record import Record
@@ -45,10 +45,10 @@ NEW_RECORDS = [
 ]
 
 TEST_FEATURE = Features(
-    DefFeature("Years", int, 1),
-    DefFeature("Expertise", int, 1),
-    DefFeature("Trust", float, 1),
-    DefFeature("Salary", int, 1),
+    Feature("Years", int, 1),
+    Feature("Expertise", int, 1),
+    Feature("Trust", float, 1),
+    Feature("Salary", int, 1),
 )
 
 TEST_DATAFLOW1 = DataFlow(
@@ -71,7 +71,7 @@ TEST_DATAFLOW1.seed = [
     # I don't think we need this as we are providing the flow
     Input(
         value={
-            feature.NAME: edit_feature.op.outputs["updated_features"].name
+            feature.name: edit_feature.op.outputs["updated_features"].name
             for feature in TEST_FEATURE
         },
         definition=AssociateDefinition.op.inputs["spec"],

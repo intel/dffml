@@ -26,9 +26,9 @@ class DataFlowSourceContext(BaseSourceContext):
                 self.parent.config.dataflow,
                 [
                     Input(
-                        value=record.feature(feature.NAME),
+                        value=record.feature(feature.name),
                         definition=Definition(
-                            name=feature.NAME, primitive=str(feature.dtype())
+                            name=feature.name, primitive=str(feature.dtype())
                         ),
                     )
                     for feature in self.parent.config.features
