@@ -82,3 +82,10 @@ class Install(CMD):
 class ShouldI(CMD):
 
     install = Install
+
+
+# We're hiding this in the last lines for now so that we can perserve the
+# operations tutorial as is
+from .use import Use
+
+ShouldI.use = Use
