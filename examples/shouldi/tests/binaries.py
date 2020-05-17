@@ -37,3 +37,23 @@ cached_target_rxjava = cached_download_unpack_archive(
     downloads / "RxJava-download",
     "2a15b4eb165e36a3de35e0d53f90b99bb328e3c18b7ef4f0a6c253d3898e794dec231fc726e154f339151eb8cf5ee5bb",
 )
+
+# Golang
+cached_golang = cached_download_unpack_archive(
+    "https://dl.google.com/go/go1.14.linux-amd64.tar.gz",
+    downloads / "golang.tar.gz",
+    downloads / "golang-download",
+    "5dcc7b2e9049d80ceee9d3a7a4b76b578f42de64eaadabd039f080a9f329f2ad448da710626ed8fb4b070b4555b50e6f",
+)
+cached_golangci_lint = cached_download_unpack_archive(
+    "https://github.com/golangci/golangci-lint/releases/download/v1.23.7/golangci-lint-1.23.7-linux-amd64.tar.gz",
+    downloads / "golangci-lint.tar.gz",
+    downloads / "golangci-lint-download",
+    "088a65ae7aa45c8a5695f40cc90672d00dece7f08ce307567fddc8b2d03858cb5baf9d162193922d36c57c504cc52999",
+)
+cached_target_cri_resource_manager = cached_download_unpack_archive(
+    "https://github.com/intel/cri-resource-manager/archive/c5e6091c79830cf7d076bbdec59c4a253b369d6a.tar.gz",
+    downloads / "cri-resource-manager.tar.gz",
+    downloads / "cri-resource-manager-download",
+    "bdcbc8dadf9c6ee2f7571d10cb54459fe54773036982ad7485f007606efae96d7aaec7da18e2fea806fb6f68eb1722a8",
+)
