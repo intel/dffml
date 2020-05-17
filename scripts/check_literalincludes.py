@@ -76,6 +76,20 @@ def main():
                 )
     if not fail:
         return
+    print(
+        "This script checks to see if any .py files changed that are "
+        "referenced in .rst files using specific line numbers. This script "
+        "is failing because those rst files were not also modified. "
+        "This script is not smart enough to tell if those lines should be "
+        "modified, or that you modifed them correctly. Just as an extra "
+        "sanity check."
+    )
+    print()
+    print(
+        "You'll notice that the literalinclude blocks might end up with the "
+        "text in them being off because the :lines: wasn't changed. That's "
+        "what this script is hoping to catch."
+    )
     sys.exit(1)
 
 

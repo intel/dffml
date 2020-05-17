@@ -138,6 +138,11 @@ is okay.
 +--------------+---------------------------------------------------------------+
 | docs         | There was an issue when running the ./scripts/docs.sh script  |
 +--------------+---------------------------------------------------------------+
+| LINES        | A python file was changed that has specific lines referenced  |
+|              | by a ``.rst`` file. If one of the files is not true, its      |
+|              | because you need to merge or rebase origin/master into your   |
+|              | branch.                                                       |
++--------------+---------------------------------------------------------------+
 
 For the tests in the various plugins:
 
