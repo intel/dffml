@@ -12,7 +12,6 @@ from typing import (
     Optional,
     Set,
 )
-from functools import wraps
 from dataclasses import is_dataclass
 from contextlib import asynccontextmanager
 
@@ -170,7 +169,6 @@ class OperationImplementation(BaseDataFlowObject):
         if loading is not None and ":" in loading:
             loaded = next(load_entrypoint(loading))
             loaded = cls._imp(loaded)
-            print(loaded)
             return loaded
         if loading is not None:
             raise FailedToLoadOperationImplementation(
