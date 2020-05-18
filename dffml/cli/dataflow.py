@@ -1,5 +1,6 @@
 import pathlib
 import hashlib
+import inspect
 import contextlib
 
 from ..base import BaseConfig
@@ -82,7 +83,15 @@ class Create(CMD):
         operations = []
         for load_operation in self.operations:
             if ":" in load_operation:
-                operations += list(load(load_operation))
+                ops = []
+                for func in load(load_operation):
+                    new_name = (
+                        f"{inspect.getmodule(func).__name__}:{func.__name__}"
+                    )
+                    if hasattr(func, "op"):
+                        func.op = func.op._replace(name=new_name)
+                    ops.append(func)
+                operations += ops
             else:
                 operations += [Operation.load(load_operation)]
         async with self.config(BaseConfig()) as configloader:

@@ -29,7 +29,7 @@ EXTRAS_REQUIRES = {
         + ("s" if not plugin_type.endswith("s") else "")
     ): [
         "dffml-%s-%s"
-        % (ALTERNATIVES.get(plugin_type, plugin_type), name.replace("_", "-"),)
+        % (ALTERNATIVES.get(plugin_type, plugin_type), name.replace("_", "-"))
         for sub_plugin_type, name in CORE_PLUGINS
         if sub_plugin_type == plugin_type
     ]

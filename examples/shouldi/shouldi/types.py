@@ -16,5 +16,5 @@ class SAResultsSpec(NamedTuple):
 
 
 SA_RESULTS = Definition(
-    name="static_analysis", primitive="string", spec=SAResultsSpec,
+    name="static_analysis", primitive="string", spec=SAResultsSpec
 )

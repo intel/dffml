@@ -17,7 +17,7 @@ def has_package_json(repo: clone_git_repo.op.outputs["repo"].spec):
 DATAFLOW = DataFlow.auto(has_package_json, GetSingle)
 DATAFLOW.seed.append(
     Input(
-        value=[has_package_json.op.outputs["result"].name,],
+        value=[has_package_json.op.outputs["result"].name],
         definition=GetSingle.op.inputs["spec"],
     )
 )

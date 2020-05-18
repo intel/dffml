@@ -363,7 +363,7 @@ class VWContext(ModelContext):
             prediction = self.clf.predict(data[0])
             self.logger.debug(
                 "Predicted Value of {} for {}: {}".format(
-                    self.parent.config.predict.name, data, prediction,
+                    self.parent.config.predict.name, data, prediction
                 )
             )
             target = self.parent.config.predict.name

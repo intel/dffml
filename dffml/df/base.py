@@ -12,6 +12,7 @@ from typing import (
     Optional,
     Set,
 )
+from functools import wraps
 from dataclasses import is_dataclass
 from contextlib import asynccontextmanager
 
@@ -29,6 +30,7 @@ from ..util.cli.arg import Arg
 from ..util.data import get_origin, get_args
 from ..util.asynchelper import context_stacker
 from ..util.entrypoint import base_entry_point
+from ..util.entrypoint import load as load_entrypoint
 
 
 class BaseDataFlowObjectContext(BaseDataFlowFacilitatorObjectContext):
@@ -152,7 +154,7 @@ class OperationImplementation(BaseDataFlowObject):
         return None
 
     @classmethod
-    def load(cls, loading=None):
+    def load(cls, loading: str = None):
         loading_classes = []
         # Load operations
         for i in pkg_resources.iter_entry_points(cls.ENTRYPOINT):
@@ -164,6 +166,12 @@ class OperationImplementation(BaseDataFlowObject):
                 loaded = cls._imp(i.load())
                 if loaded is not None:
                     loading_classes.append(loaded)
+
+        if loading is not None and ":" in loading:
+            loaded = next(load_entrypoint(loading))
+            loaded = cls._imp(loaded)
+            print(loaded)
+            return loaded
         if loading is not None:
             raise FailedToLoadOperationImplementation(
                 "%s was not found in (%s)"
