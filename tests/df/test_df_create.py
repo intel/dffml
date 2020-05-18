@@ -28,12 +28,12 @@ def echo_string(input_string):
 
 class TestDataflowCreate(AsyncTestCase):
     async def test_create_from_path(self):
-        with tempfile.NamedTemporaryFile(suffix=".yaml") as dataflow_file:
+        with tempfile.NamedTemporaryFile(suffix=".json") as dataflow_file:
             dataflow = io.StringIO()
             with contextlib.redirect_stdout(dataflow):
                 await Dataflow.cli(
                     "create",
-                    "-config" "yaml",
+                    "-config" "json",
                     *[f"tests.df.test_df_create:echo_string", "get_single"],
                 )
             dataflow_file.write(dataflow.getvalue().encode())
