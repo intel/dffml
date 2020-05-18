@@ -8,6 +8,8 @@ from shouldi.cli import ShouldI
 from shouldi.rust.cargo_audit import run_cargo_build
 
 from .binaries import (
+    cached_node,
+    cached_target_javascript_algorithms,
     cached_rust,
     cached_cargo_audit,
     cached_target_crates,
