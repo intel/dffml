@@ -41,10 +41,7 @@ class DependencyDB(abc.ABC):
         """
         Update the dependency in the database
         """
-        print(
-            f"Fake save ({self.name}):",
-            dataclasses.replace(dependency, extra={}),
-        )
+        pass
 
     def load(config: str):
         try:
