@@ -6,6 +6,7 @@ Run doctests with
 python -m doctest -v dffml/util/data.py
 """
 import ast
+import uuid
 import types
 import pydoc
 import inspect
@@ -152,7 +153,7 @@ def export_value(obj, key, value):
         export_value(obj[key], "config", value.config)
     elif inspect.isclass(value):
         obj[key] = value.__qualname__
-    elif isinstance(value, pathlib.Path):
+    elif isinstance(value, (pathlib.Path, uuid.UUID)):
         obj[key] = str(value)
     elif hasattr(value, "export"):
         obj[key] = value.export()
