@@ -37,7 +37,7 @@ INSTALL_REQUIRES = [] + (
                     list(
                         map(
                             lambda syspath: os.path.join(
-                                syspath, "dffml_feature_git.egg-link"
+                                syspath, "dffml-feature-git.egg-link"
                             ),
                             sys.path,
                         )
