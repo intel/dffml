@@ -9,6 +9,7 @@ API Reference
     high_level
     record
     base
+    plugins
     log
     noasync
     version
