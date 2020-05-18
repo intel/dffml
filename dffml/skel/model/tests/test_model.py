@@ -2,7 +2,7 @@ import tempfile
 
 from dffml import train, accuracy, predict, Features, Feature, AsyncTestCase
 
-from REPLACE_IMPORT_PACKAGE_NAME.misc import MiscModel, MiscModelConfig
+from REPLACE_IMPORT_PACKAGE_NAME.misc import MiscModel
 
 TRAIN_DATA = [
     [12.4, 11.2],
