@@ -2,6 +2,7 @@
 # Copyright (c) 2019 Intel Corporation
 import sys
 import json
+import uuid
 import enum
 import logging
 import inspect
@@ -45,6 +46,8 @@ class JSONEncoder(json.JSONEncoder):
         typename_lower = str(type(obj)).lower()
         if isinstance(obj, Record):
             return obj.dict()
+        elif isinstance(obj, uuid.UUID):
+            return str(obj)
         elif isinstance(obj, Feature):
             return obj.name
         elif isinstance(obj, enum.Enum):
