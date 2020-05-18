@@ -30,8 +30,7 @@ You can run any of the CI tests with the following docker / podman command.
         -e USER=$USER \
         -v $HOME/.cache/pip:/home/$USER/.cache/pip -w /usr/src/dffml \
         -v $PWD:/usr/src/dffml -w /usr/src/dffml \
-        --entrypoint .ci/docker-entrypoint.sh python:3.7 \
-        ./.ci/run.sh .
+        --entrypoint .ci/docker-entrypoint.sh python:3.7 .
 
 The final argument tells the script which CI test to run. If you give a path,
 such as ``.`` for the main package, or ``model/scikit`` for one of the plugins,
@@ -57,7 +56,7 @@ Options are as follows
 - ``lines``
 
 For example, to run the ``docs`` CI test, the final arguments to the above
-command would be ``./.ci/run/sh docs``
+command would be ``--entrypoint .ci/docker-entrypoint.sh python:3.7 docs``
 
 Debug Logging
 -------------
