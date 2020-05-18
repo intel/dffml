@@ -213,8 +213,13 @@ of ``Misc``.
 
 **tests/test_model.py**
 
-.. literalinclude:: /../dffml/skel/model/tests/test_model.py
-    :lines: 1-5
+.. code-block:: python
+
+    import tempfile
+
+    from dffml import train, accuracy, predict, Features, Feature, AsyncTestCase
+
+    from dffml_model_myslr.misc import MySLRModel
 
 Test data
 ~~~~~~~~~
