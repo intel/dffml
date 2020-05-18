@@ -264,6 +264,19 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                     name, name_list, param.annotation
                 )
 
+        # Definition for return type of a function
+        return_type = inspect.signature(func).return_annotation
+        if return_type not in (None, inspect._empty):
+            name_list = [func.__qualname__, "outputs", "result"]
+            if func.__module__ != "__main__":
+                name_list.insert(0, func.__module__)
+
+            kwargs["outputs"] = {}
+
+            kwargs["outputs"]["result"] = createDefinition(
+                "return type", name_list, return_type
+            )
+
         func.op = Operation(**kwargs)
         func.ENTRY_POINT_NAME = ["operation"]
         cls_name = (
@@ -394,6 +407,9 @@ def createDefinition(name, name_list, param_annotation):
             primitive = "map"
             innerclass = list(get_args(param_annotation))[1]
 
+        if issubclass(type(innerclass), type(Any)):
+            # if the innerclass is Any type ie. Dict[str, Any]
+            return None
         if is_dataclass(innerclass) or bool(
             issubclass(innerclass, tuple) and hasattr(innerclass, "_asdict")
         ):
