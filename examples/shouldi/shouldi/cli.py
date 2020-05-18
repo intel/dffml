@@ -87,5 +87,7 @@ class ShouldI(CMD):
 # We're hiding this in the last lines for now so that we can perserve the
 # operations tutorial as is
 from .use import Use
+from .project.cli import ProjectCMD
 
 ShouldI.use = Use
+ShouldI.project = ProjectCMD
