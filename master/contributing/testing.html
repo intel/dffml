@@ -223,8 +223,7 @@ tests.</p>
     -e <span class="nv">USER</span><span class="o">=</span><span class="nv">$USER</span> <span class="se">\</span>
     -v <span class="nv">$HOME</span>/.cache/pip:/home/<span class="nv">$USER</span>/.cache/pip -w /usr/src/dffml <span class="se">\</span>
     -v <span class="nv">$PWD</span>:/usr/src/dffml -w /usr/src/dffml <span class="se">\</span>
-    --entrypoint .ci/docker-entrypoint.sh python:3.7 <span class="se">\</span>
-    ./.ci/run.sh .
+    --entrypoint .ci/docker-entrypoint.sh python:3.7 .
 </pre></div>
 </div>
 <p>The final argument tells the script which CI test to run. If you give a path,
@@ -244,7 +243,7 @@ seems to have some weird issues, lack of <code class="docutils literal notransla
 <li><p><code class="docutils literal notranslate"><span class="pre">lines</span></code></p></li>
 </ul>
 <p>For example, to run the <code class="docutils literal notranslate"><span class="pre">docs</span></code> CI test, the final arguments to the above
-command would be <code class="docutils literal notranslate"><span class="pre">./.ci/run/sh</span> <span class="pre">docs</span></code></p>
+command would be <code class="docutils literal notranslate"><span class="pre">--entrypoint</span> <span class="pre">.ci/docker-entrypoint.sh</span> <span class="pre">python:3.7</span> <span class="pre">docs</span></code></p>
 </div>
 <div class="section" id="debug-logging">
 <h2>Debug Logging<a class="headerlink" href="#debug-logging" title="Permalink to this headline">¶</a></h2>
