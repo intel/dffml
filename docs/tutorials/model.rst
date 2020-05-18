@@ -213,9 +213,8 @@ of ``Misc``.
 
 **tests/test_model.py**
 
-.. code-block:: python
-
-    from dffml_model_myslr.misc import MySLRModel, MySLRModelConfig
+.. literalinclude:: /../dffml/skel/model/tests/test_model.py
+    :lines: 1-5
 
 Test data
 ~~~~~~~~~
