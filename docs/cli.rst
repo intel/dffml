@@ -90,8 +90,8 @@ Edit records present in a source
 Record
 ~~~~~~
 
-The edit record command drops you into the Python debugger to edit a
-:py:class:`Record <dffml.record.Record>` in any source.
+The edit record command drops you into the Python debugger to edit a :py:class:`Record <dffml.record.Record>`
+in any source manually when a dataflow config file is not provided.
 
 .. note::
 
@@ -150,8 +150,8 @@ All
 
 Update all the records in any source using the :py:class:`DataFlowSource <dffml.source.df.DataFlowSource>`.
 
-For this example, we are using the `edit_feature` operation which multiplies every value in a record by a factor of 10.
-The example dataflow file looks like this:
+For this example, we are using the `multiply` operation which multiplies every value in a record by a 
+factor which is 10 in this case. The example dataflow file looks like this:
 
 .. literalinclude:: /../examples/edit_records.yaml
 
@@ -160,12 +160,12 @@ Create a source file:
 .. code-block:: console
 
     $ cat > data.csv << EOF
-    > Expertise,Salary,Trust,Years
-    > 1,10,0.1,0
-    > 3,20,0.2,1
-    > 5,30,0.3,2
-    > 7,40,0.4,3
-    > EOF
+    Expertise,Salary,Trust,Years
+    1,10,0.1,0
+    3,20,0.2,1
+    5,30,0.3,2
+    7,40,0.4,3
+    EOF
 
 Run the command:
 
@@ -218,8 +218,6 @@ Run the command:
             "key": "3"
         }
     ]
-
-
 
 DataFlow
 --------

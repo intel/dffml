@@ -9,7 +9,7 @@ import pkg_resources
 
 from ..version import VERSION
 from ..record import Record
-from ..source.source import BaseSource
+from ..source.source import BaseSource, SubsetSources
 from ..source.df import DataFlowSource, DataFlowSourceConfig
 from ..configloader.configloader import BaseConfigLoader
 from ..util.packaging import is_develop
@@ -37,70 +37,73 @@ class Version(CMD):
         print(f"dffml version {VERSION} (devmode: {str(devmode)})")
 
 
-class EditAllRecords(SourcesCMD):
-    """
-    Edit all records using operations
-    """
-
+class BaseEditCMD(SourcesCMD):
     arg_dataflow = Arg(
-        "-dataflow", help="File containing exported DataFlow", required=True
+        "-dataflow", help="File containing exported DataFlow", required=False,
     )
     arg_config = Arg(
         "-config",
         help="ConfigLoader to use for importing DataFlow",
+        required=False,
         type=BaseConfigLoader.load,
         default=None,
     )
     arg_features = Arg(
         "-features",
-        help="",
-        required=True,
+        help="Feature definitions of records to update",
+        required=False,
         default=[],
         type=Feature,
         nargs="+",
         action=list_action(Features),
     )
 
-    async def run(self):
-        dataflow_path = pathlib.Path(self.dataflow)
-        config_cls = self.config
-        if config_cls is None:
-            config_type = dataflow_path.suffix.replace(".", "")
-            config_cls = BaseConfigLoader.load(config_type)
-        async with config_cls.withconfig(self.extra_config) as configloader:
-            async with configloader() as loader:
-                exported = await loader.loadb(dataflow_path.read_bytes())
-                dataflow = DataFlow._fromdict(**exported)
+    async def __aenter__(self):
+        await super().__aenter__()
+        if self.dataflow:
+            dataflow_path = pathlib.Path(self.dataflow)
+            config_cls = self.config
+            if config_cls is None:
+                config_type = dataflow_path.suffix.replace(".", "")
+                config_cls = BaseConfigLoader.load(config_type)
+            async with config_cls.withconfig(
+                self.extra_config
+            ) as configloader:
+                async with configloader() as loader:
+                    exported = await loader.loadb(dataflow_path.read_bytes())
+                self.dataflow = DataFlow._fromdict(**exported)
 
-        dataflowsource = DataFlowSource(
-            DataFlowSourceConfig(
-                source=self.sources, dataflow=dataflow, features=self.features,
+            self.sources = DataFlowSource(
+                DataFlowSourceConfig(
+                    source=self.sources,
+                    dataflow=self.dataflow,
+                    features=self.features,
+                )
             )
-        )
-        records = []
-        async with dataflowsource as source:
-            async with source() as dfsctx:
-                async for record in dfsctx.records():
-                    records.append(record)
 
+
+class EditAllRecords(BaseEditCMD, SourcesCMD):
+    """
+    Edit all records using operations
+    """
+
+    async def run(self):
         async with self.sources as src:
             async with src() as sctx:
-                for record in records:
+                async for record in sctx.records():
+                    if not self.dataflow:
+                        pdb.set_trace()
                     await sctx.update(record)
 
 
-class EditRecord(SourcesCMD, KeysCMD):
+class EditRecord(EditAllRecords, KeysCMD):
     """
     Edit each specified record
     """
 
-    async def run(self):
-        async with self.sources as sources:
-            async with sources() as sctx:
-                for key in self.keys:
-                    record = await sctx.record(key)
-                    pdb.set_trace()
-                    await sctx.update(record)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.sources = SubsetSources(*self.sources, keys=self.keys)
 
 
 class Edit(CMD):

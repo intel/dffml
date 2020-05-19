@@ -60,16 +60,3 @@ async def literal_eval(str_to_eval: str):
     """
     value = ast.literal_eval(str_to_eval)
     return {"str_after_eval": value}
-
-
-edit_feature_def = Definition(name="feature_data", primitive="generic")
-
-
-@op(
-    name="edit_feature",
-    inputs={"features": edit_feature_def},
-    outputs={"updated_features": edit_feature_def},
-)
-async def edit_feature(features):
-    value = features * 10
-    return {"updated_features": value}
