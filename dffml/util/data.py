@@ -290,10 +290,16 @@ def parser_helper(value):
     True
     >>> parser_helper("[1, 2, 3]")
     [1, 2, 3]
+    >>> parser_helper("1,2,3")
+    (1, 2, 3)
     >>> parser_helper("hello")
     'hello'
     >>> parser_helper("'on'")
     'on'
+    >>> parser_helper("on,off,feed,face,42")
+    [True, False, 'feed', 'face', 42]
+    >>> parser_helper("list,")
+    ['list']
     """
     if not isinstance(value, str):
         return value
@@ -306,4 +312,6 @@ def parser_helper(value):
     try:
         return ast.literal_eval(value)
     except:
+        if "," in value:
+            return list(map(parser_helper, filter(bool, value.split(","))))
         return value
