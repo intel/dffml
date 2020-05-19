@@ -30,7 +30,6 @@ def load(
     """
     # Push current directory into front of path so we can run things
     # relative to where we are in the shell
-    print("\n\n\n\n\n\n")
     if relative is not None:
         if relative == True:
             relative = os.getcwd()
