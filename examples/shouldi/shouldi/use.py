@@ -15,6 +15,8 @@ from .python.check import check_python
 from .python.analyze import analyze_python
 from .javascript.check import check_javascript
 from .javascript.analyze import analyze_javascript
+from .rust.check import check_rust
+from .rust.analyze import analyze_rust
 
 # Import static analysis result definition
 from .types import SA_RESULTS
@@ -27,6 +29,8 @@ DATAFLOW = DataFlow.auto(
     analyze_python,
     check_javascript,
     analyze_javascript,
+    check_rust,
+    analyze_rust,
     cleanup_git_repo,
     GetSingle,
 )
@@ -41,6 +45,8 @@ for opimp in [
     analyze_python,
     check_javascript,
     analyze_javascript,
+    check_rust,
+    analyze_rust,
 ]:
     DATAFLOW.flow[opimp.op.name].inputs["repo"].append("seed")
 DATAFLOW.update()
