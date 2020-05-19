@@ -306,12 +306,13 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                 )
 
         # Definition for return type of a function
-        return_type = inspect.signature(func).return_annotation
-        if return_type not in (None, inspect._empty):
-            name_list = [func.__qualname__, "outputs", "result"]
-            if func.__module__ != "__main__":
-                name_list.insert(0, func.__module__)
-            if not "outputs" in kwargs:
+        if not "outputs" in kwargs:
+            return_type = inspect.signature(func).return_annotation
+            if return_type not in (None, inspect._empty):
+                name_list = [func.__qualname__, "outputs", "result"]
+                if func.__module__ != "__main__":
+                    name_list.insert(0, func.__module__)
+
                 kwargs["outputs"] = {
                     "result": create_definition(
                         ".".join(name_list), return_type
