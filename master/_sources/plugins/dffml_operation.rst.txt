@@ -1210,6 +1210,73 @@ The following example shows how to use literal_eval.
 
 - str_after_eval: EvaluatedStr(type: generic)
 
+.. _plugin_operation_dffml_multiply:
+
+multiply
+~~~~~~~~
+
+*Official*
+
+Multiply record values
+
+Parameters
+++++++++++
+multiplicand : generic
+    An arithmetic type value.
+multiplier : generic
+    An arithmetic type value.
+
+Returns
++++++++
+dict
+    A dict containing the product.
+
+Examples
+++++++++
+
+The following example shows how to use multiply.
+
+>>> import asyncio
+>>> from dffml import *
+>>> 
+>>> dataflow = DataFlow.auto(multiply, GetSingle)
+>>> dataflow.seed.append(
+...    Input(
+...        value=[multiply.op.outputs["product"].name,],
+...        definition=GetSingle.op.inputs["spec"],
+...    )
+... )
+>>> inputs = [
+...    Input(
+...        value=12,
+...        definition=multiply.op.inputs["multiplicand"],
+...    ),
+...    Input(
+...        value=3,
+...        definition=multiply.op.inputs["multiplier"],
+...    ),
+... ]
+>>> 
+>>> async def main():
+...     async for ctx, results in MemoryOrchestrator.run(dataflow, inputs):
+...         print(results)
+>>> 
+>>> asyncio.run(main())
+{'product': 36}
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- multiplicand: multiplicand_def(type: generic)
+- multiplier: multiplier_def(type: generic)
+
+**Outputs**
+
+- product: product(type: generic)
+
 .. _plugin_operation_dffml_print_output:
 
 print_output
