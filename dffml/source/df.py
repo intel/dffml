@@ -18,7 +18,7 @@ class DataFlowSourceConfig(BaseConfig):
 
 class DataFlowSourceContext(BaseSourceContext):
     async def update(self, record: Record):
-        self.sctx.update(record)
+        await self.sctx.update(record)
 
     async def records(self) -> AsyncIterator[Record]:
         async for record in self.sctx.records():
