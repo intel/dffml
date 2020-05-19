@@ -7,10 +7,10 @@ from .check import check_javascript
 from ..types import SA_RESULTS
 
 
-DATAFLOW = DataFlow.auto(run_npm_audit, GetSingle)
+DATAFLOW = DataFlow.auto(run_npm_audit, GetSingle,)
 DATAFLOW.seed.append(
     Input(
-        value=[run_npm_audit.op.outputs["report"].name],
+        value=[run_npm_audit.op.outputs["report"].name,],
         definition=GetSingle.op.inputs["spec"],
     )
 )

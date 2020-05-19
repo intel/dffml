@@ -2,7 +2,7 @@ import asyncio
 from dffml import *
 
 slr_model = SLRModel(
-    features=Features(Feature("Years", int, 1)),
+    features=Features(Feature("Years", int, 1),),
     predict=Feature("Salary", int, 1),
 )
 

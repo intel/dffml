@@ -3,7 +3,7 @@ from dffml.noasync import train, accuracy, predict
 from dffml_model_scratch.logisticregression import LogisticRegression
 
 model = LogisticRegression(
-    features=Features(Feature("f1", float, 1)), predict=Feature("ans", int, 1)
+    features=Features(Feature("f1", float, 1)), predict=Feature("ans", int, 1),
 )
 
 # Train the model

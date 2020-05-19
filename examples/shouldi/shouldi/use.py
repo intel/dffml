@@ -31,7 +31,7 @@ DATAFLOW = DataFlow.auto(
     GetSingle,
 )
 DATAFLOW.seed.append(
-    Input(value=[SA_RESULTS.name], definition=GetSingle.op.inputs["spec"])
+    Input(value=[SA_RESULTS.name,], definition=GetSingle.op.inputs["spec"],)
 )
 
 # Allow for directory to be provided by user instead of the result of cloning a

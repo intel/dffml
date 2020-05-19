@@ -17,7 +17,7 @@ def has_setup_py(repo: clone_git_repo.op.outputs["repo"].spec):
 DATAFLOW_ID_PYTHON = DataFlow.auto(has_setup_py, GetSingle)
 DATAFLOW_ID_PYTHON.seed.append(
     Input(
-        value=[has_setup_py.op.outputs["result"].name],
+        value=[has_setup_py.op.outputs["result"].name,],
         definition=GetSingle.op.inputs["spec"],
     )
 )
