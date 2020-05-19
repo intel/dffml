@@ -23,7 +23,7 @@ class TestCLIUse(AsyncTestCase):
     @cached_node
     @cached_target_javascript_algorithms
     async def test_use_javascript(self, node, javascript_algo):
-        with prepend_to_path(node / "node-v14.2.0-linux-x64" / "bin"):
+        with prepend_to_path(node / "node-v14.2.0-linux-x64" / "bin",):
             with patch("sys.stdout", new_callable=io.StringIO) as stdout:
                 await ShouldI.cli(
                     "use",

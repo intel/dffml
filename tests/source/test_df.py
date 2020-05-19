@@ -62,7 +62,7 @@ TEST_DATAFLOW1 = DataFlow(
                 "features": [
                     {"seed": ["Years", "Expertise", "Trust", "Salary"]}
                 ]
-            }
+            },
         ),
         "associate_definition": InputFlow(inputs={"spec": ["seed"]}),
     },
@@ -102,7 +102,7 @@ class TestDataFlowSource(AsyncTestCase):
 
     def config(self, source, dataflow, features):
         return DataFlowSourceConfig(
-            source=source, dataflow=dataflow, features=features
+            source=source, dataflow=dataflow, features=features,
         )
 
     def setUpSource(self):
