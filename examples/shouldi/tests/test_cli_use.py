@@ -68,4 +68,4 @@ class TestCLIUse(AsyncTestCase):
                     ),
                 )
             output = stdout.getvalue()
-            self.assertEqual("high=2", output)
+            self.assertIn("high=2", output)
