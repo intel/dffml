@@ -1,18 +1,19 @@
 import io
+import json
 import pathlib
 import tempfile
 import contextlib
 
-from dffml.cli import Dataflow
-from dffml.util.asynctestcase import AsyncTestCase
+from dffml.cli.cli import CLI
 from dffml import (
     DataFlow,
     Definition,
     Input,
     op,
-    ConfigLoaders,
-    MemoryOrchestrator,
+    run,
     GetSingle,
+    chdir,
+    AsyncTestCase,
 )
 
 OP_DEF_STRING = """
@@ -29,66 +30,58 @@ def echo_string(input_string):
 
 """
 
+
 class TestDataflowCreate(AsyncTestCase):
     async def test_create_from_path(self):
-        # creates temp_dir in file path and writes op to ops.py
-        with tempfile.TemporaryDirectory(dir = pathlib.Path(__file__).parent) as tmpdirname:
-            operation_file_path = pathlib.Path(tmpdirname,"ops.py")
-            with open( operation_file_path , 'w+'  ) as operation_file:
-                operation_file.write(OP_DEF_STRING)
-
-            operation_qualname = f"tests.df.{pathlib.Path(tmpdirname).name}.ops:echo_string"
-            dataflow_file_path = pathlib.Path(tmpdirname,"dataflow.json")
-
-            #   dffml dataflow create -config json \
-            #          tests.dt.tmpname.ops:echo_string get_single
-            #           > ./tmpname/dataflow.json
-            with open(dataflow_file_path,'wb+') as dataflow_file:
-                dataflow = io.StringIO()
-                with contextlib.redirect_stdout(dataflow):
-                    await Dataflow.cli(
-                        "create",
-                        "-config" "json",
-                        *[operation_qualname, "get_single"],
-                    )
-                dataflow_file.write(dataflow.getvalue().encode())
-                dataflow_file.seek(0)
-
-            # loading dataflow from config file
-            async with ConfigLoaders() as cfgl:
-                _, test_dataflow = await cfgl.load_file(
-                    filepath=dataflow_file.name
-                )
-                test_dataflow = DataFlow._fromdict(**test_dataflow)
-
-            self.assertIn(
-                operation_qualname, test_dataflow.operations
-            )
-
-            input_string_def = test_dataflow.operations[
-                operation_qualname
-            ].inputs["input_string"]
-
-            test_dataflow.seed.append(
-                Input(
-                    value=[input_string_def.name],
-                    definition=GetSingle.op.inputs["spec"],
-                )
-            )
-            test_inputs = {
-                "TestDataFlowCreate": [
-                    Input(
-                        value="Irregular at magic school",
-                        definition=test_dataflow.operations[
-                            operation_qualname
-                        ].inputs["input_string"],
-                    )
-                ]
-            }
-            async with MemoryOrchestrator.withconfig({}) as orchestrator:
-                async with orchestrator(test_dataflow) as octx:
-                    async for ctx_str, results in octx.run(test_inputs):
-                        self.assertIn("InputString", results)
-                        self.assertEqual(
-                            results["InputString"], "Irregular at magic school"
+        # Create temp dir and write op to ops.py
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            # Change directory into the tempdir
+            with chdir(tmpdirname):
+                # Write out op to op.py
+                operation_file_path = pathlib.Path(tmpdirname, "ops.py")
+                operation_file_path.write_text(OP_DEF_STRING)
+                # We make the name the path relative to our cwd
+                operation_qualname = "ops:echo_string"
+                dataflow_file_path = pathlib.Path(tmpdirname, "dataflow.json")
+                # $ dffml dataflow create -config json \
+                #    tests.dt.tmpname.ops:echo_string get_single
+                with io.StringIO() as dataflow:
+                    with contextlib.redirect_stdout(dataflow):
+                        await CLI.cli(
+                            "dataflow",
+                            "create",
+                            *[operation_qualname, "get_single"],
                         )
+                    test_dataflow = DataFlow._fromdict(
+                        **json.loads(dataflow.getvalue())
+                    )
+                # Make sure the operation is in the dataflow
+                self.assertIn(operation_qualname, test_dataflow.operations)
+                # Use GetSingle to grab the output from the operation, this
+                # makes sure it ran
+                test_dataflow.seed.append(
+                    Input(
+                        value=[
+                            test_dataflow.operations[operation_qualname]
+                            .outputs["output_string"]
+                            .name
+                        ],
+                        definition=GetSingle.op.inputs["spec"],
+                    )
+                )
+                # Run the dataflow
+                async for ctx_str, results in run(
+                    test_dataflow,
+                    [
+                        Input(
+                            value="Irregular at magic school",
+                            definition=test_dataflow.operations[
+                                operation_qualname
+                            ].inputs["input_string"],
+                        )
+                    ],
+                ):
+                    self.assertIn("OutputString", results)
+                    self.assertEqual(
+                        results["OutputString"], "Irregular at magic school",
+                    )

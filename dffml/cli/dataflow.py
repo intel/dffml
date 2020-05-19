@@ -84,7 +84,7 @@ class Create(CMD):
         for load_operation in self.operations:
             if ":" in load_operation:
                 ops = []
-                for func in load(load_operation,relative = True):
+                for func in load(load_operation, relative=True):
                     new_name = (
                         f"{inspect.getmodule(func).__name__}:{func.__name__}"
                     )

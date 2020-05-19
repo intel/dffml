@@ -167,7 +167,7 @@ class OperationImplementation(BaseDataFlowObject):
                     loading_classes.append(loaded)
         # Loading from entrypoint if ":" is in name
         if loading is not None and ":" in loading:
-            loaded = next(load_entrypoint(loading,relative = True))
+            loaded = next(load_entrypoint(loading, relative=True))
             loaded = cls._imp(loaded)
             return loaded
         if loading is not None:
