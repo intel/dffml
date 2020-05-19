@@ -122,6 +122,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#get-single">get_single</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#group-by">group_by</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#literal-eval">literal_eval</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multiply">multiply</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#print-output">print_output</a></li>
 </ul>
 </li>
@@ -1368,19 +1369,83 @@ been returned to us.</p>
 </ul>
 </div>
 </div>
+<div class="section" id="multiply">
+<span id="plugin-operation-dffml-multiply"></span><h3>multiply<a class="headerlink" href="#multiply" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Multiply record values</p>
+<div class="section" id="id34">
+<h4>Parameters<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>multiplicand<span class="classifier">generic</span></dt><dd><p>An arithmetic type value.</p>
+</dd>
+<dt>multiplier<span class="classifier">generic</span></dt><dd><p>An arithmetic type value.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id35">
+<h4>Returns<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h4>
+<dl class="simple">
+<dt>dict</dt><dd><p>A dict containing the product.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id36">
+<h4>Examples<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h4>
+<p>The following example shows how to use multiply.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">multiply</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>       <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">multiply</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;product&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,],</span>
+<span class="gp">... </span>       <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>   <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>   <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>       <span class="n">value</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+<span class="gp">... </span>       <span class="n">definition</span><span class="o">=</span><span class="n">multiply</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;multiplicand&quot;</span><span class="p">],</span>
+<span class="gp">... </span>   <span class="p">),</span>
+<span class="gp">... </span>   <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>       <span class="n">value</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span>       <span class="n">definition</span><span class="o">=</span><span class="n">multiply</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;multiplier&quot;</span><span class="p">],</span>
+<span class="gp">... </span>   <span class="p">),</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;product&#39;: 36}</span>
+</pre></div>
+</div>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>multiplicand: multiplicand_def(type: generic)</p></li>
+<li><p>multiplier: multiplier_def(type: generic)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>product: product(type: generic)</p></li>
+</ul>
+</div>
+</div>
 <div class="section" id="print-output">
 <span id="plugin-operation-dffml-print-output"></span><h3>print_output<a class="headerlink" href="#print-output" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Print the output on stdout using python print()</p>
-<div class="section" id="id34">
-<h4>Parameters<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id37">
+<h4>Parameters<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>data<span class="classifier">Any</span></dt><dd><p>A python literal to be printed.</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="id35">
-<h4>Examples<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id38">
+<h4>Examples<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows how to use print_output.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>

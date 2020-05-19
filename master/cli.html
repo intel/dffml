@@ -108,7 +108,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#prediction">Prediction</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#edit">Edit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#edit">Edit</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#record">Record</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#all">All</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#dataflow">DataFlow</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#create">Create</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#merge">Merge</a></li>
@@ -315,8 +319,11 @@ more details on this.</p>
 </div>
 <div class="section" id="edit">
 <h2>Edit<a class="headerlink" href="#edit" title="Permalink to this headline">¶</a></h2>
-<p>The edit command drops you into the Python debugger to edit a
-<a class="reference internal" href="api/record.html#dffml.record.Record" title="dffml.record.Record"><code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code></a> in any source.</p>
+<p>Edit records present in a source</p>
+<div class="section" id="record">
+<h3>Record<a class="headerlink" href="#record" title="Permalink to this headline">¶</a></h3>
+<p>The edit record command drops you into the Python debugger to edit a <a class="reference internal" href="api/record.html#dffml.record.Record" title="dffml.record.Record"><code class="xref py py-class docutils literal notranslate"><span class="pre">Record</span></code></a>
+in any source manually when a dataflow config file is not provided.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Be sure to check the <a class="reference internal" href="plugins/dffml_source.html"><span class="doc">Sources</span></a> plugin page to see if the
@@ -330,7 +337,7 @@ another flag such as <code class="docutils literal notranslate"><span class="pre
 <span class="gp">&gt;</span><span class="s"> three,image3.mnistpng</span>
 <span class="gp">&gt;</span><span class="s"> two,image4.mnistpng</span>
 <span class="gp">&gt;</span><span class="s"> EOF</span>
-<span class="gp">$</span> dffml edit -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename image.csv -source-readwrite -keys three
+<span class="gp">$</span> dffml edit record -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename image.csv -source-readwrite -keys three
 <span class="gp">&gt;</span> /home/user/Documents/python/dffml/dffml/cli/cli.py<span class="o">(</span><span class="m">45</span><span class="o">)</span>run<span class="o">()</span>
 <span class="go">-&gt; await sctx.update(record)</span>
 <span class="gp gp-VirtualEnv">(Pdb)</span> <span class="go">record.data.features[&quot;image&quot;] += &quot;FEEDFACE&quot;</span>
@@ -367,6 +374,132 @@ another flag such as <code class="docutils literal notranslate"><span class="pre
 <span class="go">    }</span>
 <span class="go">]</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="all">
+<h3>All<a class="headerlink" href="#all" title="Permalink to this headline">¶</a></h3>
+<p>Update all the records in any source using the <a class="reference internal" href="api/source/df.html#dffml.source.df.DataFlowSource" title="dffml.source.df.DataFlowSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFlowSource</span></code></a>.</p>
+<p>For this example, we are using the <cite>multiply</cite> operation which multiplies every value in a record by a
+factor which is 10 in this case. The example dataflow file looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">definitions</span><span class="p">:</span>
+  <span class="n">multiplicand_def</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">multiplicand_def</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">generic</span>
+  <span class="n">multiplier_def</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">multiplier_def</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">generic</span>
+  <span class="n">product_def</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">product</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">generic</span>
+  <span class="n">associate_spec</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">associate_spec</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+  <span class="n">associate_output</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">associate_output</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+<span class="n">flow</span><span class="p">:</span>
+  <span class="n">multiply</span><span class="p">:</span>
+    <span class="n">inputs</span><span class="p">:</span>
+      <span class="n">multiplicand</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">seed</span><span class="p">:</span>
+        <span class="o">-</span> <span class="n">Years</span>
+        <span class="o">-</span> <span class="n">Expertise</span>
+        <span class="o">-</span> <span class="n">Trust</span>
+        <span class="o">-</span> <span class="n">Salary</span>
+      <span class="n">multiplier</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">seed</span>
+  <span class="n">associate_definition</span><span class="p">:</span>
+    <span class="n">inputs</span><span class="p">:</span>
+      <span class="n">spec</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">seed</span>
+<span class="n">linked</span><span class="p">:</span> <span class="n">true</span>
+<span class="n">operations</span><span class="p">:</span>
+  <span class="n">multiply</span><span class="p">:</span>
+    <span class="n">inputs</span><span class="p">:</span>
+      <span class="n">multiplicand</span><span class="p">:</span> <span class="n">multiplicand_def</span>
+      <span class="n">multiplier</span><span class="p">:</span> <span class="n">multiplier_def</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">multiply</span>
+    <span class="n">outputs</span><span class="p">:</span>
+      <span class="n">product</span><span class="p">:</span> <span class="n">product_def</span>
+    <span class="n">stage</span><span class="p">:</span> <span class="n">processing</span>
+  <span class="n">associate_definition</span><span class="p">:</span>
+    <span class="n">inputs</span><span class="p">:</span>
+      <span class="n">spec</span><span class="p">:</span> <span class="n">associate_spec</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">associate_definition</span>
+    <span class="n">outputs</span><span class="p">:</span>
+      <span class="n">output</span><span class="p">:</span> <span class="n">associate_output</span>
+    <span class="n">stage</span><span class="p">:</span> <span class="n">output</span>
+<span class="n">seed</span><span class="p">:</span>
+  <span class="o">-</span> <span class="n">definition</span><span class="p">:</span> <span class="n">associate_spec</span>
+    <span class="n">value</span><span class="p">:</span>
+      <span class="n">Years</span><span class="p">:</span> <span class="n">product</span>
+      <span class="n">Expertise</span><span class="p">:</span> <span class="n">product</span>
+      <span class="n">Trust</span><span class="p">:</span> <span class="n">product</span>
+      <span class="n">Salary</span><span class="p">:</span> <span class="n">product</span>
+  <span class="o">-</span> <span class="n">definition</span><span class="p">:</span> <span class="n">multiplier_def</span>
+    <span class="n">value</span><span class="p">:</span> <span class="mi">10</span>
+</pre></div>
+</div>
+<p>Create a source file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; data.csv &lt;&lt; EOF
+<span class="go">Expertise,Salary,Trust,Years</span>
+<span class="go">1,10,0.1,0</span>
+<span class="go">3,20,0.2,1</span>
+<span class="go">5,30,0.3,2</span>
+<span class="go">7,40,0.4,3</span>
+<span class="go">EOF</span>
+</pre></div>
+</div>
+<p>Run the command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml edit all <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename data.csv -source-readwrite <span class="se">\</span>
+    -features Years:int:1 Expertise:int:1 Trust:float:1 Salary:int:1 <span class="se">\</span>
+    -dataflow edit_records.yaml
+<span class="gp">$</span> dffml list records -sources <span class="nv">f</span><span class="o">=</span>csv -source-filename data.csv
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;Expertise&quot;: 10,</span>
+<span class="go">            &quot;Salary&quot;: 100,</span>
+<span class="go">            &quot;Trust&quot;: 1.0,</span>
+<span class="go">            &quot;Years&quot;: 0</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;0&quot;</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;Expertise&quot;: 30,</span>
+<span class="go">            &quot;Salary&quot;: 200,</span>
+<span class="go">            &quot;Trust&quot;: 2.0,</span>
+<span class="go">            &quot;Years&quot;: 10</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;1&quot;</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;Expertise&quot;: 50,</span>
+<span class="go">            &quot;Salary&quot;: 300,</span>
+<span class="go">            &quot;Trust&quot;: 3.0,</span>
+<span class="go">            &quot;Years&quot;: 20</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;2&quot;</span>
+<span class="go">    },</span>
+<span class="go">    {</span>
+<span class="go">        &quot;extra&quot;: {},</span>
+<span class="go">        &quot;features&quot;: {</span>
+<span class="go">            &quot;Expertise&quot;: 70,</span>
+<span class="go">            &quot;Salary&quot;: 400,</span>
+<span class="go">            &quot;Trust&quot;: 4.0,</span>
+<span class="go">            &quot;Years&quot;: 30</span>
+<span class="go">        },</span>
+<span class="go">        &quot;key&quot;: &quot;3&quot;</span>
+<span class="go">    }</span>
+<span class="go">]</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="dataflow">
