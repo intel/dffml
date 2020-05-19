@@ -182,6 +182,47 @@ class OperationImplementation(BaseDataFlowObject):
         return loading_classes
 
 
+def create_definition(name, param_annotation):
+    if param_annotation in primitive_types:
+        return Definition(
+            name=name,
+            primitive=primitive_convert.get(
+                param_annotation, param_annotation.__name__
+            ),
+        )
+    elif (
+        get_origin(param_annotation) is list
+        or get_origin(param_annotation) is dict
+    ):
+        # If the annotation are of the form List[MyDataClass] or Dict[Any, MyDataClass]
+        if get_origin(param_annotation) is list:
+            primitive = "array"
+            innerclass = list(get_args(param_annotation))[0]
+        else:
+            primitive = "map"
+            innerclass = list(get_args(param_annotation))[1]
+
+        if issubclass(type(innerclass), type(Any)):
+            # if the innerclass is Any type ie. Dict[str, Any]
+            return None
+        if is_dataclass(innerclass) or bool(
+            issubclass(innerclass, tuple) and hasattr(innerclass, "_asdict")
+        ):
+            return Definition(
+                name=name, primitive=primitive, spec=innerclass, subspec=True,
+            )
+    elif is_dataclass(param_annotation) or bool(
+        issubclass(param_annotation, tuple)
+        and hasattr(param_annotation, "_asdict")
+    ):
+        # If the annotation is either a dataclass or namedtuple
+        return Definition(name=name, primitive="map", spec=param_annotation,)
+    else:
+        raise OpCouldNotDeterminePrimitive(
+            f"The primitive of {name} could not be determined"
+        )
+
+
 def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
     """
     The ``op`` decorator creates a subclass of
@@ -260,8 +301,8 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                 if func.__module__ != "__main__":
                     name_list.insert(0, func.__module__)
 
-                kwargs["inputs"][name] = createDefinition(
-                    name, name_list, param.annotation
+                kwargs["inputs"][name] = create_definition(
+                    ".".join(name_list), param.annotation
                 )
 
         # Definition for return type of a function
@@ -271,11 +312,9 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
             if func.__module__ != "__main__":
                 name_list.insert(0, func.__module__)
 
-            kwargs["outputs"] = {}
-
-            kwargs["outputs"]["result"] = createDefinition(
-                "return type", name_list, return_type
-            )
+            kwargs["outputs"] = {
+                "result": create_definition(".".join(name_list), return_type)
+            }
 
         func.op = Operation(**kwargs)
         func.ENTRY_POINT_NAME = ["operation"]
@@ -385,52 +424,6 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
         return wrap(args[0])
 
     return wrap
-
-
-def createDefinition(name, name_list, param_annotation):
-    if param_annotation in primitive_types:
-        return Definition(
-            name=".".join(name_list),
-            primitive=primitive_convert.get(
-                param_annotation, param_annotation.__name__
-            ),
-        )
-    elif (
-        get_origin(param_annotation) is list
-        or get_origin(param_annotation) is dict
-    ):
-        # If the annotation are of the form List[MyDataClass] or Dict[Any, MyDataClass]
-        if get_origin(param_annotation) is list:
-            primitive = "array"
-            innerclass = list(get_args(param_annotation))[0]
-        else:
-            primitive = "map"
-            innerclass = list(get_args(param_annotation))[1]
-
-        if issubclass(type(innerclass), type(Any)):
-            # if the innerclass is Any type ie. Dict[str, Any]
-            return None
-        if is_dataclass(innerclass) or bool(
-            issubclass(innerclass, tuple) and hasattr(innerclass, "_asdict")
-        ):
-            return Definition(
-                name=".".join(name_list),
-                primitive=primitive,
-                spec=innerclass,
-                subspec=True,
-            )
-    elif is_dataclass(param_annotation) or bool(
-        issubclass(param_annotation, tuple)
-        and hasattr(param_annotation, "_asdict")
-    ):
-        # If the annotation is either a dataclass or namedtuple
-        return Definition(
-            name=".".join(name_list), primitive="map", spec=param_annotation,
-        )
-    else:
-        raise OpCouldNotDeterminePrimitive(
-            f"The primitive of {name} could not be determined"
-        )
 
 
 def opimp_name(item):
