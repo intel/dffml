@@ -311,10 +311,12 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
             name_list = [func.__qualname__, "outputs", "result"]
             if func.__module__ != "__main__":
                 name_list.insert(0, func.__module__)
-
-            kwargs["outputs"] = {
-                "result": create_definition(".".join(name_list), return_type)
-            }
+            if not "outputs" in kwargs:
+                kwargs["outputs"] = {
+                    "result": create_definition(
+                        ".".join(name_list), return_type
+                    )
+                }
 
         func.op = Operation(**kwargs)
         func.ENTRY_POINT_NAME = ["operation"]
