@@ -215,12 +215,6 @@ class Operation(NamedTuple, Entrypoint):
                 return i.load()
             else:
                 loading_classes.append(loaded)
-        # Loading from entrypoint if ":" is in name
-        if loading is not None and ":" in loading:
-            loaded = next(load_entrypoint(loading, relative=True))
-            loaded = cls._imp(loaded)
-            return loaded
-
         if loading is not None:
             raise KeyError(
                 "%s was not found in (%s)"
