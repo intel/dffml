@@ -330,6 +330,8 @@ given.</p></li>
 <li><p>All feature.type() and feature.lenght() are substituted with
 feature.type and feature.length</p></li>
 <li><p>FileSource takes pathlib.Path as filename</p></li>
+<li><p>Tensorflow tests re-run themselves up to 6 times to stop them from failing the
+CI due to their randomly initialized weights making them fail ~2% of the time</p></li>
 </ul>
 </div>
 <div class="section" id="fixed">
