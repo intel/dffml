@@ -205,7 +205,9 @@ def create_definition(name, param_annotation):
         if innerclass in primitive_types:
             return Definition(name=name, primitive=primitive)
         if is_dataclass(innerclass) or bool(
-            inspect.isclass(param_annotation) and issubclass(innerclass, tuple) and hasattr(innerclass, "_asdict")
+            inspect.isclass(param_annotation)
+            and issubclass(innerclass, tuple)
+            and hasattr(innerclass, "_asdict")
         ):
             return Definition(
                 name=name, primitive=primitive, spec=innerclass, subspec=True,
