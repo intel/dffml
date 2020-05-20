@@ -179,6 +179,7 @@
   <h1>Source code for dffml.cli.dataflow</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
 
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">BaseConfig</span>
@@ -256,17 +257,37 @@
         <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="n">arg_seed</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
+        <span class="s2">&quot;-seed&quot;</span><span class="p">,</span>
+        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="n">ParseInputsAction</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Inputs to be added to every context&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">operations</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">load_operation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">operations</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;:&quot;</span> <span class="ow">in</span> <span class="n">load_operation</span><span class="p">:</span>
-                <span class="n">operations</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">load</span><span class="p">(</span><span class="n">load_operation</span><span class="p">))</span>
+                <span class="n">ops</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">load</span><span class="p">(</span><span class="n">load_operation</span><span class="p">,</span> <span class="n">relative</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                    <span class="n">new_name</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">inspect</span><span class="o">.</span><span class="n">getmodule</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="s2">&quot;op&quot;</span><span class="p">):</span>
+                        <span class="n">func</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">new_name</span><span class="p">)</span>
+                    <span class="n">ops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+                <span class="n">operations</span> <span class="o">+=</span> <span class="n">ops</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">operations</span> <span class="o">+=</span> <span class="p">[</span><span class="n">Operation</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">load_operation</span><span class="p">)]</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">())</span> <span class="k">as</span> <span class="n">configloader</span><span class="p">:</span>
             <span class="k">async</span> <span class="k">with</span> <span class="n">configloader</span><span class="p">()</span> <span class="k">as</span> <span class="n">loader</span><span class="p">:</span>
                 <span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="o">*</span><span class="n">operations</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">val</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">dataflow</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="n">def_name</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">val</span><span class="p">,</span> <span class="n">def_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span>
+                <span class="p">]</span>
+                <span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
                 <span class="n">exported</span> <span class="o">=</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">linked</span><span class="o">=</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">not_linked</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">((</span><span class="k">await</span> <span class="n">loader</span><span class="o">.</span><span class="n">dumpb</span><span class="p">(</span><span class="n">exported</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
 
