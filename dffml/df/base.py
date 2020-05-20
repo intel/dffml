@@ -190,6 +190,9 @@ def create_definition(name, param_annotation):
                 param_annotation, param_annotation.__name__
             ),
         )
+    elif get_origin(param_annotation) is Union:
+        # If the annotation is of the form Optional
+        return create_definition(name, list(get_args(param_annotation))[0])
     elif (
         get_origin(param_annotation) is list
         or get_origin(param_annotation) is dict
