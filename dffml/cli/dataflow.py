@@ -83,7 +83,7 @@ class Create(CMD):
         nargs="+",
         action=ParseInputsAction,
         default=[],
-        help="Inputs to be run in every context"
+        help="Inputs to be run in every context",
     )
 
     async def run(self):
@@ -105,12 +105,9 @@ class Create(CMD):
             async with configloader() as loader:
                 dataflow = DataFlow.auto(*operations)
                 self.seed = [
-                        Input(
-                            value = val,
-                            definition = dataflow.definitions[def_name]
-                        )
-                        for val,def_name in self.seed
-                    ]
+                    Input(value=val, definition=dataflow.definitions[def_name])
+                    for val, def_name in self.seed
+                ]
                 dataflow.seed.extend(self.seed)
                 exported = dataflow.export(linked=not self.not_linked)
                 print((await loader.dumpb(exported)).decode())
