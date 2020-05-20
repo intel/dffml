@@ -202,9 +202,8 @@ def create_definition(name, param_annotation):
             primitive = "map"
             innerclass = list(get_args(param_annotation))[1]
 
-        if issubclass(type(innerclass), type(Any)):
-            # if the innerclass is Any type ie. Dict[str, Any]
-            return None
+        if innerclass in primitive_types:
+            return Definition(name=name, primitive=primitive)
         if is_dataclass(innerclass) or bool(
             issubclass(innerclass, tuple) and hasattr(innerclass, "_asdict")
         ):
@@ -217,10 +216,10 @@ def create_definition(name, param_annotation):
     ):
         # If the annotation is either a dataclass or namedtuple
         return Definition(name=name, primitive="map", spec=param_annotation,)
-    else:
-        raise OpCouldNotDeterminePrimitive(
-            f"The primitive of {name} could not be determined"
-        )
+
+    raise OpCouldNotDeterminePrimitive(
+        f"The primitive of {name} could not be determined"
+    )
 
 
 def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
