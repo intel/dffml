@@ -722,10 +722,10 @@ instance named after the respective key.</p>
 <span class="gp">... </span>    <span class="p">],</span>
 <span class="gp">... </span>    <span class="n">definition</span><span class="o">=</span><span class="n">cannotVote</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">],</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="go">Input(value=[Person(name=&#39;Bob&#39;, age=20), Person(name=&#39;Mark&#39;, age=21), Person(name=&#39;Alice&#39;, age=90)], definition=cannotVote.p)</span>
+<span class="go">Input(value=[Person(name=&#39;Bob&#39;, age=20), Person(name=&#39;Mark&#39;, age=21), Person(name=&#39;Alice&#39;, age=90)], definition=cannotVote.inputs.p)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nd">@op</span>
-<span class="gp">... </span><span class="k">def</span> <span class="nf">canVote</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Person</span><span class="p">]):</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">canVote</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Person</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Person</span><span class="p">]:</span>
 <span class="gp">... </span>    <span class="k">return</span> <span class="p">{</span>
 <span class="gp">... </span>        <span class="n">person</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">person</span>
 <span class="gp">... </span>        <span class="k">for</span> <span class="n">person</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">person</span><span class="p">:</span> <span class="n">person</span><span class="o">.</span><span class="n">age</span> <span class="o">&gt;=</span> <span class="mi">18</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
@@ -740,7 +740,17 @@ instance named after the respective key.</p>
 <span class="gp">... </span>    <span class="p">},</span>
 <span class="gp">... </span>    <span class="n">definition</span><span class="o">=</span><span class="n">canVote</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;p&quot;</span><span class="p">],</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="go">Input(value={&#39;Bob&#39;: Person(name=&#39;Bob&#39;, age=19), &#39;Alice&#39;: Person(name=&#39;Alice&#39;, age=21), &#39;Mark&#39;: Person(name=&#39;Mark&#39;, age=90)}, definition=canVote.p)</span>
+<span class="go">Input(value={&#39;Bob&#39;: Person(name=&#39;Bob&#39;, age=19), &#39;Alice&#39;: Person(name=&#39;Alice&#39;, age=21), &#39;Mark&#39;: Person(name=&#39;Mark&#39;, age=90)}, definition=canVote.inputs.p)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">value</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;Bob&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">19</span><span class="p">},</span>
+<span class="gp">... </span>        <span class="s2">&quot;Alice&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">21</span><span class="p">},</span>
+<span class="gp">... </span>        <span class="s2">&quot;Mark&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mark&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">90</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">definition</span><span class="o">=</span><span class="n">canVote</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">],</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">Input(value={&#39;Bob&#39;: Person(name=&#39;Bob&#39;, age=19), &#39;Alice&#39;: Person(name=&#39;Alice&#39;, age=21), &#39;Mark&#39;: Person(name=&#39;Mark&#39;, age=90)}, definition=canVote.outputs.result)</span>
 </pre></div>
 </div>
 </dd></dl>
