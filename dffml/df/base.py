@@ -205,13 +205,14 @@ def create_definition(name, param_annotation):
         if innerclass in primitive_types:
             return Definition(name=name, primitive=primitive)
         if is_dataclass(innerclass) or bool(
-            issubclass(innerclass, tuple) and hasattr(innerclass, "_asdict")
+            inspect.isclass(param_annotation) and issubclass(innerclass, tuple) and hasattr(innerclass, "_asdict")
         ):
             return Definition(
                 name=name, primitive=primitive, spec=innerclass, subspec=True,
             )
     elif is_dataclass(param_annotation) or bool(
-        issubclass(param_annotation, tuple)
+        inspect.isclass(param_annotation)
+        and issubclass(param_annotation, tuple)
         and hasattr(param_annotation, "_asdict")
     ):
         # If the annotation is either a dataclass or namedtuple
