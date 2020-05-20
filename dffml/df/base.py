@@ -206,7 +206,7 @@ def create_definition(name, param_annotation):
             # if the innerclass is Any type ie. Dict[str, Any]
             return None
         if is_dataclass(innerclass) or bool(
-            issubclass(innerclass, tuple) and hasattr(innerclass, "_asdict")
+            inspect.isclass(param_annotation) and issubclass(innerclass, tuple) and hasattr(innerclass, "_asdict")
         ):
             return Definition(
                 name=name, primitive=primitive, spec=innerclass, subspec=True,
