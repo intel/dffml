@@ -32,6 +32,13 @@ from ..util.entrypoint import base_entry_point
 from ..util.entrypoint import load as load_entrypoint
 
 
+primitive_types = (int, float, str, bool, dict, list)
+# Used to convert python types in to their programming language agnostic
+# names
+# TODO Combine with logic in dffml.util.data
+primitive_convert = {dict: "map", list: "array"}
+
+
 class BaseDataFlowObjectContext(BaseDataFlowFacilitatorObjectContext):
     """
     Data Flow Object Contexts are instantiated by being passed their
@@ -181,6 +188,52 @@ class OperationImplementation(BaseDataFlowObject):
         return loading_classes
 
 
+def create_definition(name, param_annotation):
+    if param_annotation in primitive_types:
+        return Definition(
+            name=name,
+            primitive=primitive_convert.get(
+                param_annotation, param_annotation.__name__
+            ),
+        )
+    elif get_origin(param_annotation) is Union:
+        # If the annotation is of the form Optional
+        return create_definition(name, list(get_args(param_annotation))[0])
+    elif (
+        get_origin(param_annotation) is list
+        or get_origin(param_annotation) is dict
+    ):
+        # If the annotation are of the form List[MyDataClass] or Dict[str, MyDataClass]
+        if get_origin(param_annotation) is list:
+            primitive = "array"
+            innerclass = list(get_args(param_annotation))[0]
+        else:
+            primitive = "map"
+            innerclass = list(get_args(param_annotation))[1]
+
+        if innerclass in primitive_types:
+            return Definition(name=name, primitive=primitive)
+        if is_dataclass(innerclass) or bool(
+            inspect.isclass(innerclass)
+            and issubclass(innerclass, tuple)
+            and hasattr(innerclass, "_asdict")
+        ):
+            return Definition(
+                name=name, primitive=primitive, spec=innerclass, subspec=True,
+            )
+    elif is_dataclass(param_annotation) or bool(
+        inspect.isclass(param_annotation)
+        and issubclass(param_annotation, tuple)
+        and hasattr(param_annotation, "_asdict")
+    ):
+        # If the annotation is either a dataclass or namedtuple
+        return Definition(name=name, primitive="map", spec=param_annotation,)
+
+    raise OpCouldNotDeterminePrimitive(
+        f"The primitive of {name} could not be determined"
+    )
+
+
 def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
     """
     The ``op`` decorator creates a subclass of
@@ -222,10 +275,10 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
     ...     ],
     ...     definition=cannotVote.op.inputs["p"],
     ... )
-    Input(value=[Person(name='Bob', age=20), Person(name='Mark', age=21), Person(name='Alice', age=90)], definition=cannotVote.p)
+    Input(value=[Person(name='Bob', age=20), Person(name='Mark', age=21), Person(name='Alice', age=90)], definition=cannotVote.inputs.p)
     >>>
     >>> @op
-    ... def canVote(p: Dict[str, Person]):
+    ... def canVote(p: Dict[str, Person]) -> Dict[str, Person]:
     ...     return {
     ...         person.name: person
     ...         for person in filter(lambda person: person.age >= 18, p.values())
@@ -240,7 +293,17 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
     ...     },
     ...     definition=canVote.op.inputs["p"],
     ... )
-    Input(value={'Bob': Person(name='Bob', age=19), 'Alice': Person(name='Alice', age=21), 'Mark': Person(name='Mark', age=90)}, definition=canVote.p)
+    Input(value={'Bob': Person(name='Bob', age=19), 'Alice': Person(name='Alice', age=21), 'Mark': Person(name='Mark', age=90)}, definition=canVote.inputs.p)
+    >>>
+    >>> Input(
+    ...     value={
+    ...         "Bob": {"name": "Bob", "age": 19},
+    ...         "Alice": {"name": "Alice", "age": 21},
+    ...         "Mark": {"name": "Mark", "age": 90},
+    ...     },
+    ...     definition=canVote.op.outputs["result"],
+    ... )
+    Input(value={'Bob': Person(name='Bob', age=19), 'Alice': Person(name='Alice', age=21), 'Mark': Person(name='Mark', age=90)}, definition=canVote.outputs.result)
     """
 
     def wrap(func):
@@ -250,64 +313,32 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
         if not "conditions" in kwargs:
             kwargs["conditions"] = []
 
-        primitive_types = (int, float, str, bool, dict, list)
-        # Used to convert python types in to their programming language agnostic
-        # names
-        # TODO Combine with logic in dffml.util.data
-        primitive_convert = {dict: "map", list: "array"}
-
         if not "inputs" in kwargs:
             sig = inspect.signature(func)
             kwargs["inputs"] = {}
 
             for name, param in sig.parameters.items():
-                name_list = [func.__qualname__, name]
+                name_list = [func.__qualname__, "inputs", name]
                 if func.__module__ != "__main__":
                     name_list.insert(0, func.__module__)
 
-                if param.annotation in primitive_types:
-                    kwargs["inputs"][name] = Definition(
-                        name=".".join(name_list),
-                        primitive=primitive_convert.get(
-                            param.annotation, param.annotation.__name__
-                        ),
-                    )
-                elif (
-                    get_origin(param.annotation) is list
-                    or get_origin(param.annotation) is dict
-                ):
-                    # If the annotation are of the form List[MyDataClass] or Dict[Any, MyDataClass]
-                    if get_origin(param.annotation) is list:
-                        primitive = "array"
-                        innerclass = list(get_args(param.annotation))[0]
-                    else:
-                        primitive = "map"
-                        innerclass = list(get_args(param.annotation))[1]
+                kwargs["inputs"][name] = create_definition(
+                    ".".join(name_list), param.annotation
+                )
 
-                    if is_dataclass(innerclass) or bool(
-                        issubclass(innerclass, tuple)
-                        and hasattr(innerclass, "_asdict")
-                    ):
-                        kwargs["inputs"][name] = Definition(
-                            name=".".join(name_list),
-                            primitive=primitive,
-                            spec=innerclass,
-                            subspec=True,
-                        )
-                elif is_dataclass(param.annotation) or bool(
-                    issubclass(param.annotation, tuple)
-                    and hasattr(param.annotation, "_asdict")
-                ):
-                    # If the annotation is either a dataclass or namedtuple
-                    kwargs["inputs"][name] = Definition(
-                        name=".".join(name_list),
-                        primitive="map",
-                        spec=param.annotation,
+        # Definition for return type of a function
+        if not "outputs" in kwargs:
+            return_type = inspect.signature(func).return_annotation
+            if return_type not in (None, inspect._empty):
+                name_list = [func.__qualname__, "outputs", "result"]
+                if func.__module__ != "__main__":
+                    name_list.insert(0, func.__module__)
+
+                kwargs["outputs"] = {
+                    "result": create_definition(
+                        ".".join(name_list), return_type
                     )
-                else:
-                    raise OpCouldNotDeterminePrimitive(
-                        f"The primitive of {name} could not be determined"
-                    )
+                }
 
         func.op = Operation(**kwargs)
         func.ENTRY_POINT_NAME = ["operation"]
