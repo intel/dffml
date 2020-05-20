@@ -272,7 +272,7 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
     Input(value=[Person(name='Bob', age=20), Person(name='Mark', age=21), Person(name='Alice', age=90)], definition=cannotVote.inputs.p)
     >>>
     >>> @op
-    ... def canVote(p: Dict[str, Person]):
+    ... def canVote(p: Dict[str, Person]) -> Dict[str, Person]:
     ...     return {
     ...         person.name: person
     ...         for person in filter(lambda person: person.age >= 18, p.values())
@@ -288,6 +288,16 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
     ...     definition=canVote.op.inputs["p"],
     ... )
     Input(value={'Bob': Person(name='Bob', age=19), 'Alice': Person(name='Alice', age=21), 'Mark': Person(name='Mark', age=90)}, definition=canVote.inputs.p)
+    >>>
+    >>> Input(
+    ...     value={
+    ...         "Bob": {"name": "Bob", "age": 19},
+    ...         "Alice": {"name": "Alice", "age": 21},
+    ...         "Mark": {"name": "Mark", "age": 90},
+    ...     },
+    ...     definition=canVote.op.outputs["result"],
+    ... )
+    Input(value={'Bob': Person(name='Bob', age=19), 'Alice': Person(name='Alice', age=21), 'Mark': Person(name='Mark', age=90)}, definition=canVote.outputs.result)
     """
 
     def wrap(func):
