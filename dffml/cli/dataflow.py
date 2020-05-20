@@ -83,7 +83,7 @@ class Create(CMD):
         nargs="+",
         action=ParseInputsAction,
         default=[],
-        help="Inputs to be run in every context",
+        help="Inputs to be added to every context",
     )
 
     async def run(self):
