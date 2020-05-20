@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Auto create Definition for the `op` when they might have a spec, subspec.
 - `shouldi use` command which detects the language of the codebase given via
   path to directory or Git repo URL and runs the appropriate static analyzers.
+- Support for entrypoint style loading of operations and seed inputs in `dataflow create`.
 ### Changed
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
