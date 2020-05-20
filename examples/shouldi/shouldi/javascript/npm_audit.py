@@ -38,4 +38,4 @@ async def run_npm_audit(pkg: str) -> Dict[str, Any]:
     npm_audit_op = stdout.decode()
     npm_audit_op = json.loads(npm_audit_op)
     result = npm_audit_op["metadata"]["vulnerabilities"]
-    return result
+    return {"report": result}

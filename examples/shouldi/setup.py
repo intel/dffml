@@ -27,4 +27,17 @@ common.KWARGS["entry_points"] = {
     ],
 }
 
+# Hiding down hear away from operations tutorial
+common.KWARGS["install_requires"] += [
+    "PyYAML>=5.1.2",
+]
+common.KWARGS["entry_points"].update(
+    {
+        "shouldi.project.bom.db": [
+            "yaml = shouldi.project.bom.db.yaml:YAMLDB",
+            "pypi = shouldi.project.bom.db.pypi:PyPiDB",
+        ]
+    }
+)
+
 setup(**common.KWARGS)

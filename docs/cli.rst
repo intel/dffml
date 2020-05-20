@@ -85,8 +85,13 @@ Output
 Edit
 ----
 
-The edit command drops you into the Python debugger to edit a
-:py:class:`Record <dffml.record.Record>` in any source.
+Edit records present in a source
+
+Record
+~~~~~~
+
+The edit record command drops you into the Python debugger to edit a :py:class:`Record <dffml.record.Record>`
+in any source manually when a dataflow config file is not provided.
 
 .. note::
 
@@ -103,7 +108,7 @@ The edit command drops you into the Python debugger to edit a
     > three,image3.mnistpng
     > two,image4.mnistpng
     > EOF
-    $ dffml edit -sources f=csv -source-filename image.csv -source-readwrite -keys three
+    $ dffml edit record -sources f=csv -source-filename image.csv -source-readwrite -keys three
     > /home/user/Documents/python/dffml/dffml/cli/cli.py(45)run()
     -> await sctx.update(record)
     (Pdb) record.data.features["image"] += "FEEDFACE"
@@ -137,6 +142,80 @@ The edit command drops you into the Python debugger to edit a
                 "image": "image4.mnistpng"
             },
             "key": "two"
+        }
+    ]
+
+All
+~~~
+
+Update all the records in any source using the :py:class:`DataFlowSource <dffml.source.df.DataFlowSource>`.
+
+For this example, we are using the `multiply` operation which multiplies every value in a record by a 
+factor which is 10 in this case. The example dataflow file looks like this:
+
+.. literalinclude:: /../examples/edit_records.yaml
+
+Create a source file: 
+
+.. code-block:: console
+
+    $ cat > data.csv << EOF
+    Expertise,Salary,Trust,Years
+    1,10,0.1,0
+    3,20,0.2,1
+    5,30,0.3,2
+    7,40,0.4,3
+    EOF
+
+Run the command:
+
+.. code-block:: console
+
+    $ dffml edit all \
+        -sources f=csv -source-filename data.csv -source-readwrite \
+        -features Years:int:1 Expertise:int:1 Trust:float:1 Salary:int:1 \
+        -dataflow edit_records.yaml
+    $ dffml list records -sources f=csv -source-filename data.csv                                                                                                           
+    [
+        {
+            "extra": {},
+            "features": {
+                "Expertise": 10,
+                "Salary": 100,
+                "Trust": 1.0,
+                "Years": 0
+            },
+            "key": "0"
+        },
+        {
+            "extra": {},
+            "features": {
+                "Expertise": 30,
+                "Salary": 200,
+                "Trust": 2.0,
+                "Years": 10
+            },
+            "key": "1"
+        },
+        {
+            "extra": {},
+            "features": {
+                "Expertise": 50,
+                "Salary": 300,
+                "Trust": 3.0,
+                "Years": 20
+            },
+            "key": "2"
+        },
+        {
+            "extra": {},
+            "features": {
+                "Expertise": 70,
+                "Salary": 400,
+                "Trust": 4.0,
+                "Years": 30
+            },
+            "key": "3"
         }
     ]
 

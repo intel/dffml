@@ -2,13 +2,18 @@ import io
 import pathlib
 from unittest.mock import patch
 
-from dffml import (
-    prepend_to_path,
-    cached_download_unpack_archive,
-    AsyncTestCase,
-)
+from dffml import prepend_to_path, AsyncTestCase
 
 from shouldi.cli import ShouldI
+from shouldi.rust.cargo_audit import run_cargo_build
+
+from .binaries import (
+    cached_node,
+    cached_target_javascript_algorithms,
+    cached_rust,
+    cached_cargo_audit,
+    cached_target_crates,
+)
 
 
 class TestCLIUse(AsyncTestCase):
@@ -22,20 +27,8 @@ class TestCLIUse(AsyncTestCase):
             output = stdout.getvalue()
         self.assertIn("high=1", output)
 
-    @cached_download_unpack_archive(
-        "https://nodejs.org/dist/v14.2.0/node-v14.2.0-linux-x64.tar.xz",
-        pathlib.Path(__file__).parent / "downloads" / "node.tar.gz",
-        pathlib.Path(__file__).parent / "downloads" / "node-download",
-        "fa2a9dfa4d0f99a0cc3ee6691518c026887677a0d565b12ebdcf9d78341db2066427c9970c41cbf72776a370bbb42729",
-    )
-    @cached_download_unpack_archive(
-        "https://github.com/trekhleb/javascript-algorithms/archive/ba2d8dc4a8e27659c1420fe52390cb7981df4a94.tar.gz",
-        pathlib.Path(__file__).parent / "downloads" / "javascript_algo.tar.gz",
-        pathlib.Path(__file__).parent
-        / "downloads"
-        / "javascript_algo-download",
-        "36b3ce51780ee6ea8dcec266c9d09e3a00198868ba1b041569950b82cf45884da0c47ec354dd8514022169849dfe8b7c",
-    )
+    @cached_node
+    @cached_target_javascript_algorithms
     async def test_use_javascript(self, node, javascript_algo):
         with prepend_to_path(node / "node-v14.2.0-linux-x64" / "bin",):
             with patch("sys.stdout", new_callable=io.StringIO) as stdout:
@@ -48,3 +41,31 @@ class TestCLIUse(AsyncTestCase):
                 )
                 output = stdout.getvalue()
         self.assertIn("high=2941", output)
+
+    @cached_rust
+    @cached_cargo_audit
+    @cached_target_crates
+    async def test_use_rust(self, rust, cargo_audit, crates):
+        if not (
+            cargo_audit
+            / "cargo-audit-0.11.2"
+            / "target"
+            / "release"
+            / "cargo-audit"
+        ).is_file():
+            await run_cargo_build(cargo_audit / "cargo-audit-0.11.2")
+
+        with prepend_to_path(
+            rust / "rust-1.42.0-x86_64-unknown-linux-gnu" / "cargo" / "bin",
+            cargo_audit / "cargo-audit-0.11.2" / "target" / "release",
+        ):
+            with patch("sys.stdout", new_callable=io.StringIO) as stdout:
+                await ShouldI.cli(
+                    "use",
+                    str(
+                        crates
+                        / "crates.io-8c1a7e29073e175f0e69e0e537374269da244cee"
+                    ),
+                )
+            output = stdout.getvalue()
+            self.assertIn("high=2", output)

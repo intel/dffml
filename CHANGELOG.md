@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- `edit all` command to edit records in bulk
 - Support for Tensorflow 2.2
 - Vowpal Wabbit Models
 - Python 3.8 support
@@ -38,7 +39,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Auto create Definition for the `op` when they might have a spec, subspec.
 - `shouldi use` command which detects the language of the codebase given via
   path to directory or Git repo URL and runs the appropriate static analyzers.
+- Support for entrypoint style loading of operations and seed inputs in `dataflow create`.
 ### Changed
+- `edit` command substituted with `edit record`
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
 - Every class and function can now be imported from the top level module
@@ -52,6 +55,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - All feature.type() and feature.lenght() are substituted with
   feature.type and feature.length
 - FileSource takes pathlib.Path as filename
+- Tensorflow tests re-run themselves up to 6 times to stop them from failing the
+  CI due to their randomly initialized weights making them fail ~2% of the time
 ### Fixed
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
   parameter sets for an operation.

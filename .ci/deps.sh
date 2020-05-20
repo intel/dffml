@@ -51,7 +51,7 @@ python -m pip install --upgrade pip setuptools twine
 # Install main package
 pip install -U -e .[dev]
 
-if [ "${PLUGIN}" == "feature/git" ]; then
+if [[ "x${PLUGIN}" == "xfeature/git" ]] || [[ "x${PLUGIN}" == "xoperations/deploy" ]]; then
   curl -sSL https://github.com/XAMPPRocky/tokei/releases/download/v9.1.1/tokei-v9.1.1-x86_64-unknown-linux-gnu.tar.gz | tar xvz -C "$HOME/.local/bin/"
   sudo apt-get update && sudo apt-get install -y git subversion cloc openssl
 fi
@@ -69,4 +69,8 @@ fi
 
 if [ "x${PLUGIN}" == "xmodel/tensorflow_hub" ]; then
   python -m pip install -U -e "./model/tensorflow"
+fi
+
+if [[ "x${PLUGIN}" == "xoperations/deploy" ]]; then
+  python -m pip install -U -e "./feature/git"
 fi

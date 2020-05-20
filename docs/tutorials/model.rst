@@ -215,7 +215,11 @@ of ``Misc``.
 
 .. code-block:: python
 
-    from dffml_model_myslr.misc import MySLRModel, MySLRModelConfig
+    import tempfile
+
+    from dffml import train, accuracy, predict, Features, Feature, AsyncTestCase
+
+    from dffml_model_myslr.misc import MySLRModel
 
 Test data
 ~~~~~~~~~
