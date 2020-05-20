@@ -43,32 +43,22 @@ class TestDataflowCreate(AsyncTestCase):
                 # We make the name the path relative to our cwd
                 operation_qualname = "ops:echo_string"
                 dataflow_file_path = pathlib.Path(tmpdirname, "dataflow.json")
-                # $ dffml dataflow create -config json \
-                #    tests.dt.tmpname.ops:echo_string get_single
+                # $ dffml dataflow create  \
+                #    ops:echo_string get_single
                 with io.StringIO() as dataflow:
                     with contextlib.redirect_stdout(dataflow):
                         await CLI.cli(
                             "dataflow",
                             "create",
                             *[operation_qualname, "get_single"],
+                            "-seed",
+                            '["OutputString"]=get_single_spec',
                         )
                     test_dataflow = DataFlow._fromdict(
                         **json.loads(dataflow.getvalue())
                     )
                 # Make sure the operation is in the dataflow
                 self.assertIn(operation_qualname, test_dataflow.operations)
-                # Use GetSingle to grab the output from the operation, this
-                # makes sure it ran
-                test_dataflow.seed.append(
-                    Input(
-                        value=[
-                            test_dataflow.operations[operation_qualname]
-                            .outputs["output_string"]
-                            .name
-                        ],
-                        definition=GetSingle.op.inputs["spec"],
-                    )
-                )
                 # Run the dataflow
                 async for ctx_str, results in run(
                     test_dataflow,

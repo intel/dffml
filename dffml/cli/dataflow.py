@@ -78,6 +78,13 @@ class Create(CMD):
         default=False,
         action="store_true",
     )
+    arg_seed = Arg(
+        "-seed",
+        nargs="+",
+        action=ParseInputsAction,
+        default=[],
+        help="Inputs to be run in every context"
+    )
 
     async def run(self):
         operations = []
@@ -97,6 +104,14 @@ class Create(CMD):
         async with self.config(BaseConfig()) as configloader:
             async with configloader() as loader:
                 dataflow = DataFlow.auto(*operations)
+                self.seed = [
+                        Input(
+                            value = val,
+                            definition = dataflow.definitions[def_name]
+                        )
+                        for val,def_name in self.seed
+                    ]
+                dataflow.seed.extend(self.seed)
                 exported = dataflow.export(linked=not self.not_linked)
                 print((await loader.dumpb(exported)).decode())
 
