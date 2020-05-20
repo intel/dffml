@@ -1,5 +1,6 @@
 import pathlib
 import hashlib
+import inspect
 import contextlib
 
 from ..base import BaseConfig
@@ -77,17 +78,37 @@ class Create(CMD):
         default=False,
         action="store_true",
     )
+    arg_seed = Arg(
+        "-seed",
+        nargs="+",
+        action=ParseInputsAction,
+        default=[],
+        help="Inputs to be added to every context",
+    )
 
     async def run(self):
         operations = []
         for load_operation in self.operations:
             if ":" in load_operation:
-                operations += list(load(load_operation))
+                ops = []
+                for func in load(load_operation, relative=True):
+                    new_name = (
+                        f"{inspect.getmodule(func).__name__}:{func.__name__}"
+                    )
+                    if hasattr(func, "op"):
+                        func.op = func.op._replace(name=new_name)
+                    ops.append(func)
+                operations += ops
             else:
                 operations += [Operation.load(load_operation)]
         async with self.config(BaseConfig()) as configloader:
             async with configloader() as loader:
                 dataflow = DataFlow.auto(*operations)
+                self.seed = [
+                    Input(value=val, definition=dataflow.definitions[def_name])
+                    for val, def_name in self.seed
+                ]
+                dataflow.seed.extend(self.seed)
                 exported = dataflow.export(linked=not self.not_linked)
                 print((await loader.dumpb(exported)).decode())
 
