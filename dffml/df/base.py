@@ -197,7 +197,7 @@ def create_definition(name, param_annotation):
         get_origin(param_annotation) is list
         or get_origin(param_annotation) is dict
     ):
-        # If the annotation are of the form List[MyDataClass] or Dict[Any, MyDataClass]
+        # If the annotation are of the form List[MyDataClass] or Dict[str, MyDataClass]
         if get_origin(param_annotation) is list:
             primitive = "array"
             innerclass = list(get_args(param_annotation))[0]
@@ -208,7 +208,7 @@ def create_definition(name, param_annotation):
         if innerclass in primitive_types:
             return Definition(name=name, primitive=primitive)
         if is_dataclass(innerclass) or bool(
-            inspect.isclass(param_annotation)
+            inspect.isclass(innerclass)
             and issubclass(innerclass, tuple)
             and hasattr(innerclass, "_asdict")
         ):
