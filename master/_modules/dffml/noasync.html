@@ -245,6 +245,54 @@
         <span class="s2">&quot;    &gt;&gt;&gt; from dffml import *</span><span class="se">\n</span><span class="s2">    &gt;&gt;&gt; from dffml.noasync import *</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">high_level</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+
+
+<span class="n">save</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">high_level</span><span class="o">.</span><span class="n">save</span><span class="o">.</span><span class="vm">__doc__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;await &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;async &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;asyncio.run(main())&quot;</span><span class="p">,</span> <span class="s2">&quot;main()&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;    &gt;&gt;&gt; import asyncio</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+        <span class="s2">&quot;    &gt;&gt;&gt; from dffml import *</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;    &gt;&gt;&gt; from dffml import *</span><span class="se">\n</span><span class="s2">    &gt;&gt;&gt; from dffml.noasync import *</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">async_gen</span> <span class="o">=</span> <span class="n">high_level</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="fm">__aiter__</span><span class="p">()</span>
+
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">():</span>
+        <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">loop</span><span class="o">.</span><span class="n">shutdown_asyncgens</span><span class="p">())</span>
+        <span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">async_gen</span><span class="o">.</span><span class="fm">__anext__</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">StopAsyncIteration</span><span class="p">:</span>
+            <span class="n">cleanup</span><span class="p">()</span>
+            <span class="k">return</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">cleanup</span><span class="p">()</span>
+            <span class="k">raise</span>
+
+
+<span class="n">load</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">high_level</span><span class="o">.</span><span class="n">load</span><span class="o">.</span><span class="vm">__doc__</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;await &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;async &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;asyncio.run(main())&quot;</span><span class="p">,</span> <span class="s2">&quot;main()&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;    &gt;&gt;&gt; import asyncio</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+        <span class="s2">&quot;    &gt;&gt;&gt; from dffml import *</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;    &gt;&gt;&gt; from dffml import *</span><span class="se">\n</span><span class="s2">    &gt;&gt;&gt; from dffml.noasync import *</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 
            </div>
