@@ -130,8 +130,7 @@ def run(*args, **kwargs):
     >>> class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
     ...     def handle(self):
     ...         data = str(self.request.recv(1024), "ascii")
-    ...         cur_thread = threading.current_thread()
-    ...         response = bytes("{}: {}".format(cur_thread.name, data), "ascii")
+    ...         response = bytes("{}".format(data), "ascii")
     ...         self.request.sendall(response)
     >>>
     >>> class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
@@ -143,7 +142,7 @@ def run(*args, **kwargs):
     ...         sock.connect((ip, port))
     ...         sock.sendall(bytes(message, "ascii"))
     ...         response = str(sock.recv(1024), "ascii")
-    ...         print("Received: {}".format(response.split(':')[1]))
+    ...         print("Received: {}".format(response))
     >>>
     >>> dataflow = DataFlow.auto(client)
     >>>
@@ -181,8 +180,8 @@ def run(*args, **kwargs):
     >>>
     >>> main()
     Server loop running in a thread
-    Received:  Hello World!
-    Received:  Hello World!
+    Received: Hello World!
+    Received: Hello World!
     """
     async_gen = high_level.run(*args, **kwargs).__aiter__()
 
