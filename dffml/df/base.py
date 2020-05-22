@@ -1,5 +1,6 @@
 import abc
 import inspect
+import collections
 import pkg_resources
 from typing import (
     AsyncIterator,
@@ -196,7 +197,10 @@ def create_definition(name, param_annotation):
                 param_annotation, param_annotation.__name__
             ),
         )
-    elif get_origin(param_annotation) is Union:
+    elif get_origin(param_annotation) in [
+        Union,
+        collections.abc.AsyncIterator,
+    ]:
         # If the annotation is of the form Optional
         return create_definition(name, list(get_args(param_annotation))[0])
     elif (
@@ -326,6 +330,7 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                     ".".join(name_list), param.annotation
                 )
 
+        auto_def_outputs = False
         # Definition for return type of a function
         if not "outputs" in kwargs:
             return_type = inspect.signature(func).return_annotation
@@ -339,6 +344,7 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                         ".".join(name_list), return_type
                     )
                 }
+                auto_def_outputs = True
 
         func.op = Operation(**kwargs)
         func.ENTRY_POINT_NAME = ["operation"]
@@ -421,12 +427,29 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                         # We can't pass self to functions running in threads
                         # Its not thread safe!
                         bound = func.__get__(self, self.__class__)
-                        return await bound(**inputs)
+                        result = await bound(**inputs)
                     elif inspect.iscoroutinefunction(func):
-                        return await func(**inputs)
+                        result = await func(**inputs)
                     else:
                         # TODO Add auto thread pooling of non-async functions
-                        return func(**inputs)
+                        result = func(**inputs)
+                    if auto_def_outputs and len(self.parent.op.outputs) == 1:
+                        if inspect.isasyncgen(result):
+
+                            async def convert_asyncgen(outputs):
+                                async for yielded_output in outputs:
+                                    yield {
+                                        list(self.parent.op.outputs.keys())[
+                                            0
+                                        ]: yielded_output
+                                    }
+
+                            result = convert_asyncgen(result)
+                        else:
+                            result = {
+                                list(self.parent.op.outputs.keys())[0]: result
+                            }
+                    return result
 
             func.imp = type(
                 f"{cls_name}Implementation",
