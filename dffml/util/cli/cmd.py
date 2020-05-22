@@ -73,6 +73,9 @@ class Parser(argparse.ArgumentParser):
         """
         # Only one subparser should be created even if multiple sub commands
         subparsers = None
+        # TODO
+        # In order to add log to every command we just add it here, first thing
+        # self.add_argument("-log", "")
         for name, method in [
             (name.lower().replace("_", ""), method)
             for name, method in inspect.getmembers(add_from)
