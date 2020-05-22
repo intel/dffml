@@ -293,6 +293,92 @@
         <span class="s2">&quot;    &gt;&gt;&gt; from dffml import *</span><span class="se">\n</span><span class="s2">    &gt;&gt;&gt; from dffml.noasync import *</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &gt;&gt;&gt; # Socket server derived from</span>
+<span class="sd">    &gt;&gt;&gt; # https://docs.python.org/3/library/socketserver.html#asynchronous-mixins</span>
+<span class="sd">    &gt;&gt;&gt; import socket</span>
+<span class="sd">    &gt;&gt;&gt; import threading</span>
+<span class="sd">    &gt;&gt;&gt; import socketserver</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; from dffml.noasync import run</span>
+<span class="sd">    &gt;&gt;&gt; from dffml import DataFlow, Input, op</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):</span>
+<span class="sd">    ...     def handle(self):</span>
+<span class="sd">    ...         data = str(self.request.recv(1024), &quot;ascii&quot;)</span>
+<span class="sd">    ...         response = bytes(&quot;{}&quot;.format(data), &quot;ascii&quot;)</span>
+<span class="sd">    ...         self.request.sendall(response)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):</span>
+<span class="sd">    ...     pass</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; @op</span>
+<span class="sd">    ... def client(ip: str, port: int, message: str):</span>
+<span class="sd">    ...     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:</span>
+<span class="sd">    ...         sock.connect((ip, port))</span>
+<span class="sd">    ...         sock.sendall(bytes(message, &quot;ascii&quot;))</span>
+<span class="sd">    ...         response = str(sock.recv(1024), &quot;ascii&quot;)</span>
+<span class="sd">    ...         print(&quot;Received: {}&quot;.format(response))</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; dataflow = DataFlow.auto(client)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; messages = [</span>
+<span class="sd">    ...     Input(value=&quot;Hello World!&quot;, definition=client.op.inputs[&quot;message&quot;])</span>
+<span class="sd">    ...     for _ in range(0, 2)</span>
+<span class="sd">    ... ]</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; def main():</span>
+<span class="sd">    ...     # Port 0 means to select an arbitrary unused port</span>
+<span class="sd">    ...     HOST, PORT = &quot;localhost&quot;, 0</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...     server = ThreadedTCPServer((HOST, PORT), ThreadedTCPRequestHandler)</span>
+<span class="sd">    ...     with server:</span>
+<span class="sd">    ...         ip, port = server.server_address</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...         # Start a thread with the server -- that thread will then start one</span>
+<span class="sd">    ...         # more thread for each request</span>
+<span class="sd">    ...         server_thread = threading.Thread(target=server.serve_forever)</span>
+<span class="sd">    ...         # Exit the server thread when the main thread terminates</span>
+<span class="sd">    ...         server_thread.daemon = True</span>
+<span class="sd">    ...         server_thread.start()</span>
+<span class="sd">    ...         print(&quot;Server loop running in a thread&quot;)</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...         inputs = messages + [</span>
+<span class="sd">    ...             Input(value=ip, definition=client.op.inputs[&quot;ip&quot;]),</span>
+<span class="sd">    ...             Input(value=port, definition=client.op.inputs[&quot;port&quot;]),</span>
+<span class="sd">    ...         ]</span>
+<span class="sd">    ...</span>
+<span class="sd">    ...         try:</span>
+<span class="sd">    ...             for ctx, results in run(dataflow, inputs):</span>
+<span class="sd">    ...                 pass</span>
+<span class="sd">    ...         finally:</span>
+<span class="sd">    ...             server.shutdown()</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; main()</span>
+<span class="sd">    Server loop running in a thread</span>
+<span class="sd">    Received: Hello World!</span>
+<span class="sd">    Received: Hello World!</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">async_gen</span> <span class="o">=</span> <span class="n">high_level</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="fm">__aiter__</span><span class="p">()</span>
+
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">new_event_loop</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">():</span>
+        <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">loop</span><span class="o">.</span><span class="n">shutdown_asyncgens</span><span class="p">())</span>
+        <span class="n">loop</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">loop</span><span class="o">.</span><span class="n">run_until_complete</span><span class="p">(</span><span class="n">async_gen</span><span class="o">.</span><span class="fm">__anext__</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">StopAsyncIteration</span><span class="p">:</span>
+            <span class="n">cleanup</span><span class="p">()</span>
+            <span class="k">return</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">cleanup</span><span class="p">()</span>
+            <span class="k">raise</span>
 </pre></div>
 
            </div>
