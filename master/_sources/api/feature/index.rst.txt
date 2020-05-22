@@ -5,5 +5,5 @@ Feature
     :maxdepth: 2
     :caption: Contents:
 
-    log
     feature
+    log
