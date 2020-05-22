@@ -121,6 +121,23 @@ class Create(CMD):
                 print((await loader.dumpb(exported)).decode())
 
 
+# This would live in dffml/util/config/fields.py
+FIELD_SOURCES = field(
+    "Sources for loading and saving",
+    default_factory=lambda: Sources(
+        JSONSource(
+            FileSourceConfig(
+                filename=os.path.join(
+                    os.path.expanduser("~"), ".cache", "dffml.json"
+                )
+            )
+        )
+    ),
+    labeled=True,
+    required=True,
+)
+
+
 @config
 class RunCMDConfig(SourcesCMDConfig):
     dataflow: str = field(
@@ -130,20 +147,7 @@ class RunCMDConfig(SourcesCMDConfig):
         "ConfigLoader to use for importing DataFlow"
     )
     # TODO Just to get the sources working for now. Will probably change it later
-    sources: Sources = field(
-        "Sources for loading and saving",
-        default_factory=lambda: Sources(
-            JSONSource(
-                FileSourceConfig(
-                    filename=os.path.join(
-                        os.path.expanduser("~"), ".cache", "dffml.json"
-                    )
-                )
-            )
-        ),
-        labeled=True,
-        required=True,
-    )
+    sources: Sources = FIELD_SOURCES
     caching: List[str] = field(
         "Skip running DataFlow if a record already contains these features",
         required=False,
