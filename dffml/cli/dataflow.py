@@ -4,7 +4,7 @@ import inspect
 import contextlib
 
 from ..base import BaseConfig
-from ..df.base import BaseOrchestrator
+from ..df.base import BaseOrchestrator, OperationImplementation
 from ..df.types import DataFlow, Stage, Operation, Input
 from ..df.memory import (
     MemoryOrchestrator,
@@ -92,6 +92,7 @@ class Create(CMD):
             if ":" in load_operation:
                 ops = []
                 for func in load(load_operation, relative=True):
+                    func = OperationImplementation._imp(func)
                     new_name = (
                         f"{inspect.getmodule(func).__name__}:{func.__name__}"
                     )

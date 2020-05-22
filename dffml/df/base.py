@@ -158,6 +158,13 @@ class OperationImplementation(BaseDataFlowObject):
         for obj in [loaded, getattr(loaded, "imp", None)]:
             if inspect.isclass(obj) and issubclass(obj, cls):
                 return obj
+        if (
+            inspect.isfunction(loaded)
+            or inspect.isgeneratorfunction(loaded)
+            or inspect.iscoroutinefunction(loaded)
+            or inspect.isasyncgenfunction(loaded)
+        ):
+            return op(loaded)
         return None
 
     @classmethod
