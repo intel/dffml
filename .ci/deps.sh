@@ -15,7 +15,7 @@ has_conda=$(python -c 'import pathlib, os; print(any(map(lambda path: pathlib.Pa
 
 mkdir -p "${HOME}/.local/bin"
 
-if [[ "x${PLUGIN}" == "xmodel/vowpalWabbit" ]] || [[ "x${PLUGIN}" == "x." ]] || [[ "x${PLUGIN}" == "xdocs" ]]; then
+if [[ "x${PLUGIN}" == "xmodel/daal4py" ]] || [[ "x${PLUGIN}" == "xmodel/vowpalWabbit" ]] || [[ "x${PLUGIN}" == "x." ]] || [[ "x${PLUGIN}" == "xdocs" ]]; then
   if [[ "${has_conda}" != "True" ]]; then
     # URL of conda
     conda_url="https://repo.anaconda.com/miniconda/Miniconda3-${python_version}_4.8.2-Linux-x86_64.sh"
@@ -65,6 +65,13 @@ fi
 
 if [[ "x${PLUGIN}" == "xmodel/vowpalWabbit" ]] || [[ "x${PLUGIN}" == "x." ]] || [[ "x${PLUGIN}" == "xdocs" ]]; then
   conda install -y -c conda-forge vowpalwabbit
+fi
+
+if [[ "x${PLUGIN}" == "xmodel/daal4py" ]] || [[ "x${PLUGIN}" == "x." ]] || [[ "x${PLUGIN}" == "xdocs" ]]; then
+  set +e
+  conda install -y -c intel daal4py
+  echo "conda install -y -c intel daal4py, exit code: $?"
+  set -e
 fi
 
 if [ "x${PLUGIN}" == "xmodel/tensorflow_hub" ]; then

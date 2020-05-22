@@ -1,6 +1,7 @@
 CORE_PLUGINS = [
     ("configloader", "yaml"),
     ("configloader", "png"),
+    ("model", "daal4py"),
     ("model", "scratch"),
     ("model", "scikit"),
     ("model", "tensorflow"),

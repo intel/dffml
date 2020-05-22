@@ -1,6 +1,6 @@
 [run]
 source =
-    daal4py_LR
+    daal4py
     tests
 branch = True
 
