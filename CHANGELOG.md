@@ -41,7 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   path to directory or Git repo URL and runs the appropriate static analyzers.
 - Support for entrypoint style loading of operations and seed inputs in `dataflow create`.
 - Definition for output of the function that `op` wraps.
-- Expose high level load, run and save funtions to noasync. 
+- Expose high level load, run and save funtions to noasync.
 ### Changed
 - `edit` command substituted with `edit record`
 - `Edit on Github` button now hidden for plugins.
