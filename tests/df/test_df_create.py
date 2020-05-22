@@ -17,17 +17,8 @@ from dffml import (
 )
 
 OP_DEF_STRING = """
-from dffml import op,Definition
-
-@op(
-    inputs={"input_string": Definition(name="InputString", primitive="str")},
-    outputs={
-        "output_string": Definition(name="OutputString", primitive="str")
-    },
-)
-def echo_string(input_string):
-    return {"output_string": input_string}
-
+def echo_string(input_string: str) -> str:
+    return "Echo: " + input_string
 """
 
 
@@ -52,26 +43,30 @@ class TestDataflowCreate(AsyncTestCase):
                             "create",
                             *[operation_qualname, "get_single"],
                             "-seed",
-                            '["OutputString"]=get_single_spec',
+                            "ops.echo_string.outputs.result,=get_single_spec",
                         )
                     test_dataflow = DataFlow._fromdict(
                         **json.loads(dataflow.getvalue())
                     )
                 # Make sure the operation is in the dataflow
                 self.assertIn(operation_qualname, test_dataflow.operations)
+                # Definitions for shorthand access
+                idef = test_dataflow.operations[operation_qualname].inputs[
+                    "input_string"
+                ]
+                odef = test_dataflow.operations[operation_qualname].outputs[
+                    "result"
+                ]
                 # Run the dataflow
                 async for ctx_str, results in run(
                     test_dataflow,
                     [
                         Input(
-                            value="Irregular at magic school",
-                            definition=test_dataflow.operations[
-                                operation_qualname
-                            ].inputs["input_string"],
+                            value="Irregular at magic school", definition=idef,
                         )
                     ],
                 ):
-                    self.assertIn("OutputString", results)
+                    self.assertIn(odef.name, results)
                     self.assertEqual(
-                        results["OutputString"], "Irregular at magic school",
+                        results[odef.name], "Echo: Irregular at magic school",
                     )
