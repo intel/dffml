@@ -18,14 +18,14 @@ CLI and other services.
     :maxdepth: 2
     :caption: Contents:
 
-    idx3
+    file
     ini
+    source
+    log
     df
     memory
-    json
-    source
-    csv
-    file
+    idx3
     db
+    csv
     idx1
-    log
+    json

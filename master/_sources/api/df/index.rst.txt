@@ -7,9 +7,9 @@ Data Flow
     :maxdepth: 2
     :caption: Contents:
 
-    exceptions
-    base
-    memory
     types
     log
+    exceptions
+    memory
     multicomm
+    base
