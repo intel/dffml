@@ -10,7 +10,7 @@ from dffml import Definition
 @op(
     name="safety_check", conditions=[],
 )
-async def safety_check(package: str, version: str) -> Dict[str, Any]:
+async def safety_check(package: str, version: str) -> Dict[str, int]:
     pinned = f"{package}=={version}"
 
     proc = await asyncio.create_subprocess_exec(
