@@ -9,13 +9,8 @@ from dffml import op, Definition, Stage
 from .safety import package, package_version
 from .bandit import package_src_dir
 
-package_json = Definition(name="package_json", primitive="Dict[str, Any]")
-package_url = Definition(name="package_url", primitive="str")
-
 
 @op(
-    inputs={"package": package},
-    outputs={"response_json": package_json},
     # imp_enter allows us to create instances of objects which are async context
     # managers and assign them to self.parent which is an object of type
     # OperationImplementation which will be alive for the lifetime of the
@@ -34,10 +29,7 @@ async def pypi_package_json(self, package: str) -> Dict[str, Any]:
         return {"response_json": package_json}
 
 
-@op(
-    inputs={"response_json": package_json},
-    outputs={"version": package_version},
-)
+@op
 async def pypi_latest_package_version(response_json: Dict[str, Any]) -> str:
     """
     Grab the version from the package information.
@@ -45,7 +37,7 @@ async def pypi_latest_package_version(response_json: Dict[str, Any]) -> str:
     return {"version": response_json["info"]["version"]}
 
 
-@op(inputs={"response_json": package_json}, outputs={"url": package_url})
+@op
 async def pypi_package_url(response_json: Dict["str", Any]) -> str:
     """
     Grab the URL of the latest source code release from the package information.
@@ -60,8 +52,6 @@ async def pypi_package_url(response_json: Dict["str", Any]) -> str:
 
 
 @op(
-    inputs={"url": package_url},
-    outputs={"directory": package_src_dir},
     imp_enter={
         "session": (lambda self: aiohttp.ClientSession(trust_env=True))
     },
@@ -81,7 +71,7 @@ async def pypi_package_contents(self, url: str) -> str:
             return {"directory": package_src_dir}
 
 
-@op(inputs={"directory": package_src_dir}, outputs={}, stage=Stage.CLEANUP)
+@op(stage=Stage.CLEANUP)
 async def cleanup_pypi_package(directory: str):
     """
     Remove the directory containing the source code release.
