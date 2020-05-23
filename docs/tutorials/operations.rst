@@ -371,7 +371,7 @@ Let's write an operation to grab the JSON information about a package.
 **shouldi/python/pypi.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
-    :lines: 1-34
+    :lines: 1-29
 
 After we have the package information, we extract the version and URL where we
 can get the source code.
@@ -379,7 +379,7 @@ can get the source code.
 **shouldi/python/pypi.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
-    :lines: 37-59
+    :lines: 32-51
 
 Once we have the URL, we download the package source and extract it to a
 temporary directory.
@@ -387,7 +387,7 @@ temporary directory.
 **shouldi/python/pypi.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
-    :lines: 62-81
+    :lines: 54-71
 
 Finally, we make a ``cleanup`` operation to remove the directory once we're done
 with it.
@@ -395,7 +395,7 @@ with it.
 **shouldi/python/pypi.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
-    :lines: 84-89
+    :lines: 74-79
 
 Now we write tests for each operation.
 
