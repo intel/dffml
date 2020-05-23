@@ -30,7 +30,7 @@ from ..util.cli.cmds import (
     KeysCMDConfig,
 )
 from ..util.cli.parser import ParseInputsAction, list_action
-from ..base import config, mkarg, field
+from ..base import config, field
 
 
 @config
@@ -87,7 +87,6 @@ class CreateConfig(CMDConfig):
         action=ParseInputsAction,
         default=[],
         help="Inputs to be added to every context",
-    )
 
 
 class Create(CMD):
@@ -151,6 +150,10 @@ class RunCMDConfig(SourcesCMDConfig):
     caching: List[str] = field(
         "Skip running DataFlow if a record already contains these features",
         required=False,
+        default_factory=lambda: [],
+    )
+    no_update: bool = field(
+        "Update record with sources", required=False, default=False,
         default_factory=lambda: [],
     )
     no_update: bool = field(
