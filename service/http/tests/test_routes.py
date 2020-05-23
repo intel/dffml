@@ -256,34 +256,6 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
 
 
 class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
-    OPIMPS = {"formatter": formatter, "get_single": GetSingle, "remap": remap}
-
-    @classmethod
-    def patch_operation_implementation_load(cls, loading):
-        try:
-            return cls.OPIMPS[loading].imp
-        except KeyError as error:
-            raise EntrypointNotFound(
-                f"{loading} not found in {list(cls.OPIMPS.keys())}"
-            ) from error
-
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls._exit_stack = ExitStack()
-        cls.exit_stack = cls._exit_stack.__enter__()
-        cls.exit_stack.enter_context(
-            patch(
-                "dffml.df.base.OperationImplementation.load",
-                new=cls.patch_operation_implementation_load,
-            )
-        )
-
-    @classmethod
-    def tearDownClass(cls):
-        super().tearDownClass()
-        cls._exit_stack.__exit__(None, None, None)
-
     async def test_no_post(self):
         url: str = "/some/url"
         message: str = "Hello World"

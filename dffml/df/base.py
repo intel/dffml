@@ -319,7 +319,15 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
 
     def wrap(func):
         if not "name" in kwargs:
-            kwargs["name"] = func.__name__
+            name = f"{inspect.getmodule(func).__name__}:{func.__name__}"
+            # Check if it's already been registered as another name
+            for i in pkg_resources.iter_entry_points(Operation.ENTRYPOINT):
+                entrypoint_load_path = i.module_name + ":" + ".".join(i.attrs)
+                # If it has, then let that name take precedence
+                if entrypoint_load_path == name:
+                    name = i.name
+                    break
+            kwargs["name"] = name
         # TODO Make this grab from the defaults for Operation
         if not "conditions" in kwargs:
             kwargs["conditions"] = []
