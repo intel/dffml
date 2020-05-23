@@ -155,7 +155,7 @@ class OperationImplementation(BaseDataFlowObject):
         None if its not an operation implemention or doesn't have the imp
         parameter which is an operation implemention.
         """
-        for obj in [loaded, getattr(loaded, "imp", None)]:
+        for obj in [getattr(loaded, "imp", None), loaded]:
             if inspect.isclass(obj) and issubclass(obj, cls):
                 return obj
         if (
@@ -164,7 +164,7 @@ class OperationImplementation(BaseDataFlowObject):
             or inspect.iscoroutinefunction(loaded)
             or inspect.isasyncgenfunction(loaded)
         ):
-            return op(loaded)
+            return op(loaded).imp
         return None
 
     @classmethod
