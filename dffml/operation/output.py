@@ -102,15 +102,15 @@ class GroupBy(OperationImplementationContext):
             return want
 
 
-get_n_spec = Definition(name="get_n_spec", primitive="array")
+get_multi_spec = Definition(name="get_multi_spec", primitive="array")
 
-get_n_output = Definition(name="get_n_output", primitive="map")
+get_multi_output = Definition(name="get_multi_output", primitive="map")
 
 
 @op(
     name="get_multi",
-    inputs={"spec": get_n_spec},
-    outputs={"output": get_n_output},
+    inputs={"spec": get_multi_spec},
+    outputs={"output": get_multi_output},
     stage=Stage.OUTPUT,
 )
 class GetMulti(OperationImplementationContext):
