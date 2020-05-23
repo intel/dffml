@@ -7,7 +7,7 @@ from typing import List
 from aiohttp import web
 
 from dffml.util.cli.arg import Arg
-from dffml.util.cli.cmd import CMD, CMDConfig
+from dffml.util.cli.cmd import CMD
 from dffml import Model, Sources, BaseSource
 from dffml.util.cli.parser import list_action
 from dffml.util.entrypoint import entrypoint
@@ -18,7 +18,7 @@ from .routes import Routes
 
 
 @config
-class TLSCMDConfig(CMDConfig):
+class TLSCMDConfig:
     key: str = field(
         "Path to key file", default="server.key",
     )
@@ -69,7 +69,7 @@ class CreateTLSServer(TLSCMD):
 
 
 @config
-class CreateTLSClientConfig(CMDConfig):
+class CreateTLSClientConfig:
     bits: int = field(
         "Number of bits to use for key", default=4096,
     )
@@ -155,7 +155,7 @@ class CreateTLS(TLSCMD):
 
 
 @config
-class MultiCommCMDConfig(CMDConfig):
+class MultiCommCMDConfig:
     mc_config: str = field(
         "MultiComm config directory", default=None,
     )

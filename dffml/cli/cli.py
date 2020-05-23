@@ -15,19 +15,23 @@ from ..util.cli.parser import list_action
 from ..df.types import DataFlow
 from ..source.df import DataFlowSource, DataFlowSourceConfig
 from ..source.source import Sources, BaseSource, SubsetSources
+from ..configloader.configloader import BaseConfigLoader
+from ..configloader.json import JSONConfigLoader
 from ..source.json import JSONSource
 from ..source.csv import CSVSource
 from ..source.file import FileSourceConfig
 from ..util.packaging import is_develop
 from ..util.cli.arg import Arg
-from ..util.cli.cmd import CMD, CMDConfig
+from ..util.cli.cmd import CMD
 from ..util.cli.cmds import (
     SourcesCMD,
     PortCMD,
     KeysCMD,
+    KeysCMDConfig,
     PortCMDConfig,
     SourcesCMDConfig,
 )
+from ..util.config.fields import FIELD_SOURCES
 from ..base import field, config
 
 from .dataflow import Dataflow
@@ -47,26 +51,23 @@ class Version(CMD):
         print(f"dffml version {VERSION} (devmode: {str(devmode)})")
 
 
+@config
+class EditCMDConfig:
+    dataflow: str = field("File containing exported DataFlow",)
+    config: BaseConfigLoader = field(
+        "ConfigLoader to use for importing DataFlow",
+    )
+    features: Features = field(
+        "Feature definitions of records to update",
+        required=False,
+        default_factory=lambda: [],
+    )
+    sources: Sources = FIELD_SOURCES
+
+
 class BaseEditCMD(SourcesCMD):
-    arg_dataflow = Arg(
-        "-dataflow", help="File containing exported DataFlow", required=False,
-    )
-    arg_config = Arg(
-        "-config",
-        help="ConfigLoader to use for importing DataFlow",
-        required=False,
-        type=BaseConfigLoader.load,
-        default=None,
-    )
-    arg_features = Arg(
-        "-features",
-        help="Feature definitions of records to update",
-        required=False,
-        default=[],
-        type=Feature,
-        nargs="+",
-        action=list_action(Features),
-    )
+
+    CONFIG = EditCMDConfig
 
     async def __aenter__(self):
         await super().__aenter__()
@@ -106,10 +107,17 @@ class EditAllRecords(BaseEditCMD, SourcesCMD):
                     await sctx.update(record)
 
 
+@config
+class EditRecordConfig(EditCMDConfig, KeysCMDConfig):
+    pass
+
+
 class EditRecord(EditAllRecords, KeysCMD):
     """
     Edit each specified record
     """
+
+    CONFIG = EditRecordConfig
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -126,7 +134,7 @@ class Edit(CMD):
 
 
 @config
-class MergeConfig(CMDConfig):
+class MergeConfig:
     src: BaseSource = field(
         "Sources to pull records from", position=0, labeled=True,
     )

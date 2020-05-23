@@ -1,11 +1,11 @@
 from dffml.util.cli.arg import Arg
-from dffml.util.cli.cmd import CMD, CMDConfig
+from dffml.util.cli.cmd import CMD
 from dffml.util.entrypoint import entrypoint
 from dffml.base import config, field
 
 
 @config
-class MiscServicesConfig(CMDConfig):
+class MiscServicesConfig:
     integer: int = field(
         f"Port to do nothing with", default=0, required=True,
     )

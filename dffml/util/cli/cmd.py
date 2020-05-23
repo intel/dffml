@@ -66,6 +66,15 @@ class JSONEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
+log_cmd = Arg(
+    "-log",
+    help="Logging level",
+    action=ParseLoggingAction,
+    required=False,
+    default=logging.INFO,
+)
+
+
 class Parser(argparse.ArgumentParser):
     def add_subs(self, add_from: "CMD"):
         """
@@ -73,9 +82,6 @@ class Parser(argparse.ArgumentParser):
         """
         # Only one subparser should be created even if multiple sub commands
         subparsers = None
-        # TODO
-        # In order to add log to every command we just add it here, first thing
-        # self.add_argument("-log", "")
         for name, method in [
             (name.lower().replace("_", ""), method)
             for name, method in inspect.getmembers(add_from)
@@ -97,12 +103,8 @@ class Parser(argparse.ArgumentParser):
                 parser.set_defaults(cmd=method)
                 parser.set_defaults(parser=parser)
                 parser.add_subs(method)  # type: ignore
-            elif isinstance(method, Arg):
-                try:
-                    self.add_argument(method.name, **method)
-                except argparse.ArgumentError as error:
-                    raise Exception(repr(add_from)) from error
 
+        # Add arguments to the Parser
         position_list = {}
         for field in dataclasses.fields(add_from.CONFIG):
             arg = mkarg(field)
@@ -125,6 +127,12 @@ class Parser(argparse.ArgumentParser):
                 name, positional_arg = position_list[position]
                 self.add_argument(name.replace("_", "-"), **positional_arg)
             position_list.clear()
+
+        # Add `-log` argument if it's not already added
+        try:
+            self.add_argument(log_cmd.name, **log_cmd)
+        except:
+            pass
 
 
 @config

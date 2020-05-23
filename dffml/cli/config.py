@@ -3,13 +3,13 @@ import pathlib
 
 from ..configloader.configloader import BaseConfigLoader
 from ..configloader.json import JSONConfigLoader
-from ..util.cli.cmd import CMD, CMDConfig
+from ..util.cli.cmd import CMD
 from ..util.cli.cmd import Arg
 from ..base import config, field
 
 
 @config
-class ConvertConfig(CMDConfig):
+class ConvertConfig:
     original: str = field(
         "Config to convert", position=0,
     )

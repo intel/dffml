@@ -249,64 +249,6 @@ def config(cls):
     """
     Decorator to create a dataclass
     """
-    newdict = {}
-    defaultdict = {}
-    # Get all the base classes and the current class in a tuple except <class 'object'>
-    class_list = inspect.getmro(cls)[:-1]
-
-    for basecls in class_list:
-        cls_annotations = basecls.__dict__.get("__annotations__", {})
-        cls_dict = basecls.__dict__
-        for var in cls_annotations:
-            # is_dataclass method returns True for current config class (cls)
-            # if the current class inherits from a dataclass
-            if not cls_dict.get("__dataclass_fields__"):
-                if cls_dict.get(var) and isinstance(
-                    cls_dict.get(var), dataclasses.Field
-                ):
-                    if "dataclasses._MISSING_TYPE" in repr(
-                        cls_dict.get(var).default
-                    ) and "dataclasses._MISSING_TYPE" in repr(
-                        cls_dict.get(var).default_factory
-                    ):
-                        newdict[var] = cls_annotations[var]
-            else:
-                if basecls.__dataclass_fields__.get(var):
-                    if "dataclasses._MISSING_TYPE" in repr(
-                        basecls.__dataclass_fields__.get(var).default
-                    ) and "dataclasses._MISSING_TYPE" in repr(
-                        basecls.__dataclass_fields__.get(var).default_factory
-                    ):
-                        newdict[var] = cls_annotations[var]
-
-        for var in cls_annotations:
-            if not dataclasses.is_dataclass(basecls):
-                if cls_dict.get(var) and isinstance(
-                    cls_dict.get(var), dataclasses.Field
-                ):
-                    if "dataclasses._MISSING_TYPE" not in repr(
-                        cls_dict.get(var).default
-                    ) or "dataclasses._MISSING_TYPE" not in repr(
-                        cls_dict.get(var).default_factory
-                    ):
-                        defaultdict[var] = cls_annotations[var]
-            else:
-                if basecls.__dataclass_fields__.get(var):
-                    if "dataclasses._MISSING_TYPE" not in repr(
-                        basecls.__dataclass_fields__.get(var).default
-                    ) or "dataclasses._MISSING_TYPE" not in repr(
-                        basecls.__dataclass_fields__.get(var).default_factory
-                    ):
-                        defaultdict[var] = cls_annotations[var]
-
-    # Tried multiple ways to update these dictionary to have the desired result
-    # but nothing works for me as `init=True` overrides everything
-    # Also as we discussed in the meeting it's going through every config class
-    # So we have to take care of errors arising due to Example: CSVSourceConfig inheriting from FileSourceConfig
-    defaultdict.update(cls.__annotations__)
-    newdict.update(defaultdict)
-    cls.__annotations__ = newdict
-
     datacls = dataclasses.dataclass(eq=True, init=True)(cls)
     datacls._fromdict = classmethod(_fromdict)
     datacls._replace = lambda self, *args, **kwargs: dataclasses.replace(

@@ -1,17 +1,15 @@
-import os
 import inspect
 from typing import List
 
 from ...port import Port
 from ...source.source import Sources
-from ...source.json import JSONSource
-from ...source.file import FileSourceConfig
 from ...model import Model
 from ...base import config, field
 
 
 from .arg import Arg
-from .cmd import CMD, CMDConfig
+from .cmd import CMD
+from ...util.config.fields import FIELD_SOURCES
 
 
 class ListEntrypoint(CMD):
@@ -39,20 +37,8 @@ class ListEntrypoint(CMD):
 
 
 @config
-class SourcesCMDConfig(CMDConfig):
-    sources: Sources = field(
-        "Sources for loading and saving",
-        default_factory=lambda: Sources(
-            JSONSource(
-                FileSourceConfig(
-                    filename=os.path.join(
-                        os.path.expanduser("~"), ".cache", "dffml.json"
-                    )
-                )
-            )
-        ),
-        labeled=True,
-    )
+class SourcesCMDConfig:
+    sources: Sources = FIELD_SOURCES
 
 
 class SourcesCMD(CMD):
@@ -74,7 +60,7 @@ class SourcesCMD(CMD):
 
 
 @config
-class ModelCMDConfig(CMDConfig):
+class ModelCMDConfig:
     model: Model = field(
         "Model used for ML", required=True,
     )
@@ -94,9 +80,9 @@ class ModelCMD(CMD):
 
 
 @config
-class PortCMDConfig(CMDConfig):
+class PortCMDConfig:
     port: Port = field(
-        "Port", required=True, position=0,
+        "Port", position=0,
     )
 
 
@@ -106,7 +92,7 @@ class PortCMD(CMD):
 
 
 @config
-class KeysCMDConfig(CMDConfig):
+class KeysCMDConfig:
     keys: List[str] = field(
         "Key used for source lookup and evaluation", required=True,
     )

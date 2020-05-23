@@ -1,4 +1,3 @@
-import os
 import pathlib
 import hashlib
 import inspect
@@ -17,27 +16,23 @@ from ..df.memory import (
 from ..configloader.configloader import BaseConfigLoader
 from ..configloader.json import JSONConfigLoader
 from ..source.source import SubsetSources, Sources
-from ..source.file import FileSourceConfig
-from ..source.json import JSONSource
 from ..util.data import merge
 from ..util.entrypoint import load
 from ..util.cli.arg import Arg
-from ..util.cli.cmd import CMD, CMDConfig, CMDOutputOverride
+from ..util.cli.cmd import CMD, CMDOutputOverride
 from ..util.cli.cmds import (
     SourcesCMD,
     KeysCMD,
-    SourcesCMDConfig,
     KeysCMDConfig,
 )
 from ..util.cli.parser import ParseInputsAction, list_action
+from ..util.config.fields import FIELD_SOURCES
 from ..base import config, field
 
 
 @config
-class MergeConfig(CMDConfig):
-    dataflows: List[pathlib.Path] = field(
-        "DataFlows to merge", position=0,
-    )
+class MergeConfig:
+    dataflows: List[pathlib.Path] = field("DataFlows to merge",)
     config: BaseConfigLoader = field(
         "ConfigLoader to use for exporting", default=JSONConfigLoader,
     )
@@ -71,7 +66,7 @@ class Merge(CMD):
 
 
 @config
-class CreateConfig(CMDConfig):
+class CreateConfig:
     operations: List[str] = field(
         "Operations to create a dataflow for", position=0,
     )
@@ -81,12 +76,11 @@ class CreateConfig(CMDConfig):
     not_linked: bool = field(
         "Do not export dataflows as linked", default=False,
     )
-    arg_seed = Arg(
-        "-seed",
-        nargs="+",
+    seed: List[str] = field(
+        "Inputs to be added to every context",
         action=ParseInputsAction,
-        default=[],
-        help="Inputs to be added to every context",
+        default_factory=lambda: [],
+    )
 
 
 class Create(CMD):
@@ -120,40 +114,19 @@ class Create(CMD):
                 print((await loader.dumpb(exported)).decode())
 
 
-# This would live in dffml/util/config/fields.py
-FIELD_SOURCES = field(
-    "Sources for loading and saving",
-    default_factory=lambda: Sources(
-        JSONSource(
-            FileSourceConfig(
-                filename=os.path.join(
-                    os.path.expanduser("~"), ".cache", "dffml.json"
-                )
-            )
-        )
-    ),
-    labeled=True,
-    required=True,
-)
-
-
 @config
-class RunCMDConfig(SourcesCMDConfig):
+class RunCMDConfig:
     dataflow: str = field(
         "File containing exported DataFlow", required=True,
     )
     config: BaseConfigLoader = field(
         "ConfigLoader to use for importing DataFlow"
     )
-    # TODO Just to get the sources working for now. Will probably change it later
+    # TODO required=False for sources here
     sources: Sources = FIELD_SOURCES
     caching: List[str] = field(
         "Skip running DataFlow if a record already contains these features",
         required=False,
-        default_factory=lambda: [],
-    )
-    no_update: bool = field(
-        "Update record with sources", required=False, default=False,
         default_factory=lambda: [],
     )
     no_update: bool = field(
@@ -323,7 +296,7 @@ class Run(CMD):
 
 
 @config
-class DiagramConfig(CMDConfig):
+class DiagramConfig:
     dataflow: str = field("File containing exported DataFlow", position=0)
     config: BaseConfigLoader = field(
         "ConfigLoader to use for importing DataFlow"

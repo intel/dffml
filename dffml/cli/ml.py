@@ -14,18 +14,18 @@ from ..base import config, field
 
 
 @config
-class MLCMDConfig(ModelCMDConfig, SourcesCMDConfig):
+class MLCMDConfig(SourcesCMDConfig, ModelCMDConfig):
     pass
 
 
-class MLCMD(ModelCMD, SourcesCMD):
+class MLCMD(SourcesCMD, ModelCMD):
     """
     Commands which use models share many similar arguments.
     """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        SourcesCMD.__init__(self, *args, **kwargs)
+        ModelCMD.__init__(self, *args, **kwargs)
 
 
 class Train(MLCMD):

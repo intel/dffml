@@ -24,7 +24,7 @@ from ..util.os import chdir, MODE_BITS_SECURE
 from ..version import VERSION
 from ..util.skel import Skel, SkelTemplateConfig
 from ..util.cli.arg import Arg
-from ..util.cli.cmd import CMD, CMDConfig
+from ..util.cli.cmd import CMD
 from ..util.entrypoint import load
 from ..base import MissingConfig, config as configdataclass, field
 from ..util.packaging import is_develop
@@ -53,7 +53,7 @@ def create_from_skel(plugin_type):
     """
 
     @configdataclass
-    class CreateCMDConfig(CMDConfig):
+    class CreateCMDConfig:
         package: str = field("Name of python package to create", position=0)
         user: str = field(
             f"Your username (default: {USER})", default=USER, required=False,
@@ -138,7 +138,7 @@ class Skeleton(CMD):
 
 
 @configdataclass
-class RunConfig(CMDConfig):
+class RunConfig:
     operation: str = field(
         "Python path to operation", position=0,
     )
@@ -243,7 +243,7 @@ class Run(CMD):
 
 
 @configdataclass
-class ListEntrypointsConfig(CMDConfig):
+class ListEntrypointsConfig:
     entrypoint: str = field(
         "Entrypoint to list, example: dffml.model", position=0,
     )
@@ -264,7 +264,7 @@ class Entrypoints(CMD):
 
 
 @configdataclass
-class ExportConfig(CMDConfig):
+class ExportConfig:
     export: str = field(
         "Python path to object to export", position=0,
     )
@@ -309,7 +309,7 @@ class Export(CMD):
 
 
 @configdataclass
-class InstallConfig(CMDConfig):
+class InstallConfig:
     user: bool = field(
         "Perform user install", default=False, action="store_true"
     )
@@ -353,7 +353,7 @@ class Install(CMD):
 
 
 @configdataclass
-class SetupPyKWArgConfig(CMDConfig):
+class SetupPyKWArgConfig:
     kwarg: str = field(
         "Keyword argument to write to stdout", position=0,
     )
@@ -405,7 +405,7 @@ class RepoDirtyError(Exception):
 
 
 @configdataclass
-class ReleaseConfig(CMDConfig):
+class ReleaseConfig:
     package: Path = field(
         "Relative path to package to release", position=0,
     )
@@ -502,7 +502,7 @@ class BumpMain(CMD):
 
 
 @configdataclass
-class BumpPackagesConfig(CMDConfig):
+class BumpPackagesConfig:
     version: str = field(
         "Version to increment by", position=0,
     )
