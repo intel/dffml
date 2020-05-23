@@ -6,11 +6,8 @@ from typing import Dict, Any
 from dffml import op
 from dffml import Definition
 
-package_src_dir = Definition(name="package_src_dir", primitive="str")
-bandit_output = Definition(name="bandit_output", primitive="Dict[str, Any]")
 
-
-@op(inputs={"pkg": package_src_dir}, outputs={"report": bandit_output})
+@op
 async def run_bandit(pkg: str) -> Dict[str, Any]:
     """
     CLI usage: dffml service dev run -log debug shouldi.bandit:run_bandit -pkg .
