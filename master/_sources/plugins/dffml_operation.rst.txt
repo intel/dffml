@@ -1058,11 +1058,11 @@ been returned to us.
 
 **Inputs**
 
-- spec: get_n_spec(type: array)
+- spec: get_multi_spec(type: array)
 
 **Outputs**
 
-- output: get_n_output(type: map)
+- output: get_multi_output(type: map)
 
 .. _plugin_operation_dffml_get_single:
 
