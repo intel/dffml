@@ -44,7 +44,7 @@ def load(
             yield obj
     finally:
         if relative is not None:
-            sys.path.pop()
+            sys.path.pop(0)
 
 
 def entrypoint(label):
