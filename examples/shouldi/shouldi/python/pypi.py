@@ -11,6 +11,27 @@ from .bandit import run_bandit
 
 
 @op(
+    outputs={"directory": run_bandit.op.inputs["pkg"]},
+    imp_enter={
+        "session": (lambda self: aiohttp.ClientSession(trust_env=True))
+    },
+)
+async def pypi_package_contents(self, url: str) -> str:
+    """
+    Download a source code release and extract it to a temporary directory.
+    """
+    package_src_dir = tempfile.mkdtemp(prefix="pypi-")
+    async with self.parent.session.get(url) as resp:
+        # Create a temporary file to extract to
+        with tempfile.NamedTemporaryFile(
+            prefix="pypi-", suffix=".tar.gz"
+        ) as package_src_file:
+            package_src_file.write(await resp.read())
+            shutil.unpack_archive(package_src_file.name, package_src_dir)
+            return {"directory": package_src_dir}
+
+
+@op(
     # imp_enter allows us to create instances of objects which are async context
     # managers and assign them to self.parent which is an object of type
     # OperationImplementation which will be alive for the lifetime of the
@@ -49,26 +70,6 @@ async def pypi_package_url(response_json: Dict["str", Any]) -> str:
             and url_dict["packagetype"] == "sdist"
         ):
             return {"url": url_dict["url"]}
-
-
-@op(
-    imp_enter={
-        "session": (lambda self: aiohttp.ClientSession(trust_env=True))
-    },
-)
-async def pypi_package_contents(self, url: str) -> str:
-    """
-    Download a source code release and extract it to a temporary directory.
-    """
-    package_src_dir = tempfile.mkdtemp(prefix="pypi-")
-    async with self.parent.session.get(url) as resp:
-        # Create a temporary file to extract to
-        with tempfile.NamedTemporaryFile(
-            prefix="pypi-", suffix=".tar.gz"
-        ) as package_src_file:
-            package_src_file.write(await resp.read())
-            shutil.unpack_archive(package_src_file.name, package_src_dir)
-            return {"directory": package_src_dir}
 
 
 @op(stage=Stage.CLEANUP)
