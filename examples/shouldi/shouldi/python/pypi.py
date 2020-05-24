@@ -6,8 +6,8 @@ import aiohttp
 
 from dffml import op, Definition, Stage
 
-from .safety import package, package_version
-from .bandit import package_src_dir
+from .safety import safety_check
+from .bandit import run_bandit
 
 
 @op(

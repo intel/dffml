@@ -7,9 +7,7 @@ from dffml import op
 from dffml import Definition
 
 
-@op(
-    name="safety_check", conditions=[],
-)
+@op
 async def safety_check(package: str, version: str) -> Dict[str, Any]:
     pinned = f"{package}=={version}"
 
