@@ -281,15 +281,15 @@
             <span class="k">return</span> <span class="n">want</span></div></div>
 
 
-<span class="n">get_n_spec</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_n_spec&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
+<span class="n">get_multi_spec</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_multi_spec&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;array&quot;</span><span class="p">)</span>
 
-<span class="n">get_n_output</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_n_output&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;map&quot;</span><span class="p">)</span>
+<span class="n">get_multi_output</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_multi_output&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;map&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="GetMulti"><a class="viewcode-back" href="../../../api/operation/output.html#dffml.operation.output.GetMulti">[docs]</a><span class="nd">@op</span><span class="p">(</span>
     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_multi&quot;</span><span class="p">,</span>
-    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="n">get_n_spec</span><span class="p">},</span>
-    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="n">get_n_output</span><span class="p">},</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="n">get_multi_spec</span><span class="p">},</span>
+    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="n">get_multi_output</span><span class="p">},</span>
     <span class="n">stage</span><span class="o">=</span><span class="n">Stage</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="k">class</span> <span class="nc">GetMulti</span><span class="p">(</span><span class="n">OperationImplementationContext</span><span class="p">):</span>

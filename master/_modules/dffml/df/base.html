@@ -179,6 +179,7 @@
   <h1>Source code for dffml.df.base</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">abc</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">AsyncIterator</span><span class="p">,</span>
@@ -333,9 +334,16 @@
 <span class="sd">        None if its not an operation implemention or doesn&#39;t have the imp</span>
 <span class="sd">        parameter which is an operation implemention.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="p">[</span><span class="n">loaded</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">loaded</span><span class="p">,</span> <span class="s2">&quot;imp&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]:</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">loaded</span><span class="p">,</span> <span class="s2">&quot;imp&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">loaded</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">obj</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">inspect</span><span class="o">.</span><span class="n">isfunction</span><span class="p">(</span><span class="n">loaded</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isgeneratorfunction</span><span class="p">(</span><span class="n">loaded</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">inspect</span><span class="o">.</span><span class="n">iscoroutinefunction</span><span class="p">(</span><span class="n">loaded</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isasyncgenfunction</span><span class="p">(</span><span class="n">loaded</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="n">op</span><span class="p">(</span><span class="n">loaded</span><span class="p">)</span><span class="o">.</span><span class="n">imp</span>
         <span class="k">return</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="OperationImplementation.load"><a class="viewcode-back" href="../../../api/df/base.html#dffml.df.base.OperationImplementation.load">[docs]</a>    <span class="nd">@classmethod</span>
@@ -375,7 +383,10 @@
                 <span class="n">param_annotation</span><span class="p">,</span> <span class="n">param_annotation</span><span class="o">.</span><span class="vm">__name__</span>
             <span class="p">),</span>
         <span class="p">)</span>
-    <span class="k">elif</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">param_annotation</span><span class="p">)</span> <span class="ow">is</span> <span class="n">Union</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">param_annotation</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="n">Union</span><span class="p">,</span>
+        <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">AsyncIterator</span><span class="p">,</span>
+    <span class="p">]:</span>
         <span class="c1"># If the annotation is of the form Optional</span>
         <span class="k">return</span> <span class="n">create_definition</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">get_args</span><span class="p">(</span><span class="n">param_annotation</span><span class="p">))[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">elif</span> <span class="p">(</span>
@@ -487,7 +498,15 @@
 
     <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;name&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">inspect</span><span class="o">.</span><span class="n">getmodule</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="c1"># Check if it&#39;s already been registered as another name</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">iter_entry_points</span><span class="p">(</span><span class="n">Operation</span><span class="o">.</span><span class="n">ENTRYPOINT</span><span class="p">):</span>
+                <span class="n">entrypoint_load_path</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">module_name</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">attrs</span><span class="p">)</span>
+                <span class="c1"># If it has, then let that name take precedence</span>
+                <span class="k">if</span> <span class="n">entrypoint_load_path</span> <span class="o">==</span> <span class="n">name</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span>
+                    <span class="k">break</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
         <span class="c1"># TODO Make this grab from the defaults for Operation</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;conditions&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;conditions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -505,6 +524,7 @@
                     <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name_list</span><span class="p">),</span> <span class="n">param</span><span class="o">.</span><span class="n">annotation</span>
                 <span class="p">)</span>
 
+        <span class="n">auto_def_outputs</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="c1"># Definition for return type of a function</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;outputs&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="n">return_type</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">return_annotation</span>
@@ -518,6 +538,7 @@
                         <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name_list</span><span class="p">),</span> <span class="n">return_type</span>
                     <span class="p">)</span>
                 <span class="p">}</span>
+                <span class="n">auto_def_outputs</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="n">func</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">Operation</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">func</span><span class="o">.</span><span class="n">ENTRY_POINT_NAME</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;operation&quot;</span><span class="p">]</span>
@@ -600,12 +621,29 @@
                         <span class="c1"># We can&#39;t pass self to functions running in threads</span>
                         <span class="c1"># Its not thread safe!</span>
                         <span class="n">bound</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
-                        <span class="k">return</span> <span class="k">await</span> <span class="n">bound</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">bound</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
                     <span class="k">elif</span> <span class="n">inspect</span><span class="o">.</span><span class="n">iscoroutinefunction</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-                        <span class="k">return</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="c1"># TODO Add auto thread pooling of non-async functions</span>
-                        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">auto_def_outputs</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isasyncgen</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+
+                            <span class="k">async</span> <span class="k">def</span> <span class="nf">convert_asyncgen</span><span class="p">(</span><span class="n">outputs</span><span class="p">):</span>
+                                <span class="k">async</span> <span class="k">for</span> <span class="n">yielded_output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+                                    <span class="k">yield</span> <span class="p">{</span>
+                                        <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span>
+                                            <span class="mi">0</span>
+                                        <span class="p">]:</span> <span class="n">yielded_output</span>
+                                    <span class="p">}</span>
+
+                            <span class="n">result</span> <span class="o">=</span> <span class="n">convert_asyncgen</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+                                <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">result</span>
+                            <span class="p">}</span>
+                    <span class="k">return</span> <span class="n">result</span>
 
             <span class="n">func</span><span class="o">.</span><span class="n">imp</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cls_name</span><span class="si">}</span><span class="s2">Implementation&quot;</span><span class="p">,</span>
