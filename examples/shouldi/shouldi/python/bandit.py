@@ -8,7 +8,7 @@ from dffml import Definition
 
 
 @op
-async def run_bandit(pkg: str) -> Dict[str, Any]:
+async def run_bandit(pkg: str) -> dict:
     """
     CLI usage: dffml service dev run -log debug shouldi.bandit:run_bandit -pkg .
     """

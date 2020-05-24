@@ -19,7 +19,7 @@ from .bandit import run_bandit
         "session": (lambda self: aiohttp.ClientSession(trust_env=True))
     },
 )
-async def pypi_package_json(self, package: str) -> Dict[str, Any]:
+async def pypi_package_json(self, package: str) -> dict:
     """
     Download the information on the package in JSON format.
     """
