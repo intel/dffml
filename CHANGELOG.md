@@ -66,6 +66,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Any plugin can now be loaded via it's entrypoint style path
 - `with_features` now raises a helpful error message if no records with matching
   features were found
+- Split out model tutorial into writing the model, and another tutorial for
+  packaging the model.
 ### Fixed
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
   parameter sets for an operation.
