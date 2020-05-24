@@ -357,7 +357,7 @@ class SetupPyKWArgConfig:
     kwarg: str = field(
         "Keyword argument to write to stdout", position=0,
     )
-    setup_filepath: str = field(
+    setupfilepath: str = field(
         "Path to setup.py", position=1,
     )
 
@@ -370,16 +370,16 @@ class SetupPyKWArg(CMD):
     CONFIG = SetupPyKWArgConfig
 
     @staticmethod
-    def get_kwargs(setup_filepath: str):
-        setup_filepath = Path(setup_filepath)
+    def get_kwargs(setupfilepath: str):
+        setupfilepath = Path(setupfilepath)
         setup_kwargs = {}
 
         def grab_setup_kwargs(**kwargs):
             setup_kwargs.update(kwargs)
 
-        with chdir(str(setup_filepath.parent)):
+        with chdir(str(setupfilepath.parent)):
             spec = importlib.util.spec_from_file_location(
-                "setup", str(setup_filepath.parts[-1])
+                "setup", str(setupfilepath.parts[-1])
             )
             with unittest.mock.patch(
                 "setuptools.setup", new=grab_setup_kwargs
@@ -390,7 +390,7 @@ class SetupPyKWArg(CMD):
         return setup_kwargs
 
     async def run(self):
-        print(self.get_kwargs(self.setup_filepath)[self.kwarg])
+        print(self.get_kwargs(self.setupfilepath)[self.kwarg])
 
 
 class SetupPy(CMD):

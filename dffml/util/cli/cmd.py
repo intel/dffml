@@ -131,7 +131,7 @@ class Parser(argparse.ArgumentParser):
         # Add `-log` argument if it's not already added
         try:
             self.add_argument(log_cmd.name, **log_cmd)
-        except:
+        except argparse.ArgumentError:
             pass
 
 

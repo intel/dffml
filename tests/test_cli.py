@@ -50,15 +50,16 @@ class RecordsTestCase(AsyncExitStackTestCase):
             "RecordsTestCase JSON file erroneously initialized as empty",
         )
         # TODO(p3) For some reason patching Model.load doesn't work
-        # self._stack.enter_context(patch("dffml.model.model.Model.load",
-        #     new=model_load))
         self._stack.enter_context(
-            patch.object(
-                ModelCMD,
-                "arg_model",
-                new=ModelCMD.arg_model.modify(type=model_load),
-            )
+            patch("dffml.model.model.Model.load", new=model_load)
         )
+        # self._stack.enter_context(
+        #     patch.object(
+        #         ModelCMD,
+        #         "arg_model",
+        #         new=ModelCMD.arg_model.modify(type=model_load),
+        #     )
+        # )
         self._stack.enter_context(
             patch("dffml.df.base.OperationImplementation.load", new=opimp_load)
         )
@@ -123,14 +124,14 @@ def opimp_load(loading=None):
 class TestMerge(RecordsTestCase):
     async def test_json_tag(self):
         await Merge.cli(
-            "dest=json",
             "src=json",
+            "dest=json",
+            "-source-src-filename",
+            self.temp_filename,
             "-source-dest-filename",
             self.temp_filename,
             "-source-dest-tag",
             "sometag",
-            "-source-src-filename",
-            self.temp_filename,
             "-source-src-allowempty",
             "-source-dest-allowempty",
             "-source-src-readwrite",
@@ -156,14 +157,14 @@ class TestMerge(RecordsTestCase):
     async def test_json_to_csv(self):
         with non_existant_tempfile() as csv_tempfile:
             await Merge.cli(
-                "dest=csv",
                 "src=json",
+                "dest=csv",
+                "-source-src-filename",
+                self.temp_filename,
                 "-source-dest-filename",
                 csv_tempfile,
                 "-source-dest-key",
                 "key",
-                "-source-src-filename",
-                self.temp_filename,
                 "-source-src-allowempty",
                 "-source-dest-allowempty",
                 "-source-src-readwrite",
@@ -185,12 +186,12 @@ class TestMerge(RecordsTestCase):
             # Move the pre-populated json data to a csv source
             with self.subTest(json_to_csv=True):
                 await Merge.cli(
-                    "dest=csv",
                     "src=json",
-                    "-source-dest-filename",
-                    csv_tempfile,
+                    "dest=csv",
                     "-source-src-filename",
                     self.temp_filename,
+                    "-source-dest-filename",
+                    csv_tempfile,
                     "-source-src-allowempty",
                     "-source-dest-allowempty",
                     "-source-src-readwrite",
@@ -199,14 +200,14 @@ class TestMerge(RecordsTestCase):
             # Merge one tag to another within the same file
             with self.subTest(merge_same_file=True):
                 await Merge.cli(
-                    "dest=csv",
                     "src=csv",
+                    "dest=csv",
+                    "-source-src-filename",
+                    csv_tempfile,
                     "-source-dest-filename",
                     csv_tempfile,
                     "-source-dest-tag",
                     "sometag",
-                    "-source-src-filename",
-                    csv_tempfile,
                     "-source-src-allowempty",
                     "-source-dest-allowempty",
                     "-source-src-readwrite",
