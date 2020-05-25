@@ -122,7 +122,8 @@ class SimpleModel(Model):
     def __init__(self, config: "BaseConfig") -> None:
         super().__init__(config)
         self.storage = {}
-        self.features = self.applicable_features(config.features)
+        if hasattr(self.config, "features"):
+            self.features = self.applicable_features(self.config.features)
         self._in_context = 0
 
     def __call__(self):
