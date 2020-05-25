@@ -6,8 +6,6 @@ from dffml import AsyncTestCase
 
 from shouldi.python.pypi import (
     pypi_package_json,
-    pypi_latest_package_version,
-    pypi_package_url,
     pypi_package_contents,
     cleanup_pypi_package,
 )
@@ -21,15 +19,9 @@ class TestPyPiOperations(AsyncTestCase):
         # Call the .test method created by the @op decorator. This sets up the
         # aiohttp.ClientSession object.
         results = await pypi_package_json.test(package=self.PACKAGE["name"])
-        self.assertIs(type(results["response_json"]), dict)
-        self.INT_RESULT_JSON.update(results["response_json"])
-
-    async def test_001_package_version(self):
-        results = await pypi_latest_package_version(self.INT_RESULT_JSON)
+        self.assertIs(type(results), dict)
+        self.INT_RESULT_JSON.update(results)
         self.assertEqual(results["version"], "0.1.0")
-
-    async def test_002_package_url(self):
-        results = await pypi_package_url(self.INT_RESULT_JSON)
         self.assertIn("insecure-package-0.1.0.tar.gz", results["url"])
         self.PACKAGE.update(results)
 
