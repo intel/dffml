@@ -1,10 +1,9 @@
 import pathlib
 import hashlib
-import inspect
 import contextlib
 
 from ..base import BaseConfig
-from ..df.base import BaseOrchestrator
+from ..df.base import BaseOrchestrator, OperationImplementation
 from ..df.types import DataFlow, Stage, Operation, Input
 from ..df.memory import (
     MemoryOrchestrator,
@@ -90,15 +89,12 @@ class Create(CMD):
         operations = []
         for load_operation in self.operations:
             if ":" in load_operation:
-                ops = []
-                for func in load(load_operation, relative=True):
-                    new_name = (
-                        f"{inspect.getmodule(func).__name__}:{func.__name__}"
+                operations.extend(
+                    map(
+                        OperationImplementation._imp,
+                        load(load_operation, relative=True),
                     )
-                    if hasattr(func, "op"):
-                        func.op = func.op._replace(name=new_name)
-                    ops.append(func)
-                operations += ops
+                )
             else:
                 operations += [Operation.load(load_operation)]
         async with self.config(BaseConfig()) as configloader:

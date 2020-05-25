@@ -1,5 +1,6 @@
 import abc
 import inspect
+import collections
 import pkg_resources
 from typing import (
     AsyncIterator,
@@ -154,9 +155,16 @@ class OperationImplementation(BaseDataFlowObject):
         None if its not an operation implemention or doesn't have the imp
         parameter which is an operation implemention.
         """
-        for obj in [loaded, getattr(loaded, "imp", None)]:
+        for obj in [getattr(loaded, "imp", None), loaded]:
             if inspect.isclass(obj) and issubclass(obj, cls):
                 return obj
+        if (
+            inspect.isfunction(loaded)
+            or inspect.isgeneratorfunction(loaded)
+            or inspect.iscoroutinefunction(loaded)
+            or inspect.isasyncgenfunction(loaded)
+        ):
+            return op(loaded).imp
         return None
 
     @classmethod
@@ -196,7 +204,10 @@ def create_definition(name, param_annotation):
                 param_annotation, param_annotation.__name__
             ),
         )
-    elif get_origin(param_annotation) is Union:
+    elif get_origin(param_annotation) in [
+        Union,
+        collections.abc.AsyncIterator,
+    ]:
         # If the annotation is of the form Optional
         return create_definition(name, list(get_args(param_annotation))[0])
     elif (
@@ -308,46 +319,18 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
 
     def wrap(func):
         if not "name" in kwargs:
-            kwargs["name"] = func.__name__
+            name = f"{inspect.getmodule(func).__name__}:{func.__name__}"
+            # Check if it's already been registered as another name
+            for i in pkg_resources.iter_entry_points(Operation.ENTRYPOINT):
+                entrypoint_load_path = i.module_name + ":" + ".".join(i.attrs)
+                # If it has, then let that name take precedence
+                if entrypoint_load_path == name:
+                    name = i.name
+                    break
+            kwargs["name"] = name
         # TODO Make this grab from the defaults for Operation
         if not "conditions" in kwargs:
             kwargs["conditions"] = []
-
-        if not "inputs" in kwargs:
-            sig = inspect.signature(func)
-            kwargs["inputs"] = {}
-
-            for name, param in sig.parameters.items():
-                name_list = [func.__qualname__, "inputs", name]
-                if func.__module__ != "__main__":
-                    name_list.insert(0, func.__module__)
-
-                kwargs["inputs"][name] = create_definition(
-                    ".".join(name_list), param.annotation
-                )
-
-        # Definition for return type of a function
-        if not "outputs" in kwargs:
-            return_type = inspect.signature(func).return_annotation
-            if return_type not in (None, inspect._empty):
-                name_list = [func.__qualname__, "outputs", "result"]
-                if func.__module__ != "__main__":
-                    name_list.insert(0, func.__module__)
-
-                kwargs["outputs"] = {
-                    "result": create_definition(
-                        ".".join(name_list), return_type
-                    )
-                }
-
-        func.op = Operation(**kwargs)
-        func.ENTRY_POINT_NAME = ["operation"]
-        cls_name = (
-            func.op.name.replace(".", " ")
-            .replace("_", " ")
-            .title()
-            .replace(" ", "")
-        )
 
         sig = inspect.signature(func)
         # Check if the function uses the operation implementation context
@@ -369,6 +352,47 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
             for name, param in sig.parameters.items():
                 if param.annotation is config_cls:
                     uses_config = name
+
+        # Definition for inputs of the function
+        if not "inputs" in kwargs:
+            sig = inspect.signature(func)
+            kwargs["inputs"] = {}
+
+            for name, param in sig.parameters.items():
+                if name == "self":
+                    continue
+                name_list = [func.__qualname__, "inputs", name]
+                if func.__module__ != "__main__":
+                    name_list.insert(0, func.__module__)
+
+                kwargs["inputs"][name] = create_definition(
+                    ".".join(name_list), param.annotation
+                )
+
+        auto_def_outputs = False
+        # Definition for return type of a function
+        if not "outputs" in kwargs:
+            return_type = inspect.signature(func).return_annotation
+            if return_type not in (None, inspect._empty):
+                name_list = [func.__qualname__, "outputs", "result"]
+                if func.__module__ != "__main__":
+                    name_list.insert(0, func.__module__)
+
+                kwargs["outputs"] = {
+                    "result": create_definition(
+                        ".".join(name_list), return_type
+                    )
+                }
+                auto_def_outputs = True
+
+        func.op = Operation(**kwargs)
+        func.ENTRY_POINT_NAME = ["operation"]
+        cls_name = (
+            func.op.name.replace(".", " ")
+            .replace("_", " ")
+            .title()
+            .replace(" ", "")
+        )
 
         # Create the test method which creates the contexts and runs
         async def test(**kwargs):
@@ -421,12 +445,29 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                         # We can't pass self to functions running in threads
                         # Its not thread safe!
                         bound = func.__get__(self, self.__class__)
-                        return await bound(**inputs)
+                        result = await bound(**inputs)
                     elif inspect.iscoroutinefunction(func):
-                        return await func(**inputs)
+                        result = await func(**inputs)
                     else:
                         # TODO Add auto thread pooling of non-async functions
-                        return func(**inputs)
+                        result = func(**inputs)
+                    if auto_def_outputs and len(self.parent.op.outputs) == 1:
+                        if inspect.isasyncgen(result):
+
+                            async def convert_asyncgen(outputs):
+                                async for yielded_output in outputs:
+                                    yield {
+                                        list(self.parent.op.outputs.keys())[
+                                            0
+                                        ]: yielded_output
+                                    }
+
+                            result = convert_asyncgen(result)
+                        else:
+                            result = {
+                                list(self.parent.op.outputs.keys())[0]: result
+                            }
+                    return result
 
             func.imp = type(
                 f"{cls_name}Implementation",
