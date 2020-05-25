@@ -63,7 +63,7 @@ async def pypi_package_json(self, package: str) -> dict:
                 url_dict["python_version"] == "source"
                 and url_dict["packagetype"] == "sdist"
             ):
-                return {"url": url_dict["url"]}
+                return pypi_latest_package_version, {"url": url_dict["url"]}
 
 
 @op(stage=Stage.CLEANUP)
