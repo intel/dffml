@@ -332,11 +332,35 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
         if not "conditions" in kwargs:
             kwargs["conditions"] = []
 
+        sig = inspect.signature(func)
+        # Check if the function uses the operation implementation context
+        uses_self = bool(
+            (sig.parameters and list(sig.parameters.keys())[0] == "self")
+            or imp_enter is not None
+            or ctx_enter is not None
+            or (
+                [
+                    name
+                    for name, param in sig.parameters.items()
+                    if param.annotation is OperationImplementationContext
+                ]
+            )
+        )
+        # Check if the function uses the operation implementation config
+        uses_config = None
+        if config_cls is not None:
+            for name, param in sig.parameters.items():
+                if param.annotation is config_cls:
+                    uses_config = name
+
+        # Definition for inputs of the function
         if not "inputs" in kwargs:
             sig = inspect.signature(func)
             kwargs["inputs"] = {}
 
             for name, param in sig.parameters.items():
+                if name == "self":
+                    continue
                 name_list = [func.__qualname__, "inputs", name]
                 if func.__module__ != "__main__":
                     name_list.insert(0, func.__module__)
@@ -369,27 +393,6 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
             .title()
             .replace(" ", "")
         )
-
-        sig = inspect.signature(func)
-        # Check if the function uses the operation implementation context
-        uses_self = bool(
-            (sig.parameters and list(sig.parameters.keys())[0] == "self")
-            or imp_enter is not None
-            or ctx_enter is not None
-            or (
-                [
-                    name
-                    for name, param in sig.parameters.items()
-                    if param.annotation is OperationImplementationContext
-                ]
-            )
-        )
-        # Check if the function uses the operation implementation config
-        uses_config = None
-        if config_cls is not None:
-            for name, param in sig.parameters.items():
-                if param.annotation is config_cls:
-                    uses_config = name
 
         # Create the test method which creates the contexts and runs
         async def test(**kwargs):
