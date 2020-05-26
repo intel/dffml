@@ -221,7 +221,6 @@ def field(
     *args,
     action=None,
     required: bool = False,
-    position: int = None,
     labeled: bool = False,
     metadata: Optional[dict] = None,
     **kwargs,
@@ -235,7 +234,6 @@ def field(
         metadata = {}
     metadata["description"] = description
     metadata["required"] = required
-    metadata["position"] = position
     metadata["labeled"] = labeled
     metadata["action"] = action
     return dataclasses.field(*args, metadata=metadata, **kwargs)

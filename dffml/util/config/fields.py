@@ -1,4 +1,4 @@
-import os
+import pathlib
 
 from ...source.file import FileSourceConfig
 from ...source.json import JSONSource
@@ -11,9 +11,7 @@ FIELD_SOURCES = field(
     default_factory=lambda: Sources(
         JSONSource(
             FileSourceConfig(
-                filename=os.path.join(
-                    os.path.expanduser("~"), ".cache", "dffml.json"
-                )
+                filename=pathlib.Path("~", ".cache", "dffml.json")
             )
         )
     ),

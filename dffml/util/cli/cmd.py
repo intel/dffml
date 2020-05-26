@@ -109,11 +109,9 @@ class Parser(argparse.ArgumentParser):
         for i, field in enumerate(dataclasses.fields(add_from.CONFIG)):
             arg = mkarg(field)
             if isinstance(arg, Arg):
-                position = field.metadata.get("position", None)
-                if not "default" in arg and position is None:
-                    position = i
-                if isinstance(position, int):
-                    position_list[position] = (field.name, arg)
+                position = None
+                if not "default" in arg:
+                    position_list[i] = (field.name, arg)
                 else:
                     try:
                         self.add_argument(

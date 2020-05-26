@@ -351,32 +351,32 @@ class TestDataflowRunRecordSet(RecordsTestCase):
 class TestTrain(RecordsTestCase):
     async def test_run(self):
         await Train.cli(
-            "-sources",
-            "primary=json",
-            "-source-filename",
-            self.temp_filename,
             "-model",
             "fake",
             "-model-features",
             "fake",
             "-model-predict",
             "fake",
+            "-sources",
+            "primary=json",
+            "-source-filename",
+            self.temp_filename,
         )
 
 
 class TestAccuracy(RecordsTestCase):
     async def test_run(self):
         result = await Accuracy.cli(
-            "-sources",
-            "primary=json",
-            "-source-filename",
-            self.temp_filename,
             "-model",
             "fake",
             "-model-features",
             "fake",
             "-model-predict",
             "fake",
+            "-sources",
+            "primary=json",
+            "-source-filename",
+            self.temp_filename,
         )
         self.assertEqual(result, 0.42)
 
@@ -385,16 +385,16 @@ class TestPredict(RecordsTestCase):
     async def test_all(self):
         results = await Predict.cli(
             "all",
-            "-sources",
-            "primary=json",
-            "-source-filename",
-            self.temp_filename,
             "-model",
             "fake",
             "-model-features",
             "fake:float:[10,0]",
             "-model-predict",
             "fake",
+            "-sources",
+            "primary=json",
+            "-source-filename",
+            self.temp_filename,
         )
         results = {
             record.key: record.prediction("fake").confidence
@@ -408,18 +408,18 @@ class TestPredict(RecordsTestCase):
         subset_urls = list(map(lambda record: record.key, subset))
         results = await Predict.cli(
             "record",
-            "-sources",
-            "primary=json",
-            "-source-filename",
-            self.temp_filename,
+            "-keys",
+            *subset_urls,
             "-model",
             "fake",
             "-model-predict",
             "fake",
             "-model-features",
             "fake",
-            "-keys",
-            *subset_urls,
+            "-sources",
+            "primary=json",
+            "-source-filename",
+            self.temp_filename,
         )
         self.assertEqual(len(results), len(subset))
         results = {

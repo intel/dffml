@@ -61,7 +61,9 @@ class SourcesCMD(CMD):
 
 @config
 class ModelCMDConfig:
-    model: Model = field("Model used for ML")
+    model: Model = field(
+        "Model used for ML", default=False,
+    )
 
 
 class ModelCMD(CMD):
