@@ -1,7 +1,9 @@
+import sys
 import pathlib
+from typing import List
 
 # Command line utility helpers and DataFlow specific classes
-from dffml import CMD, Arg, DataFlow, Input, GetSingle, run
+from dffml import CMD, Arg, DataFlow, Input, GetSingle, run, config, field
 
 # Allow users to give us a Git repo URL and we'll clone it and turn it into a
 # directory that will be scanned
@@ -52,11 +54,13 @@ for opimp in [
 DATAFLOW.update()
 
 
-class Use(CMD):
+@config
+class UseConfig:
+    targets: List[str] = field("Git repo URLs or directories to analyze")
 
-    arg_targets = Arg(
-        "targets", nargs="+", help="Git repo URLs or directories to analyze"
-    )
+
+class Use(CMD):
+    CONFIG = UseConfig
 
     async def run(self):
         # Make a corresponding list of path objects in case any of the targets
