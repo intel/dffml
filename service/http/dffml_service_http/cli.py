@@ -199,13 +199,13 @@ class ServerConfig(TLSCMDConfig, MultiCommCMDConfig):
     )
     models: Model = field(
         "Models configured on start",
-        default=AsyncContextManagerList(),
+        default_factory=lambda: AsyncContextManagerList(),
         action=list_action(AsyncContextManagerList),
         labeled=True,
     )
     sources: Sources = field(
         "Sources configured on start",
-        default_factory=lambda: Sources,
+        default_factory=lambda: Sources(),
         action=list_action(Sources),
         labeled=True,
     )
