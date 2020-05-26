@@ -16,6 +16,7 @@ from ..df.memory import (
 from ..configloader.configloader import BaseConfigLoader
 from ..configloader.json import JSONConfigLoader
 from ..source.source import SubsetSources, Sources
+from ..source.json import JSONSource
 from ..util.data import merge
 from ..util.entrypoint import load
 from ..util.cli.arg import Arg
@@ -114,29 +115,29 @@ class Create(CMD):
 
 @config
 class RunCMDConfig:
-    dataflow: str = field(
-        "File containing exported DataFlow", required=True,
-    )
+    dataflow: str = field("File containing exported DataFlow",)
     config: BaseConfigLoader = field(
-        "ConfigLoader to use for importing DataFlow"
+        "ConfigLoader to use for importing DataFlow", default=None,
     )
-    # TODO required=False for sources here
-    sources: Sources = FIELD_SOURCES
+    sources: Sources = field(
+        "Sources for loading and saving",
+        default_factory=lambda: Sources(
+            JSONSource(filename=pathlib.Path("~", ".cache", "dffml.json"))
+        ),
+        labeled=True,
+    )
     caching: List[str] = field(
         "Skip running DataFlow if a record already contains these features",
-        required=False,
         default_factory=lambda: [],
     )
     no_update: bool = field(
-        "Update record with sources", required=False, default=False,
+        "Update record with sources", default=False,
     )
     no_echo: bool = field(
-        "Do not echo back records", required=False, default=False,
+        "Do not echo back records", default=False,
     )
     no_strict: bool = field(
-        "Do not exit on operation exceptions, just log errors",
-        required=False,
-        default=False,
+        "Do not exit on operation exceptions, just log errors", default=False,
     )
     orchestrator: BaseOrchestrator = field(
         "Orchestrator", default=MemoryOrchestrator,
@@ -295,22 +296,17 @@ class Run(CMD):
 
 @config
 class DiagramConfig:
-    dataflow: str = field("File containing exported DataFlow", position=0)
+    dataflow: str = field("File containing exported DataFlow")
     config: BaseConfigLoader = field(
-        "ConfigLoader to use for importing DataFlow"
+        "ConfigLoader to use for importing DataFlow", default=None,
     )
     stages: List[str] = field(
         "Which stages to display: (processing, cleanup, output)",
         default_factory=lambda: [],
-        required=False,
     )
-    simple: bool = field(
-        "Don't display input and output names", default=False, required=False,
-    )
+    simple: bool = field("Don't display input and output names", default=False)
     display: str = field(
-        "How to display (TD: top down, LR, RL, BT)",
-        default="TD",
-        required=False,
+        "How to display (TD: top down, LR, RL, BT)", default="TD",
     )
 
 
