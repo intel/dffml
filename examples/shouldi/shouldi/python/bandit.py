@@ -41,4 +41,4 @@ async def run_bandit(pkg: str) -> dict:
             ):
                 high_conf += 1
         final_result["CONFIDENCE.HIGH_AND_SEVERITY." + level] = high_conf
-    return {"report": final_result}
+    return final_result
