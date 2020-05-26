@@ -17,6 +17,7 @@ from ..configloader.configloader import BaseConfigLoader
 from ..configloader.json import JSONConfigLoader
 from ..source.source import SubsetSources, Sources
 from ..source.json import JSONSource
+from ..source.file import FileSourceConfig
 from ..util.data import merge
 from ..util.entrypoint import load
 from ..util.cli.arg import Arg
@@ -122,7 +123,11 @@ class RunCMDConfig:
     sources: Sources = field(
         "Sources for loading and saving",
         default_factory=lambda: Sources(
-            JSONSource(filename=pathlib.Path("~", ".cache", "dffml.json"))
+            JSONSource(
+                FileSourceConfig(
+                    filename=pathlib.Path("~", ".cache", "dffml.json")
+                )
+            )
         ),
         labeled=True,
     )
