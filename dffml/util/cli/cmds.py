@@ -61,9 +61,7 @@ class SourcesCMD(CMD):
 
 @config
 class ModelCMDConfig:
-    model: Model = field(
-        "Model used for ML", required=True,
-    )
+    model: Model = field("Model used for ML")
 
 
 class ModelCMD(CMD):
@@ -91,9 +89,7 @@ class PortCMD(CMD):
 
 @config
 class KeysCMDConfig:
-    keys: List[str] = field(
-        "Key used for source lookup and evaluation", required=True,
-    )
+    keys: List[str] = field("Key used for source lookup and evaluation",)
 
 
 class KeysCMD(CMD):
