@@ -106,14 +106,14 @@ class Parser(argparse.ArgumentParser):
 
         # Add arguments to the Parser
         position_list = {}
-        for field in dataclasses.fields(add_from.CONFIG):
+        for i, field in enumerate(dataclasses.fields(add_from.CONFIG)):
             arg = mkarg(field)
             if isinstance(arg, Arg):
-                if isinstance(field.metadata.get("position"), int):
-                    position_list[field.metadata.get("position")] = (
-                        field.name,
-                        arg,
-                    )
+                position = field.metadata.get("position", None)
+                if not "default" in arg and position is None:
+                    position = i
+                if isinstance(position, int):
+                    position_list[position] = (field.name, arg)
                 else:
                     try:
                         self.add_argument(
