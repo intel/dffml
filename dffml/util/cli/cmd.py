@@ -165,8 +165,8 @@ class CMD(object):
         for field in dataclasses.fields(self.CONFIG):
             arg = mkarg(field)
             if isinstance(arg, Arg):
-                if not field.name in kwargs and field.default:
-                    kwargs[field.name] = field.default
+                if not field.name in kwargs and "default" in arg:
+                    kwargs[field.name] = arg["default"]
                 if field.name in kwargs and not hasattr(self, field.name):
                     self.logger.debug(
                         "Setting %s = %r", field.name, kwargs[field.name]
