@@ -8,7 +8,7 @@ from dffml import Definition
 
 
 @op
-async def safety_check(package: str, version: str) -> dict:
+async def safety_check(package: str, version: str) -> int:
     pinned = f"{package}=={version}"
 
     proc = await asyncio.create_subprocess_exec(
@@ -27,4 +27,4 @@ async def safety_check(package: str, version: str) -> dict:
 
     issues = json.loads(stdout)
 
-    return {"issues": len(issues)}
+    return len(issues)
