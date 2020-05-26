@@ -136,10 +136,10 @@ class Edit(CMD):
 @config
 class MergeConfig:
     src: BaseSource = field(
-        "Sources to pull records from", position=0, labeled=True,
+        "Source to pull records from", labeled=True,
     )
     dest: BaseSource = field(
-        "Sources to merge records into", position=1, labeled=True,
+        "Source to merge records into", labeled=True,
     )
 
 

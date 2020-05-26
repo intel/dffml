@@ -40,9 +40,7 @@ DATAFLOW.seed.append(
 
 @config
 class InstallConfig:
-    packages: List[str] = field(
-        "Package to check if we should install", position=0,
-    )
+    packages: List[str] = field("Package to check if we should install",)
 
 
 class Install(CMD):

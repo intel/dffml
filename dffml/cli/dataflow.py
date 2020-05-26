@@ -32,9 +32,7 @@ from ..base import config, field
 
 @config
 class MergeConfig:
-    dataflows: List[pathlib.Path] = field(
-        "DataFlows to merge", position=0,
-    )
+    dataflows: List[pathlib.Path] = field("DataFlows to merge")
     config: BaseConfigLoader = field(
         "ConfigLoader to use for exporting", default=JSONConfigLoader,
     )
@@ -69,9 +67,7 @@ class Merge(CMD):
 
 @config
 class CreateConfig:
-    operations: List[str] = field(
-        "Operations to create a dataflow for", position=0,
-    )
+    operations: List[str] = field("Operations to create a dataflow for",)
     config: BaseConfigLoader = field(
         "ConfigLoader to use", default=JSONConfigLoader,
     )

@@ -54,25 +54,21 @@ def create_from_skel(plugin_type):
 
     @configdataclass
     class CreateCMDConfig:
-        package: str = field("Name of python package to create", position=0)
-        user: str = field(
-            f"Your username (default: {USER})", default=USER, required=False,
-        )
+        package: str = field("Name of python package to create")
+        user: str = field(f"Your username (default: {USER})", default=USER)
         name: str = field(
-            f"Your name (default: {NAME})", default=NAME, required=False,
+            f"Your name (default: {NAME})", default=NAME,
         )
         email: str = field(
-            f"Your email (default: {EMAIL})", default=EMAIL, required=False,
+            f"Your email (default: {EMAIL})", default=EMAIL,
         )
         description: str = field(
             f"Description of python package (default: DFFML {plugin_type} {{package name}})",
             default=None,
-            required=False,
         )
         target: str = field(
             f"Directory to put code in (default: same as package name)",
             default=None,
-            required=False,
         )
 
     class CreateCMD(CMD):
@@ -139,9 +135,7 @@ class Skeleton(CMD):
 
 @configdataclass
 class RunConfig:
-    operation: str = field(
-        "Python path to operation", position=0,
-    )
+    operation: str = field("Python path to operation")
 
 
 class Run(CMD):
@@ -244,9 +238,7 @@ class Run(CMD):
 
 @configdataclass
 class ListEntrypointsConfig:
-    entrypoint: str = field(
-        "Entrypoint to list, example: dffml.model", position=0,
-    )
+    entrypoint: str = field("Entrypoint to list, example: dffml.model")
 
 
 class ListEntrypoints(CMD):
@@ -265,9 +257,7 @@ class Entrypoints(CMD):
 
 @configdataclass
 class ExportConfig:
-    export: str = field(
-        "Python path to object to export", position=0,
-    )
+    export: str = field("Python path to object to export",)
     config: BaseConfigLoader = field(
         "ConfigLoader to use", default=JSONConfigLoader,
     )
@@ -354,12 +344,8 @@ class Install(CMD):
 
 @configdataclass
 class SetupPyKWArgConfig:
-    kwarg: str = field(
-        "Keyword argument to write to stdout", position=0,
-    )
-    setupfilepath: str = field(
-        "Path to setup.py", position=1,
-    )
+    kwarg: str = field("Keyword argument to write to stdout")
+    setupfilepath: str = field("Path to setup.py",)
 
 
 class SetupPyKWArg(CMD):
@@ -406,9 +392,7 @@ class RepoDirtyError(Exception):
 
 @configdataclass
 class ReleaseConfig:
-    package: Path = field(
-        "Relative path to package to release", position=0,
-    )
+    package: Path = field("Relative path to package to release",)
 
 
 class Release(CMD):
@@ -503,9 +487,7 @@ class BumpMain(CMD):
 
 @configdataclass
 class BumpPackagesConfig:
-    version: str = field(
-        "Version to increment by", position=0,
-    )
+    version: str = field("Version to increment by",)
     skip: List[str] = field(
         "Do not increment versions in these packages",
         default_factory=lambda: [],

@@ -81,9 +81,7 @@ class ModelCMD(CMD):
 
 @config
 class PortCMDConfig:
-    port: Port = field(
-        "Port", position=0,
-    )
+    port: Port = field("Port")
 
 
 class PortCMD(CMD):

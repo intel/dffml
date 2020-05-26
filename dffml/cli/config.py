@@ -10,9 +10,7 @@ from ..base import config, field
 
 @config
 class ConvertConfig:
-    original: str = field(
-        "Config to convert", position=0,
-    )
+    original: str = field("Config to convert")
     config_in: BaseConfigLoader = field(
         "ConfigLoader to use for importing", default=None,
     )
