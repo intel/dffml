@@ -77,22 +77,19 @@ class Model(BaseDataFlowFacilitatorObject):
     """
 
     CONFIG = ModelConfig
-    DIRECTORY = None
 
     def __init__(self, config):
         super().__init__(config)
         # TODO Just in case its a string. We should make it so that on
         # instantiation of an @config we convert properties to their correct
         # types.
-        # directory = getattr(self.config, "directory", None)
-        directory = getattr(self.config, "directory")
+        directory = getattr(self.config, "directory", None)
         if isinstance(directory, str):
             directory = pathlib.Path(directory)
         if isinstance(directory, pathlib.Path):
             # to treat "~" as the the home directory rather than a literal
             directory = directory.expanduser().resolve()
             self.config.directory = directory
-        self.DIRECTORY = directory
 
     def __call__(self) -> ModelContext:
         self._make_config_directory()
@@ -103,12 +100,11 @@ class Model(BaseDataFlowFacilitatorObject):
         If the config object for this model contains the directory property
         then create it if it does not exist.
         """
-        # directory = getattr(self.config, "directory", None)
-        directory = getattr(self.config, "directory")
-        # if directory is not None:
-        directory = pathlib.Path(directory)
-        if not directory.is_dir():
-            directory.mkdir(mode=MODE_BITS_SECURE, parents=True)
+        directory = getattr(self.config, "directory", None)
+        if directory is not None:
+            directory = pathlib.Path(directory)
+            if not directory.is_dir():
+                directory.mkdir(mode=MODE_BITS_SECURE, parents=True)
 
 
 class SimpleModelNoContext:
