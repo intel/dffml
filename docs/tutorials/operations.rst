@@ -341,17 +341,17 @@ The DataFlow above describes the following process:
 
   - Access the PyPi API and get the JSON describing the package information
 
-  - Concurrently
-
     - Extract the version from the package information
-
-      -  Run ``safety`` using the version and the package name
 
     - Extract the URL of the latest release from the package information
 
-      - Use the URL to download and extract the package source to a directory
+  - Concurrently
 
-        - Run ``bandit`` using the package source directory
+    - Use the URL to download and extract the package source to a directory
+
+      - Run ``bandit`` using the package source directory
+
+    - Run ``safety`` using the version and the package name
 
 - In the cleanup stage we release resources created in the processing stage
 
@@ -495,16 +495,14 @@ are connected.
     graph TD
     subgraph a759a07029077edc5c37fea0326fa281[Processing Stage]
     style a759a07029077edc5c37fea0326fa281 fill:#afd388b5,stroke:#a4ca7a
-    a55c24c0d1363ec4d3c9e20883f3c740[pypi_latest_package_version]
-    d273c0a72c6acc57e33c2f7162fa7363[pypi_package_contents]
-    83503ba9fe6c0f5649644d26e59c5590[pypi_package_json]
-    00f7f4637f6f67120e83e75c78949806[pypi_package_url]
-    9220cb5f5732d9e6dcc130a4908ddf92[run_bandit]
-    88517e4cd0cae33deff50d987f2683fe[safety_check]
+    363b4b010e825ef2388cdb260cb4ef05[shouldi.python.bandit:run_bandit]
+    26b7dc960e3dd6be9600e5ae7f799ec6[shouldi.python.pypi:pypi_package_contents]
+    f4731ed58f365f146107a489753befb3[shouldi.python.pypi:pypi_package_json]
+    3870ea8602ad0cee0edf3f6a9d2b0ca9[shouldi.python.safety:safety_check]
     end
     subgraph a4827add25f5c7d5895c5728b74e2beb[Cleanup Stage]
     style a4827add25f5c7d5895c5728b74e2beb fill:#afd388b5,stroke:#a4ca7a
-    7ec0058800fd4bed6fb63633330588c7[cleanup_pypi_package]
+    634a39b4fb0fa438086a804e4ff48e4b[shouldi.python.pypi:cleanup_pypi_package]
     end
     subgraph 58ca4d24d2767176f196436c2890b926[Output Stage]
     style 58ca4d24d2767176f196436c2890b926 fill:#afd388b5,stroke:#a4ca7a
@@ -512,18 +510,17 @@ are connected.
     end
     subgraph inputs[Inputs]
     style inputs fill:#f6dbf9,stroke:#a178ca
-    d273c0a72c6acc57e33c2f7162fa7363 --> 7ec0058800fd4bed6fb63633330588c7
     d60584024f765273b6f41d6d36f8320c(get_single_spec)
     d60584024f765273b6f41d6d36f8320c --> b42e9e149e775202b18841f1f67061c4
-    83503ba9fe6c0f5649644d26e59c5590 --> a55c24c0d1363ec4d3c9e20883f3c740
-    00f7f4637f6f67120e83e75c78949806 --> d273c0a72c6acc57e33c2f7162fa7363
-    314b1a20a4db6b3bf3f2627830da97a3(package)
-    314b1a20a4db6b3bf3f2627830da97a3 --> 83503ba9fe6c0f5649644d26e59c5590
-    83503ba9fe6c0f5649644d26e59c5590 --> 00f7f4637f6f67120e83e75c78949806
-    d273c0a72c6acc57e33c2f7162fa7363 --> 9220cb5f5732d9e6dcc130a4908ddf92
-    314b1a20a4db6b3bf3f2627830da97a3(package)
-    314b1a20a4db6b3bf3f2627830da97a3 --> 88517e4cd0cae33deff50d987f2683fe
-    a55c24c0d1363ec4d3c9e20883f3c740 --> 88517e4cd0cae33deff50d987f2683fe
+    26b7dc960e3dd6be9600e5ae7f799ec6 --> 363b4b010e825ef2388cdb260cb4ef05
+    e75567c3359d4dd724df261eb523d359(shouldi.python.pypi.cleanup_pypi_package.inputs.directory)
+    e75567c3359d4dd724df261eb523d359 --> 634a39b4fb0fa438086a804e4ff48e4b
+    f4731ed58f365f146107a489753befb3 --> 26b7dc960e3dd6be9600e5ae7f799ec6
+    20f8934cf34504282bd73dca9ee45bc8(shouldi.python.safety.safety_check.inputs.package)
+    20f8934cf34504282bd73dca9ee45bc8 --> f4731ed58f365f146107a489753befb3
+    20f8934cf34504282bd73dca9ee45bc8(shouldi.python.safety.safety_check.inputs.package)
+    20f8934cf34504282bd73dca9ee45bc8 --> 3870ea8602ad0cee0edf3f6a9d2b0ca9
+    f4731ed58f365f146107a489753befb3 --> 3870ea8602ad0cee0edf3f6a9d2b0ca9
     end
 
 You can now copy that graph and paste it in the mermaidjs live editor:
