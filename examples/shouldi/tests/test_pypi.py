@@ -25,7 +25,7 @@ class TestPyPiOperations(AsyncTestCase):
         self.assertIn("insecure-package-0.1.0.tar.gz", results["url"])
         self.PACKAGE.update(results)
 
-    async def test_003_package_contents(self):
+    async def test_001_package_contents(self):
         try:
             results = await pypi_package_contents.test(url=self.PACKAGE["url"])
             no_files = os.listdir(results["directory"])
@@ -33,7 +33,7 @@ class TestPyPiOperations(AsyncTestCase):
         finally:
             shutil.rmtree(results["directory"])
 
-    async def test_004_cleanup_package(self):
+    async def test_002_cleanup_package(self):
         tempdir = tempfile.mkdtemp()
         await cleanup_pypi_package(tempdir)
         self.assertFalse(os.path.isdir(tempdir))
