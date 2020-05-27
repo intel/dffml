@@ -7,7 +7,6 @@ from ...model import Model
 from ...base import config, field
 
 
-from .arg import Arg
 from .cmd import CMD
 from ...util.config.fields import FIELD_SOURCES
 

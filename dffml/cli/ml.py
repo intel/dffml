@@ -1,5 +1,4 @@
 from ..source.source import SubsetSources
-from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
 from ..high_level import train, predict, accuracy
 from ..util.cli.cmds import (

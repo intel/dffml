@@ -20,15 +20,13 @@ from ..source.json import JSONSource
 from ..source.file import FileSourceConfig
 from ..util.data import merge
 from ..util.entrypoint import load
-from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD, CMDOutputOverride
 from ..util.cli.cmds import (
     SourcesCMD,
     KeysCMD,
     KeysCMDConfig,
 )
-from ..util.cli.parser import ParseInputsAction, list_action
-from ..util.config.fields import FIELD_SOURCES
+from ..util.cli.parser import ParseInputsAction
 from ..base import config, field
 
 

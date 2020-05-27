@@ -1,4 +1,3 @@
-from dffml.util.cli.arg import Arg
 from dffml.util.cli.cmd import CMD
 from dffml.util.entrypoint import entrypoint
 from dffml.base import config, field

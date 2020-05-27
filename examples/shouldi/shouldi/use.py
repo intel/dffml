@@ -1,9 +1,8 @@
-import sys
 import pathlib
 from typing import List
 
 # Command line utility helpers and DataFlow specific classes
-from dffml import CMD, Arg, DataFlow, Input, GetSingle, run, config, field
+from dffml import CMD, DataFlow, Input, GetSingle, run, config, field
 
 # Allow users to give us a Git repo URL and we'll clone it and turn it into a
 # directory that will be scanned

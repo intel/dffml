@@ -6,7 +6,6 @@ from typing import List
 
 from aiohttp import web
 
-from dffml.util.cli.arg import Arg
 from dffml.util.cli.cmd import CMD
 from dffml import Model, Sources, BaseSource
 from dffml.util.cli.parser import list_action

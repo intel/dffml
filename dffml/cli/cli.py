@@ -6,22 +6,15 @@ Command line interface evaluates packages given their source URLs
 import pathlib
 import pdb
 import pkg_resources
-import os
 
 from ..version import VERSION
 from ..record import Record
-from ..feature.feature import Features, Feature
-from ..util.cli.parser import list_action
+from ..feature.feature import Features
 from ..df.types import DataFlow
 from ..source.df import DataFlowSource, DataFlowSourceConfig
 from ..source.source import Sources, BaseSource, SubsetSources
 from ..configloader.configloader import BaseConfigLoader
-from ..configloader.json import JSONConfigLoader
-from ..source.json import JSONSource
-from ..source.csv import CSVSource
-from ..source.file import FileSourceConfig
 from ..util.packaging import is_develop
-from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
 from ..util.cli.cmds import (
     SourcesCMD,

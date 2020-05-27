@@ -23,7 +23,6 @@ from ..base import BaseConfig
 from ..util.os import chdir, MODE_BITS_SECURE
 from ..version import VERSION
 from ..util.skel import Skel, SkelTemplateConfig
-from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
 from ..util.entrypoint import load
 from ..base import MissingConfig, config as configdataclass, field

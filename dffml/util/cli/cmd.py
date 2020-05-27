@@ -16,7 +16,7 @@ from ...feature import Feature
 
 from ..data import export_dict
 from .arg import Arg, parse_unknown
-from ...base import config, _fromdict, mkarg, field
+from ...base import config, mkarg, field
 
 DisplayHelp = "Display help message"
 
