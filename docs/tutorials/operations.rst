@@ -366,28 +366,21 @@ The DataFlow above describes the following process:
 PyPi Operations
 ---------------
 
-Let's write an operation to grab the JSON information about a package.
-
-**shouldi/python/pypi.py**
-
-.. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
-    :lines: 1-29
-
-After we have the package information, we extract the version and URL where we
-can get the source code.
-
-**shouldi/python/pypi.py**
-
-.. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
-    :lines: 32-51
-
-Once we have the URL, we download the package source and extract it to a
+This operation will take the URL, download the package source and extract it to a
 temporary directory.
 
 **shouldi/python/pypi.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
-    :lines: 54-71
+    :lines: 1-30
+
+Let’s write an operation to grab the JSON information about a package. It will
+extract the version and the URL from where we can get the source code.
+
+**shouldi/python/pypi.py**
+
+.. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
+    :lines: 33-68
 
 Finally, we make a ``cleanup`` operation to remove the directory once we're done
 with it.
@@ -395,7 +388,7 @@ with it.
 **shouldi/python/pypi.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
-    :lines: 74-79
+    :lines: 71-76
 
 Now we write tests for each operation.
 
@@ -419,7 +412,7 @@ based on :py:mod:`argparse` which will speed things up.
 **shouldi/cli.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/cli.py
-    :lines: 1-84
+    :lines: 1-80
 
 Let's test out the code in ``shouldi.cli`` before making it accessible via the
 command line.
@@ -546,7 +539,7 @@ DFFML, we need to register them with Python's ``entry_points`` system.
 **setup.py**
 
 .. literalinclude:: /../examples/shouldi/setup.py
-    :lines: 17-28
+    :lines: 17-26
 
 Re-install the package via pip to make registrations take effect.
 

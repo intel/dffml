@@ -1,6 +1,5 @@
 import shutil
 import tempfile
-from typing import Dict, Any
 
 import aiohttp
 

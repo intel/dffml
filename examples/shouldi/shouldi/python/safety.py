@@ -1,7 +1,6 @@
 import sys
 import json
 import asyncio
-from typing import Dict, Any
 
 from dffml import op
 from dffml import Definition
