@@ -336,6 +336,8 @@ feature.type and feature.length</p></li>
 <li><p>Tensorflow tests re-run themselves up to 6 times to stop them from failing the
 CI due to their randomly initialized weights making them fail ~2% of the time</p></li>
 <li><p>Any plugin can now be loaded via it’s entrypoint style path</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">with_features</span></code> now raises a helpful error message if no records with matching
+features were found</p></li>
 </ul>
 </div>
 <div class="section" id="fixed">
