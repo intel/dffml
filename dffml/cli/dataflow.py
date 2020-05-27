@@ -117,7 +117,7 @@ class Create(CMD):
 @config
 class RunCMDConfig:
     dataflow: str = field(
-        "File containing exported DataFlow", default=None,
+        "File containing exported DataFlow", required=True,
     )
     config: BaseConfigLoader = field(
         "ConfigLoader to use for importing DataFlow", default=None,

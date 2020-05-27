@@ -110,7 +110,7 @@ class Parser(argparse.ArgumentParser):
             arg = mkarg(field)
             if isinstance(arg, Arg):
                 position = None
-                if not "default" in arg:
+                if not "default" in arg and not arg.get("required", False):
                     position_list[i] = (field.name, arg)
                 else:
                     try:

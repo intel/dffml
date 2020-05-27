@@ -408,8 +408,6 @@ class TestPredict(RecordsTestCase):
         subset_urls = list(map(lambda record: record.key, subset))
         results = await Predict.cli(
             "record",
-            "-keys",
-            *subset_urls,
             "-model",
             "fake",
             "-model-predict",
@@ -420,6 +418,8 @@ class TestPredict(RecordsTestCase):
             "primary=json",
             "-source-filename",
             self.temp_filename,
+            "-keys",
+            *subset_urls,
         )
         self.assertEqual(len(results), len(subset))
         results = {
