@@ -5,6 +5,7 @@ Source subclasses are responsible for generating an integer value given an open
 source project's source URL.
 """
 import abc
+import unittest
 from typing import AsyncIterator, List, Optional, Callable
 
 from ..base import (
@@ -19,6 +20,25 @@ from ..util.asynchelper import (
 
 from ..util.entrypoint import base_entry_point
 from .log import LOGGER
+
+
+class NoRecordsWithMatchingFeatures(Exception):
+    """
+    Raised when :py:func:`SourcesContext.with_features` was called but no
+    records were yielded.
+    """
+
+
+class NoRecordsWithMatchingFeaturesHelper(unittest.TestCase):
+    """
+    Helper to print a diff of the features requested and the features available
+    in unittest diff format
+    """
+
+    failureException = NoRecordsWithMatchingFeatures
+
+    def __init__(self):
+        super().__init__(methodName="defaultTestResult")
 
 
 class BaseSourceContext(BaseDataFlowFacilitatorObjectContext):
@@ -153,10 +173,37 @@ class SourcesContext(AsyncContextManagerListContext):
         """
         Returns all records which have the requested features
         """
-        async for record in self.records(
-            lambda record: bool(record.features(features))
-        ):
+        # Check if we found any records
+        found: bool = False
+        # We have to declare count as a list so that we can use it within the
+        # check function
+        count = [0]
+        available_features = set()
+
+        # Define a validation function
+        def check(record):
+            count[0] += 1
+            record_features: List[str] = record.features().keys()
+            # Add the features to the set of available features to provide a
+            # helpful error message when no records were yielded
+            list(map(available_features.add, record_features))
+            # Ensure only records that contain all requested features will be
+            # yielded
+            return all([feature in record_features for feature in features])
+
+        async for record in self.records(check):
+            found = True
             yield record
+
+        if not found:
+            NoRecordsWithMatchingFeaturesHelper().assertSetEqual(
+                set(features),
+                available_features,
+                "\n\nLooking for records with the "
+                f"all of the following features: {features}. But no records "
+                "had all of them. Options for features are: "
+                f"{available_features}. Searched {count[0]} records.",
+            )
 
 
 class Sources(AsyncContextManagerList):
