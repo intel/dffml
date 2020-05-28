@@ -23,9 +23,11 @@ from dffml.util.asynctestcase import (
     AsyncExitStackTestCase,
     non_existant_tempfile,
 )
-from dffml.util.cli.cmds import ModelCMD
 from dffml.base import config
-from dffml.cli import Merge, Dataflow, Train, Accuracy, Predict, List
+from dffml.cli.cli import Merge
+from dffml.cli.ml import Train, Accuracy, Predict
+from dffml.cli.list import List
+from dffml.cli.dataflow import Dataflow
 
 from .test_df import OPERATIONS, OPIMPS
 

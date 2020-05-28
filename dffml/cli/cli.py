@@ -46,9 +46,11 @@ class Version(CMD):
 
 @config
 class EditCMDConfig:
-    dataflow: str = field("File containing exported DataFlow",)
+    dataflow: str = field(
+        "File containing exported DataFlow", default=None,
+    )
     config: BaseConfigLoader = field(
-        "ConfigLoader to use for importing DataFlow",
+        "ConfigLoader to use for importing DataFlow", default=None,
     )
     features: Features = field(
         "Feature definitions of records to update",
