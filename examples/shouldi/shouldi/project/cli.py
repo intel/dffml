@@ -1,10 +1,32 @@
 import pathlib
+from typing import List
 
-from dffml import CMD, Arg
+from dffml import CMD, config, field
 
 from .bom.make import mkbom
 from .bom.db.base import DependencyDB
 from .bom.db.yaml import YAMLDB
+
+
+@config
+class ProjectCreateCMDConfig:
+    source: pathlib.Path = field(
+        "Path to directory containing source code of project",
+    )
+    _dbs: List[DependencyDB.load] = field(
+        "Databases to search for info on dependencies",
+        default_factory=lambda: [],
+    )
+    _add: List[DependencyDB.load] = field(
+        "YAML files containing info to supplement or override auto-detected info",
+        default_factory=lambda: [],
+    )
+    _authoritative: List[pathlib.Path] = field(
+        "Database to use as authoritative source",
+        default=YAMLDB(
+            pathlib.Path(__file__).parent.parent.parent / "db.yaml"
+        ),
+    )
 
 
 class ProjectCreateCMD(CMD):
@@ -18,37 +40,12 @@ class ProjectCreateCMD(CMD):
         --dbs mydb --add ./tpm2-pytss/.tools/shouldi/deps.yaml -- ./tpm2-pytss
     """
 
-    arg_source = Arg(
-        "source",
-        type=pathlib.Path,
-        help="Path to directory containing source code of project",
-    )
-    arg_dbs = Arg(
-        "--dbs",
-        nargs="+",
-        default=[],
-        type=DependencyDB.load,
-        help="Databases to search for info on dependencies",
-    )
-    arg_add = Arg(
-        "--add",
-        nargs="+",
-        default=[],
-        type=DependencyDB.load,
-        help="YAML files containing info to supplement or override auto-detected info",
-    )
-    arg_authoritative = Arg(
-        "--authoritative",
-        nargs="+",
-        type=pathlib.Path,
-        help="Database to use as authoritative source",
-        default=YAMLDB(
-            pathlib.Path(__file__).parent.parent.parent / "db.yaml"
-        ),
-    )
+    CONFIG = ProjectCreateCMDConfig
 
     async def run(self):
-        return mkbom(self.authoritative, self.dbs, self.source, add=self.add)
+        return mkbom(
+            self._authoritative, self._dbs, self.source, add=self._add
+        )
 
 
 class ProjectCMD(CMD):
