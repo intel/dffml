@@ -11,10 +11,17 @@ from dffml.record import Record
 from dffml.feature import Feature, Features
 
 from dffml.util.cli.arg import Arg, parse_unknown
-from dffml.util.cli.cmd import JSONEncoder, CMD, Parser, ParseLoggingAction
+from dffml.util.cli.cmd import (
+    JSONEncoder,
+    CMD,
+    CMDConfig,
+    Parser,
+    ParseLoggingAction,
+)
 from dffml.util.cli.parser import list_action, ParseInputsAction
 from dffml.util.cli.cmds import ListEntrypoint
 from dffml.util.asynctestcase import AsyncTestCase
+from dffml.base import config, field
 
 
 def Namespace(**kwargs):
@@ -81,9 +88,12 @@ class TestJSONEncoder(unittest.TestCase):
 
 class TestCMD(AsyncTestCase):
     def test_init(self):
+        @config
+        class CMDTestConfig(CMDConfig):
+            nope: bool = field("test field", default=False)
+
         class CMDTest(CMD):
-            arg_nope_present = Arg("nope", default=False)
-            arg_ignored = Arg("ignored")
+            CONFIG = CMDTestConfig
 
         cmd = CMDTest(nope=True)
         self.assertTrue(getattr(cmd, "log", False))
@@ -230,8 +240,12 @@ class TestArg(unittest.TestCase):
 
 class TestParser(unittest.TestCase):
     def test_add_subs(self):
+        @config
+        class FakeSubCMDConfig:
+            test: str = field("test field")
+
         class FakeSubCMD(CMD):
-            arg_test = Arg("-test")
+            CONFIG = FakeSubCMDConfig
 
         class FakeCMD(CMD):
             sub_cmd = FakeSubCMD

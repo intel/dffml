@@ -173,21 +173,6 @@ class CMD(object):
                 else:
                     self.logger.debug("Ignored %s", field.name)
 
-        for name, method in [
-            (name.lower().replace("arg_", ""), method)
-            for name, method in inspect.getmembers(self)
-            if isinstance(method, Arg)
-        ]:
-            if not name in kwargs and method.name in kwargs:
-                name = method.name
-            if not name in kwargs and "default" in method:
-                kwargs[name] = method["default"]
-            if name in kwargs and not hasattr(self, name):
-                self.logger.debug("Setting %s = %r", name, kwargs[name])
-                setattr(self, name, kwargs[name])
-            else:
-                self.logger.debug("Ignored %s", name)
-
     async def __aenter__(self):
         pass
 
