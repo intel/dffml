@@ -1,7 +1,9 @@
 import io
+import sys
 import json
 import pathlib
 import tempfile
+import importlib
 import contextlib
 
 from dffml.cli.cli import CLI
@@ -16,62 +18,91 @@ from dffml import (
     AsyncTestCase,
 )
 
-OP_DEF_STRING = """
-from dffml import op,Definition
+ECHO_STRING = """
+def echo_string(input_string: str) -> str:
+    return "Echo: " + input_string
+"""
 
-@op(
-    inputs={"input_string": Definition(name="InputString", primitive="str")},
-    outputs={
-        "output_string": Definition(name="OutputString", primitive="str")
-    },
-)
-def echo_string(input_string):
-    return {"output_string": input_string}
+ECHO_STRINGS = """
+from typing import AsyncIterator
 
+async def echo_strings(input_string: str) -> AsyncIterator[str]:
+    for i in range(0, 5):
+        yield f"Echo({i}): {input_string}"
 """
 
 
 class TestDataflowCreate(AsyncTestCase):
-    async def test_create_from_path(self):
+    @staticmethod
+    @contextlib.asynccontextmanager
+    async def make_dataflow(ops, operations, seed):
         # Create temp dir and write op to ops.py
         with tempfile.TemporaryDirectory() as tmpdirname:
             # Change directory into the tempdir
             with chdir(tmpdirname):
                 # Write out op to op.py
-                operation_file_path = pathlib.Path(tmpdirname, "ops.py")
-                operation_file_path.write_text(OP_DEF_STRING)
-                # We make the name the path relative to our cwd
-                operation_qualname = "ops:echo_string"
-                dataflow_file_path = pathlib.Path(tmpdirname, "dataflow.json")
-                # $ dffml dataflow create  \
-                #    ops:echo_string get_single
+                pathlib.Path(tmpdirname, "ops.py").write_text(ops)
+                # Reload conents
+                sys.path.insert(0, tmpdirname)
+                module = importlib.import_module("ops")
+                importlib.reload(module)
+                sys.path.pop(0)
+                # $ dffml dataflow create $operations -seed $seed
                 with io.StringIO() as dataflow:
                     with contextlib.redirect_stdout(dataflow):
                         await CLI.cli(
-                            "dataflow",
-                            "create",
-                            *[operation_qualname, "get_single"],
-                            "-seed",
-                            '["OutputString"]=get_single_spec',
+                            "dataflow", "create", *operations, "-seed", *seed
                         )
-                    test_dataflow = DataFlow._fromdict(
-                        **json.loads(dataflow.getvalue())
-                    )
-                # Make sure the operation is in the dataflow
-                self.assertIn(operation_qualname, test_dataflow.operations)
-                # Run the dataflow
-                async for ctx_str, results in run(
-                    test_dataflow,
+                    yield DataFlow._fromdict(**json.loads(dataflow.getvalue()))
+
+    async def test_single(self):
+        operation_qualname = "ops:echo_string"
+        async with self.make_dataflow(
+            ECHO_STRING,
+            [operation_qualname, "get_single"],
+            ["ops.echo_string.outputs.result,=get_single_spec"],
+        ) as dataflow:
+            # Make sure the operation is in the dataflow
+            self.assertIn(operation_qualname, dataflow.operations)
+            # Definitions for shorthand access
+            idef = dataflow.operations[operation_qualname].inputs[
+                "input_string"
+            ]
+            odef = dataflow.operations[operation_qualname].outputs["result"]
+            # Run the dataflow
+            async for ctx_str, results in run(
+                dataflow,
+                [Input(value="Irregular at magic school", definition=idef,)],
+            ):
+                self.assertIn(odef.name, results)
+                self.assertEqual(
+                    results[odef.name], "Echo: Irregular at magic school",
+                )
+
+    async def test_gen(self):
+        operation_qualname = "ops:echo_strings"
+        async with self.make_dataflow(
+            ECHO_STRINGS,
+            [operation_qualname, "get_multi"],
+            ["ops.echo_strings.outputs.result,=get_multi_spec"],
+        ) as dataflow:
+            # Make sure the operation is in the dataflow
+            self.assertIn(operation_qualname, dataflow.operations)
+            # Definitions for shorthand access
+            idef = dataflow.operations[operation_qualname].inputs[
+                "input_string"
+            ]
+            odef = dataflow.operations[operation_qualname].outputs["result"]
+            # Run the dataflow
+            async for ctx_str, results in run(
+                dataflow,
+                [Input(value="Irregular at magic school", definition=idef,)],
+            ):
+                self.assertIn(odef.name, results)
+                self.assertListEqual(
+                    results[odef.name],
                     [
-                        Input(
-                            value="Irregular at magic school",
-                            definition=test_dataflow.operations[
-                                operation_qualname
-                            ].inputs["input_string"],
-                        )
+                        f"Echo({i}): Irregular at magic school"
+                        for i in range(0, 5)
                     ],
-                ):
-                    self.assertIn("OutputString", results)
-                    self.assertEqual(
-                        results["OutputString"], "Irregular at magic school",
-                    )
+                )

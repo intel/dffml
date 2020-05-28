@@ -59,6 +59,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - FileSource takes pathlib.Path as filename
 - Tensorflow tests re-run themselves up to 6 times to stop them from failing the
   CI due to their randomly initialized weights making them fail ~2% of the time
+- Any plugin can now be loaded via it's entrypoint style path
+- `with_features` now raises a helpful error message if no records with matching
+  features were found
 ### Fixed
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
   parameter sets for an operation.
