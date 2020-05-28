@@ -53,13 +53,6 @@ class RecordsTestCase(AsyncExitStackTestCase):
         self._stack.enter_context(
             patch("dffml.model.model.Model.load", new=model_load)
         )
-        # self._stack.enter_context(
-        #     patch.object(
-        #         ModelCMD,
-        #         "arg_model",
-        #         new=ModelCMD.arg_model.modify(type=model_load),
-        #     )
-        # )
         self._stack.enter_context(
             patch("dffml.df.base.OperationImplementation.load", new=opimp_load)
         )

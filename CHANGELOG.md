@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Definition for output of the function that `op` wraps.
 - Expose high level load, run and save functions to noasync.
 ### Changed
+- `arg_` notation replaced with `CONFIG = ExampleConfig` style syntax
+  for parsing all command line arguments.
 - `edit` command substituted with `edit record`
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
