@@ -76,9 +76,7 @@ class TestAutoArgsConfig(unittest.TestCase):
                                 },
                                 "readonly": {
                                     "plugin": Arg(
-                                        type=bool,
-                                        action="store_true",
-                                        default=False,
+                                        action="store_true", default=False,
                                     ),
                                     "config": {},
                                 },

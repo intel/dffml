@@ -209,6 +209,7 @@ class SourcesContext(AsyncContextManagerListContext):
 class Sources(AsyncContextManagerList):
 
     CONTEXT = SourcesContext
+    SINGLETON = BaseSource
 
 
 class ValidationSourcesContext(SourcesContext):

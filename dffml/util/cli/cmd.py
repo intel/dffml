@@ -9,12 +9,14 @@ import inspect
 import asyncio
 import argparse
 from typing import Dict, Any
+import dataclasses
 
 from ...record import Record
 from ...feature import Feature
 
 from ..data import export_dict
 from .arg import Arg, parse_unknown
+from ...base import config, mkarg, field
 
 DisplayHelp = "Display help message"
 
@@ -64,6 +66,15 @@ class JSONEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
+log_cmd = Arg(
+    "-log",
+    help="Logging level",
+    action=ParseLoggingAction,
+    required=False,
+    default=logging.INFO,
+)
+
+
 class Parser(argparse.ArgumentParser):
     def add_subs(self, add_from: "CMD"):
         """
@@ -92,26 +103,52 @@ class Parser(argparse.ArgumentParser):
                 parser.set_defaults(cmd=method)
                 parser.set_defaults(parser=parser)
                 parser.add_subs(method)  # type: ignore
-            elif isinstance(method, Arg):
-                try:
-                    self.add_argument(method.name, **method)
-                except argparse.ArgumentError as error:
-                    raise Exception(repr(add_from)) from error
+
+        # Add arguments to the Parser
+        position_list = {}
+        for i, field in enumerate(dataclasses.fields(add_from.CONFIG)):
+            arg = mkarg(field)
+            if isinstance(arg, Arg):
+                position = None
+                if not "default" in arg and not arg.get("required", False):
+                    position_list[i] = (field.name, arg)
+                else:
+                    try:
+                        self.add_argument(
+                            "-" + field.name.replace("_", "-"), **arg
+                        )
+                    except argparse.ArgumentError as error:
+                        raise Exception(repr(add_from)) from error
+
+        if position_list:
+            for position in sorted(position_list.keys()):
+                name, positional_arg = position_list[position]
+                self.add_argument(name.replace("_", "-"), **positional_arg)
+            position_list.clear()
+
+        # Add `-log` argument if it's not already added
+        try:
+            self.add_argument(log_cmd.name, **log_cmd)
+        except argparse.ArgumentError:
+            pass
+
+
+@config
+class CMDConfig:
+    log: str = field(
+        "Logging Level",
+        default=logging.INFO,
+        required=False,
+        action=ParseLoggingAction,
+    )
 
 
 class CMD(object):
 
     JSONEncoder = JSONEncoder
     EXTRA_CONFIG_ARGS = {}
+    CONFIG = CMDConfig
     ENTRY_POINT_NAME = ["service"]
-
-    arg_log = Arg(
-        "-log",
-        help="Logging level",
-        action=ParseLoggingAction,
-        required=False,
-        default=logging.INFO,
-    )
 
     def __init__(self, extra_config=None, **kwargs) -> None:
         if not hasattr(self, "logger"):
@@ -122,20 +159,19 @@ class CMD(object):
         if extra_config is None:
             extra_config = {}
         self.extra_config = extra_config
-        for name, method in [
-            (name.lower().replace("arg_", ""), method)
-            for name, method in inspect.getmembers(self)
-            if isinstance(method, Arg)
-        ]:
-            if not name in kwargs and method.name in kwargs:
-                name = method.name
-            if not name in kwargs and "default" in method:
-                kwargs[name] = method["default"]
-            if name in kwargs and not hasattr(self, name):
-                self.logger.debug("Setting %s = %r", name, kwargs[name])
-                setattr(self, name, kwargs[name])
-            else:
-                self.logger.debug("Ignored %s", name)
+
+        for field in dataclasses.fields(self.CONFIG):
+            arg = mkarg(field)
+            if isinstance(arg, Arg):
+                if not field.name in kwargs and "default" in arg:
+                    kwargs[field.name] = arg["default"]
+                if field.name in kwargs and not hasattr(self, field.name):
+                    self.logger.debug(
+                        "Setting %s = %r", field.name, kwargs[field.name]
+                    )
+                    setattr(self, field.name, kwargs[field.name])
+                else:
+                    self.logger.debug("Ignored %s", field.name)
 
     async def __aenter__(self):
         pass

@@ -86,6 +86,7 @@ class TestDevelopCreate(AsyncTestCase):
                     # Instantiate an instance of the CreateCMD class
                     cli = cli_class(
                         package=package_name,
+                        description=None,
                         target=target
                         if target[::-1].startswith(("dot")[::-1])
                         else None,
@@ -264,7 +265,9 @@ class TestExport(AsyncTestCase):
     async def test_run(self):
         stdout = io.BytesIO()
         with unittest.mock.patch("sys.stdout.buffer.write", new=stdout.write):
-            await Export(export="tests.test_df:DATAFLOW").run()
+            await Export(
+                export="tests.test_df:DATAFLOW", not_linked=False
+            ).run()
         exported = json.loads(stdout.getvalue())
         DataFlow._fromdict(**exported)
 
