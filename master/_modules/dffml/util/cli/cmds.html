@@ -177,19 +177,17 @@
            <div itemprop="articleBody">
             
   <h1>Source code for dffml.util.cli.cmds</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">inspect</span>
+<span></span><span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
 <span class="kn">from</span> <span class="nn">...port</span> <span class="kn">import</span> <span class="n">Port</span>
-<span class="kn">from</span> <span class="nn">...source.source</span> <span class="kn">import</span> <span class="n">BaseSource</span><span class="p">,</span> <span class="n">Sources</span>
-<span class="kn">from</span> <span class="nn">...source.json</span> <span class="kn">import</span> <span class="n">JSONSource</span>
-<span class="kn">from</span> <span class="nn">...source.file</span> <span class="kn">import</span> <span class="n">FileSourceConfig</span>
+<span class="kn">from</span> <span class="nn">...source.source</span> <span class="kn">import</span> <span class="n">Sources</span>
 <span class="kn">from</span> <span class="nn">...model</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">...base</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">field</span>
 
 
-<span class="kn">from</span> <span class="nn">.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
 <span class="kn">from</span> <span class="nn">.cmd</span> <span class="kn">import</span> <span class="n">CMD</span>
-<span class="kn">from</span> <span class="nn">.parser</span> <span class="kn">import</span> <span class="n">list_action</span>
+<span class="kn">from</span> <span class="nn">...util.config.fields</span> <span class="kn">import</span> <span class="n">FIELD_SOURCES</span>
 
 
 <div class="viewcode-block" id="ListEntrypoint"><a class="viewcode-back" href="../../../../api/util/cli/cmds.html#dffml.util.cli.cmds.ListEntrypoint">[docs]</a><span class="k">class</span> <span class="nc">ListEntrypoint</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
@@ -216,24 +214,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span></div></div>
 
 
+<div class="viewcode-block" id="SourcesCMDConfig"><a class="viewcode-back" href="../../../../api/util/cli/cmds.html#dffml.util.cli.cmds.SourcesCMDConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">SourcesCMDConfig</span><span class="p">:</span>
+    <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span> <span class="o">=</span> <span class="n">FIELD_SOURCES</span></div>
+
+
 <span class="k">class</span> <span class="nc">SourcesCMD</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
 
-    <span class="n">arg_sources</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-sources&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Sources for loading and saving&quot;</span><span class="p">,</span>
-        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">Sources</span><span class="p">(</span>
-            <span class="n">JSONSource</span><span class="p">(</span>
-                <span class="n">FileSourceConfig</span><span class="p">(</span>
-                    <span class="n">filename</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">),</span> <span class="s2">&quot;.cache&quot;</span><span class="p">,</span> <span class="s2">&quot;dffml.json&quot;</span>
-                    <span class="p">)</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-        <span class="p">),</span>
-        <span class="nb">type</span><span class="o">=</span><span class="n">BaseSource</span><span class="o">.</span><span class="n">load_labeled</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="n">list_action</span><span class="p">(</span><span class="n">Sources</span><span class="p">),</span>
-    <span class="p">)</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">SourcesCMDConfig</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -249,14 +237,19 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_config</span><span class="p">)</span>
 
 
+<div class="viewcode-block" id="ModelCMDConfig"><a class="viewcode-back" href="../../../../api/util/cli/cmds.html#dffml.util.cli.cmds.ModelCMDConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">ModelCMDConfig</span><span class="p">:</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">Model</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Model used for ML&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="ModelCMD"><a class="viewcode-back" href="../../../../api/util/cli/cmds.html#dffml.util.cli.cmds.ModelCMD">[docs]</a><span class="k">class</span> <span class="nc">ModelCMD</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Set a models model dir.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">arg_model</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-model&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Model used for ML&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Model</span><span class="o">.</span><span class="n">load</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
-    <span class="p">)</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">ModelCMDConfig</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -264,19 +257,26 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_config</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="PortCMDConfig"><a class="viewcode-back" href="../../../../api/util/cli/cmds.html#dffml.util.cli.cmds.PortCMDConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">PortCMDConfig</span><span class="p">:</span>
+    <span class="n">port</span><span class="p">:</span> <span class="n">Port</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Port&quot;</span><span class="p">)</span></div>
+
+
 <span class="k">class</span> <span class="nc">PortCMD</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
 
-    <span class="n">arg_port</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span><span class="s2">&quot;port&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Port</span><span class="o">.</span><span class="n">load</span><span class="p">)</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">PortCMDConfig</span>
+
+
+<div class="viewcode-block" id="KeysCMDConfig"><a class="viewcode-back" href="../../../../api/util/cli/cmds.html#dffml.util.cli.cmds.KeysCMDConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">KeysCMDConfig</span><span class="p">:</span>
+    <span class="n">keys</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Key used for source lookup and evaluation&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span></div>
 
 
 <span class="k">class</span> <span class="nc">KeysCMD</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
 
-    <span class="n">arg_keys</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-keys&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Key used for source lookup and evaluation&quot;</span><span class="p">,</span>
-        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">KeysCMDConfig</span>
 </pre></div>
 
            </div>

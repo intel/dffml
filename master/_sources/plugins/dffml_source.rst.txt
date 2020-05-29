@@ -38,11 +38,11 @@ Uses a CSV file as the source of record feature data
 
   - default: untagged
 
-- readwrite: Boolean
+- readwrite: String
 
   - default: False
 
-- allowempty: Boolean
+- allowempty: String
 
   - default: False
 
@@ -109,11 +109,11 @@ Source to read files in IDX1 format (such as MNIST digit label dataset).
 
   - Name of the feature the data will be referenced as
 
-- readwrite: Boolean
+- readwrite: String
 
   - default: False
 
-- allowempty: Boolean
+- allowempty: String
 
   - default: False
 
@@ -134,11 +134,11 @@ Source to read files in IDX3 format (such as MNIST digit image dataset).
 
   - Name of the feature the data will be referenced as
 
-- readwrite: Boolean
+- readwrite: String
 
   - default: False
 
-- allowempty: Boolean
+- allowempty: String
 
   - default: False
 
@@ -155,11 +155,11 @@ Source to read files in .ini format.
 
 - filename: String
 
-- readwrite: Boolean
+- readwrite: String
 
   - default: False
 
-- allowempty: Boolean
+- allowempty: String
 
   - default: False
 
@@ -181,11 +181,11 @@ stored in memory.
 
   - default: untagged
 
-- readwrite: Boolean
+- readwrite: String
 
   - default: False
 
-- allowempty: Boolean
+- allowempty: String
 
   - default: False
 

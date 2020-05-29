@@ -241,7 +241,18 @@ each plugin.</p>
 <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">BumpPackages</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#BumpPackages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.BumpPackages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bump all the versions of all the packages and increment the version number
 given.</p>
+<dl class="py attribute">
+<dt id="dffml.service.dev.BumpPackages.CONFIG">
+<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.service.dev.BumpPackages.CONFIG" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.BumpPackagesConfig" title="dffml.service.dev.BumpPackagesConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BumpPackagesConfig</span></code></a></p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dffml.service.dev.BumpPackagesConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">BumpPackagesConfig</code><span class="sig-paren">(</span><em class="sig-param">version: str</em>, <em class="sig-param">skip: List[str] = &lt;factory&gt;</em>, <em class="sig-param">only: List[str] = &lt;factory&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#BumpPackagesConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.BumpPackagesConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py class">
 <dt id="dffml.service.dev.Create">
@@ -292,10 +303,32 @@ given.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt id="dffml.service.dev.ExportConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">ExportConfig</code><span class="sig-paren">(</span><em class="sig-param">export: str</em>, <em class="sig-param">config: dffml.configloader.configloader.BaseConfigLoader = &lt;class 'dffml.configloader.json.JSONConfigLoader'&gt;</em>, <em class="sig-param">not_linked: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#ExportConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.ExportConfig" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="dffml.service.dev.ExportConfig.config">
+<code class="sig-name descname">config</code><a class="headerlink" href="#dffml.service.dev.ExportConfig.config" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="../configloader/json.html#dffml.configloader.json.JSONConfigLoader" title="dffml.configloader.json.JSONConfigLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.configloader.json.JSONConfigLoader</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="dffml.service.dev.Install">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Install</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Install"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Install" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uninstall production packages and install dffml in development mode.</p>
+<dl class="py attribute">
+<dt id="dffml.service.dev.Install.CONFIG">
+<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.service.dev.Install.CONFIG" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.InstallConfig" title="dffml.service.dev.InstallConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">InstallConfig</span></code></a></p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dffml.service.dev.InstallConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">InstallConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#InstallConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.InstallConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py class">
 <dt id="dffml.service.dev.Link">
@@ -304,10 +337,26 @@ given.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt id="dffml.service.dev.ListEntrypointsConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">ListEntrypointsConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entrypoint</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#ListEntrypointsConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.ListEntrypointsConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
 <dt id="dffml.service.dev.Release">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Release</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Release"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Release" title="Permalink to this definition">¶</a></dt>
 <dd><p>Release a package (if not already released)</p>
+<dl class="py attribute">
+<dt id="dffml.service.dev.Release.CONFIG">
+<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.service.dev.Release.CONFIG" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.ReleaseConfig" title="dffml.service.dev.ReleaseConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReleaseConfig</span></code></a></p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dffml.service.dev.ReleaseConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">ReleaseConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">package</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.8)">pathlib.Path</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#ReleaseConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.ReleaseConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py exception">
 <dt id="dffml.service.dev.RepoDirtyError">
@@ -319,13 +368,35 @@ given.</p>
 <dt id="dffml.service.dev.Run">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">Run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run a single operation</p>
+<dl class="py attribute">
+<dt id="dffml.service.dev.Run.CONFIG">
+<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.service.dev.Run.CONFIG" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.RunConfig" title="dffml.service.dev.RunConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunConfig</span></code></a></p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dffml.service.dev.RunConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">RunConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">operation</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#RunConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.RunConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py class">
 <dt id="dffml.service.dev.SetupPyKWArg">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">SetupPyKWArg</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#SetupPyKWArg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.SetupPyKWArg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a keyword argument from a call to setup in a setup.py file.</p>
+<dl class="py attribute">
+<dt id="dffml.service.dev.SetupPyKWArg.CONFIG">
+<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.service.dev.SetupPyKWArg.CONFIG" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.service.dev.SetupPyKWArgConfig" title="dffml.service.dev.SetupPyKWArgConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">SetupPyKWArgConfig</span></code></a></p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dffml.service.dev.SetupPyKWArgConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">SetupPyKWArgConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">kwarg</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em>, <em class="sig-param"><span class="n">setupfilepath</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#SetupPyKWArgConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.SetupPyKWArgConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py class">
 <dt id="dffml.service.dev.Skeleton">
@@ -341,7 +412,7 @@ given.</p>
 
 <dl class="py function">
 <dt id="dffml.service.dev.create_from_skel">
-<code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">create_from_skel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#create_from_skel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.create_from_skel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">create_from_skel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">plugin_type</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#create_from_skel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.create_from_skel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copies samples out of skel/ and does re-naming.</p>
 </dd></dl>
 

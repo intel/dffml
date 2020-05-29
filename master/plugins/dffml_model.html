@@ -534,7 +534,7 @@ look for a different saved model.</p>
 <li><p>Number records to pass through in an epoch</p></li>
 </ul>
 </li>
-<li><p>shuffle: Boolean</p>
+<li><p>shuffle: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Randomise order of records in a batch</p></li>
@@ -884,7 +884,7 @@ EOF
 <li><p>Length of sentence, used in preprocessing of input for bert embedding</p></li>
 </ul>
 </li>
-<li><p>add_layers: Boolean</p>
+<li><p>add_layers: String</p>
 <ul>
 <li><p>default: False</p></li>
 <li><p>Add layers on the top of pretrianed model/layer</p></li>
@@ -1197,7 +1197,7 @@ of the model.</p>
 <li><p>If greater than zero then sets total number of training steps to perform. Overrides <cite>epochs</cite></p></li>
 </ul>
 </li>
-<li><p>use_fp16: Boolean</p>
+<li><p>use_fp16: String</p>
 <ul>
 <li><p>default: False</p></li>
 <li><p>Whether to use 16-bit (mixed) precision instead of 32-bit</p></li>
@@ -1209,7 +1209,7 @@ of the model.</p>
 <li><p>List of all distinct NER Tags</p></li>
 </ul>
 </li>
-<li><p>do_lower_case: Boolean</p>
+<li><p>do_lower_case: String</p>
 <ul>
 <li><p>default: False</p></li>
 <li><p>Set this flag if using uncased model.</p></li>
@@ -1299,13 +1299,13 @@ of the model.</p>
 <li><p>Batch size per GPU/CPU/TPU for assessing accuracy</p></li>
 </ul>
 </li>
-<li><p>no_cuda: Boolean</p>
+<li><p>no_cuda: String</p>
 <ul>
 <li><p>default: False</p></li>
 <li><p>Avoid using CUDA when available</p></li>
 </ul>
 </li>
-<li><p>eval_all_checkpoints: Boolean</p>
+<li><p>eval_all_checkpoints: String</p>
 <ul>
 <li><p>default: False</p></li>
 <li><p>Evaluate all checkpoints starting with the same prefix as model_name ending and ending with step number</p></li>
@@ -1932,7 +1932,7 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
 <li><p>Task to perform, possible values are <cite>classification</cite>, <cite>regression</cite></p></li>
 </ul>
 </li>
-<li><p>use_binary_label: Boolean</p>
+<li><p>use_binary_label: String</p>
 <ul>
 <li><p>default: False</p></li>
 <li><p>Convert target labels to -1 and 1 for binary classification</p></li>
@@ -1968,7 +1968,7 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
 <li><p>Feature to be used as <cite>tag</cite> in conversion of data to vowpal wabbit input format</p></li>
 </ul>
 </li>
-<li><p>convert_to_vw: Boolean</p>
+<li><p>convert_to_vw: String</p>
 <ul>
 <li><p>default: False</p></li>
 <li><p>Convert the input to vowpal wabbit standard input format</p></li>

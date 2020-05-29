@@ -5,5 +5,6 @@ Util Config
     :maxdepth: 2
     :caption: Contents:
 
+    fields
     exceptions
     numpy

@@ -216,6 +216,33 @@
   <div class="section" id="module-dffml.cli.dataflow">
 <span id="cli-dataflow"></span><h1>Cli Dataflow<a class="headerlink" href="#module-dffml.cli.dataflow" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
+<dt id="dffml.cli.dataflow.CreateConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.dataflow.</code><code class="sig-name descname">CreateConfig</code><span class="sig-paren">(</span><em class="sig-param">operations: List[str], config: dffml.configloader.configloader.BaseConfigLoader = &lt;class 'dffml.configloader.json.JSONConfigLoader'&gt;, not_linked: bool = False, seed: List[str] = &lt;factory&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#CreateConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.dataflow.CreateConfig" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="dffml.cli.dataflow.CreateConfig.config">
+<code class="sig-name descname">config</code><a class="headerlink" href="#dffml.cli.dataflow.CreateConfig.config" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="../configloader/json.html#dffml.configloader.json.JSONConfigLoader" title="dffml.configloader.json.JSONConfigLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.configloader.json.JSONConfigLoader</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dffml.cli.dataflow.DiagramConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.dataflow.</code><code class="sig-name descname">DiagramConfig</code><span class="sig-paren">(</span><em class="sig-param">dataflow: str</em>, <em class="sig-param">config: dffml.configloader.configloader.BaseConfigLoader = None</em>, <em class="sig-param">stages: List[str] = &lt;factory&gt;</em>, <em class="sig-param">simple: bool = False</em>, <em class="sig-param">display: str = 'TD'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#DiagramConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.dataflow.DiagramConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="dffml.cli.dataflow.MergeConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.dataflow.</code><code class="sig-name descname">MergeConfig</code><span class="sig-paren">(</span><em class="sig-param">dataflows: List[pathlib.Path], config: dffml.configloader.configloader.BaseConfigLoader = &lt;class 'dffml.configloader.json.JSONConfigLoader'&gt;, not_linked: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#MergeConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.dataflow.MergeConfig" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="dffml.cli.dataflow.MergeConfig.config">
+<code class="sig-name descname">config</code><a class="headerlink" href="#dffml.cli.dataflow.MergeConfig.config" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="../configloader/json.html#dffml.configloader.json.JSONConfigLoader" title="dffml.configloader.json.JSONConfigLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.configloader.json.JSONConfigLoader</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="dffml.cli.dataflow.Run">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.cli.dataflow.</code><code class="sig-name descname">Run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#Run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.dataflow.Run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run dataflow</p>
@@ -231,6 +258,12 @@
 <dt id="dffml.cli.dataflow.RunAllRecords">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.cli.dataflow.</code><code class="sig-name descname">RunAllRecords</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#RunAllRecords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.dataflow.RunAllRecords" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run dataflow for all records in sources</p>
+<dl class="py attribute">
+<dt id="dffml.cli.dataflow.RunAllRecords.CONFIG">
+<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.cli.dataflow.RunAllRecords.CONFIG" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.dataflow.RunAllRecordsConfig" title="dffml.cli.dataflow.RunAllRecordsConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunAllRecordsConfig</span></code></a></p>
+</dd></dl>
+
 <dl class="py method">
 <dt id="dffml.cli.dataflow.RunAllRecords.records">
 <code class="sig-name descname">records</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sctx</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#RunAllRecords.records"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.dataflow.RunAllRecords.records" title="Permalink to this definition">¶</a></dt>
@@ -240,9 +273,31 @@
 </dd></dl>
 
 <dl class="py class">
+<dt id="dffml.cli.dataflow.RunAllRecordsConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.dataflow.</code><code class="sig-name descname">RunAllRecordsConfig</code><span class="sig-paren">(</span><em class="sig-param">dataflow: str</em>, <em class="sig-param">config: dffml.configloader.configloader.BaseConfigLoader = None</em>, <em class="sig-param">sources: dffml.source.source.Sources = &lt;factory&gt;</em>, <em class="sig-param">caching: List[str] = &lt;factory&gt;</em>, <em class="sig-param">no_update: bool = False</em>, <em class="sig-param">no_echo: bool = False</em>, <em class="sig-param">no_strict: bool = False</em>, <em class="sig-param">orchestrator: dffml.df.base.BaseOrchestrator = &lt;class 'dffml.df.memory.MemoryOrchestrator'&gt;</em>, <em class="sig-param">inputs: List[str] = &lt;factory&gt;</em>, <em class="sig-param">record_def: str = False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#RunAllRecordsConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.dataflow.RunAllRecordsConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="dffml.cli.dataflow.RunCMDConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.dataflow.</code><code class="sig-name descname">RunCMDConfig</code><span class="sig-paren">(</span><em class="sig-param">dataflow: str</em>, <em class="sig-param">config: dffml.configloader.configloader.BaseConfigLoader = None</em>, <em class="sig-param">sources: dffml.source.source.Sources = &lt;factory&gt;</em>, <em class="sig-param">caching: List[str] = &lt;factory&gt;</em>, <em class="sig-param">no_update: bool = False</em>, <em class="sig-param">no_echo: bool = False</em>, <em class="sig-param">no_strict: bool = False</em>, <em class="sig-param">orchestrator: dffml.df.base.BaseOrchestrator = &lt;class 'dffml.df.memory.MemoryOrchestrator'&gt;</em>, <em class="sig-param">inputs: List[str] = &lt;factory&gt;</em>, <em class="sig-param">record_def: str = False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#RunCMDConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.dataflow.RunCMDConfig" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="dffml.cli.dataflow.RunCMDConfig.orchestrator">
+<code class="sig-name descname">orchestrator</code><a class="headerlink" href="#dffml.cli.dataflow.RunCMDConfig.orchestrator" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="../df/memory.html#dffml.df.memory.MemoryOrchestrator" title="dffml.df.memory.MemoryOrchestrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.df.memory.MemoryOrchestrator</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="dffml.cli.dataflow.RunRecordSet">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.cli.dataflow.</code><code class="sig-name descname">RunRecordSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#RunRecordSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.dataflow.RunRecordSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run dataflow for single record or set of records</p>
+<dl class="py attribute">
+<dt id="dffml.cli.dataflow.RunRecordSet.CONFIG">
+<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.cli.dataflow.RunRecordSet.CONFIG" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.dataflow.RunRecordSetConfig" title="dffml.cli.dataflow.RunRecordSetConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">RunRecordSetConfig</span></code></a></p>
+</dd></dl>
+
 <dl class="py method">
 <dt id="dffml.cli.dataflow.RunRecordSet.records">
 <code class="sig-name descname">records</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sctx</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#RunRecordSet.records"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.dataflow.RunRecordSet.records" title="Permalink to this definition">¶</a></dt>
@@ -250,6 +305,11 @@
 </dd></dl>
 
 </dd></dl>
+
+<dl class="py class">
+<dt id="dffml.cli.dataflow.RunRecordSetConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.dataflow.</code><code class="sig-name descname">RunRecordSetConfig</code><span class="sig-paren">(</span><em class="sig-param">keys: List[str], dataflow: str, config: dffml.configloader.configloader.BaseConfigLoader = None, sources: dffml.source.source.Sources = &lt;factory&gt;, caching: List[str] = &lt;factory&gt;, no_update: bool = False, no_echo: bool = False, no_strict: bool = False, orchestrator: dffml.df.base.BaseOrchestrator = &lt;class 'dffml.df.memory.MemoryOrchestrator'&gt;, inputs: List[str] = &lt;factory&gt;, record_def: str = False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#RunRecordSetConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.dataflow.RunRecordSetConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py class">
 <dt id="dffml.cli.dataflow.RunRecords">
