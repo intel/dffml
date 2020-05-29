@@ -1,3 +1,3 @@
 path: /shouldi
-output_mode: json
+presentation: json
 asynchronous: false
