@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - `arg_` notation replaced with `CONFIG = ExampleConfig` style syntax
   for parsing all command line arguments.
+- Moved usage/io.rst to docs/tutorials/dataflows/io.rst
 - `edit` command substituted with `edit record`
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
