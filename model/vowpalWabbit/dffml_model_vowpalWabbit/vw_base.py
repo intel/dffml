@@ -49,14 +49,7 @@ class VWConfig:
     )
     vwcmd: List[str] = field(
         "Command Line Arguements as per vowpal wabbit convention",
-        default_factory=lambda: [
-            "loss_function",
-            "logistic",
-            "link",
-            "logistic",
-            "l2",
-            "0.04",
-        ],
+        default_factory=lambda: [],
     )
 
     namespace: List[str] = field(
@@ -272,6 +265,18 @@ class VWContext(ModelContext):
                 use_binary_label=self.parent.config.use_binary_label,
                 class_cost=class_cost,
             )
+        # support data already in vw format
+        # append `predict` to `features`
+        else:
+            if len(self.features) > 1:
+                raise InputError(
+                    "Training features should be in vw format or `convert_to_vw` should be true."
+                )
+            vw_data = (
+                vw_data[self.parent.config.predict.name].map(str)
+                + " "
+                + vw_data[self.features[0]].map(str)
+            )
         self.logger.info("Number of input records: {}".format(len(vw_data)))
         for n in range(self.parent.config.passes):
             if n > 1:
@@ -297,7 +302,9 @@ class VWContext(ModelContext):
             base = self.parent.config.base.name
         async for record in sources.with_features(self.features):
             feature_data = record.features(
-                self.features + [self.parent.config.predict.name]
+                self.features
+                + [self.parent.config.predict.name]
+                + self.parent.config.extra_cols
             )
             data.append(feature_data)
         df = pd.DataFrame(data)
@@ -314,6 +321,12 @@ class VWContext(ModelContext):
                 base=base,
                 task=self.parent.config.task,
                 use_binary_label=self.parent.config.use_binary_label,
+            )
+        else:
+            xdata = (
+                xdata.drop(self.parent.config.extra_cols, axis=1)
+                .to_numpy()
+                .flatten()
             )
         ydata = np.array(df[self.parent.config.predict.name])
         shape = [len(xdata)]
@@ -346,7 +359,9 @@ class VWContext(ModelContext):
         if self.parent.config.base:
             base = self.parent.config.base.name
         async for record in records:
-            feature_data = record.features(self.features)
+            feature_data = record.features(
+                self.features + self.parent.config.extra_cols
+            )
             data = pd.DataFrame(feature_data, index=[0])
             if self.parent.config.convert_to_vw:
                 data = df_to_vw_format(
@@ -359,6 +374,12 @@ class VWContext(ModelContext):
                     base=base,
                     task=self.parent.config.task,
                     use_binary_label=self.parent.config.use_binary_label,
+                )
+            else:
+                data = (
+                    data.drop(self.parent.config.extra_cols, axis=1)
+                    .to_numpy()
+                    .flatten()
                 )
             prediction = self.clf.predict(data[0])
             self.logger.debug(
@@ -373,6 +394,57 @@ class VWContext(ModelContext):
 
 @entrypoint("vwmodel")
 class VWModel(Model):
+    """
+    Implemented using Vowpal Wabbit.
+
+    First we create the training and testing datasets
+
+    .. literalinclude:: /../model/vowpalWabbit/examples/train_data.sh
+
+    .. literalinclude:: /../model/vowpalWabbit/examples/test_data.sh
+
+    Train the model
+
+    .. literalinclude:: /../model/vowpalWabbit/examples/train.sh
+
+    Assess the accuracy
+
+    .. literalinclude:: /../model/vowpalWabbit/examples/accuracy.sh
+
+    Output
+
+    .. code-block::
+
+        0.38683876649129145
+
+
+    Make a prediction
+
+    .. literalinclude:: /../model/vowpalWabbit/examples/predict.sh
+
+    Output
+
+    .. code-block:: json
+
+        [
+            {
+                "extra": {},
+                "features": {
+                    "A": "| price:.46 sqft:.4 age:.10 1924"
+                },
+                "key": "0",
+                "last_updated": "2020-05-29T16:36:57Z",
+                "prediction": {
+                    "B": {
+                        "confidence": 0.38683876649129145,
+                        "value": 0.0
+                    }
+                }
+            }
+        ]
+
+    """
+
     CONTEXT = VWContext
     CONFIG = VWConfig
 
