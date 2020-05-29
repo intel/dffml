@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Definition for output of the function that `op` wraps.
 - Expose high level load, run and save functions to noasync.
 ### Changed
+- Moved usage/io.rst to docs/tutorials/dataflows/io.rst
 - `edit` command substituted with `edit record`
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests

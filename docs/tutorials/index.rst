@@ -12,3 +12,4 @@ or operations.
     model
     operations
     sources/index
+    dataflows/index
