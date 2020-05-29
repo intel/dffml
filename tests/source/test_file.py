@@ -56,17 +56,13 @@ class TestFileSource(AsyncTestCase):
                                 },
                                 "readwrite": {
                                     "plugin": Arg(
-                                        type=bool,
-                                        action="store_true",
-                                        default=False,
+                                        action="store_true", default=False,
                                     ),
                                     "config": {},
                                 },
                                 "allowempty": {
                                     "plugin": Arg(
-                                        type=bool,
-                                        action="store_true",
-                                        default=False,
+                                        action="store_true", default=False,
                                     ),
                                     "config": {},
                                 },
