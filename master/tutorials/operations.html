@@ -813,8 +813,10 @@ with it.</p>
 orchestrator run them. DFFML also provides a quick and dirty CLI abstraction
 based on <a class="reference external" href="https://docs.python.org/3/library/argparse.html#module-argparse" title="(in Python v3.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">argparse</span></code></a> which will speed things up.</p>
 <p><strong>shouldi/cli.py</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Command line utility helpers and DataFlow specific classes</span>
-<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CMD</span><span class="p">,</span> <span class="n">Arg</span><span class="p">,</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">,</span> <span class="n">run</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="c1"># Command line utility helpers and DataFlow specific classes</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">CMD</span><span class="p">,</span> <span class="n">Arg</span><span class="p">,</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">field</span>
 
 <span class="c1"># Import all the operations we wrote</span>
 <span class="kn">from</span> <span class="nn">.python.bandit</span> <span class="kn">import</span> <span class="n">run_bandit</span>
@@ -851,11 +853,14 @@ based on <a class="reference external" href="https://docs.python.org/3/library/a
 <span class="p">)</span>
 
 
+<span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">InstallConfig</span><span class="p">:</span>
+    <span class="n">packages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Package to check if we should install&quot;</span><span class="p">,)</span>
+
+
 <span class="k">class</span> <span class="nc">Install</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
 
-    <span class="n">arg_packages</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;packages&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Package to check if we should install&quot;</span>
-    <span class="p">)</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">InstallConfig</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Run all the operations, Each iteration of this loop happens</span>

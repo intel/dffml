@@ -289,10 +289,26 @@
 </dd></dl>
 
 <dl class="py class">
+<dt id="dffml.cli.cli.EditCMDConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">EditCMDConfig</code><span class="sig-paren">(</span><em class="sig-param">dataflow: str = None</em>, <em class="sig-param">config: dffml.configloader.configloader.BaseConfigLoader = None</em>, <em class="sig-param">features: dffml.feature.feature.Features = &lt;factory&gt;</em>, <em class="sig-param">sources: dffml.source.source.Sources = &lt;factory&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#EditCMDConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.EditCMDConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
 <dt id="dffml.cli.cli.EditRecord">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">EditRecord</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#EditRecord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.EditRecord" title="Permalink to this definition">¶</a></dt>
 <dd><p>Edit each specified record</p>
+<dl class="py attribute">
+<dt id="dffml.cli.cli.EditRecord.CONFIG">
+<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.cli.cli.EditRecord.CONFIG" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.cli.EditRecordConfig" title="dffml.cli.cli.EditRecordConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">EditRecordConfig</span></code></a></p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dffml.cli.cli.EditRecordConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">EditRecordConfig</code><span class="sig-paren">(</span><em class="sig-param">keys: List[str], dataflow: str = None, config: dffml.configloader.configloader.BaseConfigLoader = None, features: dffml.feature.feature.Features = &lt;factory&gt;, sources: dffml.source.source.Sources = &lt;factory&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#EditRecordConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.EditRecordConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py class">
 <dt id="dffml.cli.cli.Export">
@@ -310,13 +326,35 @@
 <dt id="dffml.cli.cli.ImportExportCMD">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">ImportExportCMD</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#ImportExportCMD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.ImportExportCMD" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shared import export arguments</p>
+<dl class="py attribute">
+<dt id="dffml.cli.cli.ImportExportCMD.CONFIG">
+<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.cli.cli.ImportExportCMD.CONFIG" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.cli.ImportExportCMDConfig" title="dffml.cli.cli.ImportExportCMDConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImportExportCMDConfig</span></code></a></p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dffml.cli.cli.ImportExportCMDConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">ImportExportCMDConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">port</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../port/port.html#dffml.port.port.Port" title="dffml.port.port.Port">dffml.port.port.Port</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#ImportExportCMDConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.ImportExportCMDConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py class">
 <dt id="dffml.cli.cli.Merge">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">Merge</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">extra_config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#Merge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.Merge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Merge record data between sources</p>
+<dl class="py attribute">
+<dt id="dffml.cli.cli.Merge.CONFIG">
+<code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.cli.cli.Merge.CONFIG" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.cli.cli.MergeConfig" title="dffml.cli.cli.MergeConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">MergeConfig</span></code></a></p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dffml.cli.cli.MergeConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.cli.</code><code class="sig-name descname">MergeConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">src</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../source/source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource">dffml.source.source.BaseSource</a></span></em>, <em class="sig-param"><span class="n">dest</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../source/source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource">dffml.source.source.BaseSource</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/cli.html#MergeConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.cli.MergeConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py class">
 <dt id="dffml.cli.cli.Version">

@@ -188,16 +188,23 @@
 
 <span class="kn">from</span> <span class="nn">..version</span> <span class="kn">import</span> <span class="n">VERSION</span>
 <span class="kn">from</span> <span class="nn">..record</span> <span class="kn">import</span> <span class="n">Record</span>
-<span class="kn">from</span> <span class="nn">..source.source</span> <span class="kn">import</span> <span class="n">BaseSource</span><span class="p">,</span> <span class="n">SubsetSources</span>
+<span class="kn">from</span> <span class="nn">..feature.feature</span> <span class="kn">import</span> <span class="n">Features</span>
+<span class="kn">from</span> <span class="nn">..df.types</span> <span class="kn">import</span> <span class="n">DataFlow</span>
 <span class="kn">from</span> <span class="nn">..source.df</span> <span class="kn">import</span> <span class="n">DataFlowSource</span><span class="p">,</span> <span class="n">DataFlowSourceConfig</span>
+<span class="kn">from</span> <span class="nn">..source.source</span> <span class="kn">import</span> <span class="n">Sources</span><span class="p">,</span> <span class="n">BaseSource</span><span class="p">,</span> <span class="n">SubsetSources</span>
 <span class="kn">from</span> <span class="nn">..configloader.configloader</span> <span class="kn">import</span> <span class="n">BaseConfigLoader</span>
 <span class="kn">from</span> <span class="nn">..util.packaging</span> <span class="kn">import</span> <span class="n">is_develop</span>
-<span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
 <span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="kn">import</span> <span class="n">CMD</span>
-<span class="kn">from</span> <span class="nn">..util.cli.cmds</span> <span class="kn">import</span> <span class="n">SourcesCMD</span><span class="p">,</span> <span class="n">PortCMD</span><span class="p">,</span> <span class="n">KeysCMD</span>
-<span class="kn">from</span> <span class="nn">..df.types</span> <span class="kn">import</span> <span class="n">DataFlow</span>
-<span class="kn">from</span> <span class="nn">..feature.feature</span> <span class="kn">import</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Feature</span>
-<span class="kn">from</span> <span class="nn">..util.cli.parser</span> <span class="kn">import</span> <span class="n">list_action</span>
+<span class="kn">from</span> <span class="nn">..util.cli.cmds</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SourcesCMD</span><span class="p">,</span>
+    <span class="n">PortCMD</span><span class="p">,</span>
+    <span class="n">KeysCMD</span><span class="p">,</span>
+    <span class="n">KeysCMDConfig</span><span class="p">,</span>
+    <span class="n">PortCMDConfig</span><span class="p">,</span>
+    <span class="n">SourcesCMDConfig</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..util.config.fields</span> <span class="kn">import</span> <span class="n">FIELD_SOURCES</span>
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">field</span><span class="p">,</span> <span class="n">config</span>
 
 <span class="kn">from</span> <span class="nn">.dataflow</span> <span class="kn">import</span> <span class="n">Dataflow</span>
 <span class="kn">from</span> <span class="nn">.config</span> <span class="kn">import</span> <span class="n">Config</span>
@@ -216,26 +223,25 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;dffml version </span><span class="si">{</span><span class="n">VERSION</span><span class="si">}</span><span class="s2"> (devmode: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">devmode</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="EditCMDConfig"><a class="viewcode-back" href="../../../api/cli/cli.html#dffml.cli.cli.EditCMDConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">EditCMDConfig</span><span class="p">:</span>
+    <span class="n">dataflow</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;File containing exported DataFlow&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;ConfigLoader to use for importing DataFlow&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">features</span><span class="p">:</span> <span class="n">Features</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Feature definitions of records to update&quot;</span><span class="p">,</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="p">)</span>
+    <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span> <span class="o">=</span> <span class="n">FIELD_SOURCES</span></div>
+
+
 <span class="k">class</span> <span class="nc">BaseEditCMD</span><span class="p">(</span><span class="n">SourcesCMD</span><span class="p">):</span>
-    <span class="n">arg_dataflow</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-dataflow&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;File containing exported DataFlow&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">arg_config</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-config&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;ConfigLoader to use for importing DataFlow&quot;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="n">BaseConfigLoader</span><span class="o">.</span><span class="n">load</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">arg_features</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-features&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Feature definitions of records to update&quot;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
-        <span class="nb">type</span><span class="o">=</span><span class="n">Feature</span><span class="p">,</span>
-        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="n">list_action</span><span class="p">(</span><span class="n">Features</span><span class="p">),</span>
-    <span class="p">)</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">EditCMDConfig</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__aenter__</span><span class="p">()</span>
@@ -275,10 +281,17 @@
                     <span class="k">await</span> <span class="n">sctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">record</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="EditRecordConfig"><a class="viewcode-back" href="../../../api/cli/cli.html#dffml.cli.cli.EditRecordConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">EditRecordConfig</span><span class="p">(</span><span class="n">EditCMDConfig</span><span class="p">,</span> <span class="n">KeysCMDConfig</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
 <div class="viewcode-block" id="EditRecord"><a class="viewcode-back" href="../../../api/cli/cli.html#dffml.cli.cli.EditRecord">[docs]</a><span class="k">class</span> <span class="nc">EditRecord</span><span class="p">(</span><span class="n">EditAllRecords</span><span class="p">,</span> <span class="n">KeysCMD</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Edit each specified record</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">EditRecordConfig</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -294,19 +307,22 @@
     <span class="n">record</span> <span class="o">=</span> <span class="n">EditRecord</span></div>
 
 
+<div class="viewcode-block" id="MergeConfig"><a class="viewcode-back" href="../../../api/cli/cli.html#dffml.cli.cli.MergeConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">MergeConfig</span><span class="p">:</span>
+    <span class="n">src</span><span class="p">:</span> <span class="n">BaseSource</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Source to pull records from&quot;</span><span class="p">,</span> <span class="n">labeled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">dest</span><span class="p">:</span> <span class="n">BaseSource</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Source to merge records into&quot;</span><span class="p">,</span> <span class="n">labeled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="Merge"><a class="viewcode-back" href="../../../api/cli/cli.html#dffml.cli.cli.Merge">[docs]</a><span class="k">class</span> <span class="nc">Merge</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Merge record data between sources</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">arg_dest</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;dest&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Sources merge records into&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">BaseSource</span><span class="o">.</span><span class="n">load_labeled</span>
-    <span class="p">)</span>
-    <span class="n">arg_src</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;src&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Sources to pull records from&quot;</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="n">BaseSource</span><span class="o">.</span><span class="n">load_labeled</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">MergeConfig</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span>
@@ -320,10 +336,16 @@
                     <span class="k">await</span> <span class="n">dctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">record</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="ImportExportCMDConfig"><a class="viewcode-back" href="../../../api/cli/cli.html#dffml.cli.cli.ImportExportCMDConfig">[docs]</a><span class="k">class</span> <span class="nc">ImportExportCMDConfig</span><span class="p">(</span><span class="n">PortCMDConfig</span><span class="p">,</span> <span class="n">SourcesCMDConfig</span><span class="p">):</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Filename&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="ImportExportCMD"><a class="viewcode-back" href="../../../api/cli/cli.html#dffml.cli.cli.ImportExportCMD">[docs]</a><span class="k">class</span> <span class="nc">ImportExportCMD</span><span class="p">(</span><span class="n">PortCMD</span><span class="p">,</span> <span class="n">SourcesCMD</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Shared import export arguments&quot;&quot;&quot;</span>
 
-    <span class="n">arg_filename</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span></div>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">ImportExportCMDConfig</span></div>
 
 
 <div class="viewcode-block" id="Import"><a class="viewcode-back" href="../../../api/cli/cli.html#dffml.cli.cli.Import">[docs]</a><span class="k">class</span> <span class="nc">Import</span><span class="p">(</span><span class="n">ImportExportCMD</span><span class="p">):</span>

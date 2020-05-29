@@ -180,6 +180,7 @@
 <span></span><span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">hashlib</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">BaseConfig</span>
 <span class="kn">from</span> <span class="nn">..df.base</span> <span class="kn">import</span> <span class="n">BaseOrchestrator</span><span class="p">,</span> <span class="n">OperationImplementation</span>
@@ -192,32 +193,35 @@
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..configloader.configloader</span> <span class="kn">import</span> <span class="n">BaseConfigLoader</span>
 <span class="kn">from</span> <span class="nn">..configloader.json</span> <span class="kn">import</span> <span class="n">JSONConfigLoader</span>
-<span class="kn">from</span> <span class="nn">..source.source</span> <span class="kn">import</span> <span class="n">SubsetSources</span>
+<span class="kn">from</span> <span class="nn">..source.source</span> <span class="kn">import</span> <span class="n">SubsetSources</span><span class="p">,</span> <span class="n">Sources</span>
+<span class="kn">from</span> <span class="nn">..source.json</span> <span class="kn">import</span> <span class="n">JSONSource</span>
+<span class="kn">from</span> <span class="nn">..source.file</span> <span class="kn">import</span> <span class="n">FileSourceConfig</span>
 <span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">merge</span>
 <span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">load</span>
-<span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
 <span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="kn">import</span> <span class="n">CMD</span><span class="p">,</span> <span class="n">CMDOutputOverride</span>
-<span class="kn">from</span> <span class="nn">..util.cli.cmds</span> <span class="kn">import</span> <span class="n">SourcesCMD</span><span class="p">,</span> <span class="n">KeysCMD</span>
+<span class="kn">from</span> <span class="nn">..util.cli.cmds</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SourcesCMD</span><span class="p">,</span>
+    <span class="n">KeysCMD</span><span class="p">,</span>
+    <span class="n">KeysCMDConfig</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..util.cli.parser</span> <span class="kn">import</span> <span class="n">ParseInputsAction</span>
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">field</span>
+
+
+<div class="viewcode-block" id="MergeConfig"><a class="viewcode-back" href="../../../api/cli/dataflow.html#dffml.cli.dataflow.MergeConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">MergeConfig</span><span class="p">:</span>
+    <span class="n">dataflows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;DataFlows to merge&quot;</span><span class="p">)</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;ConfigLoader to use for exporting&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">JSONConfigLoader</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">not_linked</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Do not export dataflows as linked&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span></div>
 
 
 <span class="k">class</span> <span class="nc">Merge</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
-    <span class="n">arg_dataflows</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;dataflows&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;DataFlows to merge&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span>
-    <span class="p">)</span>
-    <span class="n">arg_config</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-config&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;ConfigLoader to use for exporting&quot;</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="n">BaseConfigLoader</span><span class="o">.</span><span class="n">load</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">JSONConfigLoader</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">arg_not_linked</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-not-linked&quot;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;not_linked&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not export dataflows as linked&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">MergeConfig</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># The merged dataflow</span>
@@ -239,30 +243,25 @@
                 <span class="nb">print</span><span class="p">((</span><span class="k">await</span> <span class="n">loader</span><span class="o">.</span><span class="n">dumpb</span><span class="p">(</span><span class="n">exported</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
 
 
-<span class="k">class</span> <span class="nc">Create</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
-    <span class="n">arg_operations</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;operations&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Operations to create a dataflow for&quot;</span>
+<div class="viewcode-block" id="CreateConfig"><a class="viewcode-back" href="../../../api/cli/dataflow.html#dffml.cli.dataflow.CreateConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">CreateConfig</span><span class="p">:</span>
+    <span class="n">operations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Operations to create a dataflow for&quot;</span><span class="p">,)</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;ConfigLoader to use&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">JSONConfigLoader</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">arg_config</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-config&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;ConfigLoader to use&quot;</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="n">BaseConfigLoader</span><span class="o">.</span><span class="n">load</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">JSONConfigLoader</span><span class="p">,</span>
+    <span class="n">not_linked</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Do not export dataflows as linked&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">arg_not_linked</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-not-linked&quot;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;not_linked&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not export dataflows as linked&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">arg_seed</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-seed&quot;</span><span class="p">,</span>
-        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
+    <span class="n">seed</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Inputs to be added to every context&quot;</span><span class="p">,</span>
         <span class="n">action</span><span class="o">=</span><span class="n">ParseInputsAction</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Inputs to be added to every context&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">Create</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">CreateConfig</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">operations</span> <span class="o">=</span> <span class="p">[]</span>
@@ -288,76 +287,73 @@
                 <span class="nb">print</span><span class="p">((</span><span class="k">await</span> <span class="n">loader</span><span class="o">.</span><span class="n">dumpb</span><span class="p">(</span><span class="n">exported</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
 
 
-<span class="k">class</span> <span class="nc">RunCMD</span><span class="p">(</span><span class="n">SourcesCMD</span><span class="p">):</span>
-
-    <span class="n">arg_sources</span> <span class="o">=</span> <span class="n">SourcesCMD</span><span class="o">.</span><span class="n">arg_sources</span><span class="o">.</span><span class="n">modify</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">arg_caching</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-caching&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Skip running DataFlow if a record already contains these features&quot;</span><span class="p">,</span>
-        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+<div class="viewcode-block" id="RunCMDConfig"><a class="viewcode-back" href="../../../api/cli/dataflow.html#dffml.cli.dataflow.RunCMDConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">RunCMDConfig</span><span class="p">:</span>
+    <span class="n">dataflow</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;File containing exported DataFlow&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">arg_no_update</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-no-update&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Update record with sources&quot;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;no_update&quot;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;ConfigLoader to use for importing DataFlow&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">arg_no_echo</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-no-echo&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not echo back records&quot;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;no_echo&quot;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Sources for loading and saving&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">Sources</span><span class="p">(</span>
+            <span class="n">JSONSource</span><span class="p">(</span>
+                <span class="n">FileSourceConfig</span><span class="p">(</span>
+                    <span class="n">filename</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.cache&quot;</span><span class="p">,</span> <span class="s2">&quot;dffml.json&quot;</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">labeled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">arg_no_strict</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-no-strict&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not exit on operation exceptions, just log errors&quot;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;no_strict&quot;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+    <span class="n">caching</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Skip running DataFlow if a record already contains these features&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[],</span>
     <span class="p">)</span>
-    <span class="n">arg_dataflow</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-dataflow&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;File containing exported DataFlow&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">no_update</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Update record with sources&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">arg_config</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-config&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;ConfigLoader to use for importing DataFlow&quot;</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="n">BaseConfigLoader</span><span class="o">.</span><span class="n">load</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">no_echo</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Do not echo back records&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">arg_orchestrator</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-orchestrator&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">BaseOrchestrator</span><span class="o">.</span><span class="n">load</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">MemoryOrchestrator</span>
+    <span class="n">no_strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Do not exit on operation exceptions, just log errors&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">arg_inputs</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-inputs&quot;</span><span class="p">,</span>
-        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="n">ParseInputsAction</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Other inputs to add under each ctx (record&#39;s key will &quot;</span>
+    <span class="n">orchestrator</span><span class="p">:</span> <span class="n">BaseOrchestrator</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Orchestrator&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">MemoryOrchestrator</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Other inputs to add under each ctx (record&#39;s key will &quot;</span>
         <span class="o">+</span> <span class="s2">&quot;be used as the context)&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="n">ParseInputsAction</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[],</span>
     <span class="p">)</span>
-    <span class="n">arg_record_def</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-record-def&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Definition to be used for record.key.&quot;</span>
+    <span class="n">record_def</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Definition to be used for record.key.&quot;</span>
         <span class="o">+</span> <span class="s2">&quot;If set, record.key will be added to the set of inputs &quot;</span>
         <span class="o">+</span> <span class="s2">&quot;under each context (which is also the record&#39;s key)&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">RunCMD</span><span class="p">(</span><span class="n">SourcesCMD</span><span class="p">):</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">RunCMDConfig</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">orchestrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orchestrator</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_config</span><span class="p">)</span>
 
 
+<div class="viewcode-block" id="RunAllRecordsConfig"><a class="viewcode-back" href="../../../api/cli/dataflow.html#dffml.cli.dataflow.RunAllRecordsConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">RunAllRecordsConfig</span><span class="p">(</span><span class="n">RunCMDConfig</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
 <div class="viewcode-block" id="RunAllRecords"><a class="viewcode-back" href="../../../api/cli/dataflow.html#dffml.cli.dataflow.RunAllRecords">[docs]</a><span class="k">class</span> <span class="nc">RunAllRecords</span><span class="p">(</span><span class="n">RunCMD</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Run dataflow for all records in sources&quot;&quot;&quot;</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">RunAllRecordsConfig</span>
 
 <div class="viewcode-block" id="RunAllRecords.records"><a class="viewcode-back" href="../../../api/cli/dataflow.html#dffml.cli.dataflow.RunAllRecords.records">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">records</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sctx</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -446,8 +442,15 @@
             <span class="k">yield</span> <span class="n">CMDOutputOverride</span></div>
 
 
+<div class="viewcode-block" id="RunRecordSetConfig"><a class="viewcode-back" href="../../../api/cli/dataflow.html#dffml.cli.dataflow.RunRecordSetConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">RunRecordSetConfig</span><span class="p">(</span><span class="n">RunAllRecordsConfig</span><span class="p">,</span> <span class="n">KeysCMDConfig</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
 <div class="viewcode-block" id="RunRecordSet"><a class="viewcode-back" href="../../../api/cli/dataflow.html#dffml.cli.dataflow.RunRecordSet">[docs]</a><span class="k">class</span> <span class="nc">RunRecordSet</span><span class="p">(</span><span class="n">RunAllRecords</span><span class="p">,</span> <span class="n">KeysCMD</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Run dataflow for single record or set of records&quot;&quot;&quot;</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">RunRecordSetConfig</span>
 
 <div class="viewcode-block" id="RunRecordSet.records"><a class="viewcode-back" href="../../../api/cli/dataflow.html#dffml.cli.dataflow.RunRecordSet.records">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">records</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sctx</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">:</span>
@@ -471,35 +474,25 @@
     <span class="n">records</span> <span class="o">=</span> <span class="n">RunRecords</span></div>
 
 
+<div class="viewcode-block" id="DiagramConfig"><a class="viewcode-back" href="../../../api/cli/dataflow.html#dffml.cli.dataflow.DiagramConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">DiagramConfig</span><span class="p">:</span>
+    <span class="n">dataflow</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;File containing exported DataFlow&quot;</span><span class="p">)</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;ConfigLoader to use for importing DataFlow&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">stages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Which stages to display: (processing, cleanup, output)&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="p">)</span>
+    <span class="n">simple</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Don&#39;t display input and output names&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;How to display (TD: top down, LR, RL, BT)&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;TD&quot;</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
 <span class="k">class</span> <span class="nc">Diagram</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
 
-    <span class="n">arg_stages</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-stages&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Which stages to display: (processing, cleanup, output)&quot;</span><span class="p">,</span>
-        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">arg_simple</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-simple&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Don&#39;t display input and output names&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">arg_display</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-display&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;How to display (TD: top down, LR, RL, BT)&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;TD&quot;</span><span class="p">,</span>
-        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">arg_dataflow</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span><span class="s2">&quot;dataflow&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;File containing exported DataFlow&quot;</span><span class="p">)</span>
-    <span class="n">arg_config</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-config&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;ConfigLoader to use for importing&quot;</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="n">BaseConfigLoader</span><span class="o">.</span><span class="n">load</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">DiagramConfig</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">dataflow_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataflow</span><span class="p">)</span>

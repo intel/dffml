@@ -196,15 +196,15 @@
 <span class="kn">import</span> <span class="nn">urllib.request</span>
 <span class="kn">import</span> <span class="nn">importlib.util</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
 
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">BaseConfig</span>
 <span class="kn">from</span> <span class="nn">..util.os</span> <span class="kn">import</span> <span class="n">chdir</span><span class="p">,</span> <span class="n">MODE_BITS_SECURE</span>
 <span class="kn">from</span> <span class="nn">..version</span> <span class="kn">import</span> <span class="n">VERSION</span>
 <span class="kn">from</span> <span class="nn">..util.skel</span> <span class="kn">import</span> <span class="n">Skel</span><span class="p">,</span> <span class="n">SkelTemplateConfig</span>
-<span class="kn">from</span> <span class="nn">..util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
 <span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="kn">import</span> <span class="n">CMD</span>
 <span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">load</span>
-<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">MissingConfig</span>
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">MissingConfig</span><span class="p">,</span> <span class="n">config</span> <span class="k">as</span> <span class="n">configdataclass</span><span class="p">,</span> <span class="n">field</span>
 <span class="kn">from</span> <span class="nn">..util.packaging</span> <span class="kn">import</span> <span class="n">is_develop</span>
 <span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">traverse_config_get</span><span class="p">,</span> <span class="n">export_dict</span>
 <span class="kn">from</span> <span class="nn">..df.types</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">DataFlow</span>
@@ -225,57 +225,46 @@
 <span class="n">EMAIL</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span> <span class="n">fallback</span><span class="o">=</span><span class="s2">&quot;unknown@example.com&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="create_from_skel"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.create_from_skel">[docs]</a><span class="k">def</span> <span class="nf">create_from_skel</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="create_from_skel"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.create_from_skel">[docs]</a><span class="k">def</span> <span class="nf">create_from_skel</span><span class="p">(</span><span class="n">plugin_type</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Copies samples out of skel/ and does re-naming.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@configdataclass</span>
+    <span class="k">class</span> <span class="nc">CreateCMDConfig</span><span class="p">:</span>
+        <span class="n">package</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Name of python package to create&quot;</span><span class="p">)</span>
+        <span class="n">user</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Your username (default: </span><span class="si">{</span><span class="n">USER</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">USER</span><span class="p">)</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Your name (default: </span><span class="si">{</span><span class="n">NAME</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">NAME</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">email</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Your email (default: </span><span class="si">{</span><span class="n">EMAIL</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">EMAIL</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Description of python package (default: DFFML </span><span class="si">{</span><span class="n">plugin_type</span><span class="si">}</span><span class="s2"> </span><span class="se">{{</span><span class="s2">package name</span><span class="se">}}</span><span class="s2">)&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">target</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Directory to put code in (default: same as package name)&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="k">class</span> <span class="nc">CreateCMD</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
 
         <span class="n">skel</span> <span class="o">=</span> <span class="n">Skel</span><span class="p">()</span>
 
-        <span class="n">arg_user</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-            <span class="s2">&quot;-user&quot;</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Your username (default: </span><span class="si">{</span><span class="n">USER</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
-            <span class="n">default</span><span class="o">=</span><span class="n">USER</span><span class="p">,</span>
-            <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">arg_name</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-            <span class="s2">&quot;-name&quot;</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Your name (default: </span><span class="si">{</span><span class="n">NAME</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
-            <span class="n">default</span><span class="o">=</span><span class="n">NAME</span><span class="p">,</span>
-            <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">arg_email</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-            <span class="s2">&quot;-email&quot;</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Your email (default: </span><span class="si">{</span><span class="n">EMAIL</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">,</span>
-            <span class="n">default</span><span class="o">=</span><span class="n">EMAIL</span><span class="p">,</span>
-            <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">arg_description</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-            <span class="s2">&quot;-description&quot;</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Description of python package (default: DFFML </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> </span><span class="se">{{</span><span class="s2">package name</span><span class="se">}}</span><span class="s2">)&quot;</span><span class="p">,</span>
-            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">arg_target</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-            <span class="s2">&quot;-target&quot;</span><span class="p">,</span>
-            <span class="n">help</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Directory to put code in (default: same as package name)&quot;</span><span class="p">,</span>
-            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="n">arg_package</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span><span class="s2">&quot;package&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Name of python package to create&quot;</span><span class="p">)</span>
+        <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">CreateCMDConfig</span>
 
         <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="c1"># Set description if None</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;DFFML </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;DFFML </span><span class="si">{</span><span class="n">plugin_type</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">package</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="c1"># Set target directory to package name if not given</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">package</span>
             <span class="c1"># Extract</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">skel</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
-                <span class="n">name</span><span class="p">,</span>
+                <span class="n">plugin_type</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
                 <span class="n">SkelTemplateConfig</span><span class="p">(</span>
                     <span class="n">org</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
@@ -322,12 +311,17 @@
     <span class="n">link</span> <span class="o">=</span> <span class="n">Link</span></div>
 
 
+<div class="viewcode-block" id="RunConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.RunConfig">[docs]</a><span class="nd">@configdataclass</span>
+<span class="k">class</span> <span class="nc">RunConfig</span><span class="p">:</span>
+    <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Python path to operation&quot;</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="Run"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.Run">[docs]</a><span class="k">class</span> <span class="nc">Run</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Run a single operation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">arg_operation</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span><span class="s2">&quot;operation&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Python path to operation&quot;</span><span class="p">)</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">RunConfig</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Push current directory into front of path so we can run things</span>
@@ -420,11 +414,14 @@
                     <span class="k">return</span> <span class="n">results</span></div>
 
 
+<div class="viewcode-block" id="ListEntrypointsConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.ListEntrypointsConfig">[docs]</a><span class="nd">@configdataclass</span>
+<span class="k">class</span> <span class="nc">ListEntrypointsConfig</span><span class="p">:</span>
+    <span class="n">entrypoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Entrypoint to list, example: dffml.model&quot;</span><span class="p">)</span></div>
+
+
 <span class="k">class</span> <span class="nc">ListEntrypoints</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
 
-    <span class="n">arg_entrypoint</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;entrypoint&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Entrypoint to list, example: dffml.model&quot;</span>
-    <span class="p">)</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">ListEntrypointsConfig</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">entrypoint</span> <span class="ow">in</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">iter_entry_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entrypoint</span><span class="p">):</span>
@@ -436,22 +433,22 @@
     <span class="n">_list</span> <span class="o">=</span> <span class="n">ListEntrypoints</span>
 
 
-<span class="k">class</span> <span class="nc">Export</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
-
-    <span class="n">arg_config</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-config&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;ConfigLoader to use&quot;</span><span class="p">,</span>
-        <span class="nb">type</span><span class="o">=</span><span class="n">BaseConfigLoader</span><span class="o">.</span><span class="n">load</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">JSONConfigLoader</span><span class="p">,</span>
+<div class="viewcode-block" id="ExportConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.ExportConfig">[docs]</a><span class="nd">@configdataclass</span>
+<span class="k">class</span> <span class="nc">ExportConfig</span><span class="p">:</span>
+    <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Python path to object to export&quot;</span><span class="p">,)</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;ConfigLoader to use&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">JSONConfigLoader</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">arg_not_linked</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-not-linked&quot;</span><span class="p">,</span>
-        <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;not_linked&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not export dataflows as linked&quot;</span><span class="p">,</span>
+    <span class="n">not_linked</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Do not export dataflows as linked&quot;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">arg_export</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span><span class="s2">&quot;export&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Python path to object to export&quot;</span><span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">Export</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">ExportConfig</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">())</span> <span class="k">as</span> <span class="n">configloader</span><span class="p">:</span>
@@ -479,6 +476,13 @@
                         <span class="p">)</span>
 
 
+<div class="viewcode-block" id="InstallConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.InstallConfig">[docs]</a><span class="nd">@configdataclass</span>
+<span class="k">class</span> <span class="nc">InstallConfig</span><span class="p">:</span>
+    <span class="n">user</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Perform user install&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span>
+    <span class="p">)</span></div>
+
+
 <span class="c1"># TODO (p3) Remove production packages. Download full source if not already</span>
 <span class="c1"># installed in development mode.</span>
 <div class="viewcode-block" id="Install"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.Install">[docs]</a><span class="k">class</span> <span class="nc">Install</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
@@ -486,9 +490,7 @@
 <span class="sd">    Uninstall production packages and install dffml in development mode.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">arg_user</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-user&quot;</span><span class="p">,</span> <span class="s2">&quot;Preform user install&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span>
-    <span class="p">)</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">InstallConfig</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">main_package</span> <span class="o">=</span> <span class="n">is_develop</span><span class="p">(</span><span class="s2">&quot;dffml&quot;</span><span class="p">)</span>
@@ -518,25 +520,30 @@
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;pip failed to install dependencies&quot;</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="SetupPyKWArgConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.SetupPyKWArgConfig">[docs]</a><span class="nd">@configdataclass</span>
+<span class="k">class</span> <span class="nc">SetupPyKWArgConfig</span><span class="p">:</span>
+    <span class="n">kwarg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Keyword argument to write to stdout&quot;</span><span class="p">)</span>
+    <span class="n">setupfilepath</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Path to setup.py&quot;</span><span class="p">,)</span></div>
+
+
 <div class="viewcode-block" id="SetupPyKWArg"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.SetupPyKWArg">[docs]</a><span class="k">class</span> <span class="nc">SetupPyKWArg</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get a keyword argument from a call to setup in a setup.py file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">arg_kwarg</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span><span class="s2">&quot;kwarg&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Keyword argument to write to stdout&quot;</span><span class="p">)</span>
-    <span class="n">arg_setup_filepath</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span><span class="s2">&quot;setup_filepath&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to setup.py&quot;</span><span class="p">)</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">SetupPyKWArgConfig</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">get_kwargs</span><span class="p">(</span><span class="n">setup_filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">setup_filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">setup_filepath</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get_kwargs</span><span class="p">(</span><span class="n">setupfilepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">setupfilepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">setupfilepath</span><span class="p">)</span>
         <span class="n">setup_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">def</span> <span class="nf">grab_setup_kwargs</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="n">setup_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="n">chdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">setup_filepath</span><span class="o">.</span><span class="n">parent</span><span class="p">)):</span>
+        <span class="k">with</span> <span class="n">chdir</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">setupfilepath</span><span class="o">.</span><span class="n">parent</span><span class="p">)):</span>
             <span class="n">spec</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span>
-                <span class="s2">&quot;setup&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">setup_filepath</span><span class="o">.</span><span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="s2">&quot;setup&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">setupfilepath</span><span class="o">.</span><span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
             <span class="p">)</span>
             <span class="k">with</span> <span class="n">unittest</span><span class="o">.</span><span class="n">mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span>
                 <span class="s2">&quot;setuptools.setup&quot;</span><span class="p">,</span> <span class="n">new</span><span class="o">=</span><span class="n">grab_setup_kwargs</span>
@@ -547,7 +554,7 @@
         <span class="k">return</span> <span class="n">setup_kwargs</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup_filepath</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">kwarg</span><span class="p">])</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setupfilepath</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">kwarg</span><span class="p">])</span></div>
 
 
 <span class="k">class</span> <span class="nc">SetupPy</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
@@ -561,14 +568,17 @@
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
+<div class="viewcode-block" id="ReleaseConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.ReleaseConfig">[docs]</a><span class="nd">@configdataclass</span>
+<span class="k">class</span> <span class="nc">ReleaseConfig</span><span class="p">:</span>
+    <span class="n">package</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Relative path to package to release&quot;</span><span class="p">,)</span></div>
+
+
 <div class="viewcode-block" id="Release"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.Release">[docs]</a><span class="k">class</span> <span class="nc">Release</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Release a package (if not already released)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">arg_package</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;package&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Relative path to package to release&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Path</span>
-    <span class="p">)</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">ReleaseConfig</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Ensure target plugin directory has no unstaged changes</span>
@@ -653,27 +663,28 @@
             <span class="k">raise</span> <span class="ne">RuntimeError</span></div>
 
 
+<div class="viewcode-block" id="BumpPackagesConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.BumpPackagesConfig">[docs]</a><span class="nd">@configdataclass</span>
+<span class="k">class</span> <span class="nc">BumpPackagesConfig</span><span class="p">:</span>
+    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Version to increment by&quot;</span><span class="p">,)</span>
+    <span class="n">skip</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Do not increment versions in these packages&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">only</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Only increment versions in these packages&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="BumpPackages"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.BumpPackages">[docs]</a><span class="k">class</span> <span class="nc">BumpPackages</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Bump all the versions of all the packages and increment the version number</span>
 <span class="sd">    given.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">arg_skip</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-skip&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Do not increment versions in these packages&quot;</span><span class="p">,</span>
-        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">arg_only</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span>
-        <span class="s2">&quot;-only&quot;</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Only increment versions in these packages&quot;</span><span class="p">,</span>
-        <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">arg_version</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span><span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Version to increment by&quot;</span><span class="p">)</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">BumpPackagesConfig</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">bump_version</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">increment</span><span class="p">):</span>
@@ -717,7 +728,7 @@
             <span class="c1"># Ignore skel</span>
             <span class="k">if</span> <span class="n">skel</span> <span class="ow">in</span> <span class="n">version_file</span><span class="o">.</span><span class="n">parents</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                    <span class="s2">&quot;Skipping skel verison file </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">version_file</span>
+                    <span class="s2">&quot;Skipping skel version file </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">version_file</span>
                 <span class="p">)</span>
                 <span class="k">continue</span>
             <span class="c1"># If we&#39;re only supposed to increment versions of some packages,</span>
@@ -730,11 +741,11 @@
                     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">setup_filepath</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">only</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">only</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                        <span class="s2">&quot;Verison file not in only </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">version_file</span>
+                        <span class="s2">&quot;Version file not in only </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">version_file</span>
                     <span class="p">)</span>
                     <span class="k">continue</span>
                 <span class="k">elif</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">skip</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Skipping verison file </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">version_file</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Skipping version file </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">version_file</span><span class="p">)</span>
                     <span class="k">continue</span>
             <span class="c1"># Read the file</span>
             <span class="n">filetext</span> <span class="o">=</span> <span class="n">version_file</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
@@ -753,7 +764,7 @@
                 <span class="n">modified_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
             <span class="c1"># Write back the file using the modified lines</span>
             <span class="n">filetext</span> <span class="o">=</span> <span class="n">version_file</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">modified_lines</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Updated verison file </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">version_file</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Updated version file </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">version_file</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Bump"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.Bump">[docs]</a><span class="k">class</span> <span class="nc">Bump</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>

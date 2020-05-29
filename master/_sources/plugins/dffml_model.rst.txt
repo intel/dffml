@@ -221,7 +221,7 @@ Example usage of Tensorflow DNNClassifier model using python API
   - default: 20
   - Number records to pass through in an epoch
 
-- shuffle: Boolean
+- shuffle: String
 
   - default: True
   - Randomise order of records in a batch
@@ -441,7 +441,7 @@ Example usage of Tensorflow_hub Text Classifier model using python API
   - default: 256
   - Length of sentence, used in preprocessing of input for bert embedding
 
-- add_layers: Boolean
+- add_layers: String
 
   - default: False
   - Add layers on the top of pretrianed model/layer
@@ -670,7 +670,7 @@ Example usage of NER model using python API
   - default: 0
   - If greater than zero then sets total number of training steps to perform. Overrides `epochs`
 
-- use_fp16: Boolean
+- use_fp16: String
 
   - default: False
   - Whether to use 16-bit (mixed) precision instead of 32-bit
@@ -680,7 +680,7 @@ Example usage of NER model using python API
   - default: ['O', 'B-MISC', 'I-MISC', 'B-PER', 'I-PER', 'B-ORG', 'I-ORG', 'B-LOC', 'I-LOC']
   - List of all distinct NER Tags
 
-- do_lower_case: Boolean
+- do_lower_case: String
 
   - default: False
   - Set this flag if using uncased model.
@@ -755,12 +755,12 @@ Example usage of NER model using python API
   - default: 8
   - Batch size per GPU/CPU/TPU for assessing accuracy
 
-- no_cuda: Boolean
+- no_cuda: String
 
   - default: False
   - Avoid using CUDA when available
 
-- eval_all_checkpoints: Boolean
+- eval_all_checkpoints: String
 
   - default: False
   - Evaluate all checkpoints starting with the same prefix as model_name ending and ending with step number
@@ -1211,7 +1211,7 @@ No description
   - default: regression
   - Task to perform, possible values are `classification`, `regression`
 
-- use_binary_label: Boolean
+- use_binary_label: String
 
   - default: False
   - Convert target labels to -1 and 1 for binary classification
@@ -1241,7 +1241,7 @@ No description
   - default: None
   - Feature to be used as `tag` in conversion of data to vowpal wabbit input format
 
-- convert_to_vw: Boolean
+- convert_to_vw: String
 
   - default: False
   - Convert the input to vowpal wabbit standard input format
