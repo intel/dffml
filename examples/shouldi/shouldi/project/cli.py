@@ -13,15 +13,15 @@ class ProjectCreateCMDConfig:
     source: pathlib.Path = field(
         "Path to directory containing source code of project",
     )
-    _dbs: List[DependencyDB.load] = field(
+    dbs: List[DependencyDB.load] = field(
         "Databases to search for info on dependencies",
         default_factory=lambda: [],
     )
-    _add: List[DependencyDB.load] = field(
+    add: List[DependencyDB.load] = field(
         "YAML files containing info to supplement or override auto-detected info",
         default_factory=lambda: [],
     )
-    _authoritative: List[pathlib.Path] = field(
+    authoritative: List[pathlib.Path] = field(
         "Database to use as authoritative source",
         default=YAMLDB(
             pathlib.Path(__file__).parent.parent.parent / "db.yaml"
@@ -37,15 +37,13 @@ class ProjectCreateCMD(CMD):
     and add extra dependencies too it. Combining with lookups in custom
     database.
 
-        --dbs mydb --add ./tpm2-pytss/.tools/shouldi/deps.yaml -- ./tpm2-pytss
+        -dbs mydb -add ./tpm2-pytss/.tools/shouldi/deps.yaml -- ./tpm2-pytss
     """
 
     CONFIG = ProjectCreateCMDConfig
 
     async def run(self):
-        return mkbom(
-            self._authoritative, self._dbs, self.source, add=self._add
-        )
+        return mkbom(self.authoritative, self.dbs, self.source, add=self.add)
 
 
 class ProjectCMD(CMD):
