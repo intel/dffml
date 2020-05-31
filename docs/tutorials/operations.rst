@@ -20,8 +20,8 @@ I install Python package X? When it's done it'll look like this
     $ shouldi install dffml insecure-package
     dffml is okay to install
     Do not install insecure-package!
-        shouldi.python.safety.safety_check.outputs.result: 1
-        shouldi.python.bandit.run_bandit.outputs.result: {'CONFIDENCE.HIGH': 0.0, 'CONFIDENCE.LOW': 0.0, 'CONFIDENCE.MEDIUM': 0.0, 'CONFIDENCE.UNDEFINED': 0.0, 'SEVERITY.HIGH': 0.0, 'SEVERITY.LOW': 0.0, 'SEVERITY.MEDIUM': 0.0, 'SEVERITY.UNDEFINED': 0.0, 'loc': 100, 'nosec': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.LOW': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.HIGH': 0}
+        safety_check.outputs.result: 1
+        run_bandit.outputs.result: {'CONFIDENCE.HIGH': 0.0, 'CONFIDENCE.LOW': 0.0, 'CONFIDENCE.MEDIUM': 0.0, 'CONFIDENCE.UNDEFINED': 0.0, 'SEVERITY.HIGH': 0.0, 'SEVERITY.LOW': 0.0, 'SEVERITY.MEDIUM': 0.0, 'SEVERITY.UNDEFINED': 0.0, 'loc': 100, 'nosec': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.LOW': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.HIGH': 0}
 
 In the second half of this tutorial, we'll deploy the tool as an HTTP API
 endpoint rather than a command line application.
@@ -31,22 +31,24 @@ endpoint rather than a command line application.
     $ curl -s \
       --header "Content-Type: application/json" \
       --request POST \
-      --data '{"insecure-package": [{"value":"insecure-package","definition":"package"}]}' \
-      http://localhost:8080/shouldi | python -m json.tool
+      --data '{"insecure-package": [{"value":"insecure-package","definition":"safety_check.inputs.package"}]}' \
+      http://localhost:8080/shouldi | python3 -m json.tool
     {
         "insecure-package": {
-            "safety_check_number_of_issues": 1,
-            "bandit_output": {
-                "CONFIDENCE.HIGH": 0,
-                "CONFIDENCE.LOW": 0,
-                "CONFIDENCE.MEDIUM": 0,
-                "CONFIDENCE.UNDEFINED": 0,
-                "SEVERITY.HIGH": 0,
-                "SEVERITY.LOW": 0,
-                "SEVERITY.MEDIUM": 0,
-                "SEVERITY.UNDEFINED": 0,
+            "safety_check.outputs.result": 1,
+            "run_bandit.outputs.result": {
+                "CONFIDENCE.HIGH": 0.0,
+                "CONFIDENCE.LOW": 0.0,
+                "CONFIDENCE.MEDIUM": 0.0,
+                "CONFIDENCE.UNDEFINED": 0.0,
+                "SEVERITY.HIGH": 0.0,
+                "SEVERITY.LOW": 0.0,
+                "SEVERITY.MEDIUM": 0.0,
+                "SEVERITY.UNDEFINED": 0.0,
                 "loc": 100,
                 "nosec": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.LOW": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM": 0,
                 "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 0
             }
         }
@@ -453,8 +455,8 @@ is set up correctly).
     $ shouldi install dffml insecure-package
     dffml is okay to install
     Do not install insecure-package!
-        safety_check_number_of_issues: 1
-        bandit_output: {'CONFIDENCE.HIGH': 0.0, 'CONFIDENCE.LOW': 0.0, 'CONFIDENCE.MEDIUM': 0.0, 'CONFIDENCE.UNDEFINED': 0.0, 'SEVERITY.HIGH': 0.0, 'SEVERITY.LOW': 0.0, 'SEVERITY.MEDIUM': 0.0, 'SEVERITY.UNDEFINED': 0.0, 'loc': 100, 'nosec': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.HIGH': 0}
+        safety_check.outputs.result: 1
+        run_bandit.outputs.result: {'CONFIDENCE.HIGH': 0.0, 'CONFIDENCE.LOW': 0.0, 'CONFIDENCE.MEDIUM': 0.0, 'CONFIDENCE.UNDEFINED': 0.0, 'SEVERITY.HIGH': 0.0, 'SEVERITY.LOW': 0.0, 'SEVERITY.MEDIUM': 0.0, 'SEVERITY.UNDEFINED': 0.0, 'loc': 100, 'nosec': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.LOW': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.HIGH': 0}
 
 .. _tutorials_operations_visualizing_the_dataflow:
 
@@ -488,14 +490,14 @@ are connected.
     graph TD
     subgraph a759a07029077edc5c37fea0326fa281[Processing Stage]
     style a759a07029077edc5c37fea0326fa281 fill:#afd388b5,stroke:#a4ca7a
-    363b4b010e825ef2388cdb260cb4ef05[shouldi.python.bandit:run_bandit]
-    26b7dc960e3dd6be9600e5ae7f799ec6[shouldi.python.pypi:pypi_package_contents]
-    f4731ed58f365f146107a489753befb3[shouldi.python.pypi:pypi_package_json]
-    3870ea8602ad0cee0edf3f6a9d2b0ca9[shouldi.python.safety:safety_check]
+    d273c0a72c6acc57e33c2f7162fa7363[pypi_package_contents]
+    83503ba9fe6c0f5649644d26e59c5590[pypi_package_json]
+    9220cb5f5732d9e6dcc130a4908ddf92[run_bandit]
+    88517e4cd0cae33deff50d987f2683fe[safety_check]
     end
     subgraph a4827add25f5c7d5895c5728b74e2beb[Cleanup Stage]
     style a4827add25f5c7d5895c5728b74e2beb fill:#afd388b5,stroke:#a4ca7a
-    634a39b4fb0fa438086a804e4ff48e4b[shouldi.python.pypi:cleanup_pypi_package]
+    7ec0058800fd4bed6fb63633330588c7[cleanup_pypi_package]
     end
     subgraph 58ca4d24d2767176f196436c2890b926[Output Stage]
     style 58ca4d24d2767176f196436c2890b926 fill:#afd388b5,stroke:#a4ca7a
@@ -503,17 +505,17 @@ are connected.
     end
     subgraph inputs[Inputs]
     style inputs fill:#f6dbf9,stroke:#a178ca
+    54f0743fef1e65d16b527a1fdaa2d00f(cleanup_pypi_package.inputs.directory)
+    54f0743fef1e65d16b527a1fdaa2d00f --> 7ec0058800fd4bed6fb63633330588c7
     d60584024f765273b6f41d6d36f8320c(get_single_spec)
     d60584024f765273b6f41d6d36f8320c --> b42e9e149e775202b18841f1f67061c4
-    26b7dc960e3dd6be9600e5ae7f799ec6 --> 363b4b010e825ef2388cdb260cb4ef05
-    e75567c3359d4dd724df261eb523d359(shouldi.python.pypi.cleanup_pypi_package.inputs.directory)
-    e75567c3359d4dd724df261eb523d359 --> 634a39b4fb0fa438086a804e4ff48e4b
-    f4731ed58f365f146107a489753befb3 --> 26b7dc960e3dd6be9600e5ae7f799ec6
-    20f8934cf34504282bd73dca9ee45bc8(shouldi.python.safety.safety_check.inputs.package)
-    20f8934cf34504282bd73dca9ee45bc8 --> f4731ed58f365f146107a489753befb3
-    20f8934cf34504282bd73dca9ee45bc8(shouldi.python.safety.safety_check.inputs.package)
-    20f8934cf34504282bd73dca9ee45bc8 --> 3870ea8602ad0cee0edf3f6a9d2b0ca9
-    f4731ed58f365f146107a489753befb3 --> 3870ea8602ad0cee0edf3f6a9d2b0ca9
+    83503ba9fe6c0f5649644d26e59c5590 --> d273c0a72c6acc57e33c2f7162fa7363
+    9ce20b05489ff45b34f8fd4db5c97bc7(safety_check.inputs.package)
+    9ce20b05489ff45b34f8fd4db5c97bc7 --> 83503ba9fe6c0f5649644d26e59c5590
+    d273c0a72c6acc57e33c2f7162fa7363 --> 9220cb5f5732d9e6dcc130a4908ddf92
+    9ce20b05489ff45b34f8fd4db5c97bc7(safety_check.inputs.package)
+    9ce20b05489ff45b34f8fd4db5c97bc7 --> 88517e4cd0cae33deff50d987f2683fe
+    83503ba9fe6c0f5649644d26e59c5590 --> 88517e4cd0cae33deff50d987f2683fe
     end
 
 You can now copy that graph and paste it in the mermaidjs live editor:
@@ -597,22 +599,24 @@ meta static analysis tool over an HTTP interface.
     $ curl -s \
       --header "Content-Type: application/json" \
       --request POST \
-      --data '{"insecure-package": [{"value":"insecure-package","definition":"package"}]}' \
-      http://localhost:8080/shouldi | python -m json.tool
+      --data '{"insecure-package": [{"value":"insecure-package","definition":"safety_check.inputs.package"}]}' \
+      http://localhost:8080/shouldi | python3 -m json.tool
     {
         "insecure-package": {
-            "safety_check_number_of_issues": 1,
-            "bandit_output": {
-                "CONFIDENCE.HIGH": 0,
-                "CONFIDENCE.LOW": 0,
-                "CONFIDENCE.MEDIUM": 0,
-                "CONFIDENCE.UNDEFINED": 0,
-                "SEVERITY.HIGH": 0,
-                "SEVERITY.LOW": 0,
-                "SEVERITY.MEDIUM": 0,
-                "SEVERITY.UNDEFINED": 0,
+            "safety_check.outputs.result": 1,
+            "run_bandit.outputs.result": {
+                "CONFIDENCE.HIGH": 0.0,
+                "CONFIDENCE.LOW": 0.0,
+                "CONFIDENCE.MEDIUM": 0.0,
+                "CONFIDENCE.UNDEFINED": 0.0,
+                "SEVERITY.HIGH": 0.0,
+                "SEVERITY.LOW": 0.0,
+                "SEVERITY.MEDIUM": 0.0,
+                "SEVERITY.UNDEFINED": 0.0,
                 "loc": 100,
                 "nosec": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.LOW": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM": 0,
                 "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 0
             }
         }
