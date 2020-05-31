@@ -22,22 +22,24 @@ without the need to hardcode in ``import`` statements.
     $ curl -s \
       --header "Content-Type: application/json" \
       --request POST \
-      --data '{"insecure-package": [{"value":"insecure-package","definition":"package"}]}' \
+      --data '{"insecure-package": [{"value":"insecure-package","definition":"safety_check.inputs.package"}]}' \
       http://localhost:8080/shouldi | python3 -m json.tool
     {
         "insecure-package": {
-            "safety_check_number_of_issues": 1,
-            "bandit_output": {
-                "CONFIDENCE.HIGH": 0,
-                "CONFIDENCE.LOW": 0,
-                "CONFIDENCE.MEDIUM": 0,
-                "CONFIDENCE.UNDEFINED": 0,
-                "SEVERITY.HIGH": 0,
-                "SEVERITY.LOW": 0,
-                "SEVERITY.MEDIUM": 0,
-                "SEVERITY.UNDEFINED": 0,
+            "safety_check.outputs.result": 1,
+            "run_bandit.outputs.result": {
+                "CONFIDENCE.HIGH": 0.0,
+                "CONFIDENCE.LOW": 0.0,
+                "CONFIDENCE.MEDIUM": 0.0,
+                "CONFIDENCE.UNDEFINED": 0.0,
+                "SEVERITY.HIGH": 0.0,
+                "SEVERITY.LOW": 0.0,
+                "SEVERITY.MEDIUM": 0.0,
+                "SEVERITY.UNDEFINED": 0.0,
                 "loc": 100,
                 "nosec": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.LOW": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM": 0,
                 "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 0
             }
         }
@@ -154,23 +156,27 @@ items that you want evaluated.
     $ curl -s \
       --header "Content-Type: application/json" \
       --request POST \
-      --data '{"insecure-package": [{"value":"insecure-package","definition":"package"}]}' \
+      --data '{"insecure-package": [{"value":"insecure-package","definition":"safety_check.inputs.package"}]}' \
       http://localhost:8080/shouldi | python3 -m json.tool
     {
-        "bandit_output": {
-            "CONFIDENCE.HIGH": 0,
-            "CONFIDENCE.LOW": 0,
-            "CONFIDENCE.MEDIUM": 0,
-            "CONFIDENCE.UNDEFINED": 0,
-            "SEVERITY.HIGH": 0,
-            "SEVERITY.LOW": 0,
-            "SEVERITY.MEDIUM": 0,
-            "SEVERITY.UNDEFINED": 0,
-            "loc": 100,
-            "nosec": 0,
-            "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 0
-        },
-        "safety_check_number_of_issues": 1
+        "insecure-package": {
+            "safety_check.outputs.result": 1,
+            "run_bandit.outputs.result": {
+                "CONFIDENCE.HIGH": 0.0,
+                "CONFIDENCE.LOW": 0.0,
+                "CONFIDENCE.MEDIUM": 0.0,
+                "CONFIDENCE.UNDEFINED": 0.0,
+                "SEVERITY.HIGH": 0.0,
+                "SEVERITY.LOW": 0.0,
+                "SEVERITY.MEDIUM": 0.0,
+                "SEVERITY.UNDEFINED": 0.0,
+                "loc": 100,
+                "nosec": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.LOW": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 0
+            }
+        }
     }
 
 Combining Operations
@@ -314,30 +320,13 @@ Here's an example of evaluating two packages using the new DataFlow.
     $ curl -s \
       --header "Content-Type: application/json" \
       --request POST \
-      --data '{"insecure-package": [{"value":"insecure-package","definition":"package"}], "dffml": [{"value":"dffml","definition":"package"}]}' \
+      --data '{"insecure-package": [{"value":"insecure-package","definition":"safety_check.inputs.package"}], "dffml": [{"value":"dffml","definition":"safety_check.inputs.package"}]}' \
       http://localhost:8080/shouldi | python3 -m json.tool
     {
-        "dffml": {
-            "bandit_output": {
-                "CONFIDENCE.HIGH": 1.0,
-                "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 0,
-                "CONFIDENCE.LOW": 0.0,
-                "CONFIDENCE.MEDIUM": 0.0,
-                "CONFIDENCE.UNDEFINED": 0.0,
-                "SEVERITY.HIGH": 0.0,
-                "SEVERITY.LOW": 1.0,
-                "SEVERITY.MEDIUM": 0.0,
-                "SEVERITY.UNDEFINED": 0.0,
-                "loc": 6227,
-                "nosec": 0
-            },
-            "language_to_comment_ratio": 5,
-            "safety_check_number_of_issues": 0
-        },
         "insecure-package": {
-            "bandit_output": {
+            "safety_check.outputs.result": 1,
+            "run_bandit.outputs.result": {
                 "CONFIDENCE.HIGH": 0.0,
-                "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 0,
                 "CONFIDENCE.LOW": 0.0,
                 "CONFIDENCE.MEDIUM": 0.0,
                 "CONFIDENCE.UNDEFINED": 0.0,
@@ -346,9 +335,28 @@ Here's an example of evaluating two packages using the new DataFlow.
                 "SEVERITY.MEDIUM": 0.0,
                 "SEVERITY.UNDEFINED": 0.0,
                 "loc": 100,
-                "nosec": 0
-            },
-            "language_to_comment_ratio": 19,
-            "safety_check_number_of_issues": 1
+                "nosec": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.LOW": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 0
+            }
+        },
+        "dffml": {
+            "safety_check.outputs.result": 0,
+            "run_bandit.outputs.result": {
+                "CONFIDENCE.HIGH": 24.0,
+                "CONFIDENCE.LOW": 0.0,
+                "CONFIDENCE.MEDIUM": 0.0,
+                "CONFIDENCE.UNDEFINED": 0.0,
+                "SEVERITY.HIGH": 1.0,
+                "SEVERITY.LOW": 10.0,
+                "SEVERITY.MEDIUM": 13.0,
+                "SEVERITY.UNDEFINED": 0.0,
+                "loc": 13289,
+                "nosec": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.LOW": 10,
+                "CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM": 13,
+                "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 1
+            }
         }
     }
