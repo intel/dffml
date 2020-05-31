@@ -425,6 +425,51 @@ class Diagram(CMD):
                                 list(source.keys())[0].encode()
                             ).hexdigest()
                             print(f"{source_operation_node} --> {node}")
+            for i, condition in enumerate(input_flow.conditions):
+                if isinstance(condition, str):
+                    if not self.simple:
+                        condition_name = operation.conditions[i].name
+                        seed_condition_node = hashlib.md5(
+                            (condition + "." + condition_name).encode()
+                        ).hexdigest()
+                        print(f"{seed_condition_node}({condition_name})")
+                        seed_dependent_node = hashlib.md5(
+                            (
+                                "condition."
+                                + instance_name
+                                + "."
+                                + condition_name
+                            ).encode()
+                        ).hexdigest()
+                        print(
+                            f"{seed_condition_node} --> {seed_dependent_node}"
+                        )
+                else:
+                    if not self.simple:
+                        dependee_node = hashlib.md5(
+                            (
+                                "output."
+                                + ".".join(list(condition.items())[0])
+                            ).encode()
+                        ).hexdigest()
+                        dependent_node = hashlib.md5(
+                            (
+                                "condition."
+                                + instance_name
+                                + "."
+                                + dataflow.operations[
+                                    list(condition.keys())[0]
+                                ]
+                                .outputs[list(condition.values())[0]]
+                                .name
+                            ).encode()
+                        ).hexdigest()
+                        print(f"{dependee_node} --> {dependent_node}")
+                    else:
+                        dependee_operation_node = hashlib.md5(
+                            list(condition.keys())[0].encode()
+                        ).hexdigest()
+                        print(f"{dependee_operation_node} --> {node}")
         if len(self.stages) != 1:
             print(f"end")
 
