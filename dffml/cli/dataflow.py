@@ -363,6 +363,15 @@ class Diagram(CMD):
                     if not self.simple:
                         print(f"{output_node}({output_name})")
                         print(f"{node} --> {output_node}")
+                for condition in operation.conditions:
+                    condition_node = hashlib.md5(
+                        (
+                            "condition." + instance_name + "." + condition.name
+                        ).encode()
+                    ).hexdigest()
+                    if not self.simple:
+                        print(f"{condition_node}{'{' + condition.name + '}'}")
+                        print(f"{condition_node} --> {node}")
                 if not self.simple:
                     print(f"end")
             if len(self.stages) != 1:
