@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Support for link on conditions in dataflow diagrams
 - `edit all` command to edit records in bulk
 - Support for Tensorflow 2.2
 - Vowpal Wabbit Models
