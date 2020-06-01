@@ -111,7 +111,8 @@ class TestDevelopCreate(AsyncTestCase):
 
     async def test_model(self):
         await self.generic_test(
-            "model", [("{import_name}", "misc.py"), ("tests", "test_model.py")]
+            "model",
+            [("{import_name}", "myslr.py"), ("tests", "test_model.py")],
         )
 
     async def test_operations(self):

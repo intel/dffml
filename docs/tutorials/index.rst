@@ -9,7 +9,7 @@ or operations.
     :caption: Contents:
 
     intro
-    model
+    models/index
     operations
     sources/index
     dataflows/index
