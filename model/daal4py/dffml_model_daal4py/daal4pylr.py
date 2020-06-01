@@ -4,6 +4,7 @@ import importlib
 import hashlib
 import os
 
+from operator import sub
 from typing import AsyncIterator, Tuple, Any, Type, List
 
 from dffml import (
@@ -39,12 +40,25 @@ class DAAL4PyLRModel(SimpleModel):
         self.pd = importlib.import_module("pandas")
         self.np = importlib.import_module("numpy")
         self.d4p = importlib.import_module("daal4py")
-        self.features = self.features.names()
-        self.lm = self.d4p.linear_regression_training(interceptFlag=True, streaming = True)
+        self.joblib = importlib.import_module("joblib")
+        self.lm = self.d4p.linear_regression_training(
+            interceptFlag=True, streaming=True
+        )
         self.lm_predictor = self.d4p.linear_regression_prediction()
-        self.path = self.filepath(self.parent.config.directory, "trained_model.sav")
+        self.path = self.filepath(
+            self.parent.config.directory, "trained_model.sav"
+        )
         self.lm_trained = None
         self.load_model()
+
+    def compare(self, alist, bfloat):
+        result = []
+        for element in alist:
+            if element <= bfloat:
+                result.append(True)
+            else:
+                result.append(False)
+        return result
 
     def load_model(self):
         if self.path.is_file():
@@ -57,10 +71,14 @@ class DAAL4PyLRModel(SimpleModel):
         async for record in sources.with_features(
             self.features + [self.parent.config.predict.name]
         ):
-            xdata = record.features(self.features)
-            ydata = record.features(self.parent.config.predict.name)
+            xdata = self.pd.DataFrame(
+                record.features(self.features[0]), index=[0]
+            )
+            ydata = self.pd.DataFrame(
+                record.features(self.parent.config.predict.name), index=[0]
+            )
             self.lm.compute(xdata, ydata)
-        self.lm_trained = lm.finalize()
+        self.lm_trained = self.lm.finalize().model
         self.joblib.dump(self.lm_trained, self.path)
 
     async def accuracy(self, sources: Sources) -> Accuracy:
@@ -77,8 +95,12 @@ class DAAL4PyLRModel(SimpleModel):
         df = self.pd.DataFrame(data)
         xdata = self.np.array(df.drop([self.parent.config.predict.name], 1))
         ydata = self.np.array(df[self.parent.config.predict.name])
-        prediction = self.lm_predictor.compute(xdata, self.lm_trained.model)
-        accuracy_val = 100 * sum((prediction == ydata))/len(ydata)
+        preds = self.lm_predictor.compute(xdata, self.lm_trained)
+        accuracy_val = sum(
+            self.compare(
+                list(map(abs, map(sub, ydata, preds.prediction))), 0.5
+            )
+        ) / len(ydata)
         return Accuracy(accuracy_val)
 
     async def predict(
@@ -86,15 +108,15 @@ class DAAL4PyLRModel(SimpleModel):
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
         # Iterate through each record that needs a prediction
         if self.lm_trained is None:
-            raise ModelNotTrained("Train model before preiction.")
+            raise ModelNotTrained("Train model before prediction.")
         async for record in records:
-            feature_data = record.features(self.features)
-            df = self.pd.DataFrame(feature_data, index=[0])
-            predict = self.np.array(df)
-            prediction = self.lm_predictor.compute(predict, self.lm_trained.model)
+            predict = self.pd.DataFrame(
+                record.features(self.features[0]), index=[0]
+            )
+            prediction = self.lm_predictor.compute(predict, self.lm_trained)
             target = self.parent.config.predict.name
             record.predicted(
-                target, prediction, float("nan")
+                target, record.features(self.features[0]), prediction
             )
             # Yield the record to the caller
             yield record

@@ -10,7 +10,9 @@ common = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(common)
 
 common.KWARGS["entry_points"] = {
-    "dffml.model": [f"daal4pylr = dffml_model_daal4py.daal4pylr:DAAL4PyLRModel"]
+    "dffml.model": [
+        f"daal4pylr = dffml_model_daal4py.daal4pylr:DAAL4PyLRModel"
+    ]
 }
 
 setup(**common.KWARGS)

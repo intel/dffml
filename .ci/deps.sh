@@ -64,7 +64,9 @@ if [ "${PLUGIN}" == "source/mysql" ]; then
 fi
 
 if [[ "x${PLUGIN}" == "xmodel/vowpalWabbit" ]] || [[ "x${PLUGIN}" == "x." ]] || [[ "x${PLUGIN}" == "xdocs" ]]; then
+  set +e
   conda install -y -c conda-forge vowpalwabbit
+  set -e
 fi
 
 if [[ "x${PLUGIN}" == "xmodel/daal4py" ]] || [[ "x${PLUGIN}" == "x." ]] || [[ "x${PLUGIN}" == "xdocs" ]]; then
