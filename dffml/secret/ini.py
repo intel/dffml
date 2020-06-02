@@ -41,5 +41,5 @@ class INISecret(BaseSecret, INISource):
 
             """
         )
-        super().__init__(cfg)
-        self.mem: Dict[str, Record] = {}
+        BaseSecret.__init__(self, cfg)
+        INISource.__init__(self, cfg)
