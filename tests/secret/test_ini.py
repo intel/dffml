@@ -3,17 +3,17 @@ import os
 import tempfile
 import contextlib
 
-from dffml.secret.file import FileSecret
+from dffml.secret.ini import INISecret
 from dffml.util.asynctestcase import AsyncTestCase
 
 
-class TestFileSecret(AsyncTestCase):
+class TestINISecret(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
         cls.secret_file = tempfile.NamedTemporaryFile(prefix="secret_",suffix=".ini")
 
     async def test_set_get(self):
-        secret_store = FileSecret(
+        secret_store = INISecret(
                 filename = self.secret_file.name
             )
         async with secret_store() as secret_ctx:

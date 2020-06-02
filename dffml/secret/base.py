@@ -28,6 +28,3 @@ class BaseSecret(BaseDataFlowObject):
     """
     def __call__(self) -> BaseSecretContext:
         return self.CONTEXT(self)
-
-
-

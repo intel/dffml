@@ -154,6 +154,6 @@ setup(
         # Models
         "dffml.model": ["slr = dffml.model.slr:SLRModel"],
         # Secrets
-        "dffml.secret": ["file = dffml.secret.file:FileSecret"],
+        "dffml.secret": ["ini = dffml.secret.ini:INISecret"],
     },
 )

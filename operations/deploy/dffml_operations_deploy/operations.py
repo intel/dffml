@@ -27,6 +27,7 @@ def get_url_from_payload(payload: Dict[str, Any]):
     outputs={"is_default_branch": is_default_branch},
 )
 def check_if_default_branch(payload):
+    print(f"Payload received : {payload.keys()}")
     pushed_branch = payload["ref"].split("/")[-1]
     default_branch = payload["repository"]["default_branch"]
     return {"is_default_branch": (default_branch == pushed_branch)}
