@@ -2,7 +2,7 @@ import warnings
 from typing import Union, Any
 
 from ..base import config
-from dffml.high_level import Record
+from ..record import Record
 from ..util.entrypoint import entrypoint
 from .base import BaseSecretContext, BaseSecret
 from ..source.memory import MemorySourceContext
