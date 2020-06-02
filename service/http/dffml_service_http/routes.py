@@ -246,7 +246,6 @@ class Routes(BaseMultiCommContext):
                         status=HTTPStatus.NOT_FOUND,
                     )
                 if preprocess_mode == "json":
-                    print(f"Header are : {request.headers}")
                     value = await request.json()
                 elif preprocess_mode == "str":
                     value = await request.text()
