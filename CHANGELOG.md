@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Definition for output of the function that `op` wraps.
 - Expose high level load, run and save functions to noasync.
 ### Changed
+- Update MNIST use case to normalize image arrays.
 - `arg_` notation replaced with `CONFIG = ExampleConfig` style syntax
   for parsing all command line arguments.
 - Moved usage/io.rst to docs/tutorials/dataflows/io.rst
