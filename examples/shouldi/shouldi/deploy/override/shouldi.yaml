@@ -46,7 +46,8 @@ operations:
   dffml.mapping.create:
     inputs:
       key: key
-      value: value
+      value:
+      - pypi_package_contents: directory
     name: dffml.mapping.create
     outputs:
       mapping: mapping
@@ -65,4 +66,12 @@ operations:
     outputs:
       code_to_comment_ratio: language_to_comment_ratio
     stage: processing
+seed:
+- definition: key
+  value: directory
+- definition: get_single_spec
+  value:
+  - safety_check_number_of_issues
+  - bandit_output
+  - language_to_comment_ratio
 

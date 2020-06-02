@@ -242,10 +242,24 @@ operations with the existing ones.
 
 .. code-block:: console
 
-    $ mkdir -p shouldi/deploy/override
-    $ dffml dataflow create -config yaml \
-      dffml.mapping.create lines_of_code_by_language lines_of_code_to_comments \
-      > shouldi/deploy/override/shouldi.yaml
+    mkdir -p shouldi/deploy/override
+
+Use the ``dataflow create`` command to make a new dataflow that will be combined
+with the existing flow.
+
+.. code-block:: console
+
+    dffml dataflow create \
+      -config yaml \
+      -seed \
+        directory=key \
+        safety_check_number_of_issues,bandit_output,language_to_comment_ratio=get_single_spec \
+      -- \
+        dffml.mapping.create \
+        lines_of_code_by_language
+        lines_of_code_to_comments \
+      | sed -e 's/value: value/value:\n      - pypi_package_contents: directory/g' \
+      | tee shouldi/deploy/override/shouldi.yaml
 
 The final directory structure should look like this
 
