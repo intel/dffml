@@ -1,6 +1,8 @@
+import pathlib
 from typing import Type, AsyncIterator
 
 from dffml.base import config, BaseConfig
+from dffml.configloader.configloader import BaseConfigLoader
 from dffml.df.types import Definition, DataFlow, Input
 from dffml.feature import Features
 from dffml.record import Record
@@ -40,6 +42,16 @@ class DataFlowSourceContext(BaseSourceContext):
 
     async def __aenter__(self) -> "DataFlowSourceContext":
         self.sctx = await self.parent.source().__aenter__()
+
+        if isinstance(self.parent.config.dataflow, str):
+            dataflow_path = pathlib.Path(self.parent.config.dataflow)
+            config_type = dataflow_path.suffix.replace(".", "")
+            config_cls = BaseConfigLoader.load(config_type)
+            async with config_cls.withconfig({}) as configloader:
+                async with configloader() as loader:
+                    exported = await loader.loadb(dataflow_path.read_bytes())
+                self.parent.config.dataflow = DataFlow._fromdict(**exported)
+
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
