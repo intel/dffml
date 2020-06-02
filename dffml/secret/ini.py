@@ -9,6 +9,13 @@ from ..source.memory import MemorySourceContext
 from ..source.ini import INISourceConfig, INISource
 
 
+@config
+class INISecretConfig:
+    filename: str
+    readwrite: bool = True
+    allowempty: bool = False
+
+
 class INISecretContext(BaseSecretContext, MemorySourceContext):
     async def get(self, name: str) -> Union[None, str]:
         record = self.parent.mem.get("secrets", None)
@@ -20,15 +27,13 @@ class INISecretContext(BaseSecretContext, MemorySourceContext):
         record = Record("secrets", data={"features": {name: value}})
         record.merge(self.parent.mem.get("secrets", Record("secrets")))
         await self.update(record)
-        with open(self.parent.config.filename, "w+") as fd:
-            await self.parent.dump_fd(fd)
 
 
 @entrypoint("ini")
 class INISecret(BaseSecret, INISource):
 
     CONTEXT = INISecretContext
-    CONFIG = INISourceConfig
+    CONFIG = INISecretConfig
 
     def __init__(self, config: INISourceConfig):
         warnings.warn(
