@@ -445,6 +445,9 @@ class Forward:
 
 
 class DataFlow:
+
+    CONFIGLOADABLE = True
+
     def __init__(
         self,
         operations: Dict[str, Union[Operation, Callable]],

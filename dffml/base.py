@@ -165,6 +165,8 @@ def convert_value(arg, value):
         # TODO This is a oversimplification of argparse's nargs
         if "nargs" in arg:
             value = list(map(type_cls, value))
+        elif getattr(type_cls, "CONFIGLOADABLE", False):
+            pass
         else:
             value = type_cls(value)
     if "action" in arg:
