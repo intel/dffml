@@ -30,7 +30,7 @@ class INISecret(BaseSecret, INISource):
     CONTEXT = INISecretContext
     CONFIG = INISourceConfig
 
-    def __init__(self, cfg):
+    def __init__(self, config: INISourceConfig):
         warnings.warn(
             """
 
@@ -38,5 +38,5 @@ class INISecret(BaseSecret, INISource):
 
             """
         )
-        BaseSecret.__init__(self, cfg)
-        INISource.__init__(self, cfg)
+        BaseSecret.__init__(self, config)
+        INISource.__init__(self, config)
