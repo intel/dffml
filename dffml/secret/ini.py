@@ -10,9 +10,6 @@ from ..source.ini import INISourceConfig, INISource
 
 
 class INISecretContext(BaseSecretContext, MemorySourceContext):
-    def __init__(self, parent: "INISecret"):
-        self.parent = parent
-
     async def get(self, name: str) -> Union[None, str]:
         record = self.parent.mem.get("secrets", None)
         if not record:
