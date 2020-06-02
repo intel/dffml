@@ -6,7 +6,10 @@ dffml predict all \
     -model-predict label:int:1 \
     -model-classifications $(seq 0 9) \
     -model-features image:int:$((28 * 28)) \
-    -sources images=csv \
-    -source-filename image.csv  \
-    -source-loadfiles image  \
+    -sources images=df \
+    -source-images-source csv \
+    -source-images-source-filename image.csv \
+    -source-images-source-loadfiles image \
+    -source-images-features image:int:$((28*28)) \
+    -source-images-dataflow normalize.yaml \
     -log critical

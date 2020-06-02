@@ -1,0 +1,51 @@
+definitions:
+  associate_output:
+    name: associate_output
+    primitive: Dict[str, Any]
+  associate_spec:
+    name: associate_spec
+    primitive: List[str]
+  multiplicand_def:
+    name: multiplicand_def
+    primitive: generic
+  multiplier_def:
+    name: multiplier_def
+    primitive: generic
+  product:
+    name: product
+    primitive: generic
+flow:
+  associate_definition:
+    inputs:
+      spec:
+      - seed
+  multiply:
+    inputs:
+      multiplicand:
+      - seed:
+        - image
+      multiplier:
+      - seed
+linked: true
+operations:
+  associate_definition:
+    inputs:
+      spec: associate_spec
+    name: associate_definition
+    outputs:
+      output: associate_output
+    stage: output
+  multiply:
+    inputs:
+      multiplicand: multiplicand_def
+      multiplier: multiplier_def
+    name: multiply
+    outputs:
+      product: product
+    stage: processing
+seed:
+- definition: associate_spec
+  value:
+    image: product
+- definition: multiplier_def
+  value: 0.00392156862
