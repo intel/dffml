@@ -45,6 +45,7 @@ class DAAL4PyLRModel(SimpleModel):
             interceptFlag=True, streaming=True
         )
         self.lm_predictor = self.d4p.linear_regression_prediction()
+        self.ac_predictor = self.d4p.linear_regression_prediction()
         self.path = self.filepath(
             self.parent.config.directory, "trained_model.sav"
         )
@@ -94,11 +95,13 @@ class DAAL4PyLRModel(SimpleModel):
             data.append(feature_data)
         df = self.pd.DataFrame(data)
         xdata = self.np.array(df.drop([self.parent.config.predict.name], 1))
-        ydata = self.np.array(df[self.parent.config.predict.name])
-        preds = self.lm_predictor.compute(xdata, self.lm_trained)
+        ydata = self.np.array(df[self.parent.config.predict.name])    
+        preds = self.ac_predictor.compute(xdata, self.lm_trained)
+
+        #Calculate accuracy with an error margin of 0.1
         accuracy_val = sum(
             self.compare(
-                list(map(abs, map(sub, ydata, preds.prediction))), 0.5
+                list(map(abs, map(sub, ydata, preds.prediction))), 0.1
             )
         ) / len(ydata)
         return Accuracy(accuracy_val)
@@ -110,13 +113,15 @@ class DAAL4PyLRModel(SimpleModel):
         if self.lm_trained is None:
             raise ModelNotTrained("Train model before prediction.")
         async for record in records:
+            feature_data = record.features(self.features)
             predict = self.pd.DataFrame(
-                record.features(self.features[0]), index=[0]
+                feature_data, index=[0]
             )
-            prediction = self.lm_predictor.compute(predict, self.lm_trained)
+            preds = self.lm_predictor.compute(predict
+            , self.lm_trained)
             target = self.parent.config.predict.name
             record.predicted(
-                target, record.features(self.features[0]), prediction
+                target, preds.prediction, float("nan")
             )
             # Yield the record to the caller
             yield record
