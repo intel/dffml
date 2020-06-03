@@ -251,12 +251,12 @@ class Routes(BaseMultiCommContext):
                     value = await request.text()
                 elif preprocess_mode == "bytes":
                     value = await request.read()
-                elif preprocess == "stream":
+                elif preprocess_mode == "stream":
                     value = request.content
                 else:
                     return web.json_response(
                         {
-                            "error": f"preprocess tag must be one of {IO_MODES}, got {preprocess}"
+                            "error": f"preprocess tag must be one of {IO_MODES}, got {preprocess_mode}"
                         },
                         status=HTTPStatus.NOT_FOUND,
                     )
