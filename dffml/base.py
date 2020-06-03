@@ -338,11 +338,14 @@ class BaseConfigurableMetaClass(type, abc.ABC):
                 else:
                     use_CONFIG = True
                     for field in dataclasses.fields(self.CONFIG):
-                        if field.default is dataclasses.MISSING:
+                        if (
+                            field.default is dataclasses.MISSING
+                            and field.default_factory is dataclasses.MISSING
+                        ):
                             use_CONFIG = False
                             break
                     if use_CONFIG:
-                        config = self.CONFIG(**kwargs)
+                        config = self.CONFIG()
                     else:
                         raise TypeError(
                             "__init__() missing 1 required positional argument: 'config'"
