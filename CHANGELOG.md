@@ -57,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   given.
 - Classes now use `CONFIG` if it has a default for every field and `config` is `None`
 - Models now dynamically import third party modules.
+- Memory dataflow classes now use auto args and config infrastructure
 - `dffml list records` command prints Records as JSON using `.export()`
 - Feature class in `dffml/feature/feature.py` initialize a feature object
 - All DefFeatures() functions are substituted with Features()
