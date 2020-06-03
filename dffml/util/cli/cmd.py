@@ -59,6 +59,8 @@ class JSONEncoder(json.JSONEncoder):
                 return int(obj)
             elif typename_lower.startswith("float"):
                 return float(obj)
+            elif ("ndarray" in typename_lower):
+                return obj.tolist()
         elif str(obj).startswith("typing."):
             return str(obj).split(".")[-1]
         return json.JSONEncoder.default(self, obj)
