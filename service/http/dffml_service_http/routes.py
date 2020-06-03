@@ -282,7 +282,7 @@ class Routes(BaseMultiCommContext):
 
         # Run the operation in an orchestrator
         # TODO(dfass) Create the orchestrator on startup of the HTTP API itself
-        async with MemoryOrchestrator.basic_config() as orchestrator:
+        async with MemoryOrchestrator() as orchestrator:
             # TODO(dfass) Create octx on dataflow registration
             async with orchestrator(config.dataflow) as octx:
                 results = {

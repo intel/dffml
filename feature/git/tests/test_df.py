@@ -96,7 +96,7 @@ class TestRunner(AsyncTestCase):
         )
 
         # Orchestrate the running of these operations
-        async with MemoryOrchestrator.basic_config() as orchestrator:
+        async with MemoryOrchestrator() as orchestrator:
             async with orchestrator(dataflow) as octx:
                 # Add our inputs to the input network with the context being the URL
                 async for ctx, results in octx.run(
