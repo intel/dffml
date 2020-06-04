@@ -216,6 +216,74 @@ with <code class="docutils literal notranslate"><span class="pre">pip</span></co
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install -U dffml-model-tensorflow
 </pre></div>
 </div>
+<p>Create a dataflow config file which will be used by the
+<a class="reference internal" href="../api/source/df.html#dffml.source.df.DataFlowSource" title="dffml.source.df.DataFlowSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFlowSource</span></code></a> to normalize the
+data just before feeding it to the model.</p>
+<p>In the config file, using the <code class="docutils literal notranslate"><span class="pre">dataflow</span> <span class="pre">create</span></code> command we create a DataFlow
+consisting of 2 operations, multiply and associate_definition. We use <code class="docutils literal notranslate"><span class="pre">sed</span></code> to
+edit the DataFlow to have the multiplicand input of the multiply operation come
+from a list in seed containing only one element that is the <code class="docutils literal notranslate"><span class="pre">image</span></code> feature
+and to have the input of the associate_definition operation come from the output
+(product) of the multiply operation.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">dataflow</span> <span class="n">create</span> <span class="n">multiply</span> <span class="n">associate_definition</span> <span class="o">-</span><span class="n">config</span> <span class="n">yaml</span> \
+    <span class="o">-</span><span class="n">seed</span> <span class="s1">&#39;{&quot;image&quot;: &quot;product&quot;}&#39;</span><span class="o">=</span><span class="n">associate_spec</span> <span class="mf">0.00392156862</span><span class="o">=</span><span class="n">multiplier_def</span> <span class="o">|</span> \
+    <span class="n">sed</span> <span class="o">-</span><span class="n">ze</span> <span class="s1">&#39;s/multiplicand:</span><span class="se">\n</span><span class="s1">      - seed/multiplicand:</span><span class="se">\n</span><span class="s1">      - seed:</span><span class="se">\n</span><span class="s1">        - image/g&#39;</span> <span class="o">|</span> \
+    <span class="n">tee</span> <span class="n">normalize</span><span class="o">.</span><span class="n">yaml</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">definitions</span><span class="p">:</span>
+  <span class="n">associate_output</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">associate_output</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+  <span class="n">associate_spec</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">associate_spec</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+  <span class="n">multiplicand_def</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">multiplicand_def</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">generic</span>
+  <span class="n">multiplier_def</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">multiplier_def</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">generic</span>
+  <span class="n">product</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">product</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">generic</span>
+<span class="n">flow</span><span class="p">:</span>
+  <span class="n">associate_definition</span><span class="p">:</span>
+    <span class="n">inputs</span><span class="p">:</span>
+      <span class="n">spec</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">seed</span>
+  <span class="n">multiply</span><span class="p">:</span>
+    <span class="n">inputs</span><span class="p">:</span>
+      <span class="n">multiplicand</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">seed</span><span class="p">:</span>
+        <span class="o">-</span> <span class="n">image</span>
+      <span class="n">multiplier</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">seed</span>
+<span class="n">linked</span><span class="p">:</span> <span class="n">true</span>
+<span class="n">operations</span><span class="p">:</span>
+  <span class="n">associate_definition</span><span class="p">:</span>
+    <span class="n">inputs</span><span class="p">:</span>
+      <span class="n">spec</span><span class="p">:</span> <span class="n">associate_spec</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">associate_definition</span>
+    <span class="n">outputs</span><span class="p">:</span>
+      <span class="n">output</span><span class="p">:</span> <span class="n">associate_output</span>
+    <span class="n">stage</span><span class="p">:</span> <span class="n">output</span>
+  <span class="n">multiply</span><span class="p">:</span>
+    <span class="n">inputs</span><span class="p">:</span>
+      <span class="n">multiplicand</span><span class="p">:</span> <span class="n">multiplicand_def</span>
+      <span class="n">multiplier</span><span class="p">:</span> <span class="n">multiplier_def</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">multiply</span>
+    <span class="n">outputs</span><span class="p">:</span>
+      <span class="n">product</span><span class="p">:</span> <span class="n">product</span>
+    <span class="n">stage</span><span class="p">:</span> <span class="n">processing</span>
+<span class="n">seed</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">definition</span><span class="p">:</span> <span class="n">associate_spec</span>
+  <span class="n">value</span><span class="p">:</span>
+    <span class="n">image</span><span class="p">:</span> <span class="n">product</span>
+<span class="o">-</span> <span class="n">definition</span><span class="p">:</span> <span class="n">multiplier_def</span>
+  <span class="n">value</span><span class="p">:</span> <span class="mf">0.00392156862</span>
+</pre></div>
+</div>
 <p>Train the model.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml train \
     -model tfdnnc \
@@ -225,15 +293,15 @@ with <code class="docutils literal notranslate"><span class="pre">pip</span></co
     -model-predict label:int:1 \
     -model-classifications $(seq 0 9) \
     -model-features image:int:$((28 * 28)) \
-    -sources images=idx3 label=idx1 \
-    -source-images-filename train-images-idx3-ubyte.gz \
-    -source-images-feature image \
+    -sources images=df label=idx1 \
+    -source-images-dataflow normalize.yaml \
+    -source-images-features image:int:$((28 * 28)) \
+    -source-images-source idx3 \
+    -source-images-source-filename train-images-idx3-ubyte.gz \
+    -source-images-source-feature image \
     -source-label-filename train-labels-idx1-ubyte.gz \
     -source-label-feature label \
-    -log debug
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">... log output ...</span>
+    -log critical
 </pre></div>
 </div>
 <p>Assess the model’s accuracy.</p>
@@ -245,20 +313,20 @@ with <code class="docutils literal notranslate"><span class="pre">pip</span></co
     -model-predict label:int:1 \
     -model-classifications $(seq 0 9) \
     -model-features image:int:$((28 * 28)) \
-    -sources images=idx3 label=idx1 \
-    -source-images-filename t10k-images-idx3-ubyte.gz \
-    -source-images-feature image \
+    -sources images=df label=idx1 \
+    -source-images-dataflow normalize.yaml \
+    -source-images-features image:int:$((28 * 28)) \
+    -source-images-source idx3 \
+    -source-images-source-filename t10k-images-idx3-ubyte.gz \
+    -source-images-source-feature image \
     -source-label-filename t10k-labels-idx1-ubyte.gz \
     -source-label-feature label \
-    -log debug
+    -log critical
 </pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">... log output followed by accuracy as float ...</span>
-<span class="go">0.8269000053405762</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">0.8269000053405762</span>
 </pre></div>
 </div>
-<p>The accuracy likely won’t be very good right now because we need to normalize
-the data first.</p>
 <p>Create an <code class="docutils literal notranslate"><span class="pre">image.csv</span></code> file which contains the names of the images (with their extension .mnistpng) to predict on.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -287,9 +355,12 @@ the data first.</p>
     -model-predict label:int:1 \
     -model-classifications $(seq 0 9) \
     -model-features image:int:$((28 * 28)) \
-    -sources images=csv \
-    -source-filename image.csv  \
-    -source-loadfiles image  \
+    -sources images=df \
+    -source-images-source csv \
+    -source-images-source-filename image.csv \
+    -source-images-source-loadfiles image \
+    -source-images-features image:int:$((28*28)) \
+    -source-images-dataflow normalize.yaml \
     -log critical
 </pre></div>
 </div>
@@ -299,10 +370,10 @@ the data first.</p>
         <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
         <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="mi">0</span><span class="p">,</span>
+                <span class="mf">0.0</span><span class="p">,</span>
                 <span class="o">.</span>
                 <span class="o">.</span>
-                <span class="mi">0</span>
+                <span class="mf">0.0</span>
             <span class="p">]</span>
         <span class="p">},</span>
         <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;four&quot;</span><span class="p">,</span>
@@ -318,10 +389,10 @@ the data first.</p>
         <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
         <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="mi">0</span><span class="p">,</span>
+                <span class="mf">0.0</span><span class="p">,</span>
                 <span class="o">.</span>
                 <span class="o">.</span>
-                <span class="mi">0</span>            
+                <span class="mf">0.0</span>
             <span class="p">]</span>
         <span class="p">},</span>
         <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;five&quot;</span><span class="p">,</span>
@@ -337,10 +408,10 @@ the data first.</p>
         <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
         <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="mi">0</span><span class="p">,</span>
+                <span class="mf">0.0</span><span class="p">,</span>
                 <span class="o">.</span>
                 <span class="o">.</span>
-                <span class="mi">0</span>            
+                <span class="mf">0.0</span>
             <span class="p">]</span>
         <span class="p">},</span>
         <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;three&quot;</span><span class="p">,</span>
@@ -356,10 +427,10 @@ the data first.</p>
         <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
         <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="mi">0</span><span class="p">,</span>
+                <span class="mf">0.0</span><span class="p">,</span>
                 <span class="o">.</span>
                 <span class="o">.</span>
-                <span class="mi">0</span>            
+                <span class="mf">0.0</span>
             <span class="p">]</span>
         <span class="p">},</span>
         <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;two&quot;</span><span class="p">,</span>
