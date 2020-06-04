@@ -380,6 +380,11 @@ class BaseConfigurable(metaclass=BaseConfigurableMetaClass):
             str_config if len(str_config) < 512 else (str_config[:512] + "...")
         )
 
+    def __eq__(self, other: "BaseConfigurable") -> bool:
+        if inspect.isclass(other) or not isinstance(other, self.__class__):
+            return
+        return self.config == other.config
+
     @classmethod
     def add_orig_label(cls, *above):
         return (
