@@ -99,12 +99,16 @@ class Create(CMD):
         async with self.config(BaseConfig()) as configloader:
             async with configloader() as loader:
                 dataflow = DataFlow.auto(*operations)
-                self.seed = [
-                    Input(value=val, definition=dataflow.definitions[def_name])
-                    for val, def_name in self.seed
-                ]
-                dataflow.seed.extend(self.seed)
                 exported = dataflow.export(linked=not self.not_linked)
+                if self.seed:
+                    if not "seed" in exported:
+                        exported["seed"] = []
+                    exported["seed"].extend(
+                        [
+                            {"value": val, "definition": def_name}
+                            for val, def_name in self.seed
+                        ]
+                    )
                 print((await loader.dumpb(exported)).decode())
 
 
