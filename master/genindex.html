@@ -356,10 +356,10 @@
 </li>
       <li><a href="api/df/memory.html#dffml.df.memory.BaseMemoryDataFlowObject">BaseMemoryDataFlowObject (class in dffml.df.memory)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/multicomm.html#dffml.df.multicomm.BaseMultiComm">BaseMultiComm (class in dffml.df.multicomm)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/multicomm.html#dffml.df.multicomm.BaseMultiCommContext">BaseMultiCommContext (class in dffml.df.multicomm)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseOperationImplementationNetwork">BaseOperationImplementationNetwork (class in dffml.df.base)</a>
@@ -385,6 +385,10 @@
       <li><a href="api/df/base.html#dffml.df.base.BaseRedundancyCheckerConfig">BaseRedundancyCheckerConfig (class in dffml.df.base)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseRedundancyCheckerContext">BaseRedundancyCheckerContext (class in dffml.df.base)</a>
+</li>
+      <li><a href="api/secret/base.html#dffml.secret.base.BaseSecret">BaseSecret (class in dffml.secret.base)</a>
+</li>
+      <li><a href="api/secret/base.html#dffml.secret.base.BaseSecretContext">BaseSecretContext (class in dffml.secret.base)</a>
 </li>
       <li><a href="api/source/source.html#dffml.source.source.BaseSource">BaseSource (class in dffml.source.source)</a>
 </li>
@@ -470,6 +474,8 @@
         <li><a href="api/model/model.html#dffml.model.model.Model.CONFIG">(dffml.model.model.Model attribute)</a>
 </li>
         <li><a href="api/model/slr.html#dffml.model.slr.SLRModel.CONFIG">(dffml.model.slr.SLRModel attribute)</a>
+</li>
+        <li><a href="api/secret/ini.html#dffml.secret.ini.INISecret.CONFIG">(dffml.secret.ini.INISecret attribute)</a>
 </li>
         <li><a href="api/service/dev.html#dffml.service.dev.BumpPackages.CONFIG">(dffml.service.dev.BumpPackages attribute)</a>
 </li>
@@ -572,6 +578,8 @@
         <li><a href="api/model/model.html#dffml.model.model.SimpleModel.CONTEXT">(dffml.model.model.SimpleModel attribute)</a>
 </li>
         <li><a href="api/operation/io.html#dffml.operation.io.AcceptUserInput.CONTEXT">(dffml.operation.io.AcceptUserInput attribute)</a>
+</li>
+        <li><a href="api/secret/ini.html#dffml.secret.ini.INISecret.CONTEXT">(dffml.secret.ini.INISecret attribute)</a>
 </li>
         <li><a href="api/source/db.html#dffml.source.db.DbSource.CONTEXT">(dffml.source.db.DbSource attribute)</a>
 </li>
@@ -912,8 +920,6 @@
         <li><a href="api/operation/math.html#module-dffml.operation.math">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     dffml.operation.model
 
@@ -921,6 +927,8 @@
         <li><a href="api/operation/model.html#module-dffml.operation.model">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     dffml.operation.output
 
@@ -961,6 +969,20 @@
 
       <ul>
         <li><a href="api/port/port.html#module-dffml.port.port">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.secret.base
+
+      <ul>
+        <li><a href="api/secret/base.html#module-dffml.secret.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    dffml.secret.ini
+
+      <ul>
+        <li><a href="api/secret/ini.html#module-dffml.secret.ini">module</a>
 </li>
       </ul></li>
       <li>
@@ -1322,11 +1344,15 @@
       <ul>
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreContext.get">(dffml.df.memory.MemoryKeyValueStoreContext method)</a>
 </li>
-      </ul></li>
-      <li><a href="api/df/types.html#dffml.df.types.Forward.get_instances_to_forward">get_instances_to_forward() (dffml.df.types.Forward method)</a>
+        <li><a href="api/secret/base.html#dffml.secret.base.BaseSecretContext.get">(dffml.secret.base.BaseSecretContext method)</a>
 </li>
+        <li><a href="api/secret/ini.html#dffml.secret.ini.INISecretContext.get">(dffml.secret.ini.INISecretContext method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/df/types.html#dffml.df.types.Forward.get_instances_to_forward">get_instances_to_forward() (dffml.df.types.Forward method)</a>
+</li>
       <li><a href="api/operation/output.html#dffml.operation.output.GetMulti">GetMulti (class in dffml.operation.output)</a>
 </li>
       <li><a href="api/operation/output.html#dffml.operation.output.GetSingle">GetSingle (class in dffml.operation.output)</a>
@@ -1389,6 +1415,12 @@
 </li>
       <li><a href="api/cli/cli.html#dffml.cli.cli.ImportExportCMDConfig">ImportExportCMDConfig (class in dffml.cli.cli)</a>
 </li>
+      <li><a href="api/secret/ini.html#dffml.secret.ini.INISecret">INISecret (class in dffml.secret.ini)</a>
+</li>
+      <li><a href="api/secret/ini.html#dffml.secret.ini.INISecretConfig">INISecretConfig (class in dffml.secret.ini)</a>
+</li>
+      <li><a href="api/secret/ini.html#dffml.secret.ini.INISecretContext">INISecretContext (class in dffml.secret.ini)</a>
+</li>
       <li><a href="api/source/ini.html#dffml.source.ini.INISource">INISource (class in dffml.source.ini)</a>
 </li>
       <li><a href="api/source/ini.html#dffml.source.ini.INISourceConfig">INISourceConfig (class in dffml.source.ini)</a>
@@ -1399,6 +1431,8 @@
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseOrchestratorConfig.input_network">input_network() (dffml.df.base.BaseOrchestratorConfig property)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/types.html#dffml.df.types.InputFlow">InputFlow (class in dffml.df.types)</a>
 </li>
       <li><a href="api/df/base.html#dffml.df.base.BaseDefinitionSetContext.inputs">inputs() (dffml.df.base.BaseDefinitionSetContext method)</a>
@@ -1411,8 +1445,6 @@
         <li><a href="api/df/types.html#dffml.df.types.Operation.inputs">(dffml.df.types.Operation property)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/df/exceptions.html#dffml.df.exceptions.InputValidationError">InputValidationError</a>
 </li>
       <li><a href="api/db/base.html#dffml.db.base.BaseDatabaseContext.insert">insert() (dffml.db.base.BaseDatabaseContext method)</a>
@@ -1665,6 +1697,8 @@
 </li>
       <li><a href="api/util/tempdir.html#dffml.util.tempdir.TempDir.mktempdir">mktempdir() (dffml.util.tempdir.TempDir method)</a>
 </li>
+      <li><a href="api/util/packaging.html#dffml.util.packaging.mkvenv">mkvenv() (in module dffml.util.packaging)</a>
+</li>
       <li><a href="api/cli/ml.html#dffml.cli.ml.MLCMD">MLCMD (class in dffml.cli.ml)</a>
 </li>
       <li><a href="api/cli/ml.html#dffml.cli.ml.MLCMDConfig">MLCMDConfig (class in dffml.cli.ml)</a>
@@ -1764,6 +1798,10 @@
         <li><a href="api/port/log.html#module-dffml.port.log">dffml.port.log</a>
 </li>
         <li><a href="api/port/port.html#module-dffml.port.port">dffml.port.port</a>
+</li>
+        <li><a href="api/secret/base.html#module-dffml.secret.base">dffml.secret.base</a>
+</li>
+        <li><a href="api/secret/ini.html#module-dffml.secret.ini">dffml.secret.ini</a>
 </li>
         <li><a href="api/service/dev.html#module-dffml.service.dev">dffml.service.dev</a>
 </li>
@@ -2199,6 +2237,10 @@
       <ul>
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryKeyValueStoreContext.set">(dffml.df.memory.MemoryKeyValueStoreContext method)</a>
 </li>
+        <li><a href="api/secret/base.html#dffml.secret.base.BaseSecretContext.set">(dffml.secret.base.BaseSecretContext method)</a>
+</li>
+        <li><a href="api/secret/ini.html#dffml.secret.ini.INISecretContext.set">(dffml.secret.ini.INISecretContext method)</a>
+</li>
       </ul></li>
       <li><a href="api/util/asynctestcase.html#dffml.util.asynctestcase.AsyncExitStackTestCase.setUp">setUp() (dffml.util.asynctestcase.AsyncExitStackTestCase method)</a>
 
@@ -2226,10 +2268,10 @@
       </ul></li>
       <li><a href="api/service/dev.html#dffml.service.dev.Develop.skel">skel (dffml.service.dev.Develop attribute)</a>
 </li>
-      <li><a href="api/service/dev.html#dffml.service.dev.Skeleton">Skeleton (class in dffml.service.dev)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/service/dev.html#dffml.service.dev.Skeleton">Skeleton (class in dffml.service.dev)</a>
+</li>
       <li><a href="api/util/skel.html#dffml.util.skel.SkelTemplateConfig">SkelTemplateConfig (class in dffml.util.skel)</a>
 </li>
       <li><a href="api/model/slr.html#dffml.model.slr.SLRModel">SLRModel (class in dffml.model.slr)</a>

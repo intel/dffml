@@ -177,10 +177,13 @@
            <div itemprop="articleBody">
             
   <h1>Source code for dffml.source.df</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Type</span><span class="p">,</span> <span class="n">AsyncIterator</span>
+<span></span><span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Type</span><span class="p">,</span> <span class="n">AsyncIterator</span>
 
 <span class="kn">from</span> <span class="nn">dffml.base</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">BaseConfig</span>
+<span class="kn">from</span> <span class="nn">dffml.configloader.configloader</span> <span class="kn">import</span> <span class="n">BaseConfigLoader</span>
 <span class="kn">from</span> <span class="nn">dffml.df.types</span> <span class="kn">import</span> <span class="n">Definition</span><span class="p">,</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Input</span>
+<span class="kn">from</span> <span class="nn">dffml.df.base</span> <span class="kn">import</span> <span class="n">BaseOrchestrator</span>
 <span class="kn">from</span> <span class="nn">dffml.feature</span> <span class="kn">import</span> <span class="n">Features</span>
 <span class="kn">from</span> <span class="nn">dffml.record</span> <span class="kn">import</span> <span class="n">Record</span>
 <span class="kn">from</span> <span class="nn">dffml.source.source</span> <span class="kn">import</span> <span class="n">BaseSource</span><span class="p">,</span> <span class="n">BaseSourceContext</span>
@@ -189,10 +192,11 @@
 
 
 <div class="viewcode-block" id="DataFlowSourceConfig"><a class="viewcode-back" href="../../../api/source/df.html#dffml.source.df.DataFlowSourceConfig">[docs]</a><span class="nd">@config</span>
-<span class="k">class</span> <span class="nc">DataFlowSourceConfig</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DataFlowSourceConfig</span><span class="p">:</span>
     <span class="n">source</span><span class="p">:</span> <span class="n">BaseSource</span>
     <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span>
-    <span class="n">features</span><span class="p">:</span> <span class="n">Features</span></div>
+    <span class="n">features</span><span class="p">:</span> <span class="n">Features</span>
+    <span class="n">orchestrator</span><span class="p">:</span> <span class="n">BaseOrchestrator</span> <span class="o">=</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">withconfig</span><span class="p">({})</span></div>
 
 
 <div class="viewcode-block" id="DataFlowSourceContext"><a class="viewcode-back" href="../../../api/source/df.html#dffml.source.df.DataFlowSourceContext">[docs]</a><span class="k">class</span> <span class="nc">DataFlowSourceContext</span><span class="p">(</span><span class="n">BaseSourceContext</span><span class="p">):</span>
@@ -201,8 +205,7 @@
 
 <div class="viewcode-block" id="DataFlowSourceContext.records"><a class="viewcode-back" href="../../../api/source/df.html#dffml.source.df.DataFlowSourceContext.records">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">records</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
         <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
-            <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
                 <span class="p">[</span>
                     <span class="n">Input</span><span class="p">(</span>
                         <span class="n">value</span><span class="o">=</span><span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
@@ -211,7 +214,7 @@
                         <span class="p">),</span>
                     <span class="p">)</span>
                     <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">features</span>
-                <span class="p">],</span>
+                <span class="p">]</span>
             <span class="p">):</span>
                 <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
                     <span class="n">record</span><span class="o">.</span><span class="n">evaluated</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
@@ -219,9 +222,24 @@
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DataFlowSourceContext&quot;</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sctx</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">source</span><span class="p">()</span><span class="o">.</span><span class="fm">__aenter__</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">dataflow_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">)</span>
+            <span class="n">config_type</span> <span class="o">=</span> <span class="n">dataflow_path</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">config_cls</span> <span class="o">=</span> <span class="n">BaseConfigLoader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config_type</span><span class="p">)</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="n">config_cls</span><span class="o">.</span><span class="n">withconfig</span><span class="p">({})</span> <span class="k">as</span> <span class="n">configloader</span><span class="p">:</span>
+                <span class="k">async</span> <span class="k">with</span> <span class="n">configloader</span><span class="p">()</span> <span class="k">as</span> <span class="n">loader</span><span class="p">:</span>
+                    <span class="n">exported</span> <span class="o">=</span> <span class="k">await</span> <span class="n">loader</span><span class="o">.</span><span class="n">loadb</span><span class="p">(</span><span class="n">dataflow_path</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">())</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">_fromdict</span><span class="p">(</span><span class="o">**</span><span class="n">exported</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">octx</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">orchestrator</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span>
+        <span class="p">)</span><span class="o">.</span><span class="fm">__aenter__</span><span class="p">()</span>
+
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sctx</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span></div>
 
 
@@ -235,9 +253,11 @@
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DataFlowSource&quot;</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="fm">__aenter__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orchestrator</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">orchestrator</span><span class="o">.</span><span class="fm">__aenter__</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">orchestrator</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="fm">__aexit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">)</span></div>
 </pre></div>
 

@@ -278,6 +278,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <div class="section" id="added">
 <h3>Added<a class="headerlink" href="#added" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
+<li><p>DataFlowSource can take a config file as dataflow via the CLI.</p></li>
 <li><p>Support for link on conditions in dataflow diagrams</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">edit</span> <span class="pre">all</span></code> command to edit records in bulk</p></li>
 <li><p>Support for Tensorflow 2.2</p></li>
@@ -320,6 +321,7 @@ path to directory or Git repo URL and runs the appropriate static analyzers.</p>
 <div class="section" id="changed">
 <h3>Changed<a class="headerlink" href="#changed" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
+<li><p>Update MNIST use case to normalize image arrays.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">arg_</span></code> notation replaced with <code class="docutils literal notranslate"><span class="pre">CONFIG</span> <span class="pre">=</span> <span class="pre">ExampleConfig</span></code> style syntax
 for parsing all command line arguments.</p></li>
 <li><p>Moved usage/io.rst to docs/tutorials/dataflows/io.rst</p></li>
@@ -342,6 +344,8 @@ CI due to their randomly initialized weights making them fail ~2% of the time</p
 <li><p>Any plugin can now be loaded via it’s entrypoint style path</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">with_features</span></code> now raises a helpful error message if no records with matching
 features were found</p></li>
+<li><p>Split out model tutorial into writing the model, and another tutorial for
+packaging the model.</p></li>
 </ul>
 </div>
 <div class="section" id="fixed">

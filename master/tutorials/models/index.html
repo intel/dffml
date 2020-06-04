@@ -1,0 +1,288 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>New Model Tutorials &mdash; DFFML 0.3.7 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Simple Model" href="slr.html" />
+    <link rel="prev" title="Introduction to DFFML" href="../intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> DFFML
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.7
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../intro.html">Introduction to DFFML</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">New Model Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="slr.html">Simple Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="package.html">Packaging</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../operations.html">New Operations Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sources/index.html">New Source Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dataflows/index.html">DataFlow Tutorials</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Community</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/intel/dffml">GitHub</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact Us</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing/index.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DFFML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Tutorials</a> &raquo;</li>
+        
+      <li>New Model Tutorials</li>
+    
+    
+
+
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <a href="https://github.com/intel/dffml/blob/master/docs/tutorials/models/index.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="new-model-tutorials">
+<span id="model-tutorial"></span><h1>New Model Tutorials<a class="headerlink" href="#new-model-tutorials" title="Permalink to this headline">¶</a></h1>
+<p>If you have some data and want to do machine learning on it, you probably want
+to head over to the <a class="reference internal" href="../../plugins/dffml_model.html#plugin-models"><span class="std std-ref">Models</span></a> plugins. This tutorial is for
+implementing a machine learning algorithm. Which is probably what you want if
+there’s not an existing plugin for your algorithm.</p>
+<p>DFFML is not like PyTorch or TensorFlow. It’s higher level than those. However,
+that doesn’t mean it <em>has</em> to be higher level. You can use the lower level APIs
+of any library, or no library if you wanted.</p>
+<p>These tutorials will show you have to implement a machine learning algorithm
+or wrap an existing libraries implementation, and package it so others can use
+it easily.</p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="slr.html">Simple Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="slr.html#imports">Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slr.html#math">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slr.html#config">Config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slr.html#class">Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slr.html#train">Train</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slr.html#accuracy">Accuracy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slr.html#predict">Predict</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slr.html#python-usage">Python Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slr.html#command-line-usage">Command Line Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slr.html#http-server-usage">HTTP Server Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="package.html">Packaging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="package.html#create-the-package">Create the Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package.html#install-the-package">Install the Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package.html#entrypoint-registration">Entrypoint Registration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package.html#command-line-usage">Command Line Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package.html#uploading-to-pypi">Uploading to PyPi</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="slr.html" class="btn btn-neutral float-right" title="Simple Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../intro.html" class="btn btn-neutral float-left" title="Introduction to DFFML" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Intel
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
