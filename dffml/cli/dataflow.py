@@ -1,10 +1,10 @@
 import pathlib
 import hashlib
-import inspect
 import contextlib
+from typing import List
 
 from ..base import BaseConfig
-from ..df.base import BaseOrchestrator
+from ..df.base import BaseOrchestrator, OperationImplementation
 from ..df.types import DataFlow, Stage, Operation, Input
 from ..df.memory import (
     MemoryOrchestrator,
@@ -14,32 +14,35 @@ from ..df.memory import (
 )
 from ..configloader.configloader import BaseConfigLoader
 from ..configloader.json import JSONConfigLoader
-from ..source.source import SubsetSources
+from ..source.source import SubsetSources, Sources
+from ..source.json import JSONSource
+from ..source.file import FileSourceConfig
 from ..util.data import merge
 from ..util.entrypoint import load
-from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD, CMDOutputOverride
-from ..util.cli.cmds import SourcesCMD, KeysCMD
+from ..util.cli.cmds import (
+    SourcesCMD,
+    KeysCMD,
+    KeysCMDConfig,
+)
 from ..util.cli.parser import ParseInputsAction
+from ..base import config, field
+
+
+@config
+class MergeConfig:
+    dataflows: List[pathlib.Path] = field("DataFlows to merge")
+    config: BaseConfigLoader = field(
+        "ConfigLoader to use for exporting", default=JSONConfigLoader,
+    )
+    not_linked: bool = field(
+        "Do not export dataflows as linked", default=False,
+    )
 
 
 class Merge(CMD):
-    arg_dataflows = Arg(
-        "dataflows", help="DataFlows to merge", nargs="+", type=pathlib.Path
-    )
-    arg_config = Arg(
-        "-config",
-        help="ConfigLoader to use for exporting",
-        type=BaseConfigLoader.load,
-        default=JSONConfigLoader,
-    )
-    arg_not_linked = Arg(
-        "-not-linked",
-        dest="not_linked",
-        help="Do not export dataflows as linked",
-        default=False,
-        action="store_true",
-    )
+
+    CONFIG = MergeConfig
 
     async def run(self):
         # The merged dataflow
@@ -61,44 +64,36 @@ class Merge(CMD):
                 print((await loader.dumpb(exported)).decode())
 
 
-class Create(CMD):
-    arg_operations = Arg(
-        "operations", nargs="+", help="Operations to create a dataflow for"
+@config
+class CreateConfig:
+    operations: List[str] = field("Operations to create a dataflow for",)
+    config: BaseConfigLoader = field(
+        "ConfigLoader to use", default=JSONConfigLoader,
     )
-    arg_config = Arg(
-        "-config",
-        help="ConfigLoader to use",
-        type=BaseConfigLoader.load,
-        default=JSONConfigLoader,
+    not_linked: bool = field(
+        "Do not export dataflows as linked", default=False,
     )
-    arg_not_linked = Arg(
-        "-not-linked",
-        dest="not_linked",
-        help="Do not export dataflows as linked",
-        default=False,
-        action="store_true",
-    )
-    arg_seed = Arg(
-        "-seed",
-        nargs="+",
+    seed: List[str] = field(
+        "Inputs to be added to every context",
         action=ParseInputsAction,
-        default=[],
-        help="Inputs to be added to every context",
+        default_factory=lambda: [],
     )
+
+
+class Create(CMD):
+
+    CONFIG = CreateConfig
 
     async def run(self):
         operations = []
         for load_operation in self.operations:
             if ":" in load_operation:
-                ops = []
-                for func in load(load_operation, relative=True):
-                    new_name = (
-                        f"{inspect.getmodule(func).__name__}:{func.__name__}"
+                operations.extend(
+                    map(
+                        OperationImplementation._imp,
+                        load(load_operation, relative=True),
                     )
-                    if hasattr(func, "op"):
-                        func.op = func.op._replace(name=new_name)
-                    ops.append(func)
-                operations += ops
+                )
             else:
                 operations += [Operation.load(load_operation)]
         async with self.config(BaseConfig()) as configloader:
@@ -113,76 +108,73 @@ class Create(CMD):
                 print((await loader.dumpb(exported)).decode())
 
 
-class RunCMD(SourcesCMD):
-
-    arg_sources = SourcesCMD.arg_sources.modify(required=False)
-    arg_caching = Arg(
-        "-caching",
-        help="Skip running DataFlow if a record already contains these features",
-        nargs="+",
-        required=False,
-        default=[],
+@config
+class RunCMDConfig:
+    dataflow: str = field(
+        "File containing exported DataFlow", required=True,
     )
-    arg_no_update = Arg(
-        "-no-update",
-        help="Update record with sources",
-        dest="no_update",
-        required=False,
-        default=False,
-        action="store_true",
+    config: BaseConfigLoader = field(
+        "ConfigLoader to use for importing DataFlow", default=None,
     )
-    arg_no_echo = Arg(
-        "-no-echo",
-        help="Do not echo back records",
-        dest="no_echo",
-        required=False,
-        default=False,
-        action="store_true",
+    sources: Sources = field(
+        "Sources for loading and saving",
+        default_factory=lambda: Sources(
+            JSONSource(
+                FileSourceConfig(
+                    filename=pathlib.Path("~", ".cache", "dffml.json")
+                )
+            )
+        ),
+        labeled=True,
     )
-    arg_no_strict = Arg(
-        "-no-strict",
-        help="Do not exit on operation exceptions, just log errors",
-        dest="no_strict",
-        required=False,
-        default=False,
-        action="store_true",
+    caching: List[str] = field(
+        "Skip running DataFlow if a record already contains these features",
+        default_factory=lambda: [],
     )
-    arg_dataflow = Arg(
-        "-dataflow", help="File containing exported DataFlow", required=True
+    no_update: bool = field(
+        "Update record with sources", default=False,
     )
-    arg_config = Arg(
-        "-config",
-        help="ConfigLoader to use for importing DataFlow",
-        type=BaseConfigLoader.load,
-        default=None,
+    no_echo: bool = field(
+        "Do not echo back records", default=False,
     )
-    arg_orchestrator = Arg(
-        "-orchestrator", type=BaseOrchestrator.load, default=MemoryOrchestrator
+    no_strict: bool = field(
+        "Do not exit on operation exceptions, just log errors", default=False,
     )
-    arg_inputs = Arg(
-        "-inputs",
-        nargs="+",
-        action=ParseInputsAction,
-        default=[],
-        help="Other inputs to add under each ctx (record's key will "
+    orchestrator: BaseOrchestrator = field(
+        "Orchestrator", default=MemoryOrchestrator,
+    )
+    inputs: List[str] = field(
+        "Other inputs to add under each ctx (record's key will "
         + "be used as the context)",
+        action=ParseInputsAction,
+        default_factory=lambda: [],
     )
-    arg_record_def = Arg(
-        "-record-def",
-        default=False,
-        type=str,
-        help="Definition to be used for record.key."
+    record_def: str = field(
+        "Definition to be used for record.key."
         + "If set, record.key will be added to the set of inputs "
         + "under each context (which is also the record's key)",
+        default=False,
     )
+
+
+class RunCMD(SourcesCMD):
+
+    CONFIG = RunCMDConfig
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.orchestrator = self.orchestrator.withconfig(self.extra_config)
 
 
+@config
+class RunAllRecordsConfig(RunCMDConfig):
+    pass
+
+
 class RunAllRecords(RunCMD):
     """Run dataflow for all records in sources"""
+
+    CONFIG = RunAllRecordsConfig
 
     async def records(self, sctx):
         """
@@ -271,8 +263,15 @@ class RunAllRecords(RunCMD):
             yield CMDOutputOverride
 
 
+@config
+class RunRecordSetConfig(RunAllRecordsConfig, KeysCMDConfig):
+    pass
+
+
 class RunRecordSet(RunAllRecords, KeysCMD):
     """Run dataflow for single record or set of records"""
+
+    CONFIG = RunRecordSetConfig
 
     async def records(self, sctx):
         for key in self.keys:
@@ -296,35 +295,25 @@ class Run(CMD):
     records = RunRecords
 
 
+@config
+class DiagramConfig:
+    dataflow: str = field("File containing exported DataFlow")
+    config: BaseConfigLoader = field(
+        "ConfigLoader to use for importing DataFlow", default=None,
+    )
+    stages: List[str] = field(
+        "Which stages to display: (processing, cleanup, output)",
+        default_factory=lambda: [],
+    )
+    simple: bool = field("Don't display input and output names", default=False)
+    display: str = field(
+        "How to display (TD: top down, LR, RL, BT)", default="TD",
+    )
+
+
 class Diagram(CMD):
 
-    arg_stages = Arg(
-        "-stages",
-        help="Which stages to display: (processing, cleanup, output)",
-        nargs="+",
-        default=[],
-        required=False,
-    )
-    arg_simple = Arg(
-        "-simple",
-        help="Don't display input and output names",
-        default=False,
-        action="store_true",
-        required=False,
-    )
-    arg_display = Arg(
-        "-display",
-        help="How to display (TD: top down, LR, RL, BT)",
-        default="TD",
-        required=False,
-    )
-    arg_dataflow = Arg("dataflow", help="File containing exported DataFlow")
-    arg_config = Arg(
-        "-config",
-        help="ConfigLoader to use for importing",
-        type=BaseConfigLoader.load,
-        default=None,
-    )
+    CONFIG = DiagramConfig
 
     async def run(self):
         dataflow_path = pathlib.Path(self.dataflow)
@@ -374,6 +363,15 @@ class Diagram(CMD):
                     if not self.simple:
                         print(f"{output_node}({output_name})")
                         print(f"{node} --> {output_node}")
+                for condition in operation.conditions:
+                    condition_node = hashlib.md5(
+                        (
+                            "condition." + instance_name + "." + condition.name
+                        ).encode()
+                    ).hexdigest()
+                    if not self.simple:
+                        print(f"{condition_node}{'{' + condition.name + '}'}")
+                        print(f"{condition_node} --> {node}")
                 if not self.simple:
                     print(f"end")
             if len(self.stages) != 1:
@@ -427,6 +425,51 @@ class Diagram(CMD):
                                 list(source.keys())[0].encode()
                             ).hexdigest()
                             print(f"{source_operation_node} --> {node}")
+            for i, condition in enumerate(input_flow.conditions):
+                if isinstance(condition, str):
+                    if not self.simple:
+                        condition_name = operation.conditions[i].name
+                        seed_condition_node = hashlib.md5(
+                            (condition + "." + condition_name).encode()
+                        ).hexdigest()
+                        print(f"{seed_condition_node}({condition_name})")
+                        seed_dependent_node = hashlib.md5(
+                            (
+                                "condition."
+                                + instance_name
+                                + "."
+                                + condition_name
+                            ).encode()
+                        ).hexdigest()
+                        print(
+                            f"{seed_condition_node} --> {seed_dependent_node}"
+                        )
+                else:
+                    if not self.simple:
+                        dependee_node = hashlib.md5(
+                            (
+                                "output."
+                                + ".".join(list(condition.items())[0])
+                            ).encode()
+                        ).hexdigest()
+                        dependent_node = hashlib.md5(
+                            (
+                                "condition."
+                                + instance_name
+                                + "."
+                                + dataflow.operations[
+                                    list(condition.keys())[0]
+                                ]
+                                .outputs[list(condition.values())[0]]
+                                .name
+                            ).encode()
+                        ).hexdigest()
+                        print(f"{dependee_node} --> {dependent_node}")
+                    else:
+                        dependee_operation_node = hashlib.md5(
+                            list(condition.keys())[0].encode()
+                        ).hexdigest()
+                        print(f"{dependee_operation_node} --> {node}")
         if len(self.stages) != 1:
             print(f"end")
 

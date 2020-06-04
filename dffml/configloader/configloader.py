@@ -116,6 +116,8 @@ class ConfigLoaders(AsyncContextManagerList):
     loaders that get loaded as needed (based on filetype).
     """
 
+    SINGLETON = BaseConfigLoader
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.parsers: Dict[str, "BaseConfigLoader"] = {}

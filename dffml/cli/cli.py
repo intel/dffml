@@ -9,16 +9,23 @@ import pkg_resources
 
 from ..version import VERSION
 from ..record import Record
-from ..source.source import BaseSource, SubsetSources
+from ..feature.feature import Features
+from ..df.types import DataFlow
 from ..source.df import DataFlowSource, DataFlowSourceConfig
+from ..source.source import Sources, BaseSource, SubsetSources
 from ..configloader.configloader import BaseConfigLoader
 from ..util.packaging import is_develop
-from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
-from ..util.cli.cmds import SourcesCMD, PortCMD, KeysCMD
-from ..df.types import DataFlow
-from ..feature.feature import Features, Feature
-from ..util.cli.parser import list_action
+from ..util.cli.cmds import (
+    SourcesCMD,
+    PortCMD,
+    KeysCMD,
+    KeysCMDConfig,
+    PortCMDConfig,
+    SourcesCMDConfig,
+)
+from ..util.config.fields import FIELD_SOURCES
+from ..base import field, config
 
 from .dataflow import Dataflow
 from .config import Config
@@ -37,26 +44,25 @@ class Version(CMD):
         print(f"dffml version {VERSION} (devmode: {str(devmode)})")
 
 
+@config
+class EditCMDConfig:
+    dataflow: str = field(
+        "File containing exported DataFlow", default=None,
+    )
+    config: BaseConfigLoader = field(
+        "ConfigLoader to use for importing DataFlow", default=None,
+    )
+    features: Features = field(
+        "Feature definitions of records to update",
+        required=False,
+        default_factory=lambda: [],
+    )
+    sources: Sources = FIELD_SOURCES
+
+
 class BaseEditCMD(SourcesCMD):
-    arg_dataflow = Arg(
-        "-dataflow", help="File containing exported DataFlow", required=False,
-    )
-    arg_config = Arg(
-        "-config",
-        help="ConfigLoader to use for importing DataFlow",
-        required=False,
-        type=BaseConfigLoader.load,
-        default=None,
-    )
-    arg_features = Arg(
-        "-features",
-        help="Feature definitions of records to update",
-        required=False,
-        default=[],
-        type=Feature,
-        nargs="+",
-        action=list_action(Features),
-    )
+
+    CONFIG = EditCMDConfig
 
     async def __aenter__(self):
         await super().__aenter__()
@@ -96,10 +102,17 @@ class EditAllRecords(BaseEditCMD, SourcesCMD):
                     await sctx.update(record)
 
 
+@config
+class EditRecordConfig(EditCMDConfig, KeysCMDConfig):
+    pass
+
+
 class EditRecord(EditAllRecords, KeysCMD):
     """
     Edit each specified record
     """
+
+    CONFIG = EditRecordConfig
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -115,19 +128,22 @@ class Edit(CMD):
     record = EditRecord
 
 
+@config
+class MergeConfig:
+    src: BaseSource = field(
+        "Source to pull records from", labeled=True,
+    )
+    dest: BaseSource = field(
+        "Source to merge records into", labeled=True,
+    )
+
+
 class Merge(CMD):
     """
     Merge record data between sources
     """
 
-    arg_dest = Arg(
-        "dest", help="Sources merge records into", type=BaseSource.load_labeled
-    )
-    arg_src = Arg(
-        "src",
-        help="Sources to pull records from",
-        type=BaseSource.load_labeled,
-    )
+    CONFIG = MergeConfig
 
     async def run(self):
         async with self.src.withconfig(
@@ -141,10 +157,16 @@ class Merge(CMD):
                     await dctx.update(record)
 
 
+class ImportExportCMDConfig(PortCMDConfig, SourcesCMDConfig):
+    filename: str = field(
+        "Filename", default=None,
+    )
+
+
 class ImportExportCMD(PortCMD, SourcesCMD):
     """Shared import export arguments"""
 
-    arg_filename = Arg("filename", type=str)
+    CONFIG = ImportExportCMDConfig
 
 
 class Import(ImportExportCMD):

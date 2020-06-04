@@ -44,7 +44,7 @@ def load(
             yield obj
     finally:
         if relative is not None:
-            sys.path.pop()
+            sys.path.pop(0)
 
 
 def entrypoint(label):
@@ -146,6 +146,10 @@ class Entrypoint(object):
         Loads all installed loading and returns them as a list. Sources to be
         loaded should be registered to ENTRYPOINT via setuptools.
         """
+        # Loading from entrypoint if ":" is in name
+        if loading is not None and ":" in loading:
+            return next(load(loading, relative=True))
+        # Load from registered entrypoints otherwise
         loaded_names = []
         loading_classes = []
         for i in pkg_resources.iter_entry_points(cls.ENTRYPOINT):

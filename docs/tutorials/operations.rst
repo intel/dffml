@@ -419,7 +419,7 @@ based on :py:mod:`argparse` which will speed things up.
 **shouldi/cli.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/cli.py
-    :lines: 1-84
+    :lines: 1-89
 
 Let's test out the code in ``shouldi.cli`` before making it accessible via the
 command line.

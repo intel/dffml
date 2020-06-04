@@ -23,13 +23,24 @@ with ``pip``.
 
     $ pip install -U dffml-model-tensorflow
 
+Create a dataflow config file which will be used by the
+:py:class:`DataFlowSource <dffml.source.df.DataFlowSource>` to normalize the
+data just before feeding it to the model.
+
+In the config file, using the ``dataflow create`` command we create a DataFlow
+consisting of 2 operations, multiply and associate_definition. We use ``sed`` to
+edit the DataFlow to have the multiplicand input of the multiply operation come
+from a list in seed containing only one element that is the ``image`` feature
+and to have the input of the associate_definition operation come from the output
+(product) of the multiply operation.
+
+.. literalinclude:: /../examples/MNIST/create_dataflow.sh
+
+.. literalinclude:: /../examples/MNIST/normalize.yaml
+
 Train the model.
 
 .. literalinclude:: /../examples/MNIST/train.sh
-
-.. code-block:: console
-
-    ... log output ...
 
 Assess the model's accuracy.
 
@@ -37,11 +48,7 @@ Assess the model's accuracy.
 
 .. code-block:: console
 
-    ... log output followed by accuracy as float ...
     0.8269000053405762
-
-The accuracy likely won't be very good right now because we need to normalize
-the data first.
 
 Create an ``image.csv`` file which contains the names of the images (with their extension .mnistpng) to predict on.
 

@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- DataFlowSource can take a config file as dataflow via the CLI.
+- Support for link on conditions in dataflow diagrams
 - `edit all` command to edit records in bulk
 - Support for Tensorflow 2.2
 - Vowpal Wabbit Models
@@ -41,7 +43,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   path to directory or Git repo URL and runs the appropriate static analyzers.
 - Support for entrypoint style loading of operations and seed inputs in `dataflow create`.
 - Definition for output of the function that `op` wraps.
+- Expose high level load, run and save functions to noasync.
 ### Changed
+- Update MNIST use case to normalize image arrays.
+- `arg_` notation replaced with `CONFIG = ExampleConfig` style syntax
+  for parsing all command line arguments.
+- Moved usage/io.rst to docs/tutorials/dataflows/io.rst
 - `edit` command substituted with `edit record`
 - `Edit on Github` button now hidden for plugins.
 - Doctests now run via unittests
@@ -58,6 +65,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - FileSource takes pathlib.Path as filename
 - Tensorflow tests re-run themselves up to 6 times to stop them from failing the
   CI due to their randomly initialized weights making them fail ~2% of the time
+- Any plugin can now be loaded via it's entrypoint style path
+- `with_features` now raises a helpful error message if no records with matching
+  features were found
+- Split out model tutorial into writing the model, and another tutorial for
+  packaging the model.
 ### Fixed
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
   parameter sets for an operation.
