@@ -13,6 +13,8 @@ fi
 
 TEMP_DIRS=()
 
+python_version="py$(${PYTHON} -c 'import sys; print(f"{sys.version_info.major}{sys.version_info.minor}")')"
+
 function run_plugin_examples() {
   if [ ! -d "${SRC_ROOT}/${PLUGIN}/examples" ]; then
     return
@@ -30,6 +32,10 @@ function run_plugin() {
 
   if [ "x${PLUGIN}" = "xexamples/shouldi" ]; then
     "${PYTHON}" -m pip install -U -e "${SRC_ROOT}/feature/git"
+  fi
+
+  if [[ "${python_version}" == "py38" ]] && [[ "x${PLUGIN}" == "xmodel/daal4py" ]]; then
+    return
   fi
 
   cd "${SRC_ROOT}/${PLUGIN}"
