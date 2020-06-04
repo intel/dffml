@@ -256,7 +256,7 @@ with the existing flow.
         safety_check_number_of_issues,bandit_output,language_to_comment_ratio=get_single_spec \
       -- \
         dffml.mapping.create \
-        lines_of_code_by_language
+        lines_of_code_by_language \
         lines_of_code_to_comments \
       | sed -e 's/value: value/value:\n      - pypi_package_contents: directory/g' \
       | tee shouldi/deploy/override/shouldi.yaml
