@@ -94,7 +94,7 @@ No description
 
 - orchestrator: Entrypoint
 
-  - default: MemoryOrchestrator(MemoryOrchestratorConfig(input_network=MemoryInputNetwork(BaseConfig()), operation_network=MemoryOperationNetwork(MemoryOperationNetworkConfig(operations=[])), lock_network=MemoryLockNetwork(BaseConfig()), opimp_network=MemoryOperationImplementationNetwork(MemoryOperationImplementationNetworkConfig(operations={})), rchecker=MemoryRedundancyChecker(BaseRedundancyCheckerConfig(key_value_store=MemoryKeyValueStore(BaseConfig())))))
+  - default: MemoryOrchestrator(MemoryOrchestratorConfig(input_network=MemoryInputNetwork(MemoryInputNetworkConfig()), operation_network=MemoryOperationNetwork(MemoryOperationNetworkConfig(operations=[])), lock_network=MemoryLockNetwork(MemoryLockNetworkConfig()), opimp_network=MemoryOperationImplementationNetwork(MemoryOperationImplementationNetworkConfig(operations={})), rchecker=MemoryRedundancyChecker(MemoryRedundancyCheckerConfig(kvstore=MemoryKeyValueStore(MemoryKeyValueStoreConfig())))))
 
 .. _plugin_source_dffml_idx1:
 
