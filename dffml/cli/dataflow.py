@@ -112,15 +112,9 @@ class Create(CMD):
                 for v, k in self.flow:
                     opname, val_type, key = k.split(".")
                     if val_type == "inputs":
-                        fl = InputFlow(
-                            inputs=v,
-                            conditions=dataflow.flow[opname].conditions,
-                        )
+                        dataflow.flow[opname].inputs[key] = v
                     else:
-                        fl = InputFlow(
-                            inputs=dataflow.flow[opname].inputs, conditions=v
-                        )
-                    dataflow.flow[opname] = fl
+                        dataflow.flow[opname].conditions = v
 
                 exported = dataflow.export(linked=not self.not_linked)
                 print((await loader.dumpb(exported)).decode())
