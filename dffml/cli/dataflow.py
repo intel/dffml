@@ -5,7 +5,7 @@ from typing import List
 
 from ..base import BaseConfig
 from ..df.base import BaseOrchestrator, OperationImplementation
-from ..df.types import DataFlow, Stage, Operation, Input
+from ..df.types import DataFlow, Stage, Operation, Input, InputFlow
 from ..df.memory import (
     MemoryOrchestrator,
     MemoryInputSet,
@@ -79,9 +79,7 @@ class CreateConfig:
         default_factory=lambda: [],
     )
     flow: List[str] = field(
-        "Flow of inputs",
-        action=ParseInputsAction,
-        default_factory=lambda: [],
+        "Flow of inputs", action=ParseInputsAction, default_factory=lambda: [],
     )
 
 
@@ -109,6 +107,21 @@ class Create(CMD):
                     for val, def_name in self.seed
                 ]
                 dataflow.seed.extend(self.seed)
+
+                # flow argument key is of the form opname.inputs/conditions.keyname
+                for v, k in self.flow:
+                    opname, val_type, key = k.split(".")
+                    if val_type == "inputs":
+                        fl = InputFlow(
+                            inputs=v,
+                            conditions=dataflow.flow[opname].conditions,
+                        )
+                    else:
+                        fl = InputFlow(
+                            inputs=dataflow.flow[opname].inputs, conditions=v
+                        )
+                    dataflow.flow[opname] = fl
+
                 exported = dataflow.export(linked=not self.not_linked)
                 print((await loader.dumpb(exported)).decode())
 
