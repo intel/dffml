@@ -98,6 +98,28 @@ def traverse_config_get(target, *args):
     return last["plugin"]
 
 
+def split_dot_seperated(val: str) -> "List[str]":
+    raw_split = val.split(".")
+    vals = []
+    i = 0
+    tl = []
+    trig = False
+    for x in raw_split:
+        if "'" in x or '"' in x:
+            trig = not trig
+            if not trig:
+                tl.append(x)
+                k = ".".join(tl).replace("'", "").replace('"', "")
+                vals.append(k)
+                tl = []
+                continue
+        if trig:
+            tl.append(x)
+            continue
+        vals.append(x)
+    return vals
+
+
 def traverse_get(target, *args):
     """
     Travel down through a dict
@@ -109,11 +131,45 @@ def traverse_get(target, *args):
     >>>
     >>> traverse_get({"one": {"two": 3}}, "one", "two")
     3
+    >>> traverse_get({"one": {"two": 3}}, "one.two")
+    3
+    >>> traverse_get({"one.two": {"three": 4}}, "'one.two'.three")
+    4
     """
+    if len(args) == 1:
+        args = split_dot_seperated(args[0])
     current = target
     for level in args:
         current = current[level]
     return current
+
+
+def traverse_set(target, value, *args):
+    """
+    Examples
+    --------
+
+    >>> from dffml import traverse_set
+    >>>
+    >>> d = {"one": {"two": 3}}
+    >>> traverse_set(d,"Three", "one.two")
+    >>> d["one"]["two"]
+    'Three'
+    """
+    if len(args) == 1:
+        args = split_dot_seperated(args[0])
+    if len(args) == 1:
+        target[args[0]] = value
+        return
+
+    current = target
+    for level in args[:-1]:
+        if level not in current:
+            current[level] = {}
+        current = current[level]
+
+    current[args[-1]] = value
+    return
 
 
 def ignore_args(func):
