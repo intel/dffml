@@ -78,6 +78,11 @@ class CreateConfig:
         action=ParseInputsAction,
         default_factory=lambda: [],
     )
+    flow: List[str] = field(
+        "Flow of inputs",
+        action=ParseInputsAction,
+        default_factory=lambda: [],
+    )
 
 
 class Create(CMD):
