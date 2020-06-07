@@ -760,7 +760,7 @@ class DataFlow:
                 if not arg in operation:
                     continue
                 for input_name, definition_name in operation[arg].items():
-                    if not definition_name in tuple(definitions):
+                    if not definition_name in definitions:
                         raise DefinitionMissing(
                             f"While resolving {instance_name}.{arg}, missing {definition_name}"
                         )
