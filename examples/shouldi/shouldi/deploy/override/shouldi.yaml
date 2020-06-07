@@ -46,8 +46,7 @@ operations:
   dffml.mapping.create:
     inputs:
       key: key
-      value:
-      - pypi_package_contents: directory
+      value: value
     name: dffml.mapping.create
     outputs:
       mapping: mapping
