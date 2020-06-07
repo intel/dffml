@@ -17,7 +17,7 @@ from ..configloader.json import JSONConfigLoader
 from ..source.source import SubsetSources, Sources
 from ..source.json import JSONSource
 from ..source.file import FileSourceConfig
-from ..util.data import merge
+from ..util.data import merge,split_dot_seperated
 from ..util.entrypoint import load
 from ..util.cli.cmd import CMD, CMDOutputOverride
 from ..util.cli.cmds import (
@@ -27,7 +27,6 @@ from ..util.cli.cmds import (
 )
 from ..util.cli.parser import ParseInputsAction
 from ..base import config, field
-
 
 @config
 class MergeConfig:
@@ -110,17 +109,12 @@ class Create(CMD):
 
                 # flow argument key is of the form opname.inputs/conditions.keyname
                 for v, k in self.flow:
-                    opname, val_type, key = k.split(".")
+                    *opname, val_type, key = split_dot_seperated(k)
+                    opname = '.'.join(opname)
                     if val_type == "inputs":
-                        fl = InputFlow(
-                            inputs=v,
-                            conditions=dataflow.flow[opname].conditions,
-                        )
+                        dataflow.flow[opname].inputs[key] = v
                     else:
-                        fl = InputFlow(
-                            inputs=dataflow.flow[opname].inputs, conditions=v
-                        )
-                    dataflow.flow[opname] = fl
+                        dataflow.flow[opname].conditions = v
 
                 exported = dataflow.export(linked=not self.not_linked)
                 print((await loader.dumpb(exported)).decode())
