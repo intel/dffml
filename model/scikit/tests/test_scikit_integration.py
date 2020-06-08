@@ -20,6 +20,7 @@ class TestScikitClassification(IntegrationCLITestCase):
         self.required_plugins("dffml-model-scikit")
         # Create the training data
         train_filename = self.mktempfile() + ".csv"
+        model_dir = self.mktempdir()
         train_data, y = make_blobs(
             n_samples=40, centers=2, n_features=4, random_state=200
         )
@@ -66,6 +67,8 @@ class TestScikitClassification(IntegrationCLITestCase):
             "training_data=csv",
             "-source-filename",
             train_filename,
+            "-model-directory",
+            model_dir
         )
         # Assess accuracy
         await CLI.cli(
