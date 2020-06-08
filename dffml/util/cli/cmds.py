@@ -1,16 +1,14 @@
-import os
 import inspect
+from typing import List
 
 from ...port import Port
-from ...source.source import BaseSource, Sources
-from ...source.json import JSONSource
-from ...source.file import FileSourceConfig
+from ...source.source import Sources
 from ...model import Model
+from ...base import config, field
 
 
-from .arg import Arg
 from .cmd import CMD
-from .parser import list_action
+from ...util.config.fields import FIELD_SOURCES
 
 
 class ListEntrypoint(CMD):
@@ -37,24 +35,14 @@ class ListEntrypoint(CMD):
             self.display(cls)
 
 
+@config
+class SourcesCMDConfig:
+    sources: Sources = FIELD_SOURCES
+
+
 class SourcesCMD(CMD):
 
-    arg_sources = Arg(
-        "-sources",
-        help="Sources for loading and saving",
-        nargs="+",
-        default=Sources(
-            JSONSource(
-                FileSourceConfig(
-                    filename=os.path.join(
-                        os.path.expanduser("~"), ".cache", "dffml.json"
-                    )
-                )
-            )
-        ),
-        type=BaseSource.load_labeled,
-        action=list_action(Sources),
-    )
+    CONFIG = SourcesCMDConfig
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -70,14 +58,19 @@ class SourcesCMD(CMD):
                 self.sources[i] = self.sources[i].withconfig(self.extra_config)
 
 
+@config
+class ModelCMDConfig:
+    model: Model = field(
+        "Model used for ML", required=True,
+    )
+
+
 class ModelCMD(CMD):
     """
     Set a models model dir.
     """
 
-    arg_model = Arg(
-        "-model", help="Model used for ML", type=Model.load, required=True
-    )
+    CONFIG = ModelCMDConfig
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -85,16 +78,23 @@ class ModelCMD(CMD):
             self.model = self.model.withconfig(self.extra_config)
 
 
+@config
+class PortCMDConfig:
+    port: Port = field("Port")
+
+
 class PortCMD(CMD):
 
-    arg_port = Arg("port", type=Port.load)
+    CONFIG = PortCMDConfig
+
+
+@config
+class KeysCMDConfig:
+    keys: List[str] = field(
+        "Key used for source lookup and evaluation", required=True,
+    )
 
 
 class KeysCMD(CMD):
 
-    arg_keys = Arg(
-        "-keys",
-        help="Key used for source lookup and evaluation",
-        nargs="+",
-        required=True,
-    )
+    CONFIG = KeysCMDConfig

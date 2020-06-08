@@ -1,8 +1,8 @@
 import tempfile
 
-from dffml import train, accuracy, predict, Features, Feature, AsyncTestCase
+from dffml import train, accuracy, predict, Feature, AsyncTestCase
 
-from REPLACE_IMPORT_PACKAGE_NAME.misc import MiscModel
+from REPLACE_IMPORT_PACKAGE_NAME.myslr import MySLRModel
 
 TRAIN_DATA = [
     [12.4, 11.2],
@@ -34,50 +34,45 @@ TEST_DATA = [
 ]
 
 
-class TestMiscModel(AsyncTestCase):
+class TestMySLRModel(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
         # Create a temporary directory to store the trained model
         cls.model_dir = tempfile.TemporaryDirectory()
-        # Create the training data
-        cls.train_data = []
-        for x, y in TRAIN_DATA:
-            cls.train_data.append({"X": x, "Y": y})
-        # Create the test data
-        cls.test_data = []
-        for x, y in TEST_DATA:
-            cls.test_data.append({"X": x, "Y": y})
         # Create an instance of the model
-        cls.model = MiscModel(
-            directory=cls.model_dir.name,
+        cls.model = MySLRModel(
+            feature=Feature("X", float, 1),
             predict=Feature("Y", float, 1),
-            features=Features(Feature("X", float, 1)),
+            directory=cls.model_dir.name,
         )
 
     @classmethod
     def tearDownClass(cls):
-        # Remove the temporary directory where the trained model was stored
+        # Remove the temporary directory where the model was stored to cleanup
         cls.model_dir.cleanup()
 
     async def test_00_train(self):
         # Train the model on the training data
-        await train(self.model, *self.train_data)
+        await train(self.model, *[{"X": x, "Y": y} for x, y in TRAIN_DATA])
 
     async def test_01_accuracy(self):
         # Use the test data to assess the model's accuracy
-        res = await accuracy(self.model, *self.test_data)
+        res = await accuracy(
+            self.model, *[{"X": x, "Y": y} for x, y in TEST_DATA]
+        )
         # Ensure the accuracy is above 80%
         self.assertTrue(0.8 <= res < 1.0)
 
     async def test_02_predict(self):
         # Get the prediction for each piece of test data
         async for i, features, prediction in predict(
-            self.model, *self.test_data
+            self.model, *[{"X": x, "Y": y} for x, y in TEST_DATA]
         ):
             # Grab the correct value
-            correct = self.test_data[i]["Y"]
+            correct = features["Y"]
             # Grab the predicted value
             prediction = prediction["Y"]["value"]
-            # Check that the percent error is less than 10%
-            self.assertLess(prediction, correct * 1.1)
-            self.assertGreater(prediction, correct * (1.0 - 0.1))
+            # Check that the prediction is within 10% error of the actual value
+            acceptable = 0.1
+            self.assertLess(prediction, correct * (1.0 + acceptable))
+            self.assertGreater(prediction, correct * (1.0 - acceptable))

@@ -251,12 +251,12 @@ class Routes(BaseMultiCommContext):
                     value = await request.text()
                 elif preprocess_mode == "bytes":
                     value = await request.read()
-                elif preprocess == "stream":
+                elif preprocess_mode == "stream":
                     value = request.content
                 else:
                     return web.json_response(
                         {
-                            "error": f"preprocess tag must be one of {IO_MODES}, got {preprocess}"
+                            "error": f"preprocess tag must be one of {IO_MODES}, got {preprocess_mode}"
                         },
                         status=HTTPStatus.NOT_FOUND,
                     )
@@ -282,7 +282,7 @@ class Routes(BaseMultiCommContext):
 
         # Run the operation in an orchestrator
         # TODO(dfass) Create the orchestrator on startup of the HTTP API itself
-        async with MemoryOrchestrator.basic_config() as orchestrator:
+        async with MemoryOrchestrator() as orchestrator:
             # TODO(dfass) Create octx on dataflow registration
             async with orchestrator(config.dataflow) as octx:
                 results = {

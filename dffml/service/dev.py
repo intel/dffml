@@ -17,15 +17,15 @@ import unittest.mock
 import urllib.request
 import importlib.util
 from pathlib import Path
+from typing import List
 
 from ..base import BaseConfig
 from ..util.os import chdir, MODE_BITS_SECURE
 from ..version import VERSION
 from ..util.skel import Skel, SkelTemplateConfig
-from ..util.cli.arg import Arg
 from ..util.cli.cmd import CMD
 from ..util.entrypoint import load
-from ..base import MissingConfig
+from ..base import MissingConfig, config as configdataclass, field
 from ..util.packaging import is_develop
 from ..util.data import traverse_config_get, export_dict
 from ..df.types import Input, DataFlow
@@ -46,57 +46,46 @@ NAME = config.get("user", "name", fallback="Unknown")
 EMAIL = config.get("user", "email", fallback="unknown@example.com")
 
 
-def create_from_skel(name):
+def create_from_skel(plugin_type):
     """
     Copies samples out of skel/ and does re-naming.
     """
+
+    @configdataclass
+    class CreateCMDConfig:
+        package: str = field("Name of python package to create")
+        user: str = field(f"Your username (default: {USER})", default=USER)
+        name: str = field(
+            f"Your name (default: {NAME})", default=NAME,
+        )
+        email: str = field(
+            f"Your email (default: {EMAIL})", default=EMAIL,
+        )
+        description: str = field(
+            f"Description of python package (default: DFFML {plugin_type} {{package name}})",
+            default=None,
+        )
+        target: str = field(
+            f"Directory to put code in (default: same as package name)",
+            default=None,
+        )
 
     class CreateCMD(CMD):
 
         skel = Skel()
 
-        arg_user = Arg(
-            "-user",
-            help=f"Your username (default: {USER})",
-            default=USER,
-            required=False,
-        )
-        arg_name = Arg(
-            "-name",
-            help=f"Your name (default: {NAME})",
-            default=NAME,
-            required=False,
-        )
-        arg_email = Arg(
-            "-email",
-            help=f"Your email (default: {EMAIL})",
-            default=EMAIL,
-            required=False,
-        )
-        arg_description = Arg(
-            "-description",
-            help=f"Description of python package (default: DFFML {name} {{package name}})",
-            default=None,
-            required=False,
-        )
-        arg_target = Arg(
-            "-target",
-            help=f"Directory to put code in (default: same as package name)",
-            default=None,
-            required=False,
-        )
-        arg_package = Arg("package", help="Name of python package to create")
+        CONFIG = CreateCMDConfig
 
         async def run(self):
             # Set description if None
             if not self.description:
-                self.description = f"DFFML {name} {self.package}"
+                self.description = f"DFFML {plugin_type} {self.package}"
             # Set target directory to package name if not given
             if not self.target:
                 self.target = self.package
             # Extract
             self.skel.from_template(
-                name,
+                plugin_type,
                 self.target,
                 SkelTemplateConfig(
                     org=self.user,
@@ -143,12 +132,17 @@ class Skeleton(CMD):
     link = Link
 
 
+@configdataclass
+class RunConfig:
+    operation: str = field("Python path to operation")
+
+
 class Run(CMD):
     """
     Run a single operation
     """
 
-    arg_operation = Arg("operation", help="Python path to operation")
+    CONFIG = RunConfig
 
     async def run(self):
         # Push current directory into front of path so we can run things
@@ -241,11 +235,14 @@ class Run(CMD):
                     return results
 
 
+@configdataclass
+class ListEntrypointsConfig:
+    entrypoint: str = field("Entrypoint to list, example: dffml.model")
+
+
 class ListEntrypoints(CMD):
 
-    arg_entrypoint = Arg(
-        "entrypoint", help="Entrypoint to list, example: dffml.model"
-    )
+    CONFIG = ListEntrypointsConfig
 
     async def run(self):
         for entrypoint in pkg_resources.iter_entry_points(self.entrypoint):
@@ -257,22 +254,22 @@ class Entrypoints(CMD):
     _list = ListEntrypoints
 
 
-class Export(CMD):
-
-    arg_config = Arg(
-        "-config",
-        help="ConfigLoader to use",
-        type=BaseConfigLoader.load,
-        default=JSONConfigLoader,
+@configdataclass
+class ExportConfig:
+    export: str = field("Python path to object to export",)
+    config: BaseConfigLoader = field(
+        "ConfigLoader to use", default=JSONConfigLoader,
     )
-    arg_not_linked = Arg(
-        "-not-linked",
-        dest="not_linked",
-        help="Do not export dataflows as linked",
+    not_linked: bool = field(
+        "Do not export dataflows as linked",
         default=False,
         action="store_true",
     )
-    arg_export = Arg("export", help="Python path to object to export")
+
+
+class Export(CMD):
+
+    CONFIG = ExportConfig
 
     async def run(self):
         async with self.config(BaseConfig()) as configloader:
@@ -300,6 +297,13 @@ class Export(CMD):
                         )
 
 
+@configdataclass
+class InstallConfig:
+    user: bool = field(
+        "Perform user install", default=False, action="store_true"
+    )
+
+
 # TODO (p3) Remove production packages. Download full source if not already
 # installed in development mode.
 class Install(CMD):
@@ -307,9 +311,7 @@ class Install(CMD):
     Uninstall production packages and install dffml in development mode.
     """
 
-    arg_user = Arg(
-        "-user", "Preform user install", default=False, action="store_true"
-    )
+    CONFIG = InstallConfig
 
     async def run(self):
         main_package = is_develop("dffml")
@@ -339,25 +341,30 @@ class Install(CMD):
             raise RuntimeError("pip failed to install dependencies")
 
 
+@configdataclass
+class SetupPyKWArgConfig:
+    kwarg: str = field("Keyword argument to write to stdout")
+    setupfilepath: str = field("Path to setup.py",)
+
+
 class SetupPyKWArg(CMD):
     """
     Get a keyword argument from a call to setup in a setup.py file.
     """
 
-    arg_kwarg = Arg("kwarg", help="Keyword argument to write to stdout")
-    arg_setup_filepath = Arg("setup_filepath", help="Path to setup.py")
+    CONFIG = SetupPyKWArgConfig
 
     @staticmethod
-    def get_kwargs(setup_filepath: str):
-        setup_filepath = Path(setup_filepath)
+    def get_kwargs(setupfilepath: str):
+        setupfilepath = Path(setupfilepath)
         setup_kwargs = {}
 
         def grab_setup_kwargs(**kwargs):
             setup_kwargs.update(kwargs)
 
-        with chdir(str(setup_filepath.parent)):
+        with chdir(str(setupfilepath.parent)):
             spec = importlib.util.spec_from_file_location(
-                "setup", str(setup_filepath.parts[-1])
+                "setup", str(setupfilepath.parts[-1])
             )
             with unittest.mock.patch(
                 "setuptools.setup", new=grab_setup_kwargs
@@ -368,7 +375,7 @@ class SetupPyKWArg(CMD):
         return setup_kwargs
 
     async def run(self):
-        print(self.get_kwargs(self.setup_filepath)[self.kwarg])
+        print(self.get_kwargs(self.setupfilepath)[self.kwarg])
 
 
 class SetupPy(CMD):
@@ -382,14 +389,17 @@ class RepoDirtyError(Exception):
     """
 
 
+@configdataclass
+class ReleaseConfig:
+    package: Path = field("Relative path to package to release",)
+
+
 class Release(CMD):
     """
     Release a package (if not already released)
     """
 
-    arg_package = Arg(
-        "package", help="Relative path to package to release", type=Path
-    )
+    CONFIG = ReleaseConfig
 
     async def run(self):
         # Ensure target plugin directory has no unstaged changes
@@ -474,27 +484,28 @@ class BumpMain(CMD):
             raise RuntimeError
 
 
+@configdataclass
+class BumpPackagesConfig:
+    version: str = field("Version to increment by",)
+    skip: List[str] = field(
+        "Do not increment versions in these packages",
+        default_factory=lambda: [],
+        required=False,
+    )
+    only: List[str] = field(
+        "Only increment versions in these packages",
+        default_factory=lambda: [],
+        required=False,
+    )
+
+
 class BumpPackages(CMD):
     """
     Bump all the versions of all the packages and increment the version number
     given.
     """
 
-    arg_skip = Arg(
-        "-skip",
-        help="Do not increment versions in these packages",
-        nargs="+",
-        default=[],
-        required=False,
-    )
-    arg_only = Arg(
-        "-only",
-        help="Only increment versions in these packages",
-        nargs="+",
-        default=[],
-        required=False,
-    )
-    arg_version = Arg("version", help="Version to increment by")
+    CONFIG = BumpPackagesConfig
 
     @staticmethod
     def bump_version(original, increment):
@@ -538,7 +549,7 @@ class BumpPackages(CMD):
             # Ignore skel
             if skel in version_file.parents:
                 self.logger.debug(
-                    "Skipping skel verison file %s", version_file
+                    "Skipping skel version file %s", version_file
                 )
                 continue
             # If we're only supposed to increment versions of some packages,
@@ -551,11 +562,11 @@ class BumpPackages(CMD):
                     raise Exception(setup_filepath) from error
                 if self.only and name not in self.only:
                     self.logger.debug(
-                        "Verison file not in only %s", version_file
+                        "Version file not in only %s", version_file
                     )
                     continue
                 elif name in self.skip:
-                    self.logger.debug("Skipping verison file %s", version_file)
+                    self.logger.debug("Skipping version file %s", version_file)
                     continue
             # Read the file
             filetext = version_file.read_text()
@@ -574,7 +585,7 @@ class BumpPackages(CMD):
                 modified_lines.append(line)
             # Write back the file using the modified lines
             filetext = version_file.write_text("\n".join(modified_lines))
-            self.logger.debug("Updated verison file %s", version_file)
+            self.logger.debug("Updated version file %s", version_file)
 
 
 class Bump(CMD):
