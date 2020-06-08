@@ -63,12 +63,12 @@ class TestScikitClassification(IntegrationCLITestCase):
             *features,
             "-model-predict",
             "true_label:int:1",
+            "-model-directory",
+            model_dir,
             "-sources",
             "training_data=csv",
             "-source-filename",
             train_filename,
-            "-model-directory",
-            model_dir
         )
         # Assess accuracy
         await CLI.cli(
@@ -78,6 +78,8 @@ class TestScikitClassification(IntegrationCLITestCase):
             *features,
             "-model-predict",
             "true_label:int:1",
+            "-model-directory",
+            model_dir,
             "-sources",
             "test_data=csv",
             "-source-filename",
@@ -94,6 +96,8 @@ class TestScikitClassification(IntegrationCLITestCase):
                 *features,
                 "-model-predict",
                 "true_label:int:1",
+                "-model-directory",
+                model_dir,
                 "-sources",
                 "predict_data=csv",
                 "-source-filename",
@@ -151,6 +155,7 @@ class TestScikitRegression(IntegrationCLITestCase):
         features = (
             "-model-features A:float:1 B:float:1 C:float:1 D:float:1".split()
         )
+        model_dir = self.mktempdir()
         # Train the model
         await CLI.cli(
             "train",
@@ -159,6 +164,8 @@ class TestScikitRegression(IntegrationCLITestCase):
             *features,
             "-model-predict",
             "true_label:float:1",
+            "-model-directory",
+            model_dir,
             "-sources",
             "training_data=csv",
             "-source-filename",
@@ -172,6 +179,8 @@ class TestScikitRegression(IntegrationCLITestCase):
             *features,
             "-model-predict",
             "true_label:float:1",
+            "-model-directory",
+            model_dir,
             "-sources",
             "test_data=csv",
             "-source-filename",
@@ -188,6 +197,8 @@ class TestScikitRegression(IntegrationCLITestCase):
                 *features,
                 "-model-predict",
                 "true_label:float:1",
+                "-model-directory",
+                model_dir,
                 "-sources",
                 "predict_data=csv",
                 "-source-filename",
@@ -248,6 +259,7 @@ class TestScikitClustering(IntegrationCLITestCase):
         features = (
             "-model-features A:float:1 B:float:1 C:float:1 D:float:1".split()
         )
+        model_dir = self.mktempdir()
         # ind_w_labl --> inductive model with true cluster label
         # ind_wo_labl --> inductive model without true cluster label
         # tran_w_labl --> transductive model with true cluster label
@@ -296,6 +308,8 @@ class TestScikitClustering(IntegrationCLITestCase):
                 "-model",
                 model,
                 *features,
+                "-model-directory",
+                model_dir,
                 "-sources",
                 "training_data=csv",
                 "-source-filename",
@@ -309,6 +323,8 @@ class TestScikitClustering(IntegrationCLITestCase):
                         "-model",
                         model,
                         *features,
+                        "-model-directory",
+                        model_dir,
                         "-sources",
                         "test_data=csv",
                         "-source-filename",
@@ -328,6 +344,8 @@ class TestScikitClustering(IntegrationCLITestCase):
                     "all",
                     "-model",
                     model,
+                    "-model-directory",
+                    model_dir,
                     *features,
                     "-sources",
                     "predict_data=csv",

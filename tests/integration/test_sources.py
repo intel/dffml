@@ -45,6 +45,7 @@ class TestCSV(IntegrationCLITestCase):
         features = (
             "-model-features Years:int:1 Expertise:int:1 Trust:float:1".split()
         )
+        model_dir = self.mktempdir()
         # Train the model
         await CLI.cli(
             "train",
@@ -53,6 +54,8 @@ class TestCSV(IntegrationCLITestCase):
             *features,
             "-model-predict",
             "Salary:float:1",
+            "-model-directory",
+            model_dir,
             "-sources",
             "training_data=csv",
             "-source-filename",
@@ -66,6 +69,8 @@ class TestCSV(IntegrationCLITestCase):
             *features,
             "-model-predict",
             "Salary:float:1",
+            "-model-directory",
+            model_dir,
             "-sources",
             "test_data=csv",
             "-source-filename",
@@ -82,6 +87,8 @@ class TestCSV(IntegrationCLITestCase):
                 *features,
                 "-model-predict",
                 "Salary:float:1",
+                "-model-directory",
+                model_dir,
                 "-sources",
                 "predict_data=csv",
                 "-source-filename",
