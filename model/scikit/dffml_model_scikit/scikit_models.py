@@ -223,9 +223,7 @@ for entry_point_name, name, cls, applicable_features_function in [
         **{
             "directory": (
                 pathlib.Path,
-                field(
-                    "Directory where state should be saved",
-                ),
+                field("Directory where state should be saved",),
             ),
             "features": (Features, field("Features to train on")),
         },
