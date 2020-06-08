@@ -1,5 +1,6 @@
 import io
 import os
+import shutil
 import pathlib
 import inspect
 import tempfile
@@ -12,21 +13,23 @@ from dffml.util.asynctestcase import AsyncTestCase
 class TestINISecret(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
-        cls.secret_file = tempfile.NamedTemporaryFile(
-            prefix="secret_", suffix=".ini"
+        cls.tmpdir = tempfile.mkdtemp()
+        handle, cls.secret_file = tempfile.mkstemp(
+            prefix="secret_", suffix=".ini", dir=cls.tmpdir
         )
+        os.close(handle)
 
     @classmethod
     def tearDownClass(cls):
-        cls.secret_file.close()
+        shutil.rmtree(cls.tmpdir)
 
     async def test_set_get(self):
-        async with INISecret(filename=self.secret_file.name) as secret_store:
+        async with INISecret(filename=self.secret_file) as secret_store:
             async with secret_store() as secret_ctx:
                 await secret_ctx.set(name="foo", value="bar")
                 await secret_ctx.set(name="steins", value="gate")
 
-        contents = pathlib.Path(self.secret_file.name).read_text().strip()
+        contents = pathlib.Path(self.secret_file).read_text().strip()
 
         self.assertIn(
             "[secrets]", contents,
@@ -38,7 +41,7 @@ class TestINISecret(AsyncTestCase):
             "foo = bar", contents,
         )
 
-        async with INISecret(filename=self.secret_file.name) as secret_store:
+        async with INISecret(filename=self.secret_file) as secret_store:
             async with secret_store() as secret_ctx:
                 value = await secret_ctx.get(name="foo")
                 self.assertEqual(value, "bar")
