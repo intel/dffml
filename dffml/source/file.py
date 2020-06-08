@@ -105,7 +105,7 @@ class FileSource(BaseSource):
             elif self.config.filename.suffix == ".zip":
                 close = self.zip_closer_helper()
             else:
-                close = open(self.config.filename, "w+")
+                close = open(self.config.filename, "w+", newline="")
             with close as fd:
                 await self.dump_fd(fd)
 
