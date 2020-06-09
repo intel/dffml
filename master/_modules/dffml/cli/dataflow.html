@@ -184,7 +184,7 @@
 
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">BaseConfig</span>
 <span class="kn">from</span> <span class="nn">..df.base</span> <span class="kn">import</span> <span class="n">BaseOrchestrator</span><span class="p">,</span> <span class="n">OperationImplementation</span>
-<span class="kn">from</span> <span class="nn">..df.types</span> <span class="kn">import</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Stage</span><span class="p">,</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">Input</span>
+<span class="kn">from</span> <span class="nn">..df.types</span> <span class="kn">import</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Stage</span><span class="p">,</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">InputFlow</span>
 <span class="kn">from</span> <span class="nn">..df.memory</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">MemoryOrchestrator</span><span class="p">,</span>
     <span class="n">MemoryInputSet</span><span class="p">,</span>
@@ -196,7 +196,7 @@
 <span class="kn">from</span> <span class="nn">..source.source</span> <span class="kn">import</span> <span class="n">SubsetSources</span><span class="p">,</span> <span class="n">Sources</span>
 <span class="kn">from</span> <span class="nn">..source.json</span> <span class="kn">import</span> <span class="n">JSONSource</span>
 <span class="kn">from</span> <span class="nn">..source.file</span> <span class="kn">import</span> <span class="n">FileSourceConfig</span>
-<span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">merge</span>
+<span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">merge</span><span class="p">,</span> <span class="n">split_dot_seperated</span><span class="p">,</span> <span class="n">traverse_set</span>
 <span class="kn">from</span> <span class="nn">..util.entrypoint</span> <span class="kn">import</span> <span class="n">load</span>
 <span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="kn">import</span> <span class="n">CMD</span><span class="p">,</span> <span class="n">CMDOutputOverride</span>
 <span class="kn">from</span> <span class="nn">..util.cli.cmds</span> <span class="kn">import</span> <span class="p">(</span>
@@ -211,7 +211,7 @@
 <div class="viewcode-block" id="MergeConfig"><a class="viewcode-back" href="../../../api/cli/dataflow.html#dffml.cli.dataflow.MergeConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">MergeConfig</span><span class="p">:</span>
     <span class="n">dataflows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;DataFlows to merge&quot;</span><span class="p">)</span>
-    <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+    <span class="n">configloader</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="s2">&quot;ConfigLoader to use for exporting&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">JSONConfigLoader</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">not_linked</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
@@ -237,7 +237,7 @@
                 <span class="n">merge</span><span class="p">(</span><span class="n">merged</span><span class="p">,</span> <span class="n">exported</span><span class="p">,</span> <span class="n">list_append</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="c1"># Export the dataflow</span>
         <span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">_fromdict</span><span class="p">(</span><span class="o">**</span><span class="n">merged</span><span class="p">)</span>
-        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">())</span> <span class="k">as</span> <span class="n">configloader</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">configloader</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">())</span> <span class="k">as</span> <span class="n">configloader</span><span class="p">:</span>
             <span class="k">async</span> <span class="k">with</span> <span class="n">configloader</span><span class="p">()</span> <span class="k">as</span> <span class="n">loader</span><span class="p">:</span>
                 <span class="n">exported</span> <span class="o">=</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">linked</span><span class="o">=</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">not_linked</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">((</span><span class="k">await</span> <span class="n">loader</span><span class="o">.</span><span class="n">dumpb</span><span class="p">(</span><span class="n">exported</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
@@ -246,7 +246,7 @@
 <div class="viewcode-block" id="CreateConfig"><a class="viewcode-back" href="../../../api/cli/dataflow.html#dffml.cli.dataflow.CreateConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">CreateConfig</span><span class="p">:</span>
     <span class="n">operations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Operations to create a dataflow for&quot;</span><span class="p">,)</span>
-    <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+    <span class="n">configloader</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="s2">&quot;ConfigLoader to use&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">JSONConfigLoader</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">not_linked</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
@@ -256,6 +256,12 @@
         <span class="s2">&quot;Inputs to be added to every context&quot;</span><span class="p">,</span>
         <span class="n">action</span><span class="o">=</span><span class="n">ParseInputsAction</span><span class="p">,</span>
         <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="p">)</span>
+    <span class="n">flow</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Flow of inputs&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">ParseInputsAction</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="p">)</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;configs&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">ParseInputsAction</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[],</span>
     <span class="p">)</span></div>
 
 
@@ -275,7 +281,7 @@
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">operations</span> <span class="o">+=</span> <span class="p">[</span><span class="n">Operation</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">load_operation</span><span class="p">)]</span>
-        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">())</span> <span class="k">as</span> <span class="n">configloader</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">configloader</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">())</span> <span class="k">as</span> <span class="n">configloader</span><span class="p">:</span>
             <span class="k">async</span> <span class="k">with</span> <span class="n">configloader</span><span class="p">()</span> <span class="k">as</span> <span class="n">loader</span><span class="p">:</span>
                 <span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="o">*</span><span class="n">operations</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="p">[</span>
@@ -283,6 +289,17 @@
                     <span class="k">for</span> <span class="n">val</span><span class="p">,</span> <span class="n">def_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span>
                 <span class="p">]</span>
                 <span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+
+                <span class="c1"># flow argument key is of the form opname.inputs/conditions.keyname</span>
+                <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">flow</span><span class="p">:</span>
+                    <span class="o">*</span><span class="n">opname</span><span class="p">,</span> <span class="n">val_type</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">split_dot_seperated</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                    <span class="n">opname</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">opname</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">val_type</span> <span class="o">==</span> <span class="s2">&quot;inputs&quot;</span><span class="p">:</span>
+                        <span class="n">dataflow</span><span class="o">.</span><span class="n">flow</span><span class="p">[</span><span class="n">opname</span><span class="p">]</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">dataflow</span><span class="o">.</span><span class="n">flow</span><span class="p">[</span><span class="n">opname</span><span class="p">]</span><span class="o">.</span><span class="n">conditions</span> <span class="o">=</span> <span class="n">v</span>
+                <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+                    <span class="n">traverse_set</span><span class="p">(</span><span class="n">dataflow</span><span class="o">.</span><span class="n">configs</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">v</span><span class="p">)</span>
                 <span class="n">exported</span> <span class="o">=</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">export</span><span class="p">(</span><span class="n">linked</span><span class="o">=</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">not_linked</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">((</span><span class="k">await</span> <span class="n">loader</span><span class="o">.</span><span class="n">dumpb</span><span class="p">(</span><span class="n">exported</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
 
@@ -292,7 +309,7 @@
     <span class="n">dataflow</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="s2">&quot;File containing exported DataFlow&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+    <span class="n">configloader</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="s2">&quot;ConfigLoader to use for importing DataFlow&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
@@ -424,7 +441,7 @@
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">dataflow_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataflow</span><span class="p">)</span>
-        <span class="n">config_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span>
+        <span class="n">config_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">configloader</span>
         <span class="k">if</span> <span class="n">config_cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">config_type</span> <span class="o">=</span> <span class="n">dataflow_path</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
             <span class="n">config_cls</span> <span class="o">=</span> <span class="n">BaseConfigLoader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config_type</span><span class="p">)</span>
@@ -477,7 +494,7 @@
 <div class="viewcode-block" id="DiagramConfig"><a class="viewcode-back" href="../../../api/cli/dataflow.html#dffml.cli.dataflow.DiagramConfig">[docs]</a><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">DiagramConfig</span><span class="p">:</span>
     <span class="n">dataflow</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;File containing exported DataFlow&quot;</span><span class="p">)</span>
-    <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+    <span class="n">configloader</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="s2">&quot;ConfigLoader to use for importing DataFlow&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">stages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
@@ -496,7 +513,7 @@
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">dataflow_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataflow</span><span class="p">)</span>
-        <span class="n">config_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span>
+        <span class="n">config_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">configloader</span>
         <span class="k">if</span> <span class="n">config_cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">config_type</span> <span class="o">=</span> <span class="n">dataflow_path</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
             <span class="n">config_cls</span> <span class="o">=</span> <span class="n">BaseConfigLoader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config_type</span><span class="p">)</span>

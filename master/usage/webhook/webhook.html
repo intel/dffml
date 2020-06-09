@@ -224,7 +224,7 @@ we push to the default branch, the new version is pulled and its docker containe
 <span class="go">restart_running_containers</span>
 <span class="go">cleanup_git_repo</span>
 <span class="go">EOF</span>
-<span class="gp">$</span> dffml dataflow create -config yaml <span class="k">$(</span>cat /tmp/operations<span class="k">)</span> &gt; deploy/webhook/df/webhook.yaml
+<span class="gp">$</span> dffml dataflow create -configloader yaml <span class="k">$(</span>cat /tmp/operations<span class="k">)</span> &gt; deploy/webhook/df/webhook.yaml
 </pre></div>
 </div>
 <p>Config</p>

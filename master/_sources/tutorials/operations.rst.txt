@@ -482,7 +482,7 @@ We first export the DataFlow to a config file on disk.
 .. code-block:: console
 
     $ mkdir -p shouldi/deploy/df
-    $ dffml service dev export -config json shouldi.cli:DATAFLOW \
+    $ dffml service dev export -configloader json shouldi.cli:DATAFLOW \
       > shouldi/deploy/df/shouldi.json
 
 We then create the mermaidjs digarm from the DataFlow. The ``-simple`` flag says

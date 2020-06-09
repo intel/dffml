@@ -277,6 +277,28 @@
     <span class="k">return</span> <span class="n">last</span><span class="p">[</span><span class="s2">&quot;plugin&quot;</span><span class="p">]</span></div>
 
 
+<span class="k">def</span> <span class="nf">split_dot_seperated</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;List[str]&quot;</span><span class="p">:</span>
+    <span class="n">raw_split</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+    <span class="n">vals</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">tl</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">trig</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">raw_split</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;&#39;&quot;</span> <span class="ow">in</span> <span class="n">x</span> <span class="ow">or</span> <span class="s1">&#39;&quot;&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+            <span class="n">trig</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">trig</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">trig</span><span class="p">:</span>
+                <span class="n">tl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tl</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+                <span class="n">tl</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">trig</span><span class="p">:</span>
+            <span class="n">tl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="n">vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">vals</span>
+
+
 <div class="viewcode-block" id="traverse_get"><a class="viewcode-back" href="../../../api/util/data.html#dffml.util.data.traverse_get">[docs]</a><span class="k">def</span> <span class="nf">traverse_get</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Travel down through a dict</span>
@@ -288,11 +310,45 @@
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; traverse_get({&quot;one&quot;: {&quot;two&quot;: 3}}, &quot;one&quot;, &quot;two&quot;)</span>
 <span class="sd">    3</span>
+<span class="sd">    &gt;&gt;&gt; traverse_get({&quot;one&quot;: {&quot;two&quot;: 3}}, &quot;one.two&quot;)</span>
+<span class="sd">    3</span>
+<span class="sd">    &gt;&gt;&gt; traverse_get({&quot;one.two&quot;: {&quot;three&quot;: 4}}, &quot;&#39;one.two&#39;.three&quot;)</span>
+<span class="sd">    4</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">split_dot_seperated</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">current</span> <span class="o">=</span> <span class="n">target</span>
     <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
         <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">[</span><span class="n">level</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">current</span></div>
+
+
+<div class="viewcode-block" id="traverse_set"><a class="viewcode-back" href="../../../api/util/data.html#dffml.util.data.traverse_set">[docs]</a><span class="k">def</span> <span class="nf">traverse_set</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; from dffml import traverse_set</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; d = {&quot;one&quot;: {&quot;two&quot;: 3}}</span>
+<span class="sd">    &gt;&gt;&gt; traverse_set(d,&quot;one.two&quot;, value = &quot;Three&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; d[&quot;one&quot;][&quot;two&quot;]</span>
+<span class="sd">    &#39;Three&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">split_dot_seperated</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">target</span><span class="p">[</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span>
+
+    <span class="n">current</span> <span class="o">=</span> <span class="n">target</span>
+    <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">args</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">level</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">current</span><span class="p">:</span>
+            <span class="n">current</span><span class="p">[</span><span class="n">level</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">current</span> <span class="o">=</span> <span class="n">current</span><span class="p">[</span><span class="n">level</span><span class="p">]</span>
+
+    <span class="n">current</span><span class="p">[</span><span class="n">args</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">return</span></div>
 
 
 <div class="viewcode-block" id="ignore_args"><a class="viewcode-back" href="../../../api/util/data.html#dffml.util.data.ignore_args">[docs]</a><span class="k">def</span> <span class="nf">ignore_args</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
