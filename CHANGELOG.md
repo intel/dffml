@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Definition for output of the function that `op` wraps.
 - Expose high level load, run and save functions to noasync.
 - Option to modify flow in `dataflow create`.
+- Operation to verify secret for GitHub webhook.
 ### Changed
 - Update MNIST use case to normalize image arrays.
 - `arg_` notation replaced with `CONFIG = ExampleConfig` style syntax

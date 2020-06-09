@@ -13,6 +13,29 @@ from dffml_feature_git.feature.operations import clone_git_repo
 
 
 @op(
+    inputs={
+        "headers": webhook_headers,
+        "secret_filename": ini_file,
+        "body": payload,
+    },
+    outputs={"git_payload": git_payload},
+)
+async def check_secret_match(headers, secret_filename, body):
+    expected = headers["X-Hub-Signature"].replace("sha1=", "")
+    # Getting secret value from file
+    async with INISecret(filename=secret_filename) as secret_store:
+        async with secret_store() as secret_ctx:
+            secret = await secret_ctx.get(name="github_webhook")
+    key = secret.encode()
+    calculated = hmac.new(key, body, hashlib.sha1).hexdigest()
+    match = hmac.compare_digest(expected, calculated)
+
+    if match:
+        return {"git_payload": json.loads(body.decode())}
+    return
+
+
+@op(
     inputs={"payload": git_payload},
     outputs={"url": clone_git_repo.op.inputs["URL"]},
 )
