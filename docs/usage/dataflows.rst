@@ -253,7 +253,7 @@ with the existing flow.
       -config yaml \
       -seed \
         directory=key \
-        safety_check_number_of_issues,bandit_output,language_to_comment_ratio=get_single_spec \
+        safety_check.outputs.result,run_bandit.outputs.result,language_to_comment_ratio=get_single_spec \
       -- \
         dffml.mapping.create \
         lines_of_code_by_language \
