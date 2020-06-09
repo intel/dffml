@@ -427,7 +427,7 @@ file <code class="docutils literal notranslate"><span class="pre">/tmp/operation
 </pre></div>
 </div>
 <p>We then create a <code class="docutils literal notranslate"><span class="pre">DataFlow</span></code> description of how they all link together.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create -config yaml <span class="k">$(</span>cat /tmp/operations<span class="k">)</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create -configloader yaml <span class="k">$(</span>cat /tmp/operations<span class="k">)</span> <span class="se">\</span>
     &gt; cgi-bin/dataflow.yaml
 </pre></div>
 </div>

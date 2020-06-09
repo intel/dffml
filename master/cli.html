@@ -513,7 +513,7 @@ factor which is 10 in this case. The example dataflow file looks like this:</p>
 <h3>Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
 <p>Ouput the dataflow description to standard output using the specified config
 format.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create -config yaml get_single clone_git_repo &gt; df.yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create -configloader yaml get_single clone_git_repo &gt; df.yaml
 </pre></div>
 </div>
 </div>
@@ -541,7 +541,7 @@ DataFlow and have the input of the <code class="docutils literal notranslate"><s
 ouput of the <code class="docutils literal notranslate"><span class="pre">dffml.mapping.create</span></code> operation. If you want to see the
 difference create a diagram of the DataFlow with and without using the <code class="docutils literal notranslate"><span class="pre">sed</span></code>
 command during generation.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create dffml.mapping.create print_output -config yaml <span class="p">|</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create dffml.mapping.create print_output -configloader yaml <span class="p">|</span> <span class="se">\</span>
     sed <span class="s1">&#39;N;s/data:\n      - seed/data:\n      - dffml.mapping.create: mapping/g&#39;</span> <span class="p">|</span> <span class="se">\</span>
     tee df.yaml
 <span class="go">definitions:</span>
@@ -659,14 +659,14 @@ nothing else required.</p>
 of an object, covert the object to it’s <code class="docutils literal notranslate"><span class="pre">dict</span></code> representation, and export it
 using the given config format.</p>
 <p>All DFFML objects are exportable. Here’s and example of exporting a DataFlow.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev <span class="nb">export</span> -config json shouldi.cli:DATAFLOW
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev <span class="nb">export</span> -configloader json shouldi.cli:DATAFLOW
 </pre></div>
 </div>
 <p>This is an example of exporting a model. Be sure the files you’re exporting from
 have a <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">&quot;__main__&quot;:</span></code> block, or else loading the file will
 result in running the code in it instead of just exporting a global variable,
 which is what you want.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev <span class="nb">export</span> -config yaml quickstart:model
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev <span class="nb">export</span> -configloader yaml quickstart:model
 </pre></div>
 </div>
 </div>

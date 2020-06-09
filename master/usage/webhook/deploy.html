@@ -299,7 +299,7 @@ We will start writing our operation in <code class="docutils literal notranslate
 </pre></div>
 </div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir -p deploy/mc/http deploy/df
-<span class="gp">$</span> dffml service dev <span class="nb">export</span> -config yaml ffmpeg.dataflow:DATAFLOW &gt; deploy/df/ffmpeg.yaml
+<span class="gp">$</span> dffml service dev <span class="nb">export</span> -configloader yaml ffmpeg.dataflow:DATAFLOW &gt; deploy/df/ffmpeg.yaml
 </pre></div>
 </div>
 <p>Create the config file for the HTTP service

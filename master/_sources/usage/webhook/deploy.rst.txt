@@ -64,7 +64,7 @@ Dataflow and Config files
 .. code-block:: console
 
     $ mkdir -p deploy/mc/http deploy/df
-    $ dffml service dev export -config yaml ffmpeg.dataflow:DATAFLOW > deploy/df/ffmpeg.yaml
+    $ dffml service dev export -configloader yaml ffmpeg.dataflow:DATAFLOW > deploy/df/ffmpeg.yaml
 
 Create the config file for the HTTP service
 in ``deploy/mc/http/ffmpeg.yaml``

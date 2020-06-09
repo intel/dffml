@@ -397,7 +397,7 @@ operations within the <code class="docutils literal notranslate"><span class="pr
 want to add to the <code class="docutils literal notranslate"><span class="pre">shouldi</span></code> dataflow, and how we want to connect those
 operations with the existing ones.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir -p shouldi/deploy/override
-<span class="gp">$</span> dffml dataflow create -config yaml <span class="se">\</span>
+<span class="gp">$</span> dffml dataflow create -configloader yaml <span class="se">\</span>
   dffml.mapping.create lines_of_code_by_language lines_of_code_to_comments <span class="se">\</span>
   &gt; shouldi/deploy/override/shouldi.yaml
 </pre></div>
@@ -519,7 +519,7 @@ operations with the existing ones.</p>
     shouldi/deploy/df/shouldi.json <span class="se">\</span>
     shouldi/deploy/override/shouldi.yaml <span class="p">|</span> <span class="se">\</span>
   dffml dataflow diagram <span class="se">\</span>
-    -stages processing -simple -config yaml /dev/stdin
+    -stages processing -simple -configloader yaml /dev/stdin
 </pre></div>
 </div>
 <p>Copy and pasting the graph into the
