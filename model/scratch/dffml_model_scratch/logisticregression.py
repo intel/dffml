@@ -22,7 +22,6 @@ class LogisticRegressionConfig:
     features: Features = field("Features to train on")
     directory: pathlib.Path = field(
         "Directory where state should be saved",
-        default=pathlib.Path("~", ".cache", "dffml", "scratch"),
     )
 
 

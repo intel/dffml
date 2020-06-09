@@ -24,7 +24,6 @@ class DAAL4PyLRModelConfig:
     features: Features = field("Features to train on. For SLR only 1 allowed")
     directory: pathlib.Path = field(
         "Directory where state should be saved",
-        default=pathlib.Path("~", ".cache", "dffml", "daal4py"),
     )
 
 
