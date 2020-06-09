@@ -8,12 +8,15 @@ definitions:
   docker_image_tag:
     name: docker_image_tag
     primitive: str
+  docker_restarted_containers:
+    name: docker_restarted_containers
+    primitive: str
   docker_running_containers:
     name: docker_running_containers
     primitive: List[str]
   git_payload:
     name: git_payload
-    primitive: Dict[Any]
+    primitive: Dict[str,Any]
   git_repository:
     lock: true
     name: git_repository
@@ -28,20 +31,41 @@ definitions:
   got_running_containers:
     name: got_running_containers
     primitive: bool
+  ini_file:
+    name: ini_file
+    primitive: str
   is_default_branch:
     name: is_default_branch
     primitive: bool
   is_image_built:
     name: is_image_built
     primitive: bool
+  payload:
+    name: payload
+    primitive: bytes
   valid_git_repository_URL:
     name: valid_git_repository_URL
     primitive: boolean
+  webhook_headers:
+    name: webhook_headers
+    primitive: Dict[str,Any]
 flow:
   check_if_default_branch:
     inputs:
       payload:
+      - check_secret_match: git_payload
+  check_secret_match:
+    inputs:
+      body:
       - seed
+      headers:
+      - seed
+      secret_filename:
+      - seed
+  cleanup_git_repo:
+    inputs:
+      repo:
+      - clone_git_repo: repo
   clone_git_repo:
     conditions:
     - seed
@@ -58,7 +82,7 @@ flow:
   get_image_tag:
     inputs:
       payload:
-      - seed
+      - check_secret_match: git_payload
   get_running_containers:
     inputs:
       tag:
@@ -70,7 +94,7 @@ flow:
   get_url_from_payload:
     inputs:
       payload:
-      - seed
+      - check_secret_match: git_payload
   parse_docker_commands:
     inputs:
       image_tag:
@@ -94,6 +118,21 @@ operations:
     outputs:
       is_default_branch: is_default_branch
     stage: processing
+  check_secret_match:
+    inputs:
+      body: payload
+      headers: webhook_headers
+      secret_filename: ini_file
+    name: check_secret_match
+    outputs:
+      git_payload: git_payload
+    stage: processing
+  cleanup_git_repo:
+    inputs:
+      repo: git_repository
+    name: cleanup_git_repo
+    outputs: {}
+    stage: cleanup
   clone_git_repo:
     conditions:
     - valid_git_repository_URL
@@ -156,6 +195,10 @@ operations:
       containers: docker_running_containers
       docker_commands: docker_commands
     name: restart_running_containers
-    outputs: {}
+    outputs:
+      containers: docker_restarted_containers
     stage: processing
+seed:
+- definition: ini_file
+  value: ./deploy/webhook/secret.ini
 

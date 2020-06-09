@@ -1,40 +1,32 @@
 definitions:
-  input_file:
-    name: input_file
-    primitive: bytes
-  output_file:
-    name: output_file
-    primitive: bytes
-  Resolution:
-    name: Resolution
-    primitive: int
   get_single_output:
     name: get_single_output
     primitive: map
   get_single_spec:
     name: get_single_spec
     primitive: array
+  operations.convert_to_gif.inputs.input_file:
+    name: operations.convert_to_gif.inputs.input_file
+    primitive: bytes
+  operations.convert_to_gif.inputs.resolution:
+    name: operations.convert_to_gif.inputs.resolution
+    primitive: int
+  operations.convert_to_gif.outputs.result:
+    name: operations.convert_to_gif.outputs.result
+    primitive: bytes
 flow:
-  convert_to_gif:
+  get_single:
+    inputs:
+      spec:
+      - seed
+  operations:convert_to_gif:
     inputs:
       input_file:
       - seed
       resolution:
       - seed
-  get_single:
-    inputs:
-      spec:
-      - seed
 linked: true
 operations:
-  convert_to_gif:
-    inputs:
-      input_file: input_file
-      resolution: Resolution
-    name: convert_to_gif
-    outputs:
-      output_file: output_file
-    stage: processing
   get_single:
     inputs:
       spec: get_single_spec
@@ -42,9 +34,18 @@ operations:
     outputs:
       output: get_single_output
     stage: output
+  operations:convert_to_gif:
+    inputs:
+      input_file: operations.convert_to_gif.inputs.input_file
+      resolution: operations.convert_to_gif.inputs.resolution
+    name: operations:convert_to_gif
+    outputs:
+      result: operations.convert_to_gif.outputs.result
+    stage: processing
 seed:
+- definition: operations.convert_to_gif.inputs.resolution
+  value: 440
 - definition: get_single_spec
   value:
-  - output_file
-- definition: Resolution
-  value: 480
+  - operations.convert_to_gif.outputs.result
+
