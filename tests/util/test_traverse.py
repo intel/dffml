@@ -21,12 +21,12 @@ class TestTraverse(AsyncTestCase):
     def test_traverse_set(self):
         test_dict = {"who": {"am": "i"}}
 
-        traverse_set(test_dict, "I", "who", "am")
+        traverse_set(test_dict, "who", "am", value="I")
         self.assertEqual(test_dict["who"]["am"], "I")
 
-        traverse_set(test_dict, "I", "who.am")
+        traverse_set(test_dict, "who.am", value="I")
         self.assertEqual(test_dict["who"]["am"], "I")
 
         test_dict = {"who.am": {"i": "u"}}
-        traverse_set(test_dict, "U", "'who.am'.i")
+        traverse_set(test_dict, "'who.am'.i", value="U")
         self.assertEqual(test_dict["who.am"]["i"], "U")
