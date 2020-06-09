@@ -237,7 +237,7 @@ operations with the existing ones.
 .. code-block:: console
 
     $ mkdir -p shouldi/deploy/override
-    $ dffml dataflow create -config yaml \
+    $ dffml dataflow create -configloader yaml \
       dffml.mapping.create lines_of_code_by_language lines_of_code_to_comments \
       > shouldi/deploy/override/shouldi.yaml
 
@@ -291,7 +291,7 @@ The diagram above can be re-generated with the following commands
         shouldi/deploy/df/shouldi.json \
         shouldi/deploy/override/shouldi.yaml | \
       dffml dataflow diagram \
-        -stages processing -simple -config yaml /dev/stdin
+        -stages processing -simple -configloader yaml /dev/stdin
 
 Copy and pasting the graph into the
 `mermaidjs live editor <https://mermaidjs.github.io/mermaid-live-editor>`_
