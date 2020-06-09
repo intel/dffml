@@ -17,7 +17,7 @@ from ..configloader.json import JSONConfigLoader
 from ..source.source import SubsetSources, Sources
 from ..source.json import JSONSource
 from ..source.file import FileSourceConfig
-from ..util.data import merge, split_dot_seperated
+from ..util.data import merge, split_dot_seperated, traverse_set
 from ..util.entrypoint import load
 from ..util.cli.cmd import CMD, CMDOutputOverride
 from ..util.cli.cmds import (
@@ -81,6 +81,9 @@ class CreateConfig:
     flow: List[str] = field(
         "Flow of inputs", action=ParseInputsAction, default_factory=lambda: [],
     )
+    config: List[str] = field(
+        "configs", action=ParseInputsAction, default_factory=lambda: [],
+    )
 
 
 class Create(CMD):
@@ -116,7 +119,8 @@ class Create(CMD):
                         dataflow.flow[opname].inputs[key] = v
                     else:
                         dataflow.flow[opname].conditions = v
-
+                for v, k in self.config:
+                    traverse_set(dataflow.configs, k, value=v)
                 exported = dataflow.export(linked=not self.not_linked)
                 print((await loader.dumpb(exported)).decode())
 
