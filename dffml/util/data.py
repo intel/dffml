@@ -144,7 +144,7 @@ def traverse_get(target, *args):
     return current
 
 
-def traverse_set(target, value, *args):
+def traverse_set(target, *args, value):
     """
     Examples
     --------
@@ -152,7 +152,7 @@ def traverse_set(target, value, *args):
     >>> from dffml import traverse_set
     >>>
     >>> d = {"one": {"two": 3}}
-    >>> traverse_set(d,"Three", "one.two")
+    >>> traverse_set(d,"one.two", value = "Three")
     >>> d["one"]["two"]
     'Three'
     """
