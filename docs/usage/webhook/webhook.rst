@@ -32,7 +32,7 @@ Setup a http server in ``ffmpeg/deploy/webhook``, to receive webhook and redploy
     restart_running_containers
     cleanup_git_repo
     EOF
-    $ dffml dataflow create -config yaml $(cat /tmp/operations) > deploy/webhook/df/webhook.yaml
+    $ dffml dataflow create -configloader yaml $(cat /tmp/operations) > deploy/webhook/df/webhook.yaml
 
 Config
 

@@ -155,7 +155,7 @@ class TestDataFlowCreate(TestDataFlow):
                     "create",
                     "dffml.mapping.create",
                     "print_output",
-                    "-config",
+                    "-configloader",
                     "yaml",
                 )
         # Load the generated dataflow
