@@ -266,7 +266,7 @@ class TestDataflowRunAllRecords(RecordsTestCase):
             with contextlib.redirect_stdout(dataflow):
                 await Dataflow.cli(
                     "create",
-                    "-config",
+                    "-configloader",
                     "json",
                     *map(lambda op: op.name, OPERATIONS),
                 )
@@ -313,7 +313,7 @@ class TestDataflowRunRecordSet(RecordsTestCase):
             with contextlib.redirect_stdout(dataflow):
                 await Dataflow.cli(
                     "create",
-                    "-config",
+                    "-configloader",
                     "json",
                     *map(lambda op: op.name, OPERATIONS),
                 )
