@@ -303,15 +303,11 @@ class Routes(BaseMultiCommContext):
 
                 elif postprocess_mode == "bytes":
                     content_type, output_keys = content_info
-                    output_data = traverse_get(
-                        results, *output_keys.split(".")
-                    )
+                    output_data = traverse_get(results, output_keys)
                     return web.Response(body=output_data)
 
                 elif postprocess_mode == "text":
-                    output_data = traverse_get(
-                        results, *content_info[0].split(".")
-                    )
+                    output_data = traverse_get(results, content_info[0])
                     return web.Response(text=output_data)
 
                 else:
