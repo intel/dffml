@@ -78,6 +78,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
   parameter sets for an operation.
+- Typing of config vlaues for numpy parsed docstrings where type should be tuple
+  or list
 ### Removed
 - Monitor class and associated tests (unused)
 - DefinedFeature class in `dffml/feature/feature.py`
