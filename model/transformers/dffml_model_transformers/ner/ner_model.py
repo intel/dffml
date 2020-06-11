@@ -387,92 +387,26 @@ class NERModelContext(ModelContext):
             os.path.join(self.parent.config.output_dir, "tf_model.h5")
         ):
             raise ModelNotTrained("Train model before assessing for accuracy.")
-        config = self.parent.config._asdict()
-        config["strategy"] = self.parent.config.strategy
-        config["n_device"] = self.parent.config.n_device
-        self.tokenizer = self.tokenizer_class.from_pretrained(
-            config["output_dir"], do_lower_case=config["do_lower_case"]
-        )
-        eval_batch_size = (
-            config["per_device_eval_batch_size"] * config["n_device"]
-        )
+
         data_df = await self._preprocess_data(sources)
-        eval_dataset, num_eval_examples = self.get_dataset(
-            data_df,
-            self.tokenizer,
-            self.pad_token_label_id,
-            eval_batch_size,
-            mode="accuracy",
-        )
-        eval_dataset = self.parent.config.strategy.experimental_distribute_dataset(
-            eval_dataset
-        )
-
-        checkpoints = []
-        results = []
-
-        if config["eval_all_checkpoints"]:
-            checkpoints = list(
-                os.path.dirname(c)
-                for c in sorted(
-                    pathlib(
-                        config["output_dir"] + "/**/" + TF2_WEIGHTS_NAME
-                    ).glob(recursive=True),
-                    key=lambda f: int("".join(filter(str.isdigit, f)) or -1),
-                )
+        eval_dataset = self.get_dataset(data_df, self.tokenizer, mode="eval",)
+        with self.parent.config.strategy.scope():
+            self.model = TFAutoModelForTokenClassification.from_pretrained(
+                self.parent.config.output_dir,
+                config=self.config,
+                cache_dir=self.parent.config.cache_dir,
             )
 
-        if len(checkpoints) == 0:
-            checkpoints.append(config["output_dir"])
-
-        self.logger.info("Evaluate the following checkpoints: %s", checkpoints)
-
-        for checkpoint in checkpoints:
-            global_step = (
-                checkpoint.split("-")[-1]
-                if re.match(".*checkpoint-[0-9]", checkpoint)
-                else "final"
-            )
-
-            with self.parent.config.strategy.scope():
-                self.model = self.model_class.from_pretrained(checkpoint)
-
-            y_true, y_pred, eval_loss = self._custom_accuracy(
-                eval_dataset,
-                self.tokenizer,
-                self.model,
-                num_eval_examples,
-                eval_batch_size,
-            )
-            report = classification_report(y_true, y_pred, digits=4)
-
-            if global_step:
-                results.append(
-                    {
-                        global_step + "_report": report,
-                        global_step + "_loss": eval_loss,
-                    }
-                )
-
-        output_eval_file = os.path.join(
-            config["output_dir"], "accuracy_results.txt"
+        trainer = TFTrainer(
+            model=self.model,
+            args=self.parent.config,
+            train_dataset=None,
+            eval_dataset=eval_dataset.get_dataset(),
+            compute_metrics=self.compute_metrics,
         )
-        # create the report and save in output_dir
-        with self.tf.io.gfile.GFile(output_eval_file, "w") as writer:
-            for res in results:
-                for key, val in res.items():
-                    if "loss" in key:
-                        self.logger.debug(key + " = " + str(val))
-                        writer.write(key + " = " + str(val))
-                        writer.write("\n")
-                    else:
-                        self.logger.debug(key)
-                        self.logger.debug("\n" + report)
-                        writer.write(key + "\n")
-                        writer.write(report)
-                        writer.write("\n")
-        # Return accuracy for the last checkpoint
-        return Accuracy(f1_score(y_true, y_pred))
+
+        result = trainer.evaluate()
+        return Accuracy(result["eval_f1"])
 
     async def predict(
         self, records: AsyncIterator[Record]
@@ -481,35 +415,29 @@ class NERModelContext(ModelContext):
             os.path.join(self.parent.config.output_dir, "tf_model.h5")
         ):
             raise ModelNotTrained("Train model before prediction.")
-        config = self.parent.config._asdict()
-        config["strategy"] = self.parent.config.strategy
-        config["n_device"] = self.parent.config.n_device
-        tokenizer = self.tokenizer_class.from_pretrained(
-            config["output_dir"], do_lower_case=config["do_lower_case"]
-        )
-        model = self.model_class.from_pretrained(config["output_dir"])
-        test_batch_size = (
-            config["per_device_eval_batch_size"] * config["n_device"]
-        )
+        with self.parent.config.strategy.scope():
+            self.model = TFAutoModelForTokenClassification.from_pretrained(
+                self.parent.config.output_dir,
+                config=self.config,
+                cache_dir=self.parent.config.cache_dir,
+            )
+
         async for record in records:
             sentence = record.features([self.parent.config.words.name])
             df = self.pd.DataFrame(sentence, index=[0])
-            test_dataset, num_test_examples = self.get_dataset(
-                df,
-                tokenizer,
-                self.pad_token_label_id,
-                test_batch_size,
-                mode="test",
+            test_dataset = self.get_dataset(df, self.tokenizer, mode="test",)
+            trainer = TFTrainer(
+                model=self.model,
+                args=self.parent.config,
+                train_dataset=None,
+                eval_dataset=None,
+                compute_metrics=self.compute_metrics,
             )
-            test_dataset = self.parent.config.strategy.experimental_distribute_dataset(
-                test_dataset
+            predictions, label_ids, _ = trainer.predict(
+                test_dataset.get_dataset()
             )
-            y_pred = self._custom_predict(
-                test_dataset,
-                tokenizer,
-                model,
-                num_test_examples,
-                test_batch_size,
+            preds_list, labels_list = self.align_predictions(
+                predictions, label_ids
             )
             preds = [
                 {word: preds_list[0][i]}
@@ -517,6 +445,7 @@ class NERModelContext(ModelContext):
                     sentence[self.parent.config.words.name].split()
                 )
             ]
+
             record.predicted(self.parent.config.predict.name, preds, "Nan")
             yield record
 
