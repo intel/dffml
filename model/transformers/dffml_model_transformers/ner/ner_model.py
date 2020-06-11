@@ -6,30 +6,28 @@ import datetime
 import collections
 import importlib
 
-from typing import Any, List, Tuple, AsyncIterator
+from typing import Any, List, AsyncIterator, Optional, Tuple, Dict
 
-from seqeval.metrics import f1_score, classification_report
+import numpy as np
+from seqeval.metrics import (
+    classification_report,
+    f1_score,
+    precision_score,
+    recall_score,
+)
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
-try:
-    from fastprogress import master_bar, progress_bar
-except ImportError:
-    from fastprogress.fastprogress import master_bar, progress_bar
-
 from transformers import (
     TF2_WEIGHTS_NAME,
-    BertConfig,
-    BertTokenizer,
-    DistilBertConfig,
-    DistilBertTokenizer,
     GradientAccumulator,
-    RobertaConfig,
-    RobertaTokenizer,
-    TFBertForTokenClassification,
-    TFDistilBertForTokenClassification,
-    TFRobertaForTokenClassification,
     create_optimizer,
+    TFTrainer,
+    AutoConfig,
+    AutoTokenizer,
+    TFAutoModelForTokenClassification,
+    EvalPrediction,
+    PreTrainedTokenizer,
 )
 
 from dffml.record import Record
@@ -40,28 +38,10 @@ from dffml.model.accuracy import Accuracy
 from dffml.util.entrypoint import entrypoint
 from dffml.model.model import ModelContext, Model, ModelNotTrained
 
-from .utils import read_examples_from_df, convert_examples_to_features
-
-ALL_MODELS = sum(
-    (
-        tuple(conf.pretrained_config_archive_map.keys())
-        for conf in (BertConfig, RobertaConfig, DistilBertConfig)
-    ),
-    (),
+from .utils import (
+    read_examples_from_df,
+    TFNerDataset,
 )
-ORIGINAL_NER_MODELS = {
-    "bert": (BertConfig, TFBertForTokenClassification, BertTokenizer),
-    "distilbert": (
-        DistilBertConfig,
-        TFDistilBertForTokenClassification,
-        DistilBertTokenizer,
-    ),
-    "roberta": (
-        RobertaConfig,
-        TFRobertaForTokenClassification,
-        RobertaTokenizer,
-    ),
-}
 
 
 @config
@@ -71,13 +51,8 @@ class NERModelConfig:
     )
     words: Feature = field("Tokens to train NER model")
     predict: Feature = field("NER Tags (B-MISC, I-PER, O etc.) for tokens")
-    model_architecture_type: str = field(
-        "Model architecture selected in the : "
-        + ", ".join(ORIGINAL_NER_MODELS.keys())
-    )
     model_name_or_path: str = field(
-        "Path to pre-trained model or shortcut name selected in the list: "
-        + ", ".join(ALL_MODELS)
+        "Path to pre-trained model or shortcut name listed on https://huggingface.co/models"
     )
     output_dir: str = field(
         "The output directory where the model checkpoints will be written",
@@ -97,6 +72,10 @@ class NERModelConfig:
         "Directory to store the pre-trained models downloaded from s3",
         default=str(pathlib.Path("~", ".cache", "dffml", "transformers")),
     )
+    overwrite_output_dir: bool = field(
+        "Overwrite the content of the output directory.Use this to continue training if output_dir points to a checkpoint directory.",
+        default=False,
+    )
     max_seq_length: int = field(
         "The maximum total input sentence length after tokenization.Sequences longer than this will be truncated, sequences shorter will be padded",
         default=128,
@@ -108,6 +87,9 @@ class NERModelConfig:
     use_fp16: bool = field(
         "Whether to use 16-bit (mixed) precision instead of 32-bit",
         default=False,
+    )
+    use_fast: bool = field(
+        "Set this flag to use fast tokenization.", default=False
     )
     ner_tags: List[str] = field(
         "List of all distinct NER Tags",
@@ -160,9 +142,53 @@ class NERModelConfig:
         "Batch size per GPU/CPU/TPU for assessing accuracy", default=8
     )
     no_cuda: bool = field("Avoid using CUDA when available", default=False)
-    eval_all_checkpoints: bool = field(
-        "Evaluate all checkpoints starting with the same prefix as model_name ending and ending with step number",
+
+    optimizer_name: str = field(
+        'Name of a Tensorflow optimizer among "adadelta, adagrad, adam, adamax, ftrl, nadam, rmsprop, sgd, adamw"',
+        default="adam",
+    )
+    loss_name: str = field(
+        "Name of a Tensorflow loss. For the list see: https://www.tensorflow.org/api_docs/python/tf/keras/losses",
+        default="SparseCategoricalCrossentropy",
+    )
+    overwrite_cache: bool = field(
+        "Overwrite the cached training and evaluation sets", default=False,
+    )
+    logging_dir: str = field(
+        "Tensorboard log dir.",
+        default=str(
+            pathlib.Path("~", ".cache", "dffml", "transformers", "log")
+        ),
+    )
+    logging_first_step: bool = field(
+        "Log and eval the first global_step", default=False,
+    )
+    logging_steps: int = field(
+        "Log every X updates steps.", default=500,
+    )
+    save_total_limit: int = field(
+        "Limit the total amount of checkpoints.Deletes the older checkpoints in the output_dir. Default is unlimited checkpoints",
+        default=None,
+    )
+    fp16_opt_level: str = field(
+        "For fp16: Apex AMP optimization level selected in ['O0', 'O1', 'O2', and 'O3']."
+        "See details at https://nvidia.github.io/apex/amp.html",
+        default="O1",
+    )
+
+    local_rank: int = field(
+        "For distributed training: local_rank", default=-1,
+    )
+    end_lr: float = field("End learning rate for optimizer", default=0)
+    debug: bool = field(
+        "Activate the trace to record computation graphs and profiling information",
         default=False,
+    )
+    num_train_epochs: float = field(
+        "Total number of training epochs to perform.", default=1,
+    )
+    evaluate_during_training: bool = field(
+        "Run evaluation during training at each logging step.", default=False,
     )
 
     def __post_init__(self):
@@ -198,6 +224,17 @@ class NERModelConfig:
             self.strategy = self.tf.distribute.OneDeviceStrategy(
                 device="/gpu:" + self.gpus.split(",")[0]
             )
+        self.n_gpu = self.n_device
+        self.train_batch_size = (
+            self.per_device_train_batch_size * self.n_device
+        )
+        self.eval_batch_size = self.per_device_eval_batch_size * self.n_device
+        self.test_batch_size = self.per_device_eval_batch_size * self.n_device
+        self.label_map: Dict[int, str] = {
+            i: label for i, label in enumerate(self.ner_tags)
+        }
+        self.num_labels = len(self.ner_tags)
+        self.mode = "token-classification"
 
 
 class NERModelContext(ModelContext):
