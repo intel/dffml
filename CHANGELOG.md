@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Expose high level load, run and save functions to noasync.
 - Option to modify flow and add config in `dataflow create`.
 ### Changed
+- Update NER Model to use transformers 2.11.0
 - Update MNIST use case to normalize image arrays.
 - `arg_` notation replaced with `CONFIG = ExampleConfig` style syntax
   for parsing all command line arguments.

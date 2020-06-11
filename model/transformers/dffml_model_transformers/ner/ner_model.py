@@ -1,4 +1,3 @@
-
 import os
 import re
 import math
@@ -474,15 +473,7 @@ class NERModel(Model):
 
     .. code-block::
 
-                    precision    recall  f1-score   support
-
-            MISC     0.0000    0.0000    0.0000         2
-
-        micro avg     0.0000    0.0000    0.0000         2
-        macro avg     0.0000    0.0000    0.0000         2
-
-        INFO:dffml.NERModelContext:final_loss = 1.4586552
-        0.0
+        0.888888888888889
 
     Make a prediction
 
@@ -500,28 +491,26 @@ class NERModel(Model):
                     "Words": "DFFML models can do NER"
                 },
                 "key": "0",
-                "last_updated": "2020-03-21T23:14:41Z",
+                "last_updated": "2020-06-11T17:40:54Z",
                 "prediction": {
                     "Tag": {
                         "confidence": NaN,
                         "value": [
-                            [
-                                {
-                                    "DFFML": "I-LOC"
-                                },
-                                {
-                                    "models": "O"
-                                },
-                                {
-                                    "can": "I-LOC"
-                                },
-                                {
-                                    "do": "I-LOC"
-                                },
-                                {
-                                    "NER": "I-LOC"
-                                }
-                            ]
+                            {
+                                "DFFML": "B-MISC"
+                            },
+                            {
+                                "models": "I-MISC"
+                            },
+                            {
+                                "can": "O"
+                            },
+                            {
+                                "do": "B-MISC"
+                            },
+                            {
+                                "NER": "B-MISC"
+                            }
                         ]
                     }
                 }
@@ -533,33 +522,32 @@ class NERModel(Model):
                     "Words": "DFFML models can do regression"
                 },
                 "key": "1",
-                "last_updated": "2020-03-21T23:14:42Z",
+                "last_updated": "2020-06-11T17:40:57Z",
                 "prediction": {
                     "Tag": {
                         "confidence": NaN,
                         "value": [
-                            [
-                                {
-                                    "DFFML": "I-LOC"
-                                },
-                                {
-                                    "models": "O"
-                                },
-                                {
-                                    "can": "I-LOC"
-                                },
-                                {
-                                    "do": "I-LOC"
-                                },
-                                {
-                                    "regression": "I-LOC"
-                                }
-                            ]
+                            {
+                                "DFFML": "B-MISC"
+                            },
+                            {
+                                "models": "I-MISC"
+                            },
+                            {
+                                "can": "O"
+                            },
+                            {
+                                "do": "B-MISC"
+                            },
+                            {
+                                "regression": "I-MISC"
+                            }
                         ]
                     }
                 }
             }
         ]
+
     The model can be trained on large datasets to get the expected
     output. The example shown above is to demonstrate the commandline usage
     of the model.
