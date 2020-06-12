@@ -1,35 +1,41 @@
 import re
+import hmac
+import json
 import shlex
+import hashlib
 import pathlib
 from typing import Dict, Any
 
+from dffml.base import config
 from dffml.df.base import op
 from .definitions import *
 from .exceptions import *
 from .log import LOGGER
 
+from dffml.secret.base import BaseSecret
 from dffml_feature_git.util.proc import check_output
 from dffml_feature_git.feature.operations import clone_git_repo
 
 
+@config
+class CheckSecretMatchConfig:
+    secret: BaseSecret
+
+
 @op(
-    inputs={
-        "headers": webhook_headers,
-        "secret_filename": ini_file,
-        "body": payload,
-    },
+    inputs={"headers": webhook_headers, "body": payload,},
     outputs={"git_payload": git_payload},
+    config_cls=CheckSecretMatchConfig,
+    imp_enter={"secret": (lambda self: self.config.secret)},
+    ctx_enter={"sctx": (lambda self: self.parent.secret())},
 )
-async def check_secret_match(headers, secret_filename, body):
+async def check_secret_match(self, headers, body):
     expected = headers["X-Hub-Signature"].replace("sha1=", "")
     # Getting secret value from file
-    async with INISecret(filename=secret_filename) as secret_store:
-        async with secret_store() as secret_ctx:
-            secret = await secret_ctx.get(name="github_webhook")
+    secret = await self.sctx.get(name="github_webhook")
     key = secret.encode()
     calculated = hmac.new(key, body, hashlib.sha1).hexdigest()
     match = hmac.compare_digest(expected, calculated)
-
     if match:
         return {"git_payload": json.loads(body.decode())}
     return

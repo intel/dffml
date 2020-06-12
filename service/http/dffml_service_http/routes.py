@@ -183,6 +183,7 @@ class HTTPChannelConfig(NamedTuple):
     output_mode: str = "json"
     asynchronous: bool = False
     input_mode: str = "default"
+    forward_headers: str = None
 
     @classmethod
     def _fromdict(cls, **kwargs):
@@ -232,7 +233,19 @@ class Routes(BaseMultiCommContext):
                                         ],
                                     )
                                     for input_data in client_inputs
-                                ],
+                                ]
+                                + (
+                                    [
+                                        Input(
+                                            value=request.headers,
+                                            definition=config.dataflow.definitions[
+                                                config.forward_headers
+                                            ],
+                                        )
+                                    ]
+                                    if config.forward_headers
+                                    else []
+                                ),
                             )
                         )
                     )
@@ -241,7 +254,7 @@ class Routes(BaseMultiCommContext):
                 if input_def not in config.dataflow.definitions:
                     return web.json_response(
                         {
-                            "error": f"Missing definition for {input_data['definition']} in dataflow"
+                            "error": f"Missing definition for {input_def} in dataflow"
                         },
                         status=HTTPStatus.NOT_FOUND,
                     )
@@ -271,7 +284,19 @@ class Routes(BaseMultiCommContext):
                                         input_def
                                     ],
                                 )
-                            ],
+                            ]
+                            + (
+                                [
+                                    Input(
+                                        value=request.headers,
+                                        definition=config.dataflow.definitions[
+                                            config.forward_headers
+                                        ],
+                                    )
+                                ]
+                                if config.forward_headers
+                                else []
+                            ),
                         )
                     )
                 )

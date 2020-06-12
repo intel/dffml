@@ -2,7 +2,6 @@ import sys
 from dffml.df.types import Definition
 
 definitions = [
-    Definition(name="ini_file", primitive="str"),
     Definition(name="webhook_headers", primitive="Dict[str,Any]"),
     Definition(name="payload", primitive="bytes"),
     Definition(name="git_payload", primitive="Dict[str,Any]"),

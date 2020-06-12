@@ -1,3 +1,9 @@
+configs:
+  check_secret_match:
+    secret:
+      config:
+        filename: ./deploy/webhook/secret.ini
+      plugin: ini
 definitions:
   URL:
     name: URL
@@ -31,9 +37,6 @@ definitions:
   got_running_containers:
     name: got_running_containers
     primitive: bool
-  ini_file:
-    name: ini_file
-    primitive: str
   is_default_branch:
     name: is_default_branch
     primitive: bool
@@ -59,8 +62,6 @@ flow:
       body:
       - seed
       headers:
-      - seed
-      secret_filename:
       - seed
   cleanup_git_repo:
     inputs:
@@ -122,7 +123,6 @@ operations:
     inputs:
       body: payload
       headers: webhook_headers
-      secret_filename: ini_file
     name: check_secret_match
     outputs:
       git_payload: git_payload
@@ -198,7 +198,4 @@ operations:
     outputs:
       containers: docker_restarted_containers
     stage: processing
-seed:
-- definition: ini_file
-  value: ./deploy/webhook/secret.ini
 

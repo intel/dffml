@@ -33,10 +33,15 @@ Setup a http server in ``ffmpeg/deploy/webhook``, to receive webhook and redploy
     restart_running_containers
     cleanup_git_repo
     EOF
-    $ dffml dataflow create -config yaml $(cat /tmp/operations) \
-        -seed './deploy/webhook/secret.ini'=ini_file > deploy/webhook/df/webhook.yaml
+    $ dffml dataflow create -configloader yaml $(cat /tmp/operations) \
+    -config \
+        ini=check_secret_match.secret.plugin \
+        "./deploy/webhook/secret.ini"=check_secret_match.secret.config.filename \
+    > deploy/webhook/df/webhook.yaml
 
-Where the ini file contains the same secret token which we'll setup in GitHub.
+Through config we specify the dataflow to use ini file plugin and use the ini file
+located at deploy/webhook/secret.ini that contains the secret token, which we’ll
+setup in GitHub.
 
 **deploy/webhook/secret.ini**
 
@@ -52,6 +57,7 @@ Config
     path: /webhook/github
     output_mode: json
     input_mode: bytes:payload
+    forward_headers: webhook_headers
     EOF
 
 Note that the input_mode is ``bytes:payload``, this means that inputs from post request will
