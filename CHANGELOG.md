@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- `-pretty` flag to `list records` and `predict` commands
 - daal4py based linear regression model
 - DataFlowSource can take a config file as dataflow via the CLI.
 - Support for link on conditions in dataflow diagrams
