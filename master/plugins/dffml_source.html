@@ -111,6 +111,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#ini">ini</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#json">json</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#memory">memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#op">op</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-source-mysql">dffml_source_mysql</a><ul>
@@ -373,6 +374,27 @@ stored in memory.</p>
 <p><strong>Args</strong></p>
 <ul class="simple">
 <li><p>records: List of records</p></li>
+</ul>
+</div>
+<div class="section" id="op">
+<span id="plugin-source-dffml-op"></span><h3>op<a class="headerlink" href="#op" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>opimp: OperationImplementation</p></li>
+<li><p>args: List of strings</p>
+<ul>
+<li><p>default: []</p></li>
+<li><p>Arguments to operation in input order</p></li>
+</ul>
+</li>
+<li><p>allowempty: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Raise an error if the source is empty after running the loading operation</p></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
