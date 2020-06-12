@@ -24,7 +24,7 @@ INSTALL_REQUIRES = [
     "numpy>=1.16.4",
     "seqeval>=0.0.12",
     "fastprogress>=0.2.2",
-    "transformers>=2.5.1,<2.9.0",
+    "transformers>=2.11.0",
 ] + (
     ["dffml>=0.3.7"]
     if not any(
@@ -72,7 +72,8 @@ setup(
     packages=find_packages(),
     entry_points={
         "dffml.model": [
-            "ner_tagger = dffml_model_transformers.ner.ner_model:NERModel"
+            "ner_tagger = dffml_model_transformers.ner.ner_model:NERModel",
+            "hfclassifier = dffml_model_transformers.classification.classification_model:HFClassificationModel",
         ]
     },
 )
