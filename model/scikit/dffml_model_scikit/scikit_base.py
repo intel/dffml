@@ -6,11 +6,24 @@ Base class for Scikit models
 import json
 import hashlib
 import pathlib
+import logging
 import importlib
 
 from typing import AsyncIterator, Tuple, Any, NamedTuple
 
 from sklearn.metrics import silhouette_score, mutual_info_score
+
+# https://intelpython.github.io/daal4py/sklearn.html
+try:
+    import daal4py.sklearn
+
+    daal4py.sklearn.patch_sklearn()
+except ImportError:
+    # Ignore import errors, package is not installed
+    pass
+except Execption as error:
+    LOGGER = logging.getLogger(__package__)
+    LOGGER.error(error)
 
 from dffml.record import Record
 from dffml.source.source import Sources
