@@ -224,7 +224,7 @@ We then create a ``DataFlow`` description of how they all link together.
 
 .. code-block:: console
 
-    $ dffml dataflow create -config yaml $(cat /tmp/operations) \
+    $ dffml dataflow create -configloader yaml $(cat /tmp/operations) \
         > cgi-bin/dataflow.yaml
 
 The inputs and outputs of operations within a running DataFlow are organized by

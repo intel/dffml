@@ -34,6 +34,10 @@ class TestMNIST(unittest.TestCase):
     )
     def test_shell(self):
         with directory_with_data_files() as tempdir:
+            # Create the dataflow config file
+            stdout = subprocess.check_output(
+                ["bash", sh_filepath("create_dataflow.sh")]
+            )
             # Run training
             subprocess.check_output(["bash", sh_filepath("train.sh")])
             # Check the Accuracy

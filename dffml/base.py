@@ -165,6 +165,8 @@ def convert_value(arg, value):
         # TODO This is a oversimplification of argparse's nargs
         if "nargs" in arg:
             value = list(map(type_cls, value))
+        elif getattr(type_cls, "CONFIGLOADABLE", False):
+            pass
         else:
             value = type_cls(value)
     if "action" in arg:
@@ -336,11 +338,14 @@ class BaseConfigurableMetaClass(type, abc.ABC):
                 else:
                     use_CONFIG = True
                     for field in dataclasses.fields(self.CONFIG):
-                        if field.default is dataclasses.MISSING:
+                        if (
+                            field.default is dataclasses.MISSING
+                            and field.default_factory is dataclasses.MISSING
+                        ):
                             use_CONFIG = False
                             break
                     if use_CONFIG:
-                        config = self.CONFIG(**kwargs)
+                        config = self.CONFIG()
                     else:
                         raise TypeError(
                             "__init__() missing 1 required positional argument: 'config'"
@@ -374,6 +379,11 @@ class BaseConfigurable(metaclass=BaseConfigurableMetaClass):
         self.logger.debug(
             str_config if len(str_config) < 512 else (str_config[:512] + "...")
         )
+
+    def __eq__(self, other: "BaseConfigurable") -> bool:
+        if inspect.isclass(other) or not isinstance(other, self.__class__):
+            return
+        return self.config == other.config
 
     @classmethod
     def add_orig_label(cls, *above):

@@ -236,7 +236,7 @@ format.
 
 .. code-block:: console
 
-    $ dffml dataflow create -config yaml get_single clone_git_repo > df.yaml
+    $ dffml dataflow create -configloader yaml get_single clone_git_repo > df.yaml
 
 Merge
 ~~~~~
@@ -272,7 +272,7 @@ command during generation.
 
 .. code-block:: console
 
-    $ dffml dataflow create dffml.mapping.create print_output -config yaml | \
+    $ dffml dataflow create dffml.mapping.create print_output -configloader yaml | \
         sed 'N;s/data:\n      - seed/data:\n      - dffml.mapping.create: mapping/g' | \
         tee df.yaml
     definitions:
@@ -412,7 +412,7 @@ All DFFML objects are exportable. Here's and example of exporting a DataFlow.
 
 .. code-block:: console
 
-    $ dffml service dev export -config json shouldi.cli:DATAFLOW
+    $ dffml service dev export -configloader json shouldi.cli:DATAFLOW
 
 This is an example of exporting a model. Be sure the files you're exporting from
 have a ``if __name__ == "__main__":`` block, or else loading the file will
@@ -421,7 +421,7 @@ which is what you want.
 
 .. code-block:: console
 
-    $ dffml service dev export -config yaml quickstart:model
+    $ dffml service dev export -configloader yaml quickstart:model
 
 Entrypoints
 +++++++++++
