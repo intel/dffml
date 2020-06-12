@@ -17,7 +17,7 @@ from ..configloader.json import JSONConfigLoader
 from ..source.source import SubsetSources, Sources
 from ..source.json import JSONSource
 from ..source.file import FileSourceConfig
-from ..util.data import merge
+from ..util.data import merge, split_dot_seperated, traverse_set
 from ..util.entrypoint import load
 from ..util.cli.cmd import CMD, CMDOutputOverride
 from ..util.cli.cmds import (
@@ -32,7 +32,7 @@ from ..base import config, field
 @config
 class MergeConfig:
     dataflows: List[pathlib.Path] = field("DataFlows to merge")
-    config: BaseConfigLoader = field(
+    configloader: BaseConfigLoader = field(
         "ConfigLoader to use for exporting", default=JSONConfigLoader,
     )
     not_linked: bool = field(
@@ -58,7 +58,7 @@ class Merge(CMD):
                 merge(merged, exported, list_append=True)
         # Export the dataflow
         dataflow = DataFlow._fromdict(**merged)
-        async with self.config(BaseConfig()) as configloader:
+        async with self.configloader(BaseConfig()) as configloader:
             async with configloader() as loader:
                 exported = dataflow.export(linked=not self.not_linked)
                 print((await loader.dumpb(exported)).decode())
@@ -67,7 +67,7 @@ class Merge(CMD):
 @config
 class CreateConfig:
     operations: List[str] = field("Operations to create a dataflow for",)
-    config: BaseConfigLoader = field(
+    configloader: BaseConfigLoader = field(
         "ConfigLoader to use", default=JSONConfigLoader,
     )
     not_linked: bool = field(
@@ -80,6 +80,9 @@ class CreateConfig:
     )
     flow: List[str] = field(
         "Flow of inputs", action=ParseInputsAction, default_factory=lambda: [],
+    )
+    config: List[str] = field(
+        "configs", action=ParseInputsAction, default_factory=lambda: [],
     )
 
 
@@ -99,7 +102,7 @@ class Create(CMD):
                 )
             else:
                 operations += [Operation.load(load_operation)]
-        async with self.config(BaseConfig()) as configloader:
+        async with self.configloader(BaseConfig()) as configloader:
             async with configloader() as loader:
                 dataflow = DataFlow.auto(*operations)
                 self.seed = [
@@ -110,12 +113,14 @@ class Create(CMD):
 
                 # flow argument key is of the form opname.inputs/conditions.keyname
                 for v, k in self.flow:
-                    opname, val_type, key = k.split(".")
+                    *opname, val_type, key = split_dot_seperated(k)
+                    opname = ".".join(opname)
                     if val_type == "inputs":
                         dataflow.flow[opname].inputs[key] = v
                     else:
                         dataflow.flow[opname].conditions = v
-
+                for v, k in self.config:
+                    traverse_set(dataflow.configs, k, value=v)
                 exported = dataflow.export(linked=not self.not_linked)
                 print((await loader.dumpb(exported)).decode())
 
@@ -125,7 +130,7 @@ class RunCMDConfig:
     dataflow: str = field(
         "File containing exported DataFlow", required=True,
     )
-    config: BaseConfigLoader = field(
+    configloader: BaseConfigLoader = field(
         "ConfigLoader to use for importing DataFlow", default=None,
     )
     sources: Sources = field(
@@ -257,7 +262,7 @@ class RunAllRecords(RunCMD):
 
     async def run(self):
         dataflow_path = pathlib.Path(self.dataflow)
-        config_cls = self.config
+        config_cls = self.configloader
         if config_cls is None:
             config_type = dataflow_path.suffix.replace(".", "")
             config_cls = BaseConfigLoader.load(config_type)
@@ -310,7 +315,7 @@ class Run(CMD):
 @config
 class DiagramConfig:
     dataflow: str = field("File containing exported DataFlow")
-    config: BaseConfigLoader = field(
+    configloader: BaseConfigLoader = field(
         "ConfigLoader to use for importing DataFlow", default=None,
     )
     stages: List[str] = field(
@@ -329,7 +334,7 @@ class Diagram(CMD):
 
     async def run(self):
         dataflow_path = pathlib.Path(self.dataflow)
-        config_cls = self.config
+        config_cls = self.configloader
         if config_cls is None:
             config_type = dataflow_path.suffix.replace(".", "")
             config_cls = BaseConfigLoader.load(config_type)

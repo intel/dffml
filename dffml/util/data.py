@@ -164,6 +164,8 @@ def traverse_set(target, *args, value):
 
     current = target
     for level in args[:-1]:
+        if level not in current:
+            current[level] = {}
         current = current[level]
 
     current[args[-1]] = value
