@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for entrypoint style loading of operations and seed inputs in `dataflow create`.
 - Definition for output of the function that `op` wraps.
 - Expose high level load, run and save functions to noasync.
+- Operation to verify secret for GitHub webhook.
 - Option to modify flow and add config in `dataflow create`.
 ### Changed
 - Update MNIST use case to normalize image arrays.

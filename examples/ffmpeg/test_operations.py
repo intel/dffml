@@ -3,15 +3,16 @@ import sys
 import pathlib
 import tempfile
 
+from dffml import (
+    op,
+    Input,
+    DataFlow,
+    GetSingle,
+    MemoryOrchestrator,
+    AsyncTestCase,
+)
 
-from dffml.df.types import Input, DataFlow
-from dffml.df.base import opimp_in
-from dffml.df.memory import MemoryOrchestrator
-from dffml.operation.output import GetSingle
-from dffml.util.asynctestcase import AsyncTestCase
-
-from ffmpeg.operations import convert_to_gif
-from dffml.operation.output import GetSingle
+from .operations import convert_to_gif
 
 
 class TestOperations(AsyncTestCase):
@@ -19,13 +20,15 @@ class TestOperations(AsyncTestCase):
         self.parent_path = pathlib.Path(__file__).parent
 
     async def test_run(self):
+        op()(convert_to_gif)
         dataflow = DataFlow.auto(convert_to_gif, GetSingle)
         dataflow.seed.append(
             Input(
-                value=[convert_to_gif.op.outputs["output_file"].name],
+                value=[convert_to_gif.op.outputs["result"].name],
                 definition=GetSingle.op.inputs["spec"],
             )
         )
+        dataflow.implementations[convert_to_gif.op.name] = convert_to_gif.imp
 
         input_file_path = self.parent_path / "input.mp4"
 
@@ -44,10 +47,14 @@ class TestOperations(AsyncTestCase):
                 ),
             ]
         }
-
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
             async with orchestrator(dataflow) as octx:
                 async for ctx, results in octx.run(test_inputs):
+                    idx = "examples.ffmpeg.operations.convert_to_gif.outputs.result"
+                    self.assertIn(
+                        idx, results,
+                    )
+                    results = results[idx]
                     self.assertIn("output_file", results)
                     output = results["output_file"]
                     self.assertGreater(len(output), 100000)
