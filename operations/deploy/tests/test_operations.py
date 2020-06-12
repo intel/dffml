@@ -8,9 +8,7 @@ from dffml.df.base import opimp_in
 from dffml.df.types import Input, DataFlow
 from dffml.df.memory import MemoryOrchestrator
 from dffml.util.asynctestcase import AsyncTestCase
-
 from dffml.base import BaseDataFlowFacilitatorObjectContext
-
 
 from dffml.operation.output import GetSingle
 from dffml_operations_deploy.operations import *
@@ -19,9 +17,10 @@ from dffml_feature_git.feature.operations import (
     cleanup_git_repo,
 )
 from dffml_feature_git.util.proc import check_output
-
+from dffml_operations_deploy.operations import check_secret_match
 
 OPIMPS = opimp_in(sys.modules[__name__])
+OPIMPS.remove(check_secret_match.imp)
 
 REPO = str(uuid.uuid4()).split("-")[-1]
 USER = str(uuid.uuid4()).split("-")[-1]
@@ -46,22 +45,6 @@ class FakeCloneRepoImp(BaseDataFlowFacilitatorObjectContext):
         return {"repo": {"URL": URL, "directory": directory}}
 
 
-class FakeCheckSecretMatchImp(BaseDataFlowFacilitatorObjectContext):
-    def __init__(self, *args, **kwargs):
-        super().__init__()
-
-    async def run(*args, **kwargs):
-        data = {
-            "ref": "refs/master",
-            "repository": {
-                "clone_url": f"https://github.com/{USER}/{REPO}.git",
-                "default_branch": "master",
-                "html_url": f"https://github.com/{USER}/{REPO}",
-            },
-        }
-        return {"git_payload": data}
-
-
 class TestOperations(AsyncTestCase):
     async def setUp(self):
         self.dataflow = DataFlow.auto(*OPIMPS)
@@ -74,12 +57,21 @@ class TestOperations(AsyncTestCase):
             )
         )
 
-        # passing arbitary values to kickoff dataflow
-        # the first operation check_secret_match is mocked
+        test_data = {
+            "ref": "refs/master",
+            "repository": {
+                "clone_url": f"https://github.com/{USER}/{REPO}.git",
+                "default_branch": "master",
+                "html_url": f"https://github.com/{USER}/{REPO}",
+            },
+        }
+
         self.test_inputs = {
             "TestRun": [
-                Input(value="a", definition=check_secret_match.op.inputs[x],)
-                for x in ["headers", "secret_filename", "body"]
+                Input(
+                    value=test_data,
+                    definition=check_secret_match.op.outputs["git_payload"],
+                )
             ]
         }
         self.containers_to_remove = []
@@ -96,36 +88,31 @@ class TestOperations(AsyncTestCase):
         with mock.patch.object(
             clone_git_repo.imp, "CONTEXT", new=FakeCloneRepoImp
         ):
-            with mock.patch.object(
-                check_secret_match.imp, "CONTEXT", new=FakeCheckSecretMatchImp
-            ):
-                tag = f"{USER}/{REPO}"
-                before = await check_output(
-                    "docker",
-                    "ps",
-                    "--filter",
-                    f"ancestor={tag}",
-                    "--format",
-                    "{{.ID}} {{.RunningFor}}",
-                )
-                async with MemoryOrchestrator.withconfig({}) as orchestrator:
-                    async with orchestrator(self.dataflow) as octx:
-                        async for ctx, results in octx.run(self.test_inputs):
-                            after = await check_output(
-                                "docker",
-                                "ps",
-                                "--filter",
-                                f"ancestor={tag}",
-                                "--format",
-                                "{{.ID}} {{.RunningFor}}",
-                            )
-                            self.assertNotEqual(before, after)
-                            self.assertIn(
-                                "docker_restarted_containers", results
-                            )
-                            self.containers_to_remove = results[
-                                "docker_restarted_containers"
-                            ]
+            tag = f"{USER}/{REPO}"
+            before = await check_output(
+                "docker",
+                "ps",
+                "--filter",
+                f"ancestor={tag}",
+                "--format",
+                "{{.ID}} {{.RunningFor}}",
+            )
+            async with MemoryOrchestrator.withconfig({}) as orchestrator:
+                async with orchestrator(self.dataflow) as octx:
+                    async for ctx, results in octx.run(self.test_inputs):
+                        after = await check_output(
+                            "docker",
+                            "ps",
+                            "--filter",
+                            f"ancestor={tag}",
+                            "--format",
+                            "{{.ID}} {{.RunningFor}}",
+                        )
+                        self.assertNotEqual(before, after)
+                        self.assertIn("docker_restarted_containers", results)
+                        self.containers_to_remove = results[
+                            "docker_restarted_containers"
+                        ]
 
     async def test_1_restart_container(self):
         tag = f"{USER}/{REPO}"
@@ -140,25 +127,20 @@ class TestOperations(AsyncTestCase):
         with mock.patch.object(
             clone_git_repo.imp, "CONTEXT", new=FakeCloneRepoImp
         ):
-            with mock.patch.object(
-                check_secret_match.imp, "CONTEXT", new=FakeCheckSecretMatchImp
-            ):
-                async with MemoryOrchestrator.withconfig({}) as orchestrator:
-                    async with orchestrator(self.dataflow) as octx:
-                        async for ctx, results in octx.run(self.test_inputs):
-                            after = await check_output(
-                                "docker",
-                                "ps",
-                                "--filter",
-                                f"ancestor={tag}",
-                                "--format",
-                                "{{.ID}} {{.RunningFor}}",
-                            )
-                            self.assertNotEqual(before, after)
-                            self.assertIn("second", after)
-                            self.assertIn(
-                                "docker_restarted_containers", results
-                            )
-                            self.containers_to_remove = results[
-                                "docker_restarted_containers"
-                            ]
+            async with MemoryOrchestrator.withconfig({}) as orchestrator:
+                async with orchestrator(self.dataflow) as octx:
+                    async for ctx, results in octx.run(self.test_inputs):
+                        after = await check_output(
+                            "docker",
+                            "ps",
+                            "--filter",
+                            f"ancestor={tag}",
+                            "--format",
+                            "{{.ID}} {{.RunningFor}}",
+                        )
+                        self.assertNotEqual(before, after)
+                        self.assertIn("second", after)
+                        self.assertIn("docker_restarted_containers", results)
+                        self.containers_to_remove = results[
+                            "docker_restarted_containers"
+                        ]
