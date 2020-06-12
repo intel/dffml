@@ -48,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Expose high level load, run and save functions to noasync.
 - Operation to verify secret for GitHub webhook.
 - Option to modify flow and add config in `dataflow create`.
+- Ability to use a function as a data source via the `op` source
 ### Changed
 - Update MNIST use case to normalize image arrays.
 - `arg_` notation replaced with `CONFIG = ExampleConfig` style syntax
