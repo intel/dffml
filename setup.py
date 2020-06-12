@@ -101,6 +101,7 @@ setup(
             "db = dffml.source.db:DbSource",
             "ini = dffml.source.ini:INISource",
             "df = dffml.source.df:DataFlowSource",
+            "op = dffml.source.op:OpSource",
         ],
         "dffml.port": ["json = dffml.port.json:JSON"],
         "dffml.service.cli": ["dev = dffml.service.dev:Develop"],
