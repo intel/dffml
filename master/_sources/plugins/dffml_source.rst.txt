@@ -206,6 +206,29 @@ Stores records in a dict in memory
 
 - records: List of records
 
+.. _plugin_source_dffml_op:
+
+op
+~~
+
+*Official*
+
+No description
+
+**Args**
+
+- opimp: OperationImplementation
+
+- args: List of strings
+
+  - default: []
+  - Arguments to operation in input order
+
+- allowempty: String
+
+  - default: False
+  - Raise an error if the source is empty after running the loading operation
+
 .. _plugin_source_dffml_source_mysql:
 
 dffml_source_mysql
