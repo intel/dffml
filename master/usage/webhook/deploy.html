@@ -102,7 +102,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../mnist.html">MNIST Handwriten Digits</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Continuous Deployment of DataFlows</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Deploying with the HTTP Service</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#create-the-package">Create the Package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#writing-the-function">Writing the function</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#dataflow-and-config-files">Dataflow and Config files</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#serving-the-dataflow">Serving the DataFlow</a></li>
 </ul>
@@ -217,18 +217,13 @@ directory of the DFFML source code.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install dffml-yaml-config dffml-http-service
 </pre></div>
 </div>
-<div class="section" id="create-the-package">
-<h2>Create the Package<a class="headerlink" href="#create-the-package" title="Permalink to this headline">¶</a></h2>
-<p>To create a new operation we first create a new Python package. DFFML has a script to do it for you.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev create operations ffmpeg
-<span class="gp">$</span> <span class="nb">cd</span> ffmpeg
-</pre></div>
-</div>
-<p>Write operations and definitions to convert videos files to gif by calling
-<code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> (Make sure you <a class="reference external" href="https://www.ffmpeg.org/download.html">download and install</a> it).
-The operation accepts bytes (of the video), converts it to gif and outputs it as bytes.
-We will start writing our operation in <code class="docutils literal notranslate"><span class="pre">./ffmpeg/operations.py</span></code></p>
-<p><strong>ffmpeg/operations.py</strong></p>
+<div class="section" id="writing-the-function">
+<h2>Writing the function<a class="headerlink" href="#writing-the-function" title="Permalink to this headline">¶</a></h2>
+<p>We’ll first write the function to convert videos files to gif by calling
+<code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> (Make sure you <a class="reference external" href="https://www.ffmpeg.org/download.html">download and install</a> it) in
+<code class="docutils literal notranslate"><span class="pre">operation.py</span></code>. The function accepts bytes (of the video), converts it to gif and outputs it as
+bytes.</p>
+<p><strong>operations.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 
@@ -269,45 +264,24 @@ We will start writing our operation in <code class="docutils literal notranslate
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;output_file&quot;</span><span class="p">:</span> <span class="n">out</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>Add the operation to <code class="docutils literal notranslate"><span class="pre">ffmpeg/setup.py</span></code></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">common</span><span class="o">.</span><span class="n">KWARGS</span><span class="p">[</span><span class="s2">&quot;entry_points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;dffml.operation&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="sa">f</span><span class="s2">&quot;convert_to_gif = </span><span class="si">{</span><span class="n">common</span><span class="o">.</span><span class="n">IMPORT_NAME</span><span class="si">}</span><span class="s2">.operations:convert_to_gif&quot;</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Install the package</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install -e .
-</pre></div>
-</div>
 </div>
 <div class="section" id="dataflow-and-config-files">
 <h2>Dataflow and Config files<a class="headerlink" href="#dataflow-and-config-files" title="Permalink to this headline">¶</a></h2>
-<p><strong>ffmpeg/dataflow.py</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">GetSingle</span>
-<span class="kn">from</span> <span class="nn">.operations</span> <span class="kn">import</span> <span class="n">convert_to_gif</span>
-
-<span class="n">DATAFLOW</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">convert_to_gif</span><span class="p">,</span> <span class="n">GetSingle</span><span class="p">)</span>
-<span class="n">DATAFLOW</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">Input</span><span class="p">(</span>
-        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">convert_to_gif</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;output_file&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
-        <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
-    <span class="p">),</span>
-    <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">480</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">convert_to_gif</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;resolution&quot;</span><span class="p">]),</span>
-<span class="p">]</span>
+<p>DFFML can create a dataflow out of our python function.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create -config yaml operations:convert_to_gif get_single <span class="se">\</span>
+    -seed <span class="nv">480</span><span class="o">=</span>operations.convert_to_gif.inputs.resolution <span class="se">\</span>
+    <span class="s2">&quot;[&#39;operations.convert_to_gif.outputs.result&#39;]=get_single_spec&quot;</span> <span class="se">\</span>
+     &gt; deploy/df/ffmpeg.yaml
 </pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir -p deploy/mc/http deploy/df
-<span class="gp">$</span> dffml service dev <span class="nb">export</span> -configloader yaml ffmpeg.dataflow:DATAFLOW &gt; deploy/df/ffmpeg.yaml
-</pre></div>
-</div>
+<p>Here through the seed argument, we set the default resolution to 480 and output
+of the dataflow to result of <cite>convert_to_gif</cite>.</p>
 <p>Create the config file for the HTTP service
 in <code class="docutils literal notranslate"><span class="pre">deploy/mc/http/ffmpeg.yaml</span></code></p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; ./deploy/mc/http/ffmpeg.yaml &lt;&lt;EOF
 <span class="go">path: /ffmpeg</span>
-<span class="go">input_mode: bytes:input_file</span>
-<span class="go">output_mode: bytes:image/gif:post_input.output_file</span>
+<span class="go">input_mode: bytes:operations.convert_to_gif.inputs.input_file</span>
+<span class="go">output_mode: bytes:image/gif:post_input.&quot;operations.convert_to_gif.outputs.result&quot;.output_file</span>
 <span class="go">EOF</span>
 </pre></div>
 </div>
@@ -315,10 +289,10 @@ in <code class="docutils literal notranslate"><span class="pre">deploy/mc/http/f
 <li><p><code class="docutils literal notranslate"><span class="pre">input_mode</span></code></p>
 <blockquote>
 <div><ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">bytes:input_file</span></code></p>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes:operations.convert_to_gif.inputs.input_file</span></code></p>
 <blockquote>
 <div><ul class="simple">
-<li><p>We want the input from the request to be treated as bytes with definition <code class="docutils literal notranslate"><span class="pre">input_file</span></code>.</p></li>
+<li><p>We want the input from the request to be treated as bytes with definition <code class="docutils literal notranslate"><span class="pre">operations.convert_to_gif.inputs.input_file</span></code>.</p></li>
 </ul>
 </div></blockquote>
 </li>
@@ -328,10 +302,10 @@ in <code class="docutils literal notranslate"><span class="pre">deploy/mc/http/f
 <li><p><code class="docutils literal notranslate"><span class="pre">output_mode</span></code></p>
 <blockquote>
 <div><ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">bytes:image/gif:post_input.output_file</span></code></p>
+<li><p><code class="docutils literal notranslate"><span class="pre">bytes:image/gif:post_input.&quot;operations.convert_to_gif.outputs.result&quot;.output_file</span></code></p>
 <blockquote>
 <div><ul class="simple">
-<li><p>We want the response (content_type = image/gif) to be bytes taken from  <code class="docutils literal notranslate"><span class="pre">results[&quot;post_input&quot;][&quot;output_file&quot;]</span></code>,
+<li><p>We want the response (content_type = image/gif) to be bytes taken from  <code class="docutils literal notranslate"><span class="pre">results[&quot;post_input&quot;][&quot;operations.convert_to_gif.outputs.result&quot;][output_file]</span></code>,
 where <code class="docutils literal notranslate"><span class="pre">results</span></code> is the output of the dataflow.</p></li>
 </ul>
 </div></blockquote>
@@ -359,12 +333,11 @@ tutorial. See documentation on HTTP API
 </pre></div>
 </div>
 <p>You should replace <code class="docutils literal notranslate"><span class="pre">input.mp4</span></code> with path to your video file and <code class="docutils literal notranslate"><span class="pre">output.gif</span></code> to where you want the converted gif
-to be output to. An example video is available <a class="reference external" href="https://github.com/intel/dffml/raw/master/examples/ffmpeg/tests/input.mp4">here</a> .</p>
+to be output to. An example video is available <a class="reference external" href="https://github.com/intel/dffml/raw/master/examples/ffmpeg/input.mp4">here</a> .</p>
 </div>
 </div>
 <div class="section" id="deploying-via-container">
 <h1>Deploying via container<a class="headerlink" href="#deploying-via-container" title="Permalink to this headline">¶</a></h1>
-<p>A <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> is already generated in ffmpeg folder. We need to modify it to include <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code>.</p>
 <p><strong>Dockerfile</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Usage</span>
 <span class="c1"># docker build -t $USER/ffmpeg .</span>
@@ -404,7 +377,7 @@ to be output to. An example video is available <a class="reference external" hre
 <p>The run command in the comment section of the Dockerfile will be used to execute
 the container after receving webhooks, so make sure you change it to your usecase.</p>
 </div>
-<p>For this tutorial we will change it to</p>
+<p>For this tutorial we will set it to</p>
 <div class="highlight-Dockerfile notranslate"><div class="highlight"><pre><span></span><span class="c"># docker run --rm -ti -p 8080:8080 $USER/ffmpeg -mc-config deploy -insecure -log debug</span>
 </pre></div>
 </div>

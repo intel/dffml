@@ -21,6 +21,7 @@ Setup a http server in ``ffmpeg/deploy/webhook``, to receive webhook and redploy
 
     $ mkdir -p deploy/webhook/df deploy/webhook/mc/http
     $ cat > /tmp/operations <<EOF
+    check_secret_match
     get_url_from_payload
     clone_git_repo
     check_if_default_branch
@@ -32,7 +33,19 @@ Setup a http server in ``ffmpeg/deploy/webhook``, to receive webhook and redploy
     restart_running_containers
     cleanup_git_repo
     EOF
-    $ dffml dataflow create -configloader yaml $(cat /tmp/operations) > deploy/webhook/df/webhook.yaml
+    $ dffml dataflow create -configloader yaml $(cat /tmp/operations) \
+    -config \
+        ini=check_secret_match.secret.plugin \
+        "./deploy/webhook/secret.ini"=check_secret_match.secret.config.filename \
+    > deploy/webhook/df/webhook.yaml
+
+Through config we specify the dataflow to use ini file plugin and use the ini file
+located at deploy/webhook/secret.ini that contains the secret token, which we’ll
+setup in GitHub.
+
+**deploy/webhook/secret.ini**
+
+.. literalinclude:: /../examples/ffmpeg/deploy/webhook/secret.ini
 
 Config
 
@@ -43,11 +56,12 @@ Config
     $ cat > ./deploy/webhook/mc/http/webhook.yaml <<EOF
     path: /webhook/github
     output_mode: json
-    input_mode: json:git_payload
+    input_mode: bytes:payload
+    forward_headers: webhook_headers
     EOF
 
-Note that the input_mode is ``json:git_payload``, this means that inputs from post request will
-be parsed as JSON and then forwarded to dataflow as the ``git_payload`` definition..
+Note that the input_mode is ``bytes:payload``, this means that inputs from post request will
+be passed as bytes to the dataflow with ``payload`` definition..
 
 Deploy it in port 8081 as 8080 is being used by ffmpeg http service
 
@@ -76,7 +90,8 @@ Deploy it in port 8081 as 8080 is being used by ffmpeg http service
 
     .. image:: ./images/ngrok_out.png
 
-Copy paste the output url to ``Payload URL`` in webhook settings of ffmpeg repo.
+Copy paste the output url to ``Payload URL`` in webhook settings of ffmpeg repo and set
+the secret token.
 
 .. image:: ./images/github_settings.png
 
