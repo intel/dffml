@@ -213,6 +213,7 @@ we push to the default branch, the new version is pulled and its docker containe
 <p>Setup a http server in <code class="docutils literal notranslate"><span class="pre">ffmpeg/deploy/webhook</span></code>, to receive webhook and redploy ffmpeg</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir -p deploy/webhook/df deploy/webhook/mc/http
 <span class="gp">$</span> cat &gt; /tmp/operations &lt;&lt;EOF
+<span class="go">check_secret_match</span>
 <span class="go">get_url_from_payload</span>
 <span class="go">clone_git_repo</span>
 <span class="go">check_if_default_branch</span>
@@ -224,7 +225,20 @@ we push to the default branch, the new version is pulled and its docker containe
 <span class="go">restart_running_containers</span>
 <span class="go">cleanup_git_repo</span>
 <span class="go">EOF</span>
-<span class="gp">$</span> dffml dataflow create -configloader yaml <span class="k">$(</span>cat /tmp/operations<span class="k">)</span> &gt; deploy/webhook/df/webhook.yaml
+<span class="gp">$</span> dffml dataflow create -configloader yaml <span class="k">$(</span>cat /tmp/operations<span class="k">)</span> <span class="se">\</span>
+-config <span class="se">\</span>
+    <span class="nv">ini</span><span class="o">=</span>check_secret_match.secret.plugin <span class="se">\</span>
+    <span class="s2">&quot;./deploy/webhook/secret.ini&quot;</span><span class="o">=</span>check_secret_match.secret.config.filename <span class="se">\</span>
+&gt; deploy/webhook/df/webhook.yaml
+</pre></div>
+</div>
+<p>Through config we specify the dataflow to use ini file plugin and use the ini file
+located at deploy/webhook/secret.ini that contains the secret token, which we’ll
+setup in GitHub.</p>
+<p><strong>deploy/webhook/secret.ini</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">secrets</span><span class="p">]</span>
+<span class="n">github_webhook</span> <span class="o">=</span> <span class="n">myrandomsecret</span>
+
 </pre></div>
 </div>
 <p>Config</p>
@@ -232,12 +246,13 @@ we push to the default branch, the new version is pulled and its docker containe
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; ./deploy/webhook/mc/http/webhook.yaml &lt;&lt;EOF
 <span class="go">path: /webhook/github</span>
 <span class="go">output_mode: json</span>
-<span class="go">input_mode: json:git_payload</span>
+<span class="go">input_mode: bytes:payload</span>
+<span class="go">forward_headers: webhook_headers</span>
 <span class="go">EOF</span>
 </pre></div>
 </div>
-<p>Note that the input_mode is <code class="docutils literal notranslate"><span class="pre">json:git_payload</span></code>, this means that inputs from post request will
-be parsed as JSON and then forwarded to dataflow as the <code class="docutils literal notranslate"><span class="pre">git_payload</span></code> definition..</p>
+<p>Note that the input_mode is <code class="docutils literal notranslate"><span class="pre">bytes:payload</span></code>, this means that inputs from post request will
+be passed as bytes to the dataflow with <code class="docutils literal notranslate"><span class="pre">payload</span></code> definition..</p>
 <p>Deploy it in port 8081 as 8080 is being used by ffmpeg http service</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -insecure -mc-config deploy/webhook -port <span class="m">8081</span>
 </pre></div>
@@ -257,7 +272,8 @@ here are two methods of exposing the webhook,</p>
 </div>
 <img alt="../../_images/ngrok_out.png" src="../../_images/ngrok_out.png" />
 </div>
-<p>Copy paste the output url to <code class="docutils literal notranslate"><span class="pre">Payload</span> <span class="pre">URL</span></code> in webhook settings of ffmpeg repo.</p>
+<p>Copy paste the output url to <code class="docutils literal notranslate"><span class="pre">Payload</span> <span class="pre">URL</span></code> in webhook settings of ffmpeg repo and set
+the secret token.</p>
 <img alt="../../_images/github_settings.png" src="../../_images/github_settings.png" />
 <p>Now whenever there’s a push to the default branch of the repo, the ffmpeg container
 which is running gets redeployed from the fresh pull. To check this we will modify the
