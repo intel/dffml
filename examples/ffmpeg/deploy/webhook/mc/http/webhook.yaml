@@ -1,3 +1,4 @@
 path: /webhook/github
 output_mode: json
-input_mode: json:git_payload
+input_mode: bytes:payload
+forward_headers: webhook_headers
