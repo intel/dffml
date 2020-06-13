@@ -10,7 +10,7 @@ DESCRIPTION = "DFFML model dffml-model-autosklearn"
 AUTHOR_NAME = "Sudhanshu kumar"
 AUTHOR_EMAIL = "sudhanshukumar5459@gmail.com"
 # Install dffml if it is not installed in development mode
-INSTALL_REQUIRES = ["auto-sklearn"] + (
+INSTALL_REQUIRES = ["auto-sklearn>=0.7.0"] + (
     ["dffml>=0.3.7"]
     if not any(
         list(
