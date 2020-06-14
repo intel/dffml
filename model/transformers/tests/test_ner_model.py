@@ -28,7 +28,7 @@ class TestNERModel(AsyncTestCase):
                     }
                 },
             )
-            for i in range(0, len(X))
+            for i in range(len(X))
         ]
         cls.train_sources = Sources(
             MemorySource(MemorySourceConfig(records=cls.train_records))
@@ -44,7 +44,7 @@ class TestNERModel(AsyncTestCase):
                     }
                 },
             )
-            for i in range(0, len(A_predict))
+            for i in range(len(A_predict))
         ]
         cls.predict_sources = Sources(
             MemorySource(MemorySourceConfig(records=cls.predict_records))
@@ -57,7 +57,6 @@ class TestNERModel(AsyncTestCase):
                 words=Feature("words", str, 1),
                 predict=Feature("ner_tag", str, 1),
                 output_dir=cls.model_dir.name,
-                model_architecture_type="bert",
                 model_name_or_path="bert-base-cased",
                 no_cuda=True,
             )
@@ -84,7 +83,7 @@ class TestNERModel(AsyncTestCase):
             async with sources() as sctx, model() as mctx:
                 async for record in mctx.predict(sctx.records()):
                     prediction = record.prediction(target_name).value
-                    for d in prediction[0]:
+                    for d in prediction:
                         self.assertIn(
                             list(d.values())[0],
                             [
@@ -108,18 +107,16 @@ org_name = ["Tesla", "Facebook", "Nvidia", "Yahoo"]
 per_name = ["Walter", "Jack", "Sophia", "Ava"]
 loc_name = ["Germany", "India", "Australia", "Italy"]
 
-sentences = []
-for i in range(DATA_LEN):
-    sentences.append(
-        random.choice(per_name)
-        + " "
-        + random.choice(["works at", "joined", "left"])
-        + " "
-        + random.choice(org_name)
-        + " "
-        + random.choice(loc_name)
-    )
-
+sentences = [
+    random.choice(per_name)
+    + " "
+    + random.choice(["works at", "joined", "left"])
+    + " "
+    + random.choice(org_name)
+    + " "
+    + random.choice(loc_name)
+    for _ in range(DATA_LEN)
+]
 for id, sentence in enumerate(sentences):
     PREDICT_DATA.append([id, sentence])
 
