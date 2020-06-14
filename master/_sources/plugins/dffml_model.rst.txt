@@ -524,15 +524,7 @@ Output
 
 .. code-block::
 
-                precision    recall  f1-score   support
-
-        MISC     0.0000    0.0000    0.0000         2
-
-    micro avg     0.0000    0.0000    0.0000         2
-    macro avg     0.0000    0.0000    0.0000         2
-
-    INFO:dffml.NERModelContext:final_loss = 1.4586552
-    0.0
+    0.888888888888889
 
 Make a prediction
 
@@ -550,28 +542,26 @@ Output
                 "Words": "DFFML models can do NER"
             },
             "key": "0",
-            "last_updated": "2020-03-21T23:14:41Z",
+            "last_updated": "2020-06-11T17:40:54Z",
             "prediction": {
                 "Tag": {
                     "confidence": NaN,
                     "value": [
-                        [
-                            {
-                                "DFFML": "I-LOC"
-                            },
-                            {
-                                "models": "O"
-                            },
-                            {
-                                "can": "I-LOC"
-                            },
-                            {
-                                "do": "I-LOC"
-                            },
-                            {
-                                "NER": "I-LOC"
-                            }
-                        ]
+                        {
+                            "DFFML": "B-MISC"
+                        },
+                        {
+                            "models": "I-MISC"
+                        },
+                        {
+                            "can": "O"
+                        },
+                        {
+                            "do": "B-MISC"
+                        },
+                        {
+                            "NER": "B-MISC"
+                        }
                     ]
                 }
             }
@@ -583,33 +573,32 @@ Output
                 "Words": "DFFML models can do regression"
             },
             "key": "1",
-            "last_updated": "2020-03-21T23:14:42Z",
+            "last_updated": "2020-06-11T17:40:57Z",
             "prediction": {
                 "Tag": {
                     "confidence": NaN,
                     "value": [
-                        [
-                            {
-                                "DFFML": "I-LOC"
-                            },
-                            {
-                                "models": "O"
-                            },
-                            {
-                                "can": "I-LOC"
-                            },
-                            {
-                                "do": "I-LOC"
-                            },
-                            {
-                                "regression": "I-LOC"
-                            }
-                        ]
+                        {
+                            "DFFML": "B-MISC"
+                        },
+                        {
+                            "models": "I-MISC"
+                        },
+                        {
+                            "can": "O"
+                        },
+                        {
+                            "do": "B-MISC"
+                        },
+                        {
+                            "regression": "I-MISC"
+                        }
                     ]
                 }
             }
         }
     ]
+
 The model can be trained on large datasets to get the expected
 output. The example shown above is to demonstrate the commandline usage
 of the model.
@@ -632,13 +621,9 @@ Example usage of NER model using python API
 
   - NER Tags (B-MISC, I-PER, O etc.) for tokens
 
-- model_architecture_type: String
-
-  - Model architecture selected in the : bert, distilbert, roberta
-
 - model_name_or_path: String
 
-  - Path to pre-trained model or shortcut name selected in the list: bert-base-uncased, bert-large-uncased, bert-base-cased, bert-large-cased, bert-base-multilingual-uncased, bert-base-multilingual-cased, bert-base-chinese, bert-base-german-cased, bert-large-uncased-whole-word-masking, bert-large-cased-whole-word-masking, bert-large-uncased-whole-word-masking-finetuned-squad, bert-large-cased-whole-word-masking-finetuned-squad, bert-base-cased-finetuned-mrpc, bert-base-german-dbmdz-cased, bert-base-german-dbmdz-uncased, bert-base-japanese, bert-base-japanese-whole-word-masking, bert-base-japanese-char, bert-base-japanese-char-whole-word-masking, bert-base-finnish-cased-v1, bert-base-finnish-uncased-v1, bert-base-dutch-cased, roberta-base, roberta-large, roberta-large-mnli, distilroberta-base, roberta-base-openai-detector, roberta-large-openai-detector, distilbert-base-uncased, distilbert-base-uncased-distilled-squad, distilbert-base-cased, distilbert-base-cased-distilled-squad, distilbert-base-german-cased, distilbert-base-multilingual-cased, distilbert-base-uncased-finetuned-sst-2-english
+  - Path to pre-trained model or shortcut name listed on https://huggingface.co/models
 
 - output_dir: String
 
@@ -660,6 +645,11 @@ Example usage of NER model using python API
   - default: ~/.cache/dffml/transformers
   - Directory to store the pre-trained models downloaded from s3
 
+- overwrite_output_dir: String
+
+  - default: False
+  - Overwrite the content of the output directory.Use this to continue training if output_dir points to a checkpoint directory.
+
 - max_seq_length: Integer
 
   - default: 128
@@ -674,6 +664,11 @@ Example usage of NER model using python API
 
   - default: False
   - Whether to use 16-bit (mixed) precision instead of 32-bit
+
+- use_fast: String
+
+  - default: False
+  - Set this flag to use fast tokenization.
 
 - ner_tags: List of strings
 
@@ -760,10 +755,70 @@ Example usage of NER model using python API
   - default: False
   - Avoid using CUDA when available
 
-- eval_all_checkpoints: String
+- optimizer_name: String
+
+  - default: adam
+  - Name of a Tensorflow optimizer among "adadelta, adagrad, adam, adamax, ftrl, nadam, rmsprop, sgd, adamw"
+
+- loss_name: String
+
+  - default: SparseCategoricalCrossentropy
+  - Name of a Tensorflow loss. For the list see: https://www.tensorflow.org/api_docs/python/tf/keras/losses
+
+- overwrite_cache: String
 
   - default: False
-  - Evaluate all checkpoints starting with the same prefix as model_name ending and ending with step number
+  - Overwrite the cached training and evaluation sets
+
+- logging_dir: String
+
+  - default: ~/.cache/dffml/transformers/log
+  - Tensorboard log dir.
+
+- logging_first_step: String
+
+  - default: False
+  - Log and eval the first global_step
+
+- logging_steps: Integer
+
+  - default: 500
+  - Log every X updates steps.
+
+- save_total_limit: Integer
+
+  - default: None
+  - Limit the total amount of checkpoints.Deletes the older checkpoints in the output_dir. Default is unlimited checkpoints
+
+- fp16_opt_level: String
+
+  - default: O1
+  - For fp16: Apex AMP optimization level selected in ['O0', 'O1', 'O2', and 'O3'].See details at https://nvidia.github.io/apex/amp.html
+
+- local_rank: Integer
+
+  - default: -1
+  - For distributed training: local_rank
+
+- end_lr: float
+
+  - default: 0
+  - End learning rate for optimizer
+
+- debug: String
+
+  - default: False
+  - Activate the trace to record computation graphs and profiling information
+
+- num_train_epochs: float
+
+  - default: 1
+  - Total number of training epochs to perform.
+
+- evaluate_during_training: String
+
+  - default: False
+  - Run evaluation during training at each logging step.
 
 .. _plugin_model_dffml_model_scratch:
 
