@@ -1,16 +1,11 @@
 import os
-import re
-import math
 import pathlib
-import datetime
-import collections
 import importlib
 
-from typing import Any, List, AsyncIterator, Optional, Tuple, Dict
+from typing import Any, List, AsyncIterator, Tuple, Dict
 
 import numpy as np
 from seqeval.metrics import (
-    classification_report,
     f1_score,
     precision_score,
     recall_score,
@@ -19,15 +14,11 @@ from seqeval.metrics import (
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
 from transformers import (
-    TF2_WEIGHTS_NAME,
-    GradientAccumulator,
-    create_optimizer,
     TFTrainer,
     AutoConfig,
     AutoTokenizer,
     TFAutoModelForTokenClassification,
     EvalPrediction,
-    PreTrainedTokenizer,
 )
 
 from dffml.record import Record
@@ -338,9 +329,6 @@ class NERModelContext(ModelContext):
         return df
 
     def get_dataset(self, data, tokenizer, mode):
-        config = self.parent.config._asdict()
-        drop_remainder = True if config["tpu"] or mode == "train" else False
-        labels = config["ner_tags"]
         sid_col = self.parent.config.sid.name
         words_col = self.parent.config.words.name
         labels_col = self.parent.config.predict.name

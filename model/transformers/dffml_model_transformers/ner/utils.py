@@ -1,8 +1,7 @@
 import logging
 from dataclasses import dataclass
-from typing import List, Optional, Tuple, Dict
+from typing import List, Optional
 
-import numpy as np
 import tensorflow as tf
 from transformers import PreTrainedTokenizer
 
