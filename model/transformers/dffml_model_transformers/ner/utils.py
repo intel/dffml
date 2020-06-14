@@ -171,10 +171,22 @@ def convert_examples_to_features(
             segment_ids += [pad_token_segment_id] * padding_length
             label_ids += [pad_token_label_id] * padding_length
 
-        assert len(input_ids) == max_seq_length
-        assert len(input_mask) == max_seq_length
-        assert len(segment_ids) == max_seq_length
-        assert len(label_ids) == max_seq_length
+        if len(input_ids) != max_seq_length:
+            raise AssertionError(
+                "Length of input id not equal to maximum sequence length"
+            )
+        if len(input_mask) != max_seq_length:
+            raise AssertionError(
+                "Length of input mask not equal to maximum sequence length"
+            )
+        if len(segment_ids) != max_seq_length:
+            raise AssertionError(
+                "Length of segment id not equal to maximum sequence length"
+            )
+        if len(label_ids) != max_seq_length:
+            raise AssertionError(
+                "Length of label id not equal to maximum sequence length"
+            )
 
         if ex_index < 5:
             logger.info("*** Example ***")
