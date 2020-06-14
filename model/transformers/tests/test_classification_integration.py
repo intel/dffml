@@ -9,7 +9,6 @@ import pathlib
 import contextlib
 
 from dffml.cli.cli import CLI
-from dffml.df.types import DataFlow
 from dffml.service.dev import Develop
 from dffml.util.asynctestcase import IntegrationCLITestCase
 
