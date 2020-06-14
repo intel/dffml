@@ -45,7 +45,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for entrypoint style loading of operations and seed inputs in `dataflow create`.
 - Definition for output of the function that `op` wraps.
 - Expose high level load, run and save functions to noasync.
+- Operation to verify secret for GitHub webhook.
 - Option to modify flow and add config in `dataflow create`.
+- Ability to use a function as a data source via the `op` source
 ### Changed
 - Update NER Model to use transformers 2.11.0
 - Update MNIST use case to normalize image arrays.
@@ -77,6 +79,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
   parameter sets for an operation.
+- Typing of config vlaues for numpy parsed docstrings where type should be tuple
+  or list
 ### Removed
 - Monitor class and associated tests (unused)
 - DefinedFeature class in `dffml/feature/feature.py`
