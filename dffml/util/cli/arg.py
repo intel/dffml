@@ -35,6 +35,10 @@ def parse_unknown(*unknown):
 
 class Arg(dict):
     def __init__(self, *args, **kwargs) -> None:
+        self.annotation = None
+        if "annotation" in kwargs:
+            self.annotation = kwargs["annotation"]
+            del kwargs["annotation"]
         super().__init__(**kwargs)
         self.name = "no-name"
         if args:

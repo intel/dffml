@@ -6,6 +6,7 @@ representing the arguments to that callable.
 """
 import inspect
 import dataclasses
+import typing
 from typing import Dict, Optional, Tuple, Type, Any, Callable
 
 from ...base import make_config, field
@@ -63,7 +64,11 @@ def numpy_doc_to_field(type_str, description, param):
                 type_cls = python_type
 
     if type_cls == Any and default != None:
-        type_cls = type(default)
+        type_cls = getattr(
+            typing, type(default).__qualname__.title(), type(default)
+        )
+        if isinstance(default, (list, tuple)) and default:
+            type_cls = type_cls[type(default[0])]
 
     return type_cls, field(description, default=default)
 

@@ -1,3 +1,3 @@
 path: /ffmpeg
-input_mode: bytes:input_file
-output_mode: bytes:image/gif:post_input.output_file
+input_mode: bytes:operations.convert_to_gif.inputs.input_file
+output_mode: bytes:image/gif:post_input."operations.convert_to_gif.outputs.result".output_file
