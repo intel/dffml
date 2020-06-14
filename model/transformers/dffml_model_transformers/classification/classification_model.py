@@ -1,9 +1,5 @@
 import os
-import re
-import math
 import pathlib
-import datetime
-import collections
 import importlib
 from typing import Any, List, Tuple, AsyncIterator, Dict, Type
 
@@ -12,14 +8,11 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 from transformers import (
     AutoConfig,
     AutoTokenizer,
-    TF2_WEIGHTS_NAME,
     EvalPrediction,
     PreTrainedTokenizer,
     TFAutoModelForSequenceClassification,
     TFTrainer,
     glue_convert_examples_to_features,
-    glue_processors,
-    glue_tasks_num_labels,
 )
 
 from dffml.record import Record
@@ -386,7 +379,6 @@ class HFClassificationModelContext(ModelContext):
             os.path.join(self.parent.config.output_dir, "tf_model.h5")
         ):
             raise ModelNotTrained("Train model before prediction.")
-        config = self.parent.config._asdict()
         self.tokenizer = AutoTokenizer.from_pretrained(
             self.parent.config.output_dir
         )
