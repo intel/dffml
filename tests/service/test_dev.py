@@ -3,6 +3,7 @@ import os
 import sys
 import json
 import glob
+import shutil
 import inspect
 import tarfile
 import tempfile
@@ -275,7 +276,7 @@ class TestExport(AsyncTestCase):
 
 class TestRun(AsyncTestCase):
     async def test_run(self):
-        with tempfile.NamedTemporaryFile(suffix=".db") as sqlite_file:
+        with tempfile.TemporaryDirectory() as tempdir:
             await Run.cli(
                 "dffml.operation.db:db_query_create_table",
                 "-table_name",
@@ -285,7 +286,7 @@ class TestRun(AsyncTestCase):
                 "-config-database",
                 "sqlite",
                 "-config-database-filename",
-                sqlite_file.name,
+                os.path.join(tempdir, "sqlite_database.db"),
                 "-log",
                 "debug",
             )
