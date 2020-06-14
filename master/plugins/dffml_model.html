@@ -982,7 +982,6 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">sid</span> <span class="n">SentenceId</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">words</span> <span class="n">Words</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Tag</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_architecture_type</span> <span class="n">bert</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">1</span> \
@@ -997,22 +996,13 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">sid</span> <span class="n">SentenceId</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">words</span> <span class="n">Words</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Tag</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_architecture_type</span> <span class="n">bert</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
 </pre></div>
 </div>
 <p>Output</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>            <span class="n">precision</span>    <span class="n">recall</span>  <span class="n">f1</span><span class="o">-</span><span class="n">score</span>   <span class="n">support</span>
-
-    <span class="n">MISC</span>     <span class="mf">0.0000</span>    <span class="mf">0.0000</span>    <span class="mf">0.0000</span>         <span class="mi">2</span>
-
-<span class="n">micro</span> <span class="n">avg</span>     <span class="mf">0.0000</span>    <span class="mf">0.0000</span>    <span class="mf">0.0000</span>         <span class="mi">2</span>
-<span class="n">macro</span> <span class="n">avg</span>     <span class="mf">0.0000</span>    <span class="mf">0.0000</span>    <span class="mf">0.0000</span>         <span class="mi">2</span>
-
-<span class="n">INFO</span><span class="p">:</span><span class="n">dffml</span><span class="o">.</span><span class="n">NERModelContext</span><span class="p">:</span><span class="n">final_loss</span> <span class="o">=</span> <span class="mf">1.4586552</span>
-<span class="mf">0.0</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.888888888888889</span>
 </pre></div>
 </div>
 <p>Make a prediction</p>
@@ -1023,7 +1013,6 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">sid</span> <span class="n">SentenceId</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">words</span> <span class="n">Words</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Tag</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_architecture_type</span> <span class="n">bert</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
@@ -1038,28 +1027,26 @@ Description about pretrianed models can be found <a class="reference external" h
             &quot;Words&quot;: &quot;DFFML models can do NER&quot;
         },
         &quot;key&quot;: &quot;0&quot;,
-        &quot;last_updated&quot;: &quot;2020-03-21T23:14:41Z&quot;,
+        &quot;last_updated&quot;: &quot;2020-06-11T17:40:54Z&quot;,
         &quot;prediction&quot;: {
             &quot;Tag&quot;: {
                 &quot;confidence&quot;: NaN,
                 &quot;value&quot;: [
-                    [
-                        {
-                            &quot;DFFML&quot;: &quot;I-LOC&quot;
-                        },
-                        {
-                            &quot;models&quot;: &quot;O&quot;
-                        },
-                        {
-                            &quot;can&quot;: &quot;I-LOC&quot;
-                        },
-                        {
-                            &quot;do&quot;: &quot;I-LOC&quot;
-                        },
-                        {
-                            &quot;NER&quot;: &quot;I-LOC&quot;
-                        }
-                    ]
+                    {
+                        &quot;DFFML&quot;: &quot;B-MISC&quot;
+                    },
+                    {
+                        &quot;models&quot;: &quot;I-MISC&quot;
+                    },
+                    {
+                        &quot;can&quot;: &quot;O&quot;
+                    },
+                    {
+                        &quot;do&quot;: &quot;B-MISC&quot;
+                    },
+                    {
+                        &quot;NER&quot;: &quot;B-MISC&quot;
+                    }
                 ]
             }
         }
@@ -1071,28 +1058,26 @@ Description about pretrianed models can be found <a class="reference external" h
             &quot;Words&quot;: &quot;DFFML models can do regression&quot;
         },
         &quot;key&quot;: &quot;1&quot;,
-        &quot;last_updated&quot;: &quot;2020-03-21T23:14:42Z&quot;,
+        &quot;last_updated&quot;: &quot;2020-06-11T17:40:57Z&quot;,
         &quot;prediction&quot;: {
             &quot;Tag&quot;: {
                 &quot;confidence&quot;: NaN,
                 &quot;value&quot;: [
-                    [
-                        {
-                            &quot;DFFML&quot;: &quot;I-LOC&quot;
-                        },
-                        {
-                            &quot;models&quot;: &quot;O&quot;
-                        },
-                        {
-                            &quot;can&quot;: &quot;I-LOC&quot;
-                        },
-                        {
-                            &quot;do&quot;: &quot;I-LOC&quot;
-                        },
-                        {
-                            &quot;regression&quot;: &quot;I-LOC&quot;
-                        }
-                    ]
+                    {
+                        &quot;DFFML&quot;: &quot;B-MISC&quot;
+                    },
+                    {
+                        &quot;models&quot;: &quot;I-MISC&quot;
+                    },
+                    {
+                        &quot;can&quot;: &quot;O&quot;
+                    },
+                    {
+                        &quot;do&quot;: &quot;B-MISC&quot;
+                    },
+                    {
+                        &quot;regression&quot;: &quot;I-MISC&quot;
+                    }
                 ]
             }
         }
@@ -1112,7 +1097,6 @@ of the model.</p>
     <span class="n">sid</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;SentenceId&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="n">words</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Words&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Tag&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-    <span class="n">model_architecture_type</span><span class="o">=</span><span class="s2">&quot;distilbert&quot;</span><span class="p">,</span>
     <span class="n">model_name_or_path</span><span class="o">=</span><span class="s2">&quot;distilbert-base-cased&quot;</span><span class="p">,</span>
     <span class="n">epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">no_cuda</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -1151,14 +1135,9 @@ of the model.</p>
 <li><p>NER Tags (B-MISC, I-PER, O etc.) for tokens</p></li>
 </ul>
 </li>
-<li><p>model_architecture_type: String</p>
-<ul>
-<li><p>Model architecture selected in the : bert, distilbert, roberta</p></li>
-</ul>
-</li>
 <li><p>model_name_or_path: String</p>
 <ul>
-<li><p>Path to pre-trained model or shortcut name selected in the list: bert-base-uncased, bert-large-uncased, bert-base-cased, bert-large-cased, bert-base-multilingual-uncased, bert-base-multilingual-cased, bert-base-chinese, bert-base-german-cased, bert-large-uncased-whole-word-masking, bert-large-cased-whole-word-masking, bert-large-uncased-whole-word-masking-finetuned-squad, bert-large-cased-whole-word-masking-finetuned-squad, bert-base-cased-finetuned-mrpc, bert-base-german-dbmdz-cased, bert-base-german-dbmdz-uncased, bert-base-japanese, bert-base-japanese-whole-word-masking, bert-base-japanese-char, bert-base-japanese-char-whole-word-masking, bert-base-finnish-cased-v1, bert-base-finnish-uncased-v1, bert-base-dutch-cased, roberta-base, roberta-large, roberta-large-mnli, distilroberta-base, roberta-base-openai-detector, roberta-large-openai-detector, distilbert-base-uncased, distilbert-base-uncased-distilled-squad, distilbert-base-cased, distilbert-base-cased-distilled-squad, distilbert-base-german-cased, distilbert-base-multilingual-cased, distilbert-base-uncased-finetuned-sst-2-english</p></li>
+<li><p>Path to pre-trained model or shortcut name listed on <a class="reference external" href="https://huggingface.co/models">https://huggingface.co/models</a></p></li>
 </ul>
 </li>
 <li><p>output_dir: String</p>
@@ -1185,6 +1164,12 @@ of the model.</p>
 <li><p>Directory to store the pre-trained models downloaded from s3</p></li>
 </ul>
 </li>
+<li><p>overwrite_output_dir: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Overwrite the content of the output directory.Use this to continue training if output_dir points to a checkpoint directory.</p></li>
+</ul>
+</li>
 <li><p>max_seq_length: Integer</p>
 <ul>
 <li><p>default: 128</p></li>
@@ -1201,6 +1186,12 @@ of the model.</p>
 <ul>
 <li><p>default: False</p></li>
 <li><p>Whether to use 16-bit (mixed) precision instead of 32-bit</p></li>
+</ul>
+</li>
+<li><p>use_fast: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Set this flag to use fast tokenization.</p></li>
 </ul>
 </li>
 <li><p>ner_tags: List of strings</p>
@@ -1305,10 +1296,82 @@ of the model.</p>
 <li><p>Avoid using CUDA when available</p></li>
 </ul>
 </li>
-<li><p>eval_all_checkpoints: String</p>
+<li><p>optimizer_name: String</p>
+<ul>
+<li><p>default: adam</p></li>
+<li><p>Name of a Tensorflow optimizer among “adadelta, adagrad, adam, adamax, ftrl, nadam, rmsprop, sgd, adamw”</p></li>
+</ul>
+</li>
+<li><p>loss_name: String</p>
+<ul>
+<li><p>default: SparseCategoricalCrossentropy</p></li>
+<li><p>Name of a Tensorflow loss. For the list see: <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/keras/losses">https://www.tensorflow.org/api_docs/python/tf/keras/losses</a></p></li>
+</ul>
+</li>
+<li><p>overwrite_cache: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Evaluate all checkpoints starting with the same prefix as model_name ending and ending with step number</p></li>
+<li><p>Overwrite the cached training and evaluation sets</p></li>
+</ul>
+</li>
+<li><p>logging_dir: String</p>
+<ul>
+<li><p>default: ~/.cache/dffml/transformers/log</p></li>
+<li><p>Tensorboard log dir.</p></li>
+</ul>
+</li>
+<li><p>logging_first_step: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Log and eval the first global_step</p></li>
+</ul>
+</li>
+<li><p>logging_steps: Integer</p>
+<ul>
+<li><p>default: 500</p></li>
+<li><p>Log every X updates steps.</p></li>
+</ul>
+</li>
+<li><p>save_total_limit: Integer</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Limit the total amount of checkpoints.Deletes the older checkpoints in the output_dir. Default is unlimited checkpoints</p></li>
+</ul>
+</li>
+<li><p>fp16_opt_level: String</p>
+<ul>
+<li><p>default: O1</p></li>
+<li><p>For fp16: Apex AMP optimization level selected in [‘O0’, ‘O1’, ‘O2’, and ‘O3’].See details at <a class="reference external" href="https://nvidia.github.io/apex/amp.html">https://nvidia.github.io/apex/amp.html</a></p></li>
+</ul>
+</li>
+<li><p>local_rank: Integer</p>
+<ul>
+<li><p>default: -1</p></li>
+<li><p>For distributed training: local_rank</p></li>
+</ul>
+</li>
+<li><p>end_lr: float</p>
+<ul>
+<li><p>default: 0</p></li>
+<li><p>End learning rate for optimizer</p></li>
+</ul>
+</li>
+<li><p>debug: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Activate the trace to record computation graphs and profiling information</p></li>
+</ul>
+</li>
+<li><p>num_train_epochs: float</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>Total number of training epochs to perform.</p></li>
+</ul>
+</li>
+<li><p>evaluate_during_training: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Run evaluation during training at each logging step.</p></li>
 </ul>
 </li>
 </ul>
