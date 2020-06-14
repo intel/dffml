@@ -105,3 +105,6 @@ class SqliteDatabase(BaseDatabase):
         self.db.row_factory = sqlite3.Row
         self.cursor = self.db.cursor()
         return await super().__aenter__()
+
+    async def __aexit__(self, _exc_type, _exc_value, _traceback):
+        self.db.close()
