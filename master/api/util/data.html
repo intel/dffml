@@ -280,6 +280,34 @@
 </dd></dl>
 
 <dl class="py function">
+<dt id="dffml.util.data.export">
+<code class="sig-prename descclassname">dffml.util.data.</code><code class="sig-name descname">export</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.data.export" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a value from a Python object into something that is just primitives,
+so things that could be printed withough formatting issues or sent to
+<a class="reference external" href="https://docs.python.org/3/library/json.html#json.dumps" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">json.dumps()</span></code></a>.</p>
+<p>It works on <code class="xref py py-func docutils literal notranslate"><span class="pre">typing.NamedTuple()</span></code>, <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.dataclass" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dataclasses.dataclass()</span></code></a>,
+and anything that implements an <code class="docutils literal notranslate"><span class="pre">export</span></code> method that returns a dict.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">export</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NamedTuple</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyType</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">data</span><span class="p">:</span> <span class="nb">int</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">export</span><span class="p">(</span><span class="n">MyType</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="mi">42</span><span class="p">))</span>
+<span class="go">{&#39;data&#39;: 42}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyBiggerType</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;feed&quot;</span><span class="p">:</span> <span class="s2">&quot;face&quot;</span><span class="p">,</span> <span class="s2">&quot;sub&quot;</span><span class="p">:</span> <span class="n">MyType</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="mi">42</span><span class="p">)}</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">export</span><span class="p">(</span><span class="n">MyBiggerType</span><span class="p">())</span>
+<span class="go">{&#39;feed&#39;: &#39;face&#39;, &#39;sub&#39;: {&#39;data&#39;: 42}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="dffml.util.data.export_dict">
 <code class="sig-prename descclassname">dffml.util.data.</code><code class="sig-name descname">export_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#export_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.data.export_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the dict given as kwargs but first recurse into each element and call

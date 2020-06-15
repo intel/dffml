@@ -428,6 +428,37 @@
     <span class="k">return</span> <span class="n">kwargs</span></div>
 
 
+<div class="viewcode-block" id="export"><a class="viewcode-back" href="../../../api/util/data.html#dffml.util.data.export">[docs]</a><span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a value from a Python object into something that is just primitives,</span>
+<span class="sd">    so things that could be printed withough formatting issues or sent to</span>
+<span class="sd">    :py:func:`json.dumps`.</span>
+
+<span class="sd">    It works on :py:func:`typing.NamedTuple`, :py:func:`dataclasses.dataclass`,</span>
+<span class="sd">    and anything that implements an ``export`` method that returns a dict.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; from dffml import export</span>
+<span class="sd">    &gt;&gt;&gt; from typing import NamedTuple</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; class MyType(NamedTuple):</span>
+<span class="sd">    ...     data: int</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; export(MyType(data=42))</span>
+<span class="sd">    {&#39;data&#39;: 42}</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; class MyBiggerType:</span>
+<span class="sd">    ...     def export(self):</span>
+<span class="sd">    ...         return {&quot;feed&quot;: &quot;face&quot;, &quot;sub&quot;: MyType(data=42)}</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; export(MyBiggerType())</span>
+<span class="sd">    {&#39;feed&#39;: &#39;face&#39;, &#39;sub&#39;: {&#39;data&#39;: 42}}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">export_dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">obj</span><span class="p">)[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span></div>
+
+
 <div class="viewcode-block" id="explore_directories"><a class="viewcode-back" href="../../../api/util/data.html#dffml.util.data.explore_directories">[docs]</a><span class="k">def</span> <span class="nf">explore_directories</span><span class="p">(</span><span class="n">path_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Recursively explores any path binded to a key in `path_dict`</span>
