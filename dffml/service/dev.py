@@ -27,7 +27,7 @@ from ..util.cli.cmd import CMD
 from ..util.entrypoint import load
 from ..base import MissingConfig, config as configdataclass, field
 from ..util.packaging import is_develop
-from ..util.data import traverse_config_get, export_dict
+from ..util.data import traverse_config_get, export
 from ..df.types import Input, DataFlow
 from ..df.memory import MemoryOrchestrator
 from ..configloader.configloader import BaseConfigLoader
@@ -291,9 +291,8 @@ class Export(CMD):
                             await loader.dumpb(obj._asdict())
                         )
                     else:
-                        exported = export_dict(value=obj)
                         sys.stdout.buffer.write(
-                            await loader.dumpb(exported["value"])
+                            await loader.dumpb(export(obj))
                         )
 
 
