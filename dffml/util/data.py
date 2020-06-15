@@ -249,6 +249,37 @@ def export_dict(**kwargs):
     return kwargs
 
 
+def export(obj):
+    """
+    Convert a value from a Python object into something that is just primitives,
+    so things that could be printed withough formatting issues or sent to
+    :py:func:`json.dumps`.
+
+    It works on :py:func:`typing.NamedTuple`, :py:func:`dataclasses.dataclass`,
+    and anything that implements an ``export`` method that returns a dict.
+
+    Examples
+    --------
+
+    >>> from dffml import export
+    >>> from typing import NamedTuple
+    >>>
+    >>> class MyType(NamedTuple):
+    ...     data: int
+    >>>
+    >>> export(MyType(data=42))
+    {'data': 42}
+    >>>
+    >>> class MyBiggerType:
+    ...     def export(self):
+    ...         return {"feed": "face", "sub": MyType(data=42)}
+    >>>
+    >>> export(MyBiggerType())
+    {'feed': 'face', 'sub': {'data': 42}}
+    """
+    return export_dict(value=obj)["value"]
+
+
 def explore_directories(path_dict: dict):
     """
     Recursively explores any path binded to a key in `path_dict`
