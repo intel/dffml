@@ -72,7 +72,7 @@ class TestDNN(AsyncTestCase):
                 "--model-features",
                 "starts_with_a:int:1",
                 "-model-directory",
-                tempfile.TemporaryDirectory()
+                tempfile.TemporaryDirectory(),
             )
         )
         self.assertEqual(
