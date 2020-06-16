@@ -25,5 +25,7 @@ def simple_accuracy(preds, labels):
 
 
 def classification_compute_metrics(preds, labels):
+    if len(preds) != len(labels):
+        raise AssertionError("Length of predictions and labels didn't match")
     assert len(preds) == len(labels)
     return {"acc": simple_accuracy(preds, labels)}

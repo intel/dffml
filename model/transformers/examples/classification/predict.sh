@@ -4,7 +4,7 @@ dffml predict all \
   -model-label_list 0 1 \
   -model-clstype int \
   -sources f=csv \
-  -source-filename teset.csv \
+  -source-filename test.csv \
   -model-epochs 2 \
   -model-model_name_or_path bert-base-cased \
   -model-no_cuda \

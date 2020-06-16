@@ -9,7 +9,6 @@ from transformers import (
     AutoConfig,
     AutoTokenizer,
     EvalPrediction,
-    PreTrainedTokenizer,
     TFAutoModelForSequenceClassification,
     TFTrainer,
     glue_convert_examples_to_features,
@@ -18,9 +17,9 @@ from transformers import (
 from dffml.record import Record
 from dffml.base import config, field
 from dffml.source.source import Sources
-from dffml.feature.feature import Feature, Features
 from dffml.model.accuracy import Accuracy
 from dffml.util.entrypoint import entrypoint
+from dffml.feature.feature import Feature, Features
 from dffml.model.model import ModelContext, Model, ModelNotTrained
 
 from .utils import InputExample, classification_compute_metrics
@@ -178,10 +177,8 @@ class HFClassificationModelConfig:
         self.label_list = list(map(self.clstype, self.label_list))
         self.task_name = "sst-2"
         self.mode = "text-classification"
-        if len(self.features) > 2:
-            self.logger.warning(
-                "Found more than two features, only first two will be used for training"
-            )
+        if len(self.features) > 1:
+            raise ValueError("Found more than one feature to train on")
         if self.fp16:
             self.tf.config.optimizer.set_experimental_options(
                 {"auto_mixed_precision": True}
@@ -219,7 +216,7 @@ class HFClassificationModelContext(ModelContext):
         self.pd = importlib.import_module("pandas")
         self.np = importlib.import_module("numpy")
         self.tf = importlib.import_module("tensorflow")
-        self.features = [name for name in self.parent.config.features.names()]
+        self.features = self.parent.config.features.names()
         self.config = AutoConfig.from_pretrained(
             self.parent.config.config_name
             if self.parent.config.config_name
@@ -242,8 +239,7 @@ class HFClassificationModelContext(ModelContext):
             for feature, results in record.features(self.features).items():
                 x_cols[feature].append(self.np.array(results))
             y_cols.append(record.feature(self.parent.config.predict.name))
-        if not y_cols:
-            raise ValueError("No records to train on")
+
         y_cols = self.np.array(y_cols)
         for feature in x_cols:
             x_cols[feature] = self.np.array(x_cols[feature])
@@ -254,27 +250,12 @@ class HFClassificationModelContext(ModelContext):
         self.logger.info("-----------------------")
         df = self.pd.DataFrame.from_dict(x_cols)
         df[self.parent.config.predict.name] = y_cols
-        if len(self.parent.config.features) > 1:
-            train_examples = [
-                InputExample(i, text_a, text_b, label)
-                for i, (text_a, text_b, label) in enumerate(
-                    zip(
-                        df[self.features[0]],
-                        df[self.features[1]],
-                        df[self.parent.config.predict.name],
-                    )
-                )
-            ]
-        elif len(self.parent.config.features) == 1:
-            train_examples = [
-                InputExample(i, text, None, label)
-                for i, (text, label) in enumerate(
-                    zip(
-                        df[self.features[0]],
-                        df[self.parent.config.predict.name],
-                    )
-                )
-            ]
+        train_examples = [
+            InputExample(i, text, None, label)
+            for i, (text, label) in enumerate(
+                zip(df[self.features[0]], df[self.parent.config.predict.name],)
+            )
+        ]
         return glue_convert_examples_to_features(
             train_examples,
             self.tokenizer,
@@ -390,24 +371,14 @@ class HFClassificationModelContext(ModelContext):
         trainer = TFTrainer(model=self.model, args=self.parent.config,)
         async for record in records:
             to_predict = record.features(self.features)
-            if len(self.features) > 1:
-                eval_example = [
-                    InputExample(
-                        0,
-                        to_predict[self.features[0]],
-                        to_predict[self.features[1]],
-                        self.parent.config.label_list[0],
-                    )
-                ]
-            else:
-                eval_example = [
-                    InputExample(
-                        0,
-                        to_predict[self.features[0]],
-                        None,
-                        self.parent.config.label_list[0],
-                    )
-                ]
+            eval_example = [
+                InputExample(
+                    0,
+                    to_predict[self.features[0]],
+                    None,
+                    self.parent.config.label_list[0],
+                )
+            ]
             eval_features = glue_convert_examples_to_features(
                 eval_example,
                 self.tokenizer,

@@ -3,8 +3,9 @@ import tempfile
 
 from dffml.record import Record
 from dffml.source.source import Sources
-from dffml.util.asynctestcase import AsyncTestCase
+from dffml import train, accuracy, predict
 from dffml.feature import Features, Feature
+from dffml.util.asynctestcase import AsyncTestCase
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml_model_transformers.classification.classification_model import (
     HFClassificationModel,
@@ -40,23 +41,20 @@ class TestHFClassificationModel(AsyncTestCase):
         cls.model_dir.cleanup()
 
     async def test_00_train(self):
-        async with self.sources as sources, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                await mctx.train(sctx)
+        await train(self.model, self.sources)
 
     async def test_01_accuracy(self):
-        async with self.sources as sources, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                res = await mctx.accuracy(sctx)
-                self.assertGreater(res, 0)
+        res = await accuracy(self.model, self.sources)
+        self.assertGreater(res, 0)
 
     async def test_02_predict(self):
-        async with self.sources as sources, self.model as model:
-            target_name = model.config.predict.name
-            async with sources() as sctx, model() as mctx:
-                async for record in mctx.predict(sctx.records()):
-                    prediction = record.prediction(target_name).value
-                    self.assertIn(prediction, ["0", "1"])
+        target_name = self.model.config.predict.name
+        predictions = [
+            prediction
+            async for prediction in predict(self.model, self.sources)
+        ]
+        self.assertIn(predictions[0][2][target_name]["value"], ["0", "1"])
+        self.assertIn(predictions[1][2][target_name]["value"], ["0", "1"])
 
 
 # Randomly generate sample data
