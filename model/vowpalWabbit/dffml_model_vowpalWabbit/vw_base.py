@@ -79,12 +79,7 @@ class VWConfig:
         "Convert the input to vowpal wabbit standard input format",
         default=False,
     )
-    directory: str = field(
-        "Directory where state should be saved",
-        default=os.path.join(
-            os.path.expanduser("~"), ".cache", "dffml", "vowpalWabbit"
-        ),
-    )
+    directory: Path = field("Directory where state should be saved",)
 
     def __post_init__(self):
         self.extra_cols = []
