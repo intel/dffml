@@ -2,6 +2,7 @@ dffml train \
   -model text_classifier \
   -model-epochs 30 \
   -model-predict sentiment:int:1 \
+  -model-directory tempdir \
   -model-classifications 0 1 \
   -model-clstype int \
   -sources f=csv \
