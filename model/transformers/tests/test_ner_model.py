@@ -60,7 +60,7 @@ class TestNERModel(AsyncTestCase):
                 output_dir=cls.model_dir.name,
                 model_name_or_path="bert-base-cased",
                 no_cuda=True,
-                cache_dir=cls.cache_dir.name
+                cache_dir=cls.cache_dir.name,
             )
         )
 
