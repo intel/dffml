@@ -142,6 +142,8 @@ class TestTextClassifier(IntegrationCLITestCase):
                 "text:str:1",
                 "-config-model-predict",
                 "sentiment:int:1",
+                "-config-model-directory",
+                model_dir,
                 "-config-model-classifications",
                 "0",
                 "1",
