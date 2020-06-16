@@ -96,8 +96,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#data-flows-directed-graph-execution">Data Flows - Directed Graph Execution</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#consistent-api">Consistent API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#plugins">Plugins</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#team">Team</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#users">Users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#philosophy">Philosophy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#team">Team</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
@@ -297,17 +298,6 @@ everything else maintained as a part of the core repository and with other
 developers models and operations. <a class="reference internal" href="tutorials/index.html"><span class="doc">Tutorials</span></a> show how to create your
 own plugins.</p>
 </div>
-<div class="section" id="team">
-<h2>Team<a class="headerlink" href="#team" title="Permalink to this headline">¶</a></h2>
-<p>We have an awesome team working on the project. We hold weekly meetings
-and have a mailing list and chat! If you want to get involved, ask questions, or
-get help getting started, see <a class="reference internal" href="contact.html"><span class="doc">Contact Us</span></a>.</p>
-<p>We participated in Google Summer of Code 2019 under the Python Software
-Foundation. A big thanks to our students, Yash and Sudharsana!</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://github.com/intel/dffml/wiki/GSoC-2019#student-contributions">GSoC 2019 Student Contributions</a></p></li>
-</ul>
-</div>
 <div class="section" id="users">
 <h2>Users<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h2>
 <p>The following is a list of organizations and projects using DFFML. Please let us
@@ -319,6 +309,87 @@ using DFFML, see the <a class="reference internal" href="contact.html"><span cla
 <li><p>Security analysis of Open Source Software dependencies.</p></li>
 </ul>
 </li>
+</ul>
+</div>
+<div class="section" id="philosophy">
+<h2>Philosophy<a class="headerlink" href="#philosophy" title="Permalink to this headline">¶</a></h2>
+<p>DFFML is an event driven directed graph execution architecture tightly coupled
+with the typical machine learning workflow. The core concept is that all
+software can be looked at as a set of operations that occur in response to
+asynchronous events. Directed graphs are used to specify which operations should
+be run in response to which events. Every event has data associated with it,
+therefore we refer to the directed graph as a DataFlow.</p>
+<p>The project as it exists now is a Python library which provides data set
+generation via DataFlows, dataset storage, as well as model training, testing,
+and inference. Users can leverage DataFlows to do feature engineering, to create
+new datasets and modify or add to existing datasets. They then train models,
+assess their accuracy and use them to make predictions via various deployment
+methods.</p>
+<p>DFFML has a plugin based architecture. Every model, data source, operation, etc.
+is a plugin. We maintain a set of official plugins which wrap various machine
+learning frameworks such as Daal4Py, TensorFlow, Scikit Learn, etc. By wrapping
+frameworks in a standard API we simplify usage and make it easy for developers
+to switch from one underlying framework to another.</p>
+<p>Conceptually, DFFML is not just the Python implementation it is today. It’s a
+programming language agnostic architecture centered around the concept of
+DataFlows and the decoupling of definition from implementation. One goal of the
+project closely associated with this is to have an orchestrator capable of
+deploying and knitting together new or existing services without the need for
+those services to know anything about each other. This could be thought of as a
+level of abstraction beyond serverless architecture, which is where we’re hoping
+to take the project.</p>
+</div>
+<div class="section" id="team">
+<h2>Team<a class="headerlink" href="#team" title="Permalink to this headline">¶</a></h2>
+<p>We have an awesome team working on the project. We hold weekly meetings
+and have a mailing list and chat! If you want to get involved, ask questions, or
+get help getting started, see <a class="reference internal" href="contact.html"><span class="doc">Contact Us</span></a>.</p>
+<p>We participated in Google Summer of Code 2019 under the Python Software
+Foundation. A big thanks to our students, Yash and Sudharsana!</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="contributing/gsoc/2019.html"><span class="doc">GSoC 2019 Student Contributions</span></a></p></li>
+</ul>
+<p>We are currently participating in Google Summer of Code 2020 under the Python
+Software Foundation. Big thanks to Aghin, Himanshu, and Saksham!</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="contributing/gsoc/2020.html"><span class="doc">GSoC 2020 Student Contributions</span></a></p></li>
+</ul>
+<p>Thank you to everyone who’s contributed to DFFML!!!</p>
+<ul class="simple">
+<li><p>Abdallah Bashir</p></li>
+<li><p>Aghin Shah Alin</p></li>
+<li><p>Arvindh Kumar Chandran</p></li>
+<li><p>Aryan Gupta</p></li>
+<li><p>Byambaa</p></li>
+<li><p>Constanza Heath</p></li>
+<li><p>Dentigg</p></li>
+<li><p>Dmitry Poliuha</p></li>
+<li><p>Govindarajan Panneerselvam</p></li>
+<li><p>Hashim</p></li>
+<li><p>Himanshu Tripathi</p></li>
+<li><p>iamandeepsandhu</p></li>
+<li><p>Jan Keromnes</p></li>
+<li><p>John Andersen</p></li>
+<li><p>Joseph Kato</p></li>
+<li><p>Justin Moore</p></li>
+<li><p>Naeem Khoshnevis</p></li>
+<li><p>NeerajBhadani</p></li>
+<li><p>NMNDV</p></li>
+<li><p>Pankaj Patil</p></li>
+<li><p>pradeepbhadani</p></li>
+<li><p>purnimapatel</p></li>
+<li><p>raghav-ys</p></li>
+<li><p>Saksham Arora</p></li>
+<li><p>Sanket Saurav</p></li>
+<li><p>shivam singh</p></li>
+<li><p>Sudhanshu kumar</p></li>
+<li><p>Sudharsana K J L</p></li>
+<li><p>Taksh Kamlesh</p></li>
+<li><p>Theo</p></li>
+<li><p>us</p></li>
+<li><p>Vaibhav Mehra</p></li>
+<li><p>Yash Lamba</p></li>
+<li><p>Yash Varshney</p></li>
 </ul>
 </div>
 </div>
