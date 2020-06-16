@@ -51,6 +51,7 @@ class TestNERModel(AsyncTestCase):
         )
 
         cls.model_dir = tempfile.TemporaryDirectory()
+        cls.cache_dir = tempfile.TemporaryDirectory()
         cls.model = NERModel(
             NERModelConfig(
                 sid=Feature("sentence_id", int, 1),
@@ -59,6 +60,7 @@ class TestNERModel(AsyncTestCase):
                 output_dir=cls.model_dir.name,
                 model_name_or_path="bert-base-cased",
                 no_cuda=True,
+                cache_dir=cls.cache_dir.name
             )
         )
 

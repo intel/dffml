@@ -9,6 +9,8 @@ model = NERModel(
     model_name_or_path="distilbert-base-cased",
     epochs=1,
     no_cuda=True,
+    output_dir="temp_output_dir",
+    cache_dir="temp_cache_dir"
 )
 
 # Train the model

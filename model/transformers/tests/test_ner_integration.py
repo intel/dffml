@@ -61,6 +61,9 @@ class TestNER(IntegrationCLITestCase):
             writer.writerow(["A", "B"])
             writer.writerows(PREDICT_DATA)
 
+        output_dir = self.mktempdir()
+        cache_dir = self.mktempdir()
+
         # Train the model
         await CLI.cli(
             "train",
@@ -74,6 +77,10 @@ class TestNER(IntegrationCLITestCase):
             "target:str:1",
             "-model-model_name_or_path",
             "bert-base-cased",
+            "-model-output_dir",
+            output_dir,
+            "-model-cache_dir",
+            cache_dir,
             "-model-no_cuda",
             "-sources",
             "training_data=csv",
@@ -95,6 +102,10 @@ class TestNER(IntegrationCLITestCase):
             "target:str:1",
             "-model-model_name_or_path",
             "bert-base-cased",
+            "-model-output_dir",
+            output_dir,
+            "-model-cache_dir",
+            cache_dir,
             "-model-no_cuda",
             "-sources",
             "test_data=csv",
@@ -118,6 +129,10 @@ class TestNER(IntegrationCLITestCase):
                 "target:str:1",
                 "-model-model_name_or_path",
                 "bert-base-cased",
+                "-model-output_dir",
+                output_dir,
+                "-model-cache_dir",
+                cache_dir,
                 "-model-no_cuda",
                 "-sources",
                 "predict_data=csv",
@@ -156,6 +171,10 @@ class TestNER(IntegrationCLITestCase):
                 "target:str:1",
                 "-config-model-model_name_or_path",
                 "bert-base-cased",
+                "-config-model-output_dir",
+                output_dir,
+                "-config-model-cache_dir",
+                cache_dir,
                 "-config-model-no_cuda",
             )
             self.assertIn("model_predictions", results)
