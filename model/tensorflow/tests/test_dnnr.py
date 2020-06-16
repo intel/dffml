@@ -71,11 +71,9 @@ class TestDNN(AsyncTestCase):
                 "feature_1:float:1",
                 "--model-features",
                 "feature_2:float:1",
+                "-model-directory",
+                tempfile.TemporaryDirectory(),
             )
-        )
-        self.assertEqual(
-            config.directory,
-            pathlib.Path("~", ".cache", "dffml", "tensorflow"),
         )
         self.assertEqual(config.steps, 3000)
         self.assertEqual(config.epochs, 30)
