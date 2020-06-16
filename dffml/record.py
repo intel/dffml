@@ -3,10 +3,12 @@
 """
 Information on the software to evaluate is stored in a Record instance.
 """
+import os
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 
-from .util.data import merge
+from .util.data import merge, export
+from .util.display import create_row
 from .log import LOGGER
 
 LOGGER = LOGGER.getChild("record")
@@ -141,31 +143,35 @@ class Record(object):
         return str(self.dict())
 
     def __str__(self):
-        header = self.key
+        try:
+            width = int(3 * os.get_terminal_size().columns / 4)
+        except OSError:
+            width = 70
+        header = "\n\tKey:\t" + self.key
+        divider = "+" + "-" * (width) + "+"
+
         if len(self.extra.keys()):
-            header += " " + str(self.extra)
+            header += "\n\t" + str(self.extra)
 
         return "\n".join(
             [header]
+            + ["Record Features".center(width).rstrip()]
+            + [divider]
             + [
-                ("%-30s%s" % (feature, str(results)))
-                for feature, results in self.features().items()
+                create_row(feature, results, width)
+                for feature, results in map(
+                    lambda k: (k[0], export(k[1])), self.features().items()
+                )
             ]
-            + ["Predictions"]
             + (
-                [
-                    (
-                        "%-30s\n\tvalue:%s, confidence:%s"
-                        % (
-                            pred,
-                            str(conf_val["value"]),
-                            str(conf_val["confidence"]),
-                        )
-                    )
+                ["\n" + "Prediction".center(width).rstrip()]
+                + [divider]
+                + [
+                    create_row(pred, conf_val, width)
                     for pred, conf_val in self.data.prediction.items()
                 ]
                 if self.data.prediction
-                else ["Undetermined"]
+                else ["Prediction:    Undetermined".rjust(width)]
             )
         ).rstrip()
 
