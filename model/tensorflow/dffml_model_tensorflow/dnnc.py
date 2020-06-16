@@ -29,13 +29,10 @@ from dffml.model.model import ModelContext, Model, ModelNotTrained
 class TensorflowBaseConfig:
     predict: Feature = field("Feature name holding target values")
     features: Features = field("Features to train on")
+    directory: pathlib.Path = field("Directory where state should be saved")
     steps: int = field("Number of steps to train the model", default=3000)
     epochs: int = field(
         "Number of iterations to pass over all records in a source", default=30
-    )
-    directory: pathlib.Path = field(
-        "Directory where state should be saved",
-        default=pathlib.Path("~", ".cache", "dffml", "tensorflow"),
     )
     hidden: List[int] = field(
         "List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer",
