@@ -30,11 +30,4 @@ class PNGConfigLoaderContext(BaseConfigLoaderContext):
 @entrypoint("mnistpng")
 class PNGConfigLoader(BaseConfigLoader):
     CONTEXT = PNGConfigLoaderContext
-
-    @classmethod
-    def args(cls, args, *above) -> Dict[str, Arg]:
-        return args
-
-    @classmethod
-    def config(cls, config, *above) -> BaseConfig:
-        return BaseConfig()
+    CONFIG = BaseConfig
