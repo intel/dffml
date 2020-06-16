@@ -35,6 +35,7 @@ class InputError(Exception):
 class VWConfig:
     features: Features
     predict: Feature = field("Feature to predict")
+    directory: Path = field("Directory where state should be saved")
     class_cost: Features = field(
         "Features with name `Cost_{class}` contaning cost of `class` for each input example, used when `csoaa` is used",
         default=None,
@@ -79,7 +80,6 @@ class VWConfig:
         "Convert the input to vowpal wabbit standard input format",
         default=False,
     )
-    directory: Path = field("Directory where state should be saved",)
 
     def __post_init__(self):
         self.extra_cols = []
