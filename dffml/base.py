@@ -114,6 +114,7 @@ def mkarg(field):
         arg = Arg(type=field.type)
     else:
         arg = Arg()
+    arg.annotation = field.type
     # HACK For detecting dataclasses._MISSING_TYPE
     if "dataclasses._MISSING_TYPE" not in repr(field.default):
         arg["default"] = field.default
@@ -137,7 +138,7 @@ def mkarg(field):
         if hasattr(arg["type"], "load"):
             # TODO (python3.8) Use Protocol
             arg["type"] = arg["type"].load
-    elif get_origin(field.type) is list:
+    elif get_origin(field.type) in (list, tuple):
         arg["type"] = get_args(field.type)[0]
         arg["nargs"] = "+"
     if "description" in field.metadata:
@@ -169,6 +170,9 @@ def convert_value(arg, value):
             pass
         else:
             value = type_cls(value)
+        # list -> tuple
+        if arg.annotation is not None and get_origin(arg.annotation) is tuple:
+            value = get_origin(arg.annotation)(value)
     if "action" in arg:
         if isinstance(arg["action"], str):
             # HACK This accesses _pop_action_class from ArgumentParser

@@ -6,6 +6,7 @@ import shlex
 import asyncio
 import pathlib
 import tempfile
+import unittest
 import importlib
 import contextlib
 import subprocess
@@ -82,6 +83,7 @@ class TestSLR(IntegrationCLITestCase):
                 int(records[0]["prediction"]["Salary"]["value"]), 110
             )
 
+    @unittest.skip("See issue https://github.com/intel/dffml/issues/706")
     async def test_http(self):
         self.required_plugins("dffml-service-http")
         HTTPService = importlib.import_module(
