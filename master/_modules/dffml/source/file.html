@@ -284,7 +284,7 @@
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.zip&quot;</span><span class="p">:</span>
                 <span class="n">close</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zip_closer_helper</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">close</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span>
+                <span class="n">close</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
             <span class="k">with</span> <span class="n">close</span> <span class="k">as</span> <span class="n">fd</span><span class="p">:</span>
                 <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">dump_fd</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
 
