@@ -26,7 +26,6 @@ class DirectorySourceConfig:
     foldername: pathlib.Path
     feature: str = field("Name of the feature the data will be referenced as")
     labels: List[str] = None
-    loadfile: bool = False
     save: bool = False  # TODO It'll be a good idea to give the user option to save extracted features in some format
 
 
@@ -51,60 +50,82 @@ class DirectorySource(MemorySource):
 
     async def _open(self):
         if not os.path.exists(self.config.foldername) and not os.path.isdir(
-            self.config.filename
+            self.config.foldername
         ):
             raise FolderNotFoundError(f"Folder path: {self.config.foldername}")
 
-        # TODO if user provides a file having all the label names
+        # TODO doubt: Should we add a way where if user provides a file having all the label names we can read that file
         if len(self.config.labels) == 1 and self.config.labels is not None:
             if os.path.isfile(self.config.labels[0]):
+                # Update labels with list rea from the file
                 self.config.labels = pathlib.Path.read_text(
                     pathlib.Path(self.config.labels[0])
                 ).split(",")
 
-        if not set(
-            [
-                label_folders
-                for label_folders in os.listdir(self.config.foldername)
-            ]
-        ) == set(self.config.labels):
-            print(
-                "\nWrite all labels not specified (give list of all label folders preset)\n"
+        label_folders = list(
+            set(labels for labels in os.listdir(self.config.foldername))
+        )
+        # Check if all existing label folders are given to `labels` list
+        if label_folders > self.config.labels:
+            self.logger.warning(
+                "All labels not specified. Folders present: %s \nLabels entered: %s",
+                label_folders,
+                self.config.labels,
             )
-            # don't give exception if labels provided < label folder numbers
-            # only give exception if a labelfolder doesn't exist (covers spelling errors)
 
-        # folder = open(self.config.foldername, )
         await self.load_fd()
 
     async def _close(self):
         if self.config.save:
-            # TODO Save preprocessed data to a new folder
-            # So that user doesn't have to do preprocessing again and again
+            # TODO doubt: Should we save preprocessed data to a new folder/file
+            # So that user doesn't have to do preprocessing again and again later?
             await self.dump_fd()
 
     async def load_fd(self):
         self.mem = {}
         i = 0
+
+        """
+        Example cli:
+        dffml list records -sources f=dir \
+            -source-foldername dataset/train \
+            -source-feature image \
+            -source-labels airplane bird frog \
+            -log debug
+
+        | -- dataset
+        | -- | -- train
+        | -- | -- | -- label_1
+        | -- | -- | -- | -- image_1.png
+        | -- | -- | -- | -- image_2.png
+        | -- | -- | -- | -- .....
+        | -- | -- | -- label_2
+        | -- | -- | -- | -- image_1.png
+        | -- | -- | -- | -- image_2.png
+        | -- | -- | -- | -- .....
+        """
+
+        # Iterate over the labels list
         for label in self.config.labels:
             label_folder = self.config.foldername.joinpath(label)
+            # Go through all image files and read them using pngconfigloader
             for file_name in os.listdir(label_folder):
-                feature = label_folder.joinpath(file_name)
+                image_filename = label_folder.joinpath(file_name)
 
-                if self.config.loadfile:
-                    async with self.CONFIG_LOADER as cfgl:
-                        _, feature = await cfgl.load_file(feature)
+                # I have added an example directory with images renamed with .mnistpng as the pngconfigloader isn't updated
+                async with self.CONFIG_LOADER as cfgl:
+                    _, feature_data = await cfgl.load_file(image_filename)
+
                 self.mem[str(i)] = Record(
                     str(i),
                     data={
                         "features": {
-                            self.config.feature: feature,
+                            self.config.feature: feature_data,
                             "label": label,
                         }
                     },
                 )
                 i += 1
-                break
         self.logger.debug("%r loaded %d records", self, len(self.mem))
 
     async def dump_fd(self, fd):
