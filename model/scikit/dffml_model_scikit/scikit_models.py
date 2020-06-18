@@ -54,151 +54,57 @@ from sklearn.cluster import (
 from dffml.base import field
 from dffml.util.config.numpy import make_config_numpy
 from dffml.util.entrypoint import entrypoint
+from dffml.feature.feature import Feature, Features
 from dffml_model_scikit.scikit_base import (
     Scikit,
     ScikitContext,
     ScikitUnsprvised,
     ScikitContextUnsprvised,
 )
-from dffml.feature.feature import Feature, Features
-
-
-def applicable_features(self, features):
-    usable = []
-    for feature in features:
-        if feature.dtype != int and feature.dtype != float:
-            raise ValueError("Models only supports int or float feature")
-        if feature.length != 1:
-            raise ValueError(
-                "Models only supports single values (non-matrix / array)"
-            )
-        usable.append(feature.name)
-    return sorted(usable)
 
 
 supervised_estimators = ["classifier", "regressor"]
 unsupervised_estimators = ["clusterer"]
-for entry_point_name, name, cls, applicable_features_function in [
-    (
-        "scikitknn",
-        "KNeighborsClassifier",
-        KNeighborsClassifier,
-        applicable_features,
-    ),
-    (
-        "scikitadaboost",
-        "AdaBoostClassifier",
-        AdaBoostClassifier,
-        applicable_features,
-    ),
-    ("scikitsvc", "SVC", SVC, applicable_features),
-    (
-        "scikitgpc",
-        "GaussianProcessClassifier",
-        GaussianProcessClassifier,
-        applicable_features,
-    ),
-    (
-        "scikitdtc",
-        "DecisionTreeClassifier",
-        DecisionTreeClassifier,
-        applicable_features,
-    ),
-    (
-        "scikitrfc",
-        "RandomForestClassifier",
-        RandomForestClassifier,
-        applicable_features,
-    ),
-    ("scikitmlp", "MLPClassifier", MLPClassifier, applicable_features),
-    ("scikitgnb", "GaussianNB", GaussianNB, applicable_features),
+for entry_point_name, name, cls in [
+    ("scikitknn", "KNeighborsClassifier", KNeighborsClassifier,),
+    ("scikitadaboost", "AdaBoostClassifier", AdaBoostClassifier,),
+    ("scikitsvc", "SVC", SVC),
+    ("scikitgpc", "GaussianProcessClassifier", GaussianProcessClassifier,),
+    ("scikitdtc", "DecisionTreeClassifier", DecisionTreeClassifier,),
+    ("scikitrfc", "RandomForestClassifier", RandomForestClassifier,),
+    ("scikitmlp", "MLPClassifier", MLPClassifier),
+    ("scikitgnb", "GaussianNB", GaussianNB),
     (
         "scikitqda",
         "QuadraticDiscriminantAnalysis",
         QuadraticDiscriminantAnalysis,
-        applicable_features,
     ),
-    ("scikitlr", "LinearRegression", LinearRegression, applicable_features),
-    (
-        "scikitlor",
-        "LogisticRegression",
-        LogisticRegression,
-        applicable_features,
-    ),
-    (
-        "scikitgbc",
-        "GradientBoostingClassifier",
-        GradientBoostingClassifier,
-        applicable_features,
-    ),
-    (
-        "scikitetc",
-        "ExtraTreesClassifier",
-        ExtraTreesClassifier,
-        applicable_features,
-    ),
-    ("scikitbgc", "BaggingClassifier", BaggingClassifier, applicable_features),
-    ("scikiteln", "ElasticNet", ElasticNet, applicable_features),
-    ("scikitbyr", "BayesianRidge", BayesianRidge, applicable_features),
-    ("scikitlas", "Lasso", Lasso, applicable_features),
-    ("scikitard", "ARDRegression", ARDRegression, applicable_features),
-    ("scikitrsc", "RANSACRegressor", RANSACRegressor, applicable_features),
-    ("scikitbnb", "BernoulliNB", BernoulliNB, applicable_features),
-    ("scikitmnb", "MultinomialNB", MultinomialNB, applicable_features),
-    (
-        "scikitlda",
-        "LinearDiscriminantAnalysis",
-        LinearDiscriminantAnalysis,
-        applicable_features,
-    ),
-    (
-        "scikitdtr",
-        "DecisionTreeRegressor",
-        DecisionTreeRegressor,
-        applicable_features,
-    ),
-    (
-        "scikitgpr",
-        "GaussianProcessRegressor",
-        GaussianProcessRegressor,
-        applicable_features,
-    ),
-    (
-        "scikitomp",
-        "OrthogonalMatchingPursuit",
-        OrthogonalMatchingPursuit,
-        applicable_features,
-    ),
-    ("scikitridge", "Ridge", Ridge, applicable_features),
-    ("scikitlars", "Lars", Lars, applicable_features),
-    ("scikitkmeans", "KMeans", KMeans, applicable_features),
-    ("scikitbirch", "Birch", Birch, applicable_features),
-    (
-        "scikitmbkmeans",
-        "MiniBatchKMeans",
-        MiniBatchKMeans,
-        applicable_features,
-    ),
-    (
-        "scikitap",
-        "AffinityPropagation",
-        AffinityPropagation,
-        applicable_features,
-    ),
-    ("scikims", "MeanShift", MeanShift, applicable_features),
-    (
-        "scikitsc",
-        "SpectralClustering",
-        SpectralClustering,
-        applicable_features,
-    ),
-    (
-        "scikitac",
-        "AgglomerativeClustering",
-        AgglomerativeClustering,
-        applicable_features,
-    ),
-    ("scikitoptics", "OPTICS", OPTICS, applicable_features),
+    ("scikitlr", "LinearRegression", LinearRegression),
+    ("scikitlor", "LogisticRegression", LogisticRegression,),
+    ("scikitgbc", "GradientBoostingClassifier", GradientBoostingClassifier,),
+    ("scikitetc", "ExtraTreesClassifier", ExtraTreesClassifier,),
+    ("scikitbgc", "BaggingClassifier", BaggingClassifier),
+    ("scikiteln", "ElasticNet", ElasticNet),
+    ("scikitbyr", "BayesianRidge", BayesianRidge),
+    ("scikitlas", "Lasso", Lasso),
+    ("scikitard", "ARDRegression", ARDRegression),
+    ("scikitrsc", "RANSACRegressor", RANSACRegressor),
+    ("scikitbnb", "BernoulliNB", BernoulliNB),
+    ("scikitmnb", "MultinomialNB", MultinomialNB),
+    ("scikitlda", "LinearDiscriminantAnalysis", LinearDiscriminantAnalysis),
+    ("scikitdtr", "DecisionTreeRegressor", DecisionTreeRegressor),
+    ("scikitgpr", "GaussianProcessRegressor", GaussianProcessRegressor),
+    ("scikitomp", "OrthogonalMatchingPursuit", OrthogonalMatchingPursuit),
+    ("scikitridge", "Ridge", Ridge),
+    ("scikitlars", "Lars", Lars),
+    ("scikitkmeans", "KMeans", KMeans),
+    ("scikitbirch", "Birch", Birch),
+    ("scikitmbkmeans", "MiniBatchKMeans", MiniBatchKMeans),
+    ("scikitap", "AffinityPropagation", AffinityPropagation),
+    ("scikims", "MeanShift", MeanShift),
+    ("scikitsc", "SpectralClustering", SpectralClustering),
+    ("scikitac", "AgglomerativeClustering", AgglomerativeClustering),
+    ("scikitoptics", "OPTICS", OPTICS),
 ]:
     estimator_type = cls._estimator_type
     config_fields = dict()
@@ -248,11 +154,7 @@ for entry_point_name, name, cls, applicable_features_function in [
         name + "ModelConfig", cls, properties=dffml_config_properties
     )
 
-    dffml_cls_ctx = type(
-        name + "ModelContext",
-        (parentContext,),
-        {"applicable_features": applicable_features_function},
-    )
+    dffml_cls_ctx = type(name + "ModelContext", (parentContext,), {},)
 
     dffml_cls = type(
         name + "Model",
