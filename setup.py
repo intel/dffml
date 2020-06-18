@@ -1,8 +1,10 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
+import os
 import ast
 import pathlib
 from io import open
+import importlib.util
 from setuptools import find_packages, setup
 
 with open(pathlib.Path("dffml", "version.py"), "r") as f:
@@ -11,13 +13,12 @@ with open(pathlib.Path("dffml", "version.py"), "r") as f:
             VERSION = ast.literal_eval(line.strip().split("=")[-1].strip())
             break
 
-CORE_PLUGINS = ast.literal_eval(
-    pathlib.Path("dffml", "plugins.py")
-    .read_text()
-    .replace(" ", "")
-    .split("=")[-1]
-    .strip()
+# Load file by path
+spec = importlib.util.spec_from_file_location(
+    "plugins", os.path.join(os.path.dirname(__file__), "dffml", "plugins.py")
 )
+plugins = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(plugins)
 
 # All packages under configloader/ are really named dffml-config-{name}
 ALTERNATIVES = {"configloader": "config"}
@@ -30,10 +31,10 @@ EXTRAS_REQUIRES = {
     ): [
         "dffml-%s-%s"
         % (ALTERNATIVES.get(plugin_type, plugin_type), name.replace("_", "-"),)
-        for sub_plugin_type, name in CORE_PLUGINS
+        for sub_plugin_type, name in plugins.CORE_PLUGINS
         if sub_plugin_type == plugin_type
     ]
-    for plugin_type, _ in CORE_PLUGINS
+    for plugin_type, _ in plugins.CORE_PLUGINS
     if plugin_type != "examples"
 }
 
@@ -74,7 +75,7 @@ setup(
                 ALTERNATIVES.get(plugin_type, plugin_type),
                 name.replace("_", "-"),
             )
-            for plugin_type, name in CORE_PLUGINS
+            for plugin_type, name in plugins.CORE_PLUGINS
         ],
         "dev": [
             "coverage",
@@ -100,6 +101,7 @@ setup(
             "db = dffml.source.db:DbSource",
             "ini = dffml.source.ini:INISource",
             "df = dffml.source.df:DataFlowSource",
+            "op = dffml.source.op:OpSource",
         ],
         "dffml.port": ["json = dffml.port.json:JSON"],
         "dffml.service.cli": ["dev = dffml.service.dev:Develop"],
@@ -153,5 +155,7 @@ setup(
         "dffml.db": ["sqlite = dffml.db.sqlite:SqliteDatabase"],
         # Models
         "dffml.model": ["slr = dffml.model.slr:SLRModel"],
+        # Secrets
+        "dffml.secret": ["ini = dffml.secret.ini:INISecret"],
     },
 )

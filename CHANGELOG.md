@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- `-pretty` flag to `list records` and `predict` commands
+- daal4py based linear regression model
+- DataFlowSource can take a config file as dataflow via the CLI.
+- Support for link on conditions in dataflow diagrams
 - `edit all` command to edit records in bulk
 - Support for Tensorflow 2.2
 - Vowpal Wabbit Models
@@ -42,7 +46,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for entrypoint style loading of operations and seed inputs in `dataflow create`.
 - Definition for output of the function that `op` wraps.
 - Expose high level load, run and save functions to noasync.
+- Operation to verify secret for GitHub webhook.
+- Option to modify flow and add config in `dataflow create`.
+- Ability to use a function as a data source via the `op` source
 ### Changed
+- Update record `__str__` method to output in tabular format
+- Update NER Model to use transformers 2.11.0
+- Update MNIST use case to normalize image arrays.
 - `arg_` notation replaced with `CONFIG = ExampleConfig` style syntax
   for parsing all command line arguments.
 - Moved usage/io.rst to docs/tutorials/dataflows/io.rst
@@ -54,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   given.
 - Classes now use `CONFIG` if it has a default for every field and `config` is `None`
 - Models now dynamically import third party modules.
+- Memory dataflow classes now use auto args and config infrastructure
 - `dffml list records` command prints Records as JSON using `.export()`
 - Feature class in `dffml/feature/feature.py` initialize a feature object
 - All DefFeatures() functions are substituted with Features()
@@ -65,9 +76,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Any plugin can now be loaded via it's entrypoint style path
 - `with_features` now raises a helpful error message if no records with matching
   features were found
+- Split out model tutorial into writing the model, and another tutorial for
+  packaging the model.
 ### Fixed
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
   parameter sets for an operation.
+- Typing of config vlaues for numpy parsed docstrings where type should be tuple
+  or list
 ### Removed
 - Monitor class and associated tests (unused)
 - DefinedFeature class in `dffml/feature/feature.py`

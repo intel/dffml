@@ -77,14 +77,17 @@ class TestSqliteQuery(AsyncTestCase):
                         for test_ctx, test_val in test_inputs.items()
                     }
                 ):
-                    async with self.sdb() as db_ctx:
-                        query = (
-                            "SELECT count(name) FROM sqlite_master "
-                            + f" WHERE type='table' and name='{self.table_name}' "
-                        )
-                        db_ctx.parent.cursor.execute(query)
-                        results = db_ctx.parent.cursor.fetchone()
-                        self.assertEqual(results["count(name)"], 1)
+                    pass
+
+            async with self.sdb as db:
+                async with db() as db_ctx:
+                    query = (
+                        "SELECT count(name) FROM sqlite_master "
+                        + f" WHERE type='table' and name='{self.table_name}' "
+                    )
+                    db_ctx.parent.cursor.execute(query)
+                    results = db_ctx.parent.cursor.fetchone()
+                    self.assertEqual(results["count(name)"], 1)
 
     async def test_1_insert(self):
 
@@ -110,11 +113,12 @@ class TestSqliteQuery(AsyncTestCase):
                     ):
                         continue
 
-        async with self.sdb() as db_ctx:
-            query = f"SELECT * FROM {self.table_name}"
-            db_ctx.parent.cursor.execute(query)
-            rows = db_ctx.parent.cursor.fetchall()
-            self.assertEqual(self.data_dicts, list(map(dict, rows)))
+        async with self.sdb as db:
+            async with db() as db_ctx:
+                query = f"SELECT * FROM {self.table_name}"
+                db_ctx.parent.cursor.execute(query)
+                rows = db_ctx.parent.cursor.fetchall()
+                self.assertEqual(self.data_dicts, list(map(dict, rows)))
 
     async def test_2_lookup(self):
         seed = [

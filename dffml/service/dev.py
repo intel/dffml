@@ -27,7 +27,7 @@ from ..util.cli.cmd import CMD
 from ..util.entrypoint import load
 from ..base import MissingConfig, config as configdataclass, field
 from ..util.packaging import is_develop
-from ..util.data import traverse_config_get, export_dict
+from ..util.data import traverse_config_get, export
 from ..df.types import Input, DataFlow
 from ..df.memory import MemoryOrchestrator
 from ..configloader.configloader import BaseConfigLoader
@@ -257,7 +257,7 @@ class Entrypoints(CMD):
 @configdataclass
 class ExportConfig:
     export: str = field("Python path to object to export",)
-    config: BaseConfigLoader = field(
+    configloader: BaseConfigLoader = field(
         "ConfigLoader to use", default=JSONConfigLoader,
     )
     not_linked: bool = field(
@@ -272,7 +272,7 @@ class Export(CMD):
     CONFIG = ExportConfig
 
     async def run(self):
-        async with self.config(BaseConfig()) as configloader:
+        async with self.configloader() as configloader:
             async with configloader() as loader:
                 for obj in load(self.export, relative=os.getcwd()):
                     self.logger.debug("Loaded %s: %s", self.export, obj)
@@ -291,9 +291,8 @@ class Export(CMD):
                             await loader.dumpb(obj._asdict())
                         )
                     else:
-                        exported = export_dict(value=obj)
                         sys.stdout.buffer.write(
-                            await loader.dumpb(exported["value"])
+                            await loader.dumpb(export(obj))
                         )
 
 

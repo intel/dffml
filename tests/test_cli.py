@@ -3,6 +3,7 @@
 import os
 import io
 import json
+import shutil
 import random
 import tempfile
 import contextlib
@@ -261,12 +262,15 @@ class TestDataflowRunAllRecords(RecordsTestCase):
             async with source() as sctx:
                 for record in self.records:
                     await sctx.update(record)
-        with tempfile.NamedTemporaryFile(suffix=".json") as dataflow_file:
+        tmpdir = tempfile.mkdtemp()
+        handle, dataflow_file = tempfile.mkstemp(suffix=".json", dir=tmpdir)
+        os.close(handle)
+        with open(dataflow_file, mode="w+b") as dataflow_file:
             dataflow = io.StringIO()
             with contextlib.redirect_stdout(dataflow):
                 await Dataflow.cli(
                     "create",
-                    "-config",
+                    "-configloader",
                     "json",
                     *map(lambda op: op.name, OPERATIONS),
                 )
@@ -296,6 +300,7 @@ class TestDataflowRunAllRecords(RecordsTestCase):
                 self.assertEqual(
                     self.record_keys[record.key], results[record.key]
                 )
+        shutil.rmtree(tmpdir)
 
 
 class TestDataflowRunRecordSet(RecordsTestCase):
@@ -308,12 +313,15 @@ class TestDataflowRunRecordSet(RecordsTestCase):
             async with source() as sctx:
                 for record in self.records:
                     await sctx.update(record)
-        with tempfile.NamedTemporaryFile(suffix=".json") as dataflow_file:
+        tmpdir = tempfile.mkdtemp()
+        handle, dataflow_file = tempfile.mkstemp(suffix=".json", dir=tmpdir)
+        os.close(handle)
+        with open(dataflow_file, mode="w+b") as dataflow_file:
             dataflow = io.StringIO()
             with contextlib.redirect_stdout(dataflow):
                 await Dataflow.cli(
                     "create",
-                    "-config",
+                    "-configloader",
                     "json",
                     *map(lambda op: op.name, OPERATIONS),
                 )
@@ -341,6 +349,7 @@ class TestDataflowRunRecordSet(RecordsTestCase):
             self.assertEqual(
                 self.record_keys[test_key], results[0].feature("result")
             )
+        shutil.rmtree(tmpdir)
 
 
 class TestTrain(RecordsTestCase):

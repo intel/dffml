@@ -98,6 +98,28 @@ def traverse_config_get(target, *args):
     return last["plugin"]
 
 
+def split_dot_seperated(val: str) -> "List[str]":
+    raw_split = val.split(".")
+    vals = []
+    i = 0
+    tl = []
+    trig = False
+    for x in raw_split:
+        if "'" in x or '"' in x:
+            trig = not trig
+            if not trig:
+                tl.append(x)
+                k = ".".join(tl).replace("'", "").replace('"', "")
+                vals.append(k)
+                tl = []
+                continue
+        if trig:
+            tl.append(x)
+            continue
+        vals.append(x)
+    return vals
+
+
 def traverse_get(target, *args):
     """
     Travel down through a dict
@@ -109,11 +131,45 @@ def traverse_get(target, *args):
     >>>
     >>> traverse_get({"one": {"two": 3}}, "one", "two")
     3
+    >>> traverse_get({"one": {"two": 3}}, "one.two")
+    3
+    >>> traverse_get({"one.two": {"three": 4}}, "'one.two'.three")
+    4
     """
+    if len(args) == 1:
+        args = split_dot_seperated(args[0])
     current = target
     for level in args:
         current = current[level]
     return current
+
+
+def traverse_set(target, *args, value):
+    """
+    Examples
+    --------
+
+    >>> from dffml import traverse_set
+    >>>
+    >>> d = {"one": {"two": 3}}
+    >>> traverse_set(d,"one.two", value = "Three")
+    >>> d["one"]["two"]
+    'Three'
+    """
+    if len(args) == 1:
+        args = split_dot_seperated(args[0])
+    if len(args) == 1:
+        target[args[0]] = value
+        return
+
+    current = target
+    for level in args[:-1]:
+        if level not in current:
+            current[level] = {}
+        current = current[level]
+
+    current[args[-1]] = value
+    return
 
 
 def ignore_args(func):
@@ -159,6 +215,10 @@ def export_value(obj, key, value):
         obj[key] = value.export()
     elif hasattr(value, "_asdict"):
         obj[key] = value._asdict()
+    elif getattr(
+        type(value), "__module__", None
+    ) == "numpy" and inspect.ismethod(getattr(value, "flatten", None)):
+        obj[key] = tuple(value.flatten())
     elif dataclasses.is_dataclass(value):
         obj[key] = export_dict(**dataclasses.asdict(value))
     elif getattr(value, "__module__", None) == "typing":
@@ -191,6 +251,37 @@ def export_dict(**kwargs):
         elif isinstance(kwargs[key], list):
             kwargs[key] = export_list(kwargs[key])
     return kwargs
+
+
+def export(obj):
+    """
+    Convert a value from a Python object into something that is just primitives,
+    so things that could be printed withough formatting issues or sent to
+    :py:func:`json.dumps`.
+
+    It works on :py:func:`typing.NamedTuple`, :py:func:`dataclasses.dataclass`,
+    and anything that implements an ``export`` method that returns a dict.
+
+    Examples
+    --------
+
+    >>> from dffml import export
+    >>> from typing import NamedTuple
+    >>>
+    >>> class MyType(NamedTuple):
+    ...     data: int
+    >>>
+    >>> export(MyType(data=42))
+    {'data': 42}
+    >>>
+    >>> class MyBiggerType:
+    ...     def export(self):
+    ...         return {"feed": "face", "sub": MyType(data=42)}
+    >>>
+    >>> export(MyBiggerType())
+    {'feed': 'face', 'sub': {'data': 42}}
+    """
+    return export_dict(value=obj)["value"]
 
 
 def explore_directories(path_dict: dict):

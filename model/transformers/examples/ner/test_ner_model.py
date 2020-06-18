@@ -40,7 +40,7 @@ class TestExample(unittest.TestCase):
             except Exception:
                 pass
             if type(line) == type({}):
-                for d in line["Tag"][0]:
+                for d in line["Tag"]:
                     self.assertIn(
                         list(d.values())[0],
                         [
@@ -75,7 +75,7 @@ class TestExample(unittest.TestCase):
             )
             records = json.loads(stdout.decode())
             # Check the predicted ner tag
-            for d in records[0]["prediction"]["Tag"]["value"][0]:
+            for d in records[0]["prediction"]["Tag"]["value"]:
                 self.assertIn(
                     list(d.values())[0],
                     [

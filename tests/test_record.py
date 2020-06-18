@@ -100,7 +100,7 @@ class TestRecord(unittest.TestCase):
         self.assertEqual("face", self.full.data.features["feed"])
         self.full.evaluated(results, overwrite=True)
         self.assertEqual(self.full.data.features, results)
-        self.assertNotEqual(old_last_updated, self.full.data.last_updated)
+        self.assertLessEqual(old_last_updated, self.full.data.last_updated)
 
     def test_features(self):
         self.assertIn("dead", self.full.features())
@@ -112,7 +112,7 @@ class TestRecord(unittest.TestCase):
         old_last_updated = self.full.data.last_updated
         self.full.predicted("target_name", "feed", 1.00)
         self.assertNotEqual(old_prediction, self.full.data.prediction)
-        self.assertNotEqual(old_last_updated, self.full.data.last_updated)
+        self.assertLessEqual(old_last_updated, self.full.data.last_updated)
 
     def test_prediction(self):
         self.full.predicted("target_name", "feed", 1.00)

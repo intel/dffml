@@ -1,5 +1,5 @@
 import unittest
-from typing import List
+from typing import List, Tuple
 import pathlib
 
 from dffml.base import (
@@ -23,6 +23,7 @@ class FakeTestingConfig:
     num: float
     files: List[str]
     features: Features
+    nums: Tuple[int]
     name: str = field("Name of FakeTesting")
     label: str = "unlabeled"
     readonly: bool = False
@@ -66,6 +67,10 @@ class TestAutoArgsConfig(unittest.TestCase):
                                         nargs="+",
                                         action=list_action(Features),
                                     ),
+                                    "config": {},
+                                },
+                                "nums": {
+                                    "plugin": Arg(type=int, nargs="+"),
                                     "config": {},
                                 },
                                 "name": {
@@ -116,6 +121,8 @@ class TestAutoArgsConfig(unittest.TestCase):
                 "--test-features",
                 "Year:int:1",
                 "Commits:int:10",
+                "--test-fake-nums",
+                "100",
             )
         )
         self.assertEqual(config.num, -4.2)
@@ -131,6 +138,7 @@ class TestAutoArgsConfig(unittest.TestCase):
             config.features,
             Features(Feature("Year", int, 1), Feature("Commits", int, 10)),
         )
+        self.assertEqual(config.nums, (100,))
 
     def test_config_set(self):
         config = FakeTesting.config(
@@ -153,6 +161,9 @@ class TestAutoArgsConfig(unittest.TestCase):
                 "--test-features",
                 "Year:int:1",
                 "Commits:int:10",
+                "--test-fake-nums",
+                "100",
+                "42",
             )
         )
         self.assertEqual(config.num, -4.2)
@@ -168,6 +179,7 @@ class TestAutoArgsConfig(unittest.TestCase):
             config.features,
             Features(Feature("Year", int, 1), Feature("Commits", int, 10)),
         )
+        self.assertEqual(config.nums, (100, 42))
 
 
 class FakeTestingContext(BaseDataFlowFacilitatorObjectContext):
