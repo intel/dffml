@@ -54,6 +54,9 @@ class PredictAllConfig(MLCMDConfig):
     update: bool = field(
         "Update record with sources", default=False,
     )
+    pretty: bool = field(
+        "Outputs data in tabular form", default=False,
+    )
 
 
 class PredictAll(MLCMD):
@@ -65,7 +68,10 @@ class PredictAll(MLCMD):
         async for record in predict(
             self.model, self.sources, update=self.update, keep_record=True
         ):
-            yield record
+            if self.pretty:
+                print(record)
+            else:
+                yield record
 
 
 @config

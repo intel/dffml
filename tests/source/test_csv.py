@@ -4,6 +4,8 @@ import tempfile
 import os
 import csv
 import random
+import pathlib
+import inspect
 
 from dffml.source.csv import CSVSource, CSVSourceConfig
 from dffml.util.testing.source import FileSourceTest
@@ -89,13 +91,19 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
         self.assertTrue(config.loadfiles)
 
     async def test_key(self):
-        with tempfile.NamedTemporaryFile() as fileobj:
-            fileobj.write(b"KeyHeader,ValueColumn\n")
-            fileobj.write(b"a,42\n")
-            fileobj.write(b"b,420\n")
-            fileobj.seek(0)
+        with tempfile.TemporaryDirectory() as testdir:
+            testfile = os.path.join(testdir, str(random.random()))
+            pathlib.Path(testfile).write_text(
+                inspect.cleandoc(
+                    """
+                    KeyHeader,ValueColumn
+                    a,42
+                    b,420
+                    """
+                )
+            )
             async with CSVSource(
-                CSVSourceConfig(filename=fileobj.name, key="KeyHeader")
+                CSVSourceConfig(filename=testfile, key="KeyHeader")
             ) as source:
                 async with source() as sctx:
                     record_a = await sctx.record("a")

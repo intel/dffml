@@ -116,7 +116,7 @@ class TestOpSource(AsyncTestCase):
                 # Make sure they're correct
                 self.assertEqual(len(records), 1)
                 self.assertDictEqual(
-                    records[0],
+                    records[0].export(),
                     {
                         "key": "42",
                         "features": {
@@ -128,5 +128,6 @@ class TestOpSource(AsyncTestCase):
                             "is_impossible": False,
                             "answers": [],
                         },
+                        "extra": {},
                     },
                 )
