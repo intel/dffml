@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,12 +11,18 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -30,10 +35,6 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -51,7 +52,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> DFFML
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> DFFML
           
 
           
@@ -78,6 +79,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -203,6 +205,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -241,7 +244,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Changelog</li>
     
@@ -278,6 +281,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <div class="section" id="added">
 <h3>Added<a class="headerlink" href="#added" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-pretty</span></code> flag to <code class="docutils literal notranslate"><span class="pre">list</span> <span class="pre">records</span></code> and <code class="docutils literal notranslate"><span class="pre">predict</span></code> commands</p></li>
 <li><p>daal4py based linear regression model</p></li>
 <li><p>DataFlowSource can take a config file as dataflow via the CLI.</p></li>
 <li><p>Support for link on conditions in dataflow diagrams</p></li>
@@ -325,6 +329,7 @@ path to directory or Git repo URL and runs the appropriate static analyzers.</p>
 <div class="section" id="changed">
 <h3>Changed<a class="headerlink" href="#changed" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
+<li><p>Update record <code class="docutils literal notranslate"><span class="pre">__str__</span></code> method to output in tabular format</p></li>
 <li><p>Update NER Model to use transformers 2.11.0</p></li>
 <li><p>Update MNIST use case to normalize image arrays.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">arg_</span></code> notation replaced with <code class="docutils literal notranslate"><span class="pre">CONFIG</span> <span class="pre">=</span> <span class="pre">ExampleConfig</span></code> style syntax
@@ -1010,11 +1015,19 @@ code and binaries.</p></li>
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2019, Intel
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -1025,7 +1038,6 @@ code and binaries.</p></li>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
