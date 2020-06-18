@@ -250,7 +250,7 @@ with the existing flow.
 .. code-block:: console
 
     dffml dataflow create \
-      -config yaml \
+      -configloader yaml \
       -seed \
         directory=key \
         safety_check.outputs.result,run_bandit.outputs.result,language_to_comment_ratio=get_single_spec \
