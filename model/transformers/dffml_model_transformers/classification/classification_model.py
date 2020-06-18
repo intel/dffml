@@ -30,6 +30,16 @@ class HFClassificationModelConfig:
     features: Features = field("Feature to train on")
     predict: Feature = field("Feature holding target values")
     label_list: List[str] = field("List of target labels")
+    cache_dir: str = field(
+        "Directory to store the pre-trained models downloaded from s3"
+    )
+    model_name_or_path: str = field(
+        "Path to pretrained model or model identifier from huggingface.co/models",
+    )
+    output_dir: str = field(
+        "The output directory where the model predictions and checkpoints will be written.",
+    )
+    logging_dir: str = field("Tensorboard log dir.")
     clstype: Type = field("Data type of classifications values", default=str)
     max_seq_length: int = field(
         "The maximum total input sequence length after tokenization. Sequences longer than this will be truncated, sequences shorter will be padded.",
@@ -38,10 +48,7 @@ class HFClassificationModelConfig:
     overwrite_cache: bool = field(
         "Overwrite the cached training and evaluation sets", default=False,
     )
-    model_name_or_path: str = field(
-        "Path to pretrained model or model identifier from huggingface.co/models",
-        default="bert-base-cased",
-    )
+
     config_name: str = field(
         "Pretrained config name or path if not the same as model_name",
         default=None,
@@ -53,12 +60,6 @@ class HFClassificationModelConfig:
     use_fast: bool = field(
         "Set this flag to use fast tokenization.", default=False
     )
-
-    cache_dir: str = field(
-        "Directory to store the pre-trained models downloaded from s3",
-        default=str(pathlib.Path("~", ".cache", "dffml", "transformers")),
-    )
-
     doc_stride: int = field(
         "When splitting up a long document into chunks, how much stride to take between chunks.",
         default=128,
@@ -81,11 +82,6 @@ class HFClassificationModelConfig:
     debug: bool = field(
         "Activate the trace to record computation graphs and profiling information",
         default=False,
-    )
-
-    output_dir: str = field(
-        "The output directory where the model predictions and checkpoints will be written.",
-        default=str(pathlib.Path("~", ".cache", "dffml", "transformers")),
     )
     overwrite_output_dir: bool = field(
         "Overwrite the content of the output directory.Use this to continue training if output_dir points to a checkpoint directory.",
@@ -132,12 +128,6 @@ class HFClassificationModelConfig:
         "Linear warmup over warmup_steps.", default=0,
     )
 
-    logging_dir: str = field(
-        "Tensorboard log dir.",
-        default=str(
-            pathlib.Path("~", ".cache", "dffml", "transformers", "log")
-        ),
-    )
     logging_first_step: bool = field(
         "Log and eval the first global_step", default=False,
     )
