@@ -29,10 +29,9 @@ class ScikitConfig(ModelConfig, NamedTuple):
 class ScikitContext(ModelContext):
     def __init__(self, parent):
         super().__init__(parent)
-        self.pd = importlib.import_module("pandas")
         self.np = importlib.import_module("numpy")
         self.joblib = importlib.import_module("joblib")
-        self.features = self.applicable_features(self.parent.config.features)
+        self.features = self.parent.config.features.names()
         self._features_hash = self._feature_predict_hash()
         self.clf = None
 
@@ -75,17 +74,20 @@ class ScikitContext(ModelContext):
         pass
 
     async def train(self, sources: Sources):
-        data = []
+        xdata = []
+        ydata = []
         async for record in sources.with_features(
             self.features + [self.parent.config.predict.name]
         ):
-            feature_data = record.features(
-                self.features + [self.parent.config.predict.name]
-            )
-            data.append(feature_data)
-        df = self.pd.DataFrame(data)
-        xdata = self.np.array(df.drop([self.parent.config.predict.name], 1))
-        ydata = self.np.array(df[self.parent.config.predict.name])
+            record_data = []
+            for feature in record.features(self.features).values():
+                record_data.extend(
+                    [feature] if self.np.isscalar(feature) else feature
+                )
+            xdata.append(record_data)
+            ydata.append(record.feature(self.parent.config.predict.name))
+        xdata = self.np.array(xdata)
+        ydata = self.np.array(ydata)
         self.logger.info("Number of input records: {}".format(len(xdata)))
         self.clf.fit(xdata, ydata)
         self.joblib.dump(self.clf, str(self._filepath))
