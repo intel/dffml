@@ -439,7 +439,7 @@
 <div class="viewcode-block" id="ExportConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.ExportConfig">[docs]</a><span class="nd">@configdataclass</span>
 <span class="k">class</span> <span class="nc">ExportConfig</span><span class="p">:</span>
     <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Python path to object to export&quot;</span><span class="p">,)</span>
-    <span class="n">config</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+    <span class="n">configloader</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="s2">&quot;ConfigLoader to use&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">JSONConfigLoader</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">not_linked</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
@@ -454,7 +454,7 @@
     <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">ExportConfig</span>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">())</span> <span class="k">as</span> <span class="n">configloader</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">configloader</span><span class="p">()</span> <span class="k">as</span> <span class="n">configloader</span><span class="p">:</span>
             <span class="k">async</span> <span class="k">with</span> <span class="n">configloader</span><span class="p">()</span> <span class="k">as</span> <span class="n">loader</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">load</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">export</span><span class="p">,</span> <span class="n">relative</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Loaded </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">export</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>

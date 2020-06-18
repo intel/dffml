@@ -278,19 +278,6 @@
         <span class="k">return</span> <span class="n">logger</span></div>
 
 
-<div class="viewcode-block" id="BaseConfig"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfig">[docs]</a><span class="k">class</span> <span class="nc">BaseConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    All DFFML Base Objects should take an object (likely a typing.NamedTuple) as</span>
-<span class="sd">    as their config.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;BaseConfig()&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-
 <div class="viewcode-block" id="mkarg"><a class="viewcode-back" href="../../api/base.html#dffml.base.mkarg">[docs]</a><span class="k">def</span> <span class="nf">mkarg</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="n">arg</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">field</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
@@ -476,6 +463,20 @@
     <span class="k">return</span> <span class="n">dataclasses</span><span class="o">.</span><span class="n">make_dataclass</span><span class="p">(</span>
         <span class="n">cls_name</span><span class="p">,</span> <span class="n">fields</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="n">namespace</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BaseConfig"><a class="viewcode-back" href="../../api/base.html#dffml.base.BaseConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">BaseConfig</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    All DFFML Base Objects should take an object (likely a typing.NamedTuple) as</span>
+<span class="sd">    as their config.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;BaseConfig()&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ConfigurableParsingNamespace"><a class="viewcode-back" href="../../api/base.html#dffml.base.ConfigurableParsingNamespace">[docs]</a><span class="k">class</span> <span class="nc">ConfigurableParsingNamespace</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
