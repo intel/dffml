@@ -160,7 +160,7 @@ class TestHFClassifier(IntegrationCLITestCase):
                 "-config-model-label_list",
                 "0",
                 "1",
-                "-model-model_name_or_path",
+                "-config-model-model_name_or_path",
                 "bert-base-cased",
                 "-config-model-output_dir",
                 "~/dffml/transformers",
