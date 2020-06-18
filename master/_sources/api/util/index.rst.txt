@@ -18,6 +18,7 @@ Utilities
     asynchelper
     data
     net
+    display
     config/index
     testing/index
     cli/index
