@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Operation to verify secret for GitHub webhook.
 - Option to modify flow and add config in `dataflow create`.
 - Ability to use a function as a data source via the `op` source
+- Support for sharing configs among operations.
 ### Changed
 - Update record `__str__` method to output in tabular format
 - Update NER Model to use transformers 2.11.0

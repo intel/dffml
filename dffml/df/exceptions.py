@@ -20,3 +20,7 @@ class InputValidationError(Exception):
 
 class ValidatorMissing(Exception):
     pass
+
+
+class SharedObjectMissing(Exception):
+    pass

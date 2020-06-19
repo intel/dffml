@@ -27,6 +27,7 @@ from .exceptions import (
     ContextNotPresent,
     DefinitionNotInContext,
     ValidatorMissing,
+    SharedObjectMissing,
 )
 from .types import Input, Parameter, Definition, Operation, Stage, DataFlow
 from .base import (
@@ -1208,6 +1209,17 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         await self.octx.add(dataflow.operations.values())
         # Instantiate all operations
         for (instance_name, operation) in dataflow.operations.items():
+            cfg = dataflow.configs.get(instance_name, False)
+            # If config is a string, assign the shared object
+            # in dataflow to it else raise
+            if cfg and isinstance(cfg, str):
+                shared_name = dataflow.configs[instance_name]
+                if shared_name not in dataflow.shared:
+                    raise SharedObjectMissing(
+                        f"Shared object {shared_name} not in {dataflow.shared}"
+                    )
+                dataflow.configs[instance_name] = dataflow.shared[shared_name]
+
             # Add and instantiate operation implementation if not
             # present
             if not await self.nctx.contains(operation):
@@ -1239,10 +1251,23 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                             operation.name,
                             opimp_config,
                         )
-                    if isinstance(opimp_config, dict) and hasattr(
+
+                    # If config_cls is a string use shared config
+                    opimp_CONFIG = getattr(opimp, "CONFIG", None)
+                    if opimp_CONFIG and isinstance(opimp_CONFIG, str):
+                        if opimp_CONFIG in operation.shared:
+                            setattr(
+                                opimp,
+                                "CONFIG",
+                                type(operation.shared[opimp_CONFIG]),
+                            )
+                            opimp_config = operation.shared[opimp_CONFIG]
+
+                    elif isinstance(opimp_config, dict) and hasattr(
                         getattr(opimp, "CONFIG", False), "_fromdict"
                     ):
                         opimp_config = opimp.CONFIG._fromdict(**opimp_config)
+
                     await self.nctx.instantiate(
                         operation, opimp_config, opimp=opimp
                     )

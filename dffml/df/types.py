@@ -460,6 +460,7 @@ class DataFlow:
         # via the entrypoint system.
         implementations: Dict[str, "OperationImplementation"] = None,
         forward: Forward = None,
+        shared: Dict[str, Any] = None,
     ) -> None:
         self.operations = operations
         self.seed = seed
@@ -469,7 +470,7 @@ class DataFlow:
         self.by_origin = by_origin
         self.implementations = implementations
         self.forward = forward
-
+        self.shared = shared
         # Prevent usage of a global dict (if we set default to {} then all the
         # instances will share the same instance of that dict, or list)
         if self.forward is None:
@@ -482,6 +483,8 @@ class DataFlow:
             self.by_origin = {}
         if self.implementations is None:
             self.implementations = {}
+        if self.shared is None:
+            self.shared = {}
         self.validators = {}  # Maps `validator` ops instance_name to op
 
         self.update(auto_flow=bool(self.flow is None))
