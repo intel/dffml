@@ -111,9 +111,20 @@ class Definition(NamedTuple):
             # and seeing that we can hijack the __annotations__ property to
             # allow us to set default values
             def_tuple = kwargs["spec"]["defaults"]
+            # All dict are ordered in 3.7+
             annotations = {}
+            annotations_with_defaults = {}
             for key, typename in kwargs["spec"]["types"].items():
-                annotations[key] = cls.type_lookup(typename)
+                # Properties without defaults must come before those with
+                # defaults
+                if key not in def_tuple:
+                    annotations[key] = cls.type_lookup(typename)
+                else:
+                    annotations_with_defaults[key] = cls.type_lookup(typename)
+            # Ensure annotations with defaults are after those without defaults
+            # in dict
+            for key, dtype in annotations_with_defaults.items():
+                annotations[key] = dtype
             def_tuple["__annotations__"] = annotations
             kwargs["spec"] = type(
                 kwargs["spec"]["name"], (NamedTuple,), def_tuple
@@ -368,11 +379,15 @@ class Input(object):
         return cls(**kwargs)
 
 
-class Parameter(NamedTuple):
-    key: str
-    value: Any
-    origin: Input
-    definition: Definition
+class Parameter(Input):
+    def __init__(
+        self, key: str, value: Any, origin: Input, definition: Definition,
+    ):
+        super().__init__(
+            value=value, definition=definition,
+        )
+        self.key = key
+        self.origin = origin
 
 
 @dataclass
