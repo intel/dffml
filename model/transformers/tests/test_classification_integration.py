@@ -166,6 +166,8 @@ class TestHFClassifier(IntegrationCLITestCase):
                 data_filename,
             )
             results = json.loads(self.stdout.getvalue())
+            self.stdout.truncate(0)
+            self.stdout.seek(0)
             self.assertTrue(isinstance(results, list))
             self.assertTrue(results)
             results = results[0]
