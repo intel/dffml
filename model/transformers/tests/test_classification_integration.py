@@ -50,7 +50,8 @@ class TestHFClassifier(IntegrationCLITestCase):
 
         # Features
         features = "-model-features text:str:1".split()
-
+        # Temp directory to be used for saving output, log and downloaded model
+        directory = self.mktempdir()
         # Train the model
         await CLI.cli(
             "train",
@@ -67,11 +68,11 @@ class TestHFClassifier(IntegrationCLITestCase):
             "-model-model_name_or_path",
             "bert-base-cased",
             "-model-output_dir",
-            "~/dffml/transformers",
+            directory,
             "-model-cache_dir",
-            "~/dffml/transformers",
+            directory,
             "-model-logging_dir",
-            "~/dffml/transformers",
+            directory,
             "-sources",
             "training_data=csv",
             "-source-filename",
@@ -93,11 +94,11 @@ class TestHFClassifier(IntegrationCLITestCase):
             "-model-model_name_or_path",
             "bert-base-cased",
             "-model-output_dir",
-            "~/dffml/transformers",
+            directory,
             "-model-cache_dir",
-            "~/dffml/transformers",
+            directory,
             "-model-logging_dir",
-            "~/dffml/transformers",
+            directory,
             "-sources",
             "test_data=csv",
             "-source-filename",
@@ -121,11 +122,11 @@ class TestHFClassifier(IntegrationCLITestCase):
                 "-model-model_name_or_path",
                 "bert-base-cased",
                 "-model-output_dir",
-                "~/dffml/transformers",
+                directory,
                 "-model-cache_dir",
-                "~/dffml/transformers",
+                directory,
                 "-model-logging_dir",
-                "~/dffml/transformers",
+                directory,
                 "-sources",
                 "predict_data=csv",
                 "-source-filename",
@@ -163,11 +164,11 @@ class TestHFClassifier(IntegrationCLITestCase):
                 "-config-model-model_name_or_path",
                 "bert-base-cased",
                 "-config-model-output_dir",
-                "~/dffml/transformers",
+                directory,
                 "-config-model-cache_dir",
-                "~/dffml/transformers",
+                directory,
                 "-config-model-logging_dir",
-                "~/dffml/transformers",
+                directory,
                 "-config-model-clstype",
                 "int",
             )
