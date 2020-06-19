@@ -7,7 +7,7 @@ import csv
 import ast
 import itertools
 import asyncio
-from typing import Dict
+from typing import Dict, List
 from dataclasses import dataclass
 from contextlib import asynccontextmanager
 
@@ -50,7 +50,7 @@ class CSVSourceConfig(FileSourceConfig):
     key: str = CSV_SOURCE_CONFIG_DEFAULT_KEY
     tag: str = CSV_SOURCE_CONFIG_DEFAULT_tag
     tagcol: str = CSV_SOURCE_CONFIG_DEFAULT_tag_COLUMN
-    loadfiles: str = CSV_SOURCE_CONFIG_DEFAULT_LOADFILES_NAME
+    loadfiles: List[str] = CSV_SOURCE_CONFIG_DEFAULT_LOADFILES_NAME
 
 
 # CSVSource is a bit of a mess
@@ -104,11 +104,13 @@ class CSVSource(FileSource, MemorySource):
             # Grab tag from row
             tag = row.get(self.config.tagcol, self.config.tag)
             # Load via ConfigLoaders if loadfiles parameter is given
+            cfgl_data = {}
             if self.config.loadfiles:
-                async with self.CONFIG_LOADER as cfgl:
-                    _, cfgl_data = await cfgl.load_file(
-                        row[self.config.loadfiles]
-                    )
+                for loadfile in self.config.loadfiles:
+                    async with self.CONFIG_LOADER as cfgl:
+                        _, cfgl_data[loadfile] = await cfgl.load_file(
+                            row[loadfile]
+                        )
             if self.config.tagcol in row:
                 del row[self.config.tagcol]
             index.setdefault(tag, 0)
@@ -144,7 +146,8 @@ class CSVSource(FileSource, MemorySource):
             features = {}
             for _key, _value in row.items():
                 if self.config.loadfiles:
-                    _value = cfgl_data
+                    if _key in self.config.loadfiles:
+                        _value = cfgl_data[_key]
                 if _value != "":
                     try:
                         features[_key] = ast.literal_eval(_value)
