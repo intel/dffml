@@ -293,13 +293,6 @@ It contains the following files.
 
   - A dataflow containing modififactions to the ``shouldi`` dataflow
 
-The override dataflow file looks like this:
-
-**shouldi/deploy/override/shouldi.yaml**
-
-.. literalinclude:: /../examples/shouldi/shouldi/deploy/override/shouldi.yaml
-    :language: yaml
-
 We've modified the flow to create the following dataflow
 
 .. image:: /images/shouldi-dataflow-extended.svg
@@ -313,7 +306,7 @@ The diagram above can be re-generated with the following commands
         shouldi/deploy/df/shouldi.json \
         shouldi/deploy/override/shouldi.yaml | \
       dffml dataflow diagram \
-        -stages processing -simple -configloader yaml /dev/stdin
+        -stages processing -simple -configloader json /dev/stdin
 
 Copy and pasting the graph into the
 `mermaidjs live editor <https://mermaidjs.github.io/mermaid-live-editor>`_
