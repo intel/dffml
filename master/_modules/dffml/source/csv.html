@@ -189,7 +189,7 @@
 <span class="kn">import</span> <span class="nn">ast</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">asynccontextmanager</span>
 
@@ -232,7 +232,7 @@
     <span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_KEY</span>
     <span class="n">tag</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_tag</span>
     <span class="n">tagcol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_tag_COLUMN</span>
-    <span class="n">loadfiles</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_LOADFILES_NAME</span></div>
+    <span class="n">loadfiles</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">CSV_SOURCE_CONFIG_DEFAULT_LOADFILES_NAME</span></div>
 
 
 <span class="c1"># CSVSource is a bit of a mess</span>
@@ -286,11 +286,13 @@
             <span class="c1"># Grab tag from row</span>
             <span class="n">tag</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tagcol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tag</span><span class="p">)</span>
             <span class="c1"># Load via ConfigLoaders if loadfiles parameter is given</span>
+            <span class="n">cfgl_data</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">loadfiles</span><span class="p">:</span>
-                <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONFIG_LOADER</span> <span class="k">as</span> <span class="n">cfgl</span><span class="p">:</span>
-                    <span class="n">_</span><span class="p">,</span> <span class="n">cfgl_data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cfgl</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span>
-                        <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">loadfiles</span><span class="p">]</span>
-                    <span class="p">)</span>
+                <span class="k">for</span> <span class="n">loadfile</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">loadfiles</span><span class="p">:</span>
+                    <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">CONFIG_LOADER</span> <span class="k">as</span> <span class="n">cfgl</span><span class="p">:</span>
+                        <span class="n">_</span><span class="p">,</span> <span class="n">cfgl_data</span><span class="p">[</span><span class="n">loadfile</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="n">cfgl</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span>
+                            <span class="n">row</span><span class="p">[</span><span class="n">loadfile</span><span class="p">]</span>
+                        <span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tagcol</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
                 <span class="k">del</span> <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tagcol</span><span class="p">]</span>
             <span class="n">index</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
@@ -326,7 +328,8 @@
             <span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">for</span> <span class="n">_key</span><span class="p">,</span> <span class="n">_value</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">loadfiles</span><span class="p">:</span>
-                    <span class="n">_value</span> <span class="o">=</span> <span class="n">cfgl_data</span>
+                    <span class="k">if</span> <span class="n">_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">loadfiles</span><span class="p">:</span>
+                        <span class="n">_value</span> <span class="o">=</span> <span class="n">cfgl_data</span><span class="p">[</span><span class="n">_key</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">_value</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">features</span><span class="p">[</span><span class="n">_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">_value</span><span class="p">)</span>
