@@ -257,7 +257,7 @@ class Entrypoints(CMD):
 @configdataclass
 class ExportConfig:
     export: str = field("Python path to object to export",)
-    config: BaseConfigLoader = field(
+    configloader: BaseConfigLoader = field(
         "ConfigLoader to use", default=JSONConfigLoader,
     )
     not_linked: bool = field(
@@ -272,7 +272,7 @@ class Export(CMD):
     CONFIG = ExportConfig
 
     async def run(self):
-        async with self.config(BaseConfig()) as configloader:
+        async with self.configloader() as configloader:
             async with configloader() as loader:
                 for obj in load(self.export, relative=os.getcwd()):
                     self.logger.debug("Loaded %s: %s", self.export, obj)

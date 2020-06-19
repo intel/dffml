@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- `-pretty` flag to `list records` and `predict` commands
 - daal4py based linear regression model
 - DataFlowSource can take a config file as dataflow via the CLI.
 - Support for link on conditions in dataflow diagrams
@@ -50,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ability to use a function as a data source via the `op` source
 - Save and Reload Directory property for models
 ### Changed
+- Update record `__str__` method to output in tabular format
 - Update NER Model to use transformers 2.11.0
 - Update MNIST use case to normalize image arrays.
 - `arg_` notation replaced with `CONFIG = ExampleConfig` style syntax
