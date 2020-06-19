@@ -13,6 +13,7 @@ from .file import FileSource
 from ..util.entrypoint import entrypoint
 from dffml.source.source import BaseSource, BaseSourceContext
 from ..configloader.configloader import ConfigLoaders
+from ..high_level import save
 
 
 class FolderNotFoundError(Exception):
@@ -23,10 +24,10 @@ class FolderNotFoundError(Exception):
 
 @config
 class DirectorySourceConfig:
-    foldername: pathlib.Path
+    foldername: str
     feature: str = field("Name of the feature the data will be referenced as")
     labels: List[str] = None
-    save: bool = False  # TODO It'll be a good idea to give the user option to save extracted features in some format
+    save: BaseSource = None
 
 
 @entrypoint("dir")
@@ -40,6 +41,8 @@ class DirectorySource(MemorySource):
 
     def __init__(self, config):
         super().__init__(config)
+        if isinstance(getattr(self.config, "foldername", None), str):
+            self.config.foldername = pathlib.Path(self.config.foldername)
 
     async def __aenter__(self) -> "BaseSourceContext":
         await self._open()
@@ -57,7 +60,7 @@ class DirectorySource(MemorySource):
         # TODO doubt: Should we add a way where if user provides a file having all the label names we can read that file
         if len(self.config.labels) == 1 and self.config.labels is not None:
             if os.path.isfile(self.config.labels[0]):
-                # Update labels with list rea from the file
+                # Update labels with list read from the file
                 self.config.labels = pathlib.Path.read_text(
                     pathlib.Path(self.config.labels[0])
                 ).split(",")
@@ -77,9 +80,8 @@ class DirectorySource(MemorySource):
 
     async def _close(self):
         if self.config.save:
-            # TODO doubt: Should we save preprocessed data to a new folder/file
-            # So that user doesn't have to do preprocessing again and again later?
-            await self.dump_fd()
+            await save(self.config.save, self.mem)
+            # await self.dump_fd()
 
     async def load_fd(self):
         self.mem = {}
@@ -112,7 +114,6 @@ class DirectorySource(MemorySource):
             for file_name in os.listdir(label_folder):
                 image_filename = label_folder.joinpath(file_name)
 
-                # I have added an example directory with images renamed with .mnistpng as the pngconfigloader isn't updated
                 async with self.CONFIG_LOADER as cfgl:
                     _, feature_data = await cfgl.load_file(image_filename)
 
@@ -128,5 +129,5 @@ class DirectorySource(MemorySource):
                 i += 1
         self.logger.debug("%r loaded %d records", self, len(self.mem))
 
-    async def dump_fd(self, fd):
-        raise NotImplementedError
+    # async def dump_fd(self, fd):
+    #     raise NotImplementedError

@@ -1,6 +1,9 @@
+import os
 import pathlib
 import tempfile
 import inspect
+import numpy as np
+import contextlib
 
 from dffml.source.dir import DirectorySource, DirectorySourceConfig
 from dffml.util.asynctestcase import AsyncTestCase
@@ -11,31 +14,32 @@ from dffml.record import Record
 
 
 class TestDirectorySource(AsyncTestCase):
+    @contextlib.contextmanager
+    def setUpDirectory(self):
+        blank_image = np.zeros((100, 100, 3), dtype=np.uint8)
+        with tempfile.TemporaryDirectory() as tempdir:
+            with chdir(tempdir):
+                for dirname in ["a", "b", "c"]:
+                    dirpath = pathlib.Path(dirname)
+                    if not os.path.exists(dirpath):
+                        dirpath.mkdir()
+                    for image_name in ["x", "y", "z"]:
+                        # This is not saved in png file format so isn;t loaded by configloader
+                        # Need to find a better way.
+                        (dirpath / (image_name + ".png")).write_bytes(
+                            bytearray(blank_image.flatten())
+                        )
+                yield tempdir
+
     def setUpSource(self):
-        return DirectorySource(
-            DirectorySourceConfig(
-                foldername=pathlib.Path(__file__).parent / "dataset" / "train",
-                feature="image",
-                labels=["airplane", "bird", "frog"],
+        with self.setUpDirectory() as tempdir:
+            return DirectorySource(
+                DirectorySourceConfig(
+                    foldername=".", feature="image", labels=["a", "b", "c"],
+                )
             )
-        )
 
     async def test_dir(self):
-        records_from_cli = await CLI.cli(
-            "list",
-            "records",
-            "-sources",
-            "f=dir",
-            "-source-foldername",
-            "tests/source/dataset/train",
-            "-source-feature",
-            "image",
-            "-source-labels",
-            "airplane",
-            "bird",
-            "frog",
-        )
-
         records = []
         async with self.setUpSource() as source:
             async with source() as sctx:
@@ -58,6 +62,4 @@ class TestDirectorySource(AsyncTestCase):
                         28 * 28,
                     )
 
-        self.assertDictEqual(records[0].export(), records_from_cli[0].export())
-        self.assertEqual(len(records), 15)
-        self.assertEqual(len(records_from_cli), 15)
+        self.assertEqual(len(records), 9)
