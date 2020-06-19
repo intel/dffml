@@ -2,15 +2,48 @@
 This file contains integration tests. We use the CLI to exercise functionality of
 various DFFML classes and constructs.
 """
+import os
 import csv
 import json
 import random
 import pathlib
+import tempfile
 import contextlib
+import subprocess
 
 from dffml.cli.cli import CLI
+from dffml.util.os import chdir
 from dffml.service.dev import Develop
 from dffml.util.asynctestcase import IntegrationCLITestCase
+
+
+@contextlib.contextmanager
+def directory_with_csv_files():
+    with tempfile.TemporaryDirectory() as tempdir:
+        with chdir(tempdir):
+            subprocess.check_output(
+                [
+                    "bash",
+                    os.path.join(
+                        os.path.dirname(os.path.dirname(__file__)),
+                        "examples",
+                        "classification",
+                        "train_data.sh",
+                    ),
+                ]
+            )
+            subprocess.check_output(
+                [
+                    "bash",
+                    os.path.join(
+                        os.path.dirname(os.path.dirname(__file__)),
+                        "examples",
+                        "classification",
+                        "test_data.sh",
+                    ),
+                ]
+            )
+            yield tempdir
 
 
 class TestHFClassifier(IntegrationCLITestCase):
@@ -179,3 +212,63 @@ class TestHFClassifier(IntegrationCLITestCase):
             self.assertIn("value", results)
             results = results["value"]
             self.assertIn(results, [0, 1])
+
+        # Test .sh files
+        def clean_args(fd, directory):
+            cmnd = " ".join(fd.readlines()).split("\\\n")
+            cmnd = " ".join(cmnd).split()
+            for idx, word in enumerate(cmnd):
+                cmnd[idx] = word.strip()
+            cmnd[cmnd.index("-model-output_dir") + 1] = directory
+            cmnd[cmnd.index("-model-cache_dir") + 1] = directory
+            cmnd[cmnd.index("-model-logging_dir") + 1] = directory
+            return cmnd
+
+        with directory_with_csv_files() as tempdir:
+            with open(
+                os.path.join(
+                    os.path.dirname(os.path.dirname(__file__)),
+                    "examples",
+                    "classification",
+                    "train.sh",
+                ),
+                "r",
+            ) as f:
+                train_cmnd = clean_args(f, tempdir)
+            await CLI.cli(*train_cmnd[1:])
+
+            with open(
+                os.path.join(
+                    os.path.dirname(os.path.dirname(__file__)),
+                    "examples",
+                    "classification",
+                    "accuracy.sh",
+                ),
+                "r",
+            ) as f:
+                accuracy_cmnd = clean_args(f, tempdir)
+            await CLI.cli(*accuracy_cmnd[1:])
+
+            with open(
+                os.path.join(
+                    os.path.dirname(os.path.dirname(__file__)),
+                    "examples",
+                    "classification",
+                    "predict.sh",
+                ),
+                "r",
+            ) as f:
+                predict_cmnd = clean_args(f, tempdir)
+            with contextlib.redirect_stdout(self.stdout):
+                await CLI._main(*predict_cmnd[1:])
+                results = json.loads(self.stdout.getvalue())
+                self.assertTrue(isinstance(results, list))
+                self.assertTrue(results)
+                results = results[0]
+                self.assertIn("prediction", results)
+                results = results["prediction"]
+                self.assertIn("sentiment", results)
+                results = results["sentiment"]
+                self.assertIn("value", results)
+                results = results["value"]
+                self.assertIn(results, [0, 1])
