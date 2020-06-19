@@ -137,7 +137,6 @@ class VWContext(ModelContext):
                 for k, v in self.parent.config._asdict().items()
                 if k
                 not in [
-                    "directory",
                     "features",
                     "predict",
                     "vwcmd",

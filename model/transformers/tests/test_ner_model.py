@@ -67,6 +67,7 @@ class TestNERModel(AsyncTestCase):
     @classmethod
     def tearDownClass(cls):
         cls.model_dir.cleanup()
+        cls.cache_dir.cleanuo()
 
     async def test_00_train(self):
         async with self.train_sources as sources, self.model as model:

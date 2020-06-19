@@ -189,8 +189,7 @@ class SimpleModel(Model):
         # Hash the exported config
         return pathlib.Path(
             self.config.directory,
-            hashlib.sha384(json.dumps(exported).encode()).hexdigest()
-            + (extention if extention else ""),
+            "Model",
         )
 
     def applicable_features(self, features):
