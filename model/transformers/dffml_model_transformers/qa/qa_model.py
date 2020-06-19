@@ -42,12 +42,14 @@ logger = logging.getLogger(__name__)
 MODEL_CONFIG_CLASSES = list(MODEL_FOR_QUESTION_ANSWERING_MAPPING.keys())
 MODEL_TYPES = tuple(conf.model_type for conf in MODEL_CONFIG_CLASSES)
 
+
 def set_seed(seed, n_gpu):
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     if n_gpu > 0:
         torch.cuda.manual_seed_all(seed)
+
 
 @config
 class QAModelConfig:
@@ -177,6 +179,7 @@ class QAModelConfig:
             torch.distributed.barrier()
 
         self.model_type = self.model_type.lower()
+
 
 class QAModelContext(ModelContext):
     def __init__(self, parent, **kwconfig):
@@ -672,3 +675,208 @@ class QAModelContext(ModelContext):
                     self.parent.config.output_dir, "training_args.bin"
                 ),
             )
+
+    async def _custom_accuracy(self, examples, features, dataset, prefix=""):
+
+        if not os.path.exists(
+            self.parent.config.output_dir
+        ) and self.parent.config.local_rank in [-1, 0]:
+            os.makedirs(self.parent.config.output_dir)
+
+        self.parent.config.eval_batch_size = (
+            self.parent.config.per_gpu_eval_batch_size
+            * max(1, self.parent.config.n_gpu)
+        )
+
+        eval_sampler = SequentialSampler(dataset)
+        eval_dataloader = DataLoader(
+            dataset,
+            sampler=eval_sampler,
+            batch_size=self.parent.config.eval_batch_size,
+        )
+
+        # multi-gpu evaluate
+        if self.parent.config.n_gpu > 1 and not isinstance(
+            self.model, torch.nn.DataParallel
+        ):
+            self.model = torch.nn.DataParallel(self.model)
+
+        # Eval
+        logger.info("***** Running evaluation {} *****".format(prefix))
+        logger.info("  Num examples = %d", len(dataset))
+        logger.info("  Batch size = %d", self.parent.config.eval_batch_size)
+
+        all_results = []
+        start_time = timeit.default_timer()
+
+        for batch in tqdm(eval_dataloader, desc="Evaluating"):
+            self.model.eval()
+            batch = tuple(t.to(self.parent.config.device) for t in batch)
+
+            with torch.no_grad():
+                inputs = {
+                    "input_ids": batch[0],
+                    "attention_mask": batch[1],
+                    "token_type_ids": batch[2],
+                }
+
+                if self.parent.config.model_type in [
+                    "xlm",
+                    "roberta",
+                    "distilbert",
+                    "camembert",
+                ]:
+                    del inputs["token_type_ids"]
+
+                feature_indices = batch[3]
+
+                # XLNet and XLM use more arguments for their predictions
+                if self.parent.config.model_type in ["xlnet", "xlm"]:
+                    inputs.update({"cls_index": batch[4], "p_mask": batch[5]})
+                    # for lang_id-sensitive xlm models
+                    if hasattr(self.model, "config") and hasattr(
+                        self.model.config, "lang2id"
+                    ):
+                        inputs.update(
+                            {
+                                "langs": (
+                                    torch.ones(
+                                        batch[0].shape, dtype=torch.int64
+                                    )
+                                    * self.parent.config.lang_id
+                                ).to(self.parent.config.device)
+                            }
+                        )
+
+                outputs = self.model(**inputs)
+
+            for i, feature_index in enumerate(feature_indices):
+                eval_feature = features[feature_index.item()]
+                unique_id = int(eval_feature.unique_id)
+
+                output = [self.to_list(output[i]) for output in outputs]
+
+                if len(output) >= 5:
+                    start_logits = output[0]
+                    start_top_index = output[1]
+                    end_logits = output[2]
+                    end_top_index = output[3]
+                    cls_logits = output[4]
+
+                    result = SquadResult(
+                        unique_id,
+                        start_logits,
+                        end_logits,
+                        start_top_index=start_top_index,
+                        end_top_index=end_top_index,
+                        cls_logits=cls_logits,
+                    )
+                else:
+                    start_logits, end_logits = output
+                    result = SquadResult(unique_id, start_logits, end_logits)
+
+                all_results.append(result)
+
+        evalTime = timeit.default_timer() - start_time
+        logger.info(
+            "  Evaluation done in total %f secs (%f sec per example)",
+            evalTime,
+            evalTime / len(dataset),
+        )
+
+        # Compute predictions
+        output_prediction_file = os.path.join(
+            self.parent.config.output_dir, "predictions_{}.json".format(prefix)
+        )
+        output_nbest_file = os.path.join(
+            self.parent.config.output_dir,
+            "nbest_predictions_{}.json".format(prefix),
+        )
+
+        # XLNet and XLM use a more complex post-processing procedure
+        if self.parent.config.model_type in ["xlnet", "xlm"]:
+            start_n_top = (
+                self.model.config.start_n_top
+                if hasattr(self.model, "config")
+                else self.model.module.config.start_n_top
+            )
+            end_n_top = (
+                self.model.config.end_n_top
+                if hasattr(self.model, "config")
+                else self.model.module.config.end_n_top
+            )
+
+            predictions = compute_predictions_log_probs(
+                examples,
+                features,
+                all_results,
+                self.parent.config.n_best_size,
+                self.parent.config.max_answer_length,
+                output_prediction_file,
+                output_nbest_file,
+                None,
+                start_n_top,
+                end_n_top,
+                False,
+                self.tokenizer,
+                True,
+            )
+        else:
+            predictions = compute_predictions_logits(
+                examples,
+                features,
+                all_results,
+                self.parent.config.n_best_size,
+                self.parent.config.max_answer_length,
+                self.parent.config.do_lower_case,
+                output_prediction_file,
+                output_nbest_file,
+                None,
+                True,
+                False,
+                self.parent.config.null_score_diff_threshold,
+                self.tokenizer,
+            )
+
+        return predictions
+
+    async def accuracy(self, sources: Sources):
+        if not os.path.isfile(
+            os.path.join(self.parent.config.output_dir, "pytorch_model.bin")
+        ):
+            raise ModelNotTrained("Train model before assessing for accuracy.")
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            self.parent.config.output_dir,
+            do_lower_case=self.parent.config.do_lower_case,
+        )
+        eval_examples = await self._preprocess_data(sources)
+        features, dataset = squad_convert_examples_to_features(
+            examples=eval_examples,
+            tokenizer=self.tokenizer,
+            max_seq_length=self.parent.config.max_seq_length,
+            doc_stride=self.parent.config.doc_stride,
+            max_query_length=self.parent.config.max_query_length,
+            is_training=False,
+            return_dataset="pt",
+        )
+
+        results = {}
+        if self.parent.config.local_rank in [-1, 0]:
+            logger.info(
+                "Loading checkpoints saved during training for evaluation"
+            )
+            self.model = AutoModelForQuestionAnswering.from_pretrained(
+                self.parent.config.output_dir
+            )
+            self.model.to(self.parent.config.device)
+
+            # Evaluate
+            predictions = await self._custom_accuracy(
+                eval_examples, features, dataset
+            )
+            results = squad_evaluate(eval_examples, predictions)
+
+        logger.info("Results: {}".format(results))
+
+        # return results
+        return Accuracy(results["f1"])
