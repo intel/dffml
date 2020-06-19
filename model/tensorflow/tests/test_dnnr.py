@@ -75,7 +75,7 @@ class TestDNN(AsyncTestCase):
                 self.model_dir.name,
             )
         )
-        self.assertEqual(config.directory, self.model_dir.name)
+        self.assertEqual(config.directory, pathlib.Path(self.model_dir.name))
         self.assertEqual(config.steps, 3000)
         self.assertEqual(config.epochs, 30)
         self.assertEqual(config.hidden, [12, 40, 15])
