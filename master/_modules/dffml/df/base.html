@@ -529,6 +529,12 @@
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="c1"># Check if the function uses the operation implementation config</span>
+        <span class="c1"># This exists because eventually we will make non async functions</span>
+        <span class="c1"># wrapped with op run with loop.run_in_executor when that happens it&#39;s</span>
+        <span class="c1"># likely that self won&#39;t be serializeable into the thread / process.</span>
+        <span class="c1"># Config&#39;s are guaranteed to be serializable, therefore this lets us</span>
+        <span class="c1"># define operations that have configs and needs to access them when</span>
+        <span class="c1"># running within another thread.</span>
         <span class="n">uses_config</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">config_cls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">sig</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
