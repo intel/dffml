@@ -214,23 +214,25 @@ model for prediction via the DFFML CLI and HTTP API.</p>
 </pre></div>
 </div>
 <p>The model we’ll be using is a part of <code class="docutils literal notranslate"><span class="pre">dffml-model-tensorflow</span></code>, which is
-a DFFML plugin which allows you to use TensorFlow via DFFML. We can install it
-with <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install -U dffml-model-tensorflow
+a DFFML plugin which allows you to use TensorFlow via DFFML.
+We’ll also be using the <cite>resize</cite> operation from <code class="docutils literal notranslate"><span class="pre">dffml-operations-image</span></code>, which is
+a DFFML plugin which allows you to do image processing via DFFML.
+We can install them with <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install -U dffml-model-tensorflow dffml-operations-image
 </pre></div>
 </div>
 <p>Create a dataflow config file which will be used by the
 <a class="reference internal" href="../api/source/df.html#dffml.source.df.DataFlowSource" title="dffml.source.df.DataFlowSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFlowSource</span></code></a> to normalize the
 data just before feeding it to the model.</p>
 <p>In the config file, using the <code class="docutils literal notranslate"><span class="pre">dataflow</span> <span class="pre">create</span></code> command we create a DataFlow
-consisting of 2 operations, multiply and associate_definition. We use <code class="docutils literal notranslate"><span class="pre">sed</span></code> to
+consisting of 2 operations: multiply and associate_definition. We
 edit the DataFlow to have the multiplicand input of the multiply operation come
 from a list in seed containing only one element that is the <code class="docutils literal notranslate"><span class="pre">image</span></code> feature
-and to have the input of the associate_definition operation come from the output
+and the seed to have the input of the associate_definition operation come from the output
 (product) of the multiply operation.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">dataflow</span> <span class="n">create</span> <span class="n">multiply</span> <span class="n">associate_definition</span> <span class="o">-</span><span class="n">configloader</span> <span class="n">yaml</span> \
-    <span class="o">-</span><span class="n">seed</span> <span class="s1">&#39;{&quot;image&quot;: &quot;product&quot;}&#39;</span><span class="o">=</span><span class="n">associate_spec</span> <span class="mf">0.00392156862</span><span class="o">=</span><span class="n">multiplier_def</span> <span class="o">|</span> \
-    <span class="n">sed</span> <span class="o">-</span><span class="n">ze</span> <span class="s1">&#39;s/multiplicand:</span><span class="se">\n</span><span class="s1">      - seed/multiplicand:</span><span class="se">\n</span><span class="s1">      - seed:</span><span class="se">\n</span><span class="s1">        - image/g&#39;</span> <span class="o">|</span> \
+    <span class="o">-</span><span class="n">seed</span> <span class="s1">&#39;{&quot;image&quot;: &quot;product&quot;}&#39;</span><span class="o">=</span><span class="n">associate_spec</span> <span class="mf">0.00392156862</span><span class="o">=</span><span class="n">multiplier_def</span> \
+    <span class="o">-</span><span class="n">flow</span> <span class="s1">&#39;[{&quot;seed&quot;: [&quot;image&quot;]}]&#39;</span><span class="o">=</span><span class="n">multiply</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">multiplicand</span> <span class="o">|</span>
     <span class="n">tee</span> <span class="n">normalize</span><span class="o">.</span><span class="n">yaml</span>
 </pre></div>
 </div>
@@ -330,25 +332,131 @@ and to have the input of the associate_definition operation come from the output
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">0.8269000053405762</span>
 </pre></div>
 </div>
-<p>Create an <code class="docutils literal notranslate"><span class="pre">image.csv</span></code> file which contains the names of the images (with their extension .mnistpng) to predict on.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Make sure to download each image and save them with the <cite>.mnistpng</cite> extension.</p>
-</div>
+<p>Create an <code class="docutils literal notranslate"><span class="pre">image.csv</span></code> file which contains the names of the images (with their extension .png) to predict on.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">image</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
 <span class="n">key</span><span class="p">,</span><span class="n">image</span>
-<span class="n">four</span><span class="p">,</span><span class="n">image1</span><span class="o">.</span><span class="n">mnistpng</span>
-<span class="n">five</span><span class="p">,</span><span class="n">image2</span><span class="o">.</span><span class="n">mnistpng</span>
-<span class="n">three</span><span class="p">,</span><span class="n">image3</span><span class="o">.</span><span class="n">mnistpng</span>
-<span class="n">two</span><span class="p">,</span><span class="n">image4</span><span class="o">.</span><span class="n">mnistpng</span>
+<span class="n">four</span><span class="p">,</span><span class="n">image1</span><span class="o">.</span><span class="n">png</span>
+<span class="n">five</span><span class="p">,</span><span class="n">image2</span><span class="o">.</span><span class="n">png</span>
+<span class="n">three</span><span class="p">,</span><span class="n">image3</span><span class="o">.</span><span class="n">png</span>
+<span class="n">two</span><span class="p">,</span><span class="n">image4</span><span class="o">.</span><span class="n">png</span>
 <span class="n">EOF</span>
 </pre></div>
 </div>
+<p>In the config file, using the <code class="docutils literal notranslate"><span class="pre">dataflow</span> <span class="pre">create</span></code> command we create a DataFlow
+consisting of 3 operations: resize, multiply and associate_definition. We
+edit the DataFlow to have the data input of the resize operation come
+from a list in seed containing <code class="docutils literal notranslate"><span class="pre">image</span></code> feature, have the multiplicand input of
+multiply operation come from the output (resized_array) of the resize operation
+and to have the input of the associate_definition operation come from the output
+(product) of the multiply operation.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">dataflow</span> <span class="n">create</span> <span class="n">resize</span> <span class="n">multiply</span> <span class="n">associate_definition</span> <span class="o">-</span><span class="n">configloader</span> <span class="n">yaml</span> \
+    <span class="o">-</span><span class="n">seed</span> \
+      <span class="s1">&#39;[280,280,3]&#39;</span><span class="o">=</span><span class="n">dffml_operations_image</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">old_dim</span> \
+      <span class="s1">&#39;[28,28]&#39;</span><span class="o">=</span><span class="n">dffml_operations_image</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">new_dim</span> \
+      <span class="s1">&#39;{&quot;image&quot;: &quot;product&quot;}&#39;</span><span class="o">=</span><span class="n">associate_spec</span> \
+      <span class="mf">0.00392156862</span><span class="o">=</span><span class="n">multiplier_def</span> \
+    <span class="o">-</span><span class="n">flow</span> \
+      <span class="s1">&#39;[{&quot;seed&quot;: [&quot;image&quot;]}]&#39;</span><span class="o">=</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">data</span> \
+      <span class="s1">&#39;[{&quot;resize&quot;: &quot;result&quot;}]&#39;</span><span class="o">=</span><span class="n">multiply</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">multiplicand</span> <span class="o">|</span>
+    <span class="n">tee</span> <span class="n">resizenorm</span><span class="o">.</span><span class="n">yaml</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">definitions</span><span class="p">:</span>
+  <span class="n">associate_output</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">associate_output</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+  <span class="n">associate_spec</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">associate_spec</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+  <span class="n">dffml_operations_image</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">dffml_operations_image</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">array</span>
+  <span class="n">dffml_operations_image</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">new_dim</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">dffml_operations_image</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">new_dim</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">array</span>
+  <span class="n">dffml_operations_image</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">old_dim</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">dffml_operations_image</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">old_dim</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">array</span>
+  <span class="n">dffml_operations_image</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">resize</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">result</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">dffml_operations_image</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">resize</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">result</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">array</span>
+  <span class="n">multiplicand_def</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">multiplicand_def</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">generic</span>
+  <span class="n">multiplier_def</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">multiplier_def</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">generic</span>
+  <span class="n">product</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">product</span>
+    <span class="n">primitive</span><span class="p">:</span> <span class="n">generic</span>
+<span class="n">flow</span><span class="p">:</span>
+  <span class="n">associate_definition</span><span class="p">:</span>
+    <span class="n">inputs</span><span class="p">:</span>
+      <span class="n">spec</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">seed</span>
+  <span class="n">multiply</span><span class="p">:</span>
+    <span class="n">inputs</span><span class="p">:</span>
+      <span class="n">multiplicand</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">resize</span><span class="p">:</span> <span class="n">result</span>
+      <span class="n">multiplier</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">seed</span>
+  <span class="n">resize</span><span class="p">:</span>
+    <span class="n">inputs</span><span class="p">:</span>
+      <span class="n">data</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">seed</span><span class="p">:</span>
+        <span class="o">-</span> <span class="n">image</span>
+      <span class="n">new_dim</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">seed</span>
+      <span class="n">old_dim</span><span class="p">:</span>
+      <span class="o">-</span> <span class="n">seed</span>
+<span class="n">linked</span><span class="p">:</span> <span class="n">true</span>
+<span class="n">operations</span><span class="p">:</span>
+  <span class="n">associate_definition</span><span class="p">:</span>
+    <span class="n">inputs</span><span class="p">:</span>
+      <span class="n">spec</span><span class="p">:</span> <span class="n">associate_spec</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">associate_definition</span>
+    <span class="n">outputs</span><span class="p">:</span>
+      <span class="n">output</span><span class="p">:</span> <span class="n">associate_output</span>
+    <span class="n">stage</span><span class="p">:</span> <span class="n">output</span>
+  <span class="n">multiply</span><span class="p">:</span>
+    <span class="n">inputs</span><span class="p">:</span>
+      <span class="n">multiplicand</span><span class="p">:</span> <span class="n">multiplicand_def</span>
+      <span class="n">multiplier</span><span class="p">:</span> <span class="n">multiplier_def</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">multiply</span>
+    <span class="n">outputs</span><span class="p">:</span>
+      <span class="n">product</span><span class="p">:</span> <span class="n">product</span>
+    <span class="n">stage</span><span class="p">:</span> <span class="n">processing</span>
+  <span class="n">resize</span><span class="p">:</span>
+    <span class="n">inputs</span><span class="p">:</span>
+      <span class="n">data</span><span class="p">:</span> <span class="n">dffml_operations_image</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">data</span>
+      <span class="n">new_dim</span><span class="p">:</span> <span class="n">dffml_operations_image</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">new_dim</span>
+      <span class="n">old_dim</span><span class="p">:</span> <span class="n">dffml_operations_image</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">old_dim</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">resize</span>
+    <span class="n">outputs</span><span class="p">:</span>
+      <span class="n">result</span><span class="p">:</span> <span class="n">dffml_operations_image</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">resize</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">result</span>
+    <span class="n">stage</span><span class="p">:</span> <span class="n">processing</span>
+<span class="n">seed</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">definition</span><span class="p">:</span> <span class="n">dffml_operations_image</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">old_dim</span>
+  <span class="n">value</span><span class="p">:</span>
+  <span class="o">-</span> <span class="mi">280</span>
+  <span class="o">-</span> <span class="mi">280</span>
+  <span class="o">-</span> <span class="mi">3</span>
+<span class="o">-</span> <span class="n">definition</span><span class="p">:</span> <span class="n">dffml_operations_image</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">new_dim</span>
+  <span class="n">value</span><span class="p">:</span>
+  <span class="o">-</span> <span class="mi">28</span>
+  <span class="o">-</span> <span class="mi">28</span>
+<span class="o">-</span> <span class="n">definition</span><span class="p">:</span> <span class="n">associate_spec</span>
+  <span class="n">value</span><span class="p">:</span>
+    <span class="n">image</span><span class="p">:</span> <span class="n">product</span>
+<span class="o">-</span> <span class="n">definition</span><span class="p">:</span> <span class="n">multiplier_def</span>
+  <span class="n">value</span><span class="p">:</span> <span class="mf">0.00392156862</span>
+</pre></div>
+</div>
 <p>In this example, the <code class="docutils literal notranslate"><span class="pre">image.csv</span></code> file contains the names of the following images</p>
-<a class="reference internal image-reference" href="../_images/image1.mnistpng"><img alt="../_images/image1.mnistpng" src="../_images/image1.mnistpng" style="width: 140px; height: 140px;" /></a>
-<a class="reference internal image-reference" href="../_images/image2.mnistpng"><img alt="../_images/image2.mnistpng" src="../_images/image2.mnistpng" style="width: 140px; height: 140px;" /></a>
-<a class="reference internal image-reference" href="../_images/image3.mnistpng"><img alt="../_images/image3.mnistpng" src="../_images/image3.mnistpng" style="width: 140px; height: 140px;" /></a>
-<a class="reference internal image-reference" href="../_images/image4.mnistpng"><img alt="../_images/image4.mnistpng" src="../_images/image4.mnistpng" style="width: 140px; height: 140px;" /></a>
+<a class="reference internal image-reference" href="../_images/image1.png"><img alt="../_images/image1.png" src="../_images/image1.png" style="width: 140px; height: 140px;" /></a>
+<a class="reference internal image-reference" href="../_images/image2.png"><img alt="../_images/image2.png" src="../_images/image2.png" style="width: 140px; height: 140px;" /></a>
+<a class="reference internal image-reference" href="../_images/image3.png"><img alt="../_images/image3.png" src="../_images/image3.png" style="width: 140px; height: 140px;" /></a>
+<a class="reference internal image-reference" href="../_images/image4.png"><img alt="../_images/image4.png" src="../_images/image4.png" style="width: 140px; height: 140px;" /></a>
 <p>Predict with the trained model.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dffml predict all \
     -model tfdnnc \
@@ -362,8 +470,8 @@ and to have the input of the associate_definition operation come from the output
     -source-images-source csv \
     -source-images-source-filename image.csv \
     -source-images-source-loadfiles image \
-    -source-images-features image:int:$((28*28)) \
-    -source-images-dataflow normalize.yaml \
+    -source-images-features image:int:$((28 * 28)) \
+    -source-images-dataflow resizenorm.yaml \
     -log critical
 </pre></div>
 </div>
