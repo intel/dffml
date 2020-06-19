@@ -347,6 +347,12 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
             )
         )
         # Check if the function uses the operation implementation config
+        # This exists because eventually we will make non async functions
+        # wrapped with op run with loop.run_in_executor when that happens it's
+        # likely that self won't be serializeable into the thread / process.
+        # Config's are guaranteed to be serializable, therefore this lets us
+        # define operations that have configs and needs to access them when
+        # running within another thread.
         uses_config = None
         if config_cls is not None:
             for name, param in sig.parameters.items():
