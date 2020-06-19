@@ -880,3 +880,51 @@ class QAModelContext(ModelContext):
 
         # return results
         return Accuracy(results["f1"])
+
+    async def predict(
+        self, records: AsyncIterator[Record]
+    ) -> AsyncIterator[Tuple[Record, Any, float]]:
+        if not os.path.isfile(
+            os.path.join(self.parent.config.output_dir, "pytorch_model.bin")
+        ):
+            raise ModelNotTrained("Train model before prediction.")
+
+        self.model = AutoModelForQuestionAnswering.from_pretrained(
+            self.parent.config.output_dir
+        )  # , force_download=True)
+        self.model.to(self.parent.config.device)
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            self.parent.config.output_dir,
+            do_lower_case=self.parent.config.do_lower_case,
+        )
+        async for record in records:
+            example = SquadExample(
+                qas_id=record.key,
+                question_text=record.feature("question"),
+                context_text=record.feature("context"),
+                answer_text=record.feature("answer_text"),
+                start_position_character=record.feature("start_pos_char"),
+                title=record.feature("title"),
+                is_impossible=record.feature("is_impossible"),
+                answers=record.feature("answers"),
+            )
+            features, dataset = squad_convert_examples_to_features(
+                examples=[example],
+                tokenizer=self.tokenizer,
+                max_seq_length=self.parent.config.max_seq_length,
+                doc_stride=self.parent.config.doc_stride,
+                max_query_length=self.parent.config.max_query_length,
+                is_training=False,
+                return_dataset="pt",
+            )
+            prediction = await self._custom_accuracy(
+                [example], features, dataset
+            )
+            record.predicted("Answer", prediction, "Nan")
+            yield record
+
+
+@entrypoint("qa_model")
+class QAModel(Model):
+    CONTEXT = QAModelContext
+    CONFIG = QAModelConfig
