@@ -54,7 +54,7 @@ Uses a CSV file as the source of record feature data
 
   - default: tag
 
-- loadfiles: String
+- loadfiles: List of strings
 
   - default: None
 
