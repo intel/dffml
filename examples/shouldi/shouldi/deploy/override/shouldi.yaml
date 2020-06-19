@@ -4,7 +4,9 @@ definitions:
     name: git_repository_checked_out
     primitive: Dict[str, str]
     spec:
-      defaults: {}
+      defaults:
+        URL: null
+        commit: null
       name: GitRepoCheckedOutSpec
       types:
         URL: str
@@ -32,11 +34,11 @@ flow:
       key:
       - seed
       value:
-      - seed
+      - pypi_package_contents: directory
   lines_of_code_by_language:
     inputs:
       repo:
-      - seed
+      - dffml.mapping.create: mapping
   lines_of_code_to_comments:
     inputs:
       langs:
@@ -70,7 +72,7 @@ seed:
   value: directory
 - definition: get_single_spec
   value:
-  - safety_check_number_of_issues
-  - bandit_output
+  - safety_check.outputs.result
+  - run_bandit.outputs.result
   - language_to_comment_ratio
 

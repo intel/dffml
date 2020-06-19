@@ -254,11 +254,13 @@ with the existing flow.
       -seed \
         directory=key \
         safety_check.outputs.result,run_bandit.outputs.result,language_to_comment_ratio=get_single_spec \
+      -flow \
+        '[{"dffml.mapping.create": "mapping"}]=lines_of_code_by_language.inputs.repo' \
+        '[{"pypi_package_contents": "directory"}]="dffml.mapping.create".inputs.value' \
       -- \
         dffml.mapping.create \
         lines_of_code_by_language \
         lines_of_code_to_comments \
-      | sed -e 's/value: value/value:\n      - pypi_package_contents: directory/g' \
       | tee shouldi/deploy/override/shouldi.yaml
 
 The final directory structure should look like this
