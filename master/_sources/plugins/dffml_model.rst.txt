@@ -496,6 +496,277 @@ dffml_model_transformers
     pip install dffml-model-transformers
 
 
+.. _plugin_model_dffml_model_transformers_hfclassifier:
+
+hfclassifier
+~~~~~~~~~~~~
+
+*Official*
+
+Implemented using `HuggingFace Transformers <https://huggingface.co/transformers/index.html>`_ Tensorflow based Models.
+Description about pretrianed models can be found `here <https://huggingface.co/transformers/pretrained_models.html>`_
+
+First we create the training and testing datasets
+
+.. literalinclude:: /../model/transformers/examples/classification/train_data.sh
+
+.. literalinclude:: /../model/transformers/examples/classification/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/transformers/examples/classification/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/transformers/examples/classification/accuracy.sh
+
+Output
+
+.. code-block::
+
+    0.6666666666666666
+
+
+Make a prediction
+
+.. literalinclude:: /../model/transformers/examples/classification/predict.sh
+
+Output
+
+.. code-block:: json
+
+    [
+        {
+            "extra": {},
+            "features": {
+                "sentence": "Cats are stupid",
+                "sentiment": 0
+            },
+            "key": "0",
+            "last_updated": "2020-06-12T08:31:45Z",
+            "prediction": {
+                "sentiment": {
+                    "confidence": 0.153812974691391,
+                    "value": 1
+                }
+            }
+        },
+        {
+            "extra": {},
+            "features": {
+                "sentence": "My office work is awesome",
+                "sentiment": 1
+            },
+            "key": "1",
+            "last_updated": "2020-06-12T08:31:45Z",
+            "prediction": {
+                "sentiment": {
+                    "confidence": 0.13032104074954987,
+                    "value": 1
+                }
+            }
+        }
+    ]
+
+The model can be trained on large datasets to get the expected
+output. The example shown above is to demonstrate the commandline usage
+of the model.
+
+**Args**
+
+- features: List of features
+
+  - Feature to train on
+
+- predict: Feature
+
+  - Feature holding target values
+
+- label_list: List of strings
+
+  - List of target labels
+
+- cache_dir: String
+
+  - Directory to store the pre-trained models downloaded from s3
+
+- model_name_or_path: String
+
+  - Path to pretrained model or model identifier from huggingface.co/models
+
+- output_dir: String
+
+  - The output directory where the model predictions and checkpoints will be written.
+
+- logging_dir: String
+
+  - Tensorboard log dir.
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- max_seq_length: Integer
+
+  - default: 128
+  - The maximum total input sequence length after tokenization. Sequences longer than this will be truncated, sequences shorter will be padded.
+
+- overwrite_cache: String
+
+  - default: False
+  - Overwrite the cached training and evaluation sets
+
+- config_name: String
+
+  - default: None
+  - Pretrained config name or path if not the same as model_name
+
+- tokenizer_name: String
+
+  - default: None
+  - Pretrained tokenizer name or path if not the same as model_name
+
+- use_fast: String
+
+  - default: False
+  - Set this flag to use fast tokenization.
+
+- doc_stride: Integer
+
+  - default: 128
+  - When splitting up a long document into chunks, how much stride to take between chunks.
+
+- optimizer_name: String
+
+  - default: adam
+  - Name of a Tensorflow optimizer among "adadelta, adagrad, adam, adamax, ftrl, nadam, rmsprop, sgd, adamw"
+
+- loss_name: String
+
+  - default: SparseCategoricalCrossentropy
+  - Name of a Tensorflow loss. For the list see: https://www.tensorflow.org/api_docs/python/tf/keras/losses
+
+- gpus: String
+
+  - default: 0
+  - List of gpu devices. If only one, switch to single gpu strategy, if None takes all availabel gpus
+
+- no_cuda: String
+
+  - default: False
+  - Do not use CUDA even when it is available
+
+- end_lr: float
+
+  - default: 0
+  - End learning rate for optimizer
+
+- debug: String
+
+  - default: False
+  - Activate the trace to record computation graphs and profiling information
+
+- overwrite_output_dir: String
+
+  - default: False
+  - Overwrite the content of the output directory.Use this to continue training if output_dir points to a checkpoint directory.
+
+- evaluate_during_training: String
+
+  - default: False
+  - Run evaluation during training at each logging step.
+
+- per_device_train_batch_size: Integer
+
+  - default: 8
+  - Batch size per GPU/TPU core/CPU for training.
+
+- per_device_eval_batch_size: Integer
+
+  - default: 8
+  - Batch size per GPU/TPU core/CPU for evaluation.
+
+- gradient_accumulation_steps: Integer
+
+  - default: 1
+  - Number of updates steps to accumulate before performing a backward/update pass.
+
+- learning_rate: float
+
+  - default: 5e-05
+  - The initial learning rate for Adam.
+
+- weight_decay: float
+
+  - default: 0.0
+  - Weight decay if we apply some.
+
+- adam_epsilon: float
+
+  - default: 1e-08
+  - Epsilon for Adam optimizer.
+
+- max_grad_norm: float
+
+  - default: 1.0
+  - Max gradient norm.
+
+- num_train_epochs: float
+
+  - default: 1
+  - Total number of training epochs to perform.
+
+- max_steps: Integer
+
+  - default: -1
+  - If > 0: set total number of training steps to perform. Override num_train_epochs.
+
+- warmup_steps: Integer
+
+  - default: 0
+  - Linear warmup over warmup_steps.
+
+- logging_first_step: String
+
+  - default: False
+  - Log and eval the first global_step
+
+- logging_steps: Integer
+
+  - default: 500
+  - Log every X updates steps.
+
+- save_steps: Integer
+
+  - default: 500
+  - Save checkpoint every X updates steps.
+
+- save_total_limit: Integer
+
+  - default: None
+  - Limit the total amount of checkpoints.Deletes the older checkpoints in the output_dir. Default is unlimited checkpoints
+
+- seed: Integer
+
+  - default: 42
+  - random seed for initialization
+
+- fp16: String
+
+  - default: False
+  - Whether to use 16-bit (mixed) precision (through NVIDIA apex) instead of 32-bit
+
+- fp16_opt_level: String
+
+  - default: O1
+  - For fp16: Apex AMP optimization level selected in ['O0', 'O1', 'O2', and 'O3'].See details at https://nvidia.github.io/apex/amp.html
+
+- local_rank: Integer
+
+  - default: -1
+  - For distributed training: local_rank
+
 .. _plugin_model_dffml_model_transformers_ner_tagger:
 
 ner_tagger

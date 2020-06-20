@@ -119,6 +119,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-transformers">dffml_model_transformers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hfclassifier">hfclassifier</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ner-tagger">ner_tagger</a></li>
 </ul>
 </li>
@@ -948,6 +949,369 @@ EOF
 <span id="plugin-model-dffml-model-transformers"></span><h2>dffml_model_transformers<a class="headerlink" href="#dffml-model-transformers" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-model-transformers</span>
 </pre></div>
+</div>
+<div class="section" id="hfclassifier">
+<span id="plugin-model-dffml-model-transformers-hfclassifier"></span><h3>hfclassifier<a class="headerlink" href="#hfclassifier" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Implemented using <a class="reference external" href="https://huggingface.co/transformers/index.html">HuggingFace Transformers</a> Tensorflow based Models.
+Description about pretrianed models can be found <a class="reference external" href="https://huggingface.co/transformers/pretrained_models.html">here</a></p>
+<p>First we create the training and testing datasets</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">sentence</span><span class="p">,</span><span class="n">sentiment</span>
+<span class="n">I</span> <span class="n">am</span> <span class="n">happy</span><span class="p">,</span><span class="mi">1</span>
+<span class="n">You</span> <span class="n">look</span> <span class="n">sad</span><span class="p">,</span><span class="mi">0</span>
+<span class="n">My</span> <span class="n">dog</span> <span class="ow">is</span> <span class="n">stupid</span><span class="p">,</span><span class="mi">0</span>
+<span class="n">Global</span> <span class="n">warming</span> <span class="ow">is</span> <span class="n">bad</span><span class="p">,</span><span class="mi">0</span>
+<span class="n">Global</span> <span class="n">warming</span> <span class="ow">is</span> <span class="n">now</span> <span class="n">under</span> <span class="n">control</span><span class="p">,</span><span class="mi">1</span>
+<span class="n">Reading</span> <span class="n">books</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">good</span> <span class="n">habit</span><span class="p">,</span><span class="mi">1</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">sentence</span><span class="p">,</span><span class="n">sentiment</span>
+<span class="n">Cats</span> <span class="n">are</span> <span class="n">stupid</span><span class="p">,</span><span class="mi">0</span>
+<span class="n">My</span> <span class="n">office</span> <span class="n">work</span> <span class="ow">is</span> <span class="n">awesome</span><span class="p">,</span><span class="mi">1</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<p>Train the model</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">hfclassifier</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">label_list</span> <span class="mi">0</span> <span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">2</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">checkpoints</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">hfclassification</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">logging_dir</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">logging</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
+    <span class="n">sentence</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Assess the accuracy</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">hfclassifier</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">label_list</span> <span class="mi">0</span> <span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">2</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">checkpoints</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">hfclassification</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">logging_dir</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">logging</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
+    <span class="n">sentence</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.6666666666666666</span>
+</pre></div>
+</div>
+<p>Make a prediction</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">hfclassifier</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">label_list</span> <span class="mi">0</span> <span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">2</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">checkpoints</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">hfclassification</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">logging_dir</span> <span class="n">hfclassification</span><span class="o">/</span><span class="n">logging</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
+    <span class="n">sentence</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;Cats are stupid&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="mi">0</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-06-12T08:31:45Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.153812974691391</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">1</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;sentence&quot;</span><span class="p">:</span> <span class="s2">&quot;My office work is awesome&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-06-12T08:31:45Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;sentiment&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.13032104074954987</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mi">1</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The model can be trained on large datasets to get the expected
+output. The example shown above is to demonstrate the commandline usage
+of the model.</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>features: List of features</p>
+<ul>
+<li><p>Feature to train on</p></li>
+</ul>
+</li>
+<li><p>predict: Feature</p>
+<ul>
+<li><p>Feature holding target values</p></li>
+</ul>
+</li>
+<li><p>label_list: List of strings</p>
+<ul>
+<li><p>List of target labels</p></li>
+</ul>
+</li>
+<li><p>cache_dir: String</p>
+<ul>
+<li><p>Directory to store the pre-trained models downloaded from s3</p></li>
+</ul>
+</li>
+<li><p>model_name_or_path: String</p>
+<ul>
+<li><p>Path to pretrained model or model identifier from huggingface.co/models</p></li>
+</ul>
+</li>
+<li><p>output_dir: String</p>
+<ul>
+<li><p>The output directory where the model predictions and checkpoints will be written.</p></li>
+</ul>
+</li>
+<li><p>logging_dir: String</p>
+<ul>
+<li><p>Tensorboard log dir.</p></li>
+</ul>
+</li>
+<li><p>clstype: Type</p>
+<ul>
+<li><p>default: &lt;class ‘str’&gt;</p></li>
+<li><p>Data type of classifications values</p></li>
+</ul>
+</li>
+<li><p>max_seq_length: Integer</p>
+<ul>
+<li><p>default: 128</p></li>
+<li><p>The maximum total input sequence length after tokenization. Sequences longer than this will be truncated, sequences shorter will be padded.</p></li>
+</ul>
+</li>
+<li><p>overwrite_cache: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Overwrite the cached training and evaluation sets</p></li>
+</ul>
+</li>
+<li><p>config_name: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Pretrained config name or path if not the same as model_name</p></li>
+</ul>
+</li>
+<li><p>tokenizer_name: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Pretrained tokenizer name or path if not the same as model_name</p></li>
+</ul>
+</li>
+<li><p>use_fast: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Set this flag to use fast tokenization.</p></li>
+</ul>
+</li>
+<li><p>doc_stride: Integer</p>
+<ul>
+<li><p>default: 128</p></li>
+<li><p>When splitting up a long document into chunks, how much stride to take between chunks.</p></li>
+</ul>
+</li>
+<li><p>optimizer_name: String</p>
+<ul>
+<li><p>default: adam</p></li>
+<li><p>Name of a Tensorflow optimizer among “adadelta, adagrad, adam, adamax, ftrl, nadam, rmsprop, sgd, adamw”</p></li>
+</ul>
+</li>
+<li><p>loss_name: String</p>
+<ul>
+<li><p>default: SparseCategoricalCrossentropy</p></li>
+<li><p>Name of a Tensorflow loss. For the list see: <a class="reference external" href="https://www.tensorflow.org/api_docs/python/tf/keras/losses">https://www.tensorflow.org/api_docs/python/tf/keras/losses</a></p></li>
+</ul>
+</li>
+<li><p>gpus: String</p>
+<ul>
+<li><p>default: 0</p></li>
+<li><p>List of gpu devices. If only one, switch to single gpu strategy, if None takes all availabel gpus</p></li>
+</ul>
+</li>
+<li><p>no_cuda: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Do not use CUDA even when it is available</p></li>
+</ul>
+</li>
+<li><p>end_lr: float</p>
+<ul>
+<li><p>default: 0</p></li>
+<li><p>End learning rate for optimizer</p></li>
+</ul>
+</li>
+<li><p>debug: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Activate the trace to record computation graphs and profiling information</p></li>
+</ul>
+</li>
+<li><p>overwrite_output_dir: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Overwrite the content of the output directory.Use this to continue training if output_dir points to a checkpoint directory.</p></li>
+</ul>
+</li>
+<li><p>evaluate_during_training: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Run evaluation during training at each logging step.</p></li>
+</ul>
+</li>
+<li><p>per_device_train_batch_size: Integer</p>
+<ul>
+<li><p>default: 8</p></li>
+<li><p>Batch size per GPU/TPU core/CPU for training.</p></li>
+</ul>
+</li>
+<li><p>per_device_eval_batch_size: Integer</p>
+<ul>
+<li><p>default: 8</p></li>
+<li><p>Batch size per GPU/TPU core/CPU for evaluation.</p></li>
+</ul>
+</li>
+<li><p>gradient_accumulation_steps: Integer</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>Number of updates steps to accumulate before performing a backward/update pass.</p></li>
+</ul>
+</li>
+<li><p>learning_rate: float</p>
+<ul>
+<li><p>default: 5e-05</p></li>
+<li><p>The initial learning rate for Adam.</p></li>
+</ul>
+</li>
+<li><p>weight_decay: float</p>
+<ul>
+<li><p>default: 0.0</p></li>
+<li><p>Weight decay if we apply some.</p></li>
+</ul>
+</li>
+<li><p>adam_epsilon: float</p>
+<ul>
+<li><p>default: 1e-08</p></li>
+<li><p>Epsilon for Adam optimizer.</p></li>
+</ul>
+</li>
+<li><p>max_grad_norm: float</p>
+<ul>
+<li><p>default: 1.0</p></li>
+<li><p>Max gradient norm.</p></li>
+</ul>
+</li>
+<li><p>num_train_epochs: float</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>Total number of training epochs to perform.</p></li>
+</ul>
+</li>
+<li><p>max_steps: Integer</p>
+<ul>
+<li><p>default: -1</p></li>
+<li><p>If &gt; 0: set total number of training steps to perform. Override num_train_epochs.</p></li>
+</ul>
+</li>
+<li><p>warmup_steps: Integer</p>
+<ul>
+<li><p>default: 0</p></li>
+<li><p>Linear warmup over warmup_steps.</p></li>
+</ul>
+</li>
+<li><p>logging_first_step: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Log and eval the first global_step</p></li>
+</ul>
+</li>
+<li><p>logging_steps: Integer</p>
+<ul>
+<li><p>default: 500</p></li>
+<li><p>Log every X updates steps.</p></li>
+</ul>
+</li>
+<li><p>save_steps: Integer</p>
+<ul>
+<li><p>default: 500</p></li>
+<li><p>Save checkpoint every X updates steps.</p></li>
+</ul>
+</li>
+<li><p>save_total_limit: Integer</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Limit the total amount of checkpoints.Deletes the older checkpoints in the output_dir. Default is unlimited checkpoints</p></li>
+</ul>
+</li>
+<li><p>seed: Integer</p>
+<ul>
+<li><p>default: 42</p></li>
+<li><p>random seed for initialization</p></li>
+</ul>
+</li>
+<li><p>fp16: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Whether to use 16-bit (mixed) precision (through NVIDIA apex) instead of 32-bit</p></li>
+</ul>
+</li>
+<li><p>fp16_opt_level: String</p>
+<ul>
+<li><p>default: O1</p></li>
+<li><p>For fp16: Apex AMP optimization level selected in [‘O0’, ‘O1’, ‘O2’, and ‘O3’].See details at <a class="reference external" href="https://nvidia.github.io/apex/amp.html">https://nvidia.github.io/apex/amp.html</a></p></li>
+</ul>
+</li>
+<li><p>local_rank: Integer</p>
+<ul>
+<li><p>default: -1</p></li>
+<li><p>For distributed training: local_rank</p></li>
+</ul>
+</li>
+</ul>
 </div>
 <div class="section" id="ner-tagger">
 <span id="plugin-model-dffml-model-transformers-ner-tagger"></span><h3>ner_tagger<a class="headerlink" href="#ner-tagger" title="Permalink to this headline">¶</a></h3>
