@@ -7,9 +7,9 @@ dffml train \
   -source-filename train.csv \
   -model-epochs 2 \
   -model-model_name_or_path bert-base-cased \
-  -model-output_dir "$(pwd)/hfclassification/checkpoints" \
-  -model-cache_dir "$(pwd)/hfclassification" \
-  -model-logging_dir "$(pwd)/hfclassification/logging" \
+  -model-output_dir hfclassification/checkpoints \
+  -model-cache_dir hfclassification \
+  -model-logging_dir hfclassification/logging \
   -model-no_cuda \
   -model-save_steps 1 \
   -model-features \
