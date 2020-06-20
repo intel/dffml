@@ -9,8 +9,8 @@ analysis tool, ``shouldi``.
     $ shouldi install dffml insecure-package
     dffml is okay to install
     Do not install insecure-package!
-        safety_check_number_of_issues: 1
-        bandit_output: {'CONFIDENCE.HIGH': 0.0, 'CONFIDENCE.LOW': 0.0, 'CONFIDENCE.MEDIUM': 0.0, 'CONFIDENCE.UNDEFINED': 0.0, 'SEVERITY.HIGH': 0.0, 'SEVERITY.LOW': 0.0, 'SEVERITY.MEDIUM': 0.0, 'SEVERITY.UNDEFINED': 0.0, 'loc': 100, 'nosec': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.HIGH': 0}
+        safety_check.outputs.result: 1
+        run_bandit.outputs.result: {'CONFIDENCE.HIGH': 0.0, 'CONFIDENCE.LOW': 0.0, 'CONFIDENCE.MEDIUM': 0.0, 'CONFIDENCE.UNDEFINED': 0.0, 'SEVERITY.HIGH': 0.0, 'SEVERITY.LOW': 0.0, 'SEVERITY.MEDIUM': 0.0, 'SEVERITY.UNDEFINED': 0.0, 'loc': 100, 'nosec': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.LOW': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.HIGH': 0}
 
 In the :ref:`tutorials_operations_registering_opreations` section of the
 operations tutorial, we registered our operations with Python's ``entrypoint``
@@ -22,22 +22,24 @@ without the need to hardcode in ``import`` statements.
     $ curl -s \
       --header "Content-Type: application/json" \
       --request POST \
-      --data '{"insecure-package": [{"value":"insecure-package","definition":"package"}]}' \
+      --data '{"insecure-package": [{"value":"insecure-package","definition":"safety_check.inputs.package"}]}' \
       http://localhost:8080/shouldi | python3 -m json.tool
     {
         "insecure-package": {
-            "safety_check_number_of_issues": 1,
-            "bandit_output": {
-                "CONFIDENCE.HIGH": 0,
-                "CONFIDENCE.LOW": 0,
-                "CONFIDENCE.MEDIUM": 0,
-                "CONFIDENCE.UNDEFINED": 0,
-                "SEVERITY.HIGH": 0,
-                "SEVERITY.LOW": 0,
-                "SEVERITY.MEDIUM": 0,
-                "SEVERITY.UNDEFINED": 0,
+            "safety_check.outputs.result": 1,
+            "run_bandit.outputs.result": {
+                "CONFIDENCE.HIGH": 0.0,
+                "CONFIDENCE.LOW": 0.0,
+                "CONFIDENCE.MEDIUM": 0.0,
+                "CONFIDENCE.UNDEFINED": 0.0,
+                "SEVERITY.HIGH": 0.0,
+                "SEVERITY.LOW": 0.0,
+                "SEVERITY.MEDIUM": 0.0,
+                "SEVERITY.UNDEFINED": 0.0,
                 "loc": 100,
                 "nosec": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.LOW": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM": 0,
                 "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 0
             }
         }
@@ -154,23 +156,27 @@ items that you want evaluated.
     $ curl -s \
       --header "Content-Type: application/json" \
       --request POST \
-      --data '{"insecure-package": [{"value":"insecure-package","definition":"package"}]}' \
+      --data '{"insecure-package": [{"value":"insecure-package","definition":"safety_check.inputs.package"}]}' \
       http://localhost:8080/shouldi | python3 -m json.tool
     {
-        "bandit_output": {
-            "CONFIDENCE.HIGH": 0,
-            "CONFIDENCE.LOW": 0,
-            "CONFIDENCE.MEDIUM": 0,
-            "CONFIDENCE.UNDEFINED": 0,
-            "SEVERITY.HIGH": 0,
-            "SEVERITY.LOW": 0,
-            "SEVERITY.MEDIUM": 0,
-            "SEVERITY.UNDEFINED": 0,
-            "loc": 100,
-            "nosec": 0,
-            "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 0
-        },
-        "safety_check_number_of_issues": 1
+        "insecure-package": {
+            "safety_check.outputs.result": 1,
+            "run_bandit.outputs.result": {
+                "CONFIDENCE.HIGH": 0.0,
+                "CONFIDENCE.LOW": 0.0,
+                "CONFIDENCE.MEDIUM": 0.0,
+                "CONFIDENCE.UNDEFINED": 0.0,
+                "SEVERITY.HIGH": 0.0,
+                "SEVERITY.LOW": 0.0,
+                "SEVERITY.MEDIUM": 0.0,
+                "SEVERITY.UNDEFINED": 0.0,
+                "loc": 100,
+                "nosec": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.LOW": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 0
+            }
+        }
     }
 
 Combining Operations
@@ -236,10 +242,26 @@ operations with the existing ones.
 
 .. code-block:: console
 
-    $ mkdir -p shouldi/deploy/override
-    $ dffml dataflow create -configloader yaml \
-      dffml.mapping.create lines_of_code_by_language lines_of_code_to_comments \
-      > shouldi/deploy/override/shouldi.yaml
+    mkdir -p shouldi/deploy/override
+
+Use the ``dataflow create`` command to make a new dataflow that will be combined
+with the existing flow.
+
+.. code-block:: console
+
+    dffml dataflow create \
+      -configloader yaml \
+      -seed \
+        directory=key \
+        safety_check.outputs.result,run_bandit.outputs.result,language_to_comment_ratio=get_single_spec \
+      -flow \
+        '[{"dffml.mapping.create": "mapping"}]=lines_of_code_by_language.inputs.repo' \
+        '[{"pypi_package_contents": "directory"}]="dffml.mapping.create".inputs.value' \
+      -- \
+        dffml.mapping.create \
+        lines_of_code_by_language \
+        lines_of_code_to_comments \
+      | tee shouldi/deploy/override/shouldi.yaml
 
 The final directory structure should look like this
 
@@ -271,13 +293,6 @@ It contains the following files.
 
   - A dataflow containing modififactions to the ``shouldi`` dataflow
 
-The override dataflow file looks like this:
-
-**shouldi/deploy/override/shouldi.yaml**
-
-.. literalinclude:: /../examples/shouldi/shouldi/deploy/override/shouldi.yaml
-    :language: yaml
-
 We've modified the flow to create the following dataflow
 
 .. image:: /images/shouldi-dataflow-extended.svg
@@ -291,7 +306,7 @@ The diagram above can be re-generated with the following commands
         shouldi/deploy/df/shouldi.json \
         shouldi/deploy/override/shouldi.yaml | \
       dffml dataflow diagram \
-        -stages processing -simple -configloader yaml /dev/stdin
+        -stages processing -simple -configloader json /dev/stdin
 
 Copy and pasting the graph into the
 `mermaidjs live editor <https://mermaidjs.github.io/mermaid-live-editor>`_
@@ -314,30 +329,13 @@ Here's an example of evaluating two packages using the new DataFlow.
     $ curl -s \
       --header "Content-Type: application/json" \
       --request POST \
-      --data '{"insecure-package": [{"value":"insecure-package","definition":"package"}], "dffml": [{"value":"dffml","definition":"package"}]}' \
+      --data '{"insecure-package": [{"value":"insecure-package","definition":"safety_check.inputs.package"}], "dffml": [{"value":"dffml","definition":"safety_check.inputs.package"}]}' \
       http://localhost:8080/shouldi | python3 -m json.tool
     {
-        "dffml": {
-            "bandit_output": {
-                "CONFIDENCE.HIGH": 1.0,
-                "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 0,
-                "CONFIDENCE.LOW": 0.0,
-                "CONFIDENCE.MEDIUM": 0.0,
-                "CONFIDENCE.UNDEFINED": 0.0,
-                "SEVERITY.HIGH": 0.0,
-                "SEVERITY.LOW": 1.0,
-                "SEVERITY.MEDIUM": 0.0,
-                "SEVERITY.UNDEFINED": 0.0,
-                "loc": 6227,
-                "nosec": 0
-            },
-            "language_to_comment_ratio": 5,
-            "safety_check_number_of_issues": 0
-        },
         "insecure-package": {
-            "bandit_output": {
+            "safety_check.outputs.result": 1,
+            "run_bandit.outputs.result": {
                 "CONFIDENCE.HIGH": 0.0,
-                "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 0,
                 "CONFIDENCE.LOW": 0.0,
                 "CONFIDENCE.MEDIUM": 0.0,
                 "CONFIDENCE.UNDEFINED": 0.0,
@@ -346,9 +344,28 @@ Here's an example of evaluating two packages using the new DataFlow.
                 "SEVERITY.MEDIUM": 0.0,
                 "SEVERITY.UNDEFINED": 0.0,
                 "loc": 100,
-                "nosec": 0
-            },
-            "language_to_comment_ratio": 19,
-            "safety_check_number_of_issues": 1
+                "nosec": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.LOW": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 0
+            }
+        },
+        "dffml": {
+            "safety_check.outputs.result": 0,
+            "run_bandit.outputs.result": {
+                "CONFIDENCE.HIGH": 24.0,
+                "CONFIDENCE.LOW": 0.0,
+                "CONFIDENCE.MEDIUM": 0.0,
+                "CONFIDENCE.UNDEFINED": 0.0,
+                "SEVERITY.HIGH": 1.0,
+                "SEVERITY.LOW": 10.0,
+                "SEVERITY.MEDIUM": 13.0,
+                "SEVERITY.UNDEFINED": 0.0,
+                "loc": 13289,
+                "nosec": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.LOW": 10,
+                "CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM": 13,
+                "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 1
+            }
         }
     }

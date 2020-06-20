@@ -6,9 +6,7 @@ from dffml_feature_git.feature.operations import clone_git_repo
 from ..types import SA_RESULTS
 
 from .bandit import run_bandit
-from .pypi import pypi_latest_package_version
 from .pypi import pypi_package_json
-from .pypi import pypi_package_url
 from .pypi import pypi_package_contents
 from .pypi import cleanup_pypi_package
 from .safety import safety_check
@@ -17,8 +15,6 @@ from .check import check_python
 # DataFlow for doing static analysis on Python code
 DATAFLOW = DataFlow.auto(
     pypi_package_json,
-    pypi_latest_package_version,
-    pypi_package_url,
     pypi_package_contents,
     cleanup_pypi_package,
     safety_check,
@@ -32,8 +28,8 @@ DATAFLOW = DataFlow.auto(
 DATAFLOW.seed.append(
     Input(
         value=[
-            safety_check.op.outputs["issues"].name,
-            run_bandit.op.outputs["report"].name,
+            safety_check.op.outputs["result"].name,
+            run_bandit.op.outputs["result"].name,
         ],
         definition=GetSingle.op.inputs["spec"],
     )
@@ -62,8 +58,8 @@ async def analyze_python(self, repo):
             ]
         ):
             # TODO Make this report more useful
-            safety_issues = results[safety_check.op.outputs["issues"].name]
-            bandit_report = results[run_bandit.op.outputs["report"].name]
+            safety_issues = results[safety_check.op.outputs["result"].name]
+            bandit_report = results[run_bandit.op.outputs["result"].name]
             return {
                 "result": SA_RESULTS.spec(
                     critical=safety_issues,
