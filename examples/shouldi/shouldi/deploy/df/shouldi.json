@@ -1,40 +1,39 @@
 {
-    "configs": {},
     "definitions": {
-        "bandit_output": {
-            "name": "bandit_output",
-            "primitive": "Dict[str, Any]"
+        "cleanup_pypi_package.inputs.directory": {
+            "name": "cleanup_pypi_package.inputs.directory",
+            "primitive": "str"
         },
         "get_single_output": {
             "name": "get_single_output",
-            "primitive": "Dict[str, Any]"
+            "primitive": "map"
         },
         "get_single_spec": {
             "name": "get_single_spec",
-            "primitive": "List[str]"
+            "primitive": "array"
         },
-        "package": {
-            "name": "package",
+        "pypi_package_contents.inputs.url": {
+            "name": "pypi_package_contents.inputs.url",
             "primitive": "str"
         },
-        "package_json": {
-            "name": "package_json",
-            "primitive": "Dict[str, Any]"
-        },
-        "package_src_dir": {
-            "name": "package_src_dir",
+        "run_bandit.inputs.pkg": {
+            "name": "run_bandit.inputs.pkg",
             "primitive": "str"
         },
-        "package_url": {
-            "name": "package_url",
+        "run_bandit.outputs.result": {
+            "name": "run_bandit.outputs.result",
+            "primitive": "map"
+        },
+        "safety_check.inputs.package": {
+            "name": "safety_check.inputs.package",
             "primitive": "str"
         },
-        "package_version": {
-            "name": "package_version",
+        "safety_check.inputs.version": {
+            "name": "safety_check.inputs.version",
             "primitive": "str"
         },
-        "safety_check_number_of_issues": {
-            "name": "safety_check_number_of_issues",
+        "safety_check.outputs.result": {
+            "name": "safety_check.outputs.result",
             "primitive": "int"
         }
     },
@@ -42,9 +41,7 @@
         "cleanup_pypi_package": {
             "inputs": {
                 "directory": [
-                    {
-                        "pypi_package_contents": "directory"
-                    }
+                    "seed"
                 ]
             }
         },
@@ -55,20 +52,11 @@
                 ]
             }
         },
-        "pypi_latest_package_version": {
-            "inputs": {
-                "response_json": [
-                    {
-                        "pypi_package_json": "response_json"
-                    }
-                ]
-            }
-        },
         "pypi_package_contents": {
             "inputs": {
                 "url": [
                     {
-                        "pypi_package_url": "url"
+                        "pypi_package_json": "url"
                     }
                 ]
             }
@@ -77,15 +65,6 @@
             "inputs": {
                 "package": [
                     "seed"
-                ]
-            }
-        },
-        "pypi_package_url": {
-            "inputs": {
-                "response_json": [
-                    {
-                        "pypi_package_json": "response_json"
-                    }
                 ]
             }
         },
@@ -105,7 +84,7 @@
                 ],
                 "version": [
                     {
-                        "pypi_latest_package_version": "version"
+                        "pypi_package_json": "version"
                     }
                 ]
             }
@@ -115,7 +94,7 @@
     "operations": {
         "cleanup_pypi_package": {
             "inputs": {
-                "directory": "package_src_dir"
+                "directory": "cleanup_pypi_package.inputs.directory"
             },
             "name": "cleanup_pypi_package",
             "outputs": {},
@@ -131,64 +110,45 @@
             },
             "stage": "output"
         },
-        "pypi_latest_package_version": {
-            "inputs": {
-                "response_json": "package_json"
-            },
-            "name": "pypi_latest_package_version",
-            "outputs": {
-                "version": "package_version"
-            },
-            "stage": "processing"
-        },
         "pypi_package_contents": {
             "inputs": {
-                "url": "package_url"
+                "url": "pypi_package_contents.inputs.url"
             },
             "name": "pypi_package_contents",
             "outputs": {
-                "directory": "package_src_dir"
+                "directory": "run_bandit.inputs.pkg"
             },
             "stage": "processing"
         },
         "pypi_package_json": {
             "inputs": {
-                "package": "package"
+                "package": "safety_check.inputs.package"
             },
             "name": "pypi_package_json",
             "outputs": {
-                "response_json": "package_json"
-            },
-            "stage": "processing"
-        },
-        "pypi_package_url": {
-            "inputs": {
-                "response_json": "package_json"
-            },
-            "name": "pypi_package_url",
-            "outputs": {
-                "url": "package_url"
+                "url": "pypi_package_contents.inputs.url",
+                "version": "safety_check.inputs.version"
             },
             "stage": "processing"
         },
         "run_bandit": {
             "inputs": {
-                "pkg": "package_src_dir"
+                "pkg": "run_bandit.inputs.pkg"
             },
             "name": "run_bandit",
             "outputs": {
-                "report": "bandit_output"
+                "result": "run_bandit.outputs.result"
             },
             "stage": "processing"
         },
         "safety_check": {
             "inputs": {
-                "package": "package",
-                "version": "package_version"
+                "package": "safety_check.inputs.package",
+                "version": "safety_check.inputs.version"
             },
             "name": "safety_check",
             "outputs": {
-                "issues": "safety_check_number_of_issues"
+                "result": "safety_check.outputs.result"
             },
             "stage": "processing"
         }
@@ -197,8 +157,8 @@
         {
             "definition": "get_single_spec",
             "value": [
-                "safety_check_number_of_issues",
-                "bandit_output"
+                "safety_check.outputs.result",
+                "run_bandit.outputs.result"
             ]
         }
     ]
