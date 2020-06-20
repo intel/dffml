@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Transformers classification model
 - Operations plugin for image preprocessing
 - `-pretty` flag to `list records` and `predict` commands
 - daal4py based linear regression model

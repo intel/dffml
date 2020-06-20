@@ -72,7 +72,8 @@ setup(
     packages=find_packages(),
     entry_points={
         "dffml.model": [
-            "ner_tagger = dffml_model_transformers.ner.ner_model:NERModel"
+            "ner_tagger = dffml_model_transformers.ner.ner_model:NERModel",
+            "hfclassifier = dffml_model_transformers.classification.classification_model:HFClassificationModel",
         ]
     },
 )
