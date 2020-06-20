@@ -9,14 +9,8 @@ spec = importlib.util.spec_from_file_location(
 common = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(common)
 
-common.KWARGS["install_requires"] += [
-    "opencv-python>=4.2.0.34",
-    "numpy>=1.16.2",
-]
 common.KWARGS["entry_points"] = {
-    "dffml.configloader": [
-        f"png = {common.IMPORT_NAME}.configloader:PNGConfigLoader"
-    ]
+    "dffml.operation": [f"resize = {common.IMPORT_NAME}.operations:resize",]
 }
 
 setup(**common.KWARGS)

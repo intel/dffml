@@ -20,8 +20,8 @@ I install Python package X? When it's done it'll look like this
     $ shouldi install dffml insecure-package
     dffml is okay to install
     Do not install insecure-package!
-        safety_check_number_of_issues: 1
-        bandit_output: {'CONFIDENCE.HIGH': 0.0, 'CONFIDENCE.LOW': 0.0, 'CONFIDENCE.MEDIUM': 0.0, 'CONFIDENCE.UNDEFINED': 0.0, 'SEVERITY.HIGH': 0.0, 'SEVERITY.LOW': 0.0, 'SEVERITY.MEDIUM': 0.0, 'SEVERITY.UNDEFINED': 0.0, 'loc': 100, 'nosec': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.HIGH': 0}
+        safety_check.outputs.result: 1
+        run_bandit.outputs.result: {'CONFIDENCE.HIGH': 0.0, 'CONFIDENCE.LOW': 0.0, 'CONFIDENCE.MEDIUM': 0.0, 'CONFIDENCE.UNDEFINED': 0.0, 'SEVERITY.HIGH': 0.0, 'SEVERITY.LOW': 0.0, 'SEVERITY.MEDIUM': 0.0, 'SEVERITY.UNDEFINED': 0.0, 'loc': 100, 'nosec': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.LOW': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.HIGH': 0}
 
 In the second half of this tutorial, we'll deploy the tool as an HTTP API
 endpoint rather than a command line application.
@@ -31,22 +31,24 @@ endpoint rather than a command line application.
     $ curl -s \
       --header "Content-Type: application/json" \
       --request POST \
-      --data '{"insecure-package": [{"value":"insecure-package","definition":"package"}]}' \
-      http://localhost:8080/shouldi | python -m json.tool
+      --data '{"insecure-package": [{"value":"insecure-package","definition":"safety_check.inputs.package"}]}' \
+      http://localhost:8080/shouldi | python3 -m json.tool
     {
         "insecure-package": {
-            "safety_check_number_of_issues": 1,
-            "bandit_output": {
-                "CONFIDENCE.HIGH": 0,
-                "CONFIDENCE.LOW": 0,
-                "CONFIDENCE.MEDIUM": 0,
-                "CONFIDENCE.UNDEFINED": 0,
-                "SEVERITY.HIGH": 0,
-                "SEVERITY.LOW": 0,
-                "SEVERITY.MEDIUM": 0,
-                "SEVERITY.UNDEFINED": 0,
+            "safety_check.outputs.result": 1,
+            "run_bandit.outputs.result": {
+                "CONFIDENCE.HIGH": 0.0,
+                "CONFIDENCE.LOW": 0.0,
+                "CONFIDENCE.MEDIUM": 0.0,
+                "CONFIDENCE.UNDEFINED": 0.0,
+                "SEVERITY.HIGH": 0.0,
+                "SEVERITY.LOW": 0.0,
+                "SEVERITY.MEDIUM": 0.0,
+                "SEVERITY.UNDEFINED": 0.0,
                 "loc": 100,
                 "nosec": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.LOW": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM": 0,
                 "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 0
             }
         }
@@ -341,17 +343,17 @@ The DataFlow above describes the following process:
 
   - Access the PyPi API and get the JSON describing the package information
 
-  - Concurrently
-
     - Extract the version from the package information
-
-      -  Run ``safety`` using the version and the package name
 
     - Extract the URL of the latest release from the package information
 
-      - Use the URL to download and extract the package source to a directory
+  - Concurrently
 
-        - Run ``bandit`` using the package source directory
+    - Use the URL to download and extract the package source to a directory
+
+      - Run ``bandit`` using the package source directory
+
+    - Run ``safety`` using the version and the package name
 
 - In the cleanup stage we release resources created in the processing stage
 
@@ -366,28 +368,21 @@ The DataFlow above describes the following process:
 PyPi Operations
 ---------------
 
-Let's write an operation to grab the JSON information about a package.
-
-**shouldi/python/pypi.py**
-
-.. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
-    :lines: 1-34
-
-After we have the package information, we extract the version and URL where we
-can get the source code.
-
-**shouldi/python/pypi.py**
-
-.. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
-    :lines: 37-59
-
-Once we have the URL, we download the package source and extract it to a
+This operation will take the URL, download the package source and extract it to a
 temporary directory.
 
 **shouldi/python/pypi.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
-    :lines: 62-81
+    :lines: 1-30
+
+Let’s write an operation to grab the JSON information about a package. It will
+extract the version and the URL from where we can get the source code.
+
+**shouldi/python/pypi.py**
+
+.. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
+    :lines: 33-68
 
 Finally, we make a ``cleanup`` operation to remove the directory once we're done
 with it.
@@ -395,7 +390,7 @@ with it.
 **shouldi/python/pypi.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
-    :lines: 84-89
+    :lines: 71-76
 
 Now we write tests for each operation.
 
@@ -460,8 +455,8 @@ is set up correctly).
     $ shouldi install dffml insecure-package
     dffml is okay to install
     Do not install insecure-package!
-        safety_check_number_of_issues: 1
-        bandit_output: {'CONFIDENCE.HIGH': 0.0, 'CONFIDENCE.LOW': 0.0, 'CONFIDENCE.MEDIUM': 0.0, 'CONFIDENCE.UNDEFINED': 0.0, 'SEVERITY.HIGH': 0.0, 'SEVERITY.LOW': 0.0, 'SEVERITY.MEDIUM': 0.0, 'SEVERITY.UNDEFINED': 0.0, 'loc': 100, 'nosec': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.HIGH': 0}
+        safety_check.outputs.result: 1
+        run_bandit.outputs.result: {'CONFIDENCE.HIGH': 0.0, 'CONFIDENCE.LOW': 0.0, 'CONFIDENCE.MEDIUM': 0.0, 'CONFIDENCE.UNDEFINED': 0.0, 'SEVERITY.HIGH': 0.0, 'SEVERITY.LOW': 0.0, 'SEVERITY.MEDIUM': 0.0, 'SEVERITY.UNDEFINED': 0.0, 'loc': 100, 'nosec': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.LOW': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.HIGH': 0}
 
 .. _tutorials_operations_visualizing_the_dataflow:
 
@@ -495,10 +490,8 @@ are connected.
     graph TD
     subgraph a759a07029077edc5c37fea0326fa281[Processing Stage]
     style a759a07029077edc5c37fea0326fa281 fill:#afd388b5,stroke:#a4ca7a
-    a55c24c0d1363ec4d3c9e20883f3c740[pypi_latest_package_version]
     d273c0a72c6acc57e33c2f7162fa7363[pypi_package_contents]
     83503ba9fe6c0f5649644d26e59c5590[pypi_package_json]
-    00f7f4637f6f67120e83e75c78949806[pypi_package_url]
     9220cb5f5732d9e6dcc130a4908ddf92[run_bandit]
     88517e4cd0cae33deff50d987f2683fe[safety_check]
     end
@@ -512,18 +505,17 @@ are connected.
     end
     subgraph inputs[Inputs]
     style inputs fill:#f6dbf9,stroke:#a178ca
-    d273c0a72c6acc57e33c2f7162fa7363 --> 7ec0058800fd4bed6fb63633330588c7
+    54f0743fef1e65d16b527a1fdaa2d00f(cleanup_pypi_package.inputs.directory)
+    54f0743fef1e65d16b527a1fdaa2d00f --> 7ec0058800fd4bed6fb63633330588c7
     d60584024f765273b6f41d6d36f8320c(get_single_spec)
     d60584024f765273b6f41d6d36f8320c --> b42e9e149e775202b18841f1f67061c4
-    83503ba9fe6c0f5649644d26e59c5590 --> a55c24c0d1363ec4d3c9e20883f3c740
-    00f7f4637f6f67120e83e75c78949806 --> d273c0a72c6acc57e33c2f7162fa7363
-    314b1a20a4db6b3bf3f2627830da97a3(package)
-    314b1a20a4db6b3bf3f2627830da97a3 --> 83503ba9fe6c0f5649644d26e59c5590
-    83503ba9fe6c0f5649644d26e59c5590 --> 00f7f4637f6f67120e83e75c78949806
+    83503ba9fe6c0f5649644d26e59c5590 --> d273c0a72c6acc57e33c2f7162fa7363
+    9ce20b05489ff45b34f8fd4db5c97bc7(safety_check.inputs.package)
+    9ce20b05489ff45b34f8fd4db5c97bc7 --> 83503ba9fe6c0f5649644d26e59c5590
     d273c0a72c6acc57e33c2f7162fa7363 --> 9220cb5f5732d9e6dcc130a4908ddf92
-    314b1a20a4db6b3bf3f2627830da97a3(package)
-    314b1a20a4db6b3bf3f2627830da97a3 --> 88517e4cd0cae33deff50d987f2683fe
-    a55c24c0d1363ec4d3c9e20883f3c740 --> 88517e4cd0cae33deff50d987f2683fe
+    9ce20b05489ff45b34f8fd4db5c97bc7(safety_check.inputs.package)
+    9ce20b05489ff45b34f8fd4db5c97bc7 --> 88517e4cd0cae33deff50d987f2683fe
+    83503ba9fe6c0f5649644d26e59c5590 --> 88517e4cd0cae33deff50d987f2683fe
     end
 
 You can now copy that graph and paste it in the mermaidjs live editor:
@@ -549,7 +541,7 @@ DFFML, we need to register them with Python's ``entry_points`` system.
 **setup.py**
 
 .. literalinclude:: /../examples/shouldi/setup.py
-    :lines: 17-28
+    :lines: 17-26
 
 Re-install the package via pip to make registrations take effect.
 
@@ -568,18 +560,36 @@ your own operations as coming from ``shouldi``.
 .. code-block:: console
 
     $ dffml service dev entrypoints list dffml.operation
-    associate = dffml.operation.output:Associate -> dffml 0.2.1 (/usr/local/lib/python3.7/dist-packages)
-    dffml.mapping.create = dffml.operation.mapping:create_mapping -> dffml 0.2.1 (/usr/local/lib/python3.7/dist-packages)
-    dffml.mapping.extract = dffml.operation.mapping:mapping_extract_value -> dffml 0.2.1 (/usr/local/lib/python3.7/dist-packages)
-    get_single = dffml.operation.output:GetSingle -> dffml 0.2.1 (/usr/local/lib/python3.7/dist-packages)
-    group_by = dffml.operation.output:GroupBy -> dffml 0.2.1 (/usr/local/lib/python3.7/dist-packages)
-    cleanup_pypi_package = shouldi.pypi:cleanup_pypi_package -> shouldi 0.0.1 (/home/user/shouldi)
-    pypi_latest_package_version = shouldi.pypi:pypi_latest_package_version -> shouldi 0.0.1 (/home/user/shouldi)
-    pypi_package_contents = shouldi.pypi:pypi_package_contents -> shouldi 0.0.1 (/home/user/shouldi)
-    pypi_package_json = shouldi.pypi:pypi_package_json -> shouldi 0.0.1 (/home/user/shouldi)
-    pypi_package_url = shouldi.pypi:pypi_package_url -> shouldi 0.0.1 (/home/user/shouldi)
-    run_bandit = shouldi.bandit:run_bandit -> shouldi 0.0.1 (/home/user/shouldi)
-    safety_check = shouldi.safety:safety_check -> shouldi 0.0.1 (/home/user/shouldi)
+    AcceptUserInput = dffml.operation.io:AcceptUserInput -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    associate = dffml.operation.output:Associate -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    dffml.dataflow.run = dffml.operation.dataflow:run_dataflow -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    dffml.mapping.create = dffml.operation.mapping:create_mapping -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    dffml.mapping.extract = dffml.operation.mapping:mapping_extract_value -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    dffml.model.predict = dffml.operation.model:model_predict -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    get_multi = dffml.operation.output:GetMulti -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    get_single = dffml.operation.output:GetSingle -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    group_by = dffml.operation.output:GroupBy -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    literal_eval = dffml.operation.preprocess:literal_eval -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    print_output = dffml.operation.io:print_output -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    check_if_valid_git_repository_URL = dffml_feature_git.feature.operations:check_if_valid_git_repository_URL -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    cleanup_git_repo = dffml_feature_git.feature.operations:cleanup_git_repo -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    clone_git_repo = dffml_feature_git.feature.operations:clone_git_repo -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    count_authors = dffml_feature_git.feature.operations:count_authors -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    git_commits = dffml_feature_git.feature.operations:git_commits -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    git_repo_author_lines_for_dates = dffml_feature_git.feature.operations:git_repo_author_lines_for_dates -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    git_repo_checkout = dffml_feature_git.feature.operations:git_repo_checkout -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    git_repo_commit_from_date = dffml_feature_git.feature.operations:git_repo_commit_from_date -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    git_repo_default_branch = dffml_feature_git.feature.operations:git_repo_default_branch -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    git_repo_release = dffml_feature_git.feature.operations:git_repo_release -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    lines_of_code_by_language = dffml_feature_git.feature.operations:lines_of_code_by_language -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    lines_of_code_to_comments = dffml_feature_git.feature.operations:lines_of_code_to_comments -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    quarters_back_to_date = dffml_feature_git.feature.operations:quarters_back_to_date -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    work = dffml_feature_git.feature.operations:work -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
+    cleanup_pypi_package = shouldi.python.pypi:cleanup_pypi_package -> shouldi 0.0.8 (/workspace/dffml/examples/shouldi)
+    pypi_package_contents = shouldi.python.pypi:pypi_package_contents -> shouldi 0.0.8 (/workspace/dffml/examples/shouldi)
+    pypi_package_json = shouldi.python.pypi:pypi_package_json -> shouldi 0.0.8 (/workspace/dffml/examples/shouldi)
+    run_bandit = shouldi.python.bandit:run_bandit -> shouldi 0.0.8 (/workspace/dffml/examples/shouldi)
+    safety_check = shouldi.python.safety:safety_check -> shouldi 0.0.8 (/workspace/dffml/examples/shouldi)
 
 The :doc:`/usage/dataflows` usage example will show you how to expose your new
 meta static analysis tool over an HTTP interface.
@@ -589,22 +599,24 @@ meta static analysis tool over an HTTP interface.
     $ curl -s \
       --header "Content-Type: application/json" \
       --request POST \
-      --data '{"insecure-package": [{"value":"insecure-package","definition":"package"}]}' \
-      http://localhost:8080/shouldi | python -m json.tool
+      --data '{"insecure-package": [{"value":"insecure-package","definition":"safety_check.inputs.package"}]}' \
+      http://localhost:8080/shouldi | python3 -m json.tool
     {
         "insecure-package": {
-            "safety_check_number_of_issues": 1,
-            "bandit_output": {
-                "CONFIDENCE.HIGH": 0,
-                "CONFIDENCE.LOW": 0,
-                "CONFIDENCE.MEDIUM": 0,
-                "CONFIDENCE.UNDEFINED": 0,
-                "SEVERITY.HIGH": 0,
-                "SEVERITY.LOW": 0,
-                "SEVERITY.MEDIUM": 0,
-                "SEVERITY.UNDEFINED": 0,
+            "safety_check.outputs.result": 1,
+            "run_bandit.outputs.result": {
+                "CONFIDENCE.HIGH": 0.0,
+                "CONFIDENCE.LOW": 0.0,
+                "CONFIDENCE.MEDIUM": 0.0,
+                "CONFIDENCE.UNDEFINED": 0.0,
+                "SEVERITY.HIGH": 0.0,
+                "SEVERITY.LOW": 0.0,
+                "SEVERITY.MEDIUM": 0.0,
+                "SEVERITY.UNDEFINED": 0.0,
                 "loc": 100,
                 "nosec": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.LOW": 0,
+                "CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM": 0,
                 "CONFIDENCE.HIGH_AND_SEVERITY.HIGH": 0
             }
         }
