@@ -89,7 +89,7 @@ setup(
         ],
         **EXTRAS_REQUIRES,
     },
-    tests_require=["httptest>=0.0.15"],
+    tests_require=["httptest>=0.0.15", "Pillow>=7.1.2", "numpy>=1.16.2"],
     entry_points={
         "console_scripts": ["dffml = dffml.cli.cli:CLI.main"],
         "dffml.source": [
