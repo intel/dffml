@@ -2,16 +2,14 @@
 Loads files from a directory
 """
 import os
-import glob
 import pathlib
 from typing import List
 
 from ..record import Record
 from ..base import config, field
 from .memory import MemorySource
-from .file import FileSource
 from ..util.entrypoint import entrypoint
-from dffml.source.source import BaseSource, BaseSourceContext
+from ..source.source import BaseSource
 from ..configloader.configloader import ConfigLoaders
 from ..high_level import save
 
@@ -57,7 +55,6 @@ class DirectorySource(MemorySource):
         ):
             raise FolderNotFoundError(f"Folder path: {self.config.foldername}")
 
-        # TODO doubt: Should we add a way where if user provides a file having all the label names we can read that file
         if len(self.config.labels) == 1 and self.config.labels is not None:
             if os.path.isfile(self.config.labels[0]):
                 # Update labels with list read from the file
@@ -81,31 +78,10 @@ class DirectorySource(MemorySource):
     async def _close(self):
         if self.config.save:
             await save(self.config.save, self.mem)
-            # await self.dump_fd()
 
     async def load_fd(self):
         self.mem = {}
         i = 0
-
-        """
-        Example cli:
-        dffml list records -sources f=dir \
-            -source-foldername dataset/train \
-            -source-feature image \
-            -source-labels airplane bird frog \
-            -log debug
-
-        | -- dataset
-        | -- | -- train
-        | -- | -- | -- label_1
-        | -- | -- | -- | -- image_1.png
-        | -- | -- | -- | -- image_2.png
-        | -- | -- | -- | -- .....
-        | -- | -- | -- label_2
-        | -- | -- | -- | -- image_1.png
-        | -- | -- | -- | -- image_2.png
-        | -- | -- | -- | -- .....
-        """
 
         # Iterate over the labels list
         for label in self.config.labels:
@@ -113,7 +89,6 @@ class DirectorySource(MemorySource):
             # Go through all image files and read them using pngconfigloader
             for file_name in os.listdir(label_folder):
                 image_filename = label_folder.joinpath(file_name)
-
                 async with self.CONFIG_LOADER as cfgl:
                     _, feature_data = await cfgl.load_file(image_filename)
 
@@ -128,6 +103,3 @@ class DirectorySource(MemorySource):
                 )
                 i += 1
         self.logger.debug("%r loaded %d records", self, len(self.mem))
-
-    # async def dump_fd(self, fd):
-    #     raise NotImplementedError
