@@ -12,9 +12,10 @@ from dffml.util.os import chdir
 
 
 class TestDirectorySource(AsyncTestCase):
+    blank_image = Image.new(mode="RGB", size=(10, 10))
+
     @contextlib.contextmanager
-    def setUpDirectory(self):
-        blank_image = Image.new(mode="RGB", size=(50, 50))
+    def setUpLabelledDirectory(self):
         with tempfile.TemporaryDirectory() as tempdir:
             with chdir(tempdir):
                 for dirname in ["a", "b", "c"]:
@@ -22,10 +23,18 @@ class TestDirectorySource(AsyncTestCase):
                     if not os.path.exists(dirpath):
                         dirpath.mkdir()
                     for image_name in ["x", "y", "z"]:
-                        blank_image.save(dirpath / (image_name + ".png"))
+                        self.blank_image.save(dirpath / (image_name + ".png"))
                 yield tempdir
 
-    def setUpSource(self):
+    @contextlib.contextmanager
+    def setUpUnlabelledDirectory(self):
+        with tempfile.TemporaryDirectory() as tempdir:
+            with chdir(tempdir):
+                for image_name in ["l", "m", "n", "o", "k"]:
+                    self.blank_image.save(image_name + ".png")
+                yield tempdir
+
+    def setUpLabelledSource(self):
         return DirectorySource(
             DirectorySourceConfig(
                 foldername=os.getcwd(),
@@ -34,10 +43,15 @@ class TestDirectorySource(AsyncTestCase):
             )
         )
 
-    async def test_dir(self):
+    def setUpUnlabelledSource(self):
+        return DirectorySource(
+            DirectorySourceConfig(foldername=os.getcwd(), feature="image",)
+        )
+
+    async def test_dir_labelled(self):
         records = []
-        with self.setUpDirectory() as tempdir:
-            async with self.setUpSource() as source:
+        with self.setUpLabelledDirectory() as tempdir:
+            async with self.setUpLabelledSource() as source:
                 async with source() as sctx:
                     async for record in sctx.records():
                         records.append(record)
@@ -53,10 +67,31 @@ class TestDirectorySource(AsyncTestCase):
                             record.features()["label"],
                             sctx.parent.config.labels,
                         )
-
                         self.assertEqual(
                             len(record.features()[sctx.parent.config.feature]),
-                            50 * 50 * 3,
+                            10 * 10 * 3,
                         )
 
         self.assertEqual(len(records), 9)
+
+    async def test_dir_unlabelled(self):
+        records = []
+        with self.setUpUnlabelledDirectory() as tempdir:
+            async with self.setUpUnlabelledSource() as source:
+                async with source() as sctx:
+                    async for record in sctx.records():
+                        records.append(record)
+                        self.assertEqual(
+                            [*record.features().keys()],
+                            [sctx.parent.config.feature],
+                        )
+                        self.assertIsInstance(
+                            record.features()[sctx.parent.config.feature],
+                            (list, tuple, np.ndarray),
+                        )
+                        self.assertEqual(
+                            len(record.features()[sctx.parent.config.feature]),
+                            10 * 10 * 3,
+                        )
+
+        self.assertEqual(len(records), 5)

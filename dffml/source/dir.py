@@ -55,23 +55,25 @@ class DirectorySource(MemorySource):
         ):
             raise FolderNotFoundError(f"Folder path: {self.config.foldername}")
 
-        if len(self.config.labels) == 1 and self.config.labels is not None:
+        if self.config.labels is not None and len(self.config.labels) == 1:
             if os.path.isfile(self.config.labels[0]):
                 # Update labels with list read from the file
                 self.config.labels = pathlib.Path.read_text(
                     pathlib.Path(self.config.labels[0])
                 ).split(",")
 
-        label_folders = list(
-            set(labels for labels in os.listdir(self.config.foldername))
-        )
-        # Check if all existing label folders are given to `labels` list
-        if label_folders > self.config.labels:
-            self.logger.warning(
-                "All labels not specified. Folders present: %s \nLabels entered: %s",
-                label_folders,
-                self.config.labels,
+        elif self.config.labels is not None:
+            label_folders = list(
+                set(labels for labels in os.listdir(self.config.foldername))
             )
+
+            # Check if all existing label folders are given to `labels` list
+            if label_folders > self.config.labels:
+                self.logger.warning(
+                    "All labels not specified. Folders present: %s \nLabels entered: %s",
+                    label_folders,
+                    self.config.labels,
+                )
 
         await self.load_fd()
 
@@ -83,12 +85,19 @@ class DirectorySource(MemorySource):
         self.mem = {}
         i = 0
 
+        if self.config.labels is None:
+            self.config.labels = ["unlabelled"]
+
         # Iterate over the labels list
         for label in self.config.labels:
-            label_folder = self.config.foldername.joinpath(label)
+            if self.config.labels == ["unlabelled"]:
+                folders = self.config.foldername
+            else:
+                folders = self.config.foldername.joinpath(label)
+
             # Go through all image files and read them using pngconfigloader
-            for file_name in os.listdir(label_folder):
-                image_filename = label_folder.joinpath(file_name)
+            for file_name in os.listdir(folders):
+                image_filename = folders.joinpath(file_name)
                 async with self.CONFIG_LOADER as cfgl:
                     _, feature_data = await cfgl.load_file(image_filename)
 
@@ -101,5 +110,9 @@ class DirectorySource(MemorySource):
                         }
                     },
                 )
+
+                if self.config.labels == ["unlabelled"]:
+                    del self.mem[str(i)].features()["label"]
+
                 i += 1
         self.logger.debug("%r loaded %d records", self, len(self.mem))
