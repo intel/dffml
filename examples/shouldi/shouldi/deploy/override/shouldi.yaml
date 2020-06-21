@@ -1,16 +1,18 @@
-configs: {}
 definitions:
   git_repository_checked_out:
     lock: true
     name: git_repository_checked_out
     primitive: Dict[str, str]
     spec:
-      defaults: {}
+      defaults:
+        URL: null
+        commit: null
       name: GitRepoCheckedOutSpec
       types:
         URL: str
         commit: str
         directory: str
+    subspec: false
   key:
     name: key
     primitive: str
@@ -27,22 +29,30 @@ definitions:
     name: value
     primitive: generic
 flow:
-  lines_of_code_by_language:
-    inputs:
-      repo:
-      - transform_to_repo: mapping
-  lines_of_code_to_comments:
-    inputs:
-      langs:
-      - lines_of_code_by_language: lines_by_language
-  transform_to_repo:
+  dffml.mapping.create:
     inputs:
       key:
       - seed
       value:
       - pypi_package_contents: directory
+  lines_of_code_by_language:
+    inputs:
+      repo:
+      - dffml.mapping.create: mapping
+  lines_of_code_to_comments:
+    inputs:
+      langs:
+      - lines_of_code_by_language: lines_by_language
 linked: true
 operations:
+  dffml.mapping.create:
+    inputs:
+      key: key
+      value: value
+    name: dffml.mapping.create
+    outputs:
+      mapping: mapping
+    stage: processing
   lines_of_code_by_language:
     inputs:
       repo: git_repository_checked_out
@@ -57,19 +67,12 @@ operations:
     outputs:
       code_to_comment_ratio: language_to_comment_ratio
     stage: processing
-  transform_to_repo:
-    inputs:
-      key: key
-      value: value
-    name: dffml.mapping.create
-    outputs:
-      mapping: mapping
-    stage: processing
 seed:
 - definition: key
   value: directory
 - definition: get_single_spec
   value:
-  - safety_check_number_of_issues
-  - bandit_output
+  - safety_check.outputs.result
+  - run_bandit.outputs.result
   - language_to_comment_ratio
+

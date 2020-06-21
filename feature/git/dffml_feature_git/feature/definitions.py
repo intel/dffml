@@ -5,14 +5,14 @@ from dffml.df.types import Definition
 
 
 class GitRepoSpec(NamedTuple):
-    URL: str
     directory: str
+    URL: str = None
 
 
 class GitRepoCheckedOutSpec(NamedTuple):
-    URL: str
     directory: str
-    commit: str
+    URL: str = None
+    commit: str = None
 
 
 definitions = [
