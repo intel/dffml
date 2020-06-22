@@ -27,6 +27,7 @@ import contextlib
 
 from typing import Optional
 
+from .os import chdir
 from .packaging import is_develop
 
 
@@ -150,6 +151,7 @@ class IntegrationCLITestCase(AsyncExitStackTestCase):
         await super().setUp()
         self.required_plugins(*self.REQUIRED_PLUGINS)
         self.stdout = io.StringIO()
+        self._stack.enter_context(chdir(self.mktempdir()))
 
     def required_plugins(self, *args):
         if not all(map(is_develop, args)):
