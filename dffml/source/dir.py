@@ -2,6 +2,7 @@
 Loads files from a directory
 """
 import os
+import glob
 import pathlib
 from typing import List
 
@@ -24,7 +25,9 @@ class FolderNotFoundError(Exception):
 class DirectorySourceConfig:
     foldername: str
     feature: str = field("Name of the feature the data will be referenced as")
-    labels: List[str] = None
+    labels: List[str] = field(
+        "Image labels", default_factory=lambda: ["unlabelled"]
+    )
     save: BaseSource = None
 
 
@@ -55,18 +58,20 @@ class DirectorySource(MemorySource):
         ):
             raise FolderNotFoundError(f"Folder path: {self.config.foldername}")
 
-        if self.config.labels is not None and len(self.config.labels) == 1:
+        if (
+            self.config.labels != ["unlabelled"]
+            and len(self.config.labels) == 1
+        ):
             if os.path.isfile(self.config.labels[0]):
                 # Update labels with list read from the file
                 self.config.labels = pathlib.Path.read_text(
                     pathlib.Path(self.config.labels[0])
                 ).split(",")
 
-        elif self.config.labels is not None:
+        elif self.config.labels != ["unlabelled"]:
             label_folders = list(
                 set(labels for labels in os.listdir(self.config.foldername))
             )
-
             # Check if all existing label folders are given to `labels` list
             if label_folders > self.config.labels:
                 self.logger.warning(
@@ -85,9 +90,6 @@ class DirectorySource(MemorySource):
         self.mem = {}
         i = 0
 
-        if self.config.labels is None:
-            self.config.labels = ["unlabelled"]
-
         # Iterate over the labels list
         for label in self.config.labels:
             if self.config.labels == ["unlabelled"]:
@@ -96,13 +98,15 @@ class DirectorySource(MemorySource):
                 folders = self.config.foldername.joinpath(label)
 
             # Go through all image files and read them using pngconfigloader
-            for file_name in os.listdir(folders):
+            for file_name in map(
+                os.path.basename, glob.glob(str(folders) + "/*")
+            ):
                 image_filename = folders.joinpath(file_name)
                 async with self.CONFIG_LOADER as cfgl:
                     _, feature_data = await cfgl.load_file(image_filename)
 
                 self.mem[str(i)] = Record(
-                    str(i),
+                    str(file_name),
                     data={
                         "features": {
                             self.config.feature: feature_data,
