@@ -78,6 +78,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   features were found
 - Split out model tutorial into writing the model, and another tutorial for
   packaging the model.
+- IntegrationCLITestCase creates a new directory and chdir into it for each test
 ### Fixed
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
   parameter sets for an operation.
