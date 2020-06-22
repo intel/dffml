@@ -37,6 +37,12 @@ from transformers import (
     squad_convert_examples_to_features,
 )
 
+try:
+    from torch.utils.tensorboard import SummaryWriter
+except ImportError:
+    from tensorboardX import SummaryWriter
+
+
 logger = logging.getLogger(__name__)
 
 MODEL_CONFIG_CLASSES = list(MODEL_FOR_QUESTION_ANSWERING_MAPPING.keys())
@@ -68,6 +74,10 @@ class QAModelConfig:
     tokenizer_name: str = field(
         "Pretrained tokenizer name or path if not the same as model_name",
         default=None,
+    )
+    from_tf: bool = field(
+        "Whether to load model from tensorflow checkpoint or .h5 file",
+        default=False,
     )
     config_name: str = field(
         "Pretrained config name or path if not the same as model_name",
@@ -605,7 +615,7 @@ class QAModelContext(ModelContext):
         )
         self.model = AutoModelForQuestionAnswering.from_pretrained(
             self.parent.config.model_name_or_path,
-            from_tf=bool(".ckpt" in self.parent.config.model_name_or_path),
+            from_tf=self.parent.config.from_tf,
             config=config,
             cache_dir=self.parent.config.cache_dir
             if self.parent.config.cache_dir
