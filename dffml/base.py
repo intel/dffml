@@ -96,19 +96,6 @@ class LoggingLogger(object):
         return logger
 
 
-class BaseConfig(object):
-    """
-    All DFFML Base Objects should take an object (likely a typing.NamedTuple) as
-    as their config.
-    """
-
-    def __repr__(self):
-        return "BaseConfig()"
-
-    def __str__(self):
-        return repr(self)
-
-
 def mkarg(field):
     if field.type != bool:
         arg = Arg(type=field.type)
@@ -294,6 +281,20 @@ def make_config(cls_name: str, fields, *args, namespace=None, **kwargs):
     return dataclasses.make_dataclass(
         cls_name, fields, *args, namespace=namespace, **kwargs
     )
+
+
+@config
+class BaseConfig:
+    """
+    All DFFML Base Objects should take an object (likely a typing.NamedTuple) as
+    as their config.
+    """
+
+    def __repr__(self):
+        return "BaseConfig()"
+
+    def __str__(self):
+        return repr(self)
 
 
 class ConfigurableParsingNamespace(object):

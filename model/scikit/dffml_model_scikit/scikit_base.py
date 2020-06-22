@@ -29,10 +29,9 @@ class ScikitConfig(ModelConfig, NamedTuple):
 class ScikitContext(ModelContext):
     def __init__(self, parent):
         super().__init__(parent)
-        self.pd = importlib.import_module("pandas")
         self.np = importlib.import_module("numpy")
         self.joblib = importlib.import_module("joblib")
-        self.features = self.applicable_features(self.parent.config.features)
+        self.features = self.parent.config.features.names()
         self._features_hash = self._feature_predict_hash()
         self.clf = None
 
@@ -75,17 +74,20 @@ class ScikitContext(ModelContext):
         pass
 
     async def train(self, sources: Sources):
-        data = []
+        xdata = []
+        ydata = []
         async for record in sources.with_features(
             self.features + [self.parent.config.predict.name]
         ):
-            feature_data = record.features(
-                self.features + [self.parent.config.predict.name]
-            )
-            data.append(feature_data)
-        df = self.pd.DataFrame(data)
-        xdata = self.np.array(df.drop([self.parent.config.predict.name], 1))
-        ydata = self.np.array(df[self.parent.config.predict.name])
+            record_data = []
+            for feature in record.features(self.features).values():
+                record_data.extend(
+                    [feature] if self.np.isscalar(feature) else feature
+                )
+            xdata.append(record_data)
+            ydata.append(record.feature(self.parent.config.predict.name))
+        xdata = self.np.array(xdata)
+        ydata = self.np.array(ydata)
         self.logger.info("Number of input records: {}".format(len(xdata)))
         self.clf.fit(xdata, ydata)
         self.joblib.dump(self.clf, str(self._filepath))
@@ -93,15 +95,20 @@ class ScikitContext(ModelContext):
     async def accuracy(self, sources: Sources) -> Accuracy:
         if not self._filepath.is_file():
             raise ModelNotTrained("Train model before assessing for accuracy.")
-        data = []
-        async for record in sources.with_features(self.features):
-            feature_data = record.features(
-                self.features + [self.parent.config.predict.name]
-            )
-            data.append(feature_data)
-        df = self.pd.DataFrame(data)
-        xdata = self.np.array(df.drop([self.parent.config.predict.name], 1))
-        ydata = self.np.array(df[self.parent.config.predict.name])
+        xdata = []
+        ydata = []
+        async for record in sources.with_features(
+            self.features + [self.parent.config.predict.name]
+        ):
+            record_data = []
+            for feature in record.features(self.features).values():
+                record_data.extend(
+                    [feature] if self.np.isscalar(feature) else feature
+                )
+            xdata.append(record_data)
+            ydata.append(record.feature(self.parent.config.predict.name))
+        xdata = self.np.array(xdata)
+        ydata = self.np.array(ydata)
         self.logger.debug("Number of input records: {}".format(len(xdata)))
         self.confidence = self.clf.score(xdata, ydata)
         self.logger.debug("Model Accuracy: {}".format(self.confidence))
@@ -113,9 +120,12 @@ class ScikitContext(ModelContext):
         if not self._filepath.is_file():
             raise ModelNotTrained("Train model before prediction.")
         async for record in records:
-            feature_data = record.features(self.features)
-            df = self.pd.DataFrame(feature_data, index=[0])
-            predict = self.np.array(df)
+            record_data = []
+            for feature in record.features(self.features).values():
+                record_data.extend(
+                    [feature] if self.np.isscalar(feature) else feature
+                )
+            predict = self.np.array([record_data])
             self.logger.debug(
                 "Predicted Value of {} for {}: {}".format(
                     self.parent.config.predict,
@@ -144,12 +154,11 @@ class ScikitContextUnsprvised(ScikitContext):
         return self
 
     async def train(self, sources: Sources):
-        data = []
+        xdata = []
         async for record in sources.with_features(self.features):
             feature_data = record.features(self.features)
-            data.append(feature_data)
-        df = self.pd.DataFrame(data)
-        xdata = self.np.array(df)
+            xdata.append(list(feature_data.values()))
+        xdata = self.np.array(xdata)
         self.logger.info("Number of input records: {}".format(len(xdata)))
         self.clf.fit(xdata)
         self.joblib.dump(self.clf, str(self._filepath))
@@ -157,7 +166,8 @@ class ScikitContextUnsprvised(ScikitContext):
     async def accuracy(self, sources: Sources) -> Accuracy:
         if not self._filepath.is_file():
             raise ModelNotTrained("Train model before assessing for accuracy.")
-        data = []
+        xdata = []
+        ydata = []
         target = []
         estimator_type = self.clf._estimator_type
         if estimator_type == "clusterer":
@@ -167,13 +177,13 @@ class ScikitContextUnsprvised(ScikitContext):
                 else [self.parent.config.tcluster.name]
             )
         async for record in sources.with_features(self.features):
-            feature_data = record.features(self.features + target)
-            data.append(feature_data)
-        df = self.pd.DataFrame(data)
-        xdata = self.np.array(df.drop(target, axis=1))
+            feature_data = record.features(self.features)
+            xdata.append(list(feature_data.values()))
+            ydata.append(list(record.features(target).values()))
+        xdata = self.np.array(xdata)
         self.logger.debug("Number of input records: {}".format(len(xdata)))
         if target:
-            ydata = self.np.array(df[target]).flatten()
+            ydata = self.np.array(ydata).flatten()
             if hasattr(self.clf, "predict"):
                 # xdata can be training data or unseen data
                 # inductive clusterer with ground truth
@@ -227,8 +237,7 @@ class ScikitContextUnsprvised(ScikitContext):
 
         async for record in records:
             feature_data = record.features(self.features)
-            df = self.pd.DataFrame(feature_data, index=[0])
-            predict = self.np.array(df)
+            predict = self.np.array([list(feature_data.values())])
             prediction = predictor(predict)
             self.logger.debug(
                 "Predicted cluster for {}: {}".format(predict, prediction)

@@ -9,5 +9,5 @@ class TestRunBanditOp(AsyncTestCase):
     async def test_run(self):
         results = await run_bandit(os.getcwd())
         self.assertEqual(
-            type(results["report"]["CONFIDENCE.HIGH_AND_SEVERITY.HIGH"]), int
+            type(results["CONFIDENCE.HIGH_AND_SEVERITY.HIGH"]), int
         )

@@ -14,6 +14,7 @@ CORE_PLUGINS = [
     ("feature", "auth"),
     ("operations", "binsec"),
     ("operations", "deploy"),
+    ("operations", "image"),
     ("service", "http"),
     ("source", "mysql"),
 ]

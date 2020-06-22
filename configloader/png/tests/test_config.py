@@ -5,7 +5,7 @@ import hashlib
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml_config_png.configloader import PNGConfigLoader
 
-IMAGE1_HASH = "d8dd06cd1e9b9ed9f1e85ba2e91031faee142de66f8e02556d6590223038288c970d93bbc31fd6c655188632aa72b62c"
+IMAGE1_HASH = "6faf9050c6d387bc6a68d9e12127f883011add2ec994b8e66c7c0996636f2789af8d28fc11e6528a327a6383c1473e72"
 
 
 class TestConfig(AsyncTestCase):
@@ -19,12 +19,12 @@ class TestConfig(AsyncTestCase):
                     / ".."
                     / "examples"
                     / "MNIST"
-                    / "image1.mnistpng"
+                    / "image1.png"
                 ).read_bytes()
                 original = await ctx.loadb(image_bytes)
-                original = tuple([int(i) for i in original])
+                original = [int(i) for i in original]
                 hash_original = hashlib.sha384(
                     json.dumps(original).encode()
                 ).hexdigest()
-                self.assertEqual(len(original), 784)
+                self.assertEqual(len(original), 280 * 280 * 3)
                 self.assertEqual(hash_original, IMAGE1_HASH)

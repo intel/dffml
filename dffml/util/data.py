@@ -215,6 +215,10 @@ def export_value(obj, key, value):
         obj[key] = value.export()
     elif hasattr(value, "_asdict"):
         obj[key] = value._asdict()
+    elif getattr(
+        type(value), "__module__", None
+    ) == "numpy" and inspect.ismethod(getattr(value, "flatten", None)):
+        obj[key] = tuple(value.flatten())
     elif dataclasses.is_dataclass(value):
         obj[key] = export_dict(**dataclasses.asdict(value))
     elif getattr(value, "__module__", None) == "typing":
