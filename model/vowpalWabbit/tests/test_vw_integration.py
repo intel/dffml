@@ -53,7 +53,6 @@ class TestVWModel(IntegrationCLITestCase):
             "logistic",
             "l2",
             "0.04",
-            "-model-convert_to_vw",
             "-model-use_binary_label",
         )
         # Assess accuracy
@@ -72,7 +71,6 @@ class TestVWModel(IntegrationCLITestCase):
             "binary",
             "True",
             "-model-use_binary_label",
-            "-model-convert_to_vw",
         )
         # Ensure JSON output works as expected (#261)
         with contextlib.redirect_stdout(self.stdout):
@@ -92,7 +90,6 @@ class TestVWModel(IntegrationCLITestCase):
                 "-model-vwcmd",
                 "binary",
                 "True",
-                "-model-convert_to_vw",
                 "-model-use_binary_label",
             )
         results = json.loads(self.stdout.getvalue())

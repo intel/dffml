@@ -70,7 +70,7 @@ class VWConfig:
     )
     convert_to_vw: bool = field(
         "Convert the input to vowpal wabbit standard input format",
-        default=False,
+        default=True,
     )
     directory: str = field(
         "Directory where state should be saved",
