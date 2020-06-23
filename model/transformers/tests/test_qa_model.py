@@ -1,16 +1,14 @@
-import random
 import tempfile
 
 from dffml.record import Record
 from dffml.source.source import Sources
 from dffml import train, accuracy, predict
-from dffml.feature import Features, Feature
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml_model_transformers.qa.qa_model import QAModel, QAModelConfig
 
 
-class TestHFClassificationModel(AsyncTestCase):
+class TestQAModel(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
         (A_train, B_train, C_train, X_train, D_train, E_train,) = list(

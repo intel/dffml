@@ -1,10 +1,8 @@
 import os
-import json
 import random
 import timeit
 import logging
-import importlib
-from typing import Any, List, Tuple, AsyncIterator
+from typing import Any, Tuple, AsyncIterator
 
 import torch
 import numpy as np
@@ -28,7 +26,6 @@ from transformers.data.metrics.squad_metrics import (
 )
 from transformers import (
     MODEL_FOR_QUESTION_ANSWERING_MAPPING,
-    WEIGHTS_NAME,
     AdamW,
     AutoConfig,
     AutoModelForQuestionAnswering,
