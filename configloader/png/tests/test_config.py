@@ -22,9 +22,8 @@ class TestConfig(AsyncTestCase):
                     / "image1.png"
                 ).read_bytes()
                 original = await ctx.loadb(image_bytes)
-                original = [int(i) for i in original]
                 hash_original = hashlib.sha384(
-                    json.dumps(original).encode()
+                    json.dumps(original.flatten().tolist()).encode()
                 ).hexdigest()
-                self.assertEqual(len(original), 280 * 280 * 3)
+                self.assertEqual(original.shape, (280, 280, 3))
                 self.assertEqual(hash_original, IMAGE1_HASH)

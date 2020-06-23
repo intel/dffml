@@ -70,8 +70,10 @@ class TestDirectorySource(IntegrationCLITestCase):
                             sctx.parent.config.labels,
                         )
                         self.assertEqual(
-                            len(record.features()[sctx.parent.config.feature]),
-                            10 * 10 * 3,
+                            record.features()[
+                                sctx.parent.config.feature
+                            ].shape,
+                            (10, 10, 3),
                         )
 
         self.assertEqual(len(records), 9)
@@ -92,8 +94,10 @@ class TestDirectorySource(IntegrationCLITestCase):
                             (list, tuple, np.ndarray),
                         )
                         self.assertEqual(
-                            len(record.features()[sctx.parent.config.feature]),
-                            10 * 10 * 3,
+                            record.features()[
+                                sctx.parent.config.feature
+                            ].shape,
+                            (10, 10, 3),
                         )
 
         self.assertEqual(len(records), 5)
