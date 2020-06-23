@@ -19,7 +19,7 @@ class PNGConfigLoaderContext(BaseConfigLoaderContext):
         image_array = cv2.imdecode(
             np.frombuffer(resource, np.uint8), cv2.IMREAD_COLOR
         )
-        return image_array.flatten()
+        return image_array
 
     async def dumpb(self, resource: Dict) -> bytes:
         raise NotImplementedError
