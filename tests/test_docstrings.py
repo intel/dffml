@@ -81,6 +81,7 @@ def wrap_high_level_accuracy(state):
     model = SLRModel(
         features=Features(Feature("Years", int, 1),),
         predict=Feature("Salary", int, 1),
+        directory="tempdir",
     )
 
     train(
@@ -101,6 +102,7 @@ def wrap_noasync_accuracy(state):
     model = SLRModel(
         features=Features(Feature("Years", int, 1),),
         predict=Feature("Salary", int, 1),
+        directory="tempdir",
     )
 
     train(
