@@ -217,6 +217,7 @@ class TestQAModel(IntegrationCLITestCase):
             results = results["Answer"]
             self.assertIn("value", results)
             results = results["value"]
+            results = [value for _, value in results.items()][0]
             self.assertIn(isinstance(results, str), [True])
             # Make prediction using dffml.operations.predict
             results = await Develop.cli(
