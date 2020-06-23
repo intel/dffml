@@ -17,7 +17,7 @@ from dataclasses import is_dataclass
 from contextlib import asynccontextmanager
 
 from .exceptions import NotOpImp
-from .types import Operation, Input, Parameter, Stage, Definition
+from .types import Operation, Input, Parameter, Stage, Definition, NO_DEFAULT
 
 from .log import LOGGER
 
@@ -196,13 +196,14 @@ class OperationImplementation(BaseDataFlowObject):
         return loading_classes
 
 
-def create_definition(name, param_annotation):
+def create_definition(name, param_annotation, default=NO_DEFAULT):
     if param_annotation in primitive_types:
         return Definition(
             name=name,
             primitive=primitive_convert.get(
                 param_annotation, param_annotation.__name__
             ),
+            default=default,
         )
     elif get_origin(param_annotation) in [
         Union,
@@ -223,14 +224,18 @@ def create_definition(name, param_annotation):
             innerclass = list(get_args(param_annotation))[1]
 
         if innerclass in primitive_types:
-            return Definition(name=name, primitive=primitive)
+            return Definition(name=name, primitive=primitive, default=default)
         if is_dataclass(innerclass) or bool(
             inspect.isclass(innerclass)
             and issubclass(innerclass, tuple)
             and hasattr(innerclass, "_asdict")
         ):
             return Definition(
-                name=name, primitive=primitive, spec=innerclass, subspec=True,
+                name=name,
+                primitive=primitive,
+                default=default,
+                spec=innerclass,
+                subspec=True,
             )
     elif is_dataclass(param_annotation) or bool(
         inspect.isclass(param_annotation)
@@ -238,7 +243,9 @@ def create_definition(name, param_annotation):
         and hasattr(param_annotation, "_asdict")
     ):
         # If the annotation is either a dataclass or namedtuple
-        return Definition(name=name, primitive="map", spec=param_annotation,)
+        return Definition(
+            name=name, primitive="map", default=default, spec=param_annotation,
+        )
 
     raise OpCouldNotDeterminePrimitive(
         f"The primitive of {name} could not be determined"
@@ -366,14 +373,17 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
         if not "inputs" in kwargs:
             sig = inspect.signature(func)
             kwargs["inputs"] = {}
-
             for name, param in sig.parameters.items():
                 if name == "self":
                     continue
                 name_list = [kwargs["name"], "inputs", name]
 
                 kwargs["inputs"][name] = create_definition(
-                    ".".join(name_list), param.annotation
+                    ".".join(name_list),
+                    param.annotation,
+                    NO_DEFAULT
+                    if param.default is inspect.Parameter.empty
+                    else param.default,
                 )
 
         auto_def_outputs = False

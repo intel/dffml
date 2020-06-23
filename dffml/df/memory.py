@@ -28,7 +28,15 @@ from .exceptions import (
     DefinitionNotInContext,
     ValidatorMissing,
 )
-from .types import Input, Parameter, Definition, Operation, Stage, DataFlow
+from .types import (
+    Input,
+    Parameter,
+    Definition,
+    Operation,
+    Stage,
+    DataFlow,
+    NO_DEFAULT,
+)
 from .base import (
     OperationException,
     OperationImplementation,
@@ -586,9 +594,36 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                                         ],
                                     )
                                 )
-                    # Return if there is no data for an input
+                    # There is no data in the network for an input
                     if not gather[input_name]:
-                        return
+                        # Check if there is a default value for the parameter,
+                        # if so use it. That default will either come from the
+                        # definition attached to input_name, or it will come
+                        # from one of the alternate definition given within the
+                        # input flow for the input_name.
+                        check_for_default_value = [
+                            operation.inputs[input_name]
+                        ] + alternate_definitions
+                        for definition in check_for_default_value:
+                            # Check if the definition has a default value that is not _NO_DEFAULT
+                            if "dffml.df.types._NO_DEFAULT" not in repr(
+                                definition.default
+                            ):
+                                gather[input_name].append(
+                                    Parameter(
+                                        key=input_name,
+                                        value=definition.default,
+                                        origin=item,
+                                        definition=operation.inputs[
+                                            input_name
+                                        ],
+                                    )
+                                )
+                                break
+                        # If there is no default value, we don't have a complete
+                        # paremeter set, so we bail out
+                        else:
+                            return
         # Generate all possible permutations of applicable inputs
         # Create the parameter set for each
         products = list(
