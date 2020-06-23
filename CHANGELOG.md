@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Support for default value in a Definition
 - Transformers Question Answering model
 - Source for reading images in directories
 - Transformers classification model

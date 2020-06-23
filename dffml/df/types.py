@@ -34,6 +34,13 @@ class PrimitiveDoesNotMatchValue(Exception):
     """
 
 
+class _NO_DEFAULT:
+    pass
+
+
+NO_DEFAULT = _NO_DEFAULT()
+
+
 class Definition(NamedTuple):
     """
     Examples
@@ -61,6 +68,7 @@ class Definition(NamedTuple):
 
     name: str
     primitive: str
+    default: Any = NO_DEFAULT
     lock: bool = False
     # spec is a NamedTuple which could be populated via a dict
     spec: NamedTuple = None
@@ -82,6 +90,8 @@ class Definition(NamedTuple):
 
     def export(self):
         exported = dict(self._asdict())
+        if "dffml.df.types._NO_DEFAULT" in repr(self.default):
+            del exported["default"]
         if not self.lock:
             del exported["lock"]
         if not self.validate:
