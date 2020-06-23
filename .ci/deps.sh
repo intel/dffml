@@ -75,6 +75,14 @@ if [[ "x${PLUGIN}" == "xmodel/vowpalWabbit" ]] || \
   set -e
 fi
 
+if [[ "x${PLUGIN}" == "xmodel/transformers" ]] || \
+   [[ "x${PLUGIN}" == "x." ]] || \
+   [[ "x${PLUGIN}" == "xdocs" ]]; then
+  set +e
+  conda install -y -c pytorch pytorch
+  set -e
+fi
+
 if ([[ "x${PLUGIN}" == "xmodel/daal4py" ]] || \
     [[ "x${PLUGIN}" == "x." ]] || \
     [[ "x${PLUGIN}" == "xdocs" ]]) &&
