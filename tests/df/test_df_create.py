@@ -60,7 +60,7 @@ class TestDataflowCreate(AsyncTestCase):
         async with self.make_dataflow(
             ECHO_STRING,
             [operation_qualname, "get_single"],
-            ["ops.echo_string.outputs.result,=get_single_spec"],
+            ["ops:echo_string.outputs.result,=get_single_spec"],
         ) as dataflow:
             # Make sure the operation is in the dataflow
             self.assertIn(operation_qualname, dataflow.operations)
@@ -84,7 +84,7 @@ class TestDataflowCreate(AsyncTestCase):
         async with self.make_dataflow(
             ECHO_STRINGS,
             [operation_qualname, "get_multi"],
-            ["ops.echo_strings.outputs.result,=get_multi_spec"],
+            ["ops:echo_strings.outputs.result,=get_multi_spec"],
         ) as dataflow:
             # Make sure the operation is in the dataflow
             self.assertIn(operation_qualname, dataflow.operations)

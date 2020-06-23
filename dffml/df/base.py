@@ -319,7 +319,10 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
 
     def wrap(func):
         if not "name" in kwargs:
-            name = f"{inspect.getmodule(func).__name__}:{func.__name__}"
+            name = func.__name__
+            module_name = inspect.getmodule(func).__name__
+            if module_name != "__main__":
+                name = f"{module_name}:{name}"
             # Check if it's already been registered as another name
             for i in pkg_resources.iter_entry_points(Operation.ENTRYPOINT):
                 entrypoint_load_path = i.module_name + ":" + ".".join(i.attrs)
@@ -347,6 +350,12 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
             )
         )
         # Check if the function uses the operation implementation config
+        # This exists because eventually we will make non async functions
+        # wrapped with op run with loop.run_in_executor when that happens it's
+        # likely that self won't be serializeable into the thread / process.
+        # Config's are guaranteed to be serializable, therefore this lets us
+        # define operations that have configs and needs to access them when
+        # running within another thread.
         uses_config = None
         if config_cls is not None:
             for name, param in sig.parameters.items():
@@ -361,9 +370,8 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
             for name, param in sig.parameters.items():
                 if name == "self":
                     continue
-                name_list = [func.__qualname__, "inputs", name]
-                if func.__module__ != "__main__":
-                    name_list.insert(0, func.__module__)
+                name_list = [kwargs["name"], "inputs", name]
+
                 kwargs["inputs"][name] = create_definition(
                     ".".join(name_list), param.annotation
                 )
@@ -373,9 +381,8 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
         if not "outputs" in kwargs:
             return_type = inspect.signature(func).return_annotation
             if return_type not in (None, inspect._empty):
-                name_list = [func.__qualname__, "outputs", "result"]
-                if func.__module__ != "__main__":
-                    name_list.insert(0, func.__module__)
+                name_list = [kwargs["name"], "outputs", "result"]
+
                 kwargs["outputs"] = {
                     "result": create_definition(
                         ".".join(name_list), return_type

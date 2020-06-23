@@ -1251,23 +1251,10 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                             operation.name,
                             opimp_config,
                         )
-
-                    # If config_cls is a string use shared config
-                    opimp_CONFIG = getattr(opimp, "CONFIG", None)
-                    if opimp_CONFIG and isinstance(opimp_CONFIG, str):
-                        if opimp_CONFIG in operation.shared:
-                            setattr(
-                                opimp,
-                                "CONFIG",
-                                type(operation.shared[opimp_CONFIG]),
-                            )
-                            opimp_config = operation.shared[opimp_CONFIG]
-
-                    elif isinstance(opimp_config, dict) and hasattr(
+                    if isinstance(opimp_config, dict) and hasattr(
                         getattr(opimp, "CONFIG", False), "_fromdict"
                     ):
                         opimp_config = opimp.CONFIG._fromdict(**opimp_config)
-
                     await self.nctx.instantiate(
                         operation, opimp_config, opimp=opimp
                     )

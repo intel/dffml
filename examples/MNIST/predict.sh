@@ -10,6 +10,6 @@ dffml predict all \
     -source-images-source csv \
     -source-images-source-filename image.csv \
     -source-images-source-loadfiles image \
-    -source-images-features image:int:$((28*28)) \
-    -source-images-dataflow normalize.yaml \
+    -source-images-features image:int:$((28 * 28)) \
+    -source-images-dataflow resizenorm.yaml \
     -log critical
