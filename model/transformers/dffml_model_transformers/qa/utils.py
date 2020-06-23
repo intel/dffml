@@ -1,3 +1,4 @@
+import ast
 import json
 
 
@@ -20,12 +21,12 @@ def parser(json_file: str, is_training: bool) -> dict:
                         qa["is_impossible"] if "is_impossible" in qa else False
                     )
                     if not is_impossible:
-                        if is_training:
+                        if ast.literal_eval(is_training):
                             answer = qa["answers"][0]
                             answer_text = answer["text"]
                             start_pos_char = answer["answer_start"]
                         else:
-                            answers = qa["answers"]
+                            answers = [{"text": " ", "answer_start": 0}]
                     parsed_data[id] = {
                         "features": {
                             "question": question,

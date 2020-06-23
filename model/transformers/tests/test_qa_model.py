@@ -120,14 +120,14 @@ train_ques_ans_list = [
     ],
 ]
 test_ques_ans_list = [
-    ["How long was the second world war?", None, None, False,],
+    ["How long was the second world war?", " ", 0, False,],
     [
         "Which were the first two countries to declare war on Germany?",
-        None,
-        None,
+        " ",
+        0,
         False,
     ],
-    ["What was the first act of war?", None, None, False,],
+    ["What was the first act of war?", " ", 0, False,],
 ]
 TRAIN_DATA = [[title, context, *d] for d in train_ques_ans_list]
 TEST_DATA = [[title, context, *d] for d in test_ques_ans_list]

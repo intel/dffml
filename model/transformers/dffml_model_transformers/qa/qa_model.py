@@ -908,6 +908,7 @@ class QAModelContext(ModelContext):
             do_lower_case=self.parent.config.do_lower_case,
         )
         async for record in records:
+
             example = SquadExample(
                 qas_id=record.key,
                 question_text=record.feature("question"),
@@ -936,5 +937,73 @@ class QAModelContext(ModelContext):
 
 @entrypoint("qa_model")
 class QAModel(Model):
+    """
+    Implemented using `HuggingFace Transformers <https://huggingface.co/transformers/index.html>`_ Pytorch based Models.
+    Description about pretrianed models can be found `here <https://huggingface.co/transformers/pretrained_models.html>`_
+
+    First we create the training and testing datasets
+
+    .. literalinclude:: /../model/transformers/examples/qa/train_data.sh
+
+    .. literalinclude:: /../model/transformers/examples/qa/test_data.sh
+
+    Train the model
+
+    .. literalinclude:: /../model/transformers/examples/qa/train.sh
+
+    Assess the accuracy
+
+    .. literalinclude:: /../model/transformers/examples/qa/accuracy.sh
+
+    Output
+
+    .. code-block::
+
+        0.0
+
+    Make a prediction
+
+    .. literalinclude:: /../model/transformers/examples/qa/predict.sh
+
+    Output
+
+    .. code-block:: json
+
+        [
+            {
+                "extra": {},
+                "features": {
+                    "answer_text": null,
+                    "answers": [
+                        {
+                            "answer_start": 0,
+                            "text": " "
+                        }
+                    ],
+                    "context": "Architecturally, the school has a Catholic character. Atop the Main Building's gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend \"Venite Ad Me Omnes\". Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.",
+                    "is_impossible": false,
+                    "question": "What sits on top of the Main Building at Notre Dame?",
+                    "start_pos_char": null,
+                    "title": "University_of_Notre_Dame"
+                },
+                "key": "5733be284776f4190066117e",
+                "last_updated": "2020-06-23T17:54:03Z",
+                "prediction": {
+                    "Answer": {
+                        "confidence": NaN,
+                        "value": {
+                            "5733be284776f4190066117e": "a copper statue of Christ"
+                        }
+                    }
+                }
+            }
+        ]
+
+    The model can be trained on large datasets to get the expected
+    output. The example shown above is to demonstrate the commandline usage
+    of the model.
+
+    """
+
     CONTEXT = QAModelContext
     CONFIG = QAModelConfig
