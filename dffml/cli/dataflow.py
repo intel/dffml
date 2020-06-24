@@ -426,6 +426,39 @@ class Diagram(CMD):
                             print(f"{seed_input_node} --> {input_node}")
                         else:
                             print(f"{seed_input_node} --> {node}")
+                    elif isinstance(source, dict) and isinstance(
+                        list(source.values())[0], list
+                    ):
+                        # Handle the case where the key is the origin (so
+                        # something like "seed") and the value is a list of
+                        # acceptable definitions from that origin.
+                        origin, definition_names = list(source.items())[0]
+                        for definition_name in definition_names:
+                            origin_definition_name = (
+                                origin + "." + definition_name
+                            )
+                            seed_input_node = hashlib.md5(
+                                origin_definition_name.encode()
+                            ).hexdigest()
+                            print(
+                                f"{seed_input_node}({origin_definition_name})"
+                            )
+                            if len(self.stages) == 1:
+                                print(
+                                    f"style {seed_input_node} fill:#f6dbf9,stroke:#a178ca"
+                                )
+                            if not self.simple:
+                                input_node = hashlib.md5(
+                                    (
+                                        "input."
+                                        + instance_name
+                                        + "."
+                                        + input_name
+                                    ).encode()
+                                ).hexdigest()
+                                print(f"{seed_input_node} --> {input_node}")
+                            else:
+                                print(f"{seed_input_node} --> {node}")
                     else:
                         if not self.simple:
                             source_output_node = hashlib.md5(
