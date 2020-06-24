@@ -49,3 +49,4 @@ seed:
     image: product
 - definition: multiplier_def
   value: 0.00392156862
+
