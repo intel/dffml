@@ -11,7 +11,7 @@ import contextlib
 import subprocess
 import unittest.mock
 
-from dffml import chdir, AsyncTestCase
+from dffml import chdir, IntegrationCLITestCase
 
 from dffml_service_http.cli import HTTPService
 from dffml_service_http.util.testing import ServerRunner
@@ -31,7 +31,7 @@ def directory_with_csv_files():
             yield tempdir
 
 
-class TestQuickstart(AsyncTestCase):
+class TestQuickstart(IntegrationCLITestCase):
     def python_test(self, filename):
         # Path to target file
         filepath = os.path.join(os.path.dirname(__file__), filename)
