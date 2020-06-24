@@ -42,6 +42,7 @@ $ dffml train \
     -model scikitlr \
     -model-features Years:int:1 Expertise:int:1 Trust:float:1 \
     -model-predict Salary \
+    -model-directory tempdir \
     -sources f=csv \
     -source-filename train.csv \
     -source-readonly \
@@ -50,6 +51,7 @@ $ dffml accuracy \
     -model scikitlr \
     -model-features Years:int:1 Expertise:int:1 Trust:float:1 \
     -model-predict Salary \
+    -model-directory tempdir \
     -sources f=csv \
     -source-filename test.csv \
     -source-readonly \
@@ -59,6 +61,7 @@ $ echo -e 'Years,Expertise,Trust\n6,13,1.4\n' | \
     -model scikitlr \
     -model-features Years:int:1 Expertise:int:1 Trust:float:1 \
     -model-predict Salary \
+    -model-directory tempdir \
     -sources f=csv \
     -source-filename /dev/stdin \
     -source-readonly \

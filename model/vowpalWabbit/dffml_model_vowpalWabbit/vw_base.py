@@ -35,6 +35,7 @@ class InputError(Exception):
 class VWConfig:
     features: Features
     predict: Feature = field("Feature to predict")
+    directory: Path = field("Directory where state should be saved")
     class_cost: Features = field(
         "Features with name `Cost_{class}` contaning cost of `class` for each input example, used when `csoaa` is used",
         default=None,
@@ -78,12 +79,6 @@ class VWConfig:
     convert_to_vw: bool = field(
         "Convert the input to vowpal wabbit standard input format",
         default=False,
-    )
-    directory: str = field(
-        "Directory where state should be saved",
-        default=os.path.join(
-            os.path.expanduser("~"), ".cache", "dffml", "vowpalWabbit"
-        ),
     )
 
     def __post_init__(self):
@@ -142,7 +137,6 @@ class VWContext(ModelContext):
                 for k, v in self.parent.config._asdict().items()
                 if k
                 not in [
-                    "directory",
                     "features",
                     "predict",
                     "vwcmd",

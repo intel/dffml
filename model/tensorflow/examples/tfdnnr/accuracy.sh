@@ -1,6 +1,7 @@
 dffml accuracy \
   -model tfdnnr \
   -model-predict TARGET:float:1 \
+  -model-directory tempdir \
   -model-hidden 8 16 8 \
   -sources s=csv \
   -source-filename test.csv \
