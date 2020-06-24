@@ -89,6 +89,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   parameter sets for an operation.
 - Typing of config vlaues for numpy parsed docstrings where type should be tuple
   or list
+- Update definition for directory input in shouldi python
 ### Removed
 - Monitor class and associated tests (unused)
 - DefinedFeature class in `dffml/feature/feature.py`
