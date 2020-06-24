@@ -27,6 +27,7 @@ CLI and other services.
     idx1
     source
     memory
+    dir
     log
     ini
     idx3

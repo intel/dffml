@@ -1,0 +1,5 @@
+Source Dir
+==========
+
+.. automodule:: dffml.source.dir
+   :members:
