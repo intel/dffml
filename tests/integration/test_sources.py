@@ -104,4 +104,4 @@ class TestCSV(IntegrationCLITestCase):
         self.assertIn("Salary", results["prediction"])
         results = results["prediction"]["Salary"]
         self.assertIn("value", results)
-        self.assertEqual(70.0, results["value"])
+        self.assertEqual(70, round(results["value"]))
