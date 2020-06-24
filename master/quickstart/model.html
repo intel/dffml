@@ -319,6 +319,7 @@ sources are. A detailed explanation of all the command line flags follows.</p>
   <span class="o">-</span><span class="n">model</span> <span class="n">scikitlr</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">training</span><span class="o">.</span><span class="n">csv</span>
 </pre></div>
@@ -328,6 +329,7 @@ sources are. A detailed explanation of all the command line flags follows.</p>
   <span class="o">-</span><span class="n">model</span> <span class="n">scikitlr</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span>
 </pre></div>
@@ -343,6 +345,7 @@ accuracy.</p>
   <span class="o">-</span><span class="n">model</span> <span class="n">scikitlr</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">predict</span><span class="o">.</span><span class="n">csv</span>
 </pre></div>
@@ -477,6 +480,7 @@ each this way.</p></li>
         <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="p">),</span>
     <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -532,6 +536,7 @@ supply the filenames in place of the data.</p>
         <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="p">),</span>
     <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -569,6 +574,7 @@ supply the filenames in place of the data.</p>
             <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
         <span class="p">),</span>
         <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># Train the model</span>
@@ -624,7 +630,8 @@ you get up and running.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">service</span> <span class="n">http</span> <span class="n">server</span> <span class="o">-</span><span class="n">insecure</span> <span class="o">-</span><span class="n">cors</span> <span class="s1">&#39;*&#39;</span> <span class="o">-</span><span class="n">addr</span> <span class="mf">0.0</span><span class="o">.</span><span class="mf">0.0</span> <span class="o">-</span><span class="n">port</span> <span class="mi">8080</span> \
   <span class="o">-</span><span class="n">models</span> <span class="n">mymodel</span><span class="o">=</span><span class="n">scikitlr</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span>
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span>
 </pre></div>
 </div>
 <p>We can then ask the HTTP service to make predictions, or do training or accuracy

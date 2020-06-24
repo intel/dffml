@@ -326,6 +326,7 @@ path to directory or Git repo URL and runs the appropriate static analyzers.</p>
 <li><p>Operation to verify secret for GitHub webhook.</p></li>
 <li><p>Option to modify flow and add config in <code class="docutils literal notranslate"><span class="pre">dataflow</span> <span class="pre">create</span></code>.</p></li>
 <li><p>Ability to use a function as a data source via the <code class="docutils literal notranslate"><span class="pre">op</span></code> source</p></li>
+<li><p>Make every model’s directory property required</p></li>
 </ul>
 </div>
 <div class="section" id="changed">
@@ -359,6 +360,7 @@ CI due to their randomly initialized weights making them fail ~2% of the time</p
 features were found</p></li>
 <li><p>Split out model tutorial into writing the model, and another tutorial for
 packaging the model.</p></li>
+<li><p>IntegrationCLITestCase creates a new directory and chdir into it for each test</p></li>
 </ul>
 </div>
 <div class="section" id="fixed">

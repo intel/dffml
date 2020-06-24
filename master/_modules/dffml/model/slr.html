@@ -232,10 +232,7 @@
 <span class="k">class</span> <span class="nc">SLRModelConfig</span><span class="p">:</span>
     <span class="n">predict</span><span class="p">:</span> <span class="n">Feature</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Label or the value to be predicted&quot;</span><span class="p">)</span>
     <span class="n">features</span><span class="p">:</span> <span class="n">Features</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Features to train on. For SLR only 1 allowed&quot;</span><span class="p">)</span>
-    <span class="n">directory</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
-        <span class="s2">&quot;Directory where state should be saved&quot;</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.cache&quot;</span><span class="p">,</span> <span class="s2">&quot;dffml&quot;</span><span class="p">,</span> <span class="s2">&quot;slr&quot;</span><span class="p">),</span>
-    <span class="p">)</span></div>
+    <span class="n">directory</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;Directory where state should be saved&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SLRModel"><a class="viewcode-back" href="../../../api/model/slr.html#dffml.model.slr.SLRModel">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;slr&quot;</span><span class="p">)</span>

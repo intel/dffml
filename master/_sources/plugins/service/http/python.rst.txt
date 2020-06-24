@@ -16,6 +16,7 @@ This is an example of how you can use the web API from Python.
           Feature("Trust", float, 1),
       ),
       predict=Feature("Salary", int, 1),
+      directory="tempdir",
   )
 
   ## Configure model
