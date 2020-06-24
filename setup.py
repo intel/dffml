@@ -89,7 +89,7 @@ setup(
         ],
         **EXTRAS_REQUIRES,
     },
-    tests_require=["httptest>=0.0.15"],
+    tests_require=["httptest>=0.0.15", "Pillow>=7.1.2", "numpy>=1.16.2",],
     entry_points={
         "console_scripts": ["dffml = dffml.cli.cli:CLI.main"],
         "dffml.source": [
@@ -102,6 +102,7 @@ setup(
             "ini = dffml.source.ini:INISource",
             "df = dffml.source.df:DataFlowSource",
             "op = dffml.source.op:OpSource",
+            "dir = dffml.source.dir:DirectorySource",
         ],
         "dffml.port": ["json = dffml.port.json:JSON"],
         "dffml.service.cli": ["dev = dffml.service.dev:Develop"],
