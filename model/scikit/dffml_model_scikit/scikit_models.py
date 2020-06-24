@@ -17,6 +17,7 @@ from sklearn.gaussian_process import (
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 from sklearn.ensemble import (
     RandomForestClassifier,
+    RandomForestRegressor,
     AdaBoostClassifier,
     GradientBoostingClassifier,
     ExtraTreesClassifier,
@@ -72,6 +73,7 @@ for entry_point_name, name, cls in [
     ("scikitgpc", "GaussianProcessClassifier", GaussianProcessClassifier,),
     ("scikitdtc", "DecisionTreeClassifier", DecisionTreeClassifier,),
     ("scikitrfc", "RandomForestClassifier", RandomForestClassifier,),
+    ("scikitrfr", "RandomForestRegressor", RandomForestRegressor,),
     ("scikitmlp", "MLPClassifier", MLPClassifier),
     ("scikitgnb", "GaussianNB", GaussianNB),
     (
