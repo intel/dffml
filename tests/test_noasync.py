@@ -70,5 +70,5 @@ class TestML(IntegrationCLITestCase):
         predictions = [
             prediction for prediction in predict(model, predict_data)
         ]
-        self.assertEqual(predictions[0][2]["Salary"]["value"], 70)
-        self.assertEqual(predictions[1][2]["Salary"]["value"], 80)
+        self.assertEqual(round(predictions[0][2]["Salary"]["value"]), 70)
+        self.assertEqual(round(predictions[1][2]["Salary"]["value"]), 80)
