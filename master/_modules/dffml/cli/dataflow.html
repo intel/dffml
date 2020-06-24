@@ -608,6 +608,39 @@
                             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seed_input_node</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">input_node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seed_input_node</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+                        <span class="nb">list</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">list</span>
+                    <span class="p">):</span>
+                        <span class="c1"># Handle the case where the key is the origin (so</span>
+                        <span class="c1"># something like &quot;seed&quot;) and the value is a list of</span>
+                        <span class="c1"># acceptable definitions from that origin.</span>
+                        <span class="n">origin</span><span class="p">,</span> <span class="n">definition_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="k">for</span> <span class="n">definition_name</span> <span class="ow">in</span> <span class="n">definition_names</span><span class="p">:</span>
+                            <span class="n">origin_definition_name</span> <span class="o">=</span> <span class="p">(</span>
+                                <span class="n">origin</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">definition_name</span>
+                            <span class="p">)</span>
+                            <span class="n">seed_input_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
+                                <span class="n">origin_definition_name</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+                            <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                            <span class="nb">print</span><span class="p">(</span>
+                                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seed_input_node</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">origin_definition_name</span><span class="si">}</span><span class="s2">)&quot;</span>
+                            <span class="p">)</span>
+                            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stages</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                                <span class="nb">print</span><span class="p">(</span>
+                                    <span class="sa">f</span><span class="s2">&quot;style </span><span class="si">{</span><span class="n">seed_input_node</span><span class="si">}</span><span class="s2"> fill:#f6dbf9,stroke:#a178ca&quot;</span>
+                                <span class="p">)</span>
+                            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">simple</span><span class="p">:</span>
+                                <span class="n">input_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
+                                    <span class="p">(</span>
+                                        <span class="s2">&quot;input.&quot;</span>
+                                        <span class="o">+</span> <span class="n">instance_name</span>
+                                        <span class="o">+</span> <span class="s2">&quot;.&quot;</span>
+                                        <span class="o">+</span> <span class="n">input_name</span>
+                                    <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+                                <span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+                                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seed_input_node</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">input_node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">seed_input_node</span><span class="si">}</span><span class="s2"> --&gt; </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">simple</span><span class="p">:</span>
                             <span class="n">source_output_node</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span>
