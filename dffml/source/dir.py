@@ -69,11 +69,13 @@ class DirectorySource(MemorySource):
                 ).split(",")
 
         elif self.config.labels != ["unlabelled"]:
-            label_folders = list(
-                set(labels for labels in os.listdir(self.config.foldername))
-            )
+            label_folders = [
+                labels
+                for labels in os.listdir(self.config.foldername)
+                if os.path.isdir(os.path.join(self.config.foldername, labels))
+            ]
             # Check if all existing label folders are given to `labels` list
-            if label_folders > self.config.labels:
+            if set(label_folders) > set(self.config.labels):
                 self.logger.warning(
                     "All labels not specified. Folders present: %s \nLabels entered: %s",
                     label_folders,
@@ -88,7 +90,6 @@ class DirectorySource(MemorySource):
 
     async def load_fd(self):
         self.mem = {}
-        i = 0
 
         # Iterate over the labels list
         for label in self.config.labels:
@@ -105,8 +106,11 @@ class DirectorySource(MemorySource):
                 async with self.CONFIG_LOADER as cfgl:
                     _, feature_data = await cfgl.load_file(image_filename)
 
-                self.mem[str(i)] = Record(
-                    str(file_name),
+                if self.config.labels != ["unlabelled"]:
+                    file_name = label + "/" + file_name
+
+                self.mem[file_name] = Record(
+                    file_name,
                     data={
                         "features": {
                             self.config.feature: feature_data,
@@ -116,7 +120,6 @@ class DirectorySource(MemorySource):
                 )
 
                 if self.config.labels == ["unlabelled"]:
-                    del self.mem[str(i)].features()["label"]
+                    del self.mem[file_name].features()["label"]
 
-                i += 1
         self.logger.debug("%r loaded %d records", self, len(self.mem))

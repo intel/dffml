@@ -7,11 +7,13 @@ from PIL import Image
 import numpy as np
 
 from dffml.source.dir import DirectorySource, DirectorySourceConfig
-from dffml.util.asynctestcase import AsyncTestCase
+from dffml.util.asynctestcase import IntegrationCLITestCase
 from dffml.util.os import chdir
 
 
-class TestDirectorySource(AsyncTestCase):
+class TestDirectorySource(IntegrationCLITestCase):
+
+    REQUIRED_PLUGINS = ["dffml-config-png"]
     blank_image = Image.new(mode="RGB", size=(10, 10))
 
     @contextlib.contextmanager
