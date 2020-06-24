@@ -5,6 +5,7 @@ dffml train \
     -model-clstype int \
     -model-predict label:int:1 \
     -model-classifications $(seq 0 9) \
+    -model-directory tempdir \
     -model-features image:int:$((28 * 28)) \
     -sources images=df label=idx1 \
     -source-images-dataflow normalize.yaml \

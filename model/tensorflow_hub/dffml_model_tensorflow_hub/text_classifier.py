@@ -38,6 +38,7 @@ class TextClassifierConfig:
     predict: Feature = field("Feature name holding classification value")
     classifications: List[str] = field("Options for value of classification")
     features: Features = field("Features to train on")
+    directory: pathlib.Path = field("Directory where state should be saved")
     trainable: str = field(
         "Tweak pretrained model by training again", default=True
     )
@@ -65,10 +66,6 @@ class TextClassifierConfig:
     clstype: Type = field("Data type of classifications values", default=str)
     epochs: int = field(
         "Number of iterations to pass over all records in a source", default=10
-    )
-    directory: pathlib.Path = field(
-        "Directory where state should be saved",
-        default=pathlib.Path("~", ".cache", "dffml", "tensorflow_hub"),
     )
 
     def __post_init__(self):

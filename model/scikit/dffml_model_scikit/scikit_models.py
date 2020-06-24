@@ -129,12 +129,7 @@ for entry_point_name, name, cls in [
         **{
             "directory": (
                 pathlib.Path,
-                field(
-                    "Directory where state should be saved",
-                    default=pathlib.Path(
-                        "~", ".cache", "dffml", f"scikit-{entry_point_name}"
-                    ),
-                ),
+                field("Directory where state should be saved",),
             ),
             "features": (Features, field("Features to train on")),
         },

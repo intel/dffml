@@ -187,11 +187,7 @@ class SimpleModel(Model):
         if "features" in exported:
             exported["features"] = dict(sorted(exported["features"].items()))
         # Hash the exported config
-        return pathlib.Path(
-            self.config.directory,
-            hashlib.sha384(json.dumps(exported).encode()).hexdigest()
-            + (extention if extention else ""),
-        )
+        return pathlib.Path(self.config.directory, "Model",)
 
     def applicable_features(self, features):
         usable = []

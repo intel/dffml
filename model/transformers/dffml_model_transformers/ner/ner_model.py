@@ -47,9 +47,9 @@ class NERModelConfig:
     )
     output_dir: str = field(
         "The output directory where the model checkpoints will be written",
-        default=str(
-            pathlib.Path("~", ".cache", "dffml", "transformers", "checkpoints")
-        ),
+    )
+    cache_dir: str = field(
+        "Directory to store the pre-trained models downloaded from s3",
     )
     config_name: str = field(
         "Pretrained config name or path if not the same as model_name",
@@ -58,10 +58,6 @@ class NERModelConfig:
     tokenizer_name: str = field(
         "Pretrained tokenizer name or path if not the same as model_name",
         default=None,
-    )
-    cache_dir: str = field(
-        "Directory to store the pre-trained models downloaded from s3",
-        default=str(pathlib.Path("~", ".cache", "dffml", "transformers")),
     )
     overwrite_output_dir: bool = field(
         "Overwrite the content of the output directory.Use this to continue training if output_dir points to a checkpoint directory.",

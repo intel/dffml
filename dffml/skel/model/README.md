@@ -18,6 +18,7 @@ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,Petal
 head iris_training.csv
 dffml train \
   -model model_name \
+  -model-directory tempdir \
   -sources csv=iris_training.csv \
   -classifications 0 1 2 \
   -model-features \
@@ -30,6 +31,7 @@ dffml train \
   -log debug
 dffml accuracy \
   -model model_name \
+  -model-directory tempdir \
   -sources csv=iris_training.csv \
   -classifications 0 1 2 \
   -model-features \
@@ -40,6 +42,7 @@ dffml accuracy \
   -log critical
 dffml predict all \
   -model model_name \
+  -model-directory tempdir \
   -sources csv=iris_test.csv \
   -classifications 0 1 2 \
   -model-features \

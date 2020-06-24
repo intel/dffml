@@ -360,6 +360,7 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
     ...         Feature("Years", int, 1),
     ...     ),
     ...     predict=Feature("Salary", int, 1),
+    ...     directory="tempdir",
     ... )
     >>>
     >>> async def main():
@@ -416,6 +417,7 @@ async def accuracy(
     ...         Feature("Years", int, 1),
     ...     ),
     ...     predict=Feature("Salary", int, 1),
+    ...     directory="tempdir",
     ... )
     >>>
     >>> async def main():
@@ -480,6 +482,7 @@ async def predict(
     ...         Feature("Years", int, 1),
     ...     ),
     ...     predict=Feature("Salary", int, 1),
+    ...     directory="tempdir",
     ... )
     >>>
     >>> async def main():
