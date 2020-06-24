@@ -771,7 +771,7 @@ class DataFlow:
                 for i, definition_name in enumerate(operation[arg]):
                     if not definition_name in definitions:
                         raise DefinitionMissing(
-                            f"While resolving {instance_name}.{arg}, missing {definition_name}"
+                            f"While resolving {instance_name}.{arg}, missing {definition_name} not found in {definitions.keys()}"
                         )
                     operation[arg][i] = definitions[definition_name]
             for arg in ["inputs", "outputs"]:
@@ -780,7 +780,7 @@ class DataFlow:
                 for input_name, definition_name in operation[arg].items():
                     if not definition_name in definitions:
                         raise DefinitionMissing(
-                            f"While resolving {instance_name}.{arg}, missing {definition_name}"
+                            f"While resolving {instance_name}.{arg}, missing {definition_name} not found in {definitions.keys()}"
                         )
                     operation[arg][input_name] = definitions[definition_name]
             operation.setdefault("name", name)
@@ -788,7 +788,7 @@ class DataFlow:
             # Replaces strings referencing definitions with definitions
             if not item["definition"] in definitions:
                 raise DefinitionMissing(
-                    f"While resolving {instance_name}.{arg}, missing {definition_name}"
+                    f"While resolving seed {item}, definition {item['definition']} not found in {definitions.keys()}"
                 )
             item["definition"] = definitions[item["definition"]]
         return source
