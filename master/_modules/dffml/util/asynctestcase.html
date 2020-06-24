@@ -209,6 +209,7 @@
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
+<span class="kn">from</span> <span class="nn">.os</span> <span class="kn">import</span> <span class="n">chdir</span>
 <span class="kn">from</span> <span class="nn">.packaging</span> <span class="kn">import</span> <span class="n">is_develop</span>
 
 
@@ -331,7 +332,8 @@
 <div class="viewcode-block" id="IntegrationCLITestCase.setUp"><a class="viewcode-back" href="../../../api/util/asynctestcase.html#dffml.util.asynctestcase.IntegrationCLITestCase.setUp">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">required_plugins</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">REQUIRED_PLUGINS</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stack</span><span class="o">.</span><span class="n">enter_context</span><span class="p">(</span><span class="n">chdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mktempdir</span><span class="p">()))</span></div>
 
     <span class="k">def</span> <span class="nf">required_plugins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">is_develop</span><span class="p">,</span> <span class="n">args</span><span class="p">)):</span>

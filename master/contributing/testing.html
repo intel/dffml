@@ -119,6 +119,7 @@
 <li class="toctree-l2"><a class="reference internal" href="codebase.html">Codebase Layout And Notes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="git.html">Git and GitHub</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Testing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#writing-tests">Writing Tests</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#running-ci-tests-locally">Running CI Tests Locally</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#debug-logging">Debug Logging</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#test-coverage">Test Coverage</a></li>
@@ -218,6 +219,16 @@ tests.</p>
 <p>To run a specific test, use the <code class="docutils literal notranslate"><span class="pre">-s</span></code> flag.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 setup.py <span class="nb">test</span> -s tests.test_cli.TestPredict.test_record
 </pre></div>
+</div>
+<div class="section" id="writing-tests">
+<h2>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">¶</a></h2>
+<p>If your test is within the main package, aka <code class="docutils literal notranslate"><span class="pre">tests/</span></code>, and you need to use a
+plugin within your test, you should subclass from <code class="docutils literal notranslate"><span class="pre">IntegrationCLITestCase</span></code>.</p>
+<p>For example if you need test something where you had to load a PNG, you’d do</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span> <span class="nf">test_something_with_a_png</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+   <span class="bp">self</span><span class="o">.</span><span class="n">required_plugins</span><span class="p">(</span><span class="s2">&quot;dffml-config-png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="running-ci-tests-locally">
 <span id="id1"></span><h2>Running CI Tests Locally<a class="headerlink" href="#running-ci-tests-locally" title="Permalink to this headline">¶</a></h2>

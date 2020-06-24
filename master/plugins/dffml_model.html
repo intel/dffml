@@ -243,6 +243,7 @@ abstract the usage of machine learning models.</p>
   <span class="o">-</span><span class="n">model</span> <span class="n">slr</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">f1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">ans</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">dataset</span><span class="o">.</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
@@ -253,6 +254,7 @@ abstract the usage of machine learning models.</p>
   <span class="o">-</span><span class="n">model</span> <span class="n">slr</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">f1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">ans</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">dataset</span><span class="o">.</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
@@ -268,6 +270,7 @@ abstract the usage of machine learning models.</p>
   <span class="o">-</span><span class="n">model</span> <span class="n">slr</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">f1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">ans</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">stdin</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
@@ -298,7 +301,9 @@ abstract the usage of machine learning models.</p>
 <span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">train</span><span class="p">,</span> <span class="n">accuracy</span><span class="p">,</span> <span class="n">predict</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">SLRModel</span><span class="p">(</span>
-    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;ans&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;ans&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -327,7 +332,6 @@ abstract the usage of machine learning models.</p>
 </li>
 <li><p>directory: Path</p>
 <ul>
-<li><p>default: ~/.cache/dffml/slr</p></li>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
@@ -367,6 +371,7 @@ look for a different saved model.</p>
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">3000</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">steps</span> <span class="mi">20000</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">classification</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">iris</span><span class="o">=</span><span class="n">csv</span> \
@@ -383,6 +388,7 @@ look for a different saved model.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
   <span class="o">-</span><span class="n">model</span> <span class="n">tfdnnc</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">classification</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">iris</span><span class="o">=</span><span class="n">csv</span> \
@@ -404,6 +410,7 @@ look for a different saved model.</p>
 <span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
   <span class="o">-</span><span class="n">model</span> <span class="n">tfdnnc</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">classification</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">2</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">iris</span><span class="o">=</span><span class="n">csv</span> \
@@ -456,6 +463,7 @@ look for a different saved model.</p>
     <span class="n">steps</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span>
     <span class="n">classifications</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
     <span class="n">clstype</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -496,6 +504,11 @@ look for a different saved model.</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
+<li><p>directory: Path</p>
+<ul>
+<li><p>Directory where state should be saved</p></li>
+</ul>
+</li>
 <li><p>steps: Integer</p>
 <ul>
 <li><p>default: 3000</p></li>
@@ -506,12 +519,6 @@ look for a different saved model.</p>
 <ul>
 <li><p>default: 30</p></li>
 <li><p>Number of iterations to pass over all records in a source</p></li>
-</ul>
-</li>
-<li><p>directory: Path</p>
-<ul>
-<li><p>default: ~/.cache/dffml/tensorflow</p></li>
-<li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
 <li><p>hidden: List of integers</p>
@@ -585,6 +592,7 @@ from where this command is run as it overwrites any existing files.</p></li>
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">300</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">steps</span> <span class="mi">2000</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">TARGET</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">hidden</span> <span class="mi">8</span> <span class="mi">16</span> <span class="mi">8</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> \
@@ -598,6 +606,7 @@ from where this command is run as it overwrites any existing files.</p></li>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
   <span class="o">-</span><span class="n">model</span> <span class="n">tfdnnr</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">TARGET</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">hidden</span> <span class="mi">8</span> <span class="mi">16</span> <span class="mi">8</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> \
@@ -616,6 +625,7 @@ from where this command is run as it overwrites any existing files.</p></li>
   <span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
   <span class="o">-</span><span class="n">model</span> <span class="n">tfdnnr</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">TARGET</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">hidden</span> <span class="mi">8</span> <span class="mi">16</span> <span class="mi">8</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">stdin</span> \
@@ -659,6 +669,7 @@ from where this command is run as it overwrites any existing files.</p></li>
     <span class="n">epochs</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
     <span class="n">steps</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
     <span class="n">hidden</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -689,6 +700,11 @@ predict).</p>
 <li><p>Features to train on</p></li>
 </ul>
 </li>
+<li><p>directory: Path</p>
+<ul>
+<li><p>Directory where state should be saved</p></li>
+</ul>
+</li>
 <li><p>steps: Integer</p>
 <ul>
 <li><p>default: 3000</p></li>
@@ -699,12 +715,6 @@ predict).</p>
 <ul>
 <li><p>default: 30</p></li>
 <li><p>Number of iterations to pass over all records in a source</p></li>
-</ul>
-</li>
-<li><p>directory: Path</p>
-<ul>
-<li><p>default: ~/.cache/dffml/tensorflow</p></li>
-<li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
 <li><p>hidden: List of integers</p>
@@ -748,6 +758,7 @@ EOF
   <span class="o">-</span><span class="n">model</span> <span class="n">text_classifier</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">epochs</span> <span class="mi">30</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
@@ -764,6 +775,7 @@ EOF
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
   <span class="o">-</span><span class="n">model</span> <span class="n">text_classifier</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_path</span> <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
@@ -782,6 +794,7 @@ EOF
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
   <span class="o">-</span><span class="n">model</span> <span class="n">text_classifier</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">sentiment</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">classifications</span> <span class="mi">0</span> <span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_path</span> <span class="s2">&quot;https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1&quot;</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">clstype</span> <span class="nb">int</span> \
@@ -837,6 +850,7 @@ EOF
     <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;sentiment&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="n">classifications</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
     <span class="n">clstype</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -868,6 +882,11 @@ EOF
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
+</ul>
+</li>
+<li><p>directory: Path</p>
+<ul>
+<li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
 <li><p>trainable: String</p>
@@ -934,12 +953,6 @@ EOF
 <ul>
 <li><p>default: 10</p></li>
 <li><p>Number of iterations to pass over all records in a source</p></li>
-</ul>
-</li>
-<li><p>directory: Path</p>
-<ul>
-<li><p>default: ~/.cache/dffml/tensorflow_hub</p></li>
-<li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
 </ul>
@@ -1349,6 +1362,8 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">sid</span> <span class="n">SentenceId</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">words</span> <span class="n">Words</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Tag</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">temp_output_dir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">temp_cache_dir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">1</span> \
@@ -1363,6 +1378,8 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">sid</span> <span class="n">SentenceId</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">words</span> <span class="n">Words</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Tag</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">temp_output_dir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">temp_cache_dir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
@@ -1380,6 +1397,8 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">sid</span> <span class="n">SentenceId</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">words</span> <span class="n">Words</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Tag</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">temp_output_dir</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">temp_cache_dir</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">no_cuda</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
@@ -1467,6 +1486,8 @@ of the model.</p>
     <span class="n">model_name_or_path</span><span class="o">=</span><span class="s2">&quot;distilbert-base-cased&quot;</span><span class="p">,</span>
     <span class="n">epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">no_cuda</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;temp_output_dir&quot;</span><span class="p">,</span>
+    <span class="n">cache_dir</span><span class="o">=</span><span class="s2">&quot;temp_cache_dir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -1509,8 +1530,12 @@ of the model.</p>
 </li>
 <li><p>output_dir: String</p>
 <ul>
-<li><p>default: ~/.cache/dffml/transformers/checkpoints</p></li>
 <li><p>The output directory where the model checkpoints will be written</p></li>
+</ul>
+</li>
+<li><p>cache_dir: String</p>
+<ul>
+<li><p>Directory to store the pre-trained models downloaded from s3</p></li>
 </ul>
 </li>
 <li><p>config_name: String</p>
@@ -1523,12 +1548,6 @@ of the model.</p>
 <ul>
 <li><p>default: None</p></li>
 <li><p>Pretrained tokenizer name or path if not the same as model_name</p></li>
-</ul>
-</li>
-<li><p>cache_dir: String</p>
-<ul>
-<li><p>default: ~/.cache/dffml/transformers</p></li>
-<li><p>Directory to store the pre-trained models downloaded from s3</p></li>
 </ul>
 </li>
 <li><p>overwrite_output_dir: String</p>
@@ -1769,6 +1788,7 @@ of the model.</p>
   <span class="o">-</span><span class="n">model</span> <span class="n">scratchlgrsag</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">f1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">ans</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">dataset</span><span class="o">.</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
@@ -1779,6 +1799,7 @@ of the model.</p>
   <span class="o">-</span><span class="n">model</span> <span class="n">scratchlgrsag</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">f1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">ans</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">dataset</span><span class="o">.</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
@@ -1794,6 +1815,7 @@ of the model.</p>
   <span class="o">-</span><span class="n">model</span> <span class="n">scratchlgrsag</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">f1</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">ans</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">stdin</span> \
   <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
@@ -1825,7 +1847,9 @@ of the model.</p>
 <span class="kn">from</span> <span class="nn">dffml_model_scratch.logisticregression</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span>
-    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;ans&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">features</span><span class="o">=</span><span class="n">Features</span><span class="p">(</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;f1&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+    <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;ans&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -1854,7 +1878,6 @@ of the model.</p>
 </li>
 <li><p>directory: Path</p>
 <ul>
-<li><p>default: ~/.cache/dffml/scratch</p></li>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
@@ -1875,6 +1898,7 @@ their feature names.</p>
     -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
     -model-features FEATURE_DEFINITION <span class="se">\</span>
     -model-predict TO_PREDICT <span class="se">\</span>
+    -model-directory MODEL_DIRECTORY <span class="se">\</span>
     -model-SCIKIT_PARAMETER_NAME SCIKIT_PARAMETER_VALUE <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>TRAINING_DATA_SOURCE_TYPE <span class="se">\</span>
     -source-filename TRAINING_DATA_FILE_NAME <span class="se">\</span>
@@ -1886,6 +1910,7 @@ their feature names.</p>
     -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
     -model-features FEATURE_DEFINITION <span class="se">\</span>
     -model-predict TO_PREDICT <span class="se">\</span>
+    -model-directory MODEL_DIRECTORY <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>TESTING_DATA_SOURCE_TYPE <span class="se">\</span>
     -source-filename TESTING_DATA_FILE_NAME <span class="se">\</span>
     -log debug
@@ -1896,6 +1921,7 @@ their feature names.</p>
     -model SCIKIT_MODEL_ENTRYPOINT <span class="se">\</span>
     -model-features FEATURE_DEFINITION <span class="se">\</span>
     -model-predict TO_PREDICT <span class="se">\</span>
+    -model-directory MODEL_DIRECTORY <span class="se">\</span>
     -sources <span class="nv">f</span><span class="o">=</span>PREDICT_DATA_SOURCE_TYPE <span class="se">\</span>
     -source-filename PREDICT_DATA_FILE_NAME <span class="se">\</span>
     -log debug
@@ -1917,7 +1943,7 @@ their feature names.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td rowspan="11"><p>Regression</p></td>
+<tr class="row-even"><td rowspan="12"><p>Regression</p></td>
 <td><p>LinearRegression</p></td>
 <td><p>scikitlr</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression/">scikitlr</a></p></td>
@@ -1926,137 +1952,141 @@ their feature names.</p>
 <td><p>scikiteln</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ElasticNet.html#sklearn.linear_model.ElasticNet/">scikiteln</a></p></td>
 </tr>
-<tr class="row-even"><td><p>BayesianRidge</p></td>
+<tr class="row-even"><td><p>RandomForestRegressor</p></td>
+<td><p>scikitrfr</p></td>
+<td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html">scikitrfr</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>BayesianRidge</p></td>
 <td><p>scikitbyr</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.BayesianRidge.html#sklearn.linear_model.BayesianRidge/">scikitbyr</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>Lasso</p></td>
+<tr class="row-even"><td><p>Lasso</p></td>
 <td><p>scikitlas</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso/">scikitlas</a></p></td>
 </tr>
-<tr class="row-even"><td><p>ARDRegression</p></td>
+<tr class="row-odd"><td><p>ARDRegression</p></td>
 <td><p>scikitard</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ARDRegression.html#sklearn.linear_model.ARDRegression/">scikitard</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>RANSACRegressor</p></td>
+<tr class="row-even"><td><p>RANSACRegressor</p></td>
 <td><p>scikitrsc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RANSACRegressor.html#sklearn.linear_model.RANSACRegressor/">scikitrsc</a></p></td>
 </tr>
-<tr class="row-even"><td><p>DecisionTreeRegressor</p></td>
+<tr class="row-odd"><td><p>DecisionTreeRegressor</p></td>
 <td><p>scikitdtr</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor/">scikitdtr</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>GaussianProcessRegressor</p></td>
+<tr class="row-even"><td><p>GaussianProcessRegressor</p></td>
 <td><p>scikitgpr</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.gaussian_process.GaussianProcessRegressor.html#sklearn.gaussian_process.GaussianProcessRegressor/">scikitgpr</a></p></td>
 </tr>
-<tr class="row-even"><td><p>OrthogonalMatchingPursuit</p></td>
+<tr class="row-odd"><td><p>OrthogonalMatchingPursuit</p></td>
 <td><p>scikitomp</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.OrthogonalMatchingPursuit.html#sklearn.linear_model.OrthogonalMatchingPursuit/">scikitomp</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>Lars</p></td>
+<tr class="row-even"><td><p>Lars</p></td>
 <td><p>scikitlars</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lars.html#sklearn.linear_model.Lars/">scikitlars</a></p></td>
 </tr>
-<tr class="row-even"><td><p>Ridge</p></td>
+<tr class="row-odd"><td><p>Ridge</p></td>
 <td><p>scikitridge</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge/">scikitridge</a></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="16"><p>Classification</p></td>
+<tr class="row-even"><td rowspan="16"><p>Classification</p></td>
 <td><p>KNeighborsClassifier</p></td>
 <td><p>scikitknn</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier/">scikitknn</a></p></td>
 </tr>
-<tr class="row-even"><td><p>AdaBoostClassifier</p></td>
+<tr class="row-odd"><td><p>AdaBoostClassifier</p></td>
 <td><p>scikitadaboost</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html#sklearn.ensemble.AdaBoostClassifier/">scikitadaboost</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>GaussianProcessClassifier</p></td>
+<tr class="row-even"><td><p>GaussianProcessClassifier</p></td>
 <td><p>scikitgpc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.gaussian_process.GaussianProcessClassifier.html#sklearn.gaussian_process.GaussianProcessClassifier/">scikitgpc</a></p></td>
 </tr>
-<tr class="row-even"><td><p>DecisionTreeClassifier</p></td>
+<tr class="row-odd"><td><p>DecisionTreeClassifier</p></td>
 <td><p>scikitdtc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier/">scikitdtc</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>RandomForestClassifier</p></td>
+<tr class="row-even"><td><p>RandomForestClassifier</p></td>
 <td><p>scikitrfc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier/">scikitrfc</a></p></td>
 </tr>
-<tr class="row-even"><td><p>QuadraticDiscriminantAnalysis</p></td>
+<tr class="row-odd"><td><p>QuadraticDiscriminantAnalysis</p></td>
 <td><p>scikitqda</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis.html#sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis/">scikitqda</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>MLPClassifier</p></td>
+<tr class="row-even"><td><p>MLPClassifier</p></td>
 <td><p>scikitmlp</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier/">scikitmlp</a></p></td>
 </tr>
-<tr class="row-even"><td><p>GaussianNB</p></td>
+<tr class="row-odd"><td><p>GaussianNB</p></td>
 <td><p>scikitgnb</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB/">scikitgnb</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>SVC</p></td>
+<tr class="row-even"><td><p>SVC</p></td>
 <td><p>scikitsvc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC/">scikitsvc</a></p></td>
 </tr>
-<tr class="row-even"><td><p>LogisticRegression</p></td>
+<tr class="row-odd"><td><p>LogisticRegression</p></td>
 <td><p>scikitlor</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression/">scikitlor</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>GradientBoostingClassifier</p></td>
+<tr class="row-even"><td><p>GradientBoostingClassifier</p></td>
 <td><p>scikitgbc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier/">scikitgbc</a></p></td>
 </tr>
-<tr class="row-even"><td><p>BernoulliNB</p></td>
+<tr class="row-odd"><td><p>BernoulliNB</p></td>
 <td><p>scikitbnb</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.BernoulliNB.html#sklearn.naive_bayes.BernoulliNB/">scikitbnb</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>ExtraTreesClassifier</p></td>
+<tr class="row-even"><td><p>ExtraTreesClassifier</p></td>
 <td><p>scikitetc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html#sklearn.ensemble.ExtraTreesClassifier/">scikitetc</a></p></td>
 </tr>
-<tr class="row-even"><td><p>BaggingClassifier</p></td>
+<tr class="row-odd"><td><p>BaggingClassifier</p></td>
 <td><p>scikitbgc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingClassifier.html#sklearn.ensemble.BaggingClassifier/">scikitbgc</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>LinearDiscriminantAnalysis</p></td>
+<tr class="row-even"><td><p>LinearDiscriminantAnalysis</p></td>
 <td><p>scikitlda</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html#sklearn.discriminant_analysis.LinearDiscriminantAnalysis/">scikitlda</a></p></td>
 </tr>
-<tr class="row-even"><td><p>MultinomialNB</p></td>
+<tr class="row-odd"><td><p>MultinomialNB</p></td>
 <td><p>scikitmnb</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.MultinomialNB.html#sklearn.naive_bayes.MultinomialNB/">scikitmnb</a></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="8"><p>Clustering</p></td>
+<tr class="row-even"><td rowspan="8"><p>Clustering</p></td>
 <td><p>KMeans</p></td>
 <td><p>scikitkmeans</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans/">scikitkmeans</a></p></td>
 </tr>
-<tr class="row-even"><td><p>Birch</p></td>
+<tr class="row-odd"><td><p>Birch</p></td>
 <td><p>scikitbirch</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.Birch.html#sklearn.cluster.Birch/">scikitbirch</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>MiniBatchKMeans</p></td>
+<tr class="row-even"><td><p>MiniBatchKMeans</p></td>
 <td><p>scikitmbkmeans</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MiniBatchKMeans.html#sklearn.cluster.MiniBatchKMeans/">scikitmbkmeans</a></p></td>
 </tr>
-<tr class="row-even"><td><p>AffinityPropagation</p></td>
+<tr class="row-odd"><td><p>AffinityPropagation</p></td>
 <td><p>scikitap</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AffinityPropagation.html#sklearn.cluster.AffinityPropagation/">scikitap</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>MeanShift</p></td>
+<tr class="row-even"><td><p>MeanShift</p></td>
 <td><p>scikitms</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MeanShift.html#sklearn.cluster.MeanShift/">scikitms</a></p></td>
 </tr>
-<tr class="row-even"><td><p>SpectralClustering</p></td>
+<tr class="row-odd"><td><p>SpectralClustering</p></td>
 <td><p>scikitsc</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.SpectralClustering.html#sklearn.cluster.SpectralClustering/">scikitsc</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>AgglomerativeClustering</p></td>
+<tr class="row-even"><td><p>AgglomerativeClustering</p></td>
 <td><p>scikitac</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering/">scikitac</a></p></td>
 </tr>
-<tr class="row-even"><td><p>OPTICS</p></td>
+<tr class="row-odd"><td><p>OPTICS</p></td>
 <td><p>scikitoptics</p></td>
 <td><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.OPTICS.html#sklearn.cluster.OPTICS/">scikitoptics</a></p></td>
 </tr>
@@ -2134,6 +2164,7 @@ their feature names.</p>
   <span class="o">-</span><span class="n">model</span> <span class="n">scikitlr</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span>
 </pre></div>
@@ -2143,6 +2174,7 @@ their feature names.</p>
   <span class="o">-</span><span class="n">model</span> <span class="n">scikitlr</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span>
 </pre></div>
@@ -2157,6 +2189,7 @@ their feature names.</p>
   <span class="o">-</span><span class="n">model</span> <span class="n">scikitlr</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Expertise</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> <span class="n">Trust</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">tempdir</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">stdin</span>
 </pre></div>
@@ -2194,6 +2227,7 @@ their feature names.</p>
         <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="p">),</span>
     <span class="n">predict</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -2233,6 +2267,7 @@ their feature names.</p>
 <span class="gp"> $</span> dffml train <span class="se">\</span>
      -model scikitkmeans <span class="se">\</span>
      -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 <span class="se">\</span>
+     -model-directory tempdir <span class="se">\</span>
      -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
      -source-filename train.csv <span class="se">\</span>
      -source-readonly <span class="se">\</span>
@@ -2241,6 +2276,7 @@ their feature names.</p>
      -model scikitkmeans <span class="se">\</span>
      -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1<span class="se">\</span>
      -model-tcluster cluster:int:1 <span class="se">\</span>
+     -model-directory tempdir <span class="se">\</span>
      -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
      -source-filename test.csv <span class="se">\</span>
      -source-readonly <span class="se">\</span>
@@ -2250,6 +2286,7 @@ their feature names.</p>
    dffml predict all <span class="se">\</span>
      -model scikitkmeans <span class="se">\</span>
      -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 <span class="se">\</span>
+     -model-directory tempdir <span class="se">\</span>
      -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
      -source-filename /dev/stdin <span class="se">\</span>
      -source-readonly <span class="se">\</span>
@@ -2285,7 +2322,8 @@ their feature names.</p>
         <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Col3&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
         <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Col4&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
     <span class="p">),</span>
-    <span class="n">tcluster</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;cluster&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">tcluster</span><span class="o">=</span><span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;cluster&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="n">directory</span><span class="o">=</span><span class="s2">&quot;tempdir&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Train the model</span>
@@ -2327,7 +2365,6 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
 </li>
 <li><p>directory: Path</p>
 <ul>
-<li><p>default: ~/.cache/dffml/scikit-{entrypoint}</p></li>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
@@ -2348,6 +2385,11 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
 <li><p>predict: Feature</p>
 <ul>
 <li><p>Feature to predict</p></li>
+</ul>
+</li>
+<li><p>directory: Path</p>
+<ul>
+<li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
 <li><p>class_cost: List of features</p>
@@ -2402,12 +2444,6 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
 <ul>
 <li><p>default: False</p></li>
 <li><p>Convert the input to vowpal wabbit standard input format</p></li>
-</ul>
-</li>
-<li><p>directory: String</p>
-<ul>
-<li><p>default: /home/runner/.cache/dffml/vowpalWabbit</p></li>
-<li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
 </ul>

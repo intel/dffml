@@ -90,7 +90,6 @@ Example usage of Logistic Regression using Python
 
 - directory: Path
 
-  - default: ~/.cache/dffml/slr
   - Directory where state should be saved
 
 .. _plugin_model_dffml_model_tensorflow:
@@ -186,6 +185,10 @@ Example usage of Tensorflow DNNClassifier model using python API
 
   - Features to train on
 
+- directory: Path
+
+  - Directory where state should be saved
+
 - steps: Integer
 
   - default: 3000
@@ -195,11 +198,6 @@ Example usage of Tensorflow DNNClassifier model using python API
 
   - default: 30
   - Number of iterations to pass over all records in a source
-
-- directory: Path
-
-  - default: ~/.cache/dffml/tensorflow
-  - Directory where state should be saved
 
 - hidden: List of integers
 
@@ -307,6 +305,10 @@ predict).
 
   - Features to train on
 
+- directory: Path
+
+  - Directory where state should be saved
+
 - steps: Integer
 
   - default: 3000
@@ -316,11 +318,6 @@ predict).
 
   - default: 30
   - Number of iterations to pass over all records in a source
-
-- directory: Path
-
-  - default: ~/.cache/dffml/tensorflow
-  - Directory where state should be saved
 
 - hidden: List of integers
 
@@ -426,6 +423,10 @@ Example usage of Tensorflow_hub Text Classifier model using python API
 
   - Features to train on
 
+- directory: Path
+
+  - Directory where state should be saved
+
 - trainable: String
 
   - default: True
@@ -480,11 +481,6 @@ Example usage of Tensorflow_hub Text Classifier model using python API
 
   - default: 10
   - Number of iterations to pass over all records in a source
-
-- directory: Path
-
-  - default: ~/.cache/dffml/tensorflow_hub
-  - Directory where state should be saved
 
 .. _plugin_model_dffml_model_transformers:
 
@@ -898,8 +894,11 @@ Example usage of NER model using python API
 
 - output_dir: String
 
-  - default: ~/.cache/dffml/transformers/checkpoints
   - The output directory where the model checkpoints will be written
+
+- cache_dir: String
+
+  - Directory to store the pre-trained models downloaded from s3
 
 - config_name: String
 
@@ -910,11 +909,6 @@ Example usage of NER model using python API
 
   - default: None
   - Pretrained tokenizer name or path if not the same as model_name
-
-- cache_dir: String
-
-  - default: ~/.cache/dffml/transformers
-  - Directory to store the pre-trained models downloaded from s3
 
 - overwrite_output_dir: String
 
@@ -1170,7 +1164,6 @@ Example usage of Logistic Regression using Python
 
 - directory: Path
 
-  - default: ~/.cache/dffml/scratch
   - Directory where state should be saved
 
 .. _plugin_model_dffml_model_scikit:
@@ -1197,6 +1190,7 @@ Training:
         -model SCIKIT_MODEL_ENTRYPOINT \
         -model-features FEATURE_DEFINITION \
         -model-predict TO_PREDICT \
+        -model-directory MODEL_DIRECTORY \
         -model-SCIKIT_PARAMETER_NAME SCIKIT_PARAMETER_VALUE \
         -sources f=TRAINING_DATA_SOURCE_TYPE \
         -source-filename TRAINING_DATA_FILE_NAME \
@@ -1210,6 +1204,7 @@ Testing and Accuracy:
         -model SCIKIT_MODEL_ENTRYPOINT \
         -model-features FEATURE_DEFINITION \
         -model-predict TO_PREDICT \
+        -model-directory MODEL_DIRECTORY \
         -sources f=TESTING_DATA_SOURCE_TYPE \
         -source-filename TESTING_DATA_FILE_NAME \
         -log debug
@@ -1222,6 +1217,7 @@ Predicting with trained model:
         -model SCIKIT_MODEL_ENTRYPOINT \
         -model-features FEATURE_DEFINITION \
         -model-predict TO_PREDICT \
+        -model-directory MODEL_DIRECTORY \
         -sources f=PREDICT_DATA_SOURCE_TYPE \
         -source-filename PREDICT_DATA_FILE_NAME \
         -log debug
@@ -1235,6 +1231,8 @@ Predicting with trained model:
 | Regression     | LinearRegression              | scikitlr       | `scikitlr <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression/>`_                                             |
 |                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |                | ElasticNet                    | scikiteln      | `scikiteln <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ElasticNet.html#sklearn.linear_model.ElasticNet/>`_                                                        |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | RandomForestRegressor         | scikitrfr      | `scikitrfr <https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html>`_                                                                                  |
 |                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 |                | BayesianRidge                 | scikitbyr      | `scikitbyr <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.BayesianRidge.html#sklearn.linear_model.BayesianRidge/>`_                                                  |
 |                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -1402,6 +1400,7 @@ Example below uses KMeans Clustering Model on a small randomly generated dataset
     $ dffml train \
         -model scikitkmeans \
         -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \
+        -model-directory tempdir \
         -sources f=csv \
         -source-filename train.csv \
         -source-readonly \
@@ -1410,6 +1409,7 @@ Example below uses KMeans Clustering Model on a small randomly generated dataset
         -model scikitkmeans \
         -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1\
         -model-tcluster cluster:int:1 \
+        -model-directory tempdir \
         -sources f=csv \
         -source-filename test.csv \
         -source-readonly \
@@ -1419,6 +1419,7 @@ Example below uses KMeans Clustering Model on a small randomly generated dataset
       dffml predict all \
         -model scikitkmeans \
         -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \
+        -model-directory tempdir \
         -sources f=csv \
         -source-filename /dev/stdin \
         -source-readonly \
@@ -1456,7 +1457,8 @@ Example usage of KMeans Clustering Model using python API:
             Feature("Col3", float, 1),
             Feature("Col4", float, 1),
         ),
-        tcluster=Feature("cluster", int, 1)
+        tcluster=Feature("cluster", int, 1),
+        directory="tempdir",
     )
 
     # Train the model
@@ -1495,7 +1497,6 @@ Ensure that `predict` and `accuracy` for these algorithms uses training data.
 
 - directory: Path
 
-  - default: ~/.cache/dffml/scikit-{entrypoint}
   - Directory where state should be saved
 
 
@@ -1526,6 +1527,10 @@ No description
 - predict: Feature
 
   - Feature to predict
+
+- directory: Path
+
+  - Directory where state should be saved
 
 - class_cost: List of features
 
@@ -1571,8 +1576,3 @@ No description
 
   - default: False
   - Convert the input to vowpal wabbit standard input format
-
-- directory: String
-
-  - default: /home/runner/.cache/dffml/vowpalWabbit
-  - Directory where state should be saved
