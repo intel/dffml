@@ -96,6 +96,32 @@ No description
 
   - default: MemoryOrchestrator(MemoryOrchestratorConfig(input_network=MemoryInputNetwork(MemoryInputNetworkConfig()), operation_network=MemoryOperationNetwork(MemoryOperationNetworkConfig(operations=[])), lock_network=MemoryLockNetwork(MemoryLockNetworkConfig()), opimp_network=MemoryOperationImplementationNetwork(MemoryOperationImplementationNetworkConfig(operations={})), rchecker=MemoryRedundancyChecker(MemoryRedundancyCheckerConfig(kvstore=MemoryKeyValueStore(MemoryKeyValueStoreConfig())))))
 
+.. _plugin_source_dffml_dir:
+
+dir
+~~~
+
+*Official*
+
+Source to read files in a folder.
+
+**Args**
+
+- foldername: String
+
+- feature: String
+
+  - Name of the feature the data will be referenced as
+
+- labels: List of strings
+
+  - default: ['unlabelled']
+  - Image labels
+
+- save: Entrypoint
+
+  - default: None
+
 .. _plugin_source_dffml_idx1:
 
 idx1

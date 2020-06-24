@@ -108,6 +108,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#csv">csv</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#db">db</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#df">df</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dir">dir</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#plugin-source-dffml-idx1">idx1</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#plugin-source-dffml-idx3">idx3</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ini">ini</a></li>
@@ -274,6 +275,31 @@ abstract the loading and storage of data / datasets.</p>
 <li><p>orchestrator: Entrypoint</p>
 <ul>
 <li><p>default: MemoryOrchestrator(MemoryOrchestratorConfig(input_network=MemoryInputNetwork(MemoryInputNetworkConfig()), operation_network=MemoryOperationNetwork(MemoryOperationNetworkConfig(operations=[])), lock_network=MemoryLockNetwork(MemoryLockNetworkConfig()), opimp_network=MemoryOperationImplementationNetwork(MemoryOperationImplementationNetworkConfig(operations={})), rchecker=MemoryRedundancyChecker(MemoryRedundancyCheckerConfig(kvstore=MemoryKeyValueStore(MemoryKeyValueStoreConfig())))))</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="dir">
+<span id="plugin-source-dffml-dir"></span><h3>dir<a class="headerlink" href="#dir" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Source to read files in a folder.</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>foldername: String</p></li>
+<li><p>feature: String</p>
+<ul>
+<li><p>Name of the feature the data will be referenced as</p></li>
+</ul>
+</li>
+<li><p>labels: List of strings</p>
+<ul>
+<li><p>default: [‘unlabelled’]</p></li>
+<li><p>Image labels</p></li>
+</ul>
+</li>
+<li><p>save: Entrypoint</p>
+<ul>
+<li><p>default: None</p></li>
 </ul>
 </li>
 </ul>
