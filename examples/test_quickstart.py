@@ -41,8 +41,8 @@ class TestQuickstart(AsyncTestCase):
         # Check the Accuracy
         self.assertIn("Accuracy: 1.0", lines[0])
         # Check the salary
-        self.assertEqual(ast.literal_eval(lines[1])["Salary"], 70)
-        self.assertEqual(ast.literal_eval(lines[2])["Salary"], 80)
+        self.assertEqual(round(ast.literal_eval(lines[1])["Salary"]), 70)
+        self.assertEqual(round(ast.literal_eval(lines[2])["Salary"]), 80)
 
     def test_python(self):
         self.python_test("quickstart.py")
@@ -68,10 +68,10 @@ class TestQuickstart(AsyncTestCase):
             records = json.loads(stdout.decode())
             # Check the salary
             self.assertEqual(
-                int(records[0]["prediction"]["Salary"]["value"]), 70
+                round(records[0]["prediction"]["Salary"]["value"]), 70
             )
             self.assertEqual(
-                int(records[1]["prediction"]["Salary"]["value"]), 80
+                round(records[1]["prediction"]["Salary"]["value"]), 80
             )
 
     async def test_http(self):
