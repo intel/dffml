@@ -380,13 +380,9 @@ class QAModelContext(ModelContext):
         if os.path.exists(self.parent.config.model_name_or_path):
             try:
                 # set global_step to gobal_step of last saved checkpoint from model path
-                checkpoint_suffix = pathlib.Path(self.parent.config.model_name_or_path.split(
-                    "-"
-                )[
-                    -1
-                ]).parts[
-                    0
-                ]
+                checkpoint_suffix = pathlib.Path(
+                    self.parent.config.model_name_or_path.split("-")[-1]
+                ).parts[0]
                 global_step = int(checkpoint_suffix)
                 epochs_trained = global_step // (
                     len(train_dataloader)
