@@ -27,8 +27,8 @@ and replace ``-`` with ``/``.
 
 .. code-block:: console
 
-    $ python3 -m pip install -U git+https://github.com/intel/dffml \
-        git+https://github.com/intel/dffml#subdirectory=model/scikit
+    $ python3 -m pip install -U git+https://github.com/intel/dffml#egg=dffml \
+        'git+https://github.com/intel/dffml#egg=dffml-model-scikit&subdirectory=model/scikit'
 
 If you want to install all of the machine learning model plugins that are
 maintained as a part of the core repository, you can append ``[models]``.

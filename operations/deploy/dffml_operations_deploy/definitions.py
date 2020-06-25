@@ -2,7 +2,9 @@ import sys
 from dffml.df.types import Definition
 
 definitions = [
-    Definition(name="git_payload", primitive="Dict[Any]"),
+    Definition(name="webhook_headers", primitive="Dict[str,Any]"),
+    Definition(name="payload", primitive="bytes"),
+    Definition(name="git_payload", primitive="Dict[str,Any]"),
     Definition(name="docker_image_id", primitive="str"),
     Definition(name="is_default_branch", primitive="bool"),
     Definition(name="docker_image_tag", primitive="str"),

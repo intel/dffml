@@ -66,23 +66,6 @@ class TestCreateTLS(AsyncTestCase):
 
 
 class TestServer(AsyncTestCase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls._exit_stack = contextlib.ExitStack()
-        cls.exit_stack = cls._exit_stack.__enter__()
-        cls.exit_stack.enter_context(
-            patch(
-                "dffml.df.base.OperationImplementation.load",
-                new=TestRoutesMultiComm.patch_operation_implementation_load,
-            )
-        )
-
-    @classmethod
-    def tearDownClass(cls):
-        super().tearDownClass()
-        cls._exit_stack.__exit__(None, None, None)
-
     def url(self, cli):
         return f"http://{cli.addr}:{cli.port}"
 

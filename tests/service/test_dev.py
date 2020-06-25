@@ -3,6 +3,7 @@ import os
 import sys
 import json
 import glob
+import shutil
 import inspect
 import tarfile
 import tempfile
@@ -86,6 +87,7 @@ class TestDevelopCreate(AsyncTestCase):
                     # Instantiate an instance of the CreateCMD class
                     cli = cli_class(
                         package=package_name,
+                        description=None,
                         target=target
                         if target[::-1].startswith(("dot")[::-1])
                         else None,
@@ -110,7 +112,8 @@ class TestDevelopCreate(AsyncTestCase):
 
     async def test_model(self):
         await self.generic_test(
-            "model", [("{import_name}", "misc.py"), ("tests", "test_model.py")]
+            "model",
+            [("{import_name}", "myslr.py"), ("tests", "test_model.py")],
         )
 
     async def test_operations(self):
@@ -264,14 +267,16 @@ class TestExport(AsyncTestCase):
     async def test_run(self):
         stdout = io.BytesIO()
         with unittest.mock.patch("sys.stdout.buffer.write", new=stdout.write):
-            await Export(export="tests.test_df:DATAFLOW").run()
+            await Export(
+                export="tests.test_df:DATAFLOW", not_linked=False
+            ).run()
         exported = json.loads(stdout.getvalue())
         DataFlow._fromdict(**exported)
 
 
 class TestRun(AsyncTestCase):
     async def test_run(self):
-        with tempfile.NamedTemporaryFile(suffix=".db") as sqlite_file:
+        with tempfile.TemporaryDirectory() as tempdir:
             await Run.cli(
                 "dffml.operation.db:db_query_create_table",
                 "-table_name",
@@ -281,7 +286,7 @@ class TestRun(AsyncTestCase):
                 "-config-database",
                 "sqlite",
                 "-config-database-filename",
-                sqlite_file.name,
+                os.path.join(tempdir, "sqlite_database.db"),
                 "-log",
                 "debug",
             )

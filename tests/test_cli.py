@@ -3,6 +3,7 @@
 import os
 import io
 import json
+import shutil
 import random
 import tempfile
 import contextlib
@@ -23,9 +24,11 @@ from dffml.util.asynctestcase import (
     AsyncExitStackTestCase,
     non_existant_tempfile,
 )
-from dffml.util.cli.cmds import ModelCMD
 from dffml.base import config
-from dffml.cli import Merge, Dataflow, Train, Accuracy, Predict, List
+from dffml.cli.cli import Merge
+from dffml.cli.ml import Train, Accuracy, Predict
+from dffml.cli.list import List
+from dffml.cli.dataflow import Dataflow
 
 from .test_df import OPERATIONS, OPIMPS
 
@@ -50,14 +53,8 @@ class RecordsTestCase(AsyncExitStackTestCase):
             "RecordsTestCase JSON file erroneously initialized as empty",
         )
         # TODO(p3) For some reason patching Model.load doesn't work
-        # self._stack.enter_context(patch("dffml.model.model.Model.load",
-        #     new=model_load))
         self._stack.enter_context(
-            patch.object(
-                ModelCMD,
-                "arg_model",
-                new=ModelCMD.arg_model.modify(type=model_load),
-            )
+            patch("dffml.model.model.Model.load", new=model_load)
         )
         self._stack.enter_context(
             patch("dffml.df.base.OperationImplementation.load", new=opimp_load)
@@ -123,14 +120,14 @@ def opimp_load(loading=None):
 class TestMerge(RecordsTestCase):
     async def test_json_tag(self):
         await Merge.cli(
-            "dest=json",
             "src=json",
+            "dest=json",
+            "-source-src-filename",
+            self.temp_filename,
             "-source-dest-filename",
             self.temp_filename,
             "-source-dest-tag",
             "sometag",
-            "-source-src-filename",
-            self.temp_filename,
             "-source-src-allowempty",
             "-source-dest-allowempty",
             "-source-src-readwrite",
@@ -156,14 +153,14 @@ class TestMerge(RecordsTestCase):
     async def test_json_to_csv(self):
         with non_existant_tempfile() as csv_tempfile:
             await Merge.cli(
-                "dest=csv",
                 "src=json",
+                "dest=csv",
+                "-source-src-filename",
+                self.temp_filename,
                 "-source-dest-filename",
                 csv_tempfile,
                 "-source-dest-key",
                 "key",
-                "-source-src-filename",
-                self.temp_filename,
                 "-source-src-allowempty",
                 "-source-dest-allowempty",
                 "-source-src-readwrite",
@@ -185,12 +182,12 @@ class TestMerge(RecordsTestCase):
             # Move the pre-populated json data to a csv source
             with self.subTest(json_to_csv=True):
                 await Merge.cli(
-                    "dest=csv",
                     "src=json",
-                    "-source-dest-filename",
-                    csv_tempfile,
+                    "dest=csv",
                     "-source-src-filename",
                     self.temp_filename,
+                    "-source-dest-filename",
+                    csv_tempfile,
                     "-source-src-allowempty",
                     "-source-dest-allowempty",
                     "-source-src-readwrite",
@@ -199,14 +196,14 @@ class TestMerge(RecordsTestCase):
             # Merge one tag to another within the same file
             with self.subTest(merge_same_file=True):
                 await Merge.cli(
-                    "dest=csv",
                     "src=csv",
+                    "dest=csv",
+                    "-source-src-filename",
+                    csv_tempfile,
                     "-source-dest-filename",
                     csv_tempfile,
                     "-source-dest-tag",
                     "sometag",
-                    "-source-src-filename",
-                    csv_tempfile,
                     "-source-src-allowempty",
                     "-source-dest-allowempty",
                     "-source-src-readwrite",
@@ -265,12 +262,15 @@ class TestDataflowRunAllRecords(RecordsTestCase):
             async with source() as sctx:
                 for record in self.records:
                     await sctx.update(record)
-        with tempfile.NamedTemporaryFile(suffix=".json") as dataflow_file:
+        tmpdir = tempfile.mkdtemp()
+        handle, dataflow_file = tempfile.mkstemp(suffix=".json", dir=tmpdir)
+        os.close(handle)
+        with open(dataflow_file, mode="w+b") as dataflow_file:
             dataflow = io.StringIO()
             with contextlib.redirect_stdout(dataflow):
                 await Dataflow.cli(
                     "create",
-                    "-config",
+                    "-configloader",
                     "json",
                     *map(lambda op: op.name, OPERATIONS),
                 )
@@ -300,6 +300,7 @@ class TestDataflowRunAllRecords(RecordsTestCase):
                 self.assertEqual(
                     self.record_keys[record.key], results[record.key]
                 )
+        shutil.rmtree(tmpdir)
 
 
 class TestDataflowRunRecordSet(RecordsTestCase):
@@ -312,12 +313,15 @@ class TestDataflowRunRecordSet(RecordsTestCase):
             async with source() as sctx:
                 for record in self.records:
                     await sctx.update(record)
-        with tempfile.NamedTemporaryFile(suffix=".json") as dataflow_file:
+        tmpdir = tempfile.mkdtemp()
+        handle, dataflow_file = tempfile.mkstemp(suffix=".json", dir=tmpdir)
+        os.close(handle)
+        with open(dataflow_file, mode="w+b") as dataflow_file:
             dataflow = io.StringIO()
             with contextlib.redirect_stdout(dataflow):
                 await Dataflow.cli(
                     "create",
-                    "-config",
+                    "-configloader",
                     "json",
                     *map(lambda op: op.name, OPERATIONS),
                 )
@@ -345,37 +349,38 @@ class TestDataflowRunRecordSet(RecordsTestCase):
             self.assertEqual(
                 self.record_keys[test_key], results[0].feature("result")
             )
+        shutil.rmtree(tmpdir)
 
 
 class TestTrain(RecordsTestCase):
     async def test_run(self):
         await Train.cli(
-            "-sources",
-            "primary=json",
-            "-source-filename",
-            self.temp_filename,
             "-model",
             "fake",
             "-model-features",
             "fake",
             "-model-predict",
             "fake",
+            "-sources",
+            "primary=json",
+            "-source-filename",
+            self.temp_filename,
         )
 
 
 class TestAccuracy(RecordsTestCase):
     async def test_run(self):
         result = await Accuracy.cli(
-            "-sources",
-            "primary=json",
-            "-source-filename",
-            self.temp_filename,
             "-model",
             "fake",
             "-model-features",
             "fake",
             "-model-predict",
             "fake",
+            "-sources",
+            "primary=json",
+            "-source-filename",
+            self.temp_filename,
         )
         self.assertEqual(result, 0.42)
 
@@ -384,16 +389,16 @@ class TestPredict(RecordsTestCase):
     async def test_all(self):
         results = await Predict.cli(
             "all",
-            "-sources",
-            "primary=json",
-            "-source-filename",
-            self.temp_filename,
             "-model",
             "fake",
             "-model-features",
             "fake:float:[10,0]",
             "-model-predict",
             "fake",
+            "-sources",
+            "primary=json",
+            "-source-filename",
+            self.temp_filename,
         )
         results = {
             record.key: record.prediction("fake").confidence
@@ -407,16 +412,16 @@ class TestPredict(RecordsTestCase):
         subset_urls = list(map(lambda record: record.key, subset))
         results = await Predict.cli(
             "record",
-            "-sources",
-            "primary=json",
-            "-source-filename",
-            self.temp_filename,
             "-model",
             "fake",
             "-model-predict",
             "fake",
             "-model-features",
             "fake",
+            "-sources",
+            "primary=json",
+            "-source-filename",
+            self.temp_filename,
             "-keys",
             *subset_urls,
         )

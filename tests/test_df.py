@@ -128,7 +128,12 @@ class TestMemoryOperationImplementationNetwork(AsyncTestCase):
     async def test_not_instantiable(self):
         async with self.operationsNetworkCtx() as ctx:
             with self.assertRaises(OperationImplementationNotInstantiable):
-                await ctx.run(None, None, add.op, {"numbers": [40, 2]})
+                await ctx.run(
+                    None,
+                    None,
+                    add.op._replace(name="add"),
+                    {"numbers": [40, 2]},
+                )
 
     async def test_instantiable_but_not_instantiated(self):
         async def return_true(*args, **kwargs):
@@ -262,12 +267,7 @@ class TestOperation(MockIterEntryPoints):
         loaded = Operation.load()
         self.assertIn(add.op, loaded)
         self.assertIn(mult.op, loaded)
-        try:
-            self.assertIn(parse_line.op, loaded)
-        except:
-            self.assertIn(
-                parse_line.op._replace(instance_name="parse_line"), loaded
-            )
+        self.assertIn(parse_line.imp.op, loaded)
 
     async def test_load_name_given(self):
         self.assertEqual(add.op, Operation.load("add"))
@@ -283,18 +283,28 @@ class TestDataFlow(MockIterEntryPoints):
         exported = DataFlow.auto(add).export(linked=True)
         # Operations
         self.assertIn("operations", exported)
-        self.assertIn("add", exported["operations"])
-        self.assertIn("inputs", exported["operations"]["add"])
-        self.assertIn("outputs", exported["operations"]["add"])
-        self.assertIn("conditions", exported["operations"]["add"])
-        self.assertIn("is_add", exported["operations"]["add"]["conditions"])
-        self.assertIn("numbers", exported["operations"]["add"]["inputs"])
-        self.assertEqual(
-            "numbers", exported["operations"]["add"]["inputs"]["numbers"]
+        self.assertIn("tests.test_df:add", exported["operations"])
+        self.assertIn("inputs", exported["operations"]["tests.test_df:add"])
+        self.assertIn("outputs", exported["operations"]["tests.test_df:add"])
+        self.assertIn(
+            "conditions", exported["operations"]["tests.test_df:add"]
         )
-        self.assertIn("sum", exported["operations"]["add"]["outputs"])
+        self.assertIn(
+            "is_add", exported["operations"]["tests.test_df:add"]["conditions"]
+        )
+        self.assertIn(
+            "numbers", exported["operations"]["tests.test_df:add"]["inputs"]
+        )
         self.assertEqual(
-            "result", exported["operations"]["add"]["outputs"]["sum"]
+            "numbers",
+            exported["operations"]["tests.test_df:add"]["inputs"]["numbers"],
+        )
+        self.assertIn(
+            "sum", exported["operations"]["tests.test_df:add"]["outputs"]
+        )
+        self.assertEqual(
+            "result",
+            exported["operations"]["tests.test_df:add"]["outputs"]["sum"],
         )
         # Definitions
         self.assertIn("definitions", exported)

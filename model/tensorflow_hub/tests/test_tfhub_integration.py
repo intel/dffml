@@ -52,6 +52,8 @@ class TestTextClassifier(IntegrationCLITestCase):
         # Features
         features = "-model-features text:str:1".split()
 
+        model_dir = self.mktempdir()
+
         # Train the model
         await CLI.cli(
             "train",
@@ -60,6 +62,8 @@ class TestTextClassifier(IntegrationCLITestCase):
             *features,
             "-model-predict",
             "sentiment:int:1",
+            "-model-directory",
+            model_dir,
             "-model-classifications",
             "0",
             "1",
@@ -78,6 +82,8 @@ class TestTextClassifier(IntegrationCLITestCase):
             *features,
             "-model-predict",
             "sentiment:int:1",
+            "-model-directory",
+            model_dir,
             "-model-classifications",
             "0",
             "1",
@@ -98,6 +104,8 @@ class TestTextClassifier(IntegrationCLITestCase):
                 *features,
                 "-model-predict",
                 "sentiment:int:1",
+                "-model-directory",
+                model_dir,
                 "-model-classifications",
                 "0",
                 "1",
@@ -134,6 +142,8 @@ class TestTextClassifier(IntegrationCLITestCase):
                 "text:str:1",
                 "-config-model-predict",
                 "sentiment:int:1",
+                "-config-model-directory",
+                model_dir,
                 "-config-model-classifications",
                 "0",
                 "1",

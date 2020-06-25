@@ -11,6 +11,8 @@ AUTHOR_NAME = "Himanshu Tripathi"
 AUTHOR_EMAIL = "himanshutripathi366@gmail.com"
 INSTALL_REQUIRES = [
     "vowpalwabbit>=8.8.1",
+    # See https://github.com/intel/dffml/issues/737
+    "scipy==1.4.1",
     "scikit-learn>=0.21.2",
     "pandas>=0.25.0",
 ] + (

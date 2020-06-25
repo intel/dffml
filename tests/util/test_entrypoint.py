@@ -1,10 +1,13 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
+import os
+import pathlib
 import unittest
 import pkg_resources
 from unittest.mock import patch
 from typing import Type
 
+from dffml.util.os import chdir
 from dffml.util.entrypoint import Entrypoint, EntrypointNotFound
 
 
@@ -56,3 +59,9 @@ class TestEntrypoint(unittest.TestCase):
             self.assertIn("one", loaded)
             self.assertNotIn("two", loaded)
             self.assertIn("three", loaded)
+
+    def test_load_relative(self):
+        path = pathlib.Path(__file__).relative_to(os.getcwd())
+        path = ".".join(list(path.parts[:-1]) + [path.stem])
+        loaded = Entrypoint.load(str(path) + ":FakeEntrypoint")
+        self.assertIs(loaded, FakeEntrypoint)

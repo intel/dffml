@@ -1,5 +1,6 @@
 import abc
 import inspect
+import collections
 import pkg_resources
 from typing import (
     AsyncIterator,
@@ -29,6 +30,14 @@ from ..util.cli.arg import Arg
 from ..util.data import get_origin, get_args
 from ..util.asynchelper import context_stacker
 from ..util.entrypoint import base_entry_point
+from ..util.entrypoint import load as load_entrypoint
+
+
+primitive_types = (int, float, str, bool, dict, list)
+# Used to convert python types in to their programming language agnostic
+# names
+# TODO Combine with logic in dffml.util.data
+primitive_convert = {dict: "map", list: "array"}
 
 
 class BaseDataFlowObjectContext(BaseDataFlowFacilitatorObjectContext):
@@ -146,13 +155,20 @@ class OperationImplementation(BaseDataFlowObject):
         None if its not an operation implemention or doesn't have the imp
         parameter which is an operation implemention.
         """
-        for obj in [loaded, getattr(loaded, "imp", None)]:
+        for obj in [getattr(loaded, "imp", None), loaded]:
             if inspect.isclass(obj) and issubclass(obj, cls):
                 return obj
+        if (
+            inspect.isfunction(loaded)
+            or inspect.isgeneratorfunction(loaded)
+            or inspect.iscoroutinefunction(loaded)
+            or inspect.isasyncgenfunction(loaded)
+        ):
+            return op(loaded).imp
         return None
 
     @classmethod
-    def load(cls, loading=None):
+    def load(cls, loading: str = None):
         loading_classes = []
         # Load operations
         for i in pkg_resources.iter_entry_points(cls.ENTRYPOINT):
@@ -164,6 +180,11 @@ class OperationImplementation(BaseDataFlowObject):
                 loaded = cls._imp(i.load())
                 if loaded is not None:
                     loading_classes.append(loaded)
+        # Loading from entrypoint if ":" is in name
+        if loading is not None and ":" in loading:
+            loaded = next(load_entrypoint(loading, relative=True))
+            loaded = cls._imp(loaded)
+            return loaded
         if loading is not None:
             raise FailedToLoadOperationImplementation(
                 "%s was not found in (%s)"
@@ -173,6 +194,55 @@ class OperationImplementation(BaseDataFlowObject):
                 )
             )
         return loading_classes
+
+
+def create_definition(name, param_annotation):
+    if param_annotation in primitive_types:
+        return Definition(
+            name=name,
+            primitive=primitive_convert.get(
+                param_annotation, param_annotation.__name__
+            ),
+        )
+    elif get_origin(param_annotation) in [
+        Union,
+        collections.abc.AsyncIterator,
+    ]:
+        # If the annotation is of the form Optional
+        return create_definition(name, list(get_args(param_annotation))[0])
+    elif (
+        get_origin(param_annotation) is list
+        or get_origin(param_annotation) is dict
+    ):
+        # If the annotation are of the form List[MyDataClass] or Dict[str, MyDataClass]
+        if get_origin(param_annotation) is list:
+            primitive = "array"
+            innerclass = list(get_args(param_annotation))[0]
+        else:
+            primitive = "map"
+            innerclass = list(get_args(param_annotation))[1]
+
+        if innerclass in primitive_types:
+            return Definition(name=name, primitive=primitive)
+        if is_dataclass(innerclass) or bool(
+            inspect.isclass(innerclass)
+            and issubclass(innerclass, tuple)
+            and hasattr(innerclass, "_asdict")
+        ):
+            return Definition(
+                name=name, primitive=primitive, spec=innerclass, subspec=True,
+            )
+    elif is_dataclass(param_annotation) or bool(
+        inspect.isclass(param_annotation)
+        and issubclass(param_annotation, tuple)
+        and hasattr(param_annotation, "_asdict")
+    ):
+        # If the annotation is either a dataclass or namedtuple
+        return Definition(name=name, primitive="map", spec=param_annotation,)
+
+    raise OpCouldNotDeterminePrimitive(
+        f"The primitive of {name} could not be determined"
+    )
 
 
 def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
@@ -216,10 +286,10 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
     ...     ],
     ...     definition=cannotVote.op.inputs["p"],
     ... )
-    Input(value=[Person(name='Bob', age=20), Person(name='Mark', age=21), Person(name='Alice', age=90)], definition=cannotVote.p)
+    Input(value=[Person(name='Bob', age=20), Person(name='Mark', age=21), Person(name='Alice', age=90)], definition=cannotVote.inputs.p)
     >>>
     >>> @op
-    ... def canVote(p: Dict[str, Person]):
+    ... def canVote(p: Dict[str, Person]) -> Dict[str, Person]:
     ...     return {
     ...         person.name: person
     ...         for person in filter(lambda person: person.age >= 18, p.values())
@@ -234,83 +304,36 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
     ...     },
     ...     definition=canVote.op.inputs["p"],
     ... )
-    Input(value={'Bob': Person(name='Bob', age=19), 'Alice': Person(name='Alice', age=21), 'Mark': Person(name='Mark', age=90)}, definition=canVote.p)
+    Input(value={'Bob': Person(name='Bob', age=19), 'Alice': Person(name='Alice', age=21), 'Mark': Person(name='Mark', age=90)}, definition=canVote.inputs.p)
+    >>>
+    >>> Input(
+    ...     value={
+    ...         "Bob": {"name": "Bob", "age": 19},
+    ...         "Alice": {"name": "Alice", "age": 21},
+    ...         "Mark": {"name": "Mark", "age": 90},
+    ...     },
+    ...     definition=canVote.op.outputs["result"],
+    ... )
+    Input(value={'Bob': Person(name='Bob', age=19), 'Alice': Person(name='Alice', age=21), 'Mark': Person(name='Mark', age=90)}, definition=canVote.outputs.result)
     """
 
     def wrap(func):
         if not "name" in kwargs:
-            kwargs["name"] = func.__name__
+            name = func.__name__
+            module_name = inspect.getmodule(func).__name__
+            if module_name != "__main__":
+                name = f"{module_name}:{name}"
+            # Check if it's already been registered as another name
+            for i in pkg_resources.iter_entry_points(Operation.ENTRYPOINT):
+                entrypoint_load_path = i.module_name + ":" + ".".join(i.attrs)
+                # If it has, then let that name take precedence
+                if entrypoint_load_path == name:
+                    name = i.name
+                    break
+            kwargs["name"] = name
         # TODO Make this grab from the defaults for Operation
         if not "conditions" in kwargs:
             kwargs["conditions"] = []
-
-        primitive_types = (int, float, str, bool, dict, list)
-        # Used to convert python types in to their programming language agnostic
-        # names
-        # TODO Combine with logic in dffml.util.data
-        primitive_convert = {dict: "map", list: "array"}
-
-        if not "inputs" in kwargs:
-            sig = inspect.signature(func)
-            kwargs["inputs"] = {}
-
-            for name, param in sig.parameters.items():
-                name_list = [func.__qualname__, name]
-                if func.__module__ != "__main__":
-                    name_list.insert(0, func.__module__)
-
-                if param.annotation in primitive_types:
-                    kwargs["inputs"][name] = Definition(
-                        name=".".join(name_list),
-                        primitive=primitive_convert.get(
-                            param.annotation, param.annotation.__name__
-                        ),
-                    )
-                elif (
-                    get_origin(param.annotation) is list
-                    or get_origin(param.annotation) is dict
-                ):
-                    # If the annotation are of the form List[MyDataClass] or Dict[Any, MyDataClass]
-                    if get_origin(param.annotation) is list:
-                        primitive = "array"
-                        innerclass = list(get_args(param.annotation))[0]
-                    else:
-                        primitive = "map"
-                        innerclass = list(get_args(param.annotation))[1]
-
-                    if is_dataclass(innerclass) or bool(
-                        issubclass(innerclass, tuple)
-                        and hasattr(innerclass, "_asdict")
-                    ):
-                        kwargs["inputs"][name] = Definition(
-                            name=".".join(name_list),
-                            primitive=primitive,
-                            spec=innerclass,
-                            subspec=True,
-                        )
-                elif is_dataclass(param.annotation) or bool(
-                    issubclass(param.annotation, tuple)
-                    and hasattr(param.annotation, "_asdict")
-                ):
-                    # If the annotation is either a dataclass or namedtuple
-                    kwargs["inputs"][name] = Definition(
-                        name=".".join(name_list),
-                        primitive="map",
-                        spec=param.annotation,
-                    )
-                else:
-                    raise OpCouldNotDeterminePrimitive(
-                        f"The primitive of {name} could not be determined"
-                    )
-
-        func.op = Operation(**kwargs)
-        func.ENTRY_POINT_NAME = ["operation"]
-        cls_name = (
-            func.op.name.replace(".", " ")
-            .replace("_", " ")
-            .title()
-            .replace(" ", "")
-        )
 
         sig = inspect.signature(func)
         # Check if the function uses the operation implementation context
@@ -327,11 +350,54 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
             )
         )
         # Check if the function uses the operation implementation config
+        # This exists because eventually we will make non async functions
+        # wrapped with op run with loop.run_in_executor when that happens it's
+        # likely that self won't be serializeable into the thread / process.
+        # Config's are guaranteed to be serializable, therefore this lets us
+        # define operations that have configs and needs to access them when
+        # running within another thread.
         uses_config = None
         if config_cls is not None:
             for name, param in sig.parameters.items():
                 if param.annotation is config_cls:
                     uses_config = name
+
+        # Definition for inputs of the function
+        if not "inputs" in kwargs:
+            sig = inspect.signature(func)
+            kwargs["inputs"] = {}
+
+            for name, param in sig.parameters.items():
+                if name == "self":
+                    continue
+                name_list = [kwargs["name"], "inputs", name]
+
+                kwargs["inputs"][name] = create_definition(
+                    ".".join(name_list), param.annotation
+                )
+
+        auto_def_outputs = False
+        # Definition for return type of a function
+        if not "outputs" in kwargs:
+            return_type = inspect.signature(func).return_annotation
+            if return_type not in (None, inspect._empty):
+                name_list = [kwargs["name"], "outputs", "result"]
+
+                kwargs["outputs"] = {
+                    "result": create_definition(
+                        ".".join(name_list), return_type
+                    )
+                }
+                auto_def_outputs = True
+
+        func.op = Operation(**kwargs)
+        func.ENTRY_POINT_NAME = ["operation"]
+        cls_name = (
+            func.op.name.replace(".", " ")
+            .replace("_", " ")
+            .title()
+            .replace(" ", "")
+        )
 
         # Create the test method which creates the contexts and runs
         async def test(**kwargs):
@@ -384,12 +450,29 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                         # We can't pass self to functions running in threads
                         # Its not thread safe!
                         bound = func.__get__(self, self.__class__)
-                        return await bound(**inputs)
+                        result = await bound(**inputs)
                     elif inspect.iscoroutinefunction(func):
-                        return await func(**inputs)
+                        result = await func(**inputs)
                     else:
                         # TODO Add auto thread pooling of non-async functions
-                        return func(**inputs)
+                        result = func(**inputs)
+                    if auto_def_outputs and len(self.parent.op.outputs) == 1:
+                        if inspect.isasyncgen(result):
+
+                            async def convert_asyncgen(outputs):
+                                async for yielded_output in outputs:
+                                    yield {
+                                        list(self.parent.op.outputs.keys())[
+                                            0
+                                        ]: yielded_output
+                                    }
+
+                            result = convert_asyncgen(result)
+                        else:
+                            result = {
+                                list(self.parent.op.outputs.keys())[0]: result
+                            }
+                    return result
 
             func.imp = type(
                 f"{cls_name}Implementation",

@@ -1,11 +1,11 @@
+from typing import List
+
 # Command line utility helpers and DataFlow specific classes
-from dffml import CMD, Arg, DataFlow, Input, GetSingle, run
+from dffml import CMD, Arg, DataFlow, Input, GetSingle, run, config, field
 
 # Import all the operations we wrote
 from .python.bandit import run_bandit
-from .python.pypi import pypi_latest_package_version
 from .python.pypi import pypi_package_json
-from .python.pypi import pypi_package_url
 from .python.pypi import pypi_package_contents
 from .python.pypi import cleanup_pypi_package
 from .python.safety import safety_check
@@ -13,8 +13,6 @@ from .python.safety import safety_check
 # Link inputs and outputs together according to their definitions
 DATAFLOW = DataFlow.auto(
     pypi_package_json,
-    pypi_latest_package_version,
-    pypi_package_url,
     pypi_package_contents,
     cleanup_pypi_package,
     safety_check,
@@ -28,19 +26,22 @@ DATAFLOW = DataFlow.auto(
 DATAFLOW.seed.append(
     Input(
         value=[
-            safety_check.op.outputs["issues"].name,
-            run_bandit.op.outputs["report"].name,
+            safety_check.op.outputs["result"].name,
+            run_bandit.op.outputs["result"].name,
         ],
         definition=GetSingle.op.inputs["spec"],
     )
 )
 
 
+@config
+class InstallConfig:
+    packages: List[str] = field("Package to check if we should install",)
+
+
 class Install(CMD):
 
-    arg_packages = Arg(
-        "packages", nargs="+", help="Package to check if we should install"
-    )
+    CONFIG = InstallConfig
 
     async def run(self):
         # Run all the operations, Each iteration of this loop happens
@@ -65,8 +66,8 @@ class Install(CMD):
         ):
             # Grab the number of safety issues and the bandit report
             # from the results dict
-            safety_issues = results[safety_check.op.outputs["issues"].name]
-            bandit_report = results[run_bandit.op.outputs["report"].name]
+            safety_issues = results[safety_check.op.outputs["result"].name]
+            bandit_report = results[run_bandit.op.outputs["result"].name]
             # Decide if those numbers mean we should stop ship or not
             if (
                 safety_issues > 0

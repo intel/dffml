@@ -4,13 +4,11 @@ import uuid
 import tempfile
 from unittest import mock
 
-from dffml.df.types import Input, DataFlow
 from dffml.df.base import opimp_in
+from dffml.df.types import Input, DataFlow
 from dffml.df.memory import MemoryOrchestrator
 from dffml.util.asynctestcase import AsyncTestCase
-
 from dffml.base import BaseDataFlowFacilitatorObjectContext
-
 
 from dffml.operation.output import GetSingle
 from dffml_operations_deploy.operations import *
@@ -19,9 +17,10 @@ from dffml_feature_git.feature.operations import (
     cleanup_git_repo,
 )
 from dffml_feature_git.util.proc import check_output
-
+from dffml_operations_deploy.operations import check_secret_match
 
 OPIMPS = opimp_in(sys.modules[__name__])
+OPIMPS.remove(check_secret_match.imp)
 
 REPO = str(uuid.uuid4()).split("-")[-1]
 USER = str(uuid.uuid4()).split("-")[-1]
@@ -57,18 +56,21 @@ class TestOperations(AsyncTestCase):
                 definition=GetSingle.op.inputs["spec"],
             )
         )
+
+        test_data = {
+            "ref": "refs/master",
+            "repository": {
+                "clone_url": f"https://github.com/{USER}/{REPO}.git",
+                "default_branch": "master",
+                "html_url": f"https://github.com/{USER}/{REPO}",
+            },
+        }
+
         self.test_inputs = {
             "TestRun": [
                 Input(
-                    value={
-                        "ref": "refs/master",
-                        "repository": {
-                            "clone_url": f"https://github.com/{USER}/{REPO}.git",
-                            "default_branch": "master",
-                            "html_url": f"https://github.com/{USER}/{REPO}",
-                        },
-                    },
-                    definition=get_url_from_payload.op.inputs["payload"],
+                    value=test_data,
+                    definition=check_secret_match.op.outputs["git_payload"],
                 )
             ]
         }

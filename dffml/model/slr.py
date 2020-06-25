@@ -50,10 +50,7 @@ def best_fit_line(x, y):
 class SLRModelConfig:
     predict: Feature = field("Label or the value to be predicted")
     features: Features = field("Features to train on. For SLR only 1 allowed")
-    directory: pathlib.Path = field(
-        "Directory where state should be saved",
-        default=pathlib.Path("~", ".cache", "dffml", "slr"),
-    )
+    directory: pathlib.Path = field("Directory where state should be saved")
 
 
 @entrypoint("slr")

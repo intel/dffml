@@ -35,6 +35,8 @@ class TestDNNC(IntegrationCLITestCase):
         # Features
         features = "-model-features A:float:1 B:float:1 C:float:1 D:float:1 E:float:1".split()
 
+        model_dir = self.mktempdir()
+
         # Train the model
         await CLI.cli(
             "train",
@@ -43,6 +45,8 @@ class TestDNNC(IntegrationCLITestCase):
             *features,
             "-model-predict",
             "true_class:int:1",
+            "-model-directory",
+            model_dir,
             "-model-classifications",
             "0",
             "1",
@@ -63,6 +67,8 @@ class TestDNNC(IntegrationCLITestCase):
             *features,
             "-model-predict",
             "true_class:int:1",
+            "-model-directory",
+            model_dir,
             "-model-classifications",
             "0",
             "1",
@@ -85,6 +91,8 @@ class TestDNNC(IntegrationCLITestCase):
                 *features,
                 "-model-predict",
                 "true_class:int:1",
+                "-model-directory",
+                model_dir,
                 "-model-classifications",
                 "0",
                 "1",
@@ -130,6 +138,8 @@ class TestDNNR(IntegrationCLITestCase):
         # Features
         features = "-model-features A:float:1 B:float:1 C:float:1 D:float:1 E:float:1 F:float:1".split()
 
+        model_dir = self.mktempdir()
+
         # Train the model
         await CLI.cli(
             "train",
@@ -138,6 +148,8 @@ class TestDNNR(IntegrationCLITestCase):
             *features,
             "-model-predict",
             "true_target:float:1",
+            "-model-directory",
+            model_dir,
             "-sources",
             "training_data=csv",
             "-source-filename",
@@ -151,6 +163,8 @@ class TestDNNR(IntegrationCLITestCase):
             *features,
             "-model-predict",
             "true_target:float:1",
+            "-model-directory",
+            model_dir,
             "-sources",
             "test_data=csv",
             "-source-filename",
@@ -166,6 +180,8 @@ class TestDNNR(IntegrationCLITestCase):
                 *features,
                 "-model-predict",
                 "true_target:float:1",
+                "-model-directory",
+                model_dir,
                 "-sources",
                 "predict_data=csv",
                 "-source-filename",

@@ -122,7 +122,8 @@ class SimpleModel(Model):
     def __init__(self, config: "BaseConfig") -> None:
         super().__init__(config)
         self.storage = {}
-        self.features = self.applicable_features(config.features)
+        if hasattr(self.config, "features"):
+            self.features = self.applicable_features(self.config.features)
         self._in_context = 0
 
     def __call__(self):
@@ -186,11 +187,7 @@ class SimpleModel(Model):
         if "features" in exported:
             exported["features"] = dict(sorted(exported["features"].items()))
         # Hash the exported config
-        return pathlib.Path(
-            self.config.directory,
-            hashlib.sha384(json.dumps(exported).encode()).hexdigest()
-            + (extention if extention else ""),
-        )
+        return pathlib.Path(self.config.directory, "Model",)
 
     def applicable_features(self, features):
         usable = []

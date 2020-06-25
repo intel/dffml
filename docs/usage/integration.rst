@@ -224,7 +224,7 @@ We then create a ``DataFlow`` description of how they all link together.
 
 .. code-block:: console
 
-    $ dffml dataflow create -config yaml $(cat /tmp/operations) \
+    $ dffml dataflow create -configloader yaml $(cat /tmp/operations) \
         > cgi-bin/dataflow.yaml
 
 The inputs and outputs of operations within a running DataFlow are organized by
@@ -406,6 +406,7 @@ to train on our dataset.
         -model-steps 4000 \
         -model-predict maintained:str:1 \
         -model-classifications 0 1 \
+        -model-directory tempdir \
         -sources db=demoapp \
         -model-features \
           authors:int:10 \
@@ -423,6 +424,7 @@ meaningless unless you threw out the dataset and put in real classifications.
         -model tfdnnc \
         -model-predict maintained:str:1 \
         -model-classifications 0 1 \
+        -model-directory tempdir \
         -sources db=demoapp \
         -model-features \
           authors:int:10 \
@@ -455,6 +457,7 @@ Now that we have the data for the new repo, ask the model for a prediction.
         -model tfdnnc \
         -model-predict maintained:str:1 \
         -model-classifications 0 1 \
+        -model-directory tempdir \
         -sources db=demoapp \
         -model-features \
           authors:int:10 \

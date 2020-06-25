@@ -24,11 +24,4 @@ class YamlConfigLoaderContext(BaseConfigLoaderContext):
 @entrypoint("yaml")
 class YamlConfigLoader(BaseConfigLoader):
     CONTEXT = YamlConfigLoaderContext
-
-    @classmethod
-    def args(cls, args, *above) -> Dict[str, Arg]:
-        return args
-
-    @classmethod
-    def config(cls, config, *above) -> BaseConfig:
-        return BaseConfig()
+    CONFIG = BaseConfig

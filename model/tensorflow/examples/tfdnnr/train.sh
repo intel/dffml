@@ -3,6 +3,7 @@ dffml train \
   -model-epochs 300 \
   -model-steps 2000 \
   -model-predict TARGET:float:1 \
+  -model-directory tempdir \
   -model-hidden 8 16 8 \
   -sources s=csv \
   -source-filename train.csv \

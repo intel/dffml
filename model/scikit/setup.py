@@ -10,6 +10,8 @@ DESCRIPTION = "DFFML model scikit"
 AUTHOR_NAME = "Yash Lamba"
 AUTHOR_EMAIL = "yashlamba2000@gmail.com"
 INSTALL_REQUIRES = [
+    # See https://github.com/intel/dffml/issues/737
+    "scipy==1.4.1",
     "scikit-learn>=0.21.2",
     "joblib>=0.13.2",
     "pandas>=0.25.0",

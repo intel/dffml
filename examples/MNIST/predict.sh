@@ -4,9 +4,13 @@ dffml predict all \
     -model-hidden 30 50 25 \
     -model-clstype int \
     -model-predict label:int:1 \
+    -model-directory tempdir \
     -model-classifications $(seq 0 9) \
     -model-features image:int:$((28 * 28)) \
-    -sources images=csv \
-    -source-filename image.csv  \
-    -source-loadfiles image  \
+    -sources images=df \
+    -source-images-source csv \
+    -source-images-source-filename image.csv \
+    -source-images-source-loadfiles image \
+    -source-images-features image:int:$((28 * 28)) \
+    -source-images-dataflow resizenorm.yaml \
     -log critical

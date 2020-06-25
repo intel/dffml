@@ -56,17 +56,13 @@ class TestFileSource(AsyncTestCase):
                                 },
                                 "readwrite": {
                                     "plugin": Arg(
-                                        type=bool,
-                                        action="store_true",
-                                        default=False,
+                                        action="store_true", default=False,
                                     ),
                                     "config": {},
                                 },
                                 "allowempty": {
                                     "plugin": Arg(
-                                        type=bool,
-                                        action="store_true",
-                                        default=False,
+                                        action="store_true", default=False,
                                     ),
                                     "config": {},
                                 },
@@ -201,7 +197,9 @@ class TestFileSource(AsyncTestCase):
         ):
             async with FakeFileSource(self.config("testfile")):
                 pass
-            m_open.assert_called_once_with(pathlib.Path("testfile"), "w+")
+            m_open.assert_called_once_with(
+                pathlib.Path("testfile"), "w+", newline=""
+            )
 
     async def test_close_gz(self):
         m_open = mock_open()

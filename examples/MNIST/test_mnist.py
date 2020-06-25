@@ -22,7 +22,7 @@ def directory_with_data_files():
         with chdir(tempdir):
             subprocess.check_output(["bash", sh_filepath("image_data.sh")])
             subprocess.check_output(["bash", sh_filepath("image_file.sh")])
-            for image in pathlib.Path(__file__).parent.glob("*.mnistpng"):
+            for image in pathlib.Path(__file__).parent.glob("*.png"):
                 shutil.copy(str(image.absolute()), image.name)
             yield tempdir
 
@@ -34,6 +34,13 @@ class TestMNIST(unittest.TestCase):
     )
     def test_shell(self):
         with directory_with_data_files() as tempdir:
+            # Create the dataflow config files
+            subprocess.check_output(
+                ["bash", sh_filepath("create_dataflow.sh")]
+            )
+            subprocess.check_output(
+                ["bash", sh_filepath("create_dataflow_1.sh")]
+            )
             # Run training
             subprocess.check_output(["bash", sh_filepath("train.sh")])
             # Check the Accuracy

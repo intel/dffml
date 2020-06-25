@@ -19,52 +19,32 @@ We'll be using additional plugins from dffml, ``dffml-yaml-config`` and ``dffml-
 
     $ pip install dffml-yaml-config dffml-http-service
 
-Create the Package
-------------------
+Writing the function
+--------------------
+We'll first write the function to convert videos files to gif by calling
+``ffmpeg`` (Make sure you `download and install <https://www.ffmpeg.org/download.html>`_ it) in
+``operation.py``. The function accepts bytes (of the video), converts it to gif and outputs it as
+bytes.
 
-To create a new operation we first create a new Python package. DFFML has a script to do it for you.
 
-.. code-block:: console
+**operations.py**
 
-    $ dffml service dev create operations ffmpeg
-    $ cd ffmpeg
-
-Write operations and definitions to convert videos files to gif by calling
-``ffmpeg`` (Make sure you `download and install <https://www.ffmpeg.org/download.html>`_ it).
-The operation accepts bytes (of the video), converts it to gif and outputs it as bytes.
-We will start writing our operation in ``./ffmpeg/operations.py``
-
-**ffmpeg/operations.py**
-
-.. literalinclude:: /../examples/ffmpeg/ffmpeg/operations.py
-
-Add the operation to ``ffmpeg/setup.py``
-
-.. code-block:: python
-
-    common.KWARGS["entry_points"] = {
-        "dffml.operation": [
-            f"convert_to_gif = {common.IMPORT_NAME}.operations:convert_to_gif"
-        ]
-    }
-
-Install the package
-
-.. code-block:: console
-
-    $ pip install -e .
+.. literalinclude:: /../examples/ffmpeg/operations.py
 
 Dataflow and Config files
 -------------------------
 
-**ffmpeg/dataflow.py**
-
-.. literalinclude:: /../examples/ffmpeg/ffmpeg/dataflow.py
+DFFML can create a dataflow out of our python function.
 
 .. code-block:: console
 
-    $ mkdir -p deploy/mc/http deploy/df
-    $ dffml service dev export -config yaml ffmpeg.dataflow:DATAFLOW > deploy/df/ffmpeg.yaml
+    $ dffml dataflow create -config yaml operations:convert_to_gif get_single \
+        -seed 480=operations.convert_to_gif.inputs.resolution \
+        "['operations.convert_to_gif.outputs.result']=get_single_spec" \
+         > deploy/df/ffmpeg.yaml
+
+Here through the seed argument, we set the default resolution to 480 and output
+of the dataflow to result of `convert_to_gif`.
 
 Create the config file for the HTTP service
 in ``deploy/mc/http/ffmpeg.yaml``
@@ -73,21 +53,22 @@ in ``deploy/mc/http/ffmpeg.yaml``
 
     $ cat > ./deploy/mc/http/ffmpeg.yaml <<EOF
     path: /ffmpeg
-    input_mode: bytes:input_file
-    output_mode: bytes:image/gif:post_input.output_file
+    input_mode: bytes:operations.convert_to_gif.inputs.input_file
+    output_mode: bytes:image/gif:post_input."operations.convert_to_gif.outputs.result".output_file
     EOF
 
 - ``input_mode``
 
-    - ``bytes:input_file``
+    - ``bytes:operations.convert_to_gif.inputs.input_file``
 
-        - We want the input from the request to be treated as bytes with definition ``input_file``.
+        - We want the input from the request to be treated as bytes with definition ``operations.convert_to_gif.inputs.input_file``.
+
 
 - ``output_mode``
 
-    - ``bytes:image/gif:post_input.output_file``
+    - ``bytes:image/gif:post_input."operations.convert_to_gif.outputs.result".output_file``
 
-        - We want the response (content_type = image/gif) to be bytes taken from  ``results["post_input"]["output_file"]``,
+        - We want the response (content_type = image/gif) to be bytes taken from  ``results["post_input"]["operations.convert_to_gif.outputs.result"][output_file]``,
           where ``results`` is the output of the dataflow.
 
 For more details see `HttpChannelConfig <../../plugins/service/http/dataflow.html#HttpChannelConfig>`__ .
@@ -116,12 +97,10 @@ Now from another terminal, we can send post requests to the dataflow running at 
     $ curl -v --request POST --data-binary @input.mp4 http://localhost:8080/ffmpeg -o output.gif
 
 You should replace ``input.mp4`` with path to your video file and ``output.gif`` to where you want the converted gif
-to be output to. An example video is available `here <https://github.com/intel/dffml/raw/master/examples/ffmpeg/tests/input.mp4>`_ .
+to be output to. An example video is available `here <https://github.com/intel/dffml/raw/master/examples/ffmpeg/input.mp4>`_ .
 
 Deploying via container
 =======================
-
-A ``Dockerfile`` is already generated in ffmpeg folder. We need to modify it to include ``ffmpeg``.
 
 **Dockerfile**
 
@@ -132,7 +111,7 @@ A ``Dockerfile`` is already generated in ffmpeg folder. We need to modify it to 
     The run command in the comment section of the Dockerfile will be used to execute
     the container after receving webhooks, so make sure you change it to your usecase.
 
-For this tutorial we will change it to
+For this tutorial we will set it to
 
 .. code-block:: Dockerfile
 

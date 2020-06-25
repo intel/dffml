@@ -20,18 +20,16 @@ class TestNER(IntegrationCLITestCase):
         per_name = ["Walter", "Jack", "Sophia", "Ava"]
         loc_name = ["Germany", "India", "Australia", "Italy"]
 
-        sentences = []
-        for i in range(DATA_LEN):
-            sentences.append(
-                random.choice(per_name)
-                + " "
-                + random.choice(["works at", "joined", "left"])
-                + " "
-                + random.choice(org_name)
-                + " "
-                + random.choice(loc_name)
-            )
-
+        sentences = [
+            random.choice(per_name)
+            + " "
+            + random.choice(["works at", "joined", "left"])
+            + " "
+            + random.choice(org_name)
+            + " "
+            + random.choice(loc_name)
+            for _ in range(DATA_LEN)
+        ]
         for id, sentence in enumerate(sentences):
             PREDICT_DATA.append([id, sentence])
 
@@ -63,6 +61,9 @@ class TestNER(IntegrationCLITestCase):
             writer.writerow(["A", "B"])
             writer.writerows(PREDICT_DATA)
 
+        output_dir = self.mktempdir()
+        cache_dir = self.mktempdir()
+
         # Train the model
         await CLI.cli(
             "train",
@@ -74,10 +75,12 @@ class TestNER(IntegrationCLITestCase):
             "B:str:1",
             "-model-predict",
             "target:str:1",
-            "-model-model_architecture_type",
-            "bert",
             "-model-model_name_or_path",
             "bert-base-cased",
+            "-model-output_dir",
+            output_dir,
+            "-model-cache_dir",
+            cache_dir,
             "-model-no_cuda",
             "-sources",
             "training_data=csv",
@@ -97,10 +100,12 @@ class TestNER(IntegrationCLITestCase):
             "B:str:1",
             "-model-predict",
             "target:str:1",
-            "-model-model_architecture_type",
-            "bert",
             "-model-model_name_or_path",
             "bert-base-cased",
+            "-model-output_dir",
+            output_dir,
+            "-model-cache_dir",
+            cache_dir,
             "-model-no_cuda",
             "-sources",
             "test_data=csv",
@@ -122,10 +127,12 @@ class TestNER(IntegrationCLITestCase):
                 "B:str:1",
                 "-model-predict",
                 "target:str:1",
-                "-model-model_architecture_type",
-                "bert",
                 "-model-model_name_or_path",
                 "bert-base-cased",
+                "-model-output_dir",
+                output_dir,
+                "-model-cache_dir",
+                cache_dir,
                 "-model-no_cuda",
                 "-sources",
                 "predict_data=csv",
@@ -162,10 +169,12 @@ class TestNER(IntegrationCLITestCase):
                 "B:str:1",
                 "-config-model-predict",
                 "target:str:1",
-                "-config-model-model_architecture_type",
-                "bert",
                 "-config-model-model_name_or_path",
                 "bert-base-cased",
+                "-config-model-output_dir",
+                output_dir,
+                "-config-model-cache_dir",
+                cache_dir,
                 "-config-model-no_cuda",
             )
             self.assertIn("model_predictions", results)

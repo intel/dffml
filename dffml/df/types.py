@@ -18,6 +18,7 @@ from typing import (
 
 from ..base import BaseConfig
 from ..util.data import export_dict, type_lookup
+from ..util.entrypoint import load as load_entrypoint
 from ..util.entrypoint import Entrypoint, base_entry_point
 
 
@@ -110,9 +111,20 @@ class Definition(NamedTuple):
             # and seeing that we can hijack the __annotations__ property to
             # allow us to set default values
             def_tuple = kwargs["spec"]["defaults"]
+            # All dict are ordered in 3.7+
             annotations = {}
+            annotations_with_defaults = {}
             for key, typename in kwargs["spec"]["types"].items():
-                annotations[key] = cls.type_lookup(typename)
+                # Properties without defaults must come before those with
+                # defaults
+                if key not in def_tuple:
+                    annotations[key] = cls.type_lookup(typename)
+                else:
+                    annotations_with_defaults[key] = cls.type_lookup(typename)
+            # Ensure annotations with defaults are after those without defaults
+            # in dict
+            for key, dtype in annotations_with_defaults.items():
+                annotations[key] = dtype
             def_tuple["__annotations__"] = annotations
             kwargs["spec"] = type(
                 kwargs["spec"]["name"], (NamedTuple,), def_tuple
@@ -367,11 +379,15 @@ class Input(object):
         return cls(**kwargs)
 
 
-class Parameter(NamedTuple):
-    key: str
-    value: Any
-    origin: Input
-    definition: Definition
+class Parameter(Input):
+    def __init__(
+        self, key: str, value: Any, origin: Input, definition: Definition,
+    ):
+        super().__init__(
+            value=value, definition=definition,
+        )
+        self.key = key
+        self.origin = origin
 
 
 @dataclass
@@ -444,6 +460,9 @@ class Forward:
 
 
 class DataFlow:
+
+    CONFIGLOADABLE = True
+
     def __init__(
         self,
         operations: Dict[str, Union[Operation, Callable]],
@@ -752,7 +771,7 @@ class DataFlow:
                 for i, definition_name in enumerate(operation[arg]):
                     if not definition_name in definitions:
                         raise DefinitionMissing(
-                            f"While resolving {instance_name}.{arg}, missing {definition_name}"
+                            f"While resolving {instance_name}.{arg}, missing {definition_name} not found in {definitions.keys()}"
                         )
                     operation[arg][i] = definitions[definition_name]
             for arg in ["inputs", "outputs"]:
@@ -761,7 +780,7 @@ class DataFlow:
                 for input_name, definition_name in operation[arg].items():
                     if not definition_name in definitions:
                         raise DefinitionMissing(
-                            f"While resolving {instance_name}.{arg}, missing {definition_name}"
+                            f"While resolving {instance_name}.{arg}, missing {definition_name} not found in {definitions.keys()}"
                         )
                     operation[arg][input_name] = definitions[definition_name]
             operation.setdefault("name", name)
@@ -769,7 +788,7 @@ class DataFlow:
             # Replaces strings referencing definitions with definitions
             if not item["definition"] in definitions:
                 raise DefinitionMissing(
-                    f"While resolving {instance_name}.{arg}, missing {definition_name}"
+                    f"While resolving seed {item}, definition {item['definition']} not found in {definitions.keys()}"
                 )
             item["definition"] = definitions[item["definition"]]
         return source

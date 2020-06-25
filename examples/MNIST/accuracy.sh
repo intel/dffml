@@ -4,11 +4,15 @@ dffml accuracy \
     -model-hidden 30 50 25 \
     -model-clstype int \
     -model-predict label:int:1 \
+    -model-directory tempdir \
     -model-classifications $(seq 0 9) \
     -model-features image:int:$((28 * 28)) \
-    -sources images=idx3 label=idx1 \
-    -source-images-filename t10k-images-idx3-ubyte.gz \
-    -source-images-feature image \
+    -sources images=df label=idx1 \
+    -source-images-dataflow normalize.yaml \
+    -source-images-features image:int:$((28 * 28)) \
+    -source-images-source idx3 \
+    -source-images-source-filename t10k-images-idx3-ubyte.gz \
+    -source-images-source-feature image \
     -source-label-filename t10k-labels-idx1-ubyte.gz \
     -source-label-feature label \
-    -log debug
+    -log critical

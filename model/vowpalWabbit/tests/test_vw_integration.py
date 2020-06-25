@@ -35,6 +35,7 @@ class TestVWModel(IntegrationCLITestCase):
             writer.writerows(train_data)
         # Features
         features = "-model-features A:float:1 B:float:1 C:float:1 D:float:1 E:float:1".split()
+        model_dir = self.mktempdir()
 
         # Train the model
         await CLI.cli(

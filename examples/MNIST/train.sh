@@ -5,10 +5,14 @@ dffml train \
     -model-clstype int \
     -model-predict label:int:1 \
     -model-classifications $(seq 0 9) \
+    -model-directory tempdir \
     -model-features image:int:$((28 * 28)) \
-    -sources images=idx3 label=idx1 \
-    -source-images-filename train-images-idx3-ubyte.gz \
-    -source-images-feature image \
+    -sources images=df label=idx1 \
+    -source-images-dataflow normalize.yaml \
+    -source-images-features image:int:$((28 * 28)) \
+    -source-images-source idx3 \
+    -source-images-source-filename train-images-idx3-ubyte.gz \
+    -source-images-source-feature image \
     -source-label-filename train-labels-idx1-ubyte.gz \
     -source-label-feature label \
-    -log debug
+    -log critical

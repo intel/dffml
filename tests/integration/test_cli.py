@@ -33,12 +33,12 @@ class TestMerge(IntegrationCLITestCase):
         filename = self.mktempfile()
         await CLI.cli(
             "merge",
-            "dest=json",
             "src=memory",
-            "-source-dest-filename",
-            filename,
+            "dest=json",
             "-source-src-records",
             *keys,
+            "-source-dest-filename",
+            filename,
             "-source-src-allowempty",
             "-source-dest-allowempty",
             "-source-src-readwrite",
@@ -62,12 +62,12 @@ class TestMerge(IntegrationCLITestCase):
         filename = self.mktempfile()
         await CLI.cli(
             "merge",
-            "dest=csv",
             "src=memory",
-            "-source-dest-filename",
-            filename,
+            "dest=csv",
             "-source-src-records",
             *keys,
+            "-source-dest-filename",
+            filename,
             "-source-src-allowempty",
             "-source-dest-allowempty",
             "-source-src-readwrite",
