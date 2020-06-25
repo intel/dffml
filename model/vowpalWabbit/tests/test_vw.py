@@ -62,6 +62,7 @@ class TestVWModel(AsyncTestCase):
                 importance=Feature("H", int, 1),
                 tag=Feature("G", int, 1),
                 task="regression",
+                requires_formatting= True,
                 vwcmd=[
                     "l2",
                     "0.1",

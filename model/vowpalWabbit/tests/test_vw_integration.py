@@ -44,16 +44,18 @@ class TestVWModel(IntegrationCLITestCase):
             *features,
             "-model-predict",
             "true_class:int:1",
-            "-sources",
-            "training_data=csv",
-            "-source-filename",
-            data_filename,
             "-model-vwcmd",
             "loss_function",
             "logistic",
             "l2",
             "0.04",
             "-model-use_binary_label",
+            "-model-requires_formatting",
+            "-sources",
+            "training_data=csv",
+            "-source-filename",
+            data_filename,
+
         )
         # Assess accuracy
         await CLI.cli(
@@ -63,14 +65,15 @@ class TestVWModel(IntegrationCLITestCase):
             *features,
             "-model-predict",
             "true_class:int:1",
-            "-sources",
-            "test_data=csv",
-            "-source-filename",
-            data_filename,
             "-model-vwcmd",
             "binary",
             "True",
             "-model-use_binary_label",
+            "-model-requires_formatting",
+            "-sources",
+            "test_data=csv",
+            "-source-filename",
+            data_filename,
         )
         # Ensure JSON output works as expected (#261)
         with contextlib.redirect_stdout(self.stdout):
@@ -83,14 +86,16 @@ class TestVWModel(IntegrationCLITestCase):
                 *features,
                 "-model-predict",
                 "true_class:int:1",
-                "-sources",
-                "predict_data=csv",
-                "-source-filename",
-                data_filename,
                 "-model-vwcmd",
                 "binary",
                 "True",
                 "-model-use_binary_label",
+                "-model-requires_formatting",
+                "-sources",
+                "predict_data=csv",
+                "-source-filename",
+                data_filename,
+
             )
         results = json.loads(self.stdout.getvalue())
         self.assertTrue(isinstance(results, list))

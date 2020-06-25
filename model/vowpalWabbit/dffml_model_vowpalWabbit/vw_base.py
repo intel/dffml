@@ -68,9 +68,9 @@ class VWConfig:
         "Feature to be used as `tag` in conversion of data to vowpal wabbit input format",
         default=None,
     )
-    convert_to_vw: bool = field(
+    requires_formatting: bool = field(
         "Convert the input to vowpal wabbit standard input format",
-        default=True,
+        default=False,
     )
     directory: str = field(
         "Directory where state should be saved",
@@ -252,7 +252,7 @@ class VWContext(ModelContext):
             )
             data.append(feature_data)
         vw_data = pd.DataFrame(data)
-        if self.parent.config.convert_to_vw:
+        if self.parent.config.requires_formatting:
             vw_data = df_to_vw_format(
                 vw_data,
                 vwcmd=self.parent.config.vwcmd,
@@ -270,7 +270,7 @@ class VWContext(ModelContext):
         else:
             if len(self.features) > 1:
                 raise InputError(
-                    "Training features should be in vw format or `convert_to_vw` should be true."
+                    "Training features should be in vw format or `requires_formatting` should be true."
                 )
             vw_data = (
                 vw_data[self.parent.config.predict.name].map(str)
@@ -310,7 +310,7 @@ class VWContext(ModelContext):
         df = pd.DataFrame(data)
         xdata = df.drop([self.parent.config.predict.name], 1)
         self.logger.debug("Number of input records: {}".format(len(xdata)))
-        if self.parent.config.convert_to_vw:
+        if self.parent.config.requires_formatting:
             xdata = df_to_vw_format(
                 xdata,
                 vwcmd=self.parent.config.vwcmd,
@@ -363,7 +363,7 @@ class VWContext(ModelContext):
                 self.features + self.parent.config.extra_cols
             )
             data = pd.DataFrame(feature_data, index=[0])
-            if self.parent.config.convert_to_vw:
+            if self.parent.config.requires_formatting:
                 data = df_to_vw_format(
                     data,
                     vwcmd=self.parent.config.vwcmd,
