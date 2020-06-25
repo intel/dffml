@@ -6,7 +6,7 @@ from ..base import config, field
 from ..util.entrypoint import entrypoint
 from .model import SimpleModel, ModelNotTrained
 from .accuracy import Accuracy
-from ..feature.feature import Feature, Features
+from ..feature.feature import Feature
 from ..source.source import Sources
 from ..record import Record
 
@@ -49,11 +49,8 @@ def best_fit_line(x, y):
 @config
 class SLRModelConfig:
     predict: Feature = field("Label or the value to be predicted")
-    features: Features = field("Features to train on. For SLR only 1 allowed")
-    directory: pathlib.Path = field(
-        "Directory where state should be saved",
-        default=pathlib.Path("~", ".cache", "dffml", "slr"),
-    )
+    feature: Feature = field("Feature to train on")
+    directory: pathlib.Path = field("Directory where state should be saved")
 
 
 @entrypoint("slr")
@@ -112,13 +109,6 @@ class SLRModel(SimpleModel):
     """
     # The configuration class needs to be set as the CONFIG property
     CONFIG: Type[SLRModelConfig] = SLRModelConfig
-    # Simple Linear Regression only supports training on a single feature.
-    # Do not define NUM_SUPPORTED_FEATURES if you support arbitrary numbers of
-    # features.
-    NUM_SUPPORTED_FEATURES: int = 1
-    # We only support single dimensional values, non-matrix / array
-    # Do not define SUPPORTED_LENGTHS if you support arbitrary dimensions
-    SUPPORTED_LENGTHS: List[int] = [1]
 
     async def train(self, sources: Sources) -> None:
         # X and Y data
@@ -128,9 +118,9 @@ class SLRModel(SimpleModel):
         # feature we want to predict. Since our model only supports 1 feature,
         # the self.features list will only have one element at index 0.
         async for record in sources.with_features(
-            self.features + [self.config.predict.name]
+            [self.config.feature.name, self.config.predict.name]
         ):
-            x.append(record.feature(self.features[0]))
+            x.append(record.feature(self.config.feature.name))
             y.append(record.feature(self.config.predict.name))
         # Use self.logger to report how many records are being used for training
         self.logger.debug("Number of input records: %d", len(x))
@@ -160,7 +150,7 @@ class SLRModel(SimpleModel):
         # Iterate through each record that needs a prediction
         async for record in records:
             # Grab the x data from the record
-            x = record.feature(self.features[0])
+            x = record.feature(self.config.feature.name)
             # Calculate y
             y = m * x + b
             # Set the calculated value with the estimated accuracy

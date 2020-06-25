@@ -52,7 +52,7 @@ class TestSLR(AsyncTestCase):
         cls.model = SLRModel(
             directory=cls.model_dir.name,
             predict=Feature("Y", float, 1),
-            features=Features(Feature("X", float, 1)),
+            feature=Feature("X", float, 1),
         )
 
     @classmethod

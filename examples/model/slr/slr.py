@@ -1,8 +1,10 @@
-from dffml import Features, Feature, SLRModel
+from dffml import Feature, SLRModel
 from dffml.noasync import train, accuracy, predict
 
 model = SLRModel(
-    features=Features(Feature("f1", float, 1)), predict=Feature("ans", int, 1),
+    feature=Feature("f1", float, 1),
+    predict=Feature("ans", int, 1),
+    directory="tempdir",
 )
 
 # Train the model

@@ -81,6 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   features were found
 - Split out model tutorial into writing the model, and another tutorial for
   packaging the model.
+- SLRModel features changed to feature
 ### Fixed
 - CSV source overwriting configloaded data to every row
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
