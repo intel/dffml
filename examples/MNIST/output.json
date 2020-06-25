@@ -13,7 +13,7 @@
         "last_updated": "2020-03-18T04:07:01Z",
         "prediction": {
             "label": {
-                "confidence": 0.4963473677635193,
+                "confidence": 0.9977860450744629,
                 "value": 4
             }
         }
@@ -32,7 +32,7 @@
         "last_updated": "2020-03-18T04:07:01Z",
         "prediction": {
             "label": {
-                "confidence": 0.9070320725440979,
+                "confidence": 1.0,
                 "value": 5
             }
         }
