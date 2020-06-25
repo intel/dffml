@@ -10,7 +10,10 @@ common = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(common)
 
 common.KWARGS["entry_points"] = {
-    "dffml.operation": [f"resize = {common.IMPORT_NAME}.operations:resize",]
+    "dffml.operation": [
+        f"resize = {common.IMPORT_NAME}.operations:resize",
+        f"flatten = {common.IMPORT_NAME}.operations:flatten",
+    ]
 }
 
 setup(**common.KWARGS)
