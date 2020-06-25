@@ -2,6 +2,7 @@ import os
 import random
 import timeit
 import logging
+import pathlib
 from typing import Any, Tuple, AsyncIterator
 
 import torch
@@ -379,13 +380,11 @@ class QAModelContext(ModelContext):
         if os.path.exists(self.parent.config.model_name_or_path):
             try:
                 # set global_step to gobal_step of last saved checkpoint from model path
-                checkpoint_suffix = self.parent.config.model_name_or_path.split(
+                checkpoint_suffix = pathlib.Path(self.parent.config.model_name_or_path.split(
                     "-"
                 )[
                     -1
-                ].split(
-                    "/"
-                )[
+                ]).parts[
                     0
                 ]
                 global_step = int(checkpoint_suffix)
@@ -938,7 +937,7 @@ class QAModel(Model):
     Implemented using `HuggingFace Transformers <https://huggingface.co/transformers/index.html>`_ Pytorch based Models.
     Description about pretrianed models can be found `here <https://huggingface.co/transformers/pretrained_models.html>`_
 
-    First we create the training and testing datasets
+    First we create the training and testing datasets by taking few data points from `SQuAD1.1 dataset <https://rajpurkar.github.io/SQuAD-explorer/>`_ `LICENSE <https://creativecommons.org/licenses/by-sa/4.0/legalcode>`_
 
     .. literalinclude:: /../model/transformers/examples/qa/train_data.sh
 
@@ -999,6 +998,25 @@ class QAModel(Model):
     The model can be trained on large datasets to get the expected
     output. The example shown above is to demonstrate the commandline usage
     of the model.
+
+    In the above train, accuracy and predict commands, :ref:`plugin_source_dffml_op` source is used to
+    read and parse data from json file before feeding it to the model. The function used by opsource to parse json data
+    is:
+
+    .. literalinclude:: /../model/transformers/dffml_model_transformers/qa/utils.py
+
+    The location of the function is passed using: 
+
+    .. code-block:: console
+
+            -source-opimp dffml_model_transformers.qa.utils:parser
+    And the arguments to `parser` are passed by:
+
+    .. code-block:: console
+
+            -source-args train.json True
+    where `train.json` is the name of file containing training data and the bool `True`
+    is value of the flag `is_training`.
 
     """
 

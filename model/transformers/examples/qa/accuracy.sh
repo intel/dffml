@@ -6,6 +6,6 @@ dffml accuracy \
   -model-output_dir qamodel/checkpoints \
   -model-cache_dir qamodel/cache \
   -sources s=op \
-  -source-opimp model.transformers.dffml_model_transformers.qa.utils:parser \
+  -source-opimp dffml_model_transformers.qa.utils:parser \
   -source-args train.json False \
   -log debug
