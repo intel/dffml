@@ -13,6 +13,11 @@ common.KWARGS["entry_points"] = {
     "dffml.operation": [
         f"resize = {common.IMPORT_NAME}.operations:resize",
         f"flatten = {common.IMPORT_NAME}.operations:flatten",
+        f"calcHist = {common.IMPORT_NAME}.operations:calcHist",
+        f"HuMoments = {common.IMPORT_NAME}.operations:HuMoments",
+        f"Haralick = {common.IMPORT_NAME}.operations:Haralick",
+        f"normalize = {common.IMPORT_NAME}.operations:normalize",
+        f"convert_color = {common.IMPORT_NAME}.operations:convert_color",
     ]
 }
 
