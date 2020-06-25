@@ -390,7 +390,7 @@ with it.
 **shouldi/python/pypi.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
-    :lines: 71-76
+    :lines: 71-78
 
 Now we write tests for each operation.
 

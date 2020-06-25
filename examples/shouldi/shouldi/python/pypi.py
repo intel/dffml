@@ -68,7 +68,9 @@ async def pypi_package_json(self, package: str) -> dict:
                 }
 
 
-@op(stage=Stage.CLEANUP)
+@op(
+    inputs={"directory": run_bandit.op.inputs["pkg"]}, stage=Stage.CLEANUP,
+)
 async def cleanup_pypi_package(directory: str):
     """
     Remove the directory containing the source code release.
