@@ -10,6 +10,7 @@ model = DNNRegressionModel(
     epochs=300,
     steps=2000,
     hidden=[8, 16, 8],
+    directory="tempdir",
 )
 
 # Train the model

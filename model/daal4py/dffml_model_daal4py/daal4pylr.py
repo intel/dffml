@@ -22,10 +22,7 @@ from dffml import (
 class DAAL4PyLRModelConfig:
     predict: Feature = field("Label or the value to be predicted")
     features: Features = field("Features to train on. For SLR only 1 allowed")
-    directory: pathlib.Path = field(
-        "Directory where state should be saved",
-        default=pathlib.Path("~", ".cache", "dffml", "daal4py"),
-    )
+    directory: pathlib.Path = field("Directory where state should be saved",)
 
 
 @entrypoint("daal4pylr")

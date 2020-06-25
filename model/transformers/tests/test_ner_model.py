@@ -51,6 +51,7 @@ class TestNERModel(AsyncTestCase):
         )
 
         cls.model_dir = tempfile.TemporaryDirectory()
+        cls.cache_dir = tempfile.TemporaryDirectory()
         cls.model = NERModel(
             NERModelConfig(
                 sid=Feature("sentence_id", int, 1),
@@ -59,12 +60,14 @@ class TestNERModel(AsyncTestCase):
                 output_dir=cls.model_dir.name,
                 model_name_or_path="bert-base-cased",
                 no_cuda=True,
+                cache_dir=cls.cache_dir.name,
             )
         )
 
     @classmethod
     def tearDownClass(cls):
         cls.model_dir.cleanup()
+        cls.cache_dir.cleanup()
 
     async def test_00_train(self):
         async with self.train_sources as sources, self.model as model:

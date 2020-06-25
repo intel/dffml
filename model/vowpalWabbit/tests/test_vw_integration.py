@@ -35,6 +35,7 @@ class TestVWModel(IntegrationCLITestCase):
             writer.writerows(train_data)
         # Features
         features = "-model-features A:float:1 B:float:1 C:float:1 D:float:1 E:float:1".split()
+        model_dir = self.mktempdir()
 
         # Train the model
         await CLI.cli(
@@ -44,6 +45,8 @@ class TestVWModel(IntegrationCLITestCase):
             *features,
             "-model-predict",
             "true_class:int:1",
+            "-model-directory",
+            model_dir,
             "-sources",
             "training_data=csv",
             "-source-filename",
@@ -64,6 +67,8 @@ class TestVWModel(IntegrationCLITestCase):
             *features,
             "-model-predict",
             "true_class:int:1",
+            "-model-directory",
+            model_dir,
             "-sources",
             "test_data=csv",
             "-source-filename",
@@ -85,6 +90,8 @@ class TestVWModel(IntegrationCLITestCase):
                 *features,
                 "-model-predict",
                 "true_class:int:1",
+                "-model-directory",
+                model_dir,
                 "-sources",
                 "predict_data=csv",
                 "-source-filename",

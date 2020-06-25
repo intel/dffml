@@ -17,6 +17,19 @@ To run a specific test, use the ``-s`` flag.
 
     $ python3 setup.py test -s tests.test_cli.TestPredict.test_record
 
+Writing Tests
+-------------
+
+If your test is within the main package, aka ``tests/``, and you need to use a
+plugin within your test, you should subclass from ``IntegrationCLITestCase``.
+
+For example if you need test something where you had to load a PNG, you'd do
+
+.. code-block:: python
+
+    async def test_something_with_a_png(self):
+       self.required_plugins("dffml-config-png")
+
 .. _running_ci_tests_locally:
 
 Running CI Tests Locally

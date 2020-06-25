@@ -6,11 +6,24 @@ Base class for Scikit models
 import json
 import hashlib
 import pathlib
+import logging
 import importlib
 
 from typing import AsyncIterator, Tuple, Any, NamedTuple
 
 from sklearn.metrics import silhouette_score, mutual_info_score
+
+# https://intelpython.github.io/daal4py/sklearn.html
+try:
+    import daal4py.sklearn
+
+    daal4py.sklearn.patch_sklearn()
+except ImportError:
+    # Ignore import errors, package is not installed
+    pass
+except Execption as error:
+    LOGGER = logging.getLogger(__package__)
+    LOGGER.error(error)
 
 from dffml.record import Record
 from dffml.source.source import Sources
@@ -48,7 +61,7 @@ class ScikitContext(ModelContext):
             [
                 "{}{}".format(k, v)
                 for k, v in self.parent.config._asdict().items()
-                if k not in ["directory", "features", "tcluster", "predict"]
+                if k not in ["features", "tcluster", "predict"]
             ]
         )
         return hashlib.sha384(
@@ -57,7 +70,7 @@ class ScikitContext(ModelContext):
 
     @property
     def _filepath(self):
-        return self.parent.config.directory / (self._features_hash + ".joblib")
+        return self.parent.config.directory / "ScikitFeatures.joblib"
 
     async def __aenter__(self):
         if self._filepath.is_file():
@@ -254,10 +267,7 @@ class Scikit(Model):
 
     @property
     def _filepath(self):
-        return self.config.directory / (
-            hashlib.sha384(self.config.predict.name.encode()).hexdigest()
-            + ".json"
-        )
+        return self.config.directory / "Scikit.json"
 
     async def __aenter__(self) -> "Scikit":
         if self._filepath.is_file():
@@ -272,16 +282,4 @@ class ScikitUnsprvised(Scikit):
     @property
     def _filepath(self):
         model_name = self.SCIKIT_MODEL.__name__
-        return self.config.directory / (
-            hashlib.sha384(
-                (
-                    "".join(
-                        [model_name]
-                        + sorted(
-                            feature.name for feature in self.config.features
-                        )
-                    )
-                ).encode()
-            ).hexdigest()
-            + ".json"
-        )
+        return self.config.directory / "ScikitUnsupervised.json"

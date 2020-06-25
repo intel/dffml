@@ -17,6 +17,7 @@ from sklearn.gaussian_process import (
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 from sklearn.ensemble import (
     RandomForestClassifier,
+    RandomForestRegressor,
     AdaBoostClassifier,
     GradientBoostingClassifier,
     ExtraTreesClassifier,
@@ -72,6 +73,7 @@ for entry_point_name, name, cls in [
     ("scikitgpc", "GaussianProcessClassifier", GaussianProcessClassifier,),
     ("scikitdtc", "DecisionTreeClassifier", DecisionTreeClassifier,),
     ("scikitrfc", "RandomForestClassifier", RandomForestClassifier,),
+    ("scikitrfr", "RandomForestRegressor", RandomForestRegressor,),
     ("scikitmlp", "MLPClassifier", MLPClassifier),
     ("scikitgnb", "GaussianNB", GaussianNB),
     (
@@ -129,12 +131,7 @@ for entry_point_name, name, cls in [
         **{
             "directory": (
                 pathlib.Path,
-                field(
-                    "Directory where state should be saved",
-                    default=pathlib.Path(
-                        "~", ".cache", "dffml", f"scikit-{entry_point_name}"
-                    ),
-                ),
+                field("Directory where state should be saved",),
             ),
             "features": (Features, field("Features to train on")),
         },

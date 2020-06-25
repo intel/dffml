@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Transformers Question Answering model
+- Source for reading images in directories
 - Transformers classification model
 - Operations plugin for image preprocessing
 - `-pretty` flag to `list records` and `predict` commands
@@ -52,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Operation to verify secret for GitHub webhook.
 - Option to modify flow and add config in `dataflow create`.
 - Ability to use a function as a data source via the `op` source
+- Make every model's directory property required
 ### Changed
 - Update record `__str__` method to output in tabular format
 - Update NER Model to use transformers 2.11.0
@@ -81,6 +83,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   features were found
 - Split out model tutorial into writing the model, and another tutorial for
   packaging the model.
+- IntegrationCLITestCase creates a new directory and chdir into it for each test
 ### Fixed
 - CSV source overwriting configloaded data to every row
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible

@@ -27,6 +27,7 @@ class TestDevelop(IntegrationCLITestCase):
         self.required_plugins("dffml-model-scratch")
         # Create the training data
         filename = self.mktempfile() + ".csv"
+        model_dir = self.mktempdir()
         pathlib.Path(filename).write_text(
             inspect.cleandoc(
                 """
@@ -49,6 +50,8 @@ class TestDevelop(IntegrationCLITestCase):
             "Years:int:1",
             "-model-predict",
             "Salary:float:1",
+            "-model-directory",
+            model_dir,
             "-sources",
             "training_data=csv",
             "-source-filename",
@@ -68,6 +71,8 @@ class TestDevelop(IntegrationCLITestCase):
             "Years:int:1",
             "-config-model-predict",
             "Salary:float:1",
+            "-config-model-directory",
+            model_dir,
         )
         self.assertIn("model_predictions", results)
         results = results["model_predictions"]

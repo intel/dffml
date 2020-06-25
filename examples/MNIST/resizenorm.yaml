@@ -5,18 +5,6 @@ definitions:
   associate_spec:
     name: associate_spec
     primitive: List[str]
-  dffml_operations_image.operations.resize.inputs.data:
-    name: dffml_operations_image.operations.resize.inputs.data
-    primitive: array
-  dffml_operations_image.operations.resize.inputs.new_dim:
-    name: dffml_operations_image.operations.resize.inputs.new_dim
-    primitive: array
-  dffml_operations_image.operations.resize.inputs.old_dim:
-    name: dffml_operations_image.operations.resize.inputs.old_dim
-    primitive: array
-  dffml_operations_image.operations.resize.outputs.result:
-    name: dffml_operations_image.operations.resize.outputs.result
-    primitive: array
   multiplicand_def:
     name: multiplicand_def
     primitive: generic
@@ -26,6 +14,18 @@ definitions:
   product:
     name: product
     primitive: generic
+  resize.inputs.data:
+    name: resize.inputs.data
+    primitive: array
+  resize.inputs.new_dim:
+    name: resize.inputs.new_dim
+    primitive: array
+  resize.inputs.old_dim:
+    name: resize.inputs.old_dim
+    primitive: array
+  resize.outputs.result:
+    name: resize.outputs.result
+    primitive: array
 flow:
   associate_definition:
     inputs:
@@ -65,20 +65,20 @@ operations:
     stage: processing
   resize:
     inputs:
-      data: dffml_operations_image.operations.resize.inputs.data
-      new_dim: dffml_operations_image.operations.resize.inputs.new_dim
-      old_dim: dffml_operations_image.operations.resize.inputs.old_dim
+      data: resize.inputs.data
+      new_dim: resize.inputs.new_dim
+      old_dim: resize.inputs.old_dim
     name: resize
     outputs:
-      result: dffml_operations_image.operations.resize.outputs.result
+      result: resize.outputs.result
     stage: processing
 seed:
-- definition: dffml_operations_image.operations.resize.inputs.old_dim
+- definition: resize.inputs.old_dim
   value:
   - 280
   - 280
   - 3
-- definition: dffml_operations_image.operations.resize.inputs.new_dim
+- definition: resize.inputs.new_dim
   value:
   - 28
   - 28
@@ -87,3 +87,4 @@ seed:
     image: product
 - definition: multiplier_def
   value: 0.00392156862
+
