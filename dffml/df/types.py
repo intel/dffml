@@ -16,7 +16,8 @@ from typing import (
     Tuple,
 )
 
-from ..base import BaseConfig
+from .exceptions import SharedObjectMissing
+from ..base import BaseConfig,is_config_dict,convert_value
 from ..util.data import export_dict, type_lookup
 from ..util.entrypoint import load as load_entrypoint
 from ..util.entrypoint import Entrypoint, base_entry_point
@@ -630,6 +631,8 @@ class DataFlow:
             exported["configs"] = self.configs.copy()
         if self.forward.book:
             exported["forward"] = self.forward.export()
+        if self.shared:
+            exported["shared"] = self.shared.copy()
         exported = export_dict(**exported)
         if linked:
             self._linked(exported)
@@ -661,6 +664,7 @@ class DataFlow:
         # Import forward
         if "forward" in kwargs:
             kwargs["forward"] = Forward._fromdict(**kwargs["forward"])
+
         return cls(**kwargs)
 
     @classmethod

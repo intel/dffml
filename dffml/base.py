@@ -156,6 +156,7 @@ def convert_value(arg, value):
         elif getattr(type_cls, "CONFIGLOADABLE", False):
             pass
         else:
+            print(f"type_cls : {type_cls} , value : {value}" )
             value = type_cls(value)
         # list -> tuple
         if arg.annotation is not None and get_origin(arg.annotation) is tuple:
@@ -182,8 +183,10 @@ def is_config_dict(value):
 
 
 def _fromdict(cls, **kwargs):
+    print(f"Calling fromdict of : {cls}")
     for field in dataclasses.fields(cls):
         if field.name in kwargs:
+            print(f"field name : {field.name} in {kwargs}")
             value = kwargs[field.name]
             config = {}
             if is_config_dict(value):
@@ -206,6 +209,7 @@ def _fromdict(cls, **kwargs):
                     }
                 )
             kwargs[field.name] = value
+
     return cls(**kwargs)
 
 

@@ -1,0 +1,77 @@
+configs:
+  tests.df.test_shared_config1:mem_get: shared.MemConfig
+  tests.df.test_shared_config1:mem_set: shared.MemConfig
+flow:
+  get_single:
+    inputs:
+      spec:
+      - seed
+  tests.df.test_shared_config1:mem_get:
+    inputs:
+      key:
+      - tests.df.test_shared_config1:mem_set: key_done
+  tests.df.test_shared_config1:mem_set:
+    inputs:
+      key:
+      - seed
+      value:
+      - seed
+operations:
+  get_single:
+    inputs:
+      spec:
+        name: get_single_spec
+        primitive: array
+    name: get_single
+    outputs:
+      output:
+        name: get_single_output
+        primitive: map
+    stage: output
+  tests.df.test_shared_config1:mem_get:
+    inputs:
+      key:
+        name: key_done
+        primitive: string
+    name: tests.df.test_shared_config1:mem_get
+    outputs:
+      value:
+        name: value_done
+        primitive: Any
+    stage: processing
+  tests.df.test_shared_config1:mem_set:
+    inputs:
+      key:
+        name: key
+        primitive: string
+      value:
+        name: value
+        primitive: Any
+    name: tests.df.test_shared_config1:mem_set
+    outputs:
+      key_done:
+        name: key_done
+        primitive: string
+    stage: processing
+seed:
+- definition:
+    name: key
+    primitive: string
+  value: code
+- definition:
+    name: value
+    primitive: Any
+  value: geass
+- definition:
+    name: get_single_spec
+    primitive: array
+  value:
+  - value_done
+shared:
+  shared.MemConfig:
+    secret:
+      config:
+        allowempty: true
+        filename: /tmp/tmp0od_bvf_/0.9453691320372036.ini
+        readwrite: true
+      plugin: ini

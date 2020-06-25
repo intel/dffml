@@ -27,7 +27,7 @@ from .exceptions import (
     ContextNotPresent,
     DefinitionNotInContext,
     ValidatorMissing,
-    SharedObjectMissing,
+    SharedObjectMissing
 )
 from .types import Input, Parameter, Definition, Operation, Stage, DataFlow
 from .base import (
@@ -899,7 +899,7 @@ class MemoryOperationImplementationNetworkContext(
         # This is pure Python, so if we're given an operation implementation we
         # will be able to instantiate it
         if opimp is not None:
-            return True
+            return opimp
         try:
             opimp = OperationImplementation.load(operation.name)
         except FailedToLoadOperationImplementation as error:
@@ -909,7 +909,7 @@ class MemoryOperationImplementationNetworkContext(
                 error,
             )
             return False
-        return True
+        return opimp
 
     async def instantiate(
         self,
@@ -1209,17 +1209,6 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         await self.octx.add(dataflow.operations.values())
         # Instantiate all operations
         for (instance_name, operation) in dataflow.operations.items():
-            cfg = dataflow.configs.get(instance_name, False)
-            # If config is a string, assign the shared object
-            # in dataflow to it else raise
-            if cfg and isinstance(cfg, str):
-                shared_name = dataflow.configs[instance_name]
-                if shared_name not in dataflow.shared:
-                    raise SharedObjectMissing(
-                        f"Shared object {shared_name} not in {dataflow.shared}"
-                    )
-                dataflow.configs[instance_name] = dataflow.shared[shared_name]
-
             # Add and instantiate operation implementation if not
             # present
             if not await self.nctx.contains(operation):
@@ -1229,7 +1218,9 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 # There is a possiblity the operation implemenation network will
                 # be able to instantiate from the given operation implementation
                 # if present. But we can't count on it.
-                if not await self.nctx.instantiable(operation, opimp=opimp):
+                opimp = await self.nctx.instantiable(operation, opimp=opimp)
+                dataflow.implementations[operation.name] = opimp
+                if not opimp:
                     raise OperationImplementationNotInstantiable(
                         operation.name
                     )
@@ -1237,6 +1228,23 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                     opimp_config = dataflow.configs.get(
                         operation.instance_name, None
                     )
+
+                    if isinstance(opimp_config,str):
+                        shared_name = dataflow.configs[instance_name]
+                        if shared_name not in dataflow.shared:
+                            raise SharedObjectMissing(
+                                f"Shared object {shared_name} not in {dataflow.shared}"
+                            )
+
+                        shared_config = dataflow.shared[shared_name]
+
+                        if isinstance(shared_config,dict):
+                            if hasattr(opimp,"CONFIG") and hasattr(opimp.CONFIG,"_fromdict"):
+                                shared_config = opimp.CONFIG._fromdict(**shared_config)
+
+                            dataflow[shared_name] = shared_config
+
+                        dataflow.configs[instance_name] = dataflow.shared[shared_name]
                     if opimp_config is None:
                         self.logger.debug(
                             "Instantiating operation implementation %s(%s) with base config",
@@ -1258,6 +1266,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                     await self.nctx.instantiate(
                         operation, opimp_config, opimp=opimp
                     )
+
 
     async def seed_inputs(
         self,
