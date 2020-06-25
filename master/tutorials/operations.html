@@ -714,7 +714,9 @@ extract the version and the URL from where we can get the source code.</p>
 <p>Finally, we make a <code class="docutils literal notranslate"><span class="pre">cleanup</span></code> operation to remove the directory once we’re done
 with it.</p>
 <p><strong>shouldi/python/pypi.py</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span><span class="n">stage</span><span class="o">=</span><span class="n">Stage</span><span class="o">.</span><span class="n">CLEANUP</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;directory&quot;</span><span class="p">:</span> <span class="n">run_bandit</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;pkg&quot;</span><span class="p">]},</span> <span class="n">stage</span><span class="o">=</span><span class="n">Stage</span><span class="o">.</span><span class="n">CLEANUP</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">cleanup_pypi_package</span><span class="p">(</span><span class="n">directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Remove the directory containing the source code release.</span>
