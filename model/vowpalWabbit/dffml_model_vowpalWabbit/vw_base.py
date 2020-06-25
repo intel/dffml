@@ -69,8 +69,8 @@ class VWConfig:
         "Feature to be used as `tag` in conversion of data to vowpal wabbit input format",
         default=None,
     )
-    requires_formatting: bool = field(
-        "Convert the input to vowpal wabbit standard input format",
+    noconvert: bool = field(
+        "Do not convert record features to vowpal wabbit input format",
         default=False,
     )
 
@@ -246,7 +246,7 @@ class VWContext(ModelContext):
             )
             data.append(feature_data)
         vw_data = pd.DataFrame(data)
-        if self.parent.config.requires_formatting:
+        if not self.parent.config.noconvert:
             vw_data = df_to_vw_format(
                 vw_data,
                 vwcmd=self.parent.config.vwcmd,
@@ -264,7 +264,7 @@ class VWContext(ModelContext):
         else:
             if len(self.features) > 1:
                 raise InputError(
-                    "Training features should be in vw format or `requires_formatting` should be true."
+                    "Training features should be in vw format or `noconvert` should be false."
                 )
             vw_data = (
                 vw_data[self.parent.config.predict.name].map(str)
@@ -304,7 +304,7 @@ class VWContext(ModelContext):
         df = pd.DataFrame(data)
         xdata = df.drop([self.parent.config.predict.name], 1)
         self.logger.debug("Number of input records: {}".format(len(xdata)))
-        if self.parent.config.requires_formatting:
+        if not self.parent.config.noconvert:
             xdata = df_to_vw_format(
                 xdata,
                 vwcmd=self.parent.config.vwcmd,
@@ -357,7 +357,7 @@ class VWContext(ModelContext):
                 self.features + self.parent.config.extra_cols
             )
             data = pd.DataFrame(feature_data, index=[0])
-            if self.parent.config.requires_formatting:
+            if not self.parent.config.noconvert:
                 data = df_to_vw_format(
                     data,
                     vwcmd=self.parent.config.vwcmd,
