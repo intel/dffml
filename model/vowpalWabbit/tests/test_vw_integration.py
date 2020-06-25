@@ -55,7 +55,6 @@ class TestVWModel(IntegrationCLITestCase):
             "training_data=csv",
             "-source-filename",
             data_filename,
-
         )
         # Assess accuracy
         await CLI.cli(
@@ -93,7 +92,6 @@ class TestVWModel(IntegrationCLITestCase):
                 "predict_data=csv",
                 "-source-filename",
                 data_filename,
-
             )
         results = json.loads(self.stdout.getvalue())
         self.assertTrue(isinstance(results, list))
