@@ -34,24 +34,28 @@ from .shared_config_ops import mem_get, mem_set, CheckSecretMatchConfig
 
 class TestSharedConfig(IntegrationCLITestCase):
     async def test_shared(self):
+        self.required_plugins("dffml-config-yaml")
+
+        # Change to directory where this file is loacted
+        self._stack.enter_context(chdir(str(pathlib.Path(__file__).parent)))
+
+        # Create the DataFlow
         dataflow = DataFlow.auto(GetSingle, mem_get, mem_set)
-        dataflow.implementations[mem_get.op.name] = mem_get.imp
-        dataflow.implementations[mem_set.op.name] = mem_set.imp
-
-        shared_name = "mem"
-
-        temp_secret_file = self.mktempfile(suffix=".ini")
-
-        check_secret = CheckSecretMatchConfig(
-            secret=INISecret(
-                INISecretConfig(filename=temp_secret_file, allowempty=True)
-            )
+        # Specify targets for shared config. This way we don't have to guess
+        # which strings in dataflow.confg are supposed to be coming from shared
+        # config
+        dataflow.shared["mem_check_secret"] = SharedConfig(
+            values=CheckSecretMatchConfig(
+                secret=INISecret(
+                    INISecretConfig(
+                        filename=self.mktempfile(suffix=".ini"),
+                        allowempty=True,
+                    )
+                )
+            ),
+            targets=[mem_get.op.name, mem_set.op.name,],
         )
-
-        dataflow.shared[shared_name] = check_secret
-        dataflow.configs[mem_get.op.name] = shared_name
-        dataflow.configs[mem_set.op.name] = shared_name
-
+        # Add seed inputs
         dataflow.seed = [
             Input(value="code", definition=mem_set.op.inputs["key"]),
             Input(value="geass", definition=mem_set.op.inputs["value"]),
@@ -61,11 +65,8 @@ class TestSharedConfig(IntegrationCLITestCase):
             ),
         ]
 
-        dataflow.update()
-
-        self._stack.enter_context(chdir(str(pathlib.Path(__file__).parent)))
+        # Export the dataflow to a file
         dataflow_file = self.mktempfile(suffix=".yaml")
-
         async with BaseConfigLoader.load("yaml").withconfig(
             {}
         ) as configloader:
@@ -73,7 +74,8 @@ class TestSharedConfig(IntegrationCLITestCase):
                 with open(dataflow_file, "wb") as f:
                     f.write(await loader.dumpb(dataflow.export()))
 
-        await CLI.cli(
+        # Run the DataFlow
+        results = await CLI.cli(
             "dataflow",
             "run",
             "records",
@@ -86,7 +88,6 @@ class TestSharedConfig(IntegrationCLITestCase):
             "-source-records",
             "world",
         )
-        # results = stdout.getvalue()
-
+        print(results)
         # self.assertIn("value_done", results)
         # self.assertEqual(results["value_done"], "geass")

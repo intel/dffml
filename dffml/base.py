@@ -14,6 +14,8 @@ import dataclasses
 from argparse import ArgumentParser
 from typing import Dict, Any, Type, Optional
 
+import pkg_resources
+
 from .util.data import get_args, get_origin
 from .util.cli.arg import Arg
 from .util.data import (
@@ -156,7 +158,7 @@ def convert_value(arg, value):
         elif getattr(type_cls, "CONFIGLOADABLE", False):
             pass
         else:
-            print(f"type_cls : {type_cls} , value : {value}" )
+            print(f"type_cls : {type_cls} , value : {value}")
             value = type_cls(value)
         # list -> tuple
         if arg.annotation is not None and get_origin(arg.annotation) is tuple:
@@ -177,8 +179,24 @@ def convert_value(arg, value):
 def is_config_dict(value):
     return bool(
         "plugin" in value
+        and "type" in value
         and "config" in value
         and isinstance(value["config"], dict)
+    )
+
+
+def load_config_dict(value):
+    # type: model
+    # plugin: slr
+    # config:
+    #   feature: x:int:1
+    #   predict: y:int:1
+    for prefix in ["dffml.", ""]:
+        for i in pkg_resources.iter_entry_points(prefix + value["type"]):
+            if i.name == value["plugin"]:
+                return i.load()(**value["config"])
+    raise PluginNotFoundError(
+        f'{value["plugin"]!r} as not found for plugin type {value["type"]!r}'
     )
 
 
@@ -190,7 +208,7 @@ def _fromdict(cls, **kwargs):
             value = kwargs[field.name]
             config = {}
             if is_config_dict(value):
-                value, config = value["plugin"], value["config"]
+                value = load_config_dict(value)
             value = convert_value(mkarg(field), value)
             if inspect.isclass(value) and issubclass(value, BaseConfigurable):
                 # TODO This probably isn't 100% correct. Figure out what we need

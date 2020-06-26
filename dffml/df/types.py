@@ -17,8 +17,8 @@ from typing import (
 )
 
 from .exceptions import SharedObjectMissing
-from ..base import BaseConfig,is_config_dict,convert_value
-from ..util.data import export_dict, type_lookup
+from ..base import BaseConfig, is_config_dict, load_config_dict, convert_value
+from ..util.data import export_dict, type_lookup, traverse_set
 from ..util.entrypoint import load as load_entrypoint
 from ..util.entrypoint import Entrypoint, base_entry_point
 
@@ -422,6 +422,97 @@ class InputFlow:
 
 
 @dataclass
+class SharedConfig:
+    """
+    A SharedConfig is used when you want to define something once and have it be
+    used within a DataFlow's config multiple places. This is useful if you want
+    to instantiate a plugin or object once, and have multiple places in config
+    reference the same instance (which lives within dataflow.shared).
+
+    Examples
+    --------
+
+    Share an instance of a dictionary
+
+    >>> from dffml import DataFlow, SharedConfig
+    >>>
+    >>> dataflow = DataFlow(
+    ...     shared={
+    ...         'mydict': SharedConfig(
+    ...             value={"key": "value"},
+    ...             targets=[
+    ...                 "some.thing",
+    ...                 "'my.custom'.feedface",
+    ...             ]
+    ...         )
+    ...     }
+    ... )
+    >>>
+    >>> dataflow.configs["some"]["thing"]
+    {'key': 'value'}
+    >>> dataflow.configs["my.custom"]["feedface"]
+    {'key': 'value'}
+    >>>
+    >>> dataflow.configs["some"]["thing"]["key"] = "deadbeef"
+    >>>
+    >>> dataflow.configs["my.custom"]["feedface"]
+    {'key': 'deadbeef'}
+
+    Share an instance of a model
+
+    >>> from dffml import DataFlow, SharedConfig
+    >>>
+    >>> dataflow = DataFlow(
+    ...     shared={
+    ...         'mydict': SharedConfig(
+    ...             value={
+    ...                 "type": "model",
+    ...                 "plugin": "slr",
+    ...                 "config": {
+    ...                     "feature": {
+    ...                         "name": "X",
+    ...                         "dtype": "float",
+    ...                         "length": 1,
+    ...                     },
+    ...                     "predict": {
+    ...                         "name": "Y",
+    ...                         "dtype": "float",
+    ...                         "length": 1,
+    ...                     },
+    ...                     "directory": "slr"
+    ...                 }
+    ...             },
+    ...             targets=[
+    ...                 "some.model",
+    ...                 "'my.custom'.model",
+    ...             ]
+    ...         )
+    ...     }
+    ... )
+    >>>
+    >>> dataflow.configs["some"]["model"].config.predict.name
+    Y
+    >>> dataflow.configs["my.custom"]["model"].config.predict.name
+    Y
+    >>>
+    >>> dataflow.configs["some"]["model"].config.predict.name = "y_value"
+    >>>
+    >>> dataflow.configs["my.custom"]["model"].config.predict.name
+    y_value
+    """
+
+    value: Any
+    targets: List[str]
+
+    def export(self):
+        return export_dict(**asdict(self))
+
+    @classmethod
+    def _fromdict(cls, **kwargs):
+        return cls(**kwargs)
+
+
+@dataclass
 class Forward:
     """
     Keeps a map of operation instance_names to list of definitions
@@ -466,7 +557,7 @@ class DataFlow:
 
     def __init__(
         self,
-        operations: Dict[str, Union[Operation, Callable]],
+        operations: Dict[str, Union[Operation, Callable]] = None,
         seed: List[Input] = None,
         configs: Dict[str, BaseConfig] = None,
         definitions: Dict[str, Definition] = False,
@@ -489,6 +580,8 @@ class DataFlow:
         self.shared = shared
         # Prevent usage of a global dict (if we set default to {} then all the
         # instances will share the same instance of that dict, or list)
+        if self.operations is None:
+            self.operations = {}
         if self.forward is None:
             self.forward = Forward()
         if self.seed is None:
@@ -508,6 +601,7 @@ class DataFlow:
     def update(self, auto_flow: bool = False):
         self.update_operations()
         self.update_definitions()
+        self.update_config()
         if auto_flow:
             self.flow = self.auto_flow()
         self.update_by_origin()
@@ -566,6 +660,13 @@ class DataFlow:
             definition.name: definition for definition in definitions
         }
         self.definitions = definitions
+
+    def update_config(self):
+        for _key, shared_config in self.shared.items():
+            if is_config_dict(shared_config.value):
+                shared_config.value = load_config_dict(shared_config.value)
+            for target in shared_config.targets:
+                traverse_set(self.configs, target, value=shared_config.value)
 
     def update_by_origin(self):
         # Create by_origin which maps operation instance names to the sources
@@ -664,6 +765,12 @@ class DataFlow:
         # Import forward
         if "forward" in kwargs:
             kwargs["forward"] = Forward._fromdict(**kwargs["forward"])
+        # Import shared configs
+        if "shared" in kwargs:
+            kwargs["shared"] = {
+                key: SharedConfig._fromdict(**value)
+                for key, value in kwargs["shared"]
+            }
 
         return cls(**kwargs)
 
