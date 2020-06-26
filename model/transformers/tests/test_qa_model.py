@@ -63,6 +63,7 @@ class TestQAModel(AsyncTestCase):
                 model_name_or_path="bert-base-cased",
                 cache_dir=cls.model_dir.name,
                 output_dir=cls.model_dir.name,
+                log_dir=cls.model_dir.name,
                 model_type="bert",
                 no_cuda=True,
             )
