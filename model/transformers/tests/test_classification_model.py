@@ -49,7 +49,7 @@ class TestHFClassificationModel(AsyncTestCase):
 
     async def test_01_accuracy(self):
         res = await accuracy(self.model, self.sources)
-        self.assertGreater(res, 0)
+        self.assertGreaterEqual(res, 0)
 
     async def test_02_predict(self):
         target_name = self.model.config.predict.name
