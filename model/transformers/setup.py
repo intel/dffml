@@ -25,6 +25,7 @@ INSTALL_REQUIRES = [
     "seqeval>=0.0.12",
     "fastprogress>=0.2.2",
     "transformers>=2.11.0",
+    "torch>=1.5.0",
 ] + (
     ["dffml>=0.3.7"]
     if not any(
@@ -73,6 +74,7 @@ setup(
     entry_points={
         "dffml.model": [
             "ner_tagger = dffml_model_transformers.ner.ner_model:NERModel",
+            "qa_model = dffml_model_transformers.qa.qa_model:QAModel",
             "hfclassifier = dffml_model_transformers.classification.classification_model:HFClassificationModel",
         ]
     },
