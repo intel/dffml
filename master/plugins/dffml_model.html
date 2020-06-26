@@ -2817,7 +2817,82 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
 <div class="section" id="vwmodel">
 <span id="plugin-model-dffml-model-vowpalwabbit-vwmodel"></span><h3>vwmodel<a class="headerlink" href="#vwmodel" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
-<p>No description</p>
+<p>Implemented using Vowpal Wabbit.</p>
+<p>First we create the training and testing datasets</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">A</span><span class="p">,</span><span class="n">B</span>
+<span class="o">|</span> <span class="n">price</span><span class="p">:</span><span class="o">.</span><span class="mi">23</span> <span class="n">sqft</span><span class="p">:</span><span class="o">.</span><span class="mi">25</span> <span class="n">age</span><span class="p">:</span><span class="o">.</span><span class="mi">05</span> <span class="mi">2006</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span>
+<span class="o">|</span> <span class="n">price</span><span class="p">:</span><span class="o">.</span><span class="mi">18</span> <span class="n">sqft</span><span class="p">:</span><span class="o">.</span><span class="mi">15</span> <span class="n">age</span><span class="p">:</span><span class="o">.</span><span class="mi">35</span> <span class="mi">1976</span><span class="p">,</span><span class="mi">1</span>
+<span class="o">|</span> <span class="n">price</span><span class="p">:</span><span class="o">.</span><span class="mi">53</span> <span class="n">sqft</span><span class="p">:</span><span class="o">.</span><span class="mi">32</span> <span class="n">age</span><span class="p">:</span><span class="o">.</span><span class="mi">87</span> <span class="mi">1924</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="n">A</span>
+<span class="o">|</span> <span class="n">price</span><span class="p">:</span><span class="o">.</span><span class="mi">46</span> <span class="n">sqft</span><span class="p">:</span><span class="o">.</span><span class="mi">4</span> <span class="n">age</span><span class="p">:</span><span class="o">.</span><span class="mi">10</span> <span class="mi">1924</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<p>Train the model</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">vwmodel</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
+    <span class="n">A</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> \
+    <span class="n">B</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">noconvert</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span>
+</pre></div>
+</div>
+<p>Assess the accuracy</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span>  \
+  <span class="o">-</span><span class="n">model</span> <span class="n">vwmodel</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
+    <span class="n">A</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> \
+    <span class="n">B</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">noconvert</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span>
+
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.38683876649129145</span>
+</pre></div>
+</div>
+<p>Make a prediction</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">vwmodel</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">features</span> \
+    <span class="n">A</span><span class="p">:</span><span class="nb">str</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> \
+    <span class="n">B</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">noconvert</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;A&quot;</span><span class="p">:</span> <span class="s2">&quot;| price:.46 sqft:.4 age:.10 1924&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-29T16:36:57Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;B&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.38683876649129145</span><span class="p">,</span>
+                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.0</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
 <p><strong>Args</strong></p>
 <ul class="simple">
 <li><p>features: List of features</p></li>
@@ -2851,7 +2926,7 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
 </li>
 <li><p>vwcmd: List of strings</p>
 <ul>
-<li><p>default: [‘loss_function’, ‘logistic’, ‘link’, ‘logistic’, ‘l2’, ‘0.04’]</p></li>
+<li><p>default: []</p></li>
 <li><p>Command Line Arguements as per vowpal wabbit convention</p></li>
 </ul>
 </li>
@@ -2879,10 +2954,10 @@ Ensure that <cite>predict</cite> and <cite>accuracy</cite> for these algorithms 
 <li><p>Feature to be used as <cite>tag</cite> in conversion of data to vowpal wabbit input format</p></li>
 </ul>
 </li>
-<li><p>convert_to_vw: String</p>
+<li><p>noconvert: String</p>
 <ul>
 <li><p>default: False</p></li>
-<li><p>Convert the input to vowpal wabbit standard input format</p></li>
+<li><p>Do not convert record features to vowpal wabbit input format</p></li>
 </ul>
 </li>
 </ul>
