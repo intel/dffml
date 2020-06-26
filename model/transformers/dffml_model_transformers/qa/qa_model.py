@@ -69,6 +69,7 @@ class QAModelConfig:
     cache_dir: str = field(
         "Where do you want to store the pre-trained models downloaded from s3",
     )
+    log_dir: str = field("Directory used by SummaryWriter for logging")
     tokenizer_name: str = field(
         "Pretrained tokenizer name or path if not the same as model_name",
         default=None,
@@ -234,7 +235,7 @@ class QAModelContext(ModelContext):
     async def _custom_train(self, train_dataset):
         """ Train the model """
         if self.parent.config.local_rank in [-1, 0]:
-            tb_writer = SummaryWriter()
+            tb_writer = SummaryWriter(log_dir=self.parent.config.log_dir)
 
         self.parent.config.train_batch_size = (
             self.parent.config.per_gpu_train_batch_size

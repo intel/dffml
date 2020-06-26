@@ -152,6 +152,8 @@ class TestQAModel(IntegrationCLITestCase):
             directory,
             "-model-cache_dir",
             directory,
+            "-model-log_dir",
+            directory,
         )
         # Assess accuracy
         await CLI.cli(
@@ -176,6 +178,8 @@ class TestQAModel(IntegrationCLITestCase):
             "-model-output_dir",
             directory,
             "-model-cache_dir",
+            directory,
+            "-model-log_dir",
             directory,
         )
         with contextlib.redirect_stdout(self.stdout):
@@ -203,6 +207,8 @@ class TestQAModel(IntegrationCLITestCase):
                 "-model-output_dir",
                 directory,
                 "-model-cache_dir",
+                directory,
+                "-model-log_dir",
                 directory,
             )
             results = json.loads(self.stdout.getvalue())
@@ -245,6 +251,8 @@ class TestQAModel(IntegrationCLITestCase):
                 "-config-model-output_dir",
                 directory,
                 "-config-model-cache_dir",
+                directory,
+                "-config-model-log_dir",
                 directory,
                 "-config-model-save_steps",
                 "3",
