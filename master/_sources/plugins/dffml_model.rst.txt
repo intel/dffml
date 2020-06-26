@@ -1085,6 +1085,267 @@ Example usage of NER model using python API
   - default: False
   - Run evaluation during training at each logging step.
 
+.. _plugin_model_dffml_model_transformers_qa_model:
+
+qa_model
+~~~~~~~~
+
+*Official*
+
+Implemented using `HuggingFace Transformers <https://huggingface.co/transformers/index.html>`_ Pytorch based Models.
+Description about pretrianed models can be found `here <https://huggingface.co/transformers/pretrained_models.html>`_
+
+First we create the training and testing datasets by taking few data points from `SQuAD1.1 dataset <https://rajpurkar.github.io/SQuAD-explorer/>`_ `LICENSE <https://creativecommons.org/licenses/by-sa/4.0/legalcode>`_
+
+.. literalinclude:: /../model/transformers/examples/qa/train_data.sh
+
+.. literalinclude:: /../model/transformers/examples/qa/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/transformers/examples/qa/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/transformers/examples/qa/accuracy.sh
+
+Output
+
+.. code-block::
+
+    0.0
+
+Make a prediction
+
+.. literalinclude:: /../model/transformers/examples/qa/predict.sh
+
+Output
+
+.. code-block:: json
+
+    [
+        {
+            "extra": {},
+            "features": {
+                "answer_text": null,
+                "answers": [
+                    {
+                        "answer_start": 0,
+                        "text": " "
+                    }
+                ],
+                "context": "Architecturally, the school has a Catholic character. Atop the Main Building's gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend "Venite Ad Me Omnes". Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.",
+                "is_impossible": false,
+                "question": "What sits on top of the Main Building at Notre Dame?",
+                "start_pos_char": null,
+                "title": "University_of_Notre_Dame"
+            },
+            "key": "5733be284776f4190066117e",
+            "last_updated": "2020-06-23T17:54:03Z",
+            "prediction": {
+                "Answer": {
+                    "confidence": NaN,
+                    "value": {
+                        "5733be284776f4190066117e": "a copper statue of Christ"
+                    }
+                }
+            }
+        }
+    ]
+
+The model can be trained on large datasets to get the expected
+output. The example shown above is to demonstrate the commandline usage
+of the model.
+
+In the above train, accuracy and predict commands, :ref:`plugin_source_dffml_op` source is used to
+read and parse data from json file before feeding it to the model. The function used by opsource to parse json data
+is:
+
+.. literalinclude:: /../model/transformers/dffml_model_transformers/qa/utils.py
+
+The location of the function is passed using: 
+
+.. code-block:: console
+
+        -source-opimp dffml_model_transformers.qa.utils:parser
+
+And the arguments to `parser` are passed by:
+
+.. code-block:: console
+
+        -source-args train.json True
+
+where `train.json` is the name of file containing training data and the bool `True`
+is value of the flag `is_training`.
+
+**Args**
+
+- model_type: String
+
+  - Model type in the list: distilbert, albert, longformer, roberta, bert, xlnet, flaubert, xlm
+
+- model_name_or_path: String
+
+  - Path to pretrained model or model identifier from huggingface.co/models
+
+- output_dir: String
+
+  - The output directory where the model checkpoints and predictions will be written.
+
+- cache_dir: String
+
+  - Where do you want to store the pre-trained models downloaded from s3
+
+- tokenizer_name: String
+
+  - default: None
+  - Pretrained tokenizer name or path if not the same as model_name
+
+- from_tf: String
+
+  - default: False
+  - Whether to load model from tensorflow checkpoint or .h5 file
+
+- config_name: String
+
+  - default: None
+  - Pretrained config name or path if not the same as model_name
+
+- null_score_diff_threshold: String
+
+  - default: 0.0
+  - If null_score - best_non_null is greater than the threshold predict null.
+
+- max_seq_length: Integer
+
+  - default: 384
+  - The maximum total input sequence length after WordPiece tokenization. Sequences longer than this will be truncated, and sequences shorter than this will be padded.
+
+- doc_stride: Integer
+
+  - default: 128
+  - When splitting up a long document into chunks, how much stride to take between chunks.
+
+- max_query_length: Integer
+
+  - default: 64
+  - The maximum number of tokens for the question. Questions longer than this will be truncated to this length
+
+- do_lower_case: String
+
+  - default: False
+  - Set this flag while using uncased model
+
+- per_gpu_train_batch_size: Integer
+
+  - default: 8
+  - Batch size per GPU/CPU for training
+
+- per_gpu_eval_batch_size: Integer
+
+  - default: 8
+  - Batch size per GPU/CPU for evaluation
+
+- learning_rate: float
+
+  - default: 5e-05
+  - The initial learning rate for Adam
+
+- gradient_accumulation_steps: Integer
+
+  - default: 1
+  - Number of updates steps to accumulate before performing a backward/update pass
+
+- weight_decay: float
+
+  - default: 0.0
+  - Weight decay if we apply some.
+
+- adam_epsilon: float
+
+  - default: 1e-08
+  - Epsilon for Adam optimizer
+
+- max_grad_norm: float
+
+  - default: 1.0
+  - Max gradient norm.
+
+- num_train_epochs: float
+
+  - default: 1.0
+  - Total number of training epoches to perform
+
+- max_steps: Integer
+
+  - default: -1
+  - If > 0: set total number of training steps to perform. Override num_train_epochs.
+
+- warmup_steps: Integer
+
+  - default: 0
+  - Linear warmup over warmup_steps.
+
+- n_best_size: Integer
+
+  - default: 20
+  - The total number of n-best predictions to generate
+
+- max_answer_length: Integer
+
+  - default: 30
+  - The maximum length of an answer that can be generated. This is needed because the start and end predictions are not conditioned on one another.
+
+- lang_id: Integer
+
+  - default: 0
+  - language id of input for language-specific xlm models (see tokenization_xlm.PRETRAINED_INIT_CONFIGURATION)
+
+- logging_steps: Integer
+
+  - default: 500
+  - Log every X updates steps.
+
+- save_steps: Integer
+
+  - default: 500
+  - Save checkpoint every X update steps
+
+- no_cuda: String
+
+  - default: False
+  - Whether not to use CUDA when available
+
+- overwrite_output_dir: String
+
+  - default: False
+  - Overwrite the content of the output directory
+
+- seed: Integer
+
+  - default: 2020
+  - random seed for initialization
+
+- local_rank: Integer
+
+  - default: -1
+  - local_rank for distributed training on gpus
+
+- fp16: Integer
+
+  - default: False
+  - Whether to use 16-bit (mixed) precision (through NVIDIA apex) insted of 32-bit
+
+- fp16_opt_level: String
+
+  - default: O1
+  - For fp16: Apex AMP optimization level selected in ['O0', 'O1', 'O2', and 'O3']. See details at https://nvidia.github.io/apex/amp.html
+
+- threads: Integer
+
+  - default: 1
+  - Multiple threads for converting example to features
+
 .. _plugin_model_dffml_model_scratch:
 
 dffml_model_scratch

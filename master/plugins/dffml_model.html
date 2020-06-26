@@ -121,6 +121,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-transformers">dffml_model_transformers</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#hfclassifier">hfclassifier</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ner-tagger">ner_tagger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qa-model">qa_model</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-model-scratch">dffml_model_scratch</a><ul>
@@ -1758,6 +1759,444 @@ of the model.</p>
 <ul>
 <li><p>default: False</p></li>
 <li><p>Run evaluation during training at each logging step.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="qa-model">
+<span id="plugin-model-dffml-model-transformers-qa-model"></span><h3>qa_model<a class="headerlink" href="#qa-model" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Implemented using <a class="reference external" href="https://huggingface.co/transformers/index.html">HuggingFace Transformers</a> Pytorch based Models.
+Description about pretrianed models can be found <a class="reference external" href="https://huggingface.co/transformers/pretrained_models.html">here</a></p>
+<p>First we create the training and testing datasets by taking few data points from <a class="reference external" href="https://rajpurkar.github.io/SQuAD-explorer/">SQuAD1.1 dataset</a> <a class="reference external" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">LICENSE</a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;&gt;</span> <span class="n">train</span><span class="o">.</span><span class="n">json</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="p">{</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:[</span>
+       <span class="p">{</span>
+          <span class="s2">&quot;title&quot;</span><span class="p">:</span><span class="s2">&quot;University_of_Notre_Dame&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;paragraphs&quot;</span><span class="p">:[</span>
+             <span class="p">{</span>
+                <span class="s2">&quot;context&quot;</span><span class="p">:</span><span class="s2">&quot;Architecturally, the school has a Catholic character. Atop the Main Building&#39;s gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend </span><span class="se">\&quot;</span><span class="s2">Venite Ad Me Omnes</span><span class="se">\&quot;</span><span class="s2">. Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;qas&quot;</span><span class="p">:[</span>
+                   <span class="p">{</span>
+                      <span class="s2">&quot;answers&quot;</span><span class="p">:[</span>
+                         <span class="p">{</span>
+                            <span class="s2">&quot;answer_start&quot;</span><span class="p">:</span><span class="mi">515</span><span class="p">,</span>
+                            <span class="s2">&quot;text&quot;</span><span class="p">:</span><span class="s2">&quot;Saint Bernadette Soubirous&quot;</span>
+                         <span class="p">}</span>
+                      <span class="p">],</span>
+                      <span class="s2">&quot;question&quot;</span><span class="p">:</span><span class="s2">&quot;To whom did the Virgin Mary allegedly appear in 1858 in Lourdes France?&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;5733be284776f41900661182&quot;</span>
+                   <span class="p">},</span>
+                   <span class="p">{</span>
+                      <span class="s2">&quot;answers&quot;</span><span class="p">:[</span>
+                         <span class="p">{</span>
+                            <span class="s2">&quot;answer_start&quot;</span><span class="p">:</span><span class="mi">188</span><span class="p">,</span>
+                            <span class="s2">&quot;text&quot;</span><span class="p">:</span><span class="s2">&quot;a copper statue of Christ&quot;</span>
+                         <span class="p">}</span>
+                      <span class="p">],</span>
+                      <span class="s2">&quot;question&quot;</span><span class="p">:</span><span class="s2">&quot;What is in front of the Notre Dame Main Building?&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;5733be284776f4190066117f&quot;</span>
+                   <span class="p">},</span>
+                   <span class="p">{</span>
+                      <span class="s2">&quot;answers&quot;</span><span class="p">:[</span>
+                         <span class="p">{</span>
+                            <span class="s2">&quot;answer_start&quot;</span><span class="p">:</span><span class="mi">279</span><span class="p">,</span>
+                            <span class="s2">&quot;text&quot;</span><span class="p">:</span><span class="s2">&quot;the Main Building&quot;</span>
+                         <span class="p">}</span>
+                      <span class="p">],</span>
+                      <span class="s2">&quot;question&quot;</span><span class="p">:</span><span class="s2">&quot;The Basilica of the Sacred heart at Notre Dame is beside to which structure?&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;5733be284776f41900661180&quot;</span>
+                   <span class="p">},</span>
+                   <span class="p">{</span>
+                      <span class="s2">&quot;answers&quot;</span><span class="p">:[</span>
+                         <span class="p">{</span>
+                            <span class="s2">&quot;answer_start&quot;</span><span class="p">:</span><span class="mi">381</span><span class="p">,</span>
+                            <span class="s2">&quot;text&quot;</span><span class="p">:</span><span class="s2">&quot;a Marian place of prayer and reflection&quot;</span>
+                         <span class="p">}</span>
+                      <span class="p">],</span>
+                      <span class="s2">&quot;question&quot;</span><span class="p">:</span><span class="s2">&quot;What is the Grotto at Notre Dame?&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;5733be284776f41900661181&quot;</span>
+                   <span class="p">},</span>
+                   <span class="p">{</span>
+                      <span class="s2">&quot;answers&quot;</span><span class="p">:[</span>
+                         <span class="p">{</span>
+                            <span class="s2">&quot;answer_start&quot;</span><span class="p">:</span><span class="mi">92</span><span class="p">,</span>
+                            <span class="s2">&quot;text&quot;</span><span class="p">:</span><span class="s2">&quot;a golden statue of the Virgin Mary&quot;</span>
+                         <span class="p">}</span>
+                      <span class="p">],</span>
+                      <span class="s2">&quot;question&quot;</span><span class="p">:</span><span class="s2">&quot;What sits on top of the Main Building at Notre Dame?&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;5733be284776f4190066117e&quot;</span>
+                   <span class="p">}</span>
+                <span class="p">]</span>
+             <span class="p">}</span>
+          <span class="p">]</span>
+       <span class="p">}</span>
+    <span class="p">]</span>
+ <span class="p">}</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">json</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
+<span class="p">{</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:[</span>
+       <span class="p">{</span>
+          <span class="s2">&quot;title&quot;</span><span class="p">:</span><span class="s2">&quot;University_of_Notre_Dame&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;paragraphs&quot;</span><span class="p">:[</span>
+             <span class="p">{</span>
+                <span class="s2">&quot;context&quot;</span><span class="p">:</span><span class="s2">&quot;Architecturally, the school has a Catholic character. Atop the Main Building&#39;s gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend </span><span class="se">\&quot;</span><span class="s2">Venite Ad Me Omnes</span><span class="se">\&quot;</span><span class="s2">. Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;qas&quot;</span><span class="p">:[</span>
+              
+                   <span class="p">{</span>
+                      <span class="s2">&quot;question&quot;</span><span class="p">:</span><span class="s2">&quot;What sits on top of the Main Building at Notre Dame?&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;5733be284776f4190066117e&quot;</span>
+                   <span class="p">}</span>
+                <span class="p">]</span>
+             <span class="p">}</span>
+          <span class="p">]</span>
+       <span class="p">}</span>
+    <span class="p">]</span>
+ <span class="p">}</span>
+<span class="n">EOF</span>
+</pre></div>
+</div>
+<p>Train the model</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">qa_model</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_type</span> <span class="n">bert</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">3</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">checkpoints</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">cache</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">op</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">opimp</span> <span class="n">dffml_model_transformers</span><span class="o">.</span><span class="n">qa</span><span class="o">.</span><span class="n">utils</span><span class="p">:</span><span class="n">parser</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">args</span> <span class="n">train</span><span class="o">.</span><span class="n">json</span> <span class="kc">True</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Assess the accuracy</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">qa_model</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_type</span> <span class="n">bert</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">3</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">checkpoints</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">cache</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">op</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">opimp</span> <span class="n">dffml_model_transformers</span><span class="o">.</span><span class="n">qa</span><span class="o">.</span><span class="n">utils</span><span class="p">:</span><span class="n">parser</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">args</span> <span class="n">train</span><span class="o">.</span><span class="n">json</span> <span class="kc">False</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.0</span>
+</pre></div>
+</div>
+<p>Make a prediction</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
+  <span class="o">-</span><span class="n">model</span> <span class="n">qa_model</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_type</span> <span class="n">bert</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">save_steps</span> <span class="mi">3</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">checkpoints</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">cache</span> \
+  <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">op</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">opimp</span> <span class="n">dffml_model_transformers</span><span class="o">.</span><span class="n">qa</span><span class="o">.</span><span class="n">utils</span><span class="p">:</span><span class="n">parser</span> \
+  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">args</span> <span class="n">test</span><span class="o">.</span><span class="n">json</span> <span class="kc">False</span> \
+  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span>
+</pre></div>
+</div>
+<p>Output</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>[
+    {
+        &quot;extra&quot;: {},
+        &quot;features&quot;: {
+            &quot;answer_text&quot;: null,
+            &quot;answers&quot;: [
+                {
+                    &quot;answer_start&quot;: 0,
+                    &quot;text&quot;: &quot; &quot;
+                }
+            ],
+            &quot;context&quot;: &quot;Architecturally, the school has a Catholic character. Atop the Main Building&#39;s gold dome is a golden statue of the Virgin Mary. Immediately in front of the Main Building and facing it, is a copper statue of Christ with arms upraised with the legend &quot;Venite Ad Me Omnes&quot;. Next to the Main Building is the Basilica of the Sacred Heart. Immediately behind the basilica is the Grotto, a Marian place of prayer and reflection. It is a replica of the grotto at Lourdes, France where the Virgin Mary reputedly appeared to Saint Bernadette Soubirous in 1858. At the end of the main drive (and in a direct line that connects through 3 statues and the Gold Dome), is a simple, modern stone statue of Mary.&quot;,
+            &quot;is_impossible&quot;: false,
+            &quot;question&quot;: &quot;What sits on top of the Main Building at Notre Dame?&quot;,
+            &quot;start_pos_char&quot;: null,
+            &quot;title&quot;: &quot;University_of_Notre_Dame&quot;
+        },
+        &quot;key&quot;: &quot;5733be284776f4190066117e&quot;,
+        &quot;last_updated&quot;: &quot;2020-06-23T17:54:03Z&quot;,
+        &quot;prediction&quot;: {
+            &quot;Answer&quot;: {
+                &quot;confidence&quot;: NaN,
+                &quot;value&quot;: {
+                    &quot;5733be284776f4190066117e&quot;: &quot;a copper statue of Christ&quot;
+                }
+            }
+        }
+    }
+]
+</pre></div>
+</div>
+<p>The model can be trained on large datasets to get the expected
+output. The example shown above is to demonstrate the commandline usage
+of the model.</p>
+<p>In the above train, accuracy and predict commands, <a class="reference internal" href="dffml_source.html#plugin-source-dffml-op"><span class="std std-ref">op</span></a> source is used to
+read and parse data from json file before feeding it to the model. The function used by opsource to parse json data
+is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+
+<span class="k">def</span> <span class="nf">parser</span><span class="p">(</span><span class="n">json_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_training</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">parsed_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+        <span class="n">answers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">para</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;paragraphs&quot;</span><span class="p">]:</span>
+                <span class="n">context</span> <span class="o">=</span> <span class="n">para</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">qa</span> <span class="ow">in</span> <span class="n">para</span><span class="p">[</span><span class="s2">&quot;qas&quot;</span><span class="p">]:</span>
+                    <span class="nb">id</span> <span class="o">=</span> <span class="n">qa</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+                    <span class="n">question</span> <span class="o">=</span> <span class="n">qa</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">]</span>
+                    <span class="n">start_pos_char</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">answer_text</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">answers</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">is_impossible</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">qa</span><span class="p">[</span><span class="s2">&quot;is_impossible&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;is_impossible&quot;</span> <span class="ow">in</span> <span class="n">qa</span> <span class="k">else</span> <span class="kc">False</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_impossible</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">is_training</span><span class="p">):</span>
+                            <span class="n">answer</span> <span class="o">=</span> <span class="n">qa</span><span class="p">[</span><span class="s2">&quot;answers&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                            <span class="n">answer_text</span> <span class="o">=</span> <span class="n">answer</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>
+                            <span class="n">start_pos_char</span> <span class="o">=</span> <span class="n">answer</span><span class="p">[</span><span class="s2">&quot;answer_start&quot;</span><span class="p">]</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">answers</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;answer_start&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}]</span>
+                    <span class="n">parsed_data</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">question</span><span class="p">,</span>
+                            <span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="n">context</span><span class="p">,</span>
+                            <span class="s2">&quot;answer_text&quot;</span><span class="p">:</span> <span class="n">answer_text</span><span class="p">,</span>
+                            <span class="s2">&quot;start_pos_char&quot;</span><span class="p">:</span> <span class="n">start_pos_char</span><span class="p">,</span>
+                            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+                            <span class="s2">&quot;is_impossible&quot;</span><span class="p">:</span> <span class="n">is_impossible</span><span class="p">,</span>
+                            <span class="s2">&quot;answers&quot;</span><span class="p">:</span> <span class="n">answers</span><span class="p">,</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+        <span class="k">return</span> <span class="n">parsed_data</span>
+</pre></div>
+</div>
+<p>The location of the function is passed using:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">-source-opimp dffml_model_transformers.qa.utils:parser</span>
+</pre></div>
+</div>
+<p>And the arguments to <cite>parser</cite> are passed by:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">-source-args train.json True</span>
+</pre></div>
+</div>
+<p>where <cite>train.json</cite> is the name of file containing training data and the bool <cite>True</cite>
+is value of the flag <cite>is_training</cite>.</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>model_type: String</p>
+<ul>
+<li><p>Model type in the list: distilbert, albert, longformer, roberta, bert, xlnet, flaubert, xlm</p></li>
+</ul>
+</li>
+<li><p>model_name_or_path: String</p>
+<ul>
+<li><p>Path to pretrained model or model identifier from huggingface.co/models</p></li>
+</ul>
+</li>
+<li><p>output_dir: String</p>
+<ul>
+<li><p>The output directory where the model checkpoints and predictions will be written.</p></li>
+</ul>
+</li>
+<li><p>cache_dir: String</p>
+<ul>
+<li><p>Where do you want to store the pre-trained models downloaded from s3</p></li>
+</ul>
+</li>
+<li><p>tokenizer_name: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Pretrained tokenizer name or path if not the same as model_name</p></li>
+</ul>
+</li>
+<li><p>from_tf: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Whether to load model from tensorflow checkpoint or .h5 file</p></li>
+</ul>
+</li>
+<li><p>config_name: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Pretrained config name or path if not the same as model_name</p></li>
+</ul>
+</li>
+<li><p>null_score_diff_threshold: String</p>
+<ul>
+<li><p>default: 0.0</p></li>
+<li><p>If null_score - best_non_null is greater than the threshold predict null.</p></li>
+</ul>
+</li>
+<li><p>max_seq_length: Integer</p>
+<ul>
+<li><p>default: 384</p></li>
+<li><p>The maximum total input sequence length after WordPiece tokenization. Sequences longer than this will be truncated, and sequences shorter than this will be padded.</p></li>
+</ul>
+</li>
+<li><p>doc_stride: Integer</p>
+<ul>
+<li><p>default: 128</p></li>
+<li><p>When splitting up a long document into chunks, how much stride to take between chunks.</p></li>
+</ul>
+</li>
+<li><p>max_query_length: Integer</p>
+<ul>
+<li><p>default: 64</p></li>
+<li><p>The maximum number of tokens for the question. Questions longer than this will be truncated to this length</p></li>
+</ul>
+</li>
+<li><p>do_lower_case: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Set this flag while using uncased model</p></li>
+</ul>
+</li>
+<li><p>per_gpu_train_batch_size: Integer</p>
+<ul>
+<li><p>default: 8</p></li>
+<li><p>Batch size per GPU/CPU for training</p></li>
+</ul>
+</li>
+<li><p>per_gpu_eval_batch_size: Integer</p>
+<ul>
+<li><p>default: 8</p></li>
+<li><p>Batch size per GPU/CPU for evaluation</p></li>
+</ul>
+</li>
+<li><p>learning_rate: float</p>
+<ul>
+<li><p>default: 5e-05</p></li>
+<li><p>The initial learning rate for Adam</p></li>
+</ul>
+</li>
+<li><p>gradient_accumulation_steps: Integer</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>Number of updates steps to accumulate before performing a backward/update pass</p></li>
+</ul>
+</li>
+<li><p>weight_decay: float</p>
+<ul>
+<li><p>default: 0.0</p></li>
+<li><p>Weight decay if we apply some.</p></li>
+</ul>
+</li>
+<li><p>adam_epsilon: float</p>
+<ul>
+<li><p>default: 1e-08</p></li>
+<li><p>Epsilon for Adam optimizer</p></li>
+</ul>
+</li>
+<li><p>max_grad_norm: float</p>
+<ul>
+<li><p>default: 1.0</p></li>
+<li><p>Max gradient norm.</p></li>
+</ul>
+</li>
+<li><p>num_train_epochs: float</p>
+<ul>
+<li><p>default: 1.0</p></li>
+<li><p>Total number of training epoches to perform</p></li>
+</ul>
+</li>
+<li><p>max_steps: Integer</p>
+<ul>
+<li><p>default: -1</p></li>
+<li><p>If &gt; 0: set total number of training steps to perform. Override num_train_epochs.</p></li>
+</ul>
+</li>
+<li><p>warmup_steps: Integer</p>
+<ul>
+<li><p>default: 0</p></li>
+<li><p>Linear warmup over warmup_steps.</p></li>
+</ul>
+</li>
+<li><p>n_best_size: Integer</p>
+<ul>
+<li><p>default: 20</p></li>
+<li><p>The total number of n-best predictions to generate</p></li>
+</ul>
+</li>
+<li><p>max_answer_length: Integer</p>
+<ul>
+<li><p>default: 30</p></li>
+<li><p>The maximum length of an answer that can be generated. This is needed because the start and end predictions are not conditioned on one another.</p></li>
+</ul>
+</li>
+<li><p>lang_id: Integer</p>
+<ul>
+<li><p>default: 0</p></li>
+<li><p>language id of input for language-specific xlm models (see tokenization_xlm.PRETRAINED_INIT_CONFIGURATION)</p></li>
+</ul>
+</li>
+<li><p>logging_steps: Integer</p>
+<ul>
+<li><p>default: 500</p></li>
+<li><p>Log every X updates steps.</p></li>
+</ul>
+</li>
+<li><p>save_steps: Integer</p>
+<ul>
+<li><p>default: 500</p></li>
+<li><p>Save checkpoint every X update steps</p></li>
+</ul>
+</li>
+<li><p>no_cuda: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Whether not to use CUDA when available</p></li>
+</ul>
+</li>
+<li><p>overwrite_output_dir: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Overwrite the content of the output directory</p></li>
+</ul>
+</li>
+<li><p>seed: Integer</p>
+<ul>
+<li><p>default: 2020</p></li>
+<li><p>random seed for initialization</p></li>
+</ul>
+</li>
+<li><p>local_rank: Integer</p>
+<ul>
+<li><p>default: -1</p></li>
+<li><p>local_rank for distributed training on gpus</p></li>
+</ul>
+</li>
+<li><p>fp16: Integer</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Whether to use 16-bit (mixed) precision (through NVIDIA apex) insted of 32-bit</p></li>
+</ul>
+</li>
+<li><p>fp16_opt_level: String</p>
+<ul>
+<li><p>default: O1</p></li>
+<li><p>For fp16: Apex AMP optimization level selected in [‘O0’, ‘O1’, ‘O2’, and ‘O3’]. See details at <a class="reference external" href="https://nvidia.github.io/apex/amp.html">https://nvidia.github.io/apex/amp.html</a></p></li>
+</ul>
+</li>
+<li><p>threads: Integer</p>
+<ul>
+<li><p>default: 1</p></li>
+<li><p>Multiple threads for converting example to features</p></li>
 </ul>
 </li>
 </ul>
