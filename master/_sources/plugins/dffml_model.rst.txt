@@ -1196,6 +1196,10 @@ is value of the flag `is_training`.
 
   - Where do you want to store the pre-trained models downloaded from s3
 
+- log_dir: String
+
+  - Directory used by SummaryWriter for logging
+
 - tokenizer_name: String
 
   - default: None

@@ -1868,6 +1868,7 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">checkpoints</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">cache</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">log_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">log</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">op</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">opimp</span> <span class="n">dffml_model_transformers</span><span class="o">.</span><span class="n">qa</span><span class="o">.</span><span class="n">utils</span><span class="p">:</span><span class="n">parser</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">args</span> <span class="n">train</span><span class="o">.</span><span class="n">json</span> <span class="kc">True</span> \
@@ -1882,6 +1883,7 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">checkpoints</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">cache</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">log_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">log</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">op</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">opimp</span> <span class="n">dffml_model_transformers</span><span class="o">.</span><span class="n">qa</span><span class="o">.</span><span class="n">utils</span><span class="p">:</span><span class="n">parser</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">args</span> <span class="n">train</span><span class="o">.</span><span class="n">json</span> <span class="kc">False</span> \
@@ -1900,6 +1902,7 @@ Description about pretrianed models can be found <a class="reference external" h
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">model_name_or_path</span> <span class="n">bert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">cased</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">output_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">checkpoints</span> \
   <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">cache_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">cache</span> \
+  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">log_dir</span> <span class="n">qamodel</span><span class="o">/</span><span class="n">log</span> \
   <span class="o">-</span><span class="n">sources</span> <span class="n">s</span><span class="o">=</span><span class="n">op</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">opimp</span> <span class="n">dffml_model_transformers</span><span class="o">.</span><span class="n">qa</span><span class="o">.</span><span class="n">utils</span><span class="p">:</span><span class="n">parser</span> \
   <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">args</span> <span class="n">test</span><span class="o">.</span><span class="n">json</span> <span class="kc">False</span> \
@@ -2017,6 +2020,11 @@ is value of the flag <cite>is_training</cite>.</p>
 <li><p>cache_dir: String</p>
 <ul>
 <li><p>Where do you want to store the pre-trained models downloaded from s3</p></li>
+</ul>
+</li>
+<li><p>log_dir: String</p>
+<ul>
+<li><p>Directory used by SummaryWriter for logging</p></li>
 </ul>
 </li>
 <li><p>tokenizer_name: String</p>
