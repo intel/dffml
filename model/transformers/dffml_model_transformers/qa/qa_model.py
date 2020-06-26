@@ -1006,11 +1006,13 @@ class QAModel(Model):
     .. code-block:: console
 
             -source-opimp dffml_model_transformers.qa.utils:parser
+
     And the arguments to `parser` are passed by:
 
     .. code-block:: console
 
             -source-args train.json True
+
     where `train.json` is the name of file containing training data and the bool `True`
     is value of the flag `is_training`.
 
