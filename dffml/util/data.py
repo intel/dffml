@@ -11,6 +11,7 @@ import types
 import pydoc
 import inspect
 import dataclasses
+import collections
 from functools import wraps
 import pathlib
 from typing import Callable
@@ -215,9 +216,9 @@ def export_value(obj, key, value):
         obj[key] = value.export()
     elif hasattr(value, "_asdict"):
         obj[key] = value._asdict()
-    elif getattr(
-        type(value), "__module__", None
-    ) == "numpy" and inspect.ismethod(getattr(value, "flatten", None)):
+    elif getattr(type(value), "__module__", None) == "numpy" and isinstance(
+        getattr(value, "flatten", None), collections.Callable
+    ):
         obj[key] = tuple(value.flatten())
     elif dataclasses.is_dataclass(value):
         obj[key] = export_dict(**dataclasses.asdict(value))
