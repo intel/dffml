@@ -2,7 +2,7 @@ import pkg_resources
 
 from ..source.source import BaseSource
 from ..model import Model
-from ..util.cli.cmd import CMD
+from ..util.cli.cmd import CMD, CMDOutputOverride
 from ..util.cli.cmds import SourcesCMD, ListEntrypoint, SourcesCMDConfig
 from ..base import config, field
 
@@ -29,6 +29,8 @@ class ListRecords(SourcesCMD):
                         print(record)
                     else:
                         yield record
+        if self.pretty:
+            yield CMDOutputOverride
 
 
 class ListServices(ListEntrypoint):

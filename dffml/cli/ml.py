@@ -1,5 +1,5 @@
 from ..source.source import SubsetSources
-from ..util.cli.cmd import CMD
+from ..util.cli.cmd import CMD, CMDOutputOverride
 from ..high_level import train, predict, accuracy
 from ..util.cli.cmds import (
     SourcesCMD,
@@ -72,6 +72,8 @@ class PredictAll(MLCMD):
                 print(record)
             else:
                 yield record
+        if self.pretty:
+            yield CMDOutputOverride
 
 
 @config
