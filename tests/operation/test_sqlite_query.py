@@ -35,7 +35,7 @@ class TestSqliteQuery(AsyncTestCase):
             "key": "real",
             "firstName": "text",
             "lastName": "text",
-            "age": "real",
+            "age": "integer",
         }
         self.data_dicts = [
             {"key": 10, "firstName": "John", "lastName": "Doe", "age": 16},
