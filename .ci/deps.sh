@@ -89,6 +89,13 @@ if [ "x${PLUGIN}" == "xmodel/tensorflow_hub" ]; then
   python -m pip install -U -e "./model/tensorflow"
 fi
 
+if [[ "x${PLUGIN}" == "xmodel/autosklearn" ]] || \
+   [[ "x${PLUGIN}" == "x." ]] || \
+   [[ "x${PLUGIN}" == "xdocs" ]]; then
+  sudo apt-get install -y build-essential swig
+  curl https://raw.githubusercontent.com/automl/auto-sklearn/master/requirements.txt | xargs -n 1 -L 1 pip install
+fi
+
 if [[ "x${PLUGIN}" == "xoperations/deploy" ]]; then
   python -m pip install -U -e "./feature/git"
 fi
