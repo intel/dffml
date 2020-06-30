@@ -139,9 +139,6 @@ class AutoSklearnModelContext(ModelContext):
     async def get_predictions(self, data):
         return self.model.predict(data)
 
-    async def get_probabilities(self, data):
-        return self.model.predict_proba(data)
-
     async def train(self, sources: Sources):
         all_data = []
         async for record in sources.with_features(
@@ -187,7 +184,7 @@ class AutoSklearnModelContext(ModelContext):
         y_test = df[[self.parent.config.predict.name]]
         x_test = df.drop(columns=[self.parent.config.predict.name])
         predictions = await self.get_predictions(x_test)
-        accuracy = sklearn.metrics.accuracy_score(y_test, predictions)
+        accuracy = await self.accuracy_score(y_test, predictions)
         return Accuracy(accuracy)
 
     @property
