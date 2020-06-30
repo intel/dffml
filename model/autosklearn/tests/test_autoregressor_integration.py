@@ -114,4 +114,3 @@ class TestAutoClassifierModel(IntegrationCLITestCase):
                 self.assertIn("value", results)
                 self.assertIn("confidence", results)
                 self.assertEqual(int(results["value"]), 3)
-                self.assertEqual(results["confidence"], float("nan"))
