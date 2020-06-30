@@ -4,7 +4,6 @@ from typing import Optional, AsyncIterator, List, Dict, Any
 
 import pandas as pd
 import joblib as joblib
-import sklearn as sklearn
 
 from dffml.base import config, field
 from dffml.model.accuracy import Accuracy
