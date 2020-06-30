@@ -7,7 +7,7 @@ RUN echo 'unset PIP_USER' >> ~/.bashrc
 USER root
 
 RUN apt-get -q update && \
-  apt-get install -yq tmux libboost-all-dev && \
+  apt-get install -yq tmux libboost-all-dev build-essential swig && \
   rm -rf /var/lib/apt/lists/* && \
   pyenv global $(pyenv global | grep 3\\.) && \
   curl -sSL "https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-unknown-linux-gnu.tar.gz" \
