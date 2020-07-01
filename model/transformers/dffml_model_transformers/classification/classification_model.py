@@ -1,7 +1,6 @@
 import os
 import json
 import importlib
-import dataclasses
 from typing import Any, List, Tuple, AsyncIterator, Dict, Type
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
@@ -15,6 +14,7 @@ from transformers import (
     glue_convert_examples_to_features,
 )
 
+from dffml import export
 from dffml.record import Record
 from dffml.base import config, field
 from dffml.source.source import Sources
@@ -172,7 +172,7 @@ class HFClassificationModelConfig:
     )
 
     def to_json_string(self):
-        config_dict = dataclasses.asdict(self)
+        config_dict = export(self)
         [config_dict.pop(key) for key in ["features", "predict", "clstype"]]
         return json.dumps(config_dict, indent=2)
 

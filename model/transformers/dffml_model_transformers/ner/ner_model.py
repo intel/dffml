@@ -2,8 +2,6 @@ import os
 import json
 import pathlib
 import importlib
-import dataclasses
-
 from typing import Any, List, AsyncIterator, Tuple, Dict
 
 import numpy as np
@@ -23,6 +21,7 @@ from transformers import (
     EvalPrediction,
 )
 
+from dffml import export
 from dffml.record import Record
 from dffml.base import config, field
 from dffml.source.source import Sources
@@ -192,7 +191,7 @@ class NERModelConfig:
         """
         Serializes this instance to a JSON string.
         """
-        config_dict = dataclasses.asdict(self)
+        config_dict = export(self)
         [config_dict.pop(key) for key in ["sid", "words", "predict"]]
         return json.dumps(config_dict, indent=2)
 
