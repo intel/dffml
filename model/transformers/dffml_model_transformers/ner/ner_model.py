@@ -1,6 +1,8 @@
 import os
+import json
 import pathlib
 import importlib
+import dataclasses
 
 from typing import Any, List, AsyncIterator, Tuple, Dict
 
@@ -51,6 +53,10 @@ class NERModelConfig:
     cache_dir: str = field(
         "Directory to store the pre-trained models downloaded from s3",
     )
+    from_pt: bool = field(
+        "Whether to load model from pytorch checkpoint or .bin file",
+        default=False,
+    )
     config_name: str = field(
         "Pretrained config name or path if not the same as model_name",
         default=None,
@@ -71,7 +77,7 @@ class NERModelConfig:
         "If greater than zero then sets total number of training steps to perform. Overrides `epochs`",
         default=0,
     )
-    use_fp16: bool = field(
+    fp16: bool = field(
         "Whether to use 16-bit (mixed) precision instead of 32-bit",
         default=False,
     )
@@ -177,10 +183,22 @@ class NERModelConfig:
     evaluate_during_training: bool = field(
         "Run evaluation during training at each logging step.", default=False,
     )
+    dataloader_drop_last: bool = field(
+        "Drop the last incomplete batch if the length of the dataset is not divisible by the batch size",
+        default=False,
+    )
+
+    def to_json_string(self):
+        """
+        Serializes this instance to a JSON string.
+        """
+        config_dict = dataclasses.asdict(self)
+        [config_dict.pop(key) for key in ["sid", "words", "predict"]]
+        return json.dumps(config_dict, indent=2)
 
     def __post_init__(self):
         self.tf = importlib.import_module("tensorflow")
-        if self.use_fp16:
+        if self.fp16:
             self.tf.config.optimizer.set_experimental_options(
                 {"auto_mixed_precision": True}
             )
@@ -345,7 +363,7 @@ class NERModelContext(ModelContext):
         with self.parent.config.strategy.scope():
             self.model = TFAutoModelForTokenClassification.from_pretrained(
                 self.parent.config.model_name_or_path,
-                from_pt=bool(".bin" in self.parent.config.model_name_or_path),
+                from_pt=self.parent.config.from_pt,
                 config=self.config,
                 cache_dir=self.parent.config.cache_dir,
             )

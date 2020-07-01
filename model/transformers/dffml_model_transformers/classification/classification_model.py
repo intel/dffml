@@ -1,5 +1,7 @@
 import os
+import json
 import importlib
+import dataclasses
 from typing import Any, List, Tuple, AsyncIterator, Dict, Type
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
@@ -39,6 +41,10 @@ class HFClassificationModelConfig:
         "The output directory where the model predictions and checkpoints will be written.",
     )
     logging_dir: str = field("Tensorboard log dir.")
+    from_pt: bool = field(
+        "Whether to load model from pytorch checkpoint or .bin file",
+        default=False,
+    )
     clstype: Type = field("Data type of classifications values", default=str)
     max_seq_length: int = field(
         "The maximum total input sequence length after tokenization. Sequences longer than this will be truncated, sequences shorter will be padded.",
@@ -160,6 +166,15 @@ class HFClassificationModelConfig:
     local_rank: int = field(
         "For distributed training: local_rank", default=-1,
     )
+    dataloader_drop_last: bool = field(
+        "Drop the last incomplete batch if the length of the dataset is not divisible by the batch size",
+        default=False,
+    )
+
+    def to_json_string(self):
+        config_dict = dataclasses.asdict(self)
+        [config_dict.pop(key) for key in ["features", "predict", "clstype"]]
+        return json.dumps(config_dict, indent=2)
 
     def __post_init__(self):
         self.tf = importlib.import_module("tensorflow")
@@ -296,7 +311,7 @@ class HFClassificationModelContext(ModelContext):
         with self.parent.config.strategy.scope():
             self.model = TFAutoModelForSequenceClassification.from_pretrained(
                 self.parent.config.model_name_or_path,
-                from_pt=bool(".bin" in self.parent.config.model_name_or_path),
+                from_pt=self.parent.config.from_pt,
                 config=self.config,
                 cache_dir=self.parent.config.cache_dir,
             )
