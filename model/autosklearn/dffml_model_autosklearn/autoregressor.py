@@ -1,5 +1,5 @@
 import sklearn.metrics
-import autosklearn.classification
+import autosklearn.regression
 
 from dffml.model.model import Model
 from dffml.util.entrypoint import entrypoint
@@ -7,7 +7,7 @@ from dffml.util.entrypoint import entrypoint
 from .config import AutoSklearnConfig, AutoSklearnModelContext
 
 
-class AutoSklearnClassifierModelContext(AutoSklearnModelContext):
+class AutoSklearnRegressorModelContext(AutoSklearnModelContext):
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -22,9 +22,7 @@ class AutoSklearnClassifierModelContext(AutoSklearnModelContext):
         del config["predict"]
         del config["features"]
         del config["directory"]
-        self._model = autosklearn.classification.AutoSklearnClassifier(
-            **config
-        )
+        self._model = autosklearn.regression.AutoSklearnRegressor(**config)
         return self._model
 
     @model.setter
@@ -35,13 +33,13 @@ class AutoSklearnClassifierModelContext(AutoSklearnModelContext):
         self._model = model
 
     async def accuracy_score(self, y_test, predictions):
-        return sklearn.metrics.accuracy_score(y_test, predictions)
+        return sklearn.metrics.r2_score(y_test, predictions)
 
     async def get_probabilities(self, data):
-        return self.model.predict_proba(data)
+        return [[float("nan")] * len(data)]
 
 
-@entrypoint("autoclassifier")
-class AutoSklearnClassifierModel(Model):
+@entrypoint("autoregressor")
+class AutoSklearnRegressorModel(Model):
     CONFIG = AutoSklearnConfig
-    CONTEXT = AutoSklearnClassifierModelContext
+    CONTEXT = AutoSklearnRegressorModelContext

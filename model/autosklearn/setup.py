@@ -13,6 +13,7 @@ common.KWARGS["install_requires"] += ["auto-sklearn>=0.7.0"]
 common.KWARGS["entry_points"] = {
     "dffml.model": [
         "autoclassifier = dffml_model_autosklearn.autoclassifier:AutoSklearnClassifierModel",
+        "autoregressor = dffml_model_autosklearn.autoregressor:AutoSklearnRegressorModel",
     ]
 }
 
