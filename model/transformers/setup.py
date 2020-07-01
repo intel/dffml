@@ -24,7 +24,7 @@ INSTALL_REQUIRES = [
     "numpy>=1.16.4",
     "seqeval>=0.0.12",
     "fastprogress>=0.2.2",
-    "transformers>=2.11.0",
+    "transformers>=3.0.0",
     "torch>=1.5.0",
 ] + (
     ["dffml>=0.3.7"]
