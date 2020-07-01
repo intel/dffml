@@ -1127,6 +1127,12 @@ of the model.</p>
 <li><p>Tensorboard log dir.</p></li>
 </ul>
 </li>
+<li><p>from_pt: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Whether to load model from pytorch checkpoint or .bin file</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -1323,6 +1329,12 @@ of the model.</p>
 <ul>
 <li><p>default: -1</p></li>
 <li><p>For distributed training: local_rank</p></li>
+</ul>
+</li>
+<li><p>dataloader_drop_last: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Drop the last incomplete batch if the length of the dataset is not divisible by the batch size</p></li>
 </ul>
 </li>
 </ul>
@@ -1539,6 +1551,12 @@ of the model.</p>
 <li><p>Directory to store the pre-trained models downloaded from s3</p></li>
 </ul>
 </li>
+<li><p>from_pt: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Whether to load model from pytorch checkpoint or .bin file</p></li>
+</ul>
+</li>
 <li><p>config_name: String</p>
 <ul>
 <li><p>default: None</p></li>
@@ -1569,7 +1587,7 @@ of the model.</p>
 <li><p>If greater than zero then sets total number of training steps to perform. Overrides <cite>epochs</cite></p></li>
 </ul>
 </li>
-<li><p>use_fp16: String</p>
+<li><p>fp16: String</p>
 <ul>
 <li><p>default: False</p></li>
 <li><p>Whether to use 16-bit (mixed) precision instead of 32-bit</p></li>
@@ -1759,6 +1777,12 @@ of the model.</p>
 <ul>
 <li><p>default: False</p></li>
 <li><p>Run evaluation during training at each logging step.</p></li>
+</ul>
+</li>
+<li><p>dataloader_drop_last: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Drop the last incomplete batch if the length of the dataset is not divisible by the batch size</p></li>
 </ul>
 </li>
 </ul>
