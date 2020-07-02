@@ -19,9 +19,9 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 from dffml.record import Record
 from dffml.model.accuracy import Accuracy
 from dffml.base import config, field
-from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
 from dffml.feature.feature import Feature, Features
+from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelContext, Model, ModelNotTrained
 
 
@@ -112,15 +112,13 @@ class TensorflowModelContext(ModelContext):
             )
         return os.path.join(self.parent.config.directory, model)
 
-    async def predict_input_fn(self, records: AsyncIterator[Record], **kwargs):
+    async def predict_input_fn(self, sources: SourcesContext, **kwargs):
         """
         Uses the numpy input function with data from record features.
         """
         x_cols: Dict[str, Any] = {feature: [] for feature in self.features}
         ret_records = []
-        async for record in records:
-            if not record.features(self.features):
-                continue
+        async for record in sources.with_features(self.features):
             ret_records.append(record)
             for feature, results in record.features(self.features).items():
                 x_cols[feature].append(self.np.array(results))
@@ -141,11 +139,11 @@ class TensorflowModelContext(ModelContext):
         input_fn = await self.training_input_fn(sources)
         self.model.train(input_fn=input_fn, steps=self.parent.config.steps)
 
-    async def get_predictions(self, records: Record):
+    async def get_predictions(self, sources: SourcesContext):
         if not os.path.isdir(self.model_dir_path):
             raise ModelNotTrained("Train model before prediction.")
         # Create the input function
-        input_fn, predict = await self.predict_input_fn(records)
+        input_fn, predict = await self.predict_input_fn(sources)
         # Makes predictions on classifications
         predictions = self.model.predict(input_fn=input_fn)
         target = self.parent.config.predict.name
@@ -306,13 +304,11 @@ class DNNClassifierModelContext(TensorflowModelContext):
         accuracy_score = self.model.evaluate(input_fn=input_fn)
         return Accuracy(accuracy_score["accuracy"])
 
-    async def predict(
-        self, records: AsyncIterator[Record]
-    ) -> AsyncIterator[Record]:
+    async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
         """
         Uses trained data to make a prediction about the quality of a record.
         """
-        predict, predictions, target = await self.get_predictions(records)
+        predict, predictions, target = await self.get_predictions(sources)
         for record, pred_dict in zip(predict, predictions):
             class_id = pred_dict["class_ids"][0]
             probability = pred_dict["probabilities"][class_id]
