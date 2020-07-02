@@ -221,7 +221,7 @@
 <span id="data-flow-types"></span><h1>Data Flow Types<a class="headerlink" href="#module-dffml.df.types" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="dffml.df.types.Definition">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Definition</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em>, <em class="sig-param"><span class="n">primitive</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em>, <em class="sig-param"><span class="n">lock</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">spec</span><span class="p">:</span> <span class="n">NamedTuple</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">subspec</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">validate</span><span class="p">:</span> <span class="n">Callable<span class="p">[</span><span class="p">[</span>Any<span class="p">]</span><span class="p">, </span>Any<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Definition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Definition" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Definition</code><span class="sig-paren">(</span><em class="sig-param">name: str, primitive: str, default: Any = &lt;dffml.df.types._NO_DEFAULT object&gt;, lock: bool = False, spec: NamedTuple = None, subspec: bool = False, validate: Callable[[Any], Any] = None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Definition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Definition" title="Permalink to this definition">¶</a></dt>
 <dd><p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Definition</span><span class="p">,</span> <span class="n">Input</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NamedTuple</span>
@@ -244,9 +244,15 @@
 </pre></div>
 </div>
 <dl class="py method">
+<dt id="dffml.df.types.Definition.default">
+<em class="property">property </em><code class="sig-name descname">default</code><a class="headerlink" href="#dffml.df.types.Definition.default" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="dffml.df.types.Definition.lock">
 <em class="property">property </em><code class="sig-name descname">lock</code><a class="headerlink" href="#dffml.df.types.Definition.lock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 2</p>
+<dd><p>Alias for field number 3</p>
 </dd></dl>
 
 <dl class="py method">
@@ -264,19 +270,19 @@
 <dl class="py method">
 <dt id="dffml.df.types.Definition.spec">
 <em class="property">property </em><code class="sig-name descname">spec</code><a class="headerlink" href="#dffml.df.types.Definition.spec" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 3</p>
+<dd><p>Alias for field number 4</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="dffml.df.types.Definition.subspec">
 <em class="property">property </em><code class="sig-name descname">subspec</code><a class="headerlink" href="#dffml.df.types.Definition.subspec" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 4</p>
+<dd><p>Alias for field number 5</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="dffml.df.types.Definition.validate">
 <em class="property">property </em><code class="sig-name descname">validate</code><a class="headerlink" href="#dffml.df.types.Definition.validate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for field number 5</p>
+<dd><p>Alias for field number 6</p>
 </dd></dl>
 
 </dd></dl>

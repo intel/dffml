@@ -184,7 +184,7 @@
 
 <span class="kn">from</span> <span class="nn">..source.source</span> <span class="kn">import</span> <span class="n">BaseSource</span>
 <span class="kn">from</span> <span class="nn">..model</span> <span class="kn">import</span> <span class="n">Model</span>
-<span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="kn">import</span> <span class="n">CMD</span>
+<span class="kn">from</span> <span class="nn">..util.cli.cmd</span> <span class="kn">import</span> <span class="n">CMD</span><span class="p">,</span> <span class="n">CMDOutputOverride</span>
 <span class="kn">from</span> <span class="nn">..util.cli.cmds</span> <span class="kn">import</span> <span class="n">SourcesCMD</span><span class="p">,</span> <span class="n">ListEntrypoint</span><span class="p">,</span> <span class="n">SourcesCMDConfig</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">field</span>
 
@@ -210,7 +210,9 @@
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pretty</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="k">yield</span> <span class="n">record</span></div>
+                        <span class="k">yield</span> <span class="n">record</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pretty</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">CMDOutputOverride</span></div>
 
 
 <div class="viewcode-block" id="ListServices"><a class="viewcode-back" href="../../../api/cli/list.html#dffml.cli.list.ListServices">[docs]</a><span class="k">class</span> <span class="nc">ListServices</span><span class="p">(</span><span class="n">ListEntrypoint</span><span class="p">):</span>

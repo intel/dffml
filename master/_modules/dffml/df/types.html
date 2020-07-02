@@ -216,6 +216,13 @@
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
+<span class="k">class</span> <span class="nc">_NO_DEFAULT</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+
+<span class="n">NO_DEFAULT</span> <span class="o">=</span> <span class="n">_NO_DEFAULT</span><span class="p">()</span>
+
+
 <div class="viewcode-block" id="Definition"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Definition">[docs]</a><span class="k">class</span> <span class="nc">Definition</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Examples</span>
@@ -243,6 +250,7 @@
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">primitive</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">default</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">NO_DEFAULT</span>
     <span class="n">lock</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="c1"># spec is a NamedTuple which could be populated via a dict</span>
     <span class="n">spec</span><span class="p">:</span> <span class="n">NamedTuple</span> <span class="o">=</span> <span class="kc">None</span>
@@ -264,6 +272,8 @@
 
     <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">exported</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_asdict</span><span class="p">())</span>
+        <span class="k">if</span> <span class="s2">&quot;dffml.df.types._NO_DEFAULT&quot;</span> <span class="ow">in</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">):</span>
+            <span class="k">del</span> <span class="n">exported</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
             <span class="k">del</span> <span class="n">exported</span><span class="p">[</span><span class="s2">&quot;lock&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">:</span>
