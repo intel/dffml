@@ -99,3 +99,8 @@ fi
 if [[ "x${PLUGIN}" == "xoperations/deploy" ]]; then
   python -m pip install -U -e "./feature/git"
 fi
+
+if [[ "x${PLUGIN}" == "xoperations/nlp" ]]; then
+  conda install -y -c conda-forge spacy
+  python -m spacy download en_core_web_sm
+fi
