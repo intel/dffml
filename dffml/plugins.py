@@ -16,6 +16,7 @@ CORE_PLUGINS = [
     ("operations", "binsec"),
     ("operations", "deploy"),
     ("operations", "image"),
+    ("operations", "nlp"),
     ("service", "http"),
     ("source", "mysql"),
 ]
