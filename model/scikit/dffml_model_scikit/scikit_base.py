@@ -26,7 +26,7 @@ except Execption as error:
     LOGGER.error(error)
 
 from dffml.record import Record
-from dffml.source.source import Sources
+from dffml.source.source import Sources, SourcesContext
 from dffml.model.accuracy import Accuracy
 from dffml.model.model import ModelConfig, ModelContext, Model, ModelNotTrained
 from dffml.feature.feature import Features, Feature
@@ -128,11 +128,11 @@ class ScikitContext(ModelContext):
         return self.confidence
 
     async def predict(
-        self, records: AsyncIterator[Record]
+        self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
         if not self._filepath.is_file():
             raise ModelNotTrained("Train model before prediction.")
-        async for record in records:
+        async for record in sources.with_features(self.features):
             record_data = []
             for feature in record.features(self.features).values():
                 record_data.extend(

@@ -13,7 +13,7 @@ from typing import List, AsyncIterator
 
 from dffml.record import Record
 from dffml.feature import Feature, Features
-from dffml.source.source import Sources
+from dffml.source.source import Sources, SourcesContext
 from dffml.source.file import FileSourceConfig
 from dffml.source.json import JSONSource
 from dffml.source.csv import CSVSource, CSVSourceConfig
@@ -85,11 +85,11 @@ class FakeModelContext(ModelContext):
     async def accuracy(self, sources: Sources) -> AccuracyType:
         return AccuracyType(0.42)
 
-    async def predict(
-        self, records: AsyncIterator[Record]
-    ) -> AsyncIterator[Record]:
+    async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
         target = self.parent.config.predict.name
-        async for record in records:
+        async for record in sources.with_features(
+            self.parent.config.features.names()
+        ):
             record.predicted(target, random.random(), float(record.key))
             yield record
 
