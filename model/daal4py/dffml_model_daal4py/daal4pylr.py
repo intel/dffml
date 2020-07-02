@@ -15,6 +15,7 @@ from dffml import (
     Features,
     Sources,
     Record,
+    SourcesContext,
 )
 
 
