@@ -15,11 +15,12 @@ DFFML is available via pip.
 The ``[all]`` suffix tells ``pip`` to install all of the core plugins. This
 includes the ``sklearn`` and ``tensorflow`` models, ``MySQL`` source, etc.
 
-If you want to stay on the bleeding edge of bug fixes, etc. Install via git.
+If you want to stay on the bleeding edge of bug fixes, etc. You can install from
+the master branch.
 
 .. code-block:: console
 
-    $ python3 -m pip install -U git+https://github.com/intel/dffml
+    $ python3 -m pip install -U 'https://github.com/intel/dffml/archive/master.zip#egg=dffml'
 
 You can also install the bleeding edge version of any plugin. To get the
 subdirectory you should use, take the package name on PyPi and remove ``dffml-``
@@ -27,8 +28,8 @@ and replace ``-`` with ``/``.
 
 .. code-block:: console
 
-    $ python3 -m pip install -U git+https://github.com/intel/dffml#egg=dffml \
-        'git+https://github.com/intel/dffml#egg=dffml-model-scikit&subdirectory=model/scikit'
+    $ python3 -m pip install -U 'https://github.com/intel/dffml/archive/master.zip#egg=dffml' \
+        'https://github.com/intel/dffml/archive/master.zip#egg=dffml-feature-git&subdirectory=feature/git'
 
 If you want to install all of the machine learning model plugins that are
 maintained as a part of the core repository, you can append ``[models]``.
