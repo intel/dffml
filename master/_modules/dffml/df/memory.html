@@ -210,7 +210,15 @@
     <span class="n">DefinitionNotInContext</span><span class="p">,</span>
     <span class="n">ValidatorMissing</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">Definition</span><span class="p">,</span> <span class="n">Operation</span><span class="p">,</span> <span class="n">Stage</span><span class="p">,</span> <span class="n">DataFlow</span>
+<span class="kn">from</span> <span class="nn">.types</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Input</span><span class="p">,</span>
+    <span class="n">Parameter</span><span class="p">,</span>
+    <span class="n">Definition</span><span class="p">,</span>
+    <span class="n">Operation</span><span class="p">,</span>
+    <span class="n">Stage</span><span class="p">,</span>
+    <span class="n">DataFlow</span><span class="p">,</span>
+    <span class="n">NO_DEFAULT</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">OperationException</span><span class="p">,</span>
     <span class="n">OperationImplementation</span><span class="p">,</span>
@@ -768,9 +776,36 @@
                                         <span class="p">],</span>
                                     <span class="p">)</span>
                                 <span class="p">)</span>
-                    <span class="c1"># Return if there is no data for an input</span>
+                    <span class="c1"># There is no data in the network for an input</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">gather</span><span class="p">[</span><span class="n">input_name</span><span class="p">]:</span>
-                        <span class="k">return</span>
+                        <span class="c1"># Check if there is a default value for the parameter,</span>
+                        <span class="c1"># if so use it. That default will either come from the</span>
+                        <span class="c1"># definition attached to input_name, or it will come</span>
+                        <span class="c1"># from one of the alternate definition given within the</span>
+                        <span class="c1"># input flow for the input_name.</span>
+                        <span class="n">check_for_default_value</span> <span class="o">=</span> <span class="p">[</span>
+                            <span class="n">operation</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">input_name</span><span class="p">]</span>
+                        <span class="p">]</span> <span class="o">+</span> <span class="n">alternate_definitions</span>
+                        <span class="k">for</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">check_for_default_value</span><span class="p">:</span>
+                            <span class="c1"># Check if the definition has a default value that is not _NO_DEFAULT</span>
+                            <span class="k">if</span> <span class="s2">&quot;dffml.df.types._NO_DEFAULT&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">repr</span><span class="p">(</span>
+                                <span class="n">definition</span><span class="o">.</span><span class="n">default</span>
+                            <span class="p">):</span>
+                                <span class="n">gather</span><span class="p">[</span><span class="n">input_name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                    <span class="n">Parameter</span><span class="p">(</span>
+                                        <span class="n">key</span><span class="o">=</span><span class="n">input_name</span><span class="p">,</span>
+                                        <span class="n">value</span><span class="o">=</span><span class="n">definition</span><span class="o">.</span><span class="n">default</span><span class="p">,</span>
+                                        <span class="n">origin</span><span class="o">=</span><span class="n">item</span><span class="p">,</span>
+                                        <span class="n">definition</span><span class="o">=</span><span class="n">operation</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span>
+                                            <span class="n">input_name</span>
+                                        <span class="p">],</span>
+                                    <span class="p">)</span>
+                                <span class="p">)</span>
+                                <span class="k">break</span>
+                        <span class="c1"># If there is no default value, we don&#39;t have a complete</span>
+                        <span class="c1"># paremeter set, so we bail out</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">return</span>
         <span class="c1"># Generate all possible permutations of applicable inputs</span>
         <span class="c1"># Create the parameter set for each</span>
         <span class="n">products</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>

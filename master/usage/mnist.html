@@ -278,7 +278,7 @@ and the seed to have the input of the associate_definition operation come from t
     -log critical
 </pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">0.8269000053405762</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">0.9591000080108643</span>
 </pre></div>
 </div>
 <p>Create an <code class="docutils literal notranslate"><span class="pre">image.csv</span></code> file which contains the names of the images (with their extension .png) to predict on.</p>
@@ -295,18 +295,19 @@ and the seed to have the input of the associate_definition operation come from t
 consisting of 3 operations: resize, multiply and associate_definition. We
 edit the DataFlow to have the data input of the resize operation come
 from a list in seed containing <code class="docutils literal notranslate"><span class="pre">image</span></code> feature, have the multiplicand input of
-multiply operation come from the output (resized_array) of the resize operation
+multiply operation come from the output of flatten operation whose input
+comes from the output (resized_array) of the resize operation
 and to have the input of the associate_definition operation come from the output
 (product) of the multiply operation.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">dataflow</span> <span class="n">create</span> <span class="n">resize</span> <span class="n">multiply</span> <span class="n">associate_definition</span> <span class="o">-</span><span class="n">configloader</span> <span class="n">yaml</span> \
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">dataflow</span> <span class="n">create</span> <span class="n">resize</span> <span class="n">flatten</span> <span class="n">multiply</span> <span class="n">associate_definition</span> <span class="o">-</span><span class="n">configloader</span> <span class="n">yaml</span> \
     <span class="o">-</span><span class="n">seed</span> \
-      <span class="s1">&#39;[280,280,3]&#39;</span><span class="o">=</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">old_dim</span> \
-      <span class="s1">&#39;[28,28]&#39;</span><span class="o">=</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">new_dim</span> \
+      <span class="s1">&#39;[28,28]&#39;</span><span class="o">=</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">dsize</span> \
       <span class="s1">&#39;{&quot;image&quot;: &quot;product&quot;}&#39;</span><span class="o">=</span><span class="n">associate_spec</span> \
       <span class="mf">0.00392156862</span><span class="o">=</span><span class="n">multiplier_def</span> \
     <span class="o">-</span><span class="n">flow</span> \
-      <span class="s1">&#39;[{&quot;seed&quot;: [&quot;image&quot;]}]&#39;</span><span class="o">=</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">data</span> \
-      <span class="s1">&#39;[{&quot;resize&quot;: &quot;result&quot;}]&#39;</span><span class="o">=</span><span class="n">multiply</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">multiplicand</span> <span class="o">|</span>
+      <span class="s1">&#39;[{&quot;seed&quot;: [&quot;image&quot;]}]&#39;</span><span class="o">=</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">src</span> \
+      <span class="s1">&#39;[{&quot;resize&quot;: &quot;result&quot;}]&#39;</span><span class="o">=</span><span class="n">flatten</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">array</span> \
+      <span class="s1">&#39;[{&quot;flatten&quot;: &quot;result&quot;}]&#39;</span><span class="o">=</span><span class="n">multiply</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">multiplicand</span> <span class="o">|</span>
     <span class="n">tee</span> <span class="n">resizenorm</span><span class="o">.</span><span class="n">yaml</span>
 </pre></div>
 </div>
@@ -350,7 +351,7 @@ and to have the input of the associate_definition operation come from the output
         <span class="s2">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-03-18T04:07:01Z&quot;</span><span class="p">,</span>
         <span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.4963473677635193</span><span class="p">,</span>
+                <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.9977860450744629</span><span class="p">,</span>
                 <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">4</span>
             <span class="p">}</span>
         <span class="p">}</span>
@@ -369,7 +370,7 @@ and to have the input of the associate_definition operation come from the output
         <span class="s2">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-03-18T04:07:01Z&quot;</span><span class="p">,</span>
         <span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">0.9070320725440979</span><span class="p">,</span>
+                <span class="s2">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
                 <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">5</span>
             <span class="p">}</span>
         <span class="p">}</span>
