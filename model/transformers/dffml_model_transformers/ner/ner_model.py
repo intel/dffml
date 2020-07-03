@@ -422,7 +422,9 @@ class NERModelContext(ModelContext):
                 cache_dir=self.parent.config.cache_dir,
             )
 
-        async for record in sources.with_features([self.parent.config.words.name]):
+        async for record in sources.with_features(
+            [self.parent.config.words.name]
+        ):
             sentence = record.features([self.parent.config.words.name])
             df = self.pd.DataFrame(sentence, index=[0])
             test_dataset = self.get_dataset(df, self.tokenizer, mode="test",)
