@@ -25,7 +25,5 @@ RUN apt-get update && \
 WORKDIR /usr/src/app
 COPY . /usr/src/app
 
-RUN python3 -m pip install -e .
-
 ENTRYPOINT ["python3", "-m", "dffml", "service", "http", "server", "-addr", "0.0.0.0"]
 CMD ["-mc-config", "deploy"]
