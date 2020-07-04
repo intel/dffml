@@ -50,7 +50,7 @@ class TestOperations(AsyncTestCase):
         async with MemoryOrchestrator.withconfig({}) as orchestrator:
             async with orchestrator(dataflow) as octx:
                 async for ctx, results in octx.run(test_inputs):
-                    idx = "examples.ffmpeg.operations.convert_to_gif.outputs.result"
+                    idx = "examples.ffmpeg.operations:convert_to_gif.outputs.result"
                     self.assertIn(
                         idx, results,
                     )
