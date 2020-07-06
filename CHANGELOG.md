@@ -58,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Make every model's directory property required
 - New model AutoClassifierModel based on `AutoSklearn`.
 - New model AutoSklearnRegressorModel based on `AutoSklearn`.
+- Example showing usage of locks in dataflow.
 ### Changed
 - Update record `__str__` method to output in tabular format
 - Update NER Model to use transformers 2.11.0
