@@ -99,7 +99,7 @@ async def model_predict(self, features: Dict[str, Any]) -> Dict[str, Any]:
     async def records():
         yield Record("", data={"features": features})
 
-    async with MemorySource(records=[records()]) as source:
+    async with MemorySource(records=[Record("", data={"features": features})]) as source:
         async with source() as sctx:
             async for record in self.mctx.predict(sctx):
                 return {"prediction": record.predictions()}
