@@ -69,6 +69,13 @@ branch can be found `here <master/index.html>`_.
 .. toctree::
     :glob:
     :maxdepth: 2
+    :caption: Subprojects
+
+    shouldi
+
+.. toctree::
+    :glob:
+    :maxdepth: 2
     :caption: Community
 
     GitHub <https://github.com/intel/dffml>
