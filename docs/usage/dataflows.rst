@@ -249,7 +249,7 @@ with the existing flow.
 
 .. code-block:: console
 
-    dffml dataflow create \
+    $ dffml dataflow create \
       -configloader yaml \
       -seed \
         directory=key \
