@@ -5,6 +5,7 @@ from ..base import config
 from ..model import Model
 from ..df.types import Definition
 from ..df.base import op
+from ..source.memory import MemorySource
 
 
 @config
@@ -98,5 +99,7 @@ async def model_predict(self, features: Dict[str, Any]) -> Dict[str, Any]:
     async def records():
         yield Record("", data={"features": features})
 
-    async for record in self.mctx.predict(records()):
-        return {"prediction": record.predictions()}
+    async with MemorySource(records=[records()]) as source:
+        async with source() as sctx:
+            async for record in self.mctx.predict(sctx):
+                return {"prediction": record.predictions()}
