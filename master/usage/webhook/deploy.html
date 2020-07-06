@@ -230,17 +230,8 @@ bytes.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 
-<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">op</span><span class="p">,</span> <span class="n">Definition</span>
 
-
-<span class="nd">@op</span><span class="p">(</span>
-    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;input_file&quot;</span><span class="p">:</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;input_file&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;bytes&quot;</span><span class="p">),</span>
-        <span class="s2">&quot;resolution&quot;</span><span class="p">:</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;resolution&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">),</span>
-    <span class="p">},</span>
-    <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;output_file&quot;</span><span class="p">:</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;output_file&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;bytes&quot;</span><span class="p">)},</span>
-<span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">convert_to_gif</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">resolution</span><span class="p">):</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">convert_to_gif</span><span class="p">(</span><span class="n">input_file</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">resolution</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
     <span class="n">temp_input_file</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;ffmpeg-&quot;</span><span class="p">)</span>
     <span class="n">temp_input_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
     <span class="n">temp_input_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -368,8 +359,6 @@ to be output to. An example video is available <a class="reference external" hre
 
 <span class="n">WORKDIR</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">app</span>
 <span class="n">COPY</span> <span class="o">.</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">app</span>
-
-<span class="n">RUN</span> <span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
 
 <span class="n">ENTRYPOINT</span> <span class="p">[</span><span class="s2">&quot;python3&quot;</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;dffml&quot;</span><span class="p">,</span> <span class="s2">&quot;service&quot;</span><span class="p">,</span> <span class="s2">&quot;http&quot;</span><span class="p">,</span> <span class="s2">&quot;server&quot;</span><span class="p">,</span> <span class="s2">&quot;-addr&quot;</span><span class="p">,</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">]</span>
 <span class="n">CMD</span> <span class="p">[</span><span class="s2">&quot;-mc-config&quot;</span><span class="p">,</span> <span class="s2">&quot;deploy&quot;</span><span class="p">]</span>
