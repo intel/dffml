@@ -414,19 +414,19 @@ operations with the existing ones.</p>
 </div>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">dataflow</span> <span class="pre">create</span></code> command to make a new dataflow that will be combined
 with the existing flow.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dffml dataflow create \</span>
-<span class="go">  -configloader yaml \</span>
-<span class="go">  -seed \</span>
-<span class="go">    directory=key \</span>
-<span class="go">    safety_check.outputs.result,run_bandit.outputs.result,language_to_comment_ratio=get_single_spec \</span>
-<span class="go">  -flow \</span>
-<span class="go">    &#39;[{&quot;dffml.mapping.create&quot;: &quot;mapping&quot;}]=lines_of_code_by_language.inputs.repo&#39; \</span>
-<span class="go">    &#39;[{&quot;pypi_package_contents&quot;: &quot;directory&quot;}]=&quot;dffml.mapping.create&quot;.inputs.value&#39; \</span>
-<span class="go">  -- \</span>
-<span class="go">    dffml.mapping.create \</span>
-<span class="go">    lines_of_code_by_language \</span>
-<span class="go">    lines_of_code_to_comments \</span>
-<span class="go">  | tee shouldi/deploy/override/shouldi.yaml</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml dataflow create <span class="se">\</span>
+  -configloader yaml <span class="se">\</span>
+  -seed <span class="se">\</span>
+    <span class="nv">directory</span><span class="o">=</span>key <span class="se">\</span>
+    safety_check.outputs.result,run_bandit.outputs.result,language_to_comment_ratio<span class="o">=</span>get_single_spec <span class="se">\</span>
+  -flow <span class="se">\</span>
+    <span class="s1">&#39;[{&quot;dffml.mapping.create&quot;: &quot;mapping&quot;}]=lines_of_code_by_language.inputs.repo&#39;</span> <span class="se">\</span>
+    <span class="s1">&#39;[{&quot;pypi_package_contents&quot;: &quot;directory&quot;}]=&quot;dffml.mapping.create&quot;.inputs.value&#39;</span> <span class="se">\</span>
+  -- <span class="se">\</span>
+    dffml.mapping.create <span class="se">\</span>
+    lines_of_code_by_language <span class="se">\</span>
+    lines_of_code_to_comments <span class="se">\</span>
+  <span class="p">|</span> tee shouldi/deploy/override/shouldi.yaml
 </pre></div>
 </div>
 <p>The final directory structure should look like this</p>
