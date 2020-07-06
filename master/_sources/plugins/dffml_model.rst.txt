@@ -1202,7 +1202,7 @@ is value of the flag `is_training`.
 
 - model_type: String
 
-  - Model type in the list: distilbert, albert, bart, longformer, xlm-roberta, roberta, bert, xlnet, flaubert, mobilebert, xlm, electra
+  - Model type in the list: distilbert, albert, bart, longformer, xlm-roberta, roberta, bert, xlnet, flaubert, mobilebert, xlm, electra, reformer
 
 - model_name_or_path: String
 
