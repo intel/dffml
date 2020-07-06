@@ -96,7 +96,6 @@ async def model_predict(self, features: Dict[str, Any]) -> Dict[str, Any]:
     {'model_predictions': {'Salary': {'confidence': 1.0, 'value': 50.0}}}
     """
 
-
     async with MemorySource(records=[Record("", data={"features": features})]) as source:
         async with source() as sctx:
             async for record in self.mctx.predict(sctx):
