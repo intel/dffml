@@ -5,8 +5,8 @@ from pathlib import Path
 from setuptools import find_packages
 
 ORG = "intel"
-NAME = "dffml-config-png"
-DESCRIPTION = "DFFML config dffml-config-png"
+NAME = "dffml-config-image"
+DESCRIPTION = "DFFML config dffml-config-image"
 AUTHOR_NAME = "sakshamarora1"
 AUTHOR_EMAIL = "sakshamarora1001@gmail.com"
 # Install dffml if it is not installed in development mode
@@ -59,7 +59,7 @@ KWARGS = dict(
     author_email=AUTHOR_EMAIL,
     maintainer=AUTHOR_NAME,
     maintainer_email=AUTHOR_EMAIL,
-    url=f"https://github.com/dffml/blob/master/configloader/png/README.md",
+    url=f"https://github.com/dffml/blob/master/configloader/image/README.md",
     license="MIT",
     keywords=["dffml"],
     classifiers=[

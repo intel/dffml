@@ -13,7 +13,7 @@ from dffml.util.os import chdir
 
 class TestDirectorySource(IntegrationCLITestCase):
 
-    REQUIRED_PLUGINS = ["dffml-config-png"]
+    REQUIRED_PLUGINS = ["dffml-config-image"]
     blank_image = Image.new(mode="RGB", size=(10, 10))
 
     @contextlib.contextmanager

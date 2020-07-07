@@ -1,6 +1,6 @@
 [run]
 source =
-    dffml_config_png
+    dffml_config_image
     tests
 branch = True
 

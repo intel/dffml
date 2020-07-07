@@ -2,7 +2,7 @@ import sys
 
 CORE_PLUGINS = [
     ("configloader", "yaml"),
-    ("configloader", "png"),
+    ("configloader", "image"),
     ("model", "scratch"),
     ("model", "scikit"),
     ("model", "tensorflow"),
