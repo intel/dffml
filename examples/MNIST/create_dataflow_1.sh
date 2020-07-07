@@ -1,5 +1,5 @@
 dffml dataflow create resize flatten multiply associate_definition -configloader yaml \
-    -seed \
+    -inputs \
       '[28,28]'=resize.inputs.dsize \
       '{"image": "product"}'=associate_spec \
       0.00392156862=multiplier_def \

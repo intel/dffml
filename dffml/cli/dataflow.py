@@ -73,7 +73,7 @@ class CreateConfig:
     not_linked: bool = field(
         "Do not export dataflows as linked", default=False,
     )
-    seed: List[str] = field(
+    inputs: List[str] = field(
         "Inputs to be added to every context",
         action=ParseInputsAction,
         default_factory=lambda: [],
@@ -116,15 +116,27 @@ class Create(CMD):
                 for v, k in self.config:
                     traverse_set(dataflow.configs, k, value=v)
                 exported = dataflow.export(linked=not self.not_linked)
-                if self.seed:
+                if self.inputs:
                     if not "seed" in exported:
                         exported["seed"] = []
-                    exported["seed"].extend(
-                        [
-                            {"value": val, "definition": def_name}
-                            for val, def_name in self.seed
-                        ]
-                    )
+                    for val, input_info in self.inputs:
+                        if "=" in input_info:
+                            def_name, origin = input_info.split(
+                                "=", maxsplit=1
+                            )
+                            # self.inputs is of the form val=def_name=origin
+                            exported["seed"].append(
+                                {
+                                    "value": val,
+                                    "definition": def_name,
+                                    "origin": origin,
+                                }
+                            )
+                        else:
+                            # self.inputs is of the form val=def_name
+                            exported["seed"].append(
+                                {"value": val, "definition": input_info}
+                            )
                 print((await loader.dumpb(exported)).decode())
 
 
