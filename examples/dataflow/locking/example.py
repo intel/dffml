@@ -19,7 +19,7 @@ print("Running dataflow without locked object")
 for ctx, result in run(
     DataFlow(run_me),
     [
-        Input(value={"1": -1}, definition=OBJ),
+        Input(value={}, definition=OBJ),
         Input(value=0.1, definition=SLEEP_TIME),
         Input(value=0.2, definition=SLEEP_TIME),
         Input(value=1, definition=INTEGER),
@@ -35,7 +35,7 @@ run_me.op = run_me.op._replace(
 for ctx, result in run(
     DataFlow(run_me),
     [
-        Input(value={"1": -1}, definition=LOCKED_OBJ),
+        Input(value={}, definition=LOCKED_OBJ),
         Input(value=0.1, definition=SLEEP_TIME),
         Input(value=0.2, definition=SLEEP_TIME),
         Input(value=1, definition=INTEGER),
