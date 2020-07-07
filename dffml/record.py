@@ -137,7 +137,7 @@ class Record(object):
     def export(self):
         data = self.data.dict()
         data["extra"] = self.extra
-        return data
+        return export(data)
 
     def __repr__(self):
         return str(self.dict())
