@@ -251,7 +251,7 @@ with the existing flow.
 
     $ dffml dataflow create \
       -configloader yaml \
-      -seed \
+      -inputs \
         directory=key \
         safety_check.outputs.result,run_bandit.outputs.result,language_to_comment_ratio=get_single_spec \
       -flow \
