@@ -36,7 +36,10 @@ from .test_df import OPERATIONS, OPIMPS
 class RecordsTestCase(AsyncExitStackTestCase):
     async def setUp(self):
         await super().setUp()
-        self.records = [Record(str(random.random())) for _ in range(0, 10)]
+        self.records = [
+            Record(str(random.random()), data={"features": {"fake": 1}},)
+            for _ in range(0, 10)
+        ]
         self.temp_filename = self.mktempfile()
         self.sconfig = FileSourceConfig(
             filename=self.temp_filename, readwrite=True, allowempty=True
@@ -71,11 +74,6 @@ class FakeConfig:
     directory: str = os.path.join(
         os.path.expanduser("~"), ".cache", "dffml", "test_cli", "fake"
     )
-
-
-class FakeFeature(Feature):
-    def __init__(self, name="fake", dt=float, length=1):
-        super().__init__(name, dt, length)
 
 
 class FakeModelContext(ModelContext):
@@ -169,9 +167,9 @@ class TestMerge(RecordsTestCase):
             contents = Path(csv_tempfile).read_text()
             self.assertEqual(
                 contents,
-                "key,tag\n"
+                "key,tag,fake\n"
                 + "\n".join(
-                    [f"{record.key},untagged" for record in self.records]
+                    [f"{record.key},untagged,1" for record in self.records]
                 )
                 + "\n",
                 "Incorrect data in csv file",
@@ -392,7 +390,7 @@ class TestPredict(RecordsTestCase):
             "-model",
             "fake",
             "-model-features",
-            "fake:float:[10,0]",
+            "fake:float:1",
             "-model-predict",
             "fake",
             "-sources",
