@@ -38,8 +38,8 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Use Cases" href="../../usage/index.html" />
-    <link rel="prev" title="Prediction Using IO Operations" href="io.html" /> 
+    <link rel="next" title="Prediction Using IO Operations" href="io.html" />
+    <link rel="prev" title="DataFlow Tutorials" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -103,8 +103,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../operations.html">New Operations Tutorial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../sources/index.html">New Source Tutorials</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">DataFlow Tutorials</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="io.html">Prediction Using IO Operations</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Using Locks In DataFlow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="io.html">Prediction Using IO Operations</a></li>
 </ul>
 </li>
 </ul>
@@ -206,7 +206,7 @@
             
   <div class="section" id="using-locks-in-dataflow">
 <h1>Using Locks In DataFlow<a class="headerlink" href="#using-locks-in-dataflow" title="Permalink to this headline">¶</a></h1>
-<p>All the operations in DFFML runs asynchrously. DFFML takes care of locking objects which
+<p>All the operations in DFFML runs asynchronously. DFFML takes care of locking objects which
 might be used by multiple operations so that you don’t run in to any race conditions.
 This example shows one such usage.</p>
 <div class="admonition note">
@@ -215,91 +215,45 @@ This example shows one such usage.</p>
 <a class="reference external" href="https://github.com/intel/dffml/blob/master/examples/dataflow/locking">examples/dataflow/locking</a>
 directory of the DFFML source code.</p>
 </div>
+<p>First we import required packages and objects, and create Definitions for each
+data type our operation will use. Note that <code class="docutils literal notranslate"><span class="pre">LOCKED_OBJ</span></code> has <code class="docutils literal notranslate"><span class="pre">lock=True</span></code>.</p>
 <p><strong>example.py</strong></p>
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
-<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Definition</span><span class="p">,</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">run</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">Definition</span><span class="p">,</span> <span class="n">DataFlow</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">op</span>
+<span class="kn">from</span> <span class="nn">dffml.noasync</span> <span class="kn">import</span> <span class="n">run</span>
 
-<span class="n">OBJ</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;obj&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;Any&quot;</span><span class="p">)</span>
-<span class="n">LOCKED_OBJ</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;locked_obj&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;Any&quot;</span><span class="p">,</span> <span class="n">lock</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">OBJ</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;obj&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;mapping&quot;</span><span class="p">)</span>
+<span class="n">LOCKED_OBJ</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;locked_obj&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;mapping&quot;</span><span class="p">,</span> <span class="n">lock</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">SLEEP_TIME</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;sleep_time&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
-<span class="n">INTEGER</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;intefer&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
-
-<span class="n">TEST_OUT</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">INTEGER</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">)</span>
 </pre></div>
-</td></tr></table></div>
-<p>First we define all the Definitions. Note that <code class="docutils literal notranslate"><span class="pre">LOCKED_OBJ</span></code> has <code class="docutils literal notranslate"><span class="pre">lock=True</span></code>.</p>
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22</pre></div></td><td class="code"><div class="highlight"><pre><span></span>
-
-<span class="k">class</span> <span class="nc">TestObj</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
-
-
-<span class="nd">@op</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;obj&quot;</span><span class="p">:</span> <span class="n">OBJ</span><span class="p">,</span> <span class="s2">&quot;sleep_for&quot;</span><span class="p">:</span> <span class="n">SLEEP_TIME</span><span class="p">,</span> <span class="s2">&quot;i&quot;</span><span class="p">:</span> <span class="n">INTEGER</span><span class="p">})</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">run_me</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">sleep_for</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">obj</span><span class="o">.</span><span class="n">i</span> <span class="o">=</span> <span class="n">i</span>
+</div>
+<p>Our operation <code class="docutils literal notranslate"><span class="pre">run_me</span></code> takes an object(of definition OBJ) sets the <code class="docutils literal notranslate"><span class="pre">i</span></code>
+attribute of it, sleeps for given time finally prints the value which was given
+as input and the current value of the object.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;obj&quot;</span><span class="p">:</span> <span class="n">OBJ</span><span class="p">,</span> <span class="s2">&quot;sleep_for&quot;</span><span class="p">:</span> <span class="n">SLEEP_TIME</span><span class="p">,</span> <span class="s2">&quot;i&quot;</span><span class="p">:</span> <span class="n">INTEGER</span><span class="p">})</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">run_me</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">sleep_for</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">obj</span><span class="p">[</span><span class="s2">&quot;i&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
     <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep_for</span><span class="p">)</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;set i = </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, got i = </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;set i = </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, got i = </span><span class="si">{</span><span class="n">obj</span><span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
-</td></tr></table></div>
-<p>Our operation <code class="docutils literal notranslate"><span class="pre">run_me</span></code> takes an object(of defintion OBJ) sets the <code class="docutils literal notranslate"><span class="pre">i</span></code> aattribute of it, sleeps for given
-time finally prints the value which was given as input and the current value of the object.
-We’ll run the dataflow with two values for i. If the operations run as expected when printing,
+</div>
+<p>We’ll run the dataflow with two values for i. If the operations run as expected when printing,
 the value given as input and that of the object would be same.</p>
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40</pre></div></td><td class="code"><div class="highlight"><pre><span></span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
-        <span class="n">operations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;run1&quot;</span><span class="p">:</span> <span class="n">run_me</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="s2">&quot;run2&quot;</span><span class="p">:</span> <span class="n">run_me</span><span class="o">.</span><span class="n">op</span><span class="p">},</span>
-        <span class="n">implementations</span><span class="o">=</span><span class="p">{</span><span class="n">run_me</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">run_me</span><span class="o">.</span><span class="n">imp</span><span class="p">},</span>
-    <span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running dataflow without locked object&quot;</span><span class="p">)</span>
-    <span class="n">obj</span> <span class="o">=</span> <span class="n">TestObj</span><span class="p">()</span>
-    <span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">OBJ</span><span class="p">),</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running dataflow without locked object&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">run</span><span class="p">(</span>
+    <span class="n">DataFlow</span><span class="p">(</span><span class="n">run_me</span><span class="p">),</span>
+    <span class="p">[</span>
+        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span> <span class="n">definition</span><span class="o">=</span><span class="n">OBJ</span><span class="p">),</span>
+        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">SLEEP_TIME</span><span class="p">),</span>
         <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">SLEEP_TIME</span><span class="p">),</span>
-        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">INTEGER</span><span class="p">),</span>
         <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">INTEGER</span><span class="p">),</span>
-    <span class="p">]</span>
-    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">):</span>
+        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">INTEGER</span><span class="p">),</span>
+    <span class="p">],</span>
+<span class="p">):</span>
+    <span class="k">pass</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 <p>But this codeblock gives an output</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>Running dataflow without locked object
 set i = 2, got i = 1
@@ -308,55 +262,27 @@ set i = 2, got i = 1
 set i = 1, got i = 1
 </pre></div>
 </div>
-<p>We can see that the output is not what we expect. Since everything is running asynchrously,
+<p>We can see that the output is not what we expect. Since everything is running asynchronously,
 when one operations sleeps the other operation might start running and it replaces the
 value. This is where locks come handy. We’ll set <code class="docutils literal notranslate"><span class="pre">run_me</span></code> to take object of definition
 <code class="docutils literal notranslate"><span class="pre">LOCKED_OBJ</span></code> instead of <code class="docutils literal notranslate"><span class="pre">OBJ</span></code> and run the dataflow again.</p>
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63</pre></div></td><td class="code"><div class="highlight"><pre><span></span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running dataflow with locked object&quot;</span><span class="p">)</span>
-    <span class="n">run_me</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">run_me</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span>
-        <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;obj&quot;</span><span class="p">:</span> <span class="n">LOCKED_OBJ</span><span class="p">,</span> <span class="s2">&quot;sleep_for&quot;</span><span class="p">:</span> <span class="n">SLEEP_TIME</span><span class="p">,</span> <span class="s2">&quot;i&quot;</span><span class="p">:</span> <span class="n">INTEGER</span><span class="p">}</span>
-    <span class="p">)</span>
-    <span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span>
-        <span class="n">operations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;run1&quot;</span><span class="p">:</span> <span class="n">run_me</span><span class="o">.</span><span class="n">op</span><span class="p">,</span> <span class="s2">&quot;run2&quot;</span><span class="p">:</span> <span class="n">run_me</span><span class="o">.</span><span class="n">op</span><span class="p">},</span>
-        <span class="n">implementations</span><span class="o">=</span><span class="p">{</span><span class="n">run_me</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">run_me</span><span class="o">.</span><span class="n">imp</span><span class="p">},</span>
-    <span class="p">)</span>
-    <span class="n">obj</span> <span class="o">=</span> <span class="n">TestObj</span><span class="p">()</span>
-    <span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">LOCKED_OBJ</span><span class="p">),</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running dataflow with locked object&quot;</span><span class="p">)</span>
+<span class="n">run_me</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">run_me</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span>
+    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;obj&quot;</span><span class="p">:</span> <span class="n">LOCKED_OBJ</span><span class="p">,</span> <span class="s2">&quot;sleep_for&quot;</span><span class="p">:</span> <span class="n">SLEEP_TIME</span><span class="p">,</span> <span class="s2">&quot;i&quot;</span><span class="p">:</span> <span class="n">INTEGER</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">run</span><span class="p">(</span>
+    <span class="n">DataFlow</span><span class="p">(</span><span class="n">run_me</span><span class="p">),</span>
+    <span class="p">[</span>
+        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span> <span class="n">definition</span><span class="o">=</span><span class="n">LOCKED_OBJ</span><span class="p">),</span>
+        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">SLEEP_TIME</span><span class="p">),</span>
         <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">SLEEP_TIME</span><span class="p">),</span>
-        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">INTEGER</span><span class="p">),</span>
         <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">INTEGER</span><span class="p">),</span>
-    <span class="p">]</span>
-    <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">run</span><span class="p">(</span><span class="n">dataflow</span><span class="p">):</span>
-        <span class="k">pass</span>
-
-    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">TEST_OUT</span><span class="p">[</span><span class="mi">4</span><span class="p">:]:</span>
-        <span class="k">assert</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
+        <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">INTEGER</span><span class="p">),</span>
+    <span class="p">],</span>
+<span class="p">):</span>
+    <span class="k">pass</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 <p>This time the output is as expected</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span>Running dataflow with locked object
 set i = 2, got i = 2
@@ -375,10 +301,10 @@ set i = 1, got i = 1
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../usage/index.html" class="btn btn-neutral float-right" title="Use Cases" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="io.html" class="btn btn-neutral float-right" title="Prediction Using IO Operations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="io.html" class="btn btn-neutral float-left" title="Prediction Using IO Operations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="DataFlow Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
