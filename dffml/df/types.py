@@ -475,7 +475,8 @@ class DataFlow:
 
     def __init__(
         self,
-        operations: Dict[str, Union[Operation, Callable]],
+        *args,
+        operations: Dict[str, Union[Operation, Callable]] = None,
         seed: List[Input] = None,
         configs: Dict[str, BaseConfig] = None,
         definitions: Dict[str, Definition] = False,
@@ -486,6 +487,28 @@ class DataFlow:
         implementations: Dict[str, "OperationImplementation"] = None,
         forward: Forward = None,
     ) -> None:
+        # Prevent usage of a global dict (if we set default to {} then all the
+        # instances will share the same instance of that dict, or list)
+        if operations is None:
+            operations = {}
+        if forward is None:
+            forward = Forward()
+        if seed is None:
+            seed = []
+        if configs is None:
+            configs = {}
+        if by_origin is None:
+            by_origin = {}
+        if implementations is None:
+            implementations = {}
+        validators = {}  # Maps `validator` ops instance_name to op
+
+        for operation in args:
+            name = getattr(getattr(operation, "op", operation), "name")
+            if name in operations:
+                raise ValueError("Operation given as possitional and in dict")
+            operations[name] = operation
+
         self.operations = operations
         self.seed = seed
         self.configs = configs
@@ -494,20 +517,7 @@ class DataFlow:
         self.by_origin = by_origin
         self.implementations = implementations
         self.forward = forward
-
-        # Prevent usage of a global dict (if we set default to {} then all the
-        # instances will share the same instance of that dict, or list)
-        if self.forward is None:
-            self.forward = Forward()
-        if self.seed is None:
-            self.seed = []
-        if self.configs is None:
-            self.configs = {}
-        if self.by_origin is None:
-            self.by_origin = {}
-        if self.implementations is None:
-            self.implementations = {}
-        self.validators = {}  # Maps `validator` ops instance_name to op
+        self.validators = validators
 
         self.update(auto_flow=bool(self.flow is None))
 
@@ -672,12 +682,7 @@ class DataFlow:
 
     @classmethod
     def auto(cls, *operations):
-        return cls(
-            operations={
-                getattr(getattr(operation, "op", operation), "name"): operation
-                for operation in operations
-            }
-        )
+        return cls(*operations)
 
     def auto_flow(self):
         # Determine the dataflow if not given
