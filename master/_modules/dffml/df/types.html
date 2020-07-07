@@ -661,7 +661,8 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">operations</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Operation</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]],</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+        <span class="n">operations</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Operation</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">seed</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">configs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">BaseConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">definitions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Definition</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -672,6 +673,28 @@
         <span class="n">implementations</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;OperationImplementation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">forward</span><span class="p">:</span> <span class="n">Forward</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Prevent usage of a global dict (if we set default to {} then all the</span>
+        <span class="c1"># instances will share the same instance of that dict, or list)</span>
+        <span class="k">if</span> <span class="n">operations</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">operations</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">forward</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">forward</span> <span class="o">=</span> <span class="n">Forward</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">seed</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">configs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">configs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">by_origin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">by_origin</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">implementations</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">implementations</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">validators</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Maps `validator` ops instance_name to op</span>
+
+        <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="s2">&quot;op&quot;</span><span class="p">,</span> <span class="n">operation</span><span class="p">),</span> <span class="s2">&quot;name&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">operations</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Operation given as possitional and in dict&quot;</span><span class="p">)</span>
+            <span class="n">operations</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">operation</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">operations</span> <span class="o">=</span> <span class="n">operations</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">configs</span> <span class="o">=</span> <span class="n">configs</span>
@@ -680,20 +703,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">by_origin</span> <span class="o">=</span> <span class="n">by_origin</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">implementations</span> <span class="o">=</span> <span class="n">implementations</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">forward</span> <span class="o">=</span> <span class="n">forward</span>
-
-        <span class="c1"># Prevent usage of a global dict (if we set default to {} then all the</span>
-        <span class="c1"># instances will share the same instance of that dict, or list)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">forward</span> <span class="o">=</span> <span class="n">Forward</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">configs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">configs</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">by_origin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">by_origin</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">implementations</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">implementations</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">validators</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Maps `validator` ops instance_name to op</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validators</span> <span class="o">=</span> <span class="n">validators</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">auto_flow</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flow</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">))</span>
 
@@ -858,12 +868,7 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">auto</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">operations</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">operations</span><span class="o">=</span><span class="p">{</span>
-                <span class="nb">getattr</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">operation</span><span class="p">,</span> <span class="s2">&quot;op&quot;</span><span class="p">,</span> <span class="n">operation</span><span class="p">),</span> <span class="s2">&quot;name&quot;</span><span class="p">):</span> <span class="n">operation</span>
-                <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">operations</span>
-            <span class="p">}</span>
-        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">operations</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">auto_flow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Determine the dataflow if not given</span>
