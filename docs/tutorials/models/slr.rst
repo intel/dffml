@@ -140,7 +140,7 @@ passing it the name of the feature we predicted, the predicted value, and the
 confidence in our prediction.
 
 .. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
-    :lines: 109-128
+    :lines: 109-126
 
 Python Usage
 ------------

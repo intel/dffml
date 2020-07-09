@@ -16,10 +16,10 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
 from dffml.record import Record
 from dffml.model.accuracy import Accuracy
-from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
 from dffml.base import config, field
 from dffml.feature.feature import Feature, Features
+from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelContext, Model, ModelNotTrained
 from dffml_model_tensorflow.util.config.tensorflow import parse_layers
 
@@ -283,7 +283,7 @@ class TextClassifierContext(ModelContext):
         return Accuracy(accuracy_score[1])
 
     async def predict(
-        self, records: AsyncIterator[Record]
+        self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
         """
         Uses trained data to make a prediction about the quality of a record.
@@ -293,7 +293,7 @@ class TextClassifierContext(ModelContext):
         ):
             raise ModelNotTrained("Train model before assessing for accuracy.")
 
-        async for record in records:
+        async for record in sources.with_features(self.features):
             feature_data = record.features(self.features)
             df = self.pd.DataFrame(feature_data, index=[0])
             predict = await self.prediction_data_generator(

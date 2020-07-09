@@ -7,8 +7,8 @@ import joblib as joblib
 
 from dffml.base import config, field
 from dffml.model.accuracy import Accuracy
-from dffml import Feature, Features, Sources, Record
 from dffml.model.model import ModelContext, ModelNotTrained
+from dffml import Feature, Features, Sources, Record, SourcesContext
 
 
 @config
@@ -120,11 +120,9 @@ class AutoSklearnModelContext(ModelContext):
     def _get_feature_names(self):
         return [name for name in self.parent.config.features.names()]
 
-    async def get_test_records(self, records: AsyncIterator[Record]):
+    async def get_test_records(self, sources: SourcesContext):
         ret_record = []
-        async for record in records:
-            if not record.features(self.features):
-                continue
+        async for record in sources.with_features(self.features):
             ret_record.append(record)
         return ret_record
 
@@ -153,14 +151,12 @@ class AutoSklearnModelContext(ModelContext):
         )
         joblib.dump(self.model, self.path)
 
-    async def predict(
-        self, records: AsyncIterator[Record]
-    ) -> AsyncIterator[Record]:
+    async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
         if not self.model:
             raise ModelNotTrained(
                 "Train the model first before getting preictions"
             )
-        test_records = await self.get_test_records(records)
+        test_records = await self.get_test_records(sources)
         x_test = pd.DataFrame([record.features() for record in test_records])
         predictions = await self.get_predictions(x_test)
         probability = await self.get_probabilities(x_test)

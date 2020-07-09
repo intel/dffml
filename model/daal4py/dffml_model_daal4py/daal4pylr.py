@@ -15,6 +15,7 @@ from dffml import (
     Features,
     Sources,
     Record,
+    SourcesContext,
 )
 
 
@@ -101,12 +102,14 @@ class DAAL4PyLRModel(SimpleModel):
         return Accuracy(accuracy_val)
 
     async def predict(
-        self, records: AsyncIterator[Record]
+        self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
         # Iterate through each record that needs a prediction
         if self.lm_trained is None:
             raise ModelNotTrained("Train model before prediction.")
-        async for record in records:
+        async for record in sources.with_features(
+            self.parent.config.features.names()
+        ):
             feature_data = record.features(self.features)
             predict = self.pd.DataFrame(feature_data, index=[0])
             preds = self.lm_predictor.compute(predict, self.lm_trained)

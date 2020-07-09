@@ -13,6 +13,7 @@ from dffml import (
     Features,
     Sources,
     Record,
+    SourcesContext,
 )
 
 
@@ -178,13 +179,15 @@ class LogisticRegression(SimpleModel):
         return Accuracy(accuracy_value)
 
     async def predict(
-        self, records: AsyncIterator[Record]
+        self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
         # Ensure the model has been trained before we try to make a prediction
         if self.separating_line is None:
             raise ModelNotTrained("Train model before prediction.")
         target = self.config.predict.name
-        async for record in records:
+        async for record in sources.with_features(
+            self.parent.config.features.names()
+        ):
             feature_data = record.features(self.features)
             record.predicted(
                 target,
