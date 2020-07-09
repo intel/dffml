@@ -12,8 +12,8 @@ from dffml.base import config
 from dffml.record import Record
 from dffml.model.model import Model
 from dffml.model.accuracy import Accuracy
-from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
+from dffml.source.source import Sources, SourcesContext
 
 from .dnnc import TensorflowModelContext, TensorflowBaseConfig
 
@@ -138,13 +138,11 @@ class DNNRegressionModelContext(TensorflowModelContext):
         metrics = self.model.evaluate(input_fn=input_fn)
         return Accuracy(1 - metrics["loss"])  # 1 - mse
 
-    async def predict(
-        self, records: AsyncIterator[Record]
-    ) -> AsyncIterator[Record]:
+    async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
         """
         Uses trained data to make a prediction about the quality of a record.
         """
-        predict, predictions, target = await self.get_predictions(records)
+        predict, predictions, target = await self.get_predictions(sources)
         for record, pred_dict in zip(predict, predictions):
             # TODO Instead of float("nan") save accuracy value and use that.
             record.predicted(

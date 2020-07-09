@@ -501,7 +501,7 @@ async def predict(
     sources = _records_to_sources(*args)
     async with sources as sources, model as model:
         async with sources() as sctx, model() as mctx:
-            async for record in mctx.predict(sctx.records()):
+            async for record in mctx.predict(sctx):
                 yield record if keep_record else (
                     record.key,
                     record.features(),
