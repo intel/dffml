@@ -191,6 +191,8 @@
 <span class="kn">from</span> <span class="nn">..model</span> <span class="kn">import</span> <span class="n">Model</span>
 <span class="kn">from</span> <span class="nn">..df.types</span> <span class="kn">import</span> <span class="n">Definition</span>
 <span class="kn">from</span> <span class="nn">..df.base</span> <span class="kn">import</span> <span class="n">op</span>
+<span class="kn">from</span> <span class="nn">..source.source</span> <span class="kn">import</span> <span class="n">Sources</span>
+<span class="kn">from</span> <span class="nn">..source.memory</span> <span class="kn">import</span> <span class="n">MemorySource</span><span class="p">,</span> <span class="n">MemorySourceConfig</span>
 
 
 <div class="viewcode-block" id="ModelPredictConfig"><a class="viewcode-back" href="../../../api/operation/model.html#dffml.operation.model.ModelPredictConfig">[docs]</a><span class="nd">@config</span>
@@ -281,11 +283,16 @@
 <span class="sd">    {&#39;model_predictions&#39;: {&#39;Salary&#39;: {&#39;confidence&#39;: 1.0, &#39;value&#39;: 50.0}}}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">records</span><span class="p">():</span>
-        <span class="k">yield</span> <span class="n">Record</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="n">features</span><span class="p">})</span>
-
-    <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mctx</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">records</span><span class="p">()):</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">predictions</span><span class="p">()}</span></div>
+    <span class="k">async</span> <span class="k">with</span> <span class="n">Sources</span><span class="p">(</span>
+        <span class="n">MemorySource</span><span class="p">(</span>
+            <span class="n">MemorySourceConfig</span><span class="p">(</span>
+                <span class="n">records</span><span class="o">=</span><span class="p">[</span><span class="n">Record</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="n">features</span><span class="p">})]</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mctx</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">sctx</span><span class="p">):</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;prediction&quot;</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">predictions</span><span class="p">()}</span></div>
 </pre></div>
 
            </div>

@@ -250,7 +250,7 @@ editor or IDE so they can help us check our code before we run it.</p></li>
     <span class="n">ModelNotTrained</span><span class="p">,</span>
     <span class="n">Accuracy</span><span class="p">,</span>
     <span class="n">Feature</span><span class="p">,</span>
-    <span class="n">Sources</span><span class="p">,</span>
+    <span class="n">SourcesContext</span><span class="p">,</span>
     <span class="n">Record</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
@@ -354,7 +354,7 @@ let’s us avoid records that are not applicable to our model.</p>
 <p>Models should save their state to disk after training. Classes derived from
 <code class="docutils literal notranslate"><span class="pre">SimpleModel</span></code> can put anything they want saved into <code class="docutils literal notranslate"><span class="pre">self.storage</span></code>, which
 is saved and loaded from a JSON file on disk.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># X and Y data</span>
         <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
@@ -385,7 +385,7 @@ accuracy it will ever output, and that <code class="docutils literal notranslate
 to mean that the model predicted the correct value for every record given to the
 accuracy method. Numbers approaching <code class="docutils literal notranslate"><span class="pre">1.0</span></code> should indicate that the model was
 closer to making the correct prediction for each record.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">Sources</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Accuracy</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Accuracy</span><span class="p">:</span>
         <span class="c1"># Load saved regression line</span>
         <span class="n">regression_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;regression_line&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="c1"># Ensure the model has been trained before we try to make a prediction</span>
@@ -423,9 +423,7 @@ we use the <code class="docutils literal notranslate"><span class="pre">m</span>
 <p>We call <a class="reference internal" href="../../api/record.html#dffml.record.Record.predicted" title="dffml.record.Record.predicted"><code class="xref py py-meth docutils literal notranslate"><span class="pre">record.predicted</span></code></a>
 passing it the name of the feature we predicted, the predicted value, and the
 confidence in our prediction.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">records</span><span class="p">:</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">async</span> <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sources</span><span class="p">:</span> <span class="n">SourcesContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
         <span class="c1"># Load saved regression line</span>
         <span class="n">regression_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;regression_line&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="c1"># Ensure the model has been trained before we try to make a prediction</span>
@@ -434,7 +432,7 @@ confidence in our prediction.</p>
         <span class="c1"># Expand the regression_line into named variables</span>
         <span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">accuracy</span> <span class="o">=</span> <span class="n">regression_line</span>
         <span class="c1"># Iterate through each record that needs a prediction</span>
-        <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">sources</span><span class="o">.</span><span class="n">with_features</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="p">]):</span>
             <span class="c1"># Grab the x data from the record</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">feature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="c1"># Calculate y</span>
