@@ -235,7 +235,7 @@ from a list in seed containing only one element that is the <code class="docutil
 and the seed to have the input of the associate_definition operation come from the output
 (product) of the multiply operation.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">dataflow</span> <span class="n">create</span> <span class="n">multiply</span> <span class="n">associate_definition</span> <span class="o">-</span><span class="n">configloader</span> <span class="n">yaml</span> \
-    <span class="o">-</span><span class="n">seed</span> <span class="s1">&#39;{&quot;image&quot;: &quot;product&quot;}&#39;</span><span class="o">=</span><span class="n">associate_spec</span> <span class="mf">0.00392156862</span><span class="o">=</span><span class="n">multiplier_def</span> \
+    <span class="o">-</span><span class="n">inputs</span> <span class="s1">&#39;{&quot;image&quot;: &quot;product&quot;}&#39;</span><span class="o">=</span><span class="n">associate_spec</span> <span class="mf">0.00392156862</span><span class="o">=</span><span class="n">multiplier_def</span> \
     <span class="o">-</span><span class="n">flow</span> <span class="s1">&#39;[{&quot;seed&quot;: [&quot;image&quot;]}]&#39;</span><span class="o">=</span><span class="n">multiply</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">multiplicand</span> <span class="o">|</span>
     <span class="n">tee</span> <span class="n">normalize</span><span class="o">.</span><span class="n">yaml</span>
 </pre></div>
@@ -304,7 +304,7 @@ comes from the output (resized_array) of the resize operation
 and to have the input of the associate_definition operation come from the output
 (product) of the multiply operation.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">dataflow</span> <span class="n">create</span> <span class="n">resize</span> <span class="n">flatten</span> <span class="n">multiply</span> <span class="n">associate_definition</span> <span class="o">-</span><span class="n">configloader</span> <span class="n">yaml</span> \
-    <span class="o">-</span><span class="n">seed</span> \
+    <span class="o">-</span><span class="n">inputs</span> \
       <span class="s1">&#39;[28,28]&#39;</span><span class="o">=</span><span class="n">resize</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">dsize</span> \
       <span class="s1">&#39;{&quot;image&quot;: &quot;product&quot;}&#39;</span><span class="o">=</span><span class="n">associate_spec</span> \
       <span class="mf">0.00392156862</span><span class="o">=</span><span class="n">multiplier_def</span> \
