@@ -92,19 +92,27 @@ class Create(CMD):
 
     async def run(self):
         operations = []
+        operation_names = []
         for load_operation in self.operations:
-            if ":" in load_operation:
+            if "=" in load_operation:
+                opname, operation = load_operation.split("=")
+            else:
+                opname = operation = load_operation
+            operation_names.append(opname)
+            if ":" in operation:
                 operations.extend(
                     map(
                         OperationImplementation._imp,
-                        load(load_operation, relative=True),
+                        load(operation, relative=True),
                     )
                 )
             else:
-                operations += [Operation.load(load_operation)]
+                operations += [Operation.load(operation)]
         async with self.configloader(BaseConfig()) as configloader:
             async with configloader() as loader:
-                dataflow = DataFlow.auto(*operations)
+                dataflow = DataFlow(
+                    operations=dict(zip(operation_names, operations))
+                )
                 # flow argument key is of the form opname.inputs/conditions.keyname
                 for v, k in self.flow:
                     *opname, val_type, key = split_dot_seperated(k)
