@@ -15,7 +15,10 @@ common.KWARGS["install_requires"] += [
 ]
 common.KWARGS["entry_points"] = {
     "dffml.configloader": [
-        f"png = {common.IMPORT_NAME}.configloader:PNGConfigLoader"
+        f"png = {common.IMPORT_NAME}.configloader:PNGConfigLoader",
+        f"jpg = {common.IMPORT_NAME}.configloader:JPGConfigLoader",
+        f"jpeg = {common.IMPORT_NAME}.configloader:JPEGConfigLoader",
+        f"tiff = {common.IMPORT_NAME}.configloader:TIFFConfigLoader",
     ]
 }
 
