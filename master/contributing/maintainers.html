@@ -239,9 +239,18 @@ each package</p></li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p><code class="docutils literal notranslate"><span class="pre">model/tensorflow_hub</span></code> depends on <code class="docutils literal notranslate"><span class="pre">model/tensorflow</span></code>. Its important to
+<p>Some plugins depend on each other. For example
+<code class="docutils literal notranslate"><span class="pre">model/tensorflow_hub</span></code> depends on <code class="docutils literal notranslate"><span class="pre">model/tensorflow</span></code>. Its important to
 update the version of <code class="docutils literal notranslate"><span class="pre">dffml-model-tensorflow</span></code> in
 <code class="docutils literal notranslate"><span class="pre">model/tensorflow_hub</span></code>.</p>
+<p>To get a list of all the plugins that depend on each other. Run the
+following set of grep commands.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> git grep dffml- <span class="p">|</span> grep setup <span class="p">|</span> grep <span class="s1">&#39;=.*\..*\.&#39;</span>
+<span class="go">examples/shouldi/setup_common.py:        [&quot;dffml-feature-git&gt;=0.2.7&quot;]</span>
+<span class="go">model/tensorflow_hub/setup.py:        [&quot;dffml-model-tensorflow&gt;=0.2.7&quot;]</span>
+<span class="go">operations/deploy/setup_common.py:        [&quot;dffml-feature-git&gt;=0.2.7&quot;]</span>
+</pre></div>
+</div>
 </div>
 <ul class="simple">
 <li><p>Modify <code class="docutils literal notranslate"><span class="pre">CHANGELOG.md</span></code> to replace the <code class="docutils literal notranslate"><span class="pre">Unreleased</span></code> section header with the
