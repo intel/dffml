@@ -186,7 +186,11 @@ class NERModelConfig:
         "Drop the last incomplete batch if the length of the dataset is not divisible by the batch size",
         default=False,
     )
-    past_index: int = field("Some models can make use of the past hidden states for their predictions. If this argument is set to a positive int, the `Trainer` will use the corresponding output (usually index 2) as the past state and feed it to the model at the next training step under the keyword argument `mems` ", default = -1)
+    past_index: int = field(
+        "Some models can make use of the past hidden states for their predictions. If this argument is set to a positive int, the `Trainer` will use the corresponding output (usually index 2) as the past state and feed it to the model at the next training step under the keyword argument `mems` ",
+        default=-1,
+    )
+
     def to_json_string(self):
         """
         Serializes this instance to a JSON string.
@@ -231,8 +235,12 @@ class NERModelConfig:
         self.train_batch_size = (
             self.per_device_train_batch_size * self.n_replicas
         )
-        self.eval_batch_size = self.per_device_eval_batch_size * self.n_replicas
-        self.test_batch_size = self.per_device_eval_batch_size * self.n_replicas
+        self.eval_batch_size = (
+            self.per_device_eval_batch_size * self.n_replicas
+        )
+        self.test_batch_size = (
+            self.per_device_eval_batch_size * self.n_replicas
+        )
         self.label_map: Dict[int, str] = {
             i: label for i, label in enumerate(self.ner_tags)
         }

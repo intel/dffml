@@ -170,7 +170,10 @@ class HFClassificationModelConfig:
         "Drop the last incomplete batch if the length of the dataset is not divisible by the batch size",
         default=False,
     )
-    past_index: int = field("Some models can make use of the past hidden states for their predictions. If this argument is set to a positive int, the `Trainer` will use the corresponding output (usually index 2) as the past state and feed it to the model at the next training step under the keyword argument `mems` ", default = -1)
+    past_index: int = field(
+        "Some models can make use of the past hidden states for their predictions. If this argument is set to a positive int, the `Trainer` will use the corresponding output (usually index 2) as the past state and feed it to the model at the next training step under the keyword argument `mems` ",
+        default=-1,
+    )
 
     def to_json_string(self):
         config_dict = export(self)
