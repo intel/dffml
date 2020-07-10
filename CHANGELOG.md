@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Operations plugin for NLP
 - Support for default value in a Definition
 - Transformers Question Answering model
 - Source for reading images in directories
@@ -57,7 +58,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Make every model's directory property required
 - New model AutoClassifierModel based on `AutoSklearn`.
 - New model AutoSklearnRegressorModel based on `AutoSklearn`.
+- Example showing usage of locks in dataflow.
 ### Changed
+- Renamed `-seed` to `-inputs` in `dataflow create` command
+- Renamed configloader/png to configloader/image and added support for loading JPEG and TIFF file formats
 - Update record `__str__` method to output in tabular format
 - Update NER Model to use transformers 2.11.0
 - Update MNIST use case to normalize image arrays.
@@ -93,6 +97,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   parameter sets for an operation.
 - Typing of config vlaues for numpy parsed docstrings where type should be tuple
   or list
+- Model predict methods now use `SourcesContext.with_features`
 ### Removed
 - Monitor class and associated tests (unused)
 - DefinedFeature class in `dffml/feature/feature.py`

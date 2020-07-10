@@ -14,9 +14,9 @@ from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
 
 from dffml.record import Record
 from dffml.base import config, field
-from dffml.source.source import Sources
 from dffml.model.accuracy import Accuracy
 from dffml.util.entrypoint import entrypoint
+from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelContext, Model, ModelNotTrained
 
 from transformers.data.processors.squad import SquadExample, SquadResult
@@ -885,7 +885,7 @@ class QAModelContext(ModelContext):
         return Accuracy(results["f1"])
 
     async def predict(
-        self, records: AsyncIterator[Record]
+        self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
         if not os.path.isfile(
             os.path.join(self.parent.config.output_dir, "pytorch_model.bin")
@@ -900,7 +900,7 @@ class QAModelContext(ModelContext):
             self.parent.config.output_dir,
             do_lower_case=self.parent.config.do_lower_case,
         )
-        async for record in records:
+        async for record in sources.records():
 
             example = SquadExample(
                 qas_id=record.key,

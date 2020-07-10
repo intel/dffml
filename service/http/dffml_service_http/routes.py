@@ -15,6 +15,7 @@ from typing import List, Union, AsyncIterator, Type, NamedTuple, Dict
 from aiohttp import web
 import aiohttp_cors
 
+from dffml import Sources, MemorySource
 from dffml.record import Record
 from dffml.df.types import DataFlow, Input
 from dffml.df.multicomm import MultiCommInAtomicMode, BaseMultiCommContext
@@ -731,25 +732,27 @@ class Routes(BaseMultiCommContext):
                 status=HTTPStatus.BAD_REQUEST,
             )
         # Get the records
-        records: Dict[str, Record] = {
-            key: Record(key, data=record_data)
-            for key, record_data in (await request.json()).items()
-        }
-        # Create an async generator to feed records
-        async def record_gen():
-            for record in records.values():
-                yield record
-
-        # Feed them through prediction
-        return web.json_response(
-            {
-                "iterkey": None,
-                "records": {
-                    record.key: record.export()
-                    async for record in mctx.predict(record_gen())
-                },
-            }
-        )
+        records: Dict[str, Record] = {}
+        # Create a source with will provide the records
+        async with Sources(
+            MemorySource(
+                records=[
+                    Record(key, data=record_data)
+                    for key, record_data in (await request.json()).items()
+                ]
+            )
+        ) as source:
+            async with source() as sctx:
+                # Feed them through prediction
+                return web.json_response(
+                    {
+                        "iterkey": None,
+                        "records": {
+                            record.key: record.export()
+                            async for record in mctx.predict(sctx)
+                        },
+                    }
+                )
 
     async def api_js(self, request):
         return web.Response(

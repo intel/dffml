@@ -15,6 +15,7 @@ from dffml import (
     ModelContext,
     Model,
     Sources,
+    SourcesContext,
     entrypoint,
 )
 from dffml.base import BaseConfig
@@ -45,10 +46,8 @@ class FakeModelContext(ModelContext):
             accuracy += int(record.key)
         return Accuracy(accuracy)
 
-    async def predict(
-        self, records: AsyncIterator[Record]
-    ) -> AsyncIterator[Record]:
-        async for record in records:
+    async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
+        async for record in sources.with_features(["by_ten"]):
             record.predicted(
                 "Salary", record.feature("by_ten") * 10, float(record.key)
             )

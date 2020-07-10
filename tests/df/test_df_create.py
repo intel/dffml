@@ -35,7 +35,7 @@ async def echo_strings(input_string: str) -> AsyncIterator[str]:
 class TestDataflowCreate(AsyncTestCase):
     @staticmethod
     @contextlib.asynccontextmanager
-    async def make_dataflow(ops, operations, seed):
+    async def make_dataflow(ops, operations, inputs):
         # Create temp dir and write op to ops.py
         with tempfile.TemporaryDirectory() as tmpdirname:
             # Change directory into the tempdir
@@ -47,11 +47,15 @@ class TestDataflowCreate(AsyncTestCase):
                 module = importlib.import_module("ops")
                 importlib.reload(module)
                 sys.path.pop(0)
-                # $ dffml dataflow create $operations -seed $seed
+                # $ dffml dataflow create $operations -inputs $inputs
                 with io.StringIO() as dataflow:
                     with contextlib.redirect_stdout(dataflow):
                         await CLI.cli(
-                            "dataflow", "create", *operations, "-seed", *seed
+                            "dataflow",
+                            "create",
+                            *operations,
+                            "-inputs",
+                            *inputs,
                         )
                     yield DataFlow._fromdict(**json.loads(dataflow.getvalue()))
 

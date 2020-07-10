@@ -9,13 +9,10 @@ spec = importlib.util.spec_from_file_location(
 common = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(common)
 
-common.KWARGS["install_requires"] += [
-    "opencv-python>=4.2.0.34",
-    "numpy>=1.16.2",
-]
 common.KWARGS["entry_points"] = {
-    "dffml.configloader": [
-        f"png = {common.IMPORT_NAME}.configloader:PNGConfigLoader"
+    "dffml.operation": [
+        f"remove_stopwords = {common.IMPORT_NAME}.operations:remove_stopwords",
+        f"get_embedding = {common.IMPORT_NAME}.operations:get_embedding",
     ]
 }
 

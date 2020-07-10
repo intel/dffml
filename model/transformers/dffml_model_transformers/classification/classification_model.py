@@ -17,10 +17,10 @@ from transformers import (
 from dffml import export
 from dffml.record import Record
 from dffml.base import config, field
-from dffml.source.source import Sources
 from dffml.model.accuracy import Accuracy
 from dffml.util.entrypoint import entrypoint
 from dffml.feature.feature import Feature, Features
+from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelContext, Model, ModelNotTrained
 
 from .utils import InputExample, classification_compute_metrics
@@ -358,7 +358,7 @@ class HFClassificationModelContext(ModelContext):
         return Accuracy(result["eval_acc"])
 
     async def predict(
-        self, records: AsyncIterator[Record]
+        self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
         if not os.path.isfile(
             os.path.join(self.parent.config.output_dir, "tf_model.h5")
@@ -373,7 +373,7 @@ class HFClassificationModelContext(ModelContext):
                 self.parent.config.output_dir
             )
         trainer = TFTrainer(model=self.model, args=self.parent.config,)
-        async for record in records:
+        async for record in sources.with_features(self.features):
             to_predict = record.features(self.features)
             eval_example = [
                 InputExample(

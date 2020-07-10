@@ -3,7 +3,7 @@ import pathlib
 import hashlib
 
 from dffml.util.asynctestcase import AsyncTestCase
-from dffml_config_png.configloader import PNGConfigLoader
+from dffml_config_image.configloader import PNGConfigLoader
 
 IMAGE1_HASH = "6faf9050c6d387bc6a68d9e12127f883011add2ec994b8e66c7c0996636f2789af8d28fc11e6528a327a6383c1473e72"
 

@@ -59,7 +59,7 @@ jobs:
       fail-fast: false
       max-parallel: 40
       matrix:
-        plugin: [., examples/shouldi, model/daal4py, model/tensorflow, model/tensorflow_hub, model/transformers, model/scratch, model/scikit, model/vowpalWabbit, model/autosklearn, operations/binsec, operations/deploy, operations/image, source/mysql, feature/git, feature/auth, service/http, configloader/yaml, configloader/png]
+        plugin: [., examples/shouldi, model/daal4py, model/tensorflow, model/tensorflow_hub, model/transformers, model/scratch, model/scikit, model/vowpalWabbit, model/autosklearn, operations/binsec, operations/deploy, operations/image, operations/nlp, source/mysql, feature/git, feature/auth, service/http, configloader/yaml, configloader/image]
         python-version: [3.7, 3.8]
 
     steps:
@@ -127,7 +127,7 @@ jobs:
         operations/image=${{ secrets.PYPI_OPERATIONS_IMAGE }}
         service/http=${{ secrets.PYPI_SERVICE_HTTP }}
         configloader/yaml=${{ secrets.PYPI_CONFIG_YAML }}
-        configloader/png=${{ secrets.PYPI_CONFIG_PNG }}
+        configloader/image=${{ secrets.PYPI_CONFIG_IMAGE }}
         EOF
         export TWINE_USERNAME=__token__
         if [ "x${PLUGIN}" = "x." ]; then

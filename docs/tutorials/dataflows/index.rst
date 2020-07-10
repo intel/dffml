@@ -7,4 +7,5 @@ Here we have some examples to better understand the DFFML DataFlows.
     :maxdepth: 2
     :caption: Contents:
 
+    locking
     io

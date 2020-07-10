@@ -131,7 +131,7 @@ class TestScikitModel:
         async with self.sources as sources, self.model as model:
             target = model.config.predict.name
             async with sources() as sctx, model() as mctx:
-                async for record in mctx.predict(sctx.records()):
+                async for record in mctx.predict(sctx):
                     prediction = record.prediction(target).value
                     if self.MODEL_TYPE is "CLASSIFICATION":
                         self.assertIn(prediction, [2, 4])

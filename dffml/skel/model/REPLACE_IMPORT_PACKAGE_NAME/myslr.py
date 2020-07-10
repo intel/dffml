@@ -10,7 +10,7 @@ from dffml import (
     ModelNotTrained,
     Accuracy,
     Feature,
-    Sources,
+    SourcesContext,
     Record,
 )
 
@@ -62,7 +62,7 @@ class MySLRModel(SimpleModel):
     # The configuration class needs to be set as the CONFIG property
     CONFIG: Type = MySLRModelConfig
 
-    async def train(self, sources: Sources) -> None:
+    async def train(self, sources: SourcesContext) -> None:
         # X and Y data
         x = []
         y = []
@@ -78,7 +78,7 @@ class MySLRModel(SimpleModel):
         # Save m, b, and accuracy
         self.storage["regression_line"] = best_fit_line(x, y)
 
-    async def accuracy(self, sources: Sources) -> Accuracy:
+    async def accuracy(self, sources: SourcesContext) -> Accuracy:
         # Load saved regression line
         regression_line = self.storage.get("regression_line", None)
         # Ensure the model has been trained before we try to make a prediction
@@ -106,9 +106,7 @@ class MySLRModel(SimpleModel):
         self.storage["regression_line"] = m, b, accuracy
         return Accuracy(accuracy)
 
-    async def predict(
-        self, records: AsyncIterator[Record]
-    ) -> AsyncIterator[Record]:
+    async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
         # Load saved regression line
         regression_line = self.storage.get("regression_line", None)
         # Ensure the model has been trained before we try to make a prediction
@@ -117,7 +115,7 @@ class MySLRModel(SimpleModel):
         # Expand the regression_line into named variables
         m, b, accuracy = regression_line
         # Iterate through each record that needs a prediction
-        async for record in records:
+        async for record in sources.with_features([self.config.feature.name]):
             # Grab the x data from the record
             x = record.feature(self.config.feature.name)
             # Calculate y
