@@ -186,6 +186,10 @@ class NERModelConfig:
         "Drop the last incomplete batch if the length of the dataset is not divisible by the batch size",
         default=False,
     )
+    past_index: int = field(
+        "Some models can make use of the past hidden states for their predictions. If this argument is set to a positive int, the `Trainer` will use the corresponding output (usually index 2) as the past state and feed it to the model at the next training step under the keyword argument `mems` ",
+        default=-1,
+    )
 
     def to_json_string(self):
         """
@@ -210,30 +214,33 @@ class NERModelConfig:
             self.strategy = self.tf.distribute.experimental.TPUStrategy(
                 resolver
             )
-            self.n_device = self.num_tpu_cores
+            self.n_replicas = self.num_tpu_cores
         elif len(self.gpus.split(",")) > 1:
-            self.n_device = len(
+            self.n_replicas = len(
                 [f"/gpu:{gpu}" for gpu in self.gpus.split(",")]
             )
             self.strategy = self.tf.distribute.MirroredStrategy(
                 devices=[f"/gpu:{gpu}" for gpu in self.gpus.split(",")]
             )
         elif self.no_cuda:
-            self.n_device = 1
+            self.n_replicas = 1
             self.strategy = self.tf.distribute.OneDeviceStrategy(
                 device="/cpu:0"
             )
         else:
-            self.n_device = len(self.gpus.split(","))
+            self.n_replicas = len(self.gpus.split(","))
             self.strategy = self.tf.distribute.OneDeviceStrategy(
                 device="/gpu:" + self.gpus.split(",")[0]
             )
-        self.n_gpu = self.n_device
         self.train_batch_size = (
-            self.per_device_train_batch_size * self.n_device
+            self.per_device_train_batch_size * self.n_replicas
         )
-        self.eval_batch_size = self.per_device_eval_batch_size * self.n_device
-        self.test_batch_size = self.per_device_eval_batch_size * self.n_device
+        self.eval_batch_size = (
+            self.per_device_eval_batch_size * self.n_replicas
+        )
+        self.test_batch_size = (
+            self.per_device_eval_batch_size * self.n_replicas
+        )
         self.label_map: Dict[int, str] = {
             i: label for i, label in enumerate(self.ner_tags)
         }
