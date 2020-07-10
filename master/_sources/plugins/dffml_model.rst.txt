@@ -773,6 +773,11 @@ of the model.
   - default: False
   - Drop the last incomplete batch if the length of the dataset is not divisible by the batch size
 
+- past_index: Integer
+
+  - default: -1
+  - Some models can make use of the past hidden states for their predictions. If this argument is set to a positive int, the `Trainer` will use the corresponding output (usually index 2) as the past state and feed it to the model at the next training step under the keyword argument `mems`
+
 .. _plugin_model_dffml_model_transformers_ner_tagger:
 
 ner_tagger
@@ -1105,6 +1110,11 @@ Example usage of NER model using python API
   - default: False
   - Drop the last incomplete batch if the length of the dataset is not divisible by the batch size
 
+- past_index: Integer
+
+  - default: -1
+  - Some models can make use of the past hidden states for their predictions. If this argument is set to a positive int, the `Trainer` will use the corresponding output (usually index 2) as the past state and feed it to the model at the next training step under the keyword argument `mems`
+
 .. _plugin_model_dffml_model_transformers_qa_model:
 
 qa_model
@@ -1202,7 +1212,7 @@ is value of the flag `is_training`.
 
 - model_type: String
 
-  - Model type in the list: distilbert, albert, bart, longformer, xlm-roberta, roberta, bert, xlnet, flaubert, mobilebert, xlm, electra
+  - Model type in the list: distilbert, albert, bart, longformer, xlm-roberta, roberta, bert, xlnet, flaubert, mobilebert, xlm, electra, reformer
 
 - model_name_or_path: String
 
