@@ -1341,6 +1341,12 @@ of the model.</p>
 <li><p>Drop the last incomplete batch if the length of the dataset is not divisible by the batch size</p></li>
 </ul>
 </li>
+<li><p>past_index: Integer</p>
+<ul>
+<li><p>default: -1</p></li>
+<li><p>Some models can make use of the past hidden states for their predictions. If this argument is set to a positive int, the <cite>Trainer</cite> will use the corresponding output (usually index 2) as the past state and feed it to the model at the next training step under the keyword argument <cite>mems</cite></p></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="section" id="ner-tagger">
@@ -1789,6 +1795,12 @@ of the model.</p>
 <li><p>Drop the last incomplete batch if the length of the dataset is not divisible by the batch size</p></li>
 </ul>
 </li>
+<li><p>past_index: Integer</p>
+<ul>
+<li><p>default: -1</p></li>
+<li><p>Some models can make use of the past hidden states for their predictions. If this argument is set to a positive int, the <cite>Trainer</cite> will use the corresponding output (usually index 2) as the past state and feed it to the model at the next training step under the keyword argument <cite>mems</cite></p></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="section" id="qa-model">
@@ -2032,7 +2044,7 @@ is value of the flag <cite>is_training</cite>.</p>
 <ul class="simple">
 <li><p>model_type: String</p>
 <ul>
-<li><p>Model type in the list: distilbert, albert, bart, longformer, xlm-roberta, roberta, bert, xlnet, flaubert, mobilebert, xlm, electra</p></li>
+<li><p>Model type in the list: distilbert, albert, bart, longformer, xlm-roberta, roberta, bert, xlnet, flaubert, mobilebert, xlm, electra, reformer</p></li>
 </ul>
 </li>
 <li><p>model_name_or_path: String</p>
