@@ -77,22 +77,35 @@ class NatsNodeConfig:
 class NatsNodeContext(BaseDataFlowObjectContext):
     async def __aenter__(self, enter={}):
         self.uid = secrets.token_hex()
+        self.nc = self.parent.nc
+        self.sc = self.parent.sc
+
+        self._stack = AsyncExitStack()
+        self._stack = await aenter_stack(self, enter)
+        await self.init_context()
+        return self
+
+
+    @abc.abstractmethod
+    async def init_context(self):
+        pass
+
+class NatsNode(BaseDataFlowObject):
+    async def __aenter__(self, enter={}):
+        self.uid = secrets.token_hex()
         self.nc = NATS()
-        print(f"Connecting to nats server {self.parent.config.server}")
+        print(f"Connecting to nats server {self.config.server}")
         await self.nc.connect(
-            self.parent.config.server, name=self.uid, connect_timeout=10
+            self.config.server, name=self.uid, connect_timeout=10
         )
         print("Connected")
 
         self.sc = STAN()
-        print(f"Connecting to stan cluster {self.parent.config.cluster}")
+        print(f"Connecting to stan cluster {self.config.cluster}")
         await self.sc.connect(
-            self.parent.config.cluster, self.uid, nats=self.nc,
+            self.config.cluster, self.uid, nats=self.nc,
         )
         print("Connected")
-
-        self._stack = AsyncExitStack()
-        self._stack = await aenter_stack(self, enter)
         await self.init_node()
         return self
 
@@ -103,7 +116,6 @@ class NatsNodeContext(BaseDataFlowObjectContext):
     @abc.abstractmethod
     async def init_node(self):
         pass
-
 
 @config
 class NatsPrimaryNodeConfig(NatsNodeConfig):
@@ -142,7 +154,7 @@ class NatsPrimaryNodeContext(NatsNodeContext):
             self.got_all_operations.set()
         await self.nc.publish(reply, reply_data)
 
-    async def init_node(self):
+    async def init_context(self):
         # Primary node announces that it has started
         # All subnode contexts that are not already connected
         # sends list of operations supported by them.
@@ -197,7 +209,7 @@ class NatsPrimaryNodeContext(NatsNodeContext):
             )
 
 
-class NatsPrimaryNode(BaseDataFlowObject):
+class NatsPrimaryNode(NatsNode):
     CONTEXT = NatsPrimaryNodeContext
     CONFIG = NatsPrimaryNodeConfig
 
@@ -209,16 +221,12 @@ class NatsPrimaryNode(BaseDataFlowObject):
 class NatsSubNodeConfig(NatsNodeConfig):
     operations: List[Operation] = field(default_factory=lambda: [])
 
+@config
+class NatsSubNodeContextConfig:
+    primary_node_id:str
 
 class NatsSubNodeContext(NatsNodeContext):
-    async def connection_ack_handler(self, msg):
-        print(f"Connected to primary node {msg}")
-        # Subnode need to record the primary node context
-        # which its connected to, so that it only accepts
-        # input from that node; incase multiple primary nodes
-        # are connected to the same server
-        self.primary_node_id = msg.data.decode()
-        self.connection_ack.set_result(None)
+    CONFIG = NatsSubNodeContextConfig
 
     async def set_instance_details(self, msg):
         subject = msg.subject
@@ -232,7 +240,7 @@ class NatsSubNodeContext(NatsNodeContext):
         ):
             self.operation_instances[instance_name] = operation_name
 
-    async def init_node(self):
+    async def init_context(self):
         self.operation_names = {
             operation.name: operation
             for operation in self.parent.config.operations
@@ -240,14 +248,6 @@ class NatsSubNodeContext(NatsNodeContext):
         self.operation_instances: Dict[str, Operation] = {}
         self.operation_token = {}  # op_name -> token
 
-        # Subnode waits for a connection to a primary node
-        self.connection_ack = asyncio.Future()
-        await self.sc.subscribe(
-            ConnectToPrimaryNode,
-            cb=self.connection_ack_handler,
-            start_at="first",
-        )
-        await asyncio.wait_for(self.connection_ack, timeout=100)
 
         # Subscribe to instance details
         # We cannot request for instance details because,
@@ -271,9 +271,31 @@ class NatsSubNodeContext(NatsNodeContext):
         print(f"subnode initialized, operations : {self.operation_token}")
 
 
-class NatsSubNode(BaseDataFlowObject):
+class NatsSubNode(NatsNode):
     CONTEXT = NatsSubNodeContext
     CONFIG = NatsSubNodeConfig
 
+    async def connection_ack_handler(self, msg):
+        print(f"Connected to primary node {msg}")
+        primary_node_id = msg.data.decode()
+        self.running_contexts.append(
+            self.CONTEXT(
+                NatsSubNodeContextConfig(primary_node_id),
+                self
+                ).__aenter__()
+        )
+
+    async def init_node(self):
+        self.running_contexts = []
+        # Subnode waits for a connection to a primary node
+        await self.sc.subscribe(
+            ConnectToPrimaryNode,
+            cb=self.connection_ack_handler,
+            start_at="first",
+        )
+        self.keep_running = asyncio.Future()
+        await asyncio.wait_for(self.keep_running,timeout=None)
+
+
     def __call__(self):
-        return self.CONTEXT(BaseConfig(), self)
+        return self

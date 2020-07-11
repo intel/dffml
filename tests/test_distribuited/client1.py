@@ -16,7 +16,7 @@ async def main():
             )
     )
 
-    async with sn1() as snctx:
-        print(snctx)
+    async with sn1() as sn:
+        pass
 
 asyncio.run(main())

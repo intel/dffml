@@ -16,7 +16,8 @@ async def main():
             )
     )
 
-    async with primary_node() as pnctx:
-        pass
+    async with primary_node as pn:
+        async with pn() as pnctx:
+            pass
 
 asyncio.run(main())
