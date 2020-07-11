@@ -298,6 +298,10 @@ class Export(CMD):
 
 @configdataclass
 class InstallConfig:
+    skip: List[str] = field(
+        "List of plugin paths not to install (Example: model/scikit)",
+        default_factory=lambda: [],
+    )
     user: bool = field(
         "Perform user install", default=False, action="store_true"
     )
@@ -322,7 +326,11 @@ class Install(CMD):
         packages = list(
             map(
                 lambda package: Path(*main_package.parts, *package),
-                CORE_PLUGINS,
+                [
+                    package
+                    for package in CORE_PLUGINS
+                    if not "/".join(package) in self.skip
+                ],
             )
         )
         self.logger.info("Installing %r in development mode", packages)
