@@ -26,6 +26,7 @@ from ..df.base import (
     BaseOperationNetwork,
     BaseDataFlowObject,
     BaseDataFlowObjectContext,
+    BaseOperationImplementationNetworkContext
 )
 
 from ..util.asynchelper import aenter_stack
@@ -33,6 +34,7 @@ from ..util.asynchelper import aenter_stack
 # Subjects
 RegisterSubNode = "RegisterSubNode"
 ConnectToPrimaryNode = "ConnectToPrimaryNode"
+PrimaryNodeReady = "PrimaryNodeReady"
 ##
 
 NBYTES_UID = 6
@@ -53,30 +55,48 @@ class NatsNodeInputNetwork:
     pass
 
 
-@config
-class NatsOperationNetworkConfig:
-    operations: Dict[str, "OperationImplementation"] = field(
-        default_factory=lambda: {},
-    )
+class NatsOperationImplementationNetworkContext(MemoryOperationImplementationNetworkContext):
+    def __init__(self,
+        config: BaseConfig,
+        parent: "NatsSubNodeContext",
+    ):
+        BaseOperationImplementationNetworkContext.__init__(self,config,parent)
+        self.operations = {}
 
+    async def instantatiate_operations(self):
+        for instance_name,operation in self.parent.operation_instances.items():
+            print(f"{instance_name}")
+            opimp = self.parent.operation_configs.get(operation.name,None)
+            opconfig = self.parent.operation_configs.get(instance_name,{})
+            print(opconfig)
+            await self.instantiate(
+                    operation,
+                    config = opconfig,
+                    opimp = opimp
+                )
 
-class NatsOperationNetworkContext(MemoryOperationNetworkContext):
-    pass
+    async def __aenter__(self):
+        print(f"entering a context")
 
+        self._stack = AsyncExitStack()
+        await self._stack.__aenter__()
+        # Go through all operations which will be run
+        # by the parent subnode context and instantiate all of them
+        await self.instantatiate_operations()
+        print(f"Instantiated operations")
+        print(self.operations)
+        return self
 
-class NatsOperationNetwork(MemoryOperationNetwork):
-
-    CONFIG = NatsOperationNetworkConfig
-    CONTEXT = NatsOperationNetworkContext
 
 
 class NatsNodeContext(BaseDataFlowObjectContext):
-    async def __aenter__(self, enter={}):
+    async def __aenter__(self, enter = None,call = False):
+
         self.uid = secrets.token_hex(nbytes=NBYTES_UID)
         self.nc = self.parent.nc
 
         self._stack = AsyncExitStack()
-        self._stack = await aenter_stack(self, enter)
+        self._stack = await aenter_stack(self, enter,call)
         await self.init_context()
         return self
 
@@ -119,7 +139,6 @@ class NatsNode(BaseDataFlowObject):
 class NatsPrimaryNodeConfig(NatsNodeConfig):
     dataflow: DataFlow = None
 
-
 class NatsPrimaryNodeContext(NatsNodeContext):
     async def register_subnode(self, msg):
         print(f"Registering subnode {msg}")
@@ -146,6 +165,7 @@ class NatsPrimaryNodeContext(NatsNodeContext):
                     self.nodes_for_operation[operation_name] = opq
 
                 reply_data[operation_name] = token
+
         reply_data = json.dumps(reply_data).encode()
 
         if set(self.required_operations) == set(
@@ -183,12 +203,13 @@ class NatsPrimaryNodeContext(NatsNodeContext):
         # in dataflow and assign an instance to a subnode
         # making sure that each subnode gets at least
         # one instance
+        self.dataflow = self.parent.config.dataflow
         self.node_token_managing_instance = {
             instance_name: (
                 operation.name,
                 self.nodes_for_operation[operation.name].get(),
             )
-            for instance_name, operation in self.parent.config.dataflow.operations.items()
+            for instance_name, operation in self.dataflow.operations.items()
         }
 
         # Publish a message with subject as operation name,
@@ -197,18 +218,24 @@ class NatsPrimaryNodeContext(NatsNodeContext):
         # to operations they are running for the current dataflow
 
         for (
-            intance_name,
+            instance_name,
             (operation_name, token),
         ) in self.node_token_managing_instance.items():
             payload = {
-                "instance_name": intance_name,
+                "instance_name": instance_name,
                 "token": token,
+                "config": (
+                    self.dataflow.configs[instance_name]._asdict()
+                    if instance_name in self.dataflow.configs
+                    else {}
+                )
             }
             await self.nc.publish(
                 f"InstanceDetails{operation_name}.{self.uid}",
                 json.dumps(payload).encode(),
             )
 
+        await self.nc.publish(f"{PrimaryNodeReady}.{self.uid}",b"Sync")
 
 class NatsPrimaryNode(NatsNode):
     CONTEXT = NatsPrimaryNodeContext
@@ -226,30 +253,47 @@ class NatsSubNodeContextConfig:
 class NatsSubNodeContext(NatsNodeContext):
     CONFIG = NatsSubNodeContextConfig
 
+    async def __aenter__(self,):
+        self.uid = secrets.token_hex(nbytes=NBYTES_UID)
+        self.nc = self.parent.nc
+        self._stack = AsyncExitStack()
+        await self.init_context()
+        return self
+
     async def set_instance_details(self, msg):
         subject = msg.subject
-        subject, primary_id = subject.split(".")
+        # Operation name might contain '.'
+        *subject, primary_id = subject.split(".")
+        subject = '.'.join(subject)
         operation_name = subject.replace("InstanceDetails", "")
+
         # data is expected to contain 'instance_name':('operation_name','token')
         data = msg.data.decode()
+        data = json.loads(data)
+
         token = data["token"]
         instance_name = data["instance_name"]
-        if (data["primary_node_id"] == self.pnid) and (
-            token == self.operation_token[operation_name]
-        ):
-            self.operation_instances[instance_name] = operation_name
+        config = data["config"]
+
+        self.operation_instances[instance_name] = self.operation_names[operation_name]._replace(instance_name=instance_name)
+        if config:
+            self.operation_configs[instance_name] = config
+        print(f"\n Done setting instance : {data}\n")
+
 
     async def init_context(self):
         self.pnid = self.config.primary_node_id
-        print(f"New sub node context intialized id: {self.uid}")
-        print(f"<{self.uid}>: connected to primary node {self.pnid}")
+        print(f"{self.uid}: connected to primary node {self.pnid}")
+
+        self.operation_implemtaions = {}
+        self.operation_configs = {}
+        self.operation_instances: Dict[str, Operation] = {}
+        self.operation_token = {}  # op_name -> token
 
         self.operation_names = {
             operation.name: operation
             for operation in self.parent.config.operations
         }
-        self.operation_instances: Dict[str, Operation] = {}
-        self.operation_token = {}  # op_name -> token
 
         # Subscribe to instance details
         # We cannot request for instance details because,
@@ -273,14 +317,29 @@ class NatsSubNodeContext(NatsNodeContext):
         response = json.loads(response.data.decode())
         self.operation_token.update(response)
         print(
-            f"subnode context initialized, operations : {self.operation_token}"
+            f"subnode tokens received,  : {response}"
         )
+        # Look for implementations provided in sub node:
+        for operation_name in response:
+            if operation_name in self.parent.config.implementations:
+                self.operation_implemtaions[operation_name] = self.parent.config.implementations[
+                    operation_name
+                ]
 
+        # TODO:Wait for sync message from Primary node
+
+        self.opimpctx = await self._stack.enter_async_context(
+            NatsOperationImplementationNetworkContext(
+                BaseConfig(),
+                self
+            )
+        )
+        print(f"Done init op")
 
 @config
 class NatsSubNodeConfig(NatsNodeConfig):
     operations: List[Operation] = field(default_factory=lambda: [])
-
+    implementations: Dict[str,"OperationImplementation"] = field(default_factory=lambda: {})
 
 class NatsSubNode(NatsNode):
     CONTEXT = NatsSubNodeContext
