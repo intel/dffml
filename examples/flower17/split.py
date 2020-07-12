@@ -31,14 +31,10 @@ classes = [
     "pansy",
 ]
 
-i = -1
+i = 0
 j = 0
 for filename in sorted(os.listdir(directory)):
-    if j % 80 == 0:
-        i += 1
-        j = 0
-
-    if j <= 65:
+    if j < 70:
         label_dir = os.path.join(target_train, classes[i])
     else:
         label_dir = os.path.join(target_test, classes[i])
@@ -50,3 +46,7 @@ for filename in sorted(os.listdir(directory)):
 
     cv2.imwrite(os.path.join(label_dir, filename), image)
     j += 1
+
+    if j % 80 == 0:
+        i += 1
+        j = 0

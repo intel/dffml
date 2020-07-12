@@ -1,5 +1,5 @@
-17flower dataset classification using Scikit-Learn
-==================================================
+FLOWER17 dataset classification using OpenCV and Scikit-Learn
+=============================================================
 
 This example will show you how to train and test a model on the `FLOWER17` dataset.
 This dataset contains 17 classes of flower species, each having 80 images.
@@ -12,7 +12,7 @@ Download the dataset and verify with with ``sha256sum``.
 
     17flowers.tgz: OK
 
-The model we'll be using is the `RandomForestClassifier` which is a part of 
+The model we'll be using is the `RandomForestClassifier` which is a part of
 ``dffml-model-scikit``, a DFFML plugin which allows you to use Scikit-Learn via DFFML.
 We'll also be using the various operations from ``dffml-operations-image``, which is
 a DFFML plugin which allows you to do image processing via DFFML.
@@ -26,11 +26,11 @@ Extract the dataset.
 
 .. code-block:: console
 
-    $ tar -xzf ~/Downloads/17flowers.tgz
+    $ tar -xzf 17flowers.tgz
 
 All the images are now in a folder called `jpg`.
 Let's split these images into flower_dataset/train and flower_dataset/test directories,
-each directory containing sub-directories corresponding to the 17 flower classes.
+each directory containing sub-directories corresponding to the 17 flower classes using split.py.
 
 .. literalinclude:: /../examples/flower17/split.py
 
@@ -38,8 +38,8 @@ each directory containing sub-directories corresponding to the 17 flower classes
 
     $ python split.py
 
-The train directory contains 65 images for each class while the test directory contains
-15 images for each class.
+The train directory contains 70 images for each class while the test directory contains
+10 images for each class.
 
 Create a dataflow config file which will be used by the
 :py:class:`DataFlowSource <dffml.source.df.DataFlowSource>` to preprocess
@@ -52,7 +52,7 @@ To visualize the dataflow run:
 .. literalinclude:: /../examples/flower17/dataflow_diagram.sh
 
 Copy and pasting the output of the above code into the
-`mermaidjs live editor <https://mermaidjs.github.io/mermaid-live-editor>`
+`mermaidjs live editor <https://mermaidjs.github.io/mermaid-live-editor>`_
 results in the graph.
 
 .. image:: /.. /examples/flower17/dataflow_diagram.svg
@@ -71,9 +71,27 @@ The output is:
 
     0.27450980392156865
 
-Create an ``unknown_images.csv`` file which contains the names of the images to predict on.
+Create an ``unknown_images.csv`` file which contains the filenames of the images to predict on.
 
 .. literalinclude:: /../examples/flower17/unknown_data.sh
+
+In this example, the ``unknown_images.csv`` file contains the filenames of the following images
+
+.. image:: /../examples/flower17/daisy.jpg
+    :width: 140px
+    :height: 140px
+
+.. image:: /../examples/flower17/pansy.jpg
+    :width: 140px
+    :height: 140px
+
+.. image:: /../examples/flower17/tigerlily.jpg
+    :width: 140px
+    :height: 140px
+
+.. image:: /../examples/flower17/buttercup.jpg
+    :width: 140px
+    :height: 140px
 
 Predict with the trained model.
 
@@ -81,4 +99,9 @@ Predict with the trained model.
 
 Output
 
-.. literalinclude:: /../examples/flower17/output.json
+.. literalinclude:: /../examples/flower17/output.txt
+
+The model predicts 2 of the 4 images correctly!
+
+The accuracy of the model can be increased by using various preprocessing techniques
+for example scaling all the feature vectors within the range [0,1].

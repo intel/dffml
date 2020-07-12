@@ -10,7 +10,8 @@ dffml predict all \
     -sources images=df \
     -source-images-source csv \
     -source-images-source-filename unknown_images.csv \
-    -source-images-source-loadfile image \
+    -source-images-source-loadfiles image \
     -source-images-dataflow features.yaml \
     -source-images-features image:int:1 \
-  -log critical > output.json
+  -log critical \
+  -pretty > output.txt
