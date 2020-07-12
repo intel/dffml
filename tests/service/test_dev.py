@@ -21,6 +21,8 @@ from dffml.service.dev import (
     Export,
     Run,
     BumpPackages,
+    MissingDependenciesError,
+    Install,
 )
 from dffml.util.os import chdir
 from dffml.util.skel import Skel
@@ -289,4 +291,27 @@ class TestRun(AsyncTestCase):
                 os.path.join(tempdir, "sqlite_database.db"),
                 "-log",
                 "debug",
+            )
+
+
+class TestInstall(AsyncTestCase):
+    async def test_dep_check(self):
+        with self.assertRaisesRegex(
+            MissingDependenciesError,
+            inspect.cleandoc(
+                """
+            The following plugins have unmet dependencies and could not be installed
+
+                model/vowpalWabbit
+
+                    feedface
+
+            Install missing dependencies and re-run plugin install, or skip with
+
+                -skip model/vowpalWabbit
+            """
+            ),
+        ):
+            Install.dep_check(
+                {("model", "vowpalWabbit"): {"feedface": lambda: False}}, []
             )
