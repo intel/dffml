@@ -21,7 +21,10 @@ def directory_with_data_files():
     with tempfile.TemporaryDirectory() as tempdir:
         with chdir(tempdir):
             subprocess.check_output(["bash", sh_filepath("dataset.sh")])
-            subprocess.check_output(["tar -xzf", "17flowers.tgz"])
+            subprocess.check_output(
+                ["tar", "-xzf", sh_filepath("17flowers.tgz")]
+            )
+            subprocess.check_output(["python3", sh_filepath("split.py")])
             subprocess.check_output(["bash", sh_filepath("unknown_data.sh")])
             for image in pathlib.Path(__file__).parent.glob("*.jpg"):
                 shutil.copy(str(image.absolute()), image.name)
@@ -29,7 +32,6 @@ def directory_with_data_files():
 
 
 class TestFLOWER17(unittest.TestCase):
-    # TODO Skip this test if it's run locally
     def test_shell(self):
         with directory_with_data_files() as tempdir:
             # Create the dataflow config files

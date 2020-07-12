@@ -30,4 +30,4 @@ dffml dataflow \
         '["gray"]'=gray.inputs.code \
         '[{"gray": "result"}]'=HuMoments.inputs.m \
         '[{"resize": "result"}]'=Haralick.inputs.f |
-    tee features2.yaml
+    tee features.yaml
