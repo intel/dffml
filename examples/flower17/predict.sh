@@ -13,5 +13,4 @@ dffml predict all \
     -source-images-source-loadfiles image \
     -source-images-dataflow features.yaml \
     -source-images-features image:int:1 \
-  -log critical \
-  -pretty > output.txt
+  -log critical > output.json
