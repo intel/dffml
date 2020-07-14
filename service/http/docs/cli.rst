@@ -54,6 +54,18 @@ for record retrieval or updating, use the ``-sources`` flag.
         -sources mysource=csv \
         -source-mysource-filename training.csv
 
+Static Content
+--------------
+
+If you have static HTML files or other content that you want to serve via the
+HTTP server, you can do so via the ``-static`` flag. Content will be served from
+the root ``/``. Dynamically registered paths for DataFlows take priority static
+paths, and static paths take priority over Model and Source related paths.
+
+.. code-block:: console
+
+    $ dffml service http server -static .
+
 Redirects
 ---------
 
