@@ -309,6 +309,9 @@ class InstallConfig:
         "List of plugin paths not to install (Example: model/scikit)",
         default_factory=lambda: [],
     )
+    nocheck: bool = field(
+        "Do not preform pre-install dependency checks", default=False
+    )
     user: bool = field(
         "Perform user install", default=False, action="store_true"
     )
@@ -369,7 +372,8 @@ class Install(CMD):
                 "Currenty you need to have at least the main package already installed in development mode."
             )
         # Check if plugins not in skip list have unmet dependencies
-        self.dep_check(CORE_PLUGIN_DEPS, self.skip)
+        if not self.nocheck:
+            self.dep_check(CORE_PLUGIN_DEPS, self.skip)
         # Packages fail to install if we run pip processes in parallel
         packages = list(
             map(
