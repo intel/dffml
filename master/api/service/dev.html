@@ -330,11 +330,18 @@ given.</p>
 <dd><p>alias of <a class="reference internal" href="#dffml.service.dev.InstallConfig" title="dffml.service.dev.InstallConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">InstallConfig</span></code></a></p>
 </dd></dl>
 
+<dl class="py method">
+<dt id="dffml.service.dev.Install.dep_check">
+<em class="property">static </em><code class="sig-name descname">dep_check</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">plugin_deps</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>Tuple<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span><span class="p">, </span>Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">, </span>Callable<span class="p">[</span><span class="p">]</span><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a><span class="p">]</span><span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">skip</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>Tuple<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#Install.dep_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.Install.dep_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if all dependencies are installed prior to running setup.py
+installs of plugins</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt id="dffml.service.dev.InstallConfig">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">InstallConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#InstallConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.InstallConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">InstallConfig</code><span class="sig-paren">(</span><em class="sig-param">skip: List[str] = &lt;factory&gt;</em>, <em class="sig-param">nocheck: bool = False</em>, <em class="sig-param">user: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#InstallConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.InstallConfig" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
@@ -347,6 +354,13 @@ given.</p>
 <dt id="dffml.service.dev.ListEntrypointsConfig">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">ListEntrypointsConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entrypoint</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/service/dev.html#ListEntrypointsConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.ListEntrypointsConfig" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py exception">
+<dt id="dffml.service.dev.MissingDependenciesError">
+<em class="property">exception </em><code class="sig-prename descclassname">dffml.service.dev.</code><code class="sig-name descname">MissingDependenciesError</code><a class="reference internal" href="../../_modules/dffml/service/dev.html#MissingDependenciesError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.service.dev.MissingDependenciesError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when a package has non-pip installable dependencies, or pip
+installable dependencies that must be installed before running the setup.py</p>
+</dd></dl>
 
 <dl class="py class">
 <dt id="dffml.service.dev.Release">

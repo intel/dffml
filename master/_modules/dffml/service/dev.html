@@ -203,7 +203,7 @@
 <span class="kn">import</span> <span class="nn">urllib.request</span>
 <span class="kn">import</span> <span class="nn">importlib.util</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">BaseConfig</span>
 <span class="kn">from</span> <span class="nn">..util.os</span> <span class="kn">import</span> <span class="n">chdir</span><span class="p">,</span> <span class="n">MODE_BITS_SECURE</span>
@@ -219,7 +219,7 @@
 <span class="kn">from</span> <span class="nn">..configloader.configloader</span> <span class="kn">import</span> <span class="n">BaseConfigLoader</span>
 <span class="kn">from</span> <span class="nn">..configloader.json</span> <span class="kn">import</span> <span class="n">JSONConfigLoader</span>
 <span class="kn">from</span> <span class="nn">..operation.output</span> <span class="kn">import</span> <span class="n">GetSingle</span>
-<span class="kn">from</span> <span class="nn">..plugins</span> <span class="kn">import</span> <span class="n">CORE_PLUGINS</span>
+<span class="kn">from</span> <span class="nn">..plugins</span> <span class="kn">import</span> <span class="n">CORE_PLUGINS</span><span class="p">,</span> <span class="n">CORE_PLUGIN_DEPS</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
 <span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.gitconfig&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">())</span>
@@ -482,8 +482,22 @@
                         <span class="p">)</span>
 
 
+<div class="viewcode-block" id="MissingDependenciesError"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.MissingDependenciesError">[docs]</a><span class="k">class</span> <span class="nc">MissingDependenciesError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raised when a package has non-pip installable dependencies, or pip</span>
+<span class="sd">    installable dependencies that must be installed before running the setup.py</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
 <div class="viewcode-block" id="InstallConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.InstallConfig">[docs]</a><span class="nd">@configdataclass</span>
 <span class="k">class</span> <span class="nc">InstallConfig</span><span class="p">:</span>
+    <span class="n">skip</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;List of plugin paths not to install (Example: model/scikit)&quot;</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="p">)</span>
+    <span class="n">nocheck</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Do not preform pre-install dependency checks&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
     <span class="n">user</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="s2">&quot;Perform user install&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span>
     <span class="p">)</span></div>
@@ -498,32 +512,75 @@
 
     <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">InstallConfig</span>
 
+<div class="viewcode-block" id="Install.dep_check"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.Install.dep_check">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">dep_check</span><span class="p">(</span>
+        <span class="n">plugin_deps</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="nb">bool</span><span class="p">]]],</span>
+        <span class="n">skip</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if all dependencies are installed prior to running setup.py</span>
+<span class="sd">        installs of plugins</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">skip</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">skip</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">missing_deps</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">package</span><span class="p">,</span> <span class="n">deps</span> <span class="ow">in</span> <span class="n">plugin_deps</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">plugin_path</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">plugin_path</span> <span class="ow">in</span> <span class="n">skip</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">missing_plugin_deps</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">name</span><span class="p">:</span> <span class="n">check_if_dep_found</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">check_if_dep_found</span> <span class="ow">in</span> <span class="n">deps</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">missing_plugin_deps</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+                <span class="n">missing_deps</span><span class="p">[</span><span class="n">plugin_path</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">name</span>
+                    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">found</span> <span class="ow">in</span> <span class="n">missing_plugin_deps</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span>
+                <span class="p">]</span>
+        <span class="c1"># Display info on missing dependencies if there are any</span>
+        <span class="k">if</span> <span class="n">missing_deps</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;The following plugins have unmet dependencies and could not be installed</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="k">for</span> <span class="n">plugin_path</span><span class="p">,</span> <span class="n">deps</span> <span class="ow">in</span> <span class="n">missing_deps</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;    </span><span class="si">{</span><span class="n">plugin_path</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">deps</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;        </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;Install missing dependencies and re-run plugin install, or skip with</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot;    -skip &quot;</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">missing_deps</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="k">raise</span> <span class="n">MissingDependenciesError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">main_package</span> <span class="o">=</span> <span class="n">is_develop</span><span class="p">(</span><span class="s2">&quot;dffml&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">main_package</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
                 <span class="s2">&quot;Currenty you need to have at least the main package already installed in development mode.&quot;</span>
             <span class="p">)</span>
-        <span class="c1"># Packages fail to install if we run pip processes in parallel</span>
-        <span class="n">packages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-            <span class="nb">map</span><span class="p">(</span>
-                <span class="k">lambda</span> <span class="n">package</span><span class="p">:</span> <span class="n">Path</span><span class="p">(</span><span class="o">*</span><span class="n">main_package</span><span class="o">.</span><span class="n">parts</span><span class="p">,</span> <span class="o">*</span><span class="n">package</span><span class="p">),</span>
-                <span class="n">CORE_PLUGINS</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Installing </span><span class="si">%r</span><span class="s2"> in development mode&quot;</span><span class="p">,</span> <span class="n">packages</span><span class="p">)</span>
-        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;pip&quot;</span><span class="p">,</span> <span class="s2">&quot;install&quot;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
-            <span class="c1"># --user sometimes fails</span>
-            <span class="n">local_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.local&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
-            <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--prefix=</span><span class="si">{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">package</span> <span class="ow">in</span> <span class="n">packages</span><span class="p">:</span>
-            <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">package</span><span class="o">.</span><span class="n">absolute</span><span class="p">())]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
-        <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span><span class="o">*</span><span class="n">cmd</span><span class="p">)</span>
-        <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;pip failed to install dependencies&quot;</span><span class="p">)</span></div>
+        <span class="c1"># Check if plugins not in skip list have unmet dependencies</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">nocheck</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dep_check</span><span class="p">(</span><span class="n">CORE_PLUGIN_DEPS</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">skip</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Installing </span><span class="si">%r</span><span class="s2"> in development mode&quot;</span><span class="p">,</span> <span class="n">CORE_PLUGINS</span><span class="p">)</span>
+        <span class="n">failed</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">package</span> <span class="ow">in</span> <span class="n">CORE_PLUGINS</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">skip</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">package_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">*</span><span class="n">main_package</span><span class="o">.</span><span class="n">parts</span><span class="p">,</span> <span class="o">*</span><span class="n">package</span><span class="p">)</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;pip&quot;</span><span class="p">,</span> <span class="s2">&quot;install&quot;</span><span class="p">]</span>
+            <span class="c1"># Install to prefix, since --user sometimes fails</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
+                <span class="n">local_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.local&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+                <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--prefix=</span><span class="si">{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># Install package in development mode</span>
+            <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">package_path</span><span class="o">.</span><span class="n">absolute</span><span class="p">())]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
+            <span class="c1"># Packages fail to install if we run pip processes in parallel</span>
+            <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span><span class="o">*</span><span class="n">cmd</span><span class="p">)</span>
+            <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">failed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">failed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;pip failed to install: </span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">failed</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SetupPyKWArgConfig"><a class="viewcode-back" href="../../../api/service/dev.html#dffml.service.dev.SetupPyKWArgConfig">[docs]</a><span class="nd">@configdataclass</span>

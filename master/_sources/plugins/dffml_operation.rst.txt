@@ -1370,8 +1370,8 @@ No description
 
 - repo: git_repository(type: Dict[str, str])
 
-  - URL: str
   - directory: str
+  - URL: str(default: None)
 
 .. _plugin_operation_dffml_feature_git_clone_git_repo:
 
@@ -1394,8 +1394,8 @@ No description
 
 - repo: git_repository(type: Dict[str, str])
 
-  - URL: str
   - directory: str
+  - URL: str(default: None)
 
 **Conditions**
 
@@ -1439,8 +1439,8 @@ No description
 
 - repo: git_repository(type: Dict[str, str])
 
-  - URL: str
   - directory: str
+  - URL: str(default: None)
 - branch: git_branch(type: str)
 - start_end: date_pair(type: List[date])
 
@@ -1465,8 +1465,8 @@ No description
 
 - repo: git_repository(type: Dict[str, str])
 
-  - URL: str
   - directory: str
+  - URL: str(default: None)
 - branch: git_branch(type: str)
 - start_end: date_pair(type: List[date])
 
@@ -1491,17 +1491,17 @@ No description
 
 - repo: git_repository(type: Dict[str, str])
 
-  - URL: str
   - directory: str
+  - URL: str(default: None)
 - commit: git_commit(type: string)
 
 **Outputs**
 
 - repo: git_repository_checked_out(type: Dict[str, str])
 
-  - URL: str
   - directory: str
-  - commit: str
+  - URL: str(default: None)
+  - commit: str(default: None)
 
 .. _plugin_operation_dffml_feature_git_git_repo_commit_from_date:
 
@@ -1520,8 +1520,8 @@ No description
 
 - repo: git_repository(type: Dict[str, str])
 
-  - URL: str
   - directory: str
+  - URL: str(default: None)
 - branch: git_branch(type: str)
 - date: date(type: string)
 
@@ -1546,8 +1546,8 @@ No description
 
 - repo: git_repository(type: Dict[str, str])
 
-  - URL: str
   - directory: str
+  - URL: str(default: None)
 
 **Outputs**
 
@@ -1574,8 +1574,8 @@ Was there a release within this date range
 
 - repo: git_repository(type: Dict[str, str])
 
-  - URL: str
   - directory: str
+  - URL: str(default: None)
 - branch: git_branch(type: str)
 - start_end: date_pair(type: List[date])
 
@@ -1619,9 +1619,9 @@ On OSX
 
 - repo: git_repository_checked_out(type: Dict[str, str])
 
-  - URL: str
   - directory: str
-  - commit: str
+  - URL: str(default: None)
+  - commit: str(default: None)
 
 **Outputs**
 

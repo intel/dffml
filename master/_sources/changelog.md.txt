@@ -59,6 +59,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New model AutoClassifierModel based on `AutoSklearn`.
 - New model AutoSklearnRegressorModel based on `AutoSklearn`.
 - Example showing usage of locks in dataflow.
+- `-skip` flag to `service dev install` command to let users not install certain
+  core plugins
 ### Changed
 - Renamed `-seed` to `-inputs` in `dataflow create` command
 - Renamed configloader/png to configloader/image and added support for loading JPEG and TIFF file formats
