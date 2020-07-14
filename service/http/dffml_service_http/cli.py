@@ -1,5 +1,6 @@
 import ssl
 import asyncio
+import inspect
 import argparse
 import subprocess
 from typing import List
@@ -170,6 +171,41 @@ class MultiCommCMD(CMD):
     CONFIG = MultiCommCMDConfig
 
 
+class RedirectFormatError(Exception):
+    """
+    Raises when -redirects was not divisible by 3
+    """
+
+
+class ParseRedirectsAction(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        if not isinstance(values, list):
+            values = [values]
+        if len(values) % 3 != 0:
+            raise RedirectFormatError(
+                inspect.cleandoc(
+                    r"""
+                -redirect usage: METHOD SOURCE_PATH DESTINATION_PATH
+
+                Examples
+                --------
+
+                Redirect / to /index.html for GET requests
+
+                    -redirect GET / /index.html
+
+                Redirect / to /index.html for GET requests and /signup to
+                /mysignup for POST requests
+
+                    -redirect \
+                        GET / /index.html \
+                        POST /signup /mysignup
+                """
+                ).strip()
+            )
+        setattr(namespace, self.dest, values)
+
+
 @config
 class ServerConfig(TLSCMDConfig, MultiCommCMDConfig):
     port: int = field(
@@ -207,6 +243,11 @@ class ServerConfig(TLSCMDConfig, MultiCommCMDConfig):
         default_factory=lambda: Sources(),
         action=list_action(Sources),
         labeled=True,
+    )
+    redirect: List[str] = field(
+        "list of METHOD SOURCE_PATH DESTINATION_PATH pairs, number of elements must be divisible by 3",
+        action=ParseRedirectsAction,
+        default_factory=lambda: [],
     )
 
 

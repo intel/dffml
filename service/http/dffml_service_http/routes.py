@@ -760,6 +760,15 @@ class Routes(BaseMultiCommContext):
             headers={"Content-Type": "application/javascript"},
         )
 
+    def mkredirect(self, destination_path):
+        async def redirector(request):
+            return web.Response(
+                status=HTTPStatus.TEMPORARY_REDIRECT,
+                headers={"Location": destination_path},
+            )
+
+        return redirector
+
     async def on_shutdown(self, app):
         self.logger.debug("Shutting down service and exiting all contexts")
         await app["exit_stack"].__aexit__(None, None, None)
@@ -878,6 +887,11 @@ class Routes(BaseMultiCommContext):
                 ),
             ]
         )
+        # Redirects
+        for method, src, dst in (
+            self.redirect[i : i + 3] for i in range(0, len(self.redirect), 3)
+        ):
+            self.routes.append((method.upper(), src, self.mkredirect(dst)))
         # Serve api.js
         if self.js:
             self.routes.append(("GET", "/api.js", self.api_js))
