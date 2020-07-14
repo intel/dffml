@@ -109,6 +109,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#quickstart">Quickstart</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#models">Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#sources">Sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#static-content">Static Content</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#redirects">Redirects</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="dataflow.html">DataFlow</a></li>
@@ -247,6 +249,39 @@ for record retrieval or updating, use the <code class="docutils literal notransl
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server <span class="se">\</span>
     -sources <span class="nv">mysource</span><span class="o">=</span>csv <span class="se">\</span>
     -source-mysource-filename training.csv
+</pre></div>
+</div>
+</div>
+<div class="section" id="static-content">
+<h2>Static Content<a class="headerlink" href="#static-content" title="Permalink to this headline">¶</a></h2>
+<p>If you have static HTML files or other content that you want to serve via the
+HTTP server, you can do so via the <code class="docutils literal notranslate"><span class="pre">-static</span></code> flag. Content will be served from
+the root <code class="docutils literal notranslate"><span class="pre">/</span></code>. Dynamically registered paths for DataFlows take priority static
+paths, and static paths take priority over Model and Source related paths.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -static .
+</pre></div>
+</div>
+</div>
+<div class="section" id="redirects">
+<h2>Redirects<a class="headerlink" href="#redirects" title="Permalink to this headline">¶</a></h2>
+<p>You might want to have the HTTP service redirect one URL to another. You can do
+this using the <code class="docutils literal notranslate"><span class="pre">-redirect</span></code> flag. Syntax is as follows</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">redirect</span> \
+    <span class="n">METHOD_1</span> <span class="n">SOURCE_PATH_1</span> <span class="n">DESTINATION_PATH_1</span> \
+    <span class="n">METHOD_2</span> <span class="n">SOURCE_PATH_2</span> <span class="n">DESTINATION_PATH_2</span> \
+    <span class="n">METHOD_3</span> <span class="n">SOURCE_PATH_3</span> <span class="n">DESTINATION_PATH_3</span> \
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>Example of redirecting <code class="docutils literal notranslate"><span class="pre">/</span></code> to <code class="docutils literal notranslate"><span class="pre">/index.html</span></code> for GET requests</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">redirect</span> <span class="n">GET</span> <span class="o">/</span> <span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span>
+</pre></div>
+</div>
+<p>Redirect <code class="docutils literal notranslate"><span class="pre">/</span></code> to <code class="docutils literal notranslate"><span class="pre">/index.html</span></code> for GET requests and <code class="docutils literal notranslate"><span class="pre">/signup</span></code> to
+<code class="docutils literal notranslate"><span class="pre">/mysignup</span></code> for POST requests</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">redirect</span> \
+    <span class="n">GET</span> <span class="o">/</span> <span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span> \
+    <span class="n">POST</span> <span class="o">/</span><span class="n">signup</span> <span class="o">/</span><span class="n">mysignup</span>
 </pre></div>
 </div>
 </div>

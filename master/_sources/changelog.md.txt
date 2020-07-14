@@ -61,6 +61,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Example showing usage of locks in dataflow.
 - `-skip` flag to `service dev install` command to let users not install certain
   core plugins
+- HTTP service got a `-redirect` flag which allows for URL redirection via a
+  HTTP 307 response
 ### Changed
 - Renamed `-seed` to `-inputs` in `dataflow create` command
 - Renamed configloader/png to configloader/image and added support for loading JPEG and TIFF file formats
