@@ -1,6 +1,7 @@
 import ssl
 import asyncio
 import inspect
+import pathlib
 import argparse
 import subprocess
 from typing import List
@@ -269,10 +270,18 @@ class Server(TLSCMD, MultiCommCMD, Routes):
                 self.runner, host=self.addr, port=self.port
             )
         else:
+            cert_path = pathlib.Path(self.cert).resolve()
+            if not cert_path.is_file():
+                raise FileNotFoundError(
+                    f"Server cert not found: {cert_path!s}"
+                )
+            key_path = pathlib.Path(self.key)
+            if not key_path.is_file():
+                raise FileNotFoundError(f"Server key not found: {key_path!s}")
             ssl_context = ssl.create_default_context(
-                purpose=ssl.Purpose.SERVER_AUTH, cafile=self.cert
+                purpose=ssl.Purpose.SERVER_AUTH, cafile=str(cert_path)
             )
-            ssl_context.load_cert_chain(self.cert, self.key)
+            ssl_context.load_cert_chain(str(cert_path), str(key_path))
             self.site = web.TCPSite(
                 self.runner,
                 host=self.addr,
