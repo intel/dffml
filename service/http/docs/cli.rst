@@ -53,3 +53,32 @@ for record retrieval or updating, use the ``-sources`` flag.
     $ dffml service http server \
         -sources mysource=csv \
         -source-mysource-filename training.csv
+
+Redirects
+---------
+
+You might want to have the HTTP service redirect one URL to another. You can do
+this using the ``-redirect`` flag. Syntax is as follows
+
+.. code-block::
+
+    -redirect \
+        METHOD_1 SOURCE_PATH_1 DESTINATION_PATH_1 \
+        METHOD_2 SOURCE_PATH_2 DESTINATION_PATH_2 \
+        METHOD_3 SOURCE_PATH_3 DESTINATION_PATH_3 \
+        ...
+
+Example of redirecting ``/`` to ``/index.html`` for GET requests
+
+.. code-block::
+
+    -redirect GET / /index.html
+
+Redirect ``/`` to ``/index.html`` for GET requests and ``/signup`` to
+``/mysignup`` for POST requests
+
+.. code-block::
+
+        -redirect \
+            GET / /index.html \
+            POST /signup /mysignup
