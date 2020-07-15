@@ -1,4 +1,4 @@
-cat >> train_data.csv << EOF
+cat > train_data.csv << EOF
 sentence,sentiment
 What a pleasant morning,1
 Those were bad days,0

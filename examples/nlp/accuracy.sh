@@ -8,7 +8,7 @@ dffml accuracy \
     -model-directory tempdir \
     -model-features embedding:float:[1,10,96] \
     -sources text=df \
-    -source-text-dataflow nlp_ops_dataflow.yaml \
+    -source-text-dataflow examples/nlp/nlp_ops_dataflow.yaml \
     -source-text-features sentence:str:1 \
     -source-text-source csv \
     -source-text-source-filename train_data.csv \
