@@ -68,12 +68,10 @@ CORE_PLUGIN_DEPS = {
 
 # Plugins which currently don't support Python 3.8
 if sys.version_info.major == 3 and sys.version_info.minor < 8:
-    CORE_PLUGIN_DEPS[("model", "daal4py")] = (
-        {
-            # Must be installed already via conda, do not provide a pypi package yet
-            "daal4py": check_daal4py
-        },
-    )
+    CORE_PLUGIN_DEPS[("model", "daal4py")] = {
+        # Must be installed already via conda, do not provide a pypi package yet
+        "daal4py": check_daal4py
+    }
 
 # All packages under configloader/ are really named dffml-config-{name}
 ALTERNATIVES = {"configloader": "config"}
