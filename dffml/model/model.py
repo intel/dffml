@@ -58,9 +58,7 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
         Evaluates the accuracy of our model after training using the input records
         as test data.
         """
-        if not hasattr(self.config, "predict") or not hasattr(
-            self.config, "features"
-        ):
+        if not hasattr(self.config, "predict"):
             raise NotImplementedError()
         return Accuracy(
             accuracy_scorer.score(self.predict(sources), [self.config.predict])
