@@ -79,6 +79,7 @@ if ([[ "x${PLUGIN}" == "xmodel/daal4py" ]] || \
     [[ "x${PLUGIN}" == "x." ]] || \
     [[ "x${PLUGIN}" == "xdocs" ]]) &&
   [[ "${python_version}" != "py38" ]]; then
+  # daal4py only supports ^ Python 3.7
   set +e
   conda install -y -c intel daal4py
   echo "conda install -y -c intel daal4py, exit code: $?"
