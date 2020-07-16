@@ -5,12 +5,16 @@ Command line interface evaluates packages given their source URLs
 """
 import pathlib
 import pdb
+import sys
+import contextlib
 import pkg_resources
+import importlib.util
 
 from ..version import VERSION
 from ..record import Record
 from ..feature.feature import Features
 from ..df.types import DataFlow
+from ..plugins import PACKAGE_NAMES_BY_PLUGIN
 from ..source.df import DataFlowSource, DataFlowSourceConfig
 from ..source.source import Sources, BaseSource, SubsetSources
 from ..configloader.configloader import BaseConfigLoader
@@ -40,8 +44,35 @@ class Version(CMD):
 
     async def run(self):
         self.logger.debug("Reporting version")
-        devmode = is_develop("dffml")
-        print(f"dffml version {VERSION} (devmode: {str(devmode)})")
+        print(f"dffml {VERSION} {sys.modules['dffml'].__path__[0]}")
+        for package_name in PACKAGE_NAMES_BY_PLUGIN["all"]:
+            version = "not installed"
+            path = ""
+            import_package_name = package_name.replace("-", "_")
+            import_package_name_version = import_package_name + ".version"
+            for module_name in [
+                import_package_name,
+                import_package_name_version,
+            ]:
+                spec = None
+                try:
+                    spec = importlib.util.find_spec(module_name)
+                except ModuleNotFoundError:
+                    pass
+                if spec and module_name not in sys.modules:
+                    module = importlib.util.module_from_spec(spec)
+                    with contextlib.redirect_stderr(
+                        None
+                    ), contextlib.redirect_stdout(None):
+                        spec.loader.exec_module(module)
+                    sys.modules[module_name] = module
+                if module_name in sys.modules:
+                    module = sys.modules[module_name]
+                    if module_name.endswith(".version"):
+                        version = module.VERSION
+                    else:
+                        path = module.__path__[0]
+            print(" ".join([package_name, version, path]))
 
 
 @config
