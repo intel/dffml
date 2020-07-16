@@ -55,10 +55,8 @@ class Version(CMD):
                 import_package_name_version,
             ]:
                 spec = None
-                try:
+                with contextlib.suppress(ModuleNotFoundError):
                     spec = importlib.util.find_spec(module_name)
-                except ModuleNotFoundError:
-                    pass
                 if spec and module_name not in sys.modules:
                     module = importlib.util.module_from_spec(spec)
                     with contextlib.redirect_stderr(
