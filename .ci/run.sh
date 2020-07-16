@@ -30,10 +30,6 @@ function run_plugin_examples() {
 function run_plugin() {
   export PLUGIN="${1}"
 
-  if [ "x${PLUGIN}" = "xexamples/shouldi" ]; then
-    "${PYTHON}" -m pip install -U -e "${SRC_ROOT}/feature/git"
-  fi
-
   if [[ "${python_version}" == "py38" ]] && [[ "x${PLUGIN}" == "xmodel/daal4py" ]]; then
     return
   fi
