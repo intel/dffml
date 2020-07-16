@@ -8,8 +8,11 @@ import tempfile
 import contextlib
 import subprocess
 import unittest.mock
+import shlex
 
-from dffml import chdir
+from dffml.util.os import chdir
+from dffml.cli.cli import CLI
+from dffml.util.asynctestcase import IntegrationCLITestCase
 
 
 def sh_filepath(filename):
@@ -21,9 +24,7 @@ def directory_with_data_files():
     with tempfile.TemporaryDirectory() as tempdir:
         with chdir(tempdir):
             subprocess.check_output(["bash", sh_filepath("dataset.sh")])
-            subprocess.check_output(
-                ["tar", "-xzf", sh_filepath("17flowers.tgz")]
-            )
+            subprocess.check_output(["tar", "-xzf", "17flowers.tgz"])
             subprocess.check_output(["python3", sh_filepath("split.py")])
             subprocess.check_output(["bash", sh_filepath("unknown_data.sh")])
             for image in pathlib.Path(__file__).parent.glob("*.jpg"):
@@ -31,8 +32,8 @@ def directory_with_data_files():
             yield tempdir
 
 
-class TestFLOWER17(unittest.TestCase):
-    def test_shell(self):
+class TestFLOWER17(IntegrationCLITestCase):
+    async def test_shell(self):
         with directory_with_data_files() as tempdir:
             # Create the dataflow config files
             subprocess.check_output(
@@ -45,12 +46,18 @@ class TestFLOWER17(unittest.TestCase):
                 ["bash", sh_filepath("accuracy.sh")]
             )
             self.assertRegex(stdout.decode().strip(), r"[-+]?\d*\.?\d+|\d+")
+
             # Make the prediction
-            stdout = subprocess.check_output(
-                ["bash", sh_filepath("predict.sh")]
-            )
-            records = json.loads(stdout.decode())
-            # Check the label
-            self.assertIsInstance(
-                round(records[0]["prediction"]["label"]["value"][0]), str
-            )
+            with open(sh_filepath("predict.sh"), "r") as cmd:
+                cmd = cmd.read()
+                cmd = cmd.replace("\n", "")
+                cmd = cmd.replace("\\", "")
+                cmd = shlex.split(cmd)
+                # When passing to CLI, remove first argument(dffml) and -pretty at the end
+                cmd = cmd[1:-1]
+                records = await CLI.cli(*cmd)
+
+                # Check the label for 1 record
+                self.assertIsInstance(
+                    records[0].prediction("label")["value"], str
+                )

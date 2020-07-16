@@ -12,5 +12,6 @@ dffml predict all \
     -source-images-source-filename unknown_images.csv \
     -source-images-source-loadfiles image \
     -source-images-dataflow features.yaml \
-    -source-images-features image:int:$(( 500*500 )) \
-  -log critical > output.json
+    -source-images-features image:int:$((500*500)) \
+  -log critical
+  -pretty
