@@ -1,7 +1,6 @@
 import os
 import json
 import shlex
-import random
 import pathlib
 import tempfile
 import contextlib
@@ -46,7 +45,7 @@ class TestNLPOps(IntegrationCLITestCase):
                 cmnd[idx] = word.strip()
             cmnd[cmnd.index("-model-directory") + 1] = directory
             cmnd[cmnd.index("-source-text-dataflow") + 1] = os.path.join(
-                directory, "nlp_ops_dataflow.yaml",
+                directory, "nlp_ops_dataflow.json",
             )
             if "-pretty" in cmnd:
                 del cmnd[cmnd.index("-pretty")]
@@ -70,7 +69,7 @@ class TestNLPOps(IntegrationCLITestCase):
                     self.stdout.truncate(0)
                     self.stdout.seek(0)
                 with open(
-                    os.path.join(tempdir, "nlp_ops_dataflow.yaml"), "w"
+                    os.path.join(tempdir, "nlp_ops_dataflow.json"), "w"
                 ) as fd:
                     fd.write(result)
 
@@ -102,4 +101,4 @@ class TestNLPOps(IntegrationCLITestCase):
                 results = results["sentiment"]
                 self.assertIn("value", results)
                 results = results["value"]
-                self.assertTrue(results in [0, 1])
+                self.assertIn(results, [0, 1])
