@@ -46,7 +46,7 @@ class AccuracyContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
 
 
 @base_entry_point("dffml.accuracy", "accuracy")
-class Accuracy(BaseDataFlowFacilitatorObject):
+class AccuracyScorer(BaseDataFlowFacilitatorObject):
     """
     Abstract base class which should be derived from
     and implmented using various machine learning
