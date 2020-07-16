@@ -61,7 +61,7 @@ setup(
             "jsbeautifier",
             "twine",
         ],
-        **plugins.PACKAGE_NAMES_BY_PLUGIN,
+        **plugins.PACKAGE_NAMES_BY_PLUGIN_INSTALLABLE,
     },
     tests_require=["httptest>=0.0.15", "Pillow>=7.1.2", "numpy>=1.16.2",],
     entry_points={
