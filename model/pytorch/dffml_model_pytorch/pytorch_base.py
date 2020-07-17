@@ -8,9 +8,7 @@ import copy
 import time
 
 import torch
-import torch.nn as nn
-import torch.optim as optim
-from torch.optim import lr_scheduler
+
 import numpy as np
 from torchvision import models
 
@@ -26,15 +24,15 @@ from .pytorch_utils import NumpyToTensor
 
 
 @config
-class ResNet18ModelConfig:
+class PyTorchModelConfig:
     predict: Feature = field("Feature name holding classification value")
     classifications: List[str] = field("Options for value of classification")
     features: Features = field("Features to train on")
     directory: pathlib.Path = field("Directory where state should be saved")
     clstype: Type = field("Data type of classifications values", default=str)
-    imageSize: int = field(
-        "Common size for all images to resize and crop to", default=None
-    )
+    # imageSize: int = field(
+    #     "Common size for all images to resize and crop to", default=None
+    # )
     useCUDA: bool = field("Utilize GPUs for processing", default=False)
     epochs: int = field(
         "Number of iterations to pass over all records in a source", default=20
@@ -54,7 +52,7 @@ class ResNet18ModelConfig:
         self.classifications = list(map(self.clstype, self.classifications))
 
 
-class ResNet18ModelContext(ModelContext):
+class PyTorchModelContext(ModelContext):
     def __init__(self, parent):
         super().__init__(parent)
         self.cids = self._mkcids(self.parent.config.classifications)
@@ -110,36 +108,6 @@ class ResNet18ModelContext(ModelContext):
         Loads a model if already trained previously
         """
         self._model = model
-
-    def createModel(self):
-        """
-        Generates a model
-        """
-        if self._model is not None:
-            return self._model
-        self.logger.debug(
-            "Loading model with classifications(%d): %r",
-            len(self.classifications),
-            self.classifications,
-        )
-
-        model = models.resnet18(pretrained=True)
-        for param in model.parameters():
-            param.require_grad = self.parent.config.trainable
-        # num_features = model.classifier[-1].in_features
-        # features = list(model.classifier.children())[:-1]
-        # model.classifier = nn.Sequential(*features)
-        model.fc = nn.Sequential(
-            nn.Linear(model.fc.in_features, 256),
-            nn.ReLU(),
-            nn.Dropout(0.2),
-            nn.Linear(256, len(self.classifications)),
-            nn.LogSoftmax(dim=1),
-        )
-        # nn.Linear(model.fc.in_features, len(self.classifications))
-        self._model = model.to(self.device)
-
-        return self._model
 
     def _model_dir_path(self):
         if self.parent.config.directory is None:
@@ -232,7 +200,7 @@ class ResNet18ModelContext(ModelContext):
                 )
             )
             self.logger.info(
-                "Data split into Traning set: {} and Validation set: {}".format(
+                "Data split into Traning samples: {} and Validation samples: {}".format(
                     size["Training"], size["Validation"]
                 )
             )
@@ -253,14 +221,6 @@ class ResNet18ModelContext(ModelContext):
                 )
             }
 
-        # Metrics
-        criterion = nn.CrossEntropyLoss()
-        optimizer = optim.SGD(
-            self._model.fc.parameters(), lr=0.001, momentum=0.9
-        )
-        exp_lr_scheduler = lr_scheduler.StepLR(
-            optimizer, step_size=7, gamma=0.1
-        )
         since = time.time()
 
         best_model_wts = copy.deepcopy(self._model.state_dict())
@@ -284,22 +244,22 @@ class ResNet18ModelContext(ModelContext):
                 for inputs, labels in dataloaders[phase]:
                     inputs = inputs.to(self.device)
                     labels = labels.to(self.device)
-                    optimizer.zero_grad()
+                    self.optimizer.zero_grad()
 
                     with torch.set_grad_enabled(phase == "Training"):
                         outputs = self._model(inputs)
                         _, preds = torch.max(outputs, 1)
-                        loss = criterion(outputs, labels)
+                        loss = self.criterion(outputs, labels)
 
                         if phase == "Training":
                             loss.backward()
-                            optimizer.step()
+                            self.optimizer.step()
 
                     running_loss += loss.item() * inputs.size(0)
                     running_corrects += torch.sum(preds == labels.data)
 
                 if phase == "Training":
-                    exp_lr_scheduler.step()
+                    self.exp_lr_scheduler.step()
 
                 epoch_loss = running_loss / size[phase]
                 epoch_acc = running_corrects.double() / size[phase]
@@ -346,6 +306,7 @@ class ResNet18ModelContext(ModelContext):
         for inputs, labels in dataloader:
             inputs = inputs.to(inputs)
             labels = labels.to(inputs)
+
             with torch.set_grad_enabled(False):
                 outputs = self._model(inputs)
                 _, preds = torch.max(outputs, 1)
@@ -382,10 +343,3 @@ class ResNet18ModelContext(ModelContext):
                     )
 
             yield record
-
-
-@entrypoint("resnet18")
-class ResNet18Model(Model):
-
-    CONFIG = ResNet18ModelConfig
-    CONTEXT = ResNet18ModelContext

@@ -11,8 +11,8 @@ spec.loader.exec_module(common)
 
 common.KWARGS["entry_points"] = {
     "dffml.model": [
-        # f"ResNet = {common.IMPORT_NAME}.resnet:ResNetModel",
-        "resnet18 = dffml_model_pytorch.resnet18:ResNet18Model",
+        "resnet18 = dffml_model_pytorch.pytorch_pretrained:ResNet18Model",
+        "vgg16 = dffml_model_pytorch.pytorch_pretrained:VGG16Model",
     ]
 }
 
