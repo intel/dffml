@@ -28,6 +28,7 @@ CORE_PLUGINS = [
     ("model", "transformers"),
     ("model", "vowpalWabbit"),
     ("model", "autosklearn"),
+    ("model", "pytorch"),
     ("examples", "shouldi"),
     ("feature", "git"),
     ("feature", "auth"),
