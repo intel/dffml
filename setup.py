@@ -160,7 +160,7 @@ setup(
         "dffml.secret": ["ini = dffml.secret.ini:INISecret"],
         # Accuracy
         "dffml.accuracy": [
-            "accuracy = dffml.accuracy.accuracy:AccuracyScorer"
+            "mse = dffml.accuracy.mse:MeanSquaredErrorAccuracy"
         ],
     },
 )
