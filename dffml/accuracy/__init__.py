@@ -3,5 +3,10 @@
 """
 This the accuracy plugin
 """
-from .accuracy import AccuracyConfig, AccuracyContext, AccuracyScorer
-from .simple_accuracy import SimpleAccuracy
+from .accuracy import (
+    AccuracyConfig,
+    AccuracyContext,
+    AccuracyScorer,
+    InvalidNumberOfFeaturesError,
+)
+from .mse import MeanSquaredErrorAccuracy
