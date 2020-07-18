@@ -1,41 +1,41 @@
 from typing import AsyncIterator, List
 
-from dffml.base import config
-from dffml.record import Record
-from dffml.feature import Feature
-from dffml.accuracy import AccuracyContext
-from dffml.util.entrypoint import entrypoint
+from ..base import config
+from ..record import Record
+from ..feature import Feature
+from ..util.entrypoint import entrypoint
+from .accuracy import AccuracyContext, InvalidNumberOfFeaturesError
 
 
 @config
-class SimpleAccuracyConfig:
+class MeanSquaredErrorAccuracyConfig:
     pass
 
 
-class SimpleAccuracyContext(AccuracyContext):
-    def __init__(self, parent):
-        super().__init__(parent)
+class MeanSquaredErrorAccuracyContext(AccuracyContext):
+    """
+    Mean Squared Error
+    """
 
     async def score(
-        self,
-        prediction_records: AsyncIterator[Record],
-        prediction_feature: List[Feature],
+        self, records: AsyncIterator[Record], features: List[Feature],
     ):
-        """
-        Mean Squared Error
-        """
+        if len(features) != 1:
+            raise InvalidNumberOfFeaturesError(
+                f"{self.__class__.__qualname__} can only assess accuracy of one feature. features: {features}"
+            )
         y = []
         y_predict = []
-        async for record in prediction_records:
-            y.append(record.features.prediction_feature)
-            y_predict.append(record.predicttion.prediction_feature)
+        async for record in records:
+            y.append(record.feature(features[0].name))
+            y_predict.append(record.prediction(features[0].name).value)
         accuracy = sum(
             list(map(lambda x, y: abs(x - y) ** 2, y, y_predict))
         ) / len(y)
         return accuracy
 
 
-@entrypoint("simple_accuracy")
-class SimpleAccuracy:
-    CONFIG = SimpleAccuracyConfig
-    CONTEXT = SimpleAccuracyContext
+@entrypoint("mse")
+class MeanSquaredErrorAccuracy:
+    CONFIG = MeanSquaredErrorAccuracyConfig
+    CONTEXT = MeanSquaredErrorAccuracyContext
