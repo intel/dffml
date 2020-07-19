@@ -147,5 +147,9 @@ setup(
         "dffml.model": ["slr = dffml.model.slr:SLRModel"],
         # Secrets
         "dffml.secret": ["ini = dffml.secret.ini:INISecret"],
+        # Accuracy
+        "dffml.accuracy": [
+            "mse = dffml.accuracy.mse:MeanSquaredErrorAccuracy"
+        ],
     },
 )
