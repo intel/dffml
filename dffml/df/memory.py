@@ -936,7 +936,6 @@ class MemoryOperationImplementationNetworkContext(
             return True
         try:
             opimp = OperationImplementation.load(operation.name)
-
         except FailedToLoadOperationImplementation as error:
             self.logger.debug(
                 "OperationImplementation %r is not instantiable: %s",
@@ -968,7 +967,6 @@ class MemoryOperationImplementationNetworkContext(
         self.operations[
             operation.instance_name
         ] = await self._stack.enter_async_context(opimp(config))
-
 
     async def ensure_contains(self, operation: Operation):
         """

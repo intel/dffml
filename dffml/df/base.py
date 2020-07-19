@@ -425,7 +425,6 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                     if getattr(config_cls, "_fromdict", None) is not None:
                         # Use _fromdict method if it exists
                         config = config_cls._fromdict(**config)
-
                     else:
                         # Otherwise expand if existing config is a dict
                         config = config_cls(**config)
