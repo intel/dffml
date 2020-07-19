@@ -39,11 +39,11 @@ DFFML can create a dataflow out of our python function.
 .. code-block:: console
 
     $ dffml dataflow create -config yaml operations:convert_to_gif get_single \
-        -seed 480=operations.convert_to_gif.inputs.resolution \
+        -inputs 480=operations.convert_to_gif.inputs.resolution \
         "['operations.convert_to_gif.outputs.result']=get_single_spec" \
          > deploy/df/ffmpeg.yaml
 
-Here through the seed argument, we set the default resolution to 480 and output
+Here through the inputs argument, we set the default resolution to 480 and output
 of the dataflow to result of `convert_to_gif`.
 
 Create the config file for the HTTP service

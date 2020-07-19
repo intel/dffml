@@ -24,10 +24,10 @@ from transformers import (
 from dffml import export
 from dffml.record import Record
 from dffml.base import config, field
-from dffml.source.source import Sources
 from dffml.feature.feature import Feature
 from dffml.model.accuracy import Accuracy
 from dffml.util.entrypoint import entrypoint
+from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelContext, Model, ModelNotTrained
 
 from .utils import (
@@ -186,6 +186,10 @@ class NERModelConfig:
         "Drop the last incomplete batch if the length of the dataset is not divisible by the batch size",
         default=False,
     )
+    past_index: int = field(
+        "Some models can make use of the past hidden states for their predictions. If this argument is set to a positive int, the `Trainer` will use the corresponding output (usually index 2) as the past state and feed it to the model at the next training step under the keyword argument `mems` ",
+        default=-1,
+    )
 
     def to_json_string(self):
         """
@@ -210,30 +214,33 @@ class NERModelConfig:
             self.strategy = self.tf.distribute.experimental.TPUStrategy(
                 resolver
             )
-            self.n_device = self.num_tpu_cores
+            self.n_replicas = self.num_tpu_cores
         elif len(self.gpus.split(",")) > 1:
-            self.n_device = len(
+            self.n_replicas = len(
                 [f"/gpu:{gpu}" for gpu in self.gpus.split(",")]
             )
             self.strategy = self.tf.distribute.MirroredStrategy(
                 devices=[f"/gpu:{gpu}" for gpu in self.gpus.split(",")]
             )
         elif self.no_cuda:
-            self.n_device = 1
+            self.n_replicas = 1
             self.strategy = self.tf.distribute.OneDeviceStrategy(
                 device="/cpu:0"
             )
         else:
-            self.n_device = len(self.gpus.split(","))
+            self.n_replicas = len(self.gpus.split(","))
             self.strategy = self.tf.distribute.OneDeviceStrategy(
                 device="/gpu:" + self.gpus.split(",")[0]
             )
-        self.n_gpu = self.n_device
         self.train_batch_size = (
-            self.per_device_train_batch_size * self.n_device
+            self.per_device_train_batch_size * self.n_replicas
         )
-        self.eval_batch_size = self.per_device_eval_batch_size * self.n_device
-        self.test_batch_size = self.per_device_eval_batch_size * self.n_device
+        self.eval_batch_size = (
+            self.per_device_eval_batch_size * self.n_replicas
+        )
+        self.test_batch_size = (
+            self.per_device_eval_batch_size * self.n_replicas
+        )
         self.label_map: Dict[int, str] = {
             i: label for i, label in enumerate(self.ner_tags)
         }
@@ -409,7 +416,7 @@ class NERModelContext(ModelContext):
         return Accuracy(result["eval_f1"])
 
     async def predict(
-        self, records: AsyncIterator[Record]
+        self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
         if not os.path.isfile(
             os.path.join(self.parent.config.output_dir, "tf_model.h5")
@@ -422,7 +429,9 @@ class NERModelContext(ModelContext):
                 cache_dir=self.parent.config.cache_dir,
             )
 
-        async for record in records:
+        async for record in sources.with_features(
+            [self.parent.config.words.name]
+        ):
             sentence = record.features([self.parent.config.words.name])
             df = self.pd.DataFrame(sentence, index=[0])
             test_dataset = self.get_dataset(df, self.tokenizer, mode="test",)

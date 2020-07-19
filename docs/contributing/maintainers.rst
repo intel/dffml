@@ -37,9 +37,20 @@ Doing a Release
 
 .. warning::
 
+    Some plugins depend on each other. For example
     ``model/tensorflow_hub`` depends on ``model/tensorflow``. Its important to
     update the version of ``dffml-model-tensorflow`` in
     ``model/tensorflow_hub``.
+
+    To get a list of all the plugins that depend on each other. Run the
+    following set of grep commands.
+
+    .. code-block:: console
+
+        $ git grep dffml- | grep setup | grep '=.*\..*\.'
+        examples/shouldi/setup_common.py:        ["dffml-feature-git>=0.2.7"]
+        model/tensorflow_hub/setup.py:        ["dffml-model-tensorflow>=0.2.7"]
+        operations/deploy/setup_common.py:        ["dffml-feature-git>=0.2.7"]
 
 - Modify ``CHANGELOG.md`` to replace the ``Unreleased`` section header with the
   new version and the date

@@ -15,6 +15,7 @@ from typing import List, Union, AsyncIterator, Type, NamedTuple, Dict
 from aiohttp import web
 import aiohttp_cors
 
+from dffml import Sources, MemorySource
 from dffml.record import Record
 from dffml.df.types import DataFlow, Input
 from dffml.df.multicomm import MultiCommInAtomicMode, BaseMultiCommContext
@@ -731,31 +732,42 @@ class Routes(BaseMultiCommContext):
                 status=HTTPStatus.BAD_REQUEST,
             )
         # Get the records
-        records: Dict[str, Record] = {
-            key: Record(key, data=record_data)
-            for key, record_data in (await request.json()).items()
-        }
-        # Create an async generator to feed records
-        async def record_gen():
-            for record in records.values():
-                yield record
-
-        # Feed them through prediction
-        return web.json_response(
-            {
-                "iterkey": None,
-                "records": {
-                    record.key: record.export()
-                    async for record in mctx.predict(record_gen())
-                },
-            }
-        )
+        records: Dict[str, Record] = {}
+        # Create a source with will provide the records
+        async with Sources(
+            MemorySource(
+                records=[
+                    Record(key, data=record_data)
+                    for key, record_data in (await request.json()).items()
+                ]
+            )
+        ) as source:
+            async with source() as sctx:
+                # Feed them through prediction
+                return web.json_response(
+                    {
+                        "iterkey": None,
+                        "records": {
+                            record.key: record.export()
+                            async for record in mctx.predict(sctx)
+                        },
+                    }
+                )
 
     async def api_js(self, request):
         return web.Response(
             body=API_JS_BYTES,
             headers={"Content-Type": "application/javascript"},
         )
+
+    def mkredirect(self, destination_path):
+        async def redirector(request):
+            return web.Response(
+                status=HTTPStatus.TEMPORARY_REDIRECT,
+                headers={"Location": destination_path},
+            )
+
+        return redirector
 
     async def on_shutdown(self, app):
         self.logger.debug("Shutting down service and exiting all contexts")
@@ -875,6 +887,11 @@ class Routes(BaseMultiCommContext):
                 ),
             ]
         )
+        # Redirects
+        for method, src, dst in (
+            self.redirect[i : i + 3] for i in range(0, len(self.redirect), 3)
+        ):
+            self.routes.append((method.upper(), src, self.mkredirect(dst)))
         # Serve api.js
         if self.js:
             self.routes.append(("GET", "/api.js", self.api_js))

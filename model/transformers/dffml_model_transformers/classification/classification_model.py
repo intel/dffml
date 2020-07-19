@@ -17,10 +17,10 @@ from transformers import (
 from dffml import export
 from dffml.record import Record
 from dffml.base import config, field
-from dffml.source.source import Sources
 from dffml.model.accuracy import Accuracy
 from dffml.util.entrypoint import entrypoint
 from dffml.feature.feature import Feature, Features
+from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelContext, Model, ModelNotTrained
 
 from .utils import InputExample, classification_compute_metrics
@@ -170,6 +170,10 @@ class HFClassificationModelConfig:
         "Drop the last incomplete batch if the length of the dataset is not divisible by the batch size",
         default=False,
     )
+    past_index: int = field(
+        "Some models can make use of the past hidden states for their predictions. If this argument is set to a positive int, the `Trainer` will use the corresponding output (usually index 2) as the past state and feed it to the model at the next training step under the keyword argument `mems` ",
+        default=-1,
+    )
 
     def to_json_string(self):
         config_dict = export(self)
@@ -188,29 +192,27 @@ class HFClassificationModelConfig:
                 {"auto_mixed_precision": True}
             )
         if len(self.gpus.split(",")) > 1:
-            self.n_device = len(
+            self.n_replicas = len(
                 [f"/gpu:{gpu}" for gpu in self.gpus.split(",")]
             )
             self.strategy = self.tf.distribute.MirroredStrategy(
                 devices=[f"/gpu:{gpu}" for gpu in self.gpus.split(",")]
             )
         elif self.no_cuda:
-            self.n_device = 1
+            self.n_replicas = 1
             self.strategy = self.tf.distribute.OneDeviceStrategy(
                 device="/cpu:0"
             )
         else:
-            self.n_device = len(self.gpus.split(","))
+            self.n_replicas = len(self.gpus.split(","))
             self.strategy = self.tf.distribute.OneDeviceStrategy(
                 device="/gpu:" + self.gpus.split(",")[0]
             )
-        # TODO Fix this n_gpu vs n_device
-        self.n_gpu = self.n_device
         self.train_batch_size = self.per_device_train_batch_size * max(
-            1, self.n_device
+            1, self.n_replicas
         )
         self.eval_batch_size = self.per_device_eval_batch_size * max(
-            1, self.n_device
+            1, self.n_replicas
         )
 
 
@@ -358,7 +360,7 @@ class HFClassificationModelContext(ModelContext):
         return Accuracy(result["eval_acc"])
 
     async def predict(
-        self, records: AsyncIterator[Record]
+        self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
         if not os.path.isfile(
             os.path.join(self.parent.config.output_dir, "tf_model.h5")
@@ -373,7 +375,7 @@ class HFClassificationModelContext(ModelContext):
                 self.parent.config.output_dir
             )
         trainer = TFTrainer(model=self.model, args=self.parent.config,)
-        async for record in records:
+        async for record in sources.with_features(self.features):
             to_predict = record.features(self.features)
             eval_example = [
                 InputExample(

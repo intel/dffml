@@ -216,8 +216,12 @@ def export_value(obj, key, value):
         obj[key] = value.export()
     elif hasattr(value, "_asdict"):
         obj[key] = value._asdict()
-    elif getattr(type(value), "__module__", None) == "numpy" and isinstance(
-        getattr(value, "flatten", None), collections.Callable
+    elif (
+        getattr(type(value), "__module__", None) == "numpy"
+        and isinstance(value, collections.abc.Iterable)
+        and isinstance(
+            getattr(value, "flatten", None), collections.abc.Callable
+        )
     ):
         obj[key] = tuple(value.flatten())
     elif dataclasses.is_dataclass(value):

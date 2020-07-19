@@ -7,7 +7,7 @@ from ..util.entrypoint import entrypoint
 from .model import SimpleModel, ModelNotTrained
 from .accuracy import Accuracy
 from ..feature.feature import Feature, Features
-from ..source.source import Sources
+from ..source.source import Sources, SourcesContext
 from ..record import Record
 
 
@@ -145,7 +145,7 @@ class SLRModel(SimpleModel):
         return Accuracy(regression_line[2])
 
     async def predict(
-        self, records: AsyncIterator[Record]
+        self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
         # Load saved regression line
         regression_line = self.storage.get("regression_line", None)
@@ -155,7 +155,9 @@ class SLRModel(SimpleModel):
         # Expand the regression_line into named variables
         m, b, accuracy = regression_line
         # Iterate through each record that needs a prediction
-        async for record in records:
+        async for record in sources.with_features(
+            self.parent.config.features.names()
+        ):
             # Grab the x data from the record
             x = record.feature(self.features[0])
             # Calculate y

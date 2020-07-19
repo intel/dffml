@@ -20,24 +20,6 @@ spec = importlib.util.spec_from_file_location(
 plugins = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(plugins)
 
-# All packages under configloader/ are really named dffml-config-{name}
-ALTERNATIVES = {"configloader": "config"}
-ALTERNATIVES_FEATURE_TO_OP = ALTERNATIVES.copy()
-ALTERNATIVES_FEATURE_TO_OP.update({"feature": "operation"})
-EXTRAS_REQUIRES = {
-    (
-        ALTERNATIVES_FEATURE_TO_OP.get(plugin_type, plugin_type)
-        + ("s" if not plugin_type.endswith("s") else "")
-    ): [
-        "dffml-%s-%s"
-        % (ALTERNATIVES.get(plugin_type, plugin_type), name.replace("_", "-"),)
-        for sub_plugin_type, name in plugins.CORE_PLUGINS
-        if sub_plugin_type == plugin_type
-    ]
-    for plugin_type, _ in plugins.CORE_PLUGINS
-    if plugin_type != "examples"
-}
-
 with open("README.md", "r", encoding="utf-8") as f:
     README = f.read()
 
@@ -69,14 +51,6 @@ setup(
     include_package_data=True,
     zip_safe=False,
     extras_require={
-        "all": [
-            "dffml-%s-%s"
-            % (
-                ALTERNATIVES.get(plugin_type, plugin_type),
-                name.replace("_", "-"),
-            )
-            for plugin_type, name in plugins.CORE_PLUGINS
-        ],
         "dev": [
             "coverage",
             "codecov",
@@ -87,7 +61,7 @@ setup(
             "jsbeautifier",
             "twine",
         ],
-        **EXTRAS_REQUIRES,
+        **plugins.PACKAGE_NAMES_BY_PLUGIN_INSTALLABLE,
     },
     tests_require=["httptest>=0.0.15", "Pillow>=7.1.2", "numpy>=1.16.2",],
     entry_points={

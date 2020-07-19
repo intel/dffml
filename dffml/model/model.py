@@ -17,11 +17,11 @@ from ..base import (
     BaseDataFlowFacilitatorObject,
 )
 from ..record import Record
-from ..source.source import Sources
 from ..feature import Features
 from .accuracy import Accuracy
 from ..util.entrypoint import base_entry_point
 from ..util.os import MODE_BITS_SECURE
+from ..source.source import Sources, SourcesContext
 
 
 class ModelNotTrained(Exception):
@@ -59,9 +59,7 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    async def predict(
-        self, records: AsyncIterator[Record]
-    ) -> AsyncIterator[Record]:
+    async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
         """
         Uses trained data to make a prediction about the quality of a record.
         """

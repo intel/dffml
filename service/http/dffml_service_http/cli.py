@@ -1,5 +1,7 @@
 import ssl
 import asyncio
+import inspect
+import pathlib
 import argparse
 import subprocess
 from typing import List
@@ -170,6 +172,41 @@ class MultiCommCMD(CMD):
     CONFIG = MultiCommCMDConfig
 
 
+class RedirectFormatError(Exception):
+    """
+    Raises when -redirects was not divisible by 3
+    """
+
+
+class ParseRedirectsAction(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        if not isinstance(values, list):
+            values = [values]
+        if len(values) % 3 != 0:
+            raise RedirectFormatError(
+                inspect.cleandoc(
+                    r"""
+                -redirect usage: METHOD SOURCE_PATH DESTINATION_PATH
+
+                Examples
+                --------
+
+                Redirect / to /index.html for GET requests
+
+                    -redirect GET / /index.html
+
+                Redirect / to /index.html for GET requests and /signup to
+                /mysignup for POST requests
+
+                    -redirect \
+                        GET / /index.html \
+                        POST /signup /mysignup
+                """
+                ).strip()
+            )
+        setattr(namespace, self.dest, values)
+
+
 @config
 class ServerConfig(TLSCMDConfig, MultiCommCMDConfig):
     port: int = field(
@@ -208,6 +245,11 @@ class ServerConfig(TLSCMDConfig, MultiCommCMDConfig):
         action=list_action(Sources),
         labeled=True,
     )
+    redirect: List[str] = field(
+        "list of METHOD SOURCE_PATH DESTINATION_PATH pairs, number of elements must be divisible by 3",
+        action=ParseRedirectsAction,
+        default_factory=lambda: [],
+    )
 
 
 class Server(TLSCMD, MultiCommCMD, Routes):
@@ -228,10 +270,18 @@ class Server(TLSCMD, MultiCommCMD, Routes):
                 self.runner, host=self.addr, port=self.port
             )
         else:
+            cert_path = pathlib.Path(self.cert).resolve()
+            if not cert_path.is_file():
+                raise FileNotFoundError(
+                    f"Server cert not found: {cert_path!s}"
+                )
+            key_path = pathlib.Path(self.key)
+            if not key_path.is_file():
+                raise FileNotFoundError(f"Server key not found: {key_path!s}")
             ssl_context = ssl.create_default_context(
-                purpose=ssl.Purpose.SERVER_AUTH, cafile=self.cert
+                purpose=ssl.Purpose.SERVER_AUTH, cafile=str(cert_path)
             )
-            ssl_context.load_cert_chain(self.cert, self.key)
+            ssl_context.load_cert_chain(str(cert_path), str(key_path))
             self.site = web.TCPSite(
                 self.runner,
                 host=self.addr,

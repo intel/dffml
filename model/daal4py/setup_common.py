@@ -11,7 +11,8 @@ AUTHOR_NAME = "Ch.M.Hashim"
 AUTHOR_EMAIL = "hashimchaudry23@gmail.com"
 # Install dffml if it is not installed in development mode
 INSTALL_REQUIRES = [
-    "daal4py>=0.2020.0",
+    # See https://github.com/intel/dffml/issues/766
+    # "daal4py>=0.2020.0",
     "pandas>=0.25.0",
     "joblib>=0.13.2",
     "numpy>=1.16.4",

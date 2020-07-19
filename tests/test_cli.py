@@ -13,7 +13,7 @@ from typing import List, AsyncIterator
 
 from dffml.record import Record
 from dffml.feature import Feature, Features
-from dffml.source.source import Sources
+from dffml.source.source import Sources, SourcesContext
 from dffml.source.file import FileSourceConfig
 from dffml.source.json import JSONSource
 from dffml.source.csv import CSVSource, CSVSourceConfig
@@ -36,7 +36,10 @@ from .test_df import OPERATIONS, OPIMPS
 class RecordsTestCase(AsyncExitStackTestCase):
     async def setUp(self):
         await super().setUp()
-        self.records = [Record(str(random.random())) for _ in range(0, 10)]
+        self.records = [
+            Record(str(random.random()), data={"features": {"fake": 1}},)
+            for _ in range(0, 10)
+        ]
         self.temp_filename = self.mktempfile()
         self.sconfig = FileSourceConfig(
             filename=self.temp_filename, readwrite=True, allowempty=True
@@ -73,11 +76,6 @@ class FakeConfig:
     )
 
 
-class FakeFeature(Feature):
-    def __init__(self, name="fake", dt=float, length=1):
-        super().__init__(name, dt, length)
-
-
 class FakeModelContext(ModelContext):
     async def train(self, sources: Sources):
         pass
@@ -85,11 +83,11 @@ class FakeModelContext(ModelContext):
     async def accuracy(self, sources: Sources) -> AccuracyType:
         return AccuracyType(0.42)
 
-    async def predict(
-        self, records: AsyncIterator[Record]
-    ) -> AsyncIterator[Record]:
+    async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
         target = self.parent.config.predict.name
-        async for record in records:
+        async for record in sources.with_features(
+            self.parent.config.features.names()
+        ):
             record.predicted(target, random.random(), float(record.key))
             yield record
 
@@ -169,9 +167,9 @@ class TestMerge(RecordsTestCase):
             contents = Path(csv_tempfile).read_text()
             self.assertEqual(
                 contents,
-                "key,tag\n"
+                "key,tag,fake\n"
                 + "\n".join(
-                    [f"{record.key},untagged" for record in self.records]
+                    [f"{record.key},untagged,1" for record in self.records]
                 )
                 + "\n",
                 "Incorrect data in csv file",
@@ -392,7 +390,7 @@ class TestPredict(RecordsTestCase):
             "-model",
             "fake",
             "-model-features",
-            "fake:float:[10,0]",
+            "fake:float:1",
             "-model-predict",
             "fake",
             "-sources",

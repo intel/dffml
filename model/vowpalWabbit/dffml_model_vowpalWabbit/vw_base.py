@@ -17,7 +17,7 @@ from sklearn.metrics import accuracy_score, r2_score
 
 from dffml.record import Record
 from dffml.model.accuracy import Accuracy
-from dffml.source.source import Sources
+from dffml.source.source import Sources, SourcesContext
 from dffml.util.entrypoint import entrypoint
 from dffml.base import config, field
 from dffml.feature.feature import Features, Feature
@@ -339,7 +339,7 @@ class VWContext(ModelContext):
         return self.confidence
 
     async def predict(
-        self, records: AsyncIterator[Record]
+        self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
         if not os.path.isfile(self._filename()):
             raise ModelNotTrained("Train model before prediction.")
@@ -352,7 +352,7 @@ class VWContext(ModelContext):
 
         if self.parent.config.base:
             base = self.parent.config.base.name
-        async for record in records:
+        async for record in sources.with_features(self.features):
             feature_data = record.features(
                 self.features + self.parent.config.extra_cols
             )

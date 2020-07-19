@@ -1,5 +1,5 @@
 """
-Description of what this config does
+Loads an image from file
 """
 from typing import Dict
 import cv2
@@ -14,7 +14,7 @@ from dffml.configloader.configloader import (
 )
 
 
-class PNGConfigLoaderContext(BaseConfigLoaderContext):
+class ImageConfigLoaderContext(BaseConfigLoaderContext):
     async def loadb(self, resource: bytes) -> list:
         image_array = cv2.imdecode(
             np.frombuffer(resource, np.uint8), cv2.IMREAD_COLOR
@@ -27,5 +27,23 @@ class PNGConfigLoaderContext(BaseConfigLoaderContext):
 
 @entrypoint("png")
 class PNGConfigLoader(BaseConfigLoader):
-    CONTEXT = PNGConfigLoaderContext
+    CONTEXT = ImageConfigLoaderContext
+    CONFIG = BaseConfig
+
+
+@entrypoint("jpg")
+class JPGConfigLoader(BaseConfigLoader):
+    CONTEXT = ImageConfigLoaderContext
+    CONFIG = BaseConfig
+
+
+@entrypoint("jpeg")
+class JPEGConfigLoader(BaseConfigLoader):
+    CONTEXT = ImageConfigLoaderContext
+    CONFIG = BaseConfig
+
+
+@entrypoint("tiff")
+class TIFFConfigLoader(BaseConfigLoader):
+    CONTEXT = ImageConfigLoaderContext
     CONFIG = BaseConfig
