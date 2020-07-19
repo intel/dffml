@@ -1,7 +1,6 @@
 from typing import List
 
 import spacy
-from spacy.symbols import ORTH
 from spacy.lang.en import English
 from spacy.lang.en.stop_words import STOP_WORDS
 
