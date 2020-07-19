@@ -22,6 +22,7 @@ from .accuracy import Accuracy
 from ..util.entrypoint import base_entry_point
 from ..util.os import MODE_BITS_SECURE
 from ..source.source import Sources, SourcesContext
+from ..accuracy.accuracy import AccuracyContext
 
 
 class ModelNotTrained(Exception):
@@ -50,13 +51,18 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
         """
         raise NotImplementedError()
 
-    @abc.abstractmethod
-    async def accuracy(self, sources: Sources) -> Accuracy:
+    async def accuracy(
+        self, sources: Sources, accuracy_scorer: AccuracyContext
+    ) -> Accuracy:
         """
         Evaluates the accuracy of our model after training using the input records
         as test data.
         """
-        raise NotImplementedError()
+        if not hasattr(self.config, "predict"):
+            raise NotImplementedError()
+        return Accuracy(
+            accuracy_scorer.score(self.predict(sources), [self.config.predict])
+        )
 
     @abc.abstractmethod
     async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:

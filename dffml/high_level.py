@@ -9,6 +9,7 @@ from typing import Optional, Tuple, List, Union, Dict, Any, AsyncIterator
 from .record import Record
 from .df.types import DataFlow, Input
 from .df.memory import MemoryOrchestrator
+from .accuracy.accuracy import AccuracyContext
 from .source.source import Sources, BaseSource
 from .source.memory import MemorySource, MemorySourceConfig
 from .df.base import BaseInputSetContext, BaseOrchestrator, BaseInputSet
@@ -381,7 +382,9 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
 
 
 async def accuracy(
-    model, *args: Union[BaseSource, Record, Dict[str, Any]]
+    model,
+    accuracy_scorer: AccuracyContext,
+    *args: Union[BaseSource, Record, Dict[str, Any]],
 ) -> float:
     """
     Assess the accuracy of a machine learning model.
@@ -434,9 +437,9 @@ async def accuracy(
     Accuracy: 1.0
     """
     sources = _records_to_sources(*args)
-    async with sources as sources, model as model:
-        async with sources() as sctx, model() as mctx:
-            return float(await mctx.accuracy(sctx))
+    async with sources as sources, model as model, accuracy_scorer as accuracy_scorer:
+        async with sources() as sctx, model() as mctx, accuracy_scorer() as actx:
+            return float(await mctx.accuracy(sctx, actx))
 
 
 async def predict(
