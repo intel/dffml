@@ -65,13 +65,13 @@ class TestNLPOps(IntegrationCLITestCase):
                 )
                 with contextlib.redirect_stdout(self.stdout):
                     await CLI._main(*cmnd[1:])
-                    result = self.stdout.getvalue()
+                    std_output = self.stdout.getvalue()
                     self.stdout.truncate(0)
                     self.stdout.seek(0)
                 with open(
                     os.path.join(tempdir, "nlp_ops_dataflow.json"), "w"
                 ) as fd:
-                    fd.write(result)
+                    fd.write(std_output)
 
             with open(
                 os.path.join(ROOT, "examples", "nlp", "train.sh"), "r"
@@ -89,16 +89,14 @@ class TestNLPOps(IntegrationCLITestCase):
                 os.path.join(ROOT, "examples", "nlp", "predict.sh",), "r",
             ) as f:
                 predict_cmnd = clean_args(f, tempdir)
-            with contextlib.redirect_stdout(self.stdout):
-                await CLI._main(*predict_cmnd[1:])
-                results = json.loads(self.stdout.getvalue())
-                self.assertTrue(isinstance(results, list))
-                self.assertTrue(results)
-                results = results[0]
-                self.assertIn("prediction", results)
-                results = results["prediction"]
-                self.assertIn("sentiment", results)
-                results = results["sentiment"]
-                self.assertIn("value", results)
-                results = results["value"]
-                self.assertIn(results, [0, 1])
+            results = await CLI.cli(*predict_cmnd[1:])
+            self.assertTrue(isinstance(results, list))
+            self.assertTrue(results)
+            results = results[0].data.dict()
+            self.assertIn("prediction", results)
+            results = results["prediction"]
+            self.assertIn("sentiment", results)
+            results = results["sentiment"]
+            self.assertIn("value", results)
+            results = results["value"]
+            self.assertIn(results, [0, 1])
