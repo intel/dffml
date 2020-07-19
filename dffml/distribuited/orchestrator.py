@@ -1,18 +1,18 @@
-import secrets
 import abc
-import asyncio
 import json
+import asyncio
+import secrets
 import traceback
 from queue import Queue
-
 from dataclasses import field
-from nats.aio.client import Client as NATS
-from stan.aio.client import Client as STAN
-from contextlib import asynccontextmanager, AsyncExitStack, ExitStack
 from typing import Dict, List, Any
+from contextlib import asynccontextmanager, AsyncExitStack, ExitStack
 
-from ..df.types import DataFlow, Operation, Definition, Input
+from nats.aio.client import Client as NATS
+
 from ..base import config, BaseConfig
+from ..util.asynchelper import aenter_stack
+from ..df.types import DataFlow, Operation, Definition, Input
 from ..df.memory import (
     MemoryRedundancyChecker,
     MemoryLockNetwork,
@@ -30,13 +30,13 @@ from ..df.base import (
     BaseOperationImplementationNetworkContext,
 )
 
-from ..util.asynchelper import aenter_stack
 
 # Subjects
-RegisterSubNode = "RegisterSubNode"
-ConnectToPrimaryNode = "ConnectToPrimaryNode"
-PrimaryNodeReady = "PrimaryNodeReady"
-##
+RegisterWorkerNode = "RegisterWorkerNode"
+ConnectToOrchestratorNode = "ConnectToOrchestratorNode"
+OrchestratorNodeReady = "OrchestratorNodeReady"
+
+####
 
 NBYTES_UID = 6
 
@@ -60,7 +60,7 @@ class NatsOperationImplementationNetworkContext(
     MemoryOperationImplementationNetworkContext
 ):
     def __init__(
-        self, config: BaseConfig, parent: "NatsSubNodeContext",
+        self, config: BaseConfig, parent: "NatsWorkerNodeContext",
     ):
         BaseOperationImplementationNetworkContext.__init__(
             self, config, parent
@@ -79,15 +79,14 @@ class NatsOperationImplementationNetworkContext(
             )
             await self.instantiate(operation, config=opconfig, opimp=opimp)
             await self.parent.nc.publish(
-                f"InstanceAck.{instance_name}.{self.parent.pnid}", b""
+                f"InstanceAck.{instance_name}.{self.parent.onid}", b""
             )
 
     async def __aenter__(self):
-
         self._stack = AsyncExitStack()
         await self._stack.__aenter__()
         # Go through all operations which will be run
-        # by the parent subnode context and instantiate all of them
+        # by the parent worker_node context and instantiate all of them
         await self.instantatiate_operations()
         self.logger.debug(f"Instantiated operations: {self.operations}")
         return self
@@ -95,10 +94,8 @@ class NatsOperationImplementationNetworkContext(
 
 class NatsNodeContext(BaseDataFlowObjectContext):
     async def __aenter__(self, enter=None, call=False):
-
         self.uid = secrets.token_hex(nbytes=NBYTES_UID)
         self.nc = self.parent.nc
-
         self._stack = AsyncExitStack()
         self._stack = await aenter_stack(self, enter, call)
         await self.init_context()
@@ -127,7 +124,7 @@ class NatsNode(BaseDataFlowObject):
 
     async def __aenter__(self, enter={}):
         self.uid = secrets.token_hex(nbytes=NBYTES_UID)
-        self.logger.debug(f"New node. Id : {self.uid}",)
+        self.logger.debug(f"New node: {self.uid}",)
         self.nc = NATS()
         self.logger.debug(f"Connecting to nats server {self.config.server}")
         await self.nc.connect(
@@ -137,7 +134,6 @@ class NatsNode(BaseDataFlowObject):
             error_cb=self.error_handler,
         )
         self.logger.debug("Connected to nats server {self.config.server}")
-
         await self.init_node()
         return self
 
@@ -150,17 +146,16 @@ class NatsNode(BaseDataFlowObject):
 
 
 @config
-class NatsPrimaryNodeConfig(NatsNodeConfig):
+class NatsOrchestratorNodeConfig(NatsNodeConfig):
     dataflow: DataFlow = None
 
 
-class NatsPrimaryNodeContext(NatsNodeContext):
-    async def register_subnode(self, msg):
-        self.logger.debug(f"Registering new subnode context")
-
+class NatsOrchestratorNodeContext(NatsNodeContext):
+    async def register_worker_node(self, msg):
+        self.logger.debug(f"Registering new worker node context")
         reply = msg.reply
         # Data of message contains list of names of
-        # operation supported by the subnode
+        # operation supported by the worker node
         data = msg.data.decode()
         data = json.loads(data)
         self.logger.debug(f"Received data {data}")
@@ -181,7 +176,6 @@ class NatsPrimaryNodeContext(NatsNodeContext):
                     token = 1
                     opq.put(token)
                     self.nodes_for_operation[operation_name] = opq
-
                 reply_data[operation_name] = token
 
         reply_data = json.dumps(reply_data).encode()
@@ -207,37 +201,39 @@ class NatsPrimaryNodeContext(NatsNodeContext):
             self.all_op_instantiated.set_result(None)
 
     async def init_context(self):
-        self.logger.debug("New primary node context")
-        # Primary node announces that it has started
-        # All subnode contexts that are not already connected
+        self.logger.debug("Initializing new orchestrator node context")
+        # Orchestrator node announces that it has started
+        # All worker node contexts that are not already connected
         # sends list of operations supported by them.
-        # Primary node responds with allocated token per operation
+        # Onode responds with allocated token per operation
         self.all_ops_available = asyncio.Event()
-        await self.nc.publish(ConnectToPrimaryNode, self.uid.encode())
+        await self.nc.publish(ConnectToOrchestratorNode, self.uid.encode())
         self.required_operations = [
             operation.name
             for operation in self.parent.config.dataflow.operations.values()
         ]
 
+        # maps operations to registered nodes token queue
         self.nodes_for_operation = (
             {}
-        )  # maps operations to registered nodes token Q
+        )
 
         sid_node_registration = await self.nc.subscribe(
-            f"{RegisterSubNode}.{self.uid}",
-            queue="SubNodeRegistrationQueue",
-            cb=self.register_subnode,
+            f"{RegisterWorkerNode}.{self.uid}",
+            queue="WorkerNodeRegistrationQueue",
+            cb=self.register_worker_node,
         )
         self.logger.debug("Waiting for all operations to be found")
         await self.all_ops_available.wait()
         self.logger.debug("All required operations found")
+        # Stop listening to new node registration
         await self.nc.unsubscribe(
             sid_node_registration
-        )  # Stop listening to new node registratio
+        )
 
-        # Primary node goes through operation instances
-        # in dataflow and assign an instance to a subnode
-        # making sure that each subnode gets at least
+        # Onode goes through operation instances
+        # in dataflow and assign an instance to a worker node
+        # making sure that each worker node gets at least
         # one instance
         self.dataflow = self.parent.config.dataflow
         self.node_token_managing_instance = {
@@ -287,27 +283,27 @@ class NatsPrimaryNodeContext(NatsNodeContext):
                 json.dumps(payload).encode(),
             )
 
-        await self.nc.publish(f"{PrimaryNodeReady}.{self.uid}", b"")
+        await self.nc.publish(f"{OrchestratorNodeReady}.{self.uid}", b"")
         self.logger.debug("Waiting for all ops to be instantiated")
         await asyncio.wait_for(self.all_op_instantiated, timeout=None)
         self.logger.debug("All ops instantiated")
 
 
-class NatsPrimaryNode(NatsNode):
-    CONTEXT = NatsPrimaryNodeContext
-    CONFIG = NatsPrimaryNodeConfig
+class NatsOrchestratorNode(NatsNode):
+    CONTEXT = NatsOrchestratorNodeContext
+    CONFIG = NatsOrchestratorNodeConfig
 
     def __call__(self):
         return self.CONTEXT(BaseConfig(), self)
 
 
 @config
-class NatsSubNodeContextConfig:
-    primary_node_id: str
+class NatsWorkerNodeContextConfig:
+    orchestrator_node_id: str
 
 
-class NatsSubNodeContext(NatsNodeContext):
-    CONFIG = NatsSubNodeContextConfig
+class NatsWorkerNodeContext(NatsNodeContext):
+    CONFIG = NatsWorkerNodeContextConfig
 
     async def __aenter__(self,):
         self.uid = secrets.token_hex(nbytes=NBYTES_UID)
@@ -320,7 +316,7 @@ class NatsSubNodeContext(NatsNodeContext):
     async def set_instance_details(self, msg):
         subject = msg.subject
         # Operation name might contain '.'
-        *subject, primary_id = subject.split(".")
+        *subject, onid = subject.split(".")
         subject = ".".join(subject)
         operation_name = subject.replace("InstanceDetails", "")
 
@@ -340,9 +336,9 @@ class NatsSubNodeContext(NatsNodeContext):
             self.operation_configs[instance_name] = config
 
     async def init_context(self):
-        self.pnid = self.config.primary_node_id
+        self.onid = self.config.orchestrator_node_id
         self.logger.debug(
-            f"New subnode context {self.uid} connected to primary node {self.pnid}"
+            f"New worker node context {self.uid} connected to orchestrator node {self.onid}"
         )
 
         self.operation_implemtaions = {}
@@ -357,11 +353,11 @@ class NatsSubNodeContext(NatsNodeContext):
 
         # Subscribe to instance details
         # We cannot request for instance details because,
-        # all subnodes need to complete registration before
-        # primary node can allocate instances uniformly
+        # all worker nodes need to complete registration before
+        # orchestrator node can allocate instances uniformly
         for operation in self.parent.config.operations:
             await self.nc.subscribe(
-                f"InstanceDetails{operation.name}.{self.pnid}",
+                f"InstanceDetails{operation.name}.{self.onid}",
                 queue="SetInstanceDetails",
                 cb=self.set_instance_details,
             )
@@ -374,7 +370,7 @@ class NatsSubNodeContext(NatsNodeContext):
             "Requesting context registration and token allocation"
         )
         response = await self.nc.request(
-            f"{RegisterSubNode}.{self.pnid}", msg_data
+            f"{RegisterWorkerNode}.{self.onid}", msg_data
         )
         # Response contains operation names mapped to token number
         response = json.loads(response.data.decode())
@@ -395,36 +391,36 @@ class NatsSubNodeContext(NatsNodeContext):
 
 
 @config
-class NatsSubNodeConfig(NatsNodeConfig):
+class NatsWorkerNodeConfig(NatsNodeConfig):
     operations: List[Operation] = field(default_factory=lambda: [])
     implementations: Dict[str, "OperationImplementation"] = field(
         default_factory=lambda: {}
     )
 
 
-class NatsSubNode(NatsNode):
-    CONTEXT = NatsSubNodeContext
-    CONFIG = NatsSubNodeConfig
+class NatsWorkerNode(NatsNode):
+    CONTEXT = NatsWorkerNodeContext
+    CONFIG = NatsWorkerNodeConfig
 
     async def connection_ack_handler(self, msg):
-        primary_node_id = msg.data.decode()
+        orchestrator_node_id = msg.data.decode()
         self.logger.debug(
-            f"Got connection request from primary node {primary_node_id}"
+            f"Got connection request from orchestrator node {orchestrator_node_id}"
         )
         self.running_contexts.append(
             await self.CONTEXT(
-                NatsSubNodeContextConfig(primary_node_id), self
+                NatsWorkerNodeContextConfig(orchestrator_node_id), self
             ).__aenter__()
         )
 
     async def init_node(self):
         self.logger.debug(
-            f"New subnode with operations {self.config.operations}"
+            f"New worker node with operations {self.config.operations}"
         )
         self.running_contexts = []
-        # Subnode waits for a connection to a primary node
+        # Worker node waits for a connection to a orchestrator node
         await self.nc.subscribe(
-            ConnectToPrimaryNode, cb=self.connection_ack_handler,
+            ConnectToOrchestratorNode, cb=self.connection_ack_handler,
         )
 
     def __call__(self):

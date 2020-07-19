@@ -6,7 +6,7 @@ import subprocess
 from dffml.util.asynctestcase import AsyncTestCase
 
 
-from dffml.distribuited.orchestrator import NatsSubNode, NatsSubNodeConfig
+from dffml.distribuited.orchestrator import NatsWorkerNode, NatsWorkerNodeConfig
 from dffml import DataFlow
 from dffml_feature_git.feature.operations import (
     check_if_valid_git_repository_URL,
@@ -22,10 +22,10 @@ import tempfile
 import asyncio
 
 from dffml.distribuited.orchestrator import (
-    NatsPrimaryNode,
-    NatsPrimaryNodeConfig,
-    NatsSubNode,
-    NatsSubNodeConfig,
+    NatsOrchestratorNode,
+    NatsOrchestratorNodeConfig,
+    NatsWorkerNode,
+    NatsWorkerNodeConfig,
 )
 from dffml import DataFlow
 from dffml_feature_git.feature.operations import (
@@ -64,8 +64,8 @@ class TestNatsOrchestrator(AsyncTestCase):
 
     async def test_run(self):
         server = self.server_addr
-        subnode_1 = NatsSubNode(
-            NatsSubNodeConfig(
+        subnode_1 = NatsWorkerNode(
+            NatsWorkerNodeConfig(
                 server=server,
                 operations=[
                     check_if_valid_git_repository_URL.op,
@@ -77,8 +77,8 @@ class TestNatsOrchestrator(AsyncTestCase):
         fileno, database_name = tempfile.mkstemp(suffix=".db")
         os.close(fileno)
         sdb = SqliteDatabase(SqliteDatabaseConfig(filename=database_name))
-        primarynode = NatsPrimaryNode(
-            NatsPrimaryNodeConfig(
+        primarynode = NatsOrchestratorNode(
+            NatsOrchestratorNodeConfig(
                 server=server,
                 dataflow=DataFlow(
                     operations={
