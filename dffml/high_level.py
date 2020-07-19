@@ -11,12 +11,12 @@ from .record import Record
 from .model.model import Model
 from .df.types import DataFlow, Input
 from .df.memory import MemoryOrchestrator
+from .accuracy.accuracy import Accuracy, AccuracyContext
 from .source.source import (
     Sources,
     SourcesContext,
     BaseSource,
     BaseSourceContext,
-    BaseSource,
 )
 from .source.memory import MemorySource, MemorySourceConfig
 from .df.base import BaseInputSetContext, BaseOrchestrator, BaseInputSet
@@ -407,7 +407,9 @@ async def train(model, *args: Union[BaseSource, Record, Dict[str, Any]]):
 
 
 async def accuracy(
-    model, *args: Union[BaseSource, Record, Dict[str, Any]]
+    model,
+    accuracy_scorer: Union[Accuracy, AccuracyContext],
+    *args: Union[BaseSource, Record, Dict[str, Any]],
 ) -> float:
     """
     Assess the accuracy of a machine learning model.
@@ -466,8 +468,12 @@ async def accuracy(
         if isinstance(model, Model):
             model = await astack.enter_async_context(model)
             mctx = await astack.enter_async_context(model())
+        # Allow for keep models open
+        if isinstance(model, Accuracy):
+            accuracy_scorer = await astack.enter_async_context(accuracy_scorer)
+            actx = await astack.enter_async_context(accuracy_scorer())
         # Run accuracy method
-        return float(await mctx.accuracy(sctx))
+        return float(await mctx.accuracy(sctx, actx))
 
 
 async def predict(
