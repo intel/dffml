@@ -43,7 +43,7 @@ async def get_room_id(self, room_uri):
     api_url = await self.sctx.get("api_url")
     url = f"{api_url}/rooms"
     async with self.parent.session.post(
-        url, json={"uri":room_uri}, headers=headers
+        url, json={"uri": room_uri}, headers=headers
     ) as resp:
         response = await resp.json()
         return {"room_id": response["id"]}
