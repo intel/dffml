@@ -6,8 +6,7 @@ dffml train \
     Haralick.outputs.result:int:13 \
   -model-predict label:str:1 \
   -model-directory tempdir \
-  images=df \
-    -sources images=df \
+  -sources images=df \
     -source-images-source dir \
     -source-images-source-foldername flower_dataset/train \
     -source-images-source-labels \
@@ -15,5 +14,5 @@ dffml train \
       bluebell cowslip coltsfoot snowdrop daffodil lilyvalley iris buttercup daisy \
     -source-images-source-feature image \
     -source-images-dataflow features.yaml \
-    -source-images-features image:int:$(( 500*500 )) \
+    -source-images-features image:int:$((500*500)) \
   -log critical

@@ -1,4 +1,4 @@
-import cv2
+import shutil
 import os
 
 directory = "jpg"
@@ -42,8 +42,9 @@ for i in range(1, 1361):
         os.makedirs(label_dir)
 
     filename = "image_" + str(i).zfill(4) + ".jpg"
-    image = cv2.imread(os.path.join(directory, filename))
-    cv2.imwrite(os.path.join(label_dir, filename), image)
+    shutil.copy(
+        os.path.join(directory, filename), os.path.join(label_dir, filename)
+    )
 
     if i % 80 == 0:
         j += 1
