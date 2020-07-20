@@ -56,13 +56,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Option to modify flow and add config in `dataflow create`.
 - Ability to use a function as a data source via the `op` source
 - Make every model's directory property required
-<<<<<<< HEAD
 - New model AutoClassifierModel based on `AutoSklearn`.
 - New model AutoSklearnRegressorModel based on `AutoSklearn`.
 - Example showing usage of locks in dataflow.
-=======
+- `-skip` flag to `service dev install` command to let users not install certain
+  core plugins
+- HTTP service got a `-redirect` flag which allows for URL redirection via a
+  HTTP 307 response
 - Gitter chatbot tutorial.
->>>>>>> 5e7d601e... docs: tutorial: Gitter chatbot tutorial
 ### Changed
 - Renamed `-seed` to `-inputs` in `dataflow create` command
 - Renamed configloader/png to configloader/image and added support for loading JPEG and TIFF file formats

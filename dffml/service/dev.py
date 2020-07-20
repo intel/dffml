@@ -305,6 +305,13 @@ class MissingDependenciesError(Exception):
 
 @configdataclass
 class InstallConfig:
+    skip: List[str] = field(
+        "List of plugin paths not to install (Example: model/scikit)",
+        default_factory=lambda: [],
+    )
+    nocheck: bool = field(
+        "Do not preform pre-install dependency checks", default=False
+    )
     user: bool = field(
         "Perform user install", default=False, action="store_true"
     )
@@ -365,27 +372,29 @@ class Install(CMD):
                 "Currenty you need to have at least the main package already installed in development mode."
             )
         # Check if plugins not in skip list have unmet dependencies
-        self.dep_check(CORE_PLUGIN_DEPS, self.skip)
-        # Packages fail to install if we run pip processes in parallel
-        packages = list(
-            map(
-                lambda package: Path(*main_package.parts, *package),
-                CORE_PLUGINS,
-            )
-        )
-        self.logger.info("Installing %r in development mode", packages)
-        cmd = [sys.executable, "-m", "pip", "install"]
-        if self.user:
-            # --user sometimes fails
-            local_path = Path("~", ".local").expanduser().absolute()
-            cmd.append(f"--prefix={local_path}")
-        for package in packages:
-            cmd += ["-e", str(package.absolute())]
-        self.logger.debug("Running: %s", " ".join(cmd))
-        proc = await asyncio.create_subprocess_exec(*cmd)
-        await proc.wait()
-        if proc.returncode != 0:
-            raise RuntimeError("pip failed to install dependencies")
+        if not self.nocheck:
+            self.dep_check(CORE_PLUGIN_DEPS, self.skip)
+        self.logger.info("Installing %r in development mode", CORE_PLUGINS)
+        failed = []
+        for package in CORE_PLUGINS:
+            if "/".join(package) in self.skip:
+                continue
+            package_path = Path(*main_package.parts, *package)
+            cmd = [sys.executable, "-m", "pip", "install"]
+            # Install to prefix, since --user sometimes fails
+            if self.user:
+                local_path = Path("~", ".local").expanduser().absolute()
+                cmd.append(f"--prefix={local_path}")
+            # Install package in development mode
+            cmd += ["-e", str(package_path.absolute())]
+            self.logger.debug("Running: %s", " ".join(cmd))
+            # Packages fail to install if we run pip processes in parallel
+            proc = await asyncio.create_subprocess_exec(*cmd)
+            await proc.wait()
+            if proc.returncode != 0:
+                failed.append("/".join(package))
+        if failed:
+            raise RuntimeError(f"pip failed to install: {','.join(failed)}")
 
 
 @configdataclass
