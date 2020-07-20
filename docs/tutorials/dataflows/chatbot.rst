@@ -25,9 +25,30 @@ messages which are directed to our bot.
 We'll write the operations for this dataflow in operations.py
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
-    :lines: 24-51,53-86,88-120,122-217
+    :lines: 24-51
 
-our operations are ``get_room_id, stream_chat, send_message and interpret_message``.
+All requests to Gitter's API requires the room id for our room.
+``get_room_id`` gets the ``room id`` from room name ( The input to
+out dataflow).
+
+.. literalinclude:: /../examples/dataflow/chatbot/operations.py
+    :lines: 52-87
+
+We listen to new messages directed to out bot.
+
+.. literalinclude:: /../examples/dataflow/chatbot/operations.py
+    :lines: 90-122
+
+We'll use this op to send replies back to the chatroom
+
+.. literalinclude:: /../examples/dataflow/chatbot/operations.py
+    :lines: 125-220
+
+This is the operation where all the logic for interpreting the messages
+go. If you have a Natural Language Understanding module It'd go here, so
+that you can parse unstructered data.
+
+Our operations are ``get_room_id, stream_chat, send_message and interpret_message``.
 All of them use at least one config. The common config being INISecretConfig which
 loads out secret token and bot name from out ini configs file.
 
@@ -39,33 +60,32 @@ Detour: What are imp_enter and ctx_enter?
 .. code-block::python
 
     config_cls=GitterChannelConfig,
-    imp_enter={"config": lambda self: self.config.config},
-    ctx_enter={"cfg": lambda self: self.parent.config()},
+    imp_enter={"secret": lambda self: self.config.secret},
+    ctx_enter={"sctx": lambda self: self.parent.secret()},
 
 This piece of code in the op decorator tells that the operation will be using
 ``GitterChannelConfig``. ``imp_enter`` and ``ctx_enter`` are basically shortcuts for
 the double context entry followed in dffml.
 
-``"config": lambda self: self.config.config``: sets the ``config`` attribute of parent to
-what is returned by the function; in this case it returns BaseSecret(because ``self.config``
-is ``GitterChannelConfig`` and it has a ``BaseSecret`` as its config attribute)
+``"secret": lambda self: self.config.secret``: sets the ``secret`` attribute of parent
+to what is returned by the function; in this case it returns BaseSecret.
 
-``"cfg": lambda self: self.parent.config()``: calls the function and assigns the return value
-to ``cfg`` attribute.
+``"sctx": lambda self: self.parent.secret()``: calls the function and assigns the
+return value to ``sctx`` attribute.
 
 So in the operation instead of
 
 .. code-block:: python
 
-    with self.config.config() as config:
-        with cfg as config():
-            cfg.call_a_method()
+    with self.config.secret() as secret:
+        with sctx as secret():
+            sctx.call_a_method()
 
 we can do
 
 .. code-block:: python
 
-    self.cfg.call_a_method()
+    self.sctx.call_a_method()
 
 Running the dataflow
 --------------------
