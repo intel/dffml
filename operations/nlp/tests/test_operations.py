@@ -1,8 +1,8 @@
 from random import randint
 
 from dffml.df.types import Input, DataFlow
-from dffml.df.memory import MemoryOrchestrator
 from dffml.operation.output import GetSingle
+from dffml.df.memory import MemoryOrchestrator
 from dffml.util.asynctestcase import AsyncTestCase
 
 from dffml_operations_nlp.operations import remove_stopwords, get_embedding
@@ -36,11 +36,12 @@ class TestOperations(AsyncTestCase):
         input_sentence = (
             "The end is the beginning , and the beginning is the end"
         )
+        max_sentence_len = 15
         async for ctx, results in MemoryOrchestrator.run(
             DataFlow.auto(get_embedding, GetSingle),
             [
                 Input(
-                    value=[get_embedding.op.outputs["result"].name],
+                    value=[get_embedding.op.outputs["embedding"].name],
                     definition=GetSingle.op.inputs["spec"],
                 ),
                 Input(
@@ -51,11 +52,19 @@ class TestOperations(AsyncTestCase):
                     value="en_core_web_sm",
                     definition=get_embedding.op.inputs["spacy_model"],
                 ),
+                Input(
+                    value=max_sentence_len,
+                    definition=get_embedding.op.inputs["max_len"],
+                ),
+                Input(
+                    value="<PAD>",
+                    definition=get_embedding.op.inputs["pad_token"],
+                ),
             ],
         ):
-            embeddings = results[get_embedding.op.outputs["result"].name]
-            self.assertEqual(len(input_sentence.split()), len(embeddings))
+            embeddings = results[get_embedding.op.outputs["embedding"].name]
+            self.assertEqual(max_sentence_len, len(embeddings))
             self.assertEqual(
-                embeddings[randint(0, len(input_sentence.split()) - 1)].shape,
-                embeddings[randint(0, len(input_sentence.split()) - 1)].shape,
+                embeddings[randint(0, max_sentence_len - 1)].shape,
+                embeddings[randint(0, max_sentence_len - 1)].shape,
             )
