@@ -4,7 +4,7 @@ import sys
 import json
 import tempfile
 import contextlib
-from aiohttp import ClientSession, ClientTimeout, web
+from aiohttp import ClientSession, ClientTimeout
 
 from dffml.cli.cli import CLI
 from dffml import op, config, Definition, BaseSecret
@@ -40,11 +40,10 @@ async def get_room_id(self, room_uri):
         "Authorization": f"Bearer {access_token}",
     }
 
-    data = '{"uri":' + f'"{room_uri}"' + "}"
-    url = "https://api.gitter.im/v1/rooms"
-
+    api_url = await self.sctx.get("api_url")
+    url = f"{api_url}/rooms"
     async with self.parent.session.post(
-        url, data=data, headers=headers
+        url, json={"uri":room_uri}, headers=headers
     ) as resp:
         response = await resp.json()
         return {"room_id": response["id"]}
@@ -69,7 +68,9 @@ async def stream_chat(self, room_id):
         "Accept": "application/json",
         "Authorization": f"Bearer {access_token}",
     }
-    url = f"https://stream.gitter.im/v1/rooms/{room_id}/chatMessages"
+    stream_url = await self.sctx.get("stream_url")
+
+    url = f"{stream_url}/rooms/{room_id}/chatMessages"
     botname = await self.sctx.get("botname")
 
     async with self.parent.session.get(url, headers=headers) as resp:
@@ -77,6 +78,7 @@ async def stream_chat(self, room_id):
             # Gitter sends " \n" at some intervals
             if data == " \n".encode():
                 continue
+            print(f"\n\n Got data {data} \n\n")
             data = json.loads(data.strip())
             message = data["text"]
             # Only listen to messages directed to bot
@@ -110,7 +112,8 @@ async def send_message(self, message, room_id):
     # For new line we need \\n,else Gitter api
     # responds with 'Bad Request'
     message = message.replace("\n", "\\n")
-    url = f"https://api.gitter.im/v1/rooms/{room_id}/chatMessages"
+    api_url = await self.sctx.get("api_url")
+    url = f"{api_url}/rooms/{room_id}/chatMessages"
 
     async with self.parent.session.post(
         url, headers=headers, json={"text": message}
