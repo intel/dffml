@@ -56,3 +56,6 @@ class AccuracyScorer(BaseDataFlowFacilitatorObject):
 
     CONFIG = AccuracyConfig
     CONTEXT = AccuracyContext
+
+    def __call__(self) -> AccuracyContext:
+        return self.CONTEXT(self)
