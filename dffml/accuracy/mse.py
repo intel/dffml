@@ -4,7 +4,11 @@ from ..base import config
 from ..record import Record
 from ..feature import Feature
 from ..util.entrypoint import entrypoint
-from .accuracy import AccuracyContext, InvalidNumberOfFeaturesError
+from .accuracy import (
+    AccuracyScorer,
+    AccuracyContext,
+    InvalidNumberOfFeaturesError,
+)
 
 
 @config
@@ -36,6 +40,6 @@ class MeanSquaredErrorAccuracyContext(AccuracyContext):
 
 
 @entrypoint("mse")
-class MeanSquaredErrorAccuracy:
+class MeanSquaredErrorAccuracy(AccuracyScorer):
     CONFIG = MeanSquaredErrorAccuracyConfig
     CONTEXT = MeanSquaredErrorAccuracyContext
