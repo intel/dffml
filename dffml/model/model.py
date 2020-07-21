@@ -60,7 +60,9 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
         if not hasattr(self.config, "predict"):
             raise NotImplementedError()
         return Accuracy(
-            accuracy_scorer.score(self.predict(sources), [self.config.predict])
+            await accuracy_scorer.score(
+                self.predict(sources), [self.config.predict]
+            )
         )
 
     @abc.abstractmethod
@@ -234,3 +236,5 @@ class SimpleModel(Model):
             msg = f"{self.__class__.__qualname__} only supports "
             msg += f"{self.SUPPORTED_LENGTHS} dimensional values"
             raise ValueError(msg)
+
+    accuracy = ModelContext.accuracy
