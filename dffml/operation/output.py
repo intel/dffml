@@ -193,7 +193,7 @@ class GetMulti(OperationImplementationContext):
                     want[definition.name].append(item.value)
 
             # Rename outputs if present in name_map
-            for key, value in want.items():
+            for key, value in want.copy().items():
                 if name_map.get(key, None):
                     want[name_map[key]] = value
                     want.pop(key)
