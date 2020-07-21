@@ -47,9 +47,12 @@ class ResNet18ModelContext(PyTorchModelContext):
 
         # Metrics
         self.criterion = nn.CrossEntropyLoss()
-        self.optimizer = optim.SGD(
-            self._model.fc.parameters(), lr=0.001, momentum=0.9
+        model_parameters = (
+            self._model.parameters()
+            if self.parent.config.trainable
+            else self._model.fc.parameters()
         )
+        self.optimizer = optim.SGD(model_parameters, lr=0.001, momentum=0.9)
         self.exp_lr_scheduler = lr_scheduler.StepLR(
             self.optimizer, step_size=7, gamma=0.1
         )
@@ -105,9 +108,12 @@ class VGG16ModelContext(PyTorchModelContext):
 
         # Metrics
         self.criterion = nn.CrossEntropyLoss()
-        self.optimizer = optim.SGD(
-            self._model.classifier[-1].parameters(), lr=0.001, momentum=0.9
+        model_parameters = (
+            self._model.classifier.parameters()
+            if self.parent.config.trainable
+            else self._model.classifier[-1].parameters()
         )
+        self.optimizer = optim.SGD(model_parameters, lr=0.001, momentum=0.9)
         self.exp_lr_scheduler = lr_scheduler.StepLR(
             self.optimizer, step_size=7, gamma=0.1
         )

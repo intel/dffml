@@ -10,16 +10,14 @@ import time
 import torch
 
 import numpy as np
-from torchvision import models
 
 
 from dffml.record import Record
 from dffml.model.accuracy import Accuracy
-from dffml.util.entrypoint import entrypoint
 from dffml.base import config, field
 from dffml.feature.feature import Feature, Features
 from dffml.source.source import Sources, SourcesContext
-from dffml.model.model import ModelContext, Model, ModelNotTrained
+from dffml.model.model import ModelContext, ModelNotTrained
 from .pytorch_utils import NumpyToTensor
 
 
@@ -30,9 +28,9 @@ class PyTorchModelConfig:
     features: Features = field("Features to train on")
     directory: pathlib.Path = field("Directory where state should be saved")
     clstype: Type = field("Data type of classifications values", default=str)
-    # imageSize: int = field(
-    #     "Common size for all images to resize and crop to", default=None
-    # )
+    imageSize: int = field(
+        "Common size for all images to resize and crop to", default=224
+    )
     useCUDA: bool = field("Utilize GPUs for processing", default=False)
     epochs: int = field(
         "Number of iterations to pass over all records in a source", default=20
@@ -172,12 +170,14 @@ class PyTorchModelContext(ModelContext):
         self.logger.info("-----------------------")
 
         x_cols = x_cols[self.features[0]]
-        dataset = NumpyToTensor(x_cols, y_cols)
+        dataset = NumpyToTensor(
+            x_cols, y_cols, size=self.parent.config.imageSize
+        )
 
         return dataset, len(dataset)
 
     async def prediction_data_generator(self, data):
-        dataset = NumpyToTensor([data])
+        dataset = NumpyToTensor([data], size=self.parent.config.imageSize)
         dataloader = torch.utils.data.DataLoader(dataset)
         return dataloader
 
@@ -209,6 +209,7 @@ class PyTorchModelContext(ModelContext):
                     data[x],
                     batch_size=self.parent.config.batch_size,
                     shuffle=True,
+                    num_workers=4,
                 )
                 for x in ["Training", "Validation"]
             }
@@ -218,6 +219,7 @@ class PyTorchModelContext(ModelContext):
                     dataset,
                     batch_size=self.parent.config.batch_size,
                     shuffle=True,
+                    num_workers=4,
                 )
             }
 
@@ -284,7 +286,9 @@ class PyTorchModelContext(ModelContext):
         )
 
         if self.parent.config.validation_split:
-            self.logger.debug("Best Validation Acc: {:4f}".format(best_acc))
+            self.logger.debug(
+                "Best Validation Accuracy: {:4f}".format(best_acc)
+            )
             self._model.load_state_dict(best_model_wts)
 
         torch.save(
@@ -297,7 +301,10 @@ class PyTorchModelContext(ModelContext):
 
         dataset, size = await self.dataset_generator(sources)
         dataloader = torch.utils.data.DataLoader(
-            dataset, batch_size=self.parent.config.batch_size, shuffle=True
+            dataset,
+            batch_size=self.parent.config.batch_size,
+            shuffle=True,
+            num_workers=4,
         )
 
         self._model.eval()
