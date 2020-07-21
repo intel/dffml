@@ -134,16 +134,6 @@ class SLRModel(SimpleModel):
         # Save m, b, and accuracy
         self.storage["regression_line"] = best_fit_line(x, y)
 
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        # Load saved regression line
-        regression_line = self.storage.get("regression_line", None)
-        # Ensure the model has been trained before we try to make a prediction
-        if regression_line is None:
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-        # Accuracy is the last element in regression_line, which is a list of
-        # three values: m, b, and accuracy.
-        return Accuracy(regression_line[2])
-
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
