@@ -31,7 +31,7 @@ class TestExample(unittest.TestCase):
         lines = stdout.decode().split("\n")
         # Check the Accuracy
         self.assertEqual(lines[0].split()[0], "Accuracy:")
-        self.assertEqual(round(float(lines[0].split()[1])), 1)
+        self.assertEqual(round(float(lines[0].split()[1])), 0)
 
     def test_python_filenames(self):
         with directory_with_csv_files() as tempdir:
