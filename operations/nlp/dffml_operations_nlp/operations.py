@@ -12,6 +12,21 @@ from dffml.df.types import Definition
 async def remove_stopwords(
     text: str, custom_stop_words: List[str] = None
 ) -> str:
+    """
+    Removes stopword from text data.
+
+    Parameters
+    ----------
+    text : str
+        String to be cleaned.
+
+    custom_stop_words: List[str], default = None
+        List of words to be considered as stop words.
+
+    Returns
+    -------
+    result: A string without stop words.
+    """
     all_tokens = []
     clean_tokens = []
 
@@ -57,6 +72,31 @@ embedding_def = Definition(name="embedding", primitive="generic")
 async def get_embedding(
     text: str, max_len: int, pad_token: str, spacy_model: str
 ) -> List[float]:
+    """
+    Maps words of text data to their corresponding word vectors.
+
+    Parameters
+    ----------
+    text : str
+        String to be converted to word vectors.
+
+    max_len: int
+        Maximum length of sentence.
+        If the length of `text` > `max_len`, `text` is truncated
+        to have length = `max_len`.
+        If the length of `text` < `max_len`, `text` is padded with
+        `pad_token` such that len(`text`) = `max_len`.
+
+    pad_token: str
+        Token to be used for padding `text` if len(`text`) < `max_len`
+
+    spacy_model: str
+        Spacy model to be used for assigning vectors to tokens.
+
+    Returns
+    -------
+    result: A 2-d array of shape (max_len, embedding_size of vectors).
+    """
     try:
         nlp = spacy.load(spacy_model)
     except OSError:

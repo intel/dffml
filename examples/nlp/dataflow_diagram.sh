@@ -1,1 +1,1 @@
-cat nlp_ops_dataflow.json | dffml dataflow diagram -configloader yaml /dev/stdin
+dffml dataflow diagram -stage processing -- nlp_ops_dataflow.json

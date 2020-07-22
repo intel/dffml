@@ -5,10 +5,16 @@ This example will show you how to use DFFML operations to clean text data and tr
 
 DFFML offers several :ref:`plugin_models`. For this example
 we will be using the tensorflow DNNClassifier model
-(:ref:`plugin_model_dffml_model_tensorflow_tfdnnc`) which is in the ``dffml`` package.
+(:ref:`plugin_model_dffml_model_tensorflow_tfdnnc`) which is in the ``dffml-model-tensorflow`` package.
 
 We will use two operations :ref:`plugin_operation_dffml_operations_nlp_remove_stopwords` and :ref:`plugin_operation_dffml_operations_nlp_get_embedding`.
 Internally, both of these operations use `spacy <https://spacy.io/usage/spacy-101>`_ functions.
+
+To install DNNClassifier model and the above mentioned operations run:
+
+.. code-block:: console
+
+    $ pip install -U dffml-model-tensorflow dffml-operations-nlp
 
 Operation `remove_stopwords` cleans the text by removing most commanly used words which give the text little or no information eg. but, or, yet, it, is, am, etc.
 These words are called `StopWords`. 
