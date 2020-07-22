@@ -131,7 +131,8 @@ if ([[ "x${PLUGIN}" == "xmodel/daal4py" ]] || \
   # daal4py only supports ^ Python 3.7
   set +e
   # See comment in vowpalWabbit about conda exit codes
-  conda install -y -c intel daal4py
+  # See https://github.com/intel/dffml/issues/801 for discussion on pinning
+  conda install -y -c intel daal4py==2020.1 daal==2020.1
   exit_code=$?
   if [[ "x${exit_code}" != "x0" ]]; then
     exit "${exit_code}"
