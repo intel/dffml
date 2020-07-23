@@ -28,13 +28,13 @@ We'll write the operations for this dataflow in operations.py
     :lines: 24-51
 
 All requests to Gitter's API requires the room id for our room.
-``get_room_id`` gets the ``room id`` from room name ( The input to
-out dataflow).
+``get_room_id`` gets the ``room id`` from room name (The input to
+our dataflow).
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
     :lines: 52-87
 
-We listen to new messages directed to out bot.
+We listen to new messages directed to our bot.
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
     :lines: 90-122
@@ -50,14 +50,14 @@ that you can parse unstructered data.
 
 Our operations are ``get_room_id, stream_chat, send_message and interpret_message``.
 All of them use at least one config. The common config being INISecretConfig which
-loads out secret token and bot name from out ini configs file.
+loads secret token and bot name from the ini config file.
 
 .. literalinclude:: /../examples/dataflow/chatbot/configs.ini
 
 Detour: What are imp_enter and ctx_enter?
----------------------------------------------
+-----------------------------------------
 
-.. code-block::python
+.. code-block:: python
 
     config_cls=GitterChannelConfig,
     imp_enter={"secret": lambda self: self.config.secret},
@@ -109,13 +109,13 @@ Or using the command line to, create the dataflow
         operations:interpret_message \
         -config \
             ini=operations:get_room_id.secret.plugin \
-            "configs.ini"=operations:get_room_id.secret.config.filename \
+            configs.ini=operations:get_room_id.secret.config.filename \
             ini=operations:stream_chat.secret.plugin \
-            "configs.ini"=operations:stream_chat.secret.config.filename \
+            configs.ini=operations:stream_chat.secret.config.filename \
             ini=operations:send_message.secret.plugin \
-            "configs.ini"=operations:send_message.secret.config.filename \
+            configs.ini=operations:send_message.secret.config.filename \
             ini=operations:interpret_message.secret.plugin \
-            "configs.ini"=operations:interpret_message.secret.config.filename \
+            configs.ini=operations:interpret_message.secret.config.filename \
     > chatbot_df.json
 
 And run it by providing the ``room_name`` as the input
