@@ -28,6 +28,65 @@ class DAAL4PyLRModelConfig:
 
 @entrypoint("daal4pylr")
 class DAAL4PyLRModel(SimpleModel):
+    """
+    Implemented using daal4py.
+
+    First we create the training and testing datasets
+
+    .. literalinclude:: /../model/daal4py/examples/lr/train_data.sh
+
+    .. literalinclude:: /../model/daal4py/examples/lr/test_data.sh
+
+    Train the model
+
+    .. literalinclude:: /../model/daal4py/examples/lr/train.sh
+
+    Assess the accuracy
+
+    .. literalinclude:: /../model/daal4py/examples/lr/accuracy.sh
+
+    Output
+
+    .. code-block::
+
+        0.6666666666666666
+
+
+    Make a prediction
+
+    .. literalinclude:: /../model/daal4py/examples/lr/predict.sh
+
+    Output
+
+    .. code-block:: json
+
+        [
+            {
+                "extra": {},
+                "features": {
+                    "ans": 1,
+                    "f1": 0.8
+                },
+                "key": "0",
+                "last_updated": "2020-07-22T02:53:11Z",
+                "prediction": {
+                    "ans": {
+                        "confidence": NaN,
+                        "value": 1.1907472649730522
+                    }
+                }
+            }
+        ]
+
+
+
+
+
+    Example usage of daal4py Linear Regression model using python API
+
+    .. literalinclude:: /../model/daal4py/examples/lr/textclassifier.py
+    """
+
     CONFIG = DAAL4PyLRModelConfig
 
     def __init__(self, config) -> None:
@@ -90,6 +149,10 @@ class DAAL4PyLRModel(SimpleModel):
             predict = self.pd.DataFrame(feature_data, index=[0])
             preds = self.lm_predictor.compute(predict, self.lm_trained)
             target = self.parent.config.predict.name
-            record.predicted(target, preds.prediction, float("nan"))
+            if preds.prediction.size == 1:
+                prediction = preds.prediction.flat[0]
+            else:
+                prediction = preds.prediction
+            record.predicted(target, prediction, float("nan"))
             # Yield the record to the caller
             yield record
