@@ -1855,3 +1855,93 @@ No description
 **Outputs**
 
 - password: ScryptPassword(type: string)
+
+.. _plugin_operation_dffml_operations_nlp:
+
+dffml_operations_nlp
+--------------------
+
+.. code-block:: console
+
+    pip install dffml-operations-nlp
+
+
+.. _plugin_operation_dffml_operations_nlp_get_embedding:
+
+get_embedding
+~~~~~~~~~~~~~
+
+*Official*
+
+Maps words of text data to their corresponding word vectors.
+
+Parameters
+----------
+text : str
+    String to be converted to word vectors.
+
+max_len: int
+    Maximum length of sentence.
+    If the length of `text` > `max_len`, `text` is truncated
+    to have length = `max_len`.
+    If the length of `text` < `max_len`, `text` is padded with
+    `pad_token` such that len(`text`) = `max_len`.
+
+pad_token: str
+    Token to be used for padding `text` if len(`text`) < `max_len`
+
+spacy_model: str
+    Spacy model to be used for assigning vectors to tokens.
+
+Returns
+-------
+result: A 2-d array of shape (max_len, embedding_size of vectors).
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- text: text_def(type: str)
+- spacy_model: spacy_model_name_def(type: str)
+- max_len: max_len_def(type: int)
+- pad_token: pad_token_def(type: str)
+
+**Outputs**
+
+- embedding: embedding(type: generic)
+
+.. _plugin_operation_dffml_operations_nlp_remove_stopwords:
+
+remove_stopwords
+~~~~~~~~~~~~~~~~
+
+*Official*
+
+Removes stopword from text data.
+
+Parameters
+----------
+text : str
+    String to be cleaned.
+
+custom_stop_words: List[str], default = None
+    List of words to be considered as stop words.
+
+Returns
+-------
+result: A string without stop words.
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- text: remove_stopwords.inputs.text(type: str)
+- custom_stop_words: remove_stopwords.inputs.custom_stop_words(type: array)
+
+**Outputs**
+
+- result: remove_stopwords.outputs.result(type: str)

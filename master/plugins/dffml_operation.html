@@ -158,6 +158,17 @@
 <li class="toctree-l4"><a class="reference internal" href="#scrypt">scrypt</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-operations-nlp">dffml_operations_nlp</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#get-embedding">get_embedding</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id39">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id40">Returns</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#remove-stopwords">remove_stopwords</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id41">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id42">Returns</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="dffml_service_cli.html">Services</a></li>
@@ -1871,6 +1882,78 @@ check it’s releases page to make sure you’re installing the latest version.<
 <li><p>password: ScryptPassword(type: string)</p></li>
 </ul>
 </div>
+</div>
+<div class="section" id="dffml-operations-nlp">
+<span id="plugin-operation-dffml-operations-nlp"></span><h2>dffml_operations_nlp<a class="headerlink" href="#dffml-operations-nlp" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-nlp</span>
+</pre></div>
+</div>
+<div class="section" id="get-embedding">
+<span id="plugin-operation-dffml-operations-nlp-get-embedding"></span><h3>get_embedding<a class="headerlink" href="#get-embedding" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Maps words of text data to their corresponding word vectors.</p>
+</div>
+</div>
+<div class="section" id="id39">
+<h2>Parameters<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>text<span class="classifier">str</span></dt><dd><p>String to be converted to word vectors.</p>
+</dd>
+<dt>max_len: int</dt><dd><p>Maximum length of sentence.
+If the length of <cite>text</cite> &gt; <cite>max_len</cite>, <cite>text</cite> is truncated
+to have length = <cite>max_len</cite>.
+If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> is padded with
+<cite>pad_token</cite> such that len(<cite>text</cite>) = <cite>max_len</cite>.</p>
+</dd>
+<dt>pad_token: str</dt><dd><p>Token to be used for padding <cite>text</cite> if len(<cite>text</cite>) &lt; <cite>max_len</cite></p>
+</dd>
+<dt>spacy_model: str</dt><dd><p>Spacy model to be used for assigning vectors to tokens.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id40">
+<h2>Returns<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h2>
+<p>result: A 2-d array of shape (max_len, embedding_size of vectors).</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text: text_def(type: str)</p></li>
+<li><p>spacy_model: spacy_model_name_def(type: str)</p></li>
+<li><p>max_len: max_len_def(type: int)</p></li>
+<li><p>pad_token: pad_token_def(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>embedding: embedding(type: generic)</p></li>
+</ul>
+<div class="section" id="remove-stopwords">
+<span id="plugin-operation-dffml-operations-nlp-remove-stopwords"></span><h3>remove_stopwords<a class="headerlink" href="#remove-stopwords" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Removes stopword from text data.</p>
+</div>
+</div>
+<div class="section" id="id41">
+<h2>Parameters<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>text<span class="classifier">str</span></dt><dd><p>String to be cleaned.</p>
+</dd>
+<dt>custom_stop_words: List[str], default = None</dt><dd><p>List of words to be considered as stop words.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id42">
+<h2>Returns<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h2>
+<p>result: A string without stop words.</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text: remove_stopwords.inputs.text(type: str)</p></li>
+<li><p>custom_stop_words: remove_stopwords.inputs.custom_stop_words(type: array)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: remove_stopwords.outputs.result(type: str)</p></li>
+</ul>
 </div>
 </div>
 
