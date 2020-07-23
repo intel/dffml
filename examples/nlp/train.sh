@@ -1,0 +1,15 @@
+dffml train \
+    -model tfdnnc \
+    -model-batchsize 100 \
+    -model-hidden 5 2 \
+    -model-clstype int \
+    -model-predict sentiment:int:1 \
+    -model-classifications 0 1 \
+    -model-directory tempdir \
+    -model-features embedding:float:[1,10,96] \
+    -sources text=df \
+    -source-text-dataflow nlp_ops_dataflow.json \
+    -source-text-features sentence:str:1 \
+    -source-text-source csv \
+    -source-text-source-filename train_data.csv \
+    -log debug
