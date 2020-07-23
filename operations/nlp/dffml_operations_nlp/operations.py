@@ -65,6 +65,22 @@ async def get_embedding(text: str, spacy_model: str) -> List[float]:
 async def pos_tagger(
     text: str, spacy_model: str, tag_type: str = "fine_grained"
 ) -> List[str]:
+    """
+    Assigns part-of-speech tags to text.
+
+    Parameters
+    ----------
+    text : str
+        Text to be tagged.
+
+    spacy_model: str
+        A spacy model with tagger and parser.
+
+    Returns
+    -------
+    result: list
+        A list containing tuples of word and their respective pos tag.
+    """
     nlp = _load_model(spacy_model)
     doc = nlp(text)
     pos_tags = []
@@ -79,6 +95,22 @@ async def pos_tagger(
 
 @op
 async def lemmatizer(text: str, spacy_model: str) -> List[str]:
+    """
+    Reduce words in the text to their dictionary form (lemma)
+
+    Parameters
+    ----------
+    text : str
+        String to lemmatize.
+
+    spacy_model: str
+        Spacy model to be used for lemmatization.
+
+    Returns
+    -------
+    result: list
+        A list containing base form of the words.
+    """
     nlp = _load_model(spacy_model)
     doc = nlp(text)
     lemma = []
@@ -89,6 +121,25 @@ async def lemmatizer(text: str, spacy_model: str) -> List[str]:
 
 @op
 async def get_similarity(text_1: str, text_2: str, spacy_model: str) -> float:
+    """
+    Calculates similarity between two text strings as a score between 0 and 1.
+
+    Parameters
+    ----------
+    text_1 : str
+        First string to compare.
+    
+    text_2 : str
+        Second string to compare.
+
+    spacy_model: str
+        Spacy model to be used for extracting word vectors which are used for calculating similarity.
+
+    Returns
+    -------
+    result: float
+        A similarity score between 0 and 1.
+    """
     nlp = _load_model(spacy_model)
     text_1_doc = nlp(text_1)
     text_2_doc = nlp(text_2)
@@ -97,6 +148,22 @@ async def get_similarity(text_1: str, text_2: str, spacy_model: str) -> float:
 
 @op
 async def get_noun_chunks(text: str, spacy_model: str) -> List[str]:
+    """
+    Extracts the noun chunks from text.
+
+    Parameters
+    ----------
+    text : str
+        String to extract noun chunks from.
+
+    spacy_model: str
+        A spacy model with the capability of parsing.
+
+    Returns
+    -------
+    result: list
+        A list containing noun chunks.
+    """
     nlp = _load_model(spacy_model)
     text_doc = nlp(text)
     noun_chunks = list(text_doc.noun_chunks)
@@ -105,6 +172,23 @@ async def get_noun_chunks(text: str, spacy_model: str) -> List[str]:
 
 @op
 async def get_sentences(text: str, spacy_model: str) -> List[str]:
+    """
+    Extracts the sentences from text.
+
+    Parameters
+    ----------
+    text : str
+        String to extract sentences from.
+
+    spacy_model: str
+        A spacy model with the capability of parsing. Sentence 
+        boundaries are calculated from the syntactic dependency parse.
+
+    Returns
+    -------
+    result: list
+        A list containing sentences.
+    """
     nlp = _load_model(spacy_model)
     text_doc = nlp(text)
     sentences = list(text_doc.sents)
@@ -151,7 +235,7 @@ async def count_vectorizer(
 
 @op
 async def tfidf_vectorizer(
-    text: str,
+    text: List[str],
     # input="content",
     encoding: str = "utf-8",
     decode_error: str = "strict",
