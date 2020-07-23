@@ -22,7 +22,7 @@ To install DNNClassifier model and the above mentioned operations run:
     $ python -m pip install -U dffml-model-tensorflow dffml-operations-nlp
 
 Operation `remove_stopwords` cleans the text by removing most commanly used words which give the text little or no information eg. but, or, yet, it, is, am, etc.
-These words are called `StopWords`. 
+These words are called `StopWords`.
 Operation `get_embedding` maps the tokens in the text to their corresponding word-vectors. Here we will use embeddings from `en_core_web_sm` spacy model.
 You can use other models like `en_core_web_md`, `en_core_web_lg` for better results but these are bigger in size and may take a while to download.
 

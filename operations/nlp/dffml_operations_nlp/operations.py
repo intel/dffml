@@ -28,7 +28,6 @@ def _load_model(spacy_model: str):
         )
     return nlp
 
-
 @op
 async def remove_stopwords(
     text: str, custom_stop_words: List[str] = None
@@ -140,7 +139,7 @@ async def get_similarity(text_1: str, text_2: str, spacy_model: str) -> float:
     ----------
     text_1 : str
         First string to compare.
-    
+
     text_2 : str
         Second string to compare.
 
