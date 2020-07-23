@@ -35,7 +35,7 @@ def directory_with_csv_files():
 
 class TestNLPOps(IntegrationCLITestCase):
     async def test_run(self):
-        self.required_plugins("dffml-operations-nlp")
+        self.required_plugins("dffml-operations-nlp", "dffml-model-tensorflow")
 
         # Test .sh files
         def clean_args(fd, directory):
