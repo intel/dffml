@@ -1,22 +1,15 @@
 from __future__ import print_function, division
 
+import sys
 import torch.nn as nn
-import torch.optim as optim
-from torch.optim import lr_scheduler
 from torchvision import models
 
 from dffml.util.entrypoint import entrypoint
-from dffml.base import config
 from dffml.model.model import Model
 from .pytorch_base import PyTorchModelConfig, PyTorchModelContext
 
 
-@config
-class ResNet18ModelConfig(PyTorchModelConfig):
-    pass
-
-
-class ResNet18ModelContext(PyTorchModelContext):
+class PyTorchPretrainedContext(PyTorchModelContext):
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -32,97 +25,100 @@ class ResNet18ModelContext(PyTorchModelContext):
             self.classifications,
         )
 
-        model = models.resnet18(pretrained=True)
+        model = getattr(models, self.parent.PYTORCH_MODEL)(
+            pretrained=self.parent.config.pretrained
+        )
         for param in model.parameters():
             param.require_grad = self.parent.config.trainable
 
-        model.fc = nn.Sequential(
-            nn.Linear(model.fc.in_features, 256),
-            nn.ReLU(),
-            nn.Dropout(0.2),
-            nn.Linear(256, len(self.classifications)),
-            nn.LogSoftmax(dim=1),
-        )
-        self._model = model.to(self.device)
+        if self.parent.LAST_LAYER_TYPE == "classifier_sequential":
+            num_features = model.classifier[-1].in_features
+            features = list(model.classifier.children())[:-1]
+            features.append(
+                nn.Sequential(
+                    nn.Linear(num_features, 256),
+                    nn.ReLU(),
+                    nn.Dropout(0.2),
+                    nn.Linear(256, len(self.classifications)),
+                    nn.LogSoftmax(dim=1),
+                )
+            )
+            model.classifier = nn.Sequential(*features)
 
-        # Metrics
-        self.criterion = nn.CrossEntropyLoss()
-        model_parameters = (
-            self._model.parameters()
-            if self.parent.config.trainable
-            else self._model.fc.parameters()
-        )
-        self.optimizer = optim.SGD(model_parameters, lr=0.001, momentum=0.9)
-        self.exp_lr_scheduler = lr_scheduler.StepLR(
-            self.optimizer, step_size=7, gamma=0.1
-        )
-
-        return self._model
-
-
-@entrypoint("resnet18")
-class ResNet18Model(Model):
-
-    CONFIG = ResNet18ModelConfig
-    CONTEXT = ResNet18ModelContext
-
-
-@config
-class VGG16ModelConfig(PyTorchModelConfig):
-    pass
-
-
-class VGG16ModelContext(PyTorchModelContext):
-    def __init__(self, parent):
-        super().__init__(parent)
-
-    def createModel(self):
-        """
-        Generates a model
-        """
-        if self._model is not None:
-            return self._model
-        self.logger.debug(
-            "Loading model with classifications(%d): %r",
-            len(self.classifications),
-            self.classifications,
-        )
-
-        model = models.vgg16(pretrained=True)
-        for param in model.parameters():
-            param.require_grad = self.parent.config.trainable
-
-        num_features = model.classifier[-1].in_features
-        features = list(model.classifier.children())[:-1]
-        features.append(
-            nn.Sequential(
-                nn.Linear(num_features, 256),
+        elif self.parent.LAST_LAYER_TYPE == "classifier_linear":
+            model.classifier = nn.Sequential(
+                nn.Linear(model.classifier.in_features, 256),
                 nn.ReLU(),
                 nn.Dropout(0.2),
                 nn.Linear(256, len(self.classifications)),
                 nn.LogSoftmax(dim=1),
             )
-        )
-        model.classifier = nn.Sequential(*features)
+
+        else:
+            model.fc = nn.Sequential(
+                nn.Linear(model.fc.in_features, 256),
+                nn.ReLU(),
+                nn.Dropout(0.2),
+                nn.Linear(256, len(self.classifications)),
+                nn.LogSoftmax(dim=1),
+            )
+
         self._model = model.to(self.device)
-
-        # Metrics
-        self.criterion = nn.CrossEntropyLoss()
-        model_parameters = (
-            self._model.classifier.parameters()
-            if self.parent.config.trainable
-            else self._model.classifier[-1].parameters()
-        )
-        self.optimizer = optim.SGD(model_parameters, lr=0.001, momentum=0.9)
-        self.exp_lr_scheduler = lr_scheduler.StepLR(
-            self.optimizer, step_size=7, gamma=0.1
-        )
-
         return self._model
 
 
-@entrypoint("vgg16")
-class VGG16Model(Model):
+class PyTorchPreTrainedModel(Model):
+    def __init__(self, config) -> None:
+        super().__init__(config)
 
-    CONFIG = VGG16ModelConfig
-    CONTEXT = VGG16ModelContext
+
+for model_name, name, last_layer_type in [
+    ("alexnet", "AlexNet", "classifier_sequential"),
+    ("densenet121", "DenseNet121", "classifier_linear"),
+    ("densenet161", "DenseNet161", "classifier_linear"),
+    ("densenet169", "DenseNet169", "classifier_linear"),
+    ("densenet201", "DenseNet201", "classifier_linear"),
+    ("mnasnet0_5", "MnasNet0_5", "classifier_sequential"),
+    ("mnasnet1_0", "MnasNet1_0", "classifier_sequential"),
+    ("mobilenet_v2", "MobileNetV2", "classifier_sequential"),
+    ("vgg11", "VGG11", "classifier_sequential"),
+    ("vgg11_bn", "VGG11BN", "classifier_sequential"),
+    ("vgg13", "VGG13", "classifier_sequential"),
+    ("vgg13_bn", "VGG13BN", "classifier_sequential"),
+    ("vgg16", "VGG16", "classifier_sequential"),
+    ("vgg16_bn", "VGG16BN", "classifier_sequential"),
+    ("vgg19", "VGG19", "classifier_sequential"),
+    ("vgg19_bn", "VGG19BN", "classifier_sequential"),
+    ("googlenet", "GoogleNet", "fully_connected"),
+    ("inception_v3", "InceptionV3", "fully_connected"),
+    ("resnet101", "ResNet101", "fully_connected"),
+    ("resnet152", "ResNet152", "fully_connected"),
+    ("resnet18", "ResNet18", "fully_connected"),
+    ("resnet34", "ResNet34", "fully_connected"),
+    ("resnet50", "ResNet50", "fully_connected"),
+    ("resnext101_32x8d", "ResNext101_32x8D", "fully_connected"),
+    ("resnext50_32x4d", "ResNext50_32x4D", "fully_connected"),
+    ("shufflenet_v2_x0_5", "ShuffleNetV2x0_5", "fully_connected"),
+    ("shufflenet_v2_x1_0", "ShuffleNetV2x1_0", "fully_connected"),
+    ("wide_resnet101_2", "WideResNet101_2", "fully_connected"),
+    ("wide_resnet50_2", "WideResNet50_2", "fully_connected"),
+]:
+    cls_config = type(name + "ModelConfig", (PyTorchModelConfig,), {},)
+    cls_context = type(name + "ModelContext", (PyTorchPretrainedContext,), {},)
+
+    dffml_cls = type(
+        name + "Model",
+        (PyTorchPreTrainedModel,),
+        {
+            "CONFIG": cls_config,
+            "CONTEXT": cls_context,
+            "PYTORCH_MODEL": model_name,
+            "LAST_LAYER_TYPE": last_layer_type,
+        },
+    )
+
+    dffml_cls = entrypoint(model_name)(dffml_cls)
+
+    setattr(sys.modules[__name__], cls_config.__qualname__, cls_config)
+    setattr(sys.modules[__name__], cls_context.__qualname__, cls_context)
+    setattr(sys.modules[__name__], dffml_cls.__qualname__, dffml_cls)

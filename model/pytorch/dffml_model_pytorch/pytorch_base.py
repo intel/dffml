@@ -8,6 +8,9 @@ import copy
 import time
 
 import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.optim import lr_scheduler
 
 import numpy as np
 
@@ -38,13 +41,17 @@ class PyTorchModelConfig:
     trainable: bool = field(
         "Tweak pretrained model by training again", default=False
     )
-    batch_size: int = field("Batch size", default=10)
+    batch_size: int = field("Batch size", default=32)
     validation_split: float = field(
         "Split training data for Validation", default=0.0
     )
-    # criterion: str = field("Loss function", default="CrossEntropyLoss")
-    # optimizer: str = field("Optimizer used by model", default="SGD")
-    # metrics: str = field("Scheduler", default="")
+    pretrained: bool = field(
+        "Load Pre-trained model weights.", default=True,
+    )
+    patience: int = field(
+        "Early stops the training if validation loss doesn't improve after a given patience",
+        default=5,
+    )
 
     def __post_init__(self):
         self.classifications = list(map(self.clstype, self.classifications))
@@ -58,6 +65,8 @@ class PyTorchModelContext(ModelContext):
         self.features = self._applicable_features()
         self.model_dir_path = self._model_dir_path()
         self._model = None
+        self.counter = 0
+
         if self.parent.config.useCUDA and torch.cuda.is_available():
             self.device = torch.device("cuda:0")
             self.logger.info("Using CUDA")
@@ -71,6 +80,34 @@ class PyTorchModelContext(ModelContext):
             self._model = torch.load(os.path.join(path, "model.pt"))
         else:
             self._model = self.createModel()
+
+        if self.parent.LAST_LAYER_TYPE == "classifier_sequential":
+            self.model_parameters = (
+                self._model.parameters()
+                if self.parent.config.trainable
+                else self._model.classifier[-1].parameters()
+            )
+        elif self.parent.LAST_LAYER_TYPE == "classifier_linear":
+            self.model_parameters = (
+                self._model.parameters()
+                if self.parent.config.trainable
+                else self._model.classifier.parameters()
+            )
+        else:
+            self.model_parameters = (
+                self._model.parameters()
+                if self.parent.config.trainable
+                else self._model.fc.parameters()
+            )
+
+        self.criterion = nn.CrossEntropyLoss()
+        self.optimizer = optim.SGD(
+            self.model_parameters, lr=0.001, momentum=0.9
+        )
+        self.exp_lr_scheduler = lr_scheduler.StepLR(
+            self.optimizer, step_size=5, gamma=0.1
+        )
+
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):
@@ -272,21 +309,33 @@ class PyTorchModelContext(ModelContext):
                     )
                 )
 
-                if phase == "Validation" and epoch_acc > best_acc:
-                    best_acc = epoch_acc
-                    best_model_wts = copy.deepcopy(self._model.state_dict())
+                if phase == "Validation":
+                    if epoch_acc >= best_acc:
+                        best_acc = epoch_acc
+                        best_model_wts = copy.deepcopy(
+                            self._model.state_dict()
+                        )
+                        self.counter = 0
+                    else:
+                        self.counter += 1
 
             self.logger.debug("")
 
+            if self.counter == self.parent.config.patience:
+                self.logger.info(
+                    f"Early stopping: Validation Loss didn't improve for {self.counter} consecutive epochs."
+                )
+                break
+
         time_elapsed = time.time() - since
-        self.logger.debug(
+        self.logger.info(
             "Training complete in {:.0f}m {:.0f}s".format(
                 time_elapsed // 60, time_elapsed % 60
             )
         )
 
         if self.parent.config.validation_split:
-            self.logger.debug(
+            self.logger.info(
                 "Best Validation Accuracy: {:4f}".format(best_acc)
             )
             self._model.load_state_dict(best_model_wts)
