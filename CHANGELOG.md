@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Added ability to rename outputs using GetSingle
+- Tutorial for using NLP operations with models
 - Operations plugin for NLP
 - Support for default value in a Definition
 - Transformers Question Answering model
@@ -64,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   core plugins
 - HTTP service got a `-redirect` flag which allows for URL redirection via a
   HTTP 307 response
+- Daal4py example usage.
 ### Changed
 - Renamed `-seed` to `-inputs` in `dataflow create` command
 - Renamed configloader/png to configloader/image and added support for loading JPEG and TIFF file formats
