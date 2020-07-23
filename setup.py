@@ -94,6 +94,8 @@ setup(
             # Mapping
             "dffml.mapping.extract = dffml.operation.mapping:mapping_extract_value",
             "dffml.mapping.create = dffml.operation.mapping:create_mapping",
+            "dffml.mapping.merge = dffml.operation.mapping:mapping_merge",
+            "dffml.mapping.group_mappings = dffml.operation.mapping:group_mappings",
             # Dataflow
             "dffml.dataflow.run = dffml.operation.dataflow:run_dataflow",
             # Model

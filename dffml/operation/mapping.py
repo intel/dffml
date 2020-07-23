@@ -1,13 +1,15 @@
+import copy
 from typing import Dict, List, Any
 
 from ..df.types import Definition
 from ..df.base import op
-from ..util.data import traverse_get
+from ..util.data import traverse_get, merge
 
 MAPPING = Definition(name="mapping", primitive="map")
 MAPPING_TRAVERSE = Definition(name="mapping_traverse", primitive="List[str]")
 MAPPING_KEY = Definition(name="key", primitive="str")
 MAPPING_VALUE = Definition(name="value", primitive="generic")
+MAPPING_INPUTS = Definition(name="mapping_inputs", primitive="map")
 
 
 @op(
@@ -117,3 +119,41 @@ def create_mapping(key: str, value: Any):
     {'mapping': {'key1': 42}}
     """
     return {"mapping": {key: value}}
+
+
+@op(
+    name="dffml.mapping.expand.all.keys",
+    inputs={"mapping": MAPPING},
+    outputs={"key": MAPPING_KEY},
+    expand=["key"],
+)
+def mapping_expand_all_keys(mapping: Dict[str, Any]):
+    return {"key": list(mapping.keys())}
+
+
+@op(
+    name="dffml.mapping.expand.all.values",
+    inputs={"mapping": MAPPING},
+    outputs={"value": MAPPING_VALUE},
+    expand=["value"],
+)
+def mapping_expand_all_values(mapping: Dict[str, Any]):
+    return {"value": list(mapping.values())}
+
+
+@op(
+    name="dffml.mapping.merge",
+    inputs={"one": MAPPING, "two": MAPPING},
+    outputs={"mapping": MAPPING},
+)
+def mapping_merge(one: dict, two: dict):
+    return {"mapping": merge(copy.deepcopy(one), copy.deepcopy(two))}
+
+
+@op(
+    name="dffml.mapping.group_mappings",
+    inputs={"inputs": MAPPING_INPUTS},
+    outputs={"results": MAPPING},
+)
+def group_mappings(**kwargs):
+    return {"results": kwargs}

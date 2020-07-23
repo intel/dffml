@@ -335,6 +335,9 @@ By copying the example source implementation
     existing logic and just want to store data in MySQL, you chould check out
     the MySQL :doc:`/plugins/dffml_source` plugin.
 
+.. TODO We don't need demoapp/source.py now because saving to the db is done by
+   the db_query_insert operation. We should also get rid of the ml_data table.
+
 **demoapp/source.py**
 
 .. literalinclude:: /../examples/maintained/demoapp/source.py

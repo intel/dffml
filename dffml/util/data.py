@@ -36,6 +36,7 @@ def merge(one, two, list_append: bool = True):
                 one[key] += two[key]
         else:
             one[key] = two[key]
+    return one
 
 
 def traverse_config_set(target, *args):
@@ -204,6 +205,27 @@ def type_lookup(typename):
 
 
 def export_value(obj, key, value):
+    # TODO This is a workaround for the generator related AttributeError when
+    # exporting a model.
+    #
+    # features is the key that triggers this error. It is this when it come
+    # through here and dies:
+    #
+    #     [<generator object _asdict_inner.<locals>.<genexpr> at 0x7f21982ae4f8>]
+    #
+    # The following error is then raised:
+    #
+    # File "/home/user/Documents/python/dffml/dffml/util/data.py", line 115, in export_value
+    #   obj[key] = value.export()
+    # File "/home/user/Documents/python/dffml/dffml/feature/feature.py", line 317, in export
+    #   return {feature.NAME: feature.export() for feature in self}
+    # File "/home/user/Documents/python/dffml/dffml/feature/feature.py", line 317, in <dictcomp>
+    #   return {feature.NAME: feature.export() for feature in self}
+    # AttributeError: 'generator' object has no attribute 'export'
+    #
+    # At some point we need to figure out why this is happening.
+    if isinstance(value, list) and value and inspect.isgenerator(value[0]):
+        obj[key] = list(value[0])
     # export and _asdict are not classmethods
     if hasattr(value, "ENTRY_POINT_ORIG_LABEL") and hasattr(value, "config"):
         obj[key] = {"plugin": value.ENTRY_POINT_ORIG_LABEL}

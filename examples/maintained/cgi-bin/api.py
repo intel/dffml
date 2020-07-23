@@ -27,10 +27,10 @@ cnx = mysql.connector.connect(
 cursor = cnx.cursor()
 
 if action == 'dump':
-    cursor.execute("SELECT key, maintained FROM status")
+    cursor.execute("SELECT `key`, maintained FROM status")
     print json.dumps(dict(cursor))
 elif action == 'set':
-    cursor.execute("REPLACE INTO status (key, maintained) VALUES(%s, %s)",
+    cursor.execute("REPLACE INTO status (`key`, maintained) VALUES(%s, %s)",
                    (query['URL'], query['maintained'],))
     cnx.commit()
     print json.dumps(dict(success=True))

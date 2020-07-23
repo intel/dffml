@@ -22,7 +22,7 @@ class DemoAppSourceContext(BaseSourceContext):
         # tables.
         marshall = json.dumps(record.dict())
         await db.execute(
-            "INSERT INTO ml_data (key, json) VALUES(%s, %s) "
+            "INSERT INTO ml_data (`key`, json) VALUES(%s, %s) "
             "ON DUPLICATE KEY UPDATE json = %s",
             (record.key, marshall, marshall),
         )
@@ -30,9 +30,9 @@ class DemoAppSourceContext(BaseSourceContext):
         self.logger.debug("update: %s", await self.record(record.key))
 
     async def records(self) -> AsyncIterator[Record]:
-        await self.conn.execute("SELECT key FROM `status`")
+        await self.conn.execute("SELECT `key` FROM `status`")
         keys = set(map(lambda row: row[0], await self.conn.fetchall()))
-        await self.conn.execute("SELECT key FROM `ml_data`")
+        await self.conn.execute("SELECT `key` FROM `ml_data`")
         list(map(lambda row: keys.add(row[0]), await self.conn.fetchall()))
         for key in keys:
             yield await self.record(key)
@@ -41,12 +41,12 @@ class DemoAppSourceContext(BaseSourceContext):
         record = Record(key)
         db = self.conn
         # Get features
-        await db.execute("SELECT json FROM ml_data WHERE key=%s", (key,))
+        await db.execute("SELECT json FROM ml_data WHERE `key`=%s", (key,))
         dump = await db.fetchone()
         if dump is not None and dump[0] is not None:
             record.merge(Record(key, data=json.loads(dump[0])))
         await db.execute(
-            "SELECT maintained FROM `status` WHERE key=%s", (key,)
+            "SELECT maintained FROM `status` WHERE `key`=%s", (key,)
         )
         maintained = await db.fetchone()
         if maintained is not None and maintained[0] is not None:

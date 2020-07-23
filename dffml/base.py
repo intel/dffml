@@ -152,11 +152,27 @@ def convert_value(arg, value):
             type_cls = type_lookup
         # TODO This is a oversimplification of argparse's nargs
         if "nargs" in arg:
-            value = list(map(type_cls, value))
+            done = False
+            if getattr(type_cls, "_fromdict", False) and len(value) > 0:
+                if isinstance(value, list):
+                    if isinstance(value[0], dict):
+                        value = [type_cls._fromdict(**v) for v in value]
+                        done = True
+                elif isinstance(value, dict):
+                    if isinstance(list(value.values())[0], dict):
+                        value = [
+                            type_cls._fromdict(**v) for v in value.values()
+                        ]
+                        done = True
+            if not done:
+                value = list(map(type_cls, value))
+        elif isinstance(value, dict) and getattr(type_cls, "_fromdict", False):
+            value = type_cls._fromdict(**value)
         elif getattr(type_cls, "CONFIGLOADABLE", False):
             pass
         else:
             value = type_cls(value)
+
         # list -> tuple
         if arg.annotation is not None and get_origin(arg.annotation) is tuple:
             value = get_origin(arg.annotation)(value)
@@ -175,7 +191,8 @@ def convert_value(arg, value):
 
 def is_config_dict(value):
     return bool(
-        "plugin" in value
+        isinstance(value, dict)
+        and "plugin" in value
         and "config" in value
         and isinstance(value["config"], dict)
     )

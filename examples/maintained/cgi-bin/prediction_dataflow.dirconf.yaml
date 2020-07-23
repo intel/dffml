@@ -1,0 +1,224 @@
+configs:
+  insert_db:
+    database:
+      arg: mysql
+      config:
+        ca: null
+        db: db
+        host: 127.0.0.1
+        password: pass
+        port: 3306
+        user: user
+  model_predict:
+    model:
+      arg: tfdnnc
+      config:
+        classifications:
+        - '0'
+        - '1'
+        clstype: str
+        directory: /home/johnsa1/.cache/dffml/tensorflow
+        epochs: 30
+        features:
+        - dtype: int
+          length: 10
+          name: authors
+        - dtype: int
+          length: 10
+          name: commits
+        - dtype: int
+          length: 10
+          name: work
+        hidden:
+        - 12
+        - 40
+        - 15
+        predict:
+          dtype: int
+          length: 1
+          name: maintained
+        steps: 3000
+definitions:
+  flow_inputs:
+    name: flow_inputs
+    primitive: Dict[str,Any]
+  flow_results:
+    name: flow_results
+    primitive: Dict[str,Any]
+  get_single_output:
+    name: get_single_output
+    primitive: map
+  get_single_spec:
+    name: get_single_spec
+    primitive: array
+  key:
+    name: key
+    primitive: str
+  mapping:
+    name: mapping
+    primitive: map
+  mapping_traverse:
+    name: mapping_traverse
+    primitive: List[str]
+  model_predictions:
+    name: model_predictions
+    primitive: Dict[str, Any]
+  query_data:
+    name: query_data
+    primitive: Dict[str, Any]
+  query_table:
+    name: query_table
+    primitive: str
+  repo_features:
+    name: repo_features
+    primitive: Dict[str, Any]
+  value:
+    name: value
+    primitive: generic
+flow:
+  create_insert_data:
+    inputs:
+      one:
+      - create_src_url_mapping: mapping
+      two:
+      - create_maintained_mapping: mapping
+  create_maintained_mapping:
+    inputs:
+      key:
+      - seed.create_maintained_mapping.key
+      value:
+      - mapping_extract_value: value
+  create_src_url_mapping:
+    inputs:
+      key:
+      - seed.create_src_url_mapping.key
+      value:
+      - mapping_expand_all_keys: key
+  get_single:
+    inputs:
+      spec:
+      - seed
+  insert_db:
+    inputs:
+      data:
+      - create_insert_data: mapping
+      table_name:
+      - seed
+  mapping_expand_all_keys:
+    inputs:
+      mapping:
+      - run_dataflow: results
+  mapping_expand_all_values:
+    inputs:
+      mapping:
+      - run_dataflow: results
+  mapping_extract_value:
+    inputs:
+      mapping:
+      - model_predict: prediction
+      traverse:
+      - seed
+  model_predict:
+    inputs:
+      features:
+      - mapping_expand_all_values: value
+  run_dataflow:
+    inputs:
+      inputs:
+      - seed
+linked: true
+operations:
+  create_insert_data:
+    inputs:
+      one: mapping
+      two: mapping
+    name: dffml.mapping.merge
+    outputs:
+      mapping: mapping
+    stage: processing
+  create_maintained_mapping:
+    inputs:
+      key: key
+      value: value
+    name: dffml.mapping.create
+    outputs:
+      mapping: mapping
+    stage: processing
+  create_src_url_mapping:
+    inputs:
+      key: key
+      value: value
+    name: dffml.mapping.create
+    outputs:
+      mapping: mapping
+    stage: processing
+  get_single:
+    inputs:
+      spec: get_single_spec
+    name: get_single
+    outputs:
+      output: get_single_output
+    stage: output
+  insert_db:
+    inputs:
+      data: query_data
+      table_name: query_table
+    name: db_query_insert
+    outputs: {}
+    stage: processing
+  mapping_expand_all_keys:
+    expand:
+    - key
+    inputs:
+      mapping: mapping
+    name: dffml.mapping.expand.all.keys
+    outputs:
+      key: key
+    stage: processing
+  mapping_expand_all_values:
+    expand:
+    - value
+    inputs:
+      mapping: mapping
+    name: dffml.mapping.expand.all.values
+    outputs:
+      value: value
+    stage: processing
+  mapping_extract_value:
+    inputs:
+      mapping: mapping
+      traverse: mapping_traverse
+    name: dffml.mapping.extract
+    outputs:
+      value: value
+    stage: processing
+  model_predict:
+    inputs:
+      features: repo_features
+    name: model_predict
+    outputs:
+      prediction: model_predictions
+    stage: processing
+  run_dataflow:
+    expand:
+    - results
+    inputs:
+      inputs: flow_inputs
+    name: dffml.dataflow.run
+    outputs:
+      results: flow_results
+    stage: processing
+seed:
+- definition: get_single_spec
+  value:
+  - mapping
+- definition: mapping_traverse
+  value:
+  - maintained
+  - value
+- definition: key
+  value: src_url
+- definition: key
+  value: maintained
+- definition: query_table
+  value: status

@@ -381,7 +381,11 @@ class Input(object):
         return repr(self)
 
     def export(self):
-        return dict(value=self.value, definition=self.definition.export())
+        return dict(
+            value=self.value,
+            definition=self.definition.export(),
+            origin=self.origin,
+        )
 
     @classmethod
     def _fromdict(cls, **kwargs):
