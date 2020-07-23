@@ -179,8 +179,8 @@ if [[ "x${PLUGIN}" == "xoperations/nlp" ]]; then
   conda install -y -c conda-forge spacy
   python -m spacy download en_core_web_sm
   python -m pip install -U -e "./model/tensorflow"
-
 fi
+
 if [ "x${PLUGIN}" = "xexamples/shouldi" ]; then
   python -m pip install -U -e "./feature/git"
 fi
