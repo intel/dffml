@@ -646,7 +646,9 @@
                         <span class="c1"># We can&#39;t pass self to functions running in threads</span>
                         <span class="c1"># Its not thread safe!</span>
                         <span class="n">bound</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
-                        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">bound</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="n">bound</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isawaitable</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+                            <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">result</span>
                     <span class="k">elif</span> <span class="n">inspect</span><span class="o">.</span><span class="n">iscoroutinefunction</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
                         <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
