@@ -305,6 +305,33 @@ Supported preprocess tags : [json,text,bytes,stream]</p>
 </ul>
 </div></blockquote>
 </li>
+<li><p><code class="docutils literal notranslate"><span class="pre">immediate_response:</span> <span class="pre">Dict[str,Any]</span></code></p>
+<blockquote>
+<div><ul>
+<li><p>If provided with a reponse, server responds immediatly with
+it, whilst scheduling to run the dataflow.
+Expected keys:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>status: HTTP status code for the response</p></li>
+<li><p>content_type: MIME type, if not given, determined</p></li>
+</ul>
+<p>from the presence of body/text/json
+- body/text/json: One of this according to content_type
+- headers
+eg:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s2">&quot;content_type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;ok&quot;</span><span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
 </ul>
 </div>
 </div>
