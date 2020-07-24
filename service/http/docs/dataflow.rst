@@ -72,3 +72,22 @@ HttpChannelConfig
 
             - output of dataflow (Dict) is passes as json
 
+- ``immediate_response: Dict[str,Any]``
+
+    - If provided with a reponse, server responds immediatly with
+      it, whilst scheduling to run the dataflow.
+      Expected keys:
+        - status: HTTP status code for the response
+        - content_type: MIME type, if not given, determined
+        from the presence of body/text/json
+        - body/text/json: One of this according to content_type
+        - headers
+        eg:
+
+        .. code-block:: python
+
+            {
+                "status": 200,
+                "content_type": "application/json",
+                "data": {"text": "ok"},
+            }

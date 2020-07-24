@@ -1,16 +1,17 @@
 import os
 import io
+import aiohttp
+import asyncio
 import pathlib
 import tempfile
 from unittest.mock import patch
 from contextlib import asynccontextmanager, ExitStack, AsyncExitStack
 from typing import AsyncIterator, Dict
 
-import aiohttp
-
+from dffml import DataFlow
 from dffml.base import config
 from dffml.record import Record
-from dffml.df.base import BaseConfig
+from dffml.df.base import BaseConfig, op
 from dffml.operation.output import GetSingle
 from dffml.util.entrypoint import EntrypointNotFound
 from dffml.model.model import ModelContext, Model
@@ -28,6 +29,7 @@ from dffml_service_http.routes import (
     SOURCE_NOT_LOADED,
     MODEL_NOT_LOADED,
     MODEL_NO_SOURCES,
+    HTTPChannelConfig,
 )
 from dffml_service_http.util.testing import (
     ServerRunner,
@@ -314,6 +316,32 @@ class TestRoutesMultiComm(TestRoutesRunning, AsyncTestCase):
             self.assertEqual(
                 {"Feedface": {"response": message}}, await response.json()
             )
+
+    async def test_immediate_response(self):
+        url: str = "/some/url"
+        event = asyncio.Event()
+
+        @op()
+        async def my_event_setter(trigger: int) -> None:
+            event.set()
+
+        # Register the data flow
+        await self.cli.register(
+            HTTPChannelConfig(
+                path=url,
+                dataflow=DataFlow.auto(my_event_setter),
+                input_mode=f"text:{my_event_setter.op.inputs['trigger'].name}",
+                output_mode="json",
+                immediate_response={
+                    "status": 200,
+                    "content_type": "application/json",
+                    "data": {"immediate": "response"},
+                },
+            )
+        )
+        async with self.post(url, json="trigger") as response:
+            self.assertEqual(await response.json(), {"immediate": "response"})
+        await asyncio.wait_for(event.wait(), timeout=2)
 
 
 class TestRoutesSource(TestRoutesRunning, AsyncTestCase):
