@@ -77,30 +77,6 @@ class DAAL4PyLRModel(SimpleModel):
         self.lm_trained = self.lm.finalize().model
         self.joblib.dump(self.lm_trained, self.path)
 
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        if self.lm_trained is None:
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-        feature_data = []
-        async for record in sources.with_features(
-            self.features + [self.parent.config.predict.name]
-        ):
-            feature_data.append(
-                record.features(
-                    self.features + [self.parent.config.predict.name]
-                )
-            )
-        df = self.pd.DataFrame(feature_data)
-        xdata = df.drop([self.parent.config.predict.name], 1)
-        ydata = df[self.parent.config.predict.name]
-        preds = self.ac_predictor.compute(xdata, self.lm_trained)
-        # Calculate accuracy with an error margin of 0.1
-        accuracy_val = sum(
-            self.compare(
-                list(map(abs, map(sub, ydata, preds.prediction))), 0.1
-            )
-        ) / len(ydata)
-        return Accuracy(accuracy_val)
-
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
