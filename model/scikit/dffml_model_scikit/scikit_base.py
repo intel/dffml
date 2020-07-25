@@ -105,28 +105,6 @@ class ScikitContext(ModelContext):
         self.clf.fit(xdata, ydata)
         self.joblib.dump(self.clf, str(self._filepath))
 
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        if not self._filepath.is_file():
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-        xdata = []
-        ydata = []
-        async for record in sources.with_features(
-            self.features + [self.parent.config.predict.name]
-        ):
-            record_data = []
-            for feature in record.features(self.features).values():
-                record_data.extend(
-                    [feature] if self.np.isscalar(feature) else feature
-                )
-            xdata.append(record_data)
-            ydata.append(record.feature(self.parent.config.predict.name))
-        xdata = self.np.array(xdata)
-        ydata = self.np.array(ydata)
-        self.logger.debug("Number of input records: {}".format(len(xdata)))
-        self.confidence = self.clf.score(xdata, ydata)
-        self.logger.debug("Model Accuracy: {}".format(self.confidence))
-        return self.confidence
-
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
@@ -175,55 +153,6 @@ class ScikitContextUnsprvised(ScikitContext):
         self.logger.info("Number of input records: {}".format(len(xdata)))
         self.clf.fit(xdata)
         self.joblib.dump(self.clf, str(self._filepath))
-
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        if not self._filepath.is_file():
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-        xdata = []
-        ydata = []
-        target = []
-        estimator_type = self.clf._estimator_type
-        if estimator_type == "clusterer":
-            target = (
-                []
-                if self.parent.config.tcluster is None
-                else [self.parent.config.tcluster.name]
-            )
-        async for record in sources.with_features(self.features):
-            feature_data = record.features(self.features)
-            xdata.append(list(feature_data.values()))
-            ydata.append(list(record.features(target).values()))
-        xdata = self.np.array(xdata)
-        self.logger.debug("Number of input records: {}".format(len(xdata)))
-        if target:
-            ydata = self.np.array(ydata).flatten()
-            if hasattr(self.clf, "predict"):
-                # xdata can be training data or unseen data
-                # inductive clusterer with ground truth
-                y_pred = self.clf.predict(xdata)
-                self.confidence = mutual_info_score(ydata, y_pred)
-            else:
-                # requires xdata = training data
-                # transductive clusterer with ground truth
-                self.logger.critical(
-                    "Accuracy found transductive clusterer, ensure data being passed is training data"
-                )
-                self.confidence = mutual_info_score(ydata, self.clf.labels_)
-        else:
-            if hasattr(self.clf, "predict"):
-                # xdata can be training data or unseen data
-                # inductive clusterer without ground truth
-                y_pred = self.clf.predict(xdata)
-                self.confidence = silhouette_score(xdata, y_pred)
-            else:
-                # requires xdata = training data
-                # transductive clusterer without ground truth
-                self.logger.critical(
-                    "Accuracy found transductive clusterer, ensure data being passed is training data"
-                )
-                self.confidence = silhouette_score(xdata, self.clf.labels_)
-        self.logger.debug("Model Accuracy: {}".format(self.confidence))
-        return self.confidence
 
     async def predict(
         self, sources: SourcesContext
