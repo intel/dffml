@@ -171,13 +171,6 @@ class LogisticRegression(SimpleModel):
             )
         self.separating_line = self.best_separating_line()
 
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        # Ensure the model has been trained before we try to make a prediction
-        if self.separating_line is None:
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-        accuracy_value = self.separating_line[2]
-        return Accuracy(accuracy_value)
-
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
