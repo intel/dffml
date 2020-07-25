@@ -217,14 +217,27 @@ class TestOperations(AsyncTestCase):
                     value=input_sentence,
                     definition=count_vectorizer.op.inputs["text"],
                 ),
+                Input(
+                    value=[1, 1],
+                    definition=count_vectorizer.op.inputs["ngram_range"],
+                ),
+                Input(
+                    value=True,
+                    definition=count_vectorizer.op.inputs["get_feature_names"],
+                ),
             ],
         ):
-            vectors = results[count_vectorizer.op.outputs["result"].name]
+            vectors = results[count_vectorizer.op.outputs["result"].name][0]
+            features = results[count_vectorizer.op.outputs["result"].name][1]
+            self.assertTrue(isinstance(features, list))
             self.assertTrue(isinstance(vectors, np.ndarray))
             unique_tokens = list(
                 set(input_sentence[0].lower().replace(".", "").split())
             )
             self.assertEqual(len(vectors[0]), len(unique_tokens))
+            self.assertEqual(
+                set(features).intersection(set(unique_tokens)), set(features)
+            )
 
     async def test_tfidf_vectorizer(self):
         input_sentence = [
@@ -241,11 +254,24 @@ class TestOperations(AsyncTestCase):
                     value=input_sentence,
                     definition=tfidf_vectorizer.op.inputs["text"],
                 ),
+                Input(
+                    value=[1, 1],
+                    definition=count_vectorizer.op.inputs["ngram_range"],
+                ),
+                Input(
+                    value=True,
+                    definition=tfidf_vectorizer.op.inputs["get_feature_names"],
+                ),
             ],
         ):
-            vectors = results[tfidf_vectorizer.op.outputs["result"].name]
+            vectors = results[tfidf_vectorizer.op.outputs["result"].name][0]
+            features = results[tfidf_vectorizer.op.outputs["result"].name][1]
+            self.assertTrue(isinstance(features, list))
             self.assertTrue(isinstance(vectors, np.ndarray))
             unique_tokens = list(
                 set(input_sentence[0].lower().replace(".", "").split())
             )
             self.assertEqual(len(vectors[0]), len(unique_tokens))
+            self.assertEqual(
+                set(features).intersection(set(unique_tokens)), set(features)
+            )

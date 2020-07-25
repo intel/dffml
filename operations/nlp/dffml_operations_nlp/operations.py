@@ -1,6 +1,7 @@
 from typing import List, Dict, Tuple
 
 import spacy
+import numpy as np
 from spacy.attrs import ENT_IOB
 from spacy.lang.en import English
 from spacy.lang.en.stop_words import STOP_WORDS
@@ -206,15 +207,37 @@ async def count_vectorizer(
     # tokenizer=None,
     stop_words: str = None,
     token_pattern: str = "(?u)\\b\\w\\w+\\b",
-    # ngram_range: tuple = (1, 1),
+    ngram_range: List[int] = None,
     analyzer: str = "word",
     max_df: float = 1.0,
     min_df: float = 1,
     max_features: int = None,
     vocabulary: dict = None,
     binary: bool = False,
-    # dtype: str = <class 'numpy.int64'>
+    get_feature_names: bool = False,
 ) -> List[int]:
+    """
+    Converts a collection of text documents to a matrix of token counts using sklearn CountVectorizer's `fit_transform` method. 
+    For details on parameters check https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html
+    Parameters specific to this operation are described below.
+
+    Parameters
+    ----------
+    text : list
+        A list of strings.
+
+    get_feature_names: bool
+        If `True` return feature names using get_feature_names method of CountVectorizer.
+
+    Returns
+    -------
+    result: list
+        A list containing token counts and feature names if `get_feature_names` is `True`.
+    """
+    if ngram_range is None:
+        ngram_range = (1, 1)
+    else:
+        ngram_range = tuple(ngram_range)
     vectorizer = CountVectorizer(
         encoding=encoding,
         decode_error=decode_error,
@@ -222,6 +245,7 @@ async def count_vectorizer(
         lowercase=lowercase,
         stop_words=stop_words,
         token_pattern=token_pattern,
+        ngram_range=ngram_range,
         analyzer=analyzer,
         max_df=max_df,
         min_df=min_df,
@@ -229,14 +253,16 @@ async def count_vectorizer(
         vocabulary=vocabulary,
         binary=binary,
     )
-    X = vectorizer.fit_transform(text)
-    return X.toarray()
+    names = None
+    X = vectorizer.fit_transform(text).toarray()
+    if get_feature_names:
+        names = vectorizer.get_feature_names()
+    return [X, names]
 
 
 @op
 async def tfidf_vectorizer(
     text: List[str],
-    # input="content",
     encoding: str = "utf-8",
     decode_error: str = "strict",
     strip_accents: str = None,
@@ -246,18 +272,40 @@ async def tfidf_vectorizer(
     analyzer: str = "word",
     stop_words: str = None,
     token_pattern: str = "(?u)\\b\\w\\w+\\b",
-    # ngram_range=(1, 1),
+    ngram_range: List[int] = None,
     max_df: str = 1.0,
     min_df: str = 1,
     max_features: str = None,
     vocabulary: str = None,
     binary: bool = False,
-    # dtype="<class 'numpy.float64'>'",
     norm: str = "l2",
     use_idf: bool = True,
     smooth_idf: bool = True,
     sublinear_tf: bool = False,
+    get_feature_names: bool = False,
 ) -> List[float]:
+    """
+    Convert a collection of raw documents to a matrix of TF-IDF features using sklearn TfidfVectorizer's `fit_transform` method.
+    For details on parameters check https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html
+    Parameters specific to this operation are described below.
+
+    Parameters
+    ----------
+    text : list
+        A list of strings.
+
+    get_feature_names: bool
+        If `True` return feature names using get_feature_names method of TfidfVectorizer.
+
+    Returns
+    -------
+    result: list
+        A list containing token counts and feature names if `get_feature_names` is `True`.
+    """
+    if ngram_range is None:
+        ngram_range = (1, 1)
+    else:
+        ngram_range = tuple(ngram_range)
     vectorizer = TfidfVectorizer(
         encoding=encoding,
         decode_error=decode_error,
@@ -277,5 +325,8 @@ async def tfidf_vectorizer(
         sublinear_tf=sublinear_tf,
     )
 
-    X = vectorizer.fit_transform(text)
-    return X.toarray()
+    names = None
+    X = vectorizer.fit_transform(text).toarray()
+    if get_feature_names:
+        names = vectorizer.get_feature_names()
+    return [X, names]
