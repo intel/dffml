@@ -167,21 +167,6 @@ class AutoSklearnModelContext(ModelContext):
             record.predicted(target, predict, max(prob))
             yield record
 
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        if not self.model:
-            raise ModelNotTrained("Train the model before assessing accuracy")
-        test_data = []
-        async for record in sources.with_features(
-            self.features + [self.parent.config.predict.name]
-        ):
-            test_data.append(record.features())
-        df = pd.DataFrame(test_data)
-        y_test = df[[self.parent.config.predict.name]]
-        x_test = df.drop(columns=[self.parent.config.predict.name])
-        predictions = await self.get_predictions(x_test)
-        accuracy = await self.accuracy_score(y_test, predictions)
-        return Accuracy(accuracy)
-
     @property
     @abc.abstractmethod
     def model(self):
