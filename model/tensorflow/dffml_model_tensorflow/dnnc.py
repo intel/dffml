@@ -293,17 +293,6 @@ class DNNClassifierModelContext(TensorflowModelContext):
         )
         return input_fn
 
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        """
-        Evaluates the accuracy of our model after training using the input records
-        as test data.
-        """
-        if not os.path.isdir(self.model_dir_path):
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-        input_fn = await self.accuracy_input_fn(sources)
-        accuracy_score = self.model.evaluate(input_fn=input_fn)
-        return Accuracy(accuracy_score["accuracy"])
-
     async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
         """
         Uses trained data to make a prediction about the quality of a record.
