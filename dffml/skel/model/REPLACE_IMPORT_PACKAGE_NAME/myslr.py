@@ -45,7 +45,7 @@ def best_fit_line(x, y):
         (mean_x ** 2) - statistics.mean(matrix_multiply(x, x))
     )
     b = mean_y - (m * mean_x)
-    regression_line = [m * x + b for x in x]
+    regression_line = [m * x_element + b for x_element in x]
     accuracy = coeff_of_deter(y, regression_line)
     return m, b, accuracy
 
@@ -100,7 +100,7 @@ class MySLRModel(SimpleModel):
         # Use self.logger to report how many records are being used for testing
         self.logger.debug("Number of test records: %d", len(x))
         # Calculate the regression line for test data and accuracy of line
-        regression_line = [m * x + b for x in x]
+        regression_line = [m * x_element + b for x_element in x]
         accuracy = coeff_of_deter(y, regression_line)
         # Update the accuracy to be the accuracy when assessed on the test data
         self.storage["regression_line"] = m, b, accuracy

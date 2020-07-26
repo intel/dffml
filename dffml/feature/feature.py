@@ -58,7 +58,7 @@ class Feature(abc.ABC):
             dtype = tempvar[1]
             length = parser_helper(tempvar[2])
         if isinstance(dtype, str):
-            dtype = self.convert_dtype(tempvar[1])
+            dtype = self.convert_dtype(dtype)
         self.dtype = dtype
         self.length = length
         self.name = name
