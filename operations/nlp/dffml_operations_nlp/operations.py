@@ -1,14 +1,11 @@
-from typing import List, Dict, Tuple
+from typing import List
 
 import spacy
-import numpy as np
-from spacy.attrs import ENT_IOB
 from spacy.lang.en import English
 from spacy.lang.en.stop_words import STOP_WORDS
 from sklearn.feature_extraction.text import (
     CountVectorizer,
     TfidfVectorizer,
-    TfidfTransformer,
 )
 
 from dffml.df.base import op
@@ -66,6 +63,7 @@ async def remove_stopwords(
         if lexeme.is_stop == False:
             clean_tokens.append(word)
     return " ".join(clean_tokens)
+
 
 @op
 async def pos_tagger(
@@ -319,6 +317,7 @@ async def tfidf_vectorizer(
         analyzer=analyzer,
         stop_words=stop_words,
         token_pattern=token_pattern,
+        ngram_range=ngram_range,
         max_df=max_df,
         min_df=min_df,
         max_features=max_features,
@@ -335,6 +334,7 @@ async def tfidf_vectorizer(
     if get_feature_names:
         names = vectorizer.get_feature_names()
     return [X, names]
+
 
 # Definitions
 text_def = Definition(name="text_def", primitive="str")
