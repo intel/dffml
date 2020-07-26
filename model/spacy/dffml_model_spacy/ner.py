@@ -3,7 +3,10 @@ import warnings
 from typing import AsyncIterator, Type
 
 import spacy
+from spacy.scorer import Scorer
+from spacy.gold import GoldParse
 from spacy.util import minibatch, compounding
+
 
 from dffml import (
     config,
@@ -98,10 +101,36 @@ class SpacyNERModelContext(ModelContext):
             self.logger.debug("Saved model to", self.parent.config.output_dir)
 
     async def accuracy(self, sources: SourcesContext) -> Accuracy:
-        pass
+        if not os.path.isdir(
+            os.path.join(self.parent.config.output_dir, "ner")
+        ):
+            raise ModelNotTrained("Train model before assessing for accuracy.")
 
-    async def predict(self, sources: SourcesContext) -> AsyncIterator[Record]:
-        pass
+        test_examples = await self._preprocess_data(sources)
+        self.nlp = spacy.load(self.parent.config.output_dir)
+
+        scorer = Scorer()
+        for input_, annot in test_examples:
+            doc_gold_text = self.nlp.make_doc(input_)
+            gold = GoldParse(doc_gold_text, entities=annot)
+            pred_value = self.nlp(input_)
+            scorer.score(pred_value, gold)
+        return Accuracy(scorer.scores["tags_acc"])
+
+    async def predict(
+        self, sources: SourcesContext
+    ) -> AsyncIterator[Tuple[Record, Any, float]]:
+        if not os.path.isdir(
+            os.path.join(self.parent.config.output_dir, "ner")
+        ):
+            raise ModelNotTrained("Train model before prediction.")
+        self.nlp = spacy.load(self.parent.config.output_dir)
+
+        async for record in sources.records():
+            doc = self.nlp(record["sentence"])
+            prediction = [(ent.text, ent.label_) for ent in doc.ents]
+            record.predicted("Answer", prediction, "Nan")
+            yield record
 
 
 @entrypoint("spacyner")

@@ -2,14 +2,14 @@ import ast
 import json
 
 
-def parser(json_file: str, is_training: bool) -> dict:
+def parser(json_file: str, is_predicting: bool) -> dict:
     with open(json_file) as f:
         parsed_data = {}
         data = json.load(f)["data"]
         for id, entry in enumerate(data):
             entities = []
             sentence = entry["sentence"]
-            if is_training:
+            if not is_predicting:
                 for entity in entry["entities"]:
                     start = entity["start"]
                     end = entity["end"]
