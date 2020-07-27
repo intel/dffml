@@ -10,7 +10,9 @@ common = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(common)
 
 common.KWARGS["entry_points"] = {
-    "dffml.model": ["spacyner = dffml_model_spacy.ner:SpacyNERModel",]
+    "dffml.model": [
+        "spacyner = dffml_model_spacy.ner.ner_model:SpacyNERModel",
+    ]
 }
 
 setup(**common.KWARGS)

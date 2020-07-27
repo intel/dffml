@@ -1,6 +1,8 @@
+import os
+import random
 import pathlib
 import warnings
-from typing import AsyncIterator, Type
+from typing import AsyncIterator, Type, Tuple, Any
 
 import spacy
 from spacy.scorer import Scorer
@@ -18,12 +20,13 @@ from dffml import (
     Record,
 )
 from dffml.model.model import Model
+from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelContext, ModelNotTrained
 
 
 @config
-class SpacyNERConfig:
-    output_dir: pathlib.Path = field("Output directory")
+class SpacyNERModelConfig:
+    output_dir: str = field("Output directory")
     model: str = field(
         "Model name. Defaults to blank 'en' model.", default=None
     )
@@ -32,37 +35,45 @@ class SpacyNERConfig:
         "Dropout rate to be used during training", default=0.5
     )
 
+    def __post_init__(self):
+        self.output_dir = pathlib.Path(self.output_dir)
+
 
 class SpacyNERModelContext(ModelContext):
     def __init__(self, parent):
         super().__init__(parent)
         if self.parent.config.model is not None:
-            self.nlp = spacy.load(
-                self.parent.config.model
-            )  # load existing model
+            # load existing model
+            self.nlp = spacy.load(self.parent.config.model)
             self.logger.debug("Loaded model '%s'" % self.parent.config.model)
         else:
-            self.nlp = spacy.blank("en")  # create blank Language class
+            # create blank Language class
+            self.nlp = spacy.blank("en")
             self.logger.debug("Created blank 'en' model")
 
         if "ner" not in self.nlp.pipe_names:
             self.ner = self.nlp.create_pipe("ner")
             self.nlp.add_pipe(self.ner, last=True)
-        # otherwise, get it so we can add labels
         else:
+            # get it to add labels
             self.ner = self.nlp.get_pipe("ner")
 
     async def _preprocess_data(self, sources: Sources):
         all_examples = []
         all_sources = sources.with_features(["sentence", "entities",])
         async for record in all_sources:
-            all_examples.append((record["sentence"], record.entities))
+            all_examples.append(
+                (
+                    record.feature("sentence"),
+                    {"entities": record.feature("entities")},
+                )
+            )
         return all_examples
 
     async def train(self, sources: Sources):
         train_examples = await self._preprocess_data(sources)
         for _, entities in train_examples:
-            for ent in entities:
+            for ent in entities.get("entities"):
                 self.ner.add_label(ent[2])
 
         # get names of other pipes to disable them during training
@@ -112,7 +123,7 @@ class SpacyNERModelContext(ModelContext):
         scorer = Scorer()
         for input_, annot in test_examples:
             doc_gold_text = self.nlp.make_doc(input_)
-            gold = GoldParse(doc_gold_text, entities=annot)
+            gold = GoldParse(doc_gold_text, entities=annot["entities"])
             pred_value = self.nlp(input_)
             scorer.score(pred_value, gold)
         return Accuracy(scorer.scores["tags_acc"])
@@ -127,7 +138,7 @@ class SpacyNERModelContext(ModelContext):
         self.nlp = spacy.load(self.parent.config.output_dir)
 
         async for record in sources.records():
-            doc = self.nlp(record["sentence"])
+            doc = self.nlp(record.feature("sentence"))
             prediction = [(ent.text, ent.label_) for ent in doc.ents]
             record.predicted("Answer", prediction, "Nan")
             yield record
@@ -135,5 +146,5 @@ class SpacyNERModelContext(ModelContext):
 
 @entrypoint("spacyner")
 class SpacyNERModel(Model):
-    CONFIG = SpacyNERConfig
+    CONFIG = SpacyNERModelConfig
     CONTEXT = SpacyNERModelContext

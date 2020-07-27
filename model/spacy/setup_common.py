@@ -10,7 +10,7 @@ DESCRIPTION = "DFFML model dffml-model-spacy"
 AUTHOR_NAME = "0dust"
 AUTHOR_EMAIL = "himanshutripathi366@gmail.com"
 # Install dffml if it is not installed in development mode
-INSTALL_REQUIRES = [] + (
+INSTALL_REQUIRES = ["spacy>=2.3.0"] + (
     ["dffml>=0.3.7"]
     if not any(
         list(
