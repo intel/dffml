@@ -10,7 +10,7 @@ DESCRIPTION = "DFFML operations nlp"
 AUTHOR_NAME = "0dust"
 AUTHOR_EMAIL = "himanshutripathi366@gmail.com"
 # Install dffml if it is not installed in development mode
-INSTALL_REQUIRES = ["spacy>=2.3.0"] + (
+INSTALL_REQUIRES = ["spacy>=2.3.0", "scikit-learn>=0.21.2"] + (
     ["dffml>=0.3.7"]
     if not any(
         list(
