@@ -70,10 +70,10 @@ class TestSpacyNERModel(AsyncTestCase):
             async for prediction in predict(self.model, self.test_sources)
         ]
         self.assertTrue(
-            isinstance(predictions[0][2]["Answer"]["value"][0], tuple)
+            isinstance(predictions[0][2]["Tag"]["value"][0], tuple)
         )
         self.assertIn(
-            predictions[0][2]["Answer"]["value"][0][1], ["ORG", "PERSON"]
+            predictions[0][2]["Tag"]["value"][0][1], ["ORG", "PERSON", "LOC"]
         )
 
 

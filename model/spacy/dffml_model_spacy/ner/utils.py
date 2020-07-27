@@ -1,3 +1,4 @@
+import ast
 import json
 
 
@@ -8,7 +9,7 @@ def parser(json_file: str, is_predicting: bool) -> dict:
         for id, entry in enumerate(data):
             entities = []
             sentence = entry["sentence"]
-            if not is_predicting:
+            if not ast.literal_eval(is_predicting):
                 for entity in entry["entities"]:
                     start = entity["start"]
                     end = entity["end"]

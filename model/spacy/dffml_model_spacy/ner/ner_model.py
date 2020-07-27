@@ -106,13 +106,15 @@ class SpacyNERModelContext(ModelContext):
                         drop=self.parent.config.dropout,
                         losses=losses,
                     )
-                self.logger.debug("Losses", losses)
+                self.logger.debug(f"Losses: {losses}")
 
         if self.parent.config.output_dir is not None:
             if not self.parent.config.output_dir.exists():
                 self.parent.config.output_dir.mkdir()
             self.nlp.to_disk(self.parent.config.output_dir)
-            self.logger.debug("Saved model to", self.parent.config.output_dir)
+            self.logger.debug(
+                f"Saved model to {self.parent.config.output_dir.name}"
+            )
 
     async def accuracy(self, sources: SourcesContext) -> Accuracy:
         if not os.path.isdir(
@@ -143,11 +145,99 @@ class SpacyNERModelContext(ModelContext):
         async for record in sources.records():
             doc = self.nlp(record.feature("sentence"))
             prediction = [(ent.text, ent.label_) for ent in doc.ents]
-            record.predicted("Answer", prediction, "Nan")
+            record.predicted("Tag", prediction, "Nan")
             yield record
 
 
 @entrypoint("spacyner")
 class SpacyNERModel(Model):
+    """
+    Implemented using `Spacy statistical models <https://spacy.io/usage/training>`_ .
+
+    First we create the training and testing datasets.
+    
+    Training data:
+
+    .. literalinclude:: /../model/spacy/examples/ner/train_data.sh
+
+    Testing data:
+
+    .. literalinclude:: /../model/spacy/examples/ner/test_data.sh
+
+    Train the model
+
+    .. literalinclude:: /../model/spacy/examples/ner/train.sh
+
+    Assess the accuracy
+
+    .. literalinclude:: /../model/spacy/examples/ner/accuracy.sh
+
+    Output
+
+    .. code-block::
+
+        0.0
+
+    Make a prediction
+
+    .. literalinclude:: /../model/spacy/examples/ner/predict.sh
+
+    Output
+
+    .. code-block:: json
+
+        [
+            {
+                "extra": {},
+                "features": {
+                    "entities": [],
+                    "sentence": "Donald Trump went to London?"
+                },
+                "key": 0,
+                "last_updated": "2020-07-27T16:26:18Z",
+                "prediction": {
+                    "Answer": {
+                        "confidence": NaN,
+                        "value": [
+                            [
+                                "Donald Trump",
+                                "PERSON"
+                            ],
+                            [
+                                "London",
+                                "GPE"
+                            ]
+                        ]
+                    }
+                }
+            }
+        ]
+
+    The model can be trained on large datasets to get the expected
+    output. The example shown above is to demonstrate the commandline usage
+    of the model.
+
+    In the above train, accuracy and predict commands, :ref:`plugin_source_dffml_op` source is used to
+    read and parse data from json file before feeding it to the model. The function used by opsource to parse json data
+    is:
+
+    .. literalinclude:: /../model/spacy/dffml_model_spacy/ner/utils.py
+
+    The location of the function is passed using: 
+
+    .. code-block:: console
+
+            -source-opimp dffml_model_spacy.ner.utils:parser
+
+    And the arguments to `parser` are passed by:
+
+    .. code-block:: console
+
+            -source-args train.json False
+
+    where `train.json` is the name of file containing training data and the bool `False`
+    is value of the flag `is_predicting`.
+    """
+
     CONFIG = SpacyNERModelConfig
     CONTEXT = SpacyNERModelContext
