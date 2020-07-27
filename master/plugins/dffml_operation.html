@@ -159,16 +159,51 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-operations-nlp">dffml_operations_nlp</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#get-embedding">get_embedding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#count-vectorizer">count_vectorizer</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#id39">Parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id40">Returns</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#remove-stopwords">remove_stopwords</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#get-embedding">get_embedding</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#id41">Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id42">Returns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id42">Returns</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#get-noun-chunks">get_noun_chunks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id43">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id44">Returns</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#get-sentences">get_sentences</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id45">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id46">Returns</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#get-similarity">get_similarity</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id47">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id48">Returns</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lemmatizer">lemmatizer</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id49">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id50">Returns</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pos-tagger">pos_tagger</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id51">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id52">Returns</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#remove-stopwords">remove_stopwords</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id53">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id54">Returns</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tfidf-vectorizer">tfidf_vectorizer</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id55">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id56">Returns</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="dffml_service_cli.html">Services</a></li>
@@ -1888,14 +1923,60 @@ check it’s releases page to make sure you’re installing the latest version.<
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-operations-nlp</span>
 </pre></div>
 </div>
+<div class="section" id="count-vectorizer">
+<span id="plugin-operation-dffml-operations-nlp-count-vectorizer"></span><h3>count_vectorizer<a class="headerlink" href="#count-vectorizer" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Converts a collection of text documents to a matrix of token counts using sklearn CountVectorizer’s <cite>fit_transform</cite> method.
+For details on parameters check <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html">https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html</a>
+Parameters specific to this operation are described below.</p>
+</div>
+</div>
+<div class="section" id="id39">
+<h2>Parameters<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>text<span class="classifier">list</span></dt><dd><p>A list of strings.</p>
+</dd>
+<dt>get_feature_names: bool</dt><dd><p>If <cite>True</cite> return feature names using get_feature_names method of CountVectorizer.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id40">
+<h2>Returns<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>result: list</dt><dd><p>A list containing token counts and feature names if <cite>get_feature_names</cite> is <cite>True</cite>.</p>
+</dd>
+</dl>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text: count_vectorizer.inputs.text(type: array)</p></li>
+<li><p>encoding: count_vectorizer.inputs.encoding(type: str)</p></li>
+<li><p>decode_error: count_vectorizer.inputs.decode_error(type: str)</p></li>
+<li><p>strip_accents: count_vectorizer.inputs.strip_accents(type: str)</p></li>
+<li><p>lowercase: count_vectorizer.inputs.lowercase(type: bool)</p></li>
+<li><p>stop_words: count_vectorizer.inputs.stop_words(type: str)</p></li>
+<li><p>token_pattern: count_vectorizer.inputs.token_pattern(type: str)</p></li>
+<li><p>ngram_range: count_vectorizer.inputs.ngram_range(type: array)</p></li>
+<li><p>analyzer: count_vectorizer.inputs.analyzer(type: str)</p></li>
+<li><p>max_df: count_vectorizer.inputs.max_df(type: float)</p></li>
+<li><p>min_df: count_vectorizer.inputs.min_df(type: float)</p></li>
+<li><p>max_features: count_vectorizer.inputs.max_features(type: int)</p></li>
+<li><p>vocabulary: count_vectorizer.inputs.vocabulary(type: map)</p></li>
+<li><p>binary: count_vectorizer.inputs.binary(type: bool)</p></li>
+<li><p>get_feature_names: count_vectorizer.inputs.get_feature_names(type: bool)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: count_vectorizer.outputs.result(type: array)</p></li>
+</ul>
 <div class="section" id="get-embedding">
 <span id="plugin-operation-dffml-operations-nlp-get-embedding"></span><h3>get_embedding<a class="headerlink" href="#get-embedding" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Maps words of text data to their corresponding word vectors.</p>
 </div>
 </div>
-<div class="section" id="id39">
-<h2>Parameters<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id41">
+<h2>Parameters<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h2>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to be converted to word vectors.</p>
 </dd>
@@ -1911,8 +1992,8 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 </dd>
 </dl>
 </div>
-<div class="section" id="id40">
-<h2>Returns<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id42">
+<h2>Returns<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h2>
 <p>result: A 2-d array of shape (max_len, embedding_size of vectors).</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
@@ -1926,14 +2007,174 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 <ul class="simple">
 <li><p>embedding: embedding(type: generic)</p></li>
 </ul>
+<div class="section" id="get-noun-chunks">
+<span id="plugin-operation-dffml-operations-nlp-get-noun-chunks"></span><h3>get_noun_chunks<a class="headerlink" href="#get-noun-chunks" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Extracts the noun chunks from text.</p>
+</div>
+</div>
+<div class="section" id="id43">
+<h2>Parameters<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>text<span class="classifier">str</span></dt><dd><p>String to extract noun chunks from.</p>
+</dd>
+<dt>spacy_model: str</dt><dd><p>A spacy model with the capability of parsing.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id44">
+<h2>Returns<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>result: list</dt><dd><p>A list containing noun chunks.</p>
+</dd>
+</dl>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text: get_noun_chunks.inputs.text(type: str)</p></li>
+<li><p>spacy_model: get_noun_chunks.inputs.spacy_model(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: get_noun_chunks.outputs.result(type: array)</p></li>
+</ul>
+<div class="section" id="get-sentences">
+<span id="plugin-operation-dffml-operations-nlp-get-sentences"></span><h3>get_sentences<a class="headerlink" href="#get-sentences" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Extracts the sentences from text.</p>
+</div>
+</div>
+<div class="section" id="id45">
+<h2>Parameters<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>text<span class="classifier">str</span></dt><dd><p>String to extract sentences from.</p>
+</dd>
+<dt>spacy_model: str</dt><dd><p>A spacy model with the capability of parsing. Sentence
+boundaries are calculated from the syntactic dependency parse.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id46">
+<h2>Returns<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>result: list</dt><dd><p>A list containing sentences.</p>
+</dd>
+</dl>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text: get_sentences.inputs.text(type: str)</p></li>
+<li><p>spacy_model: get_sentences.inputs.spacy_model(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: get_sentences.outputs.result(type: array)</p></li>
+</ul>
+<div class="section" id="get-similarity">
+<span id="plugin-operation-dffml-operations-nlp-get-similarity"></span><h3>get_similarity<a class="headerlink" href="#get-similarity" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Calculates similarity between two text strings as a score between 0 and 1.</p>
+</div>
+</div>
+<div class="section" id="id47">
+<h2>Parameters<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>text_1<span class="classifier">str</span></dt><dd><p>First string to compare.</p>
+</dd>
+<dt>text_2<span class="classifier">str</span></dt><dd><p>Second string to compare.</p>
+</dd>
+<dt>spacy_model: str</dt><dd><p>Spacy model to be used for extracting word vectors which are used for calculating similarity.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id48">
+<h2>Returns<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>result: float</dt><dd><p>A similarity score between 0 and 1.</p>
+</dd>
+</dl>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text_1: get_similarity.inputs.text_1(type: str)</p></li>
+<li><p>text_2: get_similarity.inputs.text_2(type: str)</p></li>
+<li><p>spacy_model: get_similarity.inputs.spacy_model(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: get_similarity.outputs.result(type: float)</p></li>
+</ul>
+<div class="section" id="lemmatizer">
+<span id="plugin-operation-dffml-operations-nlp-lemmatizer"></span><h3>lemmatizer<a class="headerlink" href="#lemmatizer" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Reduce words in the text to their dictionary form (lemma)</p>
+</div>
+</div>
+<div class="section" id="id49">
+<h2>Parameters<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>text<span class="classifier">str</span></dt><dd><p>String to lemmatize.</p>
+</dd>
+<dt>spacy_model: str</dt><dd><p>Spacy model to be used for lemmatization.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id50">
+<h2>Returns<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>result: list</dt><dd><p>A list containing base form of the words.</p>
+</dd>
+</dl>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text: lemmatizer.inputs.text(type: str)</p></li>
+<li><p>spacy_model: lemmatizer.inputs.spacy_model(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: lemmatizer.outputs.result(type: array)</p></li>
+</ul>
+<div class="section" id="pos-tagger">
+<span id="plugin-operation-dffml-operations-nlp-pos-tagger"></span><h3>pos_tagger<a class="headerlink" href="#pos-tagger" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Assigns part-of-speech tags to text.</p>
+</div>
+</div>
+<div class="section" id="id51">
+<h2>Parameters<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>text<span class="classifier">str</span></dt><dd><p>Text to be tagged.</p>
+</dd>
+<dt>spacy_model: str</dt><dd><p>A spacy model with tagger and parser.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id52">
+<h2>Returns<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>result: list</dt><dd><p>A list containing tuples of word and their respective pos tag.</p>
+</dd>
+</dl>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text: pos_tagger.inputs.text(type: str)</p></li>
+<li><p>spacy_model: pos_tagger.inputs.spacy_model(type: str)</p></li>
+<li><p>tag_type: pos_tagger.inputs.tag_type(type: str)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: pos_tagger.outputs.result(type: array)</p></li>
+</ul>
 <div class="section" id="remove-stopwords">
 <span id="plugin-operation-dffml-operations-nlp-remove-stopwords"></span><h3>remove_stopwords<a class="headerlink" href="#remove-stopwords" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Removes stopword from text data.</p>
 </div>
 </div>
-<div class="section" id="id41">
-<h2>Parameters<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id53">
+<h2>Parameters<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h2>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to be cleaned.</p>
 </dd>
@@ -1941,8 +2182,8 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 </dd>
 </dl>
 </div>
-<div class="section" id="id42">
-<h2>Returns<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id54">
+<h2>Returns<a class="headerlink" href="#id54" title="Permalink to this headline">¶</a></h2>
 <p>result: A string without stop words.</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
@@ -1953,6 +2194,56 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 <p><strong>Outputs</strong></p>
 <ul class="simple">
 <li><p>result: remove_stopwords.outputs.result(type: str)</p></li>
+</ul>
+<div class="section" id="tfidf-vectorizer">
+<span id="plugin-operation-dffml-operations-nlp-tfidf-vectorizer"></span><h3>tfidf_vectorizer<a class="headerlink" href="#tfidf-vectorizer" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>Convert a collection of raw documents to a matrix of TF-IDF features using sklearn TfidfVectorizer’s <cite>fit_transform</cite> method.
+For details on parameters check <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html">https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html</a>
+Parameters specific to this operation are described below.</p>
+</div>
+</div>
+<div class="section" id="id55">
+<h2>Parameters<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>text<span class="classifier">list</span></dt><dd><p>A list of strings.</p>
+</dd>
+<dt>get_feature_names: bool</dt><dd><p>If <cite>True</cite> return feature names using get_feature_names method of TfidfVectorizer.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="id56">
+<h2>Returns<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>result: list</dt><dd><p>A list containing token counts and feature names if <cite>get_feature_names</cite> is <cite>True</cite>.</p>
+</dd>
+</dl>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>text: tfidf_vectorizer.inputs.text(type: array)</p></li>
+<li><p>encoding: tfidf_vectorizer.inputs.encoding(type: str)</p></li>
+<li><p>decode_error: tfidf_vectorizer.inputs.decode_error(type: str)</p></li>
+<li><p>strip_accents: tfidf_vectorizer.inputs.strip_accents(type: str)</p></li>
+<li><p>lowercase: tfidf_vectorizer.inputs.lowercase(type: bool)</p></li>
+<li><p>analyzer: tfidf_vectorizer.inputs.analyzer(type: str)</p></li>
+<li><p>stop_words: tfidf_vectorizer.inputs.stop_words(type: str)</p></li>
+<li><p>token_pattern: tfidf_vectorizer.inputs.token_pattern(type: str)</p></li>
+<li><p>ngram_range: tfidf_vectorizer.inputs.ngram_range(type: array)</p></li>
+<li><p>max_df: tfidf_vectorizer.inputs.max_df(type: str)</p></li>
+<li><p>min_df: tfidf_vectorizer.inputs.min_df(type: str)</p></li>
+<li><p>max_features: tfidf_vectorizer.inputs.max_features(type: str)</p></li>
+<li><p>vocabulary: tfidf_vectorizer.inputs.vocabulary(type: str)</p></li>
+<li><p>binary: tfidf_vectorizer.inputs.binary(type: bool)</p></li>
+<li><p>norm: tfidf_vectorizer.inputs.norm(type: str)</p></li>
+<li><p>use_idf: tfidf_vectorizer.inputs.use_idf(type: bool)</p></li>
+<li><p>smooth_idf: tfidf_vectorizer.inputs.smooth_idf(type: bool)</p></li>
+<li><p>sublinear_tf: tfidf_vectorizer.inputs.sublinear_tf(type: bool)</p></li>
+<li><p>get_feature_names: tfidf_vectorizer.inputs.get_feature_names(type: bool)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>result: tfidf_vectorizer.outputs.result(type: array)</p></li>
 </ul>
 </div>
 </div>
