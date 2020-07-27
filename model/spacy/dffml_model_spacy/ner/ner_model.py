@@ -2,7 +2,7 @@ import os
 import random
 import pathlib
 import warnings
-from typing import AsyncIterator, Type, Tuple, Any
+from typing import AsyncIterator, Tuple, Any
 
 import spacy
 from spacy.scorer import Scorer
@@ -27,8 +27,9 @@ from dffml.model.model import ModelContext, ModelNotTrained
 @config
 class SpacyNERModelConfig:
     output_dir: str = field("Output directory")
-    model: str = field(
-        "Model name. Defaults to blank 'en' model.", default=None
+    model_name_or_path: str = field(
+        "Model name or path to saved model. Defaults to blank 'en' model.",
+        default=None,
     )
     n_iter: int = field("Number of training iterations", default=10)
     dropout: float = field(
@@ -42,10 +43,12 @@ class SpacyNERModelConfig:
 class SpacyNERModelContext(ModelContext):
     def __init__(self, parent):
         super().__init__(parent)
-        if self.parent.config.model is not None:
+        if self.parent.config.model_name_or_path is not None:
             # load existing model
-            self.nlp = spacy.load(self.parent.config.model)
-            self.logger.debug("Loaded model '%s'" % self.parent.config.model)
+            self.nlp = spacy.load(self.parent.config.model_name_or_path)
+            self.logger.debug(
+                "Loaded model '%s'" % self.parent.config.model_name_or_path
+            )
         else:
             # create blank Language class
             self.nlp = spacy.blank("en")
@@ -87,7 +90,7 @@ class SpacyNERModelContext(ModelContext):
             warnings.filterwarnings(
                 "once", category=UserWarning, module="spacy"
             )
-            if self.parent.config.model is None:
+            if self.parent.config.model_name_or_path is None:
                 self.nlp.begin_training()
             for itn in range(self.parent.config.n_iter):
                 random.shuffle(train_examples)

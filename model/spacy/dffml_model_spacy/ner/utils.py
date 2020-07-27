@@ -1,4 +1,3 @@
-import ast
 import json
 
 
@@ -14,7 +13,6 @@ def parser(json_file: str, is_predicting: bool) -> dict:
                     start = entity["start"]
                     end = entity["end"]
                     tag = entity["tag"]
-                    context = para["context"]
                     entities.append((start, end, tag))
             parsed_data[id] = {
                 "features": {"sentence": sentence, "entities": entities,}
