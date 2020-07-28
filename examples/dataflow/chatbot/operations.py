@@ -78,7 +78,6 @@ async def stream_chat(self, room_id):
             # Gitter sends " \n" at some intervals
             if data == " \n".encode():
                 continue
-            print(f"\n\n Got data {data} \n\n")
             data = json.loads(data.strip())
             message = data["text"]
             # Only listen to messages directed to bot

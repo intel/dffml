@@ -22,31 +22,50 @@ messages which are directed to our bot.
     `examples/dataflow/chatbot <https://github.com/intel/dffml/blob/master/examples/examples/dataflow/chatbot>`_
     directory of the DFFML source code.
 
+You'll need to install `aiohttp <https://github.com/aio-libs/aiohttp>`_
+and ``dffml-model-scikit`` (The model used for prediction).
+
+.. code-block:: console
+
+    $ pip install aiohttp
+    $ pip install dffml-model-scikit
+
 We'll write the operations for this dataflow in operations.py
 
-.. literalinclude:: /../examples/dataflow/chatbot/operations.py
-    :lines: 24-51
+Adding necessary imports and defining ``Definitions`` for operation
+inputs.
 
-All requests to Gitter's API requires the room id for our room.
+.. literalinclude:: /../examples/dataflow/chatbot/operations.py
+    :lines: 1-16
+
+Defining config for our operations
+
+.. literalinclude:: /../examples/dataflow/chatbot/operations.py
+    :lines: 19-21
+
+All requests to Gitter's API requires the room id of our room.
 ``get_room_id`` gets the ``room id`` from room name (The input to
 our dataflow).
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
-    :lines: 52-87
+    :lines: 24-51
 
 We listen to new messages directed to our bot.
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
-    :lines: 90-122
+    :lines: 52-87
 
 We'll use this op to send replies back to the chatroom
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
-    :lines: 125-220
+    :lines: 90-122
 
 This is the operation where all the logic for interpreting the messages
 go. If you have a Natural Language Understanding module It'd go here, so
 that you can parse unstructered data.
+
+.. literalinclude:: /../examples/dataflow/chatbot/operations.py
+    :lines: 125-220
 
 Our operations are ``get_room_id, stream_chat, send_message and interpret_message``.
 All of them use at least one config. The common config being INISecretConfig which
