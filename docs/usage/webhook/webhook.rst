@@ -58,10 +58,19 @@ Config
     output_mode: json
     input_mode: bytes:payload
     forward_headers: webhook_headers
+    immediate_response:
+        status: 200
+        content_type: application/json
+        data:
+            status: Received
     EOF
 
-Note that the input_mode is ``bytes:payload``, this means that inputs from post request will
-be passed as bytes to the dataflow with ``payload`` definition..
+Note that the input_mode is ``bytes:payload``, this means that inputs
+from post request will be passed as bytes to the dataflow with
+``payload`` definition. We don't want to wait until the dataflow
+completes running to send a response back, so we also add an
+``immediate_response`` to the server configuration.
+
 
 Deploy it in port 8081 as 8080 is being used by ffmpeg http service
 
