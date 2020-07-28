@@ -118,18 +118,18 @@ class GetMulti(OperationImplementationContext):
     Output operation to get all Inputs matching given definitions.
 
     Parameters
-    ++++++++++
+    ----------
     spec : list
         List of definition names. Any Inputs with matching definition will be
         returned.
 
     Returns
-    +++++++
+    -------
     dict
         Maps definition names to all the Inputs of that definition
 
     Examples
-    ++++++++
+    --------
 
     The following shows how to grab all Inputs with the URL definition. If we
     had we run an operation which output a URL, that output URL would have also
@@ -216,18 +216,18 @@ class GetSingle(GetMulti):
     Output operation to get a single Input for each definition given.
 
     Parameters
-    ++++++++++
+    ----------
     spec : list
         List of definition names. An Input with matching definition will be
         returned.
 
     Returns
-    +++++++
+    -------
     dict
         Maps definition names to an Input of that definition
 
     Examples
-    ++++++++
+    --------
 
     The following shows how to grab an Inputs with the URL definition. If we
     had we run an operation which output a URL, that output URL could have also
@@ -322,7 +322,7 @@ class Associate(OperationImplementationContext):
 class AssociateDefinition(OperationImplementationContext):
     """
     Examples
-    ++++++++
+    --------
 
     >>> import asyncio
     >>> from dffml import *
