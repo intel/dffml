@@ -20,19 +20,19 @@ def mapping_extract_value(mapping: Dict[str, Any], traverse: List[str]):
     Extracts value from a given mapping.
 
     Parameters
-    ++++++++++
+    ----------
     mapping : dict
         The mapping to extract the value from.
     traverse : list[str]
         A list of keys to traverse through the mapping dictionary and extract the values.
 
     Returns
-    +++++++
+    -------
     dict
         A dictionary containing the value of the keys.
 
     Examples
-    ++++++++
+    --------
 
     >>> import asyncio
     >>> from dffml import *
@@ -76,19 +76,19 @@ def create_mapping(key: str, value: Any):
     Creates a mapping of a given key and value.
 
     Parameters
-    ++++++++++
+    ----------
     key : str
         The key for the mapping.
     value : Any
         The value for the mapping.
 
     Returns
-    +++++++
+    -------
     dict
         A dictionary containing the mapping created.
 
     Examples
-    ++++++++
+    --------
 
     >>> import asyncio
     >>> from dffml import *
