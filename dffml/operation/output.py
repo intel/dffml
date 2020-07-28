@@ -169,6 +169,13 @@ class GetMulti(OperationImplementationContext):
         # TODO Address the need to copy operation implementation inputs dict
         # In case the input is used elsewhere in the network
         exported = copy.deepcopy(inputs["spec"])
+        name_map = {}
+        for i, input_value in enumerate(exported):
+            if isinstance(input_value, dict):
+                name, value = list(input_value.items())[0]
+                name_map[value] = name
+                exported[i] = value
+
         # Look up the definiton for each
         for convert in range(0, len(exported)):
             exported[convert] = await self.octx.ictx.definition(
@@ -184,6 +191,12 @@ class GetMulti(OperationImplementationContext):
                 async for item in od.inputs(definition):
                     want.setdefault(definition.name, [])
                     want[definition.name].append(item.value)
+
+            # Rename outputs if present in name_map
+            for key, value in want.copy().items():
+                if name_map.get(key, None):
+                    want[name_map[key]] = value
+                    want.pop(key)
             return want
 
 
@@ -224,11 +237,12 @@ class GetSingle(GetMulti):
     >>> from dffml import *
     >>>
     >>> URL = Definition(name="URL", primitive="string")
+    >>> ORG = Definition(name="ORG", primitive="string")
     >>>
     >>> dataflow = DataFlow.auto(GetSingle)
     >>> dataflow.seed.append(
     ...     Input(
-    ...         value=[URL.name],
+    ...         value=[{"Repo Link": URL.name}, ORG.name],
     ...         definition=GetSingle.op.inputs["spec"]
     ...     )
     ... )
@@ -238,12 +252,16 @@ class GetSingle(GetMulti):
     ...         Input(
     ...             value="https://github.com/intel/dffml",
     ...             definition=URL
+    ...         ),
+    ...         Input(
+    ...             value="Intel",
+    ...             definition=ORG
     ...         )
     ...     ]):
     ...         print(results)
     ...
     >>> asyncio.run(main())
-    {'URL': 'https://github.com/intel/dffml'}
+    {'ORG': 'Intel', 'Repo Link': 'https://github.com/intel/dffml'}
     """
 
     async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
