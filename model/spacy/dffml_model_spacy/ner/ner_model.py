@@ -110,7 +110,7 @@ class SpacyNERModelContext(ModelContext):
 
         if self.parent.config.output_dir is not None:
             if not self.parent.config.output_dir.exists():
-                self.parent.config.output_dir.mkdir()
+                self.parent.config.output_dir.mkdir(parents=True)
             self.nlp.to_disk(self.parent.config.output_dir)
             self.logger.debug(
                 f"Saved model to {self.parent.config.output_dir.name}"
@@ -191,7 +191,7 @@ class SpacyNERModel(Model):
                 "extra": {},
                 "features": {
                     "entities": [],
-                    "sentence": "Donald Trump went to London?"
+                    "sentence": "Alex went to London?"
                 },
                 "key": 0,
                 "last_updated": "2020-07-27T16:26:18Z",
@@ -200,7 +200,7 @@ class SpacyNERModel(Model):
                         "confidence": NaN,
                         "value": [
                             [
-                                "Donald Trump",
+                                "Alex",
                                 "PERSON"
                             ],
                             [

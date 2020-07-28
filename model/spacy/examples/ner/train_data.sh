@@ -17,11 +17,11 @@ cat > train.json <<EOF
                 ]
         },
         {
-            "sentence":"Who is Donald Trump?",
+            "sentence":"Who is Alex?",
             "entities":[
                 {
                     "start":7,
-                    "end": 19,
+                    "end": 11,
                     "tag": "PERSON"
                 }
             ]
