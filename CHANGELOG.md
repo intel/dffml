@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Spacy model for NER
 - Added ability to rename outputs using GetSingle
 - Tutorial for using NLP operations with models
 - Operations plugin for NLP wrapping spacy and scikit functions
