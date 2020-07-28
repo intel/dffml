@@ -1,7 +1,7 @@
 import pathlib
 import hashlib
 import contextlib
-from typing import List
+from typing import List, Dict, Any
 
 from ..base import BaseConfig
 from ..df.base import BaseOrchestrator, OperationImplementation
@@ -27,6 +27,7 @@ from ..util.cli.cmds import (
 )
 from ..util.cli.parser import ParseInputsAction
 from ..base import config, field
+from ..high_level import run as run_dataflow
 
 
 @config
@@ -329,9 +330,120 @@ class RunRecords(CMD):
     _all = RunAllRecords
 
 
+@config
+class RunSingleConfig:
+    dataflow: str = field(
+        "File containing exported DataFlow", required=True,
+    )
+    no_echo: bool = field(
+        "Do not echo back records", default=False,
+    )
+    configloader: BaseConfigLoader = field(
+        "ConfigLoader to use for importing DataFlow", default=None,
+    )
+    orchestrator: BaseOrchestrator = field(
+        "Orchestrator", default=MemoryOrchestrator,
+    )
+    inputs: List[str] = field(
+        "Other inputs to add under each ctx",
+        action=ParseInputsAction,
+        default_factory=lambda: [],
+    )
+    no_strict: bool = field(
+        "Do not exit on operation exceptions, just log errors", default=False,
+    )
+
+
+class RunSingle(CMD):
+    CONFIG = RunSingleConfig
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.orchestrator = self.orchestrator.withconfig(self.extra_config)
+
+    async def get_dataflow(self, dataflow_path):
+        dataflow_path = pathlib.Path(dataflow_path)
+        config_cls = self.configloader
+        if config_cls is None:
+            config_type = dataflow_path.suffix.replace(".", "")
+            config_cls = BaseConfigLoader.load(config_type)
+        async with config_cls.withconfig(self.extra_config) as configloader:
+            async with configloader() as loader:
+                exported = await loader.loadb(dataflow_path.read_bytes())
+                dataflow = DataFlow._fromdict(**exported)
+        return dataflow
+
+    async def run(self):
+        dataflow = await self.get_dataflow(self.dataflow)
+        dataflow_inputs = []
+        for value, def_name in self.inputs:
+            dataflow_inputs.append(
+                Input(value=value, definition=dataflow.definitions[def_name],)
+            )
+        async for ctx, results in run_dataflow(
+            dataflow,
+            dataflow_inputs,
+            orchestrator=self.orchestrator,
+            strict=not self.no_strict,
+        ):
+            if not self.no_echo:
+                yield results
+        if self.no_echo:
+            yield CMDOutputOverride
+
+
+@config
+class RunContextsConfig(RunSingleConfig):
+    context_def: str = field(
+        "Definition to be used for contexts key. "
+        + "If set, the key will be added to the set of inputs "
+        + "under each context (which is also the contexts name)",
+        default=False,
+    )
+    contexts: List[str] = field(
+        "Contexts to run", default_factory=lambda: ["context1"], required=False
+    )
+
+
+class RunContexts(RunSingle):
+    CONFIG = RunContextsConfig
+
+    async def run(self):
+        dataflow = await self.get_dataflow(self.dataflow)
+        common_inputs = []
+        for value, def_name in self.inputs:
+            common_inputs.append(
+                Input(value=value, definition=dataflow.definitions[def_name],)
+            )
+
+        dataflow_inputs = {
+            ctx_string: [
+                Input(
+                    value=ctx_string,
+                    definition=dataflow.definitions[self.context_def],
+                )
+            ]
+            + common_inputs
+            for ctx_string in self.contexts
+        }
+
+        async for ctx, result in run_dataflow(
+            dataflow,
+            dataflow_inputs,
+            orchestrator=self.orchestrator,
+            strict=not self.no_strict,
+        ):
+            if not self.no_echo:
+                yield {ctx.as_string: result}
+        if self.no_echo:
+            yield CMDOutputOverride
+
+
 class Run(CMD):
     """Run dataflow"""
 
+    single = RunSingle
+    contexts = RunContexts
     records = RunRecords
 
 
