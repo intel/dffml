@@ -269,19 +269,6 @@ class TextClassifierContext(ModelContext):
         )
         self.tf.keras.models.save_model(self._model, self._model_dir_path())
 
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        """
-        Evaluates the accuracy of our model after training using the input records
-        as test data.
-        """
-        if not os.path.isfile(
-            os.path.join(self.model_dir_path, "saved_model.pb")
-        ):
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-        x, y = await self.train_data_generator(sources)
-        accuracy_score = self._model.evaluate(x, y)
-        return Accuracy(accuracy_score[1])
-
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
@@ -323,7 +310,7 @@ class TextClassificationModel(Model):
     """
     Implemented using Tensorflow hub pretrained models.
 
-    
+
     .. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/train_data.sh
 
     .. literalinclude:: /../model/tensorflow_hub/examples/tfhub_text_classifier/test_data.sh
