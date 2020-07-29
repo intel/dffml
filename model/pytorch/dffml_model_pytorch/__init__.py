@@ -116,11 +116,12 @@ Predicting with trained model:
 
 Example below uses ResNet-18 Model using the command line.
 
-Let us take a simple example: *Classifying Ants and Bees Images*
+Let us take a simple example: **Classifying Ants and Bees Images**
 
 First, we download the dataset and verify with ``sha384sum``
 
 .. code-block::
+
     curl -LO https://download.pytorch.org/tutorial/hymenoptera_data.zip
     sha384sum -c - << EOF
     491db45cfcab02d99843fbdcf0574ecf99aa4f056d52c660a39248b5524f9e6e8f896d9faabd27ffcfc2eaca0cec6f39  /home/tron/Desktop/Development/hymenoptera_data.zip
@@ -130,6 +131,7 @@ First, we download the dataset and verify with ``sha384sum``
 Unzip the file
 
 .. code-block::
+
     unzip hymenoptera_data.zip
 
 Train the model
@@ -148,7 +150,7 @@ Output:
 
 Create a csv file with the names of the images to predict, whether they are ants or bees.
 
-.. literalinclude:: /..model/pytorch/examples/resnet18/unknown_data.sh
+.. literalinclude:: /../model/pytorch/examples/resnet18/unknown_data.sh
 
 Make the predictions
 
