@@ -13,6 +13,13 @@ common.KWARGS["entry_points"] = {
     "dffml.operation": [
         f"remove_stopwords = {common.IMPORT_NAME}.operations:remove_stopwords",
         f"get_embedding = {common.IMPORT_NAME}.operations:get_embedding",
+        f"pos_tagger = {common.IMPORT_NAME}.operations:pos_tagger",
+        f"lemmatizer = {common.IMPORT_NAME}.operations:lemmatizer",
+        f"get_similarity = {common.IMPORT_NAME}.operations:get_similarity",
+        f"get_noun_chunks = {common.IMPORT_NAME}.operations:get_noun_chunks",
+        f"get_sentences = {common.IMPORT_NAME}.operations:get_sentences",
+        f"count_vectorizer = {common.IMPORT_NAME}.operations:count_vectorizer",
+        f"tfidf_vectorizer = {common.IMPORT_NAME}.operations:tfidf_vectorizer",
     ]
 }
 

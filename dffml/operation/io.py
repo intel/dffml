@@ -40,12 +40,12 @@ class AcceptUserInput(OperationImplementation):
     Accept input from stdin using python input()
 
     Returns
-    +++++++
+    -------
     dict
         A dictionary containing user input.
 
     Examples
-    ++++++++
+    --------
 
     The following example shows how to use AcceptUserInput.
     (Assumes that the input from stdio is "Data flow is awesome"!)
@@ -97,12 +97,12 @@ async def print_output(data: Any):
     Print the output on stdout using python print()
 
     Parameters
-    ++++++++++
+    ----------
     data : Any
         A python literal to be printed.
 
     Examples
-    ++++++++
+    --------
 
     The following example shows how to use print_output.
 

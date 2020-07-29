@@ -1,5 +1,6 @@
 import os
 import json
+import asyncio
 import secrets
 import inspect
 import pathlib
@@ -10,10 +11,11 @@ from http import HTTPStatus
 from functools import partial
 from dataclasses import dataclass
 from contextlib import AsyncExitStack
-from typing import List, Union, AsyncIterator, Type, NamedTuple, Dict
+from typing import List, Union, AsyncIterator, Type, NamedTuple, Dict, Any
 
-from aiohttp import web
 import aiohttp_cors
+from aiohttp import web
+
 
 from dffml import Sources, MemorySource
 from dffml.record import Record
@@ -176,7 +178,21 @@ class HTTPChannelConfig(NamedTuple):
                 - text:OUTPUT_KEYS
                 - json
                     - output of dataflow (Dict) is passes as json
-
+        immediate_response: Dict[str,Any]
+            If provided with a reponse, server responds immediatly with
+            it, whilst scheduling to run the dataflow.
+            Expected keys:
+                - status: HTTP status code for the response
+                - content_type: MIME type.If not given, determined
+                    from the presence of body/text/json
+                - body/text/json: One of this according to content_type
+                - headers
+            eg:
+                {
+                    "status": 200,
+                    "content_type": "application/json",
+                    "data": {"text": "ok"},
+                }
     """
 
     path: str
@@ -185,6 +201,7 @@ class HTTPChannelConfig(NamedTuple):
     asynchronous: bool = False
     input_mode: str = "default"
     forward_headers: str = None
+    immediate_response: Dict[str, Any] = None
 
     @classmethod
     def _fromdict(cls, **kwargs):
@@ -199,7 +216,7 @@ class Routes(BaseMultiCommContext):
     async def get_registered_handler(self, request):
         return self.app["multicomm_routes"].get(request.path, None)
 
-    async def multicomm_dataflow(self, config, request):
+    async def _multicomm_dataflow(self, config, request):
         # Seed the network with inputs given by caller
         # TODO(p0,security) allowlist of valid definitions to seed (set
         # Input.origin to something other than seed)
@@ -222,6 +239,7 @@ class Routes(BaseMultiCommContext):
                                 },
                                 status=HTTPStatus.NOT_FOUND,
                             )
+
                     inputs.append(
                         MemoryInputSet(
                             MemoryInputSetConfig(
@@ -251,7 +269,8 @@ class Routes(BaseMultiCommContext):
                         )
                     )
             elif ":" in config.input_mode:
-                preprocess_mode, input_def = config.input_mode.split(":")
+                preprocess_mode, *input_def = config.input_mode.split(":")
+                input_def = ":".join(input_def)
                 if input_def not in config.dataflow.definitions:
                     return web.json_response(
                         {
@@ -259,9 +278,10 @@ class Routes(BaseMultiCommContext):
                         },
                         status=HTTPStatus.NOT_FOUND,
                     )
+
                 if preprocess_mode == "json":
                     value = await request.json()
-                elif preprocess_mode == "str":
+                elif preprocess_mode == "text":
                     value = await request.text()
                 elif preprocess_mode == "bytes":
                     value = await request.read()
@@ -270,10 +290,11 @@ class Routes(BaseMultiCommContext):
                 else:
                     return web.json_response(
                         {
-                            "error": f"preprocess tag must be one of {IO_MODES}, got {preprocess_mode}"
+                            "error": f"preprocess tag must be one of {self.IO_MODES}, got {preprocess_mode}"
                         },
                         status=HTTPStatus.NOT_FOUND,
                     )
+
                 inputs.append(
                     MemoryInputSet(
                         MemoryInputSetConfig(
@@ -301,6 +322,7 @@ class Routes(BaseMultiCommContext):
                         )
                     )
                 )
+
             else:
                 raise NotImplementedError(
                     "Input modes other than default,preprocess:definition_name  not yet implemented"
@@ -314,6 +336,7 @@ class Routes(BaseMultiCommContext):
                 results = {
                     str(ctx): result async for ctx, result in octx.run(*inputs)
                 }
+
                 if config.output_mode == "json":
                     return web.json_response(results)
 
@@ -341,6 +364,38 @@ class Routes(BaseMultiCommContext):
                         {"error": f"output mode not valid"},
                         status=HTTPStatus.NOT_FOUND,
                     )
+
+    async def multicomm_dataflow(self, config, request):
+        if config.immediate_response:
+            asyncio.create_task(self._multicomm_dataflow(config, request))
+            ir = config.immediate_response
+            content_type = None
+            if "content_type" in ir:
+                content_type = ir["content_type"]
+            else:
+                if "data" in ir:
+                    content_type = "application/json"
+                elif "text" in ir:
+                    content_type = "text/plain"
+                elif "body" in ir:
+                    content_type = "application/octet-stream"
+
+            if content_type == "application/json":
+                return web.json_response(
+                    data={} if not "data" in ir else ir["data"],
+                    status=200 if not "status" in ir else ir["status"],
+                    headers=None if not "headers" in ir else ir["headers"],
+                )
+            else:
+                return web.Response(
+                    body=None if not "body" in ir else ir["body"],
+                    text=None if not "text" in ir else ir["text"],
+                    status=200 if not "status" in ir else ir["status"],
+                    headers=None if not "headers" in ir else ir["headers"],
+                    content_type=content_type,
+                )
+        else:
+            return await self._multicomm_dataflow(config, request)
 
     async def multicomm_dataflow_asynchronous(self, config, request):
         # TODO allow list of valid definitions to seed

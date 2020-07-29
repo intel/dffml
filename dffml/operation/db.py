@@ -84,14 +84,14 @@ async def db_query_create_table(
     Generates a create table query in the database.
 
     Parameters
-    ++++++++++
+    ----------
     table_name : str
         The name of the table to be created.
     cols : list[str]
         Columns of the table.
 
     Examples
-    ++++++++
+    --------
 
     >>> import asyncio
     >>> from dffml import *
@@ -141,14 +141,14 @@ async def db_query_insert(self, *, table_name: str, data: Dict[str, Any]):
     Generates an insert query in the database.
 
     Parameters
-    ++++++++++
+    ----------
     table_name : str
         The name of the table to insert data in to.
     data : dict
         Data to be inserted into the table.
 
     Examples
-    ++++++++
+    --------
 
     >>> import asyncio
     >>> from dffml import *
@@ -223,7 +223,7 @@ async def db_query_update(
     Generates an Update table query in the database.
 
     Parameters
-    ++++++++++
+    ----------
     table_name : str
         The name of the table to insert data in to.
     data : dict
@@ -232,7 +232,7 @@ async def db_query_update(
         List of query conditions.
 
     Examples
-    ++++++++
+    --------
 
     >>> import asyncio
     >>> from dffml import *
@@ -313,14 +313,14 @@ async def db_query_remove(
     Generates a remove table query in the database.
 
     Parameters
-    ++++++++++
+    ----------
     table_name : str
         The name of the table to insert data in to.
     conditions : Conditions
         Query conditions.
 
     Examples
-    ++++++++
+    --------
 
     >>> import asyncio
     >>> from dffml import *
@@ -395,7 +395,7 @@ async def db_query_lookup(
     Generates a lookup query in the database.
 
     Parameters
-    ++++++++++
+    ----------
     table_name : str
         The name of the table.
     cols : list[str]
@@ -404,7 +404,7 @@ async def db_query_lookup(
         Query conditions.
 
     Examples
-    ++++++++
+    --------
 
     >>> import asyncio
     >>> from dffml import *
@@ -466,14 +466,14 @@ async def db_query_insert_or_update(
     Automatically uses the better suited operation, insert query or update query.
 
     Parameters
-    ++++++++++
+    ----------
     table_name : str
         The name of the table to insert data in to.
     data : dict
         Data to be inserted or updated into the table.
 
     Examples
-    ++++++++
+    --------
 
     >>> import asyncio
     >>> from dffml import *

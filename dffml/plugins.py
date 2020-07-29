@@ -35,6 +35,7 @@ CORE_PLUGINS = [
     ("model", "vowpalWabbit"),
     ("model", "autosklearn"),
     ("model", "pytorch"),
+    ("model", "spacy"),
 ]
 
 # Models which currently don't support Python 3.8

@@ -460,7 +460,9 @@ def op(*args, imp_enter=None, ctx_enter=None, config_cls=None, **kwargs):
                         # We can't pass self to functions running in threads
                         # Its not thread safe!
                         bound = func.__get__(self, self.__class__)
-                        result = await bound(**inputs)
+                        result = bound(**inputs)
+                        if inspect.isawaitable(result):
+                            result = await result
                     elif inspect.iscoroutinefunction(func):
                         result = await func(**inputs)
                     else:

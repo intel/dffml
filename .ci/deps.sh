@@ -172,6 +172,11 @@ if [ "x${PLUGIN}" == "xmodel/tensorflow_hub" ]; then
   python -m pip install -U -e "./model/tensorflow"
 fi
 
+if [[ "x${PLUGIN}" == "xmodel/spacy" ]]; then
+  conda install -y -c conda-forge spacy
+  python -m spacy download en_core_web_sm
+fi
+
 if [[ "x${PLUGIN}" == "xoperations/deploy" ]]; then
   python -m pip install -U -e "./feature/git"
 fi
