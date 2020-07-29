@@ -1,4 +1,4 @@
-import pkg_resources
+import importlib.resources
 from pathlib import Path
 import distutils.dir_util
 from typing import NamedTuple
@@ -6,9 +6,8 @@ from typing import NamedTuple
 from .os import chdir
 
 # The folder where DFFML is installed
-INSTALL_LOCATION = Path(
-    pkg_resources.resource_filename("dffml", "skel")
-).parent
+with importlib.resources.path("dffml", "skel") as skel_path:
+    INSTALL_LOCATION = skel_path.parent
 
 
 class SkelTemplateConfig(NamedTuple):

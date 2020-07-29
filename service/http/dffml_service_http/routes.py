@@ -5,7 +5,7 @@ import secrets
 import inspect
 import pathlib
 import traceback
-import pkg_resources
+import importlib.resources
 from functools import wraps
 from http import HTTPStatus
 from functools import partial
@@ -34,9 +34,8 @@ from dffml.source.source import BaseSource, SourcesContext
 from dffml.util.entrypoint import EntrypointNotFound, entrypoint
 
 # Serve the javascript API
-API_JS_BYTES = pathlib.Path(
-    pkg_resources.resource_filename("dffml_service_http", "api.js")
-).read_bytes()
+with importlib.resources.path("dffml_service_http", "api.js") as API_path:
+    API_JS_BYTES = API_path.read_bytes()
 
 # TODO Add test for this
 # Bits of randomness in secret tokens
