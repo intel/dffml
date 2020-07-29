@@ -47,7 +47,7 @@ Predicting with trained model:
         -log debug
 
 
-**Models Available:**
+**Pre-Trained Models Available:**
 
 +----------------+---------------------------------+--------------------+--------------------------------------------------------------------------------+
 | Type           | Model                           | Entrypoint         | Architecture                                                                   |
@@ -62,7 +62,7 @@ Predicting with trained model:
 |                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
 |                | DenseNet-201                    | densenet201        |                                                                                |
 |                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
-|                | MnasNet 0.5                     | mnasnet0_5         | `MnasNet 0.5 architecture <https://arxiv.org/pdf/1807.11626.pdf>`_             |
+|                | MnasNet 0.5                     | mnasnet0_5         | `MnasNet architecture <https://arxiv.org/pdf/1807.11626.pdf>`_                 |
 |                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
 |                | MnasNet 1.0                     | mnasnet1_0         |                                                                                |
 |                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
@@ -88,7 +88,7 @@ Predicting with trained model:
 |                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
 |                | Inception V3                    | inception_v3       | `Inception V3 architecture <http://arxiv.org/abs/1512.00567>`_                 |
 |                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
-|                | ResNet-18                       | resnet18           | `ResNet architecture <https://arxiv.org/pdf/1409.1556.pdf>`_                   |
+|                | ResNet-18                       | resnet18           | `ResNet architecture <https://arxiv.org/pdf/1512.03385.pdf>`_                  |
 |                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
 |                | ResNet-34                       | resnet34           |                                                                                |
 |                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
@@ -106,9 +106,9 @@ Predicting with trained model:
 |                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
 |                | ShuffleNet V2 1.0               | shufflenet_v2_x1_0 |                                                                                |
 |                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
-|                | ResNext-101-32x8D               | resnext101_32x8d   | `ResNext-101-32x8D architecture <https://arxiv.org/pdf/1611.05431.pdf>`_       |
+|                | ResNext-101-32x8D               | resnext101_32x8d   | `ResNext architecture <https://arxiv.org/pdf/1611.05431.pdf>`_                 |
 |                +---------------------------------+--------------------+--------------------------------------------------------------------------------+
-|                | ResNext-50-32x4D                | resnext50_32x4d    | `ResNext-50-32x4D architecture <https://arxiv.org/pdf/1611.05431.pdf>`_        |
+|                | ResNext-50-32x4D                | resnext50_32x4d    |                                                                                |
 +----------------+---------------------------------+--------------------+--------------------------------------------------------------------------------+
 
 
@@ -116,7 +116,7 @@ Predicting with trained model:
 
 Example below uses ResNet-18 Model using the command line.
 
-Let us take a simple example: *Classifying Ants and Bees*
+Let us take a simple example: *Classifying Ants and Bees Images*
 
 First, we download the dataset and verify with ``sha384sum``
 
@@ -146,7 +146,7 @@ Output:
 
     0.9215686274509803
 
-Create a csv file with the names of the images to predict whether they are ants or bees.
+Create a csv file with the names of the images to predict, whether they are ants or bees.
 
 .. literalinclude:: /..model/pytorch/examples/resnet18/unknown_data.sh
 
