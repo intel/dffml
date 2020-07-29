@@ -4,11 +4,11 @@ dffml accuracy \
   -model-classifications ants bees \
   -model-directory resnet18_model \
   -model-batch_size 32 \
-  -model-useCUDA \
+  -model-enableGPU \
   -model-features image:int:$((500*500)) \
   -model-predict label:str:1 \
   -sources f=dir \
     -source-foldername hymenoptera_data/val \
     -source-feature image \
     -source-labels ants bees \
-  -log debug
+  -log critical

@@ -1,5 +1,3 @@
-from __future__ import print_function, division
-
 import os
 import pathlib
 import hashlib
@@ -34,7 +32,7 @@ class PyTorchModelConfig:
     imageSize: int = field(
         "Common size for all images to resize and crop to", default=224
     )
-    useCUDA: bool = field("Utilize GPUs for processing", default=False)
+    enableGPU: bool = field("Utilize GPUs for processing", default=False)
     epochs: int = field(
         "Number of iterations to pass over all records in a source", default=20
     )
@@ -46,7 +44,7 @@ class PyTorchModelConfig:
         "Split training data for Validation", default=0.0
     )
     pretrained: bool = field(
-        "Load Pre-trained model weights.", default=True,
+        "Load Pre-trained model weights", default=True,
     )
     patience: int = field(
         "Early stops the training if validation loss doesn't improve after a given patience",
@@ -63,21 +61,20 @@ class PyTorchModelContext(ModelContext):
         self.cids = self._mkcids(self.parent.config.classifications)
         self.classifications = self._classifications(self.cids)
         self.features = self._applicable_features()
-        self.model_dir_path = self._model_dir_path()
+        self.model_path = self._model_path()
         self._model = None
         self.counter = 0
 
-        if self.parent.config.useCUDA and torch.cuda.is_available():
+        if self.parent.config.enableGPU and torch.cuda.is_available():
             self.device = torch.device("cuda:0")
             self.logger.info("Using CUDA")
         else:
             self.device = torch.device("cpu")
 
     async def __aenter__(self):
-        path = self._model_dir_path()
-        if os.path.isfile(os.path.join(path, "model.pt")):
-            self.logger.info(f"Using saved model from {path}")
-            self._model = torch.load(os.path.join(path, "model.pt"))
+        if os.path.isfile(self.model_path):
+            self.logger.info(f"Using saved model from {self.model_path}")
+            self._model = torch.load(self.model_path)
         else:
             self._model = self.createModel()
 
@@ -130,36 +127,16 @@ class PyTorchModelContext(ModelContext):
     def _applicable_features(self):
         return [name for name in self.parent.config.features.names()]
 
-    @property
-    def model(self):
-        """
-        Generates or loads a model
-        """
-        return self._model
-
-    @model.setter
-    def model(self, model):
-        """
-        Loads a model if already trained previously
-        """
-        self._model = model
-
-    def _model_dir_path(self):
+    def _model_path(self):
         if self.parent.config.directory is None:
             return None
-        _to_hash = self.features + [
-            self.classification,
-            str(len(self.cids)),
-        ]
-        model = hashlib.sha384("".join(_to_hash).encode("utf-8")).hexdigest()
         if not os.path.isdir(self.parent.config.directory):
             raise NotADirectoryError(
                 "%s is not a directory" % (self.parent.config.directory)
             )
-        os.makedirs(
-            os.path.join(self.parent.config.directory, model), exist_ok=True
-        )
-        return os.path.join(self.parent.config.directory, model)
+        os.makedirs(self.parent.config.directory, exist_ok=True)
+
+        return os.path.join(self.parent.config.directory, "model.pt")
 
     def _mkcids(self, classifications):
         """
@@ -340,12 +317,10 @@ class PyTorchModelContext(ModelContext):
             )
             self._model.load_state_dict(best_model_wts)
 
-        torch.save(
-            self._model, os.path.join(self._model_dir_path(), "model.pt")
-        )
+        torch.save(self._model, self.model_path)
 
     async def accuracy(self, sources: Sources) -> Accuracy:
-        if not os.path.isfile(os.path.join(self.model_dir_path, "model.pt")):
+        if not os.path.isfile(os.path.join(self.model_path)):
             raise ModelNotTrained("Train model before assessing for accuracy.")
 
         dataset, size = await self.dataset_generator(sources)
@@ -378,7 +353,7 @@ class PyTorchModelContext(ModelContext):
         """
         Uses trained data to make a prediction about the quality of a record.
         """
-        if not os.path.isfile(os.path.join(self.model_dir_path, "model.pt")):
+        if not os.path.isfile(os.path.join(self.model_path)):
             raise ModelNotTrained("Train model before prediction.")
 
         self._model.eval()
