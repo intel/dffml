@@ -6,8 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Pre-Trained PyTorch torchvision Models
+- Spacy model for NER
+- Added ability to rename outputs using GetSingle
 - Tutorial for using NLP operations with models
-- Operations plugin for NLP
+- Operations plugin for NLP wrapping spacy and scikit functions
 - Support for default value in a Definition
 - Transformers Question Answering model
 - Source for reading images in directories
@@ -66,6 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   HTTP 307 response
 - Support for immediate response in HTTP service
 - Daal4py example usage.
+- Gitter chatbot tutorial.
 ### Changed
 - Renamed `-seed` to `-inputs` in `dataflow create` command
 - Renamed configloader/png to configloader/image and added support for loading JPEG and TIFF file formats
