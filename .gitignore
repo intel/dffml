@@ -27,4 +27,3 @@ doctest/
 *.mnistpng
 docs/plugins/dffml_*.rst
 docs/api/**
-Personal Testing/
