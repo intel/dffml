@@ -12,7 +12,8 @@ AUTHOR_EMAIL = "oliverobrien111@gmail.com"
 # Install dffml if it is not installed in development mode
 INSTALL_REQUIRES = (
     ["xgboost>=1.1.1"]
-    + ["pandas>=1.0.5"]
+    + ["scikit-learn<0.23,>=0.22.0"]
+    + ["pandas<1.0"]
     + ["joblib>=0.16.0"]
     + (
         ["dffml>=0.3.7"]
