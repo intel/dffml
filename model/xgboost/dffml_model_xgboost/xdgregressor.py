@@ -18,17 +18,44 @@ from dffml.util.entrypoint import entrypoint
 from dffml.record import Record
 
 
-# TODO Add parameters you want to have access to within self.config here
-# For example, search for n_estimators to see how that works
 @config
 class XDGRegressorModelConfig:
     directory: pathlib.Path = field("Directory where model should be saved")
     features: Features = field("Features on which we train the model")
     predict: Feature = field("Value to be predicted")
-    learning_rate: float = field("Learning rate to train with", default=0.1)
+    learning_rate: float = field("Learning rate to train with", default=0.05)
     n_estimators: int = field(
         "Number of graident boosted trees. Equivalent to the number of boosting rounds",
         default=1000,
+    )
+    max_depth: int = field("Maximium tree depth for base learners", default=6)
+    subsample: float = field(
+        "Subsample ratio of the training instance", default=1
+    )
+    gamma: float = field(
+        "Minimium loss reduction required to make a furthre partition on a leaf node",
+        default=0,
+    )
+    n_jobs: int = field(
+        "Number of parallel threads used to run xgboost", default=-1
+    )
+    colsample_bytree: float = field(
+        "Subsample ratio of columns when constructing each tree", default=1
+    )
+    booster: str = field(
+        "Specify which booster to use: gbtree, gblinear or dart",
+        default="gbtree",
+    )
+    min_child_weight: float = field(
+        "Minimum sum of instance weight(hessian) needed in a child", default=0
+    )
+    reg_lambda: float = field(
+        "L2 regularization term on weights. Increasing this value will make model more conservative",
+        default=1,
+    )
+    reg_alpha: float = field(
+        "L1 regularization term on weights. Increasing this value will make model more conservative",
+        default=0,
     )
 
 
@@ -78,8 +105,15 @@ class XDGRegressorModel(SimpleModel):
         self.saved = xgb.XGBRegressor(
             n_estimators=self.config.n_estimators,
             learning_rate=self.config.learning_rate,
-            max_depth=2,
-            subsample=0.8,
+            max_depth=self.config.max_depth,
+            subsample=self.config.subsample,
+            gamma=self.config.gamma,
+            n_jobs=self.config.n_jobs,
+            colsample_bytree=self.config.colsample_bytree,
+            booster=self.config.booster,
+            min_child_weight=self.config.min_child_weight,
+            reg_lambda=self.config.reg_lambda,
+            reg_alpha=self.config.reg_alpha
         )
         # my_model = XGBRegressor(n_estimators=1000, learning_rate=0.05, n_jobs=4) *NOTE:  n_jobs made it slightly worse
         # print(x_data)
@@ -119,7 +153,7 @@ class XDGRegressorModel(SimpleModel):
         # Calculate MAE
 
         # return mean_absolute_error(predictions, actuals)
-        print(r2_score(actuals,predictions))
+
         return r2_score(actuals, predictions)
 
     async def predict(self, sources: Sources) -> AsyncIterator[Record]:
