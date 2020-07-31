@@ -34,6 +34,7 @@ CORE_PLUGINS = [
     ("model", "transformers"),
     ("model", "vowpalWabbit"),
     ("model", "autosklearn"),
+    ("model", "xgboost"),
 ]
 
 # Models which currently don't support Python 3.8

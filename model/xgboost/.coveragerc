@@ -1,6 +1,6 @@
 [run]
 source =
-    dffml_model_myslr
+    dffml_model_xgboost
     tests
 branch = True
 

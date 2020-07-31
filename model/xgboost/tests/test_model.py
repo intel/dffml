@@ -59,18 +59,17 @@ class TestXDGRegressor(AsyncTestCase):
         # Remove the temporary directory where the model was stored to cleanup
         cls.model_dir.cleanup()
 
-    async def test_00_train(self):
+    async def test_02_train(self):
         # Train the model on the training data
         await train(self.model, self.trainingsource)
 
-    async def test_01_accuracy(self):
-
+    async def test_03_accuracy(self):
         # Use the test data to assess the model's accuracy
         res = await accuracy(self.model, self.testsource)
         # Ensure the accuracy is above 80%
         self.assertTrue(0.8 <= res < 1.0)
 
-    async def test_02_predict(self):
+    async def test_04_predict(self):
         # Get the prediction for each piece of test data
         async for i, features, prediction in predict(
             self.model, self.testsource
@@ -85,3 +84,4 @@ class TestXDGRegressor(AsyncTestCase):
             acceptable = 0.3
             # Sometimes causes an issue when only one data point anomalously has high error
             self.assertLess(error, acceptable)
+

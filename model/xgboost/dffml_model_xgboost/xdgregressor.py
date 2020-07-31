@@ -61,6 +61,17 @@ class XDGRegressorModelConfig:
 
 @entrypoint("xdgregressor")
 class XDGRegressorModel(SimpleModel):
+    """
+    Model using xgboost to perform regression prediction via gradient boosted trees
+    XGBoost is a the leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
+    as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.
+    Parameters for xgboost:
+        n_estimators = 100-1000 range,
+        learning_rate - In general, a small learning rate and large number of estimators will yield more accurate XGBoost models
+            e.g. learning_rate=0.1
+        n_jobs - specify number of cores to run in parallel
+    """
+
     CONFIG = XDGRegressorModelConfig
 
     def __init__(self, config) -> None:
@@ -76,6 +87,9 @@ class XDGRegressorModel(SimpleModel):
             self.saved = joblib.load(str(self.saved_filepath))
 
     async def train(self, sources: Sources) -> None:
+        """
+        Trains and saves a model using the source data, and the config attributes
+        """
         # Get data into memory
         xdata = []
         ydata = []
@@ -91,17 +105,7 @@ class XDGRegressorModel(SimpleModel):
             ydata.append(record.feature(self.parent.config.predict.name))
         x_data = pd.DataFrame(xdata)
         y_data = pd.DataFrame(ydata)
-        # XGBoost is a the leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
-        # as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.
-        # Parameters for xgboost
-        #   n_estimators = 100-1000 range,
-        #   learning_rate - In general, a small learning rate and large number of estimators will yield more accurate XGBoost models
-        #       e.g. learning_rate=0.1
-        #   n_jobs - specify number of cores to run in parallel
-        # my_model = XGBRegressor()
-        # my_model = XGBRegressor(n_estimators=1000)
 
-        # TODO Tweak this?
         self.saved = xgb.XGBRegressor(
             n_estimators=self.config.n_estimators,
             learning_rate=self.config.learning_rate,
@@ -113,25 +117,26 @@ class XDGRegressorModel(SimpleModel):
             booster=self.config.booster,
             min_child_weight=self.config.min_child_weight,
             reg_lambda=self.config.reg_lambda,
-            reg_alpha=self.config.reg_alpha
+            reg_alpha=self.config.reg_alpha,
         )
-        # my_model = XGBRegressor(n_estimators=1000, learning_rate=0.05, n_jobs=4) *NOTE:  n_jobs made it slightly worse
-        # print(x_data)
-        # print(y_data)
-        # TODO Tweak this?
-        self.saved.fit(
-            x_data, y_data, verbose=True,
-        )
+
+        self.saved.fit(x_data, y_data)
 
         # Save the trained model
         joblib.dump(self.saved, str(self.saved_filepath))
 
     async def accuracy(self, sources: Sources) -> Accuracy:
+        """
+        Evaluates the accuracy of the model by gathering predictions of the test data
+        and comparing them to the provided results.
+
+        Accuracy is given as an R^2 regression score
+        """
         if not self.saved:
             raise ModelNotTrained("Train the model before assessing accuracy")
 
         # Get data
-        input_data = await self.getInputData(sources)
+        input_data = await self.get_input_data(sources)
 
         # Make predictions
         xdata = []
@@ -150,19 +155,18 @@ class XDGRegressorModel(SimpleModel):
             for input_datum in input_data
         ]
 
-        # Calculate MAE
-
-        # return mean_absolute_error(predictions, actuals)
-
         return r2_score(actuals, predictions)
 
     async def predict(self, sources: Sources) -> AsyncIterator[Record]:
+        """
+        Uses saved model to make prediction off never seen before data
+        """
         if not self.saved:
             raise ModelNotTrained(
-                "Train the model first before getting preictions"
+                "Train the model first before getting predictions"
             )
         # Grab records and input data (X data)
-        input_data = await self.getInputData(sources)
+        input_data = await self.get_input_data(sources)
         # Make predictions
         xdata = []
         for record in input_data:
@@ -181,7 +185,7 @@ class XDGRegressorModel(SimpleModel):
             )
             yield record
 
-    async def getInputData(self, sources: Sources) -> list:
+    async def get_input_data(self, sources: Sources) -> list:
         saved_records = []
         async for record in sources.with_features(
             self.config.features.names()
