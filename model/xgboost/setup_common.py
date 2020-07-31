@@ -13,7 +13,6 @@ AUTHOR_EMAIL = "oliverobrien111@gmail.com"
 INSTALL_REQUIRES = (
     ["xgboost>=1.1.1"]
     + ["scikit-learn>=0.23.1"]
-    + ["pandas>=1.0.5"]
     + ["joblib>=0.16.0"]
     + (
         ["dffml>=0.3.7"]
