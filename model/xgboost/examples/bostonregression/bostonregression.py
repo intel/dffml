@@ -37,4 +37,3 @@ print(
         model, *[{"data": x, "target": y} for x, y in zip(trainX, trainy)]
     ),
 )
-

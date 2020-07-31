@@ -84,4 +84,3 @@ class TestXDGRegressor(AsyncTestCase):
             acceptable = 0.3
             # Sometimes causes an issue when only one data point anomalously has high error
             self.assertLess(error, acceptable)
-
