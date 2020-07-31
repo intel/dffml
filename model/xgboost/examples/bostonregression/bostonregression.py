@@ -1,26 +1,31 @@
 from dffml.feature.feature import Feature, Features
-from dffml.noasync import train, accuracy, predict
-from dffml_model_xgboost.xdgregressor import XDGRegressorModel
+from dffml.noasync import train, accuracy
+from dffml_model_xgboost.xdgregressor import (
+    XDGRegressorModel,
+    XDGRegressorModelConfig,
+)
 from sklearn.datasets import load_boston
 from sklearn.model_selection import train_test_split
 
 boston = load_boston()
 y = boston["target"]
 X = boston["data"]
-trainX, textX, trainy, texty = train_test_split(
+trainX, testX, trainy, testy = train_test_split(
     X, y, test_size=0.2, random_state=123
 )
 
 # Configure the model
 model = XDGRegressorModel(
-    features=Features(Feature("data", float, 13)),
-    predict=Feature("target", float, 1),
-    directory="model",
-    max_depth=8,
-    reg_lambda=200,
-    reg_alpha=2,
-    learning_rate=0.05,
-    n_estimators=2000,
+    XDGRegressorModelConfig(
+        features=Features(Feature("data", float, 13)),
+        predict=Feature("target", float, 1),
+        directory="model",
+        max_depth=5,
+        reg_lambda=200,
+        reg_alpha=2,
+        learning_rate=0.05,
+        n_estimators=1000,
+    )
 )
 
 # Train the model

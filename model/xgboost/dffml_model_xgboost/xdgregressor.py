@@ -6,7 +6,7 @@ import importlib
 
 import joblib
 import pandas as pd
-from sklearn.metrics import mean_absolute_error, r2_score
+from sklearn.metrics import r2_score
 import xgboost as xgb
 
 from dffml.base import config, field
