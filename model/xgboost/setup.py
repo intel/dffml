@@ -11,7 +11,6 @@ spec.loader.exec_module(common)
 
 common.KWARGS["install_requires"] += ["xgboost>=1.1.1"]
 common.KWARGS["install_requires"] += ["scikit-learn>=0.23.1"]
-common.KWARGS["install_requires"] += ["pandas>=1.0.5"]
 common.KWARGS["install_requires"] += ["joblib>=0.16.0"]
 common.KWARGS["entry_points"] = {
     "dffml.model": [
