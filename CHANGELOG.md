@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Docstrings and doctestable example for DataFlowSource
 - Pre-Trained PyTorch torchvision Models
 - Spacy model for NER
 - Added ability to rename outputs using GetSingle
