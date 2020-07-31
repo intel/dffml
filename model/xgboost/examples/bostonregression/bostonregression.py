@@ -7,10 +7,6 @@ from sklearn.model_selection import train_test_split
 boston = load_boston()
 y = boston["target"]
 X = boston["data"]
-trainX = X[: int(0.8 * len(X)), :]
-testX = X[int(0.8 * len(X)) :, :]
-trainy = y[: int(0.8 * len(y))]
-testy = y[int(0.8 * len(y)) :]
 trainX, textX, trainy, texty = train_test_split(
     X, y, test_size=0.2, random_state=123
 )
