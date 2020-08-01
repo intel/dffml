@@ -15,7 +15,7 @@ common.KWARGS["install_requires"] += ["scikit-learn<0.23,>=0.22.0"]
 common.KWARGS["install_requires"] += ["joblib>=0.16.0"]
 common.KWARGS["entry_points"] = {
     "dffml.model": [
-        f"xdgregressor = {common.IMPORT_NAME}.xdgregressor:XDGRegressorModel"
+        f"xgbregressor = {common.IMPORT_NAME}.xgbregressor:XGBRegressorModel"
     ]
 }
 
