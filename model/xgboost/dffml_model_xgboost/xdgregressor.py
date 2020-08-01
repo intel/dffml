@@ -20,7 +20,7 @@ from dffml.model.model import SimpleModel, ModelNotTrained
 
 
 @config
-class XDGRegressorModelConfig:
+class XGBRegressorModelConfig:
     directory: pathlib.Path = field("Directory where model should be saved")
     features: Features = field("Features on which we train the model")
     predict: Feature = field("Value to be predicted")
@@ -60,8 +60,8 @@ class XDGRegressorModelConfig:
     )
 
 
-@entrypoint("xdgregressor")
-class XDGRegressorModel(SimpleModel):
+@entrypoint("xgbregressor")
+class XGBRegressorModel(SimpleModel):
     """
     Model using xgboost to perform regression prediction via gradient boosted trees
     XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
@@ -82,7 +82,7 @@ class XDGRegressorModel(SimpleModel):
         Training accuracy: 0.819782501866115
     """
 
-    CONFIG = XDGRegressorModelConfig
+    CONFIG = XGBRegressorModelConfig
 
     def __init__(self, config) -> None:
         super().__init__(config)

@@ -3,9 +3,9 @@ from sklearn.model_selection import train_test_split
 
 from dffml import Feature, Features
 from dffml.noasync import train, accuracy
-from dffml_model_xgboost.xdgregressor import (
-    XDGRegressorModel,
-    XDGRegressorModelConfig,
+from dffml_model_xgboost.xgbregressor import (
+    XGBRegressorModel,
+    XGBRegressorModelConfig,
 )
 
 
@@ -17,8 +17,8 @@ trainX, testX, trainy, testy = train_test_split(
 )
 
 # Configure the model
-model = XDGRegressorModel(
-    XDGRegressorModelConfig(
+model = XGBRegressorModel(
+    XGBRegressorModelConfig(
         features=Features(Feature("data", float, 10)),
         predict=Feature("target", float, 1),
         directory="model",

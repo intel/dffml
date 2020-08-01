@@ -18,20 +18,20 @@ from dffml.model.model import SimpleModel, ModelNotTrained
 from dffml.source.memory import MemorySource, MemorySourceConfig
 
 
-from dffml_model_xgboost.xdgregressor import (
-    XDGRegressorModel,
-    XDGRegressorModelConfig,
+from dffml_model_xgboost.xgbregressor import (
+    XGBRegressorModel,
+    XGBRegressorModelConfig,
 )
 
 
-class TestXDGRegressor(AsyncTestCase):
+class TestXGBRegressor(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
         # Create a temporary directory to store the trained model
         cls.model_dir = tempfile.TemporaryDirectory()
         # Create an instance of the model
-        cls.model = XDGRegressorModel(
-            XDGRegressorModelConfig(
+        cls.model = XGBRegressorModel(
+            XGBRegressorModelConfig(
                 features=Features(
                     Feature("Feature1", float, 1), Feature("Feature2")
                 ),
