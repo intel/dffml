@@ -41,21 +41,20 @@ from dffml.operation.db import (
 
 class TestNatsOrchestrator(AsyncTestCase):
     async def setUp(self):
-        with socketserver.TCPServer(("localhost", 0), None) as s:
-            free_port = s.server_address[1]
-
-        self.server_addr = f"0.0.0.0:{free_port}"
-
         self.nats_proc = subprocess.Popen(
-            ["nats-server", "-p", str(free_port),],
+            ["nats-server", "-p", "-1",],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             start_new_session=True,
         )
 
         ready = False
+        listen_text = "Listening for client connections on "
         while not ready:
             line = self.nats_proc.stdout.readline().decode()
+            if listen_text in line:
+                line = line.strip().split(listen_text)
+                self.server_addr = line[-1]
             if "Server is ready" in line:
                 ready = True
 
@@ -90,20 +89,20 @@ class TestNatsOrchestrator(AsyncTestCase):
             )
         )
 
-        sn1 = await subnode_1.__aenter__()
-        async with primarynode as pn:
-            async with pn() as pnctx:
-                # Ensure subnode started new context
-                self.assertTrue(sn1.running_contexts)
-                sn1ctx = sn1.running_contexts[0]
+        async with subnode_1 as sn1:
+            async with primarynode as pn:
+                async with pn() as pnctx:
+                    # Ensure subnode started new context
+                    self.assertTrue(sn1.running_contexts)
+                    sn1ctx = sn1.running_contexts[0]
 
-                self.assertEqual(
-                    sn1ctx.operation_token,
-                    {
-                        "check_if_valid_git_repository_URL": 1,
-                        "db_query_create_table": 1,
-                    },
-                )
+                    self.assertEqual(
+                        sn1ctx.operation_token,
+                        {
+                            "check_if_valid_git_repository_URL": 1,
+                            "db_query_create_table": 1,
+                        },
+                    )
 
-                self.assertIn("check_url", sn1ctx.opimpctx.operations)
-                self.assertIn("dbq", sn1ctx.opimpctx.operations)
+                    self.assertIn("check_url", sn1ctx.opimpctx.operations)
+                    self.assertIn("dbq", sn1ctx.opimpctx.operations)

@@ -351,7 +351,7 @@ class NatsWorkerNodeContext(NatsNodeContext):
             for operation in self.parent.config.operations
         }
 
-        # Subscribe to instance details
+        # Subscribe to instance details.
         # We cannot request for instance details because,
         # all worker nodes need to complete registration before
         # orchestrator node can allocate instances uniformly
@@ -377,7 +377,11 @@ class NatsWorkerNodeContext(NatsNodeContext):
         self.operation_token.update(response)
         self.logger.debug(f"Tokens received: {response}")
 
-        # Look for implementations provided in sub node:
+        # Look for implementations provided in sub node
+        # if any. If no implementations are provided,
+        # the operation is assumed to be entrypoint loadable.
+        # opimpNetworkctx raises an exception if implementation
+        # is not found in both ways.
         for operation_name in response:
             if operation_name in self.parent.config.implementations:
                 self.operation_implemtaions[
