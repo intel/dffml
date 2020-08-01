@@ -205,6 +205,7 @@ def type_lookup(typename):
 
 def export_value(obj, key, value):
     # export and _asdict are not classmethods
+    typename_lower = str(type(value)).lower()
     if hasattr(value, "ENTRY_POINT_ORIG_LABEL") and hasattr(value, "config"):
         obj[key] = {"plugin": value.ENTRY_POINT_ORIG_LABEL}
         export_value(obj[key], "config", value.config)
@@ -216,14 +217,17 @@ def export_value(obj, key, value):
         obj[key] = value.export()
     elif hasattr(value, "_asdict"):
         obj[key] = value._asdict()
-    elif (
-        getattr(type(value), "__module__", None) == "numpy"
-        and isinstance(value, collections.abc.Iterable)
-        and isinstance(
-            getattr(value, "flatten", None), collections.abc.Callable
-        )
-    ):
-        obj[key] = tuple(value.flatten())
+    elif "numpy" in typename_lower:
+        if isinstance(value, collections.abc.Iterable) and isinstance(
+            getattr(value, "tolist", None), collections.abc.Callable
+        ):
+            obj[key] = value.tolist()
+        elif ".int" in typename_lower or ".uint" in typename_lower:
+            obj[key] = int(value)
+        elif "float" in typename_lower:
+            obj[key] = float(value)
+        else:
+            raise ValueError(f"Unknown numpy type: {typename_lower}")
     elif dataclasses.is_dataclass(value):
         obj[key] = export_dict(**dataclasses.asdict(value))
     elif getattr(value, "__module__", None) == "typing":
