@@ -105,6 +105,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   packaging the model.
 - IntegrationCLITestCase creates a new directory and chdir into it for each test
 ### Fixed
+- `export_value` now converts numpy array to JSON serializable datatype
 - CSV source overwriting configloaded data to every row
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
   parameter sets for an operation.
