@@ -25,7 +25,7 @@ class XDGRegressorModelConfig:
     predict: Feature = field("Value to be predicted")
     learning_rate: float = field("Learning rate to train with", default=0.05)
     n_estimators: int = field(
-        "Number of graident boosted trees. Equivalent to the number of boosting rounds",
+        "Number of gradient boosted trees. Equivalent to the number of boosting rounds",
         default=1000,
     )
     max_depth: int = field("Maximium tree depth for base learners", default=6)
@@ -63,13 +63,21 @@ class XDGRegressorModelConfig:
 class XDGRegressorModel(SimpleModel):
     """
     Model using xgboost to perform regression prediction via gradient boosted trees
-    XGBoost is a the leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
+    XGBoost is a leading software library for working with standard tabular data (the type of data you store in Pandas DataFrames,
     as opposed to more exotic types of data like images and videos). With careful parameter tuning, you can train highly accurate models.
-    Parameters for xgboost:
-        n_estimators = 100-1000 range,
-        learning_rate - In general, a small learning rate and large number of estimators will yield more accurate XGBoost models
-            e.g. learning_rate=0.1
-        n_jobs - specify number of cores to run in parallel
+
+    Examples
+    --------
+
+    Python usage
+
+    .. literalinclude:: /../model/xgboost/examples/diabetesregression.py
+
+    Output
+
+    .. code-block::
+
+        <Replace with output of running the example>
     """
 
     CONFIG = XDGRegressorModelConfig

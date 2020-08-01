@@ -1,15 +1,15 @@
-from dffml.feature.feature import Feature, Features
+from dffml import Feature, Features
 from dffml.noasync import train, accuracy
 from dffml_model_xgboost.xdgregressor import (
     XDGRegressorModel,
     XDGRegressorModelConfig,
 )
-from sklearn.datasets import load_boston
+from sklearn.datasets import load_diabetes
 from sklearn.model_selection import train_test_split
 
-boston = load_boston()
-y = boston["target"]
-X = boston["data"]
+diabetes = load_diabetes()
+y = diabetes["target"]
+X = diabetes["data"]
 trainX, testX, trainy, testy = train_test_split(
     X, y, test_size=0.2, random_state=123
 )

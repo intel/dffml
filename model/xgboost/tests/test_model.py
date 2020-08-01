@@ -72,7 +72,7 @@ class TestXDGRegressor(AsyncTestCase):
         # Use the test data to assess the model's accuracy
         res = await accuracy(self.model, self.testsource)
         # Ensure the accuracy is above 80%
-        self.assertTrue(0.8 <= res < 1.0)
+        self.assertTrue(0.8 <= res)
 
     async def test_02_predict(self):
         # Get the prediction for each piece of test data
