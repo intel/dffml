@@ -2,20 +2,20 @@
 # Co-authored-by: Soren Andersen <sorenpdx@gmail.com>
 import pathlib
 from typing import AsyncIterator
-import importlib
 
 import joblib
+import numpy as np
 import pandas as pd
-from sklearn.metrics import r2_score
 import xgboost as xgb
+from sklearn.metrics import r2_score
 
-from dffml.base import config, field
-from dffml.model.accuracy import Accuracy
-from dffml.model.model import SimpleModel, ModelNotTrained
-from dffml.feature.feature import Feature, Features
-from dffml.source.source import Sources
-from dffml.util.entrypoint import entrypoint
 from dffml.record import Record
+from dffml.base import config, field
+from dffml.source.source import Sources
+from dffml.model.accuracy import Accuracy
+from dffml.util.entrypoint import entrypoint
+from dffml.feature.feature import Feature, Features
+from dffml.model.model import SimpleModel, ModelNotTrained
 
 
 @config
@@ -77,7 +77,8 @@ class XDGRegressorModel(SimpleModel):
 
     .. code-block::
 
-        <Replace with output of running the example>
+        Test accuracy: 0.6669655406927468
+        Training accuracy: 0.819782501866115
     """
 
     CONFIG = XDGRegressorModelConfig
@@ -86,7 +87,6 @@ class XDGRegressorModel(SimpleModel):
         super().__init__(config)
         # The saved model
         self.saved = None
-        self.np = importlib.import_module("numpy")
         self.saved_filepath = pathlib.Path(
             self.config.directory, "model.joblib"
         )
@@ -107,7 +107,7 @@ class XDGRegressorModel(SimpleModel):
             record_data = []
             for feature in record.features(self.features).values():
                 record_data.extend(
-                    [feature] if self.np.isscalar(feature) else feature
+                    [feature] if np.isscalar(feature) else feature
                 )
             xdata.append(record_data)
             ydata.append(record.feature(self.parent.config.predict.name))
@@ -152,7 +152,7 @@ class XDGRegressorModel(SimpleModel):
             record_data = []
             for feature in record.features(self.features).values():
                 record_data.extend(
-                    [feature] if self.np.isscalar(feature) else feature
+                    [feature] if np.isscalar(feature) else feature
                 )
             xdata.append(record_data)
 
@@ -181,7 +181,7 @@ class XDGRegressorModel(SimpleModel):
             record_data = []
             for feature in record.features(self.features).values():
                 record_data.extend(
-                    [feature] if self.np.isscalar(feature) else feature
+                    [feature] if np.isscalar(feature) else feature
                 )
             xdata.append(record_data)
 

@@ -11,24 +11,23 @@ AUTHOR_NAME = "Oliver O'Brien"
 AUTHOR_EMAIL = "oliverobrien111@gmail.com"
 # Install dffml if it is not installed in development mode
 INSTALL_REQUIRES = (
-        ["dffml>=0.3.7"]
-        if not any(
-            list(
-                map(
-                    os.path.isfile,
-                    list(
-                        map(
-                            lambda syspath: os.path.join(
-                                syspath, "dffml.egg-link"
-                            ),
-                            sys.path,
-                        )
-                    ),
-                )
+    ["dffml>=0.3.7"]
+    if not any(
+        list(
+            map(
+                os.path.isfile,
+                list(
+                    map(
+                        lambda syspath: os.path.join(
+                            syspath, "dffml.egg-link"
+                        ),
+                        sys.path,
+                    )
+                ),
             )
         )
-        else []
     )
+    else []
 )
 
 IMPORT_NAME = (

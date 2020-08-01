@@ -1,18 +1,22 @@
-import tempfile
+import os
+import sys
 import random
+import tempfile
+import subprocess
 
 import numpy as np
 
-from dffml import train, accuracy, predict
+from dffml.record import Record
 from dffml.base import config, field
+from dffml.source.source import Sources
 from dffml.model.accuracy import Accuracy
+from dffml import train, accuracy, predict
+from dffml.util.entrypoint import entrypoint
+from dffml.util.asynctestcase import AsyncTestCase
+from dffml.feature.feature import Feature, Features
 from dffml.model.model import SimpleModel, ModelNotTrained
 from dffml.source.memory import MemorySource, MemorySourceConfig
-from dffml.feature.feature import Feature, Features
-from dffml.source.source import Sources
-from dffml.util.entrypoint import entrypoint
-from dffml.record import Record
-from dffml.util.asynctestcase import AsyncTestCase
+
 
 from dffml_model_xgboost.xdgregressor import (
     XDGRegressorModel,
@@ -89,3 +93,13 @@ class TestXDGRegressor(AsyncTestCase):
             acceptable = 0.3
             # Sometimes causes an issue when only one data point anomalously has high error
             self.assertLess(error, acceptable)
+
+    async def test_03_example(self):
+        # Path to target file
+        filepath = os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            "examples",
+            "diabetesregression.py",
+        )
+        subprocess.check_call([sys.executable, filepath])
