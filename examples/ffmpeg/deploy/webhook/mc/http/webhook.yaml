@@ -2,3 +2,8 @@ path: /webhook/github
 output_mode: json
 input_mode: bytes:payload
 forward_headers: webhook_headers
+immediate_response:
+  status: 200
+  content_type: application/json
+  data:
+    status: Received

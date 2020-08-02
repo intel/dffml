@@ -19,17 +19,17 @@ async def literal_eval(str_to_eval: str):
     Evaluate the input using ast.literal_eval()
 
     Parameters
-    ++++++++++
+    ----------
     str_to_eval : str
         A string to be evaluated.
 
     Returns
-    +++++++
+    -------
     dict
         A dict containing python literal.
 
     Examples
-    ++++++++
+    --------
 
     The following example shows how to use literal_eval.
 
