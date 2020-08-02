@@ -34,6 +34,7 @@ CORE_PLUGINS = [
     ("model", "transformers"),
     ("model", "vowpalWabbit"),
     ("model", "autosklearn"),
+    ("model", "xgboost"),
     ("model", "pytorch"),
     ("model", "spacy"),
 ]

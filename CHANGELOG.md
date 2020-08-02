@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- XGBoost Regression Model
 - Pre-Trained PyTorch torchvision Models
 - Spacy model for NER
 - Added ability to rename outputs using GetSingle
