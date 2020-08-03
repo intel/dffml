@@ -14,7 +14,7 @@ If you want to get started creating your own source, check out the
 .. _plugin_source_dffml:
 
 dffml
------
++++++
 
 .. code-block:: console
 
@@ -258,7 +258,7 @@ No description
 .. _plugin_source_dffml_source_mysql:
 
 dffml_source_mysql
-------------------
+++++++++++++++++++
 
 .. code-block:: console
 

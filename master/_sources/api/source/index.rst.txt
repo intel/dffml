@@ -19,15 +19,15 @@ CLI and other services.
     :caption: Contents:
 
     source
-    file
+    log
     df
+    idx1
     op
+    memory
     ini
+    file
     db
     csv
-    dir
-    idx1
-    json
-    memory
     idx3
-    log
+    json
+    dir

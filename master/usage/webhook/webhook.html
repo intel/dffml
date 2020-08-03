@@ -255,11 +255,19 @@ setup in GitHub.</p>
 <span class="go">output_mode: json</span>
 <span class="go">input_mode: bytes:payload</span>
 <span class="go">forward_headers: webhook_headers</span>
+<span class="go">immediate_response:</span>
+<span class="go">    status: 200</span>
+<span class="go">    content_type: application/json</span>
+<span class="go">    data:</span>
+<span class="go">        status: Received</span>
 <span class="go">EOF</span>
 </pre></div>
 </div>
-<p>Note that the input_mode is <code class="docutils literal notranslate"><span class="pre">bytes:payload</span></code>, this means that inputs from post request will
-be passed as bytes to the dataflow with <code class="docutils literal notranslate"><span class="pre">payload</span></code> definition..</p>
+<p>Note that the input_mode is <code class="docutils literal notranslate"><span class="pre">bytes:payload</span></code>, this means that inputs
+from post request will be passed as bytes to the dataflow with
+<code class="docutils literal notranslate"><span class="pre">payload</span></code> definition. We don’t want to wait until the dataflow
+completes running to send a response back, so we also add an
+<code class="docutils literal notranslate"><span class="pre">immediate_response</span></code> to the server configuration.</p>
 <p>Deploy it in port 8081 as 8080 is being used by ffmpeg http service</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service http server -insecure -mc-config deploy/webhook -port <span class="m">8081</span>
 </pre></div>

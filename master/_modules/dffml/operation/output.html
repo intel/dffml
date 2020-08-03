@@ -304,18 +304,18 @@
 <span class="sd">    Output operation to get all Inputs matching given definitions.</span>
 
 <span class="sd">    Parameters</span>
-<span class="sd">    ++++++++++</span>
+<span class="sd">    ----------</span>
 <span class="sd">    spec : list</span>
 <span class="sd">        List of definition names. Any Inputs with matching definition will be</span>
 <span class="sd">        returned.</span>
 
 <span class="sd">    Returns</span>
-<span class="sd">    +++++++</span>
+<span class="sd">    -------</span>
 <span class="sd">    dict</span>
 <span class="sd">        Maps definition names to all the Inputs of that definition</span>
 
 <span class="sd">    Examples</span>
-<span class="sd">    ++++++++</span>
+<span class="sd">    --------</span>
 
 <span class="sd">    The following shows how to grab all Inputs with the URL definition. If we</span>
 <span class="sd">    had we run an operation which output a URL, that output URL would have also</span>
@@ -355,6 +355,13 @@
         <span class="c1"># TODO Address the need to copy operation implementation inputs dict</span>
         <span class="c1"># In case the input is used elsewhere in the network</span>
         <span class="n">exported</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">])</span>
+        <span class="n">name_map</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">input_value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">exported</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">input_value</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">name_map</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+                <span class="n">exported</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
         <span class="c1"># Look up the definiton for each</span>
         <span class="k">for</span> <span class="n">convert</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">exported</span><span class="p">)):</span>
             <span class="n">exported</span><span class="p">[</span><span class="n">convert</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">definition</span><span class="p">(</span>
@@ -370,6 +377,12 @@
                 <span class="k">async</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">od</span><span class="o">.</span><span class="n">inputs</span><span class="p">(</span><span class="n">definition</span><span class="p">):</span>
                     <span class="n">want</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">[])</span>
                     <span class="n">want</span><span class="p">[</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+            <span class="c1"># Rename outputs if present in name_map</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">want</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">name_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+                    <span class="n">want</span><span class="p">[</span><span class="n">name_map</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="o">=</span> <span class="n">value</span>
+                    <span class="n">want</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">want</span></div></div>
 
 
@@ -389,18 +402,18 @@
 <span class="sd">    Output operation to get a single Input for each definition given.</span>
 
 <span class="sd">    Parameters</span>
-<span class="sd">    ++++++++++</span>
+<span class="sd">    ----------</span>
 <span class="sd">    spec : list</span>
 <span class="sd">        List of definition names. An Input with matching definition will be</span>
 <span class="sd">        returned.</span>
 
 <span class="sd">    Returns</span>
-<span class="sd">    +++++++</span>
+<span class="sd">    -------</span>
 <span class="sd">    dict</span>
 <span class="sd">        Maps definition names to an Input of that definition</span>
 
 <span class="sd">    Examples</span>
-<span class="sd">    ++++++++</span>
+<span class="sd">    --------</span>
 
 <span class="sd">    The following shows how to grab an Inputs with the URL definition. If we</span>
 <span class="sd">    had we run an operation which output a URL, that output URL could have also</span>
@@ -410,11 +423,12 @@
 <span class="sd">    &gt;&gt;&gt; from dffml import *</span>
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; URL = Definition(name=&quot;URL&quot;, primitive=&quot;string&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; ORG = Definition(name=&quot;ORG&quot;, primitive=&quot;string&quot;)</span>
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; dataflow = DataFlow.auto(GetSingle)</span>
 <span class="sd">    &gt;&gt;&gt; dataflow.seed.append(</span>
 <span class="sd">    ...     Input(</span>
-<span class="sd">    ...         value=[URL.name],</span>
+<span class="sd">    ...         value=[{&quot;Repo Link&quot;: URL.name}, ORG.name],</span>
 <span class="sd">    ...         definition=GetSingle.op.inputs[&quot;spec&quot;]</span>
 <span class="sd">    ...     )</span>
 <span class="sd">    ... )</span>
@@ -424,12 +438,16 @@
 <span class="sd">    ...         Input(</span>
 <span class="sd">    ...             value=&quot;https://github.com/intel/dffml&quot;,</span>
 <span class="sd">    ...             definition=URL</span>
+<span class="sd">    ...         ),</span>
+<span class="sd">    ...         Input(</span>
+<span class="sd">    ...             value=&quot;Intel&quot;,</span>
+<span class="sd">    ...             definition=ORG</span>
 <span class="sd">    ...         )</span>
 <span class="sd">    ...     ]):</span>
 <span class="sd">    ...         print(results)</span>
 <span class="sd">    ...</span>
 <span class="sd">    &gt;&gt;&gt; asyncio.run(main())</span>
-<span class="sd">    {&#39;URL&#39;: &#39;https://github.com/intel/dffml&#39;}</span>
+<span class="sd">    {&#39;ORG&#39;: &#39;Intel&#39;, &#39;Repo Link&#39;: &#39;https://github.com/intel/dffml&#39;}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GetSingle.run"><a class="viewcode-back" href="../../../api/operation/output.html#dffml.operation.output.GetSingle.run">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
@@ -490,7 +508,7 @@
 <span class="k">class</span> <span class="nc">AssociateDefinition</span><span class="p">(</span><span class="n">OperationImplementationContext</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Examples</span>
-<span class="sd">    ++++++++</span>
+<span class="sd">    --------</span>
 
 <span class="sd">    &gt;&gt;&gt; import asyncio</span>
 <span class="sd">    &gt;&gt;&gt; from dffml import *</span>
