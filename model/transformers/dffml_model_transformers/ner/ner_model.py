@@ -26,6 +26,7 @@ from dffml.record import Record
 from dffml.base import config, field
 from dffml.feature.feature import Feature
 from dffml.model.accuracy import Accuracy
+from dffml.accuracy import AccuracyContext
 from dffml.util.entrypoint import entrypoint
 from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelContext, Model, ModelNotTrained
@@ -389,7 +390,12 @@ class NERModelContext(ModelContext):
         trainer.save_model()
         self.tokenizer.save_pretrained(self.parent.config.output_dir)
 
-    async def accuracy(self, sources: Sources):
+    async def accuracy(
+        self, sources: Sources, accuracy_scorer: AccuracyContext
+    ):
+        self.logger.warning(
+            "Accuracy scoring will not be used : %s", accuracy_scorer
+        )
         if not os.path.isfile(
             os.path.join(self.parent.config.output_dir, "tf_model.h5")
         ):
