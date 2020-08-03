@@ -160,50 +160,16 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dffml-operations-nlp">dffml_operations_nlp</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#count-vectorizer">count_vectorizer</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#id39">Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id40">Returns</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#get-embedding">get_embedding</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#id41">Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id42">Returns</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#get-noun-chunks">get_noun_chunks</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#id43">Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id44">Returns</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#get-sentences">get_sentences</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#id45">Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id46">Returns</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#get-similarity">get_similarity</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#id47">Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id48">Returns</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#lemmatizer">lemmatizer</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#id49">Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id50">Returns</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#pos-tagger">pos_tagger</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#id51">Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id52">Returns</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#remove-stopwords">remove_stopwords</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#id53">Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id54">Returns</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#tfidf-vectorizer">tfidf_vectorizer</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id55">Parameters</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id56">Returns</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="dffml_service_cli.html">Services</a></li>
@@ -1318,11 +1284,12 @@ been returned to us.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">URL</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;URL&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ORG</span> <span class="o">=</span> <span class="n">Definition</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;ORG&quot;</span><span class="p">,</span> <span class="n">primitive</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="n">GetSingle</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="n">URL</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;Repo Link&quot;</span><span class="p">:</span> <span class="n">URL</span><span class="o">.</span><span class="n">name</span><span class="p">},</span> <span class="n">ORG</span><span class="o">.</span><span class="n">name</span><span class="p">],</span>
 <span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">GetSingle</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">]</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -1332,12 +1299,16 @@ been returned to us.</p>
 <span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
 <span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;https://github.com/intel/dffml&quot;</span><span class="p">,</span>
 <span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">URL</span>
+<span class="gp">... </span>        <span class="p">),</span>
+<span class="gp">... </span>        <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>            <span class="n">value</span><span class="o">=</span><span class="s2">&quot;Intel&quot;</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="n">definition</span><span class="o">=</span><span class="n">ORG</span>
 <span class="gp">... </span>        <span class="p">)</span>
 <span class="gp">... </span>    <span class="p">]):</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
-<span class="go">{&#39;URL&#39;: &#39;https://github.com/intel/dffml&#39;}</span>
+<span class="go">{&#39;ORG&#39;: &#39;Intel&#39;, &#39;Repo Link&#39;: &#39;https://github.com/intel/dffml&#39;}</span>
 </pre></div>
 </div>
 <p><strong>Stage: output</strong></p>
@@ -1929,10 +1900,8 @@ check it’s releases page to make sure you’re installing the latest version.<
 <p>Converts a collection of text documents to a matrix of token counts using sklearn CountVectorizer’s <cite>fit_transform</cite> method.
 For details on parameters check <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html">https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html</a>
 Parameters specific to this operation are described below.</p>
-</div>
-</div>
 <div class="section" id="id39">
-<h2>Parameters<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h2>
+<h4>Parameters<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">list</span></dt><dd><p>A list of strings.</p>
 </dd>
@@ -1941,7 +1910,7 @@ Parameters specific to this operation are described below.</p>
 </dl>
 </div>
 <div class="section" id="id40">
-<h2>Returns<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h2>
+<h4>Returns<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing token counts and feature names if <cite>get_feature_names</cite> is <cite>True</cite>.</p>
 </dd>
@@ -1969,14 +1938,14 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>result: count_vectorizer.outputs.result(type: array)</p></li>
 </ul>
+</div>
+</div>
 <div class="section" id="get-embedding">
 <span id="plugin-operation-dffml-operations-nlp-get-embedding"></span><h3>get_embedding<a class="headerlink" href="#get-embedding" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Maps words of text data to their corresponding word vectors.</p>
-</div>
-</div>
 <div class="section" id="id41">
-<h2>Parameters<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h2>
+<h4>Parameters<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to be converted to word vectors.</p>
 </dd>
@@ -1993,7 +1962,7 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 </dl>
 </div>
 <div class="section" id="id42">
-<h2>Returns<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h2>
+<h4>Returns<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h4>
 <p>result: A 2-d array of shape (max_len, embedding_size of vectors).</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
@@ -2007,14 +1976,14 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 <ul class="simple">
 <li><p>embedding: embedding(type: generic)</p></li>
 </ul>
+</div>
+</div>
 <div class="section" id="get-noun-chunks">
 <span id="plugin-operation-dffml-operations-nlp-get-noun-chunks"></span><h3>get_noun_chunks<a class="headerlink" href="#get-noun-chunks" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Extracts the noun chunks from text.</p>
-</div>
-</div>
 <div class="section" id="id43">
-<h2>Parameters<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h2>
+<h4>Parameters<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to extract noun chunks from.</p>
 </dd>
@@ -2023,7 +1992,7 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 </dl>
 </div>
 <div class="section" id="id44">
-<h2>Returns<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h2>
+<h4>Returns<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing noun chunks.</p>
 </dd>
@@ -2038,14 +2007,14 @@ If the length of <cite>text</cite> &lt; <cite>max_len</cite>, <cite>text</cite> 
 <ul class="simple">
 <li><p>result: get_noun_chunks.outputs.result(type: array)</p></li>
 </ul>
+</div>
+</div>
 <div class="section" id="get-sentences">
 <span id="plugin-operation-dffml-operations-nlp-get-sentences"></span><h3>get_sentences<a class="headerlink" href="#get-sentences" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Extracts the sentences from text.</p>
-</div>
-</div>
 <div class="section" id="id45">
-<h2>Parameters<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h2>
+<h4>Parameters<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to extract sentences from.</p>
 </dd>
@@ -2055,7 +2024,7 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </dl>
 </div>
 <div class="section" id="id46">
-<h2>Returns<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h2>
+<h4>Returns<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing sentences.</p>
 </dd>
@@ -2070,14 +2039,14 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <ul class="simple">
 <li><p>result: get_sentences.outputs.result(type: array)</p></li>
 </ul>
+</div>
+</div>
 <div class="section" id="get-similarity">
 <span id="plugin-operation-dffml-operations-nlp-get-similarity"></span><h3>get_similarity<a class="headerlink" href="#get-similarity" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Calculates similarity between two text strings as a score between 0 and 1.</p>
-</div>
-</div>
 <div class="section" id="id47">
-<h2>Parameters<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h2>
+<h4>Parameters<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text_1<span class="classifier">str</span></dt><dd><p>First string to compare.</p>
 </dd>
@@ -2088,7 +2057,7 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </dl>
 </div>
 <div class="section" id="id48">
-<h2>Returns<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h2>
+<h4>Returns<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: float</dt><dd><p>A similarity score between 0 and 1.</p>
 </dd>
@@ -2104,14 +2073,14 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <ul class="simple">
 <li><p>result: get_similarity.outputs.result(type: float)</p></li>
 </ul>
+</div>
+</div>
 <div class="section" id="lemmatizer">
 <span id="plugin-operation-dffml-operations-nlp-lemmatizer"></span><h3>lemmatizer<a class="headerlink" href="#lemmatizer" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Reduce words in the text to their dictionary form (lemma)</p>
-</div>
-</div>
 <div class="section" id="id49">
-<h2>Parameters<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h2>
+<h4>Parameters<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to lemmatize.</p>
 </dd>
@@ -2120,7 +2089,7 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </dl>
 </div>
 <div class="section" id="id50">
-<h2>Returns<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h2>
+<h4>Returns<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing base form of the words.</p>
 </dd>
@@ -2135,14 +2104,14 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <ul class="simple">
 <li><p>result: lemmatizer.outputs.result(type: array)</p></li>
 </ul>
+</div>
+</div>
 <div class="section" id="pos-tagger">
 <span id="plugin-operation-dffml-operations-nlp-pos-tagger"></span><h3>pos_tagger<a class="headerlink" href="#pos-tagger" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Assigns part-of-speech tags to text.</p>
-</div>
-</div>
 <div class="section" id="id51">
-<h2>Parameters<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h2>
+<h4>Parameters<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>Text to be tagged.</p>
 </dd>
@@ -2151,7 +2120,7 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </dl>
 </div>
 <div class="section" id="id52">
-<h2>Returns<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h2>
+<h4>Returns<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing tuples of word and their respective pos tag.</p>
 </dd>
@@ -2167,14 +2136,14 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <ul class="simple">
 <li><p>result: pos_tagger.outputs.result(type: array)</p></li>
 </ul>
+</div>
+</div>
 <div class="section" id="remove-stopwords">
 <span id="plugin-operation-dffml-operations-nlp-remove-stopwords"></span><h3>remove_stopwords<a class="headerlink" href="#remove-stopwords" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Removes stopword from text data.</p>
-</div>
-</div>
 <div class="section" id="id53">
-<h2>Parameters<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h2>
+<h4>Parameters<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">str</span></dt><dd><p>String to be cleaned.</p>
 </dd>
@@ -2183,7 +2152,7 @@ boundaries are calculated from the syntactic dependency parse.</p>
 </dl>
 </div>
 <div class="section" id="id54">
-<h2>Returns<a class="headerlink" href="#id54" title="Permalink to this headline">¶</a></h2>
+<h4>Returns<a class="headerlink" href="#id54" title="Permalink to this headline">¶</a></h4>
 <p>result: A string without stop words.</p>
 <p><strong>Stage: processing</strong></p>
 <p><strong>Inputs</strong></p>
@@ -2195,16 +2164,16 @@ boundaries are calculated from the syntactic dependency parse.</p>
 <ul class="simple">
 <li><p>result: remove_stopwords.outputs.result(type: str)</p></li>
 </ul>
+</div>
+</div>
 <div class="section" id="tfidf-vectorizer">
 <span id="plugin-operation-dffml-operations-nlp-tfidf-vectorizer"></span><h3>tfidf_vectorizer<a class="headerlink" href="#tfidf-vectorizer" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
 <p>Convert a collection of raw documents to a matrix of TF-IDF features using sklearn TfidfVectorizer’s <cite>fit_transform</cite> method.
 For details on parameters check <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html">https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html</a>
 Parameters specific to this operation are described below.</p>
-</div>
-</div>
 <div class="section" id="id55">
-<h2>Parameters<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h2>
+<h4>Parameters<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>text<span class="classifier">list</span></dt><dd><p>A list of strings.</p>
 </dd>
@@ -2213,7 +2182,7 @@ Parameters specific to this operation are described below.</p>
 </dl>
 </div>
 <div class="section" id="id56">
-<h2>Returns<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h2>
+<h4>Returns<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h4>
 <dl class="simple">
 <dt>result: list</dt><dd><p>A list containing token counts and feature names if <cite>get_feature_names</cite> is <cite>True</cite>.</p>
 </dd>
@@ -2245,6 +2214,8 @@ Parameters specific to this operation are described below.</p>
 <ul class="simple">
 <li><p>result: tfidf_vectorizer.outputs.result(type: array)</p></li>
 </ul>
+</div>
+</div>
 </div>
 </div>
 

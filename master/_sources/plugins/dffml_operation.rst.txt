@@ -14,7 +14,7 @@ the roadmap.
 .. _plugin_operation_dffml:
 
 dffml
------
++++++
 
 .. code-block:: console
 
@@ -31,12 +31,12 @@ AcceptUserInput
 Accept input from stdin using python input()
 
 Returns
-+++++++
+-------
 dict
     A dictionary containing user input.
 
 Examples
-++++++++
+--------
 
 The following example shows how to use AcceptUserInput.
 (Assumes that the input from stdio is "Data flow is awesome"!)
@@ -96,7 +96,7 @@ associate_definition
 *Official*
 
 Examples
-++++++++
+--------
 
 >>> import asyncio
 >>> from dffml import *
@@ -160,14 +160,14 @@ db_query_create_table
 Generates a create table query in the database.
 
 Parameters
-++++++++++
+----------
 table_name : str
     The name of the table to be created.
 cols : list[str]
     Columns of the table.
 
 Examples
-++++++++
+--------
 
 >>> import asyncio
 >>> from dffml import *
@@ -225,14 +225,14 @@ db_query_insert
 Generates an insert query in the database.
 
 Parameters
-++++++++++
+----------
 table_name : str
     The name of the table to insert data in to.
 data : dict
     Data to be inserted into the table.
 
 Examples
-++++++++
+--------
 
 >>> import asyncio
 >>> from dffml import *
@@ -309,14 +309,14 @@ db_query_insert_or_update
 Automatically uses the better suited operation, insert query or update query.
 
 Parameters
-++++++++++
+----------
 table_name : str
     The name of the table to insert data in to.
 data : dict
     Data to be inserted or updated into the table.
 
 Examples
-++++++++
+--------
 
 >>> import asyncio
 >>> from dffml import *
@@ -401,7 +401,7 @@ db_query_lookup
 Generates a lookup query in the database.
 
 Parameters
-++++++++++
+----------
 table_name : str
     The name of the table.
 cols : list[str]
@@ -410,7 +410,7 @@ conditions : Conditions
     Query conditions.
 
 Examples
-++++++++
+--------
 
 >>> import asyncio
 >>> from dffml import *
@@ -480,14 +480,14 @@ db_query_remove
 Generates a remove table query in the database.
 
 Parameters
-++++++++++
+----------
 table_name : str
     The name of the table to insert data in to.
 conditions : Conditions
     Query conditions.
 
 Examples
-++++++++
+--------
 
 >>> import asyncio
 >>> from dffml import *
@@ -564,7 +564,7 @@ db_query_update
 Generates an Update table query in the database.
 
 Parameters
-++++++++++
+----------
 table_name : str
     The name of the table to insert data in to.
 data : dict
@@ -573,7 +573,7 @@ conditions : list
     List of query conditions.
 
 Examples
-++++++++
+--------
 
 >>> import asyncio
 >>> from dffml import *
@@ -659,19 +659,19 @@ dffml.dataflow.run
 Starts a subflow ``self.config.dataflow`` and adds ``inputs`` in it.
 
 Parameters
-++++++++++
+----------
 inputs : dict
     The inputs to add to the subflow. These should be a key value mapping of
     the context string to the inputs which should be seeded for that context
     string.
 
 Returns
-+++++++
+-------
 dict
     Maps context strings in inputs to output after running through dataflow.
 
 Examples
-++++++++
+--------
 
 The following shows how to use run dataflow in its default behavior.
 
@@ -797,19 +797,19 @@ dffml.mapping.create
 Creates a mapping of a given key and value.
 
 Parameters
-++++++++++
+----------
 key : str
     The key for the mapping.
 value : Any
     The value for the mapping.
 
 Returns
-+++++++
+-------
 dict
     A dictionary containing the mapping created.
 
 Examples
-++++++++
+--------
 
 >>> import asyncio
 >>> from dffml import *
@@ -860,19 +860,19 @@ dffml.mapping.extract
 Extracts value from a given mapping.
 
 Parameters
-++++++++++
+----------
 mapping : dict
     The mapping to extract the value from.
 traverse : list[str]
     A list of keys to traverse through the mapping dictionary and extract the values.
 
 Returns
-+++++++
+-------
 dict
     A dictionary containing the value of the keys.
 
 Examples
-++++++++
+--------
 
 >>> import asyncio
 >>> from dffml import *
@@ -926,17 +926,17 @@ dffml.model.predict
 Predict using dffml models.
 
 Parameters
-++++++++++
+----------
 features : dict
     A dictionary contaning feature name and feature value.
 
 Returns
-+++++++
+-------
 dict
     A dictionary containing prediction.
 
 Examples
-++++++++
+--------
 
 The following example shows how to use model_predict.
 
@@ -1007,18 +1007,18 @@ get_multi
 Output operation to get all Inputs matching given definitions.
 
 Parameters
-++++++++++
+----------
 spec : list
     List of definition names. Any Inputs with matching definition will be
     returned.
 
 Returns
-+++++++
+-------
 dict
     Maps definition names to all the Inputs of that definition
 
 Examples
-++++++++
+--------
 
 The following shows how to grab all Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL would have also
@@ -1075,18 +1075,18 @@ get_single
 Output operation to get a single Input for each definition given.
 
 Parameters
-++++++++++
+----------
 spec : list
     List of definition names. An Input with matching definition will be
     returned.
 
 Returns
-+++++++
+-------
 dict
     Maps definition names to an Input of that definition
 
 Examples
-++++++++
+--------
 
 The following shows how to grab an Inputs with the URL definition. If we
 had we run an operation which output a URL, that output URL could have also
@@ -1096,11 +1096,12 @@ been returned to us.
 >>> from dffml import *
 >>>
 >>> URL = Definition(name="URL", primitive="string")
+>>> ORG = Definition(name="ORG", primitive="string")
 >>>
 >>> dataflow = DataFlow.auto(GetSingle)
 >>> dataflow.seed.append(
 ...     Input(
-...         value=[URL.name],
+...         value=[{"Repo Link": URL.name}, ORG.name],
 ...         definition=GetSingle.op.inputs["spec"]
 ...     )
 ... )
@@ -1110,12 +1111,16 @@ been returned to us.
 ...         Input(
 ...             value="https://github.com/intel/dffml",
 ...             definition=URL
+...         ),
+...         Input(
+...             value="Intel",
+...             definition=ORG
 ...         )
 ...     ]):
 ...         print(results)
 ...
 >>> asyncio.run(main())
-{'URL': 'https://github.com/intel/dffml'}
+{'ORG': 'Intel', 'Repo Link': 'https://github.com/intel/dffml'}
 
 **Stage: output**
 
@@ -1160,17 +1165,17 @@ literal_eval
 Evaluate the input using ast.literal_eval()
 
 Parameters
-++++++++++
+----------
 str_to_eval : str
     A string to be evaluated.
 
 Returns
-+++++++
+-------
 dict
     A dict containing python literal.
 
 Examples
-++++++++
+--------
 
 The following example shows how to use literal_eval.
 
@@ -1221,19 +1226,19 @@ multiply
 Multiply record values
 
 Parameters
-++++++++++
+----------
 multiplicand : generic
     An arithmetic type value.
 multiplier : generic
     An arithmetic type value.
 
 Returns
-+++++++
+-------
 dict
     A dict containing the product.
 
 Examples
-++++++++
+--------
 
 The following example shows how to use multiply.
 
@@ -1288,12 +1293,12 @@ print_output
 Print the output on stdout using python print()
 
 Parameters
-++++++++++
+----------
 data : Any
     A python literal to be printed.
 
 Examples
-++++++++
+--------
 
 The following example shows how to use print_output.
 
@@ -1325,7 +1330,7 @@ print_output example
 .. _plugin_operation_dffml_feature_git:
 
 dffml_feature_git
------------------
++++++++++++++++++
 
 .. code-block:: console
 
@@ -1695,7 +1700,7 @@ No description
 .. _plugin_operation_dffml_operations_binsec:
 
 dffml_operations_binsec
------------------------
++++++++++++++++++++++++
 
 .. code-block:: console
 
@@ -1828,7 +1833,7 @@ No description
 .. _plugin_operation_dffml_feature_auth:
 
 dffml_feature_auth
-------------------
+++++++++++++++++++
 
 .. code-block:: console
 
@@ -1859,7 +1864,7 @@ No description
 .. _plugin_operation_dffml_operations_nlp:
 
 dffml_operations_nlp
---------------------
+++++++++++++++++++++
 
 .. code-block:: console
 
