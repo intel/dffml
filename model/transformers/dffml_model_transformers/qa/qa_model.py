@@ -15,6 +15,7 @@ from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
 from dffml.record import Record
 from dffml.base import config, field
 from dffml.model.accuracy import Accuracy
+from dffml.accuracy import AccuracyContext
 from dffml.util.entrypoint import entrypoint
 from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelContext, Model, ModelNotTrained
@@ -843,7 +844,12 @@ class QAModelContext(ModelContext):
 
         return predictions
 
-    async def accuracy(self, sources: Sources):
+    async def accuracy(
+        self, sources: Sources, accuracy_scorer: AccuracyContext
+    ):
+        self.logger.warning(
+            "Accuracy scoring will not be used : %s", accuracy_scorer
+        )
         if not os.path.isfile(
             os.path.join(self.parent.config.output_dir, "pytorch_model.bin")
         ):
