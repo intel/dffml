@@ -9,7 +9,7 @@ import tempfile
 import contextlib
 from pathlib import Path
 from unittest.mock import patch
-from typing import List, AsyncIterator
+from typing import List, AsyncIterator, Dict
 
 from dffml.record import Record
 from dffml.feature import Feature, Features
@@ -21,16 +21,20 @@ from dffml.model.model import ModelContext, Model
 from dffml.model.accuracy import Accuracy as AccuracyType
 from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import (
+    AsyncTestCase,
     AsyncExitStackTestCase,
     non_existant_tempfile,
 )
 from dffml.base import config
+from dffml.df.base import op
 from dffml.cli.cli import Merge
 from dffml.cli.ml import Train, Accuracy, Predict
 from dffml.cli.list import List
 from dffml.cli.dataflow import Dataflow
 
 from .test_df import OPERATIONS, OPIMPS
+
+from dffml import op, DataFlow, Definition
 
 
 class RecordsTestCase(AsyncExitStackTestCase):
@@ -346,6 +350,76 @@ class TestDataflowRunRecordSet(RecordsTestCase):
             self.assertEqual(len(results), 1)
             self.assertEqual(
                 self.record_keys[test_key], results[0].feature("result")
+            )
+        shutil.rmtree(tmpdir)
+
+
+class TestDataflowRunSingle(AsyncTestCase):
+    async def test_run(self):
+        tmpdir = tempfile.mkdtemp()
+        handle, dataflow_file = tempfile.mkstemp(suffix=".json", dir=tmpdir)
+        os.close(handle)
+        with open(dataflow_file, mode="w+b") as dataflow_file:
+            dataflow = io.StringIO()
+            with contextlib.redirect_stdout(dataflow):
+                await Dataflow.cli(
+                    "create",
+                    "-configloader",
+                    "json",
+                    *map(lambda op: op.name, OPERATIONS),
+                )
+            dataflow_file.write(dataflow.getvalue().encode())
+            dataflow_file.seek(0)
+            results = await Dataflow.cli(
+                "run",
+                "single",
+                "-dataflow",
+                dataflow_file.name,
+                "-inputs",
+                '["result"]=get_single_spec',
+                "add 40 and 2=calc_string",
+            )
+            self.assertEqual(len(results), 1)
+            self.assertEqual(results[0], {"result": 42})
+        shutil.rmtree(tmpdir)
+
+
+class TestDataflowRunContexts(AsyncTestCase):
+    async def test_run(self):
+        tmpdir = tempfile.mkdtemp()
+        handle, dataflow_file = tempfile.mkstemp(suffix=".json", dir=tmpdir)
+        os.close(handle)
+
+        with open(dataflow_file, mode="w+b") as dataflow_file:
+            dataflow = io.StringIO()
+            with contextlib.redirect_stdout(dataflow):
+                await Dataflow.cli(
+                    "create",
+                    "-configloader",
+                    "json",
+                    *map(lambda op: op.name, OPERATIONS),
+                )
+            dataflow_file.write(dataflow.getvalue().encode())
+            dataflow_file.seek(0)
+            test_contexts = {"add 40 and 2": 42, "multiply 42 and 10": 420}
+            results = await Dataflow.cli(
+                "run",
+                "contexts",
+                "-dataflow",
+                dataflow_file.name,
+                "-context-def",
+                "calc_string",
+                "-contexts",
+                *test_contexts.keys(),
+                "-input",
+                '["result"]=get_single_spec',
+            )
+            self.assertCountEqual(
+                results,
+                [
+                    {ctx_string: {"result": result}}
+                    for ctx_string, result in test_contexts.items()
+                ],
             )
         shutil.rmtree(tmpdir)
 
