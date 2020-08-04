@@ -434,7 +434,7 @@ class RunContexts(RunSingle):
             strict=not self.no_strict,
         ):
             if not self.no_echo:
-                yield {ctx.as_string: result}
+                yield {(await ctx.handle()).as_string(): result}
         if self.no_echo:
             yield CMDOutputOverride
 
