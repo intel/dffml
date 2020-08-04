@@ -91,7 +91,7 @@ class DataFlowSource(BaseSource):
     ...     Feature("Salary", int, 1),
     ... )
     >>>
-    >>> dataflow = DataFlow.auto(multiply, AssociateDefinition)
+    >>> dataflow = DataFlow(multiply, AssociateDefinition)
     >>> dataflow.flow["multiply"].inputs["multiplicand"] = [
     ...     {"seed": ["Years", "Expertise", "Trust", "Salary"]}
     ... ]
