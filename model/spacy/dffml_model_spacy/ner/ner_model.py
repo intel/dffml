@@ -20,6 +20,7 @@ from dffml import (
     Record,
 )
 from dffml.model.model import Model
+from dffml.accuracy import AccuracyContext
 from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelContext, ModelNotTrained
 
@@ -118,8 +119,15 @@ class SpacyNERModelContext(ModelContext):
                 f"Saved model to {self.parent.config.location.name}"
             )
 
-    async def accuracy(self, sources: SourcesContext) -> Accuracy:
-        if not os.path.isdir(os.path.join(self.parent.config.location, "ner")):
+    async def accuracy(
+        self, sources: SourcesContext, accuracy_scorer: AccuracyContext
+    ) -> Accuracy:
+        self.logger.warning(
+            "Accuracy scoring will not be used : %s", accuracy_scorer
+        )
+        if not os.path.isdir(
+            os.path.join(self.parent.config.location, "ner")
+        ):
             raise ModelNotTrained("Train model before assessing for accuracy.")
 
         test_examples = await self._preprocess_data(sources)
