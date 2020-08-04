@@ -4,7 +4,7 @@ function predict (URL) {
       '&URL=' + URL)
     .then(function(response) {
       return response.json()
-    }.bind(this));
+    });
 }
 
 window.addEventListener('DOMContentLoaded', function(event) {

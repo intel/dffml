@@ -176,6 +176,10 @@ class ScikitContextUnsprvised(ScikitContext):
 
                 labels = yield_labels()
                 predictor = lambda predict: [next(labels)]
+        else:
+            raise NotImplementedError(
+                f"Model is not a clusterer: {self.clf._estimator_type}"
+            )
 
         async for record in sources.with_features(self.features):
             feature_data = record.features(self.features)

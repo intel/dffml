@@ -237,6 +237,10 @@ class QAModelContext(ModelContext):
         """ Train the model """
         if self.parent.config.local_rank in [-1, 0]:
             tb_writer = SummaryWriter(log_dir=self.parent.config.log_dir)
+        else:
+            raise NotImplementedError(
+                f"local_rank was not -1 or 0: {self.parent.config.local_rank}"
+            )
 
         self.parent.config.train_batch_size = (
             self.parent.config.per_gpu_train_batch_size

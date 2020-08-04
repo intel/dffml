@@ -131,7 +131,8 @@ if ([[ "x${PLUGIN}" == "xmodel/daal4py" ]] || \
   # daal4py only supports ^ Python 3.7
   set +e
   # See comment in vowpalWabbit about conda exit codes
-  conda install -y -c intel daal4py
+  # See https://github.com/intel/dffml/issues/801 for discussion on pinning
+  conda install -y -c intel daal4py==2020.1 daal==2020.1
   exit_code=$?
   if [[ "x${exit_code}" != "x0" ]]; then
     exit "${exit_code}"
@@ -171,8 +172,19 @@ if [ "x${PLUGIN}" == "xmodel/tensorflow_hub" ]; then
   python -m pip install -U -e "./model/tensorflow"
 fi
 
+if [[ "x${PLUGIN}" == "xmodel/spacy" ]]; then
+  conda install -y -c conda-forge spacy
+  python -m spacy download en_core_web_sm
+fi
+
 if [[ "x${PLUGIN}" == "xoperations/deploy" ]]; then
   python -m pip install -U -e "./feature/git"
+fi
+
+if [[ "x${PLUGIN}" == "xoperations/nlp" ]]; then
+  conda install -y -c conda-forge spacy
+  python -m spacy download en_core_web_sm
+  python -m pip install -U -e "./model/tensorflow"
 fi
 
 if [ "x${PLUGIN}" = "xexamples/shouldi" ]; then

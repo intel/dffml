@@ -1,5 +1,6 @@
 import io
 import pathlib
+import subprocess
 from unittest.mock import patch
 
 from dffml import prepend_to_path, AsyncTestCase
@@ -46,19 +47,30 @@ class TestCLIUse(AsyncTestCase):
     @cached_cargo_audit
     @cached_target_crates
     async def test_use_rust(self, rust, cargo_audit, crates):
-        if not (
-            cargo_audit
-            / "cargo-audit-0.11.2"
-            / "target"
-            / "release"
-            / "cargo-audit"
-        ).is_file():
-            await run_cargo_build(cargo_audit / "cargo-audit-0.11.2")
-
+        if not (rust / "rust-install" / "bin" / "cargo").is_file():
+            subprocess.check_call(
+                [
+                    str(
+                        rust
+                        / "rust-1.42.0-x86_64-unknown-linux-gnu"
+                        / "install.sh"
+                    ),
+                    f"--prefix={(rust / 'rust-install').resolve()}",
+                ]
+            )
         with prepend_to_path(
-            rust / "rust-1.42.0-x86_64-unknown-linux-gnu" / "cargo" / "bin",
+            rust / "rust-install" / "bin",
             cargo_audit / "cargo-audit-0.11.2" / "target" / "release",
         ):
+            if not (
+                cargo_audit
+                / "cargo-audit-0.11.2"
+                / "target"
+                / "release"
+                / "cargo-audit"
+            ).is_file():
+                await run_cargo_build(cargo_audit / "cargo-audit-0.11.2")
+
             with patch("sys.stdout", new_callable=io.StringIO) as stdout:
                 await ShouldI.cli(
                     "use",
@@ -68,4 +80,7 @@ class TestCLIUse(AsyncTestCase):
                     ),
                 )
             output = stdout.getvalue()
-            self.assertIn("high=2", output)
+            # cargo audit
+            self.assertIn("low=2,", output)
+            # npm audit
+            self.assertIn("high=6,", output)
