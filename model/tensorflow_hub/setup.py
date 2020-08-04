@@ -23,7 +23,8 @@ INSTALL_REQUIRES = (
         "tensorflow>=2.0.0",
         "tensorflow-hub>=0.6.0",
         "pandas>=0.25.0",
-        "numpy>=1.16.4",
+        # See https://github.com/intel/dffml/issues/816
+        "numpy>=1.16.4,<1.19.0",
     ]
     + (
         ["dffml>=0.3.7"]
