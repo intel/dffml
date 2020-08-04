@@ -2,7 +2,7 @@ import pathlib
 from typing import List
 
 # Command line utility helpers and DataFlow specific classes
-from dffml import CMD, DataFlow, Input, GetSingle, run, config, field
+from dffml import CMD, DataFlow, Input, GetMulti, run, config, field
 
 # Allow users to give us a Git repo URL and we'll clone it and turn it into a
 # directory that will be scanned
@@ -33,10 +33,10 @@ DATAFLOW = DataFlow.auto(
     check_rust,
     analyze_rust,
     cleanup_git_repo,
-    GetSingle,
+    GetMulti,
 )
 DATAFLOW.seed.append(
-    Input(value=[SA_RESULTS.name,], definition=GetSingle.op.inputs["spec"],)
+    Input(value=[SA_RESULTS.name,], definition=GetMulti.op.inputs["spec"],)
 )
 
 # Allow for directory to be provided by user instead of the result of cloning a

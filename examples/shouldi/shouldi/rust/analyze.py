@@ -35,4 +35,9 @@ async def analyze_rust(self, repo):
             ]
         ):
             cargo_report = results[run_cargo_audit.op.outputs["report"].name]
-            return {"result": SA_RESULTS.spec(critical=cargo_report)}
+
+            return {
+                "result": SA_RESULTS.spec(
+                    report=cargo_report, **cargo_report["qualitative"]
+                )
+            }
