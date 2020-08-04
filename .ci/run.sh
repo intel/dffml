@@ -30,10 +30,7 @@ function run_plugin_examples() {
 function run_plugin() {
   export PLUGIN="${1}"
 
-  if [ "x${PLUGIN}" = "xexamples/shouldi" ]; then
-    "${PYTHON}" -m pip install -U -e "${SRC_ROOT}/feature/git"
-  fi
-
+  # Don't test daal4py on python 3.8, since it doesn't support 3.8
   if [[ "${python_version}" == "py38" ]] && [[ "x${PLUGIN}" == "xmodel/daal4py" ]]; then
     return
   fi

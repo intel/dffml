@@ -1,8 +1,11 @@
+import os
 import json
 import asyncio
+import itertools
+import contextlib
 from typing import Dict, Any
 
-from dffml import op, Definition
+from dffml import op, Definition, traverse_get
 
 package_src_dir = Definition(name="package_src_dir", primitive="str")
 cargo_audit_output = Definition(
@@ -48,8 +51,48 @@ async def run_cargo_audit(pkg: str) -> Dict[str, Any]:
     if len(stdout) == 0:
         raise CargoAuditError(stderr.decode())
 
-    cargo_audit_op = stdout.decode()
-    issues = json.loads(cargo_audit_op)
-    result = issues["vulnerabilities"]["count"]
+    cargo_report = json.loads(stdout.decode())
 
-    return {"report": result}
+    spec = {
+        "low": 0,
+        "medium": 0,
+        "high": 0,
+        "critical": 0,
+    }
+
+    for vuln in itertools.chain(
+        cargo_report["vulnerabilities"]["list"], cargo_report["warnings"],
+    ):
+        cvss = None
+        for path in [
+            ("kind", "unmaintained", "advisory", "cvss"),
+            ("advisory", "cvss"),
+        ]:
+            with contextlib.suppress(KeyError):
+                cvss = traverse_get(vuln, *path)
+                if cvss is None or isinstance(cvss, (float, int)):
+                    break
+        if cvss is None:
+            cvss = 0
+
+        # Rating   | CVSS Score
+        # ---------+-------------
+        # None     | 0.0
+        # Low      | 0.1 - 3.9
+        # Medium   | 4.0 - 6.9
+        # High     | 7.0 - 8.9
+        # Critical | 9.0 - 10.0
+        #
+        # Source: https://www.first.org/cvss/specification-document
+        if cvss >= 9.0:
+            spec["critical"] += 1
+        elif cvss >= 7.0:
+            spec["high"] += 1
+        elif cvss >= 4.0:
+            spec["medium"] += 1
+        else:
+            spec["low"] += 1
+
+    cargo_report["qualitative"] = spec
+
+    return {"report": cargo_report}

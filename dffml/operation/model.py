@@ -41,17 +41,17 @@ async def model_predict(self, features: Dict[str, Any]) -> Dict[str, Any]:
     Predict using dffml models.
 
     Parameters
-    ++++++++++
+    ----------
     features : dict
         A dictionary contaning feature name and feature value.
 
     Returns
-    +++++++
+    -------
     dict
         A dictionary containing prediction.
 
     Examples
-    ++++++++
+    --------
 
     The following example shows how to use model_predict.
 

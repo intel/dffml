@@ -13,7 +13,7 @@ from dffml.source.json import JSONSource
 from dffml import Record, Features, Feature, save, train, accuracy
 from dffml.util.asynctestcase import AsyncTestCase
 
-from dffml_service_http.cli import HTTPService
+from dffml_service_http.cli import HTTPService, RedirectFormatError
 from dffml_service_http.util.testing import ServerRunner, ServerException
 
 from .test_routes import TestRoutesMultiComm
@@ -292,3 +292,44 @@ class TestServer(AsyncTestCase):
                     cli, "/source/mysource/record/myrecord"
                 ) as r:
                     self.assertEqual(await r.json(), myrecord.export())
+
+    async def test_redirect_format_error(self):
+        with self.assertRaises(RedirectFormatError):
+            async with ServerRunner.patch(HTTPService.server) as tserver:
+                await tserver.start(
+                    # Missing METHOD
+                    HTTPService.server.cli(
+                        "-insecure",
+                        "-port",
+                        "0",
+                        "-redirect",
+                        "/",
+                        "/index.html",
+                    )
+                )
+
+    async def test_redirect(self):
+        with tempfile.TemporaryDirectory() as tempdir:
+            pathlib.Path(tempdir, "index.html").write_text("Hello World")
+            pathlib.Path(tempdir, "mysignup").write_text("MySignUp")
+            async with ServerRunner.patch(HTTPService.server) as tserver:
+                cli = await tserver.start(
+                    HTTPService.server.cli(
+                        "-insecure",
+                        "-port",
+                        "0",
+                        "-static",
+                        tempdir,
+                        "-redirect",
+                        "GET",
+                        "/",
+                        "/index.html",
+                        "GET",
+                        "/signup",
+                        "/mysignup",
+                    )
+                )
+                async with self.get(cli, "/") as r:
+                    self.assertEqual(await r.text(), "Hello World")
+                async with self.get(cli, "/signup") as r:
+                    self.assertEqual(await r.text(), "MySignUp")
