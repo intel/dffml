@@ -319,34 +319,6 @@ class PyTorchModelContext(ModelContext):
 
         torch.save(self._model, self.model_path)
 
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        if not os.path.isfile(os.path.join(self.model_path)):
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-
-        dataset, size = await self.dataset_generator(sources)
-        dataloader = torch.utils.data.DataLoader(
-            dataset,
-            batch_size=self.parent.config.batch_size,
-            shuffle=True,
-            num_workers=4,
-        )
-
-        self._model.eval()
-        running_corrects = 0
-
-        for inputs, labels in dataloader:
-            inputs = inputs.to(inputs)
-            labels = labels.to(inputs)
-
-            with torch.set_grad_enabled(False):
-                outputs = self._model(inputs)
-                _, preds = torch.max(outputs, 1)
-
-            running_corrects += torch.sum(preds == labels.data)
-            acc = running_corrects.double() / size
-
-        return Accuracy(acc)
-
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
