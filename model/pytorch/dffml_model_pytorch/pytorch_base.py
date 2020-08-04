@@ -353,54 +353,6 @@ class PyTorchModelContext(ModelContext):
         # Save the model at the specified path
         torch.save(self._model, self.model_path)
 
-    async def accuracy(self, sources: Sources) -> Accuracy:
-        """
-        Assess the accuracy of the network on the test data after training on records
-        """
-        if not os.path.isfile(os.path.join(self.model_path)):
-            raise ModelNotTrained("Train model before assessing for accuracy.")
-
-        dataset, size = await self.dataset_generator(sources)
-        dataloader = torch.utils.data.DataLoader(
-            dataset,
-            batch_size=self.parent.config.batch_size,
-            shuffle=True,
-            num_workers=4,
-        )
-
-        self._model.eval()
-
-        if self.classifications:
-            running_corrects = 0
-
-            for inputs, labels in dataloader:
-                inputs = inputs.to(self.device)
-                labels = labels.to(self.device)
-
-                with torch.set_grad_enabled(False):
-                    outputs = self._model(inputs)
-                    _, preds = torch.max(outputs, 1)
-
-                running_corrects += torch.sum(preds == labels.data)
-                acc = running_corrects.double() / size
-        else:
-            running_loss = 0.0
-
-            for inputs, labels in dataloader:
-                inputs = inputs.to(inputs)
-                labels = labels.to(inputs)
-
-                with torch.set_grad_enabled(False):
-                    outputs = self._model(inputs)
-                    loss = self.criterion(inputs, outputs)
-
-                running_loss += loss.item() * inputs.size(0)
-
-            total_loss = running_loss / size
-            acc = 1.0 - total_loss
-
-        return Accuracy(acc)
-
     async def predict(
         self, sources: SourcesContext
     ) -> AsyncIterator[Tuple[Record, Any, float]]:
