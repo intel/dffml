@@ -18,7 +18,8 @@ with open(
 with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
-INSTALL_REQUIRES = ["numpy>=1.16.4"] + (
+# See https://github.com/intel/dffml/issues/816
+INSTALL_REQUIRES = ["numpy>=1.16.4,<1.19.0"] + (
     ["dffml>=0.3.7"]
     if not any(
         list(

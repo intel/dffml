@@ -63,7 +63,12 @@ setup(
         ],
         **plugins.PACKAGE_NAMES_BY_PLUGIN_INSTALLABLE,
     },
-    tests_require=["httptest>=0.0.15", "Pillow>=7.1.2", "numpy>=1.16.2",],
+    tests_require=[
+        "httptest>=0.0.15",
+        "Pillow>=7.1.2",
+        # See https://github.com/intel/dffml/issues/816
+        "numpy>=1.16.2,<1.19.0",
+    ],
     entry_points={
         "console_scripts": ["dffml = dffml.cli.cli:CLI.main"],
         "dffml.source": [
