@@ -62,7 +62,7 @@ if [[ "x${PLUGIN}" == "xmodel/daal4py" ]] || \
     # Add channels
     conda config --add channels anaconda
     conda config --add channels conda-forge
-    #Remove numpy 1.19.1
+    # Remove numpy 1.19.1 see https://github.com/intel/dffml/issues/816
     conda uninstall numpy
     conda install numpy==1.18.5
   fi

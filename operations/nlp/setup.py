@@ -20,7 +20,6 @@ common.KWARGS["entry_points"] = {
         f"get_sentences = {common.IMPORT_NAME}.operations:get_sentences",
         f"count_vectorizer = {common.IMPORT_NAME}.operations:count_vectorizer",
         f"tfidf_vectorizer = {common.IMPORT_NAME}.operations:tfidf_vectorizer",
-        f"get_status_collected_data = {common.IMPORT_NAME}.operations:get_status_collected_data",
     ]
 }
 

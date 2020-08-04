@@ -15,6 +15,7 @@ INSTALL_REQUIRES = [
     # "daal4py>=0.2020.0",
     "pandas>=0.25.0",
     "joblib>=0.13.2",
+    # See https://github.com/intel/dffml/issues/816
     "numpy>=1.16.4,<1.19.0",
 ] + (
     ["dffml>=0.3.7"]

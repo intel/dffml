@@ -12,6 +12,7 @@ AUTHOR_EMAIL = "sakshamarora1001@gmail.com"
 # Install dffml if it is not installed in development mode
 INSTALL_REQUIRES = [
     "opencv-python>=4.2.0.34",
+    # See https://github.com/intel/dffml/issues/816
     "numpy>=1.16.2,<1.19.0",
     "mahotas>=1.4.9",
 ] + (
