@@ -20,6 +20,7 @@ from dffml import (
     Record,
 )
 from dffml.model.model import Model
+from dffml.accuracy import AccuracyContext
 from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelContext, ModelNotTrained
 
@@ -116,7 +117,12 @@ class SpacyNERModelContext(ModelContext):
                 f"Saved model to {self.parent.config.output_dir.name}"
             )
 
-    async def accuracy(self, sources: SourcesContext) -> Accuracy:
+    async def accuracy(
+        self, sources: SourcesContext, accuracy_scorer: AccuracyContext
+    ) -> Accuracy:
+        self.logger.warning(
+            "Accuracy scoring will not be used : %s", accuracy_scorer
+        )
         if not os.path.isdir(
             os.path.join(self.parent.config.output_dir, "ner")
         ):
