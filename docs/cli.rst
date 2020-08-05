@@ -150,12 +150,12 @@ All
 
 Update all the records in any source using the :py:class:`DataFlowSource <dffml.source.df.DataFlowSource>`.
 
-For this example, we are using the `multiply` operation which multiplies every value in a record by a 
+For this example, we are using the `multiply` operation which multiplies every value in a record by a
 factor which is 10 in this case. The example dataflow file looks like this:
 
 .. literalinclude:: /../examples/edit_records.yaml
 
-Create a source file: 
+Create a source file:
 
 .. code-block:: console
 
@@ -175,7 +175,7 @@ Run the command:
         -sources f=csv -source-filename data.csv -source-readwrite \
         -features Years:int:1 Expertise:int:1 Trust:float:1 Salary:int:1 \
         -dataflow edit_records.yaml
-    $ dffml list records -sources f=csv -source-filename data.csv                                                                                                           
+    $ dffml list records -sources f=csv -source-filename data.csv
     [
         {
             "extra": {},
@@ -322,6 +322,22 @@ command during generation.
         -dataflow df.yaml \
         -sources m=memory \
         -source-records world $USER
+    {'hello': 'world'}
+    {'hello': 'user'}
+
+We can also run the dataflow without using a source
+
+.. code-block:: console
+
+    $ dffml dataflow run contexts \
+        -no-echo \
+        -dataflow df.yaml \
+        -context-def value \
+        -contexts \
+            world \
+            $USER \
+        -input \
+            hello=key
     {'hello': 'world'}
     {'hello': 'user'}
 
