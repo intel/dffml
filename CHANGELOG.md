@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Example Flower17 species image classification
 - Docstrings and doctestable example for DataFlowSource
 - XGBoost Regression Model
 - Pre-Trained PyTorch torchvision Models
