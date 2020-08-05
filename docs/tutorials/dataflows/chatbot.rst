@@ -27,10 +27,9 @@ and ``dffml-model-scikit`` (The model used for prediction).
 
 .. code-block:: console
 
-    $ pip install aiohttp
-    $ pip install dffml-model-scikit
+    $ pip install aiohttp dffml-model-scikit
 
-We'll write the operations for this dataflow in operations.py
+We'll write the operations for this dataflow in **operations.py**
 
 Adding necessary imports and defining ``Definitions`` for operation
 inputs.
@@ -48,28 +47,30 @@ All requests to Gitter's API requires the room id of our room.
 our dataflow).
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
-    :lines: 24-51
+    :lines: 24-49
 
 We listen to new messages directed to our bot.
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
-    :lines: 52-87
+    :lines: 52-86
 
 We'll use this op to send replies back to the chatroom
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
-    :lines: 90-122
+    :lines: 89-121
 
 This is the operation where all the logic for interpreting the messages
 go. If you have a Natural Language Understanding module It'd go here, so
 that you can parse unstructered data.
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
-    :lines: 125-220
+    :lines: 124-248
 
 Our operations are ``get_room_id, stream_chat, send_message and interpret_message``.
 All of them use at least one config. The common config being INISecretConfig which
 loads secret token and bot name from the ini config file.
+
+**configs.ini**
 
 .. literalinclude:: /../examples/dataflow/chatbot/configs.ini
 
@@ -109,19 +110,21 @@ we can do
 Running the dataflow
 --------------------
 
+**run.py**
+
 .. literalinclude:: /../examples/dataflow/chatbot/run.py
 
 set the room name, config file name and run the dataflow
 
 .. code-block:: console
 
-    python run.py
+    $ python run.py
 
 Or using the command line to, create the dataflow
 
 .. code-block:: console
 
-    dffml dataflow create \
+    $ dffml dataflow create \
         operations:get_room_id \
         operations:stream_chat \
         operations:send_message \
@@ -135,14 +138,12 @@ Or using the command line to, create the dataflow
             configs.ini=operations:send_message.secret.config.filename \
             ini=operations:interpret_message.secret.plugin \
             configs.ini=operations:interpret_message.secret.config.filename \
-    > chatbot_df.json
+        > chatbot_df.json
 
 And run it by providing the ``room_name`` as the input
 
 .. code-block:: console
 
-    dffml dataflow run records all \
+    $ dffml dataflow run single \
         -dataflow ./chatbot_df.json \
-        -inputs test_community1/community=room_name \
-        -sources m=memory \
-        -source-records temp
+        -inputs test_community1/community=room_name

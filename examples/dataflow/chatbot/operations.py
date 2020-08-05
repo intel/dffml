@@ -9,7 +9,7 @@ from aiohttp import ClientSession, ClientTimeout
 from dffml.cli.cli import CLI
 from dffml import op, config, Definition, BaseSecret
 
-ACCESSTOKEN = Definition(name="access_tok3n", primitive="str")
+ACCESSTOKEN = Definition(name="access_token", primitive="str")
 ROOMNAME = Definition(name="room_name", primitive="str")
 ROOMID = Definition(name="room_id", primitive="str")
 MESSAGE = Definition(name="message", primitive="str")
@@ -135,9 +135,45 @@ async def interpret_message(self, message):
             return {"message": "Hey Hooman ฅ^•ﻌ•^ฅ"}
 
     def extract_data(raw_data):
-        raw_data = raw_data.split("data:")
+        """
+        Parses data from text
+
+        eg
+            >>> raw_data = "
+                            details:
+                            features: Years:int:1 Expertise:int:1 Trust:float:1
+                            predict: Salary:float:1
+                            data:
+                            Years,Expertise,Trust,Salary
+                            0,1,0.1,10
+                            1,3,0.2,20
+                            2,5,0.3,30
+                            3,7,0.4,40
+                            "
+
+            >>> extract_data(raw_data)
+                {
+                    model-data:
+                        "
+                            Years,Expertise,Trust,Salary
+                            0,1,0.1,10
+                            1,3,0.2,20
+                            2,5,0.3,30
+                            3,7,0.4,40
+                        "
+                    ,
+                    features:
+                        Years:int:1 Expertise:int:1 Trust:float:1
+                    ,
+                    predict: Salary:float:1
+                }
+        """
+        raw_data = raw_data.split("data:")  # (Feature details, training data)
         data = {"model-data": raw_data[1]}
-        raw_data = raw_data[0].split("\n")
+        raw_data = raw_data[0].split(
+            "\n"
+        )  # splits feautre details to seprate lines
+        # Iterate and add to to dictionary `data`
         for x in raw_data:
             k, *v = x.split(":")
             if isinstance(v, list):  # for features
@@ -156,7 +192,7 @@ async def interpret_message(self, message):
     message = re.sub(r"(@[^\s]+)(.*)", r"\2", message).strip()
 
     if message.lower().startswith("train model"):
-        return {"message": "Gimme more details!!"}
+        return {"message": "Gimme more info!!"}
 
     elif message.lower().startswith("predict:"):
         # Only replace first occurence of predict
@@ -171,15 +207,9 @@ async def interpret_message(self, message):
     else:
         return {"message": " Oops ,I didnt get that ᕙ(⇀‸↼‶)ᕗ "}
 
-    # If predict or train, extract data
+    # We'll use scikit logistic regression
     data = extract_data(raw_data)
-    if "model-type" in data:
-        model_type = data["model-type"]
-    if "model-name" in data:
-        model_name = data["model-name"]
-    else:
-        model_name = "mymodel"
-
+    model_type = "scikitlr"
     features = data["features"].split(" ")
     predict = data["predict"]
     model_data = data["model-data"]
@@ -195,7 +225,7 @@ async def interpret_message(self, message):
                 "-model",
                 model_type,
                 "-model-directory",
-                model_name,
+                "tempModel",
                 "-model-features",
                 *features,
                 "-model-predict",
@@ -205,7 +235,6 @@ async def interpret_message(self, message):
                 "-source-filename",
                 fileobj.name,
             )
-            sys.stdout.flush()
 
     if "train" in cmds:
         return {"message": "Done!!"}
