@@ -11,7 +11,10 @@ from dffml_feature_git.feature.operations import clone_git_repo
     },
 )
 def has_package_cargo(repo: clone_git_repo.op.outputs["repo"].spec):
-    return {"result": pathlib.Path(repo.directory, "cargo.toml").is_file()}
+    return {
+        "result": pathlib.Path(repo.directory, "cargo.toml").is_file()
+        or pathlib.Path(repo.directory, "Cargo.toml").is_file()
+    }
 
 
 DATAFLOW = DataFlow.auto(has_package_cargo, GetSingle)

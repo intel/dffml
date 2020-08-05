@@ -19,7 +19,7 @@ messages which are directed to our bot.
 .. note::
 
     All the code for this example is located under the
-    `examples/dataflow/chatbot <https://github.com/intel/dffml/blob/master/examples/examples/dataflow/chatbot>`_
+    `examples/dataflow/chatbot <https://github.com/intel/dffml/blob/master/examples/dataflow/chatbot>`_
     directory of the DFFML source code.
 
 You'll need to install `aiohttp <https://github.com/aio-libs/aiohttp>`_

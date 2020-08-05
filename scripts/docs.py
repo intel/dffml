@@ -203,7 +203,7 @@ def gen_docs(
                     "tag": f".. _plugin_{plugin_type}_{name}:",
                     "name": name,
                     "install": name.replace("_", "-"),
-                    "underline": "-" * len(name),
+                    "underline": "+" * len(name),
                 }
             )
             + (
