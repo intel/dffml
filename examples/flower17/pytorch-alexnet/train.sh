@@ -14,7 +14,7 @@ dffml train \
   -model-features image:int:$((500*500)) \
   -model-predict label:str:1 \
   -sources f=dir \
-    -source-foldername ~/dataset/train \
+    -source-foldername flower_dataset/train \
     -source-feature image \
     -source-labels \
       crocus windflower fritillary tulip pansy dandelion tigerlily sunflower \

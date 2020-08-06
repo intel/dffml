@@ -1,5 +1,5 @@
-FLOWER17 Species classification using Transfer Learning - AlexNet
-=================================================================
+FLOWER17 Species classification using Transfer Learning
+=======================================================
 
 The model we'll be using is :ref:`AlexNet CNN Model <plugin_model_dffml_model_pytorch_alexnet>`
 which is a part of ``dffml-model-pytorch``, a DFFML plugin which allows you to use PyTorch
@@ -16,9 +16,8 @@ There are 2 ways to perform Transfer Learning:
     and training the whole network on the dataset.
 
 2. Using the CNN as fixed feature-extractor
-    We freeze all the network except the final layer. We set `requires_grad=False` to
-    freeze the parameters so that the gradients for any other layer except the last
-    layer are not computed in backward().
+    We freeze the parameters of the complete network except the final layer, so that the
+    gradients for any other layer except the last layer are not computed in back-propagation.
 
 
 In this example, we will be fine-tuning the AlexNet model. (We set `trainable=True`)
