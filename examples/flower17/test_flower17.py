@@ -86,6 +86,3 @@ class TestFLOWER17(IntegrationCLITestCase):
                 self.assertIsInstance(
                     records[0].prediction("label")["value"], str
                 )
-                self.assertTrue(
-                    records[0].prediction("label")["confidence"] >= 0.99
-                )
