@@ -50,7 +50,9 @@ We then create the dataflow config file, using the ``dataflow create`` command.
 
 To re-create the visualization of the dataflow above, run:
 
-.. literalinclude:: /../examples/flower17/sklearn-opencv/dataflow_diagram.sh
+.. code-block:: console
+
+    dffml dataflow diagram features.yaml -simple -stages processing -configloader yaml
 
 Copy and pasting the output of the above code into the
 `mermaidjs live editor <https://mermaidjs.github.io/mermaid-live-editor>`_

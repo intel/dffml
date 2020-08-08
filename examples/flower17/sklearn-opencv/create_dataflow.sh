@@ -18,7 +18,7 @@ dffml dataflow \
         '[0,256,0,256,0,256]'=calcHist.inputs.ranges \
         BGR2GRAY=convert_color.inputs.code=gray \
         BGR2HSV=convert_color.inputs.code=hsv \
-        flatten.outputs.result,HuMoments.outputs.result,Haralick.outputs.result=get_single_spec \
+        '[{"Histogram": "flatten.outputs.result"},{"HuMoments": "HuMoments.outputs.result"},{"Haralick": "Haralick.outputs.result"}]'=get_single_spec \
     -flow \
         '[{"seed": ["image"]}]'=resize.inputs.src \
         '[{"resize": "result"}]'=hsv.inputs.src \

@@ -1,9 +1,9 @@
 dffml accuracy \
   -model scikitrfc \
   -model-features \
-    flatten.outputs.result:int:$((8*8*8)) \
-    HuMoments.outputs.result:int:7 \
-    Haralick.outputs.result:int:13 \
+    Histogram:int:$((8*8*8)) \
+    HuMoments:int:7 \
+    Haralick:int:13 \
   -model-predict label:str:1 \
   -model-directory tempdir \
   -sources images=df \
