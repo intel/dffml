@@ -67,28 +67,20 @@ class NatsOperationImplementationNetworkContext(
         )
         self.operations = {}
 
-    async def instantatiate_operations(self):
-        for (
-            instance_name,
-            operation,
-        ) in self.parent.operation_instances.items():
-            opimp = self.parent.operation_configs.get(operation.name, None)
-            opconfig = self.parent.operation_configs.get(instance_name, {})
-            self.logger.debug(
-                f"Instantiating instance {instance_name} of operation {operation} with config {opconfig}"
-            )
-            await self.instantiate(operation, config=opconfig, opimp=opimp)
-            await self.parent.nc.publish(
-                f"InstanceAck.{instance_name}.{self.parent.onid}", b""
-            )
+    async def instantiate_operation(self,operation,instance_name):
+        opimp = self.parent.operation_configs.get(operation.name, None)
+        opconfig = self.parent.operation_configs.get(instance_name, {})
+        self.logger.debug(
+            f"Instantiating instance {instance_name} of operation {operation} with config {opconfig}"
+        )
+        await self.instantiate(operation, config=opconfig, opimp=opimp)
+        await self.parent.nc.publish(
+            f"InstanceAck.{instance_name}.{self.parent.onid}", b""
+        )
 
     async def __aenter__(self):
         self._stack = AsyncExitStack()
         await self._stack.__aenter__()
-        # Go through all operations which will be run
-        # by the parent worker_node context and instantiate all of them
-        await self.instantatiate_operations()
-        self.logger.debug(f"Instantiated operations: {self.operations}")
         return self
 
 
@@ -133,7 +125,7 @@ class NatsNode(BaseDataFlowObject):
             connect_timeout=10,
             error_cb=self.error_handler,
         )
-        self.logger.debug("Connected to nats server {self.config.server}")
+        self.logger.debug(f"Connected to nats server {self.config.server}")
         await self.init_node()
         return self
 
@@ -244,7 +236,7 @@ class NatsOrchestratorNodeContext(NatsNodeContext):
             for instance_name, operation in self.dataflow.operations.items()
         }
         self.logger.debug(
-            f"Tokenn allocated for instances {self.node_token_managing_instance}"
+            f"Token allocated for instances {self.node_token_managing_instance}"
         )
         # Publish a message with subject as operation name,
         # with data containing node token number and operation
@@ -329,11 +321,15 @@ class NatsWorkerNodeContext(NatsNodeContext):
         instance_name = data["instance_name"]
         config = data["config"]
 
-        self.operation_instances[instance_name] = self.operation_names[
+        op_for_instance = self.operation_names[
             operation_name
         ]._replace(instance_name=instance_name)
+        self.operation_instances[instance_name] = op_for_instance
         if config:
             self.operation_configs[instance_name] = config
+
+        # Instantiate operation
+        await self.opimpctx.instantiate_operation(op_for_instance,instance_name)
 
     async def init_context(self):
         self.onid = self.config.orchestrator_node_id
@@ -351,20 +347,39 @@ class NatsWorkerNodeContext(NatsNodeContext):
             for operation in self.parent.config.operations
         }
 
+        # Look for implementations provided in sub node
+        # if any. If no implementations are provided,
+        # the operation is assumed to be entrypoint loadable.
+        # opimpNetworkctx raises an exception if implementation
+        # is not found in both ways.
+        for operation_name in self.operation_names:
+            if operation_name in self.parent.config.implementations:
+                self.operation_implemtaions[
+                    operation_name
+                ] = self.parent.config.implementations[operation_name]
+
+        self.opimpctx = await self._stack.enter_async_context(
+            NatsOperationImplementationNetworkContext(BaseConfig(), self)
+        )
+        self.logger.debug(f"Operation implementation network instantiated")
+
         # Subscribe to instance details.
         # We cannot request for instance details because,
         # all worker nodes need to complete registration before
         # orchestrator node can allocate instances uniformly
         for operation in self.parent.config.operations:
+            self.logger.debug("Listening for instance details on"
+                    + f"InstanceDetails{operation.name}.{self.onid}")
+
             await self.nc.subscribe(
                 f"InstanceDetails{operation.name}.{self.onid}",
                 queue="SetInstanceDetails",
                 cb=self.set_instance_details,
             )
 
+
         # Send list of operation supported by the node
         msg_data = json.dumps(list(self.operation_names.keys())).encode()
-
         # Request node registration
         self.logger.debug(
             "Requesting context registration and token allocation"
@@ -376,22 +391,6 @@ class NatsWorkerNodeContext(NatsNodeContext):
         response = json.loads(response.data.decode())
         self.operation_token.update(response)
         self.logger.debug(f"Tokens received: {response}")
-
-        # Look for implementations provided in sub node
-        # if any. If no implementations are provided,
-        # the operation is assumed to be entrypoint loadable.
-        # opimpNetworkctx raises an exception if implementation
-        # is not found in both ways.
-        for operation_name in response:
-            if operation_name in self.parent.config.implementations:
-                self.operation_implemtaions[
-                    operation_name
-                ] = self.parent.config.implementations[operation_name]
-
-        self.opimpctx = await self._stack.enter_async_context(
-            NatsOperationImplementationNetworkContext(BaseConfig(), self)
-        )
-        self.logger.debug(f"Operation implementation network instantiated")
 
 
 @config
