@@ -6,7 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Operations plugin for NLP
+- Docstrings and doctestable example for DataFlowSource
+- XGBoost Regression Model
+- Pre-Trained PyTorch torchvision Models
+- Spacy model for NER
+- Added ability to rename outputs using GetSingle
+- Tutorial for using NLP operations with models
+- Operations plugin for NLP wrapping spacy and scikit functions
 - Support for default value in a Definition
 - Transformers Question Answering model
 - Source for reading images in directories
@@ -59,6 +65,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New model AutoClassifierModel based on `AutoSklearn`.
 - New model AutoSklearnRegressorModel based on `AutoSklearn`.
 - Example showing usage of locks in dataflow.
+- `-skip` flag to `service dev install` command to let users not install certain
+  core plugins
+- HTTP service got a `-redirect` flag which allows for URL redirection via a
+  HTTP 307 response
+- Support for immediate response in HTTP service
+- Daal4py example usage.
+- Gitter chatbot tutorial.
+- Option to run dataflow without sources from cli.
 ### Changed
 - Renamed `-seed` to `-inputs` in `dataflow create` command
 - Renamed configloader/png to configloader/image and added support for loading JPEG and TIFF file formats
@@ -92,6 +106,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   packaging the model.
 - IntegrationCLITestCase creates a new directory and chdir into it for each test
 ### Fixed
+- `export_value` now converts numpy array to JSON serializable datatype
 - CSV source overwriting configloaded data to every row
 - Race condition in `MemoryRedundancyChecker` when more than 4 possible
   parameter sets for an operation.

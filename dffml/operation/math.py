@@ -17,19 +17,19 @@ async def multiply(multiplicand, multiplier):
     Multiply record values
 
     Parameters
-    ++++++++++
+    ----------
     multiplicand : generic
         An arithmetic type value.
     multiplier : generic
         An arithmetic type value.
 
     Returns
-    +++++++
+    -------
     dict
         A dict containing the product.
 
     Examples
-    ++++++++
+    --------
 
     The following example shows how to use multiply.
 
