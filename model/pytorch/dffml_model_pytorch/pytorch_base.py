@@ -90,13 +90,14 @@ class PyTorchModelContext(ModelContext):
                 if self.parent.config.trainable
                 else self._model.classifier.parameters()
             )
-        else:
+        elif self.parent.LAST_LAYER_TYPE == "fully_connected":
             self.model_parameters = (
                 self._model.parameters()
                 if self.parent.config.trainable
                 else self._model.fc.parameters()
             )
-
+        else:
+            self.model_parameters = self._model.parameters()
         self.criterion = nn.CrossEntropyLoss()
         self.optimizer = optim.SGD(
             self.model_parameters, lr=0.001, momentum=0.9
