@@ -11,7 +11,7 @@ spec.loader.exec_module(common)
 
 common.KWARGS["entry_points"] = {
     "dffml.model": [
-        "pytorch_nn = dffml_model_pytorch.pytorch_nn:PyTorchNeuralNetwork",
+        "pytorchnn = dffml_model_pytorch.pytorch_nn:PyTorchNeuralNetwork",
         "alexnet = dffml_model_pytorch.pytorch_pretrained:AlexNetModel",
         "densenet121 = dffml_model_pytorch.pytorch_pretrained:DenseNet121Model",
         "densenet161 = dffml_model_pytorch.pytorch_pretrained:DenseNet161Model",

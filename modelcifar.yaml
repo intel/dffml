@@ -1,4 +1,4 @@
-model:
+model1:
   block1:
     conv1:
       name: Conv2d
@@ -80,36 +80,44 @@ model:
       name: MaxPool2d
       kernel_size: 2
       stride: 2
-  fc_layer:
-    dropout1:
-      name: Dropout
-      p: 0.1
-    linear1:
-      name: Linear
-      in_features: 4096
-      out_features: 1024
-    relu1:
-      name: ReLU
-      inplace: True
-    linear2:
-      name: Linear
-      in_features: 1024
-      out_features: 512
-    relu2:
-      name: ReLU
-      inplace: True
-    dropout2:
-      name: Dropout
-      p: 0.1
-    linear3:
-      name: Linear
-      in_features: 512
-      out_features: 10
+model2:
+  dropout1:
+    name: Dropout
+    p: 0.1
+  linear1:
+    name: Linear
+    in_features: 4096
+    out_features: 1024
+  relu1:
+    name: ReLU
+    inplace: True
+  linear2:
+    name: Linear
+    in_features: 1024
+    out_features: 512
+  relu2:
+    name: ReLU
+    inplace: True
+  dropout2:
+    name: Dropout
+    p: 0.1
+  linear3:
+    name: Linear
+    in_features: 512
+    out_features: 10
 forward:
-  - block1
-  - block2
-  - block3
-  - view:
-    - -1
-    - 4096
-  - fc_layer
+  model1:
+    - block1
+    - block2
+    - block3
+  model2:
+    - view:
+      - -1
+      - 4096
+    - dropout1
+    - linear1
+    - relu1
+    - linear2
+    - relu2
+    - dropout2
+    - linear3

@@ -2,7 +2,7 @@ import logging
 import operator
 import sys
 import pathlib
-from typing import Any, List, Type
+from typing import Any, List, Type, Dict
 import torch.nn as nn
 from torchvision import models
 
@@ -10,22 +10,27 @@ from dffml.base import config, field
 from dffml.feature.feature import Feature, Features
 from dffml.util.entrypoint import entrypoint
 from dffml.model.model import Model
-from dffml.configloader.configloader import BaseConfigLoader
 from .pytorch_base import PyTorchModelConfig, PyTorchModelContext
 
 
-class Net(nn.Module):
+class Network(nn.Module):
     def __init__(self, network):
-        super(Net, self).__init__()
-        self.setUp(network)
+        super(Network, self).__init__()
+        if isinstance(network, dict):
+            self.setUp(network)
+        elif isinstance(network, nn.Module):
+            return network
+        else:
+            raise ValueError("network should be a dict or a Pytorch Model")
 
     def forward(self, x):
-        for layer in self.model:
-            if isinstance(layer, dict) and "view" in layer.keys():
-                # TODO Add more custom functions (not part of nn Module) if you find it
-                x = x.view(*layer["view"])
-                continue
-            x = operator.attrgetter(layer)(self)(x)
+        for model in self.feedforward:
+            for layer in self.feedforward[model]:
+                if isinstance(layer, dict) and "view" in layer.keys():
+                    # TODO Add more custom functions (not part of nn Module) if you find it
+                    x = x.view(*layer["view"])
+                    continue
+                x = operator.attrgetter(layer)(self)(x)
         return x
 
     def setUp(self, network):
@@ -37,11 +42,13 @@ class Net(nn.Module):
         for model in self.models.keys():
             self.add_layers(self.models[model])
 
+        self.feedforward = {}
         if "forward" in network.keys():
-            self.model = network["forward"]
+            for model in self.models.keys():
+                self.feedforward[model] = network["forward"][model]
         else:
             for model in self.models.keys():
-                self.model = list(network[model].keys())
+                self.feedforward[model] = list(network[model].keys())
 
     def add_layers(self, data):
         for key, value in data.items():
@@ -63,12 +70,11 @@ class Net(nn.Module):
 
 @config
 class PyTorchNeuralNetworkConfig:
-    network: pathlib.Path = field("Model")
     classifications: List[str] = field("Options for value of classification")
     predict: Feature = field("Feature name holding classification value")
     features: Features = field("Features to train on")
     directory: pathlib.Path = field("Directory where state should be saved")
-    configloader: BaseConfigLoader = field("ConfigLoader", default=None)
+    network: Network = field("Model")
     clstype: Type = field("Data type of classifications values", default=str)
     imageSize: int = field(
         "Common size for all images to resize and crop to", default=224
@@ -94,24 +100,6 @@ class PyTorchNeuralNetworkContext(PyTorchModelContext):
     def __init__(self, parent):
         super().__init__(parent)
 
-    async def __aenter__(self):
-
-        if isinstance(self.parent.config.network, (str, pathlib.PosixPath,)):
-            network_path = pathlib.Path(self.parent.config.network)
-            config_cls = self.parent.config.configloader
-            if config_cls is None:
-                config_type = network_path.suffix.replace(".", "")
-                config_cls = BaseConfigLoader.load(config_type)
-            # config_cls = BaseConfigLoader.load(self.parent.config.configloader)
-
-            async with config_cls.withconfig({}) as configloader:
-                async with configloader() as loader:
-                    exported = await loader.loadb(network_path.read_bytes())
-                self.parent.config.network = Net(exported)
-
-        await super().__aenter__()
-        return self
-
     def createModel(self):
         """
         Generates a model
@@ -133,7 +121,7 @@ class PyTorchNeuralNetworkContext(PyTorchModelContext):
         return self._model
 
 
-@entrypoint("pytorch_nn")
+@entrypoint("pytorchnn")
 class PyTorchNeuralNetwork(Model):
     CONFIG = PyTorchNeuralNetworkConfig
     CONTEXT = PyTorchNeuralNetworkContext
