@@ -46,7 +46,7 @@ class Accuracy(MLCMD):
     CONFIG = MLCMDConfig
 
     async def run(self):
-        return await accuracy(self.model, self.sources)
+        return await accuracy(self.model, self.accuracy_scorer, self.sources)
 
 
 @config
