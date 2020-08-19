@@ -1,3 +1,5 @@
+queries:
+  - exclude: py/call/wrong-number-class-arguments
 path_classifiers:
   docs:
     - scripts/docs.py
