@@ -2,6 +2,7 @@ import unittest
 
 from dffml.util.testing.docs import run_doctest
 
+
 def bad_func():
     """
     >>> bad_func()
@@ -9,12 +10,14 @@ def bad_func():
     """
     return False
 
+
 def good_func():
     """
     >>> good_func()
     True
     """
     return True
+
 
 class TestDocs(unittest.TestCase):
     def test_run_doctest_bad(self):
