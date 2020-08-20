@@ -19,8 +19,10 @@ Extract the dataset.
     $ tar -xzf 17flowers.tgz
 
 All the images are now in a folder called `jpg`.
-Let's split these images into flower_dataset/train and flower_dataset/test directories,
-each directory containing sub-directories corresponding to the 17 flower classes using split.py.
+We split these images into flower_dataset/train and flower_dataset/test directories,
+each directory containing sub-directories corresponding to the 17 flower classes using **split.py**.
+
+**split.py**
 
 .. literalinclude:: /../examples/flower17/split.py
 

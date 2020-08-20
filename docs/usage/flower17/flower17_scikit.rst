@@ -106,3 +106,6 @@ The model predicts 2 of the 4 images correctly!
 
 The accuracy of the model can be increased by using various preprocessing techniques
 for example scaling all the feature vectors within the range [0,1].
+
+Alternatively using Convolutional Neural Networks vastly improves the accuracy! -
+`The Transfer Learning approach with Convolution Neural Networks <flower17_pytorch.html>`_
