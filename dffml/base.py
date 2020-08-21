@@ -504,11 +504,11 @@ class BaseConfigurable(metaclass=BaseConfigurableMetaClass):
             if inspect.isclass(got) and issubclass(got, BaseConfigurable):
                 try:
                     kwargs[field.name] = got.withconfig(
-                        config, *above, *cls.add_label()
+                        config, *above, *cls.add_label()[:-1]
                     )
                 except MissingConfig:
                     kwargs[field.name] = got.withconfig(
-                        config, *above, *cls.add_label()[:-1]
+                        config, *above, *cls.add_label()
                     )
         return cls.CONFIG(**kwargs)
 
