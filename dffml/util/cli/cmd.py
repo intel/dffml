@@ -17,6 +17,7 @@ from ...feature import Feature
 from ..data import export_dict
 from .arg import Arg, parse_unknown
 from ...base import config, mkarg, field
+from ...configloader.configloader import ConfigLoaders
 
 DisplayHelp = "Display help message"
 
@@ -204,7 +205,10 @@ class CMD(object):
     @classmethod
     async def cli(cls, *args):
         parser, (args, unknown) = await cls.parse_args(*args)
-        args.extra_config = parse_unknown(*unknown)
+        async with ConfigLoaders() as configloaders:
+            args.extra_config = await parse_unknown(
+                *unknown, configloaders=configloaders
+            )
         if (
             getattr(cls, "run", None) is not None
             and getattr(args, "cmd", None) is None

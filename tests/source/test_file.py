@@ -79,18 +79,18 @@ class TestFileSource(AsyncTestCase):
             },
         )
 
-    def test_config_readonly_default(self):
+    async def test_config_readonly_default(self):
         config = FileSource.config(
-            parse_unknown("--source-file-filename", "feedface")
+            await parse_unknown("--source-file-filename", "feedface")
         )
         self.assertEqual(config.filename, "feedface")
         self.assertEqual(config.tag, "untagged")
         self.assertFalse(config.readwrite)
         self.assertFalse(config.allowempty)
 
-    def test_config_readonly_set(self):
+    async def test_config_readonly_set(self):
         config = FileSource.config(
-            parse_unknown(
+            await parse_unknown(
                 "--source-file-filename",
                 "feedface",
                 "--source-file-tag",

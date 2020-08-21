@@ -1,0 +1,7 @@
+model1:
+  layer1:
+    name: feed
+    config: face
+  layer2:
+    name: dead
+    config: beef
