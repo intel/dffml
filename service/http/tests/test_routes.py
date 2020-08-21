@@ -155,7 +155,7 @@ class TestRoutesList(TestRoutesRunning, AsyncTestCase):
 
 class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
     async def test_source(self):
-        config = parse_unknown(
+        config = await parse_unknown(
             "--source-filename", "dataset.csv", "-source-allowempty"
         )
         async with self.post("/configure/source/csv/salary", json=config) as r:
@@ -177,7 +177,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
                     self.assertIn("salaryctx", self.cli.app["source_contexts"])
 
     async def test_source_error(self):
-        config = parse_unknown("--source-file", "dataset.csv")
+        config = await parse_unknown("--source-file", "dataset.csv")
         with self.assertRaisesRegex(ServerException, "missing.*filename"):
             async with self.post("/configure/source/csv/salary", json=config):
                 pass  # pramga: no cov
@@ -193,7 +193,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
         with tempfile.TemporaryDirectory() as tempdir, patch.object(
             Model, "load", new=model_load
         ):
-            config = parse_unknown(
+            config = await parse_unknown(
                 "--model-directory",
                 tempdir,
                 "--model-features",
@@ -230,7 +230,7 @@ class TestRoutesConfigure(TestRoutesRunning, AsyncTestCase):
 
     async def test_model_config_error(self):
         # Should be directory, not folder
-        config = parse_unknown("--model-directory", "mymodel_dir")
+        config = await parse_unknown("--model-directory", "mymodel_dir")
         with patch.object(Model, "load", new=model_load):
             with self.assertRaisesRegex(ServerException, "missing.*features"):
                 async with self.post(
