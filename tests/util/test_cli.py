@@ -4,6 +4,7 @@ import sys
 import json
 import asyncio
 import logging
+import pathlib
 import unittest
 from unittest.mock import patch
 
@@ -20,8 +21,9 @@ from dffml.util.cli.cmd import (
 )
 from dffml.util.cli.parser import list_action, ParseInputsAction
 from dffml.util.cli.cmds import ListEntrypoint
-from dffml.util.asynctestcase import AsyncTestCase
+from dffml.util.asynctestcase import AsyncTestCase, IntegrationCLITestCase
 from dffml.base import config, field
+from dffml.configloader.configloader import ConfigLoaders
 
 
 def Namespace(**kwargs):
@@ -184,7 +186,7 @@ class TestCMD(AsyncTestCase):
             mock_method.assert_called_once()
 
 
-class TestArg(unittest.TestCase):
+class TestArg(IntegrationCLITestCase):
     def test_init(self):
         arg = Arg("-test", key="value")
         self.assertEqual(arg.name, "-test")
@@ -200,13 +202,20 @@ class TestArg(unittest.TestCase):
         self.assertEqual(second.name, "-test")
         self.assertEqual(second["key"], "new_value")
 
-    def test_parse_unknown(self):
-        parsed = parse_unknown(
-            "-rchecker-memory-kvstore",
-            "withargs",
-            "-rchecker-memory-kvstore-withargs-filename",
-            "somefile",
-        )
+    async def test_parse_unknown(self):
+        self.required_plugins("dffml-config-yaml")
+        async with ConfigLoaders() as configloaders:
+            parsed = await parse_unknown(
+                "-rchecker-memory-kvstore",
+                "withargs",
+                "-rchecker-memory-kvstore-withargs-filename",
+                "somefile",
+                "-model",
+                "slr",
+                "-model-network",
+                "@" + str(pathlib.Path(__file__).parent / "model-config.yaml"),
+                configloaders=configloaders,
+            )
         self.assertEqual(
             parsed,
             {
@@ -233,7 +242,29 @@ class TestArg(unittest.TestCase):
                             },
                         }
                     },
-                }
+                },
+                "model": {
+                    "plugin": ["slr"],
+                    "config": {
+                        "network": {
+                            "plugin": [
+                                {
+                                    "model1": {
+                                        "layer1": {
+                                            "name": "feed",
+                                            "config": "face",
+                                        },
+                                        "layer2": {
+                                            "name": "dead",
+                                            "config": "beef",
+                                        },
+                                    }
+                                }
+                            ],
+                            "config": {},
+                        }
+                    },
+                },
             },
         )
 

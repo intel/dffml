@@ -60,7 +60,7 @@ class TestDNN(AsyncTestCase):
 
     async def test_config(self):
         config = self.model.__class__.config(
-            parse_unknown(
+            await parse_unknown(
                 "--model-predict",
                 "feature_name:int:1",
                 "--model-classifications",

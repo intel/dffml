@@ -6,7 +6,7 @@ from typing import Optional
 from ..data import traverse_config_set
 
 
-def parse_unknown(*unknown):
+async def parse_unknown(*unknown, configloaders=None):
     parsed = {}
     name = []
     add_to_parsed = []
@@ -24,6 +24,8 @@ def parse_unknown(*unknown):
             name = arg.lstrip("-").split("-")
             add_to_parsed = []
         else:
+            if arg.startswith("@") and configloaders is not None:
+                _, arg = await configloaders.load_file(arg[1:])
             add_to_parsed.append(arg)
     if unknown and name:
         if not add_to_parsed:
