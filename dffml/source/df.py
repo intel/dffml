@@ -4,6 +4,7 @@ from typing import Type, AsyncIterator, Dict, Any
 from dffml.base import config, BaseConfig, field
 from dffml.configloader.configloader import BaseConfigLoader
 from dffml.df.types import Definition, DataFlow, Input, Operation
+from dffml.df.base import BaseInputSetContext, BaseContextHandle
 from dffml.df.base import BaseOrchestrator,OperationImplementationContext,OperationImplementation
 from dffml.feature import Features
 from dffml.record import Record
@@ -11,11 +12,6 @@ from dffml.source.source import BaseSource, BaseSourceContext
 from dffml.util.entrypoint import entrypoint
 from dffml.df.memory import MemoryOrchestrator
 
-# from ..df.base import (
-#     op,
-    
-#     OperationImplementation,
-# )
 @config
 class DataFlowSourceConfig:
     source: BaseSource
@@ -23,17 +19,26 @@ class DataFlowSourceConfig:
     features: Features
     length: str = field("Definition name to add as source length", default=None)
     all_for_single: bool = False
+    get_single_output: bool = True
     orchestrator: BaseOrchestrator = MemoryOrchestrator.withconfig({})
- 
+
+class RecordContextHandle(BaseContextHandle):
+    def as_string(self) -> str:
+        return self.ctx.record.key
+class RecordInputSetContext(BaseInputSetContext):
+    def __init__(self, record: Record):
+        self.record = record
+    async def handle(self) -> BaseContextHandle:
+        return RecordContextHandle(self)
+    async def __repr__(self):
+        return self.as_string
+    def __str__(self):
+        return repr(self)
 
 class DataFlowSourceContext(BaseSourceContext):
     async def update(self, record: Record):
         await self.sctx.update(record)
-    def RecordContext(self, record: Record):
-        total = ""
-        for feature in self.parent.config.features:
-            total = total+record.feature(feature.name)
-        return total
+
     # TODO Implement this method. We forgot to implement it when we initially
     # added the DataFlowSourceContext
     async def record(self, key: str) -> AsyncIterator[Record]:
@@ -43,7 +48,7 @@ class DataFlowSourceContext(BaseSourceContext):
                     yield record
         else:
             async for ctx, result in self.octx.run(
-                {self.RecordContext(record): [
+                {RecordInputSetContext(record): [
                     Input(
                         value=record.feature(feature.name),
                         definition=Definition(
@@ -63,12 +68,11 @@ class DataFlowSourceContext(BaseSourceContext):
                 async for record in [self.sctx.record(key)]}
             ):
                 if result:
-                    record.evaluated(result)
-                yield record
+                    ctx.record.evaluated(result)
+                yield ctx.record
     async def records(self) -> AsyncIterator[Record]:
         async for ctx, result in self.octx.run(
-            {self.RecordContext(record): [
-                Input(
+            {RecordInputSetContext(record):[Input(
                     value=record.feature(feature.name),
                     definition=Definition(
                         name=feature.name, primitive=str(feature.dtype())
@@ -82,14 +86,10 @@ class DataFlowSourceContext(BaseSourceContext):
                         name=self.parent.config.length, primitive="int"
                     ),
                 )
-            ])
-            async for record in self.sctx.records()}
-        ):
+            ]) async for record in self.sctx.records()}):
             if result:
-                async for record in self.sctx.records():
-                    record.evaluated(result)
-                    print("((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((9", record)
-            yield record
+                ctx.record.evaluated(result)
+            yield  ctx.record
 
     async def __aenter__(self) -> "DataFlowSourceContext":
         self.sctx = await self.parent.source().__aenter__()
