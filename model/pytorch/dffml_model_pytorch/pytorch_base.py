@@ -1,17 +1,14 @@
 import os
 import pathlib
-import hashlib
 from typing import Any, Tuple, AsyncIterator, List, Type, Dict
 import copy
 import time
 
 import torch
-import torch.nn as nn
 import torch.optim as optim
 from torch.optim import lr_scheduler
 
 import numpy as np
-
 
 from dffml.record import Record
 from dffml.model.accuracy import Accuracy
@@ -19,15 +16,17 @@ from dffml.base import config, field
 from dffml.feature.feature import Feature, Features
 from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelContext, ModelNotTrained
-from .pytorch_utils import NumpyToTensor
+from .utils.utils import NumpyToTensor, PyTorchLoss, CrossEntropyLossFunction
 
 
 @config
 class PyTorchModelConfig:
     predict: Feature = field("Feature name holding classification value")
-    classifications: List[str] = field("Options for value of classification")
     features: Features = field("Features to train on")
     directory: pathlib.Path = field("Directory where state should be saved")
+    classifications: List[str] = field(
+        "Options for value of classification", default=None
+    )
     clstype: Type = field("Data type of classifications values", default=str)
     imageSize: int = field(
         "Common size for all images to resize and crop to", default=224
@@ -36,19 +35,20 @@ class PyTorchModelConfig:
     epochs: int = field(
         "Number of iterations to pass over all records in a source", default=20
     )
-    trainable: bool = field(
-        "Tweak pretrained model by training again", default=False
-    )
     batch_size: int = field("Batch size", default=32)
     validation_split: float = field(
         "Split training data for Validation", default=0.0
     )
-    pretrained: bool = field(
-        "Load Pre-trained model weights", default=True,
-    )
     patience: int = field(
         "Early stops the training if validation loss doesn't improve after a given patience",
         default=5,
+    )
+    loss: PyTorchLoss = field(
+        "Loss Functions available in PyTorch",
+        default_factory=CrossEntropyLossFunction,
+    )
+    optimizer: str = field(
+        "Optimizer Algorithms available in PyTorch", default="SGD"
     )
 
     def __post_init__(self):
@@ -98,9 +98,10 @@ class PyTorchModelContext(ModelContext):
             )
         else:
             self.model_parameters = self._model.parameters()
-        self.criterion = nn.CrossEntropyLoss()
-        self.optimizer = optim.SGD(
-            self.model_parameters, lr=0.001, momentum=0.9
+
+        self.criterion = self.parent.config.loss.function
+        self.optimizer = getattr(optim, self.parent.config.optimizer)(
+            self.model_parameters, lr=0.001
         )
         self.exp_lr_scheduler = lr_scheduler.StepLR(
             self.optimizer, step_size=5, gamma=0.1

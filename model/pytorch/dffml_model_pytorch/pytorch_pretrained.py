@@ -1,12 +1,21 @@
-from __future__ import print_function, division
-
 import sys
 import torch.nn as nn
 from torchvision import models
 
 from dffml.util.entrypoint import entrypoint
 from dffml.model.model import Model
+from dffml.base import config, field
 from .pytorch_base import PyTorchModelConfig, PyTorchModelContext
+
+
+@config
+class PyTorchPreTrainedModelConfig(PyTorchModelConfig):
+    pretrained: bool = field(
+        "Load Pre-trained model weights", default=True,
+    )
+    trainable: bool = field(
+        "Tweak pretrained model by training again", default=False
+    )
 
 
 class PyTorchPretrainedContext(PyTorchModelContext):
@@ -103,7 +112,9 @@ for model_name, name, last_layer_type in [
     ("wide_resnet101_2", "WideResNet101_2", "fully_connected"),
     ("wide_resnet50_2", "WideResNet50_2", "fully_connected"),
 ]:
-    cls_config = type(name + "ModelConfig", (PyTorchModelConfig,), {},)
+    cls_config = type(
+        name + "ModelConfig", (PyTorchPreTrainedModelConfig,), {},
+    )
     cls_context = type(name + "ModelContext", (PyTorchPretrainedContext,), {},)
 
     dffml_cls = type(

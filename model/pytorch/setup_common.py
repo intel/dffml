@@ -10,7 +10,7 @@ DESCRIPTION = "DFFML model dffml-model-pytorch"
 AUTHOR_NAME = "Saksham Arora"
 AUTHOR_EMAIL = "sakshamarora1001@gmail.com"
 # Install dffml if it is not installed in development mode
-INSTALL_REQUIRES = ["torch>=1.5.0", "torchvision>=0.6.1", "numpy>=1.16.4",] + (
+INSTALL_REQUIRES = ["torch>=1.6.0", "torchvision>=0.7.0", "numpy>=1.18.5",] + (
     ["dffml>=0.3.7"]
     if not any(
         list(

@@ -1,16 +1,11 @@
-import logging
 import operator
-import sys
-import pathlib
-from typing import Any, List, Type, Dict
 import torch.nn as nn
-from torchvision import models
 
 from dffml.base import config, field
-from dffml.feature.feature import Feature, Features
 from dffml.util.entrypoint import entrypoint
 from dffml.model.model import Model
 from .pytorch_base import PyTorchModelConfig, PyTorchModelContext
+from .utils.utils import PyTorchLoss, CrossEntropyLossFunction
 
 
 class Network(nn.Module):
@@ -21,13 +16,14 @@ class Network(nn.Module):
         elif isinstance(network, nn.Module):
             return network
         else:
-            raise ValueError("network should be a dict or a Pytorch Model")
+            raise ValueError(
+                "network should be a dict or a Pytorch Model(nn.Module)"
+            )
 
     def forward(self, x):
         for model in self.feedforward:
             for layer in self.feedforward[model]:
                 if isinstance(layer, dict) and "view" in layer.keys():
-                    # TODO Add more custom functions (not part of nn Module) if you find it
                     x = x.view(*layer["view"])
                     continue
                 x = operator.attrgetter(layer)(self)(x)
@@ -69,31 +65,8 @@ class Network(nn.Module):
 
 
 @config
-class PyTorchNeuralNetworkConfig:
-    classifications: List[str] = field("Options for value of classification")
-    predict: Feature = field("Feature name holding classification value")
-    features: Features = field("Features to train on")
-    directory: pathlib.Path = field("Directory where state should be saved")
-    network: Network = field("Model")
-    clstype: Type = field("Data type of classifications values", default=str)
-    imageSize: int = field(
-        "Common size for all images to resize and crop to", default=224
-    )
-    enableGPU: bool = field("Utilize GPUs for processing", default=False)
-    epochs: int = field(
-        "Number of iterations to pass over all records in a source", default=20
-    )
-    trainable: bool = field(
-        "Tweak pretrained model by training again", default=False
-    )
-    batch_size: int = field("Batch size", default=32)
-    validation_split: float = field(
-        "Split training data for Validation", default=0.0
-    )
-    patience: int = field(
-        "Early stops the training if validation loss doesn't improve after a given patience",
-        default=5,
-    )
+class PyTorchNeuralNetworkConfig(PyTorchModelConfig):
+    network: Network = field("Model", default=None)
 
 
 class PyTorchNeuralNetworkContext(PyTorchModelContext):
@@ -114,8 +87,6 @@ class PyTorchNeuralNetworkContext(PyTorchModelContext):
 
         model = self.parent.config.network
         self.logger.debug("Model Summary\n%r", model)
-        for param in model.parameters():
-            param.require_grad = self.parent.config.trainable
 
         self._model = model.to(self.device)
         return self._model

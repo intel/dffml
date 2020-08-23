@@ -4,7 +4,9 @@ model1:
       name: Conv2d
       in_channels: 3
       out_channels: 32
-      kernel_size: 3
+      kernel_size:
+        - 3
+        - 2
       padding: 1
     batch_norm:
       name: BatchNorm2d
