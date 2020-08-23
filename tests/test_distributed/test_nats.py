@@ -4,7 +4,11 @@ import sqlite3
 import tempfile
 import subprocess
 import contextlib
+import concurrent
 from collections import defaultdict
+from multiprocessing import Manager, cpu_count,Queue
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+from nats.aio.client import Client as NATS
 
 from dffml.distributed.orchestrator import (
     NatsOrchestratorNode,
@@ -13,7 +17,7 @@ from dffml.distributed.orchestrator import (
     NatsWorkerNodeConfig,
 )
 
-from dffml import DataFlow
+from dffml import DataFlow,op,Definition
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.operation.output import GetSingle
 from dffml.db.sqlite import SqliteDatabase, SqliteDatabaseConfig
@@ -25,9 +29,98 @@ from dffml.operation.db import (
 
 from tests.test_df import parse_line, add, mult
 
+# Source for _ProcQueue
+#https://stackoverflow.com/questions/24687061/can-i-somehow-share-an-asynchronous-queue-with-a-subprocess
 
-class TestNatsOrchestrator(AsyncTestCase):
+class NatsTestCase(AsyncTestCase):
+    async def echoAll(self,msg):
+        print(msg)
+
     async def setUp(self):
+        self.nats_proc = subprocess.Popen(
+            ["nats-server", "-p", "-1",],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            start_new_session=True,
+        )
+
+        ready = False
+        listen_text = "Listening for client connections on "
+        while not ready:
+            line = self.nats_proc.stdout.readline().decode()
+            if listen_text in line:
+                line = line.strip().split(listen_text)
+                self.server_addr = line[-1]
+            if "Server is ready" in line:
+                ready = True
+
+        self.nc = NATS()
+        await self.nc.connect(self.server_addr)
+        await self.nc.subscribe(
+            ">",
+            cb=self.echoAll,
+        )
+
+    async def tearDown(self):
+        self.nats_proc.terminate()
+
+@op(
+    inputs={"q":Definition(name="shared_q",primitive="AsyncProceeQueue")},
+    outputs = {}
+)
+async def q_op(q):
+    q.put(1)
+    print(f"length of queue {len(q)}")
+    while len(q) < 1:
+        continue
+    print(f"{os.getpid()}: Operation Complete")
+
+async def _spawnWorker(q:"AsyncProcessQueue",
+    worker_config:"NatsWorkerNodeConfig",
+    ):
+    print(f"Spawning worker")
+    wnode = NatsWorkerNode(worker_config)
+    await wnode.__aenter__()
+    await asyncio.Event().wait()
+
+def spawnWorker(q,worker_config):
+    loop = asyncio.new_event_loop()
+    loop.run_until_complete(_spawnWorker(q,worker_config))
+
+class TestNatsOrchestratorParallel(NatsTestCase):
+    async def test_run(self):
+        n_workers = 1
+
+        worker_configs = [
+            NatsWorkerNodeConfig(self.server_addr,operations=[q_op.op])
+            for _ in range(n_workers)
+        ]
+        m = Manager()
+        q = m.Queue()
+        executer = ProcessPoolExecutor()
+        loop = asyncio.get_event_loop()
+        for worker_config in worker_configs:
+            await loop.run_in_executor(executer,spawnWorker,q,worker_config)
+
+        print("\n\n here \n\n")
+        orchestrator_node = NatsOrchestratorNode(
+            NatsOrchestratorNodeConfig(
+                server=self.server_addr,
+                dataflow=DataFlow(
+                    operations={
+                        "q_op.op": q_op.op,
+                    },
+                ),
+            )
+        )
+
+        async with orchestrator_node as onode:
+                async with onode() as onctx:
+                    pass
+
+class TestNatsOrchestrator(NatsTestCase):
+    async def setUp(self):
+        await super().setUp()
         # - A worker node reads from a file containing input strings
         # - Input string are processed by another worker nodes(s)
         #   perfroming calc_string
@@ -38,25 +131,9 @@ class TestNatsOrchestrator(AsyncTestCase):
             "CREATE TABLE IF NOT EXISTS calculations (asString text PRIMARY KEY,value integer);"
         )
         self.cursor.execute("INSERT INTO calculations VALUES ('1+2' , 2)")
-
-        self.nats_proc = subprocess.Popen(
-            ["nats-server", "-p", "-1",],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            start_new_session=True,
-        )
-
         self.cursor.execute("SELECT * FROM calculations")
         rows = self.cursor.fetchall()
-        ready = False
-        listen_text = "Listening for client connections on "
-        while not ready:
-            line = self.nats_proc.stdout.readline().decode()
-            if listen_text in line:
-                line = line.strip().split(listen_text)
-                self.server_addr = line[-1]
-            if "Server is ready" in line:
-                ready = True
+
 
     async def tearDown(self):
         self.conn.close()

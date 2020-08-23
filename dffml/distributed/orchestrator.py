@@ -205,12 +205,12 @@ class NatsOrchestratorNodeContext(NatsNodeContext):
             for operation in self.parent.config.dataflow.operations.values()
         ]
 
-        # maps operations to registered nodes token queue
-        self.nodes_for_operation = (
-            {}
-        )
+        # Maps operations to circular queue which contains
+        # tokens of worker nodes allocated with different
+        # instances of an operation
+        self.nodes_for_operation = {}
 
-        sid_node_registration = await self.nc.subscribe(
+        await self.nc.subscribe(
             f"{RegisterWorkerNode}.{self.uid}",
             queue="WorkerNodeRegistrationQueue",
             cb=self.register_worker_node,
@@ -218,10 +218,6 @@ class NatsOrchestratorNodeContext(NatsNodeContext):
         self.logger.debug("Waiting for all operations to be found")
         await self.all_ops_available.wait()
         self.logger.debug("All required operations found")
-        # Stop listening to new node registration
-        await self.nc.unsubscribe(
-            sid_node_registration
-        )
 
         # Onode goes through operation instances
         # in dataflow and assign an instance to a worker node
@@ -304,6 +300,10 @@ class NatsWorkerNodeContext(NatsNodeContext):
         self._stack = AsyncExitStack()
         await self.init_context()
         return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        self.logger.debug("Exiting context")
+        await self._stack.aclose()
 
     async def set_instance_details(self, msg):
         subject = msg.subject
