@@ -46,6 +46,7 @@ class CircularQueue(Queue):
         v = super().get()
         self.put(v)
         return v
+    
 
 
 class NatsMainInputNetwork:
@@ -161,7 +162,7 @@ class NatsOrchestratorNodeContext(NatsNodeContext):
                 # queue for this operation.
                 if operation_name in self.nodes_for_operation:
                     opq = self.nodes_for_operation[operation_name]
-                    token = len(opq) + 1
+                    token = opq.qsize() + 1
                     opq.put(token)
                 else:
                     opq = CircularQueue()

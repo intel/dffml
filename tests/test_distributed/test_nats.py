@@ -1,4 +1,5 @@
 import os
+import time
 import asyncio
 import sqlite3
 import tempfile
@@ -6,7 +7,7 @@ import subprocess
 import contextlib
 import concurrent
 from collections import defaultdict
-from multiprocessing import Manager, cpu_count,Queue
+from multiprocessing import Manager, cpu_count,Queue, Process
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from nats.aio.client import Client as NATS
 
@@ -86,10 +87,9 @@ async def _spawnWorker(q:"AsyncProcessQueue",
 def spawnWorker(q,worker_config):
     loop = asyncio.new_event_loop()
     loop.run_until_complete(_spawnWorker(q,worker_config))
-
 class TestNatsOrchestratorParallel(NatsTestCase):
     async def test_run(self):
-        n_workers = 1
+        n_workers = 4
 
         worker_configs = [
             NatsWorkerNodeConfig(self.server_addr,operations=[q_op.op])
@@ -97,11 +97,13 @@ class TestNatsOrchestratorParallel(NatsTestCase):
         ]
         m = Manager()
         q = m.Queue()
-        executer = ProcessPoolExecutor()
         loop = asyncio.get_event_loop()
-        for worker_config in worker_configs:
-            await loop.run_in_executor(executer,spawnWorker,q,worker_config)
 
+        for worker_config in worker_configs:
+            # await loop.run_in_executor(ProcessPoolExecutor(),spawnWorker,q,worker_config)
+            Process(target = spawnWorker,args = (q,worker_config)).start()
+
+        time.sleep(1)
         print("\n\n here \n\n")
         orchestrator_node = NatsOrchestratorNode(
             NatsOrchestratorNodeConfig(
@@ -114,9 +116,18 @@ class TestNatsOrchestratorParallel(NatsTestCase):
             )
         )
 
+        all_workers_ran = asyncio.Event()
+        async def check_all_workers_ran():
+            while True:
+                print(q.qsize())
+                if q.qsize() == n_workers:
+                    all_workers_ran.set()
+                asyncio.sleep(.5)
+
+        await check_all_workers_ran()
         async with orchestrator_node as onode:
                 async with onode() as onctx:
-                    pass
+                    await all_workers_ran.wait()
 
 class TestNatsOrchestrator(NatsTestCase):
     async def setUp(self):
