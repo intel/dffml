@@ -5,7 +5,7 @@ from dffml.base import config, field
 from dffml.util.entrypoint import entrypoint
 from dffml.model.model import Model
 from .pytorch_base import PyTorchModelConfig, PyTorchModelContext
-from .utils.utils import PyTorchLoss, CrossEntropyLossFunction
+from .utils.utils import create_layer, PyTorchLoss, CrossEntropyLossFunction
 
 
 class Network(nn.Module):
@@ -48,20 +48,8 @@ class Network(nn.Module):
 
     def add_layers(self, data):
         for key, value in data.items():
-            try:
-                sequential_dict = nn.Sequential()
-                for name, layer in value.items():
-                    parameters = {k: v for k, v in layer.items()}
-                    layer_name = parameters.pop("name")
-
-                    sequential_dict.add_module(
-                        name, getattr(nn, layer_name)(**parameters)
-                    )
-                self.add_module(key, sequential_dict)
-            except AttributeError:
-                parameters = {k: v for k, v in value.items()}
-                layer_name = parameters.pop("name")
-                self.add_module(key, getattr(nn, layer_name)(**parameters))
+            layer = create_layer(value)
+            self.add_module(key, layer)
 
 
 @config
@@ -96,4 +84,3 @@ class PyTorchNeuralNetworkContext(PyTorchModelContext):
 class PyTorchNeuralNetwork(Model):
     CONFIG = PyTorchNeuralNetworkConfig
     CONTEXT = PyTorchNeuralNetworkContext
-    LAST_LAYER_TYPE = None

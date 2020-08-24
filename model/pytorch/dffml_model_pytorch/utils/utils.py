@@ -1,14 +1,32 @@
-import torch
-from torchvision import transforms
 import sys
 import inspect
+
+from torch import utils, nn
+from torchvision import transforms
 
 from dffml.base import BaseDataFlowFacilitatorObject
 from dffml.util.entrypoint import base_entry_point, entrypoint
 from .config import make_pytorch_config
 
 
-class NumpyToTensor(torch.utils.data.Dataset):
+def create_layer(layer_dict):
+    try:
+        sequential_dict = nn.Sequential()
+        for name, layer in layer_dict.items():
+            parameters = {k: v for k, v in layer.items()}
+            layer_name = parameters.pop("name")
+
+            sequential_dict.add_module(
+                name, getattr(nn, layer_name)(**parameters)
+            )
+        return sequential_dict
+    except AttributeError:
+        parameters = {k: v for k, v in layer_dict.items()}
+        layer_name = parameters.pop("name")
+        return getattr(nn, layer_name)(**parameters)
+
+
+class NumpyToTensor(utils.data.Dataset):
     def __init__(self, data, target=None, size=224):
         self.data = data
         self.target = target
@@ -48,13 +66,13 @@ class PyTorchLoss(BaseDataFlowFacilitatorObject):
 
     @classmethod
     def load(cls, class_name: str = None):
-        for name, loss_class in inspect.getmembers(torch.nn, inspect.isclass):
+        for name, loss_class in inspect.getmembers(nn, inspect.isclass):
             if name.endswith("Loss"):
                 if name.lower() == class_name:
                     return eval(name + "Function")
 
 
-for name, loss_class in inspect.getmembers(torch.nn, inspect.isclass):
+for name, loss_class in inspect.getmembers(nn, inspect.isclass):
     if name.endswith("Loss"):
 
         cls_config = make_pytorch_config(name + "Config", loss_class)

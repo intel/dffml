@@ -78,26 +78,7 @@ class PyTorchModelContext(ModelContext):
         else:
             self._model = self.createModel()
 
-        if self.parent.LAST_LAYER_TYPE == "classifier_sequential":
-            self.model_parameters = (
-                self._model.parameters()
-                if self.parent.config.trainable
-                else self._model.classifier[-1].parameters()
-            )
-        elif self.parent.LAST_LAYER_TYPE == "classifier_linear":
-            self.model_parameters = (
-                self._model.parameters()
-                if self.parent.config.trainable
-                else self._model.classifier.parameters()
-            )
-        elif self.parent.LAST_LAYER_TYPE == "fully_connected":
-            self.model_parameters = (
-                self._model.parameters()
-                if self.parent.config.trainable
-                else self._model.fc.parameters()
-            )
-        else:
-            self.model_parameters = self._model.parameters()
+        self.set_model_parameters()
 
         self.criterion = self.parent.config.loss.function
         self.optimizer = getattr(optim, self.parent.config.optimizer)(
@@ -111,6 +92,9 @@ class PyTorchModelContext(ModelContext):
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         pass
+
+    def set_model_parameters(self):
+        self.model_parameters = self._model.parameters()
 
     def _classifications(self, cids):
         """
