@@ -44,6 +44,8 @@ class TestDAAL4PyLRModel(IntegrationCLITestCase):
         await CLI.cli(
             "accuracy",
             *model_args,
+            "-accuracy_scorer",
+            "mse",
             "-sources",
             "test_data=csv",
             "-source-filename",
