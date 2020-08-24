@@ -9,4 +9,5 @@ dffml accuracy \
     SepalWidth:float:1 \
     PetalLength:float:1 \
     PetalWidth:float:1 \
+  -accuracy-scorer=mse \
   -log critical
