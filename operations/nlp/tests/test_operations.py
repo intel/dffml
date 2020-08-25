@@ -280,7 +280,7 @@ class TestOperations(AsyncTestCase):
             unique_tokens = list(
                 set(input_sentence[0].lower().replace(".", "").split())
             )
-            self.assertEqual(len(vectors[0]), len(unique_tokens))
+            self.assertEqual(len(vectors), len(unique_tokens))
             self.assertEqual(
                 set(features).intersection(set(unique_tokens)), set(features)
             )

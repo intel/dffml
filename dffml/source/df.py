@@ -26,7 +26,6 @@ class DataFlowSourceConfig:
         "Definition name to add as source length", default=None
     )
     all_for_single: bool = False
-    get_single_output: bool = True
     orchestrator: BaseOrchestrator = MemoryOrchestrator.withconfig({})
 
 
