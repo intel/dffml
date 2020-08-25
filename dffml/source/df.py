@@ -5,35 +5,49 @@ from dffml.base import config, BaseConfig, field
 from dffml.configloader.configloader import BaseConfigLoader
 from dffml.df.types import Definition, DataFlow, Input, Operation
 from dffml.df.base import BaseInputSetContext, BaseContextHandle
-from dffml.df.base import BaseOrchestrator,OperationImplementationContext,OperationImplementation
+from dffml.df.base import (
+    BaseOrchestrator,
+    OperationImplementationContext,
+    OperationImplementation,
+)
 from dffml.feature import Features
 from dffml.record import Record
 from dffml.source.source import BaseSource, BaseSourceContext
 from dffml.util.entrypoint import entrypoint
 from dffml.df.memory import MemoryOrchestrator
 
+
 @config
 class DataFlowSourceConfig:
     source: BaseSource
     dataflow: DataFlow
     features: Features
-    length: str = field("Definition name to add as source length", default=None)
+    length: str = field(
+        "Definition name to add as source length", default=None
+    )
     all_for_single: bool = False
     get_single_output: bool = True
     orchestrator: BaseOrchestrator = MemoryOrchestrator.withconfig({})
 
+
 class RecordContextHandle(BaseContextHandle):
     def as_string(self) -> str:
         return self.ctx.record.key
+
+
 class RecordInputSetContext(BaseInputSetContext):
     def __init__(self, record: Record):
         self.record = record
+
     async def handle(self) -> BaseContextHandle:
         return RecordContextHandle(self)
-    async def __repr__(self):
+
+    def __repr__(self):
         return self.as_string
+
     def __str__(self):
         return repr(self)
+
 
 class DataFlowSourceContext(BaseSourceContext):
     async def update(self, record: Record):
@@ -48,7 +62,41 @@ class DataFlowSourceContext(BaseSourceContext):
                     yield record
         else:
             async for ctx, result in self.octx.run(
-                {RecordInputSetContext(record): [
+                {
+                    RecordInputSetContext(record): [
+                        Input(
+                            value=record.feature(feature.name),
+                            definition=Definition(
+                                name=feature.name,
+                                primitive=str(feature.dtype()),
+                            ),
+                        )
+                        for feature in self.parent.config.features
+                    ]
+                    + (
+                        []
+                        if not self.parent.config.length
+                        else [
+                            Input(
+                                value=await self.sctx.length(),
+                                definition=Definition(
+                                    name=self.parent.config.length,
+                                    primitive="int",
+                                ),
+                            )
+                        ]
+                    )
+                    async for record in [self.sctx.record(key)]
+                }
+            ):
+                if result:
+                    ctx.record.evaluated(result)
+                yield ctx.record
+
+    async def records(self) -> AsyncIterator[Record]:
+        async for ctx, result in self.octx.run(
+            {
+                RecordInputSetContext(record): [
                     Input(
                         value=record.feature(feature.name),
                         definition=Definition(
@@ -56,40 +104,25 @@ class DataFlowSourceContext(BaseSourceContext):
                         ),
                     )
                     for feature in self.parent.config.features
-
-                ] + ([] if not self.parent.config.length else [
-                    Input(
-                        value=await self.sctx.length(),
-                        definition=Definition(
-                            name=self.parent.config.length, primitive="int"
-                        ),
-                    )
-                ])
-                async for record in [self.sctx.record(key)]}
-            ):
-                if result:
-                    ctx.record.evaluated(result)
-                yield ctx.record
-    async def records(self) -> AsyncIterator[Record]:
-        async for ctx, result in self.octx.run(
-            {RecordInputSetContext(record):[Input(
-                    value=record.feature(feature.name),
-                    definition=Definition(
-                        name=feature.name, primitive=str(feature.dtype())
-                    ),
+                ]
+                + (
+                    []
+                    if not self.parent.config.length
+                    else [
+                        Input(
+                            value=await self.sctx.length(),
+                            definition=Definition(
+                                name=self.parent.config.length, primitive="int"
+                            ),
+                        )
+                    ]
                 )
-                for feature in self.parent.config.features
-            ] + ([] if not self.parent.config.length else [
-                Input(
-                    value=await self.sctx.length(),
-                    definition=Definition(
-                        name=self.parent.config.length, primitive="int"
-                    ),
-                )
-            ]) async for record in self.sctx.records()}):
+                async for record in self.sctx.records()
+            }
+        ):
             if result:
                 ctx.record.evaluated(result)
-            yield  ctx.record
+            yield ctx.record
 
     async def __aenter__(self) -> "DataFlowSourceContext":
         self.sctx = await self.parent.source().__aenter__()

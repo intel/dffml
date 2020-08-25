@@ -5,5 +5,7 @@ dffml dataflow create get_single remove_stopwords get_embedding \
       '[{"seed": ["spacy_model_name_def"]}]'=get_embedding.inputs.spacy_model \
       '[{"seed": ["pad_token_def"]}]'=get_embedding.inputs.pad_token \
       '[{"seed": ["max_len_def"]}]'=get_embedding.inputs.max_len \
+      '[{"remove_stopwords": "result"}]'=get_embedding.inputs.text \
       '[{"remove_stopwords": "result"}]'=get_embedding.inputs.text |
+
     tee nlp_ops_dataflow.json

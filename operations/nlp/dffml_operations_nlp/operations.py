@@ -10,7 +10,12 @@ from sklearn.feature_extraction.text import (
     TfidfVectorizer,
 )
 
-from dffml.df.base import op, Operation, OperationImplementation, OperationImplementationContext
+from dffml.df.base import (
+    op,
+    Operation,
+    OperationImplementation,
+    OperationImplementationContext,
+)
 from dffml.df.types import Definition
 
 
@@ -438,22 +443,24 @@ async def get_embedding(
     return {"embedding": embedding}
 
 
-example = Operation(
-    name="example",
-    inputs={"stop_words": Definition("stop_words", "string"),
-        "length": Definition("source_length", "string")},
+collect_output = Operation(
+    name="collect_output",
+    inputs={
+        "sentence": Definition("sentence", "string"),
+        "length": Definition("source_length", "string"),
+    },
     outputs={"all": Definition("all_sentences", "List[string]")},
     conditions=[],
 )
 
-class ExampleContext(OperationImplementationContext):
+
+class CollectOutputContext(OperationImplementationContext):
     async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
 
         async with self.parent.lock:
             if self.parent.length is None:
-                print(inputs)
                 self.parent.length = inputs["length"]
-            self.parent.list.append(inputs["stop_words"])
+            self.parent.list.append(inputs["sentence"])
 
             if len(self.parent.list) == self.parent.length:
                 self.parent.event.set()
@@ -463,10 +470,10 @@ class ExampleContext(OperationImplementationContext):
         return {"all": self.parent.list}
 
 
-class Example(OperationImplementation):
+class CollectOutput(OperationImplementation):
 
-    op = example
-    CONTEXT = ExampleContext
+    op = collect_output
+    CONTEXT = CollectOutputContext
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -482,3 +489,33 @@ class Example(OperationImplementation):
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         self.lock = None
+
+
+@op
+async def extract_array_from_matrix(
+    single_text_example: str,
+    collected_text: List[str],
+    input_matrix: List[float],
+) -> List[float]:
+    """
+    Returns row from `input_matrix` based on index of `single_text_example` 
+    in `collected_text`.
+
+    Parameters
+    ----------
+    single_text_example : str
+        String to be used for indexing into `collected_text`.
+
+    collected_text: list
+        List of strings.
+
+    input_matrix: list
+        A 2-D matrix where each row represents vector corresponding
+        to `single_text_example`.
+
+    Returns
+    -------
+    result: A 1-d array.
+    """
+    idx = collected_text.index(single_text_example)
+    return input_matrix[idx, :]

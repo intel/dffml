@@ -1,1 +1,1 @@
-dffml dataflow diagram -stage processing -- nlp_ops_dataflow1.json
+dffml dataflow diagram -stage processing -- nlp_ops_dataflow.json

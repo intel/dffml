@@ -1,11 +1,11 @@
 dffml train \
     -model scikitgnb \
-    -model-features tfidf_vectorizer.outputs.result:float:[1,1,2] \
+    -model-features extract_array_from_matrix.outputs.result:float:1 \
     -model-predict sentiment:int:1 \
     -model-directory tempdir \
     -sources text=df \
-    -source-text-dataflow nlp_ops_dataflow1.json \
+    -source-text-dataflow nlp_ops_dataflow.json \
     -source-text-features sentence:str:1 \
     -source-text-source csv \
     -source-text-source-filename train_data.csv \
-    -log debug
+    -log debug 
