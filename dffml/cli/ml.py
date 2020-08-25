@@ -10,11 +10,15 @@ from ..util.cli.cmds import (
     KeysCMDConfig,
 )
 from ..base import config, field
+from ..accuracy import AccuracyScorer, MeanSquaredErrorAccuracy
 
 
 @config
 class MLCMDConfig(SourcesCMDConfig, ModelCMDConfig):
-    pass
+    accuracy_scorer: AccuracyScorer = field(
+        "Method to use to score accuracy",
+        default_factory=lambda: MeanSquaredErrorAccuracy(),
+    )
 
 
 class MLCMD(SourcesCMD, ModelCMD):
