@@ -1,8 +1,15 @@
+# To do
+# - start with OrchestratorInputNetwork
+
+
+import io
 import abc
 import json
+import inspect
 import asyncio
 import secrets
 import traceback
+from itertools import product
 from queue import Queue
 from dataclasses import field
 from typing import Dict, List, Any
@@ -12,7 +19,8 @@ from nats.aio.client import Client as NATS
 
 from ..base import config, BaseConfig
 from ..util.asynchelper import aenter_stack
-from ..df.types import DataFlow, Operation, Definition, Input
+from ..util.data import ignore_args
+from ..df.types import DataFlow, Operation, Definition, Input, Stage,Parameter
 from ..df.memory import (
     MemoryRedundancyChecker,
     MemoryLockNetwork,
@@ -20,6 +28,16 @@ from ..df.memory import (
     MemoryOperationImplementationNetworkContext,
     MemoryOperationNetworkContext,
     MemoryOperationNetwork,
+    MemoryInputNetworkContext,
+    MemoryInputNetwork,
+    MemoryRedundancyCheckerConfig,
+    MemoryRedundancyCheckerContext,
+    MemortRedundancyChecker,
+    MemoryOrchestratorContext,
+    MemoryOrchestratorContextConfig,
+    MemoryParameterSet,
+    MemoryParameterSetConfig,
+    MemoryInputSet,
 )
 from ..df.base import (
     BaseOrchestratorContext,
@@ -28,6 +46,13 @@ from ..df.base import (
     BaseDataFlowObject,
     BaseDataFlowObjectContext,
     BaseOperationImplementationNetworkContext,
+    BaseInputSetContext,
+    StringInputSetContext,
+    BaseInputSet,
+    BaseParameterSet,
+    BaseDefinitionSetContext,
+    BaseInputNetworkContext,
+    OperationException
 )
 
 
@@ -46,15 +71,55 @@ class CircularQueue(Queue):
         v = super().get()
         self.put(v)
         return v
-    
 
 
-class NatsMainInputNetwork:
-    pass
+class NatsOrchestratorInputNetworkContext(MemoryInputNetworkContext):
+    def __init__(self, config: BaseConfig, parent: "NatsOrchestratorNodeContext"):
+        super.__init__(config, parent)
+        self.input_uids = {} # maps uids to input
+
+    async def add_input_set(self,msg):
+        data = json.loads(msg.data.decode())
+        # The exported input set contains ids in parent list.
+        # Rebuild parent from ids using self.input_uids
+        for item in data["inputs"]:
+            item["parent"] = [ self.input_uids[parent_id] for parent_id in item["parent"]]
+        input_set = MemoryInputSet._fromdict(data)
+
+        await self.add(input_set)
+
+    async def add(self,input_set: BaseInputSet):
+        async for item in input_set.inputs():
+            self.input_uids[item.uid] = item
+        await super().add(input_set)
+
+    async def __aenter__(self):
+        await super().__aenter__()
+        # subscribe for new input sets
+        self.parent.nc.subscribe(
+            f"{self.parent.uid}.NewInputSet",
+            queue = "InputSetQueue",
+            cb = self.add_input_set
+        )
 
 
-class NatsNodeInputNetwork:
-    pass
+
+
+
+class NatsWorkerInputNetworkContext(MemoryInputNetworkContext):
+    def __init__(self, config: BaseConfig, parent: "NatsWorkerNodeContext"):
+        super.__init__(config, parent)
+
+    async def add(self,input_set:BaseInputSet):
+        # In mem octx `run_dispatch` calls `add` internally to
+        # add the output of the operation back to the network,
+        # now add will sent back the new inputs to the orchestrator
+        # network from which it'll be redirected to the corresponding
+        # worker node.
+        self.parent.nc.publish(
+            f"{self.parent.onid}.NewInputSet",
+            json.dumps(input_set.export()).encode()
+        )
 
 
 class NatsOperationImplementationNetworkContext(
@@ -68,7 +133,7 @@ class NatsOperationImplementationNetworkContext(
         )
         self.operations = {}
 
-    async def instantiate_operation(self,operation,instance_name):
+    async def instantiate_operation(self, operation, instance_name):
         opimp = self.parent.operation_configs.get(operation.name, None)
         opconfig = self.parent.operation_configs.get(instance_name, {})
         self.logger.debug(
@@ -84,13 +149,26 @@ class NatsOperationImplementationNetworkContext(
         await self._stack.__aenter__()
         return self
 
+    async def dispatch(self,wctx:"NatsWorkerNodeContext",operation:Operation,parameter_set:BaseParameterSet):
+        """
+        Schedule the running of an operation
+        """
+        self.logger.debug("[DISPATCH] %s", operation.instance_name)
+        # run_dipatch call ictx.add to add back results to the orchestrator network
+        task = asyncio.create_task(
+            self.run_dispatch(wctx, operation, parameter_set)
+        )
+
+        task.add_done_callback(ignore_args(self.completed_event.set))
+        return task
 
 class NatsNodeContext(BaseDataFlowObjectContext):
-    async def __aenter__(self, enter=None, call=False):
+    async def __aenter__(self):
         self.uid = secrets.token_hex(nbytes=NBYTES_UID)
         self.nc = self.parent.nc
         self._stack = AsyncExitStack()
-        self._stack = await aenter_stack(self, enter, call)
+        enter = {}
+        self._stack = await aenter_stack(self, enter)
         await self.init_context()
         return self
 
@@ -115,7 +193,7 @@ class NatsNode(BaseDataFlowObject):
         print(f"ERROR in node {self.uid}")
         print()
 
-    async def __aenter__(self, enter={}):
+    async def __aenter__(self):
         self.uid = secrets.token_hex(nbytes=NBYTES_UID)
         self.logger.debug(f"New node: {self.uid}",)
         self.nc = NATS()
@@ -141,6 +219,188 @@ class NatsNode(BaseDataFlowObject):
 @config
 class NatsOrchestratorNodeConfig(NatsNodeConfig):
     dataflow: DataFlow = None
+
+
+class NatsOrchestratorContext(MemoryOrchestratorContext):
+    def __init__(self,config,parent:"NatsOrchestratorNodeContext"):
+        super().__init__()
+        self._stack = AsyncExitStack()
+
+    async def __aenter__(self):
+        await self._stack.__aenter__()
+        self.ictx = self._stack.enter_async_context(
+                NatsOrchestratorInputNetworkContext(BaseConfig(),self)
+            )
+        self.rchecker = self._stack.enter_async_context(MemoryRedundancyChecker())
+        self.rctx = self._stack.enter_async_context(self.rchecker())
+
+
+
+    async def run(
+        self,
+        *input_sets: Union[List[Input], BaseInputSet],
+        strict: bool = True,
+        ctx: Optional[BaseInputSetContext] = None,
+    ):
+        ctxs: List[BaseInputSetContext] = []
+        self.logger.debug("Running %s: %s", self.config.dataflow, input_sets)
+        if not input_sets:
+            # If there are no input sets, add only seed inputs
+            ctxs.append(await self.seed_inputs(ctx=ctx))
+        if len(input_sets) == 1 and isinstance(input_sets[0], dict):
+            # Helper to quickly add inputs under string context
+            for ctx_string, input_set in input_sets[0].items():
+                ctxs.append(
+                    await self.seed_inputs(
+                        ctx=StringInputSetContext(ctx_string),
+                        input_set=input_set,
+                    )
+                )
+        else:
+            # For inputs sets that are of type BaseInputSetContext or list
+            for input_set in input_sets:
+                ctxs.append(
+                    await self.seed_inputs(ctx=ctx, input_set=input_set)
+                )
+        tasks = set()
+        # Create tasks to wait on the results of each of the contexts submitted
+        for ctx in ctxs:
+            self.logger.debug(
+                "kickstarting context: %s", (await ctx.handle()).as_string()
+            )
+            tasks.add(
+                asyncio.create_task(
+                    self.run_operations_for_ctx(ctx, strict=strict)
+                )
+            )
+
+        try:
+            # Return when outstanding operations reaches zero
+            while tasks:
+                # Wait for incoming events
+                done, _pending = await asyncio.wait(
+                    tasks, return_when=asyncio.FIRST_COMPLETED
+                )
+
+                for task in done:
+                    # Remove the task from the set of tasks we are waiting for
+                    tasks.remove(task)
+                    # Get the tasks exception if any
+                    exception = task.exception()
+                    if strict and exception is not None:
+                        raise exception
+                    elif exception is not None:
+                        # If there was an exception log it
+                        output = io.StringIO()
+                        task.print_stack(file=output)
+                        self.logger.error("%s", output.getvalue().rstrip())
+                        output.close()
+                    else:
+                        # All operations for a context completed
+                        # Yield the context that completed and the results of its
+                        # output operations
+                        ctx, results = task.result()
+                        yield ctx, results
+                self.logger.debug("ctx.outstanding: %d", len(tasks) - 1)
+        finally:
+            # Cancel tasks which we don't need anymore now that we know we are done
+            for task in tasks:
+                if not task.done():
+                    task.cancel()
+                else:
+                    task.exception()
+
+    async def operations(self):
+        pass
+
+    async def dispatch(self,operation, parameter_set):
+        pass
+
+    async def run_operations_for_ctx(self, ctx: BaseContextHandle, *, strict: bool = True):
+        # Track if there are more inputs
+        more = True
+        # Set of tasks we are waiting on
+        tasks = set()
+        # String representing the context we are executing operations for
+        ctx_str = (await ctx.handle()).as_string()
+        input_set_enters_network = asyncio.create_task(self.ictx.added(ctx))
+        tasks.add(input_set_enters_network)
+        try:
+            # Return when outstanding operations reaches zero
+            while tasks:
+                if (
+                    not more
+                    and len(tasks) == 1
+                    and input_set_enters_network in tasks
+                ):
+                    break
+                # Wait for incoming events
+                done, _pending = await asyncio.wait(
+                    tasks, return_when=asyncio.FIRST_COMPLETED
+                )
+                for task in done:
+                    # Remove the task from the set of tasks we are waiting for
+                    tasks.remove(task)
+                    # Get the tasks exception if any
+                    exception = task.exception()
+                    if strict and exception is not None:
+                        if task is input_set_enters_network:
+                            raise exception
+                        raise OperationException(
+                            "{}({}): {}".format(
+                                task.operation.instance_name,
+                                task.operation.inputs,
+                                {
+                                    parameter.key: parameter.value
+                                    async for parameter in task.parameter_set.parameters()
+                                },
+                            )
+                        ) from exception
+                    elif exception is not None:
+                        # If there was an exception log it
+                        output = io.StringIO()
+                        task.print_stack(file=output)
+                        self.logger.error("%s", output.getvalue().rstrip())
+                        output.close()
+
+                    elif task is input_set_enters_network:
+                        (
+                            more,
+                            new_input_sets,
+                        ) = input_set_enters_network.result()
+                        for (
+                            unvalidated_input_set,
+                            new_input_set,
+                        ) in new_input_sets:
+                            # Identify which operations have completed contextually
+                            # appropriate input sets which haven't been run yet
+                            async for operation, parameter_set in self.operations_parameter_set_pairs(
+                                ctx,
+                                self.config.dataflow,
+                                new_input_set=new_input_set,
+                            ):
+                                # Validation operations shouldn't be run here
+                                if operation.validator:
+                                    continue
+                                # Dispatch the operation and input set for running
+                                dispatch_operation = await self.nctx.dispatch(
+                                    self, operation, parameter_set
+                                )
+                                dispatch_operation.operation = operation
+                                dispatch_operation.parameter_set = (
+                                    parameter_set
+                                )
+                                tasks.add(dispatch_operation)
+                                self.logger.debug(
+                                    "[%s]: dispatch operation: %s",
+                                    ctx_str,
+                                    operation.instance_name,
+                                )
+                        # Create a another task to waits for new input sets
+                        input_set_enters_network = asyncio.create_task(
+                            self.ictx.added(ctx)
+                        )
+                        tasks.add(input_set_enters_network)
 
 
 class NatsOrchestratorNodeContext(NatsNodeContext):
@@ -194,6 +454,17 @@ class NatsOrchestratorNodeContext(NatsNodeContext):
             self.all_op_instantiated.set_result(None)
 
     async def init_context(self):
+        self.octx = self._stack.enter_async_context(
+            NatsOrchestratorContext(
+                MemoryOrchestratorContextConfig(
+                    uid=self.uid,
+                    dataflow=self.parent.config.dataflow,
+                    reuse={},
+                ),
+                self,
+            )
+        )
+
         self.logger.debug("Initializing new orchestrator node context")
         # Orchestrator node announces that it has started
         # All worker node contexts that are not already connected
@@ -307,6 +578,11 @@ class NatsWorkerNodeContext(NatsNodeContext):
         await self._stack.aclose()
 
     async def set_instance_details(self, msg):
+        # - Sets instance details of the operation
+        # - Instantiate operation in opimp network
+        # - Starts listenting to parameter sets required for the operation
+
+        # Setting instance details
         subject = msg.subject
         # Operation name might contain '.'
         *subject, onid = subject.split(".")
@@ -322,15 +598,32 @@ class NatsWorkerNodeContext(NatsNodeContext):
         instance_name = data["instance_name"]
         config = data["config"]
 
-        op_for_instance = self.operation_names[
-            operation_name
-        ]._replace(instance_name=instance_name)
+        op_for_instance = self.operation_names[operation_name]._replace(
+            instance_name=instance_name
+        )
         self.operation_instances[instance_name] = op_for_instance
         if config:
             self.operation_configs[instance_name] = config
 
         # Instantiate operation
-        await self.opimpctx.instantiate_operation(op_for_instance,instance_name)
+        await self.opimpctx.instantiate_operation(
+            op_for_instance, instance_name
+        )
+
+        # start listening to parameter set for the operation
+        await self.nc.subscribe(
+                f"{self.uid}.Parameters.{operation_name}",
+                queue=f"{operation_name}ParametersQueue",
+                cb=self.dispatch_to_opimp,
+            )
+
+    async def dispatch_to_opimp(self,msg):
+        # Process operation,parameter_set pair received from onode ictx
+        subject = msg.subject
+        operation_name = subject.split('.')[-1]
+        data = json.loads(msg.data.decode())
+        parameter_set = MemoryParameterSet._fromdict(data)
+        await self.opimpctx.dispatch(self,self.operation_names[operation_name],parameter_set)
 
     async def init_context(self):
         self.onid = self.config.orchestrator_node_id
@@ -363,21 +656,27 @@ class NatsWorkerNodeContext(NatsNodeContext):
             NatsOperationImplementationNetworkContext(BaseConfig(), self)
         )
         self.logger.debug(f"Operation implementation network instantiated")
+        self.ictx = await self._stack.enter_async_context(
+            NatsWorkerInputNetworkContext(BaseConfig(),self)
+        )
+        self.logger.debug(f"New worker input context")
+
 
         # Subscribe to instance details.
         # We cannot request for instance details because,
         # all worker nodes need to complete registration before
         # orchestrator node can allocate instances uniformly
         for operation in self.parent.config.operations:
-            self.logger.debug("Listening for instance details on"
-                    + f"InstanceDetails{operation.name}.{self.onid}")
+            self.logger.debug(
+                "Listening for instance details on"
+                + f"InstanceDetails{operation.name}.{self.onid}"
+            )
 
             await self.nc.subscribe(
                 f"InstanceDetails{operation.name}.{self.onid}",
                 queue="SetInstanceDetails",
                 cb=self.set_instance_details,
             )
-
 
         # Send list of operation supported by the node
         msg_data = json.dumps(list(self.operation_names.keys())).encode()

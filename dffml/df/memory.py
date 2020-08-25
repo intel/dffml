@@ -180,6 +180,18 @@ class MemoryInputSet(BaseInputSet):
         )
         return unvalidated_input_set
 
+    def export(self):
+        config = MemoryInputSetConfig(
+            ctx = self.config.ctx,
+            inputs = self.__inputs
+        )
+        return config.export()
+
+    @classmethod
+    def _fromdict(cls,**kwargs):
+        config = MemoryInputSetConfig._fromdict(**kwargs)
+        return cls(config)
+
 
 @config
 class MemoryParameterSetConfig:

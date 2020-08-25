@@ -381,7 +381,12 @@ class Input(object):
         return repr(self)
 
     def export(self):
-        return dict(value=self.value, definition=self.definition.export())
+        return dict(
+            uid=uid,
+            value=self.value,
+            definition=self.definition.export(),
+            parent = [item.uid for item in self.parents]
+            )
 
     @classmethod
     def _fromdict(cls, **kwargs):
