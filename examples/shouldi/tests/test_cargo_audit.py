@@ -31,4 +31,6 @@ class TestRunCargoAuditOp(AsyncTestCase):
                     / "crates.io-8c1a7e29073e175f0e69e0e537374269da244cee"
                 )
             )
-            self.assertEqual(results["report"], 1)
+            self.assertEqual(
+                len(results["report"]["vulnerabilities"]["list"]), 1
+            )

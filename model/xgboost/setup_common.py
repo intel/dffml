@@ -4,18 +4,13 @@ import ast
 from pathlib import Path
 from setuptools import find_packages
 
-ORG = "sakshamarora1"
-NAME = "dffml-operations-image"
-DESCRIPTION = "DFFML operations image"
-AUTHOR_NAME = "Saksham Arora"
-AUTHOR_EMAIL = "sakshamarora1001@gmail.com"
+ORG = "dffml"
+NAME = "dffml-model-xgboost"
+DESCRIPTION = "DFFML model dffml-model-xgboost"
+AUTHOR_NAME = "Oliver O'Brien"
+AUTHOR_EMAIL = "oliverobrien111@gmail.com"
 # Install dffml if it is not installed in development mode
-INSTALL_REQUIRES = [
-    "opencv-python>=4.2.0.34",
-    # See https://github.com/intel/dffml/issues/816
-    "numpy>=1.16.2,<1.19.0",
-    "mahotas>=1.4.9",
-] + (
+INSTALL_REQUIRES = (
     ["dffml>=0.3.7"]
     if not any(
         list(
