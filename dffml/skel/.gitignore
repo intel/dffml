@@ -1,5 +1,6 @@
 */LICENSE
 */.gitignore
+*/.github
 */.coveragerc
 */setup_common.py
 */pyproject.toml

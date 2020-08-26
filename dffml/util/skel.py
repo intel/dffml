@@ -60,6 +60,9 @@ class Skel:
                     filepath = Path("..") / filepath
                     if self.common == path:
                         break
+                # Create parent directories of link if they do not exist
+                if not linkpath.parent.is_dir():
+                    linkpath.parent.mkdir(parents=True)
                 # Resolving first gives more helpful error message if it fails
                 linkpath.resolve().symlink_to(filepath)
 
