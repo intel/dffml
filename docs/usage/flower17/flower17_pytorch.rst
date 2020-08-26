@@ -3,11 +3,12 @@ FLOWER17 Species classification using Transfer Learning
 
 The model we'll be using is :ref:`AlexNet CNN Model <plugin_model_dffml_model_pytorch_alexnet>`
 which is a part of ``dffml-model-pytorch``, a DFFML plugin which allows you to use PyTorch
-via DFFML. We can install it with ``pip``.
+via DFFML. We can install it with ``pip``. We will also be using image loading from
+``dffml-config-image``.
 
 .. code-block:: console
 
-    $ pip install -U dffml-model-pytorch
+    $ pip install -U dffml-model-pytorch dffml-config-image
 
 There are 2 ways to perform Transfer Learning:
 
