@@ -365,7 +365,6 @@ async def tfidf_vectorizer(
         text_list.append(text)
     else:
         text_list = text
-    print(text_list)
     X = vectorizer.fit_transform(text_list).toarray()
     if X.shape[0] == 1:
         X = np.ravel(X)

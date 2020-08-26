@@ -7,5 +7,5 @@ dffml predict all \
     -source-text-dataflow nlp_ops_dataflow.json \
     -source-text-features sentence:str:1 \
     -source-text-source csv \
-    -source-text-source-filename train_data.csv \
+    -source-text-source-filename test_data.csv \
     -pretty
