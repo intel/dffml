@@ -45,7 +45,7 @@ class PyTorchModelConfig:
     )
     loss: PyTorchLoss = field(
         "Loss Functions available in PyTorch",
-        default_factory=CrossEntropyLossFunction,
+        default=CrossEntropyLossFunction,
     )
     optimizer: str = field(
         "Optimizer Algorithms available in PyTorch", default="SGD"
