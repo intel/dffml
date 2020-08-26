@@ -53,7 +53,11 @@ class NumpyToTensor(utils.data.Dataset):
 
         if self.size:
             transform.extend(
-                [transforms.ToPILImage(), transforms.Resize(self.size),]
+                [
+                    transforms.ToPILImage(),
+                    transforms.Resize(self.size),
+                    transforms.CenterCrop((self.size, self.size)),
+                ]
             )
         transform.append(transforms.ToTensor())
         if self.mean and self.std:
