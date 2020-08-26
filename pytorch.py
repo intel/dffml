@@ -4,7 +4,7 @@ import asyncio
 
 from dffml import DirectorySource, Features, Feature, Sources
 from dffml import train, accuracy, predict
-from dffml_model_pytorch.pytorch_nn import (
+from dffml_model_pytorch.pytorch_net import (
     PyTorchNeuralNetwork,
     PyTorchNeuralNetworkConfig,
 )

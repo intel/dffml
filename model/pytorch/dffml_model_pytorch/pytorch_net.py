@@ -80,7 +80,7 @@ class PyTorchNeuralNetworkContext(PyTorchModelContext):
         return self._model
 
 
-@entrypoint("pytorchnn")
+@entrypoint("pytorchnet")
 class PyTorchNeuralNetwork(Model):
     CONFIG = PyTorchNeuralNetworkConfig
     CONTEXT = PyTorchNeuralNetworkContext

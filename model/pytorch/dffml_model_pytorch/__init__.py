@@ -162,4 +162,4 @@ Output:
 
 """
 from .pytorch_pretrained import *
-from .pytorch_nn import PyTorchNeuralNetwork
+from .pytorch_net import PyTorchNeuralNetwork
