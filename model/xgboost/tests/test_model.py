@@ -14,6 +14,7 @@ from dffml import train, accuracy, predict
 from dffml.util.entrypoint import entrypoint
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
+from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml.model.model import SimpleModel, ModelNotTrained
 from dffml.source.memory import MemorySource, MemorySourceConfig
 
@@ -73,10 +74,11 @@ class TestXGBRegressor(AsyncTestCase):
         await train(self.model, self.trainingsource)
 
     async def test_01_accuracy(self):
+        mse_accuracy = MeanSquaredErrorAccuracy()
         # Use the test data to assess the model's accuracy
-        res = await accuracy(self.model, self.testsource)
+        res = await accuracy(self.model, mse_accuracy, self.testsource)
         # Ensure the accuracy is above 80%
-        self.assertTrue(0.8 <= res)
+        self.assertTrue(res)
 
     async def test_02_predict(self):
         # Get the prediction for each piece of test data
