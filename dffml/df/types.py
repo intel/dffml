@@ -382,15 +382,18 @@ class Input(object):
 
     def export(self):
         return dict(
-            uid=uid,
             value=self.value,
             definition=self.definition.export(),
-            parent = [item.uid for item in self.parents]
+            origin = self.origin.export() if not isinstance(self.origin,str) else self.origin,
+            parents = [item.uid for item in self.parents],
+            uid=self.uid,
             )
 
     @classmethod
     def _fromdict(cls, **kwargs):
         kwargs["definition"] = Definition._fromdict(**kwargs["definition"])
+        if isinstance(kwargs["origin"],dict):
+            kwargs["origin"] = Input._fromdict(kwargs["origin"])
         return cls(**kwargs)
 
 
@@ -403,6 +406,21 @@ class Parameter(Input):
         )
         self.key = key
         self.origin = origin
+
+    def export(self):
+        return dict(
+            key = self.key,
+            value=self.value,
+            definition=self.definition.export(),
+            origin = self.origin.export(),
+            )
+
+    @classmethod
+    def _fromdict(cls, **kwargs):
+        kwargs["definition"] = Definition._fromdict(**kwargs["definition"])
+        kwargs["origin"] = Input._fromdict(**kwargs["origin"])
+        return cls(**kwargs)
+
 
 
 @dataclass

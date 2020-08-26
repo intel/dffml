@@ -241,7 +241,10 @@ def config(cls):
     Decorator to create a dataclass
     """
     datacls = dataclasses.dataclass(eq=True, init=True)(cls)
-    datacls._fromdict = classmethod(_fromdict)
+    if hasattr(cls,"_fromdict") and inspect.ismethod(cls._fromdict):
+        datacls._fromdict = cls._fromdict
+    else:
+        datacls._fromdict = classmethod(_fromdict)
     datacls._replace = lambda self, *args, **kwargs: dataclasses.replace(
         self, *args, **kwargs
     )

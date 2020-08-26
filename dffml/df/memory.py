@@ -198,6 +198,17 @@ class MemoryParameterSetConfig:
     ctx: BaseInputSetContext
     parameters: List[Parameter]
 
+    def export(self):
+        return {
+            "ctx":self.ctx.export(),
+            "parameters": [item.export() for item in self.parameters]
+        }
+
+    @classmethod
+    def _fromdict(cls,**kwargs):
+        kwargs["parameters"] = [ Parameter._fromdict(**param) for param in kwargs["parameters"]]
+        kwargs["ctx"] = StringInputSetContext(kwargs["ctx"])
+        return cls(**kwargs)
 
 class MemoryParameterSet(BaseParameterSet):
     def __init__(self, config: MemoryParameterSetConfig) -> None:
@@ -217,6 +228,19 @@ class MemoryParameterSet(BaseParameterSet):
         ):
             yield item
 
+    def export(self):
+        data =  self.config.export()
+        return data
+
+    @classmethod
+    def _fromdict(cls,**kwargs):
+        config = MemoryParameterSetConfig._fromdict(**kwargs)
+        return cls(config)
+
+@classmethod
+def _fromdict(cls,**kwargs):
+    config = MemoryParameterSetConfig._fromdict(**kwargs)
+    return cls(config)
 
 class NotificationSetContext(object):
     def __init__(self, parent: "NotificationSet") -> None:
@@ -1301,6 +1325,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         input_set: Optional[Union[List[Input], BaseInputSet]] = None,
     ) -> BaseInputSetContext:
         self.logger.debug("Seeding dataflow with input_set: %s", input_set)
+
         if input_set is None:
             # Create a list if extra inputs were not given
             input_set: List[Input] = []

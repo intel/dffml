@@ -660,6 +660,13 @@ class StringInputSetContext(BaseInputSetContext):
     def __str__(self):
         return repr(self)
 
+    def export(self):
+        return {"as_string":self.as_string}
+
+    @classmethod
+    def _fromdict(cls,**kwargs):
+        return cls(**kwargs)
+
 
 class BaseInputSetConfig(NamedTuple):
     ctx: BaseInputSetContext

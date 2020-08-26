@@ -18,7 +18,7 @@ from dffml.distributed.orchestrator import (
     NatsWorkerNodeConfig,
 )
 
-from dffml import DataFlow,op,Definition
+from dffml import DataFlow,op,Definition,Input
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.operation.output import GetSingle
 from dffml.db.sqlite import SqliteDatabase, SqliteDatabaseConfig
@@ -57,10 +57,10 @@ class NatsTestCase(AsyncTestCase):
 
         self.nc = NATS()
         await self.nc.connect(self.server_addr)
-        await self.nc.subscribe(
-            ">",
-            cb=self.echoAll,
-        )
+        # await self.nc.subscribe(
+        #     ">",
+        #     cb=self.echoAll,
+        # )
 
     async def tearDown(self):
         self.nats_proc.terminate()
@@ -87,6 +87,58 @@ async def _spawnWorker(q:"AsyncProcessQueue",
 def spawnWorker(q,worker_config):
     loop = asyncio.new_event_loop()
     loop.run_until_complete(_spawnWorker(q,worker_config))
+
+
+class TestNatsOrchestratorSimple(NatsTestCase):
+    async def test_run(self):
+        server = self.server_addr
+        test_operations = [
+            [parse_line.op,],
+            [add.op, mult.op],
+            [GetSingle.op],
+        ]
+
+        worker_nodes = [
+            NatsWorkerNode(NatsWorkerNodeConfig(server, operations=ops))
+            for ops in test_operations
+        ]
+
+
+        dataflow = DataFlow.auto(parse_line,add,mult,GetSingle)
+
+        dataflow.seed = [
+                Input(
+                    value=[dataflow.definitions["result"].name],
+                    definition=GetSingle.op.inputs["spec"],
+             )
+            ]
+    
+        orchestrator_node = NatsOrchestratorNode(
+            NatsOrchestratorNodeConfig(
+                server=server,
+                dataflow=dataflow
+            )
+        )
+
+        test_input = {
+            "testInput": [
+                Input(
+                    value = "add 40 and 42",
+                    definition=parse_line.op.inputs["line"]
+                )
+            ]
+        }
+
+        async with contextlib.AsyncExitStack() as stack:
+            worker_nodes = [
+                await stack.enter_async_context(wnode)
+                for wnode in worker_nodes
+            ]
+            async with orchestrator_node as onode:
+                async with onode() as onctx:
+                    async for ctx,results in onctx.run(test_input):
+                        print(results)
+
 class TestNatsOrchestratorParallel(NatsTestCase):
     async def test_run(self):
         n_workers = 4
@@ -104,7 +156,7 @@ class TestNatsOrchestratorParallel(NatsTestCase):
             Process(target = spawnWorker,args = (q,worker_config)).start()
 
         time.sleep(1)
-        print("\n\n here \n\n")
+
         orchestrator_node = NatsOrchestratorNode(
             NatsOrchestratorNodeConfig(
                 server=self.server_addr,
