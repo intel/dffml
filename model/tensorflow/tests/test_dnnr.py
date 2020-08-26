@@ -64,7 +64,7 @@ class TestDNN(AsyncTestCase):
     async def test_config(self):
         # Setting up configuration for model
         config = self.model.__class__.config(
-            parse_unknown(
+            await parse_unknown(
                 "--model-predict",
                 "TARGET:float:1",
                 "--model-features",

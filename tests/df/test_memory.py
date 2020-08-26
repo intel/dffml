@@ -61,19 +61,19 @@ class TestMemoryRedundancyChecker(AsyncTestCase):
             },
         )
 
-    @patch.object(BaseKeyValueStore, "load", load_kvstore_with_args)
-    def test_config_default_label(self):
-        was = MemoryRedundancyChecker.config(
-            parse_unknown(
-                "--rchecker-memory-kvstore",
-                "withargs",
-                "--rchecker-memory-kvstore-withargs-filename",
-                "somefile",
+    async def test_config_default_label(self):
+        with patch.object(BaseKeyValueStore, "load", load_kvstore_with_args):
+            was = MemoryRedundancyChecker.config(
+                await parse_unknown(
+                    "--rchecker-memory-kvstore",
+                    "withargs",
+                    "--rchecker-memory-kvstore-withargs-filename",
+                    "somefile",
+                )
             )
-        )
-        self.assertEqual(type(was), MemoryRedundancyCheckerConfig)
-        self.assertEqual(type(was.kvstore), KeyValueStoreWithArguments)
-        self.assertEqual(
-            type(was.kvstore.config), KeyValueStoreWithArgumentsConfig
-        )
-        self.assertEqual(was.kvstore.config.filename, "somefile")
+            self.assertEqual(type(was), MemoryRedundancyCheckerConfig)
+            self.assertEqual(type(was.kvstore), KeyValueStoreWithArguments)
+            self.assertEqual(
+                type(was.kvstore.config), KeyValueStoreWithArgumentsConfig
+            )
+            self.assertEqual(was.kvstore.config.filename, "somefile")

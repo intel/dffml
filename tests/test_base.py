@@ -16,6 +16,7 @@ from dffml.source.json import JSONSource
 from dffml.util.entrypoint import entrypoint, base_entry_point
 from dffml.util.cli.arg import Arg
 from dffml.util.cli.cmd import parse_unknown
+from dffml.util.asynctestcase import IntegrationCLITestCase
 
 
 @config
@@ -41,7 +42,7 @@ class FakeTesting(BaseTesting):
     CONFIG = FakeTestingConfig
 
 
-class TestAutoArgsConfig(unittest.TestCase):
+class TestAutoArgsConfig(IntegrationCLITestCase):
     def test_00_args(self):
         self.maxDiff = 99999
         self.assertEqual(
@@ -105,9 +106,9 @@ class TestAutoArgsConfig(unittest.TestCase):
             },
         )
 
-    def test_config_defaults(self):
+    async def test_config_defaults(self):
         config = FakeTesting.config(
-            parse_unknown(
+            await parse_unknown(
                 "--test-fake-name",
                 "feedface",
                 "--test-num",
@@ -140,9 +141,9 @@ class TestAutoArgsConfig(unittest.TestCase):
         )
         self.assertEqual(config.nums, (100,))
 
-    def test_config_set(self):
+    async def test_config_set(self):
         config = FakeTesting.config(
-            parse_unknown(
+            await parse_unknown(
                 "--test-fake-name",
                 "feedface",
                 "--test-num",
