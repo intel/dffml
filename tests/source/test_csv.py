@@ -54,9 +54,9 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
                 self.assertEqual("1", rows["untagged"]["0"]["feed"])
                 self.assertEqual("2", rows["sometag"]["0"]["face"])
 
-    def test_config_default(self):
+    async def test_config_default(self):
         config = CSVSource.config(
-            parse_unknown("--source-csv-filename", "feedface")
+            await parse_unknown("--source-csv-filename", "feedface")
         )
         self.assertEqual(config.filename, "feedface")
         self.assertEqual(config.tag, "untagged")
@@ -66,9 +66,9 @@ class TestCSVSource(FileSourceTest, AsyncTestCase):
         self.assertFalse(config.allowempty)
         self.assertIsNone(config.loadfiles)
 
-    def test_config_set(self):
+    async def test_config_set(self):
         config = CSVSource.config(
-            parse_unknown(
+            await parse_unknown(
                 "--source-csv-filename",
                 "feedface",
                 "--source-csv-tag",

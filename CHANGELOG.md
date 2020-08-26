@@ -6,11 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Configloading ablity from CLI using "@" before filename
 - Docstrings and doctestable example for DataFlowSource
 - XGBoost Regression Model
 - Pre-Trained PyTorch torchvision Models
 - Spacy model for NER
-- Added ability to rename outputs using GetSingle
+- Ability to rename outputs using GetSingle
 - Tutorial for using NLP operations with models
 - Operations plugin for NLP wrapping spacy and scikit functions
 - Support for default value in a Definition
