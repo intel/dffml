@@ -7,6 +7,7 @@ from dffml_model_xgboost.xgbregressor import (
     XGBRegressorModel,
     XGBRegressorModelConfig,
 )
+from dffml.accuracy import MeanSquaredErrorAccuracy
 
 
 diabetes = load_diabetes()
@@ -37,13 +38,20 @@ model = XGBRegressorModel(
 train(model, *[{"data": x, "target": y} for x, y in zip(trainX, trainy)])
 
 # Assess accuracy
+mse_accuracy = MeanSquaredErrorAccuracy()
 print(
     "Test accuracy:",
-    accuracy(model, *[{"data": x, "target": y} for x, y in zip(testX, testy)]),
+    accuracy(
+        model,
+        mse_accuracy,
+        *[{"data": x, "target": y} for x, y in zip(testX, testy)],
+    ),
 )
 print(
     "Training accuracy:",
     accuracy(
-        model, *[{"data": x, "target": y} for x, y in zip(trainX, trainy)]
+        model,
+        mse_accuracy,
+        *[{"data": x, "target": y} for x, y in zip(trainX, trainy)],
     ),
 )
