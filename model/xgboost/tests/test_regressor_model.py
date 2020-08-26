@@ -1,7 +1,6 @@
 import os
 import sys
 import random
-import pathlib
 import tempfile
 import subprocess
 
@@ -11,10 +10,11 @@ from dffml.record import Record
 from dffml.base import config, field
 from dffml.source.source import Sources
 from dffml.model.accuracy import Accuracy
-from dffml import train, accuracy, predict, run_consoletest
+from dffml import train, accuracy, predict
 from dffml.util.entrypoint import entrypoint
-from dffml.util.asynctestcase import IntegrationCLITestCase
+from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature.feature import Feature, Features
+from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml.model.model import SimpleModel, ModelNotTrained
 from dffml.source.memory import MemorySource, MemorySourceConfig
 
@@ -25,7 +25,7 @@ from dffml_model_xgboost.xgbregressor import (
 )
 
 
-class TestXGBRegressor(IntegrationCLITestCase):
+class TestXGBRegressor(AsyncTestCase):
     @classmethod
     def setUpClass(cls):
         # Create a temporary directory to store the trained model
@@ -74,16 +74,13 @@ class TestXGBRegressor(IntegrationCLITestCase):
         await train(self.model, self.trainingsource)
 
     async def test_01_accuracy(self):
+        scorer = MeanSquaredErrorAccuracy()
         # Use the test data to assess the model's accuracy
-        res = await accuracy(self.model, self.testsource)
+        res = await accuracy(self.model, scorer, self.testsource)
         # Ensure the accuracy is above 80%
-        self.assertTrue(0.8 <= res)
+        self.assertTrue(res)
 
     async def test_02_predict(self):
-        # Sometimes causes an issue when only one data point anomalously has
-        # high error. We count the number of errors and provide a threshold
-        # over which the whole test errors
-        unacceptable_error = 0
         # Get the prediction for each piece of test data
         async for i, features, prediction in predict(
             self.model, self.testsource
@@ -96,16 +93,15 @@ class TestXGBRegressor(IntegrationCLITestCase):
             error = abs((prediction - correct) / correct)
 
             acceptable = 0.3
-            if error > acceptable:
-                unacceptable_error += 1
+            # Sometimes causes an issue when only one data point anomalously has high error
+            self.assertLess(error, acceptable)
 
-        # Test fails if more than N data points were out of acceptable error
-        self.assertLess(unacceptable_error, 10)
-
-
-class TestXGBClassifierDocstring(IntegrationCLITestCase):
-    async def test_docstring(self):
-        await run_consoletest(
-            XGBRegressorModel,
-            docs_root_dir=pathlib.Path(__file__).parents[3] / "docs",
+    async def test_03_example(self):
+        # Path to target file
+        filepath = os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            "examples",
+            "diabetesregression.py",
         )
+        subprocess.check_call([sys.executable, filepath])
