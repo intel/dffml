@@ -384,7 +384,7 @@ class Input(object):
         return dict(
             value=self.value,
             definition=self.definition.export(),
-            origin = self.origin.export() if not isinstance(self.origin,str) else self.origin,
+            origin = self.origin.export() if isinstance(self.origin,Input) else self.origin,
             parents = [item.uid for item in self.parents],
             uid=self.uid,
             )

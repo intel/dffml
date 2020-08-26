@@ -144,6 +144,19 @@ class MemoryInputSetConfig:
     ctx: BaseInputSetContext
     inputs: List[Input]
 
+    def export(self):
+        return(
+            dict(
+                ctx = self.ctx.export(),
+                inputs = [ item.export() for item in self.inputs]
+            )
+        )
+
+    @classmethod
+    def _fromdict(cls,**kwargs):
+        kwargs['inputs'] = [Input._fromdict(**item) for item in kwargs['inputs']]
+        kwargs['ctx'] = StringInputSetContext(kwargs['ctx'])
+        return cls(**kwargs)
 
 class MemoryInputSet(BaseInputSet):
     def __init__(self, config: MemoryInputSetConfig) -> None:

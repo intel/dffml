@@ -28,7 +28,7 @@ from dffml.operation.db import (
     db_query_insert_or_update,
 )
 
-from tests.test_df import parse_line, add, mult
+from tests.test_df import parse_line, add, mult, is_add, is_mult
 
 # Source for _ProcQueue
 #https://stackoverflow.com/questions/24687061/can-i-somehow-share-an-asynchronous-queue-with-a-subprocess
@@ -93,9 +93,7 @@ class TestNatsOrchestratorSimple(NatsTestCase):
     async def test_run(self):
         server = self.server_addr
         test_operations = [
-            [parse_line.op,],
-            [add.op, mult.op],
-            [GetSingle.op],
+            [parse_line.op,add.op,mult.op],
         ]
 
         worker_nodes = [
@@ -112,7 +110,7 @@ class TestNatsOrchestratorSimple(NatsTestCase):
                     definition=GetSingle.op.inputs["spec"],
              )
             ]
-    
+
         orchestrator_node = NatsOrchestratorNode(
             NatsOrchestratorNodeConfig(
                 server=server,

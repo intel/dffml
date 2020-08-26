@@ -33,6 +33,7 @@ from ..df.memory import (
     MemoryParameterSet,
     MemoryParameterSetConfig,
     MemoryInputSet,
+    MemoryLockNetworkContext
 )
 from ..df.base import (
     BaseOrchestratorContext,
@@ -65,9 +66,9 @@ NBYTES_UID = 6
 
 class CircularQueue(Queue):
     def get(self):
-        v = super().get()
-        self.put(v)
-        return v
+        val = super().get()
+        self.put(val)
+        return val
 
 
 class NatsOrchestratorInputNetworkContext(MemoryInputNetworkContext):
@@ -76,11 +77,13 @@ class NatsOrchestratorInputNetworkContext(MemoryInputNetworkContext):
         self.input_uids = {} # maps uids to input
 
     async def add_input_set(self,msg):
+        self.logger.debug(f"Receiving new input set from worker")
         data = json.loads(msg.data.decode())
         # The exported input set contains ids in parent list.
         # Rebuild parent from ids using self.input_uids
         for item in data["inputs"]:
             item["parent"] = [ self.input_uids[parent_id] for parent_id in item["parent"]]
+        self.logger.debug(f"Received {data}")
         input_set = MemoryInputSet._fromdict(data)
         await self.add(input_set)
 
@@ -93,6 +96,7 @@ class NatsOrchestratorInputNetworkContext(MemoryInputNetworkContext):
     async def __aenter__(self):
         await super().__aenter__()
         # subscribe for new input sets
+        self.logger.debug(f"Subscribing to new input sets on {self.parent.uid}.NewInputSet")
         await self.parent.nc.subscribe(
             f"{self.parent.uid}.NewInputSet",
             queue = "InputSetQueue",
@@ -112,7 +116,8 @@ class NatsWorkerInputNetworkContext(MemoryInputNetworkContext):
         # now add will sent back the new inputs to the orchestrator
         # network from which it'll be redirected to the corresponding
         # worker node.
-        self.parent.nc.publish(
+        self.logger.debug(f"Adding new input_set to main network: {input_set}")
+        await self.parent.nc.publish(
             f"{self.parent.onid}.NewInputSet",
             json.dumps(input_set.export()).encode()
         )
@@ -135,6 +140,7 @@ class NatsOperationImplementationNetworkContext(
         self.logger.debug(
             f"Instantiating instance {instance_name} of operation {operation} with config {opconfig}"
         )
+        operation = operation._replace(instance_name = operation.name)
         await self.instantiate(operation, config=opconfig, opimp=opimp)
         await self.parent.nc.publish(
             f"InstanceAck.{instance_name}.{self.parent.onid}", b""
@@ -149,8 +155,14 @@ class NatsOperationImplementationNetworkContext(
         """
         Schedule the running of an operation
         """
-        self.logger.debug("[DISPATCH] %s", operation.instance_name)
+        self.logger.debug("[DISPATCH] %s", operation.name)
         # run_dipatch call ictx.add to add back results to the orchestrator network
+
+        # TODO
+        # this is just a patch
+        # find why instance name is None
+        operation = operation._replace(instance_name = operation.name)
+        
         task = asyncio.create_task(
             self.run_dispatch(wctx, operation, parameter_set)
         )
@@ -224,8 +236,6 @@ class NatsOrchestratorNodeConfig(NatsNodeConfig):
     )
 
 
-
-
 class NatsOrchestratorContext(MemoryOrchestratorContext):
     def __init__(self,config,parent:"NatsOrchestratorNodeContext"):
         super().__init__(config,parent)
@@ -255,7 +265,6 @@ class NatsOrchestratorContext(MemoryOrchestratorContext):
             ctxs.append(await self.seed_inputs(ctx=ctx))
         if len(input_sets) == 1 and isinstance(input_sets[0], dict):
             # Helper to quickly add inputs under string context
-
             for ctx_string, input_set in input_sets[0].items():
                 ctxs.append(
                     await self.seed_inputs(
@@ -320,7 +329,7 @@ class NatsOrchestratorContext(MemoryOrchestratorContext):
 
     async def dispatch(self,operation, parameter_set):
         instance_name = operation.instance_name
-        self.logger.debug(f"dispatching {parameter_set} to instance {instance_name}")
+        self.logger.debug(f"Dispatching {parameter_set} to instance {instance_name}")
         worker_id = self.parent.nodes_for_operation[operation.name].get()
         data = parameter_set.export()
         data = json.dumps(data).encode()
@@ -580,6 +589,11 @@ class NatsOrchestratorNodeContext(NatsNodeContext):
 
     async def init_context(self):
         self.dataflow = self.parent.config.dataflow
+        # Maps operations to circular queue which contains
+        # tokens of worker nodes allocated with different
+        # instances of an operation
+        self.nodes_for_operation = {}
+
         self.octx = await self._stack.enter_async_context(
             NatsOrchestratorContext(
                 MemoryOrchestratorContextConfig(
@@ -600,15 +614,24 @@ class NatsOrchestratorNodeContext(NatsNodeContext):
                 self
             )
         )
+        
+        self.output_operations = set()
         for instance_name,operation in self.dataflow.operations.items():
             if operation.stage == Stage.OUTPUT:
+                self.output_operations.add(operation.name)
                 opimp = self.parent.config.implementations.get(operation.name, None)
                 opconfig = self.parent.config.configs.get(instance_name, {})
                 self.logger.debug(
                     f"Instantiating instance {instance_name} of operation {operation} with config {opconfig}"
                 )
-                await self.opimpctx.instantiate(operation, config=opconfig, opimp=opimp)
+                await self.opimpctx.instantiate(
+                        operation._replace(instance_name = operation.name),
+                        config=opconfig,
+                        opimp=opimp)
 
+                # Add operation to node_for_operation, so that the check for
+                # availability of all operations passes
+                self.nodes_for_operation[operation.name] = None
 
         self.logger.debug("Initializing new orchestrator node context")
         # Orchestrator node announces that it has started
@@ -622,10 +645,7 @@ class NatsOrchestratorNodeContext(NatsNodeContext):
             for operation in self.dataflow.operations.values()
         ]
 
-        # Maps operations to circular queue which contains
-        # tokens of worker nodes allocated with different
-        # instances of an operation
-        self.nodes_for_operation = {}
+
 
         await self.nc.subscribe(
             f"{RegisterWorkerNode}.{self.uid}.*", # * contains uid of worker node
@@ -646,6 +666,7 @@ class NatsOrchestratorNodeContext(NatsNodeContext):
                 self.nodes_for_operation[operation.name].get(),
             )
             for instance_name, operation in self.dataflow.operations.items()
+            if operation.name not in self.output_operations
         }
         self.logger.debug(
             f"Token allocated for instances {self.node_token_managing_instance}"
@@ -767,8 +788,9 @@ class NatsWorkerNodeContext(NatsNodeContext):
         instance_name = data["instance_name"]
         config = data["config"]
 
-        op_for_instance = self.operation_names[operation_name]._replace(
-            instance_name=instance_name
+        operation = self.operation_names[operation_name]
+        op_for_instance = operation._replace(
+            instance_name=operation.name
         )
         self.operation_instances[instance_name] = op_for_instance
         if config:
@@ -787,7 +809,6 @@ class NatsWorkerNodeContext(NatsNodeContext):
             )
 
         # listen to operation run command
-
         await self.nc.subscribe(
             f"{self.uid}.RunOperationParameterSet",
             queue=f"RunOperationParameterSetQueue",
@@ -860,6 +881,9 @@ class NatsWorkerNodeContext(NatsNodeContext):
             NatsWorkerInputNetworkContext(BaseConfig(),self)
         )
         self.logger.debug(f"New worker input context")
+        self.lctx = await self._stack.enter_async_context(
+            MemoryLockNetworkContext(BaseConfig(),self)
+        )
 
 
         # Subscribe to instance details.
