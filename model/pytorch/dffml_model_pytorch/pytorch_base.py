@@ -29,7 +29,7 @@ class PyTorchModelConfig:
     )
     clstype: Type = field("Data type of classifications values", default=str)
     imageSize: int = field(
-        "Common size for all images to resize and crop to", default=224
+        "Common size for all images to resize and crop to", default=None
     )
     enableGPU: bool = field("Utilize GPUs for processing", default=False)
     epochs: int = field(
@@ -49,6 +49,12 @@ class PyTorchModelConfig:
     )
     optimizer: str = field(
         "Optimizer Algorithms available in PyTorch", default="SGD"
+    )
+    normalize_mean: List[float] = field(
+        "Mean values for normalizing Tensor image", default=None
+    )
+    normalize_std: List[float] = field(
+        "Standard Deviation values for normalizing Tensor image", default=None
     )
 
     def __post_init__(self):
