@@ -60,33 +60,30 @@ model = PyTorchNeuralNetwork(
     predict=Feature("label", int, 1),
     directory="rps_model",
     network=RockPaperScissorsModel,
-    epochs=1,
+    epochs=10,
     batch_size=32,
     imageSize=150,
     validation_split=0.2,
     loss=Loss,
     optimizer="Adam",
     enableGPU=True,
+    patience=2,
 )
 
 # Define source for training image dataset
 train_source = DirectorySource(
-    foldername="/home/sakshamarora1001/rps",
-    feature="image",
-    labels=["rock", "paper", "scissors"],
+    foldername="rps", feature="image", labels=["rock", "paper", "scissors"],
 )
 
 # Define source for testing image dataset
 test_source = DirectorySource(
-    foldername="/home/sakshamarora1001/rps-test-set",
+    foldername="rps-test-set",
     feature="image",
     labels=["rock", "paper", "scissors"],
 )
 
 # Define source for prediction image dataset
-predict_source = DirectorySource(
-    foldername="/home/sakshamarora1001/rps-predict", feature="image",
-)
+predict_source = DirectorySource(foldername="rps-predict", feature="image",)
 
 
 async def main():
@@ -95,11 +92,11 @@ async def main():
     # Train the model
     await train(model, train_source)
 
-    logging.getLogger().setLevel(logging.INFO)
+    logging.getLogger().setLevel(logging.CRITICAL)
 
     # Assess the accuracy
     acc = await accuracy(model, test_source)
-    print("Accuracy: ", acc)
+    print("\nTesting Accuracy: ", acc)
 
     # Make Predictions
     print(

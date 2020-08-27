@@ -9,10 +9,11 @@ dffml train \
   -model-loss crossentropyloss \
   -model-optimizer Adam \
   -model-validation_split 0.2 \
-  -model-epochs 1 \
+  -model-epochs 10 \
   -model-batch_size 32 \
   -model-imageSize 150 \
   -model-enableGPU \
+  -model-patience 2 \
   -sources f=dir \
     -source-foldername rps \
     -source-feature image \
