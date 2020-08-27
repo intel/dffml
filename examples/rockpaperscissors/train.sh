@@ -1,0 +1,20 @@
+dffml train \
+  -model pytorchnet \
+  -model-features image:int:$((300*300*3)) \
+  -model-clstype str \
+  -model-classifications rock paper scissors \
+  -model-predict label:int:1 \
+  -model-network @model.yaml \
+  -model-directory rps_model \
+  -model-loss crossentropyloss \
+  -model-optimizer Adam \
+  -model-validation_split 0.2 \
+  -model-epochs 1 \
+  -model-batch_size 32 \
+  -model-imageSize 150 \
+  -model-enableGPU \
+  -sources f=dir \
+    -source-foldername rps \
+    -source-feature image \
+    -source-labels rock paper scissors \
+  -log debug
