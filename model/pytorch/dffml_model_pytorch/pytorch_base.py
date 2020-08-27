@@ -16,7 +16,7 @@ from dffml.base import config, field
 from dffml.feature.feature import Feature, Features
 from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelContext, ModelNotTrained
-from .utils.utils import NumpyToTensor, PyTorchLoss, CrossEntropyLossFunction
+from .utils import NumpyToTensor, PyTorchLoss, CrossEntropyLossFunction
 
 
 @config
@@ -206,7 +206,7 @@ class PyTorchModelContext(ModelContext):
                 )
             )
             self.logger.info(
-                "Data split into Traning samples: {} and Validation samples: {}".format(
+                "Data split into Training samples: {} and Validation samples: {}".format(
                     size["Training"], size["Validation"]
                 )
             )
@@ -279,7 +279,7 @@ class PyTorchModelContext(ModelContext):
                 )
 
                 if phase == "Validation":
-                    if epoch_acc >= best_acc:
+                    if epoch_acc > best_acc:
                         best_acc = epoch_acc
                         best_model_wts = copy.deepcopy(
                             self._model.state_dict()

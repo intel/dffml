@@ -6,7 +6,7 @@ from dffml.util.entrypoint import entrypoint
 from dffml.model.model import Model
 from dffml.base import config, field
 from .pytorch_base import PyTorchModelConfig, PyTorchModelContext
-from .utils.utils import create_layer
+from .utils import create_layer
 
 
 class LayersNotFound(Exception):
