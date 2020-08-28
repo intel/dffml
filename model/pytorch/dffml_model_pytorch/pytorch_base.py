@@ -58,14 +58,18 @@ class PyTorchModelConfig:
     )
 
     def __post_init__(self):
-        self.classifications = list(map(self.clstype, self.classifications))
+        if self.classifications is not None:
+            self.classifications = list(
+                map(self.clstype, self.classifications)
+            )
 
 
 class PyTorchModelContext(ModelContext):
     def __init__(self, parent):
         super().__init__(parent)
-        self.cids = self._mkcids(self.parent.config.classifications)
-        self.classifications = self._classifications(self.cids)
+        if self.parent.config.classifications:
+            self.cids = self._mkcids(self.parent.config.classifications)
+            self.classifications = self._classifications(self.cids)
         self.features = self._applicable_features()
         self.model_path = self._model_path()
         self._model = None
@@ -112,10 +116,6 @@ class PyTorchModelContext(ModelContext):
         )
         return classifications
 
-    @property
-    def classification(self):
-        return self.parent.config.predict.name
-
     def _applicable_features(self):
         return [name for name in self.parent.config.features.names()]
 
@@ -147,17 +147,18 @@ class PyTorchModelContext(ModelContext):
         y_cols = []
         all_records = []
         all_sources = sources.with_features(
-            self.features + [self.classification]
+            self.features + [self.parent.config.predict.name]
         )
 
         async for record in all_sources:
-            if record.feature(self.classification) in self.classifications:
-                all_records.append(record)
-        for record in all_records:
             for feature, results in record.features(self.features).items():
                 x_cols[feature].append(np.array(results))
             y_cols.append(
-                self.classifications[record.feature(self.classification)]
+                self.classifications[
+                    record.feature(self.parent.config.predict.name)
+                ]
+                if self.classifications
+                else record.feature(self.parent.config.predict.name)
             )
         if (len(self.features)) > 1:
             self.logger.critical(
@@ -168,7 +169,7 @@ class PyTorchModelContext(ModelContext):
 
         y_cols = np.array(y_cols)
         for feature in x_cols:
-            x_cols[feature] = np.array(x_cols[feature], dtype=object)
+            x_cols[feature] = np.array(x_cols[feature])
 
         self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
@@ -265,7 +266,8 @@ class PyTorchModelContext(ModelContext):
 
                     with torch.set_grad_enabled(phase == "Training"):
                         outputs = self._model(inputs)
-                        _, preds = torch.max(outputs, 1)
+                        if self.classifications:
+                            _, preds = torch.max(outputs, 1)
                         loss = self.criterion(outputs, labels)
 
                         if phase == "Training":
@@ -273,13 +275,18 @@ class PyTorchModelContext(ModelContext):
                             self.optimizer.step()
 
                     running_loss += loss.item() * inputs.size(0)
-                    running_corrects += torch.sum(preds == labels.data)
+                    if self.classifications:
+                        running_corrects += torch.sum(preds == labels.data)
 
                 if phase == "Training":
                     self.exp_lr_scheduler.step()
 
                 epoch_loss = running_loss / size[phase]
-                epoch_acc = running_corrects.double() / size[phase]
+                epoch_acc = (
+                    running_corrects.double() / size[phase]
+                    if self.classifications
+                    else 1.0 - epoch_loss
+                )
 
                 self.logger.debug(
                     "{} Loss: {:.4f} Acc: {:.4f}".format(
@@ -288,7 +295,7 @@ class PyTorchModelContext(ModelContext):
                 )
 
                 if phase == "Validation":
-                    if epoch_acc > best_acc:
+                    if epoch_acc >= best_acc:
                         best_acc = epoch_acc
                         best_model_wts = copy.deepcopy(
                             self._model.state_dict()
@@ -296,12 +303,15 @@ class PyTorchModelContext(ModelContext):
                         self.counter = 0
                     else:
                         self.counter += 1
+                    if best_acc == 1.0:
+                        self.counter = self.parent.config.patience
 
             self.logger.debug("")
 
             if self.counter == self.parent.config.patience:
                 self.logger.info(
-                    f"Early stopping: Validation Loss didn't improve for {self.counter} consecutive epochs."
+                    f"Early stopping: Validation Loss didn't improve for {self.counter} "
+                    + "consecutive epochs OR maximum accuracy attained."
                 )
                 break
 
@@ -333,18 +343,35 @@ class PyTorchModelContext(ModelContext):
         )
 
         self._model.eval()
-        running_corrects = 0
 
-        for inputs, labels in dataloader:
-            inputs = inputs.to(inputs)
-            labels = labels.to(inputs)
+        if self.classifications:
+            running_corrects = 0
 
-            with torch.set_grad_enabled(False):
-                outputs = self._model(inputs)
-                _, preds = torch.max(outputs, 1)
+            for inputs, labels in dataloader:
+                inputs = inputs.to(inputs)
+                labels = labels.to(inputs)
 
-            running_corrects += torch.sum(preds == labels.data)
-            acc = running_corrects.double() / size
+                with torch.set_grad_enabled(False):
+                    outputs = self._model(inputs)
+                    _, preds = torch.max(outputs, 1)
+
+                running_corrects += torch.sum(preds == labels.data)
+                acc = running_corrects.double() / size
+        else:
+            running_loss = 0.0
+
+            for inputs, labels in dataloader:
+                inputs = inputs.to(inputs)
+                labels = labels.to(inputs)
+
+                with torch.set_grad_enabled(False):
+                    outputs = self._model(inputs)
+                    loss = self.criterion(inputs, outputs)
+
+                running_loss += loss.item() * inputs.size(0)
+
+            total_loss = running_loss / size
+            acc = 1.0 - total_loss
 
         return Accuracy(acc)
 
@@ -366,12 +393,18 @@ class PyTorchModelContext(ModelContext):
             with torch.no_grad():
                 for val in predict:
                     val = val.to(self.device)
+                    output = self._model(val)
 
-                    outputs = self._model(val)
-                    prob = torch.nn.functional.softmax(outputs, dim=1)
-                    confidence, prediction_value = prob.topk(1, dim=1)
-                    record.predicted(
-                        target, self.cids[prediction_value.item()], confidence,
-                    )
+                    if self.classifications:
+                        prob = torch.nn.functional.softmax(output, dim=1)
+                        confidence, prediction_value = prob.topk(1, dim=1)
+                        record.predicted(
+                            target,
+                            self.cids[prediction_value.item()],
+                            confidence,
+                        )
+                    else:
+                        confidence = 1.0 - self.criterion(val, output).item()
+                        record.predicted(target, output, confidence)
 
             yield record

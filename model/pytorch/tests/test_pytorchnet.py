@@ -120,16 +120,23 @@ class TestPyTorchNeuralNetwork(IntegrationCLITestCase):
         "predictdir",
         "375457bb95771ffeace2beedab877292d232f31e76502618d25e0d92a3e029d386429f52c771b05ae1c7229d2f5ecc29",
     )
-    async def test_00_predict(self, predictdir):
+    async def test_02_predict(self, predictdir):
         target = self.model.config.predict.name
         predict_value = 0
         async for key, features, prediction in predict(
             self.model,
             DirectorySource(foldername=str(predictdir), feature="image",),
         ):
-            predict_value = prediction[target]["value"]
+            pred = prediction
             break
-        self.assertIn(predict_value, self.model.config.classifications)
+
+        self.assertTrue(pred)
+        self.assertTrue(pred[target])
+        results = pred[target]
+        self.assertIn("value", results)
+        self.assertIn("confidence", results)
+        self.assertIn(results["value"], self.model.config.classifications)
+        self.assertTrue(results["confidence"])
 
     @cached_download_unpack_archive(
         "https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps.zip",
