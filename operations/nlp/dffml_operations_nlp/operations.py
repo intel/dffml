@@ -1,6 +1,8 @@
-from typing import List
+import asyncio
+from typing import List, Dict, Any
 
 import spacy
+import numpy as np
 from spacy.lang.en import English
 from spacy.lang.en.stop_words import STOP_WORDS
 from sklearn.feature_extraction.text import (
@@ -8,7 +10,12 @@ from sklearn.feature_extraction.text import (
     TfidfVectorizer,
 )
 
-from dffml.df.base import op
+from dffml.df.base import (
+    op,
+    Operation,
+    OperationImplementation,
+    OperationImplementationContext,
+)
 from dffml.df.types import Definition
 
 
@@ -41,6 +48,7 @@ async def remove_stopwords(
     -------
     result: A string without stop words.
     """
+    all_text = []
     all_tokens = []
     clean_tokens = []
 
@@ -263,6 +271,28 @@ async def count_vectorizer(
     return [X, names]
 
 
+collected_data = Definition(name="collected_data", primitive="List[str]")
+data_received = Definition(name="data_received", primitive="bool")
+
+
+@op(
+    inputs={"data": collected_data}, outputs={"status": data_received},
+)
+def get_status_collected_data(data):
+    return {"status": True}
+
+
+data_example = Definition(name="data_example", primitive="str")
+
+
+@op(
+    inputs={"data": data_example}, outputs={"all_data": collected_data},
+)
+def collect_data(data_example):
+
+    return {"status": True}
+
+
 @op
 async def tfidf_vectorizer(
     text: List[str],
@@ -330,10 +360,18 @@ async def tfidf_vectorizer(
     )
 
     names = None
-    X = vectorizer.fit_transform(text).toarray()
+    text_list = []
+    if type(text) != type(list()):
+        text_list.append(text)
+    else:
+        text_list = text
+    X = vectorizer.fit_transform(text_list).toarray()
+    if X.shape[0] == 1:
+        X = np.ravel(X)
     if get_feature_names:
         names = vectorizer.get_feature_names()
-    return [X, names]
+        return X, names
+    return X
 
 
 # Definitions
@@ -402,3 +440,81 @@ async def get_embedding(
     for token in tokens:
         embedding.append(token.vector)
     return {"embedding": embedding}
+
+
+collect_output = Operation(
+    name="collect_output",
+    inputs={
+        "sentence": Definition("sentence", "string"),
+        "length": Definition("source_length", "string"),
+    },
+    outputs={"all": Definition("all_sentences", "List[string]")},
+    conditions=[],
+)
+
+
+class CollectOutputContext(OperationImplementationContext):
+    async def run(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
+
+        async with self.parent.lock:
+            if self.parent.length is None:
+                self.parent.length = inputs["length"]
+            self.parent.list.append(inputs["sentence"])
+
+            if len(self.parent.list) == self.parent.length:
+                self.parent.event.set()
+
+        await self.parent.event.wait()
+
+        return {"all": self.parent.list}
+
+
+class CollectOutput(OperationImplementation):
+
+    op = collect_output
+    CONTEXT = CollectOutputContext
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.lock = None
+        self.length = None
+        self.event = None
+        self.list = []
+
+    async def __aenter__(self) -> "OperationImplementationContext":
+        self.lock = asyncio.Lock()
+        self.event = asyncio.Event()
+        return self
+
+    async def __aexit__(self, exc_type, exc_value, traceback):
+        self.lock = None
+
+
+@op
+async def extract_array_from_matrix(
+    single_text_example: str,
+    collected_text: List[str],
+    input_matrix: List[float],
+) -> List[float]:
+    """
+    Returns row from `input_matrix` based on index of `single_text_example` 
+    in `collected_text`.
+
+    Parameters
+    ----------
+    single_text_example : str
+        String to be used for indexing into `collected_text`.
+
+    collected_text: list
+        List of strings.
+
+    input_matrix: list
+        A 2-D matrix where each row represents vector corresponding
+        to `single_text_example`.
+
+    Returns
+    -------
+    result: A 1-d array.
+    """
+    idx = collected_text.index(single_text_example)
+    return input_matrix[idx, :]

@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Example usage of sklearn operations
 - Example Flower17 species image classification
 - Configloading ablity from CLI using "@" before filename
 - Docstrings and doctestable example for DataFlowSource
