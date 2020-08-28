@@ -115,11 +115,11 @@ class TestDataFlowSource(AsyncTestCase):
         )
 
     async def test_records(self):
-        records = []
+        records = {}
         async with self.setUpSource() as source:
             async with source() as dfsctx:
                 async for record in dfsctx.records():
-                    records.append(record)
+                    records[int(record.key)] = record
         for i, record in enumerate(NEW_RECORDS):
             with self.subTest(i=i):
                 self.assertDictEqual(record.features(), records[i].features())

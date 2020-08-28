@@ -1,7 +1,11 @@
 Using NLP Operations
 ====================
 
-This example will show you how to use DFFML operations to clean text data and train a model using DFFML cli.
+These example will show you how to use DFFML operations to clean text data and train Tensorflow DNNClassifier model and Scikit Learn
+Naive Bayes Classifier model using DFFML cli.
+
+Preprocessing data and training DNNClassifier model
+---------------------------------------------------
 
 DFFML offers several :ref:`plugin_models`. For this example
 we will be using the tensorflow DNNClassifier model
@@ -93,3 +97,119 @@ The output is:
     +------------------------------------------------------------------------------------------------------------------------------+
     |           Value:  1           |                               Confidence:   0.5122595429420471                               |
     +------------------------------------------------------------------------------------------------------------------------------+
+
+    
+Preprocessing data and training Naive Bayes Classifier model
+------------------------------------------------------------
+
+Now we will see how to use traditional ML algorithm like Naive Bayes Classifier available in ``dffml-model-scikit`` (:ref:`plugin_model_dffml_model_scikit`) for
+classification.
+
+Create training data:
+
+.. literalinclude:: /../examples/nlp/train_data.sh
+
+But before we feed the data to model we need to convert it to vectors of numeric values.
+Here we will use ``tfidf_vectorizer`` operation (:ref:`plugin_operation_dffml_operations_nlp_tfidf_vectorizer`) which is a wrapper around
+sklearn `TfidfVectorizer. <https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html>`_
+
+The dataflow will be similar to the one used above but with a slight modification. We will add an extra operation
+``collect_output`` (:ref:`plugin_operation_dffml_operations_nlp_collect_output`) which will collect all the records before
+forwarding them to next operation. This is to ensure that `tfidf_vectorizer` receives a list of sentence rather than a single
+sentence at a time. 
+The matrix returned by `tfidf_vectorizer` will be passed to ``extract_array_from_matrix`` (:ref:`plugin_operation_dffml_operations_nlp_extract_array_from_matrix`)
+which will return the array corresponding to each sentence.
+
+So, Let's modify the dataflow to use our new operations.
+
+.. literalinclude:: /../examples/nlp/sklearn/create_dataflow.sh
+
+To visualize the dataflow run:
+
+.. literalinclude:: /../examples/nlp/sklearn/dataflow_diagram.sh
+
+We can now use this dataflow to preprocess the data and make it ready to be fed into model:
+
+.. literalinclude:: /../examples/nlp/sklearn/train.sh
+
+Assess accuracy:
+
+.. literalinclude:: /../examples/nlp/sklearn/accuracy.sh
+
+The output is:
+
+.. code-block:: console
+
+    1.0
+
+Create test data:
+
+.. literalinclude:: /../examples/nlp/sklearn/test_data.sh
+
+Make prediction on test data:
+
+.. literalinclude:: /../examples/nlp/sklearn/predict.sh
+
+The output is:
+
+.. code-block:: console
+
+            Key:	1
+                                            Record Features
+    +------------------------------------------------------------------------------------------------+
+    |        sentence        |                          Those were good days                         |
+    +------------------------------------------------------------------------------------------------+
+    |extract_array_from_matri|             0.0, 0.0, 0.7071067811865476, 0 ... (length:9)            |
+    +------------------------------------------------------------------------------------------------+
+
+                                            Prediction
+    +------------------------------------------------------------------------------------------------+
+    |                                           sentiment                                            |
+    +------------------------------------------------------------------------------------------------+
+    |       Value:  1        |                           Confidence:   1.0                           |
+    +------------------------------------------------------------------------------------------------+
+
+        Key:	2
+                                            Record Features
+    +------------------------------------------------------------------------------------------------+
+    |        sentence        |                          My cat plays all day                         |
+    +------------------------------------------------------------------------------------------------+
+    |extract_array_from_matri|             0.5773502691896257, 0.577350269 ... (length:9)            |
+    +------------------------------------------------------------------------------------------------+
+
+                                            Prediction
+    +------------------------------------------------------------------------------------------------+
+    |                                           sentiment                                            |
+    +------------------------------------------------------------------------------------------------+
+    |       Value:  0        |                           Confidence:   1.0                           |
+    +------------------------------------------------------------------------------------------------+
+
+        Key:	0
+                                            Record Features
+    +------------------------------------------------------------------------------------------------+
+    |        sentence        |                        Such a pleasant morning                        |
+    +------------------------------------------------------------------------------------------------+
+    |extract_array_from_matri|             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0 ... (length:9)            |
+    +------------------------------------------------------------------------------------------------+
+
+                                            Prediction
+    +------------------------------------------------------------------------------------------------+
+    |                                           sentiment                                            |
+    +------------------------------------------------------------------------------------------------+
+    |       Value:  1        |                           Confidence:   1.0                           |
+    +------------------------------------------------------------------------------------------------+
+
+        Key:	3
+                                            Record Features
+    +------------------------------------------------------------------------------------------------+
+    |        sentence        |                             Dogs are evil                             |
+    +------------------------------------------------------------------------------------------------+
+    |extract_array_from_matri|             0.0, 0.0, 0.0, 0.70710678118654 ... (length:9)            |
+    +------------------------------------------------------------------------------------------------+
+
+                                            Prediction
+    +------------------------------------------------------------------------------------------------+
+    |                                           sentiment                                            |
+    +------------------------------------------------------------------------------------------------+
+    |       Value:  0        |                           Confidence:   1.0                           |
+    +------------------------------------------------------------------------------------------------+

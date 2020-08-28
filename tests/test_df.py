@@ -145,6 +145,10 @@ class TestMemoryOperationImplementationNetwork(AsyncTestCase):
                     await ctx.run(None, None, add.op, {"numbers": [40, 2]})
 
 
+class CustomInputSetContext(StringInputSetContext):
+    pass
+
+
 class TestOrchestrator(AsyncTestCase):
     """
     create_octx and run exist so that we can subclass from them in
@@ -163,10 +167,26 @@ class TestOrchestrator(AsyncTestCase):
     async def test_run(self):
         calc_strings_check = {"add 40 and 2": 42, "multiply 42 and 10": 420}
         # TODO(p0) Implement and test asyncgenerator
-        callstyles_no_expand = ["asyncgenerator", "dict"]
+        callstyles_no_expand = [
+            "asyncgenerator",
+            "dict",
+            "dict_custom_input_set_context",
+        ]
         callstyles = {
             "dict": {
                 to_calc: [
+                    Input(
+                        value=to_calc, definition=parse_line.op.inputs["line"]
+                    ),
+                    Input(
+                        value=[add.op.outputs["sum"].name],
+                        definition=GetSingle.op.inputs["spec"],
+                    ),
+                ]
+                for to_calc in calc_strings_check.keys()
+            },
+            "dict_custom_input_set_context": {
+                CustomInputSetContext(to_calc): [
                     Input(
                         value=to_calc, definition=parse_line.op.inputs["line"]
                     ),
@@ -228,6 +248,10 @@ class TestOrchestrator(AsyncTestCase):
                                 ),
                             )
                         else:
+                            if callstyle == "dict_custom_input_set_context":
+                                self.assertTrue(
+                                    isinstance(ctx, CustomInputSetContext)
+                                )
                             self.assertEqual(
                                 calc_strings_check[ctx_str],
                                 results[add.op.outputs["sum"].name],
