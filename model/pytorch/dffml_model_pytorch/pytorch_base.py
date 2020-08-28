@@ -168,7 +168,7 @@ class PyTorchModelContext(ModelContext):
 
         y_cols = np.array(y_cols)
         for feature in x_cols:
-            x_cols[feature] = np.array(x_cols[feature])
+            x_cols[feature] = np.array(x_cols[feature], dtype=object)
 
         self.logger.info("------ Record Data ------")
         self.logger.info("x_cols:    %d", len(list(x_cols.values())[0]))
@@ -177,13 +177,22 @@ class PyTorchModelContext(ModelContext):
 
         x_cols = x_cols[self.features[0]]
         dataset = NumpyToTensor(
-            x_cols, y_cols, size=self.parent.config.imageSize
+            x_cols,
+            y_cols,
+            size=self.parent.config.imageSize,
+            norm_mean=self.parent.config.normalize_mean,
+            norm_std=self.parent.config.normalize_std,
         )
 
         return dataset, len(dataset)
 
     async def prediction_data_generator(self, data):
-        dataset = NumpyToTensor([data], size=self.parent.config.imageSize)
+        dataset = NumpyToTensor(
+            [data],
+            size=self.parent.config.imageSize,
+            norm_mean=self.parent.config.normalize_mean,
+            norm_std=self.parent.config.normalize_std,
+        )
         dataloader = torch.utils.data.DataLoader(dataset)
         return dataloader
 

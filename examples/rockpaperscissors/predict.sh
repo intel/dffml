@@ -7,6 +7,7 @@ dffml predict all \
   -model-network @model.yaml \
   -model-directory rps_model \
   -model-imageSize 150 \
+  -model-enableGPU \
   -sources f=dir \
     -source-foldername rps-predict \
     -source-feature image \

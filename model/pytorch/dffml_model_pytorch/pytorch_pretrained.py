@@ -59,14 +59,17 @@ class PyTorchPretrainedContext(PyTorchModelContext):
             param.require_grad = self.parent.config.trainable
 
         if self.parent.config.add_layers:
-            layers = []
-            for key, value in self.parent.config.layers.items():
-                layers.append(create_layer(value))
+            layers = [
+                create_layer(value)
+                for key, value in self.parent.config.layers.items()
+            ]
 
             if self.parent.LAST_LAYER_TYPE == "classifier_sequential":
-                features = list(model.classifier.children())[:-1]
-                features.extend(layers)
-                model.classifier = nn.Sequential(*features)
+                if len(layers) > 1:
+                    layers = [nn.Sequential(*layers)]
+                model.classifier = nn.Sequential(
+                    *list(model.classifier.children())[:-1] + layers
+                )
             elif self.parent.LAST_LAYER_TYPE == "classifier_linear":
                 if len(layers) == 1:
                     model.classifier = layers[0]

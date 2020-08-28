@@ -36,18 +36,13 @@ def create_layer(layer_dict):
 
 class NumpyToTensor(Dataset):
     def __init__(
-        self,
-        data,
-        target=None,
-        size=None,
-        normalizing_mean=None,
-        normalizing_std=None,
+        self, data, target=None, size=None, norm_mean=None, norm_std=None,
     ):
         self.data = data
         self.target = target
         self.size = size
-        self.mean = normalizing_mean
-        self.std = normalizing_std
+        self.mean = norm_mean
+        self.std = norm_std
 
     def transform(self, data):
         transform = []

@@ -7,6 +7,7 @@ dffml accuracy \
   -model-network @model.yaml \
   -model-directory rps_model \
   -model-imageSize 150 \
+  -model-enableGPU \
   -sources f=dir \
     -source-foldername rps-test-set \
     -source-feature image \
