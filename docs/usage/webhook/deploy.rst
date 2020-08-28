@@ -13,11 +13,11 @@ we'll setup another HTTP service which waits on GitHub webhooks to rebuilt and d
     `examples/ffmpeg <https://github.com/intel/dffml/blob/master/examples/ffmpeg/>`_
     directory of the DFFML source code.
 
-We'll be using additional plugins from dffml, ``dffml-yaml-config`` and ``dffml-http-service``.
+We'll be using additional plugins from dffml, ``dffml-config-yaml`` and ``dffml-http-service``.
 
 .. code-block:: console
 
-    $ pip install dffml-yaml-config dffml-http-service
+    $ pip install dffml-config-yaml dffml-http-service
 
 Writing the function
 --------------------
