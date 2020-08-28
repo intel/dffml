@@ -13,10 +13,8 @@ model = DAAL4PyLRModel(
 train(model, "train.csv")
 
 # Assess accuracy (alternate way of specifying data source)
-mse_accuracy = MeanSquaredErrorAccuracy()
-print(
-    "Accuracy:", accuracy(model, mse_accuracy, CSVSource(filename="test.csv"))
-)
+scorer = MeanSquaredErrorAccuracy()
+print("Accuracy:", accuracy(model, scorer, CSVSource(filename="test.csv")))
 
 # Make prediction
 for i, features, prediction in predict(model, {"f1": 0.8, "ans": 0}):
