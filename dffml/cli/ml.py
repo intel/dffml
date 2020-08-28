@@ -53,19 +53,21 @@ class Train(MLCMD):
 class Accuracy(MLCMD):
     """Assess model accuracy on data from given sources"""
 
-    CONFIG = MLCMDConfig
+    CONFIG = AccuracyCMDConfig
 
     async def run(self):
-        return await accuracy(self.model, self.accuracy_scorer, self.sources)
+        return await accuracy(self.model, self.scorer, self.sources)
 
 
 @config
 class PredictAllConfig(MLCMDConfig):
     update: bool = field(
-        "Update record with sources", default=False,
+        "Update record with sources",
+        default=False,
     )
     pretty: bool = field(
-        "Outputs data in tabular form", default=False,
+        "Outputs data in tabular form",
+        default=False,
     )
 
 
