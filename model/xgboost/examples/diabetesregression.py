@@ -38,20 +38,21 @@ model = XGBRegressorModel(
 train(model, *[{"data": x, "target": y} for x, y in zip(trainX, trainy)])
 
 # Assess accuracy
-mse_accuracy = MeanSquaredErrorAccuracy()
+scorer = MeanSquaredErrorAccuracy()
 print(
     "Test accuracy:",
     accuracy(
         model,
-        mse_accuracy,
+        scorer,
         *[{"data": x, "target": y} for x, y in zip(testX, testy)],
     ),
 )
+
 print(
     "Training accuracy:",
     accuracy(
         model,
-        mse_accuracy,
+        scorer,
         *[{"data": x, "target": y} for x, y in zip(trainX, trainy)],
     ),
 )
