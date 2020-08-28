@@ -74,9 +74,9 @@ class TestXGBRegressor(AsyncTestCase):
         await train(self.model, self.trainingsource)
 
     async def test_01_accuracy(self):
-        mse_accuracy = MeanSquaredErrorAccuracy()
+        scorer = MeanSquaredErrorAccuracy()
         # Use the test data to assess the model's accuracy
-        res = await accuracy(self.model, mse_accuracy, self.testsource)
+        res = await accuracy(self.model, scorer, self.testsource)
         # Ensure the accuracy is above 80%
         self.assertTrue(res)
 
