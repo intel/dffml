@@ -1,6 +1,8 @@
-from ..source.source import SubsetSources
+from ..model.model import Model
+from ..source.source import Sources, SubsetSources
 from ..util.cli.cmd import CMD, CMDOutputOverride
 from ..high_level import train, predict, accuracy
+from ..util.config.fields import FIELD_SOURCES
 from ..util.cli.cmds import (
     SourcesCMD,
     ModelCMD,
@@ -19,10 +21,10 @@ class MLCMDConfig(SourcesCMDConfig, ModelCMDConfig):
 
 
 @config
-class AccuracyCMDConfig(MLCMDConfig):
-    scorer: AccuracyScorer = field(
-        "Method to use to score accuracy",
-    )
+class AccuracyCMDConfig:
+    model: Model = field("Model used for ML")
+    scorer: AccuracyScorer = field("Method to use to score accuracy")
+    sources: Sources = FIELD_SOURCES
 
 
 class MLCMD(SourcesCMD, ModelCMD):
@@ -60,12 +62,10 @@ class Accuracy(MLCMD):
 @config
 class PredictAllConfig(MLCMDConfig):
     update: bool = field(
-        "Update record with sources",
-        default=False,
+        "Update record with sources", default=False,
     )
     pretty: bool = field(
-        "Outputs data in tabular form",
-        default=False,
+        "Outputs data in tabular form", default=False,
     )
 
 
