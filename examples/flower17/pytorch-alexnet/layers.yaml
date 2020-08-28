@@ -1,0 +1,16 @@
+linear1:
+  name: Linear
+  in_features: 4096
+  out_features: 256
+relu:
+  name: ReLU
+dropout:
+  name: Dropout
+  p: 0.2
+linear2:
+  name: Linear
+  in_features: 256
+  out_features: 17
+logsoftmax:
+  name: LogSoftmax
+  dim: 1

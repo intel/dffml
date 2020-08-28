@@ -62,10 +62,20 @@ class TestFLOWER17(IntegrationCLITestCase):
 
     async def test_shell_pytorch(self):
         with directory_with_data_files() as tempdir:
-            # Run training
-            subprocess.check_output(
-                ["bash", sh_filepath("pytorch-alexnet/train.sh")]
+            shutil.copy(
+                sh_filepath("pytorch-alexnet/layers.yaml"),
+                os.path.join(os.getcwd(), "layers.yaml"),
             )
+
+            # Run training
+            with open(sh_filepath("pytorch-alexnet/train.sh"), "r") as cmd:
+                cmd = cmd.read()
+                cmd = cmd.replace("\n", "")
+                cmd = cmd.replace("\\", "")
+                cmd = shlex.split(cmd)
+                cmd[cmd.index("-model-epochs") + 1] = "1"
+            await CLI.cli(*cmd[1:])
+
             # Check the Accuracy
             stdout = subprocess.check_output(
                 ["bash", sh_filepath("pytorch-alexnet/accuracy.sh")]
@@ -79,8 +89,7 @@ class TestFLOWER17(IntegrationCLITestCase):
                 cmd = cmd.replace("\\", "")
                 cmd = shlex.split(cmd)
                 # When passing to CLI, remove first argument(dffml) and -pretty at the end
-                cmd = cmd[1:-1]
-                records = await CLI.cli(*cmd)
+                records = await CLI.cli(*cmd[1:-1])
 
                 # Check the label for 1 record
                 self.assertIsInstance(
