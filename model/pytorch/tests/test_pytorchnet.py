@@ -1,6 +1,7 @@
 import torch.nn as nn
 import os
 import shutil
+import tempfile
 
 from dffml.cli.cli import CLI
 from dffml.util.net import cached_download_unpack_archive
@@ -60,11 +61,12 @@ class TestPyTorchNeuralNetwork(IntegrationCLITestCase):
 
     @classmethod
     def setUpClass(cls):
+        cls.model_dir = tempfile.TemporaryDirectory()
         cls.model = PyTorchNeuralNetwork(
             classifications=["rock", "paper", "scissors"],
             features=Features(Feature("image", int, 300 * 300)),
             predict=Feature("label", int, 1),
-            directory="rps_model",
+            directory=cls.model_dir.name,
             network=RockPaperScissorsModel,
             epochs=1,
             batch_size=32,
@@ -74,6 +76,10 @@ class TestPyTorchNeuralNetwork(IntegrationCLITestCase):
             optimizer="Adam",
             enableGPU=True,
         )
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.model_dir.cleanup()
 
     @cached_download_unpack_archive(
         "https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps.zip",
