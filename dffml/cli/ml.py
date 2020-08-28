@@ -15,9 +15,13 @@ from ..accuracy import AccuracyScorer, MeanSquaredErrorAccuracy
 
 @config
 class MLCMDConfig(SourcesCMDConfig, ModelCMDConfig):
-    accuracy_scorer: AccuracyScorer = field(
+    pass
+
+
+@config
+class AccuracyCMDConfig(MLCMDConfig):
+    scorer: AccuracyScorer = field(
         "Method to use to score accuracy",
-        default_factory=lambda: MeanSquaredErrorAccuracy(),
     )
 
 
