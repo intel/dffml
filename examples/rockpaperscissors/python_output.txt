@@ -45,18 +45,8 @@ DEBUG:dffml.PyTorchNeuralNetworkContext:----------
 DEBUG:dffml.PyTorchNeuralNetworkContext:Training Loss: 0.0139 Acc: 0.9955
 DEBUG:dffml.PyTorchNeuralNetworkContext:Validation Loss: 0.0060 Acc: 1.0000
 DEBUG:dffml.PyTorchNeuralNetworkContext:
-DEBUG:dffml.PyTorchNeuralNetworkContext:Epoch 6/10
-DEBUG:dffml.PyTorchNeuralNetworkContext:----------
-DEBUG:dffml.PyTorchNeuralNetworkContext:Training Loss: 0.0057 Acc: 0.9985
-DEBUG:dffml.PyTorchNeuralNetworkContext:Validation Loss: 0.0035 Acc: 1.0000
-DEBUG:dffml.PyTorchNeuralNetworkContext:
-DEBUG:dffml.PyTorchNeuralNetworkContext:Epoch 7/10
-DEBUG:dffml.PyTorchNeuralNetworkContext:----------
-DEBUG:dffml.PyTorchNeuralNetworkContext:Training Loss: 0.0041 Acc: 0.9995
-DEBUG:dffml.PyTorchNeuralNetworkContext:Validation Loss: 0.0035 Acc: 1.0000
-DEBUG:dffml.PyTorchNeuralNetworkContext:
-INFO:dffml.PyTorchNeuralNetworkContext:Early stopping: Validation Loss didn't improve for 2 consecutive epochs.
-INFO:dffml.PyTorchNeuralNetworkContext:Training complete in 2m 2s
+INFO:dffml.PyTorchNeuralNetworkContext:Early stopping: Validation Loss didn't improve for 2 consecutive epochs OR maximum accuracy attained.
+INFO:dffml.PyTorchNeuralNetworkContext:Training complete in 1m 24s
 INFO:dffml.PyTorchNeuralNetworkContext:Best Validation Accuracy: 1.000000
 
 Testing Accuracy:  0.9220430107526881

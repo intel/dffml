@@ -12,4 +12,3 @@ The following are some example use cases of DFFML.
     mnist
     flower17/flower17
     webhook/index
-    rockpaperscissors

@@ -2,10 +2,8 @@ import torch.nn as nn
 import asyncio
 import logging
 
-from dffml import DirectorySource, Features, Feature
-from dffml import train, accuracy, predict
-from dffml_model_pytorch.pytorch_net import PyTorchNeuralNetwork
-from dffml_model_pytorch.utils import CrossEntropyLossFunction
+from dffml import train, accuracy, predict, DirectorySource, Features, Feature
+from dffml_model_pytorch import PyTorchNeuralNetwork, CrossEntropyLossFunction
 
 
 # Define the Neural Network

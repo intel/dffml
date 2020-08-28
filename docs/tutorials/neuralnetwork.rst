@@ -1,7 +1,10 @@
-Rock Paper Scissors Classification using Custom Neural Network
-==============================================================
+Custom Neural Network Tutorial
+==============================
 
-This example will show you how to train and test a PyTorch based custom neural network model made using DFFML.
+Rock Paper Scissors Hand Pose Classification
+--------------------------------------------
+
+This tutorial will show you how to train and test a PyTorch based custom neural network model made using DFFML.
 The dataset we will be using is the `rock-paper-scissors-dataset <http://www.laurencemoroney.com/rock-paper-scissors-dataset/>`_
 which contains images of hands in Rock/Paper/Scissors poses, each image is a 300x300 RGB image.
 
@@ -13,7 +16,6 @@ via DFFML. We can install it with ``pip``. We will also be using image loading f
 .. code-block:: console
 
     $ pip install -U dffml-model-pytorch dffml-config-image dffml-config-yaml
-
 
 Download the dataset and verify with with ``sha384sum``.
 
@@ -53,6 +55,8 @@ Command Line
 We first create a YAML file to define the neural network with all the information about the layers along with
 the forward method which is passed as list of layers under the model name key:
 
+**model.yaml**
+
 .. literalinclude:: /../examples/rockpaperscissors/model.yaml
 
 .. seealso::
@@ -61,7 +65,7 @@ the forward method which is passed as list of layers under the model name key:
     following syntax: `- key1.layer2`
 
 .. Note::
-    If the forward method is not given in the YAML file, forward method is automatically creating by appending
+    If the forward method is not given in the YAML file, forward method is automatically created by appending
     the top level layers sequentially.
 
 Train the model.
@@ -81,7 +85,7 @@ The output is:
 
 .. code-block:: console
 
-    0.8306451612903226
+    0.8763440860215054
 
 Predict with the trained model.
 
