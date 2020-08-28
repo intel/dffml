@@ -1288,6 +1288,10 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         ctx: Optional[BaseInputSetContext] = None,
         input_set: Optional[Union[List[Input], BaseInputSet]] = None,
     ) -> BaseInputSetContext:
+        if ctx is not None and not isinstance(ctx, BaseInputSetContext):
+            raise TypeError(
+                f"ctx {ctx} is of type {type(ctx)}, should be BaseInputSetContext"
+            )
         self.logger.debug("Seeding dataflow with input_set: %s", input_set)
         if input_set is None:
             # Create a list if extra inputs were not given
@@ -1378,7 +1382,9 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 await self.forward_inputs_to_subflow(input_set)
                 ctxs.append(
                     await self.seed_inputs(
-                        ctx=StringInputSetContext(ctx_string),
+                        ctx=StringInputSetContext(ctx_string)
+                        if isinstance(ctx_string, str)
+                        else ctx_string,
                         input_set=input_set,
                     )
                 )
