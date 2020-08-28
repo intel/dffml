@@ -15,9 +15,13 @@ from ..accuracy import AccuracyScorer, MeanSquaredErrorAccuracy
 
 @config
 class MLCMDConfig(SourcesCMDConfig, ModelCMDConfig):
-    accuracy_scorer: AccuracyScorer = field(
+    pass
+
+
+@config
+class AccuracyCMDConfig(MLCMDConfig):
+    scorer: AccuracyScorer = field(
         "Method to use to score accuracy",
-        default_factory=lambda: MeanSquaredErrorAccuracy(),
     )
 
 
@@ -56,10 +60,12 @@ class Accuracy(MLCMD):
 @config
 class PredictAllConfig(MLCMDConfig):
     update: bool = field(
-        "Update record with sources", default=False,
+        "Update record with sources",
+        default=False,
     )
     pretty: bool = field(
-        "Outputs data in tabular form", default=False,
+        "Outputs data in tabular form",
+        default=False,
     )
 
 
