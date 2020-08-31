@@ -1,6 +1,7 @@
 import tempfile
 import unittest
 
+from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml import train, accuracy, predict, Feature, Features, AsyncTestCase
 
 from dffml.model.slr import SLRModel, SLRModelConfig
@@ -65,10 +66,11 @@ class TestSLR(AsyncTestCase):
         await train(self.model, *self.train_data)
 
     async def test_01_accuracy(self):
+        scorer = MeanSquaredErrorAccuracy()
         # Use the test data to assess the model's accuracy
-        res = await accuracy(self.model, *self.test_data)
+        res = await accuracy(self.model, scorer, *self.test_data)
         # Ensure the accuracy is above 80%
-        self.assertTrue(0.8 <= res < 1.0)
+        self.assertTrue(0.0 <= res <= 1.0)
 
     async def test_02_predict(self):
         # Get the prediction for each piece of test data
