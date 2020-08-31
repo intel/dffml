@@ -5,4 +5,5 @@ dffml accuracy \
   -model-location tempdir \
   -sources f=csv \
   -source-filename dataset.csv \
+  -scorer mse \
   -log debug
