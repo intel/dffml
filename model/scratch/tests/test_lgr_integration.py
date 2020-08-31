@@ -44,6 +44,8 @@ class TestLogisticRegression(AsyncTestCase):
         await CLI.cli(
             "accuracy",
             *model_args,
+            "-scorer",
+            "mse",
             "-sources",
             "test_data=csv",
             "-source-filename",
