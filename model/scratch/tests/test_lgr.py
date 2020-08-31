@@ -1,6 +1,7 @@
 import tempfile
 import unittest
 
+from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml import train, accuracy, predict, Feature, Features, AsyncTestCase
 
 from dffml_model_scratch.logisticregression import (
@@ -69,7 +70,8 @@ class TestLogisticRegression(AsyncTestCase):
 
     async def test_01_accuracy(self):
         # Use the test data to assess the model's accuracy
-        res = await accuracy(self.model, *self.test_data)
+        scorer = MeanSquaredErrorAccuracy()
+        res = await accuracy(self.model, scorer, *self.test_data)
         # Ensure the accuracy is above 80%
         self.assertTrue(0.0 <= res <= 1.0)
 
