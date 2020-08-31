@@ -53,7 +53,7 @@ class Train(MLCMD):
 class Accuracy(MLCMD):
     """Assess model accuracy on data from given sources"""
 
-    CONFIG = MLCMDConfig
+    CONFIG = AccuracyCMDConfig
 
     async def run(self):
         return await accuracy(self.model, self.scorer, self.sources)
