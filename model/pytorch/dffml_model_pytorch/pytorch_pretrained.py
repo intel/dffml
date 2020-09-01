@@ -1,17 +1,44 @@
-from __future__ import print_function, division
-
 import sys
 import torch.nn as nn
 from torchvision import models
 
 from dffml.util.entrypoint import entrypoint
 from dffml.model.model import Model
+from dffml.base import config, field
 from .pytorch_base import PyTorchModelConfig, PyTorchModelContext
+from .utils import create_layer
+
+
+class LayersNotFound(Exception):
+    """
+    Raised when add_layers is set to True but no layers are provided.
+    """
+
+
+@config
+class PyTorchPreTrainedModelConfig(PyTorchModelConfig):
+    pretrained: bool = field(
+        "Load Pre-trained model weights", default=True,
+    )
+    trainable: bool = field(
+        "Tweak pretrained model by training again", default=False
+    )
+    add_layers: bool = field(
+        "Add layers on top of pretrained model", default=False,
+    )
+    layers: dict = field(
+        "Extra layers to be added on top of pretrained model", default=None
+    )
 
 
 class PyTorchPretrainedContext(PyTorchModelContext):
     def __init__(self, parent):
         super().__init__(parent)
+
+        if self.parent.config.add_layers and self.parent.config.layers is None:
+            raise LayersNotFound(
+                "add_layers is set to True but no layers are provided."
+            )
 
     def createModel(self):
         """
@@ -31,40 +58,52 @@ class PyTorchPretrainedContext(PyTorchModelContext):
         for param in model.parameters():
             param.require_grad = self.parent.config.trainable
 
-        if self.parent.LAST_LAYER_TYPE == "classifier_sequential":
-            num_features = model.classifier[-1].in_features
-            features = list(model.classifier.children())[:-1]
-            features.append(
-                nn.Sequential(
-                    nn.Linear(num_features, 256),
-                    nn.ReLU(),
-                    nn.Dropout(0.2),
-                    nn.Linear(256, len(self.classifications)),
-                    nn.LogSoftmax(dim=1),
+        if self.parent.config.add_layers:
+            layers = [
+                create_layer(value)
+                for key, value in self.parent.config.layers.items()
+            ]
+
+            if self.parent.LAST_LAYER_TYPE == "classifier_sequential":
+                if len(layers) > 1:
+                    layers = [nn.Sequential(*layers)]
+                model.classifier = nn.Sequential(
+                    *list(model.classifier.children())[:-1] + layers
                 )
-            )
-            model.classifier = nn.Sequential(*features)
-
-        elif self.parent.LAST_LAYER_TYPE == "classifier_linear":
-            model.classifier = nn.Sequential(
-                nn.Linear(model.classifier.in_features, 256),
-                nn.ReLU(),
-                nn.Dropout(0.2),
-                nn.Linear(256, len(self.classifications)),
-                nn.LogSoftmax(dim=1),
-            )
-
-        else:
-            model.fc = nn.Sequential(
-                nn.Linear(model.fc.in_features, 256),
-                nn.ReLU(),
-                nn.Dropout(0.2),
-                nn.Linear(256, len(self.classifications)),
-                nn.LogSoftmax(dim=1),
-            )
+            elif self.parent.LAST_LAYER_TYPE == "classifier_linear":
+                if len(layers) == 1:
+                    model.classifier = layers[0]
+                elif len(layers) > 1:
+                    model.classifier = nn.Sequential(*layers)
+            else:
+                if len(layers) == 1:
+                    model.fc = layers[0]
+                elif len(layers) > 1:
+                    model.fc = nn.Sequential(*layers)
 
         self._model = model.to(self.device)
+
         return self._model
+
+    def set_model_parameters(self):
+        if self.parent.LAST_LAYER_TYPE == "classifier_sequential":
+            self.model_parameters = (
+                self._model.parameters()
+                if self.parent.config.trainable
+                else self._model.classifier[-1].parameters()
+            )
+        elif self.parent.LAST_LAYER_TYPE == "classifier_linear":
+            self.model_parameters = (
+                self._model.parameters()
+                if self.parent.config.trainable
+                else self._model.classifier.parameters()
+            )
+        else:
+            self.model_parameters = (
+                self._model.parameters()
+                if self.parent.config.trainable
+                else self._model.fc.parameters()
+            )
 
 
 class PyTorchPreTrainedModel(Model):
@@ -103,7 +142,9 @@ for model_name, name, last_layer_type in [
     ("wide_resnet101_2", "WideResNet101_2", "fully_connected"),
     ("wide_resnet50_2", "WideResNet50_2", "fully_connected"),
 ]:
-    cls_config = type(name + "ModelConfig", (PyTorchModelConfig,), {},)
+    cls_config = type(
+        name + "ModelConfig", (PyTorchPreTrainedModelConfig,), {},
+    )
     cls_context = type(name + "ModelContext", (PyTorchPretrainedContext,), {},)
 
     dffml_cls = type(

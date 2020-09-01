@@ -1,17 +1,14 @@
 import os
 import pathlib
-import hashlib
 from typing import Any, Tuple, AsyncIterator, List, Type, Dict
 import copy
 import time
 
 import torch
-import torch.nn as nn
 import torch.optim as optim
 from torch.optim import lr_scheduler
 
 import numpy as np
-
 
 from dffml.record import Record
 from dffml.model.accuracy import Accuracy
@@ -19,47 +16,60 @@ from dffml.base import config, field
 from dffml.feature.feature import Feature, Features
 from dffml.source.source import Sources, SourcesContext
 from dffml.model.model import ModelContext, ModelNotTrained
-from .pytorch_utils import NumpyToTensor
+from .utils import NumpyToTensor, PyTorchLoss, CrossEntropyLossFunction
 
 
 @config
 class PyTorchModelConfig:
     predict: Feature = field("Feature name holding classification value")
-    classifications: List[str] = field("Options for value of classification")
     features: Features = field("Features to train on")
     directory: pathlib.Path = field("Directory where state should be saved")
+    classifications: List[str] = field(
+        "Options for value of classification", default=None
+    )
     clstype: Type = field("Data type of classifications values", default=str)
     imageSize: int = field(
-        "Common size for all images to resize and crop to", default=224
+        "Common size for all images to resize and crop to", default=None
     )
     enableGPU: bool = field("Utilize GPUs for processing", default=False)
     epochs: int = field(
         "Number of iterations to pass over all records in a source", default=20
     )
-    trainable: bool = field(
-        "Tweak pretrained model by training again", default=False
-    )
     batch_size: int = field("Batch size", default=32)
     validation_split: float = field(
         "Split training data for Validation", default=0.0
-    )
-    pretrained: bool = field(
-        "Load Pre-trained model weights", default=True,
     )
     patience: int = field(
         "Early stops the training if validation loss doesn't improve after a given patience",
         default=5,
     )
+    loss: PyTorchLoss = field(
+        "Loss Functions available in PyTorch",
+        default=CrossEntropyLossFunction,
+    )
+    optimizer: str = field(
+        "Optimizer Algorithms available in PyTorch", default="SGD"
+    )
+    normalize_mean: List[float] = field(
+        "Mean values for normalizing Tensor image", default=None
+    )
+    normalize_std: List[float] = field(
+        "Standard Deviation values for normalizing Tensor image", default=None
+    )
 
     def __post_init__(self):
-        self.classifications = list(map(self.clstype, self.classifications))
+        if self.classifications is not None:
+            self.classifications = list(
+                map(self.clstype, self.classifications)
+            )
 
 
 class PyTorchModelContext(ModelContext):
     def __init__(self, parent):
         super().__init__(parent)
-        self.cids = self._mkcids(self.parent.config.classifications)
-        self.classifications = self._classifications(self.cids)
+        if self.parent.config.classifications:
+            self.cids = self._mkcids(self.parent.config.classifications)
+            self.classifications = self._classifications(self.cids)
         self.features = self._applicable_features()
         self.model_path = self._model_path()
         self._model = None
@@ -78,28 +88,11 @@ class PyTorchModelContext(ModelContext):
         else:
             self._model = self.createModel()
 
-        if self.parent.LAST_LAYER_TYPE == "classifier_sequential":
-            self.model_parameters = (
-                self._model.parameters()
-                if self.parent.config.trainable
-                else self._model.classifier[-1].parameters()
-            )
-        elif self.parent.LAST_LAYER_TYPE == "classifier_linear":
-            self.model_parameters = (
-                self._model.parameters()
-                if self.parent.config.trainable
-                else self._model.classifier.parameters()
-            )
-        else:
-            self.model_parameters = (
-                self._model.parameters()
-                if self.parent.config.trainable
-                else self._model.fc.parameters()
-            )
+        self.set_model_parameters()
 
-        self.criterion = nn.CrossEntropyLoss()
-        self.optimizer = optim.SGD(
-            self.model_parameters, lr=0.001, momentum=0.9
+        self.criterion = self.parent.config.loss.function
+        self.optimizer = getattr(optim, self.parent.config.optimizer)(
+            self.model_parameters, lr=0.001
         )
         self.exp_lr_scheduler = lr_scheduler.StepLR(
             self.optimizer, step_size=5, gamma=0.1
@@ -110,6 +103,9 @@ class PyTorchModelContext(ModelContext):
     async def __aexit__(self, exc_type, exc_value, traceback):
         pass
 
+    def set_model_parameters(self):
+        self.model_parameters = self._model.parameters()
+
     def _classifications(self, cids):
         """
         Map classifications to numeric values
@@ -119,10 +115,6 @@ class PyTorchModelContext(ModelContext):
             "classifications(%d): %r", len(classifications), classifications
         )
         return classifications
-
-    @property
-    def classification(self):
-        return self.parent.config.predict.name
 
     def _applicable_features(self):
         return [name for name in self.parent.config.features.names()]
@@ -155,17 +147,18 @@ class PyTorchModelContext(ModelContext):
         y_cols = []
         all_records = []
         all_sources = sources.with_features(
-            self.features + [self.classification]
+            self.features + [self.parent.config.predict.name]
         )
 
         async for record in all_sources:
-            if record.feature(self.classification) in self.classifications:
-                all_records.append(record)
-        for record in all_records:
             for feature, results in record.features(self.features).items():
                 x_cols[feature].append(np.array(results))
             y_cols.append(
-                self.classifications[record.feature(self.classification)]
+                self.classifications[
+                    record.feature(self.parent.config.predict.name)
+                ]
+                if self.classifications
+                else record.feature(self.parent.config.predict.name)
             )
         if (len(self.features)) > 1:
             self.logger.critical(
@@ -185,13 +178,22 @@ class PyTorchModelContext(ModelContext):
 
         x_cols = x_cols[self.features[0]]
         dataset = NumpyToTensor(
-            x_cols, y_cols, size=self.parent.config.imageSize
+            x_cols,
+            y_cols,
+            size=self.parent.config.imageSize,
+            norm_mean=self.parent.config.normalize_mean,
+            norm_std=self.parent.config.normalize_std,
         )
 
         return dataset, len(dataset)
 
     async def prediction_data_generator(self, data):
-        dataset = NumpyToTensor([data], size=self.parent.config.imageSize)
+        dataset = NumpyToTensor(
+            [data],
+            size=self.parent.config.imageSize,
+            norm_mean=self.parent.config.normalize_mean,
+            norm_std=self.parent.config.normalize_std,
+        )
         dataloader = torch.utils.data.DataLoader(dataset)
         return dataloader
 
@@ -214,7 +216,7 @@ class PyTorchModelContext(ModelContext):
                 )
             )
             self.logger.info(
-                "Data split into Traning samples: {} and Validation samples: {}".format(
+                "Data split into Training samples: {} and Validation samples: {}".format(
                     size["Training"], size["Validation"]
                 )
             )
@@ -264,7 +266,8 @@ class PyTorchModelContext(ModelContext):
 
                     with torch.set_grad_enabled(phase == "Training"):
                         outputs = self._model(inputs)
-                        _, preds = torch.max(outputs, 1)
+                        if self.classifications:
+                            _, preds = torch.max(outputs, 1)
                         loss = self.criterion(outputs, labels)
 
                         if phase == "Training":
@@ -272,13 +275,18 @@ class PyTorchModelContext(ModelContext):
                             self.optimizer.step()
 
                     running_loss += loss.item() * inputs.size(0)
-                    running_corrects += torch.sum(preds == labels.data)
+                    if self.classifications:
+                        running_corrects += torch.sum(preds == labels.data)
 
                 if phase == "Training":
                     self.exp_lr_scheduler.step()
 
                 epoch_loss = running_loss / size[phase]
-                epoch_acc = running_corrects.double() / size[phase]
+                epoch_acc = (
+                    running_corrects.double() / size[phase]
+                    if self.classifications
+                    else 1.0 - epoch_loss
+                )
 
                 self.logger.debug(
                     "{} Loss: {:.4f} Acc: {:.4f}".format(
@@ -295,12 +303,15 @@ class PyTorchModelContext(ModelContext):
                         self.counter = 0
                     else:
                         self.counter += 1
+                    if best_acc == 1.0:
+                        self.counter = self.parent.config.patience
 
             self.logger.debug("")
 
             if self.counter == self.parent.config.patience:
                 self.logger.info(
-                    f"Early stopping: Validation Loss didn't improve for {self.counter} consecutive epochs."
+                    f"Early stopping: Validation Loss didn't improve for {self.counter} "
+                    + "consecutive epochs OR maximum accuracy attained."
                 )
                 break
 
@@ -332,18 +343,35 @@ class PyTorchModelContext(ModelContext):
         )
 
         self._model.eval()
-        running_corrects = 0
 
-        for inputs, labels in dataloader:
-            inputs = inputs.to(inputs)
-            labels = labels.to(inputs)
+        if self.classifications:
+            running_corrects = 0
 
-            with torch.set_grad_enabled(False):
-                outputs = self._model(inputs)
-                _, preds = torch.max(outputs, 1)
+            for inputs, labels in dataloader:
+                inputs = inputs.to(inputs)
+                labels = labels.to(inputs)
 
-            running_corrects += torch.sum(preds == labels.data)
-            acc = running_corrects.double() / size
+                with torch.set_grad_enabled(False):
+                    outputs = self._model(inputs)
+                    _, preds = torch.max(outputs, 1)
+
+                running_corrects += torch.sum(preds == labels.data)
+                acc = running_corrects.double() / size
+        else:
+            running_loss = 0.0
+
+            for inputs, labels in dataloader:
+                inputs = inputs.to(inputs)
+                labels = labels.to(inputs)
+
+                with torch.set_grad_enabled(False):
+                    outputs = self._model(inputs)
+                    loss = self.criterion(inputs, outputs)
+
+                running_loss += loss.item() * inputs.size(0)
+
+            total_loss = running_loss / size
+            acc = 1.0 - total_loss
 
         return Accuracy(acc)
 
@@ -365,12 +393,18 @@ class PyTorchModelContext(ModelContext):
             with torch.no_grad():
                 for val in predict:
                     val = val.to(self.device)
+                    output = self._model(val)
 
-                    outputs = self._model(val)
-                    prob = torch.nn.functional.softmax(outputs, dim=1)
-                    confidence, prediction_value = prob.topk(1, dim=1)
-                    record.predicted(
-                        target, self.cids[prediction_value.item()], confidence,
-                    )
+                    if self.classifications:
+                        prob = torch.nn.functional.softmax(output, dim=1)
+                        confidence, prediction_value = prob.topk(1, dim=1)
+                        record.predicted(
+                            target,
+                            self.cids[prediction_value.item()],
+                            confidence,
+                        )
+                    else:
+                        confidence = 1.0 - self.criterion(val, output).item()
+                        record.predicted(target, output, confidence)
 
             yield record

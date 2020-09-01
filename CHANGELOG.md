@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- CLI and Python example usage of Custom Neural Network
+- PyTorch loss function entrypoint style loading
+- Custom Neural Network, last layer support for pre-trained models
 - Example usage of sklearn operations
 - Example Flower17 species image classification
 - Configloading ablity from CLI using "@" before filename
