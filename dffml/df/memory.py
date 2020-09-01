@@ -490,12 +490,10 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                     # Ensure all conditions from all origins are True
                     for origin in origins:
                         # See comment in input_flow.inputs section
-                        alternate_definitions = []
-                        if isinstance(origin, tuple) and isinstance(
-                            origin[1], (list, tuple)
-                        ):
-                            alternate_definitions = origin[1]
-                            origin = origin[0]
+                        (
+                            alternate_definitions,
+                            origin,
+                        ) = input_flow.get_alternate_definitions(origin)
                         # Bail if the condition doesn't exist
                         if not origin in by_origin:
                             return
@@ -547,12 +545,10 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                             # These definitions will be used instead of the
                             # default one the input specified for the
                             # operation).
-                            alternate_definitions = []
-                            if isinstance(origin, tuple) and isinstance(
-                                origin[1], (list, tuple)
-                            ):
-                                alternate_definitions = origin[1]
-                                origin = origin[0]
+                            (
+                                alternate_definitions,
+                                origin,
+                            ) = input_flow.get_alternate_definitions(origin)
                             # Don't try to grab inputs from an origin that
                             # doesn't have any to give us
                             if not origin in by_origin:
