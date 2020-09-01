@@ -429,6 +429,41 @@ class InputFlow:
     def _fromdict(cls, **kwargs):
         return cls(**kwargs)
 
+    @staticmethod
+    def get_alternate_definitions(
+        origin: Tuple[Union[List[str], Tuple[str]], str]
+    ) -> Tuple[Union[List[str], Tuple[str]], str]:
+        """
+        Returns the alternate definitions and origin for an entry within an input
+        flow. If there are no alternate defintions then the first element of the
+        returned tuple is an empty list.
+
+        Examples
+        --------
+
+        >>> from dffml import InputFlow
+        >>>
+        >>> input_flow = InputFlow(
+        ...     inputs={
+        ...         "features": [
+        ...             {"seed": ["Years", "Expertise", "Trust", "Salary"]}
+        ...         ],
+        ...         "token": [
+        ...             "client",
+        ...         ]
+        ...     }
+        ... )
+        >>>
+        >>> input_flow.get_alternate_definitions(list(input_flow.inputs["features"][0].items())[0])
+        (['Years', 'Expertise', 'Trust', 'Salary'], 'seed')
+        >>>
+        input_flow.get_alternate_definitions(list(input_flow.inputs["other"][0].items())[0])
+        ([], 'client')
+        """
+        if isinstance(origin, tuple) and isinstance(origin[1], (list, tuple)):
+            return origin[1], origin[0]
+        return [], origin
+
 
 @dataclass
 class Forward:
@@ -600,8 +635,9 @@ class DataFlow:
                     )
                 else:
                     for origin in output_source.items():
-                        if isinstance(origin[1], (list, tuple,)):
-                            origin = origin[0]
+                        _, origin = input_flow.get_alternate_definitions(
+                            origin
+                        )
                         self.by_origin[operation.stage].setdefault(origin, [])
                         self.by_origin[operation.stage][origin].append(
                             operation
@@ -623,8 +659,9 @@ class DataFlow:
                             # the Input.origin (like "seed"). And the value
                             # (origin[1]) is the list of definitions which are
                             # acceptable from that origin for this input.
-                            if isinstance(origin[1], (list, tuple,)):
-                                origin = origin[0]
+                            _, origin = input_flow.get_alternate_definitions(
+                                origin
+                            )
                             self.by_origin[operation.stage].setdefault(
                                 origin, []
                             )
