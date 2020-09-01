@@ -22,8 +22,10 @@ class MLCMDConfig(SourcesCMDConfig, ModelCMDConfig):
 
 @config
 class AccuracyCMDConfig:
-    model: Model = field("Model used for ML")
-    scorer: AccuracyScorer = field("Method to use to score accuracy")
+    model: Model = field("Model used for ML", required=True)
+    scorer: AccuracyScorer = field(
+        "Method to use to score accuracy", required=True
+    )
     sources: Sources = FIELD_SOURCES
 
 
