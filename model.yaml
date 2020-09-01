@@ -1,0 +1,44 @@
+model:
+  conv1:
+    name: Conv2d
+    in_channels: 3
+    out_channels: 6
+    kernel_size: 5
+  relu:
+    name: ReLU
+  pool:
+    name: MaxPool2d
+    kernel_size: 2
+    stride: 2
+  conv2:
+    name: Conv2d
+    in_channels: 6
+    out_channels: 16
+    kernel_size: 5
+  fc1:
+    name: Linear
+    in_features: 400
+    out_features: 120
+  fc2:
+    name: Linear
+    in_features: 120
+    out_features: 84
+  fc3:
+    name: Linear
+    in_features: 84
+    out_features: 10
+forward:
+  - conv1
+  - relu
+  - pool
+  - conv2
+  - relu
+  - pool
+  - view:
+    - -1
+    - 400
+  - fc1
+  - relu
+  - fc2
+  - relu
+  - fc3

@@ -4,11 +4,11 @@ FLOWER17 Species classification using Transfer Learning
 The model we'll be using is :ref:`AlexNet CNN Model <plugin_model_dffml_model_pytorch_alexnet>`
 which is a part of ``dffml-model-pytorch``, a DFFML plugin which allows you to use PyTorch
 via DFFML. We can install it with ``pip``. We will also be using image loading from
-``dffml-config-image``.
+``dffml-config-image`` and YAML file loading from ``dffml-config-yaml``.
 
 .. code-block:: console
 
-    $ pip install -U dffml-model-pytorch dffml-config-image
+    $ pip install -U dffml-model-pytorch dffml-config-yaml dffml-config-image
 
 There are 2 ways to perform Transfer Learning:
 
@@ -22,6 +22,10 @@ There are 2 ways to perform Transfer Learning:
 
 
 In this example, we will be fine-tuning the AlexNet model. (We set `trainable=True`)
+
+We first create a YAML file to define the last layer(s) to replace from the network architecture:
+
+.. literalinclude:: /../examples/flower17/pytorch-alexnet/layers.yaml
 
 Train the model.
 

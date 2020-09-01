@@ -161,3 +161,6 @@ Output:
 .. literalinclude:: /../model/pytorch/examples/resnet18/output.txt
 
 """
+from .pytorch_pretrained import *
+from .pytorch_net import PyTorchNeuralNetwork
+from .utils.utils import *

@@ -1,0 +1,88 @@
+DEBUG:dffml.util.AsyncContextManagerList.Sources:Entering: DirectorySource(DirectorySourceConfig(foldername=PosixPath('rps'), feature='image', labels=['rock', 'paper', 'scissors'], save=None))
+DEBUG:dffml.PNGConfigLoader:BaseConfig()
+DEBUG:dffml.DirectorySource:DirectorySource(DirectorySourceConfig(foldername=PosixPath('rps'), feature='image', labels=['rock', 'paper', 'scissors'], save=None)) loaded 2520 records
+DEBUG:dffml.util.AsyncContextManagerListContext.SourcesContext:Entering context: <dffml.source.memory.MemorySourceContext object at 0x7f0fe9170c50>
+DEBUG:dffml.PyTorchNeuralNetworkContext:cids(3): {0: 'paper', 1: 'rock', 2: 'scissors'}
+DEBUG:dffml.PyTorchNeuralNetworkContext:classifications(3): {'paper': 0, 'rock': 1, 'scissors': 2}
+DEBUG:dffml.PyTorchNeuralNetworkContext:Loading model with classifications(3): {'paper': 0, 'rock': 1, 'scissors': 2}
+DEBUG:dffml.PyTorchNeuralNetworkContext:Model Summary
+ConvNet(
+  (conv1): Conv2d(3, 32, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+  (conv2): Conv2d(32, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (conv3): Conv2d(32, 16, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (relu): ReLU()
+  (pooling): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  (linear): Linear(in_features=1296, out_features=3, bias=True)
+)
+DEBUG:dffml.PyTorchNeuralNetworkContext:Training on features: ['image']
+INFO:dffml.PyTorchNeuralNetworkContext:------ Record Data ------
+INFO:dffml.PyTorchNeuralNetworkContext:x_cols:    2520
+INFO:dffml.PyTorchNeuralNetworkContext:y_cols:    2520
+INFO:dffml.PyTorchNeuralNetworkContext:-----------------------
+INFO:dffml.PyTorchNeuralNetworkContext:Data split into Training samples: 2016 and Validation samples: 504
+DEBUG:dffml.PyTorchNeuralNetworkContext:Epoch 1/10
+DEBUG:dffml.PyTorchNeuralNetworkContext:----------
+DEBUG:dffml.PyTorchNeuralNetworkContext:Training Loss: 1.0265 Acc: 0.4484
+DEBUG:dffml.PyTorchNeuralNetworkContext:Validation Loss: 0.6922 Acc: 0.7778
+DEBUG:dffml.PyTorchNeuralNetworkContext:
+DEBUG:dffml.PyTorchNeuralNetworkContext:Epoch 2/10
+DEBUG:dffml.PyTorchNeuralNetworkContext:----------
+DEBUG:dffml.PyTorchNeuralNetworkContext:Training Loss: 0.3382 Acc: 0.8988
+DEBUG:dffml.PyTorchNeuralNetworkContext:Validation Loss: 0.1446 Acc: 0.9722
+DEBUG:dffml.PyTorchNeuralNetworkContext:
+DEBUG:dffml.PyTorchNeuralNetworkContext:Epoch 3/10
+DEBUG:dffml.PyTorchNeuralNetworkContext:----------
+DEBUG:dffml.PyTorchNeuralNetworkContext:Training Loss: 0.0663 Acc: 0.9851
+DEBUG:dffml.PyTorchNeuralNetworkContext:Validation Loss: 0.0531 Acc: 0.9901
+DEBUG:dffml.PyTorchNeuralNetworkContext:
+DEBUG:dffml.PyTorchNeuralNetworkContext:Epoch 4/10
+DEBUG:dffml.PyTorchNeuralNetworkContext:----------
+DEBUG:dffml.PyTorchNeuralNetworkContext:Training Loss: 0.0332 Acc: 0.9940
+DEBUG:dffml.PyTorchNeuralNetworkContext:Validation Loss: 0.0261 Acc: 0.9940
+DEBUG:dffml.PyTorchNeuralNetworkContext:
+DEBUG:dffml.PyTorchNeuralNetworkContext:Epoch 5/10
+DEBUG:dffml.PyTorchNeuralNetworkContext:----------
+DEBUG:dffml.PyTorchNeuralNetworkContext:Training Loss: 0.0139 Acc: 0.9955
+DEBUG:dffml.PyTorchNeuralNetworkContext:Validation Loss: 0.0060 Acc: 1.0000
+DEBUG:dffml.PyTorchNeuralNetworkContext:
+INFO:dffml.PyTorchNeuralNetworkContext:Early stopping: Validation Loss didn't improve for 2 consecutive epochs OR maximum accuracy attained.
+INFO:dffml.PyTorchNeuralNetworkContext:Training complete in 1m 24s
+INFO:dffml.PyTorchNeuralNetworkContext:Best Validation Accuracy: 1.000000
+
+Testing Accuracy:  0.9220430107526881
+
+                          Image filename 	 Prediction 	 Confidence
+
+               rps-predict/scissors7.png 	   scissors 	 0.9990881681442261
+                   rps-predict/rock8.png 	       rock 	        1.0
+                  rps-predict/paper4.png 	      paper 	 0.7040390372276306
+                  rps-predict/paper9.png 	      paper 	 0.5414079427719116
+                  rps-predict/paper7.png 	      paper 	 0.9999395608901978
+            rps-predict/paper-hires1.png 	      paper 	 0.6969484090805054
+         rps-predict/scissors-hires2.png 	   scissors 	 0.9760923385620117
+               rps-predict/scissors4.png 	   scissors 	 0.9901471734046936
+               rps-predict/scissors8.png 	   scissors 	 0.9570472240447998
+             rps-predict/rock-hires1.png 	       rock 	        1.0
+            rps-predict/paper-hires2.png 	      paper 	 0.9593355059623718
+                  rps-predict/paper8.png 	      paper 	 0.9998843669891357
+               rps-predict/scissors2.png 	   scissors 	 0.9512919783592224
+                   rps-predict/rock4.png 	       rock 	 0.9999837875366211
+                  rps-predict/paper1.png 	      paper 	 0.9846717715263367
+               rps-predict/scissors5.png 	   scissors 	 0.9992364645004272
+         rps-predict/scissors-hires1.png 	   scissors 	 0.9997430443763733
+                  rps-predict/paper2.png 	      paper 	 0.9999908208847046
+                   rps-predict/rock1.png 	       rock 	 0.9999294281005859
+               rps-predict/scissors3.png 	      paper 	 0.6644117832183838
+               rps-predict/scissors1.png 	   scissors 	 0.9635807275772095
+               rps-predict/scissors6.png 	   scissors 	 0.9999761581420898
+                   rps-predict/rock9.png 	       rock 	 0.9018403887748718
+               rps-predict/scissors9.png 	   scissors 	 0.9989670515060425
+                  rps-predict/paper6.png 	      paper 	 0.9996334314346313
+                  rps-predict/paper3.png 	      paper 	 0.8676062226295471
+                  rps-predict/paper5.png 	      paper 	 0.9100719094276428
+                   rps-predict/rock7.png 	       rock 	 0.9990749359130859
+                   rps-predict/rock5.png 	       rock 	 0.8894972205162048
+                   rps-predict/rock3.png 	       rock 	 0.9995730519294739
+                   rps-predict/rock2.png 	       rock 	 0.991766631603241
+             rps-predict/rock-hires2.png 	       rock 	 0.9999849796295166
+                   rps-predict/rock6.png 	       rock 	 0.8994896411895752
