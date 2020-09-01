@@ -12,6 +12,10 @@ import traceback
 import pkg_resources
 from typing import List, Dict, Union, Optional, Iterator, Any
 
+from .log import LOGGER
+
+LOGGER = LOGGER.getChild("entrypoint")
+
 
 class EntrypointNotFound(Exception):
     pass  # pragma: no cover
@@ -146,9 +150,13 @@ class Entrypoint(object):
         Loads all installed loading and returns them as a list. Sources to be
         loaded should be registered to ENTRYPOINT via setuptools.
         """
-        # Loading from entrypoint if ":" is in name
-        if loading is not None and ":" in loading:
-            return next(load(loading, relative=True))
+        try:
+            # Loading from entrypoint if ":" is in name
+            if loading is not None and ":" in loading:
+                return next(load(loading, relative=True))
+        except:
+            LOGGER.error("Failed to load %r for %r", loading, cls.ENTRYPOINT)
+            raise
         # Load from registered entrypoints otherwise
         loaded_names = []
         loading_classes = []
