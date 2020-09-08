@@ -58,11 +58,11 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
         Evaluates the accuracy of our model after training using the input records
         as test data.
         """
-        if not hasattr(self.config, "predict"):
+        if not hasattr(self.parent.config, "predict"):
             raise NotImplementedError()
         return Accuracy(
             await accuracy_scorer.score(
-                self.predict(sources), [self.config.predict]
+                self.predict(sources), [self.parent.config.predict]
             )
         )
 
@@ -193,7 +193,10 @@ class SimpleModel(Model):
         if "features" in exported:
             exported["features"] = dict(sorted(exported["features"].items()))
         # Hash the exported config
-        return pathlib.Path(self.config.directory, "Model",)
+        return pathlib.Path(
+            self.config.directory,
+            "Model",
+        )
 
     def applicable_features(self, features):
         usable = []
