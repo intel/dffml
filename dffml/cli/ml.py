@@ -1,3 +1,5 @@
+import inspect
+
 from ..model.model import Model
 from ..source.source import Sources, SubsetSources
 from ..util.cli.cmd import CMD, CMDOutputOverride
@@ -58,6 +60,10 @@ class Accuracy(MLCMD):
     CONFIG = AccuracyCMDConfig
 
     async def run(self):
+        # Instantiate the accuracy scorer class if for some reason it is a class
+        # at this point rather than an instance.
+        if inspect.isclass(self.scorer):
+            self.scorer = self.scorer.withconfig(self.extra_config)
         return await accuracy(self.model, self.scorer, self.sources)
 
 
