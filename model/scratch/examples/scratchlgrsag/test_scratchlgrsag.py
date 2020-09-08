@@ -46,7 +46,7 @@ class TestExample(unittest.TestCase):
             stdout = subprocess.check_output(
                 ["bash", sh_filepath("accuracy.sh")]
             )
-            self.assertEqual(stdout.decode().strip(), "1.0")
+            self.assertEqual(stdout.decode().strip(), "0.0")
             # Make the prediction
             stdout = subprocess.check_output(
                 ["bash", sh_filepath("predict.sh")]
