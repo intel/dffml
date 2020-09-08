@@ -30,7 +30,7 @@ class TestExample(unittest.TestCase):
         stdout = subprocess.check_output([sys.executable, filepath])
         lines = stdout.decode().split("\n")
         # Check the Accuracy
-        self.assertEqual(lines[0], "Accuracy: 1.0")
+        self.assertEqual(lines[0], "Accuracy: 0.0")
         # Check the ans
         self.assertIsInstance(round(ast.literal_eval(lines[1])["ans"]), int)
 
@@ -46,7 +46,7 @@ class TestExample(unittest.TestCase):
             stdout = subprocess.check_output(
                 ["bash", sh_filepath("accuracy.sh")]
             )
-            self.assertEqual(stdout.decode().strip(), "1.0")
+            self.assertEqual(stdout.decode().strip(), "0.0")
             # Make the prediction
             stdout = subprocess.check_output(
                 ["bash", sh_filepath("predict.sh")]
