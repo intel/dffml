@@ -122,9 +122,16 @@ class AutoSklearnModelContext(ModelContext):
 
     async def get_test_records(self, sources: SourcesContext):
         ret_record = []
-        async for record in sources.with_features(self.features):
-            ret_record.append(record)
-        return ret_record
+        try:
+            async for record in sources.with_features(
+                self.features + [self.parent.config.predict.name]
+            ):
+                ret_record.append(record)
+        except Exeption as e:
+            async for record in sources.with_features(self.features):
+                ret_record.append(record)
+        finally:
+            return ret_record
 
     def filepath(self, directory, file):
         return directory / file
@@ -145,6 +152,8 @@ class AutoSklearnModelContext(ModelContext):
         df = pd.DataFrame(all_data)
         y_train = df[[self.parent.config.predict.name]]
         x_train = df.drop(columns=[self.parent.config.predict.name])
+        print(x_train)
+        print(x_train.shape)
         self.model.fit(x_train, y_train)
         self.model.fit_ensemble(
             y_train, ensemble_size=self.parent.config.ensemble_size
@@ -157,7 +166,11 @@ class AutoSklearnModelContext(ModelContext):
                 "Train the model first before getting preictions"
             )
         test_records = await self.get_test_records(sources)
-        x_test = pd.DataFrame([record.features() for record in test_records])
+        x_test = pd.DataFrame(
+            [record.features(self.features) for record in test_records]
+        )
+        print(x_test)
+        print(x_test.shape)
         predictions = await self.get_predictions(x_test)
         probability = await self.get_probabilities(x_test)
         target = self.parent.config.predict.name
