@@ -34,9 +34,6 @@ class AutoSklearnClassifierModelContext(AutoSklearnModelContext):
         """
         self._model = model
 
-    async def accuracy_score(self, y_test, predictions):
-        return sklearn.metrics.accuracy_score(y_test, predictions)
-
     async def get_probabilities(self, data):
         return self.model.predict_proba(data)
 
