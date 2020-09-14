@@ -90,7 +90,9 @@ class AutoSklearnModelContext(ModelContext):
                 "Train the model first before getting preictions"
             )
         test_records = await self.get_test_records(sources)
-        x_test = pd.DataFrame([record.features() for record in test_records])
+        x_test = pd.DataFrame(
+            [record.features(self.features) for record in test_records]
+        )
         predictions = await self.get_predictions(x_test)
         probability = await self.get_probabilities(x_test)
         target = self.parent.config.predict.name
