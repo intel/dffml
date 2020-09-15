@@ -73,6 +73,8 @@ class TestScikitClassification(IntegrationCLITestCase):
         # Assess accuracy
         await CLI.cli(
             "accuracy",
+            "-scorer",
+            "mse",
             "-model",
             "scikitsvc",
             *features,
@@ -174,6 +176,8 @@ class TestScikitRegression(IntegrationCLITestCase):
         # Assess accuracy
         await CLI.cli(
             "accuracy",
+            "-scorer",
+            "mse",
             "-model",
             "scikitridge",
             *features,
@@ -320,6 +324,8 @@ class TestScikitClustering(IntegrationCLITestCase):
                 *(
                     [
                         "accuracy",
+                        "-scorer",
+                        "mse",
                         "-model",
                         model,
                         *features,
