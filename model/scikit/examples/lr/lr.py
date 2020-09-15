@@ -1,6 +1,7 @@
 from dffml import CSVSource, Features, Feature
 from dffml.noasync import train, accuracy, predict
 from dffml_model_scikit import LinearRegressionModel
+from dffml.accuracy import MeanSquaredErrorAccuracy
 
 model = LinearRegressionModel(
     features=Features(
@@ -16,7 +17,8 @@ model = LinearRegressionModel(
 train(model, "train.csv")
 
 # Assess accuracy (alternate way of specifying data source)
-print("Accuracy:", accuracy(model, CSVSource(filename="test.csv")))
+scorer = MeanSquaredErrorAccuracy()
+print("Accuracy:", accuracy(model, scorer, CSVSource(filename="test.csv")))
 
 # Make prediction
 for i, features, prediction in predict(
