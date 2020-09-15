@@ -60,6 +60,15 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
         """
         if not hasattr(self.parent.config, "predict"):
             raise NotImplementedError()
+
+        # Ensure that when predict calls with_features, it doesn't just pass all
+        # the features, but instead passes the features and the feature we want
+        # to predict on. This way we'll ensure that the score method only
+        # happens on records which have ground truth data.
+        sources.with_features = lambda features: sources.with_features(
+            features + [self.parent.config.predict]
+        )
+
         return Accuracy(
             await accuracy_scorer.score(
                 self.predict(sources), [self.parent.config.predict]
