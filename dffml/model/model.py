@@ -59,6 +59,16 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
         """
         if not hasattr(self.parent.config, "predict"):
             raise NotImplementedError()
+
+        # Ensure that when predict calls with_features, it doesn't just pass all
+        # the features, but instead passes the features and the feature we want
+        # to predict on. This way we'll ensure that the score method only
+        # happens on records which have ground truth data.
+        temp = sources.with_features
+        sources.with_features = lambda features: temp(
+            features + [self.parent.config.predict.name]
+        )
+
         return Accuracy(
             await accuracy_scorer.score(
                 self.predict(sources), [self.parent.config.predict]
@@ -192,10 +202,7 @@ class SimpleModel(Model):
         if "features" in exported:
             exported["features"] = dict(sorted(exported["features"].items()))
         # Hash the exported config
-        return pathlib.Path(
-            self.config.directory,
-            "Model",
-        )
+        return pathlib.Path(self.config.directory, "Model",)
 
     def applicable_features(self, features):
         usable = []
