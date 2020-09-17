@@ -13,3 +13,4 @@ or operations.
     operations
     sources/index
     dataflows/index
+    neuralnetwork

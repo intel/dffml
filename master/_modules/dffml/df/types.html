@@ -613,7 +613,42 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_fromdict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="InputFlow.get_alternate_definitions"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.InputFlow.get_alternate_definitions">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_alternate_definitions</span><span class="p">(</span>
+        <span class="n">origin</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="nb">str</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the alternate definitions and origin for an entry within an input</span>
+<span class="sd">        flow. If there are no alternate defintions then the first element of the</span>
+<span class="sd">        returned tuple is an empty list.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        &gt;&gt;&gt; from dffml import InputFlow</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; input_flow = InputFlow(</span>
+<span class="sd">        ...     inputs={</span>
+<span class="sd">        ...         &quot;features&quot;: [</span>
+<span class="sd">        ...             {&quot;seed&quot;: [&quot;Years&quot;, &quot;Expertise&quot;, &quot;Trust&quot;, &quot;Salary&quot;]}</span>
+<span class="sd">        ...         ],</span>
+<span class="sd">        ...         &quot;token&quot;: [</span>
+<span class="sd">        ...             &quot;client&quot;,</span>
+<span class="sd">        ...         ]</span>
+<span class="sd">        ...     }</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; input_flow.get_alternate_definitions(list(input_flow.inputs[&quot;features&quot;][0].items())[0])</span>
+<span class="sd">        ([&#39;Years&#39;, &#39;Expertise&#39;, &#39;Trust&#39;, &#39;Salary&#39;], &#39;seed&#39;)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        input_flow.get_alternate_definitions(list(input_flow.inputs[&quot;other&quot;][0].items())[0])</span>
+<span class="sd">        ([], &#39;client&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[],</span> <span class="n">origin</span></div></div>
 
 
 <div class="viewcode-block" id="Forward"><a class="viewcode-back" href="../../../api/df/types.html#dffml.df.types.Forward">[docs]</a><span class="nd">@dataclass</span>
@@ -786,8 +821,9 @@
                     <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">output_source</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,)):</span>
-                            <span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">_</span><span class="p">,</span> <span class="n">origin</span> <span class="o">=</span> <span class="n">input_flow</span><span class="o">.</span><span class="n">get_alternate_definitions</span><span class="p">(</span>
+                            <span class="n">origin</span>
+                        <span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">by_origin</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">stage</span><span class="p">]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="p">[])</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">by_origin</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">stage</span><span class="p">][</span><span class="n">origin</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                             <span class="n">operation</span>
@@ -809,8 +845,9 @@
                             <span class="c1"># the Input.origin (like &quot;seed&quot;). And the value</span>
                             <span class="c1"># (origin[1]) is the list of definitions which are</span>
                             <span class="c1"># acceptable from that origin for this input.</span>
-                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,)):</span>
-                                <span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                            <span class="n">_</span><span class="p">,</span> <span class="n">origin</span> <span class="o">=</span> <span class="n">input_flow</span><span class="o">.</span><span class="n">get_alternate_definitions</span><span class="p">(</span>
+                                <span class="n">origin</span>
+                            <span class="p">)</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">by_origin</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">stage</span><span class="p">]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span>
                                 <span class="n">origin</span><span class="p">,</span> <span class="p">[]</span>
                             <span class="p">)</span>

@@ -246,6 +246,9 @@
                     <span class="n">filepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="n">filepath</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">common</span> <span class="o">==</span> <span class="n">path</span><span class="p">:</span>
                         <span class="k">break</span>
+                <span class="c1"># Create parent directories of link if they do not exist</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">linkpath</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+                    <span class="n">linkpath</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                 <span class="c1"># Resolving first gives more helpful error message if it fails</span>
                 <span class="n">linkpath</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">symlink_to</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
 

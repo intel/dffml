@@ -106,32 +106,32 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../noasync.html">High Level (noasync)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../version.html">Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../cli/index.html">Cli</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html">Cli</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Data Flow</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="base.html">Data Flow Base Objects</a></li>
 <li class="toctree-l3"><a class="reference internal" href="log.html">Df Log</a></li>
 <li class="toctree-l3"><a class="reference internal" href="multicomm.html">Df Multicomm</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Data Flow Types</a></li>
 <li class="toctree-l3"><a class="reference internal" href="memory.html">Data Flow Memory Objects</a></li>
 <li class="toctree-l3"><a class="reference internal" href="exceptions.html">Df Exceptions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="base.html">Data Flow Base Objects</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
 </ul>
 </li>
 </ul>
@@ -320,7 +320,7 @@ be forwarded to.</p>
 
 <dl class="py class">
 <dt id="dffml.df.types.Input">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Input</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">definition</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#dffml.df.types.Definition" title="dffml.df.types.Definition">dffml.df.types.Definition</a></span></em>, <em class="sig-param"><span class="n">parents</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>Input<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">origin</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">, </span>Tuple<span class="p">[</span><a class="reference internal" href="#dffml.df.types.Operation" title="dffml.df.types.Operation">dffml.df.types.Operation</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'seed'</span></em>, <em class="sig-param"><span class="n">validated</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Input" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.df.types.</code><code class="sig-name descname">Input</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">definition</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#dffml.df.types.Definition" title="dffml.df.types.Definition">dffml.df.types.Definition</a></span></em>, <em class="sig-param"><span class="n">parents</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span><a class="reference internal" href="#dffml.df.types.Input" title="dffml.df.types.Input">Input</a><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">origin</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">, </span>Tuple<span class="p">[</span><a class="reference internal" href="#dffml.df.types.Operation" title="dffml.df.types.Operation">dffml.df.types.Operation</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'seed'</span></em>, <em class="sig-param"><span class="n">validated</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">uid</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/types.html#Input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.Input" title="Permalink to this definition">¶</a></dt>
 <dd><p>All inputs have a unique id. Without it they can’t be tracked for locking
 purposes.</p>
 </dd></dl>
@@ -333,6 +333,35 @@ mapped to a list of locations they can come from. The list contains strings
 in the format of operation_instance_name.key_in_output_mapping or the
 literal “seed” which specifies that the value could be seeded to the
 network.</p>
+<dl class="py method">
+<dt id="dffml.df.types.InputFlow.get_alternate_definitions">
+<em class="property">static </em><code class="sig-name descname">get_alternate_definitions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">origin</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span>Union<span class="p">[</span>List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span><span class="p">, </span>Tuple<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span><span class="p">]</span><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>Union<span class="p">[</span>List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span><span class="p">, </span>Tuple<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span><span class="p">]</span><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span><a class="reference internal" href="../../_modules/dffml/df/types.html#InputFlow.get_alternate_definitions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.types.InputFlow.get_alternate_definitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the alternate definitions and origin for an entry within an input
+flow. If there are no alternate defintions then the first element of the
+returned tuple is an empty list.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">InputFlow</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input_flow</span> <span class="o">=</span> <span class="n">InputFlow</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">inputs</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>            <span class="p">{</span><span class="s2">&quot;seed&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">]}</span>
+<span class="gp">... </span>        <span class="p">],</span>
+<span class="gp">... </span>        <span class="s2">&quot;token&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="gp">... </span>            <span class="s2">&quot;client&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">]</span>
+<span class="gp">... </span>    <span class="p">}</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">input_flow</span><span class="o">.</span><span class="n">get_alternate_definitions</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">input_flow</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">([&#39;Years&#39;, &#39;Expertise&#39;, &#39;Trust&#39;, &#39;Salary&#39;], &#39;seed&#39;)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">input_flow.get_alternate_definitions(list(input_flow.inputs[&quot;other&quot;][0].items())[0])</span>
+<span class="go">([], &#39;client&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">

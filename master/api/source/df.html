@@ -38,8 +38,8 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Source Idx1" href="idx1.html" />
-    <link rel="prev" title="Source Log" href="log.html" /> 
+    <link rel="next" title="Memory Source" href="memory.html" />
+    <link rel="prev" title="Source Dir" href="dir.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -106,39 +106,39 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../noasync.html">High Level (noasync)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../version.html">Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../cli/index.html">Cli</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cli/index.html">Cli</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Sources</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="source.html">Source Source</a></li>
 <li class="toctree-l3"><a class="reference internal" href="log.html">Source Log</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Source Df</a></li>
-<li class="toctree-l3"><a class="reference internal" href="idx1.html">Source Idx1</a></li>
-<li class="toctree-l3"><a class="reference internal" href="op.html">Source Op</a></li>
-<li class="toctree-l3"><a class="reference internal" href="memory.html">Memory Source</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ini.html">Source Ini</a></li>
-<li class="toctree-l3"><a class="reference internal" href="file.html">File Based Sources</a></li>
-<li class="toctree-l3"><a class="reference internal" href="db.html">Source Db</a></li>
-<li class="toctree-l3"><a class="reference internal" href="csv.html">Source Csv</a></li>
 <li class="toctree-l3"><a class="reference internal" href="idx3.html">Source Idx3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="json.html">Source Json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="idx1.html">Source Idx1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="db.html">Source Db</a></li>
+<li class="toctree-l3"><a class="reference internal" href="op.html">Source Op</a></li>
+<li class="toctree-l3"><a class="reference internal" href="file.html">File Based Sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source.html">Source Source</a></li>
 <li class="toctree-l3"><a class="reference internal" href="dir.html">Source Dir</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Source Df</a></li>
+<li class="toctree-l3"><a class="reference internal" href="memory.html">Memory Source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="csv.html">Source Csv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="json.html">Source Json</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ini.html">Source Ini</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
 </ul>
 </li>
 </ul>
@@ -233,7 +233,67 @@
 <dl class="py class">
 <dt id="dffml.source.df.DataFlowSource">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.source.df.</code><code class="sig-name descname">DataFlowSource</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/df.html#DataFlowSource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.df.DataFlowSource" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py attribute">
+<dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">Record</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>            <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="gp">... </span>                <span class="s2">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="s2">&quot;Expertise&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="s2">&quot;Trust&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="s2">&quot;Salary&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+<span class="gp">... </span>            <span class="p">}</span>
+<span class="gp">... </span>        <span class="p">},</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">features</span> <span class="o">=</span> <span class="n">Features</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Expertise&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Feature</span><span class="p">(</span><span class="s2">&quot;Salary&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="p">(</span><span class="n">multiply</span><span class="p">,</span> <span class="n">AssociateDefinition</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">flow</span><span class="p">[</span><span class="s2">&quot;multiply&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;multiplicand&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s2">&quot;seed&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">,</span> <span class="s2">&quot;Trust&quot;</span><span class="p">,</span> <span class="s2">&quot;Salary&quot;</span><span class="p">]}</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">value</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>            <span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">multiply</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;product&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+<span class="gp">... </span>            <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">features</span>
+<span class="gp">... </span>        <span class="p">},</span>
+<span class="gp">... </span>        <span class="n">definition</span><span class="o">=</span><span class="n">AssociateDefinition</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;spec&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">multiply</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;multiplier&quot;</span><span class="p">],),</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">memory_source</span> <span class="o">=</span> <span class="n">Sources</span><span class="p">(</span><span class="n">MemorySource</span><span class="p">(</span><span class="n">MemorySourceConfig</span><span class="p">(</span><span class="n">records</span><span class="o">=</span><span class="n">records</span><span class="p">)))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">source</span> <span class="o">=</span> <span class="n">DataFlowSource</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">DataFlowSourceConfig</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="n">source</span><span class="o">=</span><span class="n">memory_source</span><span class="p">,</span> <span class="n">dataflow</span><span class="o">=</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">features</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">source</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">src</span><span class="p">()</span> <span class="k">as</span> <span class="n">sctx</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">sctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
+<span class="gp">... </span>                <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">())</span>
+<span class="gp">...</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;Years&#39;: 10, &#39;Expertise&#39;: 30, &#39;Trust&#39;: 2.0, &#39;Salary&#39;: 200}</span>
+</pre></div>
+</div>
+<dl class="py attribute">
 <dt id="dffml.source.df.DataFlowSource.CONFIG">
 <code class="sig-name descname">CONFIG</code><a class="headerlink" href="#dffml.source.df.DataFlowSource.CONFIG" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="#dffml.source.df.DataFlowSourceConfig" title="dffml.source.df.DataFlowSourceConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFlowSourceConfig</span></code></a></p>
@@ -249,13 +309,39 @@
 
 <dl class="py class">
 <dt id="dffml.source.df.DataFlowSourceConfig">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.source.df.</code><code class="sig-name descname">DataFlowSourceConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span><span class="p">:</span> <span class="n"><a class="reference internal" href="source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource">dffml.source.source.BaseSource</a></span></em>, <em class="sig-param"><span class="n">dataflow</span><span class="p">:</span> <span class="n">dffml.df.types.DataFlow</span></em>, <em class="sig-param"><span class="n">features</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../feature/feature.html#dffml.feature.feature.Features" title="dffml.feature.feature.Features">dffml.feature.feature.Features</a></span></em>, <em class="sig-param"><span class="n">orchestrator</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../df/base.html#dffml.df.base.BaseOrchestrator" title="dffml.df.base.BaseOrchestrator">dffml.df.base.BaseOrchestrator</a></span> <span class="o">=</span> <span class="default_value">MemoryOrchestrator(MemoryOrchestratorConfig(input_network=MemoryInputNetwork(MemoryInputNetworkConfig()), operation_network=MemoryOperationNetwork(MemoryOperationNetworkConfig(operations=[])), lock_network=MemoryLockNetwork(MemoryLockNetworkConfig()), opimp_network=MemoryOperationImplementationNetwork(MemoryOperationImplementationNetworkConfig(operations={})), rchecker=MemoryRedundancyChecker(MemoryRedundancyCheckerConfig(kvstore=MemoryKeyValueStore(MemoryKeyValueStoreConfig())))))</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/df.html#DataFlowSourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.df.DataFlowSourceConfig" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.df.</code><code class="sig-name descname">DataFlowSourceConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span><span class="p">:</span> <span class="n"><a class="reference internal" href="source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource">dffml.source.source.BaseSource</a></span></em>, <em class="sig-param"><span class="n">dataflow</span><span class="p">:</span> <span class="n">dffml.df.types.DataFlow</span></em>, <em class="sig-param"><span class="n">features</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../feature/feature.html#dffml.feature.feature.Features" title="dffml.feature.feature.Features">dffml.feature.feature.Features</a></span></em>, <em class="sig-param"><span class="n">length</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">all_for_single</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">orchestrator</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../df/base.html#dffml.df.base.BaseOrchestrator" title="dffml.df.base.BaseOrchestrator">dffml.df.base.BaseOrchestrator</a></span> <span class="o">=</span> <span class="default_value">MemoryOrchestrator(MemoryOrchestratorConfig(input_network=MemoryInputNetwork(MemoryInputNetworkConfig()), operation_network=MemoryOperationNetwork(MemoryOperationNetworkConfig(operations=[])), lock_network=MemoryLockNetwork(MemoryLockNetworkConfig()), opimp_network=MemoryOperationImplementationNetwork(MemoryOperationImplementationNetworkConfig(operations={})), rchecker=MemoryRedundancyChecker(MemoryRedundancyCheckerConfig(kvstore=MemoryKeyValueStore(MemoryKeyValueStoreConfig())))))</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/df.html#DataFlowSourceConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.df.DataFlowSourceConfig" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
 <dt id="dffml.source.df.DataFlowSourceContext">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.source.df.</code><code class="sig-name descname">DataFlowSourceContext</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="p">:</span> <span class="n"><a class="reference internal" href="source.html#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource">dffml.source.source.BaseSource</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/df.html#DataFlowSourceContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.df.DataFlowSourceContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
+<dt id="dffml.source.df.DataFlowSourceContext.record">
+<code class="sig-name descname">record</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em><span class="sig-paren">)</span> &#x2192; AsyncIterator<span class="p">[</span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record">dffml.record.Record</a><span class="p">]</span><a class="reference internal" href="../../_modules/dffml/source/df.html#DataFlowSourceContext.record"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.df.DataFlowSourceContext.record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a record from the source or add it if it doesn’t exist.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">async</span> <span class="k">with</span> <span class="n">MemorySource</span><span class="p">(</span><span class="n">records</span><span class="o">=</span><span class="p">[</span><span class="n">Record</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">features</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dead</span><span class="o">=</span><span class="s2">&quot;beef&quot;</span><span class="p">)))])</span> <span class="k">as</span> <span class="n">source</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="c1"># Open, update, and close</span>
+<span class="gp">... </span>        <span class="k">async</span> <span class="k">with</span> <span class="n">source</span><span class="p">()</span> <span class="k">as</span> <span class="n">ctx</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="n">example</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="c1"># Let&#39;s also try calling `record` for a record that doesnt exist.</span>
+<span class="gp">... </span>            <span class="n">one</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="s2">&quot;one&quot;</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">one</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
+<span class="gp">... </span>                <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+<span class="go">{&#39;key&#39;: &#39;example&#39;, &#39;features&#39;: {&#39;dead&#39;: &#39;beef&#39;}, &#39;extra&#39;: {}}</span>
+<span class="go">{&#39;key&#39;: &#39;one&#39;, &#39;extra&#39;: {}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt id="dffml.source.df.DataFlowSourceContext.records">
 <code class="sig-name descname">records</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; AsyncIterator<span class="p">[</span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record">dffml.record.Record</a><span class="p">]</span><a class="reference internal" href="../../_modules/dffml/source/df.html#DataFlowSourceContext.records"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.df.DataFlowSourceContext.records" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of records retrieved from self.src</p>
@@ -302,6 +388,16 @@
 
 </dd></dl>
 
+<dl class="py class">
+<dt id="dffml.source.df.RecordContextHandle">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.df.</code><code class="sig-name descname">RecordContextHandle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ctx</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../df/base.html#dffml.df.base.BaseInputSetContext" title="dffml.df.base.BaseInputSetContext">dffml.df.base.BaseInputSetContext</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/df.html#RecordContextHandle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.df.RecordContextHandle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="dffml.source.df.RecordInputSetContext">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.df.</code><code class="sig-name descname">RecordInputSetContext</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">record</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record">dffml.record.Record</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/df.html#RecordInputSetContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.df.RecordInputSetContext" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 
 
@@ -312,10 +408,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="idx1.html" class="btn btn-neutral float-right" title="Source Idx1" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="memory.html" class="btn btn-neutral float-right" title="Memory Source" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="log.html" class="btn btn-neutral float-left" title="Source Log" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="dir.html" class="btn btn-neutral float-left" title="Source Dir" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

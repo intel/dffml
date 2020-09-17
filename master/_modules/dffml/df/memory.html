@@ -676,12 +676,10 @@
                     <span class="c1"># Ensure all conditions from all origins are True</span>
                     <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">origins</span><span class="p">:</span>
                         <span class="c1"># See comment in input_flow.inputs section</span>
-                        <span class="n">alternate_definitions</span> <span class="o">=</span> <span class="p">[]</span>
-                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
-                            <span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
-                        <span class="p">):</span>
-                            <span class="n">alternate_definitions</span> <span class="o">=</span> <span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-                            <span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="p">(</span>
+                            <span class="n">alternate_definitions</span><span class="p">,</span>
+                            <span class="n">origin</span><span class="p">,</span>
+                        <span class="p">)</span> <span class="o">=</span> <span class="n">input_flow</span><span class="o">.</span><span class="n">get_alternate_definitions</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
                         <span class="c1"># Bail if the condition doesn&#39;t exist</span>
                         <span class="k">if</span> <span class="ow">not</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">by_origin</span><span class="p">:</span>
                             <span class="k">return</span>
@@ -733,12 +731,10 @@
                             <span class="c1"># These definitions will be used instead of the</span>
                             <span class="c1"># default one the input specified for the</span>
                             <span class="c1"># operation).</span>
-                            <span class="n">alternate_definitions</span> <span class="o">=</span> <span class="p">[]</span>
-                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
-                                <span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
-                            <span class="p">):</span>
-                                <span class="n">alternate_definitions</span> <span class="o">=</span> <span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-                                <span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                            <span class="p">(</span>
+                                <span class="n">alternate_definitions</span><span class="p">,</span>
+                                <span class="n">origin</span><span class="p">,</span>
+                            <span class="p">)</span> <span class="o">=</span> <span class="n">input_flow</span><span class="o">.</span><span class="n">get_alternate_definitions</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
                             <span class="c1"># Don&#39;t try to grab inputs from an origin that</span>
                             <span class="c1"># doesn&#39;t have any to give us</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">by_origin</span><span class="p">:</span>
@@ -1474,6 +1470,10 @@
         <span class="n">ctx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseInputSetContext</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">input_set</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">],</span> <span class="n">BaseInputSet</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseInputSetContext</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ctx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">BaseInputSetContext</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;ctx </span><span class="si">{</span><span class="n">ctx</span><span class="si">}</span><span class="s2"> is of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span><span class="si">}</span><span class="s2">, should be BaseInputSetContext&quot;</span>
+            <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Seeding dataflow with input_set: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">input_set</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">input_set</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Create a list if extra inputs were not given</span>
@@ -1564,7 +1564,9 @@
                 <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward_inputs_to_subflow</span><span class="p">(</span><span class="n">input_set</span><span class="p">)</span>
                 <span class="n">ctxs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed_inputs</span><span class="p">(</span>
-                        <span class="n">ctx</span><span class="o">=</span><span class="n">StringInputSetContext</span><span class="p">(</span><span class="n">ctx_string</span><span class="p">),</span>
+                        <span class="n">ctx</span><span class="o">=</span><span class="n">StringInputSetContext</span><span class="p">(</span><span class="n">ctx_string</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ctx_string</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                        <span class="k">else</span> <span class="n">ctx_string</span><span class="p">,</span>
                         <span class="n">input_set</span><span class="o">=</span><span class="n">input_set</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="p">)</span>

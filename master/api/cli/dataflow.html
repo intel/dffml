@@ -38,8 +38,8 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Configloader" href="../configloader/index.html" />
-    <link rel="prev" title="Cli Ml" href="ml.html" /> 
+    <link rel="next" title="Cli Cli" href="cli.html" />
+    <link rel="prev" title="Cli" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -106,31 +106,31 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">Command Line</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../plugins/service/http/index.html">HTTP API</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../base.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../log.html">Log</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../record.html">Record</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../noasync.html">High Level (noasync)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../high_level.html">High Level</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins.html">Plugins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../version.html">Version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Cli</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="list.html">Cli List</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Cli Dataflow</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cli.html">Cli Cli</a></li>
 <li class="toctree-l3"><a class="reference internal" href="config.html">Cli Config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list.html">Cli List</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ml.html">Cli Ml</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Cli Dataflow</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../operation/index.html">Operation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../df/index.html">Data Flow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configloader/index.html">Configloader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../util/index.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../source/index.html">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../port/index.html">Port</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../service/index.html">Service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../db/index.html">Databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../feature/index.html">Feature</a></li>
 </ul>
 </li>
 </ul>
@@ -296,6 +296,11 @@
 </dd></dl>
 
 <dl class="py class">
+<dt id="dffml.cli.dataflow.RunContextsConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.dataflow.</code><code class="sig-name descname">RunContextsConfig</code><span class="sig-paren">(</span><em class="sig-param">dataflow: str</em>, <em class="sig-param">no_echo: bool = False</em>, <em class="sig-param">configloader: dffml.configloader.configloader.BaseConfigLoader = None</em>, <em class="sig-param">orchestrator: dffml.df.base.BaseOrchestrator = &lt;class 'dffml.df.memory.MemoryOrchestrator'&gt;</em>, <em class="sig-param">inputs: List[str] = &lt;factory&gt;</em>, <em class="sig-param">no_strict: bool = False</em>, <em class="sig-param">context_def: str = False</em>, <em class="sig-param">contexts: List[str] = &lt;factory&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#RunContextsConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.dataflow.RunContextsConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
 <dt id="dffml.cli.dataflow.RunRecordSet">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.cli.dataflow.</code><code class="sig-name descname">RunRecordSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#RunRecordSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.dataflow.RunRecordSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run dataflow for single record or set of records</p>
@@ -324,6 +329,17 @@
 <dd><p>Run DataFlow and assign output to a record</p>
 </dd></dl>
 
+<dl class="py class">
+<dt id="dffml.cli.dataflow.RunSingleConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.cli.dataflow.</code><code class="sig-name descname">RunSingleConfig</code><span class="sig-paren">(</span><em class="sig-param">dataflow: str</em>, <em class="sig-param">no_echo: bool = False</em>, <em class="sig-param">configloader: dffml.configloader.configloader.BaseConfigLoader = None</em>, <em class="sig-param">orchestrator: dffml.df.base.BaseOrchestrator = &lt;class 'dffml.df.memory.MemoryOrchestrator'&gt;</em>, <em class="sig-param">inputs: List[str] = &lt;factory&gt;</em>, <em class="sig-param">no_strict: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/cli/dataflow.html#RunSingleConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.cli.dataflow.RunSingleConfig" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="dffml.cli.dataflow.RunSingleConfig.orchestrator">
+<code class="sig-name descname">orchestrator</code><a class="headerlink" href="#dffml.cli.dataflow.RunSingleConfig.orchestrator" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="../df/memory.html#dffml.df.memory.MemoryOrchestrator" title="dffml.df.memory.MemoryOrchestrator"><code class="xref py py-class docutils literal notranslate"><span class="pre">dffml.df.memory.MemoryOrchestrator</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -334,10 +350,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../configloader/index.html" class="btn btn-neutral float-right" title="Configloader" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="cli.html" class="btn btn-neutral float-right" title="Cli Cli" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="ml.html" class="btn btn-neutral float-left" title="Cli Ml" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Cli" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

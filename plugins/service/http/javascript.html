@@ -279,7 +279,7 @@ following files.</p>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Created test_sctx&quot;</span><span class="p">,</span> <span class="nx">test_sctx</span><span class="p">);</span>
 
   <span class="c1">// Create an array of all the records for fun</span>
-  <span class="kd">var</span> <span class="nx">records</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">training_sctx</span><span class="p">.</span><span class="nx">records</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">records</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">training_sctx</span><span class="p">.</span><span class="nx">records</span><span class="p">(</span><span class="mf">100</span><span class="p">);</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Training records&quot;</span><span class="p">,</span> <span class="nx">records</span><span class="p">);</span>
 
   <span class="kd">var</span> <span class="nx">records_array</span> <span class="o">=</span> <span class="p">[];</span>
@@ -300,7 +300,7 @@ following files.</p>
           <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="p">[{</span>
             <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Salary&quot;</span><span class="p">,</span>
             <span class="s2">&quot;dtype&quot;</span><span class="o">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mi">1</span>
+            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mf">1</span>
           <span class="p">},</span> <span class="p">],</span>
           <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{}</span>
         <span class="p">},</span>
@@ -308,15 +308,15 @@ following files.</p>
           <span class="s2">&quot;plugin&quot;</span><span class="o">:</span> <span class="p">[{</span>
             <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Years&quot;</span><span class="p">,</span>
             <span class="s2">&quot;dtype&quot;</span><span class="o">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mi">1</span>
+            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mf">1</span>
           <span class="p">},</span> <span class="p">{</span>
             <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Expertise&quot;</span><span class="p">,</span>
             <span class="s2">&quot;dtype&quot;</span><span class="o">:</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mi">1</span>
+            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mf">1</span>
           <span class="p">},</span> <span class="p">{</span>
             <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Trust&quot;</span><span class="p">,</span>
             <span class="s2">&quot;dtype&quot;</span><span class="o">:</span> <span class="s2">&quot;float&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mi">1</span>
+            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mf">1</span>
           <span class="p">}],</span>
           <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{}</span>
         <span class="p">}</span>
@@ -338,15 +338,15 @@ following files.</p>
   <span class="kd">var</span> <span class="nx">prediction</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">mctx</span><span class="p">.</span><span class="nx">predict</span><span class="p">({</span>
     <span class="s2">&quot;mish_the_smish&quot;</span><span class="o">:</span> <span class="p">{</span>
       <span class="s2">&quot;features&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;Years&quot;</span><span class="o">:</span> <span class="mi">6</span><span class="p">,</span>
-        <span class="s2">&quot;Expertise&quot;</span><span class="o">:</span> <span class="mi">13</span><span class="p">,</span>
+        <span class="s2">&quot;Years&quot;</span><span class="o">:</span> <span class="mf">6</span><span class="p">,</span>
+        <span class="s2">&quot;Expertise&quot;</span><span class="o">:</span> <span class="mf">13</span><span class="p">,</span>
         <span class="s2">&quot;Trust&quot;</span><span class="o">:</span> <span class="mf">1.4</span>
       <span class="p">}</span>
     <span class="p">}</span>
   <span class="p">});</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Model context predict&quot;</span><span class="p">,</span> <span class="nx">prediction</span><span class="p">);</span>
 
-  <span class="k">if</span> <span class="p">(</span><span class="nx">prediction</span><span class="p">.</span><span class="nx">mish_the_smish</span><span class="p">.</span><span class="nx">prediction</span><span class="p">.</span><span class="nx">Salary</span><span class="p">.</span><span class="nx">value</span> <span class="o">!==</span> <span class="mi">70</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">prediction</span><span class="p">.</span><span class="nx">mish_the_smish</span><span class="p">.</span><span class="nx">prediction</span><span class="p">.</span><span class="nx">Salary</span><span class="p">.</span><span class="nx">value</span> <span class="o">!==</span> <span class="mf">70</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">prediction</span><span class="p">)</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;prediction.mish_the_smish.prediction.value was not 70!&quot;</span><span class="p">);</span>
   <span class="p">}</span>

@@ -187,7 +187,7 @@
 <span></span><span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">hashlib</span>
 <span class="kn">import</span> <span class="nn">contextlib</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
 
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">BaseConfig</span>
 <span class="kn">from</span> <span class="nn">..df.base</span> <span class="kn">import</span> <span class="n">BaseOrchestrator</span><span class="p">,</span> <span class="n">OperationImplementation</span>
@@ -213,6 +213,7 @@
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..util.cli.parser</span> <span class="kn">import</span> <span class="n">ParseInputsAction</span>
 <span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span> <span class="nn">..high_level</span> <span class="kn">import</span> <span class="n">run</span> <span class="k">as</span> <span class="n">run_dataflow</span>
 
 
 <div class="viewcode-block" id="MergeConfig"><a class="viewcode-back" href="../../../api/cli/dataflow.html#dffml.cli.dataflow.MergeConfig">[docs]</a><span class="nd">@config</span>
@@ -515,9 +516,120 @@
     <span class="n">_all</span> <span class="o">=</span> <span class="n">RunAllRecords</span></div>
 
 
+<div class="viewcode-block" id="RunSingleConfig"><a class="viewcode-back" href="../../../api/cli/dataflow.html#dffml.cli.dataflow.RunSingleConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">RunSingleConfig</span><span class="p">:</span>
+    <span class="n">dataflow</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;File containing exported DataFlow&quot;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">no_echo</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Do not echo back records&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">configloader</span><span class="p">:</span> <span class="n">BaseConfigLoader</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;ConfigLoader to use for importing DataFlow&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">orchestrator</span><span class="p">:</span> <span class="n">BaseOrchestrator</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Orchestrator&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">MemoryOrchestrator</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Other inputs to add under each ctx&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="n">ParseInputsAction</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="p">)</span>
+    <span class="n">no_strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Do not exit on operation exceptions, just log errors&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">RunSingle</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">RunSingleConfig</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orchestrator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orchestrator</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_config</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_dataflow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataflow_path</span><span class="p">):</span>
+        <span class="n">dataflow_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">dataflow_path</span><span class="p">)</span>
+        <span class="n">config_cls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">configloader</span>
+        <span class="k">if</span> <span class="n">config_cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">config_type</span> <span class="o">=</span> <span class="n">dataflow_path</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">config_cls</span> <span class="o">=</span> <span class="n">BaseConfigLoader</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">config_type</span><span class="p">)</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">config_cls</span><span class="o">.</span><span class="n">withconfig</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_config</span><span class="p">)</span> <span class="k">as</span> <span class="n">configloader</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="n">configloader</span><span class="p">()</span> <span class="k">as</span> <span class="n">loader</span><span class="p">:</span>
+                <span class="n">exported</span> <span class="o">=</span> <span class="k">await</span> <span class="n">loader</span><span class="o">.</span><span class="n">loadb</span><span class="p">(</span><span class="n">dataflow_path</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">())</span>
+                <span class="n">dataflow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">_fromdict</span><span class="p">(</span><span class="o">**</span><span class="n">exported</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dataflow</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dataflow</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataflow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataflow</span><span class="p">)</span>
+        <span class="n">dataflow_inputs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">def_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">dataflow_inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">dataflow</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="n">def_name</span><span class="p">],)</span>
+            <span class="p">)</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">results</span> <span class="ow">in</span> <span class="n">run_dataflow</span><span class="p">(</span>
+            <span class="n">dataflow</span><span class="p">,</span>
+            <span class="n">dataflow_inputs</span><span class="p">,</span>
+            <span class="n">orchestrator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">orchestrator</span><span class="p">,</span>
+            <span class="n">strict</span><span class="o">=</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_strict</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_echo</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">results</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_echo</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">CMDOutputOverride</span>
+
+
+<div class="viewcode-block" id="RunContextsConfig"><a class="viewcode-back" href="../../../api/cli/dataflow.html#dffml.cli.dataflow.RunContextsConfig">[docs]</a><span class="nd">@config</span>
+<span class="k">class</span> <span class="nc">RunContextsConfig</span><span class="p">(</span><span class="n">RunSingleConfig</span><span class="p">):</span>
+    <span class="n">context_def</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Definition to be used for contexts key. &quot;</span>
+        <span class="o">+</span> <span class="s2">&quot;If set, the key will be added to the set of inputs &quot;</span>
+        <span class="o">+</span> <span class="s2">&quot;under each context (which is also the contexts name)&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">contexts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Contexts to run&quot;</span><span class="p">,</span> <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;context1&quot;</span><span class="p">],</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">RunContexts</span><span class="p">(</span><span class="n">RunSingle</span><span class="p">):</span>
+    <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">RunContextsConfig</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dataflow</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataflow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataflow</span><span class="p">)</span>
+        <span class="n">common_inputs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">def_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
+            <span class="n">common_inputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">definition</span><span class="o">=</span><span class="n">dataflow</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="n">def_name</span><span class="p">],)</span>
+            <span class="p">)</span>
+
+        <span class="n">dataflow_inputs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">ctx_string</span><span class="p">:</span> <span class="p">[</span>
+                <span class="n">Input</span><span class="p">(</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">ctx_string</span><span class="p">,</span>
+                    <span class="n">definition</span><span class="o">=</span><span class="n">dataflow</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">context_def</span><span class="p">],</span>
+                <span class="p">)</span>
+            <span class="p">]</span>
+            <span class="o">+</span> <span class="n">common_inputs</span>
+            <span class="k">for</span> <span class="n">ctx_string</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">contexts</span>
+        <span class="p">}</span>
+
+        <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">run_dataflow</span><span class="p">(</span>
+            <span class="n">dataflow</span><span class="p">,</span>
+            <span class="n">dataflow_inputs</span><span class="p">,</span>
+            <span class="n">orchestrator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">orchestrator</span><span class="p">,</span>
+            <span class="n">strict</span><span class="o">=</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_strict</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_echo</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="p">{(</span><span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">())</span><span class="o">.</span><span class="n">as_string</span><span class="p">():</span> <span class="n">result</span><span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_echo</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">CMDOutputOverride</span>
+
+
 <div class="viewcode-block" id="Run"><a class="viewcode-back" href="../../../api/cli/dataflow.html#dffml.cli.dataflow.Run">[docs]</a><span class="k">class</span> <span class="nc">Run</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Run dataflow&quot;&quot;&quot;</span>
 
+    <span class="n">single</span> <span class="o">=</span> <span class="n">RunSingle</span>
+    <span class="n">contexts</span> <span class="o">=</span> <span class="n">RunContexts</span>
     <span class="n">records</span> <span class="o">=</span> <span class="n">RunRecords</span></div>
 
 

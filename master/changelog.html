@@ -285,10 +285,17 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <div class="section" id="added">
 <h3>Added<a class="headerlink" href="#added" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
+<li><p>CLI and Python example usage of Custom Neural Network</p></li>
+<li><p>PyTorch loss function entrypoint style loading</p></li>
+<li><p>Custom Neural Network, last layer support for pre-trained models</p></li>
+<li><p>Example usage of sklearn operations</p></li>
+<li><p>Example Flower17 species image classification</p></li>
+<li><p>Configloading ablity from CLI using “&#64;” before filename</p></li>
+<li><p>Docstrings and doctestable example for DataFlowSource</p></li>
 <li><p>XGBoost Regression Model</p></li>
 <li><p>Pre-Trained PyTorch torchvision Models</p></li>
 <li><p>Spacy model for NER</p></li>
-<li><p>Added ability to rename outputs using GetSingle</p></li>
+<li><p>Ability to rename outputs using GetSingle</p></li>
 <li><p>Tutorial for using NLP operations with models</p></li>
 <li><p>Operations plugin for NLP wrapping spacy and scikit functions</p></li>
 <li><p>Support for default value in a Definition</p></li>
@@ -350,6 +357,7 @@ HTTP 307 response</p></li>
 <li><p>Support for immediate response in HTTP service</p></li>
 <li><p>Daal4py example usage.</p></li>
 <li><p>Gitter chatbot tutorial.</p></li>
+<li><p>Option to run dataflow without sources from cli.</p></li>
 </ul>
 </div>
 <div class="section" id="changed">
@@ -391,6 +399,7 @@ packaging the model.</p></li>
 <div class="section" id="fixed">
 <h3>Fixed<a class="headerlink" href="#fixed" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">export_value</span></code> now converts numpy array to JSON serializable datatype</p></li>
 <li><p>CSV source overwriting configloaded data to every row</p></li>
 <li><p>Race condition in <code class="docutils literal notranslate"><span class="pre">MemoryRedundancyChecker</span></code> when more than 4 possible
 parameter sets for an operation.</p></li>

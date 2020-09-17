@@ -113,6 +113,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#memory">memory</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#dffml-source-mysql">dffml_source_mysql</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mysql">mysql</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="dffml_model.html">Models</a></li>
@@ -341,6 +345,59 @@ stored in memory.</p>
 <p><strong>Args</strong></p>
 <ul class="simple">
 <li><p>records: List of records</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="dffml-source-mysql">
+<span id="plugin-source-dffml-source-mysql"></span><h2>dffml_source_mysql<a class="headerlink" href="#dffml-source-mysql" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install dffml-source-mysql</span>
+</pre></div>
+</div>
+<div class="section" id="mysql">
+<span id="plugin-source-dffml-source-mysql-mysql"></span><h3>mysql<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>host: String</p>
+<ul>
+<li><p>default: 127.0.0.1</p></li>
+</ul>
+</li>
+<li><p>port: Integer</p>
+<ul>
+<li><p>default: 3306</p></li>
+</ul>
+</li>
+<li><p>user: String</p></li>
+<li><p>password: String</p></li>
+<li><p>db: String</p></li>
+<li><p>records-query: String</p>
+<ul>
+<li><p>SELECT <cite>key</cite> as key, data_1 as feature_1, data_2 as feature_2 FROM record_data</p></li>
+</ul>
+</li>
+<li><p>record-query: String</p>
+<ul>
+<li><p>SELECT <cite>key</cite> as key, data_1 as feature_1, data_2 as feature_2 FROM record_data WHERE <a href="#id1"><span class="problematic" id="id2">`</span></a>key`=%s</p></li>
+</ul>
+</li>
+<li><p>update-query: String</p>
+<ul>
+<li><p>INSERT INTO record_data (<cite>key</cite>, data_1, data_2) VALUES(%s, %s, %s) ON DUPLICATE KEY UPDATE data_1 = %s, data_2=%s</p></li>
+</ul>
+</li>
+<li><p>model-columns: List of strings</p>
+<ul>
+<li><p>Order of Columns in table</p></li>
+</ul>
+</li>
+<li><p>ca: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Path to server TLS certificate</p></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
