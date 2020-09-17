@@ -380,7 +380,13 @@ class Install(CMD):
             if "/".join(package) in self.skip:
                 continue
             package_path = Path(*main_package.parts, *package)
-            cmd = [sys.executable, "-m", "pip", "install"]
+            cmd = [
+                sys.executable,
+                "-m",
+                "pip",
+                "install",
+                "--use-feature=2020-resolver",
+            ]
             # Install to prefix, since --user sometimes fails
             if self.user:
                 local_path = Path("~", ".local").expanduser().absolute()
