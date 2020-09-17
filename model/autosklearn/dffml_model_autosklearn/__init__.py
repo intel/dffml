@@ -15,7 +15,9 @@ To provide a C++11 building environment and the lateste SWIG version on Ubuntu, 
 Install other PyPi dependencies with
 
 .. code-block:: console
-    $ curl https://raw.githubusercontent.com/automl/auto-sklearn/master/requirements.txt | xargs -n 1 -L 1 pip install
+
+    $ python3 -m pip install cython liac-arff psutil
+    $ curl https://raw.githubusercontent.com/automl/auto-sklearn/master/requirements.txt | xargs -n 1 -L 1 python3 -m pip install
 
 For more information about installation visit https://automl.github.io/auto-sklearn/master/installation.html#installation
 """
