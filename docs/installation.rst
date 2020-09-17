@@ -10,10 +10,7 @@ DFFML is available via pip.
 
 .. code-block:: console
 
-    $ python3 -m pip install -U dffml[all]
-
-The ``[all]`` suffix tells ``pip`` to install all of the core plugins. This
-includes the ``sklearn`` and ``tensorflow`` models, ``MySQL`` source, etc.
+    $ python3 -m pip install -U dffml
 
 If you want to stay on the bleeding edge of bug fixes, etc. You can install from
 the master branch.
