@@ -83,6 +83,6 @@ class TestCLIUse(AsyncTestCase):
                 )
             output = stdout.getvalue()
             # cargo audit
-            self.assertIn("low=2,", output)
+            self.assertIn("low=3,", output)
             # npm audit
-            self.assertIn("high=6,", output)
+            self.assertIn("high=8,", output)
