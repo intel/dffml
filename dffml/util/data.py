@@ -16,6 +16,8 @@ from functools import wraps
 import pathlib
 from typing import Callable
 
+from .log import LOGGER
+
 try:
     from typing import get_origin, get_args
 except ImportError:
@@ -141,7 +143,13 @@ def traverse_get(target, *args):
         args = split_dot_seperated(args[0])
     current = target
     for level in args:
-        current = current[level]
+        try:
+            current = current[level]
+        except TypeError:
+            LOGGER.getChild("traverse_get").error(
+                "args %r, target: %r", args, target
+            )
+            raise
     return current
 
 
