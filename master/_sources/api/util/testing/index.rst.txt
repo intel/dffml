@@ -5,4 +5,5 @@ Util Testing
     :maxdepth: 2
     :caption: Contents:
 
+    docs
     source

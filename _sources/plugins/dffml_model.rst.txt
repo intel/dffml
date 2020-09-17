@@ -90,3 +90,1101 @@ Example usage of Logistic Regression using Python
 
   - default: ~/.cache/dffml/slr
   - Directory where state should be saved
+
+.. _plugin_model_dffml_model_tensorflow:
+
+dffml_model_tensorflow
+----------------------
+
+.. code-block:: console
+
+    pip install dffml-model-tensorflow
+
+
+.. note::
+
+    It's important to keep the hidden layer config and feature config the same
+    across invocations of train, predict, and accuracy methods.
+
+    Models are saved under the ``directory`` parameter in subdirectories named
+    after the hash of their feature names and hidden layer config. Which means
+    if any of those parameters change between invocations, it's being told to
+    look for a different saved model.
+
+.. _plugin_model_dffml_model_tensorflow_tfdnnc:
+
+tfdnnc
+~~~~~~
+
+*Official*
+
+Implemented using Tensorflow's DNNClassifier.
+
+First we create the training and testing datasets
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/train_data.sh
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/accuracy.sh
+
+Output
+
+.. code-block::
+
+    0.99996233782
+
+Make a prediction
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/predict.sh
+
+Output
+
+.. code-block:: json
+
+    [
+        {
+            "extra": {},
+            "features": {
+                "PetalLength": 4.2,
+                "PetalWidth": 1.5,
+                "SepalLength": 5.9,
+                "SepalWidth": 3.0,
+                "classification": 1
+            },
+            "last_updated": "2019-07-31T02:00:12Z",
+            "prediction": {
+                "classification":
+                    {
+                        "confidence": 0.9999997615814209,
+                        "value": 1
+                    }
+            },
+            "key": "0"
+        },
+    ]
+
+Example usage of Tensorflow DNNClassifier model using python API
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/tfdnnc.py
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding target values
+
+- features: List of features
+
+  - Features to train on
+
+- steps: Integer
+
+  - default: 3000
+  - Number of steps to train the model
+
+- epochs: Integer
+
+  - default: 30
+  - Number of iterations to pass over all records in a source
+
+- directory: Path
+
+  - default: ~/.cache/dffml/tensorflow
+  - Directory where state should be saved
+
+- hidden: List of integers
+
+  - default: [12, 40, 15]
+  - List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- batchsize: Integer
+
+  - default: 20
+  - Number records to pass through in an epoch
+
+- shuffle: Boolean
+
+  - default: True
+  - Randomise order of records in a batch
+
+.. _plugin_model_dffml_model_tensorflow_tfdnnr:
+
+tfdnnr
+~~~~~~
+
+*Official*
+
+Implemented using Tensorflow's DNNEstimator.
+
+Usage:
+
+* predict: Name of the feature we are trying to predict or using for training.
+
+Generating train and test data
+
+* This creates files `train.csv` and `test.csv`,
+  make sure to take a BACKUP of files with same name in the directory
+  from where this command is run as it overwrites any existing files.
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/train_data.sh
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/accuracy.sh
+
+Output
+
+.. code-block::
+
+    0.9468210011
+
+Make a prediction
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/predict.sh
+
+Output
+
+.. code-block:: json
+
+    [
+        {
+            "extra": {},
+            "features": {
+                "Feature1": 0.21,
+                "Feature2": 0.18,
+                "TARGET": 0.84
+            },
+            "last_updated": "2019-10-24T15:26:41Z",
+            "prediction": {
+                "TARGET" : {
+                    "confidence": NaN,
+                    "value": 1.1983429193496704
+                }
+            },
+            "key": 0
+        }
+    ]
+
+Example usage of Tensorflow DNNEstimator model using python API
+
+.. literalinclude:: /../model/tensorflow/examples/tfdnnr/tfdnnr.py
+
+The ``NaN`` in ``confidence`` is the expected behaviour. (See TODO in
+predict).
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding target values
+
+- features: List of features
+
+  - Features to train on
+
+- steps: Integer
+
+  - default: 3000
+  - Number of steps to train the model
+
+- epochs: Integer
+
+  - default: 30
+  - Number of iterations to pass over all records in a source
+
+- directory: Path
+
+  - default: ~/.cache/dffml/tensorflow
+  - Directory where state should be saved
+
+- hidden: List of integers
+
+  - default: [12, 40, 15]
+  - List length is the number of hidden layers in the network. Each entry in the list is the number of nodes in that hidden layer
+
+.. _plugin_model_dffml_model_tensorflow_hub:
+
+dffml_model_tensorflow_hub
+--------------------------
+
+.. code-block:: console
+
+    pip install dffml-model-tensorflow-hub
+
+
+.. _plugin_model_dffml_model_tensorflow_hub_text_classifier:
+
+text_classifier
+~~~~~~~~~~~~~~~
+
+*Official*
+
+Implemented using Tensorflow hub pretrained models.
+
+.. code-block:: console
+
+    $ cat > train.csv << EOF
+    sentence,sentiment
+    Life is good,1
+    This book is amazing,1
+    It's a terrible movie,0
+    Global warming is bad,0
+    EOF
+    $ cat > test.csv << EOF
+    sentence,sentiment
+    I am not feeling good,0
+    Our trip was full of adventures,1
+    EOF
+    $ dffml train \
+        -model text_classifier \
+        -model-epochs 30 \
+        -model-predict sentiment:int:1 \
+        -model-classifications 0 1  \
+        -model-clstype int \
+        -sources f=csv \
+        -source-filename train.csv \
+        -model-features \
+          sentence:str:1 \
+        -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \
+        -model-add_layers \
+        -model-layers "Dense(units=512, activation='relu')" "Dense(units=2, activation='softmax')" \
+        -log debug
+    $ dffml accuracy \
+        -model text_classifier \
+        -model-predict sentiment:int:1 \
+        -model-classifications 0 1 \
+        -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \
+        -model-clstype int \
+        -sources f=csv \
+        -source-filename test.csv \
+        -model-features \
+          sentence:str:1 \
+        -log critical
+        1.0
+    $ dffml predict all \
+        -model text_classifier \
+        -model-predict sentiment:int:1 \
+        -model-classifications 0 1 \
+        -model-model_path "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1" \
+        -model-clstype int \
+        -sources f=csv \
+        -source-filename test.csv \
+        -model-features \
+          sentence:str:1 \
+        -log debug
+    [
+        {
+            "extra": {},
+            "features": {
+                "sentence": "I am not feeling good",
+                "sentiment": 0
+            },
+            "key": "0",
+            "last_updated": "2020-02-15T02:54:02Z",
+            "prediction": {
+                "sentiment": {
+                    "confidence": 0.7630850076675415,
+                    "value": 0
+                }
+            }
+        },
+        {
+            "extra": {},
+            "features": {
+                "sentence": "Our trip was full of adventures",
+                "sentiment": 1
+            },
+            "key": "1",
+            "last_updated": "2020-02-15T02:54:02Z",
+            "prediction": {
+                "sentiment": {
+                    "confidence": 0.6673157811164856,
+                    "value": 1
+                }
+            }
+        }
+    ]
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- classifications: List of strings
+
+  - Options for value of classification
+
+- features: List of features
+
+  - Features to train on
+
+- trainable: String
+
+  - default: True
+  - Tweak pretrained model by training again
+
+- batch_size: Integer
+
+  - default: 120
+  - Batch size
+
+- max_seq_length: Integer
+
+  - default: 256
+  - Length of sentence, used in preprocessing of input for bert embedding
+
+- add_layers: Boolean
+
+  - default: False
+  - Add layers on the top of pretrianed model/layer
+
+- embedType: String
+
+  - default: None
+  - Type of pretrained embedding model, required to be set to `bert` to use bert pretrained embedding
+
+- layers: List of strings
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
+
+- model_path: String
+
+  - default: https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim-with-oov/1
+  - Pretrained model path/url
+
+- optimizer: String
+
+  - default: adam
+  - Optimizer used by model
+
+- metrics: String
+
+  - default: accuracy
+  - Metric used to evaluate model
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- epochs: Integer
+
+  - default: 10
+  - Number of iterations to pass over all records in a source
+
+- directory: Path
+
+  - default: ~/.cache/dffml/tensorflow_hub
+  - Directory where state should be saved
+
+.. _plugin_model_dffml_model_transformers:
+
+dffml_model_transformers
+------------------------
+
+.. code-block:: console
+
+    pip install dffml-model-transformers
+
+
+.. _plugin_model_dffml_model_transformers_ner_tagger:
+
+ner_tagger
+~~~~~~~~~~
+
+*Official*
+
+Implemented using ![HuggingFace Transformers](https://huggingface.co/transformers/index.html) Tensorflow based Models.
+Description about pretrianed models can be found ![here](https://huggingface.co/transformers/pretrained_models.html)
+
+First we create the training and testing datasets
+
+.. literalinclude:: /../model/transformers/examples/ner/train_data.sh
+
+.. literalinclude:: /../model/transformers/examples/ner/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/transformers/examples/ner/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/transformers/examples/ner/accuracy.sh
+
+Output
+
+.. code-block::
+
+                precision    recall  f1-score   support
+
+        MISC     0.0000    0.0000    0.0000         2
+
+    micro avg     0.0000    0.0000    0.0000         2
+    macro avg     0.0000    0.0000    0.0000         2
+
+    INFO:dffml.NERModelContext:final_loss = 1.4586552
+    0.0
+
+Make a prediction
+
+.. literalinclude:: /../model/transformers/examples/ner/predict.sh
+
+Output
+
+.. code-block:: json
+
+    [
+        {
+            "extra": {},
+            "features": {
+                "SentenceId": 1,
+                "Words": "DFFML models can do NER"
+            },
+            "key": "0",
+            "last_updated": "2020-03-21T23:14:41Z",
+            "prediction": {
+                "Tag": {
+                    "confidence": NaN,
+                    "value": [
+                        [
+                            {
+                                "DFFML": "I-LOC"
+                            },
+                            {
+                                "models": "O"
+                            },
+                            {
+                                "can": "I-LOC"
+                            },
+                            {
+                                "do": "I-LOC"
+                            },
+                            {
+                                "NER": "I-LOC"
+                            }
+                        ]
+                    ]
+                }
+            }
+        },
+        {
+            "extra": {},
+            "features": {
+                "SentenceId": 2,
+                "Words": "DFFML models can do regression"
+            },
+            "key": "1",
+            "last_updated": "2020-03-21T23:14:42Z",
+            "prediction": {
+                "Tag": {
+                    "confidence": NaN,
+                    "value": [
+                        [
+                            {
+                                "DFFML": "I-LOC"
+                            },
+                            {
+                                "models": "O"
+                            },
+                            {
+                                "can": "I-LOC"
+                            },
+                            {
+                                "do": "I-LOC"
+                            },
+                            {
+                                "regression": "I-LOC"
+                            }
+                        ]
+                    ]
+                }
+            }
+        }
+    ]
+The model can be trained on large datasets to get the expected
+output. The example shown above is to demonstrate the commandline usage
+of the model.
+
+Example usage of NER model using python API
+
+.. literalinclude:: /../model/transformers/examples/ner/ner_model.py
+
+**Args**
+
+- sid: Feature
+
+  - Unique Id to identify words of each sentence (Sentence ID)
+
+- words: Feature
+
+  - Tokens to train NER model
+
+- predict: Feature
+
+  - NER Tags (B-MISC, I-PER, O etc.) for tokens
+
+- model_architecture_type: String
+
+  - Model architecture selected in the : bert, distilbert, roberta
+
+- model_name_or_path: String
+
+  - Path to pre-trained model or shortcut name selected in the list: bert-base-uncased, bert-large-uncased, bert-base-cased, bert-large-cased, bert-base-multilingual-uncased, bert-base-multilingual-cased, bert-base-chinese, bert-base-german-cased, bert-large-uncased-whole-word-masking, bert-large-cased-whole-word-masking, bert-large-uncased-whole-word-masking-finetuned-squad, bert-large-cased-whole-word-masking-finetuned-squad, bert-base-cased-finetuned-mrpc, bert-base-german-dbmdz-cased, bert-base-german-dbmdz-uncased, bert-base-japanese, bert-base-japanese-whole-word-masking, bert-base-japanese-char, bert-base-japanese-char-whole-word-masking, bert-base-finnish-cased-v1, bert-base-finnish-uncased-v1, bert-base-dutch-cased, roberta-base, roberta-large, roberta-large-mnli, distilroberta-base, roberta-base-openai-detector, roberta-large-openai-detector, distilbert-base-uncased, distilbert-base-uncased-distilled-squad, distilbert-base-cased, distilbert-base-cased-distilled-squad, distilbert-base-german-cased, distilbert-base-multilingual-cased, distilbert-base-uncased-finetuned-sst-2-english
+
+- output_dir: String
+
+  - default: ~/.cache/dffml/transformers/checkpoints
+  - The output directory where the model checkpoints will be written
+
+- config_name: String
+
+  - default: None
+  - Pretrained config name or path if not the same as model_name
+
+- tokenizer_name: String
+
+  - default: None
+  - Pretrained tokenizer name or path if not the same as model_name
+
+- cache_dir: String
+
+  - default: ~/.cache/dffml/transformers
+  - Directory to store the pre-trained models downloaded from s3
+
+- max_seq_length: Integer
+
+  - default: 128
+  - The maximum total input sentence length after tokenization.Sequences longer than this will be truncated, sequences shorter will be padded
+
+- max_steps: Integer
+
+  - default: 0
+  - If greater than zero then sets total number of training steps to perform. Overrides `epochs`
+
+- use_fp16: Boolean
+
+  - default: False
+  - Whether to use 16-bit (mixed) precision instead of 32-bit
+
+- ner_tags: List of strings
+
+  - default: ['O', 'B-MISC', 'I-MISC', 'B-PER', 'I-PER', 'B-ORG', 'I-ORG', 'B-LOC', 'I-LOC']
+  - List of all distinct NER Tags
+
+- do_lower_case: Boolean
+
+  - default: False
+  - Set this flag if using uncased model.
+
+- gradient_accumulation_steps: Integer
+
+  - default: 1
+  - Number of updates steps to accumulate before performing a backward pass.
+
+- learning_rate: float
+
+  - default: 5e-05
+  - The initial learning rate for Adam
+
+- weight_decay: float
+
+  - default: 0.0
+  - Weight decay
+
+- adam_epsilon: float
+
+  - default: 1e-08
+  - Epsilon for Adam optimizer
+
+- max_grad_norm: float
+
+  - default: 1.0
+  - Max gradient norm.
+
+- epochs: Integer
+
+  - default: 1
+  - Total number of training epochs to perform.
+
+- warmup_steps: Integer
+
+  - default: 0
+  - Linear warmup over warmup_steps.
+
+- save_steps: Integer
+
+  - default: 10
+  - Save checkpoint every X update steps.
+
+- seed: Integer
+
+  - default: 2020
+  - Random seed for initialization
+
+- gpus: String
+
+  - default: 0
+  - List of gpu devices. If only one, switch to single gpu strategy, if None takes all availabel gpus
+
+- tpu: String
+
+  - default: None
+  - The Cloud TPU to use for training. This should be either the name used when creating the Cloud TPU, or a grpc://ip.address.of.tpu:8470 url
+
+- num_tpu_cores: Integer
+
+  - default: 8
+  - Total number of TPU cores to use.
+
+- per_device_train_batch_size: Integer
+
+  - default: 8
+  - Batch size per GPU/CPU/TPU for training
+
+- per_device_eval_batch_size: Integer
+
+  - default: 8
+  - Batch size per GPU/CPU/TPU for assessing accuracy
+
+- no_cuda: Boolean
+
+  - default: False
+  - Avoid using CUDA when available
+
+- eval_all_checkpoints: Boolean
+
+  - default: False
+  - Evaluate all checkpoints starting with the same prefix as model_name ending and ending with step number
+
+.. _plugin_model_dffml_model_scratch:
+
+dffml_model_scratch
+-------------------
+
+.. code-block:: console
+
+    pip install dffml-model-scratch
+
+
+.. _plugin_model_dffml_model_scratch_scratchlgrsag:
+
+scratchlgrsag
+~~~~~~~~~~~~~
+
+*Official*
+
+Logistic Regression using stochastic average gradient descent optimizer
+
+The dataset used for training
+
+.. literalinclude:: /../model/scratch/examples/scratchlgrsag/dataset.sh
+
+Train the model
+
+.. literalinclude:: /../model/scratch/examples/scratchlgrsag/train.sh
+
+Assess the accuracy
+
+.. literalinclude:: /../model/scratch/examples/scratchlgrsag/accuracy.sh
+
+Output
+
+.. code-block:: console
+
+    1.0
+
+Make a prediction
+
+.. literalinclude:: /../model/scratch/examples/scratchlgrsag/predict.sh
+
+Output
+
+.. code-block:: console
+
+    [
+        {
+            "extra": {},
+            "features": {
+                "ans": 0,
+                "f1": 0.8
+            },
+            "last_updated": "2020-03-19T13:41:08Z",
+            "prediction": {
+                "ans": {
+                    "confidence": 1.0,
+                    "value": 1
+                }
+            },
+            "key": "0"
+        }
+    ]
+
+Example usage of Logistic Regression using Python
+
+.. literalinclude:: /../model/scratch/examples/scratchlgrsag/scratchlgrsag.py
+
+**Args**
+
+- predict: Feature
+
+  - Label or the value to be predicted
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - default: ~/.cache/dffml/scratch
+  - Directory where state should be saved
+
+.. _plugin_model_dffml_model_scikit:
+
+dffml_model_scikit
+------------------
+
+.. code-block:: console
+
+    pip install dffml-model-scikit
+
+
+Machine Learning models implemented with `scikit-learn <https://scikit-learn.org/stable/>`_.
+Models are saved under the directory in subdirectories named after the hash of
+their feature names.
+
+**General Usage:**
+
+Training:
+
+.. code-block:: console
+
+    $ dffml train \
+        -model SCIKIT_MODEL_ENTRYPOINT \
+        -model-features FEATURE_DEFINITION \
+        -model-predict TO_PREDICT \
+        -model-SCIKIT_PARAMETER_NAME SCIKIT_PARAMETER_VALUE \
+        -sources f=TRAINING_DATA_SOURCE_TYPE \
+        -source-filename TRAINING_DATA_FILE_NAME \
+        -log debug
+
+Testing and Accuracy:
+
+.. code-block:: console
+
+    $ dffml accuracy \
+        -model SCIKIT_MODEL_ENTRYPOINT \
+        -model-features FEATURE_DEFINITION \
+        -model-predict TO_PREDICT \
+        -sources f=TESTING_DATA_SOURCE_TYPE \
+        -source-filename TESTING_DATA_FILE_NAME \
+        -log debug
+
+Predicting with trained model:
+
+.. code-block:: console
+
+    $ dffml predict all \
+        -model SCIKIT_MODEL_ENTRYPOINT \
+        -model-features FEATURE_DEFINITION \
+        -model-predict TO_PREDICT \
+        -sources f=PREDICT_DATA_SOURCE_TYPE \
+        -source-filename PREDICT_DATA_FILE_NAME \
+        -log debug
+
+
+**Models Available:**
+
++----------------+-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Type           | Model                         | Entrypoint     | Parameters                                                                                                                                                                                    |
++================+===============================+================+===============================================================================================================================================================================================+
+| Regression     | LinearRegression              | scikitlr       | `scikitlr <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression/>`_                                             |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | ElasticNet                    | scikiteln      | `scikiteln <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ElasticNet.html#sklearn.linear_model.ElasticNet/>`_                                                        |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | BayesianRidge                 | scikitbyr      | `scikitbyr <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.BayesianRidge.html#sklearn.linear_model.BayesianRidge/>`_                                                  |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Lasso                         | scikitlas      | `scikitlas <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html#sklearn.linear_model.Lasso/>`_                                                                  |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | ARDRegression                 | scikitard      | `scikitard <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ARDRegression.html#sklearn.linear_model.ARDRegression/>`_                                                  |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | RANSACRegressor               | scikitrsc      | `scikitrsc <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RANSACRegressor.html#sklearn.linear_model.RANSACRegressor/>`_                                              |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | DecisionTreeRegressor         | scikitdtr      | `scikitdtr <https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html#sklearn.tree.DecisionTreeRegressor/>`_                                                  |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | GaussianProcessRegressor      | scikitgpr      | `scikitgpr <https://scikit-learn.org/stable/modules/generated/sklearn.gaussian_process.GaussianProcessRegressor.html#sklearn.gaussian_process.GaussianProcessRegressor/>`_                    |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | OrthogonalMatchingPursuit     | scikitomp      | `scikitomp <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.OrthogonalMatchingPursuit.html#sklearn.linear_model.OrthogonalMatchingPursuit/>`_                          |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Lars                          | scikitlars     | `scikitlars <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lars.html#sklearn.linear_model.Lars/>`_                                                                   |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Ridge                         | scikitridge    | `scikitridge <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html#sklearn.linear_model.Ridge/>`_                                                                |
++----------------+-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Classification | KNeighborsClassifier          | scikitknn      | `scikitknn <https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier/>`_                                          |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | AdaBoostClassifier            | scikitadaboost | `scikitadaboost <https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html#sklearn.ensemble.AdaBoostClassifier/>`_                                           |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | GaussianProcessClassifier     | scikitgpc      | `scikitgpc <https://scikit-learn.org/stable/modules/generated/sklearn.gaussian_process.GaussianProcessClassifier.html#sklearn.gaussian_process.GaussianProcessClassifier/>`_                  |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | DecisionTreeClassifier        | scikitdtc      | `scikitdtc <https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html#sklearn.tree.DecisionTreeClassifier/>`_                                                |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | RandomForestClassifier        | scikitrfc      | `scikitrfc <https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier/>`_                                        |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | QuadraticDiscriminantAnalysis | scikitqda      | `scikitqda <https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis.html#sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis/>`_|
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | MLPClassifier                 | scikitmlp      | `scikitmlp <https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html#sklearn.neural_network.MLPClassifier/>`_                                              |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | GaussianNB                    | scikitgnb      | `scikitgnb <https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB/>`_                                                          |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | SVC                           | scikitsvc      | `scikitsvc <https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC/>`_                                                                                        |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | LogisticRegression            | scikitlor      | `scikitlor <https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html#sklearn.linear_model.LogisticRegression/>`_                                        |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | GradientBoostingClassifier    | scikitgbc      | `scikitgbc <https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier/>`_                                |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | BernoulliNB                   | scikitbnb      | `scikitbnb <https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.BernoulliNB.html#sklearn.naive_bayes.BernoulliNB/>`_                                                        |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | ExtraTreesClassifier          | scikitetc      | `scikitetc <https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html#sklearn.ensemble.ExtraTreesClassifier/>`_                                            |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | BaggingClassifier             | scikitbgc      | `scikitbgc <https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingClassifier.html#sklearn.ensemble.BaggingClassifier/>`_                                                  |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | LinearDiscriminantAnalysis    | scikitlda      | `scikitlda <https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html#sklearn.discriminant_analysis.LinearDiscriminantAnalysis/>`_      |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | MultinomialNB                 | scikitmnb      | `scikitmnb <https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.MultinomialNB.html#sklearn.naive_bayes.MultinomialNB/>`_                                                    |
++----------------+-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Clustering     | KMeans                        | scikitkmeans   | `scikitkmeans <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans/>`_                                                                       |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | Birch                         | scikitbirch    | `scikitbirch <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.Birch.html#sklearn.cluster.Birch/>`_                                                                          |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | MiniBatchKMeans               | scikitmbkmeans | `scikitmbkmeans <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MiniBatchKMeans.html#sklearn.cluster.MiniBatchKMeans/>`_                                                   |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | AffinityPropagation           | scikitap       | `scikitap <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AffinityPropagation.html#sklearn.cluster.AffinityPropagation/>`_                                                 |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | MeanShift                     | scikitms       | `scikitms <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.MeanShift.html#sklearn.cluster.MeanShift/>`_                                                                     |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | SpectralClustering            | scikitsc       | `scikitsc <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.SpectralClustering.html#sklearn.cluster.SpectralClustering/>`_                                                   |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | AgglomerativeClustering       | scikitac       | `scikitac <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering/>`_                                         |
+|                +-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                | OPTICS                        | scikitoptics   | `scikitoptics <https://scikit-learn.org/stable/modules/generated/sklearn.cluster.OPTICS.html#sklearn.cluster.OPTICS/>`_                                                                       |
++----------------+-------------------------------+----------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+**Usage Example:**
+
+Example below uses LinearRegression Model using the command line.
+
+Let us take a simple example:
+
++----------------------+------------+--------------+--------+
+| Years of Experience  |  Expertise | Trust Factor | Salary |
++======================+============+==============+========+
+|          0           |     01     |      0.2     |   10   |
++----------------------+------------+--------------+--------+
+|          1           |     03     |      0.4     |   20   |
++----------------------+------------+--------------+--------+
+|          2           |     05     |      0.6     |   30   |
++----------------------+------------+--------------+--------+
+|          3           |     07     |      0.8     |   40   |
++----------------------+------------+--------------+--------+
+|          4           |     09     |      1.0     |   50   |
++----------------------+------------+--------------+--------+
+|          5           |     11     |      1.2     |   60   |
++----------------------+------------+--------------+--------+
+
+First we create the files
+
+.. literalinclude:: /../model/scikit/examples/lr/train_data.sh
+
+.. literalinclude:: /../model/scikit/examples/lr/test_data.sh
+
+Train the model
+
+.. literalinclude:: /../model/scikit/examples/lr/train.sh
+
+Assess accuracy
+
+.. literalinclude:: /../model/scikit/examples/lr/accuracy.sh
+
+Output:
+
+.. code-block::
+
+    1.0
+
+Make a prediction
+
+.. literalinclude:: /../model/scikit/examples/lr/predict.sh
+
+Output:
+
+.. code-block:: json
+
+    [
+        {
+            "extra": {},
+            "features": {
+                "Expertise": 13,
+                "Trust": 0.7,
+                "Years": 6
+            },
+            "key": "0",
+            "last_updated": "2020-03-01T22:26:46Z",
+            "prediction": {
+                "Salary": {
+                    "confidence": 1.0,
+                    "value": 70.0
+                }
+            }
+        }
+    ]
+
+
+Example usage of Linear Regression Model using python API:
+
+.. literalinclude:: /../model/scikit/examples/lr/lr.py
+
+Example below uses KMeans Clustering Model on a small randomly generated dataset.
+
+.. code-block:: console
+
+    $ cat > train.csv << EOF
+   Col1,          Col2,        Col3,         Col4
+   5.05776417,   8.55128116,   6.15193196,  -8.67349666
+   3.48864265,  -7.25952218,  -4.89216256,   4.69308946
+   -8.16207603,  5.16792984,  -2.66971993,   0.2401882
+   6.09809669,   8.36434181,   6.70940915,  -7.91491768
+   -9.39122566,  5.39133807,  -2.29760281,  -1.69672981
+   0.48311336,   8.19998973,   7.78641979,   7.8843821
+   2.22409135,  -7.73598586,  -4.02660224,   2.82101794
+   2.8137247 ,   8.36064298,   7.66196849,   3.12704676
+   EOF
+    $ cat > test.csv << EOF
+   Col1,             Col2,          Col3,         Col4,    cluster
+   -10.16770144,   2.73057215,  -1.49351481,   2.43005691,    6
+   3.59705381,  -4.76520663,  -3.34916068,   5.72391486,     1
+   4.01612313,  -4.641852  ,  -4.77333308,   5.87551683,     0
+   EOF
+    $ dffml train \
+        -model scikitkmeans \
+        -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \
+        -sources f=csv \
+        -source-filename train.csv \
+        -source-readonly \
+        -log debug
+    $ dffml accuracy \
+        -model scikitkmeans \
+        -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1\
+        -model-tcluster cluster:int:1 \
+        -sources f=csv \
+        -source-filename test.csv \
+        -source-readonly \
+        -log debug
+    0.6365141682948129
+    $ echo -e 'Col1,Col2,Col3,Col4\n6.09809669,8.36434181,6.70940915,-7.91491768\n' | \
+      dffml predict all \
+        -model scikitkmeans \
+        -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1 \
+        -sources f=csv \
+        -source-filename /dev/stdin \
+        -source-readonly \
+        -log debug
+    [
+        {
+            "extra": {},
+            "features": {
+                "Col1": 6.09809669,
+                "Col2": 8.36434181,
+                "Col3": 6.70940915,
+                "Col4": -7.91491768
+            },
+            "last_updated": "2020-01-12T22:51:15Z",
+            "prediction": {
+                "confidence": 0.6365141682948129,
+                "value": 2
+            },
+            "key": "0"
+        }
+    ]
+
+Example usage of KMeans Clustering Model using python API:
+
+.. code-block:: python
+
+    from dffml import CSVSource, Features, DefFeature
+    from dffml.noasync import train, accuracy, predict
+    from dffml_model_scikit import KMeansModel
+
+    model = KMeansModel(
+        features=Features(
+            DefFeature("Col1", float, 1),
+            DefFeature("Col2", float, 1),
+            DefFeature("Col3", float, 1),
+            DefFeature("Col4", float, 1),
+        ),
+        tcluster=DefFeature("cluster", int, 1)
+    )
+
+    # Train the model
+    train(model, "train.csv")
+
+    # Assess accuracy (alternate way of specifying data source)
+    print("Accuracy:", accuracy(model, CSVSource(filename="test.csv")))
+
+    # Make prediction
+    for i, features, prediction in predict(
+        model,
+        {"Col1": 6.09809669, "Col2": 8.36434181, "Col3": 6.70940915, "Col4": -7.91491768},
+    ):
+        features["cluster"] = prediction["cluster"]["value"]
+        print(features)
+
+**NOTE**: `Transductive <https://scikit-learn.org/stable/glossary.html#term-transductive/>`_ Clusterers(scikitsc, scikitac, scikitoptics) cannot handle unseen data.
+Ensure that `predict` and `accuracy` for these algorithms uses training data.
+
+**Args**
+
+- predict: Feature
+
+  - Label or the value to be predicted
+  - Only used by classification and regression models
+
+- tcluster: Feature
+
+  - True cluster, only used by clustering models
+  - Passed with `accuracy` to return `mutual_info_score`
+  - If not passed `accuracy` returns `silhouette_score`
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - default: ~/.cache/dffml/scikit-{entrypoint}
+  - Directory where state should be saved
+

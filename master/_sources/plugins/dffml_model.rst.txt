@@ -2228,10 +2228,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -2240,6 +2236,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -2247,7 +2248,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -2260,11 +2261,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -2275,15 +2271,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_densenet121:
 
@@ -2300,10 +2331,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -2312,6 +2339,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -2319,7 +2351,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -2332,11 +2364,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -2347,15 +2374,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_densenet161:
 
@@ -2372,10 +2434,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -2384,6 +2442,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -2391,7 +2454,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -2404,11 +2467,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -2419,15 +2477,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_densenet169:
 
@@ -2444,10 +2537,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -2456,6 +2545,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -2463,7 +2557,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -2476,11 +2570,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -2491,15 +2580,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_densenet201:
 
@@ -2516,10 +2640,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -2528,6 +2648,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -2535,7 +2660,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -2548,11 +2673,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -2563,15 +2683,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_googlenet:
 
@@ -2588,10 +2743,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -2600,6 +2751,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -2607,7 +2763,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -2620,11 +2776,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -2635,15 +2786,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_inception_v3:
 
@@ -2660,10 +2846,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -2672,6 +2854,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -2679,7 +2866,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -2692,11 +2879,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -2707,15 +2889,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_mnasnet0_5:
 
@@ -2732,10 +2949,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -2744,6 +2957,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -2751,7 +2969,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -2764,11 +2982,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -2779,15 +2992,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_mnasnet1_0:
 
@@ -2804,10 +3052,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -2816,6 +3060,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -2823,7 +3072,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -2836,11 +3085,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -2851,15 +3095,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_mobilenet_v2:
 
@@ -2876,10 +3155,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -2888,6 +3163,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -2895,7 +3175,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -2908,10 +3188,108 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
+- batch_size: Integer
+
+  - default: 32
+  - Batch size
+
+- validation_split: float
+
+  - default: 0.0
+  - Split training data for Validation
+
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- pretrained: String
+
+  - default: True
+  - Load Pre-trained model weights
+
 - trainable: String
 
   - default: False
   - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
+
+.. _plugin_model_dffml_model_pytorch_pytorchnet:
+
+pytorchnet
+~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Args**
+
+- predict: Feature
+
+  - Feature name holding classification value
+
+- features: List of features
+
+  - Features to train on
+
+- directory: Path
+
+  - Directory where state should be saved
+
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
+- clstype: Type
+
+  - default: <class 'str'>
+  - Data type of classifications values
+
+- imageSize: Integer
+
+  - default: None
+  - Common size for all images to resize and crop to
+
+- enableGPU: String
+
+  - default: False
+  - Utilize GPUs for processing
+
+- epochs: Integer
+
+  - default: 20
+  - Number of iterations to pass over all records in a source
 
 - batch_size: Integer
 
@@ -2923,15 +3301,35 @@ No description
   - default: 0.0
   - Split training data for Validation
 
-- pretrained: String
-
-  - default: True
-  - Load Pre-trained model weights
-
 - patience: Integer
 
   - default: 5
   - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
+- network: Network
+
+  - default: None
+  - Model
 
 .. _plugin_model_dffml_model_pytorch_resnet101:
 
@@ -2948,10 +3346,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -2960,6 +3354,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -2967,7 +3366,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -2980,11 +3379,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -2995,15 +3389,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_resnet152:
 
@@ -3020,10 +3449,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -3032,6 +3457,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -3039,7 +3469,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -3052,11 +3482,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -3067,15 +3492,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_resnet18:
 
@@ -3092,10 +3552,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -3104,6 +3560,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -3111,7 +3572,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -3124,11 +3585,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -3139,15 +3595,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_resnet34:
 
@@ -3164,10 +3655,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -3176,6 +3663,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -3183,7 +3675,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -3196,11 +3688,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -3211,15 +3698,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_resnet50:
 
@@ -3236,10 +3758,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -3248,6 +3766,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -3255,7 +3778,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -3268,11 +3791,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -3283,15 +3801,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_resnext101_32x8d:
 
@@ -3308,10 +3861,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -3320,6 +3869,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -3327,7 +3881,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -3340,11 +3894,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -3355,15 +3904,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_resnext50_32x4d:
 
@@ -3380,10 +3964,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -3392,6 +3972,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -3399,7 +3984,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -3412,11 +3997,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -3427,15 +4007,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_shufflenet_v2_x0_5:
 
@@ -3452,10 +4067,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -3464,6 +4075,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -3471,7 +4087,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -3484,11 +4100,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -3499,15 +4110,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_shufflenet_v2_x1_0:
 
@@ -3524,10 +4170,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -3536,6 +4178,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -3543,7 +4190,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -3556,11 +4203,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -3571,15 +4213,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_vgg11:
 
@@ -3596,10 +4273,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -3608,6 +4281,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -3615,7 +4293,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -3628,11 +4306,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -3643,15 +4316,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_vgg11_bn:
 
@@ -3668,10 +4376,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -3680,6 +4384,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -3687,7 +4396,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -3700,11 +4409,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -3715,15 +4419,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_vgg13:
 
@@ -3740,10 +4479,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -3752,6 +4487,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -3759,7 +4499,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -3772,11 +4512,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -3787,15 +4522,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_vgg13_bn:
 
@@ -3812,10 +4582,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -3824,6 +4590,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -3831,7 +4602,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -3844,11 +4615,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -3859,15 +4625,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_vgg16:
 
@@ -3884,10 +4685,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -3896,6 +4693,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -3903,7 +4705,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -3916,11 +4718,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -3931,15 +4728,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_vgg16_bn:
 
@@ -3956,10 +4788,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -3968,6 +4796,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -3975,7 +4808,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -3988,11 +4821,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -4003,15 +4831,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_vgg19:
 
@@ -4028,10 +4891,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -4040,6 +4899,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -4047,7 +4911,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -4060,11 +4924,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -4075,15 +4934,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_vgg19_bn:
 
@@ -4100,10 +4994,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -4112,6 +5002,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -4119,7 +5014,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -4132,11 +5027,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -4147,15 +5037,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_wide_resnet101_2:
 
@@ -4172,10 +5097,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -4184,6 +5105,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -4191,7 +5117,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -4204,11 +5130,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -4219,15 +5140,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_pytorch_wide_resnet50_2:
 
@@ -4244,10 +5200,6 @@ No description
 
   - Feature name holding classification value
 
-- classifications: List of strings
-
-  - Options for value of classification
-
 - features: List of features
 
   - Features to train on
@@ -4256,6 +5208,11 @@ No description
 
   - Directory where state should be saved
 
+- classifications: List of strings
+
+  - default: None
+  - Options for value of classification
+
 - clstype: Type
 
   - default: <class 'str'>
@@ -4263,7 +5220,7 @@ No description
 
 - imageSize: Integer
 
-  - default: 224
+  - default: None
   - Common size for all images to resize and crop to
 
 - enableGPU: String
@@ -4276,11 +5233,6 @@ No description
   - default: 20
   - Number of iterations to pass over all records in a source
 
-- trainable: String
-
-  - default: False
-  - Tweak pretrained model by training again
-
 - batch_size: Integer
 
   - default: 32
@@ -4291,15 +5243,50 @@ No description
   - default: 0.0
   - Split training data for Validation
 
+- patience: Integer
+
+  - default: 5
+  - Early stops the training if validation loss doesn't improve after a given patience
+
+- loss: PyTorchLoss
+
+  - default: <class 'dffml.base.CrossEntropyLossFunction'>
+  - Loss Functions available in PyTorch
+
+- optimizer: String
+
+  - default: SGD
+  - Optimizer Algorithms available in PyTorch
+
+- normalize_mean: List of floats
+
+  - default: None
+  - Mean values for normalizing Tensor image
+
+- normalize_std: List of floats
+
+  - default: None
+  - Standard Deviation values for normalizing Tensor image
+
 - pretrained: String
 
   - default: True
   - Load Pre-trained model weights
 
-- patience: Integer
+- trainable: String
 
-  - default: 5
-  - Early stops the training if validation loss doesn't improve after a given patience
+  - default: False
+  - Tweak pretrained model by training again
+
+- add_layers: String
+
+  - default: False
+  - Add layers on top of pretrained model
+
+- layers: dict
+
+  - default: None
+  - Extra layers to be added on top of pretrained model
 
 .. _plugin_model_dffml_model_xgboost:
 

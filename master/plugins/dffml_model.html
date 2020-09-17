@@ -148,6 +148,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#mnasnet0-5">mnasnet0_5</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mnasnet1-0">mnasnet1_0</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mobilenet-v2">mobilenet_v2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pytorchnet">pytorchnet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#resnet101">resnet101</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#resnet152">resnet152</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#resnet18">resnet18</a></li>
@@ -3570,11 +3571,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -3585,6 +3581,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -3593,7 +3595,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -3609,12 +3611,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -3627,16 +3623,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -3652,11 +3690,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -3667,6 +3700,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -3675,7 +3714,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -3691,12 +3730,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -3709,16 +3742,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -3734,11 +3809,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -3749,6 +3819,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -3757,7 +3833,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -3773,12 +3849,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -3791,16 +3861,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -3816,11 +3928,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -3831,6 +3938,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -3839,7 +3952,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -3855,12 +3968,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -3873,16 +3980,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -3898,11 +4047,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -3913,6 +4057,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -3921,7 +4071,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -3937,12 +4087,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -3955,16 +4099,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -3980,11 +4166,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -3995,6 +4176,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -4003,7 +4190,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -4019,12 +4206,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -4037,16 +4218,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4062,11 +4285,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -4077,6 +4295,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -4085,7 +4309,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -4101,12 +4325,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -4119,16 +4337,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4144,11 +4404,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -4159,6 +4414,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -4167,7 +4428,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -4183,12 +4444,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -4201,16 +4456,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4226,11 +4523,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -4241,6 +4533,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -4249,7 +4547,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -4265,12 +4563,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -4283,16 +4575,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4308,11 +4642,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -4323,6 +4652,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -4331,7 +4666,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -4347,10 +4682,123 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
+<li><p>batch_size: Integer</p>
+<ul>
+<li><p>default: 32</p></li>
+<li><p>Batch size</p></li>
+</ul>
+</li>
+<li><p>validation_split: float</p>
+<ul>
+<li><p>default: 0.0</p></li>
+<li><p>Split training data for Validation</p></li>
+</ul>
+</li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>pretrained: String</p>
+<ul>
+<li><p>default: True</p></li>
+<li><p>Load Pre-trained model weights</p></li>
+</ul>
+</li>
 <li><p>trainable: String</p>
 <ul>
 <li><p>default: False</p></li>
 <li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="pytorchnet">
+<span id="plugin-model-dffml-model-pytorch-pytorchnet"></span><h3>pytorchnet<a class="headerlink" href="#pytorchnet" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Args</strong></p>
+<ul class="simple">
+<li><p>predict: Feature</p>
+<ul>
+<li><p>Feature name holding classification value</p></li>
+</ul>
+</li>
+<li><p>features: List of features</p>
+<ul>
+<li><p>Features to train on</p></li>
+</ul>
+</li>
+<li><p>directory: Path</p>
+<ul>
+<li><p>Directory where state should be saved</p></li>
+</ul>
+</li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
+<li><p>clstype: Type</p>
+<ul>
+<li><p>default: &lt;class ‘str’&gt;</p></li>
+<li><p>Data type of classifications values</p></li>
+</ul>
+</li>
+<li><p>imageSize: Integer</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Common size for all images to resize and crop to</p></li>
+</ul>
+</li>
+<li><p>enableGPU: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Utilize GPUs for processing</p></li>
+</ul>
+</li>
+<li><p>epochs: Integer</p>
+<ul>
+<li><p>default: 20</p></li>
+<li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
 <li><p>batch_size: Integer</p>
@@ -4365,16 +4813,40 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
-<li><p>pretrained: String</p>
-<ul>
-<li><p>default: True</p></li>
-<li><p>Load Pre-trained model weights</p></li>
-</ul>
-</li>
 <li><p>patience: Integer</p>
 <ul>
 <li><p>default: 5</p></li>
 <li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>network: Network</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Model</p></li>
 </ul>
 </li>
 </ul>
@@ -4390,11 +4862,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -4405,6 +4872,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -4413,7 +4886,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -4429,12 +4902,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -4447,16 +4914,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4472,11 +4981,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -4487,6 +4991,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -4495,7 +5005,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -4511,12 +5021,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -4529,16 +5033,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4554,11 +5100,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -4569,6 +5110,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -4577,7 +5124,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -4593,12 +5140,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -4611,16 +5152,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4636,11 +5219,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -4651,6 +5229,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -4659,7 +5243,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -4675,12 +5259,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -4693,16 +5271,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4718,11 +5338,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -4733,6 +5348,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -4741,7 +5362,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -4757,12 +5378,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -4775,16 +5390,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4800,11 +5457,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -4815,6 +5467,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -4823,7 +5481,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -4839,12 +5497,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -4857,16 +5509,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4882,11 +5576,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -4897,6 +5586,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -4905,7 +5600,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -4921,12 +5616,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -4939,16 +5628,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -4964,11 +5695,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -4979,6 +5705,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -4987,7 +5719,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -5003,12 +5735,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -5021,16 +5747,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5046,11 +5814,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -5061,6 +5824,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -5069,7 +5838,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -5085,12 +5854,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -5103,16 +5866,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5128,11 +5933,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -5143,6 +5943,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -5151,7 +5957,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -5167,12 +5973,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -5185,16 +5985,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5210,11 +6052,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -5225,6 +6062,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -5233,7 +6076,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -5249,12 +6092,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -5267,16 +6104,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5292,11 +6171,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -5307,6 +6181,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -5315,7 +6195,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -5331,12 +6211,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -5349,16 +6223,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5374,11 +6290,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -5389,6 +6300,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -5397,7 +6314,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -5413,12 +6330,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -5431,16 +6342,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5456,11 +6409,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -5471,6 +6419,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -5479,7 +6433,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -5495,12 +6449,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -5513,16 +6461,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5538,11 +6528,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -5553,6 +6538,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -5561,7 +6552,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -5577,12 +6568,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -5595,16 +6580,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5620,11 +6647,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -5635,6 +6657,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -5643,7 +6671,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -5659,12 +6687,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -5677,16 +6699,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5702,11 +6766,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -5717,6 +6776,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -5725,7 +6790,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -5741,12 +6806,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -5759,16 +6818,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5784,11 +6885,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -5799,6 +6895,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -5807,7 +6909,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -5823,12 +6925,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -5841,16 +6937,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>
@@ -5866,11 +7004,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Feature name holding classification value</p></li>
 </ul>
 </li>
-<li><p>classifications: List of strings</p>
-<ul>
-<li><p>Options for value of classification</p></li>
-</ul>
-</li>
 <li><p>features: List of features</p>
 <ul>
 <li><p>Features to train on</p></li>
@@ -5881,6 +7014,12 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Directory where state should be saved</p></li>
 </ul>
 </li>
+<li><p>classifications: List of strings</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Options for value of classification</p></li>
+</ul>
+</li>
 <li><p>clstype: Type</p>
 <ul>
 <li><p>default: &lt;class ‘str’&gt;</p></li>
@@ -5889,7 +7028,7 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 </li>
 <li><p>imageSize: Integer</p>
 <ul>
-<li><p>default: 224</p></li>
+<li><p>default: None</p></li>
 <li><p>Common size for all images to resize and crop to</p></li>
 </ul>
 </li>
@@ -5905,12 +7044,6 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Number of iterations to pass over all records in a source</p></li>
 </ul>
 </li>
-<li><p>trainable: String</p>
-<ul>
-<li><p>default: False</p></li>
-<li><p>Tweak pretrained model by training again</p></li>
-</ul>
-</li>
 <li><p>batch_size: Integer</p>
 <ul>
 <li><p>default: 32</p></li>
@@ -5923,16 +7056,58 @@ Models are saved under the directory in <cite>model.pt</cite>.</p>
 <li><p>Split training data for Validation</p></li>
 </ul>
 </li>
+<li><p>patience: Integer</p>
+<ul>
+<li><p>default: 5</p></li>
+<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+</ul>
+</li>
+<li><p>loss: PyTorchLoss</p>
+<ul>
+<li><p>default: &lt;class ‘dffml.base.CrossEntropyLossFunction’&gt;</p></li>
+<li><p>Loss Functions available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>optimizer: String</p>
+<ul>
+<li><p>default: SGD</p></li>
+<li><p>Optimizer Algorithms available in PyTorch</p></li>
+</ul>
+</li>
+<li><p>normalize_mean: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Mean values for normalizing Tensor image</p></li>
+</ul>
+</li>
+<li><p>normalize_std: List of floats</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Standard Deviation values for normalizing Tensor image</p></li>
+</ul>
+</li>
 <li><p>pretrained: String</p>
 <ul>
 <li><p>default: True</p></li>
 <li><p>Load Pre-trained model weights</p></li>
 </ul>
 </li>
-<li><p>patience: Integer</p>
+<li><p>trainable: String</p>
 <ul>
-<li><p>default: 5</p></li>
-<li><p>Early stops the training if validation loss doesn’t improve after a given patience</p></li>
+<li><p>default: False</p></li>
+<li><p>Tweak pretrained model by training again</p></li>
+</ul>
+</li>
+<li><p>add_layers: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Add layers on top of pretrained model</p></li>
+</ul>
+</li>
+<li><p>layers: dict</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Extra layers to be added on top of pretrained model</p></li>
 </ul>
 </li>
 </ul>

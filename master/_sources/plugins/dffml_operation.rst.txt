@@ -1871,6 +1871,28 @@ dffml_operations_nlp
     pip install dffml-operations-nlp
 
 
+.. _plugin_operation_dffml_operations_nlp_collect_output:
+
+collect_output
+~~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- sentence: sentence(type: string)
+- length: source_length(type: string)
+
+**Outputs**
+
+- all: all_sentences(type: List[string])
+
 .. _plugin_operation_dffml_operations_nlp_count_vectorizer:
 
 count_vectorizer
@@ -1920,6 +1942,46 @@ result: list
 **Outputs**
 
 - result: count_vectorizer.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_nlp_extract_array_from_matrix:
+
+extract_array_from_matrix
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*Official*
+
+Returns row from `input_matrix` based on index of `single_text_example` 
+in `collected_text`.
+
+Parameters
+----------
+single_text_example : str
+    String to be used for indexing into `collected_text`.
+
+collected_text: list
+    List of strings.
+
+input_matrix: list
+    A 2-D matrix where each row represents vector corresponding
+    to `single_text_example`.
+
+Returns
+-------
+result: A 1-d array.
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- single_text_example: extract_array_from_matrix.inputs.single_text_example(type: str)
+- collected_text: extract_array_from_matrix.inputs.collected_text(type: array)
+- input_matrix: extract_array_from_matrix.inputs.input_matrix(type: array)
+
+**Outputs**
+
+- result: extract_array_from_matrix.outputs.result(type: array)
 
 .. _plugin_operation_dffml_operations_nlp_get_embedding:
 
@@ -2235,3 +2297,189 @@ result: list
 **Outputs**
 
 - result: tfidf_vectorizer.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_image:
+
+dffml_operations_image
+++++++++++++++++++++++
+
+.. code-block:: console
+
+    pip install dffml-operations-image
+
+
+.. _plugin_operation_dffml_operations_image_Haralick:
+
+Haralick
+~~~~~~~~
+
+*Official*
+
+Computes Haralick texture features
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- f: Haralick.inputs.f(type: array)
+- ignore_zeros: Haralick.inputs.ignore_zeros(type: bool)
+- preserve_haralick_bug: Haralick.inputs.preserve_haralick_bug(type: bool)
+- compute_14th_feature: Haralick.inputs.compute_14th_feature(type: bool)
+- return_mean: Haralick.inputs.return_mean(type: bool)
+- return_mean_ptp: Haralick.inputs.return_mean_ptp(type: bool)
+- use_x_minus_y_variance: Haralick.inputs.use_x_minus_y_variance(type: bool)
+- distance: Haralick.inputs.distance(type: int)
+
+**Outputs**
+
+- result: Haralick.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_image_HuMoments:
+
+HuMoments
+~~~~~~~~~
+
+*Official*
+
+Calculates seven Hu invariants
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- m: HuMoments.inputs.m(type: array)
+
+**Outputs**
+
+- result: HuMoments.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_image_calcHist:
+
+calcHist
+~~~~~~~~
+
+*Official*
+
+Calculates a histogram
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- images: calcHist.inputs.images(type: array)
+- channels: calcHist.inputs.channels(type: array)
+- mask: calcHist.inputs.mask(type: array)
+- histSize: calcHist.inputs.histSize(type: array)
+- ranges: calcHist.inputs.ranges(type: array)
+
+**Outputs**
+
+- result: calcHist.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_image_convert_color:
+
+convert_color
+~~~~~~~~~~~~~
+
+*Official*
+
+Converts images from one color space to another
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- src: convert_color.inputs.src(type: array)
+- code: convert_color.inputs.code(type: str)
+
+**Outputs**
+
+- result: convert_color.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_image_flatten:
+
+flatten
+~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- array: flatten.inputs.array(type: array)
+
+**Outputs**
+
+- result: flatten.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_image_normalize:
+
+normalize
+~~~~~~~~~
+
+*Official*
+
+Normalizes arrays
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- src: normalize.inputs.src(type: array)
+- alpha: normalize.inputs.alpha(type: int)
+- beta: normalize.inputs.beta(type: int)
+- norm_type: normalize.inputs.norm_type(type: int)
+- dtype: normalize.inputs.dtype(type: int)
+- mask: normalize.inputs.mask(type: array)
+
+**Outputs**
+
+- result: normalize.outputs.result(type: array)
+
+.. _plugin_operation_dffml_operations_image_resize:
+
+resize
+~~~~~~
+
+*Official*
+
+Resizes image array to the specified new dimensions
+
+- If the new dimensions are in 2D, the image is converted to grayscale.
+
+- To enlarge the image (src dimensions < dsize),
+    it will resize the image with INTER_CUBIC interpolation.
+
+- To shrink the image (src dimensions > dsize),
+    it will resize the image with INTER_AREA interpolation
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- src: resize.inputs.src(type: array)
+- dsize: resize.inputs.dsize(type: array)
+- fx: resize.inputs.fx(type: float)
+- fy: resize.inputs.fy(type: float)
+- interpolation: resize.inputs.interpolation(type: int)
+
+**Outputs**
+
+- result: resize.outputs.result(type: array)
