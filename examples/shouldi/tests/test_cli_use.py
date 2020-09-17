@@ -43,10 +43,11 @@ class TestCLIUse(AsyncTestCase):
                 output = stdout.getvalue()
         self.assertIn("high=2941", output)
 
+    @cached_node
     @cached_rust
     @cached_cargo_audit
     @cached_target_crates
-    async def test_use_rust(self, rust, cargo_audit, crates):
+    async def test_use_rust(self, node, rust, cargo_audit, crates):
         if not (rust / "rust-install" / "bin" / "cargo").is_file():
             subprocess.check_call(
                 [
@@ -59,6 +60,7 @@ class TestCLIUse(AsyncTestCase):
                 ]
             )
         with prepend_to_path(
+            node / "node-v14.2.0-linux-x64" / "bin",
             rust / "rust-install" / "bin",
             cargo_audit / "cargo-audit-0.11.2" / "target" / "release",
         ):
