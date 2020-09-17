@@ -19,14 +19,14 @@ with open(os.path.join(self_path, "README.md"), "r", encoding="utf-8") as f:
     readme = f.read()
 
 INSTALL_REQUIRES = [
-    # See https://github.com/intel/dffml/issues/844
-    "tensorflow>=2.0.0,<3.1.0",
+    "tensorflow>=2.0.0",
     "pandas>=0.25.0",
     # See https://github.com/intel/dffml/issues/816
     "numpy>=1.16.4,<1.19.0",
     "seqeval>=0.0.12",
     "fastprogress>=0.2.2",
-    "transformers>=3.0.2",
+    # See https://github.com/intel/dffml/issues/844
+    "transformers>=3.0.2,<3.1.0",
     "torch>=1.5.0",
 ] + (
     ["dffml>=0.3.7"]
