@@ -68,6 +68,9 @@ async def run_cargo_audit(pkg: str) -> Dict[str, Any]:
             ("kind", "unmaintained", "advisory", "cvss"),
             ("advisory", "cvss"),
         ]:
+            # Handle kind is "yanked" case
+            if "kind" in vuln and not isinstance(vuln["kind"], dict):
+                continue
             with contextlib.suppress(KeyError):
                 cvss = traverse_get(vuln, *path)
                 if cvss is None or isinstance(cvss, (float, int)):
