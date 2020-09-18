@@ -163,7 +163,12 @@ def gen_docs(
     per_module = {name: [None, "", []] for name in modules}
     packagesconfig = configparser.ConfigParser()
     packagesconfig.read("scripts/packagesconfig.ini")
+    # For some reason duplicates are showing up
+    done = set()
     for i in pkg_resources.iter_entry_points(entrypoint):
+        # Skip duplicates
+        if i.name in done:
+            continue
         cls = i.load()
         plugin_type = "_".join(cls.ENTRY_POINT_NAME)
         if plugin_type == "opimp":
@@ -196,6 +201,7 @@ def gen_docs(
                 config = traverse_get_config(defaults, *cls.add_orig_label())
                 formatted += "\n\n" + build_args(config)
             per_module[module_name][2].append(formatted)
+        done.add(i.name)
     return "\n\n".join(
         [
             MODULE_TEMPLATE.format(
