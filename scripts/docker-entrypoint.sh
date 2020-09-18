@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+CONDA_ACTIVATE="${CONDA_INSTALL_LOCATION}/miniconda${PYTHON_SHORT_VERSION}/bin/activate"
+
+if [ -f "${CONDA_ACTIVATE}" ]; then
+  source "${CONDA_ACTIVATE}"
+fi
+
 echo "#!/usr/bin/env bash" > /usr/bin/cmd.sh
 chmod 755 /usr/bin/cmd.sh
 runit () {
