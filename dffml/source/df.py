@@ -25,6 +25,12 @@ class DataFlowSourceConfig:
         "Features to pass as definitions to each context from each "
         "record to be preprocessed"
     )
+    record_def: str = field(
+        "Definition to be used for record.key."
+        "If set, record.key will be added to the set of inputs "
+        "under each context (which is also the record's key)",
+        default=None,
+    )
     length: str = field(
         "Definition name to add as source length", default=None
     )
@@ -57,25 +63,41 @@ class RecordInputSetContext(BaseInputSetContext):
 
 class DataFlowSourceContext(BaseSourceContext):
     async def input_set(self, record: Record) -> List[Input]:
-        return [
-            Input(
-                value=record.feature(feature.name),
-                definition=Definition(
-                    name=feature.name, primitive=str(feature.dtype()),
-                ),
-            )
-            for feature in self.parent.config.features
-        ] + (
-            []
-            if not self.parent.config.length
-            else [
+        return (
+            [
                 Input(
-                    value=await self.sctx.length(),
+                    value=record.feature(feature.name),
                     definition=Definition(
-                        name=self.parent.config.length, primitive="int",
+                        name=feature.name, primitive=str(feature.dtype()),
                     ),
                 )
+                for feature in self.parent.config.features
             ]
+            + (
+                []
+                if not self.parent.config.length
+                else [
+                    Input(
+                        value=await self.sctx.length(),
+                        definition=Definition(
+                            name=self.parent.config.length, primitive="int",
+                        ),
+                    )
+                ]
+            )
+            + (
+                []
+                if not self.parent.config.record_def
+                else [
+                    Input(
+                        value=record.key,
+                        definition=Definition(
+                            name=self.parent.config.record_def,
+                            primitive="string",
+                        ),
+                    )
+                ]
+            )
         )
 
     async def update(self, record: Record):
