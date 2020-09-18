@@ -200,11 +200,9 @@ manager doesn’t provide Python 3.7 or 3.8,
 <a class="reference external" href="https://github.com/pyenv/pyenv#simple-python-version-management-pyenv">pyenv</a>
 is another good way to install it. You could also use the docker container.</p>
 <p>DFFML is available via pip.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install -U dffml<span class="o">[</span>all<span class="o">]</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install -U dffml
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">[all]</span></code> suffix tells <code class="docutils literal notranslate"><span class="pre">pip</span></code> to install all of the core plugins. This
-includes the <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> and <code class="docutils literal notranslate"><span class="pre">tensorflow</span></code> models, <code class="docutils literal notranslate"><span class="pre">MySQL</span></code> source, etc.</p>
 <p>If you want to stay on the bleeding edge of bug fixes, etc. You can install from
 the master branch.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install -U <span class="s1">&#39;https://github.com/intel/dffml/archive/master.zip#egg=dffml&#39;</span>

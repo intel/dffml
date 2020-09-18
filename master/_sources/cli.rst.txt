@@ -264,16 +264,16 @@ running the dataflow until everything is complete, useful for error prone
 scraping tasks.
 
 In the following example we create a DataFlow consisting of 2 operations,
-``dffml.mapping.create``, and ``print_output``. We use ``sed`` to edit the
+``dffml.mapping.create``, and ``print_output``. We use ``-flow`` to edit the
 DataFlow and have the input of the ``print_output`` operation come from the
 ouput of the ``dffml.mapping.create`` operation. If you want to see the
-difference create a diagram of the DataFlow with and without using the ``sed``
-command during generation.
+difference create a diagram of the DataFlow with and without using the ``-flow``
+flag during generation.
 
 .. code-block:: console
 
-    $ dffml dataflow create dffml.mapping.create print_output -configloader yaml | \
-        sed 'N;s/data:\n      - seed/data:\n      - dffml.mapping.create: mapping/g' | \
+    $ dffml dataflow create dffml.mapping.create print_output -configloader yaml \
+        -flow '[{"dffml.mapping.create": "mapping"}]'=print_output.inputs.data | \
         tee df.yaml
     definitions:
       DataToPrint:
@@ -315,6 +315,23 @@ command during generation.
         name: print_output
         outputs: {}
         stage: processing
+
+    $ dffml dataflow run contexts \
+        -no-echo \
+        -dataflow df.yaml \
+        -context-def value \
+        -contexts \
+          world \
+          $USER \
+        -input \
+          hello=key
+    {'hello': 'world'}
+    {'hello': 'user'}
+
+We can also run the dataflow using a source
+
+.. code-block:: console
+
     $ dffml dataflow run records all \
         -no-echo \
         -record-def value \
@@ -322,22 +339,6 @@ command during generation.
         -dataflow df.yaml \
         -sources m=memory \
         -source-records world $USER
-    {'hello': 'world'}
-    {'hello': 'user'}
-
-We can also run the dataflow without using a source
-
-.. code-block:: console
-
-    $ dffml dataflow run contexts \
-        -no-echo \
-        -dataflow df.yaml \
-        -context-def value \
-        -contexts \
-            world \
-            $USER \
-        -input \
-            hello=key
     {'hello': 'world'}
     {'hello': 'user'}
 
