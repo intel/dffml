@@ -232,6 +232,10 @@ function run_lines() {
   "${PYTHON}" ./scripts/check_literalincludes.py
 }
 
+function run_container() {
+  docker build --build-arg DFFML_RELEASE=master -t intelotc/dffml .
+}
+
 function cleanup_temp_dirs() {
   if [ "x${NO_RM_TEMP}" != "x" ]; then
     return
@@ -254,6 +258,8 @@ elif [ "x${1}" == "xdocs" ]; then
   run_docs
 elif [ "x${1}" == "xlines" ]; then
   run_lines
+elif [ "x${1}" == "xcontainer" ]; then
+  run_container
 elif [ -d "${1}" ]; then
   run_plugin "${1}"
 else
