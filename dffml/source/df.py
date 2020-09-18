@@ -19,13 +19,20 @@ from dffml.df.memory import MemoryOrchestrator
 
 @config
 class DataFlowSourceConfig:
-    source: BaseSource
-    dataflow: DataFlow
-    features: Features
+    source: BaseSource = field("Source to wrap")
+    dataflow: DataFlow = field("DataFlow to use for preprocessing")
+    features: Features = field(
+        "Features to pass as definitions to each context from each "
+        "record to be preprocessed"
+    )
     length: str = field(
         "Definition name to add as source length", default=None
     )
-    all_for_single: bool = False
+    all_for_single: bool = field(
+        "Run all records through dataflow before grabing "
+        "results of desired record on a call to record()",
+        default=False,
+    )
     orchestrator: BaseOrchestrator = MemoryOrchestrator.withconfig({})
 
 
