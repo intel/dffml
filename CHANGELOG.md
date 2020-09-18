@@ -79,6 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Daal4py example usage.
 - Gitter chatbot tutorial.
 - Option to run dataflow without sources from cli.
+- Sphinx extension for automated testing of tutorials (consoletest)
 ### Changed
 - Renamed `-seed` to `-inputs` in `dataflow create` command
 - Renamed configloader/png to configloader/image and added support for loading JPEG and TIFF file formats
