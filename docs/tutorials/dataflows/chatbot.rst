@@ -34,10 +34,14 @@ We'll write the operations for this dataflow in **operations.py**
 Adding necessary imports and defining ``Definitions`` for operation
 inputs.
 
+**operations.py**
+
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
     :lines: 1-16
 
 Defining config for our operations
+
+**operations.py**
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
     :lines: 19-21
@@ -46,15 +50,21 @@ All requests to Gitter's API requires the room id of our room.
 ``get_room_id`` gets the ``room id`` from room name (The input to
 our dataflow).
 
+**operations.py**
+
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
     :lines: 24-49
 
 We listen to new messages directed to our bot.
 
+**operations.py**
+
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
     :lines: 52-86
 
 We'll use this op to send replies back to the chatroom
+
+**operations.py**
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
     :lines: 89-121
@@ -62,6 +72,8 @@ We'll use this op to send replies back to the chatroom
 This is the operation where all the logic for interpreting the messages
 go. If you have a Natural Language Understanding module It'd go here, so
 that you can parse unstructered data.
+
+**operations.py**
 
 .. literalinclude:: /../examples/dataflow/chatbot/operations.py
     :lines: 124-248
