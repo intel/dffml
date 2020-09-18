@@ -15,6 +15,8 @@ import sys
 import pathlib
 
 sys.path.insert(0, os.path.abspath("."))
+sys.path.append(os.path.abspath("_ext"))
+
 from dffml.version import VERSION
 
 # -- Project information -----------------------------------------------------
@@ -41,6 +43,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
     "recommonmark",
+    "consoletest",
 ]
 
 intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
