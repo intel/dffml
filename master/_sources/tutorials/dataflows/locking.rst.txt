@@ -23,11 +23,15 @@ Our operation ``run_me`` takes an object(of definition OBJ) sets the ``i``
 attribute of it, sleeps for given time finally prints the value which was given
 as input and the current value of the object.
 
+**example.py**
+
 .. literalinclude:: /../examples/dataflow/locking/example.py
     :lines: 11-15
 
 We'll run the dataflow with two values for i. If the operations run as expected when printing,
 the value given as input and that of the object would be same.
+
+**example.py**
 
 .. literalinclude:: /../examples/dataflow/locking/example.py
     :lines: 18-29
@@ -46,6 +50,8 @@ We can see that the output is not what we expect. Since everything is running as
 when one operations sleeps the other operation might start running and it replaces the
 value. This is where locks come handy. We'll set ``run_me`` to take object of definition
 ``LOCKED_OBJ`` instead of ``OBJ`` and run the dataflow again.
+
+**example.py**
 
 .. literalinclude:: /../examples/dataflow/locking/example.py
     :lines: 31-45
