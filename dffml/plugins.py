@@ -168,3 +168,24 @@ PACKAGE_NAMES_BY_PLUGIN_INSTALLABLE = package_names_by_plugin(
         )
     )
 )
+
+
+def package_names_to_directory(validation=None):
+    pkgs = {}
+    for plugin_type, name in CORE_PLUGINS:
+        if plugin_type == "examples":
+            pkg = name
+        else:
+            pkg = "dffml-%s-%s" % (
+                ALTERNATIVES.get(plugin_type, plugin_type),
+                name.replace("_", "-"),
+            )
+        pkgs[pkg] = (
+            plugin_type,
+            name,
+        )
+
+    return pkgs
+
+
+PACKAGE_NAMES_TO_DIRECTORY = package_names_to_directory()
