@@ -145,9 +145,20 @@ df
 
 - source: Entrypoint
 
+  - Source to wrap
+
 - dataflow: DataFlow
 
+  - DataFlow to use for preprocessing
+
 - features: List of features
+
+  - Features to pass as definitions to each context from each record to be preprocessed
+
+- record_def: String
+
+  - default: None
+  - Definition to be used for record.key.If set, record.key will be added to the set of inputs under each context (which is also the record's key)
 
 - length: String
 
@@ -157,6 +168,7 @@ df
 - all_for_single: String
 
   - default: False
+  - Run all records through dataflow before grabing results of desired record on a call to record()
 
 - orchestrator: Entrypoint
 

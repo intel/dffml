@@ -238,6 +238,7 @@ and <code class="docutils literal notranslate"><span class="pre">dffml-model-sci
 <p>We’ll write the operations for this dataflow in <strong>operations.py</strong></p>
 <p>Adding necessary imports and defining <code class="docutils literal notranslate"><span class="pre">Definitions</span></code> for operation
 inputs.</p>
+<p><strong>operations.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -257,6 +258,7 @@ inputs.</p>
 </pre></div>
 </div>
 <p>Defining config for our operations</p>
+<p><strong>operations.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@config</span>
 <span class="k">class</span> <span class="nc">GitterChannelConfig</span><span class="p">:</span>
     <span class="n">secret</span><span class="p">:</span> <span class="n">BaseSecret</span>
@@ -265,6 +267,7 @@ inputs.</p>
 <p>All requests to Gitter’s API requires the room id of our room.
 <code class="docutils literal notranslate"><span class="pre">get_room_id</span></code> gets the <code class="docutils literal notranslate"><span class="pre">room</span> <span class="pre">id</span></code> from room name (The input to
 our dataflow).</p>
+<p><strong>operations.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span>
     <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;room_uri&quot;</span><span class="p">:</span> <span class="n">ROOMNAME</span><span class="p">},</span>
     <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;room_id&quot;</span><span class="p">:</span> <span class="n">ROOMID</span><span class="p">},</span>
@@ -294,6 +297,7 @@ our dataflow).</p>
 </pre></div>
 </div>
 <p>We listen to new messages directed to our bot.</p>
+<p><strong>operations.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span>
     <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;room_id&quot;</span><span class="p">:</span> <span class="n">ROOMID</span><span class="p">},</span>
     <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">MESSAGE</span><span class="p">},</span>
@@ -332,6 +336,7 @@ our dataflow).</p>
 </pre></div>
 </div>
 <p>We’ll use this op to send replies back to the chatroom</p>
+<p><strong>operations.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span>
     <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">TOSEND</span><span class="p">,</span> <span class="s2">&quot;room_id&quot;</span><span class="p">:</span> <span class="n">ROOMID</span><span class="p">},</span>
     <span class="n">config_cls</span><span class="o">=</span><span class="n">GitterChannelConfig</span><span class="p">,</span>
@@ -370,6 +375,7 @@ our dataflow).</p>
 <p>This is the operation where all the logic for interpreting the messages
 go. If you have a Natural Language Understanding module It’d go here, so
 that you can parse unstructered data.</p>
+<p><strong>operations.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span>
     <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">MESSAGE</span><span class="p">,},</span>
     <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">TOSEND</span><span class="p">},</span>

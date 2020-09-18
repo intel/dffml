@@ -332,9 +332,27 @@ abstract the loading and storage of data / datasets.</p>
 </div>
 <p><strong>Args</strong></p>
 <ul class="simple">
-<li><p>source: Entrypoint</p></li>
-<li><p>dataflow: DataFlow</p></li>
-<li><p>features: List of features</p></li>
+<li><p>source: Entrypoint</p>
+<ul>
+<li><p>Source to wrap</p></li>
+</ul>
+</li>
+<li><p>dataflow: DataFlow</p>
+<ul>
+<li><p>DataFlow to use for preprocessing</p></li>
+</ul>
+</li>
+<li><p>features: List of features</p>
+<ul>
+<li><p>Features to pass as definitions to each context from each record to be preprocessed</p></li>
+</ul>
+</li>
+<li><p>record_def: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Definition to be used for record.key.If set, record.key will be added to the set of inputs under each context (which is also the record’s key)</p></li>
+</ul>
+</li>
 <li><p>length: String</p>
 <ul>
 <li><p>default: None</p></li>
@@ -344,6 +362,7 @@ abstract the loading and storage of data / datasets.</p>
 <li><p>all_for_single: String</p>
 <ul>
 <li><p>default: False</p></li>
+<li><p>Run all records through dataflow before grabing results of desired record on a call to record()</p></li>
 </ul>
 </li>
 <li><p>orchestrator: Entrypoint</p>

@@ -234,6 +234,7 @@ data type our operation will use. Note that <code class="docutils literal notran
 <p>Our operation <code class="docutils literal notranslate"><span class="pre">run_me</span></code> takes an object(of definition OBJ) sets the <code class="docutils literal notranslate"><span class="pre">i</span></code>
 attribute of it, sleeps for given time finally prints the value which was given
 as input and the current value of the object.</p>
+<p><strong>example.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;obj&quot;</span><span class="p">:</span> <span class="n">OBJ</span><span class="p">,</span> <span class="s2">&quot;sleep_for&quot;</span><span class="p">:</span> <span class="n">SLEEP_TIME</span><span class="p">,</span> <span class="s2">&quot;i&quot;</span><span class="p">:</span> <span class="n">INTEGER</span><span class="p">})</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">run_me</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">sleep_for</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">obj</span><span class="p">[</span><span class="s2">&quot;i&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
@@ -243,6 +244,7 @@ as input and the current value of the object.</p>
 </div>
 <p>We’ll run the dataflow with two values for i. If the operations run as expected when printing,
 the value given as input and that of the object would be same.</p>
+<p><strong>example.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running dataflow without locked object&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">run</span><span class="p">(</span>
     <span class="n">DataFlow</span><span class="p">(</span><span class="n">run_me</span><span class="p">),</span>
@@ -269,6 +271,7 @@ set i = 1, got i = 1
 when one operations sleeps the other operation might start running and it replaces the
 value. This is where locks come handy. We’ll set <code class="docutils literal notranslate"><span class="pre">run_me</span></code> to take object of definition
 <code class="docutils literal notranslate"><span class="pre">LOCKED_OBJ</span></code> instead of <code class="docutils literal notranslate"><span class="pre">OBJ</span></code> and run the dataflow again.</p>
+<p><strong>example.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running dataflow with locked object&quot;</span><span class="p">)</span>
 <span class="n">run_me</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">run_me</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span>
     <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;obj&quot;</span><span class="p">:</span> <span class="n">LOCKED_OBJ</span><span class="p">,</span> <span class="s2">&quot;sleep_for&quot;</span><span class="p">:</span> <span class="n">SLEEP_TIME</span><span class="p">,</span> <span class="s2">&quot;i&quot;</span><span class="p">:</span> <span class="n">INTEGER</span><span class="p">}</span>
