@@ -53,6 +53,21 @@ jobs:
       run: |
         GITHUB_PAGES_KEY=${{ secrets.GITHUB_PAGES_KEY }} ./.ci/run.sh ${{ matrix.check }}
 
+  container:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        set -x
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        sudo apt-get update && sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+    - name: Run check
+      run: |
+        ./.ci/run.sh container
+
   test:
     runs-on: ubuntu-latest
     strategy:
