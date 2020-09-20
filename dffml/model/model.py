@@ -65,8 +65,9 @@ class ModelContext(abc.ABC, BaseDataFlowFacilitatorObjectContext):
         # the features, but instead passes the features and the feature we want
         # to predict on. This way we'll ensure that the score method only
         # happens on records which have ground truth data.
-        sources.with_features = lambda features: sources.with_features(
-            features + [self.parent.config.predict]
+        temp = sources.with_features
+        sources.with_features = lambda features: temp(
+            features + [self.parent.config.predict.name]
         )
 
         return Accuracy(
@@ -202,10 +203,7 @@ class SimpleModel(Model):
         if "features" in exported:
             exported["features"] = dict(sorted(exported["features"].items()))
         # Hash the exported config
-        return pathlib.Path(
-            self.config.directory,
-            "Model",
-        )
+        return pathlib.Path(self.config.directory, "Model",)
 
     def applicable_features(self, features):
         usable = []
