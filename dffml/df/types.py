@@ -363,6 +363,7 @@ class Input(object):
             self.uid = str(uuid.uuid4())
 
     def get_parents(self) -> Iterator["Input"]:
+        print(f"\n\n parents : {self.parents} \n\n")
         return list(
             set(
                 itertools.chain(
@@ -381,10 +382,18 @@ class Input(object):
         return repr(self)
 
     def export(self):
+        # TODO: How to _fromdict when origin is a tuple?
+        # is the type guaranteed to be (operation,str) or (str,str)
+        origin = self.origin
+        if isinstance(self.origin,Input):
+            origin = self.origin.export()
+        elif isinstance(self.origin,tuple):
+            origin = tuple([x.export()  if hasattr(x,'export') else x
+                for x in origin])
         return dict(
             value=self.value,
             definition=self.definition.export(),
-            origin = self.origin.export() if isinstance(self.origin,Input) else self.origin,
+            origin = origin,
             parents = [item.uid for item in self.parents],
             uid=self.uid,
             )
@@ -392,8 +401,12 @@ class Input(object):
     @classmethod
     def _fromdict(cls, **kwargs):
         kwargs["definition"] = Definition._fromdict(**kwargs["definition"])
-        if isinstance(kwargs["origin"],dict):
-            kwargs["origin"] = Input._fromdict(kwargs["origin"])
+        origin = kwargs['origin']
+        if isinstance(origin,dict):
+            origin = Input._fromdict(origin)
+        elif isinstance(origin,List):
+            origin = tuple(origin)
+        kwargs['origin'] = origin
         return cls(**kwargs)
 
 

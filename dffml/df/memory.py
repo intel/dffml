@@ -147,7 +147,7 @@ class MemoryInputSetConfig:
     def export(self):
         return(
             dict(
-                ctx = self.ctx.export(),
+                ctx =  self.ctx.export(),
                 inputs = [ item.export() for item in self.inputs]
             )
         )
@@ -155,7 +155,7 @@ class MemoryInputSetConfig:
     @classmethod
     def _fromdict(cls,**kwargs):
         kwargs['inputs'] = [Input._fromdict(**item) for item in kwargs['inputs']]
-        kwargs['ctx'] = StringInputSetContext(kwargs['ctx'])
+        kwargs['ctx'] = StringInputSetContext._fromdict(**kwargs['ctx'])
         return cls(**kwargs)
 
 class MemoryInputSet(BaseInputSet):
@@ -220,7 +220,7 @@ class MemoryParameterSetConfig:
     @classmethod
     def _fromdict(cls,**kwargs):
         kwargs["parameters"] = [ Parameter._fromdict(**param) for param in kwargs["parameters"]]
-        kwargs["ctx"] = StringInputSetContext(kwargs["ctx"])
+        kwargs["ctx"] = StringInputSetContext._fromdict(**kwargs["ctx"])
         return cls(**kwargs)
 
 class MemoryParameterSet(BaseParameterSet):
@@ -262,6 +262,7 @@ class NotificationSetContext(object):
 
     async def add(self, notification_item: Any):
         async with self.parent.lock:
+            print(f"\n\n added notification item \n\n")
             self.parent.notification_items.append(notification_item)
             self.parent.event_added.set()
 
@@ -275,7 +276,9 @@ class NotificationSetContext(object):
         # Multiple might be waiting and if there is only one event in the queue
         # they would all otherwise be triggered
         async with self.parent.event_added_lock:
+            self.logger.debug("waiting for event to get added")
             await self.parent.event_added.wait()
+            self.logger.debug("event is added")
             async with self.parent.lock:
                 notification_item = self.parent.notification_items.pop(0)
                 # If there are still more items that the added event hasn't
@@ -402,6 +405,7 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                 # Add input to by origin set
                 self.ctxhd[handle_string].by_origin[item.origin].append(item)
 
+
     async def uadd(self, *args: Input):
         """
         Shorthand for creating a MemoryInputSet with a StringInputSetContext
@@ -459,13 +463,19 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
         # Grab the input set context handle
         handle_string = (await watch_ctx.handle()).as_string()
         # Notify whatever is listening for new inputs in this context
+        print(f"\n\n Added:{handle_string} \n\n")
         async with self.input_notification_set[handle_string]() as ctx:
             """
             return await ctx.added()
             """
             async with ctx.parent.event_added_lock:
+                self.logger.debug("waiting for event to get added")
+                ctx.parent.event_added.is_waiting = True
                 await ctx.parent.event_added.wait()
+                self.logger.debug("event is added")
+                ctx.parent.event_added.is_waiting = False
                 ctx.parent.event_added.clear()
+
                 async with ctx.parent.lock:
                     notification_items = ctx.parent.notification_items
                     ctx.parent.notification_items = []

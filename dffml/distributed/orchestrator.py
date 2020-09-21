@@ -5,10 +5,11 @@ import inspect
 import asyncio
 import secrets
 import traceback
-from itertools import product,chain
 from queue import Queue
-from typing import Dict, List, Any, Union, Optional, AsyncIterator, Tuple
+from collections import defaultdict
+from itertools import product,chain
 from contextlib import asynccontextmanager, AsyncExitStack, ExitStack
+from typing import Dict, List, Any, Union, Optional, AsyncIterator, Tuple
 
 from nats.aio.client import Client as NATS
 
@@ -33,7 +34,10 @@ from ..df.memory import (
     MemoryParameterSet,
     MemoryParameterSetConfig,
     MemoryInputSet,
-    MemoryLockNetworkContext
+    MemoryLockNetworkContext,
+    NotificationSet,
+    MemoryInputNetworkContextEntry,
+    MemoryInputSetConfig
 )
 from ..df.base import (
     BaseOrchestratorContext,
@@ -75,23 +79,92 @@ class NatsOrchestratorInputNetworkContext(MemoryInputNetworkContext):
     def __init__(self, config: BaseConfig, parent: "NatsOrchestratorNodeContext"):
         super().__init__(config, parent)
         self.input_uids = {} # maps uids to input
+        self.waiting_for_outputs = {}
 
     async def add_input_set(self,msg):
         self.logger.debug(f"Receiving new input set from worker")
         data = json.loads(msg.data.decode())
-        # The exported input set contains ids in parent list.
-        # Rebuild parent from ids using self.input_uids
-        for item in data["inputs"]:
-            item["parent"] = [ self.input_uids[parent_id] for parent_id in item["parent"]]
+
+        def set_parents(data:Any):
+            # The exported input set contains ids in parent list.
+            # Rebuild parent from ids using self.input_uids
+            if isinstance(data,Dict):
+                for key,val in data.items():
+                    if isinstance(val,Dict):
+                        val = set_parents(val)
+                    if isinstance(val,List):
+                        val = [set_parents(item) for item in val]
+                    data[key] = val
+
+                if 'parents' in data:
+                    data['parents'] = [ self.input_uids[parent_id] for parent_id in data['parents']]
+
+            return data
+
+        data = set_parents(data)
+
         self.logger.debug(f"Received {data}")
-        input_set = MemoryInputSet._fromdict(data)
+        input_set = MemoryInputSet._fromdict(**data)
         await self.add(input_set)
 
     async def add(self,input_set: BaseInputSet):
         self.logger.debug(f"Adding input to network :{input_set}")
+
+
+        # TODO
+        # Check if any output operation is waiting for th
+        # Continue from here
+        # key = str(input_set.export())
+        # print(f"\n\n How to set key  {key} \n\n")
+
         async for item in input_set.inputs():
             self.input_uids[item.uid] = item
-        await super().add(input_set)
+
+        # Grab the input set context handle
+        handle = await input_set.ctx.handle()
+        handle_string = handle.as_string()
+        # TODO These ctx.add calls should probably happen after inputs are in
+        # self.ctxhd
+
+        # remove unvalidated inputs
+        unvalidated_input_set = await input_set.remove_unvalidated_inputs()
+
+        # If the context for this input set does not exist create a
+        # NotificationSet for it to notify the orchestrator
+        if not handle_string in self.input_notification_set:
+            self.input_notification_set[handle_string] = NotificationSet()
+            async with self.ctx_notification_set() as ctx:
+                await ctx.add((None, input_set.ctx))
+
+
+        # Add the input set to the incoming inputs
+        async with self.input_notification_set[handle_string]() as ctx:
+            await ctx.add((unvalidated_input_set, input_set))
+        # Associate inputs with their context handle grouped by definition
+        async with self.ctxhd_lock:
+            # Create dict for handle_string if not present
+            if not handle_string in self.ctxhd:
+                self.ctxhd[handle_string] = MemoryInputNetworkContextEntry(
+                    ctx=input_set.ctx, definitions={}, by_origin={}
+                )
+            # Go through each item in the input set
+            async for item in input_set.inputs():
+                # Create set for item definition if not present
+                if (
+                    not item.definition
+                    in self.ctxhd[handle_string].definitions
+                ):
+                    self.ctxhd[handle_string].definitions[item.definition] = []
+                # Add input to by defintion set
+                self.ctxhd[handle_string].definitions[item.definition].append(
+                    item
+                )
+                # Create set for item origin if not present
+                if not item.origin in self.ctxhd[handle_string].by_origin:
+                    self.ctxhd[handle_string].by_origin[item.origin] = []
+                # Add input to by origin set
+                self.ctxhd[handle_string].by_origin[item.origin].append(item)
+
 
     async def __aenter__(self):
         await super().__aenter__()
@@ -116,7 +189,7 @@ class NatsWorkerInputNetworkContext(MemoryInputNetworkContext):
         # now add will sent back the new inputs to the orchestrator
         # network from which it'll be redirected to the corresponding
         # worker node.
-        self.logger.debug(f"Adding new input_set to main network: {input_set}")
+        self.logger.debug(f"Adding new input_set to main network: {input_set.export()}")
         await self.parent.nc.publish(
             f"{self.parent.onid}.NewInputSet",
             json.dumps(input_set.export()).encode()
@@ -156,18 +229,92 @@ class NatsOperationImplementationNetworkContext(
         Schedule the running of an operation
         """
         self.logger.debug("[DISPATCH] %s", operation.name)
-        # run_dipatch call ictx.add to add back results to the orchestrator network
+        # run_dipatch calls ictx.add to add back results to the orchestrator network
 
         # TODO
         # this is just a patch
-        # find why instance name is None
+        # find why instance name is None, and why parents are still strings
         operation = operation._replace(instance_name = operation.name)
-        
+
+        # TODO
+        # Run dispatch does not support locking
+        # aqquire requires parents, currently parents are list of uids in
+        # worker context.
         task = asyncio.create_task(
             self.run_dispatch(wctx, operation, parameter_set)
         )
 
         return task
+
+    async def run_dispatch(
+        self,
+        octx: BaseOrchestratorContext,
+        operation: Operation,
+        parameter_set: BaseParameterSet,
+        set_valid: bool = True,
+    ):
+        """
+        Run an operation in the background and add its outputs to the input
+        network when complete
+        """
+        # Ensure that we can run the operation
+        # Locking not implemented
+            # Lock all inputs which cannot be used simultaneously
+            # async with octx.lctx.acquire(parameter_set):
+
+        # Run the operation
+        outputs = await self.run(
+            parameter_set.ctx,
+            octx,
+            operation,
+            await parameter_set._asdict(),
+        )
+        if outputs is None:
+            return
+        if not inspect.isasyncgen(outputs):
+
+            async def to_async_gen(x):
+                yield x
+
+            outputs = to_async_gen(outputs)
+        async for an_output in outputs:
+            # Create a list of inputs from the outputs using the definition mapping
+            try:
+                inputs = []
+                if operation.expand:
+                    expand = operation.expand
+                else:
+                    expand = []
+                parents = [
+                    item.origin async for item in parameter_set.parameters()
+                ]
+                for key, output in an_output.items():
+                    if not key in expand:
+                        output = [output]
+                    for value in output:
+                        new_input = Input(
+                            value=value,
+                            definition=operation.outputs[key],
+                            parents=parents,
+                            origin=(operation.instance_name, key),
+                        )
+                        new_input.validated = set_valid
+                        inputs.append(new_input)
+            except KeyError as error:
+                raise KeyError(
+                    "Value %s missing from output:definition mapping %s(%s)"
+                    % (
+                        str(error),
+                        operation.instance_name,
+                        ", ".join(operation.outputs.keys()),
+                    )
+                ) from error
+            # Add the input set made from the outputs to the input set network
+            await octx.ictx.add(
+                MemoryInputSet(
+                    MemoryInputSetConfig(ctx=parameter_set.ctx, inputs=inputs)
+                )
+            )
 
 class NatsNodeContext(BaseDataFlowObjectContext):
     async def __aenter__(self):
@@ -389,6 +536,7 @@ class NatsOrchestratorContext(MemoryOrchestratorContext):
             async for parameter_set in self.ictx.gather_inputs(
                 self.rctx, operation, dataflow, ctx=ctx
             ):
+                print(f"\n\n new parameter set from opparamset parent {parameter_set.config.parameters[0].origin.parents} \n\n")
                 yield operation, parameter_set
 
     async def run_operations_for_ctx(self, ctx: BaseContextHandle, *, strict: bool = True):
@@ -403,12 +551,22 @@ class NatsOrchestratorContext(MemoryOrchestratorContext):
         try:
             # Return when outstanding operations reaches zero
             while tasks:
+                self.logger.debug("Waiting for more tasks")
                 if (
                     not more
                     and len(tasks) == 1
                     and input_set_enters_network in tasks
+
                 ):
-                    break
+                    async with self.ictx.input_notification_set[ctx_str]() as nt_ctx:
+                        if nt_ctx.parent.event_added_lock.locked():
+                            async with nt_ctx.parent.event_added_lock:
+                                pass
+                        else:
+                            self.logger.debug("No more tasks")
+                            break
+
+
                 # Wait for incoming events
                 done, _pending = await asyncio.wait(
                     tasks, return_when=asyncio.FIRST_COMPLETED
@@ -466,7 +624,7 @@ class NatsOrchestratorContext(MemoryOrchestratorContext):
                                 tasks.add(dispatch_operation)
                                 self.logger.debug(
                                     "[%s]: dispatch operation: %s",
-                                    ctx_str,
+                                     ctx_str,
                                     operation.instance_name,
                                 )
                         # Create a another task to waits for new input sets
@@ -485,7 +643,14 @@ class NatsOrchestratorContext(MemoryOrchestratorContext):
             async for _operation, _results in self.run_stage(
                 ctx, Stage.CLEANUP
             ):
-                pass
+                # TODO : make an issue to track this
+                raise NotImplementedError("Operations in cleanup stage not supported yet!")
+
+        handle_string = (await ctx.handle()).as_string()
+        if handle_string in self.parent.opimpctx.waiters_for_output:
+            self.parent.opimpctx.waiters_for_output[handle_string].set()
+        else:
+            self.parent.opimpctx.waiters_for_output[handle_string] = None
 
         # Set output to empty dict in case output operations fail
         output = {}
@@ -516,8 +681,9 @@ class NatsOrchestratorContext(MemoryOrchestratorContext):
         async for operation, parameter_set in self.operations_parameter_set_pairs(
             ctx, self.config.dataflow, stage=stage
         ):
-            # As of now, output operations/implementations are
-            # required to be in the orchestrator node
+            # Output operations/implementations are
+            # required to be in the orchestrator node,
+            # and is handled by omimp network of onode
             if stage == Stage.OUTPUT:
                 # Run the operation, input set pair
                 yield operation, await self.parent.opimpctx.run(
@@ -614,7 +780,8 @@ class NatsOrchestratorNodeContext(NatsNodeContext):
                 self
             )
         )
-        
+
+
         self.output_operations = set()
         for instance_name,operation in self.dataflow.operations.items():
             if operation.stage == Stage.OUTPUT:
@@ -629,7 +796,7 @@ class NatsOrchestratorNodeContext(NatsNodeContext):
                         config=opconfig,
                         opimp=opimp)
 
-                # Add operation to node_for_operation, so that the check for
+                # Also add output operation to `node_for_operation`, so that the check for
                 # availability of all operations passes
                 self.nodes_for_operation[operation.name] = None
 
@@ -745,6 +912,25 @@ class NatsOrchestratorOperationImplementationNetworkContext(MemoryOperationImple
         self.opimps = self.config.operations
         self.operations = {}
         self.completed_event = asyncio.Event()
+        self.waiters_for_output = {}
+
+    async def run(
+        self,
+        ctx: BaseInputSetContext,
+        octx: BaseOrchestratorContext,
+        operation: Operation,
+        inputs: Dict[str, Any]):
+        # TODO : Ensure that only operations with stage == Stage.OUTPUT is run
+        print(f"\n\n OPIMPCTX OUTPUT \n\n\n")
+        handle_string = (await ctx.handle()).as_string()
+        self.logger.debug(f"output operations waiting: context = {handle_string}")
+        print(f"\n\n output operations waiting: context = {handle_string} \n\n")
+        print(f"\n\n output operations waiting blah :{self} \n\n")
+
+        if handle_string not in self.waiters_for_output:
+            self.waiters_for_output[handle_string] = asyncio.Event()
+            await self.waiters_for_output[handle_string].wait()
+        return await super().run(ctx,octx,operation,inputs)
 
 
 @config

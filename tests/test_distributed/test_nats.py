@@ -93,7 +93,8 @@ class TestNatsOrchestratorSimple(NatsTestCase):
     async def test_run(self):
         server = self.server_addr
         test_operations = [
-            [parse_line.op,add.op,mult.op],
+            [parse_line.op,],
+            [add.op,mult.op]
         ]
 
         worker_nodes = [
