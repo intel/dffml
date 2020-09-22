@@ -76,7 +76,7 @@ class SourceTest(abc.ABC):
                             val["value"]
                             for _, val in record.data.prediction.items()
                         ],
-                        ["undetermined"] * (len(record.data.prediction)),
+                        [None] * (len(record.data.prediction)),
                     )
                 with self.subTest(both=[full_key, empty_key]):
                     records = {
