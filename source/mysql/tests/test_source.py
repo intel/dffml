@@ -1,4 +1,5 @@
 import socket
+import inspect
 import unittest
 import contextlib
 from unittest.mock import patch
@@ -14,15 +15,14 @@ from dffml_source_mysql.util.mysql_docker import mysql, DOCKER_ENV
 class TestMySQLSource(AsyncTestCase, SourceTest):
 
     SQL_SETUP = """
-DROP TABLE IF EXISTS `record_data`;
-CREATE TABLE `record_data` (
+CREATE TABLE IF NOT EXISTS `record_data` (
   `key` varchar(100) NOT NULL,
-  `feature_PetalLength` float DEFAULT NULL,
-  `feature_PetalWidth` float DEFAULT NULL,
-  `feature_SepalLength` float DEFAULT NULL,
-  `feature_SepalWidth` float DEFAULT NULL,
-  `target_name_confidence` float DEFAULT NULL,
-  `target_name_value` varchar(100) DEFAULT NULL,
+  `PetalLength` float DEFAULT NULL,
+  `PetalWidth` float DEFAULT NULL,
+  `SepalLength` float DEFAULT NULL,
+  `SepalWidth` float DEFAULT NULL,
+  `flower_type` varchar(100) DEFAULT NULL,
+  `flower_confidence` float DEFAULT NULL,
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 """
@@ -32,20 +32,49 @@ CREATE TABLE `record_data` (
         super().setUpClass()
         cls._exit_stack = contextlib.ExitStack()
         cls.exit_stack = cls._exit_stack.__enter__()
-        cls.container_ip, cls.ca = cls.exit_stack.enter_context(
-            mysql(sql_setup=cls.SQL_SETUP)
-        )
+        cls.container_ip, cls.ca = cls.exit_stack.enter_context(mysql())
         cls.source_config = MySQLSourceConfig(
             host="mysql.unittest",
             port=3306,
             user=DOCKER_ENV["MYSQL_USER"],
             password=DOCKER_ENV["MYSQL_PASSWORD"],
             db=DOCKER_ENV["MYSQL_DATABASE"],
-            record_query="select * from record_data where `key`=%s",
-            update_query="""insert into record_data (`key`,`feature_PetalLength`,`feature_PetalWidth`, `feature_SepalLength`, `feature_SepalWidth`, `target_name_confidence`, `target_name_value`) values (%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE `key`=%s,  `feature_PetalLength`=%s, `feature_PetalWidth`=%s, `feature_SepalLength`=%s, `feature_SepalWidth`=%s, `target_name_confidence`=%s, `target_name_value`=%s""",
-            records_query="select * from record_data",
-            model_columns="key feature_PetalLength feature_PetalWidth feature_SepalLength feature_SepalWidth target_name_confidence target_name_value",
+            key="key",
+            features={
+                k: k
+                for k in [
+                    "PetalLength",
+                    "PetalWidth",
+                    "SepalLength",
+                    "SepalWidth",
+                ]
+            },
+            predictions={"target_name": ("flower_type", "flower_confidence")},
             ca=cls.ca,
+            init=cls.SQL_SETUP,
+            record="SELECT * FROM record_data WHERE `key`=%s",
+            records="SELECT * FROM record_data",
+            update=inspect.cleandoc(
+                """
+                INSERT INTO record_data
+                (
+                    `key`,
+                    `PetalLength`,
+                    `PetalWidth`,
+                    `SepalLength`,
+                    `SepalWidth`,
+                    `flower_type`,
+                    `flower_confidence`
+                )
+                VALUES (%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE
+                    `PetalLength`=%s,
+                    `PetalWidth`=%s,
+                    `SepalLength`=%s,
+                    `SepalWidth`=%s,
+                    `flower_type`=%s,
+                    `flower_confidence`=%s
+                """
+            ),
         )
         # Make it so that when the client tries to connect to mysql.unittest the
         # address it gets back is the one for the container
@@ -71,9 +100,3 @@ CREATE TABLE `record_data` (
 
     async def setUpSource(self):
         return MySQLSource(self.source_config)
-
-    @unittest.skip("Tags not implemented")
-    async def test_tag(self):
-        """
-        Tags not implemented
-        """
