@@ -31,6 +31,7 @@ MY_CONF = """[mysqld]
 ssl-ca=/conf/certs/ca.pem
 ssl-cert=/conf/certs/server-cert.pem
 ssl-key=/conf/certs/server-key.pem
+require_secure_transport=ON
 """
 DOCKER_NA: str = "Failed to connect to docker daemon"
 DOCKER_AVAILABLE: bool = False

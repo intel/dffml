@@ -30,7 +30,7 @@ class DbSourceContext(BaseSourceContext):
                         "value"
                     ]
                 else:
-                    key_value_pairs[key] = "undetermined"
+                    key_value_pairs[key] = None
             elif "_confidence" in key:
                 target = key.replace("_confidence", "")
                 if record.data.prediction:
