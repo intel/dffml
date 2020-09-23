@@ -86,3 +86,4 @@ class OpSource(MemorySource):
         # Ensure the source isn't empty
         if not self.mem and not self.config.allowempty:
             raise EmptyError()
+        return self
