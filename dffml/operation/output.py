@@ -13,11 +13,9 @@ from ..df.exceptions import DefinitionNotInContext
 from ..util.data import traverse_get
 
 
-# TODO(p3) Remove fill, it doesn't get used anyway. Or use it somehow
 class GroupBySpec(NamedTuple):
     group: Definition
     by: Definition
-    fill: Any
 
     @classmethod
     async def resolve(
