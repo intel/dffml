@@ -8,4 +8,5 @@ dffml accuracy \
   -model-features \
     Feature1:float:1 \
     Feature2:float:1 \
+  -scorer mse \
   -log critical
