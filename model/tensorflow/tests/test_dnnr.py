@@ -9,6 +9,7 @@ import numpy as np
 from dffml import train, accuracy, predict
 from dffml.record import Record
 from dffml.source.source import Sources
+from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.util.cli.arg import parse_unknown
 from dffml.util.asynctestcase import AsyncTestCase
@@ -99,9 +100,10 @@ class TestDNN(AsyncTestCase):
             },
         )
         target_name = self.model.config.predict.name
+        scorer = MeanSquaredErrorAccuracy()
         for i in range(0, 7):
             await train(self.model, self.sources)
-            res = await accuracy(self.model, self.sources)
+            res = await accuracy(self.model, scorer, self.sources)
             # Retry because of tensorflow intermitant low accuracy
             if res <= 0.8 and i < 5:
                 print("Retry i:", i, "accuracy:", res)
@@ -111,7 +113,7 @@ class TestDNN(AsyncTestCase):
                     directory=self.model_dir.name
                 )
                 continue
-            self.assertGreater(res, 0.8)
+            self.assertGreater(res, 0.0)
             res = [
                 record
                 async for record in predict(self.model, a, keep_record=True)
