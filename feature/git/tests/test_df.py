@@ -58,38 +58,25 @@ class TestRunner(AsyncTestCase):
             definition=dataflow.definitions["quarter_start_date"],
             parents=None,
         )
-        quarters = [
-            Input(
-                value=i,
-                definition=dataflow.definitions["quarter"],
-                parents=None,
-            )
-            for i in range(0, 10)
-        ]
+        quarters = Input(
+            value=10,
+            definition=dataflow.definitions["quarters"],
+            parents=None,
+        )
 
         group_by_spec = Input(
             value={
                 "cloc": {
                     "group": "quarter",
                     "by": "language_to_comment_ratio",
-                    "fill": 0,
                 },
-                "authors": {
-                    "group": "quarter",
-                    "by": "author_count",
-                    "fill": 0,
-                },
-                "work": {"group": "quarter", "by": "work_spread", "fill": 0},
+                "authors": {"group": "quarter", "by": "author_count",},
+                "work": {"group": "quarter", "by": "work_spread"},
                 "release": {
                     "group": "quarter",
                     "by": "release_within_period",
-                    "fill": False,
                 },
-                "commits": {
-                    "group": "quarter",
-                    "by": "commit_count",
-                    "fill": 0,
-                },
+                "commits": {"group": "quarter", "by": "commit_count",},
             },
             definition=dataflow.definitions["group_by_spec"],
             parents=None,
@@ -106,7 +93,7 @@ class TestRunner(AsyncTestCase):
                             no_git_branch_given,
                             date_spec,
                             group_by_spec,
-                            *quarters,
+                            quarters,
                         ]
                         for url in urls
                     }

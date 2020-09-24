@@ -65,6 +65,7 @@ setup(
     packages=find_packages(),
     entry_points={
         "dffml.operation": [
+            "make_quarters = dffml_feature_git.feature.operations:make_quarters",
             "quarters_back_to_date = dffml_feature_git.feature.operations:quarters_back_to_date",
             "check_if_valid_git_repository_URL = dffml_feature_git.feature.operations:check_if_valid_git_repository_URL",
             "clone_git_repo = dffml_feature_git.feature.operations:clone_git_repo",
