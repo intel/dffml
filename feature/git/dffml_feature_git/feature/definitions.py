@@ -18,6 +18,7 @@ class GitRepoCheckedOutSpec(NamedTuple):
 definitions = [
     Definition(name="quarter_start_date", primitive="int"),
     Definition(name="quarter", primitive="int"),
+    Definition(name="quarters", primitive="int"),
     Definition(name="URL", primitive="string"),
     Definition(name="valid_git_repository_URL", primitive="boolean"),
     Definition(name="git_branch", primitive="str"),

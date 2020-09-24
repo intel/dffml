@@ -49,6 +49,15 @@ async def exec_with_logging(*args):
 
 
 @op(
+    inputs={"number": quarters},
+    outputs={"quarters": quarter},
+    expand=["quarters"],
+)
+async def make_quarters(number: int):
+    return {"quarters": list(range(0, number))}
+
+
+@op(
     inputs={"date": quarter_start_date, "number": quarter},
     outputs={"date": date, "start_end": date_pair},
     expand=["date", "start_end"],
