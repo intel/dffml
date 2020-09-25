@@ -127,18 +127,18 @@ class DataFlowSourceContext(BaseSourceContext):
         if self.parent.config.all_for_single:
             async for ctx, result in self.records():
                 if (await ctx.handle()).as_string() == key:
-                    yield record
+                    return record
         else:
             async for ctx, result in self.octx.run(
                 {
                     RecordInputSetContext(record): await self.input_set(record)
-                    async for record in [self.sctx.record(key)]
+                    for record in [await self.sctx.record(key)]
                 },
                 strict=not self.parent.config.no_strict,
             ):
                 if result:
                     ctx.record.evaluated(result)
-                yield ctx.record
+                return ctx.record
 
     async def records(self) -> AsyncIterator[Record]:
         async for ctx, result in self.octx.run(
