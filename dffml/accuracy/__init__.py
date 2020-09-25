@@ -10,3 +10,4 @@ from .accuracy import (
     InvalidNumberOfFeaturesError,
 )
 from .mse import MeanSquaredErrorAccuracy
+from .clfacc import ClassificationAccuracy
