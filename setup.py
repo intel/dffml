@@ -149,7 +149,8 @@ setup(
         "dffml.secret": ["ini = dffml.secret.ini:INISecret"],
         # Accuracy
         "dffml.accuracy": [
-            "mse = dffml.accuracy.mse:MeanSquaredErrorAccuracy"
+            "mse = dffml.accuracy.mse:MeanSquaredErrorAccuracy",
+            "clfacc = dffml.accuracy.clfacc:ClassificationAccuracy",
         ],
     },
 )
