@@ -62,7 +62,7 @@ class RecordInputSetContext(BaseInputSetContext):
         return RecordContextHandle(self)
 
     def __repr__(self):
-        return self.as_string
+        return self.record.key
 
     def __str__(self):
         return repr(self)
