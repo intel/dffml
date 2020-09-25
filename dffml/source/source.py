@@ -238,18 +238,27 @@ class ValidationSources(Sources):
         self.validation = validation
 
 
-class SubsetSources(ValidationSources):
+class SubsetSourcesContext(SourcesContext):
+    async def records(
+        self, validation: Optional[Callable[[Record], bool]] = None
+    ) -> AsyncIterator[Record]:
+        for key in self.parent.keys:
+            record = await self.record(key)
+            if validation is None or validation(record):
+                yield record
+
+
+class SubsetSources(Sources):
     """
     Restricts access to a subset of records during iteration based on their keys.
     """
 
+    CONTEXT = SubsetSourcesContext
+
     def __init__(
         self, *args: BaseSource, keys: Optional[List[str]] = None
     ) -> None:
-        super().__init__(self.__validation, *args)
+        super().__init__(*args)
         if keys is None:
             keys = []
         self.keys = keys
-
-    def __validation(self, record: Record) -> bool:
-        return bool(record.key in self.keys)
