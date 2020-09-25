@@ -236,14 +236,18 @@ class DNNClassifierModelContext(TensorflowModelContext):
             async for record in sources.with_features(
                 self.features + [self.parent.config.predict.name]
             )
-            if record.feature(self.parent.config.predict.name)
+            if self.parent.config.clstype(
+                record.feature(self.parent.config.predict.name)
+            )
             in self.classifications
         ]:
             for feature, results in record.features(self.features).items():
                 x_cols[feature].append(self.np.array(results))
             y_cols.append(
                 self.classifications[
-                    record.feature(self.parent.config.predict.name)
+                    self.parent.config.clstype(
+                        record.feature(self.parent.config.predict.name)
+                    )
                 ]
             )
         if not y_cols:
