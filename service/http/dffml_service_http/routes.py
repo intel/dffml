@@ -5,6 +5,7 @@ import secrets
 import inspect
 import pathlib
 import traceback
+import urllib.parse
 import pkg_resources
 from functools import wraps
 from http import HTTPStatus
@@ -428,6 +429,12 @@ class Routes(BaseMultiCommContext):
 
     @web.middleware
     async def error_middleware(self, request, handler):
+        # URL decode match_info values to fix bug where some versions of Python
+        # / aiohttp do not decode them
+        for key, value in request.match_info.items():
+            request.match_info[key] = urllib.parse.unquote(
+                value, errors="strict"
+            )
         try:
             # HACK This checks if aiohttp's builtin not found handler is going
             # to be called
