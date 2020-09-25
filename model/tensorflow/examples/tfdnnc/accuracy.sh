@@ -4,6 +4,7 @@ dffml accuracy \
   -model-directory tempdir \
   -model-classifications 0 1 2 \
   -model-clstype int \
+  -scorer clfacc \
   -sources iris=csv \
   -source-filename iris_test.csv \
   -model-features \
