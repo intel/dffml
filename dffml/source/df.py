@@ -14,6 +14,7 @@ from dffml.feature import Features
 from dffml.record import Record
 from dffml.source.source import BaseSource, BaseSourceContext
 from dffml.util.entrypoint import entrypoint
+from dffml.util.cli.parser import ParseInputsAction
 from dffml.df.memory import MemoryOrchestrator
 
 
@@ -24,6 +25,12 @@ class DataFlowSourceConfig:
     features: Features = field(
         "Features to pass as definitions to each context from each "
         "record to be preprocessed"
+    )
+    inputs: List[str] = field(
+        "Other inputs to add under each ctx (record's key will "
+        + "be used as the context)",
+        action=ParseInputsAction,
+        default_factory=lambda: [],
     )
     record_def: str = field(
         "Definition to be used for record.key."
@@ -72,6 +79,13 @@ class DataFlowSourceContext(BaseSourceContext):
                     ),
                 )
                 for feature in self.parent.config.features
+            ]
+            + [
+                Input(
+                    value=value,
+                    definition=self.parent.config.dataflow.definitions[name],
+                )
+                for value, name in self.parent.config.inputs
             ]
             + (
                 []
