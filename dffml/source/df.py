@@ -47,6 +47,9 @@ class DataFlowSourceConfig:
         "results of desired record on a call to record()",
         default=False,
     )
+    no_strict: bool = field(
+        "Do not exit on operation exceptions, just log errors", default=False,
+    )
     orchestrator: BaseOrchestrator = MemoryOrchestrator.withconfig({})
 
 
@@ -130,7 +133,8 @@ class DataFlowSourceContext(BaseSourceContext):
                 {
                     RecordInputSetContext(record): await self.input_set(record)
                     async for record in [self.sctx.record(key)]
-                }
+                },
+                strict=not self.parent.config.no_strict,
             ):
                 if result:
                     ctx.record.evaluated(result)
@@ -141,7 +145,8 @@ class DataFlowSourceContext(BaseSourceContext):
             {
                 RecordInputSetContext(record): await self.input_set(record)
                 async for record in self.sctx.records()
-            }
+            },
+            strict=not self.parent.config.no_strict,
         ):
             if result:
                 ctx.record.evaluated(result)
