@@ -164,6 +164,21 @@ function run_docs() {
   TEMP_DIRS+=("${master_docs}")
   rm -rf pages
   ./scripts/docs.sh
+
+   # Log failed tests to file
+   consoletest_failures="$(mktemp)"
+   TEMP_DIRS+=("${consoletest_failures}")
+
+   # Tutorial tests
+   ./scripts/consoletest.sh 2>&1 | tee "${consoletest_failures}"
+
+   # Fail if any tests errored
+   failed=$(grep 'failures in tests' "${consoletest_failures}" | awk '{print $1}')
+   if [ "x${failed}" != "x0" ]; then
+     echo "${failed} tests failed" >&2
+     exit 1
+   fi
+
   mv pages "${master_docs}/html"
 
   # Make last release docs
