@@ -11,8 +11,9 @@ import functools
 import contextlib
 import collections
 import dataclasses
+import collections.abc
 from argparse import ArgumentParser
-from typing import Dict, Any, Type, Optional
+from typing import Dict, Any, Type, Optional, Union
 
 from .util.data import get_args, get_origin
 from .util.cli.arg import Arg
@@ -137,6 +138,26 @@ def mkarg(field):
     return arg
 
 
+PRIMITIVE_TYPES = (int, float, str, bool, dict, list, bytes)
+
+
+def typing_type_cls(param_annotation):
+    if get_origin(param_annotation) in [
+        Union,
+        collections.abc.AsyncIterator,
+    ]:
+        # If the annotation is of the form Optional
+        return list(get_args(param_annotation))[0]
+    elif (
+        get_origin(param_annotation) is list
+        or get_origin(param_annotation) is dict
+    ):
+        # If the annotation are of the form List[MyDataClass] or Dict[str, MyDataClass]
+        # Return list or dict (probably should do more here)
+        return get_origin(param_annotation)
+    return param_annotation
+
+
 def convert_value(arg, value):
     if value is None:
         # Return default if not found and available
@@ -156,7 +177,23 @@ def convert_value(arg, value):
         elif getattr(type_cls, "CONFIGLOADABLE", False):
             pass
         else:
-            value = type_cls(value)
+            if not ".load" in str(type_cls):
+                type_cls = typing_type_cls(type_cls)
+            if isinstance(value, str) and type_cls is not str:
+                value = parser_helper(value)
+            # dict -> dataclass of namedtuple
+            if (
+                dataclasses.is_dataclass(type_cls)
+                or bool(
+                    inspect.isclass(type_cls)
+                    and issubclass(type_cls, tuple)
+                    and hasattr(type_cls, "_asdict")
+                )
+                and isinstance(value, dict)
+            ):
+                value = type_cls(**value)
+            else:
+                value = type_cls(value)
         # list -> tuple
         if arg.annotation is not None and get_origin(arg.annotation) is tuple:
             value = get_origin(arg.annotation)(value)
