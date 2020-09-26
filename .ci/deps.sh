@@ -160,7 +160,7 @@ if [[ "x${PLUGIN}" == "xmodel/autosklearn" ]] || \
    [[ "x${PLUGIN}" == "xdocs" ]]; then
   sudo apt-get install -y build-essential swig
   pip install cython
-  curl https://raw.githubusercontent.com/automl/auto-sklearn/master/requirements.txt |
+  curl -L 'https://github.com/automl/auto-sklearn/raw/2786d636e92507323b21be7692fbbf8b3f37f7f3/requirements.txt' |
     xargs -n 1 -L 1 pip install
   pip install liac-arff psutil
 fi
