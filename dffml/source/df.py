@@ -24,7 +24,8 @@ class DataFlowSourceConfig:
     dataflow: DataFlow = field("DataFlow to use for preprocessing")
     features: Features = field(
         "Features to pass as definitions to each context from each "
-        "record to be preprocessed"
+        "record to be preprocessed",
+        default=Features(),
     )
     inputs: List[str] = field(
         "Other inputs to add under each ctx (record's key will "
