@@ -1,7 +1,5 @@
 function predict (URL) {
-  return fetch('cgi-bin/api-ml.py?action=predict' +
-      '&maintained=' + Number(maintained) +
-      '&URL=' + URL)
+  return fetch('cgi-bin/api.py?action=predict&URL=' + URL)
     .then(function(response) {
       return response.json()
     });
