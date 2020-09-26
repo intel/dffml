@@ -112,6 +112,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Split out model tutorial into writing the model, and another tutorial for
   packaging the model.
 - IntegrationCLITestCase creates a new directory and chdir into it for each test
+- Automated testing of Automating Classification tutorial
 ### Fixed
 - `export_value` now converts numpy array to JSON serializable datatype
 - CSV source overwriting configloaded data to every row

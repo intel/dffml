@@ -56,6 +56,7 @@ setup(
             "codecov",
             "sphinx",
             "sphinx_rtd_theme",
+            "sphinx-tabs>=1.3.0",
             "recommonmark",
             "black==19.10b0",
             "jsbeautifier",

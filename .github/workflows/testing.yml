@@ -51,6 +51,7 @@ jobs:
         ./.ci/deps.sh ${{ matrix.check }}
     - name: Run check
       run: |
+        export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
         GITHUB_PAGES_KEY=${{ secrets.GITHUB_PAGES_KEY }} ./.ci/run.sh ${{ matrix.check }}
 
   container:
@@ -119,6 +120,7 @@ jobs:
     - name: Test
       run: |
         set -x
+        export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
         export PYTHON=python${{ matrix.python-version }}
         export PLUGIN=${{ matrix.plugin }}
         export LOGGING=debug
