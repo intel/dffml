@@ -13,6 +13,10 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
+  <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
+  <link rel="stylesheet" href="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
+  <link rel="stylesheet" href="_static/sphinx_tabs/tabs.css" type="text/css" />
 
   
   
@@ -30,6 +34,8 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/language_data.js"></script>
+        <script src="_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.js"></script>
+        <script src="_static/sphinx_tabs/tabs.js"></script>
         <script src="_static/copybutton.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
@@ -592,6 +598,8 @@
         <li><a href="api/source/op.html#dffml.source.op.OpSource.CONTEXT">(dffml.source.op.OpSource attribute)</a>
 </li>
         <li><a href="api/source/source.html#dffml.source.source.Sources.CONTEXT">(dffml.source.source.Sources attribute)</a>
+</li>
+        <li><a href="api/source/source.html#dffml.source.source.SubsetSources.CONTEXT">(dffml.source.source.SubsetSources attribute)</a>
 </li>
         <li><a href="api/source/source.html#dffml.source.source.ValidationSources.CONTEXT">(dffml.source.source.ValidationSources attribute)</a>
 </li>
@@ -1356,11 +1364,7 @@
       <li><a href="api/util/testing/source.html#dffml.util.testing.source.FileSourceTest">FileSourceTest (class in dffml.util.testing.source)</a>
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Output.fill">fill() (dffml.df.types.Output property)</a>
-
-      <ul>
-        <li><a href="api/operation/output.html#dffml.operation.output.GroupBySpec.fill">(dffml.operation.output.GroupBySpec property)</a>
 </li>
-      </ul></li>
       <li><a href="api/source/dir.html#dffml.source.dir.FolderNotFoundError">FolderNotFoundError</a>
 </li>
       <li><a href="api/df/types.html#dffml.df.types.Forward">Forward (class in dffml.df.types)</a>
@@ -2167,6 +2171,8 @@
 </li>
         <li><a href="api/source/source.html#dffml.source.source.SourcesContext.records">(dffml.source.source.SourcesContext method)</a>
 </li>
+        <li><a href="api/source/source.html#dffml.source.source.SubsetSourcesContext.records">(dffml.source.source.SubsetSourcesContext method)</a>
+</li>
         <li><a href="api/source/source.html#dffml.source.source.ValidationSourcesContext.records">(dffml.source.source.ValidationSourcesContext method)</a>
 </li>
       </ul></li>
@@ -2202,10 +2208,10 @@
         <li><a href="api/df/memory.html#dffml.df.memory.MemoryInputSet.remove_input">(dffml.df.memory.MemoryInputSet method)</a>
 </li>
       </ul></li>
-      <li><a href="api/db/sql.html#dffml.db.sql.SQLDatabaseContext.remove_query">remove_query() (dffml.db.sql.SQLDatabaseContext method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/db/sql.html#dffml.db.sql.SQLDatabaseContext.remove_query">remove_query() (dffml.db.sql.SQLDatabaseContext method)</a>
+</li>
       <li><a href="api/df/base.html#dffml.df.base.BaseInputSet.remove_unvalidated_inputs">remove_unvalidated_inputs() (dffml.df.base.BaseInputSet method)</a>
 
       <ul>
@@ -2340,10 +2346,10 @@
       </ul></li>
       <li><a href="api/service/dev.html#dffml.service.dev.Develop.skel">skel (dffml.service.dev.Develop attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/service/dev.html#dffml.service.dev.Skeleton">Skeleton (class in dffml.service.dev)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/util/skel.html#dffml.util.skel.SkelTemplateConfig">SkelTemplateConfig (class in dffml.util.skel)</a>
 </li>
       <li><a href="api/model/slr.html#dffml.model.slr.SLRModel">SLRModel (class in dffml.model.slr)</a>
@@ -2382,6 +2388,8 @@
 </li>
       <li><a href="api/source/source.html#dffml.source.source.SubsetSources">SubsetSources (class in dffml.source.source)</a>
 </li>
+      <li><a href="api/source/source.html#dffml.source.source.SubsetSourcesContext">SubsetSourcesContext (class in dffml.source.source)</a>
+</li>
       <li><a href="api/df/types.html#dffml.df.types.Definition.subspec">subspec() (dffml.df.types.Definition property)</a>
 </li>
       <li><a href="api/util/net.html#dffml.util.net.sync_urlopen">sync_urlopen() (in module dffml.util.net)</a>
@@ -2419,6 +2427,8 @@
       <li><a href="api/util/data.html#dffml.util.data.traverse_set">traverse_set() (in module dffml.util.data)</a>
 </li>
       <li><a href="api/base.html#dffml.base.BaseConfigurable.type_for">type_for() (dffml.base.BaseConfigurable class method)</a>
+</li>
+      <li><a href="api/base.html#dffml.base.typing_type_cls">typing_type_cls() (in module dffml.base)</a>
 </li>
   </ul></td>
 </tr></table>

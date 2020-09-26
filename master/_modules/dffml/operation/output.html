@@ -13,6 +13,10 @@
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinx_tabs/tabs.css" type="text/css" />
 
   
   
@@ -30,6 +34,8 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.js"></script>
+        <script src="../../../_static/sphinx_tabs/tabs.js"></script>
         <script src="../../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
@@ -199,11 +205,9 @@
 <span class="kn">from</span> <span class="nn">..util.data</span> <span class="kn">import</span> <span class="n">traverse_get</span>
 
 
-<span class="c1"># TODO(p3) Remove fill, it doesn&#39;t get used anyway. Or use it somehow</span>
 <div class="viewcode-block" id="GroupBySpec"><a class="viewcode-back" href="../../../api/operation/output.html#dffml.operation.output.GroupBySpec">[docs]</a><span class="k">class</span> <span class="nc">GroupBySpec</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
     <span class="n">group</span><span class="p">:</span> <span class="n">Definition</span>
     <span class="n">by</span><span class="p">:</span> <span class="n">Definition</span>
-    <span class="n">fill</span><span class="p">:</span> <span class="n">Any</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">async</span> <span class="k">def</span> <span class="nf">resolve</span><span class="p">(</span>

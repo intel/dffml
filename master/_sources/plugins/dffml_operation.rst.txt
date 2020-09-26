@@ -1653,6 +1653,27 @@ No description
 
 - code_to_comment_ratio: language_to_comment_ratio(type: int)
 
+.. _plugin_operation_dffml_feature_git_make_quarters:
+
+make_quarters
+~~~~~~~~~~~~~
+
+*Official*
+
+No description
+
+**Stage: processing**
+
+
+
+**Inputs**
+
+- number: quarters(type: int)
+
+**Outputs**
+
+- quarters: quarter(type: int)
+
 .. _plugin_operation_dffml_feature_git_quarters_back_to_date:
 
 quarters_back_to_date

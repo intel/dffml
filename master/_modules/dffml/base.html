@@ -13,6 +13,10 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sphinx_tabs/tabs.css" type="text/css" />
 
   
   
@@ -30,6 +34,8 @@
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.js"></script>
+        <script src="../../_static/sphinx_tabs/tabs.js"></script>
         <script src="../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
@@ -197,8 +203,9 @@
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">dataclasses</span>
+<span class="kn">import</span> <span class="nn">collections.abc</span>
 <span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentParser</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">.util.data</span> <span class="kn">import</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">get_origin</span>
 <span class="kn">from</span> <span class="nn">.util.cli.arg</span> <span class="kn">import</span> <span class="n">Arg</span>
@@ -323,6 +330,26 @@
     <span class="k">return</span> <span class="n">arg</span></div>
 
 
+<span class="n">PRIMITIVE_TYPES</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="typing_type_cls"><a class="viewcode-back" href="../../api/base.html#dffml.base.typing_type_cls">[docs]</a><span class="k">def</span> <span class="nf">typing_type_cls</span><span class="p">(</span><span class="n">param_annotation</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">param_annotation</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span>
+        <span class="n">Union</span><span class="p">,</span>
+        <span class="n">collections</span><span class="o">.</span><span class="n">abc</span><span class="o">.</span><span class="n">AsyncIterator</span><span class="p">,</span>
+    <span class="p">]:</span>
+        <span class="c1"># If the annotation is of the form Optional</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">get_args</span><span class="p">(</span><span class="n">param_annotation</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="p">(</span>
+        <span class="n">get_origin</span><span class="p">(</span><span class="n">param_annotation</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span>
+        <span class="ow">or</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">param_annotation</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">dict</span>
+    <span class="p">):</span>
+        <span class="c1"># If the annotation are of the form List[MyDataClass] or Dict[str, MyDataClass]</span>
+        <span class="c1"># Return list or dict (probably should do more here)</span>
+        <span class="k">return</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">param_annotation</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">param_annotation</span></div>
+
+
 <div class="viewcode-block" id="convert_value"><a class="viewcode-back" href="../../api/base.html#dffml.base.convert_value">[docs]</a><span class="k">def</span> <span class="nf">convert_value</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Return default if not found and available</span>
@@ -342,7 +369,23 @@
         <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">type_cls</span><span class="p">,</span> <span class="s2">&quot;CONFIGLOADABLE&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
             <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">type_cls</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;.load&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">type_cls</span><span class="p">):</span>
+                <span class="n">type_cls</span> <span class="o">=</span> <span class="n">typing_type_cls</span><span class="p">(</span><span class="n">type_cls</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">type_cls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">parser_helper</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="c1"># dict -&gt; dataclass of namedtuple</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">dataclasses</span><span class="o">.</span><span class="n">is_dataclass</span><span class="p">(</span><span class="n">type_cls</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="nb">bool</span><span class="p">(</span>
+                    <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">type_cls</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">type_cls</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">type_cls</span><span class="p">,</span> <span class="s2">&quot;_asdict&quot;</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">type_cls</span><span class="p">(</span><span class="o">**</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">type_cls</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="c1"># list -&gt; tuple</span>
         <span class="k">if</span> <span class="n">arg</span><span class="o">.</span><span class="n">annotation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">annotation</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">tuple</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">annotation</span><span class="p">)(</span><span class="n">value</span><span class="p">)</span>

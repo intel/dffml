@@ -13,6 +13,10 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_tabs/tabs.css" type="text/css" />
 
   
   
@@ -344,7 +348,14 @@ abstract the loading and storage of data / datasets.</p>
 </li>
 <li><p>features: List of features</p>
 <ul>
+<li><p>default: []</p></li>
 <li><p>Features to pass as definitions to each context from each record to be preprocessed</p></li>
+</ul>
+</li>
+<li><p>inputs: List of strings</p>
+<ul>
+<li><p>default: []</p></li>
+<li><p>Other inputs to add under each ctx (record’s key will be used as the context)</p></li>
 </ul>
 </li>
 <li><p>record_def: String</p>
@@ -363,6 +374,12 @@ abstract the loading and storage of data / datasets.</p>
 <ul>
 <li><p>default: False</p></li>
 <li><p>Run all records through dataflow before grabing results of desired record on a call to record()</p></li>
+</ul>
+</li>
+<li><p>no_strict: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Do not exit on operation exceptions, just log errors</p></li>
 </ul>
 </li>
 <li><p>orchestrator: Entrypoint</p>
@@ -528,49 +545,104 @@ stored in memory.</p>
 <div class="section" id="mysql">
 <span id="plugin-source-dffml-source-mysql-mysql"></span><h3>mysql<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h3>
 <p><em>Official</em></p>
-<p>No description</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">update</span></code> config property is a SQL query which MUST handle insersion
+or update. Columns to be updated should list feature columns first,
+followed by prediction columns.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">features</span></code> config property MUST have keys in same order as they
+appear within <code class="docutils literal notranslate"><span class="pre">update</span></code> query.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prediction</span></code> config property MUST have keys in same order as they
+appear within <code class="docutils literal notranslate"><span class="pre">update</span></code> query.</p></li>
+</ul>
+</div>
+<div class="section" id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<p>Read MySQL or MariaDB’s documentation to understand how to properly setup
+your server for encrypted connections.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://dev.mysql.com/doc/refman/8.0/en/using-encrypted-connections.html">Configuring MySQL to Use Encrypted Connections</a></p></li>
+</ul>
 <p><strong>Args</strong></p>
 <ul class="simple">
+<li><p>user: String</p>
+<ul>
+<li><p>Username</p></li>
+</ul>
+</li>
+<li><p>password: String</p>
+<ul>
+<li><p>Password</p></li>
+</ul>
+</li>
+<li><p>db: String</p>
+<ul>
+<li><p>Name of database to use</p></li>
+</ul>
+</li>
+<li><p>key: String</p>
+<ul>
+<li><p>Column name of record key</p></li>
+</ul>
+</li>
+<li><p>features: typing.Dict[str, str]</p>
+<ul>
+<li><p>Mapping of feature names to column names</p></li>
+</ul>
+</li>
+<li><p>predictions: typing.Dict[str, typing.Tuple[str, str]]</p>
+<ul>
+<li><p>Mapping of prediction names to tuples of (value, confidence) column names</p></li>
+</ul>
+</li>
+<li><p>update: String</p>
+<ul>
+<li><p>Query to update a single record</p></li>
+</ul>
+</li>
+<li><p>record: String</p>
+<ul>
+<li><p>Query to get a single record</p></li>
+</ul>
+</li>
+<li><p>records: String</p>
+<ul>
+<li><p>Query to get a single record</p></li>
+</ul>
+</li>
+<li><p>init: String</p>
+<ul>
+<li><p>default: None</p></li>
+<li><p>Query to run on initial connection</p></li>
+</ul>
+</li>
 <li><p>host: String</p>
 <ul>
 <li><p>default: 127.0.0.1</p></li>
+<li><p>Host/address to connect to</p></li>
 </ul>
 </li>
 <li><p>port: Integer</p>
 <ul>
 <li><p>default: 3306</p></li>
-</ul>
-</li>
-<li><p>user: String</p></li>
-<li><p>password: String</p></li>
-<li><p>db: String</p></li>
-<li><p>records-query: String</p>
-<ul>
-<li><p>SELECT <cite>key</cite> as key, data_1 as feature_1, data_2 as feature_2 FROM record_data</p></li>
-</ul>
-</li>
-<li><p>record-query: String</p>
-<ul>
-<li><p>SELECT <cite>key</cite> as key, data_1 as feature_1, data_2 as feature_2 FROM record_data WHERE <a href="#id1"><span class="problematic" id="id2">`</span></a>key`=%s</p></li>
-</ul>
-</li>
-<li><p>update-query: String</p>
-<ul>
-<li><p>INSERT INTO record_data (<cite>key</cite>, data_1, data_2) VALUES(%s, %s, %s) ON DUPLICATE KEY UPDATE data_1 = %s, data_2=%s</p></li>
-</ul>
-</li>
-<li><p>model-columns: List of strings</p>
-<ul>
-<li><p>Order of Columns in table</p></li>
+<li><p>Port to connect to</p></li>
 </ul>
 </li>
 <li><p>ca: String</p>
 <ul>
 <li><p>default: None</p></li>
-<li><p>Path to server TLS certificate</p></li>
+<li><p>Server certificate to use for TLS validation</p></li>
+</ul>
+</li>
+<li><p>insecure: String</p>
+<ul>
+<li><p>default: False</p></li>
+<li><p>Must be true to accept risks of non-TLS connection</p></li>
 </ul>
 </li>
 </ul>
+</div>
 </div>
 </div>
 </div>

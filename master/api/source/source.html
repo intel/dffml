@@ -13,6 +13,10 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/sphinx_tabs/tabs.css" type="text/css" />
 
   
   
@@ -385,6 +389,23 @@ in unittest diff format</p>
 <dt id="dffml.source.source.SubsetSources">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">SubsetSources</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#dffml.source.source.BaseSource" title="dffml.source.source.BaseSource">dffml.source.source.BaseSource</a></span></em>, <em class="sig-param"><span class="n">keys</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#SubsetSources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SubsetSources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Restricts access to a subset of records during iteration based on their keys.</p>
+<dl class="py attribute">
+<dt id="dffml.source.source.SubsetSources.CONTEXT">
+<code class="sig-name descname">CONTEXT</code><a class="headerlink" href="#dffml.source.source.SubsetSources.CONTEXT" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#dffml.source.source.SubsetSourcesContext" title="dffml.source.source.SubsetSourcesContext"><code class="xref py py-class docutils literal notranslate"><span class="pre">SubsetSourcesContext</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dffml.source.source.SubsetSourcesContext">
+<em class="property">class </em><code class="sig-prename descclassname">dffml.source.source.</code><code class="sig-name descname">SubsetSourcesContext</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="p">:</span> <span class="n"><a class="reference internal" href="../util/asynchelper.html#dffml.util.asynchelper.AsyncContextManagerList" title="dffml.util.asynchelper.AsyncContextManagerList">dffml.util.asynchelper.AsyncContextManagerList</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/source/source.html#SubsetSourcesContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SubsetSourcesContext" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="dffml.source.source.SubsetSourcesContext.records">
+<code class="sig-name descname">records</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">validation</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Callable<span class="p">[</span><span class="p">[</span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record">dffml.record.Record</a><span class="p">]</span><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; AsyncIterator<span class="p">[</span><a class="reference internal" href="../record.html#dffml.record.Record" title="dffml.record.Record">dffml.record.Record</a><span class="p">]</span><a class="reference internal" href="../../_modules/dffml/source/source.html#SubsetSourcesContext.records"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.source.source.SubsetSourcesContext.records" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves records from all sources</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">

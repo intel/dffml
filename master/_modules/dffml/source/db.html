@@ -13,6 +13,10 @@
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinx_tabs/tabs.css" type="text/css" />
 
   
   
@@ -30,6 +34,8 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.js"></script>
+        <script src="../../../_static/sphinx_tabs/tabs.js"></script>
         <script src="../../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
@@ -216,7 +222,7 @@
                         <span class="s2">&quot;value&quot;</span>
                     <span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">key_value_pairs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;undetermined&quot;</span>
+                    <span class="n">key_value_pairs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">elif</span> <span class="s2">&quot;_confidence&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
                 <span class="n">target</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_confidence&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">prediction</span><span class="p">:</span>
