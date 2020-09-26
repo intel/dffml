@@ -13,6 +13,10 @@
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinx_tabs/tabs.css" type="text/css" />
 
   
   
@@ -30,6 +34,8 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.js"></script>
+        <script src="../../../_static/sphinx_tabs/tabs.js"></script>
         <script src="../../../_static/copybutton.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
@@ -200,6 +206,7 @@
 <span class="kn">from</span> <span class="nn">dffml.record</span> <span class="kn">import</span> <span class="n">Record</span>
 <span class="kn">from</span> <span class="nn">dffml.source.source</span> <span class="kn">import</span> <span class="n">BaseSource</span><span class="p">,</span> <span class="n">BaseSourceContext</span>
 <span class="kn">from</span> <span class="nn">dffml.util.entrypoint</span> <span class="kn">import</span> <span class="n">entrypoint</span>
+<span class="kn">from</span> <span class="nn">dffml.util.cli.parser</span> <span class="kn">import</span> <span class="n">ParseInputsAction</span>
 <span class="kn">from</span> <span class="nn">dffml.df.memory</span> <span class="kn">import</span> <span class="n">MemoryOrchestrator</span>
 
 
@@ -209,7 +216,14 @@
     <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="s2">&quot;DataFlow to use for preprocessing&quot;</span><span class="p">)</span>
     <span class="n">features</span><span class="p">:</span> <span class="n">Features</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="s2">&quot;Features to pass as definitions to each context from each &quot;</span>
-        <span class="s2">&quot;record to be preprocessed&quot;</span>
+        <span class="s2">&quot;record to be preprocessed&quot;</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">Features</span><span class="p">(),</span>
+    <span class="p">)</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Other inputs to add under each ctx (record&#39;s key will &quot;</span>
+        <span class="o">+</span> <span class="s2">&quot;be used as the context)&quot;</span><span class="p">,</span>
+        <span class="n">action</span><span class="o">=</span><span class="n">ParseInputsAction</span><span class="p">,</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[],</span>
     <span class="p">)</span>
     <span class="n">record_def</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="s2">&quot;Definition to be used for record.key.&quot;</span>
@@ -224,6 +238,9 @@
         <span class="s2">&quot;Run all records through dataflow before grabing &quot;</span>
         <span class="s2">&quot;results of desired record on a call to record()&quot;</span><span class="p">,</span>
         <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">no_strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="s2">&quot;Do not exit on operation exceptions, just log errors&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">orchestrator</span><span class="p">:</span> <span class="n">BaseOrchestrator</span> <span class="o">=</span> <span class="n">MemoryOrchestrator</span><span class="o">.</span><span class="n">withconfig</span><span class="p">({})</span></div>
 
@@ -241,7 +258,7 @@
         <span class="k">return</span> <span class="n">RecordContextHandle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">as_string</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">record</span><span class="o">.</span><span class="n">key</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
@@ -258,6 +275,13 @@
                     <span class="p">),</span>
                 <span class="p">)</span>
                 <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">features</span>
+            <span class="p">]</span>
+            <span class="o">+</span> <span class="p">[</span>
+                <span class="n">Input</span><span class="p">(</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+                    <span class="n">definition</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="o">.</span><span class="n">definitions</span><span class="p">[</span><span class="n">name</span><span class="p">],</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">inputs</span>
             <span class="p">]</span>
             <span class="o">+</span> <span class="p">(</span>
                 <span class="p">[]</span>
@@ -295,24 +319,26 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">all_for_single</span><span class="p">:</span>
             <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">records</span><span class="p">():</span>
                 <span class="k">if</span> <span class="p">(</span><span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">())</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span> <span class="o">==</span> <span class="n">key</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">record</span>
+                    <span class="k">return</span> <span class="n">record</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
                 <span class="p">{</span>
                     <span class="n">RecordInputSetContext</span><span class="p">(</span><span class="n">record</span><span class="p">):</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_set</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
-                    <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sctx</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
-                <span class="p">}</span>
+                    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="p">[</span><span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sctx</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span>
+                <span class="p">},</span>
+                <span class="n">strict</span><span class="o">=</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">no_strict</span><span class="p">,</span>
             <span class="p">):</span>
                 <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
                     <span class="n">ctx</span><span class="o">.</span><span class="n">record</span><span class="o">.</span><span class="n">evaluated</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-                <span class="k">yield</span> <span class="n">ctx</span><span class="o">.</span><span class="n">record</span></div>
+                <span class="k">return</span> <span class="n">ctx</span><span class="o">.</span><span class="n">record</span></div>
 
 <div class="viewcode-block" id="DataFlowSourceContext.records"><a class="viewcode-back" href="../../../api/source/df.html#dffml.source.df.DataFlowSourceContext.records">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">records</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Record</span><span class="p">]:</span>
         <span class="k">async</span> <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">octx</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
             <span class="p">{</span>
                 <span class="n">RecordInputSetContext</span><span class="p">(</span><span class="n">record</span><span class="p">):</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_set</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
                 <span class="k">async</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sctx</span><span class="o">.</span><span class="n">records</span><span class="p">()</span>
-            <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="n">strict</span><span class="o">=</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">no_strict</span><span class="p">,</span>
         <span class="p">):</span>
             <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
                 <span class="n">ctx</span><span class="o">.</span><span class="n">record</span><span class="o">.</span><span class="n">evaluated</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>

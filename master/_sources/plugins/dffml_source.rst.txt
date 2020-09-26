@@ -153,7 +153,13 @@ df
 
 - features: List of features
 
+  - default: []
   - Features to pass as definitions to each context from each record to be preprocessed
+
+- inputs: List of strings
+
+  - default: []
+  - Other inputs to add under each ctx (record's key will be used as the context)
 
 - record_def: String
 
@@ -169,6 +175,11 @@ df
 
   - default: False
   - Run all records through dataflow before grabing results of desired record on a call to record()
+
+- no_strict: String
+
+  - default: False
+  - Do not exit on operation exceptions, just log errors
 
 - orchestrator: Entrypoint
 
@@ -350,41 +361,85 @@ mysql
 
 *Official*
 
-No description
+.. warning::
+
+    - ``update`` config property is a SQL query which MUST handle insersion
+      or update. Columns to be updated should list feature columns first,
+      followed by prediction columns.
+
+    - ``features`` config property MUST have keys in same order as they
+      appear within ``update`` query.
+
+    - ``prediction`` config property MUST have keys in same order as they
+      appear within ``update`` query.
+
+Examples
+--------
+
+Read MySQL or MariaDB's documentation to understand how to properly setup
+your server for encrypted connections.
+
+- `Configuring MySQL to Use Encrypted Connections <https://dev.mysql.com/doc/refman/8.0/en/using-encrypted-connections.html>`_
 
 **Args**
+
+- user: String
+
+  - Username
+
+- password: String
+
+  - Password
+
+- db: String
+
+  - Name of database to use
+
+- key: String
+
+  - Column name of record key
+
+- features: typing.Dict[str, str]
+
+  - Mapping of feature names to column names
+
+- predictions: typing.Dict[str, typing.Tuple[str, str]]
+
+  - Mapping of prediction names to tuples of (value, confidence) column names
+
+- update: String
+
+  - Query to update a single record
+
+- record: String
+
+  - Query to get a single record
+
+- records: String
+
+  - Query to get a single record
+
+- init: String
+
+  - default: None
+  - Query to run on initial connection
 
 - host: String
 
   - default: 127.0.0.1
+  - Host/address to connect to
 
 - port: Integer
 
   - default: 3306
-
-- user: String
-
-- password: String
-
-- db: String
-
-- records-query: String
-
-  - SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM record_data
-
-- record-query: String
-
-  - SELECT `key` as key, data_1 as feature_1, data_2 as feature_2 FROM record_data WHERE `key`=%s
-
-- update-query: String
-
-  - INSERT INTO record_data (`key`, data_1, data_2) VALUES(%s, %s, %s) ON DUPLICATE KEY UPDATE data_1 = %s, data_2=%s
-
-- model-columns: List of strings
-
-  - Order of Columns in table
+  - Port to connect to
 
 - ca: String
 
   - default: None
-  - Path to server TLS certificate
+  - Server certificate to use for TLS validation
+
+- insecure: String
+
+  - default: False
+  - Must be true to accept risks of non-TLS connection

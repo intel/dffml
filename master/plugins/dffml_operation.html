@@ -13,6 +13,10 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/segment.min.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/menu.min.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_tabs/semantic-ui-2.4.1/tab.min.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/sphinx_tabs/tabs.css" type="text/css" />
 
   
   
@@ -141,6 +145,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#git-repo-release">git_repo_release</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#lines-of-code-by-language">lines_of_code_by_language</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#lines-of-code-to-comments">lines_of_code_to_comments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#make-quarters">make_quarters</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#quarters-back-to-date">quarters_back_to_date</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#work">work</a></li>
 </ul>
@@ -1761,6 +1766,20 @@ check it’s releases page to make sure you’re installing the latest version.<
 <p><strong>Outputs</strong></p>
 <ul class="simple">
 <li><p>code_to_comment_ratio: language_to_comment_ratio(type: int)</p></li>
+</ul>
+</div>
+<div class="section" id="make-quarters">
+<span id="plugin-operation-dffml-feature-git-make-quarters"></span><h3>make_quarters<a class="headerlink" href="#make-quarters" title="Permalink to this headline">¶</a></h3>
+<p><em>Official</em></p>
+<p>No description</p>
+<p><strong>Stage: processing</strong></p>
+<p><strong>Inputs</strong></p>
+<ul class="simple">
+<li><p>number: quarters(type: int)</p></li>
+</ul>
+<p><strong>Outputs</strong></p>
+<ul class="simple">
+<li><p>quarters: quarter(type: int)</p></li>
 </ul>
 </div>
 <div class="section" id="quarters-back-to-date">
