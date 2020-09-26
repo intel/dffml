@@ -162,7 +162,7 @@ if [[ "x${PLUGIN}" == "xmodel/autosklearn" ]] || \
   pip install cython
   curl -L 'https://github.com/automl/auto-sklearn/raw/2786d636e92507323b21be7692fbbf8b3f37f7f3/requirements.txt' |
     xargs -n 1 -L 1 pip install
-  pip install liac-arff psutil
+  pip install liac-arff psutil smac==0.12.3
 fi
 
 # ==========================  END  INSTALL DEPENDENCIES ========================
