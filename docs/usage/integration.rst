@@ -102,11 +102,9 @@ Make sure to update ``pip`` in case it's old, and install ``setuptools`` and
 
 Install DFFML.
 
-.. TODO Remove -e
-
 .. consoletest::
 
-    $ pip install -U -e dffml -e dffml-source-mysql
+    $ pip install -U dffml dffml-source-mysql
 
 Download the Python client libraries for MySQL.
 
