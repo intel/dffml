@@ -40,7 +40,7 @@ class ClassificationAccuracyContext(AccuracyContext):
         return accuracy
 
 
-@entrypoint("clfacc")
+@entrypoint("clf")
 class ClassificationAccuracy(AccuracyScorer):
     CONFIG = ClassificationAccuracyConfig
     CONTEXT = ClassificationAccuracyContext
