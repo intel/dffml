@@ -150,7 +150,7 @@ setup(
         # Accuracy
         "dffml.accuracy": [
             "mse = dffml.accuracy.mse:MeanSquaredErrorAccuracy",
-            "clfacc = dffml.accuracy.clfacc:ClassificationAccuracy",
+            "clf = dffml.accuracy.clf:ClassificationAccuracy",
         ],
     },
 )
