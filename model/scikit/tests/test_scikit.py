@@ -7,6 +7,7 @@ from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Feature, Features
 from dffml.util.asynctestcase import AsyncTestCase
+from dffml.accuracy import MeanSquaredErrorAccuracy, ClassificationAccuracy
 
 import dffml_model_scikit.scikit_models
 from sklearn.datasets import make_blobs
@@ -108,6 +109,11 @@ class TestScikitModel:
         cls.model = cls.MODEL(
             cls.MODEL_CONFIG(**{**properties, **config_fields})
         )
+        cls.scorer = (
+            MeanSquaredErrorAccuracy()
+            if cls.MODEL_TYPE == "REGRESSION"
+            else ClassificationAccuracy()
+        )
 
     @classmethod
     def tearDownClass(cls):
@@ -119,11 +125,13 @@ class TestScikitModel:
                 await mctx.train(sctx)
 
     async def test_01_accuracy(self):
-        async with self.sources as sources, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                res = await mctx.accuracy(sctx)
+        async with self.sources as sources, self.model as model, self.scorer as scorer:
+            async with sources() as sctx, model() as mctx, scorer() as actx:
+                res = await mctx.accuracy(sctx, actx)
                 if self.MODEL_TYPE is "CLUSTERING":
                     self.assertTrue(res is not None)
+                elif self.MODEL_TYPE == "REGRESSION":
+                    self.assertTrue(0 <= res <= float("inf"))
                 else:
                     self.assertTrue(0 <= res <= 1)
 
@@ -283,6 +291,7 @@ for clf in CLASSIFIERS:
             "MODEL_CONFIG": getattr(
                 dffml_model_scikit.scikit_models, clf + "ModelConfig"
             ),
+            "SCORER": ClassificationAccuracy(),
         },
     )
     setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)
@@ -297,6 +306,7 @@ for reg in REGRESSORS:
             "MODEL_CONFIG": getattr(
                 dffml_model_scikit.scikit_models, reg + "ModelConfig"
             ),
+            "SCORER": MeanSquaredErrorAccuracy(),
         },
     )
     setattr(sys.modules[__name__], test_cls.__qualname__, test_cls)
