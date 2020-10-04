@@ -109,6 +109,11 @@ class TestScikitModel:
         cls.model = cls.MODEL(
             cls.MODEL_CONFIG(**{**properties, **config_fields})
         )
+        cls.scorer = (
+            MeanSquaredErrorAccuracy()
+            if cls.MODEL_TYPE == "REGRESSION"
+            else ClassificationAccuracy()
+        )
 
     @classmethod
     def tearDownClass(cls):
@@ -122,9 +127,11 @@ class TestScikitModel:
     async def test_01_accuracy(self):
         async with self.sources as sources, self.model as model, self.scorer as scorer:
             async with sources() as sctx, model() as mctx, scorer() as actx:
-                res = await mctx.accuracy(actx, sctx)
+                res = await mctx.accuracy(sctx, actx)
                 if self.MODEL_TYPE is "CLUSTERING":
                     self.assertTrue(res is not None)
+                elif self.MODEL_TYPE == "REGRESSION":
+                    self.assertTrue(0 <= res <= float("inf"))
                 else:
                     self.assertTrue(0 <= res <= 1)
 
