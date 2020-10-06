@@ -240,7 +240,7 @@
 <p>python -m doctest -v dffml/util/data.py</p>
 <dl class="py function">
 <dt id="dffml.util.data.explore_directories">
-<code class="sig-prename descclassname">dffml.util.data.</code><code class="sig-name descname">explore_directories</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path_dict</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#explore_directories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.data.explore_directories" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">dffml.util.data.</code><code class="sig-name descname">explore_directories</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path_dict</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#explore_directories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.data.explore_directories" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recursively explores any path binded to a key in <cite>path_dict</cite></p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pathlib</span>
@@ -296,8 +296,8 @@
 <code class="sig-prename descclassname">dffml.util.data.</code><code class="sig-name descname">export</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">obj</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.data.export" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a value from a Python object into something that is just primitives,
 so things that could be printed withough formatting issues or sent to
-<a class="reference external" href="https://docs.python.org/3/library/json.html#json.dumps" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">json.dumps()</span></code></a>.</p>
-<p>It works on <code class="xref py py-func docutils literal notranslate"><span class="pre">typing.NamedTuple()</span></code>, <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.dataclass" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dataclasses.dataclass()</span></code></a>,
+<a class="reference external" href="https://docs.python.org/3/library/json.html#json.dumps" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">json.dumps()</span></code></a>.</p>
+<p>It works on <code class="xref py py-func docutils literal notranslate"><span class="pre">typing.NamedTuple()</span></code>, <a class="reference external" href="https://docs.python.org/3/library/dataclasses.html#dataclasses.dataclass" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dataclasses.dataclass()</span></code></a>,
 and anything that implements an <code class="docutils literal notranslate"><span class="pre">export</span></code> method that returns a dict.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">export</span>
@@ -334,7 +334,7 @@ its export or _asdict function if it is not a serializable type.</p>
 
 <dl class="py function">
 <dt id="dffml.util.data.nested_apply">
-<em class="property">async </em><code class="sig-prename descclassname">dffml.util.data.</code><code class="sig-name descname">nested_apply</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a></span></em>, <em class="sig-param"><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#nested_apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.data.nested_apply" title="Permalink to this definition">¶</a></dt>
+<em class="property">async </em><code class="sig-prename descclassname">dffml.util.data.</code><code class="sig-name descname">nested_apply</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></span></em>, <em class="sig-param"><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/util/data.html#nested_apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.util.data.nested_apply" title="Permalink to this definition">¶</a></dt>
 <dd><p>Applies <cite>func</cite> recursively to all non dict types in <cite>target</cite></p>
 </dd></dl>
 
@@ -344,7 +344,7 @@ its export or _asdict function if it is not a serializable type.</p>
 <dd><p>Calls checks if value is string and if it is it converts it to a bool if
 the string is a string representation of common boolean value (on, off,
 true, false, yes, no). Otherwise it tries to call
-<a class="reference external" href="https://docs.python.org/3/library/ast.html#ast.literal_eval" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">ast.literal_eval()</span></code></a>, if that doesn’t succeed the string value is
+<a class="reference external" href="https://docs.python.org/3/library/ast.html#ast.literal_eval" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">ast.literal_eval()</span></code></a>, if that doesn’t succeed the string value is
 returned.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="n">parser_helper</span>

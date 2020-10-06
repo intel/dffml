@@ -199,16 +199,16 @@
 <p>Repository of information about a unique key.</p>
 <dl class="py class">
 <dt id="dffml.record.Record">
-<em class="property">class </em><code class="sig-prename descclassname">dffml.record.</code><code class="sig-name descname">Record</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">, </span>Any<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">extra</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">, </span>Any<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/record.html#Record"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.record.Record" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dffml.record.</code><code class="sig-name descname">Record</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span>Any<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">extra</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span>Any<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/record.html#Record"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.record.Record" title="Permalink to this definition">¶</a></dt>
 <dd><p>Manages feature independent information and actions for a record.</p>
 <dl class="py method">
 <dt id="dffml.record.Record.evaluated">
-<code class="sig-name descname">evaluated</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">, </span>Any<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">overwrite</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/record.html#Record.evaluated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.record.Record.evaluated" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">evaluated</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span>Any<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">overwrite</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/record.html#Record.evaluated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.record.Record.evaluated" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates features with the result dict</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>results</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – The results that will be added to the features.</p></li>
+<li><p><strong>results</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – The results that will be added to the features.</p></li>
 <li><p><strong>overwrite</strong> (<em>boolean</em>) – If ‘True’, the function overwrites the current features with the results provided.
 If ‘Fasle’, the function updates the current features with the results provided.</p></li>
 </ul>
@@ -231,11 +231,11 @@ If ‘Fasle’, the function updates the current features with the results provi
 
 <dl class="py method">
 <dt id="dffml.record.Record.feature">
-<code class="sig-name descname">feature</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em><span class="sig-paren">)</span> &#x2192; Any<a class="reference internal" href="../_modules/dffml/record.html#Record.feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.record.Record.feature" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">feature</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span> &#x2192; Any<a class="reference internal" href="../_modules/dffml/record.html#Record.feature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.record.Record.feature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a feature of the record.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The name of the feature that will be returned.</p>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The name of the feature that will be returned.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>feature.</p>
@@ -254,17 +254,17 @@ If ‘Fasle’, the function updates the current features with the results provi
 
 <dl class="py method">
 <dt id="dffml.record.Record.features">
-<code class="sig-name descname">features</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">subset</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[]</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">, </span>Any<span class="p">]</span><a class="reference internal" href="../_modules/dffml/record.html#Record.features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.record.Record.features" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">features</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">subset</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[]</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span>Any<span class="p">]</span><a class="reference internal" href="../_modules/dffml/record.html#Record.features"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.record.Record.features" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns all features for the record or the subset specified.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>subset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>]</em>) – The subset of features that will be returned.</p>
+<dd class="field-odd"><p><strong>subset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – The subset of features that will be returned.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>features.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -278,12 +278,12 @@ If ‘Fasle’, the function updates the current features with the results provi
 
 <dl class="py method">
 <dt id="dffml.record.Record.predicted">
-<code class="sig-name descname">predicted</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em>, <em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">confidence</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/record.html#Record.predicted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.record.Record.predicted" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predicted</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em>, <em class="sig-param"><span class="n">value</span><span class="p">:</span> <span class="n">Any</span></em>, <em class="sig-param"><span class="n">confidence</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dffml/record.html#Record.predicted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.record.Record.predicted" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the prediction for this record.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>target</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The target you want to store the prediction at.</p></li>
+<li><p><strong>target</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The target you want to store the prediction at.</p></li>
 <li><p><strong>value</strong> (<em>Any</em>) – The prediction.</p></li>
 </ul>
 </dd>
@@ -299,11 +299,11 @@ If ‘Fasle’, the function updates the current features with the results provi
 
 <dl class="py method">
 <dt id="dffml.record.Record.prediction">
-<code class="sig-name descname">prediction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span></em><span class="sig-paren">)</span> &#x2192; dffml.record.RecordPrediction<a class="reference internal" href="../_modules/dffml/record.html#Record.prediction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.record.Record.prediction" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">prediction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span> &#x2192; dffml.record.RecordPrediction<a class="reference internal" href="../_modules/dffml/record.html#Record.prediction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.record.Record.prediction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the prediction for this record.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>target</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The name of the feature that will be returned.</p>
+<dd class="field-odd"><p><strong>target</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The name of the feature that will be returned.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The prediction of the target specified.</p>
@@ -323,17 +323,17 @@ If ‘Fasle’, the function updates the current features with the results provi
 
 <dl class="py method">
 <dt id="dffml.record.Record.predictions">
-<code class="sig-name descname">predictions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">subset</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[]</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">, </span>Any<span class="p">]</span><a class="reference internal" href="../_modules/dffml/record.html#Record.predictions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.record.Record.predictions" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">predictions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">subset</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">[]</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><span class="p">, </span>Any<span class="p">]</span><a class="reference internal" href="../_modules/dffml/record.html#Record.predictions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.record.Record.predictions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the predictions for the subset of record.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>subset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>]</em>) – The list of subset of the record that predictions are returned for.</p>
+<dd class="field-odd"><p><strong>subset</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>]</em>) – The list of subset of the record that predictions are returned for.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The prediction of the specified subset.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
