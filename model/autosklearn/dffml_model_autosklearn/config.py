@@ -80,7 +80,6 @@ class AutoSklearnConfig:
     delete_output_folder_after_terminate: bool = field(
         "Remove output_folder, when finished", default=True
     )
-    shared_mode: bool = field("Run smac in shared-model-node", default=False)
     n_jobs: Optional[int] = field(
         "The number of jobs to run in parallel for fit()", default=None
     )
