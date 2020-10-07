@@ -148,7 +148,9 @@ class ScikitContext(ModelContext):
             )
             target = self.parent.config.predict.name
             record.predicted(
-                target, self.parent.config.predict.dtype(self.clf.predict(predict)[0]), self.confidence
+                target,
+                self.parent.config.predict.dtype(self.clf.predict(predict)[0]),
+                self.confidence,
             )
             yield record
 
@@ -260,7 +262,11 @@ class ScikitContextUnsprvised(ScikitContext):
                 "Predicted cluster for {}: {}".format(predict, prediction)
             )
             target = self.parent.config.predict.name
-            record.predicted(target, self.parent.config.predict.dtype(prediction[0]), self.confidence)
+            record.predicted(
+                target,
+                self.parent.config.predict.dtype(prediction[0]),
+                self.confidence,
+            )
             yield record
 
 
