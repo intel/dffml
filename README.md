@@ -11,7 +11,10 @@
 
 DFFML aims to be the easiest and most convenient way to use Machine Learning.
 
-- It's an AutoML Python library, command line application, and HTTP service.
+- Its a machine learning distribution. Providing you access to a set of popular
+  machine learning libraries guaranteed to work together.
+
+- Its a AI/ML Python library, command line application, and HTTP service.
 
 - You give it your data and tell it what kind of model you want to train. It
   creates a model for you.
