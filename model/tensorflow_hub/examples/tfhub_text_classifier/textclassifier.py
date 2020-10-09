@@ -17,7 +17,7 @@ model = TextClassificationModel(
 train(model, "train.csv")
 
 # Assess accuracy (alternate way of specifying data source)
-scorer = TextClassificationModel()
+scorer = TextClassifierAccuracy()
 print("Accuracy:", accuracy(model, scorer, CSVSource(filename="test.csv")))
 
 # Make prediction
