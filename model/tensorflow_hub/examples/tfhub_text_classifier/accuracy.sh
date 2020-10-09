@@ -9,4 +9,5 @@ dffml accuracy \
   -source-filename test.csv \
   -model-features \
     sentence:str:1 \
+  -scorer textclf \
   -log critical
