@@ -10,6 +10,9 @@ from dffml_model_tensorflow_hub.text_classifier import (
     TextClassificationModel,
     TextClassifierConfig,
 )
+from dffml_model_tensorflow_hub.text_classifier_accuracy import (
+    TextClassifierAccuracy,
+)
 
 
 class TestTextClassificationModel(AsyncTestCase):
@@ -42,6 +45,7 @@ class TestTextClassificationModel(AsyncTestCase):
                 epochs=30,
             )
         )
+        cls.scorer = TextClassifierAccuracy()
 
     @classmethod
     def tearDownClass(cls):
@@ -53,9 +57,9 @@ class TestTextClassificationModel(AsyncTestCase):
                 await mctx.train(sctx)
 
     async def test_01_accuracy(self):
-        async with self.sources as sources, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                res = await mctx.accuracy(sctx)
+        async with self.sources as sources, self.model as model, self.scorer as scorer:
+            async with sources() as sctx, model() as mctx, scorer() as actx:
+                res = await mctx.accuracy(sctx, actx)
                 self.assertGreater(res, 0)
 
     async def test_02_predict(self):
