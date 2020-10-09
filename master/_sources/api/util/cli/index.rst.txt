@@ -6,7 +6,7 @@ Util Cli
     :caption: Contents:
 
     arg
-    parser
-    log
     cmd
+    log
     cmds
+    parser
