@@ -6,11 +6,11 @@ Operation
     :caption: Contents:
 
     dataflow
-    preprocess
+    output
+    model
     log
     db
     io
-    math
-    output
-    model
     mapping
+    preprocess
+    math

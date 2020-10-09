@@ -7,6 +7,6 @@ Cli
 
     dataflow
     cli
-    config
     list
     ml
+    config
