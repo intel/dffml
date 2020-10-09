@@ -45,6 +45,9 @@ setup(
     entry_points={
         "dffml.model": [
             "text_classifier = dffml_model_tensorflow_hub.text_classifier:TextClassificationModel"
-        ]
+        ],
+        "dffml.accuracy": [
+            "textclf = dffml_model_tensorflow_hub.text_classifier_accuracy:TextClassifierAccuracy"
+        ],
     },
 )
