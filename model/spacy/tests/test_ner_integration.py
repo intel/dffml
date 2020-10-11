@@ -134,6 +134,8 @@ class TestSpacyNERModel(AsyncTestCase):
             directory,
             "-model-n_iter",
             "5",
+            "-scorer",
+            "mse",
         )
         with contextlib.redirect_stdout(self.stdout):
             # Make prediction
