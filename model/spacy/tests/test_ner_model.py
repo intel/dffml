@@ -5,6 +5,7 @@ from dffml.record import Record
 from dffml.source.source import Sources
 from dffml import train, accuracy, predict, run_consoletest
 from dffml.util.asynctestcase import AsyncTestCase
+from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml_model_spacy.ner.ner_model import SpacyNERModel, SpacyNERModelConfig
 
@@ -52,6 +53,7 @@ class TestSpacyNERModel(AsyncTestCase):
                 dropout=0.4,
             )
         )
+        cls.scorer = MeanSquaredErrorAccuracy()
 
     @classmethod
     def tearDownClass(cls):
@@ -61,7 +63,7 @@ class TestSpacyNERModel(AsyncTestCase):
         await train(self.model, self.train_sources)
 
     async def test_01_accuracy(self):
-        res = await accuracy(self.model, self.train_sources)
+        res = await accuracy(self.model, self.scorer, self.train_sources)
         self.assertGreaterEqual(res, 0)
 
     async def test_02_predict(self):
