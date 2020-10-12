@@ -8,6 +8,7 @@ The following are some example use cases of DFFML.
     :caption: Contents:
 
     integration
+    shouldi
     dataflows
     mnist
     flower17/flower17

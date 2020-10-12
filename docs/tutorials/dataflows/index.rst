@@ -1,5 +1,5 @@
-DataFlow Tutorials
-====================
+DataFlows
+=========
 
 Here we have some examples to better understand the DFFML DataFlows.
 
