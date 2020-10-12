@@ -1,7 +1,7 @@
 .. _model_tutorial:
 
-New Model Tutorials
-===================
+Models
+======
 
 If you have some data and want to do machine learning on it, you probably want
 to head over to the :ref:`plugin_models` plugins. This tutorial is for

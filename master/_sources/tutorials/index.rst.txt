@@ -8,9 +8,7 @@ or operations.
     :maxdepth: 2
     :caption: Contents:
 
-    intro
     models/index
-    operations
     sources/index
     dataflows/index
     neuralnetwork

@@ -1,5 +1,5 @@
-New Source Tutorials
-====================
+Sources
+=======
 
 DFFML is plugin based. Here we have documentation for creating
 your own data Sources.

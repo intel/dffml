@@ -42,7 +42,7 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Custom Neural Network Tutorial" href="../neuralnetwork.html" />
+    <link rel="next" title="Neural Networks" href="../neuralnetwork.html" />
     <link rel="prev" title="Gitter ML Inference Chatbot" href="chatbot.html" /> 
 </head>
 
@@ -98,15 +98,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../concepts/index.html">Concepts</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
+<p class="caption"><span class="caption-text">Usage</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../intro.html">Introduction to DFFML</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../models/index.html">New Model Tutorials</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../operations.html">New Operations Tutorial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../sources/index.html">New Source Tutorials</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.html">DataFlow Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../models/index.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sources/index.html">Sources</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">DataFlows</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="locking.html">Using Locks In DataFlow</a></li>
 <li class="toctree-l3"><a class="reference internal" href="io.html">Prediction Using IO Operations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chatbot.html">Gitter ML Inference Chatbot</a></li>
@@ -117,10 +115,10 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../neuralnetwork.html">Custom Neural Network Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../neuralnetwork.html">Neural Networks</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../usage/index.html">Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
@@ -188,7 +186,7 @@
         
           <li><a href="../index.html">Tutorials</a> &raquo;</li>
         
-          <li><a href="index.html">DataFlow Tutorials</a> &raquo;</li>
+          <li><a href="index.html">DataFlows</a> &raquo;</li>
         
       <li>Using NLP Operations</li>
     
@@ -271,7 +269,7 @@ than <cite>max_len</cite> (here 10). A sentence which has length greater than <c
 <p>Copy and pasting the output of the above code into the
 <a class="reference external" href="https://mermaidjs.github.io/mermaid-live-editor">mermaidjs live editor</a>
 results in the graph.</p>
-<img alt="../../_images/dataflow_diagram2.svg" src="../../_images/dataflow_diagram2.svg" /><p>We can now use this dataflow to preprocess the data and make it ready to be fed into model:</p>
+<img alt="../../_images/dataflow_diagram3.svg" src="../../_images/dataflow_diagram3.svg" /><p>We can now use this dataflow to preprocess the data and make it ready to be fed into model:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
     <span class="o">-</span><span class="n">model</span> <span class="n">tfdnnc</span> \
     <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">batchsize</span> <span class="mi">100</span> \
@@ -528,7 +526,7 @@ which will return the array corresponding to each sentence.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../neuralnetwork.html" class="btn btn-neutral float-right" title="Custom Neural Network Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../neuralnetwork.html" class="btn btn-neutral float-right" title="Neural Networks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="chatbot.html" class="btn btn-neutral float-left" title="Gitter ML Inference Chatbot" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

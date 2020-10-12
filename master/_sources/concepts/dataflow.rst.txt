@@ -91,7 +91,7 @@ Terminology
 
 .. Not sure if we want this example here, no other bullet points have examples.
 
-  In the :doc:`/usage/integration` example use case. There is a DataFlow
+  In the :doc:`/examples/integration` example use case. There is a DataFlow
   which collects information on a Git repo. Each URL is used as a context,
   as well as an :py:class:`Input <dffml.df.types.Input>`. By using the URL
   as a context we ensure all

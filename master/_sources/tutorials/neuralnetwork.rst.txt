@@ -1,5 +1,5 @@
-Custom Neural Network Tutorial
-==============================
+Neural Networks
+===============
 
 Rock Paper Scissors Hand Pose Classification
 --------------------------------------------
