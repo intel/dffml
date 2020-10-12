@@ -1,5 +1,6 @@
 import os
 import time
+import base64
 import pathlib
 import asyncio
 import sqlite3
@@ -8,6 +9,7 @@ import subprocess
 import contextlib
 import concurrent
 from collections import defaultdict
+from multiprocessing.managers import BaseManager
 from multiprocessing import Manager, cpu_count,Queue, Process
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from nats.aio.client import Client as NATS
@@ -79,12 +81,27 @@ class NatsTestCase(AsyncTestCase):
     async def tearDown(self):
         self.nats_proc.terminate()
 
-@op(
-    inputs={"q":Definition(name="shared_q",primitive="AsyncProceeQueue")},
-    outputs = {}
-)
-async def q_op(q):
-    q.put(1)
+
+# See
+# https://docs.python.org/3.7/library/multiprocessing.html#using-a-remote-manager
+# for more details.
+class QueueManager(BaseManager):
+    pass
+
+
+QueueManager.register('get_queue')
+
+
+@op
+async def q_op(port: int, authkey: bytes, number: int) -> None:
+    m = QueueManager(
+        address=("127.0.0.1", port),
+        authkey=base64.b64decode(authkey),
+    )
+    m.connect()
+    q = m.get_queue()
+    q.put(number)
+    return
     print(f"length of queue {len(q)}")
     while len(q) < 1:
         continue
@@ -162,8 +179,32 @@ class TestNatsOrchestratorParallel(NatsTestCase):
             NatsWorkerNodeConfig(self.server_addr,operations=[q_op.op])
             for _ in range(n_workers)
         ]
-        m = Manager()
-        q = m.Queue()
+
+
+        class QueueManager(BaseManager):
+            pass
+
+
+        q = Queue()
+        QueueManager.register('get_queue', callable=lambda: q)
+
+
+        # Port of the multiprocessing.BaseManager to connect to. Will be set to the
+        # bound to port by the process running the manager.
+        manager_port = 0
+        # The authkey for the multiprocessing.BaseManager (384 random bits)
+        # TODO(pdxjohnny -> aghinsa) Here I've base 64 encoded the bytes to be
+        # used as the authkey. This is because there was a JSON encode error
+        # when it was raw bytes being sent to nats. You should b64 encode and
+        # decode any values for definitions with "bytes" or "binary" primitives.
+        manager_authkey = os.urandom(int(384 / 8))
+        # We use a remote multiprocessing.BaseManager to provide worker nodes
+        # with access to the queue
+        m = QueueManager(
+            address=("127.0.0.1", manager_port),
+            authkey=manager_authkey,
+        )
+
         loop = asyncio.get_event_loop()
 
         for worker_config in worker_configs:
@@ -186,18 +227,29 @@ class TestNatsOrchestratorParallel(NatsTestCase):
             )
         )
 
-        all_workers_ran = asyncio.Event()
-        async def check_all_workers_ran():
-            while True:
-                print(q.qsize())
-                if q.qsize() == n_workers:
-                    all_workers_ran.set()
-                asyncio.sleep(.5)
-
-        await check_all_workers_ran()
-        async with orchestrator_node as onode:
+        with m:
+            # The port the listening manager server is bound to
+            manager_port = m._address[1]
+            async with orchestrator_node as onode:
                 async with onode() as onctx:
-                    await all_workers_ran.wait()
+                    async for ctx,results in onctx.run([
+                        Input(
+                            value=manager_port,
+                            definition=q_op.op.inputs["port"],
+                        ),
+                        Input(
+                            value=base64.b64encode(manager_authkey).decode('ascii'),
+                            definition=q_op.op.inputs["authkey"],
+                        ),
+                    ] + [
+                        Input(
+                            value=i,
+                            definition=q_op.op.inputs["number"]
+                        )
+                        for i in range(0, n_workers)
+                    ]):
+                        print(results)
+
 
 class TestNatsOrchestrator(NatsTestCase):
     async def setUp(self):
