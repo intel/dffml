@@ -50,7 +50,7 @@ branch can be found `here <master/index.html>`_.
 .. toctree::
     :glob:
     :maxdepth: 2
-    :caption: Examples
+    :caption: Usage
 
     quickstart/model
     tutorials/index
