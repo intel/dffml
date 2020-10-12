@@ -96,6 +96,8 @@ async def _spawnWorker(q:"AsyncProcessQueue",
     print(f"Spawning worker")
     wnode = NatsWorkerNode(worker_config)
     await wnode.__aenter__()
+    # Notify orchestrator that we are ready for processing
+    q.put(1)
     await asyncio.Event().wait()
 
 def spawnWorker(q,worker_config):
@@ -168,7 +170,10 @@ class TestNatsOrchestratorParallel(NatsTestCase):
             # await loop.run_in_executor(ProcessPoolExecutor(),spawnWorker,q,worker_config)
             Process(target = spawnWorker,args = (q,worker_config)).start()
 
-        time.sleep(1)
+        # Never rely on timing. Always ensure you know state of a distributed
+        # system through some form of communication
+        for i, _ in enumerate(worker_configs):
+            q.get()
 
         orchestrator_node = NatsOrchestratorNode(
             NatsOrchestratorNodeConfig(
