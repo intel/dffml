@@ -321,6 +321,11 @@ Stores records in a dict in memory
 
 - records: List of records
 
+- display: Integer
+
+  - default: 10
+  - When repr() is called, how many records to display
+
 .. _plugin_source_dffml_op:
 
 op
