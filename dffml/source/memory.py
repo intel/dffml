@@ -41,7 +41,10 @@ class MemorySource(BaseSource):
     CONTEXT = MemorySourceContext
 
     def __repr__(self):
-        if len(self.mem) > self.config.display:
+        if (
+            hasattr(self.config, "display")
+            and len(self.mem) > self.config.display
+        ):
             first_n = [
                 record
                 for _, record in zip(
