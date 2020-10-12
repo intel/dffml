@@ -5,7 +5,7 @@ Fake data sources used for testing
 """
 from typing import Dict, List, AsyncIterator
 
-from ..base import config
+from ..base import config, field
 from ..record import Record
 from .source import BaseSourceContext, BaseSource
 from ..util.entrypoint import entrypoint
@@ -26,6 +26,9 @@ class MemorySourceContext(BaseSourceContext):
 @config
 class MemorySourceConfig:
     records: List[Record]
+    display: int = field(
+        "When repr() is called, how many records to display", default=10
+    )
 
 
 @entrypoint("memory")
@@ -36,6 +39,28 @@ class MemorySource(BaseSource):
 
     CONFIG = MemorySourceConfig
     CONTEXT = MemorySourceContext
+
+    def __repr__(self):
+        if len(self.mem) > self.config.display:
+            first_n = [
+                record
+                for _, record in zip(
+                    range(0, self.config.display), self.mem.values()
+                )
+            ]
+            return (
+                "%s(records=%r ... (only displaying %d records, %d total) ... )"
+                % (
+                    self.__class__.__qualname__,
+                    first_n,
+                    self.config.display,
+                    len(self.mem),
+                )
+            )
+        return "%s(records=%r)" % (
+            self.__class__.__qualname__,
+            self.mem.values(),
+        )
 
     def __init__(self, config: MemorySourceConfig) -> None:
         super().__init__(config)
