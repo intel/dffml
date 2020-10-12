@@ -182,7 +182,7 @@ items that you want evaluated.
 Combining Operations
 --------------------
 
-If you've gone through the :doc:`/usage/integration` example, you've seen the
+If you've gone through the :doc:`/examples/integration` example, you've seen the
 Git and source code analysis related operations (a list of all available
 operations can be found on the :doc:`/plugins/dffml_operation` plugins page).
 
