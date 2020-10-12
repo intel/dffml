@@ -1,5 +1,5 @@
-New Operations Tutorial
-=======================
+Meta Static Analysis
+====================
 
 This tutorial will explain what operations are and how you can use them. In the
 process we'll create a meta static analysis tool, ``shouldi``.
