@@ -1,5 +1,6 @@
 import os
 import time
+import pathlib
 import asyncio
 import sqlite3
 import tempfile
@@ -27,6 +28,8 @@ from dffml.operation.db import (
     db_query_create_table,
     db_query_insert_or_update,
 )
+from dffml.util.net import cached_download_unpack_archive
+from dffml.util.os import prepend_to_path
 
 from tests.test_df import parse_line, add, mult, is_add, is_mult
 
@@ -37,13 +40,24 @@ class NatsTestCase(AsyncTestCase):
     async def echoAll(self,msg):
         print(msg)
 
-    async def setUp(self):
-        self.nats_proc = subprocess.Popen(
-            ["nats-server", "-p", "-1",],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            start_new_session=True,
-        )
+    @cached_download_unpack_archive(
+        "https://github.com/nats-io/nats-server/releases/download/v2.0.0/nats-server-v2.0.0-linux-amd64.zip",
+        pathlib.Path(__file__).parent / "downloads" / "nats-server.zip",
+        pathlib.Path(__file__).parent / "downloads" / "nats-server",
+        "47c56fd6ae24b339fbb77bfa9b0e578e56b8f191e31abc09c15f5db87eda928291119023947d80dfd902708dcc2bdf25",
+    )
+    async def setUp(self, nats_server):
+        with prepend_to_path(nats_server / "nats-server-v2.0.0-linux-amd64"):
+            os.chmod(
+                nats_server / "nats-server-v2.0.0-linux-amd64" / "nats-server",
+                0o755
+            )
+            self.nats_proc = subprocess.Popen(
+                ["nats-server", "-p", "-1",],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                start_new_session=True,
+            )
 
         ready = False
         listen_text = "Listening for client connections on "
