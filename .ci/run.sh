@@ -21,7 +21,7 @@ function run_plugin_examples() {
   fi
   cd "${SRC_ROOT}/${PLUGIN}/examples"
   if [ -f "requirements.txt" ]; then
-    "${PYTHON}" -m pip install -r requirements.txt
+    "${PYTHON}" -m pip install --use-feature=2020-resolver -r requirements.txt
   fi
   "${PYTHON}" -m unittest discover -v
   cd "${SRC_ROOT}/${PLUGIN}"
@@ -38,7 +38,7 @@ function run_plugin() {
   cd "${SRC_ROOT}/${PLUGIN}"
 
   # Install plugin
-  "${PYTHON}" -m pip install -U -e .
+  "${PYTHON}" -m pip install --use-feature=2020-resolver -U -e .
   # Run the tests
   "${PYTHON}" setup.py test
 
@@ -62,7 +62,7 @@ function run_plugin() {
     for plugin in ${PLUGINS[@]}; do
       dffml service dev create "${plugin}" "ci-test-${plugin}"
       cd "ci-test-${plugin}"
-      "${PYTHON}" -m pip install -U .
+      "${PYTHON}" -m pip install --use-feature=2020-resolver -U .
       "${PYTHON}" setup.py test
       cd "${plugin_creation_dir}"
     done
