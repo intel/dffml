@@ -591,8 +591,8 @@ your own operations as coming from ``shouldi``.
     run_bandit = shouldi.python.bandit:run_bandit -> shouldi 0.0.8 (/workspace/dffml/examples/shouldi)
     safety_check = shouldi.python.safety:safety_check -> shouldi 0.0.8 (/workspace/dffml/examples/shouldi)
 
-The :doc:`/usage/dataflows` usage example will show you how to expose your new
-meta static analysis tool over an HTTP interface.
+The :doc:`/examples/dataflows` usage example will show you how to expose your
+new meta static analysis tool over an HTTP interface.
 
 .. code-block:: console
 

@@ -54,7 +54,7 @@ branch can be found `here <master/index.html>`_.
 
     quickstart/model
     tutorials/index
-    usage/index
+    examples/index
 
 .. toctree::
     :glob:
