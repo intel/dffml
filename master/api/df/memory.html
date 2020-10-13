@@ -527,12 +527,6 @@ prior to running an operation using the input.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="dffml.df.memory.MemoryOperationImplementationNetworkContext.dispatch_auto_starts">
-<code class="sig-name descname">dispatch_auto_starts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">octx</span><span class="p">:</span> <span class="n"><a class="reference internal" href="base.html#dffml.df.base.BaseOrchestratorContext" title="dffml.df.base.BaseOrchestratorContext">dffml.df.base.BaseOrchestratorContext</a></span></em>, <em class="sig-param"><span class="n">ctx</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.dispatch_auto_starts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.dispatch_auto_starts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Schedule the running of all operations without inputs</p>
-</dd></dl>
-
-<dl class="py method">
 <dt id="dffml.df.memory.MemoryOperationImplementationNetworkContext.ensure_contains">
 <em class="property">async </em><code class="sig-name descname">ensure_contains</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">operation</span><span class="p">:</span> <span class="n"><a class="reference internal" href="types.html#dffml.df.types.Operation" title="dffml.df.types.Operation">dffml.df.types.Operation</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOperationImplementationNetworkContext.ensure_contains"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOperationImplementationNetworkContext.ensure_contains" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raise errors if we don’t have and can’t instantiate an operation.</p>
@@ -639,6 +633,12 @@ operations who have inputs with definitions in the input set.</p>
 <dt id="dffml.df.memory.MemoryOrchestratorContext">
 <em class="property">class </em><code class="sig-prename descclassname">dffml.df.memory.</code><code class="sig-name descname">MemoryOrchestratorContext</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#dffml.df.memory.MemoryOrchestratorContextConfig" title="dffml.df.memory.MemoryOrchestratorContextConfig">dffml.df.memory.MemoryOrchestratorContextConfig</a></span></em>, <em class="sig-param"><span class="n">parent</span><span class="p">:</span> <span class="n"><a class="reference internal" href="base.html#dffml.df.base.BaseOrchestrator" title="dffml.df.base.BaseOrchestrator">dffml.df.base.BaseOrchestrator</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOrchestratorContext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOrchestratorContext" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
+<dt id="dffml.df.memory.MemoryOrchestratorContext.dispatch_auto_starts">
+<code class="sig-name descname">dispatch_auto_starts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ctx</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOrchestratorContext.dispatch_auto_starts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOrchestratorContext.dispatch_auto_starts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Schedule the running of all operations without inputs</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="dffml.df.memory.MemoryOrchestratorContext.initialize_dataflow">
 <em class="property">async </em><code class="sig-name descname">initialize_dataflow</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dataflow</span><span class="p">:</span> <span class="n">dffml.df.types.DataFlow</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)">None</a><a class="reference internal" href="../../_modules/dffml/df/memory.html#MemoryOrchestratorContext.initialize_dataflow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dffml.df.memory.MemoryOrchestratorContext.initialize_dataflow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize a DataFlow by preforming the following steps.</p>

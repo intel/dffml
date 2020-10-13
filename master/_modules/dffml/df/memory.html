@@ -643,6 +643,90 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseDefinitionSetContext</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">MemoryDefinitionSetContext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span></div>
 
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">check_conditions</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
+        <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">,</span>
+        <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseInputSetContext</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd_lock</span><span class="p">:</span>
+            <span class="c1"># Grab the input set context handle</span>
+            <span class="n">handle_string</span> <span class="o">=</span> <span class="p">(</span><span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">())</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span>
+            <span class="c1"># Ensure that the handle_string is present in ctxhd</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">handle_string</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="c1"># Limit search to given context via context handle</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_conditions</span><span class="p">(</span>
+                <span class="n">operation</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]</span><span class="o">.</span><span class="n">by_origin</span>
+            <span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_check_conditions</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="n">Operation</span><span class="p">,</span>
+        <span class="n">dataflow</span><span class="p">:</span> <span class="n">DataFlow</span><span class="p">,</span>
+        <span class="n">by_origin</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">List</span><span class="p">[</span><span class="n">Input</span><span class="p">]],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="c1"># Grab the input flow to check for definition overrides</span>
+        <span class="n">input_flow</span> <span class="o">=</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">flow</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">]</span>
+        <span class="c1"># Return that all conditions are satisfied if there are none to satisfy</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">input_flow</span><span class="o">.</span><span class="n">conditions</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="c1"># Check that all conditions are present and logicly True</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">condition_source</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">input_flow</span><span class="o">.</span><span class="n">conditions</span><span class="p">):</span>
+            <span class="c1"># We must check if we found an Input where the definition</span>
+            <span class="c1"># matches the definition of the condition in addition to</span>
+            <span class="c1"># checking that the Input&#39;s value is True. If we were not</span>
+            <span class="c1"># to check that we found a definition we would be effectively</span>
+            <span class="c1"># saying that the lack of presence equates with the</span>
+            <span class="c1"># condition being True.</span>
+            <span class="n">condition_found_and_true</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="c1"># Create a list of places this input originates from</span>
+            <span class="n">origins</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condition_source</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">condition_source</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">condition_source</span><span class="p">)</span>
+            <span class="c1"># Ensure all conditions from all origins are True</span>
+            <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">origins</span><span class="p">:</span>
+                <span class="c1"># See comment in input_flow.inputs section</span>
+                <span class="p">(</span>
+                    <span class="n">alternate_definitions</span><span class="p">,</span>
+                    <span class="n">origin</span><span class="p">,</span>
+                <span class="p">)</span> <span class="o">=</span> <span class="n">input_flow</span><span class="o">.</span><span class="n">get_alternate_definitions</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+                <span class="c1"># Bail if the condition doesn&#39;t exist</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">by_origin</span><span class="p">:</span>
+                    <span class="k">return</span>
+                <span class="c1"># Bail if the condition is not True</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">by_origin</span><span class="p">[</span><span class="n">origin</span><span class="p">]:</span>
+                    <span class="c1"># TODO(p2) Alright, this shits fucked, way not clean</span>
+                    <span class="c1"># / clear. We&#39;re just trying to skip any conditions</span>
+                    <span class="c1"># (and inputs for input_flow.inputs.items()) where</span>
+                    <span class="c1"># the definition doesn&#39;t match, but it&#39;s within the</span>
+                    <span class="c1"># correct origin.</span>
+                    <span class="k">if</span> <span class="n">alternate_definitions</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">alternate_definitions</span><span class="p">:</span>
+                            <span class="k">continue</span>
+                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condition_source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="p">(</span>
+                            <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span>
+                            <span class="o">!=</span> <span class="n">operation</span><span class="o">.</span><span class="n">conditions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+                        <span class="p">):</span>
+                            <span class="k">continue</span>
+                    <span class="k">elif</span> <span class="p">(</span>
+                        <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span>
+                        <span class="o">!=</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                        <span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+                        <span class="o">.</span><span class="n">name</span>
+                    <span class="p">):</span>
+                        <span class="k">continue</span>
+                    <span class="n">condition_found_and_true</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="c1"># Ensure we were able to find a condition within the input</span>
+            <span class="c1"># network, and that when we found it it&#39;s value was True.</span>
+            <span class="k">if</span> <span class="n">condition_found_and_true</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
 <div class="viewcode-block" id="MemoryInputNetworkContext.gather_inputs"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryInputNetworkContext.gather_inputs">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">gather_inputs</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">rctx</span><span class="p">:</span> <span class="s2">&quot;BaseRedundancyCheckerContext&quot;</span><span class="p">,</span>
@@ -666,57 +750,14 @@
                 <span class="c1"># Limit search to given context via context handle</span>
                 <span class="n">contexts</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ctxhd</span><span class="p">[</span><span class="n">handle_string</span><span class="p">]]</span>
             <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">by_origin</span> <span class="ow">in</span> <span class="n">contexts</span><span class="p">:</span>
+                <span class="c1"># Ensure we were able to find a condition within the input</span>
+                <span class="c1"># network, and that when we found it it&#39;s value was True.</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_conditions</span><span class="p">(</span>
+                    <span class="n">operation</span><span class="p">,</span> <span class="n">dataflow</span><span class="p">,</span> <span class="n">by_origin</span>
+                <span class="p">):</span>
+                    <span class="k">return</span>
                 <span class="c1"># Grab the input flow to check for definition overrides</span>
                 <span class="n">input_flow</span> <span class="o">=</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">flow</span><span class="p">[</span><span class="n">operation</span><span class="o">.</span><span class="n">instance_name</span><span class="p">]</span>
-                <span class="c1"># TODO(p1) This only checks that Inputs that are present are</span>
-                <span class="c1"># true. If there are none present, the operation will run</span>
-                <span class="c1"># Check that all conditions are present and logicly True</span>
-                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">condition_source</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">input_flow</span><span class="o">.</span><span class="n">conditions</span><span class="p">):</span>
-                    <span class="c1"># Create a list of places this input originates from</span>
-                    <span class="n">origins</span> <span class="o">=</span> <span class="p">[]</span>
-                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condition_source</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                        <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">condition_source</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                            <span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">origins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">condition_source</span><span class="p">)</span>
-                    <span class="c1"># Ensure all conditions from all origins are True</span>
-                    <span class="k">for</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">origins</span><span class="p">:</span>
-                        <span class="c1"># See comment in input_flow.inputs section</span>
-                        <span class="p">(</span>
-                            <span class="n">alternate_definitions</span><span class="p">,</span>
-                            <span class="n">origin</span><span class="p">,</span>
-                        <span class="p">)</span> <span class="o">=</span> <span class="n">input_flow</span><span class="o">.</span><span class="n">get_alternate_definitions</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
-                        <span class="c1"># Bail if the condition doesn&#39;t exist</span>
-                        <span class="k">if</span> <span class="ow">not</span> <span class="n">origin</span> <span class="ow">in</span> <span class="n">by_origin</span><span class="p">:</span>
-                            <span class="k">return</span>
-                        <span class="c1"># Bail if the condition is not True</span>
-                        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">by_origin</span><span class="p">[</span><span class="n">origin</span><span class="p">]:</span>
-                            <span class="c1"># TODO(p2) Alright, this shits fucked, way not clean</span>
-                            <span class="c1"># / clear. We&#39;re just trying to skip any conditions</span>
-                            <span class="c1"># (and inputs for input_flow.inputs.items()) where</span>
-                            <span class="c1"># the definition doesn&#39;t match, but it&#39;s within the</span>
-                            <span class="c1"># correct origin.</span>
-                            <span class="k">if</span> <span class="n">alternate_definitions</span><span class="p">:</span>
-                                <span class="k">if</span> <span class="p">(</span>
-                                    <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span>
-                                    <span class="ow">not</span> <span class="ow">in</span> <span class="n">alternate_definitions</span>
-                                <span class="p">):</span>
-                                    <span class="k">continue</span>
-                            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condition_source</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                                <span class="k">if</span> <span class="p">(</span>
-                                    <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span>
-                                    <span class="o">!=</span> <span class="n">operation</span><span class="o">.</span><span class="n">conditions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
-                                <span class="p">):</span>
-                                    <span class="k">continue</span>
-                            <span class="k">elif</span> <span class="p">(</span>
-                                <span class="n">item</span><span class="o">.</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span>
-                                <span class="o">!=</span> <span class="n">dataflow</span><span class="o">.</span><span class="n">operations</span><span class="p">[</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-                                <span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="n">origin</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-                                <span class="o">.</span><span class="n">name</span>
-                            <span class="p">):</span>
-                                <span class="k">continue</span>
-                            <span class="k">if</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
-                                <span class="k">return</span>
                 <span class="c1"># Gather all inputs with matching definitions and contexts</span>
                 <span class="k">for</span> <span class="n">input_name</span><span class="p">,</span> <span class="n">input_sources</span> <span class="ow">in</span> <span class="n">input_flow</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="c1"># Create parameters for all the inputs</span>
@@ -1307,24 +1348,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">run_dispatch</span><span class="p">(</span><span class="n">octx</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">task</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">ignore_args</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">set</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">task</span></div>
-
-<div class="viewcode-block" id="MemoryOperationImplementationNetworkContext.dispatch_auto_starts"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetworkContext.dispatch_auto_starts">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch_auto_starts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">octx</span><span class="p">:</span> <span class="n">BaseOrchestratorContext</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Schedule the running of all operations without inputs</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">empty_parameter_set</span> <span class="o">=</span> <span class="n">MemoryParameterSet</span><span class="p">(</span>
-            <span class="n">MemoryParameterSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[])</span>
-        <span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="n">octx</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">operation</span><span class="o">.</span><span class="n">inputs</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="n">task</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">run_dispatch</span><span class="p">(</span><span class="n">octx</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">empty_parameter_set</span><span class="p">)</span>
-            <span class="p">)</span>
-            <span class="n">task</span><span class="o">.</span><span class="n">add_done_callback</span><span class="p">(</span><span class="n">ignore_args</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">completed_event</span><span class="o">.</span><span class="n">set</span><span class="p">))</span>
-            <span class="k">yield</span> <span class="n">task</span></div></div>
+        <span class="k">return</span> <span class="n">task</span></div></div>
 
 
 <div class="viewcode-block" id="MemoryOperationImplementationNetwork"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOperationImplementationNetwork">[docs]</a><span class="nd">@entrypoint</span><span class="p">(</span><span class="s2">&quot;memory&quot;</span><span class="p">)</span>
@@ -1693,6 +1717,23 @@
                 <span class="k">if</span> <span class="n">taken</span><span class="p">:</span>
                     <span class="k">yield</span> <span class="n">validator</span><span class="p">,</span> <span class="n">parameter_set</span>
 
+<div class="viewcode-block" id="MemoryOrchestratorContext.dispatch_auto_starts"><a class="viewcode-back" href="../../../api/df/memory.html#dffml.cli.dataflow.MemoryOrchestratorContext.dispatch_auto_starts">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">dispatch_auto_starts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Schedule the running of all operations without inputs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">operation</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">operation</span><span class="o">.</span><span class="n">inputs</span> <span class="ow">or</span> <span class="ow">not</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">ictx</span><span class="o">.</span><span class="n">check_conditions</span><span class="p">(</span>
+                <span class="n">operation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">ctx</span>
+            <span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">yield</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span>
+                <span class="n">operation</span><span class="p">,</span>
+                <span class="n">MemoryParameterSet</span><span class="p">(</span>
+                    <span class="n">MemoryParameterSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[])</span>
+                <span class="p">),</span>
+            <span class="p">)</span></div>
+
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run_operations_for_ctx</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseContextHandle</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">BaseContextHandle</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]:</span>
@@ -1703,7 +1744,7 @@
         <span class="c1"># String representing the context we are executing operations for</span>
         <span class="n">ctx_str</span> <span class="o">=</span> <span class="p">(</span><span class="k">await</span> <span class="n">ctx</span><span class="o">.</span><span class="n">handle</span><span class="p">())</span><span class="o">.</span><span class="n">as_string</span><span class="p">()</span>
         <span class="c1"># schedule running of operations with no inputs</span>
-        <span class="k">async</span> <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">dispatch_auto_starts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispatch_auto_starts</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
             <span class="n">tasks</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
         <span class="c1"># Create initial events to wait on</span>
         <span class="c1"># TODO(dfass) Make ictx.added(ctx) specific to dataflow</span>

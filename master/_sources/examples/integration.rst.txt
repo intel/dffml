@@ -274,28 +274,69 @@ it first.
         .. consoletest::
 
             $ curl -sSL 'https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-unknown-linux-gnu.tar.gz' \
-                | tar -xvz
-            $ mv tokei .venv/bin/
+                | tar -xvz -C .venv/bin/
 
     .. group-tab:: MacOS
 
         .. code-block:: console
 
             $ curl -sSL 'https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz' \
-                | tar -xvz
-            $ mv tokei .venv/bin/
+                | tar -xvz -C .venv/bin/
 
 Operations are just Python functions, or classes. They define a routine which
 will be run concurrently with other operations. Here's an example of the
 ``git_commits`` operation, which will find the number of commits within a date
-range.
-
-**feature/git/dffml_feature_git/feature/operations.py**
+range. This function / operation was installed when you installed the
+``dffml-feature-git`` package via ``pip``.
 
 .. literalinclude:: /../feature/git/dffml_feature_git/feature/operations.py
     :linenos:
-    :lineno-start: 363
-    :lines: 363-394
+    :lines: 372-399
+
+We're going to use the operations provided in ``dffml-feature-git`` to gather
+our dataset. The following command creates a ``DataFlow`` description of how
+all the operations within ``dffml-feature-git`` link together. The ``DataFlow``
+is stored in the YAML file **dataflow.yaml**.
+
+.. consoletest::
+
+    $ dffml dataflow create \
+        -configloader yaml \
+        -inputs \
+          10=quarters \
+          true=no_git_branch_given \
+          '{"authors": {"group": "author_count", "by": "quarter"},
+            "commits": {"group": "commit_count", "by": "quarter"},
+            "work": {"group": "work_spread", "by": "quarter"}}'=group_by_spec \
+        -- \
+          group_by \
+          make_quarters \
+          quarters_back_to_date \
+          check_if_valid_git_repository_URL \
+          clone_git_repo \
+          git_repo_default_branch \
+          git_repo_commit_from_date \
+          git_repo_author_lines_for_dates \
+          work \
+          git_commits \
+          count_authors \
+          cleanup_git_repo \
+        | tee dataflow.yaml \
+        | tail -n 15
+    seed:
+    - definition: quarters
+      value: 10
+    - definition: group_by_spec
+      value:
+        authors:
+          by: quarter
+          group: author_count
+        commits:
+          by: quarter
+          group: commit_count
+        work:
+          by: quarter
+          group: work_spread
 
 Since operations are run concurrently with each other, DFFML manages locking of
 input data, such as git repositories. This is done via ``Definitions`` which are
@@ -318,52 +359,6 @@ automatically.
 .. image:: /images/integration_dataflow_complex.svg
     :alt: Diagram showing detailed version of Dataflow
 
-We're going to use the operations provided in ``dffml-feature-git`` to gather
-our dataset. The following command creates a ``DataFlow`` description of how
-all the operations within ``dffml-feature-git`` link together. The ``DataFlow``
-is stored in the YAML file **cgi-bin/dataflow.yaml**.
-
-.. consoletest::
-
-    $ dffml dataflow create \
-        -configloader yaml \
-        -inputs \
-          10=quarters \
-          '{"authors": {"group": "author_count", "by": "quarter"},
-            "commits": {"group": "commit_count", "by": "quarter"},
-            "work": {"group": "work_spread", "by": "quarter"}}'=group_by_spec \
-        -- \
-          group_by \
-          make_quarters \
-          quarters_back_to_date \
-          check_if_valid_git_repository_URL \
-          clone_git_repo \
-          git_repo_default_branch \
-          git_repo_checkout \
-          git_repo_commit_from_date \
-          git_repo_author_lines_for_dates \
-          work \
-          git_repo_release \
-          git_commits \
-          count_authors \
-          cleanup_git_repo \
-        | tee dataflow.yaml \
-        | tail -n 15
-    seed:
-    - definition: quarters
-      value: 10
-    - definition: group_by_spec
-      value:
-        authors:
-          by: quarter
-          group: author_count
-        commits:
-          by: quarter
-          group: commit_count
-        work:
-          by: quarter
-          group: work_spread
-
 The inputs and outputs of operations within a running DataFlow are organized by
 contexts. The context for our dataset generation will be the source URL to the
 Git repo.
@@ -373,7 +368,8 @@ Git repo.
 - We provide the start date of the zeroith quarter, and 10 instances of quarter,
   since for each operation, every possible permutation of inputs will be run,
   ``quarters_back_to_date`` is going to take the start date, and the quarter,
-  and produce a date range for that quarter.
+  and produce a date range for that quarter. We use ``make_quarters`` and pass
+  ``10=quarters`` to make ten instances of ``quarter``.
 
 - We'll also need to provide an input to the output operation ``group_by_spec``.
   Output operations decide what data generated should be used as feature data,
@@ -382,11 +378,6 @@ Git repo.
   - Here we're telling the ``group_by`` operation to create feature data where
     the ``author_count``, ``work_spread`` and ``commit_count`` are grouped by
     the quarter they were generated for.
-
-The speed of the following command depends on your internet connection, it may
-take 2 minutes, it may take more. All the git repos in ``/tmp/urls`` will be
-downloaded, this will also take up space in ``/tmp``, they will be cleaned up
-automatically.
 
 Training our Model
 ------------------
@@ -403,11 +394,21 @@ to train on our dataset.
 
 We're going to put the training command in it's own file, since it's very long
 
+We use the :py:class:`DataFlowSource <dffml.source.df.DataFlowSource>` to run
+the DataFlow we created using the above ``dffml dataflow create`` command on
+each repo. When we run the DataFlow we pass it the current date and tell it to
+use the record's key as the repo URL (since that's what the key is).
+
 **train.sh**
 
 .. consoletest-literalinclude:: /../examples/maintained/train.sh
 
 Run **train.sh** to train the model
+
+The speed of the following command depends on your internet connection, it may
+take 2 minutes, it may take more. All the git repos in the database will be
+downloaded, this will also take up space in ``/tmp``, they will be cleaned up
+automatically.
 
 .. consoletest::
 
@@ -436,48 +437,50 @@ to make a prediction on the DFFML repo.
             "extra": {},
             "features": {
                 "authors": [
+                    9,
+                    16,
+                    20,
+                    14,
+                    10,
+                    4,
                     5,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
                     0,
                     0,
                     0
                 ],
                 "commits": [
-                    39,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
+                    110,
+                    273,
+                    252,
+                    105,
+                    65,
+                    64,
+                    51,
                     0,
                     0,
                     0
                 ],
                 "work": [
-                    4,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
+                    75,
+                    82,
+                    73,
+                    34,
+                    56,
+                    3,
+                    5,
                     0,
                     0,
                     0
                 ]
             },
-            "last_updated": "2019-05-23T10:33:03Z",
+            "key": "https://github.com/intel/dffml",
+            "last_updated": "2020-10-12T21:15:13Z",
             "prediction": {
-                "value": "0",
-                "confidence": 1.0
-            },
-            "key": "https://github.com/intel/dffml"
+                "maintained": {
+                    "confidence": 0.9999271631240845,
+                    "value": "1"
+                }
+            }
         }
     ]
 
