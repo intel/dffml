@@ -1,10 +1,14 @@
 Installation
 ============
 
-DFFML currently **supports Python 3.7 and 3.8**. If your distribution's package
-manager doesn't provide Python 3.7 or 3.8,
+DFFML currently **supports Python 3.7 and 3.8 on Linux**. If your distribution's
+package manager doesn't provide Python 3.7 or 3.8,
 `pyenv <https://github.com/pyenv/pyenv#simple-python-version-management-pyenv>`_
 is another good way to install it. You could also use the docker container.
+
+Windows and MacOS support varies by which plugins you install. We do not
+currently have a list of what is supported and what is not supported on those
+OSs.
 
 DFFML is available via pip.
 
