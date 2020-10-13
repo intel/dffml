@@ -6,19 +6,22 @@ package manager doesn't provide Python 3.7 or 3.8,
 `pyenv <https://github.com/pyenv/pyenv#simple-python-version-management-pyenv>`_
 is another good way to install it. You could also use the docker container.
 
-Windows and MacOS support varies by which plugins you install. We do not
-currently have a list of what is supported and what is not supported on those
-OSs.
+**Windows and MacOS are not officially supported yet**. Support varies by which
+plugins you install. We do not currently have a list of what is supported and
+what is not supported on those OSs.
 
 DFFML is available via pip.
 
+First make sure you have the latest versions of ``pip``, ``setuptools``, and
+``wheel``. Some ML libraries require them to be up-to-date.
+
 .. tabs::
 
-    .. group-tab:: Linux
+    .. group-tab:: Linux and MacOS
 
         .. code-block:: console
 
-            $ python3 -m pip install -U dffml
+            $ python3 -m pip install -U pip setuptools wheel
 
     .. group-tab:: Windows
 
@@ -29,6 +32,20 @@ DFFML is available via pip.
 
             C:\Users\username> python -m venv .venv
             C:\Users\username> .venv\Scripts\activate
+            (.venv) C:\Users\username> python -m pip install -U pip setuptools wheel
+
+.. tabs::
+
+    .. group-tab:: Linux and MacOS
+
+        .. code-block:: console
+
+            $ python3 -m pip install -U dffml
+
+    .. group-tab:: Windows
+
+        .. code-block:: console
+
             (.venv) C:\Users\username> python -m pip install -U dffml
 
 If you want to install all of the machine learning model plugins that are
@@ -36,7 +53,7 @@ maintained as a part of the core repository, you can append ``[models]``.
 
 .. tabs::
 
-    .. group-tab:: Linux
+    .. group-tab:: Linux and MacOS
 
         .. code-block:: console
 
@@ -54,7 +71,7 @@ repository, you can append ``[all]``.
 
 .. tabs::
 
-    .. group-tab:: Linux
+    .. group-tab:: Linux and MacOS
 
         .. code-block:: console
 
@@ -79,7 +96,7 @@ and replace ``-`` with ``/``.
 
 .. tabs::
 
-    .. group-tab:: Linux
+    .. group-tab:: Linux and MacOS
 
         .. code-block:: console
 
@@ -90,7 +107,7 @@ and replace ``-`` with ``/``.
 
         .. code-block:: console
 
-            $ python3 -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml" ^
+            (.venv) C:\Users\username> python -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml" ^
                 "https://github.com/intel/dffml/archive/master.zip#egg=dffml-feature-git&subdirectory=feature/git"
 
 There's an online IDE based on Theia (similar to VS Code) called GitPod that
