@@ -127,3 +127,17 @@ class TestMemoryOrchestrator(AsyncTestCase):
                     pass
 
         self.assertFalse(ran)
+
+    async def test_condition_does_not_run_auto_start(self):
+        ran = []
+
+        @op(conditions=[CONDITION])
+        async def condition_test():
+            ran.append(True)  # pragma: no cover
+
+        async with MemoryOrchestrator() as orchestrator:
+            async with orchestrator(DataFlow(condition_test)) as octx:
+                async for _ in octx.run([]):
+                    pass
+
+        self.assertFalse(ran)

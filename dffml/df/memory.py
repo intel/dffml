@@ -1530,7 +1530,9 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         Schedule the running of all operations without inputs
         """
         for operation in self.config.dataflow.operations.values():
-            if operation.inputs:
+            if operation.inputs or not await self.ictx.check_conditions(
+                operation, self.config.dataflow, ctx
+            ):
                 continue
             yield await self.nctx.dispatch(
                 self,
