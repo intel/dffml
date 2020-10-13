@@ -48,15 +48,15 @@ class FakeCloneRepoImp(BaseDataFlowFacilitatorObjectContext):
 class TestOperations(AsyncTestCase):
     async def setUp(self):
         self.dataflow = DataFlow.auto(*OPIMPS)
-        self.dataflow.seed.append(
+        self.dataflow.seed += [
             Input(
                 value=[
                     restart_running_containers.op.outputs["containers"].name
                 ],
                 definition=GetSingle.op.inputs["spec"],
             ),
-            Input(value=True, definition=clone_git_repo.op.conditions[0],),
-        )
+            Input(value=True, definition=clone_git_repo.op.conditions[0]),
+        ]
 
         test_data = {
             "ref": "refs/master",
