@@ -1,7 +1,7 @@
 DataFlow HTTP Deployment
 ========================
 
-In the :doc:`/tutorials/operations` we created a command line meta static
+In the :doc:`/examples/shouldi` we created a command line meta static
 analysis tool, ``shouldi``.
 
 .. code-block:: console
@@ -12,7 +12,7 @@ analysis tool, ``shouldi``.
         safety_check.outputs.result: 1
         run_bandit.outputs.result: {'CONFIDENCE.HIGH': 0.0, 'CONFIDENCE.LOW': 0.0, 'CONFIDENCE.MEDIUM': 0.0, 'CONFIDENCE.UNDEFINED': 0.0, 'SEVERITY.HIGH': 0.0, 'SEVERITY.LOW': 0.0, 'SEVERITY.MEDIUM': 0.0, 'SEVERITY.UNDEFINED': 0.0, 'loc': 100, 'nosec': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.LOW': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.HIGH': 0}
 
-In the :ref:`tutorials_operations_registering_opreations` section of the
+In the :ref:`examples_shouldi_registering_opreations` section of the
 operations tutorial, we registered our operations with Python's ``entrypoint``
 system. This allows other Python packages and DFFML plugins to access them
 without the need to hardcode in ``import`` statements.
@@ -59,7 +59,7 @@ to look at JSON.
     $ python3 -m pip install dffml-config-yaml
 
 We'll be working from the top level directory of the ``shouldi`` package we
-created in the :doc:`/tutorials/operations`.
+created in the :doc:`/examples/shouldi`.
 
 The source for that package is also available under the ``examples/shouldi``
 directory of the DFFML source code.
@@ -69,8 +69,8 @@ directory of the DFFML source code.
     $ cd examples/shouldi
 
 Config files are named after the dataflow they are associated with. In the
-:ref:`tutorials_operations_visualizing_the_dataflow` section of the
-:doc:`/tutorials/operations`, we serialized the ``shouldi`` dataflow to the
+:ref:`examples_shouldi_visualizing_the_dataflow` section of the
+:doc:`/examples/shouldi`, we serialized the ``shouldi`` dataflow to the
 ``shouldi/deploy/df`` directory.
 
 The ``df`` directory is contains the main dataflows to be deployed.
