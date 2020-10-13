@@ -22,11 +22,15 @@ modifications though if you made any).
 
 You may know the best fit line as ``y = m * x + b``
 
-.. literalinclude:: /../tests/tutorials/models/package/create.sh
+.. consoletest::
+
+    $ dffml service dev create model dffml-model-myslr
 
 Then enter the directory of the package we just created
 
-.. literalinclude:: /../tests/tutorials/models/package/cd.sh
+.. consoletest::
+
+    $ cd dffml-model-myslr
 
 Install the Package
 -------------------
@@ -51,7 +55,9 @@ that we're working on here. If you don't pass ``-e`` then anytime you make
 changes in this directory, they won't take effect until you reinstall the
 package.
 
-.. literalinclude:: /../tests/tutorials/models/package/pip_install.sh
+.. code-block:: console
+
+    $ pip install -e .
 
 Testing
 -------
@@ -68,8 +74,14 @@ than :py:class:`unittest.TestCase`.
 
 **tests/test_model.py**
 
-.. literalinclude:: /../tests/tutorials/models/package/test_model_imports.txt
-    :language: python
+.. consoletest-file:: python
+    :filepath: tests/test_model.py
+
+    import tempfile
+
+    from dffml import train, accuracy, predict, Feature, AsyncTestCase
+
+    from dffml_model_myslr.myslr import MySLRModel
 
 Test data
 ~~~~~~~~~
@@ -79,7 +91,8 @@ we're just going to hard code in some data.
 
 **tests/test_model.py**
 
-.. literalinclude:: /../dffml/skel/model/tests/test_model.py
+.. consoletest-literalinclude:: /../dffml/skel/model/tests/test_model.py
+    :filepath: tests/test_model.py
     :lines: 7-34
 
 TestCase Class
@@ -90,7 +103,8 @@ they're done.
 
 **tests/test_model.py**
 
-.. literalinclude:: /../dffml/skel/model/tests/test_model.py
+.. consoletest-literalinclude:: /../dffml/skel/model/tests/test_model.py
+    :filepath: tests/test_model.py
     :lines: 37-52
 
 Testing Train
@@ -110,7 +124,8 @@ for more information on how the ``*``-operator works.
 
 **tests/test_model.py**
 
-.. literalinclude:: /../dffml/skel/model/tests/test_model.py
+.. consoletest-literalinclude:: /../dffml/skel/model/tests/test_model.py
+    :filepath: tests/test_model.py
     :lines: 54-56
 
 Testing Accuracy
@@ -124,7 +139,8 @@ acceptable range.
 
 **tests/test_model.py**
 
-.. literalinclude:: /../dffml/skel/model/tests/test_model.py
+.. consoletest-literalinclude:: /../dffml/skel/model/tests/test_model.py
+    :filepath: tests/test_model.py
     :lines: 58-64
 
 Testing Prediction
@@ -136,7 +152,8 @@ value is within 10% of what it should be.
 
 **tests/test_model.py**
 
-.. literalinclude:: /../dffml/skel/model/tests/test_model.py
+.. consoletest-literalinclude:: /../dffml/skel/model/tests/test_model.py
+    :filepath: tests/test_model.py
     :lines: 66-78
 
 Run the tests
@@ -144,12 +161,9 @@ Run the tests
 
 We can run the tests using the ``unittest`` module
 
-.. literalinclude:: /../tests/tutorials/models/package/unittest.sh
+.. consoletest::
 
-The output will look something ike this
-
-.. code-block::
-
+    $ python3 -m unittest discover -v
     test_00_train (tests.test_model.TestMySLRModel) ... ok
     test_01_accuracy (tests.test_model.TestMySLRModel) ... ok
     test_02_predict (tests.test_model.TestMySLRModel) ... ok
@@ -162,7 +176,9 @@ The output will look something ike this
 If you want to see the output of the call to ``self.logger.debug``, just set the
 ``LOGGING`` environment variable to ``debug``.
 
-.. literalinclude:: /../tests/tutorials/models/package/unittest_logging.sh
+.. consoletest::
+
+    $ LOGGING=debug python3 -m unittest discover -v
 
 Entrypoint Registration
 -----------------------
@@ -187,15 +203,40 @@ path on the right side.
 
 And remember that any time we modify the **setup.py**, we have to re-install.
 
-.. literalinclude:: /../tests/tutorials/models/package/pip_install.sh
+.. consoletest::
+
+    $ pip install -e .
 
 Command Line Usage
 ------------------
 
+Let's add some training data to a CSV file.
+
+**train.csv**
+
+.. consoletest-file::
+    :filepath: train.csv
+
+    Years,Salary
+    1,40
+    2,50
+    3,60
+    4,70
+    5,80
+
 Since we've registered our model as a ``dffml.model`` plugin, we can now
 reference it by it's short name.
 
-.. literalinclude:: /../tests/tutorials/models/package/train.sh
+.. consoletest::
+
+    $ dffml train \
+        -log debug \
+        -model myslr \
+        -model-feature Years:int:1 \
+        -model-predict Salary:float:1 \
+        -model-directory modeldir \
+        -sources f=csv \
+        -source-filename train.csv
 
 Uploading to PyPi
 -----------------
