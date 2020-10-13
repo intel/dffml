@@ -1,1 +1,0 @@
-LOGGING=debug python3 -m unittest discover -v

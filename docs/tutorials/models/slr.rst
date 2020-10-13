@@ -28,12 +28,12 @@ We're going to need a few modules from the standard library, let's import them.
 - ``typing`` is for Python's static type hinting. It lets use give hints to our
   editor or IDE so they can help us check our code before we run it.
 
-.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+.. consoletest-literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :lines: 1-3
 
 We'll also need a few things from DFFML.
 
-.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+.. consoletest-literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :lines: 5-15
 
 Math
@@ -45,7 +45,7 @@ So we're going to skip over their logic in this tutorial. You can write your own
 versions to find the best fit line for lists of X, and Y data if you want, or
 you can copy these.
 
-.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+.. consoletest-literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :lines: 18-50
 
 Config
@@ -59,7 +59,7 @@ Anything that a user might want to tweak about a models behavior should go in
 the ``Config`` class for the model. The naming convention is ``TheName`` +
 ``Model`` + ``Config``.
 
-.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+.. consoletest-literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :lines: 53-57
 
 Our model has three configurable properties.
@@ -90,7 +90,7 @@ model from the DFFML command line and other interfaces.
 
 - We must set the ``CONFIG`` attribute to the respective ``Config`` class.
 
-.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+.. consoletest-literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :lines: 60-63
 
 Train
@@ -105,7 +105,7 @@ Models should save their state to disk after training. Classes derived from
 ``SimpleModel`` can put anything they want saved into ``self.storage``, which
 is saved and loaded from a JSON file on disk.
 
-.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+.. consoletest-literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :lines: 65-79
 
 Accuracy
@@ -125,7 +125,7 @@ to mean that the model predicted the correct value for every record given to the
 accuracy method. Numbers approaching ``1.0`` should indicate that the model was
 closer to making the correct prediction for each record.
 
-.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+.. consoletest-literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :lines: 81-107
 
 Predict
@@ -139,7 +139,7 @@ We call :py:meth:`record.predicted <dffml.record.Record.predicted>`
 passing it the name of the feature we predicted, the predicted value, and the
 confidence in our prediction.
 
-.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+.. consoletest-literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
     :lines: 109-126
 
 Python Usage
@@ -151,28 +151,46 @@ We can use our new model from Python code as follows. This example makes use of
 
 Let's first create our training, test, and prediction data CSV files.
 
-.. literalinclude:: /../tests/tutorials/models/slr/train_data.sh
+**train.csv**
 
-.. literalinclude:: /../tests/tutorials/models/slr/test_data.sh
+.. consoletest-file::
+    :filepath: train.csv
 
-.. literalinclude:: /../tests/tutorials/models/slr/predict_data.sh
+    Years,Salary
+    1,40
+    2,50
+    3,60
+    4,70
+    5,80
+
+**test.csv**
+
+.. consoletest-file::
+    :filepath: test.csv
+
+    Years,Salary
+    6,90
+    7,100
+
+**predict.csv**
+
+.. consoletest-file::
+    :filepath: predict.csv
+
+    Years
+    8
 
 Then we can write our Python file, **run.py**.
 
-.. literalinclude:: /../tests/tutorials/models/slr/run.py
+.. consoletest-literalinclude:: /../examples/tutorials/models/slr/run.py
 
 We run it as we would any other Python file
 
-.. code-block:: console
+.. consoletest::
 
     $ python3 run.py
-
-The output should look like this
-
-.. code-block::
-
-   Accuracy: 1.0
-   {'Years': 8, 'Salary': 110.0}
+    Accuracy: 1.0
+    {'Years': 8, 'Salary': 110.0}
 
 Command Line Usage
 ------------------
@@ -183,26 +201,30 @@ be ``myslr:MySLRModel``.
 
 We do the same steps we did with Python, only using the command line interface.
 
-.. literalinclude:: /../tests/tutorials/models/slr/train.sh
+.. consoletest::
+
+    $ dffml train \
+        -log debug \
+        -model myslr:MySLRModel \
+        -model-feature Years:int:1 \
+        -model-predict Salary:float:1 \
+        -model-directory modeldir \
+        -sources f=csv \
+        -source-filename train.csv
 
 There's no output from the training command if everything went well
 
-.. literalinclude:: /../tests/tutorials/models/slr/test.sh
+Now let's make predictions
 
-The accuracy command outputs the percentage accuracy
+.. consoletest::
 
-.. code-block::
-
-   1.0
-
-Finally, let's make predictions
-
-.. literalinclude:: /../tests/tutorials/models/slr/predict.sh
-
-The output of prediction should like similar to this
-
-.. code-block:: json
-
+    $ dffml predict all \
+        -model myslr:MySLRModel \
+        -model-feature Years:int:1 \
+        -model-predict Salary:float:1 \
+        -model-directory modeldir \
+        -sources f=csv \
+        -source-filename predict.csv
     [
         {
             "extra": {},
@@ -229,7 +251,7 @@ First we need to install the HTTP service, which is the HTTP server which will
 serve our model. See the :doc:`/plugins/service/http/index` docs for more
 information on the HTTP service.
 
-.. code-block:: console
+.. consoletest::
 
     $ pip install -U dffml-service-http
 
@@ -242,17 +264,26 @@ via the HTTP :ref:`plugin_service_http_api_model` API.
     This example of running the HTTP API is insecure and is only used to help
     you get up and running.
 
-.. literalinclude:: /../tests/tutorials/models/slr/start_http.sh
+.. consoletest::
+    :daemon:
+
+    $ dffml service http server -insecure -cors '*' -addr 0.0.0.0 -port 8080 \
+        -models mymodel=myslr:MySLRModel \
+        -model-feature Years:int:1 \
+        -model-predict Salary:float:1 \
+        -model-directory modeldir
 
 We can then ask the HTTP service to make predictions, or do training or accuracy
 assessment.
 
-.. literalinclude:: /../tests/tutorials/models/slr/curl_http.sh
+.. consoletest::
+    :replace: cmd[1] = cmd[1].replace("8080", str(ctx["HTTP_SERVER"]["8080"]))
+    :poll-until: bool(b"Salary" in stdout)
+    :ignore-errors:
 
-You should see the following prediction
-
-.. code-block:: json
-
+    $ curl http://localhost:8080/model/mymodel/predict/0 -v \
+        --header "Content-Type: application/json" \
+        --data '{"0": {"features": {"Years": 8}}}'
     {
         "iterkey": null,
         "records": {
