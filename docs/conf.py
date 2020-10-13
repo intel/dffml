@@ -13,6 +13,7 @@
 import os
 import sys
 import pathlib
+import datetime
 
 sys.path.insert(0, os.path.abspath("."))
 sys.path.append(os.path.abspath("_ext"))
@@ -22,7 +23,7 @@ from dffml.version import VERSION
 # -- Project information -----------------------------------------------------
 
 project = "DFFML"
-copyright = "2019, Intel"
+copyright = "2017 - %d, Intel" % (datetime.datetime.today().year,)
 author = "John Andersen"
 
 # The short X.Y version
