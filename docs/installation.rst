@@ -10,8 +10,6 @@ is another good way to install it. You could also use the docker container.
 plugins you install. We do not currently have a list of what is supported and
 what is not supported on those OSs.
 
-DFFML is available via pip.
-
 First make sure you have the latest versions of ``pip``, ``setuptools``, and
 ``wheel``. Some ML libraries require them to be up-to-date.
 
@@ -19,7 +17,7 @@ First make sure you have the latest versions of ``pip``, ``setuptools``, and
 
     .. group-tab:: Linux and MacOS
 
-        .. code-block:: console
+        .. consoletest::
 
             $ python3 -m pip install -U pip setuptools wheel
 
@@ -34,11 +32,14 @@ First make sure you have the latest versions of ``pip``, ``setuptools``, and
             C:\Users\username> .venv\Scripts\activate
             (.venv) C:\Users\username> python -m pip install -U pip setuptools wheel
 
+DFFML is available via pip. You can install it as you would any other Python
+package.
+
 .. tabs::
 
     .. group-tab:: Linux and MacOS
 
-        .. code-block:: console
+        .. consoletest::
 
             $ python3 -m pip install -U dffml
 
@@ -86,9 +87,19 @@ repository, you can append ``[all]``.
 If you want to stay on the bleeding edge of bug fixes, etc. You can install from
 the master branch.
 
-.. code-block:: console
+.. tabs::
 
-    $ python3 -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml"
+    .. group-tab:: Linux and MacOS
+
+        .. consoletest::
+
+            $ python3 -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml"
+
+    .. group-tab:: Windows
+
+        .. code-block:: console
+
+            (.venv) C:\Users\username> python -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml"
 
 You can also install the bleeding edge version of any plugin. To get the
 subdirectory you should use, take the package name on PyPi and remove ``dffml-``
@@ -98,7 +109,7 @@ and replace ``-`` with ``/``.
 
     .. group-tab:: Linux and MacOS
 
-        .. code-block:: console
+        .. consoletest::
 
             $ python3 -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml" \
                 "https://github.com/intel/dffml/archive/master.zip#egg=dffml-feature-git&subdirectory=feature/git"

@@ -251,6 +251,7 @@ class CMD(object):
                 cls=cls.JSONEncoder,
             )
             print()
+        return result
 
     @classmethod
     def main(cls, loop=None, argv=sys.argv):
