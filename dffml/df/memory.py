@@ -451,6 +451,90 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
     ) -> BaseDefinitionSetContext:
         return MemoryDefinitionSetContext(self.config, self, ctx)
 
+    async def check_conditions(
+        self,
+        operation: Operation,
+        dataflow: DataFlow,
+        ctx: BaseInputSetContext,
+    ) -> bool:
+        async with self.ctxhd_lock:
+            # Grab the input set context handle
+            handle_string = (await ctx.handle()).as_string()
+            # Ensure that the handle_string is present in ctxhd
+            if not handle_string in self.ctxhd:
+                return
+            # Limit search to given context via context handle
+            return await self._check_conditions(
+                operation, dataflow, self.ctxhd[handle_string].by_origin
+            )
+
+    async def _check_conditions(
+        self,
+        operation: Operation,
+        dataflow: DataFlow,
+        by_origin: Dict[Union[str, Tuple[str, str]], List[Input]],
+    ) -> bool:
+        # Grab the input flow to check for definition overrides
+        input_flow = dataflow.flow[operation.instance_name]
+        # Return that all conditions are satisfied if there are none to satisfy
+        if not input_flow.conditions:
+            return True
+        # Check that all conditions are present and logicly True
+        for i, condition_source in enumerate(input_flow.conditions):
+            # We must check if we found an Input where the definition
+            # matches the definition of the condition in addition to
+            # checking that the Input's value is True. If we were not
+            # to check that we found a definition we would be effectively
+            # saying that the lack of presence equates with the
+            # condition being True.
+            condition_found_and_true = False
+            # Create a list of places this input originates from
+            origins = []
+            if isinstance(condition_source, dict):
+                for origin in condition_source.items():
+                    origins.append(origin)
+            else:
+                origins.append(condition_source)
+            # Ensure all conditions from all origins are True
+            for origin in origins:
+                # See comment in input_flow.inputs section
+                (
+                    alternate_definitions,
+                    origin,
+                ) = input_flow.get_alternate_definitions(origin)
+                # Bail if the condition doesn't exist
+                if not origin in by_origin:
+                    return
+                # Bail if the condition is not True
+                for item in by_origin[origin]:
+                    # TODO(p2) Alright, this shits fucked, way not clean
+                    # / clear. We're just trying to skip any conditions
+                    # (and inputs for input_flow.inputs.items()) where
+                    # the definition doesn't match, but it's within the
+                    # correct origin.
+                    if alternate_definitions:
+                        if item.definition.name not in alternate_definitions:
+                            continue
+                    elif isinstance(condition_source, str):
+                        if (
+                            item.definition.name
+                            != operation.conditions[i].name
+                        ):
+                            continue
+                    elif (
+                        item.definition.name
+                        != dataflow.operations[origin[0]]
+                        .outputs[origin[1]]
+                        .name
+                    ):
+                        continue
+                    condition_found_and_true = bool(item.value)
+            # Ensure we were able to find a condition within the input
+            # network, and that when we found it it's value was True.
+            if condition_found_and_true:
+                return True
+        return False
+
     async def gather_inputs(
         self,
         rctx: "BaseRedundancyCheckerContext",
@@ -474,65 +558,14 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                 # Limit search to given context via context handle
                 contexts = [self.ctxhd[handle_string]]
             for ctx, _, by_origin in contexts:
+                # Ensure we were able to find a condition within the input
+                # network, and that when we found it it's value was True.
+                if not await self._check_conditions(
+                    operation, dataflow, by_origin
+                ):
+                    return
                 # Grab the input flow to check for definition overrides
                 input_flow = dataflow.flow[operation.instance_name]
-                # Check that all conditions are present and logicly True
-                for i, condition_source in enumerate(input_flow.conditions):
-                    # We must check if we found an Input where the definition
-                    # matches the defintion of the condition in addition to
-                    # checking that the Input's value is True. If we were not
-                    # to check that we found a definition we would be effectivly
-                    # saying that the lack of presence equates with the
-                    # condition being True.
-                    condition_found_and_true = False
-                    # Create a list of places this input originates from
-                    origins = []
-                    if isinstance(condition_source, dict):
-                        for origin in condition_source.items():
-                            origins.append(origin)
-                    else:
-                        origins.append(condition_source)
-                    # Ensure all conditions from all origins are True
-                    for origin in origins:
-                        # See comment in input_flow.inputs section
-                        (
-                            alternate_definitions,
-                            origin,
-                        ) = input_flow.get_alternate_definitions(origin)
-                        # Bail if the condition doesn't exist
-                        if not origin in by_origin:
-                            return
-                        # Bail if the condition is not True
-                        for item in by_origin[origin]:
-                            # TODO(p2) Alright, this shits fucked, way not clean
-                            # / clear. We're just trying to skip any conditions
-                            # (and inputs for input_flow.inputs.items()) where
-                            # the definition doesn't match, but it's within the
-                            # correct origin.
-                            if alternate_definitions:
-                                if (
-                                    item.definition.name
-                                    not in alternate_definitions
-                                ):
-                                    continue
-                            elif isinstance(condition_source, str):
-                                if (
-                                    item.definition.name
-                                    != operation.conditions[i].name
-                                ):
-                                    continue
-                            elif (
-                                item.definition.name
-                                != dataflow.operations[origin[0]]
-                                .outputs[origin[1]]
-                                .name
-                            ):
-                                continue
-                            condition_found_and_true = bool(item.value)
-                    # Ensure we were able to find a condition within the input
-                    # network, and that when we found it it's value was True.
-                    if not condition_found_and_true:
-                        return
                 # Gather all inputs with matching definitions and contexts
                 for input_name, input_sources in input_flow.inputs.items():
                     # Create parameters for all the inputs
