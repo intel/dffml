@@ -458,7 +458,7 @@ is set up correctly).
         safety_check.outputs.result: 1
         run_bandit.outputs.result: {'CONFIDENCE.HIGH': 0.0, 'CONFIDENCE.LOW': 0.0, 'CONFIDENCE.MEDIUM': 0.0, 'CONFIDENCE.UNDEFINED': 0.0, 'SEVERITY.HIGH': 0.0, 'SEVERITY.LOW': 0.0, 'SEVERITY.MEDIUM': 0.0, 'SEVERITY.UNDEFINED': 0.0, 'loc': 100, 'nosec': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.LOW': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM': 0, 'CONFIDENCE.HIGH_AND_SEVERITY.HIGH': 0}
 
-.. _tutorials_operations_visualizing_the_dataflow:
+.. _examples_shouldi_visualizing_the_dataflow:
 
 Visualizing the DataFlow
 ------------------------
@@ -530,7 +530,7 @@ It should render the following SVG showing how all the operations are connected.
 GitLab will render mermaidjs diagrams found in markdown files. There is also a
 sphinx plugin, and a command line utility.
 
-.. _tutorials_operations_registering_opreations:
+.. _examples_shouldi_registering_opreations:
 
 Registering Operations
 ----------------------
