@@ -1158,23 +1158,6 @@ class MemoryOperationImplementationNetworkContext(
         task.add_done_callback(ignore_args(self.completed_event.set))
         return task
 
-    async def dispatch_auto_starts(self, octx: BaseOrchestratorContext, ctx):
-        """
-        Schedule the running of all operations without inputs
-        """
-        empty_parameter_set = MemoryParameterSet(
-            MemoryParameterSetConfig(ctx=ctx, parameters=[])
-        )
-
-        for operation in octx.config.dataflow.operations.values():
-            if operation.inputs:
-                continue
-            task = asyncio.create_task(
-                self.run_dispatch(octx, operation, empty_parameter_set)
-            )
-            task.add_done_callback(ignore_args(self.completed_event.set))
-            yield task
-
 
 @entrypoint("memory")
 class MemoryOperationImplementationNetwork(
@@ -1542,6 +1525,21 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 if taken:
                     yield validator, parameter_set
 
+    async def dispatch_auto_starts(self, ctx):
+        """
+        Schedule the running of all operations without inputs
+        """
+        for operation in self.config.dataflow.operations.values():
+            if operation.inputs:
+                continue
+            yield await self.nctx.dispatch(
+                self,
+                operation,
+                MemoryParameterSet(
+                    MemoryParameterSetConfig(ctx=ctx, parameters=[])
+                ),
+            )
+
     async def run_operations_for_ctx(
         self, ctx: BaseContextHandle, *, strict: bool = True
     ) -> AsyncIterator[Tuple[BaseContextHandle, Dict[str, Any]]]:
@@ -1552,7 +1550,7 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
         # String representing the context we are executing operations for
         ctx_str = (await ctx.handle()).as_string()
         # schedule running of operations with no inputs
-        async for task in self.nctx.dispatch_auto_starts(self, ctx):
+        async for task in self.dispatch_auto_starts(ctx):
             tasks.add(task)
         # Create initial events to wait on
         # TODO(dfass) Make ictx.added(ctx) specific to dataflow
