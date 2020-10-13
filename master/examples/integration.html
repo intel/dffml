@@ -628,15 +628,13 @@ it first.</p>
 </div>
 <div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-TGludXg= active docutils container">
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-unknown-linux-gnu.tar.gz&#39;</span> <span class="se">\</span>
-    <span class="p">|</span> tar -xvz
-<span class="gp">$</span> mv tokei .venv/bin/
+    <span class="p">|</span> tar -xvz -C .venv/bin/
 </pre></div>
 </div>
 </div>
 <div class="ui bottom attached sphinx-tab tab segment sphinx-data-tab-TWFjT1M= docutils container">
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> curl -sSL <span class="s1">&#39;https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-apple-darwin.tar.gz&#39;</span> <span class="se">\</span>
-    <span class="p">|</span> tar -xvz
-<span class="gp">$</span> mv tokei .venv/bin/
+    <span class="p">|</span> tar -xvz -C .venv/bin/
 </pre></div>
 </div>
 </div>
@@ -644,49 +642,36 @@ it first.</p>
 <p>Operations are just Python functions, or classes. They define a routine which
 will be run concurrently with other operations. Here’s an example of the
 <code class="docutils literal notranslate"><span class="pre">git_commits</span></code> operation, which will find the number of commits within a date
-range.</p>
-<p><strong>feature/git/dffml_feature_git/feature/operations.py</strong></p>
-<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>363
-364
-365
-366
-367
-368
-369
-370
-371
-372
-373
-374
-375
-376
-377
-378
-379
-380
-381
-382
-383
-384
-385
-386
-387
-388
-389
-390
-391
-392
-393
-394</pre></div></td><td class="code"><div class="highlight"><pre><span></span>            <span class="mi">100</span>
-            <span class="o">*</span> <span class="n">langs</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">][</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span>
-            <span class="o">/</span> <span class="p">(</span><span class="n">langs</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">][</span><span class="s2">&quot;comment&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">langs</span><span class="p">[</span><span class="s2">&quot;sum&quot;</span><span class="p">][</span><span class="s2">&quot;code&quot;</span><span class="p">])</span>
-        <span class="p">)</span>
-    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
-        <span class="n">code_to_comment_ratio</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;code_to_comment_ratio&quot;</span><span class="p">:</span> <span class="n">code_to_comment_ratio</span><span class="p">}</span>
-
-
-<span class="nd">@op</span><span class="p">(</span>
+range. This function / operation was installed when you installed the
+<code class="docutils literal notranslate"><span class="pre">dffml-feature-git</span></code> package via <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
+<div class="highlight-default notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nd">@op</span><span class="p">(</span>
     <span class="n">inputs</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">&quot;repo&quot;</span><span class="p">:</span> <span class="n">git_repository</span><span class="p">,</span>
         <span class="s2">&quot;branch&quot;</span><span class="p">:</span> <span class="n">git_branch</span><span class="p">,</span>
@@ -709,25 +694,22 @@ range.</p>
         <span class="n">cwd</span><span class="o">=</span><span class="n">repo</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">while</span> <span class="ow">not</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">at_eof</span><span class="p">():</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">line</span> <span class="o">!=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="n">commit_count</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">await</span> <span class="n">stop</span><span class="p">(</span><span class="n">proc</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;commits&quot;</span><span class="p">:</span> <span class="n">commit_count</span><span class="p">}</span>
 </pre></div>
 </td></tr></table></div>
-<p>Since operations are run concurrently with each other, DFFML manages locking of
-input data, such as git repositories. This is done via <code class="docutils literal notranslate"><span class="pre">Definitions</span></code> which are
-the variables used as values in the <code class="docutils literal notranslate"><span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code> dictionaries. We
-link together all of the operations in a <code class="docutils literal notranslate"><span class="pre">DataFlow</span></code>. The pink boxes in the
-diagram below are the inputs to the network. The purple are the different
-operations. Arrows show how data moves between operations.</p>
-<img alt="Diagram showing Dataflow" src="../_images/integration_dataflow.svg" /><p>We can also visualize how the individual inputs and outputs are linked together.
-Inputs and outputs of the same <code class="docutils literal notranslate"><span class="pre">Definition</span></code> can be linked together
-automatically.</p>
-<img alt="Diagram showing detailed version of Dataflow" src="../_images/integration_dataflow_complex.svg" /><p>We’re going to use the operations provided in <code class="docutils literal notranslate"><span class="pre">dffml-feature-git</span></code> to gather
+<p>We’re going to use the operations provided in <code class="docutils literal notranslate"><span class="pre">dffml-feature-git</span></code> to gather
 our dataset. The following command creates a <code class="docutils literal notranslate"><span class="pre">DataFlow</span></code> description of how
 all the operations within <code class="docutils literal notranslate"><span class="pre">dffml-feature-git</span></code> link together. The <code class="docutils literal notranslate"><span class="pre">DataFlow</span></code>
-is stored in the YAML file <strong>cgi-bin/dataflow.yaml</strong>.</p>
+is stored in the YAML file <strong>dataflow.yaml</strong>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span>$ dffml dataflow create \
     -configloader yaml \
     -inputs \
       10=quarters \
+      true=no_git_branch_given \
       &#39;{&quot;authors&quot;: {&quot;group&quot;: &quot;author_count&quot;, &quot;by&quot;: &quot;quarter&quot;},
         &quot;commits&quot;: {&quot;group&quot;: &quot;commit_count&quot;, &quot;by&quot;: &quot;quarter&quot;},
         &quot;work&quot;: {&quot;group&quot;: &quot;work_spread&quot;, &quot;by&quot;: &quot;quarter&quot;}}&#39;=group_by_spec \
@@ -738,11 +720,9 @@ is stored in the YAML file <strong>cgi-bin/dataflow.yaml</strong>.</p>
       check_if_valid_git_repository_URL \
       clone_git_repo \
       git_repo_default_branch \
-      git_repo_checkout \
       git_repo_commit_from_date \
       git_repo_author_lines_for_dates \
       work \
-      git_repo_release \
       git_commits \
       count_authors \
       cleanup_git_repo \
@@ -764,7 +744,16 @@ seed:
       group: work_spread
 </pre></div>
 </div>
-<p>The inputs and outputs of operations within a running DataFlow are organized by
+<p>Since operations are run concurrently with each other, DFFML manages locking of
+input data, such as git repositories. This is done via <code class="docutils literal notranslate"><span class="pre">Definitions</span></code> which are
+the variables used as values in the <code class="docutils literal notranslate"><span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code> dictionaries. We
+link together all of the operations in a <code class="docutils literal notranslate"><span class="pre">DataFlow</span></code>. The pink boxes in the
+diagram below are the inputs to the network. The purple are the different
+operations. Arrows show how data moves between operations.</p>
+<img alt="Diagram showing Dataflow" src="../_images/integration_dataflow.svg" /><p>We can also visualize how the individual inputs and outputs are linked together.
+Inputs and outputs of the same <code class="docutils literal notranslate"><span class="pre">Definition</span></code> can be linked together
+automatically.</p>
+<img alt="Diagram showing detailed version of Dataflow" src="../_images/integration_dataflow_complex.svg" /><p>The inputs and outputs of operations within a running DataFlow are organized by
 contexts. The context for our dataset generation will be the source URL to the
 Git repo.</p>
 <ul class="simple">
@@ -772,7 +761,8 @@ Git repo.</p>
 <li><p>We provide the start date of the zeroith quarter, and 10 instances of quarter,
 since for each operation, every possible permutation of inputs will be run,
 <code class="docutils literal notranslate"><span class="pre">quarters_back_to_date</span></code> is going to take the start date, and the quarter,
-and produce a date range for that quarter.</p></li>
+and produce a date range for that quarter. We use <code class="docutils literal notranslate"><span class="pre">make_quarters</span></code> and pass
+<code class="docutils literal notranslate"><span class="pre">10=quarters</span></code> to make ten instances of <code class="docutils literal notranslate"><span class="pre">quarter</span></code>.</p></li>
 <li><p>We’ll also need to provide an input to the output operation <code class="docutils literal notranslate"><span class="pre">group_by_spec</span></code>.
 Output operations decide what data generated should be used as feature data,
 and present it in a usable format.</p>
@@ -783,10 +773,6 @@ the quarter they were generated for.</p></li>
 </ul>
 </li>
 </ul>
-<p>The speed of the following command depends on your internet connection, it may
-take 2 minutes, it may take more. All the git repos in <code class="docutils literal notranslate"><span class="pre">/tmp/urls</span></code> will be
-downloaded, this will also take up space in <code class="docutils literal notranslate"><span class="pre">/tmp</span></code>, they will be cleaned up
-automatically.</p>
 </div>
 <div class="section" id="training-our-model">
 <h2>Training our Model<a class="headerlink" href="#training-our-model" title="Permalink to this headline">¶</a></h2>
@@ -798,6 +784,10 @@ another separate Python package from DFFML which we can install via <code class=
 <p>The model is a generic wrapper around Tensorflow’s DNN estimator. We can use it
 to train on our dataset.</p>
 <p>We’re going to put the training command in it’s own file, since it’s very long</p>
+<p>We use the <a class="reference internal" href="../api/source/df.html#dffml.source.df.DataFlowSource" title="dffml.source.df.DataFlowSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFlowSource</span></code></a> to run
+the DataFlow we created using the above <code class="docutils literal notranslate"><span class="pre">dffml</span> <span class="pre">dataflow</span> <span class="pre">create</span></code> command on
+each repo. When we run the DataFlow we pass it the current date and tell it to
+use the record’s key as the repo URL (since that’s what the key is).</p>
 <p><strong>train.sh</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env bash</span>
 <span class="c1"># echo command back and exit on error</span>
@@ -838,6 +828,10 @@ to train on our dataset.</p>
 </pre></div>
 </div>
 <p>Run <strong>train.sh</strong> to train the model</p>
+<p>The speed of the following command depends on your internet connection, it may
+take 2 minutes, it may take more. All the git repos in the database will be
+downloaded, this will also take up space in <code class="docutils literal notranslate"><span class="pre">/tmp</span></code>, they will be cleaned up
+automatically.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> bash train.sh
 </pre></div>
 </div>
@@ -895,48 +889,50 @@ to make a prediction on the DFFML repo.</p>
 <span class="go">        &quot;extra&quot;: {},</span>
 <span class="go">        &quot;features&quot;: {</span>
 <span class="go">            &quot;authors&quot;: [</span>
+<span class="go">                9,</span>
+<span class="go">                16,</span>
+<span class="go">                20,</span>
+<span class="go">                14,</span>
+<span class="go">                10,</span>
+<span class="go">                4,</span>
 <span class="go">                5,</span>
-<span class="go">                0,</span>
-<span class="go">                0,</span>
-<span class="go">                0,</span>
-<span class="go">                0,</span>
-<span class="go">                0,</span>
-<span class="go">                0,</span>
 <span class="go">                0,</span>
 <span class="go">                0,</span>
 <span class="go">                0</span>
 <span class="go">            ],</span>
 <span class="go">            &quot;commits&quot;: [</span>
-<span class="go">                39,</span>
-<span class="go">                0,</span>
-<span class="go">                0,</span>
-<span class="go">                0,</span>
-<span class="go">                0,</span>
-<span class="go">                0,</span>
-<span class="go">                0,</span>
+<span class="go">                110,</span>
+<span class="go">                273,</span>
+<span class="go">                252,</span>
+<span class="go">                105,</span>
+<span class="go">                65,</span>
+<span class="go">                64,</span>
+<span class="go">                51,</span>
 <span class="go">                0,</span>
 <span class="go">                0,</span>
 <span class="go">                0</span>
 <span class="go">            ],</span>
 <span class="go">            &quot;work&quot;: [</span>
-<span class="go">                4,</span>
-<span class="go">                0,</span>
-<span class="go">                0,</span>
-<span class="go">                0,</span>
-<span class="go">                0,</span>
-<span class="go">                0,</span>
-<span class="go">                0,</span>
+<span class="go">                75,</span>
+<span class="go">                82,</span>
+<span class="go">                73,</span>
+<span class="go">                34,</span>
+<span class="go">                56,</span>
+<span class="go">                3,</span>
+<span class="go">                5,</span>
 <span class="go">                0,</span>
 <span class="go">                0,</span>
 <span class="go">                0</span>
 <span class="go">            ]</span>
 <span class="go">        },</span>
-<span class="go">        &quot;last_updated&quot;: &quot;2019-05-23T10:33:03Z&quot;,</span>
+<span class="go">        &quot;key&quot;: &quot;https://github.com/intel/dffml&quot;,</span>
+<span class="go">        &quot;last_updated&quot;: &quot;2020-10-12T21:15:13Z&quot;,</span>
 <span class="go">        &quot;prediction&quot;: {</span>
-<span class="go">            &quot;value&quot;: &quot;0&quot;,</span>
-<span class="go">            &quot;confidence&quot;: 1.0</span>
-<span class="go">        },</span>
-<span class="go">        &quot;key&quot;: &quot;https://github.com/intel/dffml&quot;</span>
+<span class="go">            &quot;maintained&quot;: {</span>
+<span class="go">                &quot;confidence&quot;: 0.9999271631240845,</span>
+<span class="go">                &quot;value&quot;: &quot;1&quot;</span>
+<span class="go">            }</span>
+<span class="go">        }</span>
 <span class="go">    }</span>
 <span class="go">]</span>
 </pre></div>
