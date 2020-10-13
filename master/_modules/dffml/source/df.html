@@ -433,9 +433,6 @@
     <span class="n">CONFIG</span> <span class="o">=</span> <span class="n">DataFlowSourceConfig</span>
     <span class="n">CONTEXT</span> <span class="o">=</span> <span class="n">DataFlowSourceContext</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cnfg</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseConfig</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">cnfg</span><span class="p">)</span>
-
     <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;DataFlowSource&quot;</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="fm">__aenter__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">orchestrator</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">orchestrator</span><span class="o">.</span><span class="fm">__aenter__</span><span class="p">()</span>
