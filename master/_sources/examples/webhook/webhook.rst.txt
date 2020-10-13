@@ -20,24 +20,26 @@ Setup a http server in ``ffmpeg/deploy/webhook``, to receive webhook and redploy
 .. code-block:: console
 
     $ mkdir -p deploy/webhook/df deploy/webhook/mc/http
-    $ cat > /tmp/operations <<EOF
-    check_secret_match
-    get_url_from_payload
-    clone_git_repo
-    check_if_default_branch
-    get_image_tag
-    get_running_containers
-    get_status_running_containers
-    parse_docker_commands
-    docker_build_image
-    restart_running_containers
-    cleanup_git_repo
-    EOF
-    $ dffml dataflow create -configloader yaml $(cat /tmp/operations) \
-    -config \
-        ini=check_secret_match.secret.plugin \
-        "./deploy/webhook/secret.ini"=check_secret_match.secret.config.filename \
-    > deploy/webhook/df/webhook.yaml
+    $ dffml dataflow create \
+        -configloader yaml \
+        -inputs \
+          true=valid_git_repository_URL \
+        -config \
+          ini=check_secret_match.secret.plugin \
+          "./deploy/webhook/secret.ini"=check_secret_match.secret.config.filename \
+        -- \
+          check_secret_match \
+          get_url_from_payload \
+          clone_git_repo \
+          check_if_default_branch \
+          get_image_tag \
+          get_running_containers \
+          get_status_running_containers \
+          parse_docker_commands \
+          docker_build_image \
+          restart_running_containers \
+          cleanup_git_repo \
+        | tee deploy/webhook/df/webhook.yaml
 
 Through config we specify the dataflow to use ini file plugin and use the ini file
 located at deploy/webhook/secret.ini that contains the secret token, which we’ll
