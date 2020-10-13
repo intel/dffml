@@ -476,10 +476,15 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
             for ctx, _, by_origin in contexts:
                 # Grab the input flow to check for definition overrides
                 input_flow = dataflow.flow[operation.instance_name]
-                # TODO(p1) This only checks that Inputs that are present are
-                # true. If there are none present, the operation will run
                 # Check that all conditions are present and logicly True
                 for i, condition_source in enumerate(input_flow.conditions):
+                    # We must check if we found an Input where the definition
+                    # matches the defintion of the condition in addition to
+                    # checking that the Input's value is True. If we were not
+                    # to check that we found a definition we would be effectivly
+                    # saying that the lack of presence equates with the
+                    # condition being True.
+                    condition_found_and_true = False
                     # Create a list of places this input originates from
                     origins = []
                     if isinstance(condition_source, dict):
@@ -523,8 +528,11 @@ class MemoryInputNetworkContext(BaseInputNetworkContext):
                                 .name
                             ):
                                 continue
-                            if not bool(item.value):
-                                return
+                            condition_found_and_true = bool(item.value)
+                    # Ensure we were able to find a condition within the input
+                    # network, and that when we found it it's value was True.
+                    if not condition_found_and_true:
+                        return
                 # Gather all inputs with matching definitions and contexts
                 for input_name, input_sources in input_flow.inputs.items():
                     # Create parameters for all the inputs
