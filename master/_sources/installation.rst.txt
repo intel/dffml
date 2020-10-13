@@ -8,32 +8,86 @@ is another good way to install it. You could also use the docker container.
 
 DFFML is available via pip.
 
-.. code-block:: console
+.. tabs::
 
-    $ python3 -m pip install -U dffml
+    .. group-tab:: Linux
+
+        .. code-block:: console
+
+            $ python3 -m pip install -U dffml
+
+    .. group-tab:: Windows
+
+        On Windows you may want to first create a virtual environment to avoid
+        any permissions issues when running ``pip install``.
+
+        .. code-block:: console
+
+            C:\Users\username> python -m venv .venv
+            C:\Users\username> .venv\Scripts\activate
+            (.venv) C:\Users\username> python -m pip install -U dffml
+
+If you want to install all of the machine learning model plugins that are
+maintained as a part of the core repository, you can append ``[models]``.
+
+.. tabs::
+
+    .. group-tab:: Linux
+
+        .. code-block:: console
+
+            $ python3 -m pip install -U dffml[models]
+
+    .. group-tab:: Windows
+
+        .. code-block:: console
+
+            (.venv) C:\Users\username> python -m pip install -U dffml[models]
+
+If you want to install all of the machine learning model plugins and all the
+data sources and DataFlow operations that are maintained as a part of the core
+repository, you can append ``[all]``.
+
+.. tabs::
+
+    .. group-tab:: Linux
+
+        .. code-block:: console
+
+            $ python3 -m pip install -U dffml[all]
+
+    .. group-tab:: Windows
+
+        .. code-block:: console
+
+            (.venv) C:\Users\username> python -m pip install -U dffml[all]
 
 If you want to stay on the bleeding edge of bug fixes, etc. You can install from
 the master branch.
 
 .. code-block:: console
 
-    $ python3 -m pip install -U 'https://github.com/intel/dffml/archive/master.zip#egg=dffml'
+    $ python3 -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml"
 
 You can also install the bleeding edge version of any plugin. To get the
 subdirectory you should use, take the package name on PyPi and remove ``dffml-``
 and replace ``-`` with ``/``.
 
-.. code-block:: console
+.. tabs::
 
-    $ python3 -m pip install -U 'https://github.com/intel/dffml/archive/master.zip#egg=dffml' \
-        'https://github.com/intel/dffml/archive/master.zip#egg=dffml-feature-git&subdirectory=feature/git'
+    .. group-tab:: Linux
 
-If you want to install all of the machine learning model plugins that are
-maintained as a part of the core repository, you can append ``[models]``.
+        .. code-block:: console
 
-.. code-block:: console
+            $ python3 -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml" \
+                "https://github.com/intel/dffml/archive/master.zip#egg=dffml-feature-git&subdirectory=feature/git"
 
-    $ python3 -m pip install -U dffml[models]
+    .. group-tab:: Windows
+
+        .. code-block:: console
+
+            $ python3 -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml" ^
+                "https://github.com/intel/dffml/archive/master.zip#egg=dffml-feature-git&subdirectory=feature/git"
 
 There's an online IDE based on Theia (similar to VS Code) called GitPod that
 gives you a setup development environment to get started working with/on DFFML
