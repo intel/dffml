@@ -241,9 +241,6 @@ class DataFlowSource(BaseSource):
     CONFIG = DataFlowSourceConfig
     CONTEXT = DataFlowSourceContext
 
-    def __init__(self, cnfg: Type[BaseConfig]) -> None:
-        super().__init__(cnfg)
-
     async def __aenter__(self) -> "DataFlowSource":
         self.source = await self.config.source.__aenter__()
         self.orchestrator = await self.config.orchestrator.__aenter__()
