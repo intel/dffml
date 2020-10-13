@@ -40,6 +40,12 @@ class MemorySource(BaseSource):
     CONFIG = MemorySourceConfig
     CONTEXT = MemorySourceContext
 
+    def __init__(self, config: MemorySourceConfig) -> None:
+        super().__init__(config)
+        self.mem: Dict[str, Record] = {}
+        if isinstance(self.config, MemorySourceConfig):
+            self.mem = {record.key: record for record in self.config.records}
+
     def __repr__(self):
         if not isinstance(self.config, MemorySourceConfig):
             return super().__repr__()
@@ -69,9 +75,3 @@ class MemorySource(BaseSource):
                     len(self.mem),
                 )
             )
-
-    def __init__(self, config: MemorySourceConfig) -> None:
-        super().__init__(config)
-        self.mem: Dict[str, Record] = {}
-        if isinstance(self.config, MemorySourceConfig):
-            self.mem = {record.key: record for record in self.config.records}
