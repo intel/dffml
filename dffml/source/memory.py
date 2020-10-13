@@ -47,31 +47,31 @@ class MemorySource(BaseSource):
             self.mem = {record.key: record for record in self.config.records}
 
     def __repr__(self):
-        if not isinstance(self.config, MemorySourceConfig):
-            return super().__repr__()
-        if not self.config.display:
-            return "%s(%d records)" % (
-                self.__class__.__qualname__,
-                len(self.mem),
-            )
-        elif self.config.display == -1:
-            return "%s(records=%r)" % (
-                self.__class__.__qualname__,
-                self.mem.values(),
-            )
-        elif len(self.mem) > self.config.display:
-            first_n = [
-                record
-                for _, record in zip(
-                    range(0, self.config.display), self.mem.values()
-                )
-            ]
-            return (
-                "%s(records=%r ... (only displaying %d records, %d total) ... )"
-                % (
+        if isinstance(self.config, MemorySourceConfig):
+            if not self.config.display:
+                return "%s(%d records)" % (
                     self.__class__.__qualname__,
-                    first_n,
-                    self.config.display,
                     len(self.mem),
                 )
-            )
+            elif self.config.display == -1:
+                return "%s(records=%r)" % (
+                    self.__class__.__qualname__,
+                    self.mem.values(),
+                )
+            elif len(self.mem) > self.config.display:
+                first_n = [
+                    record
+                    for _, record in zip(
+                        range(0, self.config.display), self.mem.values()
+                    )
+                ]
+                return (
+                    "%s(records=%r ... (only displaying %d records, %d total) ... )"
+                    % (
+                        self.__class__.__qualname__,
+                        first_n,
+                        self.config.display,
+                        len(self.mem),
+                    )
+                )
+        return super().__repr__()
