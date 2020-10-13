@@ -54,7 +54,8 @@ class TestOperations(AsyncTestCase):
                     restart_running_containers.op.outputs["containers"].name
                 ],
                 definition=GetSingle.op.inputs["spec"],
-            )
+            ),
+            Input(value=True, definition=clone_git_repo.op.conditions[0],),
         )
 
         test_data = {
