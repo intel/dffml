@@ -10,6 +10,7 @@ from dffml.source.source import Sources
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml.feature import Feature, Features
 from dffml.util.asynctestcase import AsyncTestCase
+from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml_model_vowpalWabbit.vw_base import VWModel, VWConfig
 
 
@@ -72,6 +73,7 @@ class TestVWModel(AsyncTestCase):
                 ],
             )
         )
+        cls.scorer = MeanSquaredErrorAccuracy()
 
     @classmethod
     def tearDownClass(cls):
@@ -83,9 +85,9 @@ class TestVWModel(AsyncTestCase):
                 await mctx.train(sctx)
 
     async def test_01_accuracy(self):
-        async with self.sources as sources, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                res = await mctx.accuracy(sctx)
+        async with self.sources as sources, self.model as model, self.scorer as scorer:
+            async with sources() as sctx, model() as mctx, scorer() as actx:
+                res = await mctx.accuracy(sctx, actx)
                 self.assertTrue(isinstance(res, float))
 
     async def test_02_predict(self):
