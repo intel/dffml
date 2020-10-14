@@ -72,6 +72,8 @@ class TestVWModel(AsyncTestCase):
             "-model-use_binary_label",
             "-model-location",
             model_dir,
+            "-scorer",
+            "mse",
             "-sources",
             "test_data=csv",
             "-source-filename",
