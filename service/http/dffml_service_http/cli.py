@@ -250,6 +250,10 @@ class ServerConfig(TLSCMDConfig, MultiCommCMDConfig):
         action=ParseRedirectsAction,
         default_factory=lambda: [],
     )
+    portfile: pathlib.Path = field(
+        "File to write bound port to when starting. Helpful when port 0 was requeseted to bind to any free port",
+        default=None,
+    )
 
 
 class Server(TLSCMD, MultiCommCMD, Routes):
@@ -306,6 +310,9 @@ class Server(TLSCMD, MultiCommCMD, Routes):
             self.mc_atomic = False
             await self.register_directory(self.mc_config)
             self.mc_atomic = atomic
+        # Write out port to file
+        if self.portfile is not None:
+            pathlib.Path(self.portfile).write_text(str(self.port))
         try:
             # If we are testing then RUN_YIELD will be an asyncio.Event
             if self.RUN_YIELD_START is not False:
