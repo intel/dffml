@@ -251,7 +251,7 @@ maintenance, we can then feed that data into a machine learning model.
      This example is centered around machine learning. We'll be using DataFlows
      to collect a dataset for training, testing, and prediction. For a deeper
      understanding of Operations and DataFlows, see the
-     :doc:`/tutorials/operations`.
+     :doc:`/examples/shouldi`.
 
 The operations we're going to use are a part of ``dffml-feature-git``, which is
 a separate Python package from DFFML which we can install via ``pip``. We'll
