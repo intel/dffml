@@ -258,6 +258,12 @@ class CMD(object):
         Runs cli commands in asyncio loop and outputs in appropriate format
         """
         if loop is None:
+            # In order to use asyncio.subprocess_create_exec from event loops in
+            # non-main threads we have to call asyncio.get_child_watcher(). This
+            # is only for Python 3.7
+            if sys.version_info.major == 3 and sys.version_info.minor == 7:
+                asyncio.get_child_watcher()
+            # Create a new event loop
             loop = asyncio.get_event_loop()
             # In Python 3.8 ThreadedChildWatcher becomes the default which
             # should work fine for us. However, in Python 3.7 SafeChildWatcher
