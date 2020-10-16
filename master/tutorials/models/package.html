@@ -231,11 +231,11 @@ means it finds the best fit line for a dataset. If you’ve done the
 <strong>myslr.py</strong> will be present in <strong>dffml_model_myslr/myslr.py</strong> (not your
 modifications though if you made any).</p>
 <p>You may know the best fit line as <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">m</span> <span class="pre">*</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">b</span></code></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">service</span> <span class="n">dev</span> <span class="n">create</span> <span class="n">model</span> <span class="n">dffml</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">myslr</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dffml service dev create model dffml-model-myslr
 </pre></div>
 </div>
 <p>Then enter the directory of the package we just created</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">dffml</span><span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">myslr</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd dffml-model-myslr
 </pre></div>
 </div>
 </div>
@@ -256,7 +256,7 @@ which means anytime Python import’s our package, it’s going to use the versi
 that we’re working on here. If you don’t pass <code class="docutils literal notranslate"><span class="pre">-e</span></code> then anytime you make
 changes in this directory, they won’t take effect until you reinstall the
 package.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install -e .
 </pre></div>
 </div>
 </div>
@@ -399,23 +399,20 @@ value is within 10% of what it should be.</p>
 <div class="section" id="run-the-tests">
 <h3>Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h3>
 <p>We can run the tests using the <code class="docutils literal notranslate"><span class="pre">unittest</span></code> module</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">unittest</span> <span class="n">discover</span> <span class="o">-</span><span class="n">v</span>
-</pre></div>
-</div>
-<p>The output will look something ike this</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">test_00_train</span> <span class="p">(</span><span class="n">tests</span><span class="o">.</span><span class="n">test_model</span><span class="o">.</span><span class="n">TestMySLRModel</span><span class="p">)</span> <span class="o">...</span> <span class="n">ok</span>
-<span class="n">test_01_accuracy</span> <span class="p">(</span><span class="n">tests</span><span class="o">.</span><span class="n">test_model</span><span class="o">.</span><span class="n">TestMySLRModel</span><span class="p">)</span> <span class="o">...</span> <span class="n">ok</span>
-<span class="n">test_02_predict</span> <span class="p">(</span><span class="n">tests</span><span class="o">.</span><span class="n">test_model</span><span class="o">.</span><span class="n">TestMySLRModel</span><span class="p">)</span> <span class="o">...</span> <span class="n">ok</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python3 -m unittest discover -v
+test_00_train (tests.test_model.TestMySLRModel) ... ok
+test_01_accuracy (tests.test_model.TestMySLRModel) ... ok
+test_02_predict (tests.test_model.TestMySLRModel) ... ok
 
-<span class="o">----------------------------------------------------------------------</span>
-<span class="n">Ran</span> <span class="mi">3</span> <span class="n">tests</span> <span class="ow">in</span> <span class="mf">0.003</span><span class="n">s</span>
+----------------------------------------------------------------------
+Ran 3 tests in 0.003s
 
-<span class="n">OK</span>
+OK
 </pre></div>
 </div>
 <p>If you want to see the output of the call to <code class="docutils literal notranslate"><span class="pre">self.logger.debug</span></code>, just set the
 <code class="docutils literal notranslate"><span class="pre">LOGGING</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">debug</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">LOGGING</span><span class="o">=</span><span class="n">debug</span> <span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">unittest</span> <span class="n">discover</span> <span class="o">-</span><span class="n">v</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ LOGGING=debug python3 -m unittest discover -v
 </pre></div>
 </div>
 </div>
@@ -439,22 +436,32 @@ path on the right side.</p>
 </pre></div>
 </div>
 <p>And remember that any time we modify the <strong>setup.py</strong>, we have to re-install.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install -e .
 </pre></div>
 </div>
 </div>
 <div class="section" id="command-line-usage">
 <h2>Command Line Usage<a class="headerlink" href="#command-line-usage" title="Permalink to this headline">¶</a></h2>
+<p>Let’s add some training data to a CSV file.</p>
+<p><strong>train.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Years</span><span class="p">,</span><span class="n">Salary</span>
+<span class="mi">1</span><span class="p">,</span><span class="mi">40</span>
+<span class="mi">2</span><span class="p">,</span><span class="mi">50</span>
+<span class="mi">3</span><span class="p">,</span><span class="mi">60</span>
+<span class="mi">4</span><span class="p">,</span><span class="mi">70</span>
+<span class="mi">5</span><span class="p">,</span><span class="mi">80</span>
+</pre></div>
+</div>
 <p>Since we’ve registered our model as a <code class="docutils literal notranslate"><span class="pre">dffml.model</span></code> plugin, we can now
 reference it by it’s short name.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">myslr</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">feature</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">modeldir</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dffml train \
+    -log debug \
+    -model myslr \
+    -model-feature Years:int:1 \
+    -model-predict Salary:float:1 \
+    -model-directory modeldir \
+    -sources f=csv \
+    -source-filename train.csv
 </pre></div>
 </div>
 </div>

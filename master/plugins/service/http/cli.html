@@ -115,6 +115,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#sources">Sources</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#static-content">Static Content</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#redirects">Redirects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#binding-to-a-random-port">Binding to a random port</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="dataflow.html">DataFlow</a></li>
@@ -286,6 +287,17 @@ this using the <code class="docutils literal notranslate"><span class="pre">-red
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">redirect</span> \
     <span class="n">GET</span> <span class="o">/</span> <span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span> \
     <span class="n">POST</span> <span class="o">/</span><span class="n">signup</span> <span class="o">/</span><span class="n">mysignup</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="binding-to-a-random-port">
+<h2>Binding to a random port<a class="headerlink" href="#binding-to-a-random-port" title="Permalink to this headline">¶</a></h2>
+<p>When writing tests you might often find yourself wanting the server to bind to
+any free port.</p>
+<p>Passing <code class="docutils literal notranslate"><span class="pre">0</span></code> for the port will have the HTTP service bind to any free port.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">-portfile</span></code> flag is given the HTTP service will write the port number
+that was randomly chosen to the specified file as a string.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="n">port</span> <span class="mi">0</span> <span class="o">-</span><span class="n">portfile</span> <span class="n">portfile</span><span class="o">.</span><span class="n">int</span>
 </pre></div>
 </div>
 </div>

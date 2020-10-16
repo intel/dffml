@@ -213,7 +213,7 @@
             
   <div class="section" id="dataflow-http-deployment">
 <h1>DataFlow HTTP Deployment<a class="headerlink" href="#dataflow-http-deployment" title="Permalink to this headline">¶</a></h1>
-<p>In the <span class="xref std std-doc">/tutorials/operations</span> we created a command line meta static
+<p>In the <a class="reference internal" href="shouldi.html"><span class="doc">Meta Static Analysis</span></a> we created a command line meta static
 analysis tool, <code class="docutils literal notranslate"><span class="pre">shouldi</span></code>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> shouldi install dffml insecure-package
 <span class="go">dffml is okay to install</span>
@@ -222,7 +222,7 @@ analysis tool, <code class="docutils literal notranslate"><span class="pre">shou
 <span class="go">    run_bandit.outputs.result: {&#39;CONFIDENCE.HIGH&#39;: 0.0, &#39;CONFIDENCE.LOW&#39;: 0.0, &#39;CONFIDENCE.MEDIUM&#39;: 0.0, &#39;CONFIDENCE.UNDEFINED&#39;: 0.0, &#39;SEVERITY.HIGH&#39;: 0.0, &#39;SEVERITY.LOW&#39;: 0.0, &#39;SEVERITY.MEDIUM&#39;: 0.0, &#39;SEVERITY.UNDEFINED&#39;: 0.0, &#39;loc&#39;: 100, &#39;nosec&#39;: 0, &#39;CONFIDENCE.HIGH_AND_SEVERITY.LOW&#39;: 0, &#39;CONFIDENCE.HIGH_AND_SEVERITY.MEDIUM&#39;: 0, &#39;CONFIDENCE.HIGH_AND_SEVERITY.HIGH&#39;: 0}</span>
 </pre></div>
 </div>
-<p>In the <a class="reference internal" href="shouldi.html#tutorials-operations-registering-opreations"><span class="std std-ref">Registering Operations</span></a> section of the
+<p>In the <a class="reference internal" href="shouldi.html#examples-shouldi-registering-opreations"><span class="std std-ref">Registering Operations</span></a> section of the
 operations tutorial, we registered our operations with Python’s <code class="docutils literal notranslate"><span class="pre">entrypoint</span></code>
 system. This allows other Python packages and DFFML plugins to access them
 without the need to hardcode in <code class="docutils literal notranslate"><span class="pre">import</span></code> statements.</p>
@@ -263,15 +263,15 @@ to look at JSON.</p>
 </pre></div>
 </div>
 <p>We’ll be working from the top level directory of the <code class="docutils literal notranslate"><span class="pre">shouldi</span></code> package we
-created in the <span class="xref std std-doc">/tutorials/operations</span>.</p>
+created in the <a class="reference internal" href="shouldi.html"><span class="doc">Meta Static Analysis</span></a>.</p>
 <p>The source for that package is also available under the <code class="docutils literal notranslate"><span class="pre">examples/shouldi</span></code>
 directory of the DFFML source code.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> examples/shouldi
 </pre></div>
 </div>
 <p>Config files are named after the dataflow they are associated with. In the
-<a class="reference internal" href="shouldi.html#tutorials-operations-visualizing-the-dataflow"><span class="std std-ref">Visualizing the DataFlow</span></a> section of the
-<span class="xref std std-doc">/tutorials/operations</span>, we serialized the <code class="docutils literal notranslate"><span class="pre">shouldi</span></code> dataflow to the
+<a class="reference internal" href="shouldi.html#examples-shouldi-visualizing-the-dataflow"><span class="std std-ref">Visualizing the DataFlow</span></a> section of the
+<a class="reference internal" href="shouldi.html"><span class="doc">Meta Static Analysis</span></a>, we serialized the <code class="docutils literal notranslate"><span class="pre">shouldi</span></code> dataflow to the
 <code class="docutils literal notranslate"><span class="pre">shouldi/deploy/df</span></code> directory.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">df</span></code> directory is contains the main dataflows to be deployed.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> tree shouldi/deploy/
