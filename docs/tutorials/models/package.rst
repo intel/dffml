@@ -1,7 +1,7 @@
 .. _model_tutorial_package:
 
-Packaging
-=========
+Packaging a Model
+=================
 
 In the pervious tutorial we created a DFFML style model, which we could use from
 the command line, HTTP service, etc. We're now going to take that model and
