@@ -1,4 +1,4 @@
-.. _model_tutorial_slr:
+.. _model_tutorial_iris:
 
 Using Models
 ============
