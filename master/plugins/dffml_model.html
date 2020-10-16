@@ -408,10 +408,12 @@ look for a different saved model.</p>
 <p>Implemented using Tensorflow’s DNNClassifier.</p>
 <p>First we create the training and testing datasets</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">download</span><span class="o">.</span><span class="n">tensorflow</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">iris_training</span><span class="o">.</span><span class="n">csv</span>
+<span class="n">echo</span> <span class="s1">&#39;376c8ea3b7f85caff195b4abe62f34e8f4e7aece8bd087bbd746518a9d1fd60ae3b4274479f88ab0aa5c839460d535ef iris_training.csv&#39;</span> <span class="o">|</span> <span class="n">sha384sum</span> <span class="o">-</span><span class="n">c</span> <span class="o">-</span>
 <span class="n">sed</span> <span class="o">-</span><span class="n">i</span> <span class="s1">&#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g&#39;</span> <span class="o">*.</span><span class="n">csv</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">download</span><span class="o">.</span><span class="n">tensorflow</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">iris_test</span><span class="o">.</span><span class="n">csv</span>
+<span class="n">echo</span> <span class="s1">&#39;8c2cda42ce5ce6f977d17d668b1c98a45bfe320175f33e97293c62ab543b3439eab934d8e11b1208de1e4a9eb1957714 iris_test.csv&#39;</span> <span class="o">|</span> <span class="n">sha384sum</span> <span class="o">-</span><span class="n">c</span> <span class="o">-</span>
 <span class="n">sed</span> <span class="o">-</span><span class="n">i</span> <span class="s1">&#39;s/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g&#39;</span> <span class="o">*.</span><span class="n">csv</span>
 </pre></div>
 </div>

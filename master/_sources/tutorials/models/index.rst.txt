@@ -12,13 +12,14 @@ DFFML is not like PyTorch or TensorFlow. It's higher level than those. However,
 that doesn't mean it *has* to be higher level. You can use the lower level APIs
 of any library, or no library if you wanted.
 
-These tutorials will show you have to implement a machine learning algorithm
-or wrap an existing libraries implementation, and package it so others can use
-it easily.
+These tutorials will show you two use existing DFFML models, implement your own
+machine learning algorithm or wrap an existing libraries implementation, and
+package it so others can use it easily.
 
 .. toctree::
     :maxdepth: 2
     :caption: Contents:
 
+    iris
     slr
     package
