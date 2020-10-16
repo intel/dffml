@@ -1,7 +1,7 @@
 .. _model_tutorial_iris:
 
-Using Models
-============
+Use a Model
+===========
 
 For this tutorial we'll be using :doc:`/plugins/dffml_model` that exist within
 DFFML.

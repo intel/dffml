@@ -1,7 +1,7 @@
 .. _model_tutorial_slr:
 
-Simple Model
-============
+Writing a Model
+===============
 
 For this tutorial we'll be implementing our own machine learning algorithm from
 scratch, which means that we're not using a machine learning focused library to
