@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Packaging &mdash; DFFML 0.3.7 documentation</title>
+  <title>Packaging a Model &mdash; DFFML 0.3.7 documentation</title>
   
 
   
@@ -43,7 +43,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Sources" href="../sources/index.html" />
-    <link rel="prev" title="Simple Model" href="slr.html" /> 
+    <link rel="prev" title="Writing a Model" href="slr.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -103,9 +103,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../quickstart/model.html">Quickstart</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Models</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="iris.html">Using Models</a></li>
-<li class="toctree-l3"><a class="reference internal" href="slr.html">Simple Model</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Packaging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="iris.html">Use a Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="slr.html">Writing a Model</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Packaging a Model</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#create-the-package">Create the Package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#install-the-package">Install the Package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#testing">Testing</a></li>
@@ -191,7 +191,7 @@
         
           <li><a href="index.html">Models</a> &raquo;</li>
         
-      <li>Packaging</li>
+      <li>Packaging a Model</li>
     
     
 
@@ -216,8 +216,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="packaging">
-<span id="model-tutorial-package"></span><h1>Packaging<a class="headerlink" href="#packaging" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="packaging-a-model">
+<span id="model-tutorial-package"></span><h1>Packaging a Model<a class="headerlink" href="#packaging-a-model" title="Permalink to this headline">¶</a></h1>
 <p>In the pervious tutorial we created a DFFML style model, which we could use from
 the command line, HTTP service, etc. We’re now going to take that model and
 package it so that it can be published to PyPi for others to download via
@@ -228,7 +228,7 @@ package it so that it can be published to PyPi for others to download via
 to create it for you.</p>
 <p>The helper creates a model which does Simple Linear Regression (SLR). Which
 means it finds the best fit line for a dataset. If you’ve done the
-<a class="reference internal" href="slr.html#model-tutorial-slr"><span class="std std-ref">Simple Model</span></a> tutorial then the same code from that tutorial in
+<a class="reference internal" href="slr.html#model-tutorial-slr"><span class="std std-ref">Writing a Model</span></a> tutorial then the same code from that tutorial in
 <strong>myslr.py</strong> will be present in <strong>dffml_model_myslr/myslr.py</strong> (not your
 modifications though if you made any).</p>
 <p>You may know the best fit line as <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">m</span> <span class="pre">*</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">b</span></code></p>
@@ -420,7 +420,7 @@ OK
 </div>
 <div class="section" id="entrypoint-registration">
 <h2>Entrypoint Registration<a class="headerlink" href="#entrypoint-registration" title="Permalink to this headline">¶</a></h2>
-<p>In the <a class="reference internal" href="slr.html#model-tutorial-slr"><span class="std std-ref">Simple Model</span></a> tutorial we refrenced the new model on the
+<p>In the <a class="reference internal" href="slr.html#model-tutorial-slr"><span class="std std-ref">Writing a Model</span></a> tutorial we refrenced the new model on the
 command line via it’s entrypoint style path. This is in the format of
 <code class="docutils literal notranslate"><span class="pre">file:ClassWithinFile</span></code>, so for that tutorial it was <code class="docutils literal notranslate"><span class="pre">myslr:MySLRModel</span></code>.</p>
 <p>That requires that the <code class="docutils literal notranslate"><span class="pre">file</span></code> be in a directory in current working directory,
@@ -493,7 +493,7 @@ within the DFFML source tree, and submit a pull request.</p>
         <a href="../sources/index.html" class="btn btn-neutral float-right" title="Sources" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="slr.html" class="btn btn-neutral float-left" title="Simple Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="slr.html" class="btn btn-neutral float-left" title="Writing a Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
