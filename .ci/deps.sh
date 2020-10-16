@@ -85,15 +85,18 @@ python -m pip install -U -e .[dev]
 # =========================== BEGIN TEST DEPENDENCIES ==========================
 #
 # Dependencies for specific plugins only used when running the tests for those
-# plugins. Not when generating docs or running main package integration tests
+# plugins. Used when running main package consoletests on the documentation. Not
+# when generating html docs.
 
 if [[ "x${PLUGIN}" == "xfeature/git" ]] || \
-   [[ "x${PLUGIN}" == "xoperations/deploy" ]]; then
+   [[ "x${PLUGIN}" == "xoperations/deploy" ]] || \
+   [[ "x${PLUGIN}" == "x." ]]; then
   curl -sSL https://github.com/XAMPPRocky/tokei/releases/download/v9.1.1/tokei-v9.1.1-x86_64-unknown-linux-gnu.tar.gz | tar xvz -C "$HOME/.local/bin/"
   sudo apt-get update && sudo apt-get install -y git subversion cloc openssl
 fi
 
-if [ "${PLUGIN}" == "source/mysql" ]; then
+if [[ "x${PLUGIN}" == "xsource/mysql" ]] || \
+   [[ "x${PLUGIN}" == "x." ]]; then
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   sudo apt-get update && sudo apt-get install -y docker-ce docker-ce-cli containerd.io
@@ -143,7 +146,9 @@ if ([[ "x${PLUGIN}" == "xmodel/daal4py" ]] || \
   set -e
 fi
 
-if [[ "x${PLUGIN}" == "xoperations/nlp" ]]; then
+if [[ "x${PLUGIN}" == "xoperations/nlp" ]] || \
+   [[ "x${PLUGIN}" == "x." ]] || \
+   [[ "x${PLUGIN}" == "xdocs" ]]; then
   # See comment in vowpalWabbit about conda exit codes
   set +e
   conda install -y -c conda-forge spacy

@@ -39,8 +39,8 @@ function run_plugin() {
 
   # Install plugin
   "${PYTHON}" -m pip install --use-feature=2020-resolver -U -e .
-  # Run the tests
-  "${PYTHON}" setup.py test
+  # Run the tests but not the long documentation consoletests
+  SKIP_CONSOLETEST=1 "${PYTHON}" setup.py test
 
   if [ "x${PLUGIN}" != "x." ]; then
     # Run examples if they exist and we aren't at the root
@@ -83,8 +83,7 @@ function run_plugin() {
 
     # Fail if any tests were skipped or errored
     skipped=$(grep -E '(skipped=.*)' "${check_skips}" | wc -l)
-    # See issue https://github.com/intel/dffml/issues/706
-    if [ "$skipped" -ne 1 ]; then
+    if [ "$skipped" -ne 0 ]; then
       echo "Tests were skipped" >&2
       exit 1
     fi
@@ -164,20 +163,6 @@ function run_docs() {
   TEMP_DIRS+=("${master_docs}")
   rm -rf pages
   ./scripts/docs.sh
-
-   # Log failed tests to file
-   consoletest_failures="$(mktemp)"
-   TEMP_DIRS+=("${consoletest_failures}")
-
-   # Tutorial tests
-   ./scripts/consoletest.sh 2>&1 | tee "${consoletest_failures}"
-
-   # Fail if any tests errored
-   failed=$(grep 'failures in tests' "${consoletest_failures}" | awk '{print $1}')
-   if [ "x${failed}" != "x0" ]; then
-     echo "${failed} tests failed" >&2
-     exit 1
-   fi
 
   mv pages "${master_docs}/html"
 
