@@ -118,6 +118,22 @@ class TestServer(AsyncTestCase):
                     )
                 )
 
+    async def test_portfile(self):
+        with tempfile.TemporaryDirectory() as tempdir:
+            portfile_path = pathlib.Path(tempdir, "portfile.int")
+            async with ServerRunner.patch(HTTPService.server) as tserver:
+                cli = await tserver.start(
+                    HTTPService.server.cli(
+                        "-insecure",
+                        "-port",
+                        "0",
+                        "-portfile",
+                        str(portfile_path),
+                    )
+                )
+                self.assertTrue(portfile_path.is_file())
+                self.assertEqual(cli.port, int(portfile_path.read_text()))
+
     async def test_mc_config(self):
         with tempfile.TemporaryDirectory() as tempdir:
             # URLs for endpoints
