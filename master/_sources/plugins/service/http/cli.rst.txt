@@ -94,3 +94,18 @@ Redirect ``/`` to ``/index.html`` for GET requests and ``/signup`` to
         -redirect \
             GET / /index.html \
             POST /signup /mysignup
+
+Binding to a random port
+------------------------
+
+When writing tests you might often find yourself wanting the server to bind to
+any free port.
+
+Passing ``0`` for the port will have the HTTP service bind to any free port.
+
+If the ``-portfile`` flag is given the HTTP service will write the port number
+that was randomly chosen to the specified file as a string.
+
+.. code-block::
+
+        -port 0 -portfile portfile.int

@@ -453,27 +453,24 @@ confidence in our prediction.</p>
 <code class="docutils literal notranslate"><span class="pre">dffml.noasync</span></code> which contains versions of <code class="docutils literal notranslate"><span class="pre">train</span></code>, <code class="docutils literal notranslate"><span class="pre">accuracy</span></code>, and
 <code class="docutils literal notranslate"><span class="pre">predict</span></code> which we don’t have to be in an <code class="docutils literal notranslate"><span class="pre">async</span></code> function to call.</p>
 <p>Let’s first create our training, test, and prediction data CSV files.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
-<span class="n">Years</span><span class="p">,</span><span class="n">Salary</span>
+<p><strong>train.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Years</span><span class="p">,</span><span class="n">Salary</span>
 <span class="mi">1</span><span class="p">,</span><span class="mi">40</span>
 <span class="mi">2</span><span class="p">,</span><span class="mi">50</span>
 <span class="mi">3</span><span class="p">,</span><span class="mi">60</span>
 <span class="mi">4</span><span class="p">,</span><span class="mi">70</span>
 <span class="mi">5</span><span class="p">,</span><span class="mi">80</span>
-<span class="n">EOF</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
-<span class="n">Years</span><span class="p">,</span><span class="n">Salary</span>
+<p><strong>test.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Years</span><span class="p">,</span><span class="n">Salary</span>
 <span class="mi">6</span><span class="p">,</span><span class="mi">90</span>
 <span class="mi">7</span><span class="p">,</span><span class="mi">100</span>
-<span class="n">EOF</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">predict</span><span class="o">.</span><span class="n">csv</span> <span class="o">&lt;&lt;</span> <span class="n">EOF</span>
-<span class="n">Years</span>
+<p><strong>predict.csv</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Years</span>
 <span class="mi">8</span>
-<span class="n">EOF</span>
 </pre></div>
 </div>
 <p>Then we can write our Python file, <strong>run.py</strong>.</p>
@@ -501,12 +498,9 @@ confidence in our prediction.</p>
 </pre></div>
 </div>
 <p>We run it as we would any other Python file</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 run.py
-</pre></div>
-</div>
-<p>The output should look like this</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Accuracy</span><span class="p">:</span> <span class="mf">1.0</span>
-<span class="p">{</span><span class="s1">&#39;Years&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;Salary&#39;</span><span class="p">:</span> <span class="mf">110.0</span><span class="p">}</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python3 run.py
+Accuracy: 1.0
+{&#39;Years&#39;: 8, &#39;Salary&#39;: 110.0}
 </pre></div>
 </div>
 </div>
@@ -516,57 +510,41 @@ confidence in our prediction.</p>
 style path. This is in the format of <code class="docutils literal notranslate"><span class="pre">file:ClassWithinFile</span></code>, so for this it’ll
 be <code class="docutils literal notranslate"><span class="pre">myslr:MySLRModel</span></code>.</p>
 <p>We do the same steps we did with Python, only using the command line interface.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">train</span> \
-  <span class="o">-</span><span class="n">log</span> <span class="n">debug</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">myslr</span><span class="p">:</span><span class="n">MySLRModel</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">feature</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">modeldir</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">train</span><span class="o">.</span><span class="n">csv</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dffml train \
+    -log debug \
+    -model myslr:MySLRModel \
+    -model-feature Years:int:1 \
+    -model-predict Salary:float:1 \
+    -model-directory modeldir \
+    -sources f=csv \
+    -source-filename train.csv
 </pre></div>
 </div>
 <p>There’s no output from the training command if everything went well</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">accuracy</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">myslr</span><span class="p">:</span><span class="n">MySLRModel</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">feature</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">modeldir</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">test</span><span class="o">.</span><span class="n">csv</span>
-</pre></div>
-</div>
-<p>The accuracy command outputs the percentage accuracy</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.0</span>
-</pre></div>
-</div>
-<p>Finally, let’s make predictions</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">predict</span> <span class="nb">all</span> \
-  <span class="o">-</span><span class="n">model</span> <span class="n">myslr</span><span class="p">:</span><span class="n">MySLRModel</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">feature</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">modeldir</span> \
-  <span class="o">-</span><span class="n">sources</span> <span class="n">f</span><span class="o">=</span><span class="n">csv</span> \
-  <span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="n">filename</span> <span class="n">predict</span><span class="o">.</span><span class="n">csv</span>
-</pre></div>
-</div>
-<p>The output of prediction should like similar to this</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
-    <span class="p">{</span>
-        <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{},</span>
-        <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">8</span>
-        <span class="p">},</span>
-        <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-05-24T22:48:11Z&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;Salary&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-                <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mf">110.0</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">]</span>
+<p>Now let’s make predictions</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dffml predict all \
+    -model myslr:MySLRModel \
+    -model-feature Years:int:1 \
+    -model-predict Salary:float:1 \
+    -model-directory modeldir \
+    -sources f=csv \
+    -source-filename predict.csv
+[
+    {
+        &quot;extra&quot;: {},
+        &quot;features&quot;: {
+            &quot;Years&quot;: 8
+        },
+        &quot;key&quot;: &quot;0&quot;,
+        &quot;last_updated&quot;: &quot;2020-05-24T22:48:11Z&quot;,
+        &quot;prediction&quot;: {
+            &quot;Salary&quot;: {
+                &quot;confidence&quot;: 1.0,
+                &quot;value&quot;: 110.0
+            }
+        }
+    }
+]
 </pre></div>
 </div>
 </div>
@@ -576,7 +554,7 @@ be <code class="docutils literal notranslate"><span class="pre">myslr:MySLRModel
 <p>First we need to install the HTTP service, which is the HTTP server which will
 serve our model. See the <a class="reference internal" href="../../plugins/service/http/index.html"><span class="doc">HTTP API</span></a> docs for more
 information on the HTTP service.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install -U dffml-service-http
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install -U dffml-service-http
 </pre></div>
 </div>
 <p>We start the HTTP service and tell it that we want to make our model accessable
@@ -587,41 +565,37 @@ via the HTTP <a class="reference internal" href="../../plugins/service/http/api.
 This example of running the HTTP API is insecure and is only used to help
 you get up and running.</p>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">service</span> <span class="n">http</span> <span class="n">server</span> <span class="o">-</span><span class="n">insecure</span> <span class="o">-</span><span class="n">cors</span> <span class="s1">&#39;*&#39;</span> <span class="o">-</span><span class="n">addr</span> <span class="mf">0.0</span><span class="o">.</span><span class="mf">0.0</span> <span class="o">-</span><span class="n">port</span> <span class="mi">8080</span> \
-  <span class="o">-</span><span class="n">models</span> <span class="n">mymodel</span><span class="o">=</span><span class="n">myslr</span><span class="p">:</span><span class="n">MySLRModel</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">feature</span> <span class="n">Years</span><span class="p">:</span><span class="nb">int</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">predict</span> <span class="n">Salary</span><span class="p">:</span><span class="nb">float</span><span class="p">:</span><span class="mi">1</span> \
-  <span class="o">-</span><span class="n">model</span><span class="o">-</span><span class="n">directory</span> <span class="n">modeldir</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dffml service http server -insecure -cors &#39;*&#39; -addr 0.0.0.0 -port 8080 \
+    -models mymodel=myslr:MySLRModel \
+    -model-feature Years:int:1 \
+    -model-predict Salary:float:1 \
+    -model-directory modeldir
 </pre></div>
 </div>
 <p>We can then ask the HTTP service to make predictions, or do training or accuracy
 assessment.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span><span class="n">model</span><span class="o">/</span><span class="n">mymodel</span><span class="o">/</span><span class="n">predict</span><span class="o">/</span><span class="mi">0</span> \
-  <span class="o">--</span><span class="n">header</span> <span class="s2">&quot;Content-Type: application/json&quot;</span> \
-  <span class="o">--</span><span class="n">data</span> <span class="s1">&#39;{&quot;0&quot;: {&quot;features&quot;: {&quot;Years&quot;: 8}}}&#39;</span> \
-  <span class="o">|</span> <span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">json</span><span class="o">.</span><span class="n">tool</span>
-</pre></div>
-</div>
-<p>You should see the following prediction</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="nt">&quot;iterkey&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-    <span class="nt">&quot;records&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;0&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;features&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;Years&quot;</span><span class="p">:</span> <span class="mi">8</span>
-            <span class="p">},</span>
-            <span class="nt">&quot;prediction&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="nt">&quot;Salary&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="nt">&quot;confidence&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-                    <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="mf">110.0</span>
-                <span class="p">}</span>
-            <span class="p">},</span>
-            <span class="nt">&quot;last_updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-04-14T20:07:11Z&quot;</span><span class="p">,</span>
-            <span class="nt">&quot;extra&quot;</span><span class="p">:</span> <span class="p">{}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ curl http://localhost:8080/model/mymodel/predict/0 -v \
+    --header &quot;Content-Type: application/json&quot; \
+    --data &#39;{&quot;0&quot;: {&quot;features&quot;: {&quot;Years&quot;: 8}}}&#39;
+{
+    &quot;iterkey&quot;: null,
+    &quot;records&quot;: {
+        &quot;0&quot;: {
+            &quot;key&quot;: &quot;0&quot;,
+            &quot;features&quot;: {
+                &quot;Years&quot;: 8
+            },
+            &quot;prediction&quot;: {
+                &quot;Salary&quot;: {
+                    &quot;confidence&quot;: 1.0,
+                    &quot;value&quot;: 110.0
+                }
+            },
+            &quot;last_updated&quot;: &quot;2020-04-14T20:07:11Z&quot;,
+            &quot;extra&quot;: {}
+        }
+    }
+}
 </pre></div>
 </div>
 </div>
