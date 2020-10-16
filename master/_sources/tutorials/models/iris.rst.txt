@@ -24,9 +24,27 @@ The ``sha384sum`` commands are do ensure we downloaded the correct data.
 .. consoletest::
 
     $ wget http://download.tensorflow.org/data/iris_training.csv
+    --2020-10-16 15:19:54--  http://download.tensorflow.org/data/iris_training.csv
+    200 OK
+    Length: 2194 (2.1K) [text/csv]
+    Saving to: ‘iris_training.csv’
+
+    iris_training.csv                                 100%[==========================================================================================================>]   2.14K  --.-KB/s    in 0s
+
+    2020-10-16 15:19:54 (111 MB/s) - ‘iris_training.csv’ saved [2194/2194]
     $ wget http://download.tensorflow.org/data/iris_test.csv
+    --2020-10-16 15:19:54--  http://download.tensorflow.org/data/iris_test.csv
+    200 OK
+    Length: 573 [text/csv]
+    Saving to: ‘iris_test.csv’
+
+    iris_test.csv                                     100%[==========================================================================================================>]    573   --.-KB/s    in 0s
+
+    2020-10-16 15:19:54 (71.4 MB/s) - ‘iris_test.csv’ saved [573/573]
     $ echo '376c8ea3b7f85caff195b4abe62f34e8f4e7aece8bd087bbd746518a9d1fd60ae3b4274479f88ab0aa5c839460d535ef iris_training.csv' | sha384sum -c -
+    iris_training.csv: OK
     $ echo '8c2cda42ce5ce6f977d17d668b1c98a45bfe320175f33e97293c62ab543b3439eab934d8e11b1208de1e4a9eb1957714 iris_test.csv' | sha384sum -c -
+    iris_test.csv: OK
     $ sed -i 's/.*setosa,versicolor,virginica/SepalLength,SepalWidth,PetalLength,PetalWidth,classification/g' iris_training.csv iris_test.csv
 
 Python Usage
@@ -52,12 +70,13 @@ Run it to train the model
 .. consoletest::
 
     $ python3 run.py
-    Accuracy: 1.0
-    {'Years': 8, 'Salary': 110.0}
+    Accuracy: 0.9666666388511658
+    {'PetalLength': 4.2, 'PetalWidth': 1.5, 'SepalLength': 5.9, 'SepalWidth': 3.0, 'classification': 1}
+    {'PetalLength': 5.4, 'PetalWidth': 2.1, 'SepalLength': 6.9, 'SepalWidth': 3.1, 'classification': 2}
 
 Command Line Usage
 ------------------
 
 Reference the
-:ref:`<TensorFlow Classifier <plugin_model_dffml_model_tensorflow_tfdnnc>` on
+:ref:`TensorFlow Classifier <plugin_model_dffml_model_tensorflow_tfdnnc>` on
 the Model plugins page for CLI usage examples.
