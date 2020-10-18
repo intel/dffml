@@ -1,5 +1,6 @@
 from dffml import CSVSource, Feature
 from dffml.noasync import train, accuracy, predict
+from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml_model_transformers.ner.ner_model import NERModel
 
 model = NERModel(
@@ -17,7 +18,8 @@ model = NERModel(
 train(model, "train.csv")
 
 # Assess accuracy (alternate way of specifying data source)
-print("Accuracy:", accuracy(model, CSVSource(filename="train.csv")))
+scorer = MeanSquaredErrorAccuracy()
+print("Accuracy:", accuracy(model, scorer, CSVSource(filename="train.csv")))
 
 # Make prediction
 for i, features, prediction in predict(
