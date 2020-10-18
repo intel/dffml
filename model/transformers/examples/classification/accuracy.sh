@@ -14,4 +14,5 @@ dffml accuracy \
   -model-save_steps 1 \
   -model-features \
     sentence:str:1 \
+  -scorer mse \
   -log debug
