@@ -4,6 +4,7 @@ from dffml.record import Record
 from dffml.source.source import Sources
 from dffml import train, accuracy, predict
 from dffml.util.asynctestcase import AsyncTestCase
+from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml_model_transformers.qa.qa_model import QAModel, QAModelConfig
 
@@ -70,6 +71,7 @@ class TestQAModel(AsyncTestCase):
                 no_cuda=True,
             )
         )
+        cls.scorer = MeanSquaredErrorAccuracy()
 
     @classmethod
     def tearDownClass(cls):
@@ -79,7 +81,7 @@ class TestQAModel(AsyncTestCase):
         await train(self.model, self.train_sources)
 
     async def test_01_accuracy(self):
-        res = await accuracy(self.model, self.train_sources)
+        res = await accuracy(self.model, self.train_sources, self.scorer)
         self.assertGreaterEqual(res, 0)
 
     async def test_02_predict(self):
