@@ -8,6 +8,7 @@ from dffml.source.source import Sources
 from dffml.util.asynctestcase import AsyncTestCase
 from dffml.feature import Feature
 from dffml.source.memory import MemorySource, MemorySourceConfig
+from dffml.accuracy import ClassificationAccuracy
 from dffml_model_transformers.ner.ner_model import NERModel, NERModelConfig
 
 from .defaults import CACHE_DIR
@@ -64,6 +65,7 @@ class TestNERModel(AsyncTestCase):
                 cache_dir=CACHE_DIR,
             )
         )
+        cls.scorer = ClassificationAccuracy()
 
     @classmethod
     def tearDownClass(cls):
@@ -75,9 +77,9 @@ class TestNERModel(AsyncTestCase):
                 await mctx.train(sctx)
 
     async def test_01_accuracy(self):
-        async with self.train_sources as sources, self.model as model:
-            async with sources() as sctx, model() as mctx:
-                res = await mctx.accuracy(sctx)
+        async with self.train_sources as sources, self.model as model, self.scorer as scorer:
+            async with sources() as sctx, model() as mctx, scorer() as actx:
+                res = await mctx.accuracy(sctx, actx)
                 self.assertTrue(res >= 0)
 
     async def test_02_predict(self):
