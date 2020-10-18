@@ -6,6 +6,7 @@ from dffml.source.source import Sources
 from dffml import train, accuracy, predict
 from dffml.feature import Features, Feature
 from dffml.util.asynctestcase import AsyncTestCase
+from dffml.accuracy import MeanSquaredErrorAccuracy
 from dffml.source.memory import MemorySource, MemorySourceConfig
 from dffml_model_transformers.classification.classification_model import (
     HFClassificationModel,
@@ -41,6 +42,7 @@ class TestHFClassificationModel(AsyncTestCase):
                 label_list=["0", "1"],
             )
         )
+        cls.scorer = MeanSquaredErrorAccuracy()
 
     @classmethod
     def tearDownClass(cls):
@@ -50,7 +52,7 @@ class TestHFClassificationModel(AsyncTestCase):
         await train(self.model, self.sources)
 
     async def test_01_accuracy(self):
-        res = await accuracy(self.model, self.sources)
+        res = await accuracy(self.model, self.sources, self.scorer)
         self.assertGreaterEqual(res, 0)
 
     async def test_02_predict(self):
