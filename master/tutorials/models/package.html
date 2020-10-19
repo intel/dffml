@@ -232,11 +232,11 @@ means it finds the best fit line for a dataset. If you’ve done the
 <strong>myslr.py</strong> will be present in <strong>dffml_model_myslr/myslr.py</strong> (not your
 modifications though if you made any).</p>
 <p>You may know the best fit line as <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">m</span> <span class="pre">*</span> <span class="pre">x</span> <span class="pre">+</span> <span class="pre">b</span></code></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dffml service dev create model dffml-model-myslr
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev create model dffml-model-myslr
 </pre></div>
 </div>
 <p>Then enter the directory of the package we just created</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd dffml-model-myslr
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nb">cd</span> dffml-model-myslr
 </pre></div>
 </div>
 </div>
@@ -400,20 +400,20 @@ value is within 10% of what it should be.</p>
 <div class="section" id="run-the-tests">
 <h3>Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h3>
 <p>We can run the tests using the <code class="docutils literal notranslate"><span class="pre">unittest</span></code> module</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python3 -m unittest discover -v
-test_00_train (tests.test_model.TestMySLRModel) ... ok
-test_01_accuracy (tests.test_model.TestMySLRModel) ... ok
-test_02_predict (tests.test_model.TestMySLRModel) ... ok
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m unittest discover -v
+<span class="go">test_00_train (tests.test_model.TestMySLRModel) ... ok</span>
+<span class="go">test_01_accuracy (tests.test_model.TestMySLRModel) ... ok</span>
+<span class="go">test_02_predict (tests.test_model.TestMySLRModel) ... ok</span>
 
-----------------------------------------------------------------------
-Ran 3 tests in 0.003s
+<span class="go">----------------------------------------------------------------------</span>
+<span class="go">Ran 3 tests in 0.003s</span>
 
-OK
+<span class="go">OK</span>
 </pre></div>
 </div>
 <p>If you want to see the output of the call to <code class="docutils literal notranslate"><span class="pre">self.logger.debug</span></code>, just set the
 <code class="docutils literal notranslate"><span class="pre">LOGGING</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">debug</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ LOGGING=debug python3 -m unittest discover -v
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> <span class="nv">LOGGING</span><span class="o">=</span>debug python3 -m unittest discover -v
 </pre></div>
 </div>
 </div>
@@ -437,7 +437,7 @@ path on the right side.</p>
 </pre></div>
 </div>
 <p>And remember that any time we modify the <strong>setup.py</strong>, we have to re-install.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> pip install -e .
 </pre></div>
 </div>
 </div>
@@ -455,13 +455,13 @@ path on the right side.</p>
 </div>
 <p>Since we’ve registered our model as a <code class="docutils literal notranslate"><span class="pre">dffml.model</span></code> plugin, we can now
 reference it by it’s short name.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ dffml train \
-    -log debug \
-    -model myslr \
-    -model-feature Years:int:1 \
-    -model-predict Salary:float:1 \
-    -model-directory modeldir \
-    -sources f=csv \
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml train <span class="se">\</span>
+    -log debug <span class="se">\</span>
+    -model myslr <span class="se">\</span>
+    -model-feature Years:int:1 <span class="se">\</span>
+    -model-predict Salary:float:1 <span class="se">\</span>
+    -model-directory modeldir <span class="se">\</span>
+    -sources <span class="nv">f</span><span class="o">=</span>csv <span class="se">\</span>
     -source-filename train.csv
 </pre></div>
 </div>
@@ -476,7 +476,7 @@ reference it by it’s short name.</p>
 Place the top level directory, <strong>dffml-model-myslr</strong>, into <strong>model/slr</strong>
 within the DFFML source tree, and submit a pull request.</p>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">sdist</span> <span class="o">&amp;&amp;</span> <span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">twine</span> <span class="n">upload</span> <span class="n">dist</span><span class="o">/*</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 setup.py sdist <span class="o">&amp;&amp;</span> python3 -m twine upload dist/*
 </pre></div>
 </div>
 </div>
