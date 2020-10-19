@@ -40,29 +40,33 @@ First create the webpage
 
 **index.html**
 
-.. consoletest-literalinclude:: /../examples/maintained/index.html
+.. literalinclude:: /../examples/maintained/index.html
+    :test:
     :language: html
 
 Then the JavaScript, which will interact with the CGI API.
 
 **main.js**
 
-.. consoletest-literalinclude:: /../examples/maintained/main.js
+.. literalinclude:: /../examples/maintained/main.js
+    :test:
     :language: javascript
 
 The style sheet which gives the page colors and styling
 
 **theme.css**
 
-.. consoletest-literalinclude:: /../examples/maintained/theme.css
+.. literalinclude:: /../examples/maintained/theme.css
+    :test:
     :language: css
 
 Now create the **cgi-bin** directory which is where our server side Python
 script will run.
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
-   $ mkdir cgi-bin
+    $ mkdir cgi-bin
 
 Then create the backend API script. This script connects to the database and
 provides two actions.
@@ -73,15 +77,17 @@ provides two actions.
 
 **cgi-bin/api.py**
 
-.. consoletest-literalinclude:: /../examples/maintained/cgi-bin/api.py
+.. literalinclude:: /../examples/maintained/cgi-bin/api.py
+    :test:
     :filepath: cgi-bin/api.py
 
 We have to make the cgi-bin directory and API file executable so that the CGI
 server can run it.
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
-   $ chmod 755 cgi-bin cgi-bin/api.py
+    $ chmod 755 cgi-bin cgi-bin/api.py
 
 Setup
 -----
@@ -94,28 +100,25 @@ Create a virtual environment where we'll install all our Python packages to.
 Make sure to update ``pip`` in case it's old, and install ``setuptools`` and
 ``wheel`` so that we can install the MySQL package.
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ python3 -m venv .venv
     $ . .venv/bin/activate
     $ pip install -U pip setuptools wheel
 
-Install DFFML.
-
-.. consoletest::
-
-    $ pip install -U dffml dffml-source-mysql
-
 Download the Python client libraries for MySQL.
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ pip install -U \
         https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python-8.0.21.tar.gz
 
 Start MariaDB (functionally very similar to MySQL which its a fork of).
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ docker run --rm -d --name maintained_db \
         -e MYSQL_RANDOM_ROOT_PASSWORD=yes \
@@ -128,7 +131,8 @@ Start MariaDB (functionally very similar to MySQL which its a fork of).
 Wait for the database to start. Run the following command until you see ``ready
 for connections`` twice in the output.
 
-.. consoletest::
+.. code-block:: console
+    :test:
     :poll-until: bool(stdout.count(b"ready for") == 2)
     :ignore-errors:
 
@@ -136,10 +140,19 @@ for connections`` twice in the output.
     2020-01-13 21:31:09 0 [Note] mysqld: ready for connections.
     2020-01-13 21:32:16 0 [Note] mysqld: ready for connections.
 
-Instead of having you go classify a bunch of repos manually, we're just going to
+Instead of having you go classify a bunch of repos manually, we're going to
 assign a bunch of repos a random maintenance status. This will of course produce
 a meaningless model. If you want a model that's accurate you should go classify
 repos for real.
+
+The randomly assigned maintenance status and URL for the repo will be stored in
+the database. We need to install the ``dffml-source-mysql`` plugin to use
+MariaDB/MySQL with DFFML.
+
+.. code-block:: console
+    :test:
+
+    $ pip install -U dffml-source-mysql
 
 To get our dummy data, we'll be using the GitHub v4 API to search for "todo".
 The search should return repos implementing a TODO app.
@@ -167,7 +180,8 @@ exactly. 0 means unmaintained, 1 means maintained.
 
 **github_search.py**
 
-.. consoletest-literalinclude:: /../examples/maintained/github_search.py
+.. literalinclude:: /../examples/maintained/github_search.py
+    :test:
 
 We'll use this function as a Source. In DFFML a source is somewhere a dataset is
 stored. In this case the source is dynamic, it's pulling from an API and
@@ -185,7 +199,8 @@ We'll be using the ``dffml merge`` command to take the search results from the
 GitHub API and putting them with their randomly assigned status into our
 database.
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ dffml merge github=op db=mysql \
         -source-github-opimp github_search:get_repos \
@@ -215,7 +230,8 @@ ready to start the CGI server. You'll want to do this in another terminal.
 The last argument is the port to serve on, change that number if you already
 have something running on that port.
 
-.. consoletest::
+.. code-block:: console
+    :test:
     :daemon:
 
     $ . .venv/bin/activate
@@ -224,7 +240,8 @@ have something running on that port.
 You can see all the records and their statuses that we imported into the
 database by calling the API.
 
-.. consoletest::
+.. code-block:: console
+    :test:
     :poll-until: bool(stdout.count(b"github.com") >= 1)
     :ignore-errors:
 
@@ -258,7 +275,8 @@ a separate Python package from DFFML which we can install via ``pip``. We'll
 also use the ``yaml`` configloader, since that creates more user friendly
 configs than ``json``.
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ pip install -U dffml-feature-git dffml-config-yaml
 
@@ -271,7 +289,8 @@ it first.
 
     .. group-tab:: Linux
 
-        .. consoletest::
+        .. code-block:: console
+            :test:
 
             $ curl -sSL 'https://github.com/XAMPPRocky/tokei/releases/download/v10.1.1/tokei-v10.1.1-x86_64-unknown-linux-gnu.tar.gz' \
                 | tar -xvz -C .venv/bin/
@@ -298,7 +317,8 @@ our dataset. The following command creates a ``DataFlow`` description of how
 all the operations within ``dffml-feature-git`` link together. The ``DataFlow``
 is stored in the YAML file **dataflow.yaml**.
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ dffml dataflow create \
         -configloader yaml \
@@ -385,7 +405,8 @@ Training our Model
 The model we'll be using is a part of ``dffml-model-tensorflow``, which is
 another separate Python package from DFFML which we can install via ``pip``.
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ pip install -U dffml-model-tensorflow
 
@@ -401,7 +422,8 @@ use the record's key as the repo URL (since that's what the key is).
 
 **train.sh**
 
-.. consoletest-literalinclude:: /../examples/maintained/train.sh
+.. literalinclude:: /../examples/maintained/train.sh
+    :test:
 
 Run **train.sh** to train the model
 
@@ -410,7 +432,8 @@ take 2 minutes, it may take more. All the git repos in the database will be
 downloaded, this will also take up space in ``/tmp``, they will be cleaned up
 automatically.
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ bash train.sh
 
@@ -424,12 +447,14 @@ We're going to put the prediction command in it's own file, since it's very long
 
 **predict.sh**
 
-.. consoletest-literalinclude:: /../examples/maintained/predict.sh
+.. literalinclude:: /../examples/maintained/predict.sh
+    :test:
 
 Run **predict.sh** to make a prediction using the model. We're asking the model
 to make a prediction on the DFFML repo.
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ bash predict.sh https://github.com/intel/dffml
     [
@@ -501,13 +526,15 @@ We modify the backend CGI Python API to have it call our **predict.sh** script.
 
 **cgi-bin/api.py**
 
-.. consoletest-literalinclude:: /../examples/maintained/cgi-bin/api-ml.py
+.. literalinclude:: /../examples/maintained/cgi-bin/api-ml.py
+    :test:
     :diff: /../examples/maintained/cgi-bin/api.py
     :filepath: cgi-bin/api.py
 
 Test the new prediction capabilities from the command line with ``curl``
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ curl -v 'http://127.0.0.1:8000/cgi-bin/api.py?action=predict&URL=https://github.com/intel/dffml' | \
         python -m json.tool
@@ -517,7 +544,8 @@ the Predict button is clicked.
 
 **ml.js**
 
-.. consoletest-literalinclude:: /../examples/maintained/ml.js
+.. literalinclude:: /../examples/maintained/ml.js
+    :test:
     :language: javascript
 
 We need to import the new script into the main page and add the HTML for the
@@ -525,7 +553,8 @@ predict button.
 
 **index.html**
 
-.. consoletest-literalinclude:: /../examples/maintained/ml.html
+.. literalinclude:: /../examples/maintained/ml.html
+    :test:
     :diff: /../examples/maintained/index.html
     :filepath: index.html
 
