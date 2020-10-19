@@ -17,7 +17,8 @@ First make sure you have the latest versions of ``pip``, ``setuptools``, and
 
     .. group-tab:: Linux and MacOS
 
-        .. consoletest::
+        .. code-block:: console
+            :test:
 
             $ python3 -m pip install -U pip setuptools wheel
 
@@ -39,7 +40,8 @@ package.
 
     .. group-tab:: Linux and MacOS
 
-        .. consoletest::
+        .. code-block:: console
+            :test:
 
             $ python3 -m pip install -U dffml
 
@@ -91,7 +93,8 @@ the master branch.
 
     .. group-tab:: Linux and MacOS
 
-        .. consoletest::
+        .. code-block:: console
+            :test:
 
             $ python3 -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml"
 
@@ -109,7 +112,8 @@ and replace ``-`` with ``/``.
 
     .. group-tab:: Linux and MacOS
 
-        .. consoletest::
+        .. code-block:: console
+            :test:
 
             $ python3 -m pip install -U "https://github.com/intel/dffml/archive/master.zip#egg=dffml" \
                 "https://github.com/intel/dffml/archive/master.zip#egg=dffml-feature-git&subdirectory=feature/git"

@@ -28,12 +28,14 @@ We're going to need a few modules from the standard library, let's import them.
 - ``typing`` is for Python's static type hinting. It lets use give hints to our
   editor or IDE so they can help us check our code before we run it.
 
-.. consoletest-literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+    :test:
     :lines: 1-3
 
 We'll also need a few things from DFFML.
 
-.. consoletest-literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+    :test:
     :lines: 5-15
 
 Math
@@ -45,7 +47,8 @@ So we're going to skip over their logic in this tutorial. You can write your own
 versions to find the best fit line for lists of X, and Y data if you want, or
 you can copy these.
 
-.. consoletest-literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+    :test:
     :lines: 18-50
 
 Config
@@ -59,7 +62,8 @@ Anything that a user might want to tweak about a models behavior should go in
 the ``Config`` class for the model. The naming convention is ``TheName`` +
 ``Model`` + ``Config``.
 
-.. consoletest-literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+    :test:
     :lines: 53-57
 
 Our model has three configurable properties.
@@ -90,7 +94,8 @@ model from the DFFML command line and other interfaces.
 
 - We must set the ``CONFIG`` attribute to the respective ``Config`` class.
 
-.. consoletest-literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+    :test:
     :lines: 60-63
 
 Train
@@ -105,7 +110,8 @@ Models should save their state to disk after training. Classes derived from
 ``SimpleModel`` can put anything they want saved into ``self.storage``, which
 is saved and loaded from a JSON file on disk.
 
-.. consoletest-literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+    :test:
     :lines: 65-79
 
 Accuracy
@@ -125,7 +131,8 @@ to mean that the model predicted the correct value for every record given to the
 accuracy method. Numbers approaching ``1.0`` should indicate that the model was
 closer to making the correct prediction for each record.
 
-.. consoletest-literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+    :test:
     :lines: 81-107
 
 Predict
@@ -139,7 +146,8 @@ We call :py:meth:`record.predicted <dffml.record.Record.predicted>`
 passing it the name of the feature we predicted, the predicted value, and the
 confidence in our prediction.
 
-.. consoletest-literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+.. literalinclude:: /../dffml/skel/model/REPLACE_IMPORT_PACKAGE_NAME/myslr.py
+    :test:
     :lines: 109-126
 
 Python Usage
@@ -153,7 +161,7 @@ Let's first create our training, test, and prediction data CSV files.
 
 **train.csv**
 
-.. consoletest-file::
+.. code-block::
     :filepath: train.csv
 
     Years,Salary
@@ -165,7 +173,7 @@ Let's first create our training, test, and prediction data CSV files.
 
 **test.csv**
 
-.. consoletest-file::
+.. code-block::
     :filepath: test.csv
 
     Years,Salary
@@ -174,7 +182,7 @@ Let's first create our training, test, and prediction data CSV files.
 
 **predict.csv**
 
-.. consoletest-file::
+.. code-block::
     :filepath: predict.csv
 
     Years
@@ -182,11 +190,13 @@ Let's first create our training, test, and prediction data CSV files.
 
 Then we can write our Python file, **run.py**.
 
-.. consoletest-literalinclude:: /../examples/tutorials/models/slr/run.py
+.. literalinclude:: /../examples/tutorials/models/slr/run.py
+    :test:
 
 We run it as we would any other Python file
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ python3 run.py
     Accuracy: 1.0
@@ -201,7 +211,8 @@ be ``myslr:MySLRModel``.
 
 We do the same steps we did with Python, only using the command line interface.
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ dffml train \
         -log debug \
@@ -216,7 +227,8 @@ There's no output from the training command if everything went well
 
 Now let's make predictions
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ dffml predict all \
         -model myslr:MySLRModel \
@@ -251,7 +263,8 @@ First we need to install the HTTP service, which is the HTTP server which will
 serve our model. See the :doc:`/plugins/service/http/index` docs for more
 information on the HTTP service.
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ pip install -U dffml-service-http
 
@@ -264,7 +277,8 @@ via the HTTP :ref:`plugin_service_http_api_model` API.
     This example of running the HTTP API is insecure and is only used to help
     you get up and running.
 
-.. consoletest::
+.. code-block:: console
+    :test:
     :daemon:
 
     $ dffml service http server -insecure -cors '*' -addr 0.0.0.0 -port 8080 \
@@ -276,10 +290,9 @@ via the HTTP :ref:`plugin_service_http_api_model` API.
 We can then ask the HTTP service to make predictions, or do training or accuracy
 assessment.
 
-.. consoletest::
+.. code-block:: console
+    :test:
     :replace: cmd[1] = cmd[1].replace("8080", str(ctx["HTTP_SERVER"]["8080"]))
-    :poll-until: bool(b"Salary" in stdout)
-    :ignore-errors:
 
     $ curl http://localhost:8080/model/mymodel/predict/0 -v \
         --header "Content-Type: application/json" \

@@ -9,7 +9,8 @@ DFFML.
 We're going to create a TensorFlow classification model, we'll need to install
 the ``dffml-model-tensorflow`` plugin.
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ python -m pip install dffml-model-tensorflow
 
@@ -21,7 +22,8 @@ and test files now.
 
 The ``sha384sum`` commands are do ensure we downloaded the correct data.
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ wget http://download.tensorflow.org/data/iris_training.csv
     --2020-10-16 15:19:54--  http://download.tensorflow.org/data/iris_training.csv
@@ -62,12 +64,14 @@ neither dataset.
 
 **run.py**
 
-.. consoletest-literalinclude:: /../model/tensorflow/examples/tfdnnc/tfdnnc.py
+.. literalinclude:: /../model/tensorflow/examples/tfdnnc/tfdnnc.py
+    :test:
     :filepath: run.py
 
 Run it to train the model
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ python3 run.py
     Accuracy: 0.9666666388511658
