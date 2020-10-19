@@ -244,7 +244,7 @@ def mktestcase(filepath: pathlib.Path, relative: pathlib.Path):
 
 if not "SKIP_CONSOLETEST" in os.environ:
     for filepath in DOCS_PATH.rglob("*.rst"):
-        if "consoletest" not in pathlib.Path(filepath).read_text():
+        if ":test:" not in pathlib.Path(filepath).read_text():
             continue
         relative = filepath.relative_to(DOCS_PATH).with_suffix("")
         name = "test_" + str(relative).replace(os.sep, "_")

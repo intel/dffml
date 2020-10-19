@@ -736,73 +736,78 @@ def call_replace(func: str, cmd: List[str], ctx: Dict[str, Any]) -> List[str]:
         )
 
 
-class ConsoletestLiteralIncludeDirective(LiteralInclude):
-    name = "consoletest-literalinclude"
+# Override the literalinclude directive's run method so we can pick up the flags
+# we've added
+def LiteralInclude_run(func):
+    @functools.wraps(func)
+    def wrapper(self) -> List[Node]:
+        retnodes = func(self)
 
-    def run(self) -> List[Node]:
-        retnodes = super().run()
-        retnodes[0]["consoletestnodetype"] = self.name
-        retnodes[0]["lines"] = self.options.get("lines", None)
-        retnodes[0]["filepath"] = self.options.get(
-            "filepath", os.path.basename(retnodes[0]["source"])
-        ).split("/")
+        if "test" in self.options:
+            retnodes[0]["consoletestnodetype"] = "consoletest-literalinclude"
+            retnodes[0]["lines"] = self.options.get("lines", None)
+            retnodes[0]["filepath"] = self.options.get(
+                "filepath", os.path.basename(retnodes[0]["source"])
+            ).split("/")
+
         return retnodes
 
+    return wrapper
 
-ConsoletestLiteralIncludeDirective.option_spec.update(
-    {"filepath": directives.unchanged_required}
+
+LiteralInclude.run = LiteralInclude_run(LiteralInclude.run)
+
+
+LiteralInclude.option_spec.update(
+    {"filepath": directives.unchanged_required, "test": directives.flag}
 )
 
 
-class ConsoletestFileDirective(CodeBlock):
-    name = "consoletest-file"
+# Override the code-block directive's run method so we can pick up the flags
+# we've added
+def CodeBlock_run(func):
+    @functools.wraps(func)
+    def wrapper(self) -> List[Node]:
+        retnodes = func(self)
 
-    def run(self) -> List[Node]:
-        retnodes = super().run()
-        retnodes[0]["consoletestnodetype"] = self.name
-        retnodes[0]["content"] = self.content
-        retnodes[0]["filepath"] = self.options["filepath"].split("/")
-        return retnodes
+        if "filepath" in self.options:
+            node = retnodes[0]
+            node["consoletestnodetype"] = "consoletest-file"
+            node["content"] = self.content
+            node["filepath"] = self.options["filepath"].split("/")
+        elif "test" in self.options:
+            node = retnodes[0]
+            node.setdefault("language", "console")
+            node["consoletestnodetype"] = "consoletest"
+            node["consoletest_commands"] = list(
+                map(build_command, parse_commands(self.content))
+            )
 
+            for command in node["consoletest_commands"]:
+                command.replace = self.options.get("replace", None)
+                command.poll_until = self.options.get("poll-until", None)
+                command.ignore_errors = bool("ignore-errors" in self.options)
 
-ConsoletestFileDirective.option_spec.update(
-    {"filepath": directives.unchanged_required}
-)
-
-
-class ConsoletestDirective(CodeBlock):
-    name = "consoletest"
-
-    def run(self) -> List[Node]:
-        retnodes = super().run()
-
-        node = retnodes[0]
-
-        node.setdefault("language", "console")
-        node["consoletestnodetype"] = self.name
-        node["consoletest_commands"] = list(
-            map(build_command, parse_commands(self.content))
-        )
-
-        for command in node["consoletest_commands"]:
-            command.replace = self.options.get("replace", None)
-            command.poll_until = self.options.get("poll-until", None)
-            command.ignore_errors = bool("ignore-errors" in self.options)
-
-        # Last command to be run is a daemon
-        daemon = bool("daemon" in self.options)
-        if daemon:
-            node["consoletest_commands"][-1].daemon = True
+            # Last command to be run is a daemon
+            daemon = bool("daemon" in self.options)
+            if daemon:
+                node["consoletest_commands"][-1].daemon = True
 
         return retnodes
 
+    return wrapper
 
-ConsoletestDirective.option_spec.update(
+
+CodeBlock.run = CodeBlock_run(CodeBlock.run)
+
+CodeBlock.option_spec.update(
     {
+        "filepath": directives.unchanged_required,
         "replace": directives.unchanged_required,
         "poll-until": directives.unchanged_required,
         "ignore-errors": directives.flag,
         "daemon": directives.flag,
+        "test": directives.flag,
     }
 )
 
@@ -1004,10 +1009,5 @@ class ConsoleTestBuilder(DocTestBuilder):
 
 
 def setup(app: "Sphinx") -> Dict[str, Any]:
-    app.add_directive("consoletest", ConsoletestDirective)
-    app.add_directive("consoletest-file", ConsoletestFileDirective)
-    app.add_directive(
-        "consoletest-literalinclude", ConsoletestLiteralIncludeDirective
-    )
     app.add_builder(ConsoleTestBuilder)
     return {"version": "0.0.1", "parallel_read_safe": True}

@@ -22,13 +22,15 @@ modifications though if you made any).
 
 You may know the best fit line as ``y = m * x + b``
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ dffml service dev create model dffml-model-myslr
 
 Then enter the directory of the package we just created
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ cd dffml-model-myslr
 
@@ -74,7 +76,7 @@ than :py:class:`unittest.TestCase`.
 
 **tests/test_model.py**
 
-.. consoletest-file:: python
+.. code-block:: python
     :filepath: tests/test_model.py
 
     import tempfile
@@ -91,7 +93,8 @@ we're just going to hard code in some data.
 
 **tests/test_model.py**
 
-.. consoletest-literalinclude:: /../dffml/skel/model/tests/test_model.py
+.. literalinclude:: /../dffml/skel/model/tests/test_model.py
+    :test:
     :filepath: tests/test_model.py
     :lines: 7-34
 
@@ -103,7 +106,8 @@ they're done.
 
 **tests/test_model.py**
 
-.. consoletest-literalinclude:: /../dffml/skel/model/tests/test_model.py
+.. literalinclude:: /../dffml/skel/model/tests/test_model.py
+    :test:
     :filepath: tests/test_model.py
     :lines: 37-52
 
@@ -124,7 +128,8 @@ for more information on how the ``*``-operator works.
 
 **tests/test_model.py**
 
-.. consoletest-literalinclude:: /../dffml/skel/model/tests/test_model.py
+.. literalinclude:: /../dffml/skel/model/tests/test_model.py
+    :test:
     :filepath: tests/test_model.py
     :lines: 54-56
 
@@ -139,7 +144,8 @@ acceptable range.
 
 **tests/test_model.py**
 
-.. consoletest-literalinclude:: /../dffml/skel/model/tests/test_model.py
+.. literalinclude:: /../dffml/skel/model/tests/test_model.py
+    :test:
     :filepath: tests/test_model.py
     :lines: 58-64
 
@@ -152,7 +158,8 @@ value is within 10% of what it should be.
 
 **tests/test_model.py**
 
-.. consoletest-literalinclude:: /../dffml/skel/model/tests/test_model.py
+.. literalinclude:: /../dffml/skel/model/tests/test_model.py
+    :test:
     :filepath: tests/test_model.py
     :lines: 66-78
 
@@ -161,7 +168,8 @@ Run the tests
 
 We can run the tests using the ``unittest`` module
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ python3 -m unittest discover -v
     test_00_train (tests.test_model.TestMySLRModel) ... ok
@@ -176,7 +184,8 @@ We can run the tests using the ``unittest`` module
 If you want to see the output of the call to ``self.logger.debug``, just set the
 ``LOGGING`` environment variable to ``debug``.
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ LOGGING=debug python3 -m unittest discover -v
 
@@ -203,7 +212,8 @@ path on the right side.
 
 And remember that any time we modify the **setup.py**, we have to re-install.
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ pip install -e .
 
@@ -214,7 +224,7 @@ Let's add some training data to a CSV file.
 
 **train.csv**
 
-.. consoletest-file::
+.. code-block::
     :filepath: train.csv
 
     Years,Salary
@@ -227,7 +237,8 @@ Let's add some training data to a CSV file.
 Since we've registered our model as a ``dffml.model`` plugin, we can now
 reference it by it's short name.
 
-.. consoletest::
+.. code-block:: console
+    :test:
 
     $ dffml train \
         -log debug \
@@ -250,6 +261,6 @@ You can now upload your package to PyPi, so that other's can install it using
    Place the top level directory, **dffml-model-myslr**, into **model/slr**
    within the DFFML source tree, and submit a pull request.
 
-.. code-block::
+.. code-block:: console
 
-    python3 setup.py sdist && python3 -m twine upload dist/*
+    $ python3 setup.py sdist && python3 -m twine upload dist/*
