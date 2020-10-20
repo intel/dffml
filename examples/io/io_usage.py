@@ -26,7 +26,9 @@ dataflow = DataFlow(
         "print_predictions": print_output,
     },
     configs={"predict_using_model": ModelPredictConfig(model=slr_model)},
-    flow={
+)
+dataflow.flow.update(
+    {
         "literal_eval_input": InputFlow(
             inputs={"str_to_eval": [{"get_user_input": "InputData"}]}
         ),
@@ -42,8 +44,9 @@ dataflow = DataFlow(
         "print_predictions": InputFlow(
             inputs={"data": [{"predict_using_model": "prediction"}]}
         ),
-    },
+    }
 )
+dataflow.update()
 dataflow.seed.append(
     Input(
         value="Years",
