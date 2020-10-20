@@ -233,8 +233,6 @@ you want to load and save data from.</p>
 to do it for you.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev create <span class="nb">source</span> dffml-source-ini
 <span class="gp">$</span> <span class="nb">cd</span> dffml-source-ini
-<span class="gp">$</span> ls
-<span class="go">dffml_source_ini  LICENSE  MANIFEST.in  pyproject.toml  README.md  setup_common.py  setup.py  tests</span>
 </pre></div>
 </div>
 <p>We will start writing our source in ./dffml_source_ini/misc.py</p>
@@ -422,7 +420,7 @@ the records we saved is the same record which gets loaded.</p>
 <div class="section" id="run-the-tests">
 <h2>Run the tests<a class="headerlink" href="#run-the-tests" title="Permalink to this headline">¶</a></h2>
 <p>To run the tests</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 setup.py <span class="nb">test</span> -s tests.test_source
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python setup.py <span class="nb">test</span>
 </pre></div>
 </div>
 <p>This will look into the file test_source.py and run all the tests.</p>
@@ -432,9 +430,17 @@ the records we saved is the same record which gets loaded.</p>
 <p><strong>setup.py</strong></p>
 <p>To register your source under dffml entrypoint you need to add the following
 to the setup.py file</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">common</span><span class="o">.</span><span class="n">KWARGS</span><span class="p">[</span><span class="s2">&quot;entry_points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;dffml.source&quot;</span><span class="p">:</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;myini = </span><span class="si">{</span><span class="n">common</span><span class="o">.</span><span class="n">IMPORT_NAME</span><span class="si">}</span><span class="s2">.misc:INISource&quot;</span><span class="p">]</span>
-<span class="p">}</span>
+<div class="highlight-udiff notranslate"><div class="highlight"><pre><span></span><span class="gd">--- ./setup.py</span>
+<span class="gi">+++ ./setup.py</span>
+<span class="gu">@@ -10,7 +10,7 @@</span>
+ spec.loader.exec_module(common)
+ 
+ common.KWARGS[&quot;entry_points&quot;] = {
+<span class="gd">-    &quot;dffml.source&quot;: [f&quot;misc = {common.IMPORT_NAME}.misc:MiscSource&quot;]</span>
+<span class="gi">+    &quot;dffml.source&quot;: [f&quot;myini = {common.IMPORT_NAME}.misc:INISource&quot;]</span>
+ }
+ 
+ setup(**common.KWARGS)
 </pre></div>
 </div>
 <p>This will add the newly created source to the dffml entrypoints and hence can
@@ -443,23 +449,25 @@ also be used in CLI.</p>
 <div class="section" id="install-your-package">
 <h2>Install your package<a class="headerlink" href="#install-your-package" title="Permalink to this headline">¶</a></h2>
 <p>To install your new source run</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install --prefix<span class="o">=</span>~/.local -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install -e .
 </pre></div>
 </div>
 </div>
 <div class="section" id="cli-usage">
 <h2>CLI Usage<a class="headerlink" href="#cli-usage" title="Permalink to this headline">¶</a></h2>
-<p>To use your newly created source in CLI.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> cat &gt; data.ini &lt;&lt; EOF
-<span class="go">[dffml]</span>
-<span class="go">third_party = yes</span>
-<span class="go">maintained = true</span>
+<p>Create a <code class="docutils literal notranslate"><span class="pre">.ini</span></code> file with some record data in it.</p>
+<p><strong>data.ini</strong></p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[dffml]</span>
+<span class="na">third_party</span> <span class="o">=</span> <span class="s">yes</span>
+<span class="na">maintained</span> <span class="o">=</span> <span class="s">true</span>
 
-<span class="go">[python]</span>
-<span class="go">third_party = no</span>
-<span class="go">maintained = true</span>
-<span class="go">EOF</span>
-<span class="gp">$</span> dffml list records -sources <span class="nv">data</span><span class="o">=</span>myini -source-filename data.ini
+<span class="k">[python]</span>
+<span class="na">third_party</span> <span class="o">=</span> <span class="s">no</span>
+<span class="na">maintained</span> <span class="o">=</span> <span class="s">true</span>
+</pre></div>
+</div>
+<p>To use your newly created source in CLI, try listing some records.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml list records -sources <span class="nv">data</span><span class="o">=</span>myini -source-filename data.ini
 <span class="go">[</span>
 <span class="go">    {</span>
 <span class="go">        &quot;extra&quot;: {},</span>
