@@ -13,12 +13,15 @@ from dffml.util.asynctestcase import AsyncTestCase
 # Root of DFFML source tree
 ROOT_DIR = os.path.join(os.path.dirname(__file__), "..", "..")
 
-# Load file by path
-spec = importlib.util.spec_from_file_location(
-    "consoletest", os.path.join(ROOT_DIR, "docs", "_ext", "consoletest.py")
-)
-consoletest = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(consoletest)
+# Load files by path. We have to import literalinclude_diff for diff-files
+for module_name in ["consoletest", "literalinclude_diff"]:
+    spec = importlib.util.spec_from_file_location(
+        module_name,
+        os.path.join(ROOT_DIR, "docs", "_ext", f"{module_name}.py"),
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    setattr(sys.modules[__name__], module_name, module)
 
 
 class TestFunctions(AsyncTestCase):

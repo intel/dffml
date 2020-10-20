@@ -46,6 +46,7 @@ extensions = [
     "sphinx_tabs.tabs",
     "recommonmark",
     "consoletest",
+    "literalinclude_diff",
 ]
 
 intersphinx_mapping = {"python": ("https://docs.python.org/3", None)}
