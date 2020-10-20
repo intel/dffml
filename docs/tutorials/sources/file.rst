@@ -14,11 +14,10 @@ To create a new source we first create a new Python package. DFFML has a script
 to do it for you.
 
 .. code-block:: console
+    :test:
 
     $ dffml service dev create source dffml-source-ini
     $ cd dffml-source-ini
-    $ ls
-    dffml_source_ini  LICENSE  MANIFEST.in  pyproject.toml  README.md  setup_common.py  setup.py  tests
 
 We will start writing our source in ./dffml_source_ini/misc.py
 
@@ -36,6 +35,8 @@ Import modules
 **dffml_source_ini/misc.py**
 
 .. code-block:: python
+    :test:
+    :filepath: dffml_source_ini/misc.py
 
     from configparser import ConfigParser
 
@@ -53,6 +54,8 @@ Add configuration
 **dffml_source_ini/misc.py**
 
 .. literalinclude:: ../../../dffml/source/ini.py
+    :test:
+    :filepath: dffml_source_ini/misc.py
     :lines: 11-15
 
 Here we will be writing the configuration options which will be avaliable for our
@@ -65,6 +68,8 @@ Create Source
 **dffml_source_ini/misc.py**
 
 .. literalinclude:: ../../../dffml/source/ini.py
+    :test:
+    :filepath: dffml_source_ini/misc.py
     :lines: 18-24
 
 Here we have added the entrypoint to INISource class as "ini". Do note that "ini" source
@@ -88,6 +93,8 @@ Add load method
 **dffml_source_ini/misc.py**
 
 .. literalinclude:: ../../../dffml/source/ini.py
+    :test:
+    :filepath: dffml_source_ini/misc.py
     :lines: 26-47
 
 This method will be used to load the data from the file(s). We will be reading data
@@ -110,6 +117,8 @@ Add dump method
 **dffml_source_ini/misc.py**
 
 .. literalinclude:: ../../../dffml/source/ini.py
+    :test:
+    :filepath: dffml_source_ini/misc.py
     :lines: 49-66
 
 This method will be used to dump the data to the file. We will read data from memory
@@ -126,6 +135,8 @@ Add Tests
 **tests/test_source.py**
 
 .. code-block:: python
+    :test:
+    :filepath: tests/test_source.py
 
     import os
     from tempfile import TemporaryDirectory
@@ -143,6 +154,8 @@ test methods as coroutines in default event loop.
 **tests/test_source.py**
 
 .. literalinclude:: ../../../tests/source/test_ini.py
+    :test:
+    :filepath: tests/test_source.py
     :lines: 10-30
 
 To test the working of the INISource created we will create a class TestINISource, since
@@ -162,8 +175,9 @@ Run the tests
 To run the tests
 
 .. code-block:: console
+    :test:
 
-    $ python3 setup.py test -s tests.test_source
+    $ python setup.py test
 
 This will look into the file test_source.py and run all the tests.
 
@@ -175,11 +189,11 @@ Add the entrypoint
 To register your source under dffml entrypoint you need to add the following
 to the setup.py file
 
-.. code-block:: python
-
-    common.KWARGS["entry_points"] = {
-        "dffml.source": [f"myini = {common.IMPORT_NAME}.misc:INISource"]
-    }
+.. literalinclude:: /../examples/tutorials/sources/file/dffml-source-ini/setup.py
+    :test:
+    :diff: /../dffml/skel/source/setup.py
+    :diff-files: setup.py
+    :filepath: setup.py
 
 This will add the newly created source to the dffml entrypoints and hence can
 also be used in CLI.
@@ -190,17 +204,21 @@ Install your package
 To install your new source run
 
 .. code-block:: console
+    :test:
 
-    $ python3 -m pip install --prefix=~/.local -e .
+    $ python -m pip install -e .
 
 CLI Usage
 ---------
 
-To use your newly created source in CLI.
+Create a ``.ini`` file with some record data in it.
 
-.. code-block:: console
+**data.ini**
 
-    $ cat > data.ini << EOF
+.. code-block:: ini
+    :test:
+    :filepath: data.ini
+
     [dffml]
     third_party = yes
     maintained = true
@@ -208,7 +226,12 @@ To use your newly created source in CLI.
     [python]
     third_party = no
     maintained = true
-    EOF
+
+To use your newly created source in CLI, try listing some records.
+
+.. code-block:: console
+    :test:
+
     $ dffml list records -sources data=myini -source-filename data.ini
     [
         {
