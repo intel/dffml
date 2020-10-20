@@ -11,14 +11,20 @@ we will be using the Simple Linear Regression model
 First we train the model and then create a DataFlow for making predictions
 on user input.
 
+**main.py**
 
 .. literalinclude:: /../examples/io/io_usage.py
+    :test:
+    :filepath: main.py
 
 On running the above code `AcceptUserInput` operation
 waits for input from stdio.
 
 .. code-block:: console
+    :test:
+    :stdin: 21
 
+    $ python main.py
     Enter the value: 21
 
 The feature value (which is the `str` "21") is then converted to `int` by
@@ -41,7 +47,11 @@ The dataflow that we have created is
 
 To re-generate the DataFlow diagram run.
 
-.. literalinclude:: /../examples/io/dataflow_diagram.sh
+.. code-block:: console
+    :test:
+
+    $ dffml service dev export examples.io.io_usage:dataflow | \
+        dffml dataflow diagram -stages processing -configloader json /dev/stdin
 
 Copy and pasting the output of the above code into the
 `mermaidjs live editor <https://mermaidjs.github.io/mermaid-live-editor>`_
