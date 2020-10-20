@@ -1726,13 +1726,13 @@
                 <span class="n">operation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dataflow</span><span class="p">,</span> <span class="n">ctx</span>
             <span class="p">):</span>
                 <span class="k">continue</span>
-            <span class="k">yield</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span>
-                <span class="bp">self</span><span class="p">,</span>
-                <span class="n">operation</span><span class="p">,</span>
-                <span class="n">MemoryParameterSet</span><span class="p">(</span>
-                    <span class="n">MemoryParameterSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[])</span>
-                <span class="p">),</span>
-            <span class="p">)</span></div>
+            <span class="n">parameter_set</span> <span class="o">=</span> <span class="n">MemoryParameterSet</span><span class="p">(</span>
+                <span class="n">MemoryParameterSetConfig</span><span class="p">(</span><span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[])</span>
+            <span class="p">)</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">nctx</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">parameter_set</span><span class="p">)</span>
+            <span class="n">task</span><span class="o">.</span><span class="n">operation</span> <span class="o">=</span> <span class="n">operation</span>
+            <span class="n">task</span><span class="o">.</span><span class="n">parameter_set</span> <span class="o">=</span> <span class="n">parameter_set</span>
+            <span class="k">yield</span> <span class="n">task</span></div>
 
     <span class="k">async</span> <span class="k">def</span> <span class="nf">run_operations_for_ctx</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">:</span> <span class="n">BaseContextHandle</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>

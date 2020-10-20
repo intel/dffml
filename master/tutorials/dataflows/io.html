@@ -218,6 +218,7 @@ we will be using the Simple Linear Regression model
 (<a class="reference internal" href="../../plugins/dffml_model.html#plugin-model-dffml-slr"><span class="std std-ref">slr</span></a>) which is in the <code class="docutils literal notranslate"><span class="pre">dffml</span></code> package.</p>
 <p>First we train the model and then create a DataFlow for making predictions
 on user input.</p>
+<p><strong>main.py</strong></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">from</span> <span class="nn">dffml</span> <span class="kn">import</span> <span class="o">*</span>
 
@@ -246,7 +247,9 @@ on user input.</p>
         <span class="s2">&quot;print_predictions&quot;</span><span class="p">:</span> <span class="n">print_output</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="n">configs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;predict_using_model&quot;</span><span class="p">:</span> <span class="n">ModelPredictConfig</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">slr_model</span><span class="p">)},</span>
-    <span class="n">flow</span><span class="o">=</span><span class="p">{</span>
+<span class="p">)</span>
+<span class="n">dataflow</span><span class="o">.</span><span class="n">flow</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="p">{</span>
         <span class="s2">&quot;literal_eval_input&quot;</span><span class="p">:</span> <span class="n">InputFlow</span><span class="p">(</span>
             <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;str_to_eval&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;get_user_input&quot;</span><span class="p">:</span> <span class="s2">&quot;InputData&quot;</span><span class="p">}]}</span>
         <span class="p">),</span>
@@ -262,8 +265,9 @@ on user input.</p>
         <span class="s2">&quot;print_predictions&quot;</span><span class="p">:</span> <span class="n">InputFlow</span><span class="p">(</span>
             <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;predict_using_model&quot;</span><span class="p">:</span> <span class="s2">&quot;prediction&quot;</span><span class="p">}]}</span>
         <span class="p">),</span>
-    <span class="p">},</span>
+    <span class="p">}</span>
 <span class="p">)</span>
+<span class="n">dataflow</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 <span class="n">dataflow</span><span class="o">.</span><span class="n">seed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
     <span class="n">Input</span><span class="p">(</span>
         <span class="n">value</span><span class="o">=</span><span class="s2">&quot;Years&quot;</span><span class="p">,</span>
@@ -293,7 +297,8 @@ on user input.</p>
 </div>
 <p>On running the above code <cite>AcceptUserInput</cite> operation
 waits for input from stdio.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Enter the value: 21</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python main.py
+<span class="go">Enter the value: 21</span>
 </pre></div>
 </div>
 <p>The feature value (which is the <cite>str</cite> “21”) is then converted to <cite>int</cite> by
@@ -309,7 +314,8 @@ The prediction is printed on stdout using <cite>print_output</cite> operation.</
 </div>
 <p>The dataflow that we have created is</p>
 <img alt="../../_images/dataflow_diagram2.svg" src="../../_images/dataflow_diagram2.svg" /><p>To re-generate the DataFlow diagram run.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dffml</span> <span class="n">service</span> <span class="n">dev</span> <span class="n">export</span> <span class="n">examples</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">io_usage</span><span class="p">:</span><span class="n">dataflow</span> <span class="o">|</span> <span class="n">dffml</span> <span class="n">dataflow</span> <span class="n">diagram</span> <span class="o">-</span><span class="n">stages</span> <span class="n">processing</span> <span class="o">-</span><span class="n">configloader</span> <span class="n">json</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">stdin</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev <span class="nb">export</span> examples.io.io_usage:dataflow <span class="p">|</span> <span class="se">\</span>
+    dffml dataflow diagram -stages processing -configloader json /dev/stdin
 </pre></div>
 </div>
 <p>Copy and pasting the output of the above code into the
