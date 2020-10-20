@@ -110,7 +110,7 @@ class CDCommand(ConsoletestCommand):
         ctx["cwd"] = os.path.abspath(os.path.join(ctx["cwd"], self.directory))
 
 
-class VirtualEnvCommand(ConsoletestCommand):
+class ActivateVirtualEnvCommand(ConsoletestCommand):
     def __init__(self, directory: str):
         super().__init__()
         self.directory = directory
@@ -118,7 +118,7 @@ class VirtualEnvCommand(ConsoletestCommand):
         self.old_path = None
         self.old_sys_path = []
 
-    def __eq__(self, other: "VirtualEnvCommand"):
+    def __eq__(self, other: "ActivateVirtualEnvCommand"):
         return bool(
             hasattr(other, "directory") and self.directory == other.directory
         )
@@ -126,14 +126,31 @@ class VirtualEnvCommand(ConsoletestCommand):
     async def run(self, ctx):
         self.old_virtual_env = os.environ.get("VIRTUAL_ENV", None)
         self.old_path = os.environ.get("PATH", None)
-        self.old_sys_path[:] = sys.path
-        os.environ["VIRTUAL_ENV"] = os.path.abspath(
-            os.path.join(ctx["cwd"], self.directory)
-        )
+        env_path = os.path.abspath(os.path.join(ctx["cwd"], self.directory))
         os.environ["PATH"] = ":".join(
-            [os.path.abspath(os.path.join(ctx["cwd"], self.directory, "bin"))]
+            [os.path.join(env_path, "bin")]
             + os.environ.get("PATH", "").split(":")
         )
+        # conda
+        if "CONDA_PREFIX" in os.environ:
+            print("CONDA")
+            # Bump all prefixes up
+            for key, value in filter(
+                lambda i: i[0].startswith("CONDA_PREFIX_"),
+                list(os.environ.items()),
+            ):
+                prefix = int(key[len("CONDA_PREFIX_") :])
+                os.environ[f"CONDA_PREFIX_{prefix + 1}"] = value
+            # Add new prefix
+            old_shlvl = int(os.environ["CONDA_SHLVL"])
+            os.environ["CONDA_SHLVL"] = str(old_shlvl + 1)
+            os.environ["CONDA_PREFIX_1"] = os.environ["CONDA_PREFIX"]
+            os.environ["CONDA_PREFIX"] = env_path
+            os.environ["CONDA_DEFAULT_ENV"] = env_path
+        else:
+            print("VIRTUAL_ENV")
+            os.environ["VIRTUAL_ENV"] = env_path
+
         return
 
         # TODO Related to the coverage issue
@@ -173,6 +190,25 @@ class VirtualEnvCommand(ConsoletestCommand):
             os.environ["VIRTUAL_ENV"] = self.old_virtual_env
         if self.old_path is not None:
             os.environ["PATH"] = self.old_path
+        # conda
+        if "CONDA_PREFIX" in os.environ:
+            # Decrement shell level
+            os.environ["CONDA_SHLVL"] = str(int(os.environ["CONDA_SHLVL"]) - 1)
+            if int(os.environ["CONDA_SHLVL"]) == 0:
+                del os.environ["CONDA_SHLVL"]
+            # Bump all prefixes down
+            for key, value in filter(
+                lambda i: i[0].startswith("CONDA_PREFIX_"),
+                list(os.environ.items()),
+            ):
+                del os.environ[key]
+                prefix = int(key[len("CONDA_PREFIX_") :])
+                if prefix == 1:
+                    lower_key = "CONDA_PREFIX"
+                    os.environ["CONDA_PREFIX"] = value
+                    os.environ["CONDA_DEFAULT_ENV"] = value
+                else:
+                    os.environ[f"CONDA_PREFIX_{prefix - 1}"] = value
         return
 
         # TODO Related to the coverage issue
@@ -491,6 +527,31 @@ class ConsoleCommand(ConsoletestCommand):
         self.stack.__exit__(None, None, None)
 
 
+class CreateVirtualEnvCommand(ConsoleCommand):
+    def __init__(self, directory: str):
+        super().__init__([])
+        self.directory = directory
+
+    def __eq__(self, other: "CreateVirtualEnvCommand"):
+        return bool(
+            hasattr(other, "directory") and self.directory == other.directory
+        )
+
+    async def run(self, ctx):
+        if "CONDA_PREFIX" in os.environ:
+            self.cmd = [
+                "conda",
+                "create",
+                f"python={sys.version_info.major}.{sys.version_info.minor}",
+                "-y",
+                "-p",
+                self.directory,
+            ]
+        else:
+            self.cmd = ["python", "-m", "venv", self.directory]
+        await super().run(ctx)
+
+
 class PipInstallCommand(ConsoleCommand):
     def __init__(self, cmd: List[str]):
         super().__init__(cmd)
@@ -665,13 +726,18 @@ def parse_commands(content):
 def build_command(cmd):
     if not cmd:
         raise ValueError("Empty command")
+    # Handle virtualenv creation
+    if (
+        "-m" in cmd and "venv" in cmd and cmd[cmd.index("-m") + 1] == "venv"
+    ) or (cmd[:2] == ["conda", "create"]):
+        return CreateVirtualEnvCommand(cmd[-1])
     # Handle virtualenv activation
     if ".\\.venv\\Scripts\\activate" in cmd or (
         len(cmd) == 2
         and cmd[0] in ("source", ".")
         and ".venv/bin/activate" == cmd[1]
     ):
-        return VirtualEnvCommand(".venv")
+        return ActivateVirtualEnvCommand(".venv")
     # Handle cd
     if "cd" == cmd[0]:
         return CDCommand(cmd[1])
@@ -922,8 +988,8 @@ class ConsoleTestBuilder(DocTestBuilder):
 
             # Create a virtualenv for every document
             for command in [
-                ConsoleCommand(["python", "-m", "venv", venvdir]),
-                VirtualEnvCommand(venvdir),
+                CreateVirtualEnvCommand(venvdir),
+                ActivateVirtualEnvCommand(venvdir),
                 PipInstallCommand(
                     [
                         "python",
