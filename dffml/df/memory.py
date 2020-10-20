@@ -1534,13 +1534,13 @@ class MemoryOrchestratorContext(BaseOrchestratorContext):
                 operation, self.config.dataflow, ctx
             ):
                 continue
-            yield await self.nctx.dispatch(
-                self,
-                operation,
-                MemoryParameterSet(
-                    MemoryParameterSetConfig(ctx=ctx, parameters=[])
-                ),
+            parameter_set = MemoryParameterSet(
+                MemoryParameterSetConfig(ctx=ctx, parameters=[])
             )
+            task = await self.nctx.dispatch(self, operation, parameter_set)
+            task.operation = operation
+            task.parameter_set = parameter_set
+            yield task
 
     async def run_operations_for_ctx(
         self, ctx: BaseContextHandle, *, strict: bool = True
