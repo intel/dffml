@@ -90,7 +90,7 @@ class ConsoletestCommand(abc.ABC):
         return repr(self)
 
     async def __aenter__(self):
-        pass
+        return self
 
     async def __aexit__(self, _exc_type, _exc_value, _traceback):
         pass
@@ -441,12 +441,15 @@ class ConsoleCommand(ConsoletestCommand):
         self.cmd = cmd
         self.daemon_proc = None
         self.replace = None
+        self.stdin = None
+        self.stack = contextlib.ExitStack()
 
     async def run(self, ctx):
         if self.poll_until is None:
             self.daemon_proc = await run_commands(
                 pipes(self.cmd),
                 ctx,
+                stdin=self.stdin,
                 ignore_errors=self.ignore_errors,
                 daemon=self.daemon,
                 replace=self.replace,
@@ -457,6 +460,7 @@ class ConsoleCommand(ConsoletestCommand):
                     await run_commands(
                         pipes(self.cmd),
                         ctx,
+                        stdin=self.stdin,
                         stdout=stdout,
                         ignore_errors=self.ignore_errors,
                         replace=self.replace,
@@ -467,6 +471,15 @@ class ConsoleCommand(ConsoletestCommand):
                         return
                 time.sleep(0.1)
 
+    async def __aenter__(self):
+        self.stack.__enter__()
+        if self.stdin is not None:
+            fileobj = self.stack.enter_context(tempfile.TemporaryFile())
+            fileobj.write(self.stdin.encode())
+            fileobj.seek(0)
+            self.stdin = fileobj
+        return self
+
     async def __aexit__(self, _exc_type, _exc_value, _traceback):
         # Send ctrl-c to daemon if running
         if self.daemon_proc is not None:
@@ -475,6 +488,7 @@ class ConsoleCommand(ConsoletestCommand):
             else:
                 self.daemon_proc.send_signal(signal.SIGINT)
                 self.daemon_proc.wait()
+        self.stack.__exit__(None, None, None)
 
 
 class PipInstallCommand(ConsoleCommand):
@@ -587,6 +601,7 @@ class DockerRunCommand(ConsoleCommand):
 
     async def __aenter__(self):
         atexit.register(self.cleanup)
+        return self
 
     async def __aexit__(self, _exc_type, _exc_value, _traceback):
         self.cleanup()
@@ -787,6 +802,7 @@ def CodeBlock_run(func):
                 command.replace = self.options.get("replace", None)
                 command.poll_until = self.options.get("poll-until", None)
                 command.ignore_errors = bool("ignore-errors" in self.options)
+                command.stdin = self.options.get("stdin", None)
 
             # Last command to be run is a daemon
             daemon = bool("daemon" in self.options)
@@ -808,6 +824,7 @@ CodeBlock.option_spec.update(
         "ignore-errors": directives.flag,
         "daemon": directives.flag,
         "test": directives.flag,
+        "stdin": directives.unchanged_required,
     }
 )
 
