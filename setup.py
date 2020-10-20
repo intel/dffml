@@ -54,9 +54,7 @@ setup(
         "dev": [
             "coverage",
             "codecov",
-            "sphinx",
             "sphinx_rtd_theme",
-            "sphinx-tabs>=1.3.0",
             "recommonmark",
             "black==19.10b0",
             "jsbeautifier",
@@ -65,6 +63,8 @@ setup(
         **plugins.PACKAGE_NAMES_BY_PLUGIN_INSTALLABLE,
     },
     tests_require=[
+        "sphinx>=2.4.4",
+        "sphinx-tabs>=1.3.0",
         "httptest>=0.0.15",
         "Pillow>=7.1.2",
         # See https://github.com/intel/dffml/issues/816
