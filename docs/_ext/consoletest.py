@@ -846,10 +846,10 @@ def copyfile(
             # Line numbers start at 1
             i += 1
             if len(lines) == 1 and i == lines[0]:
-                outfile.write(line + "\n")
+                outfile.write(line)
                 break
             elif i >= lines[0] and i <= lines[1]:
-                outfile.write(line + "\n")
+                outfile.write(line)
             elif i > lines[1]:
                 break
 
@@ -953,14 +953,15 @@ class ConsoleTestBuilder(DocTestBuilder):
                     if lines is not None:
                         lines = tuple(map(int, lines.split("-")))
 
-                    src = node["source"]
+                    src = os.path.join(ROOT_DIR, "docs", node["source"])
                     dst = os.path.join(ctx["cwd"], *node["filepath"])
 
                     print()
                     print("Copying", ctx, src, dst, lines)
-                    print()
 
                     copyfile(src, dst, lines=lines)
+                    print(pathlib.Path(dst).read_text(), end="")
+                    print()
                 elif node["consoletestnodetype"] == "consoletest-file":
                     print()
                     filepath = pathlib.Path(ctx["cwd"], *node["filepath"])
