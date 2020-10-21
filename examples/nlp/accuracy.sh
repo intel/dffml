@@ -12,4 +12,5 @@ dffml accuracy \
     -source-text-features sentence:str:1 \
     -source-text-source csv \
     -source-text-source-filename train_data.csv \
+    -scorer clf \
     -log debug
