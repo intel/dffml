@@ -33,7 +33,11 @@ from ..df.memory import MemoryOrchestrator
 from ..configloader.configloader import BaseConfigLoader
 from ..configloader.json import JSONConfigLoader
 from ..operation.output import GetSingle
-from ..plugins import CORE_PLUGINS, CORE_PLUGIN_DEPS
+from ..plugins import (
+    CORE_PLUGINS,
+    CORE_PLUGIN_DEPS,
+    PACKAGE_NAMES_TO_DIRECTORY,
+)
 
 config = configparser.ConfigParser()
 config.read(Path("~", ".gitconfig").expanduser())
@@ -376,30 +380,34 @@ class Install(CMD):
             self.dep_check(CORE_PLUGIN_DEPS, self.skip)
         self.logger.info("Installing %r in development mode", CORE_PLUGINS)
         failed = []
+        cmd = [
+            sys.executable,
+            "-m",
+            "pip",
+            "install",
+            "--use-feature=2020-resolver",
+        ]
+        # Install to prefix, since --user sometimes fails
+        if self.user:
+            local_path = Path("~", ".local").expanduser().absolute()
+            cmd.append(f"--prefix={local_path}")
         for package in CORE_PLUGINS:
             if "/".join(package) in self.skip:
                 continue
             package_path = Path(*main_package.parts, *package)
-            cmd = [
-                sys.executable,
-                "-m",
-                "pip",
-                "install",
-                "--use-feature=2020-resolver",
-            ]
-            # Install to prefix, since --user sometimes fails
-            if self.user:
-                local_path = Path("~", ".local").expanduser().absolute()
-                cmd.append(f"--prefix={local_path}")
             # Install package in development mode
             cmd += ["-e", str(package_path.absolute())]
-            self.logger.debug("Running: %s", " ".join(cmd))
-            # Packages fail to install if we run pip processes in parallel
-            proc = await asyncio.create_subprocess_exec(*cmd)
-            await proc.wait()
-            if proc.returncode != 0:
-                failed.append("/".join(package))
-        if failed:
+        self.logger.debug("Running: %s", " ".join(cmd))
+        # Packages fail to install if we run pip processes in parallel
+        proc = await asyncio.create_subprocess_exec(*cmd)
+        await proc.wait()
+        if proc.returncode != 0:
+            importlib.invalidate_caches()
+            for package_name, package in PACKAGE_NAMES_TO_DIRECTORY.items():
+                try:
+                    importlib.util.find_spec(package_name.replace("-", "_"))
+                except ModuleNotFoundError:
+                    failed.append("/".join(package))
             raise RuntimeError(f"pip failed to install: {','.join(failed)}")
 
 
