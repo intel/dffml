@@ -256,8 +256,11 @@ class DFFMLProcess:
 
 async def run_dffml_command(cmd, ctx, kwargs):
     # Run the DFFML command if its not the http server
-    if cmd[:4] != ["dffml", "service", "http", "server"]:
+    if cmd[2:6] != ["dffml", "service", "http", "server"]:
         # Run the command
+        print()
+        print("Running", cmd)
+        print()
         proc = subprocess.Popen(
             cmd, start_new_session=True, cwd=ctx["cwd"], **kwargs
         )
@@ -284,6 +287,9 @@ async def run_dffml_command(cmd, ctx, kwargs):
             # port
             cmd[cmd.index("-port") + 1] = "0"
             # Run the command
+            print()
+            print("Running", cmd)
+            print()
             proc = subprocess.Popen(
                 cmd, start_new_session=True, cwd=ctx["cwd"], **kwargs
             )
@@ -412,6 +418,11 @@ async def run_commands(
         if "2>&1" in cmd:
             kwargs["stderr"] = subprocess.STDOUT
             cmd.remove("2>&1")
+        # Make sure dffml commands are run with python -m
+        # TODO XXX Raise issue with command that don't run this way
+        if cmd[0] == "dffml":
+            cmd.insert(0, "-m")
+            cmd.insert(0, "python")
         # If not in venv ensure correct Python
         if (
             "VIRTUAL_ENV" not in os.environ
@@ -421,11 +432,14 @@ async def run_commands(
             cmd[0] = sys.executable
         # Handle temporary environment variables prepended to command
         with tmpenv(cmd) as cmd:
-            if cmd[0] == "dffml":
+            if cmd[2:3] == ["dffml"]:
                 # Run dffml command through Python so that we capture coverage info
                 proc = await run_dffml_command(cmd, ctx, kwargs)
             else:
                 # Run the command
+                print()
+                print("Running", cmd)
+                print()
                 proc = subprocess.Popen(
                     cmd, start_new_session=True, cwd=ctx["cwd"], **kwargs
                 )
