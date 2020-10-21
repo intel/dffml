@@ -120,8 +120,11 @@ class TestPipInstallCommand(unittest.TestCase):
     def test_fix_dffml_packages(self):
         command = consoletest.PipInstallCommand(
             [
+                "python",
+                "-m",
                 "pip",
                 "install",
+                "--use-feature=2020-resolver",
                 "-U",
                 "dffml",
                 "-e",
@@ -130,12 +133,14 @@ class TestPipInstallCommand(unittest.TestCase):
                 "aiohttp",
             ]
         )
-        command.fix_dffml_packages()
         self.assertListEqual(
             command.cmd,
             [
+                "python",
+                "-m",
                 "pip",
                 "install",
+                "--use-feature=2020-resolver",
                 "-U",
                 "-e",
                 os.path.abspath(ROOT_DIR),
