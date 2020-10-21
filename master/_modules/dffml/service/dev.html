@@ -225,7 +225,11 @@
 <span class="kn">from</span> <span class="nn">..configloader.configloader</span> <span class="kn">import</span> <span class="n">BaseConfigLoader</span>
 <span class="kn">from</span> <span class="nn">..configloader.json</span> <span class="kn">import</span> <span class="n">JSONConfigLoader</span>
 <span class="kn">from</span> <span class="nn">..operation.output</span> <span class="kn">import</span> <span class="n">GetSingle</span>
-<span class="kn">from</span> <span class="nn">..plugins</span> <span class="kn">import</span> <span class="n">CORE_PLUGINS</span><span class="p">,</span> <span class="n">CORE_PLUGIN_DEPS</span>
+<span class="kn">from</span> <span class="nn">..plugins</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">CORE_PLUGINS</span><span class="p">,</span>
+    <span class="n">CORE_PLUGIN_DEPS</span><span class="p">,</span>
+    <span class="n">PACKAGE_NAMES_TO_DIRECTORY</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="n">config</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
 <span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.gitconfig&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">())</span>
@@ -568,30 +572,34 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">dep_check</span><span class="p">(</span><span class="n">CORE_PLUGIN_DEPS</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">skip</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Installing </span><span class="si">%r</span><span class="s2"> in development mode&quot;</span><span class="p">,</span> <span class="n">CORE_PLUGINS</span><span class="p">)</span>
         <span class="n">failed</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span>
+            <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;pip&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;install&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--use-feature=2020-resolver&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="c1"># Install to prefix, since --user sometimes fails</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
+            <span class="n">local_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.local&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--prefix=</span><span class="si">{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">package</span> <span class="ow">in</span> <span class="n">CORE_PLUGINS</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">skip</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">package_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="o">*</span><span class="n">main_package</span><span class="o">.</span><span class="n">parts</span><span class="p">,</span> <span class="o">*</span><span class="n">package</span><span class="p">)</span>
-            <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span>
-                <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;pip&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;install&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;--use-feature=2020-resolver&quot;</span><span class="p">,</span>
-            <span class="p">]</span>
-            <span class="c1"># Install to prefix, since --user sometimes fails</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">:</span>
-                <span class="n">local_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.local&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">expanduser</span><span class="p">()</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
-                <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--prefix=</span><span class="si">{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="c1"># Install package in development mode</span>
             <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">package_path</span><span class="o">.</span><span class="n">absolute</span><span class="p">())]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
-            <span class="c1"># Packages fail to install if we run pip processes in parallel</span>
-            <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span><span class="o">*</span><span class="n">cmd</span><span class="p">)</span>
-            <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">failed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">failed</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Running: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
+        <span class="c1"># Packages fail to install if we run pip processes in parallel</span>
+        <span class="n">proc</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_subprocess_exec</span><span class="p">(</span><span class="o">*</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">importlib</span><span class="o">.</span><span class="n">invalidate_caches</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">package_name</span><span class="p">,</span> <span class="n">package</span> <span class="ow">in</span> <span class="n">PACKAGE_NAMES_TO_DIRECTORY</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">importlib</span><span class="o">.</span><span class="n">util</span><span class="o">.</span><span class="n">find_spec</span><span class="p">(</span><span class="n">package_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+                    <span class="n">failed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">package</span><span class="p">))</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;pip failed to install: </span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">failed</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
