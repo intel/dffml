@@ -88,7 +88,7 @@ def check_boost():
             """
             )
         )
-        return bool(
+        return inpath("c++") and bool(
             subprocess.call(
                 ["c++", str(c_file)],
                 cwd=tempdir,
