@@ -147,6 +147,7 @@ Creating our Package
 Create a new package using the create script.
 
 .. code-block:: console
+    :test:
 
     $ dffml service dev create operations shouldi
     $ cd shouldi
@@ -160,6 +161,7 @@ Create a new package using the create script.
 Remove the example files as we won't be needing them
 
 .. code-block:: console
+    :test:
 
     $ rm shouldi/operations.py shouldi/definitions.py tests/test_operations.py
 
@@ -169,14 +171,10 @@ Installing Static Analysis Tools
 The tools we'll be using are ``bandit`` and ``safety``. We'll also need to make
 http requests so let's install ``aiohttp`` too.
 
-Some people are familiar with the ``requirements.txt`` file used to declare
-dependences. For packages, we can declare our dependencies right in our
-``setup.py`` file.
+**requirements.txt**
 
-**setup.py**
-
-.. literalinclude:: /../examples/shouldi/setup.py
-    :lines: 12-16
+.. literalinclude:: /../examples/shouldi/requirements.txt
+    :test:
 
 .. note::
 
@@ -185,11 +183,13 @@ dependences. For packages, we can declare our dependencies right in our
 
 .. TODO Add link to pip oddities doc here once it exists
 
-Now install the newly created package in development mode.
+Install the newly created package in development mode to install the
+dependencies listed in **requirements.txt** as well.
 
 .. code-block:: console
+    :test:
 
-    $ python3 -m pip install -e .
+    $ python -m pip install --use-feature=2020-resolver -e .
 
 Safety Operation
 ----------------
@@ -197,6 +197,9 @@ Safety Operation
 To get parsable output, we'll run ``safety`` with the ``--json`` flag.
 
 .. code-block:: console
+    :test:
+    :poll-until: bool(b"\"insecure-package\"" in stdout)
+    :ignore-errors:
 
     $ echo insecure-package==0.1.0 | safety check --stdin --json
     [
@@ -214,18 +217,23 @@ Let's now write the operation to call ``safety`` via a subprocess.
 **shouldi/python/safety.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/python/safety.py
+    :test:
+    :filepath: shouldi/python/safety.py
 
 Write a test for it
 
 **tests/test_safety.py**
 
 .. literalinclude:: /../examples/shouldi/tests/test_safety.py
+    :test:
+    :filepath: tests/test_safety.py
 
 Run the tests
 
 .. code-block:: console
+    :test:
 
-    $ python3 setup.py test -s tests.test_safety
+    $ python setup.py test -s tests.test_safety
 
 Bandit Operation
 ----------------
@@ -292,18 +300,23 @@ Let's now write the operation to call ``bandit`` via a subprocess.
 **shouldi/python/bandit.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/python/bandit.py
+    :test:
+    :filepath: shouldi/python/bandit.py
 
 Write a test for it
 
 **tests/test_bandit.py**
 
 .. literalinclude:: /../examples/shouldi/tests/test_bandit.py
+    :test:
+    :filepath: tests/test_bandit.py
 
 Run the tests
 
 .. code-block:: console
+    :test:
 
-    $ python3 setup.py test -s tests.test_bandit
+    $ python setup.py test -s tests.test_bandit
 
 What's the Data Flow?
 ---------------------
@@ -374,6 +387,8 @@ temporary directory.
 **shouldi/python/pypi.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
+    :test:
+    :filepath: shouldi/python/pypi.py
     :lines: 1-30
 
 Let’s write an operation to grab the JSON information about a package. It will
@@ -382,6 +397,8 @@ extract the version and the URL from where we can get the source code.
 **shouldi/python/pypi.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
+    :test:
+    :filepath: shouldi/python/pypi.py
     :lines: 33-68
 
 Finally, we make a ``cleanup`` operation to remove the directory once we're done
@@ -390,6 +407,8 @@ with it.
 **shouldi/python/pypi.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/python/pypi.py
+    :test:
+    :filepath: shouldi/python/pypi.py
     :lines: 71-78
 
 Now we write tests for each operation.
@@ -397,12 +416,15 @@ Now we write tests for each operation.
 **tests/test_pypi.py**
 
 .. literalinclude:: /../examples/shouldi/tests/test_pypi.py
+    :test:
+    :filepath: tests/test_pypi.py
 
 Run the tests
 
 .. code-block:: console
+    :test:
 
-    $ python3 setup.py test -s tests.test_pypi
+    $ python setup.py test -s tests.test_pypi
 
 CLI
 ---
@@ -414,7 +436,9 @@ based on :py:mod:`argparse` which will speed things up.
 **shouldi/cli.py**
 
 .. literalinclude:: /../examples/shouldi/shouldi/cli.py
-    :lines: 1-89
+    :test:
+    :filepath: shouldi/cli.py
+    :lines: 1-85
 
 Let's test out the code in ``shouldi.cli`` before making it accessible via the
 command line.
@@ -422,12 +446,15 @@ command line.
 **tests/test_cli.py**
 
 .. literalinclude:: /../examples/shouldi/tests/test_cli.py
+    :test:
+    :filepath: tests/test_cli.py
 
 Run the all the tests this time
 
 .. code-block:: console
+    :test:
 
-    $ python3 setup.py test
+    $ python setup.py test
 
 We want this to be usable as a command line utility, Python's
 :py:mod:`setuptools` allows us to define console ``entry_points``. All we have
@@ -436,21 +463,29 @@ a user runs a given command line application. The name of our CLI is ``shouldi``
 and the function we want to run is ``main`` in the ``ShouldI`` class which is in
 the ``shouldi.cli`` module.
 
+We're going to remove the ``dffml.operation`` entry's for now. We'll address
+those shortly.
+
 **setup.py**
 
-.. literalinclude:: /../examples/shouldi/setup.py
-    :lines: 17-18
+.. literalinclude:: /../examples/shouldi/setup_console_scripts.py
+    :test:
+    :diff: /../dffml/skel/operations/setup.py
+    :diff-files: setup.py
+    :filepath: setup.py
 
 Re-install the package via pip
 
 .. code-block:: console
+    :test:
 
-    $ python3 -m pip install -e .
+    $ python -m pip install --use-feature=2020-resolver -e .
 
 Now we should be able to run our new tool via the CLI! (Provided your ``$PATH``
 is set up correctly).
 
 .. code-block:: console
+    :test:
 
     $ shouldi install dffml insecure-package
     dffml is okay to install
@@ -475,16 +510,18 @@ DataFlows can be visualized using `mermaidjs <https://mermaidjs.github.io/>`_.
 We first export the DataFlow to a config file on disk.
 
 .. code-block:: console
+    :test:
 
     $ mkdir -p shouldi/deploy/df
     $ dffml service dev export -configloader json shouldi.cli:DATAFLOW \
-      > shouldi/deploy/df/shouldi.json
+        | tee shouldi/deploy/df/shouldi.json
 
 We then create the mermaidjs digarm from the DataFlow. The ``-simple`` flag says
 to only show connections between operations, don't show which inputs and outputs
 are connected.
 
 .. code-block:: console
+    :test:
 
     $ dffml dataflow diagram -simple shouldi/deploy/df/shouldi.json
     graph TD
@@ -541,55 +578,35 @@ DFFML, we need to register them with Python's ``entry_points`` system.
 **setup.py**
 
 .. literalinclude:: /../examples/shouldi/setup.py
-    :lines: 17-26
+    :test:
+    :diff: /../examples/shouldi/setup_console_scripts.py
+    :diff-files: setup.py
+    :filepath: setup.py
 
 Re-install the package via pip to make registrations take effect.
 
 .. code-block:: console
+    :test:
 
-    $ python3 -m pip install -e .
+    $ python -m pip install --use-feature=2020-resolver -e .
 
 After you've registered the operations, services such as the
 :doc:`/plugins/service/http/index` will have access to your operations.
 
 To make sure your operations were registered, you can use the development
 service's ``entrypoints list`` command. You should see the ``get_single``
-operation we used to get our output as comming from ``dffml``. You'll also see
+operation we used to get our output as coming from ``dffml``. You'll also see
 your own operations as coming from ``shouldi``.
 
 .. code-block:: console
+    :test:
 
-    $ dffml service dev entrypoints list dffml.operation
-    AcceptUserInput = dffml.operation.io:AcceptUserInput -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    associate = dffml.operation.output:Associate -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    dffml.dataflow.run = dffml.operation.dataflow:run_dataflow -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    dffml.mapping.create = dffml.operation.mapping:create_mapping -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    dffml.mapping.extract = dffml.operation.mapping:mapping_extract_value -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    dffml.model.predict = dffml.operation.model:model_predict -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    get_multi = dffml.operation.output:GetMulti -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    get_single = dffml.operation.output:GetSingle -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    group_by = dffml.operation.output:GroupBy -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    literal_eval = dffml.operation.preprocess:literal_eval -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    print_output = dffml.operation.io:print_output -> dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    check_if_valid_git_repository_URL = dffml_feature_git.feature.operations:check_if_valid_git_repository_URL -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    cleanup_git_repo = dffml_feature_git.feature.operations:cleanup_git_repo -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    clone_git_repo = dffml_feature_git.feature.operations:clone_git_repo -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    count_authors = dffml_feature_git.feature.operations:count_authors -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    git_commits = dffml_feature_git.feature.operations:git_commits -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    git_repo_author_lines_for_dates = dffml_feature_git.feature.operations:git_repo_author_lines_for_dates -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    git_repo_checkout = dffml_feature_git.feature.operations:git_repo_checkout -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    git_repo_commit_from_date = dffml_feature_git.feature.operations:git_repo_commit_from_date -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    git_repo_default_branch = dffml_feature_git.feature.operations:git_repo_default_branch -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    git_repo_release = dffml_feature_git.feature.operations:git_repo_release -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    lines_of_code_by_language = dffml_feature_git.feature.operations:lines_of_code_by_language -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    lines_of_code_to_comments = dffml_feature_git.feature.operations:lines_of_code_to_comments -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    quarters_back_to_date = dffml_feature_git.feature.operations:quarters_back_to_date -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    work = dffml_feature_git.feature.operations:work -> dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)
-    cleanup_pypi_package = shouldi.python.pypi:cleanup_pypi_package -> shouldi 0.0.8 (/workspace/dffml/examples/shouldi)
-    pypi_package_contents = shouldi.python.pypi:pypi_package_contents -> shouldi 0.0.8 (/workspace/dffml/examples/shouldi)
-    pypi_package_json = shouldi.python.pypi:pypi_package_json -> shouldi 0.0.8 (/workspace/dffml/examples/shouldi)
-    run_bandit = shouldi.python.bandit:run_bandit -> shouldi 0.0.8 (/workspace/dffml/examples/shouldi)
-    safety_check = shouldi.python.safety:safety_check -> shouldi 0.0.8 (/workspace/dffml/examples/shouldi)
+    $ dffml service dev entrypoints list dffml.operation | grep shouldi
+    cleanup_pypi_package = shouldi.python.pypi:cleanup_pypi_package -> shouldi 0.0.1 (/workspace/dffml/examples/shouldi)
+    pypi_package_contents = shouldi.python.pypi:pypi_package_contents -> shouldi 0.0.1 (/workspace/dffml/examples/shouldi)
+    pypi_package_json = shouldi.python.pypi:pypi_package_json -> shouldi 0.0.1 (/workspace/dffml/examples/shouldi)
+    run_bandit = shouldi.python.bandit:run_bandit -> shouldi 0.0.1 (/workspace/dffml/examples/shouldi)
+    safety_check = shouldi.python.safety:safety_check -> shouldi 0.0.1 (/workspace/dffml/examples/shouldi)
 
 The :doc:`/examples/dataflows` usage example will show you how to expose your
 new meta static analysis tool over an HTTP interface.

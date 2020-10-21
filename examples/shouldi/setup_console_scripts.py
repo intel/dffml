@@ -11,13 +11,6 @@ spec.loader.exec_module(common)
 
 common.KWARGS["entry_points"] = {
     "console_scripts": ["shouldi = shouldi.cli:ShouldI.main"],
-    "dffml.operation": [
-        "run_bandit = shouldi.python.bandit:run_bandit",
-        "safety_check = shouldi.python.safety:safety_check",
-        "pypi_package_json = shouldi.python.pypi:pypi_package_json",
-        "pypi_package_contents = shouldi.python.pypi:pypi_package_contents",
-        "cleanup_pypi_package = shouldi.python.pypi:cleanup_pypi_package",
-    ],
 }
 
 setup(**common.KWARGS)
