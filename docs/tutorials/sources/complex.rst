@@ -80,7 +80,7 @@ The following command installs your new source.
 
 .. code-block:: console
 
-    $ python -m pip install -e .
+    $ python -m pip install --use-feature=2020-resolver -e .
 
 Write the tests
 ---------------
