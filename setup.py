@@ -54,6 +54,8 @@ setup(
         "dev": [
             "coverage",
             "codecov",
+            "sphinx>=2.4.4",
+            "sphinx-tabs>=1.3.0",
             "sphinx_rtd_theme",
             "recommonmark",
             "black==19.10b0",
