@@ -413,7 +413,11 @@ async def run_commands(
             kwargs["stderr"] = subprocess.STDOUT
             cmd.remove("2>&1")
         # If not in venv ensure correct Python
-        if not "VIRTUAL_ENV" in os.environ and cmd[0].startswith("python"):
+        if (
+            "VIRTUAL_ENV" not in os.environ
+            and "CONDA_PREFIX" not in os.environ
+            and cmd[0].startswith("python")
+        ):
             cmd[0] = sys.executable
         # Handle temporary environment variables prepended to command
         with tmpenv(cmd) as cmd:
