@@ -89,7 +89,7 @@ function run_plugin() {
     "${PYTHON}" -m coverage report -m
 
     # Fail if any tests were skipped or errored
-    skipped=$(grep -E '(skipped=.*)' "${check_skips}" | wc -l)
+    skipped=$(tail -n 1 "${check_skips}" | grep -E '(skipped=.*)' | wc -l)
     if [ "$skipped" -ne 0 ]; then
       echo "Tests were skipped" >&2
       exit 1
