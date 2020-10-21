@@ -83,7 +83,7 @@ class TestFunctions(AsyncTestCase):
     def test_build_command_venv_linux(self):
         self.assertEqual(
             consoletest.build_command([".", ".venv/bin/activate"],),
-            consoletest.VirtualEnvCommand(".venv"),
+            consoletest.ActivateVirtualEnvCommand(".venv"),
         )
 
     def test_pipes(self):
@@ -245,10 +245,16 @@ def mktestcase(filepath: pathlib.Path, relative: pathlib.Path):
     return testcase
 
 
-if not "SKIP_CONSOLETEST" in os.environ:
-    for filepath in DOCS_PATH.rglob("*.rst"):
-        if ":test:" not in pathlib.Path(filepath).read_text():
-            continue
-        relative = filepath.relative_to(DOCS_PATH).with_suffix("")
-        name = "test_" + str(relative).replace(os.sep, "_")
-        setattr(TestDocs, name, mktestcase(filepath, relative))
+for filepath in DOCS_PATH.rglob("*.rst"):
+    if ":test:" not in pathlib.Path(filepath).read_text():
+        continue
+    relative = filepath.relative_to(DOCS_PATH).with_suffix("")
+    name = "test_" + str(relative).replace(os.sep, "_")
+    setattr(
+        TestDocs,
+        name,
+        unittest.skipIf(
+            "RUN_CONSOLETESTS" not in os.environ,
+            "RUN_CONSOLETESTS environment variable not set",
+        )(mktestcase(filepath, relative)),
+    )

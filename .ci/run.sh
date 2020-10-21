@@ -40,7 +40,7 @@ function run_plugin() {
   # Install plugin
   "${PYTHON}" -m pip install --use-feature=2020-resolver -U -e .
   # Run the tests but not the long documentation consoletests
-  SKIP_CONSOLETEST=1 "${PYTHON}" -u setup.py test
+  "${PYTHON}" -u setup.py test
 
   if [ "x${PLUGIN}" != "x." ]; then
     # Run examples if they exist and we aren't at the root
@@ -78,7 +78,7 @@ function run_plugin() {
     TEMP_DIRS+=("${check_skips}")
 
     # Run with coverage
-    "${PYTHON}" -u -m coverage run setup.py test 2>&1 | tee "${check_skips}"
+    RUN_CONSOLETESTS=1 "${PYTHON}" -u -m coverage run setup.py test 2>&1 | tee "${check_skips}"
     "${PYTHON}" -m coverage report -m
 
     # Fail if any tests were skipped or errored
