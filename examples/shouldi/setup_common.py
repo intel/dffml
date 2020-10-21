@@ -71,6 +71,12 @@ VERSION = ast.literal_eval(
 
 README = Path(SELF_PATH, "README.md").read_text()
 
+REQUIREMENTS_TXT_PATH = Path(SELF_PATH, "requirements.txt")
+if REQUIREMENTS_TXT_PATH.is_file():
+    INSTALL_REQUIRES += list(
+        map(lambda i: i.strip(), REQUIREMENTS_TXT_PATH.read_text().split("\n"))
+    )
+
 KWARGS = dict(
     name=NAME,
     version=VERSION,
@@ -97,4 +103,18 @@ KWARGS = dict(
     ],
     install_requires=INSTALL_REQUIRES,
     packages=find_packages(),
+    entry_points={},
+)
+
+# Hiding here away from operations tutorial
+KWARGS["install_requires"] += [
+    "PyYAML>=5.1.2",
+]
+KWARGS["entry_points"].update(
+    {
+        "shouldi.project.bom.db": [
+            "yaml = shouldi.project.bom.db.yaml:YAMLDB",
+            "pypi = shouldi.project.bom.db.pypi:PyPiDB",
+        ]
+    }
 )
