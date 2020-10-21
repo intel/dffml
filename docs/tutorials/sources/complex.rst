@@ -16,9 +16,10 @@ To create a new source we first create a new python package. DFFML has a script
 to create it for you.
 
 .. code-block:: console
+    :test:
 
-    $ dffml service dev create source my-source
-    $ cd my-source
+    $ dffml service dev create source dffml-source-sqlite
+    $ cd dffml-source-sqlite
 
 This creates a Python package for you with a source that stores ``Record`` objects
 in memory, called ``MiscSource``, and some tests.
@@ -50,23 +51,11 @@ to do this.
 If we had a ``sqlite`` database will custom columns we could implement it like
 so.
 
-**examples/source/custom_sqlite.py**
+**dffml_source_sqlite/misc.py**
 
 .. literalinclude:: /../examples/source/custom_sqlite.py
-
-Write the tests
----------------
-
-**examples/source/test_custom_sqlite.py**
-
-.. literalinclude:: /../examples/source/test_custom_sqlite.py
-
-Run the tests
--------------
-
-.. code-block:: console
-
-    $ python3 setup.py test
+    :test:
+    :filepath: dffml_source_sqlite/misc.py
 
 Register your source
 --------------------
@@ -74,17 +63,12 @@ Register your source
 Modify the **setup.py** file and change the ``dffml.source`` ``entrypoint``'s
 to point to your new source class (not the one ending in ``Context``).
 
-.. code-block:: python
+We also need to add ``aiosqlite`` to our list of dependencies.
 
-    from setuptools import setup
-
-    from dffml_setup_common import SETUP_KWARGS, IMPORT_NAME
-
-    SETUP_KWARGS["entry_points"] = {
-        "dffml.source": [f"customsqlite = {IMPORT_NAME}.custom_sqlite:CustomSQLiteSource"]
-    }
-
-    setup(**SETUP_KWARGS)
+.. literalinclude:: /../examples/source/setup.py
+    :test:
+    :diff: /../dffml/skel/source/setup.py
+    :diff-files: setup.py
 
 This allows you to use your source with the CLI and HTTP API (after you install
 it).
@@ -96,4 +80,21 @@ The following command installs your new source.
 
 .. code-block:: console
 
-    $ python3 -m pip install --prefix=~/.local -e .
+    $ python -m pip install -e .
+
+Write the tests
+---------------
+
+**tests/test_source.py**
+
+.. literalinclude:: /../examples/source/test_custom_sqlite.py
+    :test:
+    :filepath: tests/test_source.py
+
+Run the tests
+-------------
+
+.. code-block:: console
+    :test:
+
+    $ python setup.py test
