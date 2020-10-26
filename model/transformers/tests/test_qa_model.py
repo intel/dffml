@@ -81,7 +81,7 @@ class TestQAModel(AsyncTestCase):
         await train(self.model, self.train_sources)
 
     async def test_01_accuracy(self):
-        res = await accuracy(self.model, self.train_sources, self.scorer)
+        res = await accuracy(self.model, self.scorer, self.train_sources)
         self.assertGreaterEqual(res, 0)
 
     async def test_02_predict(self):
