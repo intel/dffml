@@ -66,9 +66,11 @@ if [[ "x${PLUGIN}" == "xmodel/daal4py" ]] || \
     conda uninstall numpy
     conda install numpy==1.18.5
   fi
-  if [ -f "${PIP_CACHE_DIR}/miniconda${python_version}/bin/activate" ]; then
-    source "${PIP_CACHE_DIR}/miniconda${python_version}/bin/activate" base
+  where_conda=$(conda info -s | grep CONDA_ROOT | awk '{print $NF}')
+  if [ -f "${where_conda}/etc/profile.d/conda.sh" ]; then
+    source "${where_conda}/etc/profile.d/conda.sh"
   fi
+  conda activate base
 fi
 
 # Install and upgrade

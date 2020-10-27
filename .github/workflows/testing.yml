@@ -120,6 +120,8 @@ jobs:
     - name: Test
       run: |
         set -x
+        export CONDA_PREFIX="${CONDA}"
+        export CONDA_SHLVL="${SHLVL}"
         export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
         export PYTHON=python${{ matrix.python-version }}
         export PLUGIN=${{ matrix.plugin }}
