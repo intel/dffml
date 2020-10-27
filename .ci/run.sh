@@ -18,7 +18,7 @@ TEMPFIX="$(mktemp -d)"
 TEMP_DIRS+=("${TEMPFIX}")
 cp -r ${SRC_ROOT}/scripts/tempfix/* "${TEMPFIX}/"
 
-python_version="py$(${PYTHON} -c 'import sys; print(f"{sys.version_info.major}{sys.version_info.minor}")')"
+python_version="$(${PYTHON} -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')"
 
 function run_plugin_examples() {
   if [ ! -d "${SRC_ROOT}/${PLUGIN}/examples" ]; then
@@ -36,7 +36,7 @@ function run_plugin() {
   export PLUGIN="${1}"
 
   # Don't test daal4py on python 3.8, since it doesn't support 3.8
-  if [[ "${python_version}" == "py38" ]] && [[ "x${PLUGIN}" == "xmodel/daal4py" ]]; then
+  if [[ "${python_version}" == "3.8" ]] && [[ "x${PLUGIN}" == "xmodel/daal4py" ]]; then
     return
   fi
 
