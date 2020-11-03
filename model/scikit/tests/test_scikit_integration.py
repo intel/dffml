@@ -283,9 +283,10 @@ class TestScikitClustering(IntegrationCLITestCase):
                     predict_filename,
                 )
             elif algo is "ind_wo_labl":
+                # TODO This is the case were tcluster would be set to false
                 model, true_clstr, train_file, test_file, predict_file = (
                     "scikitap",
-                    None,
+                    "true_label:int:1",
                     train_filename,
                     test_filename,
                     predict_filename,
@@ -301,7 +302,7 @@ class TestScikitClustering(IntegrationCLITestCase):
             elif algo is "tran_wo_labl":
                 model, true_clstr, train_file, test_file, predict_file = (
                     "scikitac",
-                    None,
+                    "true_label:int:1",
                     train_filename,
                     train_filename,
                     train_filename,
@@ -335,12 +336,9 @@ class TestScikitClustering(IntegrationCLITestCase):
                         "test_data=csv",
                         "-source-filename",
                         test_file,
+                        "-model-predict",
+                        true_clstr,
                     ]
-                    + (
-                        ["-model-tcluster", true_clstr]
-                        if true_clstr is not None
-                        else []
-                    )
                 )
             )
             with contextlib.redirect_stdout(self.stdout):
