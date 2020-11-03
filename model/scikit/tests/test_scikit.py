@@ -104,10 +104,11 @@ class TestScikitModel:
         if estimator_type in supervised_estimators:
             config_fields["predict"] = Feature("X", float, 1)
         elif estimator_type in unsupervised_estimators:
-            if cls.TRUE_CLSTR_PRESENT:
-                config_fields["tcluster"] = Feature("X", float, 1)
-            else:
-                config_fields["predict"] = Feature("X", float, 1)
+            # TODO If cls.TRUE_CLSTR_PRESENT then we want to use the
+            # mutual_info_score scikit accuracy scorer. In this case we might
+            # want to change tcluster to a boolean config property.
+            # For more info see commit e4f523976bf37d3457cda140ceab7899420ae2c7
+            config_fields["predict"] = Feature("X", float, 1)
         cls.model = cls.MODEL(
             cls.MODEL_CONFIG(**{**properties, **config_fields})
         )
