@@ -120,13 +120,9 @@ for entry_point_name, name, cls in [
     elif estimator_type in unsupervised_estimators:
         parentContext = ScikitContextUnsprvised
         parentModel = ScikitUnsprvised
-        config_fields["tcluster"] = (
-            Feature,
-            field(
-                "True cluster label for evaluating clustering models",
-                default=None,
-            ),
-        )
+        # TODO Make tcluster a boolean field, likely it will need to be
+        # no-tcluster or something like that, because we have a case in the
+        # integration test cases where it needs to be false.
     dffml_config_properties = {
         **{
             "directory": (

@@ -231,7 +231,7 @@ Example below uses KMeans Clustering Model on a small randomly generated dataset
     $ dffml accuracy \\
         -model scikitkmeans \\
         -model-features Col1:float:1 Col2:float:1 Col3:float:1 Col4:float:1\\
-        -model-tcluster cluster:int:1 \\
+        -model-predict cluster:int:1 \\
         -model-directory tempdir \\
         -sources f=csv \\
         -source-filename test.csv \\
@@ -280,7 +280,7 @@ Example usage of KMeans Clustering Model using python API:
             Feature("Col3", float, 1),
             Feature("Col4", float, 1),
         ),
-        tcluster=Feature("cluster", int, 1),
+        predict=Feature("cluster", int, 1),
         directory="tempdir",
     )
 
@@ -307,12 +307,6 @@ Ensure that `predict` and `accuracy` for these algorithms uses training data.
 
   - Label or the value to be predicted
   - Only used by classification and regression models
-
-- tcluster: Feature
-
-  - True cluster, only used by clustering models
-  - Passed with `accuracy` to return `mutual_info_score`
-  - If not passed `accuracy` returns `silhouette_score`
 
 - features: List of features
 
