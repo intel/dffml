@@ -1,11 +1,20 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2019 Intel Corporation
 import os
+import sys
 import ast
 import pathlib
 from io import open
 import importlib.util
 from setuptools import find_packages, setup
+
+
+class InstallException(Exception):
+    pass
+
+
+if sys.version_info.major != 3 and sys.version_info.minor < 7:
+    raise InstallException("dffml is incompatible with Python version < 3.7!")
 
 with open(pathlib.Path("dffml", "version.py"), "r") as f:
     for line in f:
