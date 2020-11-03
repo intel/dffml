@@ -106,6 +106,8 @@ class TestScikitModel:
         elif estimator_type in unsupervised_estimators:
             if cls.TRUE_CLSTR_PRESENT:
                 config_fields["tcluster"] = Feature("X", float, 1)
+            else:
+                config_fields["predict"] = Feature("X", float, 1)
         cls.model = cls.MODEL(
             cls.MODEL_CONFIG(**{**properties, **config_fields})
         )
