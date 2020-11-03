@@ -6,7 +6,7 @@ Cli
     :caption: Contents:
 
     dataflow
-    cli
-    list
     ml
+    cli
     config
+    list
