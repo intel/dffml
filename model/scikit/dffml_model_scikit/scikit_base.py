@@ -36,7 +36,6 @@ class ScikitConfig(ModelConfig, NamedTuple):
     directory: pathlib.Path
     predict: Feature
     features: Features
-    tcluster: Feature
 
 
 class ScikitContext(ModelContext):
@@ -61,7 +60,7 @@ class ScikitContext(ModelContext):
             [
                 "{}{}".format(k, v)
                 for k, v in self.parent.config._asdict().items()
-                if k not in ["features", "tcluster", "predict"]
+                if k not in ["features", "predict"]
             ]
         )
         return secure_hash(
@@ -143,7 +142,6 @@ class ScikitContextUnsprvised(ScikitContext):
             config = self.parent.config._asdict()
             del config["directory"]
             del config["features"]
-            del config["tcluster"]
             del config["predict"]
             self.clf = self.parent.SCIKIT_MODEL(**config)
         return self
