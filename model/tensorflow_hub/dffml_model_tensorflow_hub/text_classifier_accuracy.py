@@ -2,8 +2,6 @@ import os
 from typing import AsyncIterator, List
 
 from dffml.base import config
-from dffml.record import Record
-from dffml.feature import Feature
 from dffml.source.source import Sources
 from dffml.util.entrypoint import entrypoint
 from dffml.model import ModelNotTrained, ModelContext
