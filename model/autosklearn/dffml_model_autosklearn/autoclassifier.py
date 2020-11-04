@@ -1,4 +1,3 @@
-import sklearn.metrics
 import autosklearn.classification
 
 from dffml.model.model import Model
