@@ -246,7 +246,7 @@ def mktestcase(filepath: pathlib.Path, relative: pathlib.Path):
 
 
 for filepath in DOCS_PATH.rglob("*.rst"):
-    if ":test:" not in pathlib.Path(filepath).read_text():
+    if b":test:" not in pathlib.Path(filepath).read_bytes():
         continue
     relative = filepath.relative_to(DOCS_PATH).with_suffix("")
     name = "test_" + str(relative).replace(os.sep, "_")
