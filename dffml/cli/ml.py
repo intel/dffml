@@ -14,7 +14,7 @@ from ..util.cli.cmds import (
     KeysCMDConfig,
 )
 from ..base import config, field
-from ..accuracy import AccuracyScorer, MeanSquaredErrorAccuracy
+from ..accuracy import AccuracyScorer
 
 
 @config
