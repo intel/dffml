@@ -32,5 +32,5 @@ class TestRunCargoAuditOp(AsyncTestCase):
                 )
             )
             self.assertEqual(
-                len(results["report"]["vulnerabilities"]["list"]), 1
+                len(results["report"]["vulnerabilities"]["list"]), 4
             )
