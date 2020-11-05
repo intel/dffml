@@ -1,4 +1,6 @@
+import os
 import json
+import shutil
 import inspect
 import pathlib
 import tempfile
@@ -79,18 +81,19 @@ def parser(json_file: str) -> dict:
 class TestOpSource(AsyncTestCase):
     async def test_records(self):
         records = []
-
-        with tempfile.NamedTemporaryFile(
-            mode="w+t"
-        ) as fileobj, tempfile.NamedTemporaryFile(
-            mode="w+t", prefix="op_source_test_", suffix=".py"
-        ) as pyfile:
-            # Initial check to make sure parser works
-            json.dump(FILE_DATA, fileobj)
-            fileobj.seek(0)
-            self.assertEqual(len(parser(fileobj.name)), 1)
-            # Write parser to file
-            pyfile.write(
+        tmpdir = tempfile.mkdtemp()
+        handlejson, fileobj = tempfile.mkstemp(dir=tmpdir)
+        handlepy, pyfile = tempfile.mkstemp(
+            prefix="op_source_test_", suffix=".py", dir=tmpdir
+        )
+        # Initial check to make sure parser works
+        with open(fileobj, mode="w") as f:
+            json.dump(FILE_DATA, f)
+            f.seek(0)
+        self.assertEqual(len(parser(fileobj)), 1)
+        # Write parser to file
+        with open(pyfile, mode="w") as p:
+            p.write(
                 inspect.cleandoc(
                     """
                     import json
@@ -99,35 +102,38 @@ class TestOpSource(AsyncTestCase):
                 + "\n\n"
                 + inspect.getsource(parser)
             )
-            pyfile.seek(0)
-            # Now test that operation source works
-            with chdir(pathlib.Path(pyfile.name).parent):
-                # Load the records
-                records = await CLI.cli(
-                    "list",
-                    "records",
-                    "-sources",
-                    "a=op",
-                    "-source-opimp",
-                    f"{pathlib.Path(pyfile.name).stem}:{parser.__name__}",
-                    "-source-args",
-                    fileobj.name,
-                )
-                # Make sure they're correct
-                self.assertEqual(len(records), 1)
-                self.assertDictEqual(
-                    records[0].export(),
-                    {
-                        "key": "42",
-                        "features": {
-                            "question": "babebabe?",
-                            "context": "Feeda da facea",
-                            "answer_text": "dead beef",
-                            "start_pos_char": 10,
-                            "title": "feedface",
-                            "is_impossible": False,
-                            "answers": [],
-                        },
-                        "extra": {},
+            p.seek(0)
+        # Now test that operation source works
+        with chdir(pathlib.Path(pyfile).parent):
+            # Load the records
+            records = await CLI.cli(
+                "list",
+                "records",
+                "-sources",
+                "a=op",
+                "-source-opimp",
+                f"{pathlib.Path(pyfile).stem}:{parser.__name__}",
+                "-source-args",
+                fileobj,
+            )
+            # Make sure they're correct
+            self.assertEqual(len(records), 1)
+            self.assertDictEqual(
+                records[0].export(),
+                {
+                    "key": "42",
+                    "features": {
+                        "question": "babebabe?",
+                        "context": "Feeda da facea",
+                        "answer_text": "dead beef",
+                        "start_pos_char": 10,
+                        "title": "feedface",
+                        "is_impossible": False,
+                        "answers": [],
                     },
-                )
+                    "extra": {},
+                },
+            )
+        os.close(handlejson)
+        os.close(handlepy)
+        shutil.rmtree(tmpdir)
