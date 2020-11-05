@@ -27,4 +27,6 @@ doctest/
 *.mnistpng
 docs/plugins/dffml_*.rst
 docs/api/**
+docs/changelog.md
+docs/shouldi.md
 consoletest/
