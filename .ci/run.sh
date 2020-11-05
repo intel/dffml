@@ -70,7 +70,7 @@ function run_plugin() {
     # Install all the plugins so examples can use them
     "${PYTHON}" -m dffml service dev install
     # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-    "${PYTHON}" -m pip uninstall -y dataclasses
+    "${PYTHON}" "${SRC_ROOT}/scripts/tempfix/pytorch/pytorch/46930.py"
 
     # Run the examples
     run_plugin_examples
@@ -150,7 +150,7 @@ function run_docs() {
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
   # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-  "${PYTHON}" -m pip uninstall -y dataclasses
+  "${PYTHON}" "${SRC_ROOT}/scripts/tempfix/pytorch/pytorch/46930.py"
 
   last_release=$("${PYTHON}" -m dffml service dev setuppy kwarg version setup.py)
 
@@ -187,7 +187,7 @@ function run_docs() {
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
   # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-  "${PYTHON}" -m pip uninstall -y dataclasses
+  "${PYTHON}" "${SRC_ROOT}/scripts/tempfix/pytorch/pytorch/46930.py"
   ./scripts/docs.sh
   mv pages "${release_docs}/html"
 
