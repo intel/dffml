@@ -150,7 +150,7 @@ function run_docs() {
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
   # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-  "${PYTHON}" "${SRC_ROOT}/scripts/tempfix/pytorch/pytorch/46930.py"
+  "${PYTHON}" "${SRC_ROOT}/scripts/tempfix/pytorch/pytorch/46930.py" ~/.local
 
   last_release=$("${PYTHON}" -m dffml service dev setuppy kwarg version setup.py)
 
@@ -187,7 +187,7 @@ function run_docs() {
   "${PYTHON}" -m pip install --prefix=~/.local -U -e "${SRC_ROOT}[dev]"
   "${PYTHON}" -m dffml service dev install -user
   # Remove dataclasses. See https://github.com/intel/dffml/issues/882
-  "${PYTHON}" "${SRC_ROOT}/scripts/tempfix/pytorch/pytorch/46930.py"
+  "${PYTHON}" "${SRC_ROOT}/scripts/tempfix/pytorch/pytorch/46930.py" ~/.local
   ./scripts/docs.sh
   mv pages "${release_docs}/html"
 
