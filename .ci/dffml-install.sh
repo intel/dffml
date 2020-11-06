@@ -11,3 +11,4 @@ elif [ "x${DFFML_RELEASE}" == "xlatest" ]; then
 else
   pip install --use-feature=2020-resolver "dffml[all]==${DFFML_RELEASE}"
 fi
+python scripts/tempfix/pytorch/pytorch/46930.py
