@@ -4,101 +4,35 @@ from typing import Optional, AsyncIterator, List, Dict, Any
 
 import pandas as pd
 import joblib as joblib
+import autosklearn.estimators
 
-from dffml.base import config, field
-from dffml.model.accuracy import Accuracy
-from dffml.model.model import ModelContext, ModelNotTrained
-from dffml import Feature, Features, Sources, Record, SourcesContext
+from dffml import (
+    Feature,
+    Features,
+    Sources,
+    Record,
+    SourcesContext,
+    ModelContext,
+    ModelNotTrained,
+    Accuracy,
+    config,
+    field,
+    make_config_numpy,
+)
 
 
-@config
-class AutoSklearnConfig:
-    predict: Feature = field("Label or the value to be predicted")
-    features: Features = field("Features on which to train the model")
-    directory: pathlib.Path = field("Directory where model should be saved")
-    time_left_for_this_task: int = field(
-        "Time limit in seconds for the search of appropriate models",
-        default=3600,
-    )
-    per_run_time_limit: int = field(
-        "Time limit for the single call to the machine learning model",
-        default=360,
-    )
-    initial_configurations_via_metalearning: int = field(
-        "Initialize the hyperparameter optimization algorithm with this many configurations which worked well on previously seen datasets",
-        default=25,
-    )
-    ensemble_size: int = field(
-        "Number of models added to the ensemble built by Ensemble selection from libraries of models. Models are drawn with replacement",
-        default=50,
-    )
-    ensemble_nbest: int = field(
-        "Only consider the ensemble_nbest models when building an ensemble",
-        default=50,
-    )
-    max_models_on_disc: int = field(
-        "Defines the maximum number of models that are kept in the disc",
-        default=50,
-    )
-    ensemble_memory_limit: int = field(
-        "Memory limit in MB for the ensemble building process", default=1024
-    )
-    seed: int = field(
-        "Used to seed SMAC. Will determine the output file names", default=1
-    )
-    ml_memory_limit: int = field(
-        "Memory limit in MB for the machine learning algorithm", default=3072
-    )
-    include_estimators: List[str] = field(
-        "Specify the set of estimators to use", default=None
-    )
-    exclude_estimators: List[str] = field(
-        "Specify the set of estimators not to use", default=None
-    )
-    include_preprocessors: List[str] = field(
-        "Specify the set of preprocessors to use", default=None
-    )
-    exclude_preprocessors: List[str] = field(
-        "Specify the set of preprocessors not to use", default=None
-    )
-    resampling_strategy: str = field(
-        "How to to handle overfitting", default="holdout"
-    )
-    resampling_strategy_arguments: Dict[str, int] = field(
-        "Additional arguments for resampling_strategy",
-        default_factory=lambda: {"train_size default": 0.67},
-    )
-    tmp_folder: str = field(
-        "Folder to store configuration output and log files", default=None
-    )
-    output_folder: str = field(
-        "Folder to store predictions for optional test set", default=None
-    )
-    delete_tmp_folder_after_terminate: bool = field(
-        "Remove tmp_folder, when finished", default=True
-    )
-    delete_output_folder_after_terminate: bool = field(
-        "Remove output_folder, when finished", default=True
-    )
-    n_jobs: Optional[int] = field(
-        "The number of jobs to run in parallel for fit()", default=None
-    )
-    disable_evaluator_output: bool = field(
-        "Disable model and prediction output", default=False
-    )
-    get_smac_object_callback: callable = field(
-        "Callback function to create an object of class smac.optimizer.smbo.SMBO",
-        default=None,
-    )
-    smac_scenario_args: Dict[str, str] = field(
-        "Additional arguments inserted into the scenario of SMAC", default=None
-    )
-    logging_config: Dict[str, Any] = field(
-        "dictionary object specifying the logger configuration", default=None
-    )
-    metadata_directory: str = field(
-        "Path to the metadata directory", default=None
-    )
+AutoSklearnConfig = make_config_numpy(
+    "AutoSklearnConfig",
+    autosklearn.estimators.AutoSklearnEstimator.__init__,
+    properties={
+        "features": (Features, field("Features to train on")),
+        "predict": (Feature, field("Label or the value to be predicted")),
+        "directory": (
+            pathlib.Path,
+            field("Directory where state should be saved",),
+        ),
+    },
+)
 
 
 class AutoSklearnModelContext(ModelContext):
