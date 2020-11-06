@@ -279,7 +279,7 @@ via the HTTP :ref:`plugin_service_http_api_model` API.
 
 .. code-block:: console
     :test:
-    :daemon:
+    :daemon: 8080
 
     $ dffml service http server -insecure -cors '*' -addr 0.0.0.0 -port 8080 \
         -models mymodel=myslr:MySLRModel \
