@@ -85,7 +85,6 @@ Config files are named after the dataflow they are associated with. In the
 The ``df`` directory is contains the main dataflows to be deployed.
 
 .. code-block:: console
-    :test:
 
     $ tree shouldi/deploy/
     shouldi/deploy/
@@ -291,7 +290,6 @@ with the existing flow.
 The final directory structure should look like this
 
 .. code-block:: console
-    :test:
 
     $ tree shouldi/deploy
     shouldi/deploy
