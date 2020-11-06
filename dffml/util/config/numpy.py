@@ -123,7 +123,7 @@ def numpy_docstring_args(cls: Callable):
 
     # Ensure all required parameters are present in docstring
     for param_name, param in parameters.items():
-        if param_name in ["args", "kwargs"]:
+        if param_name in ["self", "args", "kwargs"]:
             continue
         if not param_name in docparams:
             raise ParameterNotInDocString(
