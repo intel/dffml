@@ -71,7 +71,7 @@ class ConsoletestCommand(abc.ABC):
     def __init__(self):
         self.poll_until = None
         self.ignore_errors = False
-        self.daemon = False
+        self.daemon = None
 
     def __repr__(self):
         return (
@@ -507,6 +507,15 @@ def pipes(cmd):
     return cmds
 
 
+async def stop_daemon(proc):
+    if isinstance(proc, DFFMLProcess):
+        await proc.stop()
+    else:
+        # Send ctrl-c to daemon if running
+        proc.send_signal(signal.SIGINT)
+        proc.wait()
+
+
 class ConsoleCommand(ConsoletestCommand):
     def __init__(self, cmd: List[str]):
         super().__init__()
@@ -517,14 +526,18 @@ class ConsoleCommand(ConsoletestCommand):
         self.stack = contextlib.ExitStack()
 
     async def run(self, ctx):
+        if self.daemon is not None and self.daemon in ctx["daemons"]:
+            await stop_daemon(ctx["daemons"][self.daemon].daemon_proc)
         if self.poll_until is None:
             self.daemon_proc = await run_commands(
                 pipes(self.cmd),
                 ctx,
                 stdin=self.stdin,
                 ignore_errors=self.ignore_errors,
-                daemon=self.daemon,
+                daemon=bool(self.daemon),
             )
+            if self.daemon is not None:
+                ctx["daemons"][self.daemon] = self
         else:
             while True:
                 with tempfile.TemporaryFile() as stdout:
@@ -551,13 +564,8 @@ class ConsoleCommand(ConsoletestCommand):
         return self
 
     async def __aexit__(self, _exc_type, _exc_value, _traceback):
-        # Send ctrl-c to daemon if running
         if self.daemon_proc is not None:
-            if isinstance(self.daemon_proc, DFFMLProcess):
-                await self.daemon_proc.stop()
-            else:
-                self.daemon_proc.send_signal(signal.SIGINT)
-                self.daemon_proc.wait()
+            await stop_daemon(self.daemon_proc)
         self.stack.__exit__(None, None, None)
 
 
@@ -872,9 +880,9 @@ def call_replace(
         # Write out context
         ctx_fileobj = stack.enter_context(tempfile.NamedTemporaryFile())
         ctx_serializable = ctx.copy()
-        for remove in ["stack"]:
+        for remove in ["stack", "daemons"]:
             if remove in ctx_serializable:
-                del ctx_serializable["stack"]
+                del ctx_serializable[remove]
         ctx_fileobj.write(json.dumps(ctx_serializable).encode())
         ctx_fileobj.seek(0)
         # Python file modifies command and json.dumps result to stdout
@@ -946,9 +954,10 @@ def CodeBlock_run(func):
                 command.stdin = self.options.get("stdin", None)
 
             # Last command to be run is a daemon
-            daemon = bool("daemon" in self.options)
-            if daemon:
-                node["consoletest_commands"][-1].daemon = True
+            if "daemon" in self.options:
+                node["consoletest_commands"][-1].daemon = self.options[
+                    "daemon"
+                ]
 
         return retnodes
 
@@ -963,7 +972,7 @@ CodeBlock.option_spec.update(
         "replace": directives.unchanged_required,
         "poll-until": directives.unchanged_required,
         "ignore-errors": directives.flag,
-        "daemon": directives.flag,
+        "daemon": directives.unchanged_required,
         "test": directives.flag,
         "stdin": directives.unchanged_required,
     }
@@ -1063,6 +1072,7 @@ class ConsoleTestBuilder(DocTestBuilder):
                 "cwd": tempdir,
                 "venv": venvdir,
                 "stack": stack,
+                "daemons": {},
             }
             venvdir = os.path.abspath(venvdir)
 
