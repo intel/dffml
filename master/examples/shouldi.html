@@ -366,15 +366,10 @@ directory of the DFFML source code.</p>
 <h2>Installing Static Analysis Tools<a class="headerlink" href="#installing-static-analysis-tools" title="Permalink to this headline">¶</a></h2>
 <p>The tools we’ll be using are <code class="docutils literal notranslate"><span class="pre">bandit</span></code> and <code class="docutils literal notranslate"><span class="pre">safety</span></code>. We’ll also need to make
 http requests so let’s install <code class="docutils literal notranslate"><span class="pre">aiohttp</span></code> too.</p>
-<p>Some people are familiar with the <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file used to declare
-dependences. For packages, we can declare our dependencies right in our
-<code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file.</p>
-<p><strong>setup.py</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">common</span><span class="o">.</span><span class="n">KWARGS</span><span class="p">[</span><span class="s2">&quot;install_requires&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span>
-    <span class="s2">&quot;aiohttp&gt;=3.5.4&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;bandit&gt;=1.6.2&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;safety&gt;=1.8.5&quot;</span><span class="p">,</span>
-<span class="p">]</span>
+<p><strong>requirements.txt</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">aiohttp</span><span class="o">&gt;=</span><span class="mf">3.5</span><span class="o">.</span><span class="mi">4</span>
+<span class="n">bandit</span><span class="o">&gt;=</span><span class="mf">1.6</span><span class="o">.</span><span class="mi">2</span>
+<span class="n">safety</span><span class="o">&gt;=</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">5</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -382,8 +377,9 @@ dependences. For packages, we can declare our dependencies right in our
 <p>These versions will change over time, you should always check PyPi to find
 the latest version and use that version.</p>
 </div>
-<p>Now install the newly created package in development mode.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install -e .
+<p>Install the newly created package in development mode to install the
+dependencies listed in <strong>requirements.txt</strong> as well.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver -e .
 </pre></div>
 </div>
 </div>
@@ -449,7 +445,7 @@ the latest version and use that version.</p>
 </pre></div>
 </div>
 <p>Run the tests</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 setup.py <span class="nb">test</span> -s tests.test_safety
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python setup.py <span class="nb">test</span> -s tests.test_safety
 </pre></div>
 </div>
 </div>
@@ -574,7 +570,7 @@ the latest version and use that version.</p>
 </pre></div>
 </div>
 <p>Run the tests</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 setup.py <span class="nb">test</span> -s tests.test_bandit
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python setup.py <span class="nb">test</span> -s tests.test_bandit
 </pre></div>
 </div>
 </div>
@@ -777,7 +773,7 @@ with it.</p>
 </pre></div>
 </div>
 <p>Run the tests</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 setup.py <span class="nb">test</span> -s tests.test_pypi
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python setup.py <span class="nb">test</span> -s tests.test_pypi
 </pre></div>
 </div>
 </div>
@@ -872,10 +868,6 @@ based on <a class="reference external" href="https://docs.python.org/3/library/a
 <span class="k">class</span> <span class="nc">ShouldI</span><span class="p">(</span><span class="n">CMD</span><span class="p">):</span>
 
     <span class="n">install</span> <span class="o">=</span> <span class="n">Install</span>
-
-
-<span class="c1"># We&#39;re hiding this in the last lines for now so that we can perserve the</span>
-<span class="c1"># operations tutorial as is</span>
 </pre></div>
 </div>
 <p>Let’s test out the code in <code class="docutils literal notranslate"><span class="pre">shouldi.cli</span></code> before making it accessible via the
@@ -899,7 +891,7 @@ command line.</p>
 </pre></div>
 </div>
 <p>Run the all the tests this time</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 setup.py <span class="nb">test</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python setup.py <span class="nb">test</span>
 </pre></div>
 </div>
 <p>We want this to be usable as a command line utility, Python’s
@@ -908,13 +900,28 @@ to do is tell <code class="xref py py-mod docutils literal notranslate"><span cl
 a user runs a given command line application. The name of our CLI is <code class="docutils literal notranslate"><span class="pre">shouldi</span></code>
 and the function we want to run is <code class="docutils literal notranslate"><span class="pre">main</span></code> in the <code class="docutils literal notranslate"><span class="pre">ShouldI</span></code> class which is in
 the <code class="docutils literal notranslate"><span class="pre">shouldi.cli</span></code> module.</p>
+<p>We’re going to remove the <code class="docutils literal notranslate"><span class="pre">dffml.operation</span></code> entry’s for now. We’ll address
+those shortly.</p>
 <p><strong>setup.py</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">common</span><span class="o">.</span><span class="n">KWARGS</span><span class="p">[</span><span class="s2">&quot;entry_points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;console_scripts&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;shouldi = shouldi.cli:ShouldI.main&quot;</span><span class="p">],</span>
+<div class="highlight-udiff notranslate"><div class="highlight"><pre><span></span><span class="gd">--- ./setup.py</span>
+<span class="gi">+++ ./setup.py</span>
+<span class="gu">@@ -10,11 +10,7 @@</span>
+ spec.loader.exec_module(common)
+ 
+ common.KWARGS[&quot;entry_points&quot;] = {
+<span class="gd">-    &quot;dffml.operation&quot;: [</span>
+<span class="gd">-        f&quot;calc_add = {common.IMPORT_NAME}.operations:calc_add&quot;,</span>
+<span class="gd">-        f&quot;calc_mult = {common.IMPORT_NAME}.operations:calc_mult&quot;,</span>
+<span class="gd">-        f&quot;calc_parse_line = {common.IMPORT_NAME}.operations:calc_parse_line&quot;,</span>
+<span class="gd">-    ]</span>
+<span class="gi">+    &quot;console_scripts&quot;: [&quot;shouldi = shouldi.cli:ShouldI.main&quot;],</span>
+ }
+ 
+ setup(**common.KWARGS)
 </pre></div>
 </div>
 <p>Re-install the package via pip</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver -e .
 </pre></div>
 </div>
 <p>Now we should be able to run our new tool via the CLI! (Provided your <code class="docutils literal notranslate"><span class="pre">$PATH</span></code>
@@ -940,7 +947,7 @@ You can also convert between config file formats with the
 <p>We first export the DataFlow to a config file on disk.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> mkdir -p shouldi/deploy/df
 <span class="gp">$</span> dffml service dev <span class="nb">export</span> -configloader json shouldi.cli:DATAFLOW <span class="se">\</span>
-  &gt; shouldi/deploy/df/shouldi.json
+    <span class="p">|</span> tee shouldi/deploy/df/shouldi.json
 </pre></div>
 </div>
 <p>We then create the mermaidjs digarm from the DataFlow. The <code class="docutils literal notranslate"><span class="pre">-simple</span></code> flag says
@@ -992,59 +999,40 @@ sphinx plugin, and a command line utility.</p>
 <p>In order to make our operations visible to other plugins and packages using
 DFFML, we need to register them with Python’s <code class="docutils literal notranslate"><span class="pre">entry_points</span></code> system.</p>
 <p><strong>setup.py</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">common</span><span class="o">.</span><span class="n">KWARGS</span><span class="p">[</span><span class="s2">&quot;entry_points&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;console_scripts&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;shouldi = shouldi.cli:ShouldI.main&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;dffml.operation&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s2">&quot;run_bandit = shouldi.python.bandit:run_bandit&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;safety_check = shouldi.python.safety:safety_check&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;pypi_package_json = shouldi.python.pypi:pypi_package_json&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;pypi_package_contents = shouldi.python.pypi:pypi_package_contents&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;cleanup_pypi_package = shouldi.python.pypi:cleanup_pypi_package&quot;</span><span class="p">,</span>
-    <span class="p">],</span>
-<span class="p">}</span>
+<div class="highlight-udiff notranslate"><div class="highlight"><pre><span></span><span class="gd">--- ./setup.py</span>
+<span class="gi">+++ ./setup.py</span>
+<span class="gu">@@ -11,6 +11,13 @@</span>
+ 
+ common.KWARGS[&quot;entry_points&quot;] = {
+     &quot;console_scripts&quot;: [&quot;shouldi = shouldi.cli:ShouldI.main&quot;],
+<span class="gi">+    &quot;dffml.operation&quot;: [</span>
+<span class="gi">+        &quot;run_bandit = shouldi.python.bandit:run_bandit&quot;,</span>
+<span class="gi">+        &quot;safety_check = shouldi.python.safety:safety_check&quot;,</span>
+<span class="gi">+        &quot;pypi_package_json = shouldi.python.pypi:pypi_package_json&quot;,</span>
+<span class="gi">+        &quot;pypi_package_contents = shouldi.python.pypi:pypi_package_contents&quot;,</span>
+<span class="gi">+        &quot;cleanup_pypi_package = shouldi.python.pypi:cleanup_pypi_package&quot;,</span>
+<span class="gi">+    ],</span>
+ }
+ 
+ setup(**common.KWARGS)
 </pre></div>
 </div>
 <p>Re-install the package via pip to make registrations take effect.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python3 -m pip install -e .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> python -m pip install --use-feature<span class="o">=</span><span class="m">2020</span>-resolver -e .
 </pre></div>
 </div>
 <p>After you’ve registered the operations, services such as the
 <a class="reference internal" href="../plugins/service/http/index.html"><span class="doc">HTTP API</span></a> will have access to your operations.</p>
 <p>To make sure your operations were registered, you can use the development
 service’s <code class="docutils literal notranslate"><span class="pre">entrypoints</span> <span class="pre">list</span></code> command. You should see the <code class="docutils literal notranslate"><span class="pre">get_single</span></code>
-operation we used to get our output as comming from <code class="docutils literal notranslate"><span class="pre">dffml</span></code>. You’ll also see
+operation we used to get our output as coming from <code class="docutils literal notranslate"><span class="pre">dffml</span></code>. You’ll also see
 your own operations as coming from <code class="docutils literal notranslate"><span class="pre">shouldi</span></code>.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev entrypoints list dffml.operation
-<span class="go">AcceptUserInput = dffml.operation.io:AcceptUserInput -&gt; dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">associate = dffml.operation.output:Associate -&gt; dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">dffml.dataflow.run = dffml.operation.dataflow:run_dataflow -&gt; dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">dffml.mapping.create = dffml.operation.mapping:create_mapping -&gt; dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">dffml.mapping.extract = dffml.operation.mapping:mapping_extract_value -&gt; dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">dffml.model.predict = dffml.operation.model:model_predict -&gt; dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">get_multi = dffml.operation.output:GetMulti -&gt; dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">get_single = dffml.operation.output:GetSingle -&gt; dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">group_by = dffml.operation.output:GroupBy -&gt; dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">literal_eval = dffml.operation.preprocess:literal_eval -&gt; dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">print_output = dffml.operation.io:print_output -&gt; dffml 0.3.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">check_if_valid_git_repository_URL = dffml_feature_git.feature.operations:check_if_valid_git_repository_URL -&gt; dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">cleanup_git_repo = dffml_feature_git.feature.operations:cleanup_git_repo -&gt; dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">clone_git_repo = dffml_feature_git.feature.operations:clone_git_repo -&gt; dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">count_authors = dffml_feature_git.feature.operations:count_authors -&gt; dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">git_commits = dffml_feature_git.feature.operations:git_commits -&gt; dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">git_repo_author_lines_for_dates = dffml_feature_git.feature.operations:git_repo_author_lines_for_dates -&gt; dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">git_repo_checkout = dffml_feature_git.feature.operations:git_repo_checkout -&gt; dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">git_repo_commit_from_date = dffml_feature_git.feature.operations:git_repo_commit_from_date -&gt; dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">git_repo_default_branch = dffml_feature_git.feature.operations:git_repo_default_branch -&gt; dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">git_repo_release = dffml_feature_git.feature.operations:git_repo_release -&gt; dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">lines_of_code_by_language = dffml_feature_git.feature.operations:lines_of_code_by_language -&gt; dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">lines_of_code_to_comments = dffml_feature_git.feature.operations:lines_of_code_to_comments -&gt; dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">quarters_back_to_date = dffml_feature_git.feature.operations:quarters_back_to_date -&gt; dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">work = dffml_feature_git.feature.operations:work -&gt; dffml-feature-git 0.2.7 (/home/gitpod/.pyenv/versions/3.8.2/lib/python3.8/site-packages)</span>
-<span class="go">cleanup_pypi_package = shouldi.python.pypi:cleanup_pypi_package -&gt; shouldi 0.0.8 (/workspace/dffml/examples/shouldi)</span>
-<span class="go">pypi_package_contents = shouldi.python.pypi:pypi_package_contents -&gt; shouldi 0.0.8 (/workspace/dffml/examples/shouldi)</span>
-<span class="go">pypi_package_json = shouldi.python.pypi:pypi_package_json -&gt; shouldi 0.0.8 (/workspace/dffml/examples/shouldi)</span>
-<span class="go">run_bandit = shouldi.python.bandit:run_bandit -&gt; shouldi 0.0.8 (/workspace/dffml/examples/shouldi)</span>
-<span class="go">safety_check = shouldi.python.safety:safety_check -&gt; shouldi 0.0.8 (/workspace/dffml/examples/shouldi)</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> dffml service dev entrypoints list dffml.operation <span class="p">|</span> grep shouldi
+<span class="go">cleanup_pypi_package = shouldi.python.pypi:cleanup_pypi_package -&gt; shouldi 0.0.1 (/workspace/dffml/examples/shouldi)</span>
+<span class="go">pypi_package_contents = shouldi.python.pypi:pypi_package_contents -&gt; shouldi 0.0.1 (/workspace/dffml/examples/shouldi)</span>
+<span class="go">pypi_package_json = shouldi.python.pypi:pypi_package_json -&gt; shouldi 0.0.1 (/workspace/dffml/examples/shouldi)</span>
+<span class="go">run_bandit = shouldi.python.bandit:run_bandit -&gt; shouldi 0.0.1 (/workspace/dffml/examples/shouldi)</span>
+<span class="go">safety_check = shouldi.python.safety:safety_check -&gt; shouldi 0.0.1 (/workspace/dffml/examples/shouldi)</span>
 </pre></div>
 </div>
 <p>The <a class="reference internal" href="dataflows.html"><span class="doc">DataFlow HTTP Deployment</span></a> usage example will show you how to expose your
