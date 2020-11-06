@@ -14,6 +14,7 @@ import atexit
 import shutil
 import asyncio
 import pathlib
+import inspect
 import tempfile
 import functools
 import traceback
@@ -124,11 +125,12 @@ class ActivateVirtualEnvCommand(ConsoletestCommand):
         )
 
     async def run(self, ctx):
+        tempdir = ctx["stack"].enter_context(tempfile.TemporaryDirectory())
         self.old_virtual_env = os.environ.get("VIRTUAL_ENV", None)
         self.old_path = os.environ.get("PATH", None)
         env_path = os.path.abspath(os.path.join(ctx["cwd"], self.directory))
         os.environ["PATH"] = ":".join(
-            [os.path.join(env_path, "bin")]
+            [os.path.abspath(tempdir), os.path.join(env_path, "bin")]
             + os.environ.get("PATH", "").split(":")
         )
         # conda
@@ -150,6 +152,29 @@ class ActivateVirtualEnvCommand(ConsoletestCommand):
         else:
             print("VIRTUAL_ENV")
             os.environ["VIRTUAL_ENV"] = env_path
+
+        # Find full path
+        for pathdir in os.environ.get("PATH", "").split(":"):
+            check_path = pathlib.Path(pathdir, "python")
+            if check_path.is_file():
+                python_path = str(check_path.resolve())
+                break
+        # Prepend a dffml command to the path to ensure the correct
+        # version of dffml always runs
+        # Write out the file
+        dffml_path = pathlib.Path(os.path.abspath(tempdir), "dffml")
+        dffml_path.write_text(
+            inspect.cleandoc(
+                f"""
+            #!{python_path}
+            import os
+            import sys
+
+            os.execv("{python_path}", ["{python_path}", "-m", "dffml", *sys.argv[1:]])
+            """
+            )
+        )
+        dffml_path.chmod(0o755)
 
         return
 
@@ -256,7 +281,7 @@ class DFFMLProcess:
 
 async def run_dffml_command(cmd, ctx, kwargs):
     # Run the DFFML command if its not the http server
-    if cmd[2:6] != ["dffml", "service", "http", "server"]:
+    if cmd[:4] != ["dffml", "service", "http", "server"]:
         # Run the command
         print()
         print("Running", cmd)
@@ -418,11 +443,6 @@ async def run_commands(
         if "2>&1" in cmd:
             kwargs["stderr"] = subprocess.STDOUT
             cmd.remove("2>&1")
-        # Make sure dffml commands are run with python -m
-        # TODO XXX Raise issue with command that don't run this way
-        if cmd[0] == "dffml":
-            cmd.insert(0, "-m")
-            cmd.insert(0, "python")
         # If not in venv ensure correct Python
         if (
             "VIRTUAL_ENV" not in os.environ
@@ -432,7 +452,8 @@ async def run_commands(
             cmd[0] = sys.executable
         # Handle temporary environment variables prepended to command
         with tmpenv(cmd) as cmd:
-            if cmd[2:3] == ["dffml"]:
+            # Run the command
+            if cmd[0] == "dffml":
                 # Run dffml command through Python so that we capture coverage info
                 proc = await run_dffml_command(cmd, ctx, kwargs)
             else:
@@ -1034,7 +1055,7 @@ class ConsoleTestBuilder(DocTestBuilder):
             tempdir = stack.enter_context(tempfile.TemporaryDirectory())
             venvdir = stack.enter_context(tempfile.TemporaryDirectory())
 
-            ctx = {"cwd": tempdir}
+            ctx = {"cwd": tempdir, "stack": stack}
             venvdir = os.path.abspath(venvdir)
 
             # Create a virtualenv for every document
